@@ -227,66 +227,79 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         final shouldHideUI = _screenshotModeService.isActive && appState.ui.hideUIInScreenshotMode;
 
         return Scaffold(
-          appBar: shouldHideUI ? null : AppBar(
-            title: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 32,
-                  height: 32,
-                  margin: const EdgeInsets.only(right: 12),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryFaint),
-                      width: 1.5,
-                    ),
-                    image: const DecorationImage(image: AssetImage('assets/images/app-logo.png'), fit: BoxFit.cover),
+          appBar: shouldHideUI
+              ? null
+              : AppBar(
+                  title: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 32,
+                        height: 32,
+                        margin: const EdgeInsets.only(right: 12),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryFaint),
+                            width: 1.5,
+                          ),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/images/app-logo.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Text(l10n.appTitle),
+                    ],
                   ),
+                  backgroundColor: AppColors.uiBlack.withValues(alpha: AppTypography.opacityMedium),
+                  actions: [
+                    IconButton(
+                      tooltip: l10n.settingsTooltip,
+                      onPressed: () => _showSettings(context),
+                      icon: const Icon(Icons.settings),
+                    ),
+                    IconButton(
+                      tooltip: l10n.selectScenarioTooltip,
+                      onPressed: () => _showScenarioSelection(context),
+                      icon: const Icon(Icons.science),
+                    ),
+                    IconButton(
+                      tooltip: appState.simulation.isPaused ? l10n.playButton : l10n.pauseButton,
+                      onPressed: () {
+                        final action = appState.simulation.isPaused ? 'play' : 'pause';
+                        FirebaseService.instance.logUIEvent(
+                          'button_pressed',
+                          element: 'simulation_control',
+                          value: action,
+                        );
+                        appState.simulation.pause();
+                      },
+                      icon: Icon(appState.simulation.isPaused ? Icons.play_arrow : Icons.pause),
+                    ),
+                    IconButton(
+                      tooltip: l10n.resetButton,
+                      onPressed: () {
+                        FirebaseService.instance.logUIEvent(
+                          'button_pressed',
+                          element: 'simulation_control',
+                          value: 'reset',
+                        );
+
+                        // Check if screenshot mode is active and deactivate it first
+                        final screenshotService = ScreenshotModeService();
+                        if (screenshotService.isActive) {
+                          screenshotService.deactivate(uiState: appState.ui);
+                        }
+
+                        // Reset timing to prevent timing issues after reset
+                        _lastElapsed = Duration.zero;
+                        appState.resetAll();
+                      },
+                      icon: const Icon(Icons.refresh),
+                    ),
+                  ],
                 ),
-                Text(l10n.appTitle),
-              ],
-            ),
-            backgroundColor: AppColors.uiBlack.withValues(alpha: AppTypography.opacityMedium),
-            actions: [
-              IconButton(
-                tooltip: l10n.settingsTooltip,
-                onPressed: () => _showSettings(context),
-                icon: const Icon(Icons.settings),
-              ),
-              IconButton(
-                tooltip: l10n.selectScenarioTooltip,
-                onPressed: () => _showScenarioSelection(context),
-                icon: const Icon(Icons.science),
-              ),
-              IconButton(
-                tooltip: appState.simulation.isPaused ? l10n.playButton : l10n.pauseButton,
-                onPressed: () {
-                  final action = appState.simulation.isPaused ? 'play' : 'pause';
-                  FirebaseService.instance.logUIEvent('button_pressed', element: 'simulation_control', value: action);
-                  appState.simulation.pause();
-                },
-                icon: Icon(appState.simulation.isPaused ? Icons.play_arrow : Icons.pause),
-              ),
-              IconButton(
-                tooltip: l10n.resetButton,
-                onPressed: () {
-                  FirebaseService.instance.logUIEvent('button_pressed', element: 'simulation_control', value: 'reset');
-
-                  // Check if screenshot mode is active and deactivate it first
-                  final screenshotService = ScreenshotModeService();
-                  if (screenshotService.isActive) {
-                    screenshotService.deactivate(uiState: appState.ui);
-                  }
-
-                  // Reset timing to prevent timing issues after reset
-                  _lastElapsed = Duration.zero;
-                  appState.resetAll();
-                },
-                icon: const Icon(Icons.refresh),
-              ),
-            ],
-          ),
           body: LayoutBuilder(
             builder: (context, constraints) {
               final size = Size(constraints.maxWidth, constraints.maxHeight);

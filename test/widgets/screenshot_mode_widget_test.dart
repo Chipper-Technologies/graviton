@@ -137,7 +137,10 @@ void main() {
 
       // Should have the hide UI toggle available
       expect(find.text('Hide Navigation'), findsOneWidget);
-      expect(find.text('Hide app bar, bottom navigation, and copyright when screenshot mode is active'), findsOneWidget);
+      expect(
+        find.text('Hide app bar, bottom navigation, and copyright when screenshot mode is active'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('Should toggle hide UI setting correctly via state', (tester) async {
