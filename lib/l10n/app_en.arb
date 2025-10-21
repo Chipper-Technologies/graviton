@@ -1,0 +1,869 @@
+{
+  "@@locale": "en",
+  "appTitle": "Graviton",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "playButton": "Play",
+  "@playButton": {
+    "description": "Button to start the simulation"
+  },
+  
+  "pauseButton": "Pause",
+  "@pauseButton": {
+    "description": "Button to pause the simulation"
+  },
+  
+  "resetButton": "Reset",
+  "@resetButton": {
+    "description": "Button to reset the simulation"
+  },
+  
+  "speedLabel": "Speed",
+  "@speedLabel": {
+    "description": "Label for simulation speed control"
+  },
+  
+  "trailsLabel": "Trails",
+  "@trailsLabel": {
+    "description": "Label for trail visibility toggle"
+  },
+  
+  "warmTrails": "🔥 Warm",
+  "@warmTrails": {
+    "description": "Option for warm-colored trails"
+  },
+  
+  "coolTrails": "❄️ Cool",
+  "@coolTrails": {
+    "description": "Option for cool-colored trails"
+  },
+  
+  "toggleStatsTooltip": "Toggle Stats",
+  "@toggleStatsTooltip": {
+    "description": "Tooltip for the stats toggle button"
+  },
+  
+  "toggleLabelsTooltip": "Toggle Body Labels",
+  "@toggleLabelsTooltip": {
+    "description": "Tooltip for the body labels toggle button"
+  },
+  
+  "showLabelsDescription": "Show celestial body names in the simulation",
+  "@showLabelsDescription": {
+    "description": "Description for the body labels setting"
+  },
+  
+  "offScreenIndicatorsTitle": "Off-Screen Indicators",
+  "@offScreenIndicatorsTitle": {
+    "description": "Title for the off-screen indicators toggle"
+  },
+  
+  "offScreenIndicatorsDescription": "Show arrows pointing to objects outside the visible area",
+  "@offScreenIndicatorsDescription": {
+    "description": "Description for the off-screen indicators setting"
+  },
+  
+  "autoRotateTooltip": "Auto Rotate",
+  "@autoRotateTooltip": {
+    "description": "Tooltip for the auto-rotate button"
+  },
+  
+  "centerViewTooltip": "Center View",
+  "@centerViewTooltip": {
+    "description": "Tooltip for the center view button"
+  },
+  
+  "focusOnNearestTooltip": "Focus on Nearest Body",
+  "@focusOnNearestTooltip": {
+    "description": "Tooltip for the focus on nearest body button"
+  },
+  
+  "followObjectTooltip": "Follow Selected Object",
+  "@followObjectTooltip": {
+    "description": "Tooltip for the follow object button when an object is selected"
+  },
+  
+  "stopFollowingTooltip": "Stop Following Object",
+  "@stopFollowingTooltip": {
+    "description": "Tooltip for the follow object button when currently following"
+  },
+  
+  "selectObjectToFollowTooltip": "Select Object to Follow",
+  "@selectObjectToFollowTooltip": {
+    "description": "Tooltip for the follow object button when no object is selected"
+  },
+  
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Title for the settings dialog"
+  },
+  
+  "settingsTooltip": "Settings",
+  "@settingsTooltip": {
+    "description": "Tooltip for the settings button in the app bar"
+  },
+  
+  "selectScenarioTooltip": "Select Scenario",
+  "@selectScenarioTooltip": {
+    "description": "Tooltip for the scenario selection button in the app bar"
+  },
+  
+  "showTrails": "Show Trails",
+  "@showTrails": {
+    "description": "Label for the show trails switch"
+  },
+  
+  "showTrailsDescription": "Display motion trails behind objects",
+  "@showTrailsDescription": {
+    "description": "Description for show trails setting"
+  },
+  
+  "showOrbitalPaths": "Show Orbital Paths",
+  "@showOrbitalPaths": {
+    "description": "Title for the orbital paths toggle"
+  },
+  
+  "showOrbitalPathsDescription": "Display predicted orbital paths in scenarios with stable orbits",
+  "@showOrbitalPathsDescription": {
+    "description": "Description for show orbital paths setting"
+  },
+  
+  "dualOrbitalPaths": "Dual Orbital Paths",
+  "@dualOrbitalPaths": {
+    "description": "Title for the dual orbital paths toggle"
+  },
+  
+  "dualOrbitalPathsDescription": "Show both ideal circular and actual elliptical orbital paths",
+  "@dualOrbitalPathsDescription": {
+    "description": "Description for dual orbital paths setting"
+  },
+  
+  "trailColorLabel": "Trail Color",
+  "@trailColorLabel": {
+    "description": "Label for trail color selection"
+  },
+  
+  "closeButton": "Close",
+  "@closeButton": {
+    "description": "Label for close button"
+  },
+  
+  "simulationStats": "Simulation Stats",
+  "@simulationStats": {
+    "description": "Header for simulation statistics"
+  },
+  
+  "stepsLabel": "Steps",
+  "@stepsLabel": {
+    "description": "Label for simulation steps count"
+  },
+  
+  "timeLabel": "Time",
+  "@timeLabel": {
+    "description": "Label for simulation time"
+  },
+  
+  "earthYearsLabel": "Earth Years",
+  "@earthYearsLabel": {
+    "description": "Label for simulation time converted to Earth years"
+  },
+  
+  "speedStatsLabel": "Speed",
+  "@speedStatsLabel": {
+    "description": "Label for simulation speed in stats"
+  },
+  
+  "bodiesLabel": "Bodies",
+  "@bodiesLabel": {
+    "description": "Label for number of celestial bodies"
+  },
+  
+  "statusLabel": "Status",
+  "@statusLabel": {
+    "description": "Label for simulation status"
+  },
+  
+  "statusRunning": "Running",
+  "@statusRunning": {
+    "description": "Status when simulation is running"
+  },
+  
+  "statusPaused": "Paused",
+  "@statusPaused": {
+    "description": "Status when simulation is paused"
+  },
+  
+  "cameraLabel": "Camera",
+  "@cameraLabel": {
+    "description": "Header for camera information"
+  },
+  
+  "distanceLabel": "Distance",
+  "@distanceLabel": {
+    "description": "Label for camera distance"
+  },
+  
+  "autoRotateLabel": "Auto-rotate",
+  "@autoRotateLabel": {
+    "description": "Label for auto-rotate status"
+  },
+  
+  "autoRotateOn": "On",
+  "@autoRotateOn": {
+    "description": "Auto-rotate is enabled"
+  },
+  
+  "autoRotateOff": "Off",
+  "@autoRotateOff": {
+    "description": "Auto-rotate is disabled"
+  },
+  
+  "cameraControlsLabel": "Camera Controls",
+  "@cameraControlsLabel": {
+    "description": "Header for camera controls section"
+  },
+  
+  "invertPitchControlsLabel": "Invert Pitch Controls",
+  "@invertPitchControlsLabel": {
+    "description": "Label for invert pitch controls toggle"
+  },
+  
+  "invertPitchControlsDescription": "Reverse up/down drag direction",
+  "@invertPitchControlsDescription": {
+    "description": "Description for invert pitch controls toggle"
+  },
+  
+  "marketingLabel": "Marketing",
+  "@marketingLabel": {
+    "description": "Header for marketing tools section"
+  },
+  
+  "stepsCount": "{count}",
+  "@stepsCount": {
+    "description": "Number of simulation steps",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  
+  "timeFormatted": "{time}s",
+  "@timeFormatted": {
+    "description": "Formatted simulation time in seconds",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "earthYearsFormatted": "{years} yr",
+  "@earthYearsFormatted": {
+    "description": "Formatted simulation time in Earth years (abbreviated)",
+    "placeholders": {
+      "years": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "speedFormatted": "{speed}x",
+  "@speedFormatted": {
+    "description": "Formatted simulation speed multiplier",
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "bodiesCount": "{count}",
+  "@bodiesCount": {
+    "description": "Number of celestial bodies",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "distanceFormatted": "{distance}",
+  "@distanceFormatted": {
+    "description": "Formatted camera distance",
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "scenarioSelectionTitle": "Select Scenario",
+  "@scenarioSelectionTitle": {
+    "description": "Title for the scenario selection dialog"
+  },
+  
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  
+  "bodies": "bodies",
+  "@bodies": {
+    "description": "Word for celestial bodies (lowercase for use in sentences)"
+  },
+  
+  "scenarioRandom": "Random System",
+  "@scenarioRandom": {
+    "description": "Name of the random scenario"
+  },
+  
+  "scenarioRandomDescription": "Randomly generated chaotic three-body system with unpredictable dynamics",
+  "@scenarioRandomDescription": {
+    "description": "Description of the random scenario"
+  },
+  
+  "scenarioEarthMoonSun": "Earth-Moon-Sun",
+  "@scenarioEarthMoonSun": {
+    "description": "Name of the Earth-Moon-Sun scenario"
+  },
+  
+  "scenarioEarthMoonSunDescription": "Educational simulation of our familiar Earth-Moon-Sun system",
+  "@scenarioEarthMoonSunDescription": {
+    "description": "Description of the Earth-Moon-Sun scenario"
+  },
+  
+  "scenarioBinaryStars": "Binary Stars",
+  "@scenarioBinaryStars": {
+    "description": "Name of the binary stars scenario"
+  },
+  
+  "scenarioBinaryStarsDescription": "Two massive stars orbiting each other with circumbinary planets",
+  "@scenarioBinaryStarsDescription": {
+    "description": "Description of the binary stars scenario"
+  },
+  
+  "scenarioAsteroidBelt": "Asteroid Belt",
+  "@scenarioAsteroidBelt": {
+    "description": "Name of the asteroid belt scenario"
+  },
+  
+  "scenarioAsteroidBeltDescription": "Central star surrounded by a belt of rocky asteroids and debris",
+  "@scenarioAsteroidBeltDescription": {
+    "description": "Description of the asteroid belt scenario"
+  },
+  
+  "scenarioGalaxyFormation": "Galaxy Formation",
+  "@scenarioGalaxyFormation": {
+    "description": "Name of the galaxy formation scenario"
+  },
+  
+  "scenarioGalaxyFormationDescription": "Watch matter organize into spiral structures around a central black hole",
+  "@scenarioGalaxyFormationDescription": {
+    "description": "Description of the galaxy formation scenario"
+  },
+  
+  "scenarioPlanetaryRings": "Planetary Rings",
+  "@scenarioPlanetaryRings": {
+    "description": "Name of the planetary rings scenario"
+  },
+  
+  "scenarioPlanetaryRingsDescription": "Ring system dynamics around a massive planet like Saturn",
+  "@scenarioPlanetaryRingsDescription": {
+    "description": "Description of the planetary rings scenario"
+  },
+  
+  "scenarioSolarSystem": "Solar System",
+  "@scenarioSolarSystem": {
+    "description": "Name of the solar system scenario"
+  },
+  
+  "scenarioSolarSystemDescription": "Simplified version of our solar system with inner and outer planets",
+  "@scenarioSolarSystemDescription": {
+    "description": "Description of the solar system scenario"
+  },
+  
+  "habitabilityLabel": "Habitability",
+  "@habitabilityLabel": {
+    "description": "Label for habitability features"
+  },
+  
+  "habitableZonesLabel": "Habitable Zones",
+  "@habitableZonesLabel": {
+    "description": "Label for habitable zones toggle"
+  },
+  
+  "habitabilityIndicatorsLabel": "Planet Status",
+  "@habitabilityIndicatorsLabel": {
+    "description": "Label for habitability indicators toggle"
+  },
+  
+  "habitabilityHabitable": "Habitable",
+  "@habitabilityHabitable": {
+    "description": "Status for planets in the habitable zone"
+  },
+  
+  "habitabilityTooHot": "Too Hot",
+  "@habitabilityTooHot": {
+    "description": "Status for planets too close to stars"
+  },
+  
+  "habitabilityTooCold": "Too Cold",
+  "@habitabilityTooCold": {
+    "description": "Status for planets too far from stars"
+  },
+  
+  "habitabilityUnknown": "Unknown",
+  "@habitabilityUnknown": {
+    "description": "Status for bodies with unknown habitability"
+  },
+  
+  "toggleHabitableZonesTooltip": "Toggle Habitable Zones",
+  "@toggleHabitableZonesTooltip": {
+    "description": "Tooltip for habitable zones toggle button"
+  },
+  
+  "toggleHabitabilityIndicatorsTooltip": "Toggle Planet Habitability Status",
+  "@toggleHabitabilityIndicatorsTooltip": {
+    "description": "Tooltip for habitability indicators toggle button"
+  },
+  
+  "habitableZonesDescription": "Show colored zones around stars indicating habitable regions",
+  "@habitableZonesDescription": {
+    "description": "Description for habitable zones setting"
+  },
+  
+  "habitabilityIndicatorsDescription": "Display color-coded status rings around planets based on their habitability",
+  "@habitabilityIndicatorsDescription": {
+    "description": "Description for habitability indicators setting"
+  },
+  
+  "aboutDialogTitle": "About",
+  "@aboutDialogTitle": {
+    "description": "Title for the about dialog"
+  },
+  
+  "appDescription": "A physics simulation exploring gravitational dynamics and orbital mechanics. Experience the beauty and complexity of celestial motion through interactive 3D visualization.",
+  "@appDescription": {
+    "description": "Description of the app shown in about dialog"
+  },
+  
+  "authorLabel": "Author",
+  "@authorLabel": {
+    "description": "Label for author information"
+  },
+  
+  "websiteLabel": "Website",
+  "@websiteLabel": {
+    "description": "Label for website information"
+  },
+  
+  "aboutButtonTooltip": "About",
+  "@aboutButtonTooltip": {
+    "description": "Tooltip for the about button"
+  },
+  
+  "appNameGraviton": "Graviton",
+  "@appNameGraviton": {
+    "description": "The name of the application"
+  },
+  
+  "versionLabel": "Version",
+  "@versionLabel": {
+    "description": "Label for version information"
+  },
+  
+  "loadingVersion": "Loading version...",
+  "@loadingVersion": {
+    "description": "Text shown while version information is loading"
+  },
+  
+  "companyName": "Chipper Technologies, LLC",
+  "@companyName": {
+    "description": "The company name"
+  },
+  
+  "gravityWellsLabel": "Gravity Wells",
+  "@gravityWellsLabel": {
+    "description": "Label for gravity wells setting"
+  },
+  
+  "gravityWellsDescription": "Show gravitational field strength around objects",
+  "@gravityWellsDescription": {
+    "description": "Description for gravity wells setting"
+  },
+  
+  "languageLabel": "Language",
+  "@languageLabel": {
+    "description": "Label for language selection setting"
+  },
+  
+  "languageDescription": "Change the app language",
+  "@languageDescription": {
+    "description": "Description for language selection setting"
+  },
+  
+  "languageSystem": "System Default",
+  "@languageSystem": {
+    "description": "Option to use system default language"
+  },
+  
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "English language option"
+  },
+  
+  "languageGerman": "Deutsch",
+  "@languageGerman": {
+    "description": "German language option"
+  },
+  
+  "languageSpanish": "Español",
+  "@languageSpanish": {
+    "description": "Spanish language option"
+  },
+  
+  "languageFrench": "Français",
+  "@languageFrench": {
+    "description": "French language option"
+  },
+  
+  "languageChinese": "中文",
+  "@languageChinese": {
+    "description": "Chinese language option"
+  },
+  
+  "languageJapanese": "日本語",
+  "@languageJapanese": {
+    "description": "Japanese language option"
+  },
+  
+  "languageKorean": "한국어",
+  "@languageKorean": {
+    "description": "Korean language option"
+  },
+  
+  "bodyAlpha": "Alpha",
+  "@bodyAlpha": {
+    "description": "Name for first star in random scenarios"
+  },
+  
+  "bodyBeta": "Beta", 
+  "@bodyBeta": {
+    "description": "Name for second star in random scenarios"
+  },
+  
+  "bodyGamma": "Gamma",
+  "@bodyGamma": {
+    "description": "Name for third star in random scenarios"
+  },
+  
+  "bodyRockyPlanet": "Rocky Planet",
+  "@bodyRockyPlanet": {
+    "description": "Name for small rocky planets"
+  },
+  
+  "bodyEarthLike": "Earth-like",
+  "@bodyEarthLike": {
+    "description": "Name for Earth-like planets"
+  },
+  
+  "bodySuperEarth": "Super-Earth",
+  "@bodySuperEarth": {
+    "description": "Name for Super-Earth planets"
+  },
+  
+  "bodySun": "Sun",
+  "@bodySun": {
+    "description": "Name for the Sun"
+  },
+  
+  "bodyEarth": "Earth",
+  "@bodyEarth": {
+    "description": "Name for Earth"
+  },
+  
+  "bodyMoon": "Moon",
+  "@bodyMoon": {
+    "description": "Name for the Moon"
+  },
+  
+  "bodyStarA": "Star A",
+  "@bodyStarA": {
+    "description": "Name for first star in binary systems"
+  },
+  
+  "bodyStarB": "Star B",
+  "@bodyStarB": {
+    "description": "Name for second star in binary systems"
+  },
+  
+  "bodyPlanetP": "Planet P",
+  "@bodyPlanetP": {
+    "description": "Name for planet in binary star system"
+  },
+  
+  "bodyMoonM": "Moon M",
+  "@bodyMoonM": {
+    "description": "Name for moon in binary star system"
+  },
+  
+  "bodyCentralStar": "Central Star",
+  "@bodyCentralStar": {
+    "description": "Name for central star in asteroid belt"
+  },
+  
+  "bodyAsteroid": "Asteroid {number}",
+  "@bodyAsteroid": {
+    "description": "Name for asteroids with number",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "bodyBlackHole": "Black Hole",
+  "@bodyBlackHole": {
+    "description": "Name for black hole in galaxy formation"
+  },
+  
+  "bodyStar": "Star {number}",
+  "@bodyStar": {
+    "description": "Name for stars with number",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "bodyRingedPlanet": "Ringed Planet",
+  "@bodyRingedPlanet": {
+    "description": "Name for planet with rings"
+  },
+  
+  "bodyRing": "Ring {number}",
+  "@bodyRing": {
+    "description": "Name for ring particles with number",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "bodyMercury": "Mercury",
+  "@bodyMercury": {
+    "description": "Name for Mercury planet"
+  },
+  
+  "bodyVenus": "Venus",
+  "@bodyVenus": {
+    "description": "Name for Venus planet"
+  },
+  
+  "bodyMars": "Mars",
+  "@bodyMars": {
+    "description": "Name for Mars planet"
+  },
+  
+  "bodyJupiter": "Jupiter",
+  "@bodyJupiter": {
+    "description": "Name for Jupiter planet"
+  },
+  
+  "bodySaturn": "Saturn",
+  "@bodySaturn": {
+    "description": "Name for Saturn planet"
+  },
+  
+  "bodyUranus": "Uranus",
+  "@bodyUranus": {
+    "description": "Name for Uranus planet"
+  },
+  
+  "bodyNeptune": "Neptune",
+  "@bodyNeptune": {
+    "description": "Name for Neptune planet"
+  },
+  
+  "bodyInnerPlanet": "Inner Planet",
+  "@bodyInnerPlanet": {
+    "description": "Name for inner companion planet in asteroid belt scenario"
+  },
+  
+  "bodyOuterPlanet": "Outer Planet",
+  "@bodyOuterPlanet": {
+    "description": "Name for outer companion planet in asteroid belt scenario"
+  },
+
+  "educationalFocusChaoticDynamics": "chaotic dynamics",
+  "@educationalFocusChaoticDynamics": {
+    "description": "Educational focus for random scenario"
+  },
+
+  "educationalFocusRealWorldSystem": "real-world system",
+  "@educationalFocusRealWorldSystem": {
+    "description": "Educational focus for Earth-Moon-Sun scenario"
+  },
+
+  "educationalFocusBinaryOrbits": "binary orbits",
+  "@educationalFocusBinaryOrbits": {
+    "description": "Educational focus for binary stars scenario"
+  },
+
+  "educationalFocusManyBodyDynamics": "many-body dynamics",
+  "@educationalFocusManyBodyDynamics": {
+    "description": "Educational focus for asteroid belt scenario"
+  },
+
+  "educationalFocusStructureFormation": "structure formation",
+  "@educationalFocusStructureFormation": {
+    "description": "Educational focus for galaxy formation scenario"
+  },
+
+  "educationalFocusPlanetaryMotion": "planetary motion",
+  "@educationalFocusPlanetaryMotion": {
+    "description": "Educational focus for solar system scenario"
+  },
+
+  "updateRequiredTitle": "Update Required",
+  "@updateRequiredTitle": {
+    "description": "Title for the update required dialog"
+  },
+
+  "updateRequiredMessage": "A newer version of this app is available. Please update to continue using the app with the latest features and improvements.",
+  "@updateRequiredMessage": {
+    "description": "Message for the update required dialog"
+  },
+
+  "updateRequiredWarning": "This version is no longer supported.",
+  "@updateRequiredWarning": {
+    "description": "Warning message for the update required dialog"
+  },
+
+  "updateNow": "Update Now",
+  "@updateNow": {
+    "description": "Button text to update now"
+  },
+
+  "updateLater": "Later",
+  "@updateLater": {
+    "description": "Button text to update later"
+  },
+
+  "versionStatusCurrent": "Current",
+  "@versionStatusCurrent": {
+    "description": "Badge text for current app version"
+  },
+
+  "versionStatusBeta": "Beta",
+  "@versionStatusBeta": {
+    "description": "Badge text for beta app version"
+  },
+
+  "versionStatusOutdated": "Out-of-Date",
+  "@versionStatusOutdated": {
+    "description": "Badge text for outdated app version"
+  },
+
+  "maintenanceTitle": "Maintenance",
+  "@maintenanceTitle": {
+    "description": "Title for maintenance mode dialog"
+  },
+
+  "newsTitle": "News",
+  "@newsTitle": {
+    "description": "Title for news notification dialog"
+  },
+
+  "emergencyNotificationTitle": "Important Notice",
+  "@emergencyNotificationTitle": {
+    "description": "Title for emergency notification dialog"
+  },
+
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button text"
+  },
+
+  "screenshotMode": "Screenshot Mode",
+  "@screenshotMode": {
+    "description": "Title for screenshot mode toggle"
+  },
+
+  "screenshotModeSubtitle": "Enable preset scenes for capturing marketing screenshots",
+  "@screenshotModeSubtitle": {
+    "description": "Subtitle explaining screenshot mode functionality"
+  },
+
+  "scenePreset": "Scene Preset",
+  "@scenePreset": {
+    "description": "Label for scene preset selection"
+  },
+
+  "previousPreset": "Previous preset",
+  "@previousPreset": {
+    "description": "Tooltip for previous preset button"
+  },
+
+  "nextPreset": "Next preset",
+  "@nextPreset": {
+    "description": "Tooltip for next preset button"
+  },
+
+  "applyScene": "Apply Scene",
+  "@applyScene": {
+    "description": "Button text to apply the selected scene preset"
+  },
+
+  "appliedPreset": "Applied preset: {presetName}",
+  "@appliedPreset": {
+    "description": "Snackbar message when a preset is applied",
+    "placeholders": {
+      "presetName": {
+        "type": "String",
+        "description": "Name of the applied preset"
+      }
+    }
+  },
+
+  "deactivate": "Deactivate",
+  "@deactivate": {
+    "description": "Button text to deactivate screenshot mode"
+  },
+
+  "sceneActive": "Scene active - simulation paused for screenshot capture",
+  "@sceneActive": {
+    "description": "Message shown when a screenshot scene is active"
+  },
+
+  "presetGalaxyFormationOverview": "Galaxy Formation Overview",
+  "presetGalaxyFormationOverviewDesc": "Wide view of spiral galaxy formation with cosmic background",
+  "presetGalaxyCoreDetail": "Galaxy Core Detail",
+  "presetGalaxyCoreDetailDesc": "Close-up of bright galactic center with accretion disk",
+  "presetGalaxyBlackHole": "Galaxy Black Hole",
+  "presetGalaxyBlackHoleDesc": "Close-up view of supermassive black hole at galactic center",
+  "presetCompleteSolarSystem": "Complete Solar System",
+  "presetCompleteSolarSystemDesc": "All planets visible with beautiful orbital trails",
+  "presetInnerSolarSystem": "Inner Solar System",
+  "presetInnerSolarSystemDesc": "Close-up of Mercury, Venus, Earth, and Mars with habitable zone indicator",
+  "presetEarthView": "Earth View",
+  "presetEarthViewDesc": "Close-up perspective of Earth with atmospheric detail",
+  "presetSaturnRings": "Saturn's Majestic Rings",
+  "presetSaturnRingsDesc": "Close-up of Saturn with detailed ring system",
+  "presetEarthMoonSystem": "Earth-Moon System",
+  "presetEarthMoonSystemDesc": "Earth and Moon with visible orbital mechanics",
+  "presetBinaryStarDrama": "Binary Star Drama",
+  "presetBinaryStarDramaDesc": "Front view of two massive stars in gravitational dance",
+  "presetBinaryStarPlanetMoon": "Binary Star Planet & Moon",
+  "presetBinaryStarPlanetMoonDesc": "Planet and moon orbiting in chaotic binary star system",
+  "presetAsteroidBeltChaos": "Asteroid Belt Chaos",
+  "presetAsteroidBeltChaosDesc": "Dense asteroid field with gravitational effects",
+  "presetThreeBodyBallet": "Three-Body Ballet",
+  "presetThreeBodyBalletDesc": "Classic three-body problem in elegant motion"
+}

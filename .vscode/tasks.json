@@ -1,0 +1,379 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    // ============================================================================
+    // DEVELOPMENT & RUNNING TASKS
+    // ============================================================================
+    {
+      "label": "🚀 Run Development",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "run",
+        "--dart-define-from-file",
+        "config/dev.json",
+        "--flavor",
+        "dev"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter app with development configuration"
+    },
+    {
+      "label": "🎯 Run Production",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "run",
+        "--dart-define-from-file",
+        "config/prod.json",
+        "--flavor",
+        "prod"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter app with production configuration"
+    },
+    
+    // ============================================================================
+    // ANDROID BUILD TASKS
+    // ============================================================================
+    {
+      "label": "📱 Build Android APK (Dev)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "apk",
+        "--flavor",
+        "dev",
+        "--dart-define-from-file",
+        "config/dev.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build Android APK for development"
+    },
+    {
+      "label": "📱 Build Android APK (Prod)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "apk",
+        "--flavor",
+        "prod",
+        "--dart-define-from-file",
+        "config/prod.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build Android APK for production"
+    },
+    {
+      "label": "📦 Build Android Bundle (Dev)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "appbundle",
+        "--flavor",
+        "dev",
+        "--dart-define-from-file",
+        "config/dev.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build Android App Bundle for development"
+    },
+    {
+      "label": "📦 Build Android Bundle (Prod)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "appbundle",
+        "--flavor",
+        "prod",
+        "--dart-define-from-file",
+        "config/prod.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build Android App Bundle for production"
+    },
+
+    // ============================================================================
+    // iOS BUILD TASKS
+    // ============================================================================
+    {
+      "label": "🍎 Build iOS (Dev)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "ios",
+        "--dart-define-from-file",
+        "config/dev.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build iOS app for development"
+    },
+    {
+      "label": "🍎 Build iOS (Prod)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "ios",
+        "--dart-define-from-file",
+        "config/prod.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build iOS app for production"
+    },
+    {
+      "label": "📋 Build iOS Archive (Dev)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "ipa",
+        "--dart-define-from-file",
+        "config/dev.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build iOS IPA archive for development"
+    },
+    {
+      "label": "📋 Build iOS Archive (Prod)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "ipa",
+        "--dart-define-from-file",
+        "config/prod.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build iOS IPA archive for production"
+    },
+
+    // ============================================================================
+    // MAINTENANCE TASKS
+    // ============================================================================
+    {
+      "label": "🧹 Clean Build",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "clean"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Clean Flutter build cache and artifacts"
+    },
+    {
+      "label": "📦 Get Dependencies",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "pub",
+        "get"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Get Flutter package dependencies"
+    },
+    {
+      "label": "🔍 Analyze Code",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "analyze"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter static analysis"
+    },
+    {
+      "label": "🧪 Run Tests",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "test"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run all Flutter tests"
+    }
+  ]
+}
