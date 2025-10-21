@@ -27,6 +27,9 @@ class UIState extends ChangeNotifier {
   // Language settings
   String? _selectedLanguageCode; // null means system default
 
+  // Screenshot mode settings
+  bool _hideUIInScreenshotMode = false;
+
   // SharedPreferences keys
   static const String _keyShowTrails = 'showTrails';
   static const String _keyUseWarmTrails = 'useWarmTrails';
@@ -43,6 +46,7 @@ class UIState extends ChangeNotifier {
   static const String _keyShowHabitabilityIndicators = 'showHabitabilityIndicators';
   static const String _keyShowGravityWells = 'showGravityWells';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
+  static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
 
   /// Initialize and load saved settings
   Future<void> initialize() async {
@@ -68,6 +72,7 @@ class UIState extends ChangeNotifier {
       _showHabitabilityIndicators = prefs.getBool(_keyShowHabitabilityIndicators) ?? false;
       _showGravityWells = prefs.getBool(_keyShowGravityWells) ?? false;
       _selectedLanguageCode = prefs.getString(_keySelectedLanguageCode);
+      _hideUIInScreenshotMode = prefs.getBool(_keyHideUIInScreenshotMode) ?? false;
 
       notifyListeners();
     } catch (e) {
@@ -118,6 +123,9 @@ class UIState extends ChangeNotifier {
 
   // Language getters
   String? get selectedLanguageCode => _selectedLanguageCode;
+
+  // Screenshot mode getters
+  bool get hideUIInScreenshotMode => _hideUIInScreenshotMode;
 
   // Setters
   void toggleTrails() {
@@ -225,6 +233,14 @@ class UIState extends ChangeNotifier {
     _selectedLanguageCode = languageCode;
     _saveSetting(_keySelectedLanguageCode, languageCode);
     FirebaseService.instance.logSettingsChange('language', languageCode ?? 'system');
+    notifyListeners();
+  }
+
+  // Screenshot mode setters
+  void toggleHideUIInScreenshotMode() {
+    _hideUIInScreenshotMode = !_hideUIInScreenshotMode;
+    _saveSetting(_keyHideUIInScreenshotMode, _hideUIInScreenshotMode);
+    FirebaseService.instance.logSettingsChange('hide_ui_in_screenshot_mode', _hideUIInScreenshotMode);
     notifyListeners();
   }
 }

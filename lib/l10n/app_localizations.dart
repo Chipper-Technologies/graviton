@@ -1014,6 +1014,18 @@ abstract class AppLocalizations {
   /// **'Enable preset scenes for capturing marketing screenshots'**
   String get screenshotModeSubtitle;
 
+  /// Title for toggle to hide app bar and bottom navigation in screenshot mode
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Navigation'**
+  String get hideUIInScreenshotMode;
+
+  /// Subtitle explaining hide UI in screenshot mode functionality
+  ///
+  /// In en, this message translates to:
+  /// **'Hide app bar, bottom navigation, and copyright when screenshot mode is active'**
+  String get hideUIInScreenshotModeSubtitle;
+
   /// Label for scene preset selection
   ///
   /// In en, this message translates to:

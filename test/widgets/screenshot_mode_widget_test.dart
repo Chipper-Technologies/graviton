@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/enums/app_flavor.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/widgets/screenshot_mode_widget.dart';
 import 'package:provider/provider.dart';
@@ -119,8 +120,39 @@ void main() {
 
         // Verify widget builds without errors
         expect(find.byType(ScreenshotModeWidget), findsOneWidget);
-        expect(find.byType(SwitchListTile), findsOneWidget);
+        expect(find.byType(SwitchListTile), findsAtLeastNWidgets(1));
       }
+    });
+
+    testWidgets('Should include hide UI functionality when screenshot mode is enabled', (tester) async {
+      await tester.pumpWidget(createWidgetWithLocale(const Locale('en')));
+      await tester.pumpAndSettle();
+
+      // Enable screenshot mode via appState (avoid UI complexity)
+      final screenshotService = ScreenshotModeService();
+      screenshotService.enableScreenshotMode();
+
+      // Rebuild widget
+      await tester.pumpAndSettle();
+
+      // Should have the hide UI toggle available
+      expect(find.text('Hide Navigation'), findsOneWidget);
+      expect(find.text('Hide app bar, bottom navigation, and copyright when screenshot mode is active'), findsOneWidget);
+    });
+
+    testWidgets('Should toggle hide UI setting correctly via state', (tester) async {
+      await tester.pumpWidget(createWidgetWithLocale(const Locale('en')));
+      await tester.pumpAndSettle();
+
+      // Initial state should be false
+      expect(appState.ui.hideUIInScreenshotMode, isFalse);
+
+      // Toggle the setting directly
+      appState.ui.toggleHideUIInScreenshotMode();
+      await tester.pumpAndSettle();
+
+      // Should now be true
+      expect(appState.ui.hideUIInScreenshotMode, isTrue);
     });
   });
 }

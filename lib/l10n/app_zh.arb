@@ -162,6 +162,8 @@
 
   "screenshotMode": "截图模式",
   "screenshotModeSubtitle": "启用预设场景以捕获营销截图",
+  "hideUIInScreenshotMode": "隐藏导航",
+  "hideUIInScreenshotModeSubtitle": "当截图模式激活时隐藏应用栏、底部导航和版权信息",
   "scenePreset": "场景预设",
   "previousPreset": "上一个预设",
   "nextPreset": "下一个预设",
@@ -193,5 +195,6 @@
   "presetAsteroidBeltChaos": "小行星带混沌",
   "presetAsteroidBeltChaosDesc": "密集的小行星场，具有引力效应",
   "presetThreeBodyBallet": "三体芭蕾",
-  "presetThreeBodyBalletDesc": "经典三体问题的优雅运动"
+  "presetThreeBodyBalletDesc": "经典三体问题的优雅运动",
+  "privacyPolicyLabel": "隐私政策"
 }

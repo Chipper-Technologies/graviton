@@ -162,6 +162,8 @@
 
   "screenshotMode": "スクリーンショットモード",
   "screenshotModeSubtitle": "マーケティング用スクリーンショット撮影のプリセットシーンを有効化",
+  "hideUIInScreenshotMode": "ナビゲーションを非表示",
+  "hideUIInScreenshotModeSubtitle": "スクリーンショットモードがアクティブな時にアプリバー、ボトムナビゲーション、コピーライトを非表示にする",
   "scenePreset": "シーンプリセット",
   "previousPreset": "前のプリセット",
   "nextPreset": "次のプリセット",
@@ -193,5 +195,6 @@
   "presetAsteroidBeltChaos": "小惑星帯カオス",
   "presetAsteroidBeltChaosDesc": "重力効果を持つ密集した小惑星フィールド",
   "presetThreeBodyBallet": "三体バレエ",
-  "presetThreeBodyBalletDesc": "エレガントな動きの古典的三体問題"
+  "presetThreeBodyBalletDesc": "エレガントな動きの古典的三体問題",
+  "privacyPolicyLabel": "プライバシーポリシー"
 }

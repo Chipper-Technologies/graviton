@@ -182,6 +182,8 @@
 
   "screenshotMode": "Screenshot-Modus",
   "screenshotModeSubtitle": "Vorgegebene Szenen für Marketing-Screenshots aktivieren",
+  "hideUIInScreenshotMode": "Navigation Ausblenden",
+  "hideUIInScreenshotModeSubtitle": "App-Leiste, untere Navigation und Copyright ausblenden, wenn Screenshot-Modus aktiv ist",
   "scenePreset": "Szenen-Voreinstellung",
   "previousPreset": "Vorherige Voreinstellung",
   "nextPreset": "Nächste Voreinstellung",
@@ -213,5 +215,6 @@
   "presetAsteroidBeltChaos": "Asteroidengürtel Chaos",
   "presetAsteroidBeltChaosDesc": "Dichtes Asteroidenfeld mit Gravitationseffekten",
   "presetThreeBodyBallet": "Dreikörper-Ballett",
-  "presetThreeBodyBalletDesc": "Klassisches Dreikörperproblem in eleganter Bewegung"
+  "presetThreeBodyBalletDesc": "Klassisches Dreikörperproblem in eleganter Bewegung",
+  "privacyPolicyLabel": "Datenschutzrichtlinie"
 }

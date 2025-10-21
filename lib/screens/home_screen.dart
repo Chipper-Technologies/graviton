@@ -224,8 +224,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           }
         });
 
+        final shouldHideUI = _screenshotModeService.isActive && appState.ui.hideUIInScreenshotMode;
+
         return Scaffold(
-          appBar: AppBar(
+          appBar: shouldHideUI ? null : AppBar(
             title: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -399,13 +401,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                     if (appState.ui.showStats) StatsOverlay(appState: appState),
                     ScreenshotCountdown(screenshotService: _screenshotModeService),
-                    const CopyrightText(),
+                    if (!shouldHideUI) const CopyrightText(),
                   ],
                 ),
               );
             },
           ),
-          bottomNavigationBar: const BottomControls(),
+          bottomNavigationBar: shouldHideUI ? null : const BottomControls(),
         );
       },
     );

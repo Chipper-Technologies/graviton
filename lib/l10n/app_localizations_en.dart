@@ -502,6 +502,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enable preset scenes for capturing marketing screenshots';
 
   @override
+  String get hideUIInScreenshotMode => 'Hide Navigation';
+
+  @override
+  String get hideUIInScreenshotModeSubtitle =>
+      'Hide app bar, bottom navigation, and copyright when screenshot mode is active';
+
+  @override
   String get scenePreset => 'Scene Preset';
 
   @override

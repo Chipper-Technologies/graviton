@@ -484,6 +484,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get screenshotModeSubtitle => '启用预设场景以捕获营销截图';
 
   @override
+  String get hideUIInScreenshotMode => '隐藏导航';
+
+  @override
+  String get hideUIInScreenshotModeSubtitle => '当截图模式激活时隐藏应用栏、底部导航和版权信息';
+
+  @override
   String get scenePreset => '场景预设';
 
   @override
@@ -579,5 +585,5 @@ class AppLocalizationsZh extends AppLocalizations {
   String get presetThreeBodyBalletDesc => '经典三体问题的优雅运动';
 
   @override
-  String get privacyPolicyLabel => 'Privacy Policy';
+  String get privacyPolicyLabel => '隐私政策';
 }

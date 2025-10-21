@@ -161,6 +161,8 @@
 
   "screenshotMode": "Modo de Captura",
   "screenshotModeSubtitle": "Activar escenas predefinidas para capturas de marketing",
+  "hideUIInScreenshotMode": "Ocultar Navegación",
+  "hideUIInScreenshotModeSubtitle": "Ocultar barra de aplicación, navegación inferior y copyright cuando el modo captura esté activo",
   "scenePreset": "Escena Predefinida",
   "previousPreset": "Escena anterior",
   "nextPreset": "Escena siguiente",
@@ -192,5 +194,6 @@
   "presetAsteroidBeltChaos": "Caos del Cinturón de Asteroides",
   "presetAsteroidBeltChaosDesc": "Campo denso de asteroides con efectos gravitacionales",
   "presetThreeBodyBallet": "Ballet de Tres Cuerpos",
-  "presetThreeBodyBalletDesc": "Problema clásico de tres cuerpos en movimiento elegante"
+  "presetThreeBodyBalletDesc": "Problema clásico de tres cuerpos en movimiento elegante",
+  "privacyPolicyLabel": "Política de Privacidad"
 }

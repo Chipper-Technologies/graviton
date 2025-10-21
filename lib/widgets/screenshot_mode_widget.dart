@@ -45,6 +45,21 @@ class ScreenshotModeWidget extends StatelessWidget {
                   secondary: const Icon(Icons.camera_alt),
                 ),
 
+                // Hide UI Toggle (only show when screenshot mode is enabled)
+                if (screenshotService.isEnabled) ...[
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: SwitchListTile(
+                      title: Text(l10n.hideUIInScreenshotMode),
+                      subtitle: Text(l10n.hideUIInScreenshotModeSubtitle),
+                      value: appState.ui.hideUIInScreenshotMode,
+                      onChanged: (v) => appState.ui.toggleHideUIInScreenshotMode(),
+                      secondary: const Icon(Icons.visibility_off),
+                    ),
+                  ),
+                ],
+
                 // Preset Selection (only show when enabled)
                 if (screenshotService.isEnabled) ...[
                   const SizedBox(height: 8),

@@ -801,6 +801,16 @@
     "description": "Subtitle explaining screenshot mode functionality"
   },
 
+  "hideUIInScreenshotMode": "Hide Navigation",
+  "@hideUIInScreenshotMode": {
+    "description": "Title for toggle to hide app bar and bottom navigation in screenshot mode"
+  },
+
+  "hideUIInScreenshotModeSubtitle": "Hide app bar, bottom navigation, and copyright when screenshot mode is active",
+  "@hideUIInScreenshotModeSubtitle": {
+    "description": "Subtitle explaining hide UI in screenshot mode functionality"
+  },
+
   "scenePreset": "Scene Preset",
   "@scenePreset": {
     "description": "Label for scene preset selection"

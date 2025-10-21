@@ -504,6 +504,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Vorgegebene Szenen für Marketing-Screenshots aktivieren';
 
   @override
+  String get hideUIInScreenshotMode => 'Navigation Ausblenden';
+
+  @override
+  String get hideUIInScreenshotModeSubtitle =>
+      'App-Leiste, untere Navigation und Copyright ausblenden, wenn Screenshot-Modus aktiv ist';
+
+  @override
   String get scenePreset => 'Szenen-Voreinstellung';
 
   @override
@@ -611,5 +618,5 @@ class AppLocalizationsDe extends AppLocalizations {
       'Klassisches Dreikörperproblem in eleganter Bewegung';
 
   @override
-  String get privacyPolicyLabel => 'Privacy Policy';
+  String get privacyPolicyLabel => 'Datenschutzrichtlinie';
 }

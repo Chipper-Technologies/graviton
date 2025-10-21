@@ -162,6 +162,8 @@
 
   "screenshotMode": "스크린샷 모드",
   "screenshotModeSubtitle": "마케팅 스크린샷 촬영을 위한 프리셋 장면 활성화",
+  "hideUIInScreenshotMode": "내비게이션 숨기기",
+  "hideUIInScreenshotModeSubtitle": "스크린샷 모드가 활성화될 때 앱 바, 하단 내비게이션, 저작권을 숨김",
   "scenePreset": "장면 프리셋",
   "previousPreset": "이전 프리셋",
   "nextPreset": "다음 프리셋",
@@ -193,5 +195,6 @@
   "presetAsteroidBeltChaos": "소행성대 혼돈",
   "presetAsteroidBeltChaosDesc": "중력 효과가 있는 밀집한 소행성 필드",
   "presetThreeBodyBallet": "삼체 발레",
-  "presetThreeBodyBalletDesc": "우아한 움직임의 고전적 삼체 문제"
+  "presetThreeBodyBalletDesc": "우아한 움직임의 고전적 삼체 문제",
+  "privacyPolicyLabel": "개인정보 보호정책"
 }

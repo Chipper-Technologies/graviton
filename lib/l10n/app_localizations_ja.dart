@@ -488,6 +488,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get screenshotModeSubtitle => 'マーケティング用スクリーンショット撮影のプリセットシーンを有効化';
 
   @override
+  String get hideUIInScreenshotMode => 'ナビゲーションを非表示';
+
+  @override
+  String get hideUIInScreenshotModeSubtitle =>
+      'スクリーンショットモードがアクティブな時にアプリバー、ボトムナビゲーション、コピーライトを非表示にする';
+
+  @override
   String get scenePreset => 'シーンプリセット';
 
   @override
@@ -583,5 +590,5 @@ class AppLocalizationsJa extends AppLocalizations {
   String get presetThreeBodyBalletDesc => 'エレガントな動きの古典的三体問題';
 
   @override
-  String get privacyPolicyLabel => 'Privacy Policy';
+  String get privacyPolicyLabel => 'プライバシーポリシー';
 }

@@ -504,6 +504,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Activar escenas predefinidas para capturas de marketing';
 
   @override
+  String get hideUIInScreenshotMode => 'Ocultar Navegación';
+
+  @override
+  String get hideUIInScreenshotModeSubtitle =>
+      'Ocultar barra de aplicación, navegación inferior y copyright cuando el modo captura esté activo';
+
+  @override
   String get scenePreset => 'Escena Predefinida';
 
   @override
@@ -612,5 +619,5 @@ class AppLocalizationsEs extends AppLocalizations {
       'Problema clásico de tres cuerpos en movimiento elegante';
 
   @override
-  String get privacyPolicyLabel => 'Privacy Policy';
+  String get privacyPolicyLabel => 'Política de Privacidad';
 }

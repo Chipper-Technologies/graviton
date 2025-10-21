@@ -489,6 +489,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get screenshotModeSubtitle => '마케팅 스크린샷 촬영을 위한 프리셋 장면 활성화';
 
   @override
+  String get hideUIInScreenshotMode => '내비게이션 숨기기';
+
+  @override
+  String get hideUIInScreenshotModeSubtitle =>
+      '스크린샷 모드가 활성화될 때 앱 바, 하단 내비게이션, 저작권을 숨김';
+
+  @override
   String get scenePreset => '장면 프리셋';
 
   @override
@@ -585,5 +592,5 @@ class AppLocalizationsKo extends AppLocalizations {
   String get presetThreeBodyBalletDesc => '우아한 움직임의 고전적 삼체 문제';
 
   @override
-  String get privacyPolicyLabel => 'Privacy Policy';
+  String get privacyPolicyLabel => '개인정보 보호정책';
 }
