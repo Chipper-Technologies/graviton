@@ -1,0 +1,98 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Build the Flutter app for Android"
+  lane :build_flutter do
+    Dir.chdir("..") do
+      sh("flutter", "clean")
+      sh("flutter", "pub", "get")
+      sh("flutter", "build", "appbundle", "--release")
+    end
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Play Console Internal Testing"
+  lane :beta do
+    # Build Flutter app first
+    build_flutter
+    
+    # Upload to Play Console Internal Testing
+    upload_to_play_store(
+      track: 'internal',
+      release_status: 'draft',
+      aab: '../build/app/outputs/bundle/release/app-release.aab'
+    )
+  end
+
+  desc "Deploy a new version to the Google Play Store"
+  lane :deploy do
+    # Build Flutter app first
+    build_flutter
+    
+    # Upload to Play Store
+    upload_to_play_store(
+      track: 'production',
+      release_status: 'draft',
+      aab: '../build/app/outputs/bundle/release/app-release.aab'
+    )
+  end
+
+  desc "Deploy to alpha testing"
+  lane :alpha do
+    # Build Flutter app first
+    build_flutter
+    
+    # Upload to Play Console Alpha Track
+    upload_to_play_store(
+      track: 'alpha',
+      release_status: 'draft',
+      aab: '../build/app/outputs/bundle/release/app-release.aab'
+    )
+  end
+
+  desc "Build release APK"
+  lane :build_apk do
+    Dir.chdir("..") do
+      sh("flutter", "clean")
+      sh("flutter", "pub", "get")
+      sh("flutter", "build", "apk", "--release", "--flavor=prod")
+    end
+  end
+
+  desc "Build release AAB"
+  lane :build_aab do
+    Dir.chdir("..") do
+      sh("flutter", "clean")
+      sh("flutter", "pub", "get")
+      sh("flutter", "build", "appbundle", "--release", "--flavor=prod")
+    end
+  end
+
+  desc "Build dev AAB"
+  lane :build_aab_dev do
+    Dir.chdir("..") do
+      sh("flutter", "clean")
+      sh("flutter", "pub", "get")
+      sh("flutter", "build", "appbundle", "--release", "--flavor=dev")
+    end
+  end
+end

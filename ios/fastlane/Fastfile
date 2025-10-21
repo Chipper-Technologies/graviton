@@ -1,0 +1,97 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Build Flutter iOS app"
+  lane :build_flutter do
+    sh("cd ../../ && flutter clean")
+    sh("cd ../../ && flutter pub get")
+    
+    # Run pod install using bundle exec to ensure correct environment
+    sh("bundle exec pod install")
+    
+    sh("cd ../../ && flutter build ios --flavor dev --release")
+    
+    build_app(
+      scheme: "Runner",
+      configuration: "Release-dev",
+      export_method: "development",
+      output_directory: "./build"
+    )
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    run_tests(workspace: "Runner.xcworkspace",
+              devices: ["iPhone 15"],
+              scheme: "Runner")
+  end
+
+  desc "Submit a new Beta Build to TestFlight"
+  lane :beta do
+    # Match for development certificates
+    match(type: "appstore")
+    
+    # Build Flutter app first
+    build_flutter
+    
+    # Build iOS app
+    build_app(workspace: "Runner.xcworkspace",
+              scheme: "Runner",
+              export_method: "app-store")
+    
+    # Upload to TestFlight
+    upload_to_testflight(skip_waiting_for_build_processing: true)
+  end
+
+  desc "Deploy a new version to the App Store"
+  lane :deploy do
+    # Match for distribution certificates
+    match(type: "appstore")
+    
+    # Build Flutter app first
+    build_flutter
+    
+    # Build iOS app
+    build_app(workspace: "Runner.xcworkspace",
+              scheme: "Runner",
+              export_method: "app-store")
+    
+    # Upload to App Store
+    upload_to_app_store(force: true)
+  end
+
+  desc "Generate and download new screenshots"
+  lane :screenshots do
+    capture_screenshots(workspace: "Runner.xcworkspace",
+                       scheme: "Runner")
+  end
+
+  desc "Update app metadata on App Store Connect"
+  lane :metadata do
+    upload_to_app_store(
+      skip_binary_upload: true,
+      skip_screenshots: true
+    )
+  end
+
+  desc "Sync certificates and profiles"
+  lane :certificates do
+    match(type: "development")
+    match(type: "appstore")
+  end
+end

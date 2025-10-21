@@ -37,12 +37,15 @@
 - [🚀 Getting Started](#-getting-started)
   - [📋 Prerequisites](#-prerequisites)
   - [🛠️ Installation](#️-installation)
+  - [📦 Dependencies](#-dependencies)
   - [🎯 Quick Start Guide](#-quick-start-guide)
-  - [� VS Code Development Workflow](#-vs-code-development-workflow)
-  - [�🔨 Building for Production](#-building-for-production)
+  - [💻 VS Code Development Workflow](#-vs-code-development-workflow)
+  - [🔨 Building for Production](#-building-for-production)
 - [📱 Screenshots](#-screenshots)
-- [� Screenshot Mode Development](#-screenshot-mode-development)
-- [�🔥 Firebase Integration](#-firebase-integration)
+- [🛠️ Development Tools](#️-development-tools)
+  - [🚀 Fastlane Automation](#-fastlane-automation)
+- [🏗️ Technical Architecture](#️-technical-architecture)
+- [🔥 Firebase Integration](#-firebase-integration)
 - [🔧 Troubleshooting](#-troubleshooting)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
@@ -235,6 +238,40 @@ Professional screenshot capture system for creating marketing materials:
    flutter run -d "iPhone 15" --dart-define-from-file config/dev.json
    ```
 
+### 📦 Dependencies
+
+The project uses the following key dependencies:
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:    # Internationalization support
+    sdk: flutter
+  intl: any                  # Internationalization utilities
+  cupertino_icons: ^1.0.8   # iOS-style icons
+  provider: ^6.1.2          # State management
+  vector_math: ^2.2.0       # 3D mathematics and transformations
+  vibration: ^3.1.3         # Haptic feedback for interactions
+  # Firebase dependencies
+  firebase_core: ^4.2.0     # Firebase core functionality
+  firebase_analytics: ^12.0.3 # Analytics and user behavior tracking
+  firebase_crashlytics: ^5.0.3 # Crash reporting and monitoring
+  firebase_remote_config: ^6.1.0 # Dynamic app configuration
+  # Additional dependencies
+  flutter_svg: ^2.2.1       # SVG rendering support
+  package_info_plus: ^9.0.0 # Package information utilities
+  shared_preferences: ^2.5.3 # Local data persistence
+  url_launcher: ^6.3.1      # URL launching capabilities
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0     # Dart/Flutter linting rules
+  flutter_launcher_icons: ^0.14.4 # App icon generation
+  flutter_native_splash: ^2.4.7   # Native splash screen generation
+```
+
 ### 🎯 Quick Start Guide
 
 1. **Launch the app** - Choose your preferred platform
@@ -421,6 +458,8 @@ flutter build appbundle --flavor prod --dart-define-from-file config/prod.json -
 - Enable R8/ProGuard for Android builds in release mode
 - Consider using `--tree-shake-icons` to reduce icon bundle size
 
+> **💡 Pro Tip:** For automated builds and deployment, check out our [Fastlane automation setup](docs/FASTLANE.md) which handles all the above commands with simple one-liners and includes automatic deployment to app stores.
+
 ---
 
 ## 📱 Screenshots
@@ -486,9 +525,34 @@ For detailed tool documentation, including troubleshooting, advanced options, an
 
 **[📖 View Complete Tools Documentation →](tools/README.md)**
 
+### 🚀 Fastlane Automation
+Automated build and deployment pipelines for both iOS and Android platforms:
+
+```bash
+# Android builds
+cd android && fastlane build_aab flavor:dev    # Development AAB
+cd android && fastlane build_aab flavor:prod   # Production AAB
+cd android && fastlane build_apk flavor:dev    # Development APK
+cd android && fastlane beta                    # Deploy to Play Console internal testing
+
+# iOS builds  
+cd ios && bundle exec fastlane build_flutter   # Development IPA
+cd ios && bundle exec fastlane beta            # Deploy to TestFlight
+cd ios && bundle exec fastlane deploy          # Deploy to App Store
+```
+
+**Features:**
+- Multi-flavor support (dev/prod environments)
+- Automatic version management and Firebase integration
+- Screenshot generation and metadata management
+- Code signing and certificate management
+- One-command deployment to app stores
+
+**[📖 View Complete Fastlane Documentation →](docs/FASTLANE.md)**
+
 ---
 
-## Technical Architecture
+## 🏗️ Technical Architecture
 
 ### 🏗️ Clean Architecture
 The project follows clean architecture principles with clear separation of concerns and namespace imports:
@@ -526,14 +590,20 @@ lib/
 │   ├── asteroid_particle.dart  # Asteroid belt particle model
 │   ├── ring_particle.dart      # Planetary ring particle model
 │   ├── orbital_parameters.dart # Orbital mechanics parameters
-│   └── scenario_config.dart    # Scenario configuration model
+│   ├── scenario_config.dart    # Scenario configuration model
+│   ├── camera_position.dart    # 3D camera positioning data
+│   ├── screenshot_preset.dart  # Screenshot preset configuration
+│   ├── screenshot_presets.dart # Collection of marketing presets
+│   └── screenshot_models.dart  # Screenshot mode data models
 ├── services/                    # Business logic and Firebase integration
 │   ├── simulation.dart         # Core physics engine
 │   ├── scenario_service.dart   # Scenario generation and management
 │   ├── habitable_zone_service.dart # Habitable zone calculations
 │   ├── asteroid_belt_system.dart   # Asteroid belt physics system
 │   ├── version_service.dart    # Dual-threshold version management system
-│   └── firebase_service.dart   # Firebase analytics, crashlytics, remote config
+│   ├── firebase_service.dart   # Firebase analytics, crashlytics, remote config
+│   ├── remote_config_service.dart # Firebase remote config integration
+│   └── screenshot_mode_service.dart # Screenshot mode management (dev only)
 ├── state/                       # State management
 │   ├── app_state.dart          # Main app state coordinator
 │   ├── simulation_state.dart   # Physics simulation state
@@ -541,7 +611,11 @@ lib/
 │   └── camera_state.dart       # Enhanced 3D camera state with roll support
 ├── utils/                       # Utilities
 │   ├── star_generator.dart     # Background star field generation
-│   └── painter_utils.dart      # 3D projection and rendering utilities
+│   ├── painter_utils.dart      # 3D projection and rendering utilities
+│   ├── physics_utils.dart      # Physics calculation helpers
+│   ├── vector_utils.dart       # Vector mathematics utilities
+│   ├── collision_utils.dart    # Collision detection helpers
+│   └── random_utils.dart       # Random number generation utilities
 ├── painters/                    # Specialized rendering engines
 │   ├── graviton_painter.dart   # Main 3D rendering orchestrator
 │   ├── celestial_body_painter.dart # Planet and ring system rendering
@@ -552,7 +626,7 @@ lib/
 │   ├── gravity_painter.dart    # Gravitational field visualization
 │   ├── habitability_painter.dart # Habitable zone indicators
 │   └── asteroid_belt_painter.dart # Asteroid belt rendering system
-├── widgets/                     # Custom widgets
+├── widgets/                    # Custom widgets
 │   ├── stats_overlay.dart      # Statistics display
 │   ├── bottom_controls.dart    # Enhanced control panel
 │   ├── body_labels_overlay.dart # Celestial body labels
@@ -561,11 +635,15 @@ lib/
 │   ├── settings_dialog.dart    # Application settings
 │   ├── about_dialog.dart       # Application about dialog with version status badges
 │   ├── version_check_dialog.dart # Smart update dialog with dual-threshold enforcement
+│   ├── maintenance_dialog.dart # Firebase maintenance mode dialog
 │   ├── dev_ribbon.dart         # Development mode indicator (enhanced with shadow)
-│   └── copyright_text.dart     # Copyright information
-├── theme/                       # Theme and styling
+│   ├── copyright_text.dart     # Copyright information
+│   ├── screenshot_mode_widget.dart # Screenshot mode controls (dev only)
+│   └── screenshot_countdown.dart    # Screenshot countdown timer widget
+├── theme/                      # Theme and styling
 │   └── app_colors.dart         # Application color scheme
-└── screens/                     # UI screens
+│   └── app_typography.dart     # Application typography scheme
+└── screens/                    # UI screens
     └── home_screen.dart        # Main simulation screen with enhanced gestures
 ```
 
@@ -595,44 +673,6 @@ lib/
 - **Vector Mathematics**: Comprehensive 3D transformations using `vector_math` library
 - **Optimized Performance**: Efficient trail rendering with configurable opacity and warm/cool modes
 - **Astronomical Accuracy**: Counterclockwise orbital motion matching real celestial mechanics
-
-## Setup & Installation
-
-### Prerequisites
-- Flutter SDK (latest stable version)
-- Dart SDK (included with Flutter)
-- Android Studio / VS Code with Flutter extensions
-
-### Dependencies
-```yaml
-dependencies:
-  flutter:
-    sdk: flutter
-  flutter_localizations:    # Internationalization support
-    sdk: flutter
-  intl: any                  # Internationalization utilities
-  cupertino_icons: ^1.0.8   # iOS-style icons
-  provider: ^6.1.2          # State management
-  vector_math: ^2.2.0       # 3D mathematics and transformations
-  vibration: ^3.1.3         # Haptic feedback for interactions
-  # Firebase dependencies
-  firebase_core: ^4.2.0     # Firebase core functionality
-  firebase_analytics: ^12.0.3 # Analytics and user behavior tracking
-  firebase_crashlytics: ^5.0.3 # Crash reporting and monitoring
-  firebase_remote_config: ^6.1.0 # Dynamic app configuration
-  # Additional dependencies
-  flutter_svg: ^2.2.1       # SVG rendering support
-  package_info_plus: ^9.0.0 # Package information utilities
-  shared_preferences: ^2.5.3 # Local data persistence
-  url_launcher: ^6.3.1      # URL launching capabilities
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^6.0.0     # Dart/Flutter linting rules
-  flutter_launcher_icons: ^0.14.4 # App icon generation
-  flutter_native_splash: ^2.4.7   # Native splash screen generation
-```
 
 ## 🔥 Firebase Integration
 
@@ -903,29 +943,6 @@ The app logs the following custom events:
 - `app_start` - App launch with flavor information
 - `app_initialized` - Firebase initialization complete
 
-### Getting Started
-
-1. **Clone the repository**
-```bash
-git clone <repository-url>
-cd graviton
-```
-
-2. **Install dependencies**
-```bash
-flutter pub get
-```
-
-3. **Generate localizations** (if modifying translations)
-```bash
-flutter gen-l10n
-```
-
-4. **Run the app**
-```bash
-flutter run
-```
-
 ## Internationalization Guide
 
 ### Adding New Languages
@@ -1134,7 +1151,7 @@ flutter clean && flutter pub get
 
 The screenshot mode system provides professional-grade screenshot capture capabilities specifically designed for creating marketing materials. This development-only feature enables rapid creation of high-quality promotional content.
 
-### 🏗️ Technical Architecture
+### � Service Architecture
 
 #### Service Layer (`ScreenshotModeService`)
 - **Singleton Pattern**: Ensures consistent state across the application
@@ -1151,7 +1168,7 @@ The screenshot mode system provides professional-grade screenshot capture capabi
 - **Responsive UI**: Adaptive layout with proper error handling
 - **State Integration**: Seamless integration with app-wide state management
 
-###  Production Considerations
+### 🔧 Production Considerations
 
 #### Build Optimization
 - **Zero Production Impact**: Completely excluded from release builds
@@ -1261,11 +1278,7 @@ We welcome contributions! Here's how you can help improve the Gravitational Phys
 
 ---
 
-## � Privacy
-
-Please review our [Privacy Policy](PRIVACY.md) for details on data collection and handling.
-
-## �📄 License
+## 📄 License
 
 This project is open source and available under the **MIT License**.
 

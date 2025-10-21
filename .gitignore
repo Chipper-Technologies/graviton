@@ -63,6 +63,7 @@ app.*.map.json
 
 # Environment Configuration Files (sensitive)
 config/
+keys/
 *.env
 .env.*
 
@@ -135,3 +136,69 @@ Thumbs.db
 
 # Virtual Environments
 .venv/
+
+# Fastlane specific files
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots/
+**/fastlane/test_output/
+**/fastlane/metadata/
+**/fastlane/builds/
+**/fastlane/derived_data/
+
+# Fastlane sensitive files (DO NOT COMMIT)
+**/fastlane/**/*.json
+**/fastlane/**/*.p8
+**/fastlane/**/*.mobileprovision
+**/fastlane/**/*service-account*
+**/fastlane/**/*AuthKey*
+**/fastlane/**/gc_keys.json
+**/fastlane/**/api_key.json
+**/fastlane/**/key.json
+
+# Fastlane Appfiles
+**/fastlane/Appfile
+
+# Gemfile lock files (can be regenerated)
+**/Gemfile.lock
+
+# Build directories (contains compiled artifacts)
+**/android/build/
+**/ios/build/
+**/build/
+**/android/app/build/
+**/ios/Runner.xcarchive
+**/ios/Runner.xcworkspace/xcuserdata/
+
+# iOS specific build artifacts
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/
+**/ios/Runner.xcworkspace/xcshareddata/
+**/ios/*.ipa
+**/ios/*.dSYM.zip
+**/ios/archive/
+
+# Android specific build artifacts
+**/android/app/outputs/
+**/android/app/intermediates/
+**/android/gradle/
+**/android/.gradle/
+**/*.aab
+**/*.apk
+**/android/captures/
+**/android/mapping.txt
+**/android/proguard/
+
+# Xcode build artifacts
+**/DerivedData/
+**/Build/
+**/.build/
+**/xcuserdata/
+**/*.xcarchive/
+
+# Additional sensitive files
+secrets/
+private_keys/
+certificates/
+provisioning_profiles/

@@ -1,0 +1,25 @@
+# iOS Fastlane Appfile Template  
+# Copy this to 'Appfile' and configure with your actual values
+#
+# SECURITY: Never commit the actual Appfile to version control!
+# The Appfile is ignored in .gitignore for your protection.
+
+# Your app's bundle identifier
+app_identifier("your.app.identifier")
+
+# Your Apple Developer account email
+apple_id("your.apple.id@email.com")
+
+# App Store Connect API Key configuration
+# Store your AuthKey_*.p8 file in the keys/ directory (also gitignored)
+# Uncomment and configure these lines:
+#
+# for_platform :ios do
+#   api_key_path("../keys/AuthKey_YOUR_KEY_ID.p8")
+#   api_key_id("YOUR_KEY_ID")
+#   api_key_issuer_id("your-issuer-id-uuid")
+# end
+
+# Optional: Specify team if you have multiple teams
+# team_id("YOUR_TEAM_ID")
+# team_name("Your Team Name")

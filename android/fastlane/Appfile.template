@@ -1,0 +1,15 @@
+# Android Fastlane Appfile Template
+# Copy this to 'Appfile' and configure with your actual values
+# 
+# SECURITY: Never commit the actual Appfile to version control!
+# The Appfile is ignored in .gitignore for your protection.
+
+# Google Service Account JSON key file path
+# Store your key in the keys/ directory (also gitignored)
+json_key_file("../keys/your-service-account-key.json")
+
+# Your Android package name
+package_name("your.package.name")
+
+# Optional: Specify team if you have multiple teams
+# team_name("Your Team Name")
