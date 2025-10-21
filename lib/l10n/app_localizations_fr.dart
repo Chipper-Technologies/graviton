@@ -39,7 +39,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get toggleLabelsTooltip => 'Basculer Étiquettes des Corps';
 
   @override
-  String get showLabelsDescription => 'Afficher les noms des corps célestes dans la simulation';
+  String get showLabelsDescription =>
+      'Afficher les noms des corps célestes dans la simulation';
 
   @override
   String get offScreenIndicatorsTitle => 'Indicateurs Hors Écran';
@@ -55,7 +56,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get centerViewTooltip => 'Centrer la Vue';
 
   @override
-  String get focusOnNearestTooltip => 'Se Concentrer sur le Corps le Plus Proche';
+  String get focusOnNearestTooltip =>
+      'Se Concentrer sur le Corps le Plus Proche';
 
   @override
   String get followObjectTooltip => 'Suivre l\'Objet Sélectionné';
@@ -79,7 +81,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get showTrails => 'Afficher les Traînées';
 
   @override
-  String get showTrailsDescription => 'Afficher les traînées de mouvement derrière les objets';
+  String get showTrailsDescription =>
+      'Afficher les traînées de mouvement derrière les objets';
 
   @override
   String get showOrbitalPaths => 'Afficher les Trajectoires Orbitales';
@@ -100,9 +103,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get closeButton => 'Fermer';
-
-  @override
-  String get privacyPolicyLabel => 'Politique de confidentialité';
 
   @override
   String get simulationStats => 'Statistiques de Simulation';
@@ -153,14 +153,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get invertPitchControlsLabel => 'Inverser les Contrôles de Tangage';
 
   @override
-  String get invertPitchControlsDescription => 'Inverser la direction de glissement haut/bas';
+  String get invertPitchControlsDescription =>
+      'Inverser la direction de glissement haut/bas';
 
   @override
   String get marketingLabel => 'Marketing';
 
   @override
   String stepsCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     return '$countString';
@@ -211,7 +213,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get scenarioEarthMoonSun => 'Terre-Lune-Soleil';
 
   @override
-  String get scenarioEarthMoonSunDescription => 'Simulation éducative de notre système familier Terre-Lune-Soleil';
+  String get scenarioEarthMoonSunDescription =>
+      'Simulation éducative de notre système familier Terre-Lune-Soleil';
 
   @override
   String get scenarioBinaryStars => 'Étoiles Binaires';
@@ -273,7 +276,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get toggleHabitableZonesTooltip => 'Basculer les Zones Habitables';
 
   @override
-  String get toggleHabitabilityIndicatorsTooltip => 'Basculer l\'État d\'Habitabilité de la Planète';
+  String get toggleHabitabilityIndicatorsTooltip =>
+      'Basculer l\'État d\'Habitabilité de la Planète';
 
   @override
   String get habitableZonesDescription =>
@@ -315,7 +319,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get gravityWellsLabel => 'Puits Gravitationnels';
 
   @override
-  String get gravityWellsDescription => 'Afficher l\'intensité du champ gravitationnel autour des objets';
+  String get gravityWellsDescription =>
+      'Afficher l\'intensité du champ gravitationnel autour des objets';
 
   @override
   String get languageLabel => 'Langue';
@@ -463,7 +468,8 @@ class AppLocalizationsFr extends AppLocalizations {
       'Une version plus récente de cette application est disponible. Veuillez mettre à jour pour continuer à utiliser l\'application avec les dernières fonctionnalités et améliorations.';
 
   @override
-  String get updateRequiredWarning => 'Cette version n\'est plus prise en charge.';
+  String get updateRequiredWarning =>
+      'Cette version n\'est plus prise en charge.';
 
   @override
   String get updateNow => 'Mettre à jour maintenant';
@@ -496,7 +502,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get screenshotMode => 'Mode Capture d\'Écran';
 
   @override
-  String get screenshotModeSubtitle => 'Activer des scènes prédéfinies pour les captures marketing';
+  String get screenshotModeSubtitle =>
+      'Activer des scènes prédéfinies pour les captures marketing';
 
   @override
   String get scenePreset => 'Scène Prédéfinie';
@@ -522,7 +529,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get sceneActive => 'Scène active - simulation pausée pour capture';
 
   @override
-  String get presetGalaxyFormationOverview => 'Vue d\'Ensemble de Formation Galactique';
+  String get presetGalaxyFormationOverview =>
+      'Vue d\'Ensemble de Formation Galactique';
 
   @override
   String get presetGalaxyFormationOverviewDesc =>
@@ -532,19 +540,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get presetGalaxyCoreDetail => 'Détail du Noyau Galactique';
 
   @override
-  String get presetGalaxyCoreDetailDesc => 'Gros plan du centre galactique brillant avec disque d\'accrétion';
+  String get presetGalaxyCoreDetailDesc =>
+      'Gros plan du centre galactique brillant avec disque d\'accrétion';
 
   @override
   String get presetGalaxyBlackHole => 'Trou Noir Galactique';
 
   @override
-  String get presetGalaxyBlackHoleDesc => 'Vue rapprochée du trou noir supermassif au centre galactique';
+  String get presetGalaxyBlackHoleDesc =>
+      'Vue rapprochée du trou noir supermassif au centre galactique';
 
   @override
   String get presetCompleteSolarSystem => 'Système Solaire Complet';
 
   @override
-  String get presetCompleteSolarSystemDesc => 'Toutes les planètes visibles avec de belles orbites';
+  String get presetCompleteSolarSystemDesc =>
+      'Toutes les planètes visibles avec de belles orbites';
 
   @override
   String get presetInnerSolarSystem => 'Système Solaire Intérieur';
@@ -557,41 +568,51 @@ class AppLocalizationsFr extends AppLocalizations {
   String get presetEarthView => 'Vue de la Terre';
 
   @override
-  String get presetEarthViewDesc => 'Perspective rapprochée de la Terre avec détail atmosphérique';
+  String get presetEarthViewDesc =>
+      'Perspective rapprochée de la Terre avec détail atmosphérique';
 
   @override
   String get presetSaturnRings => 'Anneaux Majestueux de Saturne';
 
   @override
-  String get presetSaturnRingsDesc => 'Gros plan de Saturne avec système d\'anneaux détaillé';
+  String get presetSaturnRingsDesc =>
+      'Gros plan de Saturne avec système d\'anneaux détaillé';
 
   @override
   String get presetEarthMoonSystem => 'Système Terre-Lune';
 
   @override
-  String get presetEarthMoonSystemDesc => 'Terre et Lune avec mécanique orbitale visible';
+  String get presetEarthMoonSystemDesc =>
+      'Terre et Lune avec mécanique orbitale visible';
 
   @override
   String get presetBinaryStarDrama => 'Drame d\'Étoile Binaire';
 
   @override
-  String get presetBinaryStarDramaDesc => 'Vue de face de deux étoiles massives en danse gravitationnelle';
+  String get presetBinaryStarDramaDesc =>
+      'Vue de face de deux étoiles massives en danse gravitationnelle';
 
   @override
   String get presetBinaryStarPlanetMoon => 'Planète et Lune d\'Étoile Binaire';
 
   @override
-  String get presetBinaryStarPlanetMoonDesc => 'Planète et lune en orbite dans un système binaire chaotique';
+  String get presetBinaryStarPlanetMoonDesc =>
+      'Planète et lune en orbite dans un système binaire chaotique';
 
   @override
   String get presetAsteroidBeltChaos => 'Chaos de la Ceinture d\'Astéroïdes';
 
   @override
-  String get presetAsteroidBeltChaosDesc => 'Champ dense d\'astéroïdes avec effets gravitationnels';
+  String get presetAsteroidBeltChaosDesc =>
+      'Champ dense d\'astéroïdes avec effets gravitationnels';
 
   @override
   String get presetThreeBodyBallet => 'Ballet à Trois Corps';
 
   @override
-  String get presetThreeBodyBalletDesc => 'Problème classique à trois corps en mouvement élégant';
+  String get presetThreeBodyBalletDesc =>
+      'Problème classique à trois corps en mouvement élégant';
+
+  @override
+  String get privacyPolicyLabel => 'Privacy Policy';
 }

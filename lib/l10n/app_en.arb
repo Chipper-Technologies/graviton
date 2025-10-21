@@ -865,5 +865,10 @@
   "presetAsteroidBeltChaos": "Asteroid Belt Chaos",
   "presetAsteroidBeltChaosDesc": "Dense asteroid field with gravitational effects",
   "presetThreeBodyBallet": "Three-Body Ballet",
-  "presetThreeBodyBalletDesc": "Classic three-body problem in elegant motion"
+  "presetThreeBodyBalletDesc": "Classic three-body problem in elegant motion",
+  
+  "privacyPolicyLabel": "Privacy Policy",
+  "@privacyPolicyLabel": {
+    "description": "Label for privacy policy link"
+  }
 }

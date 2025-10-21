@@ -99,9 +99,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get closeButton => '閉じる';
 
   @override
-  String get privacyPolicyLabel => 'プライバシーポリシー';
-
-  @override
   String get simulationStats => 'シミュレーション統計';
 
   @override
@@ -157,7 +154,8 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String stepsCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     return '$countString';
@@ -225,7 +223,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get scenarioGalaxyFormation => '銀河形成';
 
   @override
-  String get scenarioGalaxyFormationDescription => '中央のブラックホール周りに物質が螺旋構造に組織化される様子を観察';
+  String get scenarioGalaxyFormationDescription =>
+      '中央のブラックホール周りに物質が螺旋構造に組織化される様子を観察';
 
   @override
   String get scenarioPlanetaryRings => '惑星の環';
@@ -270,13 +269,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get habitableZonesDescription => '居住可能な領域を示す星の周りの色付きゾーンを表示';
 
   @override
-  String get habitabilityIndicatorsDescription => '居住可能性に基づく惑星周りの色分けされた状態リングを表示';
+  String get habitabilityIndicatorsDescription =>
+      '居住可能性に基づく惑星周りの色分けされた状態リングを表示';
 
   @override
   String get aboutDialogTitle => 'について';
 
   @override
-  String get appDescription => '重力動力学と軌道力学を探求する物理シミュレーション。インタラクティブな3D可視化を通じて天体運動の美しさと複雑さを体験してください。';
+  String get appDescription =>
+      '重力動力学と軌道力学を探求する物理シミュレーション。インタラクティブな3D可視化を通じて天体運動の美しさと複雑さを体験してください。';
 
   @override
   String get authorLabel => '作者';
@@ -447,7 +448,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get updateRequiredTitle => '更新が必要';
 
   @override
-  String get updateRequiredMessage => 'このアプリの新しいバージョンが利用可能です。最新の機能と改善を引き続きご利用いただくために、アップデートしてください。';
+  String get updateRequiredMessage =>
+      'このアプリの新しいバージョンが利用可能です。最新の機能と改善を引き続きご利用いただくために、アップデートしてください。';
 
   @override
   String get updateRequiredWarning => 'このバージョンはサポートされなくなりました。';
@@ -579,4 +581,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get presetThreeBodyBalletDesc => 'エレガントな動きの古典的三体問題';
+
+  @override
+  String get privacyPolicyLabel => 'Privacy Policy';
 }

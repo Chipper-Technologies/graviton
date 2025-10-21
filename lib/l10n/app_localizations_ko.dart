@@ -99,9 +99,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get closeButton => '닫기';
 
   @override
-  String get privacyPolicyLabel => '개인정보 처리방침';
-
-  @override
   String get simulationStats => '시뮬레이션 통계';
 
   @override
@@ -157,7 +154,8 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String stepsCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     return '$countString';
@@ -213,7 +211,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get scenarioBinaryStars => '이중성';
 
   @override
-  String get scenarioBinaryStarsDescription => '서로 궤도를 도는 두 개의 거대한 별과 주변 이중성 행성';
+  String get scenarioBinaryStarsDescription =>
+      '서로 궤도를 도는 두 개의 거대한 별과 주변 이중성 행성';
 
   @override
   String get scenarioAsteroidBelt => '소행성대';
@@ -225,7 +224,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get scenarioGalaxyFormation => '은하 형성';
 
   @override
-  String get scenarioGalaxyFormationDescription => '중심 블랙홀 주위로 물질이 나선 구조로 조직화되는 것을 관찰';
+  String get scenarioGalaxyFormationDescription =>
+      '중심 블랙홀 주위로 물질이 나선 구조로 조직화되는 것을 관찰';
 
   @override
   String get scenarioPlanetaryRings => '행성 고리';
@@ -270,13 +270,15 @@ class AppLocalizationsKo extends AppLocalizations {
   String get habitableZonesDescription => '거주 가능한 지역을 나타내는 별 주위의 색상 영역 표시';
 
   @override
-  String get habitabilityIndicatorsDescription => '거주 가능성에 따른 행성 주위의 색상 코드 상태 고리 표시';
+  String get habitabilityIndicatorsDescription =>
+      '거주 가능성에 따른 행성 주위의 색상 코드 상태 고리 표시';
 
   @override
   String get aboutDialogTitle => '정보';
 
   @override
-  String get appDescription => '중력 역학과 궤도 역학을 탐구하는 물리 시뮬레이션. 대화형 3D 시각화를 통해 천체 운동의 아름다움과 복잡성을 경험하세요.';
+  String get appDescription =>
+      '중력 역학과 궤도 역학을 탐구하는 물리 시뮬레이션. 대화형 3D 시각화를 통해 천체 운동의 아름다움과 복잡성을 경험하세요.';
 
   @override
   String get authorLabel => '작성자';
@@ -447,7 +449,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get updateRequiredTitle => '업데이트 필요';
 
   @override
-  String get updateRequiredMessage => '이 앱의 새 버전이 사용 가능합니다. 최신 기능과 개선 사항을 계속 사용하려면 업데이트해주세요.';
+  String get updateRequiredMessage =>
+      '이 앱의 새 버전이 사용 가능합니다. 최신 기능과 개선 사항을 계속 사용하려면 업데이트해주세요.';
 
   @override
   String get updateRequiredWarning => '이 버전은 더 이상 지원되지 않습니다.';
@@ -536,7 +539,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get presetInnerSolarSystem => '내태양계';
 
   @override
-  String get presetInnerSolarSystemDesc => '거주 가능 구역 지시기가 있는 수성, 금성, 지구, 화성의 클로즈업';
+  String get presetInnerSolarSystemDesc =>
+      '거주 가능 구역 지시기가 있는 수성, 금성, 지구, 화성의 클로즈업';
 
   @override
   String get presetEarthView => '지구 뷰';
@@ -579,4 +583,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get presetThreeBodyBalletDesc => '우아한 움직임의 고전적 삼체 문제';
+
+  @override
+  String get privacyPolicyLabel => 'Privacy Policy';
 }

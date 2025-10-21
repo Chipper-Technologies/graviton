@@ -39,13 +39,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get toggleLabelsTooltip => 'Körperlabels umschalten';
 
   @override
-  String get showLabelsDescription => 'Himmelskörpernamen in der Simulation anzeigen';
+  String get showLabelsDescription =>
+      'Himmelskörpernamen in der Simulation anzeigen';
 
   @override
   String get offScreenIndicatorsTitle => 'Bildschirm-Außen-Indikatoren';
 
   @override
-  String get offScreenIndicatorsDescription => 'Pfeile zu Objekten außerhalb des sichtbaren Bereichs anzeigen';
+  String get offScreenIndicatorsDescription =>
+      'Pfeile zu Objekten außerhalb des sichtbaren Bereichs anzeigen';
 
   @override
   String get autoRotateTooltip => 'Auto-Rotation';
@@ -78,13 +80,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get showTrails => 'Spuren anzeigen';
 
   @override
-  String get showTrailsDescription => 'Bewegungsspuren hinter Objekten anzeigen';
+  String get showTrailsDescription =>
+      'Bewegungsspuren hinter Objekten anzeigen';
 
   @override
   String get showOrbitalPaths => 'Orbitalbahnen anzeigen';
 
   @override
-  String get showOrbitalPathsDescription => 'Vorhergesagte Orbitalbahnen in Szenarien mit stabilen Orbits anzeigen';
+  String get showOrbitalPathsDescription =>
+      'Vorhergesagte Orbitalbahnen in Szenarien mit stabilen Orbits anzeigen';
 
   @override
   String get dualOrbitalPaths => 'Doppelte Orbitalbahnen';
@@ -98,9 +102,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get closeButton => 'Schließen';
-
-  @override
-  String get privacyPolicyLabel => 'Datenschutzerklärung';
 
   @override
   String get simulationStats => 'Simulationsstatistiken';
@@ -158,7 +159,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String stepsCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     return '$countString';
@@ -209,13 +211,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get scenarioEarthMoonSun => 'Erde-Mond-Sonne';
 
   @override
-  String get scenarioEarthMoonSunDescription => 'Lehrreiche Simulation unseres vertrauten Erde-Mond-Sonne-Systems';
+  String get scenarioEarthMoonSunDescription =>
+      'Lehrreiche Simulation unseres vertrauten Erde-Mond-Sonne-Systems';
 
   @override
   String get scenarioBinaryStars => 'Doppelsterne';
 
   @override
-  String get scenarioBinaryStarsDescription => 'Zwei massive Sterne, die sich umkreisen mit zirkumbinären Planeten';
+  String get scenarioBinaryStarsDescription =>
+      'Zwei massive Sterne, die sich umkreisen mit zirkumbinären Planeten';
 
   @override
   String get scenarioAsteroidBelt => 'Asteroidengürtel';
@@ -235,7 +239,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get scenarioPlanetaryRings => 'Planetenringe';
 
   @override
-  String get scenarioPlanetaryRingsDescription => 'Ringsystemdynamik um einen massiven Planeten wie Saturn';
+  String get scenarioPlanetaryRingsDescription =>
+      'Ringsystemdynamik um einen massiven Planeten wie Saturn';
 
   @override
   String get scenarioSolarSystem => 'Sonnensystem';
@@ -269,10 +274,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get toggleHabitableZonesTooltip => 'Bewohnbare Zonen Umschalten';
 
   @override
-  String get toggleHabitabilityIndicatorsTooltip => 'Planeten-Bewohnbarkeitsstatus Umschalten';
+  String get toggleHabitabilityIndicatorsTooltip =>
+      'Planeten-Bewohnbarkeitsstatus Umschalten';
 
   @override
-  String get habitableZonesDescription => 'Farbige Zonen um Sterne anzeigen, die bewohnbare Regionen kennzeichnen';
+  String get habitableZonesDescription =>
+      'Farbige Zonen um Sterne anzeigen, die bewohnbare Regionen kennzeichnen';
 
   @override
   String get habitabilityIndicatorsDescription =>
@@ -310,7 +317,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get gravityWellsLabel => 'Gravitationsfelder';
 
   @override
-  String get gravityWellsDescription => 'Gravitationsfeldstärke um Objekte anzeigen';
+  String get gravityWellsDescription =>
+      'Gravitationsfeldstärke um Objekte anzeigen';
 
   @override
   String get languageLabel => 'Sprache';
@@ -458,7 +466,8 @@ class AppLocalizationsDe extends AppLocalizations {
       'Eine neuere Version dieser App ist verfügbar. Bitte aktualisieren Sie die App, um sie weiterhin mit den neuesten Funktionen und Verbesserungen nutzen zu können.';
 
   @override
-  String get updateRequiredWarning => 'Diese Version wird nicht mehr unterstützt.';
+  String get updateRequiredWarning =>
+      'Diese Version wird nicht mehr unterstützt.';
 
   @override
   String get updateNow => 'Jetzt aktualisieren';
@@ -491,7 +500,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get screenshotMode => 'Screenshot-Modus';
 
   @override
-  String get screenshotModeSubtitle => 'Vorgegebene Szenen für Marketing-Screenshots aktivieren';
+  String get screenshotModeSubtitle =>
+      'Vorgegebene Szenen für Marketing-Screenshots aktivieren';
 
   @override
   String get scenePreset => 'Szenen-Voreinstellung';
@@ -520,71 +530,86 @@ class AppLocalizationsDe extends AppLocalizations {
   String get presetGalaxyFormationOverview => 'Galaxienbildung Übersicht';
 
   @override
-  String get presetGalaxyFormationOverviewDesc => 'Weite Sicht auf Spiralgalaxienbildung mit kosmischem Hintergrund';
+  String get presetGalaxyFormationOverviewDesc =>
+      'Weite Sicht auf Spiralgalaxienbildung mit kosmischem Hintergrund';
 
   @override
   String get presetGalaxyCoreDetail => 'Galaxienkern Detail';
 
   @override
-  String get presetGalaxyCoreDetailDesc => 'Nahaufnahme des hellen galaktischen Zentrums mit Akkretionsscheibe';
+  String get presetGalaxyCoreDetailDesc =>
+      'Nahaufnahme des hellen galaktischen Zentrums mit Akkretionsscheibe';
 
   @override
   String get presetGalaxyBlackHole => 'Galaktisches Schwarzes Loch';
 
   @override
-  String get presetGalaxyBlackHoleDesc => 'Nahaufnahme des supermassiven schwarzen Lochs im galaktischen Zentrum';
+  String get presetGalaxyBlackHoleDesc =>
+      'Nahaufnahme des supermassiven schwarzen Lochs im galaktischen Zentrum';
 
   @override
   String get presetCompleteSolarSystem => 'Vollständiges Sonnensystem';
 
   @override
-  String get presetCompleteSolarSystemDesc => 'Alle Planeten sichtbar mit schönen Umlaufbahnen';
+  String get presetCompleteSolarSystemDesc =>
+      'Alle Planeten sichtbar mit schönen Umlaufbahnen';
 
   @override
   String get presetInnerSolarSystem => 'Inneres Sonnensystem';
 
   @override
-  String get presetInnerSolarSystemDesc => 'Nahaufnahme von Merkur, Venus, Erde und Mars mit bewohnbarer Zone';
+  String get presetInnerSolarSystemDesc =>
+      'Nahaufnahme von Merkur, Venus, Erde und Mars mit bewohnbarer Zone';
 
   @override
   String get presetEarthView => 'Erdansicht';
 
   @override
-  String get presetEarthViewDesc => 'Nahaufnahme der Erde mit atmosphärischen Details';
+  String get presetEarthViewDesc =>
+      'Nahaufnahme der Erde mit atmosphärischen Details';
 
   @override
   String get presetSaturnRings => 'Saturns Majestätische Ringe';
 
   @override
-  String get presetSaturnRingsDesc => 'Nahaufnahme von Saturn mit detailliertem Ringsystem';
+  String get presetSaturnRingsDesc =>
+      'Nahaufnahme von Saturn mit detailliertem Ringsystem';
 
   @override
   String get presetEarthMoonSystem => 'Erde-Mond-System';
 
   @override
-  String get presetEarthMoonSystemDesc => 'Erde und Mond mit sichtbarer Orbitalmechanik';
+  String get presetEarthMoonSystemDesc =>
+      'Erde und Mond mit sichtbarer Orbitalmechanik';
 
   @override
   String get presetBinaryStarDrama => 'Doppelstern Drama';
 
   @override
-  String get presetBinaryStarDramaDesc => 'Frontansicht zweier massereicher Sterne im Gravitationstanz';
+  String get presetBinaryStarDramaDesc =>
+      'Frontansicht zweier massereicher Sterne im Gravitationstanz';
 
   @override
   String get presetBinaryStarPlanetMoon => 'Doppelstern Planet & Mond';
 
   @override
-  String get presetBinaryStarPlanetMoonDesc => 'Planet und Mond in chaotischem Doppelsternsystem';
+  String get presetBinaryStarPlanetMoonDesc =>
+      'Planet und Mond in chaotischem Doppelsternsystem';
 
   @override
   String get presetAsteroidBeltChaos => 'Asteroidengürtel Chaos';
 
   @override
-  String get presetAsteroidBeltChaosDesc => 'Dichtes Asteroidenfeld mit Gravitationseffekten';
+  String get presetAsteroidBeltChaosDesc =>
+      'Dichtes Asteroidenfeld mit Gravitationseffekten';
 
   @override
   String get presetThreeBodyBallet => 'Dreikörper-Ballett';
 
   @override
-  String get presetThreeBodyBalletDesc => 'Klassisches Dreikörperproblem in eleganter Bewegung';
+  String get presetThreeBodyBalletDesc =>
+      'Klassisches Dreikörperproblem in eleganter Bewegung';
+
+  @override
+  String get privacyPolicyLabel => 'Privacy Policy';
 }

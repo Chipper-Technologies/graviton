@@ -99,9 +99,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get closeButton => '关闭';
 
   @override
-  String get privacyPolicyLabel => '隐私政策';
-
-  @override
   String get simulationStats => '模拟统计';
 
   @override
@@ -157,7 +154,8 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String stepsCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     return '$countString';
@@ -579,4 +577,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get presetThreeBodyBalletDesc => '经典三体问题的优雅运动';
+
+  @override
+  String get privacyPolicyLabel => 'Privacy Policy';
 }

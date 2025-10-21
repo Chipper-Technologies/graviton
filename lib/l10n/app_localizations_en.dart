@@ -39,13 +39,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get toggleLabelsTooltip => 'Toggle Body Labels';
 
   @override
-  String get showLabelsDescription => 'Show celestial body names in the simulation';
+  String get showLabelsDescription =>
+      'Show celestial body names in the simulation';
 
   @override
   String get offScreenIndicatorsTitle => 'Off-Screen Indicators';
 
   @override
-  String get offScreenIndicatorsDescription => 'Show arrows pointing to objects outside the visible area';
+  String get offScreenIndicatorsDescription =>
+      'Show arrows pointing to objects outside the visible area';
 
   @override
   String get autoRotateTooltip => 'Auto Rotate';
@@ -84,22 +86,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showOrbitalPaths => 'Show Orbital Paths';
 
   @override
-  String get showOrbitalPathsDescription => 'Display predicted orbital paths in scenarios with stable orbits';
+  String get showOrbitalPathsDescription =>
+      'Display predicted orbital paths in scenarios with stable orbits';
 
   @override
   String get dualOrbitalPaths => 'Dual Orbital Paths';
 
   @override
-  String get dualOrbitalPathsDescription => 'Show both ideal circular and actual elliptical orbital paths';
+  String get dualOrbitalPathsDescription =>
+      'Show both ideal circular and actual elliptical orbital paths';
 
   @override
   String get trailColorLabel => 'Trail Color';
 
   @override
   String get closeButton => 'Close';
-
-  @override
-  String get privacyPolicyLabel => 'Privacy Policy';
 
   @override
   String get simulationStats => 'Simulation Stats';
@@ -157,7 +158,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String stepsCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     return '$countString';
@@ -201,25 +203,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scenarioRandom => 'Random System';
 
   @override
-  String get scenarioRandomDescription => 'Randomly generated chaotic three-body system with unpredictable dynamics';
+  String get scenarioRandomDescription =>
+      'Randomly generated chaotic three-body system with unpredictable dynamics';
 
   @override
   String get scenarioEarthMoonSun => 'Earth-Moon-Sun';
 
   @override
-  String get scenarioEarthMoonSunDescription => 'Educational simulation of our familiar Earth-Moon-Sun system';
+  String get scenarioEarthMoonSunDescription =>
+      'Educational simulation of our familiar Earth-Moon-Sun system';
 
   @override
   String get scenarioBinaryStars => 'Binary Stars';
 
   @override
-  String get scenarioBinaryStarsDescription => 'Two massive stars orbiting each other with circumbinary planets';
+  String get scenarioBinaryStarsDescription =>
+      'Two massive stars orbiting each other with circumbinary planets';
 
   @override
   String get scenarioAsteroidBelt => 'Asteroid Belt';
 
   @override
-  String get scenarioAsteroidBeltDescription => 'Central star surrounded by a belt of rocky asteroids and debris';
+  String get scenarioAsteroidBeltDescription =>
+      'Central star surrounded by a belt of rocky asteroids and debris';
 
   @override
   String get scenarioGalaxyFormation => 'Galaxy Formation';
@@ -232,13 +238,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scenarioPlanetaryRings => 'Planetary Rings';
 
   @override
-  String get scenarioPlanetaryRingsDescription => 'Ring system dynamics around a massive planet like Saturn';
+  String get scenarioPlanetaryRingsDescription =>
+      'Ring system dynamics around a massive planet like Saturn';
 
   @override
   String get scenarioSolarSystem => 'Solar System';
 
   @override
-  String get scenarioSolarSystemDescription => 'Simplified version of our solar system with inner and outer planets';
+  String get scenarioSolarSystemDescription =>
+      'Simplified version of our solar system with inner and outer planets';
 
   @override
   String get habitabilityLabel => 'Habitability';
@@ -265,10 +273,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get toggleHabitableZonesTooltip => 'Toggle Habitable Zones';
 
   @override
-  String get toggleHabitabilityIndicatorsTooltip => 'Toggle Planet Habitability Status';
+  String get toggleHabitabilityIndicatorsTooltip =>
+      'Toggle Planet Habitability Status';
 
   @override
-  String get habitableZonesDescription => 'Show colored zones around stars indicating habitable regions';
+  String get habitableZonesDescription =>
+      'Show colored zones around stars indicating habitable regions';
 
   @override
   String get habitabilityIndicatorsDescription =>
@@ -306,7 +316,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gravityWellsLabel => 'Gravity Wells';
 
   @override
-  String get gravityWellsDescription => 'Show gravitational field strength around objects';
+  String get gravityWellsDescription =>
+      'Show gravitational field strength around objects';
 
   @override
   String get languageLabel => 'Language';
@@ -487,7 +498,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get screenshotMode => 'Screenshot Mode';
 
   @override
-  String get screenshotModeSubtitle => 'Enable preset scenes for capturing marketing screenshots';
+  String get screenshotModeSubtitle =>
+      'Enable preset scenes for capturing marketing screenshots';
 
   @override
   String get scenePreset => 'Scene Preset';
@@ -510,77 +522,93 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deactivate => 'Deactivate';
 
   @override
-  String get sceneActive => 'Scene active - simulation paused for screenshot capture';
+  String get sceneActive =>
+      'Scene active - simulation paused for screenshot capture';
 
   @override
   String get presetGalaxyFormationOverview => 'Galaxy Formation Overview';
 
   @override
-  String get presetGalaxyFormationOverviewDesc => 'Wide view of spiral galaxy formation with cosmic background';
+  String get presetGalaxyFormationOverviewDesc =>
+      'Wide view of spiral galaxy formation with cosmic background';
 
   @override
   String get presetGalaxyCoreDetail => 'Galaxy Core Detail';
 
   @override
-  String get presetGalaxyCoreDetailDesc => 'Close-up of bright galactic center with accretion disk';
+  String get presetGalaxyCoreDetailDesc =>
+      'Close-up of bright galactic center with accretion disk';
 
   @override
   String get presetGalaxyBlackHole => 'Galaxy Black Hole';
 
   @override
-  String get presetGalaxyBlackHoleDesc => 'Close-up view of supermassive black hole at galactic center';
+  String get presetGalaxyBlackHoleDesc =>
+      'Close-up view of supermassive black hole at galactic center';
 
   @override
   String get presetCompleteSolarSystem => 'Complete Solar System';
 
   @override
-  String get presetCompleteSolarSystemDesc => 'All planets visible with beautiful orbital trails';
+  String get presetCompleteSolarSystemDesc =>
+      'All planets visible with beautiful orbital trails';
 
   @override
   String get presetInnerSolarSystem => 'Inner Solar System';
 
   @override
-  String get presetInnerSolarSystemDesc => 'Close-up of Mercury, Venus, Earth, and Mars with habitable zone indicator';
+  String get presetInnerSolarSystemDesc =>
+      'Close-up of Mercury, Venus, Earth, and Mars with habitable zone indicator';
 
   @override
   String get presetEarthView => 'Earth View';
 
   @override
-  String get presetEarthViewDesc => 'Close-up perspective of Earth with atmospheric detail';
+  String get presetEarthViewDesc =>
+      'Close-up perspective of Earth with atmospheric detail';
 
   @override
   String get presetSaturnRings => 'Saturn\'s Majestic Rings';
 
   @override
-  String get presetSaturnRingsDesc => 'Close-up of Saturn with detailed ring system';
+  String get presetSaturnRingsDesc =>
+      'Close-up of Saturn with detailed ring system';
 
   @override
   String get presetEarthMoonSystem => 'Earth-Moon System';
 
   @override
-  String get presetEarthMoonSystemDesc => 'Earth and Moon with visible orbital mechanics';
+  String get presetEarthMoonSystemDesc =>
+      'Earth and Moon with visible orbital mechanics';
 
   @override
   String get presetBinaryStarDrama => 'Binary Star Drama';
 
   @override
-  String get presetBinaryStarDramaDesc => 'Front view of two massive stars in gravitational dance';
+  String get presetBinaryStarDramaDesc =>
+      'Front view of two massive stars in gravitational dance';
 
   @override
   String get presetBinaryStarPlanetMoon => 'Binary Star Planet & Moon';
 
   @override
-  String get presetBinaryStarPlanetMoonDesc => 'Planet and moon orbiting in chaotic binary star system';
+  String get presetBinaryStarPlanetMoonDesc =>
+      'Planet and moon orbiting in chaotic binary star system';
 
   @override
   String get presetAsteroidBeltChaos => 'Asteroid Belt Chaos';
 
   @override
-  String get presetAsteroidBeltChaosDesc => 'Dense asteroid field with gravitational effects';
+  String get presetAsteroidBeltChaosDesc =>
+      'Dense asteroid field with gravitational effects';
 
   @override
   String get presetThreeBodyBallet => 'Three-Body Ballet';
 
   @override
-  String get presetThreeBodyBalletDesc => 'Classic three-body problem in elegant motion';
+  String get presetThreeBodyBalletDesc =>
+      'Classic three-body problem in elegant motion';
+
+  @override
+  String get privacyPolicyLabel => 'Privacy Policy';
 }
