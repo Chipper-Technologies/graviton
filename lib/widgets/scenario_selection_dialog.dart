@@ -17,6 +17,12 @@ class ScenarioSelectionDialog extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
+    // Filter scenarios to only show those available in the main selection
+    // (excluding screenshot-only scenarios: threeBodyClassic, collisionDemo, deepSpace)
+    final availableScenarios = ScenarioType.values.where((scenario) {
+      return ScenarioConfig.defaults.containsKey(scenario);
+    }).toList();
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
@@ -50,9 +56,9 @@ class ScenarioSelectionDialog extends StatelessWidget {
             Flexible(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: ScenarioType.values.length,
+                itemCount: availableScenarios.length,
                 itemBuilder: (context, index) {
-                  final scenario = ScenarioType.values[index];
+                  final scenario = availableScenarios[index];
                   final config = ScenarioConfig.defaults[scenario]!;
                   final isSelected = scenario == currentScenario;
 
@@ -250,7 +256,12 @@ class _ScenarioTile extends StatelessWidget {
   }
 
   String _getLocalizedEducationalFocus(AppLocalizations l10n, ScenarioType scenario) {
-    final config = ScenarioConfig.defaults[scenario]!;
+    final config = ScenarioConfig.defaults[scenario];
+
+    // Return fallback for scenarios without config (screenshot-only scenarios)
+    if (config == null) {
+      return 'Special scenario';
+    }
 
     // Map educational focus keys to localized strings
     switch (config.educationalFocus) {

@@ -26,7 +26,7 @@ class ScreenshotModeService extends ChangeNotifier {
   Map<String, bool>? _originalUIState;
 
   /// Whether screenshot mode is available (dev mode only)
-  bool get isAvailable => AppConfig.enableScreenshotMode;
+  bool get isAvailable => FlavorConfig.instance.isDevelopment;
 
   /// Whether screenshot mode is currently enabled
   bool get isEnabled => _isScreenshotModeEnabled && isAvailable;

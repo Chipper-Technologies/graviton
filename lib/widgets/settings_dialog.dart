@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -167,12 +168,13 @@ class SettingsDialog extends StatelessWidget {
                         Divider(color: AppColors.uiDividerGrey),
 
                         // Screenshot Mode Section (Dev only)
-                        Text(l10n.marketingLabel, style: Theme.of(context).textTheme.titleMedium),
-                        const SizedBox(height: 8),
-                        const ScreenshotModeWidget(),
-
-                        const SizedBox(height: 16),
-                        Divider(color: AppColors.uiDividerGrey),
+                        if (ScreenshotModeService().isAvailable) ...[
+                          Text(l10n.marketingLabel, style: Theme.of(context).textTheme.titleMedium),
+                          const SizedBox(height: 8),
+                          const ScreenshotModeWidget(),
+                          const SizedBox(height: 16),
+                          Divider(color: AppColors.uiDividerGrey),
+                        ],
 
                         // Language Section
                         Text(l10n.languageLabel, style: Theme.of(context).textTheme.titleMedium),
