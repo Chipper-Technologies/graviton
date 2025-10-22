@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -90,6 +91,11 @@ class _OffScreenIndicatorPainter extends CustomPainter {
           ndc.z > 1.0; // Too far away
 
       if (isOffScreen) {
+        // Skip showing individual planets if they have off-screen moons
+        if (_shouldSkipPlanetWithMoon(body, size)) {
+          continue;
+        }
+
         _drawOffScreenIndicator(
           canvas,
           size,
@@ -241,7 +247,93 @@ class _OffScreenIndicatorPainter extends CustomPainter {
     );
 
     // Draw body name
-    _drawBodyName(canvas, position, body.name, isSelected);
+    _drawBodyName(canvas, position, _formatBodyName(body), isSelected);
+  }
+
+  /// Format body name for moons as "Planet+Moon"
+  String _formatBodyName(Body body) {
+    if (body.bodyType == BodyType.moon) {
+      // Find the closest planet that this moon likely orbits
+      final parentPlanet = _findParentPlanet(body);
+      if (parentPlanet != null) {
+        return '${parentPlanet.name}+${body.name}';
+      }
+    }
+
+    return body.name;
+  }
+
+  /// Find the planet that this moon most likely orbits
+  Body? _findParentPlanet(Body moon) {
+    if (bodies.isEmpty) return null;
+
+    Body? closestPlanet;
+    double minDistance = double.infinity;
+
+    // Find the closest planet to this moon
+    for (final body in bodies) {
+      if (body.bodyType == BodyType.planet) {
+        final distance = (moon.position - body.position).length;
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestPlanet = body;
+        }
+      }
+    }
+
+    return closestPlanet;
+  }
+
+  /// Check if a planet should be skipped because it has an off-screen moon
+  bool _shouldSkipPlanetWithMoon(Body body, Size size) {
+    if (body.bodyType != BodyType.planet) return false;
+
+    final mvp = projMatrix * viewMatrix;
+
+    // Check if this planet has any moons that are also off-screen
+    for (final otherBody in bodies) {
+      if (otherBody.bodyType == BodyType.moon) {
+        final parentPlanet = _findParentPlanet(otherBody);
+        if (parentPlanet == body) {
+          // This moon belongs to the current planet, check if moon is off-screen
+          final moonWorldPos = vm.Vector4(
+            otherBody.position.x,
+            otherBody.position.y,
+            otherBody.position.z,
+            1.0,
+          );
+          final moonClipPos = mvp * moonWorldPos;
+
+          // Skip if moon is behind camera
+          if (moonClipPos.w <= 0) continue;
+
+          // Convert to normalized device coordinates
+          final moonNdc = vm.Vector3(
+            moonClipPos.x / moonClipPos.w,
+            moonClipPos.y / moonClipPos.w,
+            moonClipPos.z / moonClipPos.w,
+          );
+
+          // Convert to screen coordinates
+          final moonScreenX = (moonNdc.x + 1) * 0.5 * size.width;
+          final moonScreenY = (1 - moonNdc.y) * 0.5 * size.height;
+
+          // Check if moon is off-screen
+          final moonIsOffScreen =
+              moonScreenX < 0 ||
+              moonScreenX > size.width ||
+              moonScreenY < 0 ||
+              moonScreenY > size.height ||
+              moonNdc.z > 1.0;
+
+          if (moonIsOffScreen) {
+            return true; // Skip the planet since its moon is off-screen
+          }
+        }
+      }
+    }
+
+    return false; // Don't skip this planet
   }
 
   void _drawBodyName(
