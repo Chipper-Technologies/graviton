@@ -16,7 +16,8 @@ class Body {
 
   // Habitability properties
   BodyType bodyType;
-  double stellarLuminosity; // relative to Sun (1.0 = Sun's luminosity), only relevant for stars
+  double
+  stellarLuminosity; // relative to Sun (1.0 = Sun's luminosity), only relevant for stars
   HabitabilityStatus habitabilityStatus;
 
   Body({

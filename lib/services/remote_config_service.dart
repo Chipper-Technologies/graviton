@@ -4,7 +4,8 @@ import 'package:flutter/foundation.dart';
 /// Service for managing all Firebase Remote Config features
 class RemoteConfigService {
   static RemoteConfigService? _instance;
-  static RemoteConfigService get instance => _instance ??= RemoteConfigService._();
+  static RemoteConfigService get instance =>
+      _instance ??= RemoteConfigService._();
 
   RemoteConfigService._();
 
@@ -75,7 +76,9 @@ class RemoteConfigService {
     // Analytics & A/B Testing
     _analyticsSamplingRate = _remoteConfig.getDouble('analytics_sampling_rate');
     _crashReportingEnabled = _remoteConfig.getBool('crash_reporting_enabled');
-    _performanceMonitoringEnabled = _remoteConfig.getBool('performance_monitoring_enabled');
+    _performanceMonitoringEnabled = _remoteConfig.getBool(
+      'performance_monitoring_enabled',
+    );
     _userBehaviorTracking = _remoteConfig.getString('user_behavior_tracking');
     _abTestGroup = _remoteConfig.getString('ab_test_group');
 
@@ -124,7 +127,8 @@ class RemoteConfigService {
   /// Check if analytics should be sampled for this user
   bool shouldSampleAnalytics() {
     return _analyticsSamplingRate >= 1.0 ||
-        (DateTime.now().millisecondsSinceEpoch % 1000) / 1000.0 < _analyticsSamplingRate;
+        (DateTime.now().millisecondsSinceEpoch % 1000) / 1000.0 <
+            _analyticsSamplingRate;
   }
 
   /// Check if user behavior tracking is enabled
@@ -135,7 +139,8 @@ class RemoteConfigService {
 
   /// Check if there's an active notification to show
   bool get hasActiveNotification =>
-      _emergencyNotification.isNotEmpty || (_newsBannerEnabled && _newsBannerText.isNotEmpty);
+      _emergencyNotification.isNotEmpty ||
+      (_newsBannerEnabled && _newsBannerText.isNotEmpty);
 
   /// Get the current active notification text
   String get activeNotificationText {

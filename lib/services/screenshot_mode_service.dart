@@ -10,7 +10,8 @@ import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Service for managing screenshot mode functionality
 class ScreenshotModeService extends ChangeNotifier {
-  static final ScreenshotModeService _instance = ScreenshotModeService._internal();
+  static final ScreenshotModeService _instance =
+      ScreenshotModeService._internal();
   factory ScreenshotModeService() => _instance;
   ScreenshotModeService._internal();
 
@@ -47,22 +48,36 @@ class ScreenshotModeService extends ChangeNotifier {
   int get presetCount => ScreenshotPresets.getPresetCount();
 
   /// Current preset (requires localization context)
-  ScreenshotPreset? getCurrentPreset(AppLocalizations l10n) => ScreenshotPresets.getPreset(_currentPresetIndex, l10n);
+  ScreenshotPreset? getCurrentPreset(AppLocalizations l10n) =>
+      ScreenshotPresets.getPreset(_currentPresetIndex, l10n);
 
   /// All available presets (requires localization context)
-  List<ScreenshotPreset> getPresets(AppLocalizations l10n) => ScreenshotPresets.getPresets(l10n);
+  List<ScreenshotPreset> getPresets(AppLocalizations l10n) =>
+      ScreenshotPresets.getPresets(l10n);
 
   /// Simple test preset for unit testing when l10n is not available
   ScreenshotPreset? _getTestPreset() {
-    if (_currentPresetIndex < 0 || _currentPresetIndex >= presetCount) return null;
+    if (_currentPresetIndex < 0 || _currentPresetIndex >= presetCount) {
+      return null;
+    }
 
     // Import the required classes for the test preset
     return ScreenshotPreset(
       name: 'Test Preset',
       description: 'Test preset for unit testing',
       scenarioType: ScenarioType.galaxyFormation,
-      configuration: {'bodyCount': 100, 'centralMass': 10000.0, 'diskRadius': 1000.0, 'timeStep': 0.1},
-      camera: const CameraPosition(distance: 300.0, yaw: 0.0, pitch: 0.0, roll: 0.0),
+      configuration: {
+        'bodyCount': 100,
+        'centralMass': 10000.0,
+        'diskRadius': 1000.0,
+        'timeStep': 0.1,
+      },
+      camera: const CameraPosition(
+        distance: 300.0,
+        yaw: 0.0,
+        pitch: 0.0,
+        roll: 0.0,
+      ),
       cameraDistance: 12.8,
       cameraYaw: 0.0,
       cameraPitch: 0.0,
@@ -101,7 +116,8 @@ class ScreenshotModeService extends ChangeNotifier {
 
   /// Cancel any pending apply operations
   void _cancelPendingOperations() {
-    if (_pendingApplyOperation != null && !_pendingApplyOperation!.isCompleted) {
+    if (_pendingApplyOperation != null &&
+        !_pendingApplyOperation!.isCompleted) {
       _pendingApplyOperation!.complete();
     }
     _countdownTimer?.cancel();
@@ -123,7 +139,9 @@ class ScreenshotModeService extends ChangeNotifier {
     required dynamic uiState, // UIState but avoiding import cycle
     AppLocalizations? l10n, // Optional for testing
   }) async {
-    final preset = l10n != null ? getCurrentPreset(l10n) : _getTestPreset(); // Use test preset when l10n is null
+    final preset = l10n != null
+        ? getCurrentPreset(l10n)
+        : _getTestPreset(); // Use test preset when l10n is null
     if (preset == null || !isEnabled) return;
 
     try {
@@ -132,7 +150,8 @@ class ScreenshotModeService extends ChangeNotifier {
       _countdownTimer = null;
 
       // Cancel any pending apply operation
-      if (_pendingApplyOperation != null && !_pendingApplyOperation!.isCompleted) {
+      if (_pendingApplyOperation != null &&
+          !_pendingApplyOperation!.isCompleted) {
         _pendingApplyOperation!.complete();
       }
       _pendingApplyOperation = Completer<void>();
@@ -212,7 +231,9 @@ class ScreenshotModeService extends ChangeNotifier {
             notifyListeners();
 
             // Update countdown every second
-            _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+            _countdownTimer = Timer.periodic(const Duration(seconds: 1), (
+              timer,
+            ) {
               _countdownSeconds--;
               notifyListeners();
 
@@ -244,7 +265,10 @@ class ScreenshotModeService extends ChangeNotifier {
   }
 
   /// Apply scenario configuration
-  void _applyScenarioConfiguration(ScreenshotPreset preset, SimulationState simulationState) {
+  void _applyScenarioConfiguration(
+    ScreenshotPreset preset,
+    SimulationState simulationState,
+  ) {
     ScenarioType scenarioType = preset.scenarioType;
 
     // Reset simulation with the appropriate scenario
@@ -291,7 +315,9 @@ class ScreenshotModeService extends ChangeNotifier {
     }
 
     // Set camera target if specified
-    if (camera.targetX != 0.0 || camera.targetY != 0.0 || camera.targetZ != 0.0) {
+    if (camera.targetX != 0.0 ||
+        camera.targetY != 0.0 ||
+        camera.targetZ != 0.0) {
       final target = vm.Vector3(camera.targetX, camera.targetY, camera.targetZ);
       cameraState.setTarget(target);
     }
@@ -361,14 +387,19 @@ class ScreenshotModeService extends ChangeNotifier {
     if (preset.showOffScreenIndicators != null) {
       if (preset.showOffScreenIndicators! && !uiState.showOffScreenIndicators) {
         uiState.toggleOffScreenIndicators();
-      } else if (!preset.showOffScreenIndicators! && uiState.showOffScreenIndicators) {
+      } else if (!preset.showOffScreenIndicators! &&
+          uiState.showOffScreenIndicators) {
         uiState.toggleOffScreenIndicators();
       }
     }
   }
 
   /// Apply body focus settings based on preset configuration
-  void _applyBodyFocus(ScreenshotPreset preset, SimulationState simulationState, CameraState cameraState) {
+  void _applyBodyFocus(
+    ScreenshotPreset preset,
+    SimulationState simulationState,
+    CameraState cameraState,
+  ) {
     // Clear any existing selection first
     cameraState.selectBody(null);
 
@@ -381,7 +412,8 @@ class ScreenshotModeService extends ChangeNotifier {
 
     // Find target body by index
     if (preset.focusBodyIndex != null) {
-      if (preset.focusBodyIndex! >= 0 && preset.focusBodyIndex! < simulationState.bodies.length) {
+      if (preset.focusBodyIndex! >= 0 &&
+          preset.focusBodyIndex! < simulationState.bodies.length) {
         targetBodyIndex = preset.focusBodyIndex;
       }
     }
@@ -390,7 +422,9 @@ class ScreenshotModeService extends ChangeNotifier {
     if (targetBodyIndex == null && preset.focusBodyName != null) {
       final bodies = simulationState.bodies;
       for (int i = 0; i < bodies.length; i++) {
-        if (bodies[i].name.toLowerCase().contains(preset.focusBodyName!.toLowerCase())) {
+        if (bodies[i].name.toLowerCase().contains(
+          preset.focusBodyName!.toLowerCase(),
+        )) {
           targetBodyIndex = i;
           break;
         }
@@ -419,7 +453,10 @@ class ScreenshotModeService extends ChangeNotifier {
   }
 
   /// Start scene normally and pause after specified seconds for screenshot
-  void _startSceneAndPauseAfterDelay(SimulationState simulationState, ScreenshotPreset preset) {
+  void _startSceneAndPauseAfterDelay(
+    SimulationState simulationState,
+    ScreenshotPreset preset,
+  ) {
     // Start the simulation normally
     simulationState.start();
 
@@ -429,7 +466,8 @@ class ScreenshotModeService extends ChangeNotifier {
       _countdownSeconds = 0;
       _showCountdown = false;
       if (!simulationState.isPaused) {
-        simulationState.pause(); // This toggles pause state just like the app bar button
+        simulationState
+            .pause(); // This toggles pause state just like the app bar button
       }
       notifyListeners();
     } else {
@@ -448,7 +486,8 @@ class ScreenshotModeService extends ChangeNotifier {
           _countdownTimer = null;
           _showCountdown = false;
           if (!simulationState.isPaused) {
-            simulationState.pause(); // This toggles pause state just like the app bar button
+            simulationState
+                .pause(); // This toggles pause state just like the app bar button
           }
           notifyListeners();
         }
@@ -464,7 +503,9 @@ class ScreenshotModeService extends ChangeNotifier {
 
   /// Get the previous preset (for easy cycling)
   void previousPreset() {
-    final prevIndex = _currentPresetIndex == 0 ? presetCount - 1 : _currentPresetIndex - 1;
+    final prevIndex = _currentPresetIndex == 0
+        ? presetCount - 1
+        : _currentPresetIndex - 1;
     setPreset(prevIndex);
   }
 
@@ -542,7 +583,8 @@ class ScreenshotModeService extends ChangeNotifier {
     if (_originalUIState!['showGravityWells'] != uiState.showGravityWells) {
       uiState.toggleGravityWells();
     }
-    if (_originalUIState!['showOffScreenIndicators'] != uiState.showOffScreenIndicators) {
+    if (_originalUIState!['showOffScreenIndicators'] !=
+        uiState.showOffScreenIndicators) {
       uiState.toggleOffScreenIndicators();
     }
 

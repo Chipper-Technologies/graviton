@@ -31,7 +31,11 @@ void main() {
         name: 'Full Test Preset',
         description: 'A complete preset for testing',
         scenarioType: ScenarioType.galaxyFormation,
-        configuration: {'bodyCount': 500, 'centralMass': 50000.0, 'diskRadius': 3000.0},
+        configuration: {
+          'bodyCount': 500,
+          'centralMass': 50000.0,
+          'diskRadius': 3000.0,
+        },
         camera: testCameraPosition,
         showUI: true,
         showTrails: false,

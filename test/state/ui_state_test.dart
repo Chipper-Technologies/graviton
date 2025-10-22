@@ -112,16 +112,19 @@ void main() {
       expect(uiState.useWarmTrails, isFalse);
     });
 
-    test('ToggleHideUIInScreenshotMode should change hideUIInScreenshotMode state', () {
-      final initialState = uiState.hideUIInScreenshotMode;
-      expect(initialState, isFalse); // Default should be false
+    test(
+      'ToggleHideUIInScreenshotMode should change hideUIInScreenshotMode state',
+      () {
+        final initialState = uiState.hideUIInScreenshotMode;
+        expect(initialState, isFalse); // Default should be false
 
-      uiState.toggleHideUIInScreenshotMode();
-      expect(uiState.hideUIInScreenshotMode, equals(!initialState));
+        uiState.toggleHideUIInScreenshotMode();
+        expect(uiState.hideUIInScreenshotMode, equals(!initialState));
 
-      uiState.toggleHideUIInScreenshotMode();
-      expect(uiState.hideUIInScreenshotMode, equals(initialState));
-    });
+        uiState.toggleHideUIInScreenshotMode();
+        expect(uiState.hideUIInScreenshotMode, equals(initialState));
+      },
+    );
 
     test('HideUIInScreenshotMode should notify listeners', () {
       bool wasNotified = false;

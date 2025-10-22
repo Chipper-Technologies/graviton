@@ -13,16 +13,34 @@ void main() {
       await simulationState.initialize();
 
       // Check that we have 4 bodies (default random scenario)
-      expect(simulationState.bodies.length, 4, reason: 'Should have 4 bodies after initialization');
+      expect(
+        simulationState.bodies.length,
+        4,
+        reason: 'Should have 4 bodies after initialization',
+      );
 
       // Check that bodies have proper names after initialization
-      final bodiesWithNames = simulationState.bodies.where((body) => body.name.isNotEmpty).toList();
-      expect(bodiesWithNames.length, equals(4), reason: 'All bodies should have names');
+      final bodiesWithNames = simulationState.bodies
+          .where((body) => body.name.isNotEmpty)
+          .toList();
+      expect(
+        bodiesWithNames.length,
+        equals(4),
+        reason: 'All bodies should have names',
+      );
 
       // Verify all bodies have proper mass (should be > 0)
       for (final body in simulationState.bodies) {
-        expect(body.mass, greaterThan(0), reason: 'All bodies should have positive mass');
-        expect(body.radius, greaterThan(0), reason: 'All bodies should have positive radius');
+        expect(
+          body.mass,
+          greaterThan(0),
+          reason: 'All bodies should have positive mass',
+        );
+        expect(
+          body.radius,
+          greaterThan(0),
+          reason: 'All bodies should have positive radius',
+        );
       }
     });
   });

@@ -29,7 +29,9 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
   Future<void> _loadPackageInfo() async {
     try {
       final packageInfo = await PackageInfo.fromPlatform();
-      debugPrint('Package info loaded: ${packageInfo.version}+${packageInfo.buildNumber}');
+      debugPrint(
+        'Package info loaded: ${packageInfo.version}+${packageInfo.buildNumber}',
+      );
       if (mounted) {
         setState(() {
           _packageInfo = packageInfo;
@@ -71,10 +73,15 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.uiWhiteBorder.withValues(alpha: AppTypography.opacityVeryFaint),
+                    color: AppColors.uiWhiteBorder.withValues(
+                      alpha: AppTypography.opacityVeryFaint,
+                    ),
                     width: 2,
                   ),
-                  image: const DecorationImage(image: AssetImage('assets/images/app-logo.png'), fit: BoxFit.cover),
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/app-logo.png'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -97,21 +104,31 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
                 Text(
                   l10n.loadingVersion,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: AppTypography.opacityHigh),
+                    color: theme.colorScheme.onSurface.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
                   ),
                   textAlign: TextAlign.center,
                 ),
               const SizedBox(height: 12),
 
               // Description
-              Text(l10n.appDescription, style: theme.textTheme.bodyMedium, textAlign: TextAlign.center),
+              Text(
+                l10n.appDescription,
+                style: theme.textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 24),
 
               // Author Section with Chipper Logo
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.business, size: 20, color: theme.colorScheme.primary),
+                  Icon(
+                    Icons.business,
+                    size: 20,
+                    color: theme.colorScheme.primary,
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -127,9 +144,18 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
                         const SizedBox(height: 2),
                         Row(
                           children: [
-                            SvgPicture.asset('assets/images/chipper-logo.svg', width: 20, height: 20),
+                            SvgPicture.asset(
+                              'assets/images/chipper-logo.svg',
+                              width: 20,
+                              height: 20,
+                            ),
                             const SizedBox(width: 8),
-                            Flexible(child: Text(l10n.companyName, style: theme.textTheme.bodyMedium)),
+                            Flexible(
+                              child: Text(
+                                l10n.companyName,
+                                style: theme.textTheme.bodyMedium,
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -153,14 +179,20 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
                 context,
                 icon: Icons.privacy_tip,
                 title: l10n.privacyPolicyLabel,
-                content: 'https://chippertechnology.com/privacy-policy/graviton',
+                content:
+                    'https://chippertechnology.com/privacy-policy/graviton',
                 isLink: true,
               ),
             ],
           ),
         ),
       ),
-      actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.closeButton))],
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.closeButton),
+        ),
+      ],
       actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 2),
     );
   }
@@ -185,7 +217,10 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
             children: [
               Text(
                 title,
-                style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600, color: AppColors.uiTextGrey),
+                style: theme.textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.uiTextGrey,
+                ),
               ),
               const SizedBox(height: 2),
               isLink
@@ -196,7 +231,9 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.primary,
                           decoration: TextDecoration.underline,
-                          decorationColor: theme.colorScheme.primary.withValues(alpha: AppTypography.opacityMediumHigh),
+                          decorationColor: theme.colorScheme.primary.withValues(
+                            alpha: AppTypography.opacityMediumHigh,
+                          ),
                         ),
                       ),
                     )
@@ -248,9 +285,14 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
   }
 
   /// Build version info with status color and upgrade link if needed
-  Widget _buildVersionInfo(BuildContext context, ThemeData theme, AppLocalizations l10n) {
+  Widget _buildVersionInfo(
+    BuildContext context,
+    ThemeData theme,
+    AppLocalizations l10n,
+  ) {
     final versionStatus = VersionService.instance.getVersionStatus();
-    final versionText = '${l10n.versionLabel} ${_packageInfo!.version}+${_packageInfo!.buildNumber}';
+    final versionText =
+        '${l10n.versionLabel} ${_packageInfo!.version}+${_packageInfo!.buildNumber}';
 
     // Determine badge properties based on version status
     late Color badgeColor;
@@ -258,15 +300,15 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
 
     switch (versionStatus) {
       case VersionStatus.current:
-        badgeColor = Colors.green;
+        badgeColor = AppColors.uiStatusGreen;
         badgeText = l10n.versionStatusCurrent;
         break;
       case VersionStatus.beta:
-        badgeColor = Colors.blue;
+        badgeColor = AppColors.basicBlue;
         badgeText = l10n.versionStatusBeta;
         break;
       case VersionStatus.outdated:
-        badgeColor = Colors.red;
+        badgeColor = AppColors.uiRed;
         badgeText = l10n.versionStatusOutdated;
         break;
     }
@@ -275,28 +317,46 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
       children: [
         Text(
           versionText,
-          style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface, fontWeight: FontWeight.w500),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 6),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-          decoration: BoxDecoration(color: badgeColor, borderRadius: BorderRadius.circular(8)),
+          decoration: BoxDecoration(
+            color: badgeColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
           child: Text(
             badgeText,
-            style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              color: AppColors.uiWhite,
+              fontSize: AppTypography.fontSizeSmall,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
 
         // Show upgrade link for outdated versions
-        if (versionStatus == VersionStatus.outdated && VersionService.instance.getStoreUrl() != null) ...[
+        if (versionStatus == VersionStatus.outdated &&
+            VersionService.instance.getStoreUrl() != null) ...[
           const SizedBox(height: 8),
           TextButton.icon(
             onPressed: () => VersionService.instance.launchStore(),
-            icon: Icon(Icons.open_in_new, size: 16, color: theme.colorScheme.primary),
+            icon: Icon(
+              Icons.open_in_new,
+              size: 16,
+              color: theme.colorScheme.primary,
+            ),
             label: Text(
               l10n.updateNow,
-              style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
@@ -307,9 +367,12 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
   void _copyToClipboard(String text) {
     Clipboard.setData(ClipboardData(text: text));
     if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Copied to clipboard: $text'), duration: const Duration(seconds: 2)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Copied to clipboard: $text'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
     }
   }
 }

@@ -23,7 +23,9 @@ class TrailPainter {
 
     for (int i = 0; i < sim.bodies.length && i < sim.trails.length; i++) {
       final bodyColor = sim.bodies[i].color;
-      final hueTarget = useWarmTrails ? AppColors.uiOrangeAccent : AppColors.uiLightBlueAccent;
+      final hueTarget = useWarmTrails
+          ? AppColors.uiOrangeAccent
+          : AppColors.uiLightBlueAccent;
       final pts = sim.trails[i];
 
       for (int k = 1; k < pts.length; k++) {
@@ -47,18 +49,28 @@ class TrailPainter {
             segmentColor = AppColors.uiGreen;
           } else if (distanceFromCenter > 80.0) {
             final t = (120.0 - distanceFromCenter) / 40.0;
-            segmentColor = Color.lerp(AppColors.uiGreen, AppColors.uiYellow, t) ?? AppColors.uiYellow;
+            segmentColor =
+                Color.lerp(AppColors.uiGreen, AppColors.uiYellow, t) ??
+                AppColors.uiYellow;
           } else if (distanceFromCenter > 50.0) {
             final t = (80.0 - distanceFromCenter) / 30.0;
-            segmentColor = Color.lerp(AppColors.uiYellow, AppColors.uiOrange, t) ?? AppColors.uiOrange;
+            segmentColor =
+                Color.lerp(AppColors.uiYellow, AppColors.uiOrange, t) ??
+                AppColors.uiOrange;
           } else {
             final t = math.min(1.0, (50.0 - distanceFromCenter) / 50.0);
-            segmentColor = Color.lerp(AppColors.uiOrange, AppColors.uiRed, t) ?? AppColors.uiRed;
+            segmentColor =
+                Color.lerp(AppColors.uiOrange, AppColors.uiRed, t) ??
+                AppColors.uiRed;
           }
 
           color = segmentColor.withValues(alpha: alpha);
         } else {
-          color = Color.lerp(bodyColor, hueTarget, 1.0 - alpha)!.withValues(alpha: alpha);
+          color = Color.lerp(
+            bodyColor,
+            hueTarget,
+            1.0 - alpha,
+          )!.withValues(alpha: alpha);
         }
 
         final p = Paint()

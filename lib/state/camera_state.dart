@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/services/firebase_service.dart';
@@ -86,14 +88,22 @@ class CameraState extends ChangeNotifier {
 
   /// Enhanced zoom that considers selected body for better focus
   void zoomTowardBody(double delta, List<Body> bodies) {
-    if (_selectedBody != null && _selectedBody! >= 0 && _selectedBody! < bodies.length) {
+    if (_selectedBody != null &&
+        _selectedBody! >= 0 &&
+        _selectedBody! < bodies.length) {
       // If a body is selected, smoothly adjust target toward that body while zooming
       final selectedBodyPosition = bodies[_selectedBody!].position;
-      final zoomStrength = (delta < 0 ? -delta : delta).clamp(0.0, 0.3); // Increased adjustment strength
+      final zoomStrength = (delta < 0 ? -delta : delta).clamp(
+        0.0,
+        0.3,
+      ); // Increased adjustment strength
 
       // Interpolate target toward selected body (more aggressively when zooming in)
-      final targetWeight = delta < 0 ? zoomStrength * 3.0 : zoomStrength * 1.5; // Zoom in = more focus
-      _target = _target * (1.0 - targetWeight) + selectedBodyPosition * targetWeight;
+      final targetWeight = delta < 0
+          ? zoomStrength * 3.0
+          : zoomStrength * 1.5; // Zoom in = more focus
+      _target =
+          _target * (1.0 - targetWeight) + selectedBodyPosition * targetWeight;
     }
 
     // Apply the zoom
@@ -112,7 +122,11 @@ class CameraState extends ChangeNotifier {
 
   void selectBody(int? bodyIndex) {
     _selectedBody = bodyIndex;
-    FirebaseService.instance.logUIEvent('body_selected', element: 'camera', value: bodyIndex?.toString() ?? 'none');
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.bodySelected,
+      element: UIElement.camera,
+      value: bodyIndex?.toString() ?? 'none',
+    );
     notifyListeners();
   }
 
@@ -120,7 +134,11 @@ class CameraState extends ChangeNotifier {
     if (bodyIndex >= 0 && bodyIndex < bodies.length) {
       _target = bodies[bodyIndex].position.clone();
       _selectedBody = bodyIndex;
-      FirebaseService.instance.logUIEvent('camera_focus', element: 'body', value: bodyIndex.toString());
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.cameraFocus,
+        element: UIElement.body,
+        value: bodyIndex.toString(),
+      );
       notifyListeners();
     }
   }
@@ -145,16 +163,18 @@ class CameraState extends ChangeNotifier {
 
   /// Toggle follow mode for the currently selected body
   void toggleFollowMode(List<Body> bodies) {
-    if (_selectedBody != null && _selectedBody! >= 0 && _selectedBody! < bodies.length) {
+    if (_selectedBody != null &&
+        _selectedBody! >= 0 &&
+        _selectedBody! < bodies.length) {
       _followMode = !_followMode;
 
       if (_followMode) {
         _followedBodyIndex = _selectedBody;
         _distance = _followDistance; // Set close follow distance
         updateFollowTarget(bodies); // Initial target update
-        FirebaseService.instance.logUIEvent(
-          'follow_mode_enabled',
-          element: 'camera_controls',
+        FirebaseService.instance.logUIEventWithEnums(
+          UIAction.followModeEnabled,
+          element: UIElement.cameraControls,
           value: _selectedBody.toString(),
         );
       } else {
@@ -163,7 +183,10 @@ class CameraState extends ChangeNotifier {
         _distance = 600.0;
         // Clear selection when unfollowing to prevent object dragging
         _selectedBody = null;
-        FirebaseService.instance.logUIEvent('follow_mode_disabled', element: 'camera_controls');
+        FirebaseService.instance.logUIEventWithEnums(
+          UIAction.followModeDisabled,
+          element: UIElement.cameraControls,
+        );
       }
 
       notifyListeners();
@@ -191,7 +214,10 @@ class CameraState extends ChangeNotifier {
 
   /// Update camera target to follow the tracked body (called each frame)
   void updateFollowTarget(List<Body> bodies) {
-    if (_followMode && _followedBodyIndex != null && _followedBodyIndex! >= 0 && _followedBodyIndex! < bodies.length) {
+    if (_followMode &&
+        _followedBodyIndex != null &&
+        _followedBodyIndex! >= 0 &&
+        _followedBodyIndex! < bodies.length) {
       _target = bodies[_followedBodyIndex!].position.clone();
     }
   }
@@ -222,7 +248,10 @@ class CameraState extends ChangeNotifier {
     _autoRotate = false;
     _followMode = false;
     _followedBodyIndex = null;
-    FirebaseService.instance.logUIEvent('camera_reset', element: 'camera_controls');
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.cameraReset,
+      element: UIElement.cameraControls,
+    );
     notifyListeners();
   }
 
@@ -251,7 +280,11 @@ class CameraState extends ChangeNotifier {
     _autoRotate = false;
     _followMode = false;
     _followedBodyIndex = null;
-    FirebaseService.instance.logUIEvent('camera_auto_zoom', element: 'scenario', value: scenario.name);
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.cameraAutoZoom,
+      element: UIElement.scenario,
+      value: scenario.name,
+    );
     notifyListeners();
   }
 
@@ -271,7 +304,8 @@ class CameraState extends ChangeNotifier {
 
     // Calculate distance needed to fit bounding sphere in view
     // Assumes ~60° field of view, so distance = radius / tan(30°)
-    final optimalDistance = (boundingRadius * multiplier) / math.tan(math.pi / 6);
+    final optimalDistance =
+        (boundingRadius * multiplier) / math.tan(math.pi / 6);
 
     // Clamp to reasonable bounds
     return optimalDistance.clamp(20.0, 2000.0);
@@ -322,9 +356,9 @@ class CameraState extends ChangeNotifier {
   void toggleAutoRotate() {
     _autoRotate = !_autoRotate;
 
-    FirebaseService.instance.logUIEvent(
-      'auto_rotate_toggle',
-      element: 'camera_controls',
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.autoRotateToggle,
+      element: UIElement.cameraControls,
       value: _autoRotate.toString(),
     );
 
@@ -334,9 +368,9 @@ class CameraState extends ChangeNotifier {
   void toggleInvertPitch() {
     _invertPitch = !_invertPitch;
 
-    FirebaseService.instance.logUIEvent(
-      'invert_pitch_toggle',
-      element: 'camera_controls',
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.invertPitchToggle,
+      element: UIElement.cameraControls,
       value: _invertPitch.toString(),
     );
 

@@ -33,7 +33,10 @@ void main() {
           name: 'Test Body',
         );
 
-        expect(() => CelestialBodyPainter.drawBody(canvas, center, radius, body), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawBody(canvas, center, radius, body),
+          returnsNormally,
+        );
       });
 
       test('should draw black hole with special rendering', () {
@@ -46,7 +49,11 @@ void main() {
           name: 'Black Hole',
         );
 
-        expect(() => CelestialBodyPainter.drawBody(canvas, center, radius, blackHole), returnsNormally);
+        expect(
+          () =>
+              CelestialBodyPainter.drawBody(canvas, center, radius, blackHole),
+          returnsNormally,
+        );
       });
 
       test('should draw Sun with special rendering', () {
@@ -59,11 +66,23 @@ void main() {
           name: 'Sun',
         );
 
-        expect(() => CelestialBodyPainter.drawBody(canvas, center, radius, sun), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawBody(canvas, center, radius, sun),
+          returnsNormally,
+        );
       });
 
       test('should draw all planets with special rendering', () {
-        final planets = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
+        final planets = [
+          'Mercury',
+          'Venus',
+          'Earth',
+          'Mars',
+          'Jupiter',
+          'Saturn',
+          'Uranus',
+          'Neptune',
+        ];
 
         for (final planetName in planets) {
           final planet = Body(
@@ -86,31 +105,52 @@ void main() {
 
     group('Individual Celestial Bodies', () {
       test('should draw black hole with accretion disk', () {
-        expect(() => CelestialBodyPainter.drawBlackHole(canvas, center, radius), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawBlackHole(canvas, center, radius),
+          returnsNormally,
+        );
       });
 
       test('should draw Sun with corona', () {
-        expect(() => CelestialBodyPainter.drawSun(canvas, center, radius), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawSun(canvas, center, radius),
+          returnsNormally,
+        );
       });
 
       test('should draw Mercury with craters', () {
-        expect(() => CelestialBodyPainter.drawMercury(canvas, center, radius), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawMercury(canvas, center, radius),
+          returnsNormally,
+        );
       });
 
       test('should draw Venus with atmosphere', () {
-        expect(() => CelestialBodyPainter.drawVenus(canvas, center, radius), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawVenus(canvas, center, radius),
+          returnsNormally,
+        );
       });
 
       test('should draw Earth with continents and atmosphere', () {
-        expect(() => CelestialBodyPainter.drawEarth(canvas, center, radius), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawEarth(canvas, center, radius),
+          returnsNormally,
+        );
       });
 
       test('should draw Mars with polar ice caps', () {
-        expect(() => CelestialBodyPainter.drawMars(canvas, center, radius), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawMars(canvas, center, radius),
+          returnsNormally,
+        );
       });
 
       test('should draw Jupiter with Great Red Spot and bands', () {
-        expect(() => CelestialBodyPainter.drawJupiter(canvas, center, radius), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawJupiter(canvas, center, radius),
+          returnsNormally,
+        );
       });
 
       test('should draw Saturn with rings', () {
@@ -122,7 +162,10 @@ void main() {
           color: AppColors.basicYellow,
           name: 'Saturn',
         );
-        expect(() => CelestialBodyPainter.drawSaturn(canvas, center, radius, saturn), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawSaturn(canvas, center, radius, saturn),
+          returnsNormally,
+        );
       });
 
       test('should draw Uranus with tilted rings', () {
@@ -134,11 +177,17 @@ void main() {
           color: AppColors.basicCyan,
           name: 'Uranus',
         );
-        expect(() => CelestialBodyPainter.drawUranus(canvas, center, radius, uranus), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawUranus(canvas, center, radius, uranus),
+          returnsNormally,
+        );
       });
 
       test('should draw Neptune with Great Dark Spot', () {
-        expect(() => CelestialBodyPainter.drawNeptune(canvas, center, radius), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawNeptune(canvas, center, radius),
+          returnsNormally,
+        );
       });
     });
 
@@ -153,7 +202,10 @@ void main() {
           name: 'Test Body',
         );
 
-        expect(() => CelestialBodyPainter.drawBody(canvas, center, 0.0, body), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawBody(canvas, center, 0.0, body),
+          returnsNormally,
+        );
       });
 
       test('should handle very large radius', () {
@@ -166,7 +218,10 @@ void main() {
           name: 'Test Body',
         );
 
-        expect(() => CelestialBodyPainter.drawBody(canvas, center, 1000.0, body), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawBody(canvas, center, 1000.0, body),
+          returnsNormally,
+        );
       });
 
       test('should handle negative center coordinates', () {
@@ -179,7 +234,15 @@ void main() {
           name: 'Test Body',
         );
 
-        expect(() => CelestialBodyPainter.drawBody(canvas, const Offset(-100, -100), radius, body), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            const Offset(-100, -100),
+            radius,
+            body,
+          ),
+          returnsNormally,
+        );
       });
 
       test('should handle transparent colors', () {
@@ -188,11 +251,16 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1.0,
           radius: 1.0,
-          color: AppColors.basicBlue.withValues(alpha: AppTypography.opacityTransparent),
+          color: AppColors.basicBlue.withValues(
+            alpha: AppTypography.opacityTransparent,
+          ),
           name: 'Test Body',
         );
 
-        expect(() => CelestialBodyPainter.drawBody(canvas, center, radius, body), returnsNormally);
+        expect(
+          () => CelestialBodyPainter.drawBody(canvas, center, radius, body),
+          returnsNormally,
+        );
       });
     });
 

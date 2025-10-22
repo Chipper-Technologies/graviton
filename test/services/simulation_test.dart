@@ -25,7 +25,9 @@ void main() {
     });
 
     test('Reset should generate new random bodies', () {
-      final originalBodies = simulation.bodies.map((b) => b.position.clone()).toList();
+      final originalBodies = simulation.bodies
+          .map((b) => b.position.clone())
+          .toList();
 
       simulation.reset();
 
@@ -114,7 +116,9 @@ void main() {
 
     test('Merge flashes should age over time', () {
       // Add a merge flash manually for testing
-      simulation.mergeFlashes.add(MergeFlash(vm.Vector3.zero(), AppColors.basicRed));
+      simulation.mergeFlashes.add(
+        MergeFlash(vm.Vector3.zero(), AppColors.basicRed),
+      );
       final flash = simulation.mergeFlashes.first;
       final initialAge = flash.age;
 
@@ -135,14 +139,17 @@ void main() {
     });
 
     test('StepRK4 should update body positions', () {
-      final originalPositions = simulation.bodies.map((b) => b.position.clone()).toList();
+      final originalPositions = simulation.bodies
+          .map((b) => b.position.clone())
+          .toList();
 
       simulation.stepRK4(1.0 / 60.0);
 
       // At least some bodies should have moved
       bool hasMoved = false;
       for (int i = 0; i < simulation.bodies.length; i++) {
-        if ((simulation.bodies[i].position - originalPositions[i]).length > 1e-10) {
+        if ((simulation.bodies[i].position - originalPositions[i]).length >
+            1e-10) {
           hasMoved = true;
           break;
         }
@@ -171,13 +178,18 @@ void main() {
     });
 
     test('StepRK4 should handle zero time step', () {
-      final originalPositions = simulation.bodies.map((b) => b.position.clone()).toList();
+      final originalPositions = simulation.bodies
+          .map((b) => b.position.clone())
+          .toList();
 
       simulation.stepRK4(0.0);
 
       // Positions should not change with zero time step
       for (int i = 0; i < simulation.bodies.length; i++) {
-        expect((simulation.bodies[i].position - originalPositions[i]).length, lessThan(1e-10));
+        expect(
+          (simulation.bodies[i].position - originalPositions[i]).length,
+          lessThan(1e-10),
+        );
       }
     });
 
@@ -198,7 +210,11 @@ void main() {
           name: 'Test Body 1',
         ),
         Body(
-          position: vm.Vector3(0.05, 0, 0), // Within collision radius (5% of visual radius = 0.1 total)
+          position: vm.Vector3(
+            0.05,
+            0,
+            0,
+          ), // Within collision radius (5% of visual radius = 0.1 total)
           velocity: vm.Vector3(0, 0, 0),
           mass: 1.0,
           radius: 1.0,

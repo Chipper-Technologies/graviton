@@ -81,7 +81,10 @@ class AppState extends ChangeNotifier {
   void resetAll() {
     simulation.reset();
     // Reset camera with optimal zoom for current scenario
-    camera.resetViewForScenario(simulation.simulation.currentScenario, simulation.bodies);
+    camera.resetViewForScenario(
+      simulation.simulation.currentScenario,
+      simulation.bodies,
+    );
     clearError();
   }
 
@@ -91,7 +94,10 @@ class AppState extends ChangeNotifier {
     // Regenerate scenario with correct localization on first load
     if (_isInitialized) {
       simulation.regenerateScenarioWithLocalization(l10n);
-      camera.resetViewForScenario(simulation.currentScenario, simulation.bodies);
+      camera.resetViewForScenario(
+        simulation.currentScenario,
+        simulation.bodies,
+      );
     }
   }
 

@@ -42,7 +42,7 @@ platform :ios do
   end
 
   desc "Submit a new Beta Build to TestFlight"
-  lane :beta do
+  lane :beta do |options|
     # Match for development certificates
     match(type: "appstore")
     
@@ -54,12 +54,16 @@ platform :ios do
               scheme: "Runner",
               export_method: "app-store")
     
+    # Upload dSYMs to Crashlytics (default to dev flavor)
+    flavor = options[:flavor] || "dev"
+    upload_dsyms(flavor: flavor)
+    
     # Upload to TestFlight
     upload_to_testflight(skip_waiting_for_build_processing: true)
   end
 
   desc "Deploy a new version to the App Store"
-  lane :deploy do
+  lane :deploy do |options|
     # Match for distribution certificates
     match(type: "appstore")
     
@@ -70,6 +74,10 @@ platform :ios do
     build_app(workspace: "Runner.xcworkspace",
               scheme: "Runner",
               export_method: "app-store")
+    
+    # Upload dSYMs to Crashlytics (default to prod for deploy)
+    flavor = options[:flavor] || "prod"
+    upload_dsyms(flavor: flavor)
     
     # Upload to App Store
     upload_to_app_store(force: true)
@@ -93,5 +101,49 @@ platform :ios do
   lane :certificates do
     match(type: "development")
     match(type: "appstore")
+  end
+
+  desc "Upload dSYMs to Firebase Crashlytics"
+  lane :upload_dsyms do |options|
+    # Default to Dev configuration if no flavor specified
+    flavor = options[:flavor] || "dev"
+    
+    UI.message "Uploading dSYMs for #{flavor} flavor..."
+    
+    # Set the path to the GoogleService-Info.plist based on flavor
+    google_service_info_path = case flavor
+    when "prod"
+      "./Config/Prod/GoogleService-Info.plist"
+    else
+      "./Config/Dev/GoogleService-Info.plist"
+    end
+    
+    # Ensure the GoogleService-Info.plist exists
+    unless File.exist?(google_service_info_path)
+      UI.user_error!("GoogleService-Info.plist not found at #{google_service_info_path}")
+    end
+    
+    # Upload dSYMs to Crashlytics
+    upload_symbols_to_crashlytics(
+      gsp_path: google_service_info_path,
+      dsym_path: "./build/Runner.app.dSYM.zip", # Default path after build_app
+      binary_path: "./Pods/FirebaseCrashlytics/upload-symbols" # Path to upload-symbols script
+    )
+    
+    UI.success "Successfully uploaded dSYMs to Firebase Crashlytics for #{flavor} flavor"
+  end
+
+  desc "Build and upload dSYMs to Crashlytics"
+  lane :build_and_upload_dsyms do |options|
+    # Default to Dev flavor if no flavor specified
+    flavor = options[:flavor] || "dev"
+    
+    UI.message "Building app and uploading dSYMs for #{flavor} flavor..."
+    
+    # Build the Flutter app first
+    build_flutter
+    
+    # Upload the dSYMs
+    upload_dsyms(flavor: flavor)
   end
 end

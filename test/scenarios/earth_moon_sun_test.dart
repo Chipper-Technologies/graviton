@@ -8,7 +8,9 @@ void main() {
   group('Earth-Moon-Sun Orbital Mechanics', () {
     test('System should be simple and stable like solar system', () {
       final scenarioService = ScenarioService();
-      final bodies = scenarioService.generateScenario(ScenarioType.earthMoonSun);
+      final bodies = scenarioService.generateScenario(
+        ScenarioType.earthMoonSun,
+      );
 
       final sun = bodies.firstWhere((body) => body.name == 'Sun');
       final earth = bodies.firstWhere((body) => body.name == 'Earth');
@@ -32,7 +34,9 @@ void main() {
 
     test('Bodies should have stable circular orbital velocities', () {
       final scenarioService = ScenarioService();
-      final bodies = scenarioService.generateScenario(ScenarioType.earthMoonSun);
+      final bodies = scenarioService.generateScenario(
+        ScenarioType.earthMoonSun,
+      );
 
       // Find the bodies
       final sun = bodies.firstWhere((body) => body.name == 'Sun');
@@ -46,7 +50,9 @@ void main() {
       // Check Earth has correct orbital velocity around Sun
       final earthDistance = earth.position.length;
       final earthSpeed = earth.velocity.length;
-      final expectedEarthSpeed = math.sqrt(1.2 * 50.0 / earthDistance); // Updated for Sun's mass (50.0)
+      final expectedEarthSpeed = math.sqrt(
+        1.2 * 50.0 / earthDistance,
+      ); // Updated for Sun's mass (50.0)
 
       // Debug output (commented out to avoid lint warnings)
       // print('Earth distance: $earthDistance');
@@ -54,14 +60,19 @@ void main() {
       // print('Expected Earth speed: $expectedEarthSpeed');
 
       // Earth speed should be close to stable circular orbital velocity
-      expect(earthSpeed, closeTo(expectedEarthSpeed * 0.95, expectedEarthSpeed * 0.1));
+      expect(
+        earthSpeed,
+        closeTo(expectedEarthSpeed * 0.95, expectedEarthSpeed * 0.1),
+      );
 
       // Check Moon has correct orbital velocity around Earth
       final moonEarthVector = moon.position - earth.position;
       final moonEarthDistance = moonEarthVector.length;
       final moonRelativeVel = moon.velocity - earth.velocity;
       final moonSpeed = moonRelativeVel.length;
-      final expectedMoonSpeed = math.sqrt(1.2 * 0.30 / moonEarthDistance); // Updated for Earth's new mass (0.30)
+      final expectedMoonSpeed = math.sqrt(
+        1.2 * 0.30 / moonEarthDistance,
+      ); // Updated for Earth's new mass (0.30)
 
       // Debug output (commented out to avoid lint warnings)
       // print('Moon-Earth distance: $moonEarthDistance');
@@ -74,7 +85,9 @@ void main() {
 
     test('Moon should orbit Earth, not directly the Sun', () {
       final scenarioService = ScenarioService();
-      final bodies = scenarioService.generateScenario(ScenarioType.earthMoonSun);
+      final bodies = scenarioService.generateScenario(
+        ScenarioType.earthMoonSun,
+      );
 
       final sun = bodies.firstWhere((body) => body.name == 'Sun');
       final earth = bodies.firstWhere((body) => body.name == 'Earth');
@@ -87,17 +100,24 @@ void main() {
       expect(moonEarthDistance, lessThan(moonSunDistance / 5.0));
 
       // Moon's mass should be much smaller than Earth's
-      expect(moon.mass, lessThan(earth.mass)); // Updated: 0.01 vs 0.02 (Moon is 50% of Earth mass)
+      expect(
+        moon.mass,
+        lessThan(earth.mass),
+      ); // Updated: 0.01 vs 0.02 (Moon is 50% of Earth mass)
     });
 
     test('Moon should remain bound to Earth throughout simulation', () {
       final scenarioService = ScenarioService();
-      final bodies = scenarioService.generateScenario(ScenarioType.earthMoonSun);
+      final bodies = scenarioService.generateScenario(
+        ScenarioType.earthMoonSun,
+      );
 
       final simulation = physics.Simulation();
       simulation.bodies = bodies;
 
-      final earth = simulation.bodies.firstWhere((body) => body.name == 'Earth');
+      final earth = simulation.bodies.firstWhere(
+        (body) => body.name == 'Earth',
+      );
       final moon = simulation.bodies.firstWhere((body) => body.name == 'Moon');
 
       // Record initial Moon-Earth distance
@@ -109,9 +129,14 @@ void main() {
       }
 
       // Check that Moon is still close to Earth after simulation
-      final finalEarth = simulation.bodies.firstWhere((body) => body.name == 'Earth');
-      final finalMoon = simulation.bodies.firstWhere((body) => body.name == 'Moon');
-      final finalMoonEarthDistance = (finalMoon.position - finalEarth.position).length;
+      final finalEarth = simulation.bodies.firstWhere(
+        (body) => body.name == 'Earth',
+      );
+      final finalMoon = simulation.bodies.firstWhere(
+        (body) => body.name == 'Moon',
+      );
+      final finalMoonEarthDistance =
+          (finalMoon.position - finalEarth.position).length;
 
       // Debug output (commented out to avoid lint warnings)
       // print('Initial Moon-Earth distance: $initialMoonEarthDistance');
@@ -121,14 +146,19 @@ void main() {
       expect(finalMoonEarthDistance, lessThan(initialMoonEarthDistance * 3.0));
 
       // Moon should be much closer to Earth than to Sun
-      final finalSun = simulation.bodies.firstWhere((body) => body.name == 'Sun');
-      final finalMoonSunDistance = (finalMoon.position - finalSun.position).length;
+      final finalSun = simulation.bodies.firstWhere(
+        (body) => body.name == 'Sun',
+      );
+      final finalMoonSunDistance =
+          (finalMoon.position - finalSun.position).length;
       expect(finalMoonEarthDistance, lessThan(finalMoonSunDistance / 3.0));
     });
 
     test('System should be stable in short-term simulation', () {
       final scenarioService = ScenarioService();
-      final bodies = scenarioService.generateScenario(ScenarioType.earthMoonSun);
+      final bodies = scenarioService.generateScenario(
+        ScenarioType.earthMoonSun,
+      );
 
       final simulation = physics.Simulation();
       simulation.bodies = bodies;
@@ -141,7 +171,9 @@ void main() {
       // All bodies should still exist and have reasonable positions
       expect(simulation.bodies.length, equals(3));
 
-      final earth = simulation.bodies.firstWhere((body) => body.name == 'Earth');
+      final earth = simulation.bodies.firstWhere(
+        (body) => body.name == 'Earth',
+      );
       final moon = simulation.bodies.firstWhere((body) => body.name == 'Moon');
 
       // Bodies shouldn't have escaped to infinity

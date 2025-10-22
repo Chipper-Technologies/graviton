@@ -21,9 +21,16 @@ class CopyrightText extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: AppColors.uiBlack.withValues(alpha: AppTypography.opacitySemiTransparent),
+            color: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacitySemiTransparent,
+            ),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityDisabled), width: 1),
+            border: Border.all(
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityDisabled,
+              ),
+              width: 1,
+            ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -31,7 +38,9 @@ class CopyrightText extends StatelessWidget {
               Text(
                 '© $currentYear ${AppLocalizations.of(context)!.companyName}. ',
                 style: TextStyle(
-                  color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityMedium),
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityMedium,
+                  ),
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
@@ -40,12 +49,15 @@ class CopyrightText extends StatelessWidget {
                 child: Text(
                   AppLocalizations.of(context)!.aboutButtonTooltip,
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary.withValues(alpha: AppTypography.opacityHigh),
+                    color: Theme.of(context).colorScheme.primary.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
                     fontSize: AppTypography.fontSizeSmall,
                     decoration: TextDecoration.underline,
-                    decorationColor: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: AppTypography.opacitySemiTransparent),
+                    decorationColor: Theme.of(context).colorScheme.primary
+                        .withValues(
+                          alpha: AppTypography.opacitySemiTransparent,
+                        ),
                   ),
                 ),
               ),
@@ -57,6 +69,9 @@ class CopyrightText extends StatelessWidget {
   }
 
   void _showAbout(BuildContext context) {
-    showDialog<void>(context: context, builder: (context) => const AppAboutDialog());
+    showDialog<void>(
+      context: context,
+      builder: (context) => const AppAboutDialog(),
+    );
   }
 }

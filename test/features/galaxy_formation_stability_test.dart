@@ -20,7 +20,8 @@ void main() {
       final steps = (totalTime / timeStep).round();
 
       int ejectedStars = 0;
-      const maxDistance = 500.0; // Consider stars beyond this distance as ejected
+      const maxDistance =
+          500.0; // Consider stars beyond this distance as ejected
       final ejectedStarData = <String>[];
 
       // Track outer stars specifically
@@ -46,7 +47,8 @@ void main() {
             final distance = star.position.length;
             final velocity = star.velocity.length;
 
-            if (distance > maxDistance && !ejectedStarData.any((data) => data.contains('Star $i'))) {
+            if (distance > maxDistance &&
+                !ejectedStarData.any((data) => data.contains('Star $i'))) {
               ejectedStars++;
               final isOuterStar = outerStars.contains(i);
               ejectedStarData.add(
@@ -85,16 +87,20 @@ void main() {
           // Skip black hole
           final star = simulation.bodies[i];
           final velocity = star.velocity.length;
-          maxVelocityObserved = velocity > maxVelocityObserved ? velocity : maxVelocityObserved;
+          maxVelocityObserved = velocity > maxVelocityObserved
+              ? velocity
+              : maxVelocityObserved;
         }
       }
 
       // Velocity should not exceed reasonable orbital speeds
-      const maxReasonableVelocity = 8.0; // Adjusted based on our orbital calculations
+      const maxReasonableVelocity =
+          8.0; // Adjusted based on our orbital calculations
       expect(
         maxVelocityObserved,
         lessThan(maxReasonableVelocity),
-        reason: 'Star velocities exceeded reasonable bounds ($maxVelocityObserved), indicating potential ejection',
+        reason:
+            'Star velocities exceeded reasonable bounds ($maxVelocityObserved), indicating potential ejection',
       );
     });
 
@@ -110,8 +116,16 @@ void main() {
 
         // Black hole should be at index 0 and remain at origin
         final blackHole = simulation.bodies[0];
-        expect(blackHole.position.length, lessThan(0.01), reason: 'Black hole moved from galactic center');
-        expect(blackHole.velocity.length, lessThan(0.01), reason: 'Black hole has non-zero velocity');
+        expect(
+          blackHole.position.length,
+          lessThan(0.01),
+          reason: 'Black hole moved from galactic center',
+        );
+        expect(
+          blackHole.velocity.length,
+          lessThan(0.01),
+          reason: 'Black hole has non-zero velocity',
+        );
       }
     });
 
@@ -136,7 +150,8 @@ void main() {
         expect(
           initialVelocity,
           greaterThan(0.1),
-          reason: 'Star at distance $initialDistance has very low initial velocity ($initialVelocity)',
+          reason:
+              'Star at distance $initialDistance has very low initial velocity ($initialVelocity)',
         );
 
         final initialPosition = testStar.position.clone();
@@ -150,13 +165,18 @@ void main() {
 
         // For now, just check that displacement is reasonable (not zero, not excessive)
         // Stars in stable circular orbits may move slowly but steadily
-        expect(displacement, greaterThan(0.01), reason: 'Star is completely stationary');
+        expect(
+          displacement,
+          greaterThan(0.01),
+          reason: 'Star is completely stationary',
+        );
 
         // But not too much (indicating runaway motion)
         expect(
           displacement,
           lessThan(20.0),
-          reason: 'Star moved too far ($displacement), indicating potential ejection',
+          reason:
+              'Star moved too far ($displacement), indicating potential ejection',
         );
 
         // Star should still be roughly the same distance from center (stable orbit)

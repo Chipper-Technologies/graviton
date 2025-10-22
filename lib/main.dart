@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import 'config/flavor_config.dart';
 import 'enums/app_flavor.dart';
+import 'enums/firebase_event.dart';
 import 'l10n/app_localizations.dart';
 import 'screens/home_screen.dart';
 import 'services/firebase_service.dart';
@@ -17,13 +18,17 @@ import 'services/remote_config_service.dart';
 import 'services/version_service.dart';
 import 'state/app_state.dart';
 import 'theme/app_colors.dart';
+import 'theme/app_typography.dart';
 import 'widgets/dev_ribbon.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Detect flavor from dart-define or default to production
-  final flavorString = const String.fromEnvironment('environment', defaultValue: 'prod');
+  final flavorString = const String.fromEnvironment(
+    'environment',
+    defaultValue: 'prod',
+  );
   final flavor = AppFlavor.values.firstWhere(
     (f) => f.toString().split('.').last == flavorString,
     orElse: () => AppFlavor.prod,
@@ -80,7 +85,10 @@ class GravitonApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Log app start
-    FirebaseService.instance.logEvent('app_start', parameters: {'flavor': FlavorConfig.instance.flavor.name});
+    FirebaseService.instance.logEventWithEnum(
+      FirebaseEvent.appStart,
+      parameters: {'flavor': FlavorConfig.instance.flavor.name},
+    );
 
     return ChangeNotifierProvider.value(
       value: appState,
@@ -100,20 +108,32 @@ class GravitonApp extends StatelessWidget {
             supportedLocales: AppLocalizations.supportedLocales,
             locale: locale,
             navigatorObservers: FirebaseService.instance.analytics != null
-                ? [FirebaseAnalyticsObserver(analytics: FirebaseService.instance.analytics!)]
+                ? [
+                    FirebaseAnalyticsObserver(
+                      analytics: FirebaseService.instance.analytics!,
+                    ),
+                  ]
                 : [],
             theme: ThemeData.dark(useMaterial3: true).copyWith(
-              colorScheme: const ColorScheme.dark(primary: AppColors.primaryColor),
-              sliderTheme: const SliderThemeData(showValueIndicator: ShowValueIndicator.onDrag),
+              colorScheme: const ColorScheme.dark(
+                primary: AppColors.primaryColor,
+              ),
+              sliderTheme: const SliderThemeData(
+                showValueIndicator: ShowValueIndicator.onDrag,
+              ),
               segmentedButtonTheme: SegmentedButtonThemeData(
                 style: ButtonStyle(
-                  foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+                  foregroundColor: WidgetStateProperty.resolveWith<Color>((
+                    states,
+                  ) {
                     if (states.contains(WidgetState.selected)) {
                       return AppColors.uiWhite;
                     }
                     return AppColors.primaryColor;
                   }),
-                  backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+                  backgroundColor: WidgetStateProperty.resolveWith<Color>((
+                    states,
+                  ) {
                     if (states.contains(WidgetState.selected)) {
                       return AppColors.primaryColor;
                     }
@@ -122,19 +142,34 @@ class GravitonApp extends StatelessWidget {
                 ),
               ),
               snackBarTheme: SnackBarThemeData(
-                backgroundColor: AppColors.spaceDeepBlueBlack.withValues(alpha: 0.95),
-                contentTextStyle: const TextStyle(color: AppColors.uiWhite, fontSize: 14, fontWeight: FontWeight.w500),
+                backgroundColor: AppColors.spaceDeepBlueBlack.withValues(
+                  alpha: AppTypography.opacityNearlyOpaque,
+                ),
+                contentTextStyle: const TextStyle(
+                  color: AppColors.uiWhite,
+                  fontSize: AppTypography.fontSizeMedium,
+                  fontWeight: FontWeight.w500,
+                ),
                 actionTextColor: AppColors.primaryColor,
                 actionOverflowThreshold: 0.25,
-                disabledActionTextColor: AppColors.primaryColor.withValues(alpha: 0.5),
+                disabledActionTextColor: AppColors.primaryColor.withValues(
+                  alpha: AppTypography.opacityMedium,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(color: AppColors.primaryColor.withValues(alpha: 0.4), width: 1),
+                  side: BorderSide(
+                    color: AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacitySemiTransparent,
+                    ),
+                    width: 1,
+                  ),
                 ),
                 behavior: SnackBarBehavior.floating,
                 elevation: 12,
                 showCloseIcon: false,
-                closeIconColor: AppColors.uiWhite.withValues(alpha: 0.7),
+                closeIconColor: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityHigh,
+                ),
               ),
             ),
             home: const DevRibbon(child: HomeScreen()),

@@ -6,7 +6,9 @@ import 'package:graviton/models/screenshot_presets.dart';
 
 void main() {
   group('ScreenshotPresets Tests', () {
-    testWidgets('Should have all 12 predefined presets', (WidgetTester tester) async {
+    testWidgets('Should have all 12 predefined presets', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -23,7 +25,9 @@ void main() {
       );
     });
 
-    testWidgets('Should use ScenarioType enum values', (WidgetTester tester) async {
+    testWidgets('Should use ScenarioType enum values', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -56,27 +60,60 @@ void main() {
 
     test('ScenarioType enum should have string conversion methods', () {
       // Test stringValue method
-      expect(ScenarioType.galaxyFormation.stringValue, equals('galaxy_formation'));
+      expect(
+        ScenarioType.galaxyFormation.stringValue,
+        equals('galaxy_formation'),
+      );
       expect(ScenarioType.solarSystem.stringValue, equals('solar_system'));
       expect(ScenarioType.earthMoonSun.stringValue, equals('earth_moon_sun'));
       expect(ScenarioType.binaryStars.stringValue, equals('binary_star'));
       expect(ScenarioType.asteroidBelt.stringValue, equals('asteroid_belt'));
-      expect(ScenarioType.threeBodyClassic.stringValue, equals('three_body_classic'));
+      expect(
+        ScenarioType.threeBodyClassic.stringValue,
+        equals('three_body_classic'),
+      );
       expect(ScenarioType.collisionDemo.stringValue, equals('collision_demo'));
       expect(ScenarioType.deepSpace.stringValue, equals('deep_space'));
 
       // Test fromString method
-      expect(ScenarioType.fromString('galaxy_formation'), equals(ScenarioType.galaxyFormation));
-      expect(ScenarioType.fromString('solar_system'), equals(ScenarioType.solarSystem));
-      expect(ScenarioType.fromString('earth_moon_sun'), equals(ScenarioType.earthMoonSun));
-      expect(ScenarioType.fromString('binary_star'), equals(ScenarioType.binaryStars));
-      expect(ScenarioType.fromString('asteroid_belt'), equals(ScenarioType.asteroidBelt));
-      expect(ScenarioType.fromString('three_body_classic'), equals(ScenarioType.threeBodyClassic));
-      expect(ScenarioType.fromString('collision_demo'), equals(ScenarioType.collisionDemo));
-      expect(ScenarioType.fromString('deep_space'), equals(ScenarioType.deepSpace));
+      expect(
+        ScenarioType.fromString('galaxy_formation'),
+        equals(ScenarioType.galaxyFormation),
+      );
+      expect(
+        ScenarioType.fromString('solar_system'),
+        equals(ScenarioType.solarSystem),
+      );
+      expect(
+        ScenarioType.fromString('earth_moon_sun'),
+        equals(ScenarioType.earthMoonSun),
+      );
+      expect(
+        ScenarioType.fromString('binary_star'),
+        equals(ScenarioType.binaryStars),
+      );
+      expect(
+        ScenarioType.fromString('asteroid_belt'),
+        equals(ScenarioType.asteroidBelt),
+      );
+      expect(
+        ScenarioType.fromString('three_body_classic'),
+        equals(ScenarioType.threeBodyClassic),
+      );
+      expect(
+        ScenarioType.fromString('collision_demo'),
+        equals(ScenarioType.collisionDemo),
+      );
+      expect(
+        ScenarioType.fromString('deep_space'),
+        equals(ScenarioType.deepSpace),
+      );
 
       // Test error case
-      expect(() => ScenarioType.fromString('invalid_scenario'), throwsArgumentError);
+      expect(
+        () => ScenarioType.fromString('invalid_scenario'),
+        throwsArgumentError,
+      );
     });
   });
 }

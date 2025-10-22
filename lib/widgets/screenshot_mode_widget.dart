@@ -3,6 +3,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:provider/provider.dart';
 
 /// Widget for controlling screenshot mode
@@ -54,7 +55,8 @@ class ScreenshotModeWidget extends StatelessWidget {
                       title: Text(l10n.hideUIInScreenshotMode),
                       subtitle: Text(l10n.hideUIInScreenshotModeSubtitle),
                       value: appState.ui.hideUIInScreenshotMode,
-                      onChanged: (v) => appState.ui.toggleHideUIInScreenshotMode(),
+                      onChanged: (v) =>
+                          appState.ui.toggleHideUIInScreenshotMode(),
                       secondary: const Icon(Icons.visibility_off),
                     ),
                   ),
@@ -68,7 +70,10 @@ class ScreenshotModeWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(l10n.scenePreset, style: Theme.of(context).textTheme.titleSmall),
+                        Text(
+                          l10n.scenePreset,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
                         const SizedBox(height: 8),
                         Container(
                           width: double.infinity,
@@ -86,18 +91,37 @@ class ScreenshotModeWidget extends StatelessWidget {
                                 (index) => DropdownMenuItem<int>(
                                   value: index,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
-                                        screenshotService.getPresetDisplayName(index, l10n),
-                                        style: Theme.of(context).textTheme.bodyMedium,
+                                        screenshotService.getPresetDisplayName(
+                                          index,
+                                          l10n,
+                                        ),
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodyMedium,
                                       ),
                                       Text(
-                                        screenshotService.getPresetDescription(index, l10n),
-                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
+                                        screenshotService.getPresetDescription(
+                                          index,
+                                          l10n,
                                         ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall
+                                                  ?.color
+                                                  ?.withValues(
+                                                    alpha: AppTypography
+                                                        .opacityHigh,
+                                                  ),
+                                            ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
@@ -119,7 +143,8 @@ class ScreenshotModeWidget extends StatelessWidget {
                           children: [
                             // Previous button
                             IconButton(
-                              onPressed: () => screenshotService.previousPreset(),
+                              onPressed: () =>
+                                  screenshotService.previousPreset(),
                               icon: const Icon(Icons.arrow_back_ios),
                               tooltip: l10n.previousPreset,
                             ),
@@ -134,27 +159,34 @@ class ScreenshotModeWidget extends StatelessWidget {
                                     cameraState: appState.camera,
                                     uiState: appState.ui,
                                   );
-                                  Navigator.of(context).pop(); // Close settings dialog
+                                  Navigator.of(
+                                    context,
+                                  ).pop(); // Close settings dialog
 
                                   // Show a snackbar to inform user
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
                                         l10n.appliedPreset(
-                                          screenshotService.getPresetDisplayName(
-                                            screenshotService.currentPresetIndex,
-                                            l10n,
-                                          ),
+                                          screenshotService
+                                              .getPresetDisplayName(
+                                                screenshotService
+                                                    .currentPresetIndex,
+                                                l10n,
+                                              ),
                                         ),
                                       ),
                                       duration: const Duration(seconds: 3),
                                       action: SnackBarAction(
                                         label: l10n.deactivate,
                                         onPressed: () {
-                                          screenshotService.deactivate(uiState: appState.ui);
+                                          screenshotService.deactivate(
+                                            uiState: appState.ui,
+                                          );
                                           // Resume simulation when deactivating
                                           if (appState.simulation.isPaused) {
-                                            appState.simulation.pause(); // Toggle pause to resume
+                                            appState.simulation
+                                                .pause(); // Toggle pause to resume
                                           }
                                         },
                                       ),
@@ -164,8 +196,12 @@ class ScreenshotModeWidget extends StatelessWidget {
                                 icon: const Icon(Icons.camera),
                                 label: Text(l10n.applyScene),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(context).colorScheme.primary,
-                                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primary,
+                                  foregroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
                                 ),
                               ),
                             ),
@@ -185,7 +221,9 @@ class ScreenshotModeWidget extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primaryContainer,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primaryContainer,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(
@@ -193,15 +231,20 @@ class ScreenshotModeWidget extends StatelessWidget {
                                 Icon(
                                   Icons.camera_alt,
                                   size: 16,
-                                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimaryContainer,
                                 ),
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
                                     l10n.sceneActive,
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                                    ),
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimaryContainer,
+                                        ),
                                   ),
                                 ),
                               ],

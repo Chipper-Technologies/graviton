@@ -4,6 +4,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/painters/graviton_painter.dart';
 import 'package:graviton/services/firebase_service.dart';
@@ -33,7 +35,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final Ticker _ticker;
   Offset? _lastPan;
   late final List<StarData> _stars = StarGenerator.generateStars(
@@ -87,7 +90,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     final appState = Provider.of<AppState>(context, listen: false);
     // Calculate deltaTime, but clamp it to prevent huge jumps after reset
     double deltaTime = (elapsed - _lastElapsed).inMicroseconds / 1000000.0;
-    deltaTime = deltaTime.clamp(0.0, 1.0 / 30.0); // Max 30 FPS worth of time per frame
+    deltaTime = deltaTime.clamp(
+      0.0,
+      1.0 / 30.0,
+    ); // Max 30 FPS worth of time per frame
     _lastElapsed = elapsed;
 
     // Update simulation
@@ -105,16 +111,29 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     }
   }
 
-  void _handleTapWithDelay(BuildContext context, AppState appState, Size size, AppLocalizations l10n) {
+  void _handleTapWithDelay(
+    BuildContext context,
+    AppState appState,
+    Size size,
+    AppLocalizations l10n,
+  ) {
     // Use Timer instead of Future.delayed to avoid async context issues
     Timer(const Duration(milliseconds: 50), () {
       if (!_hasMoved && mounted) {
-        FirebaseService.instance.logUIEvent('tap', element: 'simulation_viewport');
+        FirebaseService.instance.logUIEventWithEnums(
+          UIAction.tap,
+          element: UIElement.simulationViewport,
+        );
 
         // Check if screenshot mode is active and show navigation controls
         final screenshotService = ScreenshotModeService();
         if (screenshotService.isActive) {
-          _showScreenshotNavigationControls(context, appState, screenshotService, l10n);
+          _showScreenshotNavigationControls(
+            context,
+            appState,
+            screenshotService,
+            l10n,
+          );
         } else {
           _selectObjectAtTapLocation(appState, size);
         }
@@ -186,7 +205,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   void _showScenarioSelection(BuildContext context) {
     final appState = Provider.of<AppState>(context, listen: false);
-    FirebaseService.instance.logUIEvent('dialog_opened', element: 'scenario_selection');
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.dialogOpened,
+      element: UIElement.scenarioSelection,
+    );
 
     showDialog<void>(
       context: context,
@@ -194,18 +216,31 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         currentScenario: appState.simulation.simulation.currentScenario,
         onScenarioSelected: (scenario) {
           final l10n = AppLocalizations.of(context)!;
-          FirebaseService.instance.logUIEvent('scenario_selected', element: 'scenario_dialog', value: scenario.name);
+          FirebaseService.instance.logUIEventWithEnums(
+            UIAction.scenarioSelected,
+            element: UIElement.scenarioDialog,
+            value: scenario.name,
+          );
           appState.simulation.resetWithScenario(scenario, l10n: l10n);
           // Auto-zoom camera to fit the new scenario
-          appState.camera.resetViewForScenario(scenario, appState.simulation.bodies);
+          appState.camera.resetViewForScenario(
+            scenario,
+            appState.simulation.bodies,
+          );
         },
       ),
     );
   }
 
   void _showSettings(BuildContext context) {
-    FirebaseService.instance.logUIEvent('dialog_opened', element: 'settings');
-    showDialog<void>(context: context, builder: (context) => const SettingsDialog());
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.dialogOpened,
+      element: UIElement.settings,
+    );
+    showDialog<void>(
+      context: context,
+      builder: (context) => const SettingsDialog(),
+    );
   }
 
   @override
@@ -224,7 +259,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           }
         });
 
-        final shouldHideUI = _screenshotModeService.isActive && appState.ui.hideUIInScreenshotMode;
+        final shouldHideUI =
+            _screenshotModeService.isActive &&
+            appState.ui.hideUIInScreenshotMode;
 
         return Scaffold(
           appBar: shouldHideUI
@@ -240,7 +277,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryFaint),
+                            color: AppColors.uiWhite.withValues(
+                              alpha: AppTypography.opacityVeryFaint,
+                            ),
                             width: 1.5,
                           ),
                           image: const DecorationImage(
@@ -252,7 +291,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       Text(l10n.appTitle),
                     ],
                   ),
-                  backgroundColor: AppColors.uiBlack.withValues(alpha: AppTypography.opacityMedium),
+                  backgroundColor: AppColors.uiBlack.withValues(
+                    alpha: AppTypography.opacityMedium,
+                  ),
                   actions: [
                     IconButton(
                       tooltip: l10n.settingsTooltip,
@@ -265,24 +306,32 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       icon: const Icon(Icons.science),
                     ),
                     IconButton(
-                      tooltip: appState.simulation.isPaused ? l10n.playButton : l10n.pauseButton,
+                      tooltip: appState.simulation.isPaused
+                          ? l10n.playButton
+                          : l10n.pauseButton,
                       onPressed: () {
-                        final action = appState.simulation.isPaused ? 'play' : 'pause';
-                        FirebaseService.instance.logUIEvent(
-                          'button_pressed',
-                          element: 'simulation_control',
+                        final action = appState.simulation.isPaused
+                            ? 'play'
+                            : 'pause';
+                        FirebaseService.instance.logUIEventWithEnums(
+                          UIAction.buttonPressed,
+                          element: UIElement.simulationControl,
                           value: action,
                         );
                         appState.simulation.pause();
                       },
-                      icon: Icon(appState.simulation.isPaused ? Icons.play_arrow : Icons.pause),
+                      icon: Icon(
+                        appState.simulation.isPaused
+                            ? Icons.play_arrow
+                            : Icons.pause,
+                      ),
                     ),
                     IconButton(
                       tooltip: l10n.resetButton,
                       onPressed: () {
-                        FirebaseService.instance.logUIEvent(
-                          'button_pressed',
-                          element: 'simulation_control',
+                        FirebaseService.instance.logUIEventWithEnums(
+                          UIAction.buttonPressed,
+                          element: UIElement.simulationControl,
                           value: 'reset',
                         );
 
@@ -318,15 +367,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   // Don't clear selection on drag start - let user drag selected objects
 
                   if (d.pointerCount >= 2) {
-                    FirebaseService.instance.logUIEvent(
-                      'gesture_start',
-                      element: 'camera_controls',
+                    FirebaseService.instance.logUIEventWithEnums(
+                      UIAction.gestureStart,
+                      element: UIElement.cameraControls,
                       value: 'multi_touch',
                     );
                   } else {
-                    FirebaseService.instance.logUIEvent(
-                      'gesture_start',
-                      element: 'camera_controls',
+                    FirebaseService.instance.logUIEventWithEnums(
+                      UIAction.gestureStart,
+                      element: UIElement.cameraControls,
                       value: 'single_touch',
                     );
                   }
@@ -348,11 +397,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   if (d.pointerCount >= 2) {
                     // Handle two-finger gestures: zoom and roll
                     final dz = (1 - d.scale) * 0.1;
-                    appState.camera.zoomTowardBody(dz, appState.simulation.bodies);
+                    appState.camera.zoomTowardBody(
+                      dz,
+                      appState.simulation.bodies,
+                    );
 
                     // Handle roll rotation
                     if (_lastTwoFingerRotation != null) {
-                      final deltaRotation = d.rotation - _lastTwoFingerRotation!;
+                      final deltaRotation =
+                          d.rotation - _lastTwoFingerRotation!;
                       appState.camera.rotateRoll(deltaRotation);
                     }
                     _lastTwoFingerRotation = d.rotation;
@@ -388,7 +441,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         showOrbitalPaths: appState.ui.showOrbitalPaths,
                         dualOrbitalPaths: appState.ui.dualOrbitalPaths,
                         showHabitableZones: appState.ui.showHabitableZones,
-                        showHabitabilityIndicators: appState.ui.showHabitabilityIndicators,
+                        showHabitabilityIndicators:
+                            appState.ui.showHabitabilityIndicators,
                         showGravityWells: appState.ui.showGravityWells,
                         selectedBodyIndex: appState.camera.selectedBody,
                         followMode: appState.camera.followMode,
@@ -413,7 +467,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         selectedBodyIndex: appState.camera.selectedBody,
                       ),
                     if (appState.ui.showStats) StatsOverlay(appState: appState),
-                    ScreenshotCountdown(screenshotService: _screenshotModeService),
+                    ScreenshotCountdown(
+                      screenshotService: _screenshotModeService,
+                    ),
                     if (!shouldHideUI) const CopyrightText(),
                   ],
                 ),
@@ -456,13 +512,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         left: 16,
         right: 16,
         child: Material(
-          color: Colors.transparent,
+          color: AppColors.transparentColor,
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(8),
               boxShadow: [
-                BoxShadow(color: Colors.black.withValues(alpha: 0.2), blurRadius: 8, offset: const Offset(0, 2)),
+                BoxShadow(
+                  color: AppColors.uiBlack.withValues(
+                    alpha: AppTypography.opacityFaint,
+                  ),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
               ],
             ),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -489,7 +551,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 // Current preset info
                 Expanded(
                   child: Text(
-                    screenshotService.getPresetDisplayName(screenshotService.currentPresetIndex, l10n),
+                    screenshotService.getPresetDisplayName(
+                      screenshotService.currentPresetIndex,
+                      l10n,
+                    ),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
@@ -527,7 +592,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          l10n.appliedPreset(screenshotService.getPresetDisplayName(screenshotService.currentPresetIndex, l10n)),
+          l10n.appliedPreset(
+            screenshotService.getPresetDisplayName(
+              screenshotService.currentPresetIndex,
+              l10n,
+            ),
+          ),
         ),
         duration: const Duration(seconds: 3),
         action: SnackBarAction(
@@ -544,7 +614,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
             // Deactivate screenshot mode and ensure simulation is unpaused
-            screenshotService.deactivate(uiState: appState.ui, simulationState: appState.simulation);
+            screenshotService.deactivate(
+              uiState: appState.ui,
+              simulationState: appState.simulation,
+            );
           },
         ),
       ),

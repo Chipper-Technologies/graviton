@@ -17,13 +17,17 @@ class AsteroidBeltSystem {
     required int particleCount,
     required double centralMass,
     double gravitationalConstant = 1.2,
-    Color baseColor = AppColors.asteroidBrownish, // Default brownish asteroid color
+    Color baseColor =
+        AppColors.asteroidBrownish, // Default brownish asteroid color
     double colorVariation = 0.3, // How much color can vary (0.0 to 1.0)
-    bool useXZPlane = false, // true for solar system (XZ), false for asteroid belt scenario (XY)
+    bool useXZPlane =
+        false, // true for solar system (XZ), false for asteroid belt scenario (XY)
     double minSize = 0.04, // Minimum particle size
     double maxSize = 0.16, // Maximum particle size
-    double maxInclination = 0.15, // Maximum inclination in radians (default ±4.3°)
-    double radialDistribution = 1.0, // 1.0 = even, >1.0 = more packed toward inner edge
+    double maxInclination =
+        0.15, // Maximum inclination in radians (default ±4.3°)
+    double radialDistribution =
+        1.0, // 1.0 = even, >1.0 = more packed toward inner edge
   }) {
     _particles.clear();
 
@@ -32,7 +36,11 @@ class AsteroidBeltSystem {
       final t = _random.nextDouble();
       final radius =
           innerRadius +
-          (outerRadius - innerRadius) * math.pow(t, 1.0 / radialDistribution); // Configurable distribution
+          (outerRadius - innerRadius) *
+              math.pow(
+                t,
+                1.0 / radialDistribution,
+              ); // Configurable distribution
 
       // Random starting angle
       final phase = _random.nextDouble() * 2 * math.pi;
@@ -42,26 +50,40 @@ class AsteroidBeltSystem {
 
       // Add some speed variation for elliptical orbits and slow it down significantly
       final speedVariation = 0.9 + _random.nextDouble() * 0.2; // ±10% variation
-      var finalSpeed = speed * speedVariation * 0.02; // Much much slower - 2% of calculated speed
+      var finalSpeed =
+          speed *
+          speedVariation *
+          0.02; // Much much slower - 2% of calculated speed
 
       // Fix rotation direction for solar system (XZ plane) to match planetary motion
       if (useXZPlane) {
-        finalSpeed = -finalSpeed; // Negative for counterclockwise rotation in XZ plane
+        finalSpeed =
+            -finalSpeed; // Negative for counterclockwise rotation in XZ plane
       }
 
       // Configurable inclination for different scenarios
-      final inclination = (_random.nextDouble() - 0.5) * maxInclination; // Configurable inclination range
+      final inclination =
+          (_random.nextDouble() - 0.5) *
+          maxInclination; // Configurable inclination range
 
       // Random asteroid appearance - customizable particle sizes
       final size = minSize + _random.nextDouble() * (maxSize - minSize);
 
       // Generate color based on base color with variation
-      final brightness = 0.7 + _random.nextDouble() * 0.3; // 70% to 100% brightness
-      final variation = (_random.nextDouble() - 0.5) * colorVariation; // ±variation amount
+      final brightness =
+          0.7 + _random.nextDouble() * 0.3; // 70% to 100% brightness
+      final variation =
+          (_random.nextDouble() - 0.5) * colorVariation; // ±variation amount
 
-      final red = ((baseColor.r + variation) * brightness * 255).clamp(0, 255).round();
-      final green = ((baseColor.g + variation) * brightness * 255).clamp(0, 255).round();
-      final blue = ((baseColor.b + variation) * brightness * 255).clamp(0, 255).round();
+      final red = ((baseColor.r + variation) * brightness * 255)
+          .clamp(0, 255)
+          .round();
+      final green = ((baseColor.g + variation) * brightness * 255)
+          .clamp(0, 255)
+          .round();
+      final blue = ((baseColor.b + variation) * brightness * 255)
+          .clamp(0, 255)
+          .round();
 
       final color = Color.fromARGB(255, red, green, blue);
 

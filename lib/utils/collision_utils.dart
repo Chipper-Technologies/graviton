@@ -19,7 +19,8 @@ class CollisionUtils {
   /// Calculate collision radius between two bodies
   static double _calculateCollisionRadius(Body body1, Body body2) {
     // Ultra-small collision radius - bodies almost never collide
-    return (body1.radius + body2.radius) * SimulationConstants.collisionRadiusMultiplier;
+    return (body1.radius + body2.radius) *
+        SimulationConstants.collisionRadiusMultiplier;
   }
 
   /// Calculate collision distance between two bodies
@@ -38,13 +39,16 @@ class CollisionUtils {
     final newVelocity = totalMomentum / totalMass;
 
     // Center of mass position
-    final newPosition = (body1.position * body1.mass + body2.position * body2.mass) / totalMass;
+    final newPosition =
+        (body1.position * body1.mass + body2.position * body2.mass) / totalMass;
 
     // Combined radius (volume conservation: V = (4/3)πr³)
     final volume1 = (4.0 / 3.0) * math.pi * math.pow(body1.radius, 3);
     final volume2 = (4.0 / 3.0) * math.pi * math.pow(body2.radius, 3);
     final totalVolume = volume1 + volume2;
-    final newRadius = math.pow(totalVolume / ((4.0 / 3.0) * math.pi), 1.0 / 3.0).toDouble();
+    final newRadius = math
+        .pow(totalVolume / ((4.0 / 3.0) * math.pi), 1.0 / 3.0)
+        .toDouble();
 
     // Choose color based on more massive body
     final newColor = body1.mass >= body2.mass ? body1.color : body2.color;
@@ -77,7 +81,9 @@ class CollisionUtils {
   /// Create merge flash effect at collision point
   static MergeFlash createMergeFlash(Body body1, Body body2) {
     // Flash position at center of mass
-    final flashPosition = (body1.position * body1.mass + body2.position * body2.mass) / (body1.mass + body2.mass);
+    final flashPosition =
+        (body1.position * body1.mass + body2.position * body2.mass) /
+        (body1.mass + body2.mass);
 
     // Flash color based on more massive body
     final flashColor = body1.mass >= body2.mass ? body1.color : body2.color;
@@ -123,13 +129,15 @@ class CollisionUtils {
     if (relativeVelocity.length < 1e-10) return null;
 
     // Project relative position onto relative velocity
-    final projectedDistance = -relativePosition.dot(relativeVelocity) / relativeVelocity.length2;
+    final projectedDistance =
+        -relativePosition.dot(relativeVelocity) / relativeVelocity.length2;
 
     // If projection is negative, bodies are moving away from each other
     if (projectedDistance < 0) return null;
 
     // Calculate closest approach point
-    final closestApproachPosition = relativePosition + relativeVelocity * projectedDistance;
+    final closestApproachPosition =
+        relativePosition + relativeVelocity * projectedDistance;
     final closestApproachDistance = closestApproachPosition.length;
 
     // Check if closest approach is within collision radius
@@ -159,13 +167,19 @@ class CollisionUtils {
   }
 
   /// Calculate elastic collision velocities (rarely used in gravity simulation)
-  static Map<String, vm.Vector3> calculateElasticCollision(Body body1, Body body2) {
+  static Map<String, vm.Vector3> calculateElasticCollision(
+    Body body1,
+    Body body2,
+  ) {
     final mass1 = body1.mass;
     final mass2 = body2.mass;
     final totalMass = mass1 + mass2;
 
     if (totalMass <= 0) {
-      return {'velocity1': body1.velocity.clone(), 'velocity2': body2.velocity.clone()};
+      return {
+        'velocity1': body1.velocity.clone(),
+        'velocity2': body2.velocity.clone(),
+      };
     }
 
     final normal = calculateCollisionNormal(body1, body2);
@@ -176,7 +190,10 @@ class CollisionUtils {
 
     // If velocities are separating, no collision response needed
     if (velocityAlongNormal > 0) {
-      return {'velocity1': body1.velocity.clone(), 'velocity2': body2.velocity.clone()};
+      return {
+        'velocity1': body1.velocity.clone(),
+        'velocity2': body2.velocity.clone(),
+      };
     }
 
     // Calculate collision impulse
@@ -190,9 +207,14 @@ class CollisionUtils {
   }
 
   /// Calculate kinetic energy lost in collision
-  static double calculateEnergyLoss(Body body1Before, Body body2Before, Body mergedBody) {
+  static double calculateEnergyLoss(
+    Body body1Before,
+    Body body2Before,
+    Body mergedBody,
+  ) {
     final kineticBefore =
-        0.5 * body1Before.mass * body1Before.velocity.length2 + 0.5 * body2Before.mass * body2Before.velocity.length2;
+        0.5 * body1Before.mass * body1Before.velocity.length2 +
+        0.5 * body2Before.mass * body2Before.velocity.length2;
 
     final kineticAfter = 0.5 * mergedBody.mass * mergedBody.velocity.length2;
     return kineticBefore - kineticAfter;
@@ -206,9 +228,16 @@ class CollisionUtils {
     final relativeSpeed = (body2.velocity - body1.velocity).length;
 
     final kineticEnergy =
-        0.5 * CollisionUtils.calculateReducedMass(body1.mass, body2.mass) * relativeSpeed * relativeSpeed;
+        0.5 *
+        CollisionUtils.calculateReducedMass(body1.mass, body2.mass) *
+        relativeSpeed *
+        relativeSpeed;
 
-    final potentialEnergy = SimulationConstants.gravitationalConstant * body1.mass * body2.mass / distance;
+    final potentialEnergy =
+        SimulationConstants.gravitationalConstant *
+        body1.mass *
+        body2.mass /
+        distance;
 
     // Collision is favorable if kinetic energy is comparable to potential energy
     return kineticEnergy >= 0.1 * potentialEnergy;

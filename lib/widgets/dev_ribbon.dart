@@ -30,7 +30,11 @@ class DevRibbon extends StatelessWidget {
           message: 'DEV',
           location: BannerLocation.topEnd,
           color: AppColors.testRed,
-          shadow: const BoxShadow(color: AppColors.uiBlack, blurRadius: 4, offset: Offset(2, 2)),
+          shadow: const BoxShadow(
+            color: AppColors.uiBlack,
+            blurRadius: 4,
+            offset: Offset(2, 2),
+          ),
           textStyle: const TextStyle(
             color: AppColors.uiWhite,
             fontSize: AppTypography.fontSizeSmall,

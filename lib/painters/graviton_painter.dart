@@ -74,10 +74,24 @@ class GravitonPainter extends CustomPainter {
     TrailPainter.drawTrails(canvas, size, vp, sim, showTrails, useWarmTrails);
 
     // Draw orbital paths (predictive paths showing where bodies will go)
-    OrbitalPathPainter.drawOrbitalPaths(canvas, size, vp, sim, showOrbitalPaths, dualMode: dualOrbitalPaths);
+    OrbitalPathPainter.drawOrbitalPaths(
+      canvas,
+      size,
+      vp,
+      sim,
+      showOrbitalPaths,
+      dualMode: dualOrbitalPaths,
+    );
 
     // Draw habitable zones (before bodies so they appear as background elements)
-    HabitabilityPainter.drawHabitableZones(canvas, size, vp, view, sim, showHabitableZones);
+    HabitabilityPainter.drawHabitableZones(
+      canvas,
+      size,
+      vp,
+      view,
+      sim,
+      showHabitableZones,
+    );
 
     // Draw gravity wells (before bodies as background elements)
     GravityPainter.drawGravityWells(canvas, size, vp, sim, showGravityWells);
@@ -85,17 +99,47 @@ class GravitonPainter extends CustomPainter {
     // Draw asteroid belt particles (before bodies but after background elements)
     if (sim.currentScenario == ScenarioType.asteroidBelt) {
       // Original asteroid belt scenario
-      AsteroidBeltPainter.drawAsteroidBelt(canvas, size, vp, sim.asteroidBelt, true);
+      AsteroidBeltPainter.drawAsteroidBelt(
+        canvas,
+        size,
+        vp,
+        sim.asteroidBelt,
+        true,
+      );
     } else if (sim.currentScenario == ScenarioType.solarSystem) {
       // Solar system with both belts
-      AsteroidBeltPainter.drawAsteroidBelt(canvas, size, vp, sim.asteroidBelt, true); // Main asteroid belt
-      AsteroidBeltPainter.drawAsteroidBelt(canvas, size, vp, sim.kuiperBelt, true); // Kuiper belt
+      AsteroidBeltPainter.drawAsteroidBelt(
+        canvas,
+        size,
+        vp,
+        sim.asteroidBelt,
+        true,
+      ); // Main asteroid belt
+      AsteroidBeltPainter.drawAsteroidBelt(
+        canvas,
+        size,
+        vp,
+        sim.kuiperBelt,
+        true,
+      ); // Kuiper belt
     } else if (sim.currentScenario == ScenarioType.galaxyFormation) {
       // Galaxy formation with proper 3D galactic glow
       _drawGalactic3DGlow(canvas, size, vp, sim);
 
-      AsteroidBeltPainter.drawAsteroidBelt(canvas, size, vp, sim.asteroidBelt, true); // Galactic disk
-      AsteroidBeltPainter.drawAsteroidBelt(canvas, size, vp, sim.kuiperBelt, true); // Galactic halo
+      AsteroidBeltPainter.drawAsteroidBelt(
+        canvas,
+        size,
+        vp,
+        sim.asteroidBelt,
+        true,
+      ); // Galactic disk
+      AsteroidBeltPainter.drawAsteroidBelt(
+        canvas,
+        size,
+        vp,
+        sim.kuiperBelt,
+        true,
+      ); // Galactic halo
     }
 
     // Bodies (sorted back-to-front by eye-space z)
@@ -111,19 +155,26 @@ class GravitonPainter extends CustomPainter {
       final p = PainterUtils.project(vp, b.position, size);
       if (p == null) continue;
 
-      final eyeSpace = (view * vm.Vector4(b.position.x, b.position.y, b.position.z, 1));
-      final dist = (-eyeSpace.z).abs().clamp(RenderingConstants.distanceClampMin, RenderingConstants.distanceClampMax);
-      final pr = (b.radius * RenderingConstants.bodySizeMultiplier / dist).clamp(
-        RenderingConstants.bodyMinSize,
-        RenderingConstants.bodyMaxSize,
+      final eyeSpace =
+          (view * vm.Vector4(b.position.x, b.position.y, b.position.z, 1));
+      final dist = (-eyeSpace.z).abs().clamp(
+        RenderingConstants.distanceClampMin,
+        RenderingConstants.distanceClampMax,
       );
+      final pr = (b.radius * RenderingConstants.bodySizeMultiplier / dist)
+          .clamp(
+            RenderingConstants.bodyMinSize,
+            RenderingConstants.bodyMaxSize,
+          );
 
       // Special visibility handling for black holes in solar system simulation
       double opacity = 1.0;
       bool shouldRenderBody = true;
 
       // Check if this is a black hole in any scenario that should have distance-based visibility
-      if ((b.name.contains('Black Hole') || b.name == 'Black Hole' || b.name == 'Supermassive Black Hole')) {
+      if ((b.name.contains('Black Hole') ||
+          b.name == 'Black Hole' ||
+          b.name == 'Supermassive Black Hole')) {
         // Black hole visibility based on actual camera zoom level (cameraDistance)
         // Hide completely when camera distance > 550, start easing in from 550 down to 285
         const double hideDistance = 550.0;
@@ -133,7 +184,9 @@ class GravitonPainter extends CustomPainter {
           shouldRenderBody = false;
         } else if (cameraDistance > fullVisibleDistance) {
           // Calculate opacity for smooth fade-in as we zoom closer (lower camera distance)
-          final fadeRatio = (hideDistance - cameraDistance) / (hideDistance - fullVisibleDistance);
+          final fadeRatio =
+              (hideDistance - cameraDistance) /
+              (hideDistance - fullVisibleDistance);
           opacity = (fadeRatio * fadeRatio * fadeRatio).clamp(
             0.0,
             1.0,
@@ -147,11 +200,25 @@ class GravitonPainter extends CustomPainter {
 
       if (shouldRenderBody) {
         // Render the celestial body using the specialized painter with calculated opacity
-        CelestialBodyPainter.drawBody(canvas, p, pr, b, viewMatrix: vp, canvasSize: size, opacity: opacity);
+        CelestialBodyPainter.drawBody(
+          canvas,
+          p,
+          pr,
+          b,
+          viewMatrix: vp,
+          canvasSize: size,
+          opacity: opacity,
+        );
       }
 
       // Draw habitability indicator for planets
-      HabitabilityPainter.drawHabitabilityIndicator(canvas, p, pr, b, showHabitabilityIndicators);
+      HabitabilityPainter.drawHabitabilityIndicator(
+        canvas,
+        p,
+        pr,
+        b,
+        showHabitabilityIndicators,
+      );
 
       // Draw selection/follow indicator
       if (selectedBodyIndex != null && selectedBodyIndex == i) {
@@ -178,13 +245,23 @@ class GravitonPainter extends CustomPainter {
     if (galacticCenter == null) return;
 
     // Project the galactic center position to screen coordinates
-    final centerScreen = PainterUtils.project(vp, galacticCenter.position, size);
+    final centerScreen = PainterUtils.project(
+      vp,
+      galacticCenter.position,
+      size,
+    );
     if (centerScreen == null) return; // Behind camera or outside view
 
     // Calculate distance for scaling
     final view = vp;
     final eyeSpace =
-        (view * vm.Vector4(galacticCenter.position.x, galacticCenter.position.y, galacticCenter.position.z, 1));
+        (view *
+        vm.Vector4(
+          galacticCenter.position.x,
+          galacticCenter.position.y,
+          galacticCenter.position.z,
+          1,
+        ));
 
     final distance = (-eyeSpace.z).abs().clamp(
       RenderingConstants.distanceClampMin,
@@ -192,11 +269,22 @@ class GravitonPainter extends CustomPainter {
     );
 
     // Draw the photon ring on top of everything
-    _drawPhotonRing(canvas, centerScreen, 0.0, distance, cameraDistance); // glowRadius not needed anymore
+    _drawPhotonRing(
+      canvas,
+      centerScreen,
+      0.0,
+      distance,
+      cameraDistance,
+    ); // glowRadius not needed anymore
   }
 
   /// Draw selection indicator around selected/followed body
-  static void _drawSelectionIndicator(Canvas canvas, Offset center, double bodyRadius, bool isFollowMode) {
+  static void _drawSelectionIndicator(
+    Canvas canvas,
+    Offset center,
+    double bodyRadius,
+    bool isFollowMode,
+  ) {
     final selectionRadius = bodyRadius * 2.5;
 
     if (isFollowMode) {
@@ -212,7 +300,9 @@ class GravitonPainter extends CustomPainter {
 
       // Inner follow ring
       final innerFollowPaint = Paint()
-        ..color = AppColors.uiCyan.withValues(alpha: pulseAlpha * AppTypography.opacityMediumHigh)
+        ..color = AppColors.uiCyan.withValues(
+          alpha: pulseAlpha * AppTypography.opacityMediumHigh,
+        )
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.5;
 
@@ -220,7 +310,9 @@ class GravitonPainter extends CustomPainter {
     } else {
       // Selection mode: Steady ring to indicate selected but not following
       final selectionPaint = Paint()
-        ..color = AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryHigh)
+        ..color = AppColors.uiWhite.withValues(
+          alpha: AppTypography.opacityVeryHigh,
+        )
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2.0;
 
@@ -228,7 +320,9 @@ class GravitonPainter extends CustomPainter {
 
       // Dashed inner ring effect
       final innerPaint = Paint()
-        ..color = AppColors.uiWhite.withValues(alpha: AppTypography.opacitySemiTransparent)
+        ..color = AppColors.uiWhite.withValues(
+          alpha: AppTypography.opacitySemiTransparent,
+        )
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.0;
 
@@ -237,7 +331,12 @@ class GravitonPainter extends CustomPainter {
   }
 
   /// Draw proper 3D galactic glow that scales with distance and projects correctly
-  static void _drawGalactic3DGlow(Canvas canvas, Size size, vm.Matrix4 vp, physics.Simulation sim) {
+  static void _drawGalactic3DGlow(
+    Canvas canvas,
+    Size size,
+    vm.Matrix4 vp,
+    physics.Simulation sim,
+  ) {
     // Find the galactic center (supermassive black hole - the most massive body at origin)
     final galacticCenter = sim.bodies.where((b) => b.mass > 100.0).firstOrNull;
     if (galacticCenter == null) return;
@@ -245,7 +344,13 @@ class GravitonPainter extends CustomPainter {
     // Calculate distance-based scaling (same as particles)
     final view = vp;
     final eyeSpace =
-        (view * vm.Vector4(galacticCenter.position.x, galacticCenter.position.y, galacticCenter.position.z, 1));
+        (view *
+        vm.Vector4(
+          galacticCenter.position.x,
+          galacticCenter.position.y,
+          galacticCenter.position.z,
+          1,
+        ));
 
     final distance = (-eyeSpace.z).abs().clamp(
       RenderingConstants.distanceClampMin,
@@ -253,23 +358,36 @@ class GravitonPainter extends CustomPainter {
     );
 
     // Scale glow based on distance - smooth transition between scaling modes
-    final baseGlowSize = 240.0; // Base size in 3D units representing actual galactic bulge size
+    final baseGlowSize =
+        240.0; // Base size in 3D units representing actual galactic bulge size
 
     // Use smooth blended scaling instead of abrupt transition
     final transitionStart = 150.0;
     final transitionEnd = 250.0;
 
-    final gentleScaleFactor = math.sqrt(RenderingConstants.bodySizeMultiplier / distance);
-    final aggressiveScaleFactor = RenderingConstants.bodySizeMultiplier / (distance * 1.5);
+    final gentleScaleFactor = math.sqrt(
+      RenderingConstants.bodySizeMultiplier / distance,
+    );
+    final aggressiveScaleFactor =
+        RenderingConstants.bodySizeMultiplier / (distance * 1.5);
 
     // Smooth blend between the two scaling methods
     final scaleFactor = distance <= transitionStart
         ? gentleScaleFactor // Pure gentle scaling when close
         : distance >= transitionEnd
         ? aggressiveScaleFactor // Pure aggressive scaling when far
-        : _blendScaling(gentleScaleFactor, aggressiveScaleFactor, distance, transitionStart, transitionEnd);
+        : _blendScaling(
+            gentleScaleFactor,
+            aggressiveScaleFactor,
+            distance,
+            transitionStart,
+            transitionEnd,
+          );
 
-    final glowRadius = (baseGlowSize * scaleFactor).clamp(10.0, size.width * 0.8);
+    final glowRadius = (baseGlowSize * scaleFactor).clamp(
+      10.0,
+      size.width * 0.8,
+    );
 
     // Ensure the glow becomes very small when far away but still visible when close
     final minRadius = 16.0;
@@ -283,8 +401,13 @@ class GravitonPainter extends CustomPainter {
     // GALAXY-WIDE: Massive bluish/purple galactic disk glow spanning entire galaxy
     // Scale up the galaxy size more aggressively when far away for better visibility
     final galaxySizeMultiplier = distance > 200.0 ? 1.5 : 1.0;
-    final galaxyRadius = finalGlowRadius * 10.0 * galaxySizeMultiplier; // Much larger to span entire galaxy
-    final galaxyHeight = galaxyRadius * 0.25; // Very flattened for realistic galactic disk appearance
+    final galaxyRadius =
+        finalGlowRadius *
+        10.0 *
+        galaxySizeMultiplier; // Much larger to span entire galaxy
+    final galaxyHeight =
+        galaxyRadius *
+        0.25; // Very flattened for realistic galactic disk appearance
 
     _drawGalactic3DDisk(
       canvas,
@@ -294,25 +417,79 @@ class GravitonPainter extends CustomPainter {
       galaxyRadius,
       galaxyHeight,
       [
-        AppColors.withAlpha(AppColors.galaxySlateBlue, AppColors.alphaSemiVisible * distanceAlphaMultiplier),
-        AppColors.withAlpha(AppColors.galaxyDarkSlateBlue, AppColors.alphaMediumHigh * distanceAlphaMultiplier),
-        AppColors.withAlpha(AppColors.galaxyRoyalBlue, AppColors.alphaMedium * distanceAlphaMultiplier),
-        AppColors.withAlpha(AppColors.galaxyPureBlue, AppColors.alphaLowMedium * distanceAlphaMultiplier),
-        AppColors.withAlpha(AppColors.galaxyIndigo, AppColors.alphaLow * distanceAlphaMultiplier),
-        AppColors.withAlpha(AppColors.galaxyIndigo, AppColors.alphaFaint2 * distanceAlphaMultiplier),
-        AppColors.withAlpha(AppColors.galaxyIndigo, AppColors.alphaVeryFaint2 * distanceAlphaMultiplier),
-        AppColors.withAlpha(AppColors.galaxyIndigo, AppColors.alphaAlmostInvisible * distanceAlphaMultiplier),
-        AppColors.withAlpha(AppColors.galaxyIndigo, AppColors.alphaExtremelyFaint * distanceAlphaMultiplier),
-        AppColors.withAlpha(AppColors.galaxyIndigo, AppColors.alphaVeryFaint * distanceAlphaMultiplier),
-        AppColors.withAlpha(AppColors.galaxyIndigo, 0.001 * distanceAlphaMultiplier), // Nearly transparent
-        AppColors.withAlpha(AppColors.galaxyIndigo, 0.0), // Fully transparent edge
+        AppColors.withAlpha(
+          AppColors.galaxySlateBlue,
+          AppColors.alphaSemiVisible * distanceAlphaMultiplier,
+        ),
+        AppColors.withAlpha(
+          AppColors.galaxyDarkSlateBlue,
+          AppColors.alphaMediumHigh * distanceAlphaMultiplier,
+        ),
+        AppColors.withAlpha(
+          AppColors.galaxyRoyalBlue,
+          AppColors.alphaMedium * distanceAlphaMultiplier,
+        ),
+        AppColors.withAlpha(
+          AppColors.galaxyPureBlue,
+          AppColors.alphaLowMedium * distanceAlphaMultiplier,
+        ),
+        AppColors.withAlpha(
+          AppColors.galaxyIndigo,
+          AppColors.alphaLow * distanceAlphaMultiplier,
+        ),
+        AppColors.withAlpha(
+          AppColors.galaxyIndigo,
+          AppColors.alphaFaint2 * distanceAlphaMultiplier,
+        ),
+        AppColors.withAlpha(
+          AppColors.galaxyIndigo,
+          AppColors.alphaVeryFaint2 * distanceAlphaMultiplier,
+        ),
+        AppColors.withAlpha(
+          AppColors.galaxyIndigo,
+          AppColors.alphaAlmostInvisible * distanceAlphaMultiplier,
+        ),
+        AppColors.withAlpha(
+          AppColors.galaxyIndigo,
+          AppColors.alphaExtremelyFaint * distanceAlphaMultiplier,
+        ),
+        AppColors.withAlpha(
+          AppColors.galaxyIndigo,
+          AppColors.alphaVeryFaint * distanceAlphaMultiplier,
+        ),
+        AppColors.withAlpha(
+          AppColors.galaxyIndigo,
+          0.001 * distanceAlphaMultiplier,
+        ), // Nearly transparent
+        AppColors.withAlpha(
+          AppColors.galaxyIndigo,
+          0.0,
+        ), // Fully transparent edge
       ],
-      const [0.0, 0.15, 0.3, 0.45, 0.6, 0.72, 0.82, 0.90, 0.95, 0.98, 0.995, 1.0],
+      const [
+        0.0,
+        0.15,
+        0.3,
+        0.45,
+        0.6,
+        0.72,
+        0.82,
+        0.90,
+        0.95,
+        0.98,
+        0.995,
+        1.0,
+      ],
     );
 
     // LARGEST: Galactic bulge - massive diffuse stellar halo with very soft edges
-    final bulgeRadius = finalGlowRadius * 3.0 * galaxySizeMultiplier; // Much bigger - 3x and larger when far away
-    final bulgeHeight = bulgeRadius * 0.3; // Squashed height - 30% of width for disk-like appearance
+    final bulgeRadius =
+        finalGlowRadius *
+        3.0 *
+        galaxySizeMultiplier; // Much bigger - 3x and larger when far away
+    final bulgeHeight =
+        bulgeRadius *
+        0.3; // Squashed height - 30% of width for disk-like appearance
 
     _drawGalactic3DDisk(
       canvas,
@@ -354,15 +531,21 @@ class GravitonPainter extends CustomPainter {
           AppColors.galaxyIndigo,
           AppColors.alphaAlmostInvisible * distanceAlphaMultiplier,
         ), // Nearly invisible
-        AppColors.withAlpha(AppColors.galaxyIndigo, 0.002 * distanceAlphaMultiplier), // Barely visible
+        AppColors.withAlpha(
+          AppColors.galaxyIndigo,
+          0.002 * distanceAlphaMultiplier,
+        ), // Barely visible
         AppColors.withAlpha(AppColors.galaxyIndigo, 0.0), // Transparent edge
       ],
       const [0.0, 0.2, 0.4, 0.6, 0.75, 0.85, 0.92, 0.96, 0.99, 1.0],
     );
 
     // LARGE: Outer red radiating energy layer with much softer edges
-    final outerRadius = finalGlowRadius * galaxySizeMultiplier; // Larger when far away
-    final outerHeight = outerRadius * 0.4; // Squashed height - 40% of width for disk-like appearance
+    final outerRadius =
+        finalGlowRadius * galaxySizeMultiplier; // Larger when far away
+    final outerHeight =
+        outerRadius *
+        0.4; // Squashed height - 40% of width for disk-like appearance
 
     _drawGalactic3DDisk(
       canvas,
@@ -384,22 +567,37 @@ class GravitonPainter extends CustomPainter {
           AppColors.accretionRed,
           AppColors.alphaLowMedium * distanceAlphaMultiplier,
         ), // Red outer - brighter
-        AppColors.withAlpha(AppColors.accretionRed, AppColors.alphaFaint3 * distanceAlphaMultiplier), // Faint red
-        AppColors.withAlpha(AppColors.accretionRed, AppColors.alphaFaint * distanceAlphaMultiplier), // Very faint red
+        AppColors.withAlpha(
+          AppColors.accretionRed,
+          AppColors.alphaFaint3 * distanceAlphaMultiplier,
+        ), // Faint red
+        AppColors.withAlpha(
+          AppColors.accretionRed,
+          AppColors.alphaFaint * distanceAlphaMultiplier,
+        ), // Very faint red
         AppColors.withAlpha(
           AppColors.accretionRed,
           AppColors.alphaVeryFaint * distanceAlphaMultiplier,
         ), // Almost invisible red
-        AppColors.withAlpha(AppColors.accretionRed, 0.003 * distanceAlphaMultiplier), // Barely visible red
-        AppColors.withAlpha(AppColors.accretionRed, 0.001 * distanceAlphaMultiplier), // Nearly transparent red
+        AppColors.withAlpha(
+          AppColors.accretionRed,
+          0.003 * distanceAlphaMultiplier,
+        ), // Barely visible red
+        AppColors.withAlpha(
+          AppColors.accretionRed,
+          0.001 * distanceAlphaMultiplier,
+        ), // Nearly transparent red
         AppColors.withAlpha(AppColors.accretionRed, 0.0), // Transparent edge
       ],
       const [0.0, 0.25, 0.5, 0.7, 0.82, 0.90, 0.95, 0.98, 1.0],
     );
 
     // Middle golden galactic bulge layer with ultra-soft edges - SLIGHTLY DIMMED
-    final middleRadius = finalGlowRadius * 0.65 * galaxySizeMultiplier; // Larger when far away
-    final middleHeight = middleRadius * 0.5; // Squashed height - 50% of width for disk-like appearance
+    final middleRadius =
+        finalGlowRadius * 0.65 * galaxySizeMultiplier; // Larger when far away
+    final middleHeight =
+        middleRadius *
+        0.5; // Squashed height - 50% of width for disk-like appearance
 
     // Slight dimming for middle layer to reduce center brightness
     final middleDimMultiplier = 0.7; // Reduce middle brightness by 30%
@@ -414,11 +612,15 @@ class GravitonPainter extends CustomPainter {
       [
         AppColors.withAlpha(
           AppColors.accretionGold,
-          AppColors.alphaSemiTransparent * distanceAlphaMultiplier * middleDimMultiplier,
+          AppColors.alphaSemiTransparent *
+              distanceAlphaMultiplier *
+              middleDimMultiplier,
         ), // Dimmed gold center
         AppColors.withAlpha(
           AppColors.accretionOrange,
-          AppColors.alphaMediumVisible * distanceAlphaMultiplier * middleDimMultiplier,
+          AppColors.alphaMediumVisible *
+              distanceAlphaMultiplier *
+              middleDimMultiplier,
         ), // Dimmed orange middle
         AppColors.withAlpha(
           AppColors.accretionDarkOrange,
@@ -440,15 +642,24 @@ class GravitonPainter extends CustomPainter {
           AppColors.accretionDarkOrange,
           AppColors.alphaAlmostInvisible * distanceAlphaMultiplier,
         ), // Nearly invisible
-        AppColors.withAlpha(AppColors.accretionDarkOrange, 0.002 * distanceAlphaMultiplier), // Barely visible
-        AppColors.withAlpha(AppColors.accretionDarkOrange, 0.0), // Transparent edge
+        AppColors.withAlpha(
+          AppColors.accretionDarkOrange,
+          0.002 * distanceAlphaMultiplier,
+        ), // Barely visible
+        AppColors.withAlpha(
+          AppColors.accretionDarkOrange,
+          0.0,
+        ), // Transparent edge
       ],
       const [0.0, 0.2, 0.45, 0.7, 0.82, 0.90, 0.95, 0.98, 1.0],
     );
 
     // Inner bright accretion disk core with very soft edges - TONED DOWN for better star visibility
-    final innerRadius = finalGlowRadius * 0.3 * galaxySizeMultiplier; // Larger when far away
-    final innerHeight = innerRadius * 0.6; // Squashed height - 60% of width for disk-like appearance
+    final innerRadius =
+        finalGlowRadius * 0.3 * galaxySizeMultiplier; // Larger when far away
+    final innerHeight =
+        innerRadius *
+        0.6; // Squashed height - 60% of width for disk-like appearance
 
     // Create a dimmer multiplier for the center to not overpower star trails
     final centerDimMultiplier = 0.4; // Reduce center brightness by 60%
@@ -463,15 +674,21 @@ class GravitonPainter extends CustomPainter {
       [
         AppColors.withAlpha(
           AppColors.accretionGold,
-          AppColors.alphaSemiVisible * distanceAlphaMultiplier * centerDimMultiplier,
+          AppColors.alphaSemiVisible *
+              distanceAlphaMultiplier *
+              centerDimMultiplier,
         ), // Dimmed gold center instead of white
         AppColors.withAlpha(
           AppColors.accretionOrange,
-          AppColors.alphaMediumVisible * distanceAlphaMultiplier * centerDimMultiplier,
+          AppColors.alphaMediumVisible *
+              distanceAlphaMultiplier *
+              centerDimMultiplier,
         ), // Dimmed orange instead of gold
         AppColors.withAlpha(
           AppColors.accretionDarkOrange,
-          AppColors.alphaVisible * distanceAlphaMultiplier * centerDimMultiplier,
+          AppColors.alphaVisible *
+              distanceAlphaMultiplier *
+              centerDimMultiplier,
         ), // Dimmed dark orange
         AppColors.withAlpha(
           AppColors.accretionOrange,
@@ -489,8 +706,14 @@ class GravitonPainter extends CustomPainter {
           AppColors.accretionOrange,
           AppColors.alphaExtremelyFaint * distanceAlphaMultiplier,
         ), // Nearly invisible
-        AppColors.withAlpha(AppColors.accretionOrange, 0.003 * distanceAlphaMultiplier), // Barely visible
-        AppColors.withAlpha(AppColors.accretionOrange, 0.001 * distanceAlphaMultiplier), // Nearly transparent
+        AppColors.withAlpha(
+          AppColors.accretionOrange,
+          0.003 * distanceAlphaMultiplier,
+        ), // Barely visible
+        AppColors.withAlpha(
+          AppColors.accretionOrange,
+          0.001 * distanceAlphaMultiplier,
+        ), // Nearly transparent
         AppColors.withAlpha(AppColors.accretionOrange, 0.0), // Transparent edge
       ],
       const [0.0, 0.1, 0.3, 0.6, 0.75, 0.85, 0.92, 0.96, 0.99, 1.0],
@@ -514,10 +737,15 @@ class GravitonPainter extends CustomPainter {
 
     for (int ring = 0; ring < numRings; ring++) {
       final ringProgress = ring / (numRings - 1); // 0.0 to 1.0
-      final currentRadius = diskRadius * (0.3 + 0.7 * ringProgress); // Start from 30% and go to 100%
+      final currentRadius =
+          diskRadius *
+          (0.3 + 0.7 * ringProgress); // Start from 30% and go to 100%
 
       // Calculate opacity based on ring progress
-      final opacityMultiplier = math.pow(1.0 - ringProgress, 2.5); // Exponential fade-out
+      final opacityMultiplier = math.pow(
+        1.0 - ringProgress,
+        2.5,
+      ); // Exponential fade-out
 
       const int numSegments = 32; // Fewer segments per ring for performance
       final points = <Offset>[];
@@ -533,7 +761,11 @@ class GravitonPainter extends CustomPainter {
         final localZ = 0.0; // Disk is flat in XY plane
 
         // Transform to world space
-        final worldPos = vm.Vector3(centerPosition.x + localX, centerPosition.y + localY, centerPosition.z + localZ);
+        final worldPos = vm.Vector3(
+          centerPosition.x + localX,
+          centerPosition.y + localY,
+          centerPosition.z + localZ,
+        );
 
         // Project to screen space
         final screenPos = PainterUtils.project(vp, worldPos, size);
@@ -574,30 +806,50 @@ class GravitonPainter extends CustomPainter {
 
         // Select appropriate colors based on ring position
         final colorIndex = (ringProgress * (gradientColors.length - 1)).floor();
-        final nextColorIndex = math.min(colorIndex + 1, gradientColors.length - 1);
-        final localProgress = (ringProgress * (gradientColors.length - 1)) - colorIndex;
+        final nextColorIndex = math.min(
+          colorIndex + 1,
+          gradientColors.length - 1,
+        );
+        final localProgress =
+            (ringProgress * (gradientColors.length - 1)) - colorIndex;
 
         // Interpolate between colors
         final baseColor = gradientColors[colorIndex];
         final nextColor = gradientColors[nextColorIndex];
 
-        final ringColor = Color.lerp(baseColor, nextColor, localProgress) ?? baseColor;
-        final finalColor = ringColor.withValues(alpha: ringColor.a * opacityMultiplier);
+        final ringColor =
+            Color.lerp(baseColor, nextColor, localProgress) ?? baseColor;
+        final finalColor = ringColor.withValues(
+          alpha: ringColor.a * opacityMultiplier,
+        );
 
         // Create a simple radial gradient for this ring
         final paint = Paint()
           ..style = PaintingStyle.fill
-          ..shader = RadialGradient(
-            center: Alignment.center,
-            radius: 1.0,
-            colors: [
-              finalColor,
-              finalColor.withValues(alpha: finalColor.a * AppTypography.opacityHigh),
-              finalColor.withValues(alpha: finalColor.a * AppTypography.opacityFaint),
-              finalColor.withValues(alpha: AppTypography.opacityTransparent),
-            ],
-            stops: const [0.0, 0.4, 0.7, 1.0],
-          ).createShader(Rect.fromCenter(center: centerScreen, width: gradientRadius * 2, height: gradientRadius * 2));
+          ..shader =
+              RadialGradient(
+                center: Alignment.center,
+                radius: 1.0,
+                colors: [
+                  finalColor,
+                  finalColor.withValues(
+                    alpha: finalColor.a * AppTypography.opacityHigh,
+                  ),
+                  finalColor.withValues(
+                    alpha: finalColor.a * AppTypography.opacityFaint,
+                  ),
+                  finalColor.withValues(
+                    alpha: AppTypography.opacityTransparent,
+                  ),
+                ],
+                stops: const [0.0, 0.4, 0.7, 1.0],
+              ).createShader(
+                Rect.fromCenter(
+                  center: centerScreen,
+                  width: gradientRadius * 2,
+                  height: gradientRadius * 2,
+                ),
+              );
 
         // Create path from projected points
         final path = Path();
@@ -622,7 +874,9 @@ class GravitonPainter extends CustomPainter {
     double transitionEnd,
   ) {
     // Calculate blend ratio (0.0 = pure gentle, 1.0 = pure aggressive)
-    final blendRatio = ((distance - transitionStart) / (transitionEnd - transitionStart)).clamp(0.0, 1.0);
+    final blendRatio =
+        ((distance - transitionStart) / (transitionEnd - transitionStart))
+            .clamp(0.0, 1.0);
 
     // Use smooth interpolation (ease-in-out curve) for natural transition
     final smoothRatio = blendRatio * blendRatio * (3.0 - 2.0 * blendRatio);
@@ -633,16 +887,24 @@ class GravitonPainter extends CustomPainter {
 
   /// Draw the photon ring - brilliant thin ring of light around the black hole event horizon
   /// Only visible when zoomed in very close to the black hole
-  static void _drawPhotonRing(Canvas canvas, Offset center, double glowRadius, double distance, double cameraDistance) {
+  static void _drawPhotonRing(
+    Canvas canvas,
+    Offset center,
+    double glowRadius,
+    double distance,
+    double cameraDistance,
+  ) {
     // First, calculate the actual black hole visual size using same system as particles
-    final blackHoleVisualRadius = (2.5 * RenderingConstants.bodySizeMultiplier / distance).clamp(
-      RenderingConstants.bodyMinSize,
-      RenderingConstants.bodyMaxSize,
-    );
+    final blackHoleVisualRadius =
+        (2.5 * RenderingConstants.bodySizeMultiplier / distance).clamp(
+          RenderingConstants.bodyMinSize,
+          RenderingConstants.bodyMaxSize,
+        );
 
     // Photon ring radius - make it larger for better visibility
     // In real physics, photon rings are at ~2.6x the Schwarzschild radius
-    final schwarzschildRadius = blackHoleVisualRadius * 0.6; // Larger photon ring radius
+    final schwarzschildRadius =
+        blackHoleVisualRadius * 0.6; // Larger photon ring radius
 
     // Photon ring visibility based on camera distance with smooth easing
     // Start appearing at 100, fully visible at 50
@@ -655,8 +917,13 @@ class GravitonPainter extends CustomPainter {
       ringOpacity = 0.0; // Too far away to see photon ring
     } else if (cameraDistance > fullVisibleDistance) {
       // Calculate opacity for smooth fade-in as we zoom closer
-      final fadeRatio = (startFadeDistance - cameraDistance) / (startFadeDistance - fullVisibleDistance);
-      ringOpacity = (fadeRatio * fadeRatio * fadeRatio).clamp(0.0, 1.0); // Cubic easing
+      final fadeRatio =
+          (startFadeDistance - cameraDistance) /
+          (startFadeDistance - fullVisibleDistance);
+      ringOpacity = (fadeRatio * fadeRatio * fadeRatio).clamp(
+        0.0,
+        1.0,
+      ); // Cubic easing
     }
 
     // Apply size-based fade as well for very small rings
@@ -679,7 +946,8 @@ class GravitonPainter extends CustomPainter {
     canvas.save();
 
     // Apply global opacity - this affects all subsequent drawing operations
-    final alphaLayer = Paint()..color = Color.fromARGB((255 * ringOpacity).round(), 255, 255, 255);
+    final alphaLayer = Paint()
+      ..color = Color.fromARGB((255 * ringOpacity).round(), 255, 255, 255);
     canvas.saveLayer(null, alphaLayer);
 
     // First, draw a bright orange/red base ring (warmer colors show better)

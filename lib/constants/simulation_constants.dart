@@ -1,13 +1,15 @@
 /// Physics and simulation constants for Graviton
 class SimulationConstants {
   // Physics constants
-  static const double gravitationalConstant = 1.2; // slightly increased to help bind the system
+  static const double gravitationalConstant =
+      1.2; // slightly increased to help bind the system
   static const double softening = 0.01; // collision softening parameter
 
   // Time conversion
   // Convert simulation time units to Earth years
   // Based on typical orbital periods in the simulation (rough approximation)
-  static const double simulationTimeToEarthYears = 0.1; // 1 simulation unit ≈ 0.1 Earth years
+  static const double simulationTimeToEarthYears =
+      0.1; // 1 simulation unit ≈ 0.1 Earth years
 
   // Trail management
   static const int maxTrailPoints = 500;
@@ -43,7 +45,8 @@ class SimulationConstants {
 
   // Planet mass and size categories
   static const double smallPlanetProbability = 0.3;
-  static const double earthLikePlanetProbability = 0.7; // cumulative (0.3-0.7 = 0.4)
+  static const double earthLikePlanetProbability =
+      0.7; // cumulative (0.3-0.7 = 0.4)
 
   // Small rocky planets (Mercury to Mars size)
   static const double smallPlanetMassMin = 0.8;
@@ -64,7 +67,8 @@ class SimulationConstants {
   static const double superEarthRadiusMax = 1.6;
 
   // Collision detection
-  static const double collisionRadiusMultiplier = 0.05; // only 5% of visual radius
+  static const double collisionRadiusMultiplier =
+      0.05; // only 5% of visual radius
 
   // Emergency system regeneration
   static const double centralBodyMass = 50.0;
@@ -86,7 +90,8 @@ class SimulationConstants {
   static const double flashMaxRadius = 60.0;
 
   // Vibration settings
-  static const double vibrationThrottleTime = 0.18; // 180ms minimum between vibrations
+  static const double vibrationThrottleTime =
+      0.18; // 180ms minimum between vibrations
   static const double vibrationIntensityLogDivisor = 6.0;
   static const double vibrationIntensityMin = 0.1;
   static const double vibrationIntensityMax = 1.0;

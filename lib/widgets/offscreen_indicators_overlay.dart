@@ -59,14 +59,23 @@ class _OffScreenIndicatorPainter extends CustomPainter {
 
     for (int i = 0; i < bodies.length; i++) {
       final body = bodies[i];
-      final worldPos = vm.Vector4(body.position.x, body.position.y, body.position.z, 1.0);
+      final worldPos = vm.Vector4(
+        body.position.x,
+        body.position.y,
+        body.position.z,
+        1.0,
+      );
       final clipPos = mvp * worldPos;
 
       // Skip if behind camera
       if (clipPos.w <= 0) continue;
 
       // Convert to normalized device coordinates
-      final ndc = vm.Vector3(clipPos.x / clipPos.w, clipPos.y / clipPos.w, clipPos.z / clipPos.w);
+      final ndc = vm.Vector3(
+        clipPos.x / clipPos.w,
+        clipPos.y / clipPos.w,
+        clipPos.z / clipPos.w,
+      );
 
       // Convert to screen coordinates
       final screenX = (ndc.x + 1) * 0.5 * size.width;
@@ -74,10 +83,21 @@ class _OffScreenIndicatorPainter extends CustomPainter {
 
       // Check if object is off-screen
       final isOffScreen =
-          screenX < 0 || screenX > size.width || screenY < 0 || screenY > size.height || ndc.z > 1.0; // Too far away
+          screenX < 0 ||
+          screenX > size.width ||
+          screenY < 0 ||
+          screenY > size.height ||
+          ndc.z > 1.0; // Too far away
 
       if (isOffScreen) {
-        _drawOffScreenIndicator(canvas, size, screenX, screenY, body, i == selectedBodyIndex);
+        _drawOffScreenIndicator(
+          canvas,
+          size,
+          screenX,
+          screenY,
+          body,
+          i == selectedBodyIndex,
+        );
       }
     }
   }
@@ -113,8 +133,12 @@ class _OffScreenIndicatorPainter extends CustomPainter {
     double indicatorX, indicatorY;
 
     // Calculate where the direction vector hits the screen bounds
-    final tX = normalizedX > 0 ? (maxX - centerX) / normalizedX : (margin - centerX) / normalizedX;
-    final tY = normalizedY > 0 ? (maxY - centerY) / normalizedY : (margin - centerY) / normalizedY;
+    final tX = normalizedX > 0
+        ? (maxX - centerX) / normalizedX
+        : (margin - centerX) / normalizedX;
+    final tY = normalizedY > 0
+        ? (maxY - centerY) / normalizedY
+        : (margin - centerY) / normalizedY;
 
     final t = math.min(tX.abs(), tY.abs());
 
@@ -126,18 +150,38 @@ class _OffScreenIndicatorPainter extends CustomPainter {
     indicatorY = indicatorY.clamp(margin, size.height - margin);
 
     // Draw the arrow
-    _drawArrow(canvas, Offset(indicatorX, indicatorY), normalizedX, normalizedY, body, isSelected);
+    _drawArrow(
+      canvas,
+      Offset(indicatorX, indicatorY),
+      normalizedX,
+      normalizedY,
+      body,
+      isSelected,
+    );
   }
 
-  void _drawArrow(Canvas canvas, Offset position, double dirX, double dirY, Body body, bool isSelected) {
-    final baseColor = isSelected ? AppColors.uiSelectionYellow : _getBodyColor(body);
+  void _drawArrow(
+    Canvas canvas,
+    Offset position,
+    double dirX,
+    double dirY,
+    Body body,
+    bool isSelected,
+  ) {
+    final baseColor = isSelected
+        ? AppColors.uiSelectionYellow
+        : _getBodyColor(body);
 
     // Special handling for black hole - use dark gray with white border for visibility
-    final circleColor = body.name == 'Black Hole' && !isSelected ? AppColors.offScreenBlackHole : baseColor;
+    final circleColor = body.name == 'Black Hole' && !isSelected
+        ? AppColors.offScreenBlackHole
+        : baseColor;
 
     final paint = Paint()
       ..color = circleColor
-          .withValues(alpha: AppTypography.opacityHigh) // Make the background more opaque
+          .withValues(
+            alpha: AppTypography.opacityHigh,
+          ) // Make the background more opaque
       ..style = PaintingStyle.fill
       ..strokeWidth = 2.0;
 
@@ -151,8 +195,12 @@ class _OffScreenIndicatorPainter extends CustomPainter {
       paint
         ..style = PaintingStyle.stroke
         ..color = isSelected
-            ? AppColors.uiWhite.withValues(alpha: AppTypography.opacityNearlyOpaque)
-            : AppColors.uiWhite.withValues(alpha: AppTypography.opacityMediumHigh)
+            ? AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityNearlyOpaque,
+              )
+            : AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityMediumHigh,
+              )
         ..strokeWidth = 2.0,
     );
 
@@ -172,17 +220,67 @@ class _OffScreenIndicatorPainter extends CustomPainter {
 
     final path = Path()
       ..moveTo(tipX, tipY)
-      ..lineTo(baseX + perpX * arrowWidth * 0.5, baseY + perpY * arrowWidth * 0.5)
-      ..lineTo(baseX - perpX * arrowWidth * 0.5, baseY - perpY * arrowWidth * 0.5)
+      ..lineTo(
+        baseX + perpX * arrowWidth * 0.5,
+        baseY + perpY * arrowWidth * 0.5,
+      )
+      ..lineTo(
+        baseX - perpX * arrowWidth * 0.5,
+        baseY - perpY * arrowWidth * 0.5,
+      )
       ..close();
 
     // Draw arrow
     canvas.drawPath(
       path,
       paint
-        ..color = AppColors.uiWhite.withValues(alpha: AppTypography.opacityNearlyOpaque)
+        ..color = AppColors.uiWhite.withValues(
+          alpha: AppTypography.opacityNearlyOpaque,
+        )
         ..style = PaintingStyle.fill,
     );
+
+    // Draw body name
+    _drawBodyName(canvas, position, body.name, isSelected);
+  }
+
+  void _drawBodyName(
+    Canvas canvas,
+    Offset position,
+    String bodyName,
+    bool isSelected,
+  ) {
+    final textStyle = TextStyle(
+      color: AppColors.uiWhite.withValues(
+        alpha: AppTypography.opacityNearlyOpaque,
+      ),
+      fontSize: AppTypography.fontSizeSmall,
+      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+      shadows: [
+        Shadow(
+          offset: const Offset(1, 1),
+          blurRadius: 2,
+          color: AppColors.uiBlack.withValues(
+            alpha: AppTypography.opacityMediumHigh,
+          ),
+        ),
+      ],
+    );
+
+    final textPainter = TextPainter(
+      text: TextSpan(text: bodyName, style: textStyle),
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout();
+
+    // Position text below the indicator circle
+    final textOffset = Offset(
+      position.dx - textPainter.width / 2,
+      position.dy + 20, // 15 (circle radius) + 5 (spacing)
+    );
+
+    textPainter.paint(canvas, textOffset);
   }
 
   Color _getBodyColor(Body body) {
