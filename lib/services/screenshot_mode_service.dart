@@ -54,7 +54,9 @@ class ScreenshotModeService extends ChangeNotifier {
 
   /// Simple test preset for unit testing when l10n is not available
   ScreenshotPreset? _getTestPreset() {
-    if (_currentPresetIndex < 0 || _currentPresetIndex >= presetCount) return null;
+    if (_currentPresetIndex < 0 || _currentPresetIndex >= presetCount) {
+      return null;
+    }
 
     // Import the required classes for the test preset
     return ScreenshotPreset(

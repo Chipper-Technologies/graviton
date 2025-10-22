@@ -15,7 +15,8 @@ class VersionCheckDialog extends StatelessWidget {
     final theme = Theme.of(context);
 
     return AlertDialog(
-      backgroundColor: DialogTheme.of(context).backgroundColor ?? theme.colorScheme.surface,
+      backgroundColor:
+          DialogTheme.of(context).backgroundColor ?? theme.colorScheme.surface,
       title: Row(
         children: [
           Icon(Icons.system_update, color: theme.colorScheme.error, size: 24),
@@ -36,23 +37,33 @@ class VersionCheckDialog extends StatelessWidget {
           Text(
             l10n.updateRequiredMessage,
             style: theme.textTheme.bodyLarge?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: AppTypography.opacityVeryHigh),
+              color: theme.colorScheme.onSurface.withValues(
+                alpha: AppTypography.opacityVeryHigh,
+              ),
             ),
           ),
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: theme.colorScheme.errorContainer.withValues(alpha: AppTypography.opacityFaint),
+              color: theme.colorScheme.errorContainer.withValues(
+                alpha: AppTypography.opacityFaint,
+              ),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: theme.colorScheme.error.withValues(alpha: AppTypography.opacityFaint),
+                color: theme.colorScheme.error.withValues(
+                  alpha: AppTypography.opacityFaint,
+                ),
                 width: 1,
               ),
             ),
             child: Row(
               children: [
-                Icon(Icons.warning_rounded, color: theme.colorScheme.error, size: 20),
+                Icon(
+                  Icons.warning_rounded,
+                  color: theme.colorScheme.error,
+                  size: 20,
+                ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -75,7 +86,11 @@ class VersionCheckDialog extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               l10n.updateLater,
-              style: TextStyle(color: theme.colorScheme.onSurface.withValues(alpha: AppTypography.opacityMediumHigh)),
+              style: TextStyle(
+                color: theme.colorScheme.onSurface.withValues(
+                  alpha: AppTypography.opacityMediumHigh,
+                ),
+              ),
             ),
           ),
         ElevatedButton(
@@ -96,11 +111,18 @@ class VersionCheckDialog extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.open_in_new, size: 18, color: theme.colorScheme.onPrimary),
+              Icon(
+                Icons.open_in_new,
+                size: 18,
+                color: theme.colorScheme.onPrimary,
+              ),
               const SizedBox(width: 8),
               Text(
                 l10n.updateNow,
-                style: TextStyle(fontWeight: FontWeight.bold, color: theme.colorScheme.onPrimary),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onPrimary,
+                ),
               ),
             ],
           ),

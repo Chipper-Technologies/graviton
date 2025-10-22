@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Enhanced star data with visual properties
@@ -20,18 +21,18 @@ class StarGenerator {
     final rnd = math.Random(); // Remove fixed seed for randomness
     final stars = <StarData>[];
 
-    // Star color palette (realistic stellar colors)
+    // Star color palette (realistic stellar colors from app theme)
     final starColors = [
-      0xFFFFFFFF, // White (most common)
-      0xFFFFFFFF, // White
-      0xFFFFF8DC, // Cream white
-      0xFFFFE4B5, // Light yellow
-      0xFFFFD700, // Yellow
-      0xFFFFB347, // Orange
-      0xFFFFA500, // Orange
-      0xFFB0C4DE, // Light blue
-      0xFF87CEEB, // Sky blue
-      0xFF4169E1, // Royal blue
+      AppColors.randomStarWhite.toARGB32(), // White (most common)
+      AppColors.randomStarWhite.toARGB32(), // White
+      AppColors.randomStarCream.toARGB32(), // Cream white
+      AppColors.randomStarYellow.toARGB32(), // Light yellow
+      AppColors.randomStarYellow.toARGB32(), // Yellow
+      AppColors.randomStarOrange.toARGB32(), // Orange
+      AppColors.randomStarOrange.toARGB32(), // Orange
+      AppColors.randomStarBlue.toARGB32(), // Light blue
+      AppColors.nebulaSkyBlue.toARGB32(), // Sky blue
+      AppColors.nebulaRoyalBlue.toARGB32(), // Royal blue
     ];
 
     for (int i = 0; i < count; i++) {

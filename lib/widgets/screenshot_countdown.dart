@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 
 /// Countdown timer widget for screenshot mode
 class ScreenshotCountdown extends StatelessWidget {
@@ -24,18 +26,25 @@ class ScreenshotCountdown extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.black87,
+                color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityVeryHigh),
                 borderRadius: BorderRadius.circular(25),
-                border: Border.all(color: Colors.white24, width: 1),
+                border: Border.all(
+                  color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityLowMedium),
+                  width: 1,
+                ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.camera_alt, color: Colors.white, size: 20),
+                  const Icon(Icons.camera_alt, color: AppColors.uiWhite, size: 20),
                   const SizedBox(width: 8),
                   Text(
                     'Screenshot in ${screenshotService.countdownSeconds}s',
-                    style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                    style: const TextStyle(
+                      color: AppColors.uiWhite,
+                      fontSize: AppTypography.fontSizeLarge,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),

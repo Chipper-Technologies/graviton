@@ -258,15 +258,15 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
 
     switch (versionStatus) {
       case VersionStatus.current:
-        badgeColor = Colors.green;
+        badgeColor = AppColors.uiStatusGreen;
         badgeText = l10n.versionStatusCurrent;
         break;
       case VersionStatus.beta:
-        badgeColor = Colors.blue;
+        badgeColor = AppColors.basicBlue;
         badgeText = l10n.versionStatusBeta;
         break;
       case VersionStatus.outdated:
-        badgeColor = Colors.red;
+        badgeColor = AppColors.uiRed;
         badgeText = l10n.versionStatusOutdated;
         break;
     }
@@ -284,7 +284,11 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
           decoration: BoxDecoration(color: badgeColor, borderRadius: BorderRadius.circular(8)),
           child: Text(
             badgeText,
-            style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              color: AppColors.uiWhite,
+              fontSize: AppTypography.fontSizeSmall,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
 

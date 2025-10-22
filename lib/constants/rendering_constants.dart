@@ -8,16 +8,19 @@ class RenderingConstants {
   static const double distanceClampMax = 1e9;
 
   // Body rendering
-  static const double bodySizeMultiplier = 175.0; // Much larger multiplier for gas giants
+  static const double bodySizeMultiplier =
+      175.0; // Much larger multiplier for gas giants
   static const double bodyMinSize = 2.0;
-  static const double bodyMaxSize = 875.0; // Much larger max size for gas giants
+  static const double bodyMaxSize =
+      875.0; // Much larger max size for gas giants
   static const double bodyGlowMultiplier = 2.6;
   static const double bodyAlpha = 0.8;
   static const double bodyGlowAlpha = 0.0; // for gradient end
 
   // Star field rendering
   static const double starSize = 0.7;
-  static const double starDefaultRadius = 3000.0; // Increased from 1000 to accommodate max zoom of 2000
+  static const double starDefaultRadius =
+      3000.0; // Increased from 1000 to accommodate max zoom of 2000
   static const int starAlpha = 0x88;
 
   // Background gradient colors

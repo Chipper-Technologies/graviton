@@ -456,13 +456,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         left: 16,
         right: 16,
         child: Material(
-          color: Colors.transparent,
+          color: AppColors.transparentColor,
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(8),
               boxShadow: [
-                BoxShadow(color: Colors.black.withValues(alpha: 0.2), blurRadius: 8, offset: const Offset(0, 2)),
+                BoxShadow(
+                  color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityFaint),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
               ],
             ),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

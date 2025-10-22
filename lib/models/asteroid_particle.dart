@@ -12,7 +12,8 @@ class AsteroidParticle {
   final Color color;
   final double size;
   final double eccentricity;
-  final bool useXZPlane; // true for solar system (XZ), false for asteroid belt scenario (XY)
+  final bool
+  useXZPlane; // true for solar system (XZ), false for asteroid belt scenario (XY)
 
   late double _currentAngle;
 
@@ -40,7 +41,8 @@ class AsteroidParticle {
   /// Get current 3D position of the particle
   vm.Vector3 get position {
     // Calculate elliptical orbit position
-    final currentRadius = orbitRadius * (1 - eccentricity * math.cos(_currentAngle));
+    final currentRadius =
+        orbitRadius * (1 - eccentricity * math.cos(_currentAngle));
 
     if (useXZPlane) {
       // Solar system coordinate system: base orbit in XZ plane (horizontal)

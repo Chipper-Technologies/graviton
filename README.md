@@ -537,13 +537,19 @@ cd android && fastlane beta                    # Deploy to Play Console internal
 
 # iOS builds  
 cd ios && bundle exec fastlane build_flutter   # Development IPA
-cd ios && bundle exec fastlane beta            # Deploy to TestFlight
-cd ios && bundle exec fastlane deploy          # Deploy to App Store
+cd ios && bundle exec fastlane beta            # Deploy to TestFlight (includes dSYM upload)
+cd ios && bundle exec fastlane deploy          # Deploy to App Store (includes dSYM upload)
+
+# Firebase Crashlytics dSYM uploads
+cd ios && bundle exec fastlane upload_dsyms flavor:dev     # Upload dSYMs for dev
+cd ios && bundle exec fastlane upload_dsyms flavor:prod    # Upload dSYMs for prod
+cd ios && bundle exec fastlane build_and_upload_dsyms      # Build and upload dSYMs
 ```
 
 **Features:**
 - Multi-flavor support (dev/prod environments)
 - Automatic version management and Firebase integration
+- **Firebase Crashlytics dSYM upload** for crash symbolication ✨ *NEW*
 - Screenshot generation and metadata management
 - Code signing and certificate management
 - One-command deployment to app stores

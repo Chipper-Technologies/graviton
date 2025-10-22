@@ -10,7 +10,11 @@ class ScenarioSelectionDialog extends StatelessWidget {
   final ScenarioType currentScenario;
   final ValueChanged<ScenarioType> onScenarioSelected;
 
-  const ScenarioSelectionDialog({super.key, required this.currentScenario, required this.onScenarioSelected});
+  const ScenarioSelectionDialog({
+    super.key,
+    required this.currentScenario,
+    required this.onScenarioSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +38,13 @@ class ScenarioSelectionDialog extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: theme.primaryColor.withValues(alpha: AppTypography.opacityDisabled),
-                borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+                color: theme.primaryColor.withValues(
+                  alpha: AppTypography.opacityDisabled,
+                ),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
+                ),
               ),
               child: Row(
                 children: [
@@ -77,7 +86,12 @@ class ScenarioSelectionDialog extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.cancel))],
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(l10n.cancel),
+                  ),
+                ],
               ),
             ),
           ],
@@ -98,7 +112,12 @@ class _ScenarioTile extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const _ScenarioTile({required this.scenario, required this.config, required this.isSelected, required this.onTap});
+  const _ScenarioTile({
+    required this.scenario,
+    required this.config,
+    required this.isSelected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +131,9 @@ class _ScenarioTile extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       elevation: isSelected ? 8 : 2,
-      color: isSelected ? config.primaryColor.withValues(alpha: AppTypography.opacityDisabled) : null,
+      color: isSelected
+          ? config.primaryColor.withValues(alpha: AppTypography.opacityDisabled)
+          : null,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(8),
@@ -125,7 +146,9 @@ class _ScenarioTile extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: config.primaryColor.withValues(alpha: AppTypography.opacityVeryFaint),
+                  color: config.primaryColor.withValues(
+                    alpha: AppTypography.opacityVeryFaint,
+                  ),
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: Icon(config.icon, color: config.primaryColor, size: 24),
@@ -144,12 +167,19 @@ class _ScenarioTile extends StatelessWidget {
                           child: Text(
                             name,
                             style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.w500,
                               color: isSelected ? config.primaryColor : null,
                             ),
                           ),
                         ),
-                        if (isSelected) Icon(Icons.check_circle, color: config.primaryColor, size: 20),
+                        if (isSelected)
+                          Icon(
+                            Icons.check_circle,
+                            color: config.primaryColor,
+                            size: 20,
+                          ),
                       ],
                     ),
 
@@ -158,7 +188,9 @@ class _ScenarioTile extends StatelessWidget {
                     Text(
                       description,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.textTheme.bodySmall?.color?.withValues(alpha: AppTypography.opacityVeryHigh),
+                        color: theme.textTheme.bodySmall?.color?.withValues(
+                          alpha: AppTypography.opacityVeryHigh,
+                        ),
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -172,29 +204,36 @@ class _ScenarioTile extends StatelessWidget {
                         Icon(
                           Icons.group,
                           size: 14,
-                          color: theme.textTheme.bodySmall?.color?.withValues(alpha: AppTypography.opacityMediumHigh),
+                          color: theme.textTheme.bodySmall?.color?.withValues(
+                            alpha: AppTypography.opacityMediumHigh,
+                          ),
                         ),
                         const SizedBox(width: 4),
                         Text(
                           '${config.expectedBodyCount} ${l10n.bodies}',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.textTheme.bodySmall?.color?.withValues(alpha: AppTypography.opacityMediumHigh),
+                            color: theme.textTheme.bodySmall?.color?.withValues(
+                              alpha: AppTypography.opacityMediumHigh,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 16),
                         Icon(
                           Icons.school,
                           size: 14,
-                          color: theme.textTheme.bodySmall?.color?.withValues(alpha: AppTypography.opacityMediumHigh),
+                          color: theme.textTheme.bodySmall?.color?.withValues(
+                            alpha: AppTypography.opacityMediumHigh,
+                          ),
                         ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             _getLocalizedEducationalFocus(l10n, scenario),
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.textTheme.bodySmall?.color?.withValues(
-                                alpha: AppTypography.opacityMediumHigh,
-                              ),
+                              color: theme.textTheme.bodySmall?.color
+                                  ?.withValues(
+                                    alpha: AppTypography.opacityMediumHigh,
+                                  ),
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -233,7 +272,10 @@ class _ScenarioTile extends StatelessWidget {
     }
   }
 
-  String _getLocalizedDescription(AppLocalizations l10n, ScenarioType scenario) {
+  String _getLocalizedDescription(
+    AppLocalizations l10n,
+    ScenarioType scenario,
+  ) {
     switch (scenario) {
       case ScenarioType.random:
         return l10n.scenarioRandomDescription;
@@ -255,7 +297,10 @@ class _ScenarioTile extends StatelessWidget {
     }
   }
 
-  String _getLocalizedEducationalFocus(AppLocalizations l10n, ScenarioType scenario) {
+  String _getLocalizedEducationalFocus(
+    AppLocalizations l10n,
+    ScenarioType scenario,
+  ) {
     final config = ScenarioConfig.defaults[scenario];
 
     // Return fallback for scenarios without config (screenshot-only scenarios)

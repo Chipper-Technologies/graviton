@@ -17,6 +17,7 @@ import 'services/remote_config_service.dart';
 import 'services/version_service.dart';
 import 'state/app_state.dart';
 import 'theme/app_colors.dart';
+import 'theme/app_typography.dart';
 import 'widgets/dev_ribbon.dart';
 
 void main() async {
@@ -122,19 +123,26 @@ class GravitonApp extends StatelessWidget {
                 ),
               ),
               snackBarTheme: SnackBarThemeData(
-                backgroundColor: AppColors.spaceDeepBlueBlack.withValues(alpha: 0.95),
-                contentTextStyle: const TextStyle(color: AppColors.uiWhite, fontSize: 14, fontWeight: FontWeight.w500),
+                backgroundColor: AppColors.spaceDeepBlueBlack.withValues(alpha: AppTypography.opacityNearlyOpaque),
+                contentTextStyle: const TextStyle(
+                  color: AppColors.uiWhite,
+                  fontSize: AppTypography.fontSizeMedium,
+                  fontWeight: FontWeight.w500,
+                ),
                 actionTextColor: AppColors.primaryColor,
                 actionOverflowThreshold: 0.25,
-                disabledActionTextColor: AppColors.primaryColor.withValues(alpha: 0.5),
+                disabledActionTextColor: AppColors.primaryColor.withValues(alpha: AppTypography.opacityMedium),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(color: AppColors.primaryColor.withValues(alpha: 0.4), width: 1),
+                  side: BorderSide(
+                    color: AppColors.primaryColor.withValues(alpha: AppTypography.opacitySemiTransparent),
+                    width: 1,
+                  ),
                 ),
                 behavior: SnackBarBehavior.floating,
                 elevation: 12,
                 showCloseIcon: false,
-                closeIconColor: AppColors.uiWhite.withValues(alpha: 0.7),
+                closeIconColor: AppColors.uiWhite.withValues(alpha: AppTypography.opacityHigh),
               ),
             ),
             home: const DevRibbon(child: HomeScreen()),

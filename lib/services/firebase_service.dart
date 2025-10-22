@@ -40,7 +40,10 @@ class FirebaseService {
       // Log initialization
       await logEvent(
         'app_initialized',
-        parameters: {'platform': defaultTargetPlatform.name, 'debug_mode': kDebugMode.toString()},
+        parameters: {
+          'platform': defaultTargetPlatform.name,
+          'debug_mode': kDebugMode.toString(),
+        },
       );
 
       debugPrint('Firebase services initialized successfully');
@@ -107,9 +110,11 @@ class FirebaseService {
       'enable_vibration': true,
       'show_debug_info': kDebugMode,
       'maintenance_mode': false,
-      'maintenance_message': 'The app is currently under maintenance. Please try again later.',
+      'maintenance_message':
+          'The app is currently under maintenance. Please try again later.',
       'force_update_version': '0.0.0',
-      'update_message': 'A new version is available. Please update to continue.',
+      'update_message':
+          'A new version is available. Please update to continue.',
     };
   }
 
@@ -137,7 +142,9 @@ class FirebaseService {
       };
 
       await _analytics!.logEvent(name: name, parameters: enhancedParameters);
-      debugPrint('Logged analytics event: $name with parameters: $enhancedParameters');
+      debugPrint(
+        'Logged analytics event: $name with parameters: $enhancedParameters',
+      );
     } catch (e) {
       debugPrint('Error logging analytics event $name: $e');
     }
@@ -186,9 +193,19 @@ class FirebaseService {
   }
 
   /// Record custom error
-  Future<void> recordError(dynamic exception, StackTrace? stackTrace, {String? reason, bool fatal = false}) async {
+  Future<void> recordError(
+    dynamic exception,
+    StackTrace? stackTrace, {
+    String? reason,
+    bool fatal = false,
+  }) async {
     try {
-      await _crashlytics?.recordError(exception, stackTrace, reason: reason, fatal: fatal);
+      await _crashlytics?.recordError(
+        exception,
+        stackTrace,
+        reason: reason,
+        fatal: fatal,
+      );
     } catch (e) {
       debugPrint('Error recording crash: $e');
     }
@@ -206,7 +223,8 @@ class FirebaseService {
   /// Get Remote Config value as bool
   bool getRemoteConfigBool(String key) {
     try {
-      return _remoteConfig?.getBool(key) ?? (_getDefaultRemoteConfigValues()[key] as bool? ?? false);
+      return _remoteConfig?.getBool(key) ??
+          (_getDefaultRemoteConfigValues()[key] as bool? ?? false);
     } catch (e) {
       debugPrint('Error getting remote config bool $key: $e');
       return _getDefaultRemoteConfigValues()[key] as bool? ?? false;
@@ -216,7 +234,8 @@ class FirebaseService {
   /// Get Remote Config value as double
   double getRemoteConfigDouble(String key) {
     try {
-      return _remoteConfig?.getDouble(key) ?? (_getDefaultRemoteConfigValues()[key] as double? ?? 0.0);
+      return _remoteConfig?.getDouble(key) ??
+          (_getDefaultRemoteConfigValues()[key] as double? ?? 0.0);
     } catch (e) {
       debugPrint('Error getting remote config double $key: $e');
       return _getDefaultRemoteConfigValues()[key] as double? ?? 0.0;
@@ -226,7 +245,8 @@ class FirebaseService {
   /// Get Remote Config value as string
   String getRemoteConfigString(String key) {
     try {
-      return _remoteConfig?.getString(key) ?? (_getDefaultRemoteConfigValues()[key] as String? ?? '');
+      return _remoteConfig?.getString(key) ??
+          (_getDefaultRemoteConfigValues()[key] as String? ?? '');
     } catch (e) {
       debugPrint('Error getting remote config string $key: $e');
       return _getDefaultRemoteConfigValues()[key] as String? ?? '';
@@ -281,7 +301,10 @@ class FirebaseService {
 
   /// Settings change analytics
   Future<void> logSettingsChange(String setting, Object value) async {
-    await logEvent('settings_changed', parameters: {'setting': setting, 'value': value.toString()});
+    await logEvent(
+      'settings_changed',
+      parameters: {'setting': setting, 'value': value.toString()},
+    );
   }
 
   /// Performance analytics

@@ -11,7 +11,8 @@ class ScenarioConfig {
   final int expectedBodyCount;
   final String educationalFocus;
   final double? optimalCameraDistance; // Optional: if null, auto-calculate
-  final double cameraDistanceMultiplier; // Multiplier for auto-calculated distance
+  final double
+  cameraDistanceMultiplier; // Multiplier for auto-calculated distance
 
   const ScenarioConfig({
     required this.type,
@@ -67,7 +68,8 @@ class ScenarioConfig {
       primaryColor: AppColors.celestialOrange,
       expectedBodyCount: 9,
       educationalFocus: EducationalFocusKeys.planetaryMotion,
-      optimalCameraDistance: 1200.0, // Fixed distance for optimal solar system view
+      optimalCameraDistance:
+          1200.0, // Fixed distance for optimal solar system view
     ),
   };
 }

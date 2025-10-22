@@ -48,7 +48,9 @@ class SimulationState extends ChangeNotifier {
 
       if (savedScenarioName != null) {
         try {
-          final savedScenario = ScenarioType.values.firstWhere((s) => s.name == savedScenarioName);
+          final savedScenario = ScenarioType.values.firstWhere(
+            (s) => s.name == savedScenarioName,
+          );
           _simulation.resetWithScenario(savedScenario);
         } catch (e) {
           // If saved scenario is invalid, keep the default (random)
@@ -113,7 +115,8 @@ class SimulationState extends ChangeNotifier {
   double get totalTime => _totalTime;
 
   /// Convert simulation time to Earth years
-  double get totalTimeInEarthYears => _totalTime * SimulationConstants.simulationTimeToEarthYears;
+  double get totalTimeInEarthYears =>
+      _totalTime * SimulationConstants.simulationTimeToEarthYears;
 
   List<Body> get bodies => _simulation.bodies;
   List<List<TrailPoint>> get trails => _simulation.trails;
@@ -128,7 +131,9 @@ class SimulationState extends ChangeNotifier {
 
   void pause() {
     _isPaused = !_isPaused;
-    FirebaseService.instance.logEvent(_isPaused ? 'simulation_paused' : 'simulation_resumed');
+    FirebaseService.instance.logEvent(
+      _isPaused ? 'simulation_paused' : 'simulation_resumed',
+    );
     notifyListeners();
   }
 

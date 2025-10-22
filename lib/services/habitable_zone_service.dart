@@ -9,7 +9,9 @@ class HabitableZoneService {
   /// Calculate habitable zone boundaries for a given star
   /// Returns a map with 'inner' and 'outer' distance boundaries
   Map<String, double> calculateHabitableZone(Body star) {
-    if (!star.isLuminous || star.stellarLuminosity < SimulationConstants.minLuminosityForHabitableZone) {
+    if (!star.isLuminous ||
+        star.stellarLuminosity <
+            SimulationConstants.minLuminosityForHabitableZone) {
       return {'inner': 0.0, 'outer': 0.0};
     }
 
@@ -17,8 +19,10 @@ class HabitableZoneService {
     final sqrtLuminosity = math.sqrt(luminosity);
 
     // Calculate habitable zone boundaries in AU
-    final innerAU = SimulationConstants.habitableZoneInnerMultiplier * sqrtLuminosity;
-    final outerAU = SimulationConstants.habitableZoneOuterMultiplier * sqrtLuminosity;
+    final innerAU =
+        SimulationConstants.habitableZoneInnerMultiplier * sqrtLuminosity;
+    final outerAU =
+        SimulationConstants.habitableZoneOuterMultiplier * sqrtLuminosity;
 
     // Convert to simulation units
     final innerDistance = innerAU / SimulationConstants.simulationUnitsToAU;
@@ -27,7 +31,10 @@ class HabitableZoneService {
   }
 
   /// Calculate the habitability status of a planet considering all stars in the system
-  HabitabilityStatus calculateHabitabilityStatus(Body planet, List<Body> allBodies) {
+  HabitabilityStatus calculateHabitabilityStatus(
+    Body planet,
+    List<Body> allBodies,
+  ) {
     if (!planet.canBeHabitable) {
       return HabitabilityStatus.unknown;
     }
@@ -46,7 +53,8 @@ class HabitableZoneService {
       final distance = (planet.position - star.position).length;
 
       // Skip if star is too dim to contribute meaningfully
-      if (star.stellarLuminosity < SimulationConstants.minLuminosityForHabitableZone) {
+      if (star.stellarLuminosity <
+          SimulationConstants.minLuminosityForHabitableZone) {
         continue;
       }
 
@@ -63,11 +71,17 @@ class HabitableZoneService {
     }
 
     // Convert total energy to equivalent distance from a Sun-like star
-    final equivalentDistance = math.sqrt(SimulationConstants.solarLuminosity / totalEnergyReceived);
+    final equivalentDistance = math.sqrt(
+      SimulationConstants.solarLuminosity / totalEnergyReceived,
+    );
 
     // Calculate habitable zone for a Sun-like star as reference
-    final referenceInner = SimulationConstants.habitableZoneInnerMultiplier / SimulationConstants.simulationUnitsToAU;
-    final referenceOuter = SimulationConstants.habitableZoneOuterMultiplier / SimulationConstants.simulationUnitsToAU;
+    final referenceInner =
+        SimulationConstants.habitableZoneInnerMultiplier /
+        SimulationConstants.simulationUnitsToAU;
+    final referenceOuter =
+        SimulationConstants.habitableZoneOuterMultiplier /
+        SimulationConstants.simulationUnitsToAU;
 
     // Determine habitability status
     if (equivalentDistance < referenceInner) {
@@ -126,7 +140,8 @@ class HabitableZoneService {
     for (final star in stars) {
       final distance = (planet.position - star.position).length;
 
-      if (star.stellarLuminosity < SimulationConstants.minLuminosityForHabitableZone) {
+      if (star.stellarLuminosity <
+          SimulationConstants.minLuminosityForHabitableZone) {
         continue;
       }
 
@@ -138,7 +153,8 @@ class HabitableZoneService {
     // Convert to relative temperature (Earth = 1.0)
     // At 1 AU from Sun, we receive 1 unit of energy
     final earthEnergyReference =
-        SimulationConstants.solarLuminosity / math.pow(1.0 / SimulationConstants.simulationUnitsToAU, 2);
+        SimulationConstants.solarLuminosity /
+        math.pow(1.0 / SimulationConstants.simulationUnitsToAU, 2);
 
     return totalEnergyReceived / earthEnergyReference;
   }

@@ -27,7 +27,11 @@ class RandomUtils {
   }
 
   /// Generate random angle with offset and randomness
-  static double randomAngleWithOffset(double baseAngle, double randomness, [math.Random? random]) {
+  static double randomAngleWithOffset(
+    double baseAngle,
+    double randomness, [
+    math.Random? random,
+  ]) {
     final rand = random ?? math.Random();
     return baseAngle + (rand.nextDouble() - 0.5) * randomness;
   }
@@ -54,7 +58,11 @@ class RandomUtils {
   }
 
   /// Generate random velocity magnitude within range
-  static double randomVelocityMagnitude(double min, double max, [math.Random? random]) {
+  static double randomVelocityMagnitude(
+    double min,
+    double max, [
+    math.Random? random,
+  ]) {
     return randomRange(min, max, random);
   }
 
@@ -67,7 +75,11 @@ class RandomUtils {
   }
 
   /// Generate random velocity component with randomness factor
-  static double randomVelocityComponent(double baseValue, double randomness, [math.Random? random]) {
+  static double randomVelocityComponent(
+    double baseValue,
+    double randomness, [
+    math.Random? random,
+  ]) {
     final rand = random ?? math.Random();
     return baseValue + (rand.nextDouble() - 0.5) * randomness;
   }
@@ -85,7 +97,11 @@ class RandomUtils {
     final distance = randomDistance(minRadius, maxRadius, rand);
     final height = randomHeight(heightRange, rand);
 
-    return vm.Vector3(distance * math.cos(angle), distance * math.sin(angle), height);
+    return vm.Vector3(
+      distance * math.cos(angle),
+      distance * math.sin(angle),
+      height,
+    );
   }
 
   /// Generate random stellar color based on temperature/type
@@ -150,18 +166,30 @@ class RandomUtils {
     final g = (grayLevel + tint * 0.5).clamp(0.0, 1.0);
     final b = (grayLevel).clamp(0.0, 1.0);
 
-    return Color.fromRGBO((r * 255).round(), (g * 255).round(), (b * 255).round(), 1.0);
+    return Color.fromRGBO(
+      (r * 255).round(),
+      (g * 255).round(),
+      (b * 255).round(),
+      1.0,
+    );
   }
 
   /// Generate weighted random choice from list of options
-  static T weightedChoice<T>(List<T> options, List<double> weights, [math.Random? random]) {
+  static T weightedChoice<T>(
+    List<T> options,
+    List<double> weights, [
+    math.Random? random,
+  ]) {
     if (options.isEmpty) throw ArgumentError('Options list cannot be empty');
     if (options.length != weights.length) {
       throw ArgumentError('Options and weights lists must have same length');
     }
 
     final rand = random ?? math.Random();
-    final totalWeight = weights.fold<double>(0.0, (sum, weight) => sum + weight);
+    final totalWeight = weights.fold<double>(
+      0.0,
+      (sum, weight) => sum + weight,
+    );
 
     if (totalWeight <= 0) throw ArgumentError('Total weight must be positive');
 
@@ -186,7 +214,11 @@ class RandomUtils {
   }
 
   /// Generate random value from Gaussian/normal distribution
-  static double randomGaussian(double mean, double standardDeviation, [math.Random? random]) {
+  static double randomGaussian(
+    double mean,
+    double standardDeviation, [
+    math.Random? random,
+  ]) {
     final rand = random ?? math.Random();
 
     // Box-Muller transform
@@ -209,7 +241,12 @@ class RandomUtils {
   }
 
   /// Generate random power law distribution value
-  static double randomPowerLaw(double min, double max, double exponent, [math.Random? random]) {
+  static double randomPowerLaw(
+    double min,
+    double max,
+    double exponent, [
+    math.Random? random,
+  ]) {
     final rand = random ?? math.Random();
 
     if (exponent == -1.0) {
@@ -217,7 +254,9 @@ class RandomUtils {
     } else {
       final exp1 = exponent + 1.0;
       final numerator = math.pow(max, exp1) - math.pow(min, exp1);
-      return math.pow(math.pow(min, exp1) + rand.nextDouble() * numerator, 1.0 / exp1).toDouble();
+      return math
+          .pow(math.pow(min, exp1) + rand.nextDouble() * numerator, 1.0 / exp1)
+          .toDouble();
     }
   }
 

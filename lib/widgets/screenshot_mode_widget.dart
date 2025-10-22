@@ -3,6 +3,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:provider/provider.dart';
 
 /// Widget for controlling screenshot mode
@@ -96,7 +97,9 @@ class ScreenshotModeWidget extends StatelessWidget {
                                       Text(
                                         screenshotService.getPresetDescription(index, l10n),
                                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
+                                          color: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall?.color?.withValues(alpha: AppTypography.opacityHigh),
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),

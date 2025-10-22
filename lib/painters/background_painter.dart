@@ -119,7 +119,7 @@ class BackgroundPainter {
             color1,
             color2.withValues(alpha: color2.a * 0.7),
             color3.withValues(alpha: color3.a * 0.4),
-            Colors.transparent,
+            AppColors.transparentColor,
           ],
           stops: const [0.0, 0.4, 0.7, 1.0],
         ).createShader(Offset.zero & size);
@@ -140,7 +140,7 @@ class BackgroundPainter {
           colors: [
             color2.withValues(alpha: layerAlpha * 0.6),
             color3.withValues(alpha: layerAlpha * 0.3),
-            Colors.transparent,
+            AppColors.transparentColor,
           ],
           stops: const [0.0, 0.6, 1.0],
         ).createShader(Offset.zero & size);
@@ -265,7 +265,7 @@ class BackgroundPainter {
             sourceColor.withValues(alpha: intensity * RenderingConstants.sphericalGradientPrimaryAlpha),
             sourceColor.withValues(alpha: intensity * RenderingConstants.sphericalGradientSecondaryAlpha),
             sourceColor.withValues(alpha: intensity * RenderingConstants.sphericalGradientTertiaryAlpha),
-            Colors.transparent,
+            AppColors.transparentColor,
           ],
           stops: const [0.0, 0.4, 0.8, 1.0],
         ).createShader(Offset.zero & size);

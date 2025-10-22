@@ -43,7 +43,8 @@ class UIState extends ChangeNotifier {
   static const String _keyEnableVibration = 'enableVibration';
   static const String _keyUIOpacity = 'uiOpacity';
   static const String _keyShowHabitableZones = 'showHabitableZones';
-  static const String _keyShowHabitabilityIndicators = 'showHabitabilityIndicators';
+  static const String _keyShowHabitabilityIndicators =
+      'showHabitabilityIndicators';
   static const String _keyShowGravityWells = 'showGravityWells';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
@@ -65,14 +66,18 @@ class UIState extends ChangeNotifier {
       _showStats = prefs.getBool(_keyShowStats) ?? false;
       _showGrid = prefs.getBool(_keyShowGrid) ?? false;
       _showLabels = prefs.getBool(_keyShowLabels) ?? true;
-      _showOffScreenIndicators = prefs.getBool(_keyShowOffScreenIndicators) ?? true;
+      _showOffScreenIndicators =
+          prefs.getBool(_keyShowOffScreenIndicators) ?? true;
       _enableVibration = prefs.getBool(_keyEnableVibration) ?? true;
-      _uiOpacity = prefs.getDouble(_keyUIOpacity) ?? RenderingConstants.defaultUIOpacity;
+      _uiOpacity =
+          prefs.getDouble(_keyUIOpacity) ?? RenderingConstants.defaultUIOpacity;
       _showHabitableZones = prefs.getBool(_keyShowHabitableZones) ?? false;
-      _showHabitabilityIndicators = prefs.getBool(_keyShowHabitabilityIndicators) ?? false;
+      _showHabitabilityIndicators =
+          prefs.getBool(_keyShowHabitabilityIndicators) ?? false;
       _showGravityWells = prefs.getBool(_keyShowGravityWells) ?? false;
       _selectedLanguageCode = prefs.getString(_keySelectedLanguageCode);
-      _hideUIInScreenshotMode = prefs.getBool(_keyHideUIInScreenshotMode) ?? false;
+      _hideUIInScreenshotMode =
+          prefs.getBool(_keyHideUIInScreenshotMode) ?? false;
 
       notifyListeners();
     } catch (e) {
@@ -145,14 +150,20 @@ class UIState extends ChangeNotifier {
   void toggleOrbitalPaths() {
     _showOrbitalPaths = !_showOrbitalPaths;
     _saveSetting(_keyShowOrbitalPaths, _showOrbitalPaths);
-    FirebaseService.instance.logSettingsChange('orbital_paths', _showOrbitalPaths);
+    FirebaseService.instance.logSettingsChange(
+      'orbital_paths',
+      _showOrbitalPaths,
+    );
     notifyListeners();
   }
 
   void toggleDualOrbitalPaths() {
     _dualOrbitalPaths = !_dualOrbitalPaths;
     _saveSetting(_keyDualOrbitalPaths, _dualOrbitalPaths);
-    FirebaseService.instance.logSettingsChange('dual_orbital_paths', _dualOrbitalPaths);
+    FirebaseService.instance.logSettingsChange(
+      'dual_orbital_paths',
+      _dualOrbitalPaths,
+    );
     notifyListeners();
   }
 
@@ -187,19 +198,28 @@ class UIState extends ChangeNotifier {
   void toggleOffScreenIndicators() {
     _showOffScreenIndicators = !_showOffScreenIndicators;
     _saveSetting(_keyShowOffScreenIndicators, _showOffScreenIndicators);
-    FirebaseService.instance.logSettingsChange('show_offscreen_indicators', _showOffScreenIndicators);
+    FirebaseService.instance.logSettingsChange(
+      'show_offscreen_indicators',
+      _showOffScreenIndicators,
+    );
     notifyListeners();
   }
 
   void toggleVibration() {
     _enableVibration = !_enableVibration;
     _saveSetting(_keyEnableVibration, _enableVibration);
-    FirebaseService.instance.logSettingsChange('enable_vibration', _enableVibration);
+    FirebaseService.instance.logSettingsChange(
+      'enable_vibration',
+      _enableVibration,
+    );
     notifyListeners();
   }
 
   void setUIOpacity(double opacity) {
-    _uiOpacity = opacity.clamp(RenderingConstants.uiOpacityMin, RenderingConstants.uiOpacityMax);
+    _uiOpacity = opacity.clamp(
+      RenderingConstants.uiOpacityMin,
+      RenderingConstants.uiOpacityMax,
+    );
     _saveSetting(_keyUIOpacity, _uiOpacity);
     FirebaseService.instance.logSettingsChange('ui_opacity', _uiOpacity);
     notifyListeners();
@@ -209,14 +229,20 @@ class UIState extends ChangeNotifier {
   void toggleHabitableZones() {
     _showHabitableZones = !_showHabitableZones;
     _saveSetting(_keyShowHabitableZones, _showHabitableZones);
-    FirebaseService.instance.logSettingsChange('show_habitable_zones', _showHabitableZones);
+    FirebaseService.instance.logSettingsChange(
+      'show_habitable_zones',
+      _showHabitableZones,
+    );
     notifyListeners();
   }
 
   void toggleHabitabilityIndicators() {
     _showHabitabilityIndicators = !_showHabitabilityIndicators;
     _saveSetting(_keyShowHabitabilityIndicators, _showHabitabilityIndicators);
-    FirebaseService.instance.logSettingsChange('show_habitability_indicators', _showHabitabilityIndicators);
+    FirebaseService.instance.logSettingsChange(
+      'show_habitability_indicators',
+      _showHabitabilityIndicators,
+    );
     notifyListeners();
   }
 
@@ -224,7 +250,10 @@ class UIState extends ChangeNotifier {
   void toggleGravityWells() {
     _showGravityWells = !_showGravityWells;
     _saveSetting(_keyShowGravityWells, _showGravityWells);
-    FirebaseService.instance.logSettingsChange('show_gravity_wells', _showGravityWells);
+    FirebaseService.instance.logSettingsChange(
+      'show_gravity_wells',
+      _showGravityWells,
+    );
     notifyListeners();
   }
 
@@ -232,7 +261,10 @@ class UIState extends ChangeNotifier {
   void setLanguage(String? languageCode) {
     _selectedLanguageCode = languageCode;
     _saveSetting(_keySelectedLanguageCode, languageCode);
-    FirebaseService.instance.logSettingsChange('language', languageCode ?? 'system');
+    FirebaseService.instance.logSettingsChange(
+      'language',
+      languageCode ?? 'system',
+    );
     notifyListeners();
   }
 
@@ -240,7 +272,10 @@ class UIState extends ChangeNotifier {
   void toggleHideUIInScreenshotMode() {
     _hideUIInScreenshotMode = !_hideUIInScreenshotMode;
     _saveSetting(_keyHideUIInScreenshotMode, _hideUIInScreenshotMode);
-    FirebaseService.instance.logSettingsChange('hide_ui_in_screenshot_mode', _hideUIInScreenshotMode);
+    FirebaseService.instance.logSettingsChange(
+      'hide_ui_in_screenshot_mode',
+      _hideUIInScreenshotMode,
+    );
     notifyListeners();
   }
 }

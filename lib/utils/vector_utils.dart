@@ -7,8 +7,16 @@ class VectorUtils {
   VectorUtils._(); // Private constructor to prevent instantiation
 
   /// Generate a 3D position from distance, angle, and height
-  static vm.Vector3 positionFromPolar(double distance, double angle, double height) {
-    return vm.Vector3(distance * math.cos(angle), distance * math.sin(angle), height);
+  static vm.Vector3 positionFromPolar(
+    double distance,
+    double angle,
+    double height,
+  ) {
+    return vm.Vector3(
+      distance * math.cos(angle),
+      distance * math.sin(angle),
+      height,
+    );
   }
 
   /// Generate orbital velocity perpendicular to radius vector
@@ -22,8 +30,10 @@ class VectorUtils {
     final rand = random ?? math.Random();
 
     return vm.Vector3(
-      orbitalSpeed * math.cos(tangentAngle) + (randomness > 0 ? (rand.nextDouble() - 0.5) * randomness : 0.0),
-      orbitalSpeed * math.sin(tangentAngle) + (randomness > 0 ? (rand.nextDouble() - 0.5) * randomness : 0.0),
+      orbitalSpeed * math.cos(tangentAngle) +
+          (randomness > 0 ? (rand.nextDouble() - 0.5) * randomness : 0.0),
+      orbitalSpeed * math.sin(tangentAngle) +
+          (randomness > 0 ? (rand.nextDouble() - 0.5) * randomness : 0.0),
       0.0,
     );
   }
@@ -36,7 +46,12 @@ class VectorUtils {
     double randomness = 0.0,
     math.Random? random,
   }) {
-    final baseVelocity = orbitalVelocityFromAngle(orbitalSpeed, angle, randomness: randomness, random: random);
+    final baseVelocity = orbitalVelocityFromAngle(
+      orbitalSpeed,
+      angle,
+      randomness: randomness,
+      random: random,
+    );
     return vm.Vector3(baseVelocity.x, baseVelocity.y, zVelocity);
   }
 
@@ -69,21 +84,33 @@ class VectorUtils {
   static vm.Vector3 rotateZ(vm.Vector3 vector, double angle) {
     final cos = math.cos(angle);
     final sin = math.sin(angle);
-    return vm.Vector3(vector.x * cos - vector.y * sin, vector.x * sin + vector.y * cos, vector.z);
+    return vm.Vector3(
+      vector.x * cos - vector.y * sin,
+      vector.x * sin + vector.y * cos,
+      vector.z,
+    );
   }
 
   /// Rotate vector around the Y-axis by angle (in radians)
   static vm.Vector3 rotateY(vm.Vector3 vector, double angle) {
     final cos = math.cos(angle);
     final sin = math.sin(angle);
-    return vm.Vector3(vector.x * cos + vector.z * sin, vector.y, -vector.x * sin + vector.z * cos);
+    return vm.Vector3(
+      vector.x * cos + vector.z * sin,
+      vector.y,
+      -vector.x * sin + vector.z * cos,
+    );
   }
 
   /// Rotate vector around the X-axis by angle (in radians)
   static vm.Vector3 rotateX(vm.Vector3 vector, double angle) {
     final cos = math.cos(angle);
     final sin = math.sin(angle);
-    return vm.Vector3(vector.x, vector.y * cos - vector.z * sin, vector.y * sin + vector.z * cos);
+    return vm.Vector3(
+      vector.x,
+      vector.y * cos - vector.z * sin,
+      vector.y * sin + vector.z * cos,
+    );
   }
 
   /// Generate random unit vector (uniformly distributed on unit sphere)
@@ -107,7 +134,9 @@ class VectorUtils {
   static vm.Vector3 randomVectorInSphere(double radius, [math.Random? random]) {
     final rand = random ?? math.Random();
     final unitVector = randomUnitVector(rand);
-    final r = math.pow(rand.nextDouble(), 1.0 / 3.0) * radius; // Cube root for uniform distribution
+    final r =
+        math.pow(rand.nextDouble(), 1.0 / 3.0) *
+        radius; // Cube root for uniform distribution
     return unitVector * r;
   }
 
@@ -120,7 +149,8 @@ class VectorUtils {
   ]) {
     final rand = random ?? math.Random();
     final angle = rand.nextDouble() * 2 * math.pi;
-    final distance = minDistance + rand.nextDouble() * (maxDistance - minDistance);
+    final distance =
+        minDistance + rand.nextDouble() * (maxDistance - minDistance);
     final height = (rand.nextDouble() - 0.5) * heightRange;
     return positionFromPolar(distance, angle, height);
   }
@@ -136,7 +166,11 @@ class VectorUtils {
   }
 
   /// Clamp vector components to specified ranges
-  static vm.Vector3 clampComponents(vm.Vector3 vector, double minValue, double maxValue) {
+  static vm.Vector3 clampComponents(
+    vm.Vector3 vector,
+    double minValue,
+    double maxValue,
+  ) {
     return vm.Vector3(
       vector.x.clamp(minValue, maxValue),
       vector.y.clamp(minValue, maxValue),
@@ -182,16 +216,28 @@ class VectorUtils {
   /// Convert spherical coordinates (r, theta, phi) to cartesian
   static vm.Vector3 fromSpherical(double r, double theta, double phi) {
     final sinPhi = math.sin(phi);
-    return vm.Vector3(r * sinPhi * math.cos(theta), r * sinPhi * math.sin(theta), r * math.cos(phi));
+    return vm.Vector3(
+      r * sinPhi * math.cos(theta),
+      r * sinPhi * math.sin(theta),
+      r * math.cos(phi),
+    );
   }
 
   /// Check if point is within a sphere
-  static bool isWithinSphere(vm.Vector3 point, vm.Vector3 center, double radius) {
+  static bool isWithinSphere(
+    vm.Vector3 point,
+    vm.Vector3 center,
+    double radius,
+  ) {
     return distanceSquared(point, center) <= radius * radius;
   }
 
   /// Find closest point on a line segment to a given point
-  static vm.Vector3 closestPointOnSegment(vm.Vector3 point, vm.Vector3 segmentStart, vm.Vector3 segmentEnd) {
+  static vm.Vector3 closestPointOnSegment(
+    vm.Vector3 point,
+    vm.Vector3 segmentStart,
+    vm.Vector3 segmentEnd,
+  ) {
     final segment = segmentEnd - segmentStart;
     final pointToStart = point - segmentStart;
 
