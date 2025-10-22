@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/images/app-logo-nobg-trimmed.png" alt="Graviton Logo" width="100" height="100" />
+  <img src="assets/images/graviton-logo-readme.png" alt="Graviton Logo" width="100" height="100" />
   
   # Graviton
   ### Gravitational Physics Simulator

@@ -1,0 +1,42 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f0f1e;stop-opacity:1" />
+    </linearGradient>
+    
+    <radialGradient id="coreGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4f46e5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3730a3;stop-opacity:1" />
+    </radialGradient>
+    
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Transparent background -->
+  <rect width="200" height="200" fill="none"/>
+  
+  <!-- Orbital rings -->
+  <ellipse cx="100" cy="100" rx="70" ry="25" fill="none" stroke="#6366f1" stroke-width="2" opacity="0.3" transform="rotate(30 100 100)"/>
+  <ellipse cx="100" cy="100" rx="70" ry="25" fill="none" stroke="#818cf8" stroke-width="2" opacity="0.4" transform="rotate(-30 100 100)"/>
+  <ellipse cx="100" cy="100" rx="70" ry="25" fill="none" stroke="#a5b4fc" stroke-width="2" opacity="0.3" transform="rotate(90 100 100)"/>
+  
+  <!-- Central core -->
+  <circle cx="100" cy="100" r="30" fill="url(#coreGradient)" filter="url(#glow)"/>
+  
+  <!-- Bright center highlight -->
+  <circle cx="100" cy="100" r="18" fill="#818cf8" opacity="0.8"/>
+  <circle cx="95" cy="95" r="8" fill="#c7d2fe" opacity="0.9"/>
+  
+  <!-- Orbiting particles (static positions) -->
+  <circle cx="170" cy="100" r="5" fill="#818cf8" opacity="0.8"/>
+  <circle cx="30" cy="100" r="4" fill="#a5b4fc" opacity="0.7"/>
+</svg>

@@ -1,7 +1,7 @@
 name: graviton
 description: "A physics simulation exploring gravitational dynamics and orbital mechanics."
 publish_to: "none"
-version: 0.0.1+2
+version: 1.0.0+1
 repository: https://github.com/Chipper-Technologies/graviton
 license: MIT
 
@@ -50,18 +50,11 @@ flutter_launcher_icons:
   remove_alpha_ios: true
 
 flutter_native_splash:
-  color: "#1a1a2e"
-  image: "assets/images/app-logo-nobg.png"
-  color_dark: "#0f0f1e"
-  image_dark: "assets/images/app-logo-nobg.png"
+  color: "#0e091c"
+  image: "assets/images/graviton-logo-transparent.png"
+  color_dark: "#0e091c"
+  image_dark: "assets/images/graviton-logo-transparent.png"
   android_gravity: center
   ios_content_mode: scaleAspectFit
   fullscreen: false
-  android_12:
-    image: "assets/images/app-logo-nobg.png"
-    icon_background_color: "#1a1a2e"
-    color: "#1a1a2e"
-    image_dark: "assets/images/app-logo-nobg.png"
-    icon_background_color_dark: "#0f0f1e"
-    color_dark: "#0f0f1e"
   web: false

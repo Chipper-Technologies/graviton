@@ -47,14 +47,14 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>https</string>
-		<string>http</string>
-		<string>itms-apps</string>
-		<string>mailto</string>
-	</array>
-</dict>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false/>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>https</string>
+			<string>http</string>
+			<string>itms-apps</string>
+			<string>mailto</string>
+		</array>
+	</dict>
 </plist>
