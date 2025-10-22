@@ -38,7 +38,11 @@ void main() {
     group('Collision Detection', () {
       test('should detect collision when bodies are very close', () {
         // Move bodies very close together
-        body2.position = vm.Vector3(TestConstants.testCollisionRadius * 0.5, 0, 0);
+        body2.position = vm.Vector3(
+          TestConstants.testCollisionRadius * 0.5,
+          0,
+          0,
+        );
 
         final colliding = CollisionUtils.areColliding(body1, body2);
 
@@ -52,7 +56,10 @@ void main() {
       });
 
       test('should calculate collision distance correctly', () {
-        final distance = CollisionUtils.calculateCollisionDistance(body1, body2);
+        final distance = CollisionUtils.calculateCollisionDistance(
+          body1,
+          body2,
+        );
 
         expect(distance, closeTo(1.0, TestConstants.physicsTestTolerance));
       });
@@ -74,7 +81,10 @@ void main() {
 
         // Should detect collision between body1 and body3
         expect(collisions, hasLength(1));
-        expect(collisions[0], containsAll([0, 2])); // Indices of body1 and body3
+        expect(
+          collisions[0],
+          containsAll([0, 2]),
+        ); // Indices of body1 and body3
       });
 
       test('should return empty list when no collisions', () {
@@ -89,7 +99,10 @@ void main() {
       test('should merge bodies conserving mass', () {
         final merged = CollisionUtils.mergeBodies(body1, body2);
 
-        expect(merged.mass, closeTo(3.0, TestConstants.physicsTestTolerance)); // 1.0 + 2.0
+        expect(
+          merged.mass,
+          closeTo(3.0, TestConstants.physicsTestTolerance),
+        ); // 1.0 + 2.0
       });
 
       test('should merge bodies conserving momentum', () {
@@ -97,18 +110,36 @@ void main() {
 
         // Initial momentum: 1*1 + 2*(-1) = -1 in x direction
         // Final velocity: -1/3 in x direction
-        expect(merged.velocity.x, closeTo(-1.0 / 3.0, TestConstants.momentumTestTolerance));
-        expect(merged.velocity.y, closeTo(0.0, TestConstants.physicsTestTolerance));
-        expect(merged.velocity.z, closeTo(0.0, TestConstants.physicsTestTolerance));
+        expect(
+          merged.velocity.x,
+          closeTo(-1.0 / 3.0, TestConstants.momentumTestTolerance),
+        );
+        expect(
+          merged.velocity.y,
+          closeTo(0.0, TestConstants.physicsTestTolerance),
+        );
+        expect(
+          merged.velocity.z,
+          closeTo(0.0, TestConstants.physicsTestTolerance),
+        );
       });
 
       test('should place merged body at center of mass', () {
         final merged = CollisionUtils.mergeBodies(body1, body2);
 
         // Center of mass: (1*0 + 2*1) / (1+2) = 2/3
-        expect(merged.position.x, closeTo(2.0 / 3.0, TestConstants.physicsTestTolerance));
-        expect(merged.position.y, closeTo(0.0, TestConstants.physicsTestTolerance));
-        expect(merged.position.z, closeTo(0.0, TestConstants.physicsTestTolerance));
+        expect(
+          merged.position.x,
+          closeTo(2.0 / 3.0, TestConstants.physicsTestTolerance),
+        );
+        expect(
+          merged.position.y,
+          closeTo(0.0, TestConstants.physicsTestTolerance),
+        );
+        expect(
+          merged.position.z,
+          closeTo(0.0, TestConstants.physicsTestTolerance),
+        );
       });
 
       test('should give merged body properties of more massive body', () {
@@ -145,7 +176,10 @@ void main() {
 
         final merged = CollisionUtils.mergeBodies(star1, star2);
 
-        expect(merged.stellarLuminosity, closeTo(3.0, TestConstants.physicsTestTolerance));
+        expect(
+          merged.stellarLuminosity,
+          closeTo(3.0, TestConstants.physicsTestTolerance),
+        );
       });
 
       test('should handle planet flag correctly', () {
@@ -154,7 +188,10 @@ void main() {
 
         final merged = CollisionUtils.mergeBodies(body1, body2);
 
-        expect(merged.isPlanet, isTrue); // Should be true if either was a planet
+        expect(
+          merged.isPlanet,
+          isTrue,
+        ); // Should be true if either was a planet
       });
     });
 
@@ -163,24 +200,42 @@ void main() {
         final flash = CollisionUtils.createMergeFlash(body1, body2);
 
         // Center of mass position
-        expect(flash.position.x, closeTo(2.0 / 3.0, TestConstants.physicsTestTolerance));
-        expect(flash.position.y, closeTo(0.0, TestConstants.physicsTestTolerance));
-        expect(flash.position.z, closeTo(0.0, TestConstants.physicsTestTolerance));
+        expect(
+          flash.position.x,
+          closeTo(2.0 / 3.0, TestConstants.physicsTestTolerance),
+        );
+        expect(
+          flash.position.y,
+          closeTo(0.0, TestConstants.physicsTestTolerance),
+        );
+        expect(
+          flash.position.z,
+          closeTo(0.0, TestConstants.physicsTestTolerance),
+        );
       });
 
       test('should use color of more massive body', () {
         final flash = CollisionUtils.createMergeFlash(body1, body2);
 
-        expect(flash.color, equals(AppColors.basicBlue)); // Body2 is more massive
+        expect(
+          flash.color,
+          equals(AppColors.basicBlue),
+        ); // Body2 is more massive
       });
     });
 
     group('Impact Calculations', () {
       test('should calculate impact velocity correctly', () {
-        final impactVelocity = CollisionUtils.calculateImpactVelocity(body1, body2);
+        final impactVelocity = CollisionUtils.calculateImpactVelocity(
+          body1,
+          body2,
+        );
 
         // Relative velocity magnitude: |(-1) - 1| = 2
-        expect(impactVelocity, closeTo(2.0, TestConstants.physicsTestTolerance));
+        expect(
+          impactVelocity,
+          closeTo(2.0, TestConstants.physicsTestTolerance),
+        );
       });
 
       test('should calculate reduced mass correctly', () {
@@ -241,8 +296,14 @@ void main() {
         final result = CollisionUtils.calculateElasticCollision(body1, body2);
 
         // Velocities should remain unchanged for separating motion
-        expect(result['velocity1']!.x, closeTo(-1.0, TestConstants.physicsTestTolerance));
-        expect(result['velocity2']!.x, closeTo(1.0, TestConstants.physicsTestTolerance));
+        expect(
+          result['velocity1']!.x,
+          closeTo(-1.0, TestConstants.physicsTestTolerance),
+        );
+        expect(
+          result['velocity2']!.x,
+          closeTo(1.0, TestConstants.physicsTestTolerance),
+        );
       });
     });
 
@@ -273,16 +334,26 @@ void main() {
 
         final merged = CollisionUtils.mergeBodies(body1, body2);
 
-        final energyLoss = CollisionUtils.calculateEnergyLoss(bodyBefore1, bodyBefore2, merged);
+        final energyLoss = CollisionUtils.calculateEnergyLoss(
+          bodyBefore1,
+          bodyBefore2,
+          merged,
+        );
 
-        expect(energyLoss, greaterThanOrEqualTo(0)); // Energy should be lost in inelastic collision
+        expect(
+          energyLoss,
+          greaterThanOrEqualTo(0),
+        ); // Energy should be lost in inelastic collision
       });
 
       test('should check if collision is energetically favorable', () {
         // Place bodies close together
         body2.position = vm.Vector3(0.1, 0, 0);
 
-        final favorable = CollisionUtils.isCollisionEnergeticallyFavorable(body1, body2);
+        final favorable = CollisionUtils.isCollisionEnergeticallyFavorable(
+          body1,
+          body2,
+        );
 
         expect(favorable, isA<bool>());
       });
@@ -313,7 +384,10 @@ void main() {
         body2.velocity = vm.Vector3(-1, 0, 0);
         body2.position = vm.Vector3(2, 0, 0); // Far enough apart
 
-        final timeToCollision = CollisionUtils.calculateTimeToCollision(body1, body2);
+        final timeToCollision = CollisionUtils.calculateTimeToCollision(
+          body1,
+          body2,
+        );
 
         expect(timeToCollision, isNotNull);
         expect(timeToCollision!, greaterThan(0));
@@ -324,7 +398,10 @@ void main() {
         body1.velocity = vm.Vector3(-1, 0, 0);
         body2.velocity = vm.Vector3(1, 0, 0);
 
-        final timeToCollision = CollisionUtils.calculateTimeToCollision(body1, body2);
+        final timeToCollision = CollisionUtils.calculateTimeToCollision(
+          body1,
+          body2,
+        );
 
         expect(timeToCollision, isNull);
       });
@@ -334,7 +411,10 @@ void main() {
         body1.velocity = vm.Vector3(1, 0, 0);
         body2.velocity = vm.Vector3(1, 0, 0);
 
-        final timeToCollision = CollisionUtils.calculateTimeToCollision(body1, body2);
+        final timeToCollision = CollisionUtils.calculateTimeToCollision(
+          body1,
+          body2,
+        );
 
         expect(timeToCollision, isNull);
       });
@@ -359,7 +439,10 @@ void main() {
           stellarLuminosity: body1.stellarLuminosity,
         );
 
-        expect(() => CollisionUtils.mergeBodies(body1, identicalBody), returnsNormally);
+        expect(
+          () => CollisionUtils.mergeBodies(body1, identicalBody),
+          returnsNormally,
+        );
       });
 
       test('should handle bodies with zero radius', () {
@@ -367,7 +450,10 @@ void main() {
         body2.radius = 0.0;
 
         final colliding = CollisionUtils.areColliding(body1, body2);
-        expect(colliding, isFalse); // Should not collide with zero collision radius
+        expect(
+          colliding,
+          isFalse,
+        ); // Should not collide with zero collision radius
       });
     });
   });

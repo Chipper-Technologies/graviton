@@ -13,17 +13,23 @@ void main() {
       final testAppState = AppState();
       await testAppState.initializeAsync();
       await tester.pumpWidget(GravitonApp(appState: testAppState));
-      await tester.pump(const Duration(milliseconds: 100)); // Use pump instead of pumpAndSettle
+      await tester.pump(
+        const Duration(milliseconds: 100),
+      ); // Use pump instead of pumpAndSettle
 
       expect(find.byType(MaterialApp), findsOneWidget);
       expect(find.byType(ChangeNotifierProvider<AppState>), findsOneWidget);
     });
 
-    testWidgets('App should display home screen with simulation canvas', (tester) async {
+    testWidgets('App should display home screen with simulation canvas', (
+      tester,
+    ) async {
       final testAppState = AppState();
       await testAppState.initializeAsync();
       await tester.pumpWidget(GravitonApp(appState: testAppState));
-      await tester.pump(const Duration(milliseconds: 100)); // Use pump instead of pumpAndSettle
+      await tester.pump(
+        const Duration(milliseconds: 100),
+      ); // Use pump instead of pumpAndSettle
 
       // Should find the main simulation canvas (CustomPaint)
       expect(find.byType(CustomPaint), findsWidgets);
@@ -93,7 +99,9 @@ void main() {
       // Find UI toggle buttons/controls
       final toggleButtonsFinder = find.byType(ToggleButtons);
       if (toggleButtonsFinder.evaluate().isNotEmpty) {
-        final toggleButtons = tester.widget<ToggleButtons>(toggleButtonsFinder.first);
+        final toggleButtons = tester.widget<ToggleButtons>(
+          toggleButtonsFinder.first,
+        );
         expect(toggleButtons.children, isNotEmpty);
       }
     });
@@ -152,7 +160,9 @@ void main() {
 
         // Test scale gesture (zoom) - this is harder to test directly
         // We'll just verify the gesture detector is present and has some gesture handling
-        final gestureDetector = tester.widget<GestureDetector>(mainGestureDetector);
+        final gestureDetector = tester.widget<GestureDetector>(
+          mainGestureDetector,
+        );
         expect(gestureDetector, isNotNull);
       }
     });
@@ -180,7 +190,10 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
 
       // Simulation should have advanced
-      expect(appState.simulation.stepCount, greaterThanOrEqualTo(initialStepCount));
+      expect(
+        appState.simulation.stepCount,
+        greaterThanOrEqualTo(initialStepCount),
+      );
       expect(appState.simulation.totalTime, greaterThanOrEqualTo(initialTime));
     });
 
@@ -207,7 +220,10 @@ void main() {
 
       expect(appState.simulation.stepCount, equals(0));
       expect(appState.simulation.totalTime, equals(0.0));
-      expect(appState.simulation.bodies, hasLength(4)); // Should still have bodies
+      expect(
+        appState.simulation.bodies,
+        hasLength(4),
+      ); // Should still have bodies
     });
 
     testWidgets('Multiple locales should be supported', (tester) async {
@@ -283,7 +299,9 @@ void main() {
       expect(appState.lastError, isNull);
     });
 
-    testWidgets('Performance - App should handle rapid updates', (tester) async {
+    testWidgets('Performance - App should handle rapid updates', (
+      tester,
+    ) async {
       final testAppState = AppState();
       await testAppState.initializeAsync();
       await tester.pumpWidget(GravitonApp(appState: testAppState));

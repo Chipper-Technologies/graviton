@@ -28,8 +28,12 @@ void main() {
     }
 
     group('Rendering', () {
-      testWidgets('Should display stats overlay with default values', (tester) async {
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+      testWidgets('Should display stats overlay with default values', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         expect(find.byType(StatsOverlay), findsOneWidget);
         expect(find.byType(Positioned), findsOneWidget);
@@ -39,7 +43,9 @@ void main() {
       });
 
       testWidgets('Should display simulation stats text', (tester) async {
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         expect(find.text('Simulation Stats'), findsOneWidget);
         expect(find.textContaining('Steps:'), findsOneWidget);
@@ -52,7 +58,9 @@ void main() {
         // Modify simulation state
         appState.simulation.step(1.0 / 60.0); // Advance one step
 
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         expect(find.textContaining('Bodies: 4'), findsOneWidget);
         expect(find.textContaining('Speed: 1.0x'), findsOneWidget);
@@ -64,7 +72,9 @@ void main() {
         // Set specific opacity
         appState.ui.setUIOpacity(0.5);
 
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         final opacityWidget = tester.widget<Opacity>(find.byType(Opacity));
         expect(opacityWidget.opacity, equals(0.5));
@@ -73,7 +83,9 @@ void main() {
       testWidgets('Should handle zero opacity', (tester) async {
         appState.ui.setUIOpacity(0.0); // Minimum allowed by clamp
 
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         final opacityWidget = tester.widget<Opacity>(find.byType(Opacity));
         expect(opacityWidget.opacity, equals(0.0));
@@ -82,7 +94,9 @@ void main() {
       testWidgets('Should handle full opacity', (tester) async {
         appState.ui.setUIOpacity(1.0);
 
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         final opacityWidget = tester.widget<Opacity>(find.byType(Opacity));
         expect(opacityWidget.opacity, equals(1.0));
@@ -91,7 +105,9 @@ void main() {
 
     group('Positioning', () {
       testWidgets('Should be positioned in top-left corner', (tester) async {
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         final positioned = tester.widget<Positioned>(find.byType(Positioned));
         expect(positioned.top, equals(16));
@@ -103,7 +119,9 @@ void main() {
 
     group('Styling', () {
       testWidgets('Should have proper container styling', (tester) async {
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         final container = tester.widget<Container>(find.byType(Container));
         final decoration = container.decoration as BoxDecoration;
@@ -114,7 +132,9 @@ void main() {
       });
 
       testWidgets('Should have proper text styles', (tester) async {
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         // Find title text widget
         final titleFinder = find.text('Simulation Stats');
@@ -200,8 +220,12 @@ void main() {
     });
 
     group('Dynamic Updates', () {
-      testWidgets('Should update when simulation state changes', (tester) async {
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+      testWidgets('Should update when simulation state changes', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         // Get initial body count
         final initialBodies = appState.simulation.bodies.length;
@@ -211,7 +235,9 @@ void main() {
       }, skip: true);
 
       testWidgets('Should update when time scale changes', (tester) async {
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         // Initial speed - speedFormatted adds "x" suffix
         expect(find.textContaining('Speed: 1.0x'), findsOneWidget);
@@ -224,7 +250,9 @@ void main() {
       testWidgets('Should handle empty simulation', (tester) async {
         appState.simulation.bodies.clear();
 
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         expect(find.textContaining('Bodies: 0'), findsOneWidget);
         expect(find.byType(StatsOverlay), findsOneWidget);
@@ -236,7 +264,9 @@ void main() {
           appState.simulation.step(0.1);
         }
 
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         // Should display some large step count
         expect(find.textContaining('Steps:'), findsOneWidget);
@@ -247,19 +277,29 @@ void main() {
         // This shouldn't happen in normal usage, but test defensive programming
         appState.ui.setUIOpacity(-0.1);
 
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         final opacityWidget = tester.widget<Opacity>(find.byType(Opacity));
-        expect(opacityWidget.opacity, equals(0.0)); // Should be clamped to minimum (0.0)
+        expect(
+          opacityWidget.opacity,
+          equals(0.0),
+        ); // Should be clamped to minimum (0.0)
       });
 
       testWidgets('Should handle opacity greater than 1.0', (tester) async {
         appState.ui.setUIOpacity(1.5);
 
-        await tester.pumpWidget(createTestWidget(child: StatsOverlay(appState: appState)));
+        await tester.pumpWidget(
+          createTestWidget(child: StatsOverlay(appState: appState)),
+        );
 
         final opacityWidget = tester.widget<Opacity>(find.byType(Opacity));
-        expect(opacityWidget.opacity, equals(1.0)); // Should be clamped to maximum
+        expect(
+          opacityWidget.opacity,
+          equals(1.0),
+        ); // Should be clamped to maximum
       });
     });
   });

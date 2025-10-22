@@ -85,13 +85,18 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CustomPaint(painter: painter, child: const SizedBox(width: 800, height: 600)),
+              body: CustomPaint(
+                painter: painter,
+                child: const SizedBox(width: 800, height: 600),
+              ),
             ),
           ),
         );
 
         // Find the specific CustomPaint with our painter
-        final customPaints = tester.widgetList<CustomPaint>(find.byType(CustomPaint));
+        final customPaints = tester.widgetList<CustomPaint>(
+          find.byType(CustomPaint),
+        );
         expect(customPaints.any((cp) => cp.painter == painter), isTrue);
       });
 
@@ -114,13 +119,18 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CustomPaint(painter: emptyPainter, child: const SizedBox(width: 800, height: 600)),
+              body: CustomPaint(
+                painter: emptyPainter,
+                child: const SizedBox(width: 800, height: 600),
+              ),
             ),
           ),
         );
 
         // Find the specific CustomPaint with our painter
-        final customPaints = tester.widgetList<CustomPaint>(find.byType(CustomPaint));
+        final customPaints = tester.widgetList<CustomPaint>(
+          find.byType(CustomPaint),
+        );
         expect(customPaints.any((cp) => cp.painter == emptyPainter), isTrue);
       });
 
@@ -129,13 +139,18 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CustomPaint(painter: painter, child: const SizedBox(width: 1, height: 1)),
+              body: CustomPaint(
+                painter: painter,
+                child: const SizedBox(width: 1, height: 1),
+              ),
             ),
           ),
         );
 
         // Find the specific CustomPaint with our painter
-        final customPaints = tester.widgetList<CustomPaint>(find.byType(CustomPaint));
+        final customPaints = tester.widgetList<CustomPaint>(
+          find.byType(CustomPaint),
+        );
         expect(customPaints.any((cp) => cp.painter == painter), isTrue);
       });
 
@@ -154,14 +169,22 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CustomPaint(painter: nullStarsPainter, child: const SizedBox(width: 800, height: 600)),
+              body: CustomPaint(
+                painter: nullStarsPainter,
+                child: const SizedBox(width: 800, height: 600),
+              ),
             ),
           ),
         );
 
         // Find the specific CustomPaint with our painter
-        final customPaints = tester.widgetList<CustomPaint>(find.byType(CustomPaint));
-        expect(customPaints.any((cp) => cp.painter == nullStarsPainter), isTrue);
+        final customPaints = tester.widgetList<CustomPaint>(
+          find.byType(CustomPaint),
+        );
+        expect(
+          customPaints.any((cp) => cp.painter == nullStarsPainter),
+          isTrue,
+        );
       });
     });
 
@@ -183,7 +206,8 @@ void main() {
       });
 
       test('Should repaint when view matrix changes', () {
-        final newViewMatrix = vm.Matrix4.identity()..translateByVector3(vm.Vector3(10.0, 0.0, 0.0));
+        final newViewMatrix = vm.Matrix4.identity()
+          ..translateByVector3(vm.Vector3(10.0, 0.0, 0.0));
         final newPainter = GravitonPainter(
           sim: simulation,
           view: newViewMatrix,
@@ -199,7 +223,8 @@ void main() {
       });
 
       test('Should repaint when projection matrix changes', () {
-        final newProjMatrix = vm.Matrix4.identity()..scaleByVector3(vm.Vector3(2.0, 2.0, 2.0));
+        final newProjMatrix = vm.Matrix4.identity()
+          ..scaleByVector3(vm.Vector3(2.0, 2.0, 2.0));
         final newPainter = GravitonPainter(
           sim: simulation,
           view: viewMatrix,
@@ -263,7 +288,9 @@ void main() {
     });
 
     group('Edge Cases', () {
-      testWidgets('Should handle extreme matrix transformations', (tester) async {
+      testWidgets('Should handle extreme matrix transformations', (
+        tester,
+      ) async {
         final extremeView = vm.Matrix4.identity()
           ..translateByVector3(vm.Vector3(1000.0, 1000.0, 1000.0))
           ..rotateX(math.pi)
@@ -283,13 +310,18 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CustomPaint(painter: extremePainter, child: const SizedBox(width: 800, height: 600)),
+              body: CustomPaint(
+                painter: extremePainter,
+                child: const SizedBox(width: 800, height: 600),
+              ),
             ),
           ),
         );
 
         // Find the specific CustomPaint with our painter
-        final customPaints = tester.widgetList<CustomPaint>(find.byType(CustomPaint));
+        final customPaints = tester.widgetList<CustomPaint>(
+          find.byType(CustomPaint),
+        );
         expect(customPaints.any((cp) => cp.painter == extremePainter), isTrue);
       });
 
@@ -312,7 +344,9 @@ void main() {
         for (int i = 0; i < simulation.bodies.length; i++) {
           simulation.trails.add([]);
           for (int j = 0; j < 100; j++) {
-            simulation.trails[i].add(TrailPoint(vm.Vector3(j.toDouble(), 0, 0), 1.0));
+            simulation.trails[i].add(
+              TrailPoint(vm.Vector3(j.toDouble(), 0, 0), 1.0),
+            );
           }
         }
 
@@ -330,20 +364,30 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CustomPaint(painter: manyBodiesPainter, child: const SizedBox(width: 800, height: 600)),
+              body: CustomPaint(
+                painter: manyBodiesPainter,
+                child: const SizedBox(width: 800, height: 600),
+              ),
             ),
           ),
         );
 
         // Find the specific CustomPaint with our painter
-        final customPaints = tester.widgetList<CustomPaint>(find.byType(CustomPaint));
-        expect(customPaints.any((cp) => cp.painter == manyBodiesPainter), isTrue);
+        final customPaints = tester.widgetList<CustomPaint>(
+          find.byType(CustomPaint),
+        );
+        expect(
+          customPaints.any((cp) => cp.painter == manyBodiesPainter),
+          isTrue,
+        );
       });
 
       testWidgets('Should handle many merge flashes', (tester) async {
         // Add many merge flashes
         for (int i = 0; i < 50; i++) {
-          simulation.mergeFlashes.add(MergeFlash(vm.Vector3(i.toDouble(), 0, 0), AppColors.basicRed));
+          simulation.mergeFlashes.add(
+            MergeFlash(vm.Vector3(i.toDouble(), 0, 0), AppColors.basicRed),
+          );
         }
 
         final manyFlashesPainter = GravitonPainter(
@@ -360,14 +404,22 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CustomPaint(painter: manyFlashesPainter, child: const SizedBox(width: 800, height: 600)),
+              body: CustomPaint(
+                painter: manyFlashesPainter,
+                child: const SizedBox(width: 800, height: 600),
+              ),
             ),
           ),
         );
 
         // Find the specific CustomPaint with our painter
-        final customPaints = tester.widgetList<CustomPaint>(find.byType(CustomPaint));
-        expect(customPaints.any((cp) => cp.painter == manyFlashesPainter), isTrue);
+        final customPaints = tester.widgetList<CustomPaint>(
+          find.byType(CustomPaint),
+        );
+        expect(
+          customPaints.any((cp) => cp.painter == manyFlashesPainter),
+          isTrue,
+        );
       });
 
       testWidgets('Should handle all display options enabled', (tester) async {
@@ -395,10 +447,15 @@ void main() {
         );
 
         // Add some merge flashes
-        simulation.mergeFlashes.add(MergeFlash(vm.Vector3(0, 0, -20), AppColors.basicRed, age: 0.5));
+        simulation.mergeFlashes.add(
+          MergeFlash(vm.Vector3(0, 0, -20), AppColors.basicRed, age: 0.5),
+        );
 
         // Add some trails
-        simulation.trails.add([TrailPoint(vm.Vector3(0, 0, -20), 1.0), TrailPoint(vm.Vector3(1, 0, -20), 0.8)]);
+        simulation.trails.add([
+          TrailPoint(vm.Vector3(0, 0, -20), 1.0),
+          TrailPoint(vm.Vector3(1, 0, -20), 0.8),
+        ]);
 
         final fullFeaturesPainter = GravitonPainter(
           sim: simulation,
@@ -417,14 +474,22 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: CustomPaint(painter: fullFeaturesPainter, child: const SizedBox(width: 800, height: 600)),
+              body: CustomPaint(
+                painter: fullFeaturesPainter,
+                child: const SizedBox(width: 800, height: 600),
+              ),
             ),
           ),
         );
 
         // Find the specific CustomPaint with our painter
-        final customPaints = tester.widgetList<CustomPaint>(find.byType(CustomPaint));
-        expect(customPaints.any((cp) => cp.painter == fullFeaturesPainter), isTrue);
+        final customPaints = tester.widgetList<CustomPaint>(
+          find.byType(CustomPaint),
+        );
+        expect(
+          customPaints.any((cp) => cp.painter == fullFeaturesPainter),
+          isTrue,
+        );
       });
     });
 

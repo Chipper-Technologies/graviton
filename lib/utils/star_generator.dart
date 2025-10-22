@@ -17,7 +17,10 @@ class StarData {
 /// Utility class for generating background stars
 class StarGenerator {
   /// Generates a spherical distribution of stars for the background with enhanced visual properties
-  static List<StarData> generateStars(int count, {double radius = RenderingConstants.starDefaultRadius}) {
+  static List<StarData> generateStars(
+    int count, {
+    double radius = RenderingConstants.starDefaultRadius,
+  }) {
     final rnd = math.Random(); // Remove fixed seed for randomness
     final stars = <StarData>[];
 
@@ -46,7 +49,9 @@ class StarGenerator {
       final position = vm.Vector3(x, y, z) * radius;
 
       // Vary star properties for realism
-      final size = RenderingConstants.starSize * (0.3 + rnd.nextDouble() * 1.7); // 0.3x to 2x base size
+      final size =
+          RenderingConstants.starSize *
+          (0.3 + rnd.nextDouble() * 1.7); // 0.3x to 2x base size
       final brightness = 0.3 + rnd.nextDouble() * 0.7; // 30% to 100% brightness
       final color = starColors[rnd.nextInt(starColors.length)];
 
@@ -57,7 +62,10 @@ class StarGenerator {
   }
 
   /// Generates a spherical distribution of simple stars (backward compatibility)
-  static List<vm.Vector3> generateSimpleStars(int count, {double radius = RenderingConstants.starDefaultRadius}) {
+  static List<vm.Vector3> generateSimpleStars(
+    int count, {
+    double radius = RenderingConstants.starDefaultRadius,
+  }) {
     final rnd = math.Random();
     final stars = <vm.Vector3>[];
 

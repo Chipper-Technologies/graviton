@@ -22,7 +22,13 @@ class BackgroundPainter {
 
   /// Draw spherical gradient background that wraps around the 3D scene like the starfield
   /// Creates gradient sources positioned in 3D space that get projected to screen
-  static void drawSphericalSpaceBackground(Canvas canvas, Size size, vm.Matrix4 vp, vm.Matrix4 view, [int? seed]) {
+  static void drawSphericalSpaceBackground(
+    Canvas canvas,
+    Size size,
+    vm.Matrix4 vp,
+    vm.Matrix4 view, [
+    int? seed,
+  ]) {
     final time = DateTime.now().millisecondsSinceEpoch / 1000.0;
     final backgroundSeed = seed ?? 42;
 
@@ -32,7 +38,12 @@ class BackgroundPainter {
 
   /// Create a beautiful animated space gradient with flowing colors
   /// Uses seed to create unique patterns that change with each simulation
-  static void _drawAnimatedSpaceGradient(Canvas canvas, Size size, double time, int seed) {
+  static void _drawAnimatedSpaceGradient(
+    Canvas canvas,
+    Size size,
+    double time,
+    int seed,
+  ) {
     // Use theme colors for deep space background palette with enhanced vibrant purples
     final spaceColors = [
       AppColors.backgroundDeepBlue,
@@ -64,23 +75,45 @@ class BackgroundPainter {
     final seedOffset2 = random.nextDouble() * 8;
     final seedOffset3 = random.nextDouble() * 12;
     final speedMultiplier = 0.8 + random.nextDouble() * 0.4; // Speed variation
-    final colorShift = random.nextInt(spaceColors.length); // Starting color offset
+    final colorShift = random.nextInt(
+      spaceColors.length,
+    ); // Starting color offset
 
     // Create multiple animated radial gradient layers for organic, flowing motion
     for (int layer = 0; layer < 4; layer++) {
-      final layerTime = time * (0.08 + layer * 0.03) * speedMultiplier; // Unique speed per sim
+      final layerTime =
+          time *
+          (0.08 + layer * 0.03) *
+          speedMultiplier; // Unique speed per sim
       final layerAlpha = 0.6 - (layer * 0.1);
-      final layerSeedOffset = random.nextDouble() * 5; // Unique offset per layer
+      final layerSeedOffset =
+          random.nextDouble() * 5; // Unique offset per layer
 
       // Smoothly cycle through colors over time with seed-based variation
-      final colorIndex1 = ((layerTime * 0.25 + layer * 2.1 + seedOffset1) % spaceColors.length).floor();
-      final colorIndex2 = ((layerTime * 0.18 + layer * 1.7 + seedOffset2 + 3) % spaceColors.length).floor();
-      final colorIndex3 = ((layerTime * 0.22 + layer * 2.3 + seedOffset3 + 5) % spaceColors.length).floor();
+      final colorIndex1 =
+          ((layerTime * 0.25 + layer * 2.1 + seedOffset1) % spaceColors.length)
+              .floor();
+      final colorIndex2 =
+          ((layerTime * 0.18 + layer * 1.7 + seedOffset2 + 3) %
+                  spaceColors.length)
+              .floor();
+      final colorIndex3 =
+          ((layerTime * 0.22 + layer * 2.3 + seedOffset3 + 5) %
+                  spaceColors.length)
+              .floor();
 
       // Smooth interpolation factors for color blending with seed variation
-      final blend1 = (math.sin(layerTime * 0.3 + layer * 1.4 + layerSeedOffset) * 0.5 + 0.5);
-      final blend2 = (math.cos(layerTime * 0.35 + layer * 0.9 + layerSeedOffset * 1.3) * 0.5 + 0.5);
-      final blend3 = (math.sin(layerTime * 0.28 + layer * 1.8 + layerSeedOffset * 0.8) * 0.5 + 0.5);
+      final blend1 =
+          (math.sin(layerTime * 0.3 + layer * 1.4 + layerSeedOffset) * 0.5 +
+          0.5);
+      final blend2 =
+          (math.cos(layerTime * 0.35 + layer * 0.9 + layerSeedOffset * 1.3) *
+              0.5 +
+          0.5);
+      final blend3 =
+          (math.sin(layerTime * 0.28 + layer * 1.8 + layerSeedOffset * 0.8) *
+              0.5 +
+          0.5);
 
       // Create interpolated colors with seed-based color shift
       final color1 = Color.lerp(
@@ -103,11 +136,14 @@ class BackgroundPainter {
 
       // Create organic, flowing radial gradients with seed-based positioning
       // Animate center position in smooth, circular patterns with unique offsets
-      final centerX = 0.5 + math.sin(layerTime * 0.15 + layer * 1.3 + seedOffset1) * 0.4;
-      final centerY = 0.5 + math.cos(layerTime * 0.12 + layer * 0.8 + seedOffset2) * 0.3;
+      final centerX =
+          0.5 + math.sin(layerTime * 0.15 + layer * 1.3 + seedOffset1) * 0.4;
+      final centerY =
+          0.5 + math.cos(layerTime * 0.12 + layer * 0.8 + seedOffset2) * 0.3;
 
       // Animate radius for breathing effect with seed variation
-      final baseRadius = 0.8 + math.sin(layerTime * 0.2 + layer * 1.1 + seedOffset3) * 0.3;
+      final baseRadius =
+          0.8 + math.sin(layerTime * 0.2 + layer * 1.1 + seedOffset3) * 0.3;
 
       // Create multiple overlapping radial gradients for organic patterns
       final radialGradient1 = Paint()
@@ -128,9 +164,16 @@ class BackgroundPainter {
 
       // Add a second offset radial gradient for more complexity with seed variation
       final offset = layer * 0.3 + layerSeedOffset;
-      final centerX2 = 0.5 + math.cos(layerTime * 0.18 + layer * 2.1 + offset + seedOffset2) * 0.35;
-      final centerY2 = 0.5 + math.sin(layerTime * 0.14 + layer * 1.6 + offset + seedOffset3) * 0.25;
-      final radius2 = 0.6 + math.cos(layerTime * 0.25 + layer * 0.7 + seedOffset1) * 0.2;
+      final centerX2 =
+          0.5 +
+          math.cos(layerTime * 0.18 + layer * 2.1 + offset + seedOffset2) *
+              0.35;
+      final centerY2 =
+          0.5 +
+          math.sin(layerTime * 0.14 + layer * 1.6 + offset + seedOffset3) *
+              0.25;
+      final radius2 =
+          0.6 + math.cos(layerTime * 0.25 + layer * 0.7 + seedOffset1) * 0.2;
 
       final radialGradient2 = Paint()
         ..blendMode = BlendMode.softLight
@@ -151,7 +194,14 @@ class BackgroundPainter {
 
   /// Create spherical gradient sources positioned in 3D space that wrap around the scene
   /// Similar to how stars are positioned on a sphere but for gradient color sources
-  static void _drawSphericalGradients(Canvas canvas, Size size, vm.Matrix4 vp, vm.Matrix4 view, double time, int seed) {
+  static void _drawSphericalGradients(
+    Canvas canvas,
+    Size size,
+    vm.Matrix4 vp,
+    vm.Matrix4 view,
+    double time,
+    int seed,
+  ) {
     // Use theme colors for deep space background palette
     final spaceColors = [
       AppColors.backgroundDeepBlue,
@@ -181,11 +231,20 @@ class BackgroundPainter {
     final random = math.Random(seed);
 
     // Create gradient sources using theme constants
-    for (int source = 0; source < RenderingConstants.sphericalGradientSourceCount; source++) {
+    for (
+      int source = 0;
+      source < RenderingConstants.sphericalGradientSourceCount;
+      source++
+    ) {
       // Use deterministic positioning based on source index for stability
-      final phi = (source * 2.39996322972865332) % (2 * math.pi); // Golden angle for even distribution
+      final phi =
+          (source * 2.39996322972865332) %
+          (2 * math.pi); // Golden angle for even distribution
       final theta = math.acos(
-        1 - 2 * (source + 0.5) / RenderingConstants.sphericalGradientSourceCount,
+        1 -
+            2 *
+                (source + 0.5) /
+                RenderingConstants.sphericalGradientSourceCount,
       ); // Even latitude distribution
 
       final x = math.sin(theta) * math.cos(phi);
@@ -193,7 +252,9 @@ class BackgroundPainter {
       final z = math.cos(theta);
 
       // Position the gradient source using theme radius
-      final basePosition = vm.Vector3(x, y, z) * RenderingConstants.sphericalGradientSourceRadius;
+      final basePosition =
+          vm.Vector3(x, y, z) *
+          RenderingConstants.sphericalGradientSourceRadius;
 
       // Add subtle animation with seed-based phase offset using theme scale
       final phaseOffset = random.nextDouble() * math.pi * 2;
@@ -220,8 +281,13 @@ class BackgroundPainter {
       final colorIndex2 = (source * 3 + 2) % spaceColors.length;
 
       // Create slow color animation
-      final colorBlend = (math.sin(time * 0.1 + source * 0.8 + phaseOffset) * 0.5 + 0.5);
-      final sourceColor = Color.lerp(spaceColors[colorIndex1], spaceColors[colorIndex2], colorBlend)!;
+      final colorBlend =
+          (math.sin(time * 0.1 + source * 0.8 + phaseOffset) * 0.5 + 0.5);
+      final sourceColor = Color.lerp(
+        spaceColors[colorIndex1],
+        spaceColors[colorIndex2],
+        colorBlend,
+      )!;
 
       // Calculate visibility based on camera direction using theme constants
       final cameraForward = vm.Vector3(view[2], view[6], view[10]).normalized();
@@ -242,29 +308,45 @@ class BackgroundPainter {
       } else {
         // For sources behind camera, project them to screen edges smoothly
         final screenX = size.width * 0.5 + sourceDirection.x * size.width * 0.3;
-        final screenY = size.height * 0.5 + sourceDirection.y * size.height * 0.3;
+        final screenY =
+            size.height * 0.5 + sourceDirection.y * size.height * 0.3;
         center = Offset(screenX, screenY);
       }
 
       // Large, overlapping gradients using theme radius constants
       final gradientRadius =
           RenderingConstants.sphericalGradientBaseRadius +
-          math.sin(time * 0.08 + source * 0.5) * RenderingConstants.sphericalGradientRadiusVariation;
+          math.sin(time * 0.08 + source * 0.5) *
+              RenderingConstants.sphericalGradientRadiusVariation;
       final intensity =
           visibility *
           (RenderingConstants.sphericalGradientBaseIntensity +
-              RenderingConstants.sphericalGradientIntensityVariation * math.sin(time * 0.12 + source));
+              RenderingConstants.sphericalGradientIntensityVariation *
+                  math.sin(time * 0.12 + source));
 
       // Draw the spherical gradient source using theme alpha values
       final gradientPaint = Paint()
         ..blendMode = source == 0 ? BlendMode.src : BlendMode.softLight
         ..shader = RadialGradient(
-          center: Alignment((center.dx / size.width) * 2 - 1, (center.dy / size.height) * 2 - 1),
+          center: Alignment(
+            (center.dx / size.width) * 2 - 1,
+            (center.dy / size.height) * 2 - 1,
+          ),
           radius: gradientRadius / math.max(size.width, size.height),
           colors: [
-            sourceColor.withValues(alpha: intensity * RenderingConstants.sphericalGradientPrimaryAlpha),
-            sourceColor.withValues(alpha: intensity * RenderingConstants.sphericalGradientSecondaryAlpha),
-            sourceColor.withValues(alpha: intensity * RenderingConstants.sphericalGradientTertiaryAlpha),
+            sourceColor.withValues(
+              alpha:
+                  intensity * RenderingConstants.sphericalGradientPrimaryAlpha,
+            ),
+            sourceColor.withValues(
+              alpha:
+                  intensity *
+                  RenderingConstants.sphericalGradientSecondaryAlpha,
+            ),
+            sourceColor.withValues(
+              alpha:
+                  intensity * RenderingConstants.sphericalGradientTertiaryAlpha,
+            ),
             AppColors.transparentColor,
           ],
           stops: const [0.0, 0.4, 0.8, 1.0],
@@ -275,7 +357,13 @@ class BackgroundPainter {
   }
 
   /// Draw enhanced starfield with variable sizes, colors, and twinkling
-  static void drawEnhancedStarfield(Canvas canvas, vm.Matrix4 vp, vm.Matrix4 view, Size size, List<StarData> stars) {
+  static void drawEnhancedStarfield(
+    Canvas canvas,
+    vm.Matrix4 vp,
+    vm.Matrix4 view,
+    Size size,
+    List<StarData> stars,
+  ) {
     final time = DateTime.now().millisecondsSinceEpoch / 1000.0;
 
     for (final star in stars) {
@@ -284,10 +372,13 @@ class BackgroundPainter {
 
       // Calculate distance-based fading for depth
       final distance = star.position.length;
-      final distanceFade = math.max(0.3, 1.0 - (distance / 3000.0)).clamp(0.0, 1.0);
+      final distanceFade = math
+          .max(0.3, 1.0 - (distance / 3000.0))
+          .clamp(0.0, 1.0);
 
       // Add subtle twinkling effect
-      final twinklePhase = (star.position.x + star.position.y + star.position.z) * 0.001;
+      final twinklePhase =
+          (star.position.x + star.position.y + star.position.z) * 0.001;
       final twinkle = 0.7 + 0.3 * math.sin(time * 2.0 + twinklePhase);
 
       // Combine brightness factors
@@ -362,7 +453,10 @@ class BackgroundPainter {
     ];
 
     final baseColor = galaxyColors[random.nextInt(galaxyColors.length)];
-    final alpha = 0.2 + random.nextDouble() * 0.35; // Enhanced from 0.15-0.4 to 0.2-0.55 for more vibrant purples
+    final alpha =
+        0.2 +
+        random.nextDouble() *
+            0.35; // Enhanced from 0.15-0.4 to 0.2-0.55 for more vibrant purples
     final color = baseColor.withValues(alpha: alpha);
 
     return {
@@ -377,12 +471,22 @@ class BackgroundPainter {
   }
 
   /// Draw distant galaxies in 3D space using enhanced rendering with full randomization
-  static void drawDistantGalaxies(Canvas canvas, vm.Matrix4 vp, vm.Matrix4 view, Size size) {
-    final random = math.Random(42); // Seeded for consistent results across frames
+  static void drawDistantGalaxies(
+    Canvas canvas,
+    vm.Matrix4 vp,
+    vm.Matrix4 view,
+    Size size,
+  ) {
+    final random = math.Random(
+      42,
+    ); // Seeded for consistent results across frames
 
     // Generate randomized galaxies
     final galaxyCount = 8 + random.nextInt(5); // 8-12 galaxies
-    final galaxies = List.generate(galaxyCount, (_) => _generateRandomGalaxy(random));
+    final galaxies = List.generate(
+      galaxyCount,
+      (_) => _generateRandomGalaxy(random),
+    );
 
     for (final galaxy in galaxies) {
       final worldPos = galaxy['position'] as vm.Vector3;
@@ -398,29 +502,61 @@ class BackgroundPainter {
       if (centerProjected == null) continue;
 
       // Calculate distance-based size scaling (galaxies are very distant)
-      final eyeSpace = (view * vm.Vector4(worldPos.x, worldPos.y, worldPos.z, 1));
+      final eyeSpace =
+          (view * vm.Vector4(worldPos.x, worldPos.y, worldPos.z, 1));
       final dist = (-eyeSpace.z).abs().clamp(
         RenderingConstants.distanceClampMin * 5,
         RenderingConstants.distanceClampMax * 2,
       );
 
       // Scale galaxy size based on distance
-      final projectedSize = (galaxySize * RenderingConstants.bodySizeMultiplier / dist).clamp(15.0, 120.0);
+      final projectedSize =
+          (galaxySize * RenderingConstants.bodySizeMultiplier / dist).clamp(
+            15.0,
+            120.0,
+          );
 
       // Calculate perspective effects from 3D rotation
-      final perspectiveScale = PainterUtils.calculatePerspectiveScale(tiltX, tiltY);
+      final perspectiveScale = PainterUtils.calculatePerspectiveScale(
+        tiltX,
+        tiltY,
+      );
       final effectiveSize = projectedSize * perspectiveScale;
 
       // Draw different galaxy types with 3D rotation
       switch (galaxyType) {
         case 'spiral':
-          _drawSpiralGalaxy(canvas, centerProjected, effectiveSize, rotation, tiltX, tiltY, galaxyColor);
+          _drawSpiralGalaxy(
+            canvas,
+            centerProjected,
+            effectiveSize,
+            rotation,
+            tiltX,
+            tiltY,
+            galaxyColor,
+          );
           break;
         case 'elliptical':
-          _drawEllipticalGalaxy(canvas, centerProjected, effectiveSize, rotation, tiltX, tiltY, galaxyColor);
+          _drawEllipticalGalaxy(
+            canvas,
+            centerProjected,
+            effectiveSize,
+            rotation,
+            tiltX,
+            tiltY,
+            galaxyColor,
+          );
           break;
         case 'irregular':
-          _drawIrregularGalaxy(canvas, centerProjected, effectiveSize, rotation, tiltX, tiltY, galaxyColor);
+          _drawIrregularGalaxy(
+            canvas,
+            centerProjected,
+            effectiveSize,
+            rotation,
+            tiltX,
+            tiltY,
+            galaxyColor,
+          );
           break;
       }
     }
@@ -477,14 +613,17 @@ class BackgroundPainter {
     // Medium glow
     final mediumGlowSize = size * 1.2;
     final mediumGlowPaint = Paint()
-      ..shader = RadialGradient(
-        colors: [
-          color.withValues(alpha: color.a * 0.2),
-          color.withValues(alpha: color.a * 0.1),
-          AppColors.transparentColor,
-        ],
-        stops: const [0.0, 0.5, 1.0],
-      ).createShader(Rect.fromCircle(center: Offset.zero, radius: mediumGlowSize));
+      ..shader =
+          RadialGradient(
+            colors: [
+              color.withValues(alpha: color.a * 0.2),
+              color.withValues(alpha: color.a * 0.1),
+              AppColors.transparentColor,
+            ],
+            stops: const [0.0, 0.5, 1.0],
+          ).createShader(
+            Rect.fromCircle(center: Offset.zero, radius: mediumGlowSize),
+          );
     canvas.drawCircle(Offset.zero, mediumGlowSize, mediumGlowPaint);
 
     // Bright core with enhanced brightness
@@ -583,42 +722,76 @@ class BackgroundPainter {
     final haloWidth = width * 2.0;
     final haloHeight = height * 2.0;
     final haloPaint = Paint()
-      ..shader = RadialGradient(
-        colors: [
-          color.withValues(alpha: color.a * 0.15),
-          color.withValues(alpha: color.a * 0.08),
-          AppColors.transparentColor,
-        ],
-        stops: const [0.0, 0.6, 1.0],
-      ).createShader(Rect.fromCenter(center: Offset.zero, width: haloWidth, height: haloHeight));
-    canvas.drawOval(Rect.fromCenter(center: Offset.zero, width: haloWidth, height: haloHeight), haloPaint);
+      ..shader =
+          RadialGradient(
+            colors: [
+              color.withValues(alpha: color.a * 0.15),
+              color.withValues(alpha: color.a * 0.08),
+              AppColors.transparentColor,
+            ],
+            stops: const [0.0, 0.6, 1.0],
+          ).createShader(
+            Rect.fromCenter(
+              center: Offset.zero,
+              width: haloWidth,
+              height: haloHeight,
+            ),
+          );
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: Offset.zero,
+        width: haloWidth,
+        height: haloHeight,
+      ),
+      haloPaint,
+    );
 
     // Medium glow
     final mediumWidth = width * 1.4;
     final mediumHeight = height * 1.4;
     final mediumGlowPaint = Paint()
-      ..shader = RadialGradient(
-        colors: [
-          color.withValues(alpha: color.a * 0.25),
-          color.withValues(alpha: color.a * 0.12),
-          AppColors.transparentColor,
-        ],
-        stops: const [0.0, 0.5, 1.0],
-      ).createShader(Rect.fromCenter(center: Offset.zero, width: mediumWidth, height: mediumHeight));
-    canvas.drawOval(Rect.fromCenter(center: Offset.zero, width: mediumWidth, height: mediumHeight), mediumGlowPaint);
+      ..shader =
+          RadialGradient(
+            colors: [
+              color.withValues(alpha: color.a * 0.25),
+              color.withValues(alpha: color.a * 0.12),
+              AppColors.transparentColor,
+            ],
+            stops: const [0.0, 0.5, 1.0],
+          ).createShader(
+            Rect.fromCenter(
+              center: Offset.zero,
+              width: mediumWidth,
+              height: mediumHeight,
+            ),
+          );
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: Offset.zero,
+        width: mediumWidth,
+        height: mediumHeight,
+      ),
+      mediumGlowPaint,
+    );
 
     // Main elliptical body with enhanced brightness
     final mainPaint = Paint()
-      ..shader = RadialGradient(
-        colors: [
-          color.withValues(alpha: math.min(1.0, color.a * 1.3)),
-          color.withValues(alpha: color.a * 0.8),
-          color.withValues(alpha: color.a * 0.3),
-          AppColors.transparentColor,
-        ],
-        stops: const [0.0, 0.4, 0.7, 1.0],
-      ).createShader(Rect.fromCenter(center: Offset.zero, width: width, height: height));
-    canvas.drawOval(Rect.fromCenter(center: Offset.zero, width: width, height: height), mainPaint);
+      ..shader =
+          RadialGradient(
+            colors: [
+              color.withValues(alpha: math.min(1.0, color.a * 1.3)),
+              color.withValues(alpha: color.a * 0.8),
+              color.withValues(alpha: color.a * 0.3),
+              AppColors.transparentColor,
+            ],
+            stops: const [0.0, 0.4, 0.7, 1.0],
+          ).createShader(
+            Rect.fromCenter(center: Offset.zero, width: width, height: height),
+          );
+    canvas.drawOval(
+      Rect.fromCenter(center: Offset.zero, width: width, height: height),
+      mainPaint,
+    );
 
     canvas.restore();
   }
@@ -664,34 +837,43 @@ class BackgroundPainter {
       final blobDistance = size * (0.2 + 0.4 * math.sin(blob * 1.7));
       final blobSize = size * (0.15 + 0.2 * math.cos(blob * 2.3));
 
-      final blobCenter = Offset(math.cos(blobAngle) * blobDistance, math.sin(blobAngle) * blobDistance);
+      final blobCenter = Offset(
+        math.cos(blobAngle) * blobDistance,
+        math.sin(blobAngle) * blobDistance,
+      );
 
       final blobAlpha = color.a * (0.4 + 0.3 * math.sin(blob * 1.1));
 
       // Outer glow for each blob
       final blobGlowSize = blobSize * 2.2;
       final blobGlowPaint = Paint()
-        ..shader = RadialGradient(
-          colors: [
-            color.withValues(alpha: blobAlpha * 0.15),
-            color.withValues(alpha: blobAlpha * 0.08),
-            AppColors.transparentColor,
-          ],
-          stops: const [0.0, 0.6, 1.0],
-        ).createShader(Rect.fromCircle(center: blobCenter, radius: blobGlowSize));
+        ..shader =
+            RadialGradient(
+              colors: [
+                color.withValues(alpha: blobAlpha * 0.15),
+                color.withValues(alpha: blobAlpha * 0.08),
+                AppColors.transparentColor,
+              ],
+              stops: const [0.0, 0.6, 1.0],
+            ).createShader(
+              Rect.fromCircle(center: blobCenter, radius: blobGlowSize),
+            );
       canvas.drawCircle(blobCenter, blobGlowSize, blobGlowPaint);
 
       // Medium glow
       final blobMediumGlowSize = blobSize * 1.5;
       final blobMediumGlowPaint = Paint()
-        ..shader = RadialGradient(
-          colors: [
-            color.withValues(alpha: blobAlpha * 0.3),
-            color.withValues(alpha: blobAlpha * 0.15),
-            AppColors.transparentColor,
-          ],
-          stops: const [0.0, 0.5, 1.0],
-        ).createShader(Rect.fromCircle(center: blobCenter, radius: blobMediumGlowSize));
+        ..shader =
+            RadialGradient(
+              colors: [
+                color.withValues(alpha: blobAlpha * 0.3),
+                color.withValues(alpha: blobAlpha * 0.15),
+                AppColors.transparentColor,
+              ],
+              stops: const [0.0, 0.5, 1.0],
+            ).createShader(
+              Rect.fromCircle(center: blobCenter, radius: blobMediumGlowSize),
+            );
       canvas.drawCircle(blobCenter, blobMediumGlowSize, blobMediumGlowPaint);
 
       // Main blob with enhanced brightness

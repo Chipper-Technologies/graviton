@@ -239,6 +239,48 @@ class _OffScreenIndicatorPainter extends CustomPainter {
         )
         ..style = PaintingStyle.fill,
     );
+
+    // Draw body name
+    _drawBodyName(canvas, position, body.name, isSelected);
+  }
+
+  void _drawBodyName(
+    Canvas canvas,
+    Offset position,
+    String bodyName,
+    bool isSelected,
+  ) {
+    final textStyle = TextStyle(
+      color: AppColors.uiWhite.withValues(
+        alpha: AppTypography.opacityNearlyOpaque,
+      ),
+      fontSize: AppTypography.fontSizeSmall,
+      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+      shadows: [
+        Shadow(
+          offset: const Offset(1, 1),
+          blurRadius: 2,
+          color: AppColors.uiBlack.withValues(
+            alpha: AppTypography.opacityMediumHigh,
+          ),
+        ),
+      ],
+    );
+
+    final textPainter = TextPainter(
+      text: TextSpan(text: bodyName, style: textStyle),
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout();
+
+    // Position text below the indicator circle
+    final textOffset = Offset(
+      position.dx - textPainter.width / 2,
+      position.dy + 20, // 15 (circle radius) + 5 (spacing)
+    );
+
+    textPainter.paint(canvas, textOffset);
   }
 
   Color _getBodyColor(Body body) {

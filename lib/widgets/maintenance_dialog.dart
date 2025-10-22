@@ -8,7 +8,8 @@ import 'package:graviton/theme/app_typography.dart';
 class MaintenanceDialog extends StatelessWidget {
   final bool _isMaintenanceMode;
 
-  const MaintenanceDialog._({required bool isMaintenanceMode}) : _isMaintenanceMode = isMaintenanceMode;
+  const MaintenanceDialog._({required bool isMaintenanceMode})
+    : _isMaintenanceMode = isMaintenanceMode;
 
   static Future<void> showIfNeeded(BuildContext context) async {
     final remoteConfig = RemoteConfigService.instance;
@@ -18,7 +19,8 @@ class MaintenanceDialog extends StatelessWidget {
       await showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const MaintenanceDialog._(isMaintenanceMode: true),
+        builder: (context) =>
+            const MaintenanceDialog._(isMaintenanceMode: true),
       );
       return;
     }
@@ -28,7 +30,8 @@ class MaintenanceDialog extends StatelessWidget {
       await showDialog<void>(
         context: context,
         barrierDismissible: true,
-        builder: (context) => const MaintenanceDialog._(isMaintenanceMode: false),
+        builder: (context) =>
+            const MaintenanceDialog._(isMaintenanceMode: false),
       );
     }
   }
@@ -45,7 +48,11 @@ class MaintenanceDialog extends StatelessWidget {
     }
   }
 
-  Widget _buildMaintenanceDialog(BuildContext context, AppLocalizations? l10n, RemoteConfigService remoteConfig) {
+  Widget _buildMaintenanceDialog(
+    BuildContext context,
+    AppLocalizations? l10n,
+    RemoteConfigService remoteConfig,
+  ) {
     return AlertDialog(
       backgroundColor: AppColors.uiBlack,
       title: Row(
@@ -64,18 +71,28 @@ class MaintenanceDialog extends StatelessWidget {
       ),
       content: Text(
         remoteConfig.maintenanceMessage,
-        style: TextStyle(color: AppColors.uiTextGrey, fontSize: AppTypography.fontSizeMedium),
+        style: TextStyle(
+          color: AppColors.uiTextGrey,
+          fontSize: AppTypography.fontSizeMedium,
+        ),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n?.ok ?? 'OK', style: TextStyle(color: AppColors.uiLightBlueAccent)),
+          child: Text(
+            l10n?.ok ?? 'OK',
+            style: TextStyle(color: AppColors.uiLightBlueAccent),
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildNotificationDialog(BuildContext context, AppLocalizations? l10n, RemoteConfigService remoteConfig) {
+  Widget _buildNotificationDialog(
+    BuildContext context,
+    AppLocalizations? l10n,
+    RemoteConfigService remoteConfig,
+  ) {
     final isEmergency = remoteConfig.isEmergencyNotification;
 
     return AlertDialog(
@@ -89,7 +106,9 @@ class MaintenanceDialog extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            isEmergency ? (l10n?.emergencyNotificationTitle ?? 'Important Notice') : (l10n?.newsTitle ?? 'News'),
+            isEmergency
+                ? (l10n?.emergencyNotificationTitle ?? 'Important Notice')
+                : (l10n?.newsTitle ?? 'News'),
             style: TextStyle(
               color: AppColors.uiWhite,
               fontSize: AppTypography.fontSizeXLarge,
@@ -100,14 +119,21 @@ class MaintenanceDialog extends StatelessWidget {
       ),
       content: Text(
         remoteConfig.activeNotificationText,
-        style: TextStyle(color: AppColors.uiTextGrey, fontSize: AppTypography.fontSizeMedium),
+        style: TextStyle(
+          color: AppColors.uiTextGrey,
+          fontSize: AppTypography.fontSizeMedium,
+        ),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
             l10n?.ok ?? 'OK',
-            style: TextStyle(color: isEmergency ? AppColors.uiRed : AppColors.uiLightBlueAccent),
+            style: TextStyle(
+              color: isEmergency
+                  ? AppColors.uiRed
+                  : AppColors.uiLightBlueAccent,
+            ),
           ),
         ),
       ],

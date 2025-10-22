@@ -2,6 +2,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
+import 'package:graviton/enums/firebase_event.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/services/remote_config_service.dart';
 
 /// Service class for managing Firebase functionality
@@ -38,8 +41,8 @@ class FirebaseService {
       _isInitialized = true;
 
       // Log initialization
-      await logEvent(
-        'app_initialized',
+      await logEventWithEnum(
+        FirebaseEvent.appInitialized,
         parameters: {
           'platform': defaultTargetPlatform.name,
           'debug_mode': kDebugMode.toString(),
@@ -106,7 +109,7 @@ class FirebaseService {
       'feature_advanced_controls': true,
       'max_simulation_speed': 16.0,
       'min_simulation_speed': 0.1,
-      'default_time_scale': 1.0,
+      'default_time_scale': 8.0,
       'enable_vibration': true,
       'show_debug_info': kDebugMode,
       'maintenance_mode': false,
@@ -148,6 +151,14 @@ class FirebaseService {
     } catch (e) {
       debugPrint('Error logging analytics event $name: $e');
     }
+  }
+
+  /// Log an analytics event with type-safe enum
+  Future<void> logEventWithEnum(
+    FirebaseEvent event, {
+    Map<String, Object>? parameters,
+  }) async {
+    await logEvent(event.value, parameters: parameters);
   }
 
   /// Log screen view
@@ -299,10 +310,27 @@ class FirebaseService {
     await logEvent('ui_$action', parameters: params);
   }
 
+  /// UI interaction analytics with type-safe enums
+  Future<void> logUIEventWithEnums(
+    UIAction action, {
+    UIElement? element,
+    String? value,
+    Map<String, Object>? additionalParams,
+  }) async {
+    final params = <String, Object>{
+      'action': action.value,
+      if (element != null) 'element': element.value,
+      if (value != null) 'value': value,
+      ...?additionalParams,
+    };
+
+    await logEvent('ui_${action.value}', parameters: params);
+  }
+
   /// Settings change analytics
   Future<void> logSettingsChange(String setting, Object value) async {
-    await logEvent(
-      'settings_changed',
+    await logEventWithEnum(
+      FirebaseEvent.settingsChanged,
       parameters: {'setting': setting, 'value': value.toString()},
     );
   }
@@ -321,7 +349,7 @@ class FirebaseService {
       ...?additionalParams,
     };
 
-    await logEvent('performance_metric', parameters: params);
+    await logEventWithEnum(FirebaseEvent.performanceMetric, parameters: params);
   }
 
   /// Error analytics
@@ -338,6 +366,6 @@ class FirebaseService {
       ...?additionalParams,
     };
 
-    await logEvent('app_error', parameters: params);
+    await logEventWithEnum(FirebaseEvent.appError, parameters: params);
   }
 }

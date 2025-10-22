@@ -26,17 +26,25 @@ class ScreenshotCountdown extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
-                color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityVeryHigh),
+                color: AppColors.uiBlack.withValues(
+                  alpha: AppTypography.opacityVeryHigh,
+                ),
                 borderRadius: BorderRadius.circular(25),
                 border: Border.all(
-                  color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityLowMedium),
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityLowMedium,
+                  ),
                   width: 1,
                 ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.camera_alt, color: AppColors.uiWhite, size: 20),
+                  const Icon(
+                    Icons.camera_alt,
+                    color: AppColors.uiWhite,
+                    size: 20,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     'Screenshot in ${screenshotService.countdownSeconds}s',
