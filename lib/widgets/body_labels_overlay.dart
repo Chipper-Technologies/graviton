@@ -26,7 +26,12 @@ class BodyLabelsOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: _BodyLabelsPainter(bodies: bodies, viewMatrix: viewMatrix, projMatrix: projMatrix, l10n: l10n),
+      painter: _BodyLabelsPainter(
+        bodies: bodies,
+        viewMatrix: viewMatrix,
+        projMatrix: projMatrix,
+        l10n: l10n,
+      ),
       size: screenSize,
     );
   }
@@ -38,7 +43,12 @@ class _BodyLabelsPainter extends CustomPainter {
   final vm.Matrix4 projMatrix;
   final AppLocalizations? l10n;
 
-  _BodyLabelsPainter({required this.bodies, required this.viewMatrix, required this.projMatrix, this.l10n});
+  _BodyLabelsPainter({
+    required this.bodies,
+    required this.viewMatrix,
+    required this.projMatrix,
+    this.l10n,
+  });
 
   /// Translate a stored body name to the current localized name
   String _getLocalizedBodyName(String storedName) {
@@ -132,10 +142,14 @@ class _BodyLabelsPainter extends CustomPainter {
     }
 
     final screenX =
-        (ndc.x * RenderingConstants.ndcTransformOffset + RenderingConstants.ndcTransformOffset) * size.width;
+        (ndc.x * RenderingConstants.ndcTransformOffset +
+            RenderingConstants.ndcTransformOffset) *
+        size.width;
 
     final screenY =
-        (-ndc.y * RenderingConstants.ndcTransformOffset + RenderingConstants.ndcTransformOffset) * size.height;
+        (-ndc.y * RenderingConstants.ndcTransformOffset +
+            RenderingConstants.ndcTransformOffset) *
+        size.height;
 
     return Offset(screenX, screenY);
   }
@@ -143,10 +157,15 @@ class _BodyLabelsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final textStyle = TextStyle(
-      color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityNearlyOpaque),
+      color: AppColors.uiWhite.withValues(
+        alpha: AppTypography.opacityNearlyOpaque,
+      ),
       fontSize: AppTypography.fontSizeSmall,
       fontWeight: FontWeight.w500,
-      shadows: AppTypography.createTextShadow(color: AppColors.uiBlack, opacity: AppTypography.opacityVeryHigh),
+      shadows: AppTypography.createTextShadow(
+        color: AppColors.uiBlack,
+        opacity: AppTypography.opacityVeryHigh,
+      ),
     );
 
     for (int i = 0; i < bodies.length; i++) {
@@ -182,10 +201,15 @@ class _BodyLabelsPainter extends CustomPainter {
       );
 
       final backgroundPaint = Paint()
-        ..color = AppColors.uiBlack.withValues(alpha: AppTypography.opacityMediumHigh)
+        ..color = AppColors.uiBlack.withValues(
+          alpha: AppTypography.opacityMediumHigh,
+        )
         ..style = PaintingStyle.fill;
 
-      canvas.drawRRect(RRect.fromRectAndRadius(backgroundRect, const Radius.circular(3)), backgroundPaint);
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(backgroundRect, const Radius.circular(3)),
+        backgroundPaint,
+      );
 
       // Draw the text
       textPainter.paint(canvas, labelOffset);

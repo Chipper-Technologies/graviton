@@ -9,6 +9,7 @@ This comprehensive guide covers Fastlane automation setup, security best practic
 - [🛡️ Security Setup](#️-security-setup)
 - [Android Configuration](#android-configuration)
 - [iOS Configuration](#ios-configuration)
+- [🔥 Firebase Crashlytics Integration](#-firebase-crashlytics-integration)
 - [Getting Started](#getting-started)
 - [Available Commands](#available-commands)
 - [🔑 Credential Management](#-credential-management)
@@ -122,6 +123,62 @@ fastlane deploy
 
 2. Set up certificates and provisioning profiles using Match (recommended) or manual setup
 
+## 🔥 Firebase Crashlytics Integration
+
+The project includes Firebase Crashlytics for crash reporting and analytics. The Fastlane configuration automatically handles dSYM uploads to Firebase Crashlytics for crash symbolication.
+
+### Environment Configuration
+
+The project supports two Firebase environments:
+
+- **Development (`dev`)**: Uses `ios/Config/Dev/GoogleService-Info.plist`
+- **Production (`prod`)**: Uses `ios/Config/Prod/GoogleService-Info.plist`
+
+### Automatic dSYM Upload
+
+The `beta` and `deploy` lanes automatically upload dSYM files to Firebase Crashlytics:
+
+- **`fastlane beta`**: Uploads to dev environment by default
+- **`fastlane deploy`**: Uploads to prod environment by default
+- Both support the `flavor` parameter to override the environment
+
+### Manual dSYM Upload
+
+For manual dSYM uploads or troubleshooting:
+
+```bash
+# Upload dSYMs for development environment
+fastlane upload_dsyms
+
+# Upload dSYMs for production environment  
+fastlane upload_dsyms flavor:prod
+
+# Build app and upload dSYMs in one command
+fastlane build_and_upload_dsyms flavor:dev
+```
+
+### Requirements
+
+1. **Firebase Project Setup**: Ensure Firebase is properly configured in your project
+2. **GoogleService-Info.plist**: Both dev and prod configurations must be present
+3. **Firebase Crashlytics SDK**: Already included in the Flutter dependencies
+4. **Upload Symbols Script**: Located at `./Pods/FirebaseCrashlytics/upload-symbols`
+
+### Troubleshooting dSYM Upload
+
+If dSYM upload fails:
+
+1. **Check Firebase Configuration**:
+   ```bash
+   # Verify GoogleService-Info.plist exists
+   ls ios/Config/Dev/GoogleService-Info.plist
+   ls ios/Config/Prod/GoogleService-Info.plist
+   ```
+
+2. **Verify dSYM Generation**: Ensure your build generates dSYM files
+3. **Check Upload Script**: Verify the Firebase upload script exists after pod install
+4. **Manual Upload**: Use the Firebase console if automated upload fails
+
 ## Getting Started
 
 ### First Time Setup
@@ -187,11 +244,19 @@ fastlane build_flutter
 # Run tests
 fastlane test
 
-# Deploy to TestFlight
-fastlane beta
+# Deploy to TestFlight (includes automatic dSYM upload to Crashlytics)
+fastlane beta                          # Uses dev flavor by default
+fastlane beta flavor:prod             # Use production environment
 
-# Deploy to App Store (creates draft)
-fastlane deploy
+# Deploy to App Store (includes automatic dSYM upload to Crashlytics)
+fastlane deploy                        # Uses prod flavor by default
+fastlane deploy flavor:dev            # Use development environment
+
+# Firebase Crashlytics dSYM upload
+fastlane upload_dsyms                  # Upload dSYMs for dev environment
+fastlane upload_dsyms flavor:prod     # Upload dSYMs for production environment
+fastlane build_and_upload_dsyms       # Build app and upload dSYMs for dev
+fastlane build_and_upload_dsyms flavor:prod  # Build app and upload dSYMs for prod
 
 # Take screenshots
 fastlane screenshots

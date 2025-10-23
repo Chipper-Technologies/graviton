@@ -72,7 +72,11 @@ void main() {
       final status = service.getVersionStatus();
 
       // Should be one of the valid status values
-      expect([VersionStatus.current, VersionStatus.outdated, VersionStatus.beta], contains(status));
+      expect([
+        VersionStatus.current,
+        VersionStatus.outdated,
+        VersionStatus.beta,
+      ], contains(status));
     });
 
     test('Should handle minimum version logic correctly', () {

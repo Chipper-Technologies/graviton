@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
+import 'package:graviton/enums/firebase_event.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
@@ -15,7 +16,7 @@ class SimulationState extends ChangeNotifier {
 
   bool _isRunning = false;
   bool _isPaused = false;
-  double _timeScale = 1.0;
+  double _timeScale = 8.0;
   int _stepCount = 0;
   double _totalTime = 0.0;
 
@@ -41,14 +42,16 @@ class SimulationState extends ChangeNotifier {
   Future<void> _loadSettings() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      _timeScale = prefs.getDouble(_keyTimeScale) ?? 1.0;
+      _timeScale = prefs.getDouble(_keyTimeScale) ?? 8.0;
 
       // Load saved scenario preference
       final savedScenarioName = prefs.getString(_keyScenario);
 
       if (savedScenarioName != null) {
         try {
-          final savedScenario = ScenarioType.values.firstWhere((s) => s.name == savedScenarioName);
+          final savedScenario = ScenarioType.values.firstWhere(
+            (s) => s.name == savedScenarioName,
+          );
           _simulation.resetWithScenario(savedScenario);
         } catch (e) {
           // If saved scenario is invalid, keep the default (random)
@@ -113,7 +116,8 @@ class SimulationState extends ChangeNotifier {
   double get totalTime => _totalTime;
 
   /// Convert simulation time to Earth years
-  double get totalTimeInEarthYears => _totalTime * SimulationConstants.simulationTimeToEarthYears;
+  double get totalTimeInEarthYears =>
+      _totalTime * SimulationConstants.simulationTimeToEarthYears;
 
   List<Body> get bodies => _simulation.bodies;
   List<List<TrailPoint>> get trails => _simulation.trails;
@@ -122,20 +126,24 @@ class SimulationState extends ChangeNotifier {
   // Physics control
   void start() {
     _isRunning = true;
-    FirebaseService.instance.logEvent('simulation_started');
+    FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationStarted);
     notifyListeners();
   }
 
   void pause() {
     _isPaused = !_isPaused;
-    FirebaseService.instance.logEvent(_isPaused ? 'simulation_paused' : 'simulation_resumed');
+    FirebaseService.instance.logEventWithEnum(
+      _isPaused
+          ? FirebaseEvent.simulationPaused
+          : FirebaseEvent.simulationResumed,
+    );
     notifyListeners();
   }
 
   void stop() {
     _isRunning = false;
     _isPaused = false;
-    FirebaseService.instance.logEvent('simulation_stopped');
+    FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationStopped);
     notifyListeners();
   }
 
@@ -147,7 +155,7 @@ class SimulationState extends ChangeNotifier {
     _stepCount = 0;
     _totalTime = 0.0;
 
-    FirebaseService.instance.logEvent('simulation_reset');
+    FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationReset);
     notifyListeners();
 
     // Start immediately after
@@ -166,7 +174,7 @@ class SimulationState extends ChangeNotifier {
     // Save the scenario preference
     _saveScenario();
 
-    FirebaseService.instance.logEvent('simulation_reset');
+    FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationReset);
     notifyListeners();
 
     // Start immediately after

@@ -21,7 +21,9 @@ class CelestialBodyPainter {
     double opacity = 1.0,
   }) {
     // Special rendering for celestial bodies
-    if (body.name.contains('Black Hole') || body.name == 'Black Hole' || body.name == 'Supermassive Black Hole') {
+    if (body.name.contains('Black Hole') ||
+        body.name == 'Black Hole' ||
+        body.name == 'Supermassive Black Hole') {
       drawBlackHole(canvas, center, radius, opacity: opacity);
     } else if (body.name == 'Sun') {
       drawSun(canvas, center, radius);
@@ -36,9 +38,23 @@ class CelestialBodyPainter {
     } else if (body.name == 'Jupiter') {
       drawJupiter(canvas, center, radius);
     } else if (body.name == 'Saturn') {
-      drawSaturn(canvas, center, radius, body, viewMatrix: viewMatrix, canvasSize: canvasSize);
+      drawSaturn(
+        canvas,
+        center,
+        radius,
+        body,
+        viewMatrix: viewMatrix,
+        canvasSize: canvasSize,
+      );
     } else if (body.name == 'Uranus') {
-      drawUranus(canvas, center, radius, body, viewMatrix: viewMatrix, canvasSize: canvasSize);
+      drawUranus(
+        canvas,
+        center,
+        radius,
+        body,
+        viewMatrix: viewMatrix,
+        canvasSize: canvasSize,
+      );
     } else if (body.name == 'Neptune') {
       drawNeptune(canvas, center, radius);
     } else {
@@ -50,7 +66,10 @@ class CelestialBodyPainter {
         ],
       );
 
-      final rect = Rect.fromCircle(center: center, radius: radius * RenderingConstants.bodyGlowMultiplier);
+      final rect = Rect.fromCircle(
+        center: center,
+        radius: radius * RenderingConstants.bodyGlowMultiplier,
+      );
       canvas.drawCircle(
         center,
         radius * RenderingConstants.bodyGlowMultiplier,
@@ -62,23 +81,43 @@ class CelestialBodyPainter {
   }
 
   /// Draw a realistic black hole with accretion disk and event horizon
-  static void drawBlackHole(Canvas canvas, Offset center, double radius, {double opacity = 1.0}) {
+  static void drawBlackHole(
+    Canvas canvas,
+    Offset center,
+    double radius, {
+    double opacity = 1.0,
+  }) {
     // Enhanced accretion disk for supermassive black hole - clean glow
     final accretionDiskRadius = radius * 5.0; // Large disk for presence
 
     // Single clean glow - no color mixing issues (with opacity adjustment)
     final cleanGlow = RadialGradient(
       colors: [
-        AppColors.starGlowWhite.withValues(alpha: AppTypography.opacityHigh * opacity), // Bright white center
-        AppColors.starGlowGold.withValues(alpha: AppTypography.opacityMedium * opacity), // Golden ring
-        AppColors.starGlowOrange.withValues(alpha: AppTypography.opacityFaint * opacity), // Orange outer
-        AppColors.starGlowRedOrange.withValues(alpha: AppTypography.opacityMidFade * opacity), // Dim orange edge
+        AppColors.starGlowWhite.withValues(
+          alpha: AppTypography.opacityHigh * opacity,
+        ), // Bright white center
+        AppColors.starGlowGold.withValues(
+          alpha: AppTypography.opacityMedium * opacity,
+        ), // Golden ring
+        AppColors.starGlowOrange.withValues(
+          alpha: AppTypography.opacityFaint * opacity,
+        ), // Orange outer
+        AppColors.starGlowRedOrange.withValues(
+          alpha: AppTypography.opacityMidFade * opacity,
+        ), // Dim orange edge
         AppColors.transparentColor,
       ],
     );
 
-    final glowRect = Rect.fromCircle(center: center, radius: accretionDiskRadius);
-    canvas.drawCircle(center, accretionDiskRadius, Paint()..shader = cleanGlow.createShader(glowRect));
+    final glowRect = Rect.fromCircle(
+      center: center,
+      radius: accretionDiskRadius,
+    );
+    canvas.drawCircle(
+      center,
+      accretionDiskRadius,
+      Paint()..shader = cleanGlow.createShader(glowRect),
+    );
 
     // Clean accretion disk rings - simple and bright
     final diskPaint = Paint()
@@ -87,7 +126,10 @@ class CelestialBodyPainter {
 
     for (int i = 0; i < 5; i++) {
       final ringRadius = radius * (1.3 + i * 0.4);
-      final alpha = ((0.6 - i * 0.1) * opacity).clamp(0.0, 1.0); // Clean intensity progression with opacity
+      final alpha = ((0.6 - i * 0.1) * opacity).clamp(
+        0.0,
+        1.0,
+      ); // Clean intensity progression with opacity
 
       // Clean color progression - no green mixing
       Color ringColor;
@@ -98,7 +140,9 @@ class CelestialBodyPainter {
       } else if (i == 2) {
         ringColor = AppColors.starGlowOrange.withValues(alpha: alpha); // Orange
       } else {
-        ringColor = AppColors.starGlowRedOrange.withValues(alpha: alpha); // Red-orange
+        ringColor = AppColors.starGlowRedOrange.withValues(
+          alpha: alpha,
+        ); // Red-orange
       }
 
       diskPaint.color = ringColor;
@@ -110,7 +154,9 @@ class CelestialBodyPainter {
     final photonSpherePaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.2
-      ..color = AppColors.starGlowWhite.withValues(alpha: AppTypography.opacityFaint * opacity);
+      ..color = AppColors.starGlowWhite.withValues(
+        alpha: AppTypography.opacityFaint * opacity,
+      );
 
     canvas.drawCircle(center, photonSphereRadius, photonSpherePaint);
 
@@ -125,7 +171,9 @@ class CelestialBodyPainter {
     final schwarzschildPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0
-      ..color = AppColors.starGlowWhite.withValues(alpha: AppTypography.opacityMediumHigh * opacity);
+      ..color = AppColors.starGlowWhite.withValues(
+        alpha: AppTypography.opacityMediumHigh * opacity,
+      );
 
     canvas.drawCircle(center, radius, schwarzschildPaint);
 
@@ -135,7 +183,9 @@ class CelestialBodyPainter {
       final distortionPaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 0.5
-        ..color = AppColors.starGlowWhite.withValues(alpha: (AppTypography.opacityVeryFaint / i) * opacity);
+        ..color = AppColors.starGlowWhite.withValues(
+          alpha: (AppTypography.opacityVeryFaint / i) * opacity,
+        );
 
       canvas.drawCircle(center, distortionRadius, distortionPaint);
     }
@@ -146,15 +196,25 @@ class CelestialBodyPainter {
     // Corona - outer solar atmosphere
     final coronaGlow = RadialGradient(
       colors: [
-        AppColors.accretionDiskGold.withValues(alpha: AppTypography.opacityVeryHigh), // Bright gold center
-        AppColors.accretionDiskOrange.withValues(alpha: AppTypography.opacityMediumHigh), // Orange middle
-        AppColors.accretionDiskRed.withValues(alpha: AppTypography.opacityFaint), // Red outer
+        AppColors.accretionDiskGold.withValues(
+          alpha: AppTypography.opacityVeryHigh,
+        ), // Bright gold center
+        AppColors.accretionDiskOrange.withValues(
+          alpha: AppTypography.opacityMediumHigh,
+        ), // Orange middle
+        AppColors.accretionDiskRed.withValues(
+          alpha: AppTypography.opacityFaint,
+        ), // Red outer
         AppColors.transparentColor,
       ],
     );
 
     final coronaRect = Rect.fromCircle(center: center, radius: radius * 3.0);
-    canvas.drawCircle(center, radius * 3.0, Paint()..shader = coronaGlow.createShader(coronaRect));
+    canvas.drawCircle(
+      center,
+      radius * 3.0,
+      Paint()..shader = coronaGlow.createShader(coronaRect),
+    );
 
     // Solar surface with slight texture
     final surfaceGlow = RadialGradient(
@@ -166,7 +226,11 @@ class CelestialBodyPainter {
     );
 
     final surfaceRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(center, radius, Paint()..shader = surfaceGlow.createShader(surfaceRect));
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()..shader = surfaceGlow.createShader(surfaceRect),
+    );
   }
 
   /// Draw Mercury with crater-like surface
@@ -180,15 +244,29 @@ class CelestialBodyPainter {
     );
 
     final rect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(center, radius, Paint()..shader = mercuryGlow.createShader(rect));
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()..shader = mercuryGlow.createShader(rect),
+    );
 
     // Crater details
     final craterPaint = Paint()
-      ..color = AppColors.moonShadow.withValues(alpha: AppTypography.opacityHigh)
+      ..color = AppColors.moonShadow.withValues(
+        alpha: AppTypography.opacityHigh,
+      )
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(Offset(center.dx - radius * 0.3, center.dy - radius * 0.2), radius * 0.2, craterPaint);
-    canvas.drawCircle(Offset(center.dx + radius * 0.4, center.dy + radius * 0.3), radius * 0.15, craterPaint);
+    canvas.drawCircle(
+      Offset(center.dx - radius * 0.3, center.dy - radius * 0.2),
+      radius * 0.2,
+      craterPaint,
+    );
+    canvas.drawCircle(
+      Offset(center.dx + radius * 0.4, center.dy + radius * 0.3),
+      radius * 0.15,
+      craterPaint,
+    );
   }
 
   /// Draw Venus with thick atmosphere
@@ -196,15 +274,28 @@ class CelestialBodyPainter {
     // Thick atmosphere glow
     final atmosphereGlow = RadialGradient(
       colors: [
-        AppColors.venusYellow.withValues(alpha: AppTypography.opacityMediumHigh), // Bright center
-        AppColors.venusOrangeMiddle.withValues(alpha: AppTypography.opacitySemiTransparent), // Orange middle
-        AppColors.venusOuterGlow.withValues(alpha: AppTypography.opacityVeryFaint), // Outer glow
+        AppColors.venusYellow.withValues(
+          alpha: AppTypography.opacityMediumHigh,
+        ), // Bright center
+        AppColors.venusOrangeMiddle.withValues(
+          alpha: AppTypography.opacitySemiTransparent,
+        ), // Orange middle
+        AppColors.venusOuterGlow.withValues(
+          alpha: AppTypography.opacityVeryFaint,
+        ), // Outer glow
         AppColors.transparentColor,
       ],
     );
 
-    final atmosphereRect = Rect.fromCircle(center: center, radius: radius * 2.0);
-    canvas.drawCircle(center, radius * 2.0, Paint()..shader = atmosphereGlow.createShader(atmosphereRect));
+    final atmosphereRect = Rect.fromCircle(
+      center: center,
+      radius: radius * 2.0,
+    );
+    canvas.drawCircle(
+      center,
+      radius * 2.0,
+      Paint()..shader = atmosphereGlow.createShader(atmosphereRect),
+    );
 
     // Planet surface
     final surfaceGlow = RadialGradient(
@@ -215,7 +306,11 @@ class CelestialBodyPainter {
     );
 
     final surfaceRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(center, radius, Paint()..shader = surfaceGlow.createShader(surfaceRect));
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()..shader = surfaceGlow.createShader(surfaceRect),
+    );
   }
 
   /// Draw Earth with continents and atmosphere
@@ -223,16 +318,29 @@ class CelestialBodyPainter {
     // Thin blue atmosphere
     final atmosphereGlow = RadialGradient(
       colors: [
-        AppColors.earthSkyBlue.withValues(alpha: AppTypography.opacityFaint), // Sky blue
+        AppColors.earthSkyBlue.withValues(
+          alpha: AppTypography.opacityFaint,
+        ), // Sky blue
         AppColors.transparentColor,
       ],
     );
 
-    final atmosphereRect = Rect.fromCircle(center: center, radius: radius * 1.5);
-    canvas.drawCircle(center, radius * 1.5, Paint()..shader = atmosphereGlow.createShader(atmosphereRect));
+    final atmosphereRect = Rect.fromCircle(
+      center: center,
+      radius: radius * 1.5,
+    );
+    canvas.drawCircle(
+      center,
+      radius * 1.5,
+      Paint()..shader = atmosphereGlow.createShader(atmosphereRect),
+    );
 
     // Ocean base
-    canvas.drawCircle(center, radius, Paint()..color = AppColors.earthDeepBlue); // Deep blue
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()..color = AppColors.earthDeepBlue,
+    ); // Deep blue
 
     // Continental masses
     final continentPaint = Paint()
@@ -240,8 +348,20 @@ class CelestialBodyPainter {
       ..style = PaintingStyle.fill;
 
     // Simple continent shapes
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -0.5, 1.2, true, continentPaint);
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.8), 1.8, 0.8, true, continentPaint);
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      -0.5,
+      1.2,
+      true,
+      continentPaint,
+    );
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius * 0.8),
+      1.8,
+      0.8,
+      true,
+      continentPaint,
+    );
   }
 
   /// Draw Mars with polar ice caps
@@ -249,13 +369,22 @@ class CelestialBodyPainter {
     // Thin atmosphere
     final atmosphereGlow = RadialGradient(
       colors: [
-        AppColors.marsFaintRed.withValues(alpha: AppTypography.opacityVeryFaint), // Faint red
+        AppColors.marsFaintRed.withValues(
+          alpha: AppTypography.opacityVeryFaint,
+        ), // Faint red
         AppColors.transparentColor,
       ],
     );
 
-    final atmosphereRect = Rect.fromCircle(center: center, radius: radius * 1.3);
-    canvas.drawCircle(center, radius * 1.3, Paint()..shader = atmosphereGlow.createShader(atmosphereRect));
+    final atmosphereRect = Rect.fromCircle(
+      center: center,
+      radius: radius * 1.3,
+    );
+    canvas.drawCircle(
+      center,
+      radius * 1.3,
+      Paint()..shader = atmosphereGlow.createShader(atmosphereRect),
+    );
 
     // Planet surface
     final surfaceGlow = RadialGradient(
@@ -266,12 +395,27 @@ class CelestialBodyPainter {
     );
 
     final surfaceRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(center, radius, Paint()..shader = surfaceGlow.createShader(surfaceRect));
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()..shader = surfaceGlow.createShader(surfaceRect),
+    );
 
     // Polar ice caps
-    final icePaint = Paint()..color = AppColors.marsIceWhite.withValues(alpha: AppTypography.opacityVeryHigh);
-    canvas.drawCircle(Offset(center.dx, center.dy - radius * 0.7), radius * 0.3, icePaint);
-    canvas.drawCircle(Offset(center.dx, center.dy + radius * 0.7), radius * 0.25, icePaint);
+    final icePaint = Paint()
+      ..color = AppColors.marsIceWhite.withValues(
+        alpha: AppTypography.opacityVeryHigh,
+      );
+    canvas.drawCircle(
+      Offset(center.dx, center.dy - radius * 0.7),
+      radius * 0.3,
+      icePaint,
+    );
+    canvas.drawCircle(
+      Offset(center.dx, center.dy + radius * 0.7),
+      radius * 0.25,
+      icePaint,
+    );
   }
 
   /// Draw Jupiter with Great Red Spot and bands
@@ -279,33 +423,68 @@ class CelestialBodyPainter {
     // Gas giant glow
     final giantGlow = RadialGradient(
       colors: [
-        AppColors.jupiterCreamCenter.withValues(alpha: AppTypography.opacityVeryHigh), // Cream center
-        AppColors.jupiterGoldEdge.withValues(alpha: AppTypography.opacitySemiTransparent), // Gold edge
+        AppColors.jupiterCreamCenter.withValues(
+          alpha: AppTypography.opacityVeryHigh,
+        ), // Cream center
+        AppColors.jupiterGoldEdge.withValues(
+          alpha: AppTypography.opacitySemiTransparent,
+        ), // Gold edge
         AppColors.transparentColor,
       ],
     );
 
     final glowRect = Rect.fromCircle(center: center, radius: radius * 2.0);
-    canvas.drawCircle(center, radius * 2.0, Paint()..shader = giantGlow.createShader(glowRect));
+    canvas.drawCircle(
+      center,
+      radius * 2.0,
+      Paint()..shader = giantGlow.createShader(glowRect),
+    );
 
     // Planet base
-    canvas.drawCircle(center, radius, Paint()..color = AppColors.jupiterSurface);
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()..color = AppColors.jupiterSurface,
+    );
 
     // Atmospheric bands
     final bandPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = radius * 0.1;
 
-    bandPaint.color = AppColors.jupiterBandGold.withValues(alpha: AppTypography.opacityHigh);
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.6), 0, 6.28, false, bandPaint);
+    bandPaint.color = AppColors.jupiterBandGold.withValues(
+      alpha: AppTypography.opacityHigh,
+    );
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius * 0.6),
+      0,
+      6.28,
+      false,
+      bandPaint,
+    );
 
-    bandPaint.color = AppColors.jupiterBandBrown.withValues(alpha: AppTypography.opacityMedium);
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.8), 0, 6.28, false, bandPaint);
+    bandPaint.color = AppColors.jupiterBandBrown.withValues(
+      alpha: AppTypography.opacityMedium,
+    );
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius * 0.8),
+      0,
+      6.28,
+      false,
+      bandPaint,
+    );
 
     // Great Red Spot
-    final redSpotPaint = Paint()..color = AppColors.jupiterRedSpot.withValues(alpha: AppTypography.opacityVeryHigh);
+    final redSpotPaint = Paint()
+      ..color = AppColors.jupiterRedSpot.withValues(
+        alpha: AppTypography.opacityVeryHigh,
+      );
     canvas.drawOval(
-      Rect.fromCenter(center: Offset(center.dx + radius * 0.3, center.dy), width: radius * 0.4, height: radius * 0.2),
+      Rect.fromCenter(
+        center: Offset(center.dx + radius * 0.3, center.dy),
+        width: radius * 0.4,
+        height: radius * 0.2,
+      ),
       redSpotPaint,
     );
   }
@@ -329,20 +508,45 @@ class CelestialBodyPainter {
     );
 
     final planetRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(center, radius, Paint()..shader = saturnGlow.createShader(planetRect));
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()..shader = saturnGlow.createShader(planetRect),
+    );
 
     // Add subtle bands to Saturn's atmosphere
     final bandPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = radius * 0.08
-      ..color = AppColors.saturnRingColor.withValues(alpha: AppTypography.opacityFaint);
+      ..color = AppColors.saturnRingColor.withValues(
+        alpha: AppTypography.opacityFaint,
+      );
 
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.6), 0, 6.28, false, bandPaint);
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.8), 0, 6.28, false, bandPaint);
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius * 0.6),
+      0,
+      6.28,
+      false,
+      bandPaint,
+    );
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius * 0.8),
+      0,
+      6.28,
+      false,
+      bandPaint,
+    );
 
     // Draw beautiful 3D inclined ring system if we have the view matrix
     if (viewMatrix != null && canvasSize != null) {
-      _drawSaturnRings(canvas, center, radius, body.position, viewMatrix, canvasSize);
+      _drawSaturnRings(
+        canvas,
+        center,
+        radius,
+        body.position,
+        viewMatrix,
+        canvasSize,
+      );
     } else {
       // Fallback to beautiful circular rings
       _drawSaturnRingsFallback(canvas, center, radius);
@@ -368,11 +572,22 @@ class CelestialBodyPainter {
     );
 
     final planetRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(center, radius, Paint()..shader = uranusGlow.createShader(planetRect));
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()..shader = uranusGlow.createShader(planetRect),
+    );
 
     // Draw beautiful 3D inclined ring system if we have the view matrix
     if (viewMatrix != null && canvasSize != null) {
-      _drawUranusRings(canvas, center, radius, body.position, viewMatrix, canvasSize);
+      _drawUranusRings(
+        canvas,
+        center,
+        radius,
+        body.position,
+        viewMatrix,
+        canvasSize,
+      );
     } else {
       // Fallback to beautiful vertical rings
       _drawUranusRingsFallback(canvas, center, radius);
@@ -390,10 +605,17 @@ class CelestialBodyPainter {
     );
 
     final planetRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(center, radius, Paint()..shader = neptuneGlow.createShader(planetRect));
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()..shader = neptuneGlow.createShader(planetRect),
+    );
 
     // Great Dark Spot
-    final darkSpotPaint = Paint()..color = AppColors.neptuneDarkSpot.withValues(alpha: AppTypography.opacityHigh);
+    final darkSpotPaint = Paint()
+      ..color = AppColors.neptuneDarkSpot.withValues(
+        alpha: AppTypography.opacityHigh,
+      );
     canvas.drawOval(
       Rect.fromCenter(
         center: Offset(center.dx - radius * 0.2, center.dy + radius * 0.1),
@@ -407,9 +629,17 @@ class CelestialBodyPainter {
     final bandPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = radius * 0.05
-      ..color = AppColors.neptuneWindBand.withValues(alpha: AppTypography.opacityMedium);
+      ..color = AppColors.neptuneWindBand.withValues(
+        alpha: AppTypography.opacityMedium,
+      );
 
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.7), 0, 6.28, false, bandPaint);
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius * 0.7),
+      0,
+      6.28,
+      false,
+      bandPaint,
+    );
   }
 
   /// Draw Saturn's beautiful ring system in 3D
@@ -425,16 +655,37 @@ class CelestialBodyPainter {
     // Real Saturn rings are much closer to the planet than currently shown
     final ringData = [
       // [innerRadius, outerRadius, color, opacity] - CORRECTED realistic proportions
-      [1.11, 1.16, AppColors.saturnDRing, 0.3], // D Ring - Very close inner ring
+      [
+        1.11,
+        1.16,
+        AppColors.saturnDRing,
+        0.3,
+      ], // D Ring - Very close inner ring
       [1.23, 1.45, AppColors.saturnCRing, 0.5], // C Ring - Crepe ring
-      [1.53, 1.88, AppColors.saturnBRing, 0.9], // B Ring - Main bright ring (much closer)
+      [
+        1.53,
+        1.88,
+        AppColors.saturnBRing,
+        0.9,
+      ], // B Ring - Main bright ring (much closer)
       // Cassini Division gap here (1.88 - 1.95)
-      [1.95, 2.27, AppColors.saturnARing, 0.8], // A Ring - Outer main ring (closer)
-      [2.27, 2.32, AppColors.saturnFRing, 0.4], // F Ring - Very narrow shepherd ring
+      [
+        1.95,
+        2.27,
+        AppColors.saturnARing,
+        0.8,
+      ], // A Ring - Outer main ring (closer)
+      [
+        2.27,
+        2.32,
+        AppColors.saturnFRing,
+        0.4,
+      ], // F Ring - Very narrow shepherd ring
     ];
 
     const int numPoints = 128; // High detail for smooth rings
-    final inclinationRadians = 26.7 * math.pi / 180.0; // Saturn's ring inclination
+    final inclinationRadians =
+        26.7 * math.pi / 180.0; // Saturn's ring inclination
 
     for (final ring in ringData) {
       final innerRadius = radius * (ring[0] as double);
@@ -461,7 +712,11 @@ class CelestialBodyPainter {
           bodyPosition.z + innerRotatedZ,
         );
 
-        final innerScreenPos = PainterUtils.project(viewMatrix, innerWorldPos, canvasSize);
+        final innerScreenPos = PainterUtils.project(
+          viewMatrix,
+          innerWorldPos,
+          canvasSize,
+        );
 
         // Outer ring edge
         final outerLocalX = outerRadius * math.cos(angle);
@@ -473,7 +728,11 @@ class CelestialBodyPainter {
           bodyPosition.y + outerRotatedY,
           bodyPosition.z + outerRotatedZ,
         );
-        final outerScreenPos = PainterUtils.project(viewMatrix, outerWorldPos, canvasSize);
+        final outerScreenPos = PainterUtils.project(
+          viewMatrix,
+          outerWorldPos,
+          canvasSize,
+        );
 
         if (innerScreenPos != null && outerScreenPos != null) {
           innerPoints.add(innerScreenPos);
@@ -525,13 +784,22 @@ class CelestialBodyPainter {
   }
 
   /// Draw Saturn's beautiful ring system fallback (2D)
-  static void _drawSaturnRingsFallback(Canvas canvas, Offset center, double radius) {
+  static void _drawSaturnRingsFallback(
+    Canvas canvas,
+    Offset center,
+    double radius,
+  ) {
     // Saturn's ring system with REALISTIC proportions - rings much closer to planet
     final ringData = [
       // [innerRadius, outerRadius, color, opacity] - CORRECTED realistic proportions
       [1.11, 1.16, AppColors.saturnDRing, 0.3], // D Ring
       [1.23, 1.45, AppColors.saturnCRing, 0.5], // C Ring
-      [1.53, 1.88, AppColors.saturnBRing, 0.9], // B Ring (main ring much closer)
+      [
+        1.53,
+        1.88,
+        AppColors.saturnBRing,
+        0.9,
+      ], // B Ring (main ring much closer)
       // Cassini Division gap (1.88 - 1.95)
       [1.95, 2.27, AppColors.saturnARing, 0.8], // A Ring (closer)
       [2.27, 2.32, AppColors.saturnFRing, 0.4], // F Ring (very narrow)
@@ -574,7 +842,11 @@ class CelestialBodyPainter {
         final outerX = center.dx + outerRadius * math.cos(angle);
         final outerY = center.dy + outerRadius * math.sin(angle);
 
-        canvas.drawLine(Offset(innerX, innerY), Offset(outerX, outerY), texturePaint);
+        canvas.drawLine(
+          Offset(innerX, innerY),
+          Offset(outerX, outerY),
+          texturePaint,
+        );
       }
     }
   }
@@ -598,7 +870,8 @@ class CelestialBodyPainter {
     ];
 
     const int numPoints = 48; // Fewer points needed for simple rings
-    final inclinationRadians = 97.8 * math.pi / 180.0; // Uranus is tilted on its side!
+    final inclinationRadians =
+        97.8 * math.pi / 180.0; // Uranus is tilted on its side!
 
     final ringPaint = Paint()
       ..style = PaintingStyle.stroke
@@ -623,8 +896,16 @@ class CelestialBodyPainter {
         final rotatedY = localZ * math.sin(inclinationRadians);
         final rotatedZ = localZ * math.cos(inclinationRadians);
 
-        final worldPos = vm.Vector3(bodyPosition.x + localX, bodyPosition.y + rotatedY, bodyPosition.z + rotatedZ);
-        final screenPos = PainterUtils.project(viewMatrix, worldPos, canvasSize);
+        final worldPos = vm.Vector3(
+          bodyPosition.x + localX,
+          bodyPosition.y + rotatedY,
+          bodyPosition.z + rotatedZ,
+        );
+        final screenPos = PainterUtils.project(
+          viewMatrix,
+          worldPos,
+          canvasSize,
+        );
         if (screenPos != null) {
           ringPoints.add(screenPos);
         }
@@ -640,7 +921,11 @@ class CelestialBodyPainter {
   }
 
   /// Draw Uranus's simple ring system fallback (2D)
-  static void _drawUranusRingsFallback(Canvas canvas, Offset center, double radius) {
+  static void _drawUranusRingsFallback(
+    Canvas canvas,
+    Offset center,
+    double radius,
+  ) {
     // Uranus's very narrow, dark ring system - simple fallback version
     // Just a few thin, dark rings to match astronomical reality
     final ringData = [

@@ -37,7 +37,12 @@ void main() {
         );
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
@@ -45,7 +50,12 @@ void main() {
       test('should handle empty merge flashes list', () {
         // Empty simulation (no merge flashes)
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
@@ -79,13 +89,25 @@ void main() {
         );
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
 
       test('should handle flashes with different colors', () {
-        final colors = [AppColors.basicYellow, AppColors.basicOrange, AppColors.basicRed, AppColors.basicBlue, AppColors.basicPurple, AppColors.uiWhite];
+        final colors = [
+          AppColors.basicYellow,
+          AppColors.basicOrange,
+          AppColors.basicRed,
+          AppColors.basicBlue,
+          AppColors.basicPurple,
+          AppColors.uiWhite,
+        ];
 
         for (int i = 0; i < colors.length; i++) {
           simulation.mergeFlashes.add(
@@ -98,7 +120,12 @@ void main() {
         }
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
@@ -111,11 +138,20 @@ void main() {
           MergeFlash(vm.Vector3(-50, 0, -20), AppColors.basicBlue, age: 0.5),
           MergeFlash(vm.Vector3(0, 50, -20), AppColors.basicYellow, age: 0.5),
           MergeFlash(vm.Vector3(0, -50, -20), AppColors.basicPurple, age: 0.5),
-          MergeFlash(vm.Vector3(0, 0, -50), AppColors.basicCyan, age: 0.5), // Further away
+          MergeFlash(
+            vm.Vector3(0, 0, -50),
+            AppColors.basicCyan,
+            age: 0.5,
+          ), // Further away
         ]);
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
@@ -123,15 +159,40 @@ void main() {
       test('should handle flash age progression', () {
         // Test flashes at different stages of their lifecycle
         simulation.mergeFlashes.addAll([
-          MergeFlash(vm.Vector3(0, 0, -20), AppColors.uiWhite, age: 0.0), // Brand new
-          MergeFlash(vm.Vector3(20, 0, -20), AppColors.basicYellow, age: 0.5), // Young
-          MergeFlash(vm.Vector3(40, 0, -20), AppColors.basicOrange, age: 1.5), // Middle-aged
-          MergeFlash(vm.Vector3(60, 0, -20), AppColors.basicRed, age: 2.5), // Old
-          MergeFlash(vm.Vector3(80, 0, -20), AppColors.uiBlack, age: 3.0), // Very old
+          MergeFlash(
+            vm.Vector3(0, 0, -20),
+            AppColors.uiWhite,
+            age: 0.0,
+          ), // Brand new
+          MergeFlash(
+            vm.Vector3(20, 0, -20),
+            AppColors.basicYellow,
+            age: 0.5,
+          ), // Young
+          MergeFlash(
+            vm.Vector3(40, 0, -20),
+            AppColors.basicOrange,
+            age: 1.5,
+          ), // Middle-aged
+          MergeFlash(
+            vm.Vector3(60, 0, -20),
+            AppColors.basicRed,
+            age: 2.5,
+          ), // Old
+          MergeFlash(
+            vm.Vector3(80, 0, -20),
+            AppColors.uiBlack,
+            age: 3.0,
+          ), // Very old
         ]);
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
@@ -146,7 +207,12 @@ void main() {
         );
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
@@ -161,7 +227,12 @@ void main() {
         );
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
@@ -178,29 +249,51 @@ void main() {
         );
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
 
       test('should handle zero-size canvas', () {
-        simulation.mergeFlashes.add(MergeFlash(vm.Vector3(0, 0, -20), AppColors.basicYellow, age: 0.5));
+        simulation.mergeFlashes.add(
+          MergeFlash(vm.Vector3(0, 0, -20), AppColors.basicYellow, age: 0.5),
+        );
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, Size.zero, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            Size.zero,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
 
       test('should handle extreme view transformations', () {
-        simulation.mergeFlashes.add(MergeFlash(vm.Vector3(0, 0, -20), AppColors.basicYellow, age: 0.5));
+        simulation.mergeFlashes.add(
+          MergeFlash(vm.Vector3(0, 0, -20), AppColors.basicYellow, age: 0.5),
+        );
 
         final extremeView = vm.Matrix4.identity()
           ..translateByVector3(vm.Vector3(1000, 1000, 1000))
           ..rotateX(3.14159)
           ..scaleByVector3(vm.Vector3(0.001, 0.001, 0.001));
 
-        expect(() => EffectsPainter.drawMergeFlashes(canvas, canvasSize, extremeView, simulation), returnsNormally);
+        expect(
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            extremeView,
+            simulation,
+          ),
+          returnsNormally,
+        );
       });
 
       test('should handle many merge flashes performance test', () {
@@ -216,30 +309,68 @@ void main() {
         }
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
 
       test('should handle flashes at extreme distances', () {
         simulation.mergeFlashes.addAll([
-          MergeFlash(vm.Vector3(0, 0, -1), AppColors.basicRed, age: 0.5), // Very close
-          MergeFlash(vm.Vector3(0, 0, -1000), AppColors.basicBlue, age: 0.5), // Very far
-          MergeFlash(vm.Vector3(1000, 0, -20), AppColors.basicGreen, age: 0.5), // Far to side
-          MergeFlash(vm.Vector3(-1000, 0, -20), AppColors.basicYellow, age: 0.5), // Far other side
-          MergeFlash(vm.Vector3(0, 1000, -20), AppColors.basicPurple, age: 0.5), // Far up
-          MergeFlash(vm.Vector3(0, -1000, -20), AppColors.basicCyan, age: 0.5), // Far down
+          MergeFlash(
+            vm.Vector3(0, 0, -1),
+            AppColors.basicRed,
+            age: 0.5,
+          ), // Very close
+          MergeFlash(
+            vm.Vector3(0, 0, -1000),
+            AppColors.basicBlue,
+            age: 0.5,
+          ), // Very far
+          MergeFlash(
+            vm.Vector3(1000, 0, -20),
+            AppColors.basicGreen,
+            age: 0.5,
+          ), // Far to side
+          MergeFlash(
+            vm.Vector3(-1000, 0, -20),
+            AppColors.basicYellow,
+            age: 0.5,
+          ), // Far other side
+          MergeFlash(
+            vm.Vector3(0, 1000, -20),
+            AppColors.basicPurple,
+            age: 0.5,
+          ), // Far up
+          MergeFlash(
+            vm.Vector3(0, -1000, -20),
+            AppColors.basicCyan,
+            age: 0.5,
+          ), // Far down
         ]);
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
 
       test('should handle flashes with transparent colors', () {
         simulation.mergeFlashes.addAll([
-          MergeFlash(vm.Vector3(0, 0, -20), AppColors.transparentColor, age: 0.5),
+          MergeFlash(
+            vm.Vector3(0, 0, -20),
+            AppColors.transparentColor,
+            age: 0.5,
+          ),
           MergeFlash(
             vm.Vector3(20, 0, -20),
             AppColors.basicRed.withValues(alpha: AppTypography.opacityMedium),
@@ -247,13 +378,20 @@ void main() {
           ),
           MergeFlash(
             vm.Vector3(40, 0, -20),
-            AppColors.basicBlue.withValues(alpha: AppTypography.opacityDisabled),
+            AppColors.basicBlue.withValues(
+              alpha: AppTypography.opacityDisabled,
+            ),
             age: 0.5,
           ),
         ]);
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });
@@ -261,12 +399,25 @@ void main() {
       test('should handle very old flashes', () {
         // These would normally be cleaned up by the simulation, but test robustness
         simulation.mergeFlashes.addAll([
-          MergeFlash(vm.Vector3(0, 0, -20), AppColors.uiWhite, age: 10.0), // Very old
-          MergeFlash(vm.Vector3(20, 0, -20), AppColors.basicRed, age: 100.0), // Extremely old
+          MergeFlash(
+            vm.Vector3(0, 0, -20),
+            AppColors.uiWhite,
+            age: 10.0,
+          ), // Very old
+          MergeFlash(
+            vm.Vector3(20, 0, -20),
+            AppColors.basicRed,
+            age: 100.0,
+          ), // Extremely old
         ]);
 
         expect(
-          () => EffectsPainter.drawMergeFlashes(canvas, canvasSize, viewProjectionMatrix, simulation),
+          () => EffectsPainter.drawMergeFlashes(
+            canvas,
+            canvasSize,
+            viewProjectionMatrix,
+            simulation,
+          ),
           returnsNormally,
         );
       });

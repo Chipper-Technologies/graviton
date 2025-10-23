@@ -47,8 +47,12 @@ class VersionService {
 
       // Load values
       _currentVersion = remoteConfig.getString('current_version');
-      _minimumEnforcedVersion = remoteConfig.getString('minimum_enforced_version');
-      _minimumPreferredVersion = remoteConfig.getString('minimum_preferred_version');
+      _minimumEnforcedVersion = remoteConfig.getString(
+        'minimum_enforced_version',
+      );
+      _minimumPreferredVersion = remoteConfig.getString(
+        'minimum_preferred_version',
+      );
       _appStoreUrl = remoteConfig.getString('app_store_url');
       _playStoreUrl = remoteConfig.getString('play_store_url');
 

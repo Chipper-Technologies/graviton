@@ -10,7 +10,10 @@ class PainterUtils {
     final clip = vp * vm.Vector4(p.x, p.y, p.z, 1);
     if (clip.w <= 0) return null;
     final ndc = vm.Vector2(clip.x / clip.w, clip.y / clip.w);
-    return Offset((ndc.x + 1) * size.width * 0.5, (1 - ndc.y) * size.height * 0.5);
+    return Offset(
+      (ndc.x + 1) * size.width * 0.5,
+      (1 - ndc.y) * size.height * 0.5,
+    );
   }
 
   /// Gets the clip-space z coordinate for depth sorting
@@ -51,7 +54,10 @@ class PainterUtils {
     required Offset center,
     required double radius,
   }) {
-    assert(colors.length == stops.length, 'Colors and stops must have the same length');
+    assert(
+      colors.length == stops.length,
+      'Colors and stops must have the same length',
+    );
     return Paint()
       ..shader = RadialGradient(
         colors: colors,

@@ -51,13 +51,17 @@ class OrbitalPathPainter {
         // For the planet, show orbital path around the center of mass of the two stars
         if (body.bodyType == BodyType.planet) {
           // Find the two stars
-          final stars = sim.bodies.where((b) => b.bodyType == BodyType.star).toList();
+          final stars = sim.bodies
+              .where((b) => b.bodyType == BodyType.star)
+              .toList();
           if (stars.length >= 2) {
             // Calculate center of mass of the two stars as the orbital center
             final star1 = stars[0];
             final star2 = stars[1];
             final totalMass = star1.mass + star2.mass;
-            final centerOfMass = (star1.position * star1.mass + star2.position * star2.mass) / totalMass;
+            final centerOfMass =
+                (star1.position * star1.mass + star2.position * star2.mass) /
+                totalMass;
 
             // Create a virtual central body at the center of mass
             final virtualCenter = Body(
@@ -70,11 +74,21 @@ class OrbitalPathPainter {
             );
 
             // Calculate orbital parameters for planet around center of mass
-            final orbitalParams = _calculateOrbitalParameters(body, virtualCenter);
+            final orbitalParams = _calculateOrbitalParameters(
+              body,
+              virtualCenter,
+            );
             if (orbitalParams != null) {
               // Draw the orbital path for the planet
               if (dualMode) {
-                painter._drawDualOrbitalPaths(canvas, size, vp, orbitalParams, body, sim);
+                painter._drawDualOrbitalPaths(
+                  canvas,
+                  size,
+                  vp,
+                  orbitalParams,
+                  body,
+                  sim,
+                );
               } else {
                 painter._drawOrbitalEllipse(
                   canvas,
@@ -150,7 +164,14 @@ class OrbitalPathPainter {
 
           // Draw the orbital path(s) for the moon
           if (dualMode) {
-            painter._drawDualOrbitalPaths(canvas, size, vp, inclinedParams, body, sim);
+            painter._drawDualOrbitalPaths(
+              canvas,
+              size,
+              vp,
+              inclinedParams,
+              body,
+              sim,
+            );
           } else {
             painter._drawOrbitalEllipse(
               canvas,
@@ -190,10 +211,14 @@ class OrbitalPathPainter {
         double inclinationRadians;
         if (sim.currentScenario == ScenarioType.binaryStars) {
           // For binary stars (XY plane), inclination is angle from Z-axis
-          inclinationRadians = math.acos((angularMomentum.z.abs()) / angularMomentum.length);
+          inclinationRadians = math.acos(
+            (angularMomentum.z.abs()) / angularMomentum.length,
+          );
         } else {
           // For solar system (XZ plane), inclination is angle from Y-axis
-          inclinationRadians = math.acos((angularMomentum.y.abs()) / angularMomentum.length);
+          inclinationRadians = math.acos(
+            (angularMomentum.y.abs()) / angularMomentum.length,
+          );
         }
         inclination = inclinationRadians * (180.0 / math.pi);
 
@@ -217,7 +242,14 @@ class OrbitalPathPainter {
 
       // Draw the orbital path(s)
       if (dualMode) {
-        painter._drawDualOrbitalPaths(canvas, size, vp, inclinedParams, body, sim);
+        painter._drawDualOrbitalPaths(
+          canvas,
+          size,
+          vp,
+          inclinedParams,
+          body,
+          sim,
+        );
       } else {
         painter._drawOrbitalEllipse(
           canvas,
@@ -237,7 +269,10 @@ class OrbitalPathPainter {
   static Body? _findCentralBody(List<Body> bodies, Body orbitingBody) {
     // Special case for Moon - it orbits Earth, not the Sun
     if (orbitingBody.name == 'Moon') {
-      return bodies.firstWhere((body) => body.name == 'Earth', orElse: () => bodies.first);
+      return bodies.firstWhere(
+        (body) => body.name == 'Earth',
+        orElse: () => bodies.first,
+      );
     }
 
     // For other bodies, find the most massive body
@@ -298,7 +333,10 @@ class OrbitalPathPainter {
   /// Calculate actual inclination from body's current orbital motion (for randomized scenarios)
   static double _calculateActualInclination(Body body, physics.Simulation sim) {
     // Find the central body (one with larger mass)
-    final centralBody = sim.bodies.firstWhere((b) => b.mass > body.mass, orElse: () => sim.bodies.first);
+    final centralBody = sim.bodies.firstWhere(
+      (b) => b.mass > body.mass,
+      orElse: () => sim.bodies.first,
+    );
     final r = body.position - centralBody.position;
 
     // For binary stars, the base orbital plane was XY, with inclination applied around X-axis
@@ -312,7 +350,10 @@ class OrbitalPathPainter {
   }
 
   /// Calculate orbital parameters for a circular/elliptical orbit
-  static OrbitalParameters? _calculateOrbitalParameters(Body orbitingBody, Body centralBody) {
+  static OrbitalParameters? _calculateOrbitalParameters(
+    Body orbitingBody,
+    Body centralBody,
+  ) {
     final r = orbitingBody.position - centralBody.position;
     final v = orbitingBody.velocity - centralBody.velocity;
 
@@ -326,7 +367,10 @@ class OrbitalPathPainter {
     final center = centralBody.position;
 
     // Calculate expected circular orbital velocity
-    final expectedSpeed = PhysicsUtils.calculateOrbitalVelocity(centralBody.mass, distance);
+    final expectedSpeed = PhysicsUtils.calculateOrbitalVelocity(
+      centralBody.mass,
+      distance,
+    );
 
     // If the current speed is close to expected circular orbital speed, assume circular orbit
     final speedRatio = speed / expectedSpeed;
@@ -373,12 +417,25 @@ class OrbitalPathPainter {
       argumentOfPeriapsis: params.argumentOfPeriapsis,
     );
 
-    final lightColor = body.color.withValues(alpha: AppTypography.opacitySemiTransparent); // More visible for testing
-    _drawOrbitalEllipse(canvas, size, vp, idealParams, lightColor, scenario: sim.currentScenario, body: body, sim: sim);
+    final lightColor = body.color.withValues(
+      alpha: AppTypography.opacitySemiTransparent,
+    ); // More visible for testing
+    _drawOrbitalEllipse(
+      canvas,
+      size,
+      vp,
+      idealParams,
+      lightColor,
+      scenario: sim.currentScenario,
+      body: body,
+      sim: sim,
+    );
 
     // 2. Draw actual elliptical orbit (dark blue dashed)
     final actualParams = _estimateActualOrbit(params, body, sim);
-    final darkBlue = AppColors.uiDarkBlueOrbit.withValues(alpha: AppTypography.opacityNearlyOpaque); // Much darker blue
+    final darkBlue = AppColors.uiDarkBlueOrbit.withValues(
+      alpha: AppTypography.opacityNearlyOpaque,
+    ); // Much darker blue
 
     _drawOrbitalEllipse(
       canvas,
@@ -394,7 +451,11 @@ class OrbitalPathPainter {
   }
 
   /// Estimate actual orbital parameters based on trail data or realistic modeling
-  OrbitalParameters _estimateActualOrbit(OrbitalParameters baseParams, Body body, physics.Simulation sim) {
+  OrbitalParameters _estimateActualOrbit(
+    OrbitalParameters baseParams,
+    Body body,
+    physics.Simulation sim,
+  ) {
     // The elliptical orbit should be FIXED and represent the actual orbital path
     // The circular orbit (current distance) should intersect it twice per revolution
 
@@ -403,10 +464,12 @@ class OrbitalPathPainter {
     double fixedSemiMajor;
 
     if (body.name == 'Moon' || body.name == 'Moon M') {
-      fixedSemiMajor = 0.35; // Larger than typical Moon distance (0.25) so circle can intersect
+      fixedSemiMajor =
+          0.35; // Larger than typical Moon distance (0.25) so circle can intersect
     } else if (body.name == 'Planet P') {
       // Binary star planet orbits at distance 60.0, make ellipse slightly larger
-      fixedSemiMajor = 65.0; // Slightly larger than actual binary planet distance (60.0)
+      fixedSemiMajor =
+          65.0; // Slightly larger than actual binary planet distance (60.0)
     } else if (body.bodyType == BodyType.planet) {
       switch (body.name) {
         case 'Mercury':
@@ -436,7 +499,8 @@ class OrbitalPathPainter {
     double eccentricity = 0.0;
 
     if (body.name == 'Moon') {
-      eccentricity = 0.4; // Moderate oval for Moon - wide enough for both intersections
+      eccentricity =
+          0.4; // Moderate oval for Moon - wide enough for both intersections
     } else if (body.bodyType == BodyType.planet) {
       switch (body.name) {
         case 'Mercury':
@@ -470,7 +534,8 @@ class OrbitalPathPainter {
       semiMinorAxis: semiMinor,
       eccentricity: eccentricity,
       inclination: baseParams.inclination,
-      argumentOfPeriapsis: 0.0, // Align major axis with current position for better visibility
+      argumentOfPeriapsis:
+          0.0, // Align major axis with current position for better visibility
     );
   }
 
@@ -494,7 +559,10 @@ class OrbitalPathPainter {
 
     if (body != null && sim != null) {
       // Calculate angular momentum to determine direction
-      final centralBody = sim.bodies.firstWhere((b) => b.mass > body.mass, orElse: () => sim.bodies.first);
+      final centralBody = sim.bodies.firstWhere(
+        (b) => b.mass > body.mass,
+        orElse: () => sim.bodies.first,
+      );
       final r = body.position - centralBody.position;
       final v = body.velocity - centralBody.velocity;
       final angularMomentum = r.cross(v);
@@ -512,7 +580,10 @@ class OrbitalPathPainter {
     double phaseOffset = 0.0;
     if (body != null && sim != null) {
       // Find the central body for this orbit
-      final centralBody = sim.bodies.firstWhere((b) => b.mass > body.mass, orElse: () => sim.bodies.first);
+      final centralBody = sim.bodies.firstWhere(
+        (b) => b.mass > body.mass,
+        orElse: () => sim.bodies.first,
+      );
       final r = body.position - centralBody.position;
 
       // Calculate the current angle of the body's position relative to the orbital center
@@ -533,7 +604,8 @@ class OrbitalPathPainter {
           : // Clockwise
             (i / numPoints) * 2 * math.pi; // Counterclockwise
 
-      final angle = baseAngle + phaseOffset; // Align path with body's current position
+      final angle =
+          baseAngle + phaseOffset; // Align path with body's current position
 
       // Calculate position on the ellipse based on scenario - with proper inclination
       double x, y, z;
@@ -608,7 +680,10 @@ class OrbitalPathPainter {
 
         while (currentDistance < segmentLength) {
           final progress1 = currentDistance / segmentLength;
-          final progress2 = math.min((currentDistance + dashLength) / segmentLength, 1.0);
+          final progress2 = math.min(
+            (currentDistance + dashLength) / segmentLength,
+            1.0,
+          );
 
           final dashStart = Offset.lerp(start, end, progress1)!;
           final dashEnd = Offset.lerp(start, end, progress2)!;
@@ -656,7 +731,11 @@ class OrbitalPathPainter {
     // arrows can simply follow the point sequence
 
     // Draw arrows at quarter positions around the orbit
-    final arrowPositions = [points.length ~/ 4, points.length ~/ 2, (points.length * 3) ~/ 4];
+    final arrowPositions = [
+      points.length ~/ 4,
+      points.length ~/ 2,
+      (points.length * 3) ~/ 4,
+    ];
 
     for (final pos in arrowPositions) {
       if (pos >= points.length - 1) continue;
@@ -686,15 +765,24 @@ class OrbitalPathPainter {
 
       // Draw small arrow
       const arrowSize = 8.0;
-      final arrowEnd = Offset(current.dx + ndx * arrowSize, current.dy + ndy * arrowSize);
+      final arrowEnd = Offset(
+        current.dx + ndx * arrowSize,
+        current.dy + ndy * arrowSize,
+      );
 
       // Arrow head
       final perpX = -ndy;
       final perpY = ndx;
 
-      final arrowHead1 = Offset(arrowEnd.dx - ndx * 4 + perpX * 2, arrowEnd.dy - ndy * 4 + perpY * 2);
+      final arrowHead1 = Offset(
+        arrowEnd.dx - ndx * 4 + perpX * 2,
+        arrowEnd.dy - ndy * 4 + perpY * 2,
+      );
 
-      final arrowHead2 = Offset(arrowEnd.dx - ndx * 4 - perpX * 2, arrowEnd.dy - ndy * 4 - perpY * 2);
+      final arrowHead2 = Offset(
+        arrowEnd.dx - ndx * 4 - perpX * 2,
+        arrowEnd.dy - ndy * 4 - perpY * 2,
+      );
 
       canvas.drawLine(current, arrowEnd, arrowPaint);
       canvas.drawLine(arrowEnd, arrowHead1, arrowPaint);

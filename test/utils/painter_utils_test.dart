@@ -20,7 +20,11 @@ void main() {
     group('project', () {
       test('should project 3D point to screen coordinates', () {
         final point3D = vm.Vector3(0, 0, -10);
-        final result = PainterUtils.project(viewProjectionMatrix, point3D, canvasSize);
+        final result = PainterUtils.project(
+          viewProjectionMatrix,
+          point3D,
+          canvasSize,
+        );
 
         expect(result, isNotNull);
         expect(result!.dx, equals(400)); // Center of 800px width
@@ -29,12 +33,22 @@ void main() {
 
       test('should return null for point behind camera', () {
         // Create a proper view matrix looking down negative Z
-        final view = vm.Matrix4.identity()..translateByVector3(vm.Vector3(0.0, 0.0, 0.0));
+        final view = vm.Matrix4.identity()
+          ..translateByVector3(vm.Vector3(0.0, 0.0, 0.0));
         // Create a perspective projection matrix
-        final proj = vm.makePerspectiveMatrix(math.pi / 4, 800.0 / 600.0, 0.1, 100.0);
+        final proj = vm.makePerspectiveMatrix(
+          math.pi / 4,
+          800.0 / 600.0,
+          0.1,
+          100.0,
+        );
         final vp = proj * view;
 
-        final point3D = vm.Vector3(0, 0, 1); // Positive Z (behind camera in typical OpenGL setup)
+        final point3D = vm.Vector3(
+          0,
+          0,
+          1,
+        ); // Positive Z (behind camera in typical OpenGL setup)
         final result = PainterUtils.project(vp, point3D, canvasSize);
 
         expect(result, isNull);
@@ -43,7 +57,11 @@ void main() {
       test('should handle zero-size canvas', () {
         final point3D = vm.Vector3(0, 0, -10);
         final zeroSize = Size.zero;
-        final result = PainterUtils.project(viewProjectionMatrix, point3D, zeroSize);
+        final result = PainterUtils.project(
+          viewProjectionMatrix,
+          point3D,
+          zeroSize,
+        );
 
         expect(result, isNotNull);
         expect(result!.dx, equals(0));
@@ -76,8 +94,14 @@ void main() {
       });
 
       test('should return smaller value for extreme tilt', () {
-        final result = PainterUtils.calculatePerspectiveScale(1.57, 1.57); // ~90 degrees
-        expect(result, lessThan(0.6)); // Adjust expectation to be more realistic
+        final result = PainterUtils.calculatePerspectiveScale(
+          1.57,
+          1.57,
+        ); // ~90 degrees
+        expect(
+          result,
+          lessThan(0.6),
+        ); // Adjust expectation to be more realistic
         expect(result, greaterThan(0.0));
       });
 
@@ -118,7 +142,11 @@ void main() {
 
     group('createMultiStopGlowPaint', () {
       test('should create paint with multiple color stops', () {
-        final colors = [AppColors.basicRed, AppColors.basicOrange, AppColors.transparentColor];
+        final colors = [
+          AppColors.basicRed,
+          AppColors.basicOrange,
+          AppColors.transparentColor,
+        ];
         final stops = [0.0, 0.5, 1.0];
 
         final paint = PainterUtils.createMultiStopGlowPaint(

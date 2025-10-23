@@ -25,21 +25,39 @@ void main() {
 
       // Maintenance & Communication defaults
       expect(service.maintenanceMode, isFalse);
-      expect(service.maintenanceMessage, equals('Scheduled maintenance in progress'));
+      expect(
+        service.maintenanceMessage,
+        equals('Scheduled maintenance in progress'),
+      );
       expect(service.newsBannerEnabled, isFalse);
       expect(service.newsBannerText, isEmpty);
       expect(service.emergencyNotification, isEmpty);
     });
 
     test('Should handle behavioral tracking flags correctly', () {
-      expect(service.isUserBehaviorTrackingEnabled, isTrue); // 'standard' != 'disabled'
-      expect(service.isEnhancedTrackingEnabled, isFalse); // 'standard' != 'enhanced'
+      expect(
+        service.isUserBehaviorTrackingEnabled,
+        isTrue,
+      ); // 'standard' != 'disabled'
+      expect(
+        service.isEnhancedTrackingEnabled,
+        isFalse,
+      ); // 'standard' != 'enhanced'
     });
 
     test('Should handle notification state correctly', () {
-      expect(service.hasActiveNotification, isFalse); // No emergency or news banner
-      expect(service.isEmergencyNotification, isFalse); // Empty emergency notification
-      expect(service.activeNotificationText, isEmpty); // No active notifications
+      expect(
+        service.hasActiveNotification,
+        isFalse,
+      ); // No emergency or news banner
+      expect(
+        service.isEmergencyNotification,
+        isFalse,
+      ); // Empty emergency notification
+      expect(
+        service.activeNotificationText,
+        isEmpty,
+      ); // No active notifications
     });
 
     test('Should initialize without throwing', () async {
@@ -64,7 +82,12 @@ void main() {
     });
 
     test('Should validate user behavior tracking values', () {
-      final validTrackingModes = ['minimal', 'standard', 'enhanced', 'disabled'];
+      final validTrackingModes = [
+        'minimal',
+        'standard',
+        'enhanced',
+        'disabled',
+      ];
       expect(validTrackingModes, contains(service.userBehaviorTracking));
     });
 

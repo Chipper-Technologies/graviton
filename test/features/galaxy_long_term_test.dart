@@ -49,7 +49,11 @@ void main() {
       final survivalRate = survivingOuterStars / outerStars.length;
 
       // We expect at least 70% of outer stars to survive the very long simulation
-      expect(survivalRate, greaterThan(0.7), reason: 'Too many outer stars were ejected over long simulation time');
+      expect(
+        survivalRate,
+        greaterThan(0.7),
+        reason: 'Too many outer stars were ejected over long simulation time',
+      );
     });
   });
 }

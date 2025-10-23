@@ -34,12 +34,18 @@ void main() {
 
     test('Zoom should respect minimum distance', () {
       cameraState.zoom(-10.0); // Try to zoom way in
-      expect(cameraState.distance, greaterThanOrEqualTo(5.0)); // Updated to current minimum
+      expect(
+        cameraState.distance,
+        greaterThanOrEqualTo(5.0),
+      ); // Updated to current minimum
     });
 
     test('Zoom should respect maximum distance', () {
       cameraState.zoom(10.0); // Try to zoom way out
-      expect(cameraState.distance, lessThanOrEqualTo(2000.0)); // Updated to current maximum
+      expect(
+        cameraState.distance,
+        lessThanOrEqualTo(2000.0),
+      ); // Updated to current maximum
     });
 
     test('Rotate should update yaw and pitch', () {
@@ -173,7 +179,10 @@ void main() {
       cameraState.toggleAutoRotate();
       cameraState.selectBody(2);
 
-      expect(cameraState.distance, equals(300.0 * 1.1)); // Updated to current default
+      expect(
+        cameraState.distance,
+        equals(300.0 * 1.1),
+      ); // Updated to current default
       expect(cameraState.yaw, equals(0.6 + 0.5));
       expect(cameraState.pitch, equals(0.3 + 0.3));
       expect(cameraState.autoRotate, isTrue);

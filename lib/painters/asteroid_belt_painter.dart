@@ -25,7 +25,8 @@ class AsteroidBeltPainter {
       ..strokeCap = StrokeCap.round;
 
     int rendered = 0;
-    const maxRenderDistance = 2000.0; // Increased to render Kuiper belt at proper distance
+    const maxRenderDistance =
+        2000.0; // Increased to render Kuiper belt at proper distance
 
     for (final particle in asteroidBelt.particles) {
       final worldPos = particle.position;
@@ -41,9 +42,18 @@ class AsteroidBeltPainter {
       // Calculate size based on distance (perspective effect)
       // Use different scaling for very distant objects (Kuiper belt)
       final perspectiveScale = distanceFromOrigin > 800
-          ? math.max(0.3, 500.0 / (distanceFromOrigin + 100.0)) // Better scaling for Kuiper belt
-          : math.max(0.1, 100.0 / (distanceFromOrigin + 50.0)); // Original scaling for asteroid belt
-      final renderSize = particle.size * perspectiveScale * 15.0; // Increase multiplier for better visibility
+          ? math.max(
+              0.3,
+              500.0 / (distanceFromOrigin + 100.0),
+            ) // Better scaling for Kuiper belt
+          : math.max(
+              0.1,
+              100.0 / (distanceFromOrigin + 50.0),
+            ); // Original scaling for asteroid belt
+      final renderSize =
+          particle.size *
+          perspectiveScale *
+          15.0; // Increase multiplier for better visibility
 
       // Skip tiny particles for performance (but be more lenient for debugging)
       if (renderSize < 0.05) {
@@ -51,7 +61,9 @@ class AsteroidBeltPainter {
       }
 
       // Set color with slight alpha for depth effect
-      paint.color = particle.color.withValues(alpha: AppTypography.opacityVeryHigh);
+      paint.color = particle.color.withValues(
+        alpha: AppTypography.opacityVeryHigh,
+      );
 
       // Draw particle as a small circle
       canvas.drawCircle(screenPos, renderSize, paint);

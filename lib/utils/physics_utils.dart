@@ -48,13 +48,19 @@ class PhysicsUtils {
 
   /// Convert energy to equivalent distance from a reference star
   /// Used for habitability calculations
-  static double energyToEquivalentDistance(double totalEnergy, double referenceLuminosity) {
+  static double energyToEquivalentDistance(
+    double totalEnergy,
+    double referenceLuminosity,
+  ) {
     if (totalEnergy <= 0 || referenceLuminosity <= 0) return double.infinity;
     return math.sqrt(referenceLuminosity / totalEnergy);
   }
 
   /// Calculate relative temperature compared to Earth (1.0 = Earth temperature)
-  static double calculateRelativeTemperature(double totalEnergyReceived, double earthEnergyReference) {
+  static double calculateRelativeTemperature(
+    double totalEnergyReceived,
+    double earthEnergyReference,
+  ) {
     if (earthEnergyReference <= 0) return 0.0;
     return totalEnergyReceived / earthEnergyReference;
   }
@@ -62,12 +68,15 @@ class PhysicsUtils {
   /// Calculate Earth's energy reference for temperature calculations
   static double calculateEarthEnergyReference() {
     final earthDistanceFromSun = 1.0 / SimulationConstants.simulationUnitsToAU;
-    return SimulationConstants.solarLuminosity / math.pow(earthDistanceFromSun, 2);
+    return SimulationConstants.solarLuminosity /
+        math.pow(earthDistanceFromSun, 2);
   }
 
   /// Calculate habitable zone boundaries for a given stellar luminosity
   /// Returns inner and outer distances in simulation units
-  static Map<String, double> calculateHabitableZoneBoundaries(double luminosity) {
+  static Map<String, double> calculateHabitableZoneBoundaries(
+    double luminosity,
+  ) {
     if (luminosity < SimulationConstants.minLuminosityForHabitableZone) {
       return {'inner': 0.0, 'outer': 0.0};
     }
@@ -75,8 +84,10 @@ class PhysicsUtils {
     final sqrtLuminosity = math.sqrt(luminosity);
 
     // Calculate boundaries in AU
-    final innerAU = SimulationConstants.habitableZoneInnerMultiplier * sqrtLuminosity;
-    final outerAU = SimulationConstants.habitableZoneOuterMultiplier * sqrtLuminosity;
+    final innerAU =
+        SimulationConstants.habitableZoneInnerMultiplier * sqrtLuminosity;
+    final outerAU =
+        SimulationConstants.habitableZoneOuterMultiplier * sqrtLuminosity;
 
     // Convert to simulation units
     final innerDistance = innerAU / SimulationConstants.simulationUnitsToAU;
@@ -88,13 +99,17 @@ class PhysicsUtils {
   /// Calculate orbital velocity for circular orbit
   static double calculateOrbitalVelocity(double totalMass, double distance) {
     if (distance <= 0 || totalMass <= 0) return 0.0;
-    return math.sqrt(SimulationConstants.gravitationalConstant * totalMass / distance);
+    return math.sqrt(
+      SimulationConstants.gravitationalConstant * totalMass / distance,
+    );
   }
 
   /// Calculate escape velocity from a massive body
   static double calculateEscapeVelocity(double mass, double radius) {
     if (radius <= 0 || mass <= 0) return 0.0;
-    return math.sqrt(2 * SimulationConstants.gravitationalConstant * mass / radius);
+    return math.sqrt(
+      2 * SimulationConstants.gravitationalConstant * mass / radius,
+    );
   }
 
   /// Calculate kinetic energy of a body
@@ -111,12 +126,20 @@ class PhysicsUtils {
   }) {
     if (distance <= 0) return 0.0;
     final effectiveDistance = math.sqrt(distance * distance + softening);
-    return -SimulationConstants.gravitationalConstant * mass1 * mass2 / effectiveDistance;
+    return -SimulationConstants.gravitationalConstant *
+        mass1 *
+        mass2 /
+        effectiveDistance;
   }
 
   /// Calculate total system energy (kinetic + potential)
-  static double calculateSystemEnergy(List<double> masses, List<vm.Vector3> positions, List<vm.Vector3> velocities) {
-    if (masses.length != positions.length || masses.length != velocities.length) {
+  static double calculateSystemEnergy(
+    List<double> masses,
+    List<vm.Vector3> positions,
+    List<vm.Vector3> velocities,
+  ) {
+    if (masses.length != positions.length ||
+        masses.length != velocities.length) {
       throw ArgumentError('All lists must have the same length');
     }
 
@@ -132,7 +155,11 @@ class PhysicsUtils {
     for (int i = 0; i < masses.length; i++) {
       for (int j = i + 1; j < masses.length; j++) {
         final distance = (positions[i] - positions[j]).length;
-        totalPotential += calculatePotentialEnergy(masses[i], masses[j], distance);
+        totalPotential += calculatePotentialEnergy(
+          masses[i],
+          masses[j],
+          distance,
+        );
       }
     }
 
@@ -140,7 +167,10 @@ class PhysicsUtils {
   }
 
   /// Calculate center of mass for a system of bodies
-  static vm.Vector3 calculateCenterOfMass(List<double> masses, List<vm.Vector3> positions) {
+  static vm.Vector3 calculateCenterOfMass(
+    List<double> masses,
+    List<vm.Vector3> positions,
+  ) {
     if (masses.length != positions.length || masses.isEmpty) {
       return vm.Vector3.zero();
     }
@@ -161,7 +191,10 @@ class PhysicsUtils {
   }
 
   /// Calculate system momentum
-  static vm.Vector3 calculateSystemMomentum(List<double> masses, List<vm.Vector3> velocities) {
+  static vm.Vector3 calculateSystemMomentum(
+    List<double> masses,
+    List<vm.Vector3> velocities,
+  ) {
     if (masses.length != velocities.length) {
       return vm.Vector3.zero();
     }

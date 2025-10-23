@@ -15,7 +15,10 @@ void main() {
 
     setUp(() {
       // Initialize FlavorConfig for testing
-      FlavorConfig.instance.initialize(flavor: AppFlavor.dev, appName: 'Graviton Dev');
+      FlavorConfig.instance.initialize(
+        flavor: AppFlavor.dev,
+        appName: 'Graviton Dev',
+      );
 
       service = ScreenshotModeService();
       simulationState = SimulationState();
@@ -77,7 +80,11 @@ void main() {
     test('Should disable screenshot mode and deactivate', () async {
       service.enableScreenshotMode();
       // Simulate activation
-      await service.applyCurrentPreset(simulationState: simulationState, cameraState: cameraState, uiState: uiState);
+      await service.applyCurrentPreset(
+        simulationState: simulationState,
+        cameraState: cameraState,
+        uiState: uiState,
+      );
 
       expect(service.isEnabled, isTrue);
       expect(service.isActive, isTrue);
@@ -128,11 +135,17 @@ void main() {
 
     test('Should apply preset and activate', () async {
       service.enableScreenshotMode();
-      service.setPreset(2); // Galaxy Black Hole (timerSeconds: 0, should pause immediately)
+      service.setPreset(
+        2,
+      ); // Galaxy Black Hole (timerSeconds: 0, should pause immediately)
 
       expect(service.isActive, isFalse);
 
-      await service.applyCurrentPreset(simulationState: simulationState, cameraState: cameraState, uiState: uiState);
+      await service.applyCurrentPreset(
+        simulationState: simulationState,
+        cameraState: cameraState,
+        uiState: uiState,
+      );
 
       expect(service.isActive, isTrue);
       // Note: Simulation pause state may vary based on preset configuration and timing
@@ -142,7 +155,11 @@ void main() {
     test('Should not apply preset when disabled', () async {
       service.disableScreenshotMode();
 
-      await service.applyCurrentPreset(simulationState: simulationState, cameraState: cameraState, uiState: uiState);
+      await service.applyCurrentPreset(
+        simulationState: simulationState,
+        cameraState: cameraState,
+        uiState: uiState,
+      );
 
       expect(service.isActive, isFalse);
     });
@@ -173,7 +190,11 @@ void main() {
 
     test('Should deactivate screenshot mode', () async {
       service.enableScreenshotMode();
-      await service.applyCurrentPreset(simulationState: simulationState, cameraState: cameraState, uiState: uiState);
+      await service.applyCurrentPreset(
+        simulationState: simulationState,
+        cameraState: cameraState,
+        uiState: uiState,
+      );
 
       expect(service.isActive, isTrue);
 
@@ -206,34 +227,56 @@ void main() {
       expect(notificationCount, equals(2));
 
       service.enableScreenshotMode();
-      await service.applyCurrentPreset(simulationState: simulationState, cameraState: cameraState, uiState: uiState);
-      expect(notificationCount, greaterThanOrEqualTo(3)); // May vary based on implementation
+      await service.applyCurrentPreset(
+        simulationState: simulationState,
+        cameraState: cameraState,
+        uiState: uiState,
+      );
+      expect(
+        notificationCount,
+        greaterThanOrEqualTo(3),
+      ); // May vary based on implementation
 
       service.deactivate();
-      expect(notificationCount, greaterThanOrEqualTo(4)); // May vary based on implementation
+      expect(
+        notificationCount,
+        greaterThanOrEqualTo(4),
+      ); // May vary based on implementation
     });
 
     test('Should apply camera position correctly', () async {
       service.enableScreenshotMode();
-      service.setPreset(5); // Earth View - has distance 12.8, very different from default 300
+      service.setPreset(
+        5,
+      ); // Earth View - has distance 12.8, very different from default 300
 
       final initialDistance = cameraState.distance;
       expect(initialDistance, equals(300.0)); // Default camera distance
 
-      await service.applyCurrentPreset(simulationState: simulationState, cameraState: cameraState, uiState: uiState);
+      await service.applyCurrentPreset(
+        simulationState: simulationState,
+        cameraState: cameraState,
+        uiState: uiState,
+      );
 
       // Add a small delay to ensure camera updates complete
       await Future.delayed(const Duration(milliseconds: 200));
 
       // Check that camera was updated to Earth View's distance (12.8)
       expect(cameraState.distance, isNot(equals(initialDistance)));
-      expect(cameraState.distance, closeTo(12.8, 1.0)); // Should be close to preset value
+      expect(
+        cameraState.distance,
+        closeTo(12.8, 1.0),
+      ); // Should be close to preset value
       expect(service.isActive, isTrue);
     });
 
     test('Should handle production mode correctly', () {
       // Test production mode
-      FlavorConfig.instance.initialize(flavor: AppFlavor.prod, appName: 'Graviton');
+      FlavorConfig.instance.initialize(
+        flavor: AppFlavor.prod,
+        appName: 'Graviton',
+      );
 
       final prodService = ScreenshotModeService();
       expect(prodService.isAvailable, isFalse);
@@ -244,7 +287,10 @@ void main() {
       expect(prodService.isEnabled, isFalse);
 
       // Reset to dev mode for other tests
-      FlavorConfig.instance.initialize(flavor: AppFlavor.dev, appName: 'Graviton Dev');
+      FlavorConfig.instance.initialize(
+        flavor: AppFlavor.dev,
+        appName: 'Graviton Dev',
+      );
     });
 
     test('Should handle scenario type mapping', () {
@@ -276,7 +322,11 @@ void main() {
 
       // This should not throw an exception even with null states
       await expectLater(
-        service.applyCurrentPreset(simulationState: simulationState, cameraState: cameraState, uiState: uiState),
+        service.applyCurrentPreset(
+          simulationState: simulationState,
+          cameraState: cameraState,
+          uiState: uiState,
+        ),
         completes,
       );
     });

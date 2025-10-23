@@ -85,11 +85,15 @@ class AppColors {
 
   /// Asteroid and small body colors
   static const Color asteroidBrownish = Color(0xFF8B6B3F);
-  static const Color kuiperBeltIcy = Color(0xFFB8E6FF); // Icy blue-white for Kuiper objects
+  static const Color kuiperBeltIcy = Color(
+    0xFFB8E6FF,
+  ); // Icy blue-white for Kuiper objects
 
   /// Binary star system colors
   static const Color binaryStarBrown = Color(0xFF8B5A3C); // Central brown star
-  static const Color binaryStarWhite = Color(0xFFE8E8E8); // White companion star
+  static const Color binaryStarWhite = Color(
+    0xFFE8E8E8,
+  ); // White companion star
   static const Color binaryStarBlue = Color(0xFF87CEEB); // Blue companion star
 
   // =============================================================================
@@ -101,7 +105,9 @@ class AppColors {
   static const Color habitabilityTooHot = Color(0xFFF44336); // Red
   static const Color habitabilityTooCold = Color(0xFF2196F3); // Blue
   static const Color habitabilityUnknown = Color(0xFF9E9E9E); // Grey
-  static const Color habitabilityDangerZone = Color(0xFFFF5722); // Deep orange/red
+  static const Color habitabilityDangerZone = Color(
+    0xFFFF5722,
+  ); // Deep orange/red
 
   // =============================================================================
   // UI & INTERFACE COLORS
@@ -114,9 +120,13 @@ class AppColors {
   /// General UI element colors
   static const Color uiDividerGrey = Color(0xFF424242); // Colors.grey[800]
   static const Color uiBorderGrey = Color(0xFF616161); // Colors.grey[700]
-  static const Color uiDarkBlueOrbit = Color(0xFF1565C0); // Colors.blue.shade800
+  static const Color uiDarkBlueOrbit = Color(
+    0xFF1565C0,
+  ); // Colors.blue.shade800
   static const Color uiTextGrey = Color(0xFF9E9E9E); // Colors.grey[500]
-  static const Color uiWhiteBorder = Color(0xFFFFFFFF); // White for borders with transparency
+  static const Color uiWhiteBorder = Color(
+    0xFFFFFFFF,
+  ); // White for borders with transparency
   static const Color uiBlackOverlay = Color(0x8A000000); // Colors.black54
   static const Color uiWhite = Color(0xFFFFFFFF); // Colors.white
   static const Color uiWhite70 = Color(0xB3FFFFFF); // Colors.white70
@@ -125,20 +135,26 @@ class AppColors {
   static const Color uiCyanAccent = Color(0xFF18FFFF); // Colors.cyanAccent
   static const Color uiCyan = Color(0xFF00FFFF); // Colors.cyan
   static const Color uiOrangeAccent = Color(0xFFFFAB40); // Colors.orangeAccent
-  static const Color uiLightBlueAccent = Color(0xFF40C4FF); // Colors.lightBlueAccent
+  static const Color uiLightBlueAccent = Color(
+    0xFF40C4FF,
+  ); // Colors.lightBlueAccent
   static const Color uiGreen = Color(0xFF4CAF50); // Colors.green
   static const Color uiYellow = Color(0xFFFFEB3B); // Colors.yellow
   static const Color uiOrange = Color(0xFFFF9800); // Colors.orange
   static const Color uiRed = Color(0xFFF44336); // Colors.red
   static const Color uiBlack = Color(0xFF000000); // Colors.black
-  static const Color uiSelectionYellow = Color(0xFFFFEB3B); // Colors.yellow (selection)
+  static const Color uiSelectionYellow = Color(
+    0xFFFFEB3B,
+  ); // Colors.yellow (selection)
   static const Color uiDevRed = Color(0xFFFF0000); // Colors.red for dev ribbon
 
   /// Primary app theme colors
   static const Color primaryColor = Color(0xFF818cf8); // Main app primary color
 
   /// Off-screen indicator colors
-  static const Color offScreenBlackHole = Color(0xFF404040); // Dark grey for black holes
+  static const Color offScreenBlackHole = Color(
+    0xFF404040,
+  ); // Dark grey for black holes
   static const Color offScreenSun = Color(0xFFFFD700); // Gold for sun
   static const Color offScreenMercury = Color(0xFF8C7853); // Mercury color
   static const Color offScreenVenus = Color(0xFFFFC649); // Venus color
@@ -150,7 +166,9 @@ class AppColors {
   static const Color offScreenNeptune = Color(0xFF4B70DD); // Neptune color
 
   /// Random system/utility colors
-  static const Color randomStarBlue = Color(0xFFADD8E6); // Light blue for hot stars
+  static const Color randomStarBlue = Color(
+    0xFFADD8E6,
+  ); // Light blue for hot stars
   static const Color randomStarWhite = Color(0xFFFFFFFF); // White stars
   static const Color randomStarCream = Color(0xFFFFFACD); // Cream stars
   static const Color randomStarYellow = Color(0xFFFFD700); // Yellow stars
@@ -158,11 +176,15 @@ class AppColors {
   static const Color randomStarRed = Color(0xFFFF4500); // Red stars
   static const Color randomPlanetBlue = Color(0xFF4169E1); // Blue planets
   static const Color randomPlanetCrimson = Color(0xFFDC143C); // Red planets
-  static const Color randomPlanetCornsilk = Color(0xFFFFF8DC); // Venus-like planets
+  static const Color randomPlanetCornsilk = Color(
+    0xFFFFF8DC,
+  ); // Venus-like planets
   static const Color randomPlanetGoldenrod = Color(0xFFDAA520); // Gas giants
   static const Color randomPlanetSkyBlue = Color(0xFF87CEEB); // Ice giants
   static const Color randomPlanetBrown = Color(0xFF8B4513); // Rocky planets
-  static const Color randomPlanetSilver = Color(0xFFC0C0C0); // Metal-rich planets
+  static const Color randomPlanetSilver = Color(
+    0xFFC0C0C0,
+  ); // Metal-rich planets
   static const Color randomPlanetPurple = Color(0xFF9370DB); // Exotic planets
 
   // =============================================================================
@@ -170,8 +192,12 @@ class AppColors {
   // =============================================================================
 
   /// Graviton painter colors
-  static const Color gravitonOrangeRed = Color(0xFFFF4500); // Bright orange-red for graviton rings
-  static const Color gravitonGold = Color(0xFFFFD700); // Pure gold for graviton highlights
+  static const Color gravitonOrangeRed = Color(
+    0xFFFF4500,
+  ); // Bright orange-red for graviton rings
+  static const Color gravitonGold = Color(
+    0xFFFFD700,
+  ); // Pure gold for graviton highlights
 
   /// Star glow gradient colors
   static const Color starGlowWhite = Color(0xFFFFFFFF); // Bright white center
@@ -180,7 +206,9 @@ class AppColors {
   static const Color starGlowRedOrange = Color(0xFFFF6B35); // Dim orange edge
 
   /// Accretion disk colors
-  static const Color accretionDiskGold = Color(0xFFFFD700); // Bright gold center
+  static const Color accretionDiskGold = Color(
+    0xFFFFD700,
+  ); // Bright gold center
   static const Color accretionDiskOrange = Color(0xFFFFA500); // Orange middle
   static const Color accretionDiskRed = Color(0xFFFF4500); // Red outer
 
@@ -196,7 +224,9 @@ class AppColors {
 
   /// Venus surface colors
   static const Color venusYellow = Color(0xFFFFC649); // Bright Venus surface
-  static const Color venusOrangeMiddle = Color(0xFFFFB347); // Orange middle for Venus atmosphere
+  static const Color venusOrangeMiddle = Color(
+    0xFFFFB347,
+  ); // Orange middle for Venus atmosphere
   static const Color venusOuterGlow = Color(0xFFFFA500); // Outer glow
   static const Color venusCreamCenter = Color(0xFFFFF8DC); // Light cream center
   static const Color venusGoldenEdge = Color(0xFFFFC649); // Golden yellow edge
@@ -221,17 +251,29 @@ class AppColors {
   static const Color jupiterRedSpot = Color(0xFFDC143C); // Great Red Spot
 
   /// Saturn surface colors
-  static const Color saturnCreamCenter = Color(0xFFFFF8DC); // Light cream center
-  static const Color saturnGoldenMiddle = Color(0xFFEEDC82); // Golden yellow middle
+  static const Color saturnCreamCenter = Color(
+    0xFFFFF8DC,
+  ); // Light cream center
+  static const Color saturnGoldenMiddle = Color(
+    0xFFEEDC82,
+  ); // Golden yellow middle
   static const Color saturnBurlywoodEdge = Color(0xFFDEB887); // Burlywood edge
   static const Color saturnRingColor = Color(0xFFDEB887); // Ring color
 
   /// Saturn ring system colors
-  static const Color saturnDRing = Color(0xFFD3D3D3); // D Ring - Very close inner ring
+  static const Color saturnDRing = Color(
+    0xFFD3D3D3,
+  ); // D Ring - Very close inner ring
   static const Color saturnCRing = Color(0xFFE6E6FA); // C Ring - Crepe ring
-  static const Color saturnBRing = Color(0xFFF5F5DC); // B Ring - Main bright ring
-  static const Color saturnARing = Color(0xFFFFE4E1); // A Ring - Outer main ring
-  static const Color saturnFRing = Color(0xFFDDDDDD); // F Ring - Very narrow shepherd ring
+  static const Color saturnBRing = Color(
+    0xFFF5F5DC,
+  ); // B Ring - Main bright ring
+  static const Color saturnARing = Color(
+    0xFFFFE4E1,
+  ); // A Ring - Outer main ring
+  static const Color saturnFRing = Color(
+    0xFFDDDDDD,
+  ); // F Ring - Very narrow shepherd ring
 
   /// Uranus surface colors
   static const Color uranusCyanCenter = Color(0xFF87CEEB); // Light cyan center
@@ -239,27 +281,41 @@ class AppColors {
   static const Color uranusTurquoiseEdge = Color(0xFF40E0D0); // Turquoise edge
 
   /// Neptune surface colors
-  static const Color neptuneCornflowerCenter = Color(0xFF6495ED); // Cornflower blue center
+  static const Color neptuneCornflowerCenter = Color(
+    0xFF6495ED,
+  ); // Cornflower blue center
   static const Color neptuneDeepBlueEdge = Color(0xFF4B70DD); // Deep blue edge
   static const Color neptuneDarkSpot = Color(0xFF191970); // Dark storm spot
   static const Color neptuneWindBand = Color(0xFF483D8B); // Wind band color
 
   /// Generic dark colors for various uses
-  static const Color genericDarkGray = Color(0xFF505050); // Dark gray for rings and shadows
+  static const Color genericDarkGray = Color(
+    0xFF505050,
+  ); // Dark gray for rings and shadows
   static const Color transparentColor = Color(0x00000000); // Fully transparent
 
   /// Basic colors for testing and general use
   static const Color basicRed = Color(0xFFF44336); // Colors.red equivalent
   static const Color basicBlue = Color(0xFF2196F3); // Colors.blue equivalent
   static const Color basicGreen = Color(0xFF4CAF50); // Colors.green equivalent
-  static const Color basicYellow = Color(0xFFFFEB3B); // Colors.yellow equivalent
-  static const Color basicPurple = Color(0xFF9C27B0); // Colors.purple equivalent
-  static const Color basicOrange = Color(0xFFFF9800); // Colors.orange equivalent
+  static const Color basicYellow = Color(
+    0xFFFFEB3B,
+  ); // Colors.yellow equivalent
+  static const Color basicPurple = Color(
+    0xFF9C27B0,
+  ); // Colors.purple equivalent
+  static const Color basicOrange = Color(
+    0xFFFF9800,
+  ); // Colors.orange equivalent
   static const Color basicCyan = Color(0xFF00FFFF); // Colors.cyan equivalent
   static const Color basicPink = Color(0xFFE91E63); // Colors.pink equivalent
-  static const Color basicIndigo = Color(0xFF3F51B5); // Colors.indigo equivalent
+  static const Color basicIndigo = Color(
+    0xFF3F51B5,
+  ); // Colors.indigo equivalent
   static const Color basicGrey = Color(0xFF9E9E9E); // Colors.grey equivalent
-  static const Color basicBlack54 = Color(0x8A000000); // Colors.black54 equivalent
+  static const Color basicBlack54 = Color(
+    0x8A000000,
+  ); // Colors.black54 equivalent
 
   /// List of basic colors for testing (Colors.primaries equivalent)
   static const List<Color> basicPrimaries = [
@@ -283,38 +339,68 @@ class AppColors {
   static const Color testLightBlue = Color(0xFF4CC9F0); // light blue
 
   /// Gravity well colors
-  static const Color gravityWellYellow = Color(0xFFFFEB3B); // Colors.yellow equivalent
-  static const Color gravityWellBlue = Color(0xFF2196F3); // Colors.blue equivalent
-  static const Color gravityWellCyan = Color(0xFF00FFFF); // Colors.cyan equivalent
+  static const Color gravityWellYellow = Color(
+    0xFFFFEB3B,
+  ); // Colors.yellow equivalent
+  static const Color gravityWellBlue = Color(
+    0xFF2196F3,
+  ); // Colors.blue equivalent
+  static const Color gravityWellCyan = Color(
+    0xFF00FFFF,
+  ); // Colors.cyan equivalent
 
   /// Background gradient colors
-  static const Color backgroundDeepBlue = Color(0xFF0a0a1a); // Deep space blue-black
-  static const Color backgroundPurple = Color(0xFF2a1a3f); // Enhanced space purple - more vibrant
-  static const Color backgroundDeepPurple = Color(0xFF3d1a5c); // Enhanced deep purple - more vibrant
+  static const Color backgroundDeepBlue = Color(
+    0xFF0a0a1a,
+  ); // Deep space blue-black
+  static const Color backgroundPurple = Color(
+    0xFF2a1a3f,
+  ); // Enhanced space purple - more vibrant
+  static const Color backgroundDeepPurple = Color(
+    0xFF3d1a5c,
+  ); // Enhanced deep purple - more vibrant
   static const Color backgroundBlack = Color(0xFF000000); // Pure black
 
   /// Enhanced vibrant background purples for gradient prominence
-  static const Color backgroundVibrantPurple = Color(0xFF5a2d7a); // Bright purple
-  static const Color backgroundMysticPurple = Color(0xFF7b3f9b); // Mystic purple
+  static const Color backgroundVibrantPurple = Color(
+    0xFF5a2d7a,
+  ); // Bright purple
+  static const Color backgroundMysticPurple = Color(
+    0xFF7b3f9b,
+  ); // Mystic purple
   static const Color backgroundRoyalPurple = Color(0xFF663399); // Royal purple
 
   /// Nebula colors for stars
-  static const Color nebulaMediumSlateBlue = Color(0xFF9370DB); // Medium slate blue
+  static const Color nebulaMediumSlateBlue = Color(
+    0xFF9370DB,
+  ); // Medium slate blue
   static const Color nebulaPlum = Color(0xFFDDA0DD); // Plum
   static const Color nebulaBlueViolet = Color(0xFF8A2BE2); // Blue violet
   static const Color nebulaSlateBlue = Color(0xFF6A5ACD); // Slate blue
-  static const Color nebulaMediumSlateBlue2 = Color(0xFF7B68EE); // Medium slate blue variant
+  static const Color nebulaMediumSlateBlue2 = Color(
+    0xFF7B68EE,
+  ); // Medium slate blue variant
   static const Color nebulaDarkOrchid = Color(0xFF9932CC); // Dark orchid
   static const Color nebulaDarkMagenta = Color(0xFF8B008B); // Dark magenta
   static const Color nebulaRoyalBlue = Color(0xFF4169E1); // Royal blue
-  static const Color nebulaCornflowerBlue = Color(0xFF6495ED); // Cornflower blue
+  static const Color nebulaCornflowerBlue = Color(
+    0xFF6495ED,
+  ); // Cornflower blue
   static const Color nebulaSkyBlue = Color(0xFF87CEEB); // Sky blue
 
   /// Enhanced vibrant nebula purples for more prominence
-  static const Color nebulaVibrantPurple = Color(0xFFAA55DD); // Bright vibrant purple
-  static const Color nebulaMysticPurple = Color(0xFFBB66EE); // Mystic glowing purple
-  static const Color nebulaElectricPurple = Color(0xFF9955FF); // Electric purple
-  static const Color nebulaCosmicPurple = Color(0xFF7744CC); // Cosmic deep purple
+  static const Color nebulaVibrantPurple = Color(
+    0xFFAA55DD,
+  ); // Bright vibrant purple
+  static const Color nebulaMysticPurple = Color(
+    0xFFBB66EE,
+  ); // Mystic glowing purple
+  static const Color nebulaElectricPurple = Color(
+    0xFF9955FF,
+  ); // Electric purple
+  static const Color nebulaCosmicPurple = Color(
+    0xFF7744CC,
+  ); // Cosmic deep purple
 
   // =============================================================================
   // ALPHA & TRANSPARENCY CONSTANTS
@@ -358,7 +444,10 @@ class AppColors {
   }
 
   /// Create gradient colors for glow effects
-  static List<Color> createGlowGradient(Color baseColor, List<double> alphaStops) {
+  static List<Color> createGlowGradient(
+    Color baseColor,
+    List<double> alphaStops,
+  ) {
     return alphaStops.map((alpha) => withAlpha(baseColor, alpha)).toList();
   }
 

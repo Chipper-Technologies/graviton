@@ -36,7 +36,11 @@ class HabitabilityPainter {
       // Sample multiple perpendicular directions to find the maximum apparent radius
       // This ensures consistent zone size regardless of camera rotation direction
       final eyeSpace = (view * vm.Vector4(starPos.x, starPos.y, starPos.z, 1));
-      final cameraToStar = vm.Vector3(-eyeSpace.x, -eyeSpace.y, -eyeSpace.z).normalized();
+      final cameraToStar = vm.Vector3(
+        -eyeSpace.x,
+        -eyeSpace.y,
+        -eyeSpace.z,
+      ).normalized();
 
       // Find two perpendicular vectors to the camera-star direction
       vm.Vector3 perp1, perp2;
@@ -81,21 +85,34 @@ class HabitabilityPainter {
         center: Alignment.center,
         stops: const [0.0, 0.7, 1.0],
         colors: [
-          AppColors.habitabilityHabitable.withValues(alpha: AppTypography.opacityFaint), // More opaque center
-          AppColors.habitabilityHabitable.withValues(alpha: AppTypography.opacityMidFade), // Mid fade
-          AppColors.habitabilityHabitable.withValues(alpha: AppTypography.opacityTransparent), // Transparent edge
+          AppColors.habitabilityHabitable.withValues(
+            alpha: AppTypography.opacityFaint,
+          ), // More opaque center
+          AppColors.habitabilityHabitable.withValues(
+            alpha: AppTypography.opacityMidFade,
+          ), // Mid fade
+          AppColors.habitabilityHabitable.withValues(
+            alpha: AppTypography.opacityTransparent,
+          ), // Transparent edge
         ],
       );
 
       // Draw habitable zone with gradient fill
-      final habitableRect = Rect.fromCircle(center: starProjected, radius: projectedOuterRadius);
+      final habitableRect = Rect.fromCircle(
+        center: starProjected,
+        radius: projectedOuterRadius,
+      );
       final habitableZoneFill = Paint()
         ..shader = habitableGradient.createShader(habitableRect)
         ..style = PaintingStyle.fill;
 
       final path = Path()
-        ..addOval(Rect.fromCircle(center: starProjected, radius: projectedOuterRadius))
-        ..addOval(Rect.fromCircle(center: starProjected, radius: projectedInnerRadius));
+        ..addOval(
+          Rect.fromCircle(center: starProjected, radius: projectedOuterRadius),
+        )
+        ..addOval(
+          Rect.fromCircle(center: starProjected, radius: projectedInnerRadius),
+        );
       path.fillType = PathFillType.evenOdd;
 
       canvas.drawPath(path, habitableZoneFill);
@@ -105,13 +122,22 @@ class HabitabilityPainter {
         center: Alignment.center,
         stops: const [0.0, 0.8, 1.0],
         colors: [
-          AppColors.habitabilityTooHot.withValues(alpha: AppTypography.opacityLowMedium),
-          AppColors.habitabilityTooHot.withValues(alpha: AppTypography.opacityDisabled),
-          AppColors.habitabilityTooHot.withValues(alpha: AppTypography.opacityTransparent),
+          AppColors.habitabilityTooHot.withValues(
+            alpha: AppTypography.opacityLowMedium,
+          ),
+          AppColors.habitabilityTooHot.withValues(
+            alpha: AppTypography.opacityDisabled,
+          ),
+          AppColors.habitabilityTooHot.withValues(
+            alpha: AppTypography.opacityTransparent,
+          ),
         ],
       );
 
-      final hotRect = Rect.fromCircle(center: starProjected, radius: projectedInnerRadius);
+      final hotRect = Rect.fromCircle(
+        center: starProjected,
+        radius: projectedInnerRadius,
+      );
       final hotZoneFill = Paint()
         ..shader = hotGradient.createShader(hotRect)
         ..style = PaintingStyle.fill;
@@ -120,18 +146,30 @@ class HabitabilityPainter {
 
       // Zone boundary lines (more subtle)
       final innerBoundaryPaint = Paint()
-        ..color = AppColors.habitabilityTooHot.withValues(alpha: AppTypography.opacityFaint)
+        ..color = AppColors.habitabilityTooHot.withValues(
+          alpha: AppTypography.opacityFaint,
+        )
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.5;
 
       final outerBoundaryPaint = Paint()
-        ..color = AppColors.habitabilityTooCold.withValues(alpha: AppTypography.opacityFaint)
+        ..color = AppColors.habitabilityTooCold.withValues(
+          alpha: AppTypography.opacityFaint,
+        )
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.5;
 
       // Draw boundary circles
-      canvas.drawCircle(starProjected, projectedInnerRadius, innerBoundaryPaint);
-      canvas.drawCircle(starProjected, projectedOuterRadius, outerBoundaryPaint);
+      canvas.drawCircle(
+        starProjected,
+        projectedInnerRadius,
+        innerBoundaryPaint,
+      );
+      canvas.drawCircle(
+        starProjected,
+        projectedOuterRadius,
+        outerBoundaryPaint,
+      );
     }
   }
 
@@ -146,23 +184,42 @@ class HabitabilityPainter {
     if (!showHabitabilityIndicators || body.bodyType != BodyType.planet) return;
 
     final statusColor = Color(body.habitabilityStatus.statusColor);
-    final indicatorRadius = bodyRadius * 4.0; // Much wider radius for more visibility
+    final indicatorRadius =
+        bodyRadius * 4.0; // Much wider radius for more visibility
 
     // Star-like radial gradient that fades out to transparent - brighter and more visible
     final habitabilityGlow = RadialGradient(
       colors: [
-        statusColor.withValues(alpha: AppTypography.opacityNearlyOpaque), // Very bright center
-        statusColor.withValues(alpha: AppTypography.opacityHigh), // Bright middle
-        statusColor.withValues(alpha: AppTypography.opacitySemiTransparent), // Middle fade
-        statusColor.withValues(alpha: AppTypography.opacityDisabled), // Outer fade
+        statusColor.withValues(
+          alpha: AppTypography.opacityNearlyOpaque,
+        ), // Very bright center
+        statusColor.withValues(
+          alpha: AppTypography.opacityHigh,
+        ), // Bright middle
+        statusColor.withValues(
+          alpha: AppTypography.opacitySemiTransparent,
+        ), // Middle fade
+        statusColor.withValues(
+          alpha: AppTypography.opacityDisabled,
+        ), // Outer fade
         AppColors.transparentColor, // Complete fade to transparent
       ],
-      stops: const [0.0, 0.2, 0.5, 0.8, 1.0], // More gradient steps for smoother fade
+      stops: const [
+        0.0,
+        0.2,
+        0.5,
+        0.8,
+        1.0,
+      ], // More gradient steps for smoother fade
     );
 
     // Draw the main glow effect
     final glowRect = Rect.fromCircle(center: center, radius: indicatorRadius);
-    canvas.drawCircle(center, indicatorRadius, Paint()..shader = habitabilityGlow.createShader(glowRect));
+    canvas.drawCircle(
+      center,
+      indicatorRadius,
+      Paint()..shader = habitabilityGlow.createShader(glowRect),
+    );
 
     // Add multiple border rings for more definition and visibility
     final innerBorderPaint = Paint()
@@ -173,7 +230,9 @@ class HabitabilityPainter {
     canvas.drawCircle(center, indicatorRadius * 0.7, innerBorderPaint);
 
     final outerBorderPaint = Paint()
-      ..color = statusColor.withValues(alpha: AppTypography.opacitySemiTransparent)
+      ..color = statusColor.withValues(
+        alpha: AppTypography.opacitySemiTransparent,
+      )
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
 

@@ -76,8 +76,10 @@ void main() {
       expect(targetMovement, greaterThan(0.0));
 
       // Target should be closer to selected body than before
-      final distanceToBodyBefore = (initialTarget - selectedBodyPosition).length;
-      final distanceToBodyAfter = (cameraState.target - selectedBodyPosition).length;
+      final distanceToBodyBefore =
+          (initialTarget - selectedBodyPosition).length;
+      final distanceToBodyAfter =
+          (cameraState.target - selectedBodyPosition).length;
       expect(distanceToBodyAfter, lessThan(distanceToBodyBefore));
     });
 

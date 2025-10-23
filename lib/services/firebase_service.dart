@@ -2,6 +2,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
+import 'package:graviton/enums/firebase_event.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/services/remote_config_service.dart';
 
 /// Service class for managing Firebase functionality
@@ -38,9 +41,12 @@ class FirebaseService {
       _isInitialized = true;
 
       // Log initialization
-      await logEvent(
-        'app_initialized',
-        parameters: {'platform': defaultTargetPlatform.name, 'debug_mode': kDebugMode.toString()},
+      await logEventWithEnum(
+        FirebaseEvent.appInitialized,
+        parameters: {
+          'platform': defaultTargetPlatform.name,
+          'debug_mode': kDebugMode.toString(),
+        },
       );
 
       debugPrint('Firebase services initialized successfully');
@@ -103,13 +109,15 @@ class FirebaseService {
       'feature_advanced_controls': true,
       'max_simulation_speed': 16.0,
       'min_simulation_speed': 0.1,
-      'default_time_scale': 1.0,
+      'default_time_scale': 8.0,
       'enable_vibration': true,
       'show_debug_info': kDebugMode,
       'maintenance_mode': false,
-      'maintenance_message': 'The app is currently under maintenance. Please try again later.',
+      'maintenance_message':
+          'The app is currently under maintenance. Please try again later.',
       'force_update_version': '0.0.0',
-      'update_message': 'A new version is available. Please update to continue.',
+      'update_message':
+          'A new version is available. Please update to continue.',
     };
   }
 
@@ -137,10 +145,20 @@ class FirebaseService {
       };
 
       await _analytics!.logEvent(name: name, parameters: enhancedParameters);
-      debugPrint('Logged analytics event: $name with parameters: $enhancedParameters');
+      debugPrint(
+        'Logged analytics event: $name with parameters: $enhancedParameters',
+      );
     } catch (e) {
       debugPrint('Error logging analytics event $name: $e');
     }
+  }
+
+  /// Log an analytics event with type-safe enum
+  Future<void> logEventWithEnum(
+    FirebaseEvent event, {
+    Map<String, Object>? parameters,
+  }) async {
+    await logEvent(event.value, parameters: parameters);
   }
 
   /// Log screen view
@@ -186,9 +204,19 @@ class FirebaseService {
   }
 
   /// Record custom error
-  Future<void> recordError(dynamic exception, StackTrace? stackTrace, {String? reason, bool fatal = false}) async {
+  Future<void> recordError(
+    dynamic exception,
+    StackTrace? stackTrace, {
+    String? reason,
+    bool fatal = false,
+  }) async {
     try {
-      await _crashlytics?.recordError(exception, stackTrace, reason: reason, fatal: fatal);
+      await _crashlytics?.recordError(
+        exception,
+        stackTrace,
+        reason: reason,
+        fatal: fatal,
+      );
     } catch (e) {
       debugPrint('Error recording crash: $e');
     }
@@ -206,7 +234,8 @@ class FirebaseService {
   /// Get Remote Config value as bool
   bool getRemoteConfigBool(String key) {
     try {
-      return _remoteConfig?.getBool(key) ?? (_getDefaultRemoteConfigValues()[key] as bool? ?? false);
+      return _remoteConfig?.getBool(key) ??
+          (_getDefaultRemoteConfigValues()[key] as bool? ?? false);
     } catch (e) {
       debugPrint('Error getting remote config bool $key: $e');
       return _getDefaultRemoteConfigValues()[key] as bool? ?? false;
@@ -216,7 +245,8 @@ class FirebaseService {
   /// Get Remote Config value as double
   double getRemoteConfigDouble(String key) {
     try {
-      return _remoteConfig?.getDouble(key) ?? (_getDefaultRemoteConfigValues()[key] as double? ?? 0.0);
+      return _remoteConfig?.getDouble(key) ??
+          (_getDefaultRemoteConfigValues()[key] as double? ?? 0.0);
     } catch (e) {
       debugPrint('Error getting remote config double $key: $e');
       return _getDefaultRemoteConfigValues()[key] as double? ?? 0.0;
@@ -226,7 +256,8 @@ class FirebaseService {
   /// Get Remote Config value as string
   String getRemoteConfigString(String key) {
     try {
-      return _remoteConfig?.getString(key) ?? (_getDefaultRemoteConfigValues()[key] as String? ?? '');
+      return _remoteConfig?.getString(key) ??
+          (_getDefaultRemoteConfigValues()[key] as String? ?? '');
     } catch (e) {
       debugPrint('Error getting remote config string $key: $e');
       return _getDefaultRemoteConfigValues()[key] as String? ?? '';
@@ -279,9 +310,29 @@ class FirebaseService {
     await logEvent('ui_$action', parameters: params);
   }
 
+  /// UI interaction analytics with type-safe enums
+  Future<void> logUIEventWithEnums(
+    UIAction action, {
+    UIElement? element,
+    String? value,
+    Map<String, Object>? additionalParams,
+  }) async {
+    final params = <String, Object>{
+      'action': action.value,
+      if (element != null) 'element': element.value,
+      if (value != null) 'value': value,
+      ...?additionalParams,
+    };
+
+    await logEvent('ui_${action.value}', parameters: params);
+  }
+
   /// Settings change analytics
   Future<void> logSettingsChange(String setting, Object value) async {
-    await logEvent('settings_changed', parameters: {'setting': setting, 'value': value.toString()});
+    await logEventWithEnum(
+      FirebaseEvent.settingsChanged,
+      parameters: {'setting': setting, 'value': value.toString()},
+    );
   }
 
   /// Performance analytics
@@ -298,7 +349,7 @@ class FirebaseService {
       ...?additionalParams,
     };
 
-    await logEvent('performance_metric', parameters: params);
+    await logEventWithEnum(FirebaseEvent.performanceMetric, parameters: params);
   }
 
   /// Error analytics
@@ -315,6 +366,6 @@ class FirebaseService {
       ...?additionalParams,
     };
 
-    await logEvent('app_error', parameters: params);
+    await logEventWithEnum(FirebaseEvent.appError, parameters: params);
   }
 }

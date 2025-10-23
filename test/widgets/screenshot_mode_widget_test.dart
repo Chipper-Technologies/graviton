@@ -28,7 +28,10 @@ void main() {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
-          body: ChangeNotifierProvider<AppState>.value(value: appState, child: const ScreenshotModeWidget()),
+          body: ChangeNotifierProvider<AppState>.value(
+            value: appState,
+            child: const ScreenshotModeWidget(),
+          ),
         ),
       );
     }
@@ -38,34 +41,54 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Screenshot Mode'), findsOneWidget);
-      expect(find.text('Enable preset scenes for capturing marketing screenshots'), findsOneWidget);
+      expect(
+        find.text('Enable preset scenes for capturing marketing screenshots'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('Should display German text when locale is German', (tester) async {
+    testWidgets('Should display German text when locale is German', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetWithLocale(const Locale('de')));
       await tester.pumpAndSettle();
 
       expect(find.text('Screenshot-Modus'), findsOneWidget);
-      expect(find.text('Vorgegebene Szenen für Marketing-Screenshots aktivieren'), findsOneWidget);
+      expect(
+        find.text('Vorgegebene Szenen für Marketing-Screenshots aktivieren'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('Should display Spanish text when locale is Spanish', (tester) async {
+    testWidgets('Should display Spanish text when locale is Spanish', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetWithLocale(const Locale('es')));
       await tester.pumpAndSettle();
 
       expect(find.text('Modo de Captura'), findsOneWidget);
-      expect(find.text('Activar escenas predefinidas para capturas de marketing'), findsOneWidget);
+      expect(
+        find.text('Activar escenas predefinidas para capturas de marketing'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('Should display French text when locale is French', (tester) async {
+    testWidgets('Should display French text when locale is French', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetWithLocale(const Locale('fr')));
       await tester.pumpAndSettle();
 
       expect(find.text('Mode Capture d\'Écran'), findsOneWidget);
-      expect(find.text('Activer des scènes prédéfinies pour les captures marketing'), findsOneWidget);
+      expect(
+        find.text('Activer des scènes prédéfinies pour les captures marketing'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('Should display Japanese text when locale is Japanese', (tester) async {
+    testWidgets('Should display Japanese text when locale is Japanese', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetWithLocale(const Locale('ja')));
       await tester.pumpAndSettle();
 
@@ -73,7 +96,9 @@ void main() {
       expect(find.text('マーケティング用スクリーンショット撮影のプリセットシーンを有効化'), findsOneWidget);
     });
 
-    testWidgets('Should display Korean text when locale is Korean', (tester) async {
+    testWidgets('Should display Korean text when locale is Korean', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetWithLocale(const Locale('ko')));
       await tester.pumpAndSettle();
 
@@ -81,7 +106,9 @@ void main() {
       expect(find.text('마케팅 스크린샷 촬영을 위한 프리셋 장면 활성화'), findsOneWidget);
     });
 
-    testWidgets('Should display Chinese text when locale is Chinese', (tester) async {
+    testWidgets('Should display Chinese text when locale is Chinese', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetWithLocale(const Locale('zh')));
       await tester.pumpAndSettle();
 
@@ -103,7 +130,9 @@ void main() {
       expect(find.text('Szene anwenden'), findsOneWidget);
     });
 
-    testWidgets('Should handle all supported locales without errors', (tester) async {
+    testWidgets('Should handle all supported locales without errors', (
+      tester,
+    ) async {
       final supportedLocales = [
         const Locale('en'),
         const Locale('de'),
@@ -124,26 +153,33 @@ void main() {
       }
     });
 
-    testWidgets('Should include hide UI functionality when screenshot mode is enabled', (tester) async {
-      await tester.pumpWidget(createWidgetWithLocale(const Locale('en')));
-      await tester.pumpAndSettle();
+    testWidgets(
+      'Should include hide UI functionality when screenshot mode is enabled',
+      (tester) async {
+        await tester.pumpWidget(createWidgetWithLocale(const Locale('en')));
+        await tester.pumpAndSettle();
 
-      // Enable screenshot mode via appState (avoid UI complexity)
-      final screenshotService = ScreenshotModeService();
-      screenshotService.enableScreenshotMode();
+        // Enable screenshot mode via appState (avoid UI complexity)
+        final screenshotService = ScreenshotModeService();
+        screenshotService.enableScreenshotMode();
 
-      // Rebuild widget
-      await tester.pumpAndSettle();
+        // Rebuild widget
+        await tester.pumpAndSettle();
 
-      // Should have the hide UI toggle available
-      expect(find.text('Hide Navigation'), findsOneWidget);
-      expect(
-        find.text('Hide app bar, bottom navigation, and copyright when screenshot mode is active'),
-        findsOneWidget,
-      );
-    });
+        // Should have the hide UI toggle available
+        expect(find.text('Hide Navigation'), findsOneWidget);
+        expect(
+          find.text(
+            'Hide app bar, bottom navigation, and copyright when screenshot mode is active',
+          ),
+          findsOneWidget,
+        );
+      },
+    );
 
-    testWidgets('Should toggle hide UI setting correctly via state', (tester) async {
+    testWidgets('Should toggle hide UI setting correctly via state', (
+      tester,
+    ) async {
       await tester.pumpWidget(createWidgetWithLocale(const Locale('en')));
       await tester.pumpAndSettle();
 

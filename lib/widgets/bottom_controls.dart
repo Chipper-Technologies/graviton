@@ -22,7 +22,11 @@ class BottomControls extends StatelessWidget {
                 message: l10n.toggleStatsTooltip,
                 preferBelow: false,
                 child: IconButton(
-                  icon: Icon(appState.ui.showStats ? Icons.analytics : Icons.analytics_outlined),
+                  icon: Icon(
+                    appState.ui.showStats
+                        ? Icons.analytics
+                        : Icons.analytics_outlined,
+                  ),
                   onPressed: () => appState.ui.toggleStats(),
                 ),
               ),
@@ -30,7 +34,11 @@ class BottomControls extends StatelessWidget {
                 message: l10n.autoRotateTooltip,
                 preferBelow: false,
                 child: IconButton(
-                  icon: Icon(appState.camera.autoRotate ? Icons.rotate_right : Icons.rotate_right_outlined),
+                  icon: Icon(
+                    appState.camera.autoRotate
+                        ? Icons.rotate_right
+                        : Icons.rotate_right_outlined,
+                  ),
                   onPressed: () => appState.camera.toggleAutoRotate(),
                 ),
               ),
@@ -42,9 +50,15 @@ class BottomControls extends StatelessWidget {
                           : l10n.selectObjectToFollowTooltip),
                 preferBelow: false,
                 child: IconButton(
-                  icon: Icon(appState.camera.followMode ? Icons.track_changes : Icons.track_changes_outlined),
+                  icon: Icon(
+                    appState.camera.followMode
+                        ? Icons.track_changes
+                        : Icons.track_changes_outlined,
+                  ),
                   onPressed: appState.camera.selectedBody != null
-                      ? () => appState.camera.toggleFollowMode(appState.simulation.bodies)
+                      ? () => appState.camera.toggleFollowMode(
+                          appState.simulation.bodies,
+                        )
                       : null, // Disabled when no object selected
                 ),
               ),
@@ -53,7 +67,9 @@ class BottomControls extends StatelessWidget {
                 preferBelow: false,
                 child: IconButton(
                   icon: const Icon(Icons.center_focus_strong),
-                  onPressed: () => appState.camera.resetView(appState.simulation.currentScenario),
+                  onPressed: () => appState.camera.resetView(
+                    appState.simulation.currentScenario,
+                  ),
                 ),
               ),
               Tooltip(
@@ -62,7 +78,9 @@ class BottomControls extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.my_location),
                   onPressed: appState.simulation.bodies.isNotEmpty
-                      ? () => appState.camera.focusOnNearestBody(appState.simulation.bodies)
+                      ? () => appState.camera.focusOnNearestBody(
+                          appState.simulation.bodies,
+                        )
                       : null, // Disabled when no bodies
                 ),
               ),

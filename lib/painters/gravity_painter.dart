@@ -12,7 +12,13 @@ import 'package:vector_math/vector_math_64.dart' as vm;
 /// Painter responsible for rendering gravity wells and gravitational field visualization
 class GravityPainter {
   /// Draw gravity wells showing gravitational field strength around objects
-  static void drawGravityWells(Canvas canvas, Size size, vm.Matrix4 vp, physics.Simulation sim, bool showGravityWells) {
+  static void drawGravityWells(
+    Canvas canvas,
+    Size size,
+    vm.Matrix4 vp,
+    physics.Simulation sim,
+    bool showGravityWells,
+  ) {
     if (!showGravityWells) return;
 
     for (int i = 0; i < sim.bodies.length; i++) {
@@ -31,11 +37,19 @@ class GravityPainter {
 
         // Calculate field strength at this distance (inverse square law)
         final distance = ringRadius / 20.0; // Scale for visual purposes
-        final fieldStrength = body.mass / (distance * distance + 1.0); // Add 1 to avoid division by zero
+        final fieldStrength =
+            body.mass /
+            (distance * distance + 1.0); // Add 1 to avoid division by zero
 
         // Normalize field strength for alpha calculation
-        final normalizedStrength = (fieldStrength / (body.mass + 1.0)).clamp(0.0, 1.0);
-        final alpha = (normalizedStrength * 0.4 * (ring / ringCount)).clamp(0.02, 0.3);
+        final normalizedStrength = (fieldStrength / (body.mass + 1.0)).clamp(
+          0.0,
+          1.0,
+        );
+        final alpha = (normalizedStrength * 0.4 * (ring / ringCount)).clamp(
+          0.02,
+          0.3,
+        );
 
         // Color based on object type and field strength
         Color wellColor;
@@ -63,14 +77,23 @@ class GravityPainter {
   }
 
   /// Draw a subtle grid pattern to show space-time curvature around massive objects
-  static void _drawGravityGrid(Canvas canvas, Offset center, Body body, double maxRadius) {
+  static void _drawGravityGrid(
+    Canvas canvas,
+    Offset center,
+    Body body,
+    double maxRadius,
+  ) {
     const int gridLines = 6;
     final gridSpacing = maxRadius / gridLines;
 
     final gridPaint = Paint()
       ..color = body.bodyType == BodyType.star
-          ? AppColors.gravityWellYellow.withValues(alpha: AppTypography.opacityDisabled)
-          : AppColors.gravityWellCyan.withValues(alpha: AppTypography.opacityDisabled)
+          ? AppColors.gravityWellYellow.withValues(
+              alpha: AppTypography.opacityDisabled,
+            )
+          : AppColors.gravityWellCyan.withValues(
+              alpha: AppTypography.opacityDisabled,
+            )
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.8;
 
