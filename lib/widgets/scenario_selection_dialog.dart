@@ -52,9 +52,8 @@ class ScenarioSelectionDialog extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     l10n.scenarioSelectionTitle,
-                    style: theme.textTheme.headlineSmall?.copyWith(
+                    style: AppTypography.titleText.copyWith(
                       color: theme.primaryColor,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
@@ -166,7 +165,7 @@ class _ScenarioTile extends StatelessWidget {
                         Expanded(
                           child: Text(
                             name,
-                            style: theme.textTheme.titleMedium?.copyWith(
+                            style: AppTypography.largeText.copyWith(
                               fontWeight: isSelected
                                   ? FontWeight.bold
                                   : FontWeight.w500,
@@ -187,12 +186,26 @@ class _ScenarioTile extends StatelessWidget {
 
                     Text(
                       description,
-                      style: theme.textTheme.bodySmall?.copyWith(
+                      style: AppTypography.smallText.copyWith(
                         color: theme.textTheme.bodySmall?.color?.withValues(
                           alpha: AppTypography.opacityVeryHigh,
                         ),
                       ),
                       maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+
+                    const SizedBox(height: 6),
+
+                    // Learning objectives
+                    Text(
+                      _getScenarioObjectives(l10n, scenario),
+                      style: AppTypography.smallText.copyWith(
+                        color: config.primaryColor,
+                        fontSize: 11,
+                        height: 1.3,
+                      ),
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
 
@@ -211,7 +224,7 @@ class _ScenarioTile extends StatelessWidget {
                         const SizedBox(width: 4),
                         Text(
                           '${config.expectedBodyCount} ${l10n.bodies}',
-                          style: theme.textTheme.bodySmall?.copyWith(
+                          style: AppTypography.smallText.copyWith(
                             color: theme.textTheme.bodySmall?.color?.withValues(
                               alpha: AppTypography.opacityMediumHigh,
                             ),
@@ -229,7 +242,7 @@ class _ScenarioTile extends StatelessWidget {
                         Expanded(
                           child: Text(
                             _getLocalizedEducationalFocus(l10n, scenario),
-                            style: theme.textTheme.bodySmall?.copyWith(
+                            style: AppTypography.smallText.copyWith(
                               color: theme.textTheme.bodySmall?.color
                                   ?.withValues(
                                     alpha: AppTypography.opacityMediumHigh,
@@ -325,6 +338,27 @@ class _ScenarioTile extends StatelessWidget {
       default:
         // Fallback for unknown keys
         return config.educationalFocus;
+    }
+  }
+
+  String _getScenarioObjectives(AppLocalizations l10n, ScenarioType scenario) {
+    switch (scenario) {
+      case ScenarioType.solarSystem:
+        return l10n.scenarioObjectivesSolar;
+      case ScenarioType.earthMoonSun:
+        return l10n.scenarioObjectivesEarthMoon;
+      case ScenarioType.binaryStars:
+        return l10n.scenarioObjectivesBinary;
+      case ScenarioType.threeBodyClassic:
+        return l10n.scenarioObjectivesThreeBody;
+      case ScenarioType.random:
+        return l10n.scenarioObjectivesRandom;
+      case ScenarioType.asteroidBelt:
+        return l10n.scenarioObjectivesRandom; // Fallback to random objectives
+      case ScenarioType.galaxyFormation:
+        return l10n.scenarioObjectivesRandom; // Fallback to random objectives
+      default:
+        return l10n.scenarioObjectivesRandom; // Safe fallback
     }
   }
 }

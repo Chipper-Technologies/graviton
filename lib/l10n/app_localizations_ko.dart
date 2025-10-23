@@ -592,5 +592,109 @@ class AppLocalizationsKo extends AppLocalizations {
   String get presetThreeBodyBalletDesc => '우아한 움직임의 고전적 삼체 문제';
 
   @override
+  String get scenarioObjectivesSolar =>
+      '🎯 학습 내용: 행성 운동, 궤도 역학, 친숙한 천체\n⭐ 최적 대상: 초보자, 천문학 애호가';
+
+  @override
+  String get scenarioObjectivesEarthMoon =>
+      '🎯 학습 내용: 삼체 역학, 달의 역학, 조석력\n⭐ 최적 대상: 지구-달 시스템 이해';
+
+  @override
+  String get scenarioObjectivesBinary =>
+      '🎯 학습 내용: 항성 진화, 쌍성계, 극한 중력\n⭐ 최적 대상: 고급 물리학 탐구';
+
+  @override
+  String get scenarioObjectivesThreeBody =>
+      '🎯 학습 내용: 카오스 이론, 예측 불가능한 운동, 불안정 시스템\n⭐ 최적 대상: 수리물리학 애호가';
+
+  @override
+  String get scenarioObjectivesRandom =>
+      '🎯 학습 내용: 알려지지 않은 구성 발견, 실험 물리학\n⭐ 최적 대상: 탐색과 실험';
+
+  @override
   String get privacyPolicyLabel => '개인정보 보호정책';
+
+  @override
+  String get tutorialWelcomeTitle => 'Graviton에 오신 것을 환영합니다!';
+
+  @override
+  String get tutorialWelcomeDescription =>
+      '중력 물리학의 매혹적인 세계로의 창문인 Graviton에 오신 것을 환영합니다! 이 앱을 통해 천체들이 중력을 통해 어떻게 상호작용하며 공간과 시간을 통해 아름다운 궤도 춤을 만들어내는지 탐구할 수 있습니다.';
+
+  @override
+  String get tutorialObjectivesTitle => '무엇을 할 수 있나요?';
+
+  @override
+  String get tutorialObjectivesDescription =>
+      '• 현실적인 궤도 역학 관찰\n• 다양한 천문학적 시나리오 탐구\n• 중력 상호작용 실험\n• 충돌과 합병 관찰\n• 행성 운동에 대해 학습\n• 혼돈스러운 삼체 역학 발견';
+
+  @override
+  String get tutorialControlsTitle => '기본 조작';
+
+  @override
+  String get tutorialControlsDescription =>
+      '상단 컨트롤을 사용하여 시뮬레이션 재생/일시정지, 새로운 시나리오를 위한 리셋, 시뮬레이션 속도 조정을 하세요. 설정 버튼을 통해 궤적과 기타 시각적 옵션을 사용자 정의할 수 있습니다.';
+
+  @override
+  String get tutorialCameraTitle => '카메라 조작';
+
+  @override
+  String get tutorialCameraDescription =>
+      '드래그하여 뷰 회전, 핀치하여 줌, 두 손가락으로 카메라 롤을 조작하세요. 하단 컨트롤은 객체에 초점을 맞추고, 뷰를 중앙에 배치하며, 영화적 경험을 위한 자동 회전을 활성화하는 데 도움이 됩니다.';
+
+  @override
+  String get tutorialScenariosTitle => '모험을 선택하세요';
+
+  @override
+  String get tutorialScenariosDescription =>
+      '과학 버튼을 눌러 다양한 시나리오를 탐구하세요: 우리의 태양계, 지구-달 역학, 쌍성, 또는 고전적인 혼돈의 삼체 문제. 각각은 발견할 독특한 물리학을 제공합니다!';
+
+  @override
+  String get tutorialExploreTitle => '탐구할 준비 완료!';
+
+  @override
+  String get tutorialExploreDescription =>
+      '준비 완료입니다! 친숙한 행성들을 보려면 태양계부터 시작하거나, 혼돈스러운 재미를 위해 삼체 문제에 뛰어드세요. 기억하세요: 매번 리셋할 때마다 탐구할 새로운 우주가 만들어집니다!';
+
+  @override
+  String get skipTutorial => '건너뛰기';
+
+  @override
+  String get previous => '이전';
+
+  @override
+  String get next => '다음';
+
+  @override
+  String get getStarted => '시작하기!';
+
+  @override
+  String get showTutorialTooltip => '튜토리얼 표시';
+
+  @override
+  String get helpAndObjectivesTitle => '도움말 및 목표';
+
+  @override
+  String get whatToDoTitle => 'Graviton에서 할 수 있는 것';
+
+  @override
+  String get whatToDoDescription =>
+      'Graviton은 물리학 놀이터입니다:\n\n🪐 현실적인 궤도 역학 탐구\n🌟 항성 진화와 충돌 관찰\n🎯 중력에 대해 학습\n🎮 다양한 시나리오로 실험\n📚 천체 역학 이해\n🔄 무한한 랜덤 구성 생성';
+
+  @override
+  String get objectivesTitle => '학습 목표';
+
+  @override
+  String get objectivesDescription =>
+      '• 중력이 우주를 어떻게 형성하는지 이해\n• 안정적 vs 혼돈적 궤도 시스템 관찰\n• 행성이 왜 타원 궤도로 움직이는지 학습\n• 쌍성이 어떻게 상호작용하는지 발견\n• 객체가 충돌할 때 무슨 일이 일어나는지 관찰\n• 삼체 문제의 복잡성 이해';
+
+  @override
+  String get quickStartTitle => '빠른 시작 가이드';
+
+  @override
+  String get quickStartDescription =>
+      '1. 시나리오 선택 (초보자에게는 태양계 추천)\n2. 재생을 눌러 시뮬레이션 시작\n3. 드래그하여 뷰 회전, 핀치하여 줌\n4. 속도 슬라이더를 터치하여 시간 제어\n5. 새로운 랜덤 구성을 위해 리셋 시도\n6. 궤도 경로를 보려면 궤적 활성화';
+
+  @override
+  String get showHelpTooltip => '도움말 및 목표';
 }

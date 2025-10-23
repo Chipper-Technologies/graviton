@@ -621,5 +621,109 @@ class AppLocalizationsFr extends AppLocalizations {
       'Problème classique à trois corps en mouvement élégant';
 
   @override
+  String get scenarioObjectivesSolar =>
+      '🎯 Apprendre : Mouvement planétaire, mécanique orbitale, corps célestes familiers\n⭐ Idéal pour : Débutants, passionnés d\'astronomie';
+
+  @override
+  String get scenarioObjectivesEarthMoon =>
+      '🎯 Apprendre : Dynamiques à trois corps, mécanique lunaire, forces de marée\n⭐ Idéal pour : Comprendre le système Terre-Lune';
+
+  @override
+  String get scenarioObjectivesBinary =>
+      '🎯 Apprendre : Évolution stellaire, systèmes binaires, gravité extrême\n⭐ Idéal pour : Exploration avancée de physique';
+
+  @override
+  String get scenarioObjectivesThreeBody =>
+      '🎯 Apprendre : Théorie du chaos, mouvement imprévisible, systèmes instables\n⭐ Idéal pour : Passionnés de physique mathématique';
+
+  @override
+  String get scenarioObjectivesRandom =>
+      '🎯 Apprendre : Découvrir des configurations inconnues, physique expérimentale\n⭐ Idéal pour : Exploration et expérimentation';
+
+  @override
   String get privacyPolicyLabel => 'Politique de Confidentialité';
+
+  @override
+  String get tutorialWelcomeTitle => 'Bienvenue dans Graviton !';
+
+  @override
+  String get tutorialWelcomeDescription =>
+      'Bienvenue dans Graviton, votre fenêtre sur le monde fascinant de la physique gravitationnelle ! Cette application vous permet d\'explorer comment les corps célestes interagissent par la gravité, créant de belles danses orbitales à travers l\'espace et le temps.';
+
+  @override
+  String get tutorialObjectivesTitle => 'Que pouvez-vous faire ?';
+
+  @override
+  String get tutorialObjectivesDescription =>
+      '• Observer une mécanique orbitale réaliste\n• Explorer différents scénarios astronomiques\n• Expérimenter avec les interactions gravitationnelles\n• Regarder les collisions et fusions\n• Apprendre le mouvement planétaire\n• Découvrir les dynamiques chaotiques à trois corps';
+
+  @override
+  String get tutorialControlsTitle => 'Contrôles de Base';
+
+  @override
+  String get tutorialControlsDescription =>
+      'Utilisez les contrôles du haut pour Lecture/Pause de la simulation, Réinitialiser pour de nouveaux scénarios, et ajuster la Vitesse de simulation. Le bouton Paramètres vous permet de personnaliser les traînées et autres options visuelles.';
+
+  @override
+  String get tutorialCameraTitle => 'Contrôles de Caméra';
+
+  @override
+  String get tutorialCameraDescription =>
+      'Glissez pour faire pivoter la vue, pincez pour zoomer, et utilisez les boutons du bas pour centrer la vue ou suivre des objets spécifiques. Touchez n\'importe quel corps céleste pour le sélectionner et suivre son mouvement.';
+
+  @override
+  String get tutorialScenariosTitle => 'Explorer les Scénarios';
+
+  @override
+  String get tutorialScenariosDescription =>
+      'Touchez le bouton de scénario en bas pour explorer différentes configurations : de notre système solaire aux systèmes stellaires exotiques et problèmes classiques à trois corps. Chaque scénario offre des perspectives uniques sur la mécanique gravitationnelle.';
+
+  @override
+  String get tutorialExploreTitle => 'Commencez à Explorer !';
+
+  @override
+  String get tutorialExploreDescription =>
+      'Vous êtes maintenant prêt à explorer le cosmos ! Expérimentez avec différents scénarios, ajustez les paramètres, et observez comment la gravité façonne la danse des corps célestes. Profitez de votre voyage à travers l\'univers !';
+
+  @override
+  String get skipTutorial => 'Passer le Tutoriel';
+
+  @override
+  String get previous => 'Précédent';
+
+  @override
+  String get next => 'Suivant';
+
+  @override
+  String get getStarted => 'Commencer';
+
+  @override
+  String get showTutorialTooltip => 'Afficher le Tutoriel';
+
+  @override
+  String get helpAndObjectivesTitle => 'Aide et Objectifs';
+
+  @override
+  String get whatToDoTitle => 'Que faire ?';
+
+  @override
+  String get whatToDoDescription =>
+      'Explorez les contrôles, expérimentez avec différents scénarios, et observez comment la gravité affecte le mouvement des objets célestes.';
+
+  @override
+  String get objectivesTitle => 'Objectifs';
+
+  @override
+  String get objectivesDescription =>
+      'Chaque scénario a des objectifs d\'apprentissage spécifiques. Utilisez-les comme guide pour concentrer votre exploration.';
+
+  @override
+  String get quickStartTitle => 'Démarrage Rapide';
+
+  @override
+  String get quickStartDescription =>
+      'Nouveau dans les simulations gravitationnelles ? Commencez avec le scénario du Système Solaire pour vous familiariser avec les contrôles de base.';
+
+  @override
+  String get showHelpTooltip => 'Afficher l\'Aide';
 }

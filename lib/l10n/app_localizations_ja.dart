@@ -590,5 +590,109 @@ class AppLocalizationsJa extends AppLocalizations {
   String get presetThreeBodyBalletDesc => 'エレガントな動きの古典的三体問題';
 
   @override
+  String get scenarioObjectivesSolar =>
+      '🎯 学習内容: 惑星運動、軌道力学、身近な天体\n⭐ 最適対象: 初心者、天文学愛好家';
+
+  @override
+  String get scenarioObjectivesEarthMoon =>
+      '🎯 学習内容: 三体力学、月の力学、潮汐力\n⭐ 最適対象: 地球-月システムの理解';
+
+  @override
+  String get scenarioObjectivesBinary =>
+      '🎯 学習内容: 恒星進化、連星系、極端重力\n⭐ 最適対象: 高度な物理学探究';
+
+  @override
+  String get scenarioObjectivesThreeBody =>
+      '🎯 学習内容: カオス理論、予測不可能な運動、不安定システム\n⭐ 最適対象: 数理物理学愛好家';
+
+  @override
+  String get scenarioObjectivesRandom =>
+      '🎯 学習内容: 未知の構成発見、実験物理学\n⭐ 最適対象: 探索と実験';
+
+  @override
   String get privacyPolicyLabel => 'プライバシーポリシー';
+
+  @override
+  String get tutorialWelcomeTitle => 'Gravitonへようこそ！';
+
+  @override
+  String get tutorialWelcomeDescription =>
+      'Gravitonへようこそ。重力物理学の魅力的な世界への窓です！このアプリでは、天体が重力を通じてどのように相互作用し、空間と時間を通じて美しい軌道ダンスを作り出すかを探索できます。';
+
+  @override
+  String get tutorialObjectivesTitle => '何ができますか？';
+
+  @override
+  String get tutorialObjectivesDescription =>
+      '• リアルな軌道力学を観察\n• さまざまな天文シナリオを探索\n• 重力相互作用を実験\n• 衝突と合体を観察\n• 惑星運動について学習\n• 混沌とした三体力学を発見';
+
+  @override
+  String get tutorialControlsTitle => '基本操作';
+
+  @override
+  String get tutorialControlsDescription =>
+      '上部のコントロールを使用してシミュレーションの再生/一時停止、新しいシナリオのリセット、シミュレーション速度の調整を行います。設定ボタンでは軌跡やその他の視覚オプションをカスタマイズできます。';
+
+  @override
+  String get tutorialCameraTitle => 'カメラ操作';
+
+  @override
+  String get tutorialCameraDescription =>
+      'ドラッグしてビューを回転、ピンチしてズーム、2本指でカメラをロールします。下部のコントロールでオブジェクトへのフォーカス、ビューの中央配置、映画的な体験のための自動回転を有効にできます。';
+
+  @override
+  String get tutorialScenariosTitle => '冒険を選択';
+
+  @override
+  String get tutorialScenariosDescription =>
+      '科学ボタンをタップして異なるシナリオを探索：太陽系、地球-月力学、連星、または古典的な混沌の三体問題。それぞれが発見すべき独特な物理学を提供します！';
+
+  @override
+  String get tutorialExploreTitle => '探索の準備完了！';
+
+  @override
+  String get tutorialExploreDescription =>
+      '準備完了です！身近な惑星を見るには太陽系から始めるか、混沌とした楽しみのために三体問題に飛び込んでください。覚えておいてください：リセットするたびに探索する新しい宇宙が作られます！';
+
+  @override
+  String get skipTutorial => 'スキップ';
+
+  @override
+  String get previous => '前へ';
+
+  @override
+  String get next => '次へ';
+
+  @override
+  String get getStarted => '始める！';
+
+  @override
+  String get showTutorialTooltip => 'チュートリアルを表示';
+
+  @override
+  String get helpAndObjectivesTitle => 'ヘルプと目標';
+
+  @override
+  String get whatToDoTitle => 'Gravitonでできること';
+
+  @override
+  String get whatToDoDescription =>
+      'Gravitonは物理学の遊び場です：\n\n🪐 リアルな軌道力学を探索\n🌟 恒星進化と衝突を観察\n🎯 重力について学習\n🎮 異なるシナリオで実験\n📚 天体力学を理解\n🔄 無限のランダム構成を作成';
+
+  @override
+  String get objectivesTitle => '学習目標';
+
+  @override
+  String get objectivesDescription =>
+      '• 重力が宇宙をどう形作るかを理解\n• 安定対混沌軌道系を観察\n• なぜ惑星が楕円軌道で動くかを学習\n• 連星がどう相互作用するかを発見\n• オブジェクトが衝突するとどうなるかを観察\n• 三体問題の複雑さを理解';
+
+  @override
+  String get quickStartTitle => 'クイックスタートガイド';
+
+  @override
+  String get quickStartDescription =>
+      '1. シナリオを選択（初心者には太陽系推奨）\n2. 再生を押してシミュレーション開始\n3. ドラッグでビュー回転、ピンチでズーム\n4. 速度スライダーをタップして時間制御\n5. リセットで新しいランダム構成を試行\n6. 軌跡を有効にして軌道パスを表示';
+
+  @override
+  String get showHelpTooltip => 'ヘルプと目標';
 }

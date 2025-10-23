@@ -1212,11 +1212,191 @@ abstract class AppLocalizations {
   /// **'Classic three-body problem in elegant motion'**
   String get presetThreeBodyBalletDesc;
 
+  /// Learning objectives for solar system scenario
+  ///
+  /// In en, this message translates to:
+  /// **'🎯 Learn: Planetary motion, orbital mechanics, familiar celestial bodies\n⭐ Best for: Beginners, astronomy enthusiasts'**
+  String get scenarioObjectivesSolar;
+
+  /// Learning objectives for Earth-Moon scenario
+  ///
+  /// In en, this message translates to:
+  /// **'🎯 Learn: Three-body dynamics, lunar mechanics, tidal forces\n⭐ Best for: Understanding Earth-Moon system'**
+  String get scenarioObjectivesEarthMoon;
+
+  /// Learning objectives for binary star scenario
+  ///
+  /// In en, this message translates to:
+  /// **'🎯 Learn: Stellar evolution, binary systems, extreme gravity\n⭐ Best for: Advanced physics exploration'**
+  String get scenarioObjectivesBinary;
+
+  /// Learning objectives for three-body scenario
+  ///
+  /// In en, this message translates to:
+  /// **'🎯 Learn: Chaos theory, unpredictable motion, unstable systems\n⭐ Best for: Mathematical physics enthusiasts'**
+  String get scenarioObjectivesThreeBody;
+
+  /// Learning objectives for random scenario
+  ///
+  /// In en, this message translates to:
+  /// **'🎯 Learn: Discover unknown configurations, experimental physics\n⭐ Best for: Exploration and experimentation'**
+  String get scenarioObjectivesRandom;
+
   /// Label for privacy policy link
   ///
   /// In en, this message translates to:
   /// **'Privacy Policy'**
   String get privacyPolicyLabel;
+
+  /// Title for tutorial welcome step
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Graviton!'**
+  String get tutorialWelcomeTitle;
+
+  /// Description for tutorial welcome step
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Graviton, your window into the fascinating world of gravitational physics! This app lets you explore how celestial bodies interact through gravity, creating beautiful orbital dances across space and time.'**
+  String get tutorialWelcomeDescription;
+
+  /// Title for tutorial objectives step
+  ///
+  /// In en, this message translates to:
+  /// **'What Can You Do?'**
+  String get tutorialObjectivesTitle;
+
+  /// Description for tutorial objectives step
+  ///
+  /// In en, this message translates to:
+  /// **'• Observe realistic orbital mechanics\n• Explore different astronomical scenarios\n• Experiment with gravitational interactions\n• Watch collisions and mergers\n• Learn about planetary motion\n• Discover chaotic three-body dynamics'**
+  String get tutorialObjectivesDescription;
+
+  /// Title for tutorial controls step
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Controls'**
+  String get tutorialControlsTitle;
+
+  /// Description for tutorial controls step
+  ///
+  /// In en, this message translates to:
+  /// **'Use the top controls to Play/Pause the simulation, Reset for new scenarios, and adjust simulation Speed. The Settings button lets you customize trails and other visual options.'**
+  String get tutorialControlsDescription;
+
+  /// Title for tutorial camera step
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Controls'**
+  String get tutorialCameraTitle;
+
+  /// Description for tutorial camera step
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to rotate your view, pinch to zoom, and use two fingers to roll the camera. The bottom controls help you focus on objects, center the view, and enable auto-rotation for a cinematic experience.'**
+  String get tutorialCameraDescription;
+
+  /// Title for tutorial scenarios step
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Adventure'**
+  String get tutorialScenariosTitle;
+
+  /// Description for tutorial scenarios step
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the Science button to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the classic chaotic Three-Body Problem. Each offers unique physics to discover!'**
+  String get tutorialScenariosDescription;
+
+  /// Title for tutorial final step
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to Explore!'**
+  String get tutorialExploreTitle;
+
+  /// Description for tutorial final step
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all set! Start with the Solar System to see familiar planets, or dive into the Three-Body Problem for some chaotic fun. Remember: every reset creates a new universe to explore!'**
+  String get tutorialExploreDescription;
+
+  /// Button to skip tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skipTutorial;
+
+  /// Previous button
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previous;
+
+  /// Next button
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// Final tutorial button to start using the app
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started!'**
+  String get getStarted;
+
+  /// Tooltip for tutorial button
+  ///
+  /// In en, this message translates to:
+  /// **'Show Tutorial'**
+  String get showTutorialTooltip;
+
+  /// Title for help dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Objectives'**
+  String get helpAndObjectivesTitle;
+
+  /// Title for what to do section
+  ///
+  /// In en, this message translates to:
+  /// **'What to Do in Graviton'**
+  String get whatToDoTitle;
+
+  /// Description of what users can do
+  ///
+  /// In en, this message translates to:
+  /// **'Graviton is a physics playground where you can:\n\n🪐 Explore realistic orbital mechanics\n🌟 Watch stellar evolution and collisions\n🎯 Learn about gravitational forces\n🎮 Experiment with different scenarios\n📚 Understand celestial dynamics\n🔄 Create endless random configurations'**
+  String get whatToDoDescription;
+
+  /// Title for learning objectives section
+  ///
+  /// In en, this message translates to:
+  /// **'Learning Objectives'**
+  String get objectivesTitle;
+
+  /// Description of learning objectives
+  ///
+  /// In en, this message translates to:
+  /// **'• Understand how gravity shapes the cosmos\n• Observe stable vs. chaotic orbital systems\n• Learn why planets move in elliptical orbits\n• Discover how binary stars interact\n• See what happens when objects collide\n• Appreciate the three-body problem\'s complexity'**
+  String get objectivesDescription;
+
+  /// Title for quick start section
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Start Guide'**
+  String get quickStartTitle;
+
+  /// Quick start instructions
+  ///
+  /// In en, this message translates to:
+  /// **'1. Choose a scenario (Solar System recommended for beginners)\n2. Press Play to start the simulation\n3. Drag to rotate your view, pinch to zoom\n4. Tap the Speed slider to control time\n5. Try Reset for new random configurations\n6. Enable Trails to see orbital paths'**
+  String get quickStartDescription;
+
+  /// Tooltip for help button
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Objectives'**
+  String get showHelpTooltip;
 }
 
 class _AppLocalizationsDelegate

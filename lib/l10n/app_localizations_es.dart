@@ -619,5 +619,109 @@ class AppLocalizationsEs extends AppLocalizations {
       'Problema clásico de tres cuerpos en movimiento elegante';
 
   @override
+  String get scenarioObjectivesSolar =>
+      '🎯 Aprende: Movimiento planetario, mecánica orbital, cuerpos celestes familiares\n⭐ Ideal para: Principiantes, entusiastas de la astronomía';
+
+  @override
+  String get scenarioObjectivesEarthMoon =>
+      '🎯 Aprende: Dinámicas de tres cuerpos, mecánica lunar, fuerzas de marea\n⭐ Ideal para: Entender el sistema Tierra-Luna';
+
+  @override
+  String get scenarioObjectivesBinary =>
+      '🎯 Aprende: Evolución estelar, sistemas binarios, gravedad extrema\n⭐ Ideal para: Exploración avanzada de física';
+
+  @override
+  String get scenarioObjectivesThreeBody =>
+      '🎯 Aprende: Teoría del caos, movimiento impredecible, sistemas inestables\n⭐ Ideal para: Entusiastas de la física matemática';
+
+  @override
+  String get scenarioObjectivesRandom =>
+      '🎯 Aprende: Descubre configuraciones desconocidas, física experimental\n⭐ Ideal para: Exploración y experimentación';
+
+  @override
   String get privacyPolicyLabel => 'Política de Privacidad';
+
+  @override
+  String get tutorialWelcomeTitle => '¡Bienvenido a Graviton!';
+
+  @override
+  String get tutorialWelcomeDescription =>
+      '¡Bienvenido a Graviton, tu ventana al fascinante mundo de la física gravitacional! Esta aplicación te permite explorar cómo los cuerpos celestes interactúan a través de la gravedad, creando hermosas danzas orbitales a través del espacio y el tiempo.';
+
+  @override
+  String get tutorialObjectivesTitle => '¿Qué puedes hacer?';
+
+  @override
+  String get tutorialObjectivesDescription =>
+      '• Observar mecánica orbital realista\n• Explorar diferentes escenarios astronómicos\n• Experimentar con interacciones gravitacionales\n• Ver colisiones y fusiones\n• Aprender sobre movimiento planetario\n• Descubrir dinámicas caóticas de tres cuerpos';
+
+  @override
+  String get tutorialControlsTitle => 'Controles Básicos';
+
+  @override
+  String get tutorialControlsDescription =>
+      'Usa los controles superiores para Reproducir/Pausar la simulación, Reiniciar para nuevos escenarios, y ajustar la Velocidad de simulación. El botón de Configuración te permite personalizar rastros y otras opciones visuales.';
+
+  @override
+  String get tutorialCameraTitle => 'Controles de Cámara';
+
+  @override
+  String get tutorialCameraDescription =>
+      'Arrastra para rotar la vista, pellizca para hacer zoom, y usa los botones inferiores para centrar la vista o seguir objetos específicos. Toca cualquier cuerpo celeste para seleccionarlo y seguir su movimiento.';
+
+  @override
+  String get tutorialScenariosTitle => 'Explorar Escenarios';
+
+  @override
+  String get tutorialScenariosDescription =>
+      'Toca el botón de escenario en la parte inferior para explorar diferentes configuraciones: desde nuestro sistema solar hasta sistemas estelares exóticos y problemas clásicos de tres cuerpos. Cada escenario ofrece perspectivas únicas sobre la mecánica gravitacional.';
+
+  @override
+  String get tutorialExploreTitle => '¡Comienza a Explorar!';
+
+  @override
+  String get tutorialExploreDescription =>
+      '¡Ahora estás listo para explorar el cosmos! Experimenta con diferentes escenarios, ajusta configuraciones, y observa cómo la gravedad da forma al baile de los cuerpos celestes. ¡Que disfrutes tu viaje a través del universo!';
+
+  @override
+  String get skipTutorial => 'Saltar Tutorial';
+
+  @override
+  String get previous => 'Anterior';
+
+  @override
+  String get next => 'Siguiente';
+
+  @override
+  String get getStarted => 'Comenzar';
+
+  @override
+  String get showTutorialTooltip => 'Mostrar Tutorial';
+
+  @override
+  String get helpAndObjectivesTitle => 'Ayuda y Objetivos';
+
+  @override
+  String get whatToDoTitle => '¿Qué hacer?';
+
+  @override
+  String get whatToDoDescription =>
+      'Explora los controles, experimenta con diferentes escenarios, y observa cómo la gravedad afecta el movimiento de los objetos celestes.';
+
+  @override
+  String get objectivesTitle => 'Objetivos';
+
+  @override
+  String get objectivesDescription =>
+      'Cada escenario tiene objetivos de aprendizaje específicos. Úsalos como guía para enfocar tu exploración.';
+
+  @override
+  String get quickStartTitle => 'Inicio Rápido';
+
+  @override
+  String get quickStartDescription =>
+      'Nuevo en simulaciones de gravedad? Comienza con el escenario del Sistema Solar para familiarizarte con los controles básicos.';
+
+  @override
+  String get showHelpTooltip => 'Mostrar Ayuda';
 }

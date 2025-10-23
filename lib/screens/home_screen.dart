@@ -24,6 +24,9 @@ import 'package:graviton/widgets/screenshot_countdown.dart';
 import 'package:graviton/widgets/settings_dialog.dart';
 import 'package:graviton/widgets/stats_overlay.dart';
 import 'package:graviton/widgets/version_check_dialog.dart';
+import 'package:graviton/widgets/help_dialog.dart';
+import 'package:graviton/widgets/tutorial_overlay.dart';
+import 'package:graviton/services/onboarding_service.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -71,6 +74,8 @@ class _HomeScreenState extends State<HomeScreen>
           MaintenanceDialog.showIfNeeded(context);
         }
       });
+      // Check if first-time user needs tutorial
+      _checkFirstTimeUser();
     });
   }
 
@@ -243,6 +248,54 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  void _showHelpDialog(BuildContext context) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.dialogOpened,
+      element: UIElement.help,
+    );
+    showDialog<void>(
+      context: context,
+      builder: (context) => const HelpDialog(),
+    );
+  }
+
+  void _showTutorial(BuildContext context) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.tutorialStarted,
+      element: UIElement.tutorial,
+    );
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => TutorialOverlay(
+        onComplete: () async {
+          await OnboardingService.markTutorialCompleted();
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
+
+          FirebaseService.instance.logUIEventWithEnums(
+            UIAction.tutorialCompleted,
+            element: UIElement.tutorial,
+          );
+        },
+      ),
+    );
+  }
+
+  void _checkFirstTimeUser() async {
+    final hasSeenTutorial = await OnboardingService.hasSeenTutorial();
+    if (!hasSeenTutorial && mounted) {
+      // Show tutorial after a short delay to let the app initialize
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        if (mounted) {
+          _showTutorial(context);
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -295,6 +348,11 @@ class _HomeScreenState extends State<HomeScreen>
                     alpha: AppTypography.opacityMedium,
                   ),
                   actions: [
+                    IconButton(
+                      tooltip: l10n.showHelpTooltip,
+                      onPressed: () => _showHelpDialog(context),
+                      icon: const Icon(Icons.help_outline),
+                    ),
                     IconButton(
                       tooltip: l10n.settingsTooltip,
                       onPressed: () => _showSettings(context),

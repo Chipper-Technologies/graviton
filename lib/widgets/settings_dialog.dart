@@ -1,11 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
+import 'package:graviton/services/onboarding_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/screenshot_mode_widget.dart';
+import 'package:graviton/widgets/tutorial_overlay.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
+import 'package:graviton/services/firebase_service.dart';
 import 'package:provider/provider.dart';
 
 /// Dialog for adjusting simulation settings
@@ -162,6 +168,47 @@ class SettingsDialog extends StatelessWidget {
 
                         // Habitability Section - only show if there are planets or moons
                         ..._buildHabitabilitySection(context, l10n, appState),
+
+                        // Tutorial Section
+                        Divider(color: AppColors.uiDividerGrey),
+                        const SizedBox(height: 16),
+                        Text(
+                          l10n.helpAndObjectivesTitle,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            onPressed: () => _showTutorialFromSettings(context),
+                            icon: const Icon(Icons.school),
+                            label: Text(l10n.showTutorialTooltip),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        // Debug: Reset tutorial state (only in debug mode)
+                        if (kDebugMode)
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextButton.icon(
+                              onPressed: () => _resetTutorialState(context),
+                              icon: const Icon(Icons.refresh, size: 16),
+                              label: const Text('Reset Tutorial State (Debug)'),
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                              ),
+                            ),
+                          ),
+                        const SizedBox(height: 16),
 
                         // Gravity Wells Toggle - Commented out for reimplementation later
                         // SwitchListTile(
@@ -395,5 +442,52 @@ class SettingsDialog extends StatelessWidget {
 
       const SizedBox(height: 16),
     ];
+  }
+
+  /// Show tutorial overlay from settings
+  void _showTutorialFromSettings(BuildContext context) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.tutorialStarted,
+      element: UIElement.tutorial,
+    );
+
+    final currentContext = context;
+
+    // Close the settings dialog first
+    Navigator.of(context).pop();
+
+    // Then show the tutorial
+    showDialog<void>(
+      context: currentContext,
+      barrierDismissible: false,
+      builder: (dialogContext) => TutorialOverlay(
+        onComplete: () async {
+          await OnboardingService.markTutorialCompleted();
+          if (dialogContext.mounted) {
+            Navigator.of(dialogContext).pop();
+          }
+
+          FirebaseService.instance.logUIEventWithEnums(
+            UIAction.tutorialCompleted,
+            element: UIElement.tutorial,
+          );
+        },
+      ),
+    );
+  }
+
+  /// Reset tutorial state for testing (debug only)
+  void _resetTutorialState(BuildContext context) async {
+    await OnboardingService.resetTutorialState();
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Tutorial state reset! Restart app to see first-time experience.',
+          ),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
   }
 }
