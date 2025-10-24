@@ -109,6 +109,21 @@ class AppColors {
     0xFFFF5722,
   ); // Deep orange/red
 
+  /// Temperature visualization colors - from cold to hot
+  static const Color temperatureFrozen = Color(
+    0xFF1E90FF,
+  ); // Deep blue (frozen)
+  static const Color temperatureCold = Color(0xFF87CEEB); // Sky blue (cold)
+  static const Color temperatureCool = Color(0xFF90EE90); // Light green (cool)
+  static const Color temperatureWarm = Color(0xFFFFFF00); // Yellow (warm)
+  static const Color temperatureHot = Color(0xFFFFA500); // Orange (hot)
+  static const Color temperatureVeryHot = Color(
+    0xFFFF4500,
+  ); // Red-orange (very hot)
+  static const Color temperatureScorching = Color(
+    0xFF8B0000,
+  ); // Dark red (scorching)
+
   // =============================================================================
   // UI & INTERFACE COLORS
   // =============================================================================
@@ -466,6 +481,20 @@ class AppColors {
       default:
         return habitabilityUnknown;
     }
+  }
+
+  /// Get temperature visualization color based on temperature in Kelvin
+  static Color getTemperatureColor(double temperatureKelvin) {
+    final celsius = temperatureKelvin - 273.15;
+
+    // Color scale from blue (cold) to red (hot)
+    if (celsius < -50) return temperatureFrozen;
+    if (celsius < 0) return temperatureCold;
+    if (celsius < 25) return temperatureCool;
+    if (celsius < 50) return temperatureWarm;
+    if (celsius < 100) return temperatureHot;
+    if (celsius < 200) return temperatureVeryHot;
+    return temperatureScorching;
   }
 
   /// Get planet color by name

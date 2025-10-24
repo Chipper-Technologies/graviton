@@ -13,51 +13,92 @@ class HelpDialog extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
+      ),
       child: Container(
         constraints: AppConstraints.dialogLarge,
-        padding: AppConstraints.dialogPadding,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Title with close button
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primaryColor.withValues(alpha: 0.15),
+                    AppColors.primaryColor.withValues(alpha: 0.05),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(AppTypography.radiusXLarge),
+                  topRight: Radius.circular(AppTypography.radiusXLarge),
+                ),
+              ),
+              padding: EdgeInsets.all(AppTypography.spacingLarge),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.lightbulb_outline,
+                    color: AppColors.primaryColor,
+                    size: 28,
+                  ),
+                  SizedBox(width: AppTypography.spacingMedium),
+                  Text(
+                    l10n.showHelpTooltip,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+            ),
             // Content
             Flexible(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // What to Do section
-                    _buildSection(
-                      context,
-                      icon: Icons.rocket_launch,
-                      title: l10n.whatToDoTitle,
-                      content: l10n.whatToDoDescription,
-                    ),
-                    const SizedBox(height: 20),
+              child: Padding(
+                padding: AppConstraints.dialogPadding,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // What to Do section
+                      _buildSection(
+                        context,
+                        icon: Icons.rocket_launch,
+                        title: l10n.whatToDoTitle,
+                        content: l10n.whatToDoDescription,
+                      ),
+                      SizedBox(height: AppTypography.spacingXLarge),
 
-                    // Learning Objectives section
-                    _buildObjectivesSection(context, l10n),
-                    const SizedBox(height: 20),
+                      // Learning Objectives section
+                      _buildObjectivesSection(context, l10n),
+                      SizedBox(height: AppTypography.spacingXLarge),
 
-                    // Quick Start section
-                    _buildQuickStartSection(context, l10n),
-                    const SizedBox(height: 24),
+                      // Quick Start section
+                      _buildQuickStartSection(context, l10n),
+                      SizedBox(height: AppTypography.spacingXXLarge),
 
-                    // Call to action
-                    Center(
-                      child: ElevatedButton.icon(
-                        onPressed: () => Navigator.of(context).pop(),
-                        icon: const Icon(Icons.explore),
-                        label: Text(l10n.getStarted),
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 12,
+                      // Call to action
+                      Center(
+                        child: ElevatedButton.icon(
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: const Icon(Icons.explore),
+                          label: Text(l10n.getStarted),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -83,7 +124,7 @@ class HelpDialog extends StatelessWidget {
             color: AppColors.sectionTitlePurple,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppTypography.spacingSmall),
         // Content with emoji formatting if needed
         _buildFormattedContent(content),
       ],
@@ -129,7 +170,7 @@ class HelpDialog extends StatelessWidget {
                       style: AppTypography.mediumText.copyWith(height: 1.6),
                     ),
                   ),
-                  const SizedBox(width: 4),
+                  SizedBox(width: AppTypography.spacingXSmall),
                   Expanded(
                     child: Text(
                       text,
@@ -199,7 +240,7 @@ class HelpDialog extends StatelessWidget {
             color: AppColors.sectionTitlePurple,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppTypography.spacingSmall),
         // Try to use individual list items, fall back to description if they don't exist
         _tryBuildObjectivesList(l10n) ??
             Text(
@@ -221,7 +262,7 @@ class HelpDialog extends StatelessWidget {
             color: AppColors.sectionTitlePurple,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppTypography.spacingSmall),
         // Try to use individual list items, fall back to description if they don't exist
         _tryBuildQuickStartList(l10n) ??
             Text(
@@ -287,7 +328,7 @@ class HelpDialog extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 4),
+                  SizedBox(width: AppTypography.spacingXSmall),
                   Expanded(
                     child: Text(
                       item,
@@ -325,7 +366,7 @@ class HelpDialog extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 4),
+              SizedBox(width: AppTypography.spacingXSmall),
               Expanded(
                 child: Text(
                   item,

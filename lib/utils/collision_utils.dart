@@ -65,6 +65,11 @@ class CollisionUtils {
     // Stellar luminosity: sum for stars, zero for planets
     final stellarLuminosity = body1.stellarLuminosity + body2.stellarLuminosity;
 
+    // Temperature: mass-weighted average for similar bodies, or from more massive body
+    final temperature =
+        (body1.temperature * body1.mass + body2.temperature * body2.mass) /
+        totalMass;
+
     return Body(
       position: newPosition,
       velocity: newVelocity,
@@ -75,6 +80,7 @@ class CollisionUtils {
       isPlanet: isPlanet,
       bodyType: bodyType,
       stellarLuminosity: stellarLuminosity,
+      temperature: temperature,
     );
   }
 

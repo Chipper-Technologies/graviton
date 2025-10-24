@@ -59,7 +59,9 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
     final theme = Theme.of(context);
 
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
+      ),
       child: Container(
         constraints: AppConstraints.dialogCompact,
         child: SingleChildScrollView(

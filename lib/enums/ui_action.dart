@@ -6,6 +6,9 @@ enum UIAction {
   /// Tap gesture
   tap('tap'),
 
+  /// Double tap gesture
+  doubleTap('double_tap'),
+
   /// Dialog opened
   dialogOpened('dialog_opened'),
 

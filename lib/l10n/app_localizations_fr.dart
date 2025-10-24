@@ -78,6 +78,63 @@ class AppLocalizationsFr extends AppLocalizations {
   String get selectScenarioTooltip => 'Sélectionner un Scénario';
 
   @override
+  String get moreOptionsTooltip => 'Plus d\'options';
+
+  @override
+  String get physicsSettingsTitle => 'Paramètres de Physique';
+
+  @override
+  String get physicsSettingsDescription => 'Paramètres de simulation';
+
+  @override
+  String get physicsSection => 'Physique';
+
+  @override
+  String get gravitationalConstant => 'Constante gravitationnelle';
+
+  @override
+  String get softeningParameter => 'Paramètre d\'adoucissement';
+
+  @override
+  String get simulationSpeed => 'Vitesse de simulation';
+
+  @override
+  String get collisionsSection => 'Collisions';
+
+  @override
+  String get collisionSensitivity => 'Sensibilité aux collisions';
+
+  @override
+  String get trailsSection => 'Traces';
+
+  @override
+  String get trailLength => 'Longueur des traces';
+
+  @override
+  String get trailFadeRate => 'Taux de fondu des traces';
+
+  @override
+  String get hapticsSection => 'Haptique';
+
+  @override
+  String get vibrationEnabled => 'Vibration activée';
+
+  @override
+  String get hapticFeedbackCollisions => 'Retour haptique sur les collisions';
+
+  @override
+  String get vibrationThrottle => 'Limitation de vibration';
+
+  @override
+  String get scenariosMenuDescription => 'Explorer différents scénarios';
+
+  @override
+  String get settingsMenuDescription => 'Options visuelles et de comportement';
+
+  @override
+  String get helpMenuDescription => 'Tutoriel et objectifs';
+
+  @override
   String get showTrails => 'Afficher les Traînées';
 
   @override
@@ -273,6 +330,33 @@ class AppLocalizationsFr extends AppLocalizations {
   String get habitabilityUnknown => 'Inconnu';
 
   @override
+  String get temperatureFrozen => 'Gelé';
+
+  @override
+  String get temperatureCold => 'Froid';
+
+  @override
+  String get temperatureModerate => 'Modéré';
+
+  @override
+  String get temperatureHot => 'Chaud';
+
+  @override
+  String get temperatureScorching => 'Brûlant';
+
+  @override
+  String get temperatureNotApplicable => 'N/A';
+
+  @override
+  String get temperatureUnitCelsius => '°C';
+
+  @override
+  String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitFahrenheit => '°F';
+
+  @override
   String get toggleHabitableZonesTooltip => 'Basculer les Zones Habitables';
 
   @override
@@ -372,6 +456,42 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get bodySun => 'Soleil';
+
+  @override
+  String get bodyPropertiesTitle => 'Propriétés du Corps';
+
+  @override
+  String get bodyPropertiesName => 'Nom';
+
+  @override
+  String get bodyPropertiesNameHint => 'Entrer le nom du corps';
+
+  @override
+  String get bodyPropertiesType => 'Type de Corps';
+
+  @override
+  String get bodyPropertiesColor => 'Couleur';
+
+  @override
+  String get bodyPropertiesMass => 'Masse';
+
+  @override
+  String get bodyPropertiesRadius => 'Rayon';
+
+  @override
+  String get bodyPropertiesLuminosity => 'Luminosité Stellaire';
+
+  @override
+  String get bodyPropertiesVelocity => 'Vitesse';
+
+  @override
+  String get bodyPropertiesAxisX => 'X:';
+
+  @override
+  String get bodyPropertiesAxisY => 'Y:';
+
+  @override
+  String get bodyPropertiesAxisZ => 'Z:';
 
   @override
   String get bodyEarth => 'Terre';

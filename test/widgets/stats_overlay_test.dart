@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/stats_overlay.dart';
 
 void main() {
@@ -131,7 +132,10 @@ void main() {
 
         expect(container.padding, equals(const EdgeInsets.all(12)));
         expect(decoration.color, equals(AppColors.basicBlack54));
-        expect(decoration.borderRadius, equals(BorderRadius.circular(8)));
+        expect(
+          decoration.borderRadius,
+          equals(BorderRadius.circular(AppTypography.radiusMedium)),
+        );
       });
 
       testWidgets('Should have proper text styles', (tester) async {

@@ -11,7 +11,9 @@ import 'package:provider/provider.dart';
 
 /// Floating video-style controls for play/pause and reset
 class FloatingSimulationControls extends StatefulWidget {
-  const FloatingSimulationControls({super.key});
+  final void Function(VoidCallback)? onRegisterShowControls;
+
+  const FloatingSimulationControls({super.key, this.onRegisterShowControls});
 
   @override
   State<FloatingSimulationControls> createState() =>
@@ -36,6 +38,9 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
     );
     _animationController.forward();
     _startAutoHideTimer();
+
+    // Register the show controls callback with parent
+    widget.onRegisterShowControls?.call(_showControls);
   }
 
   @override
@@ -62,6 +67,11 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
     }
   }
 
+  /// Public method to show controls from external widgets
+  void showControls() {
+    _showControls();
+  }
+
   void _hideControls() {
     if (_isVisible) {
       setState(() {
@@ -78,10 +88,9 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
     return Consumer<AppState>(
       builder: (context, appState, child) {
         return GestureDetector(
-          onTap: _showControls,
-          behavior: _isVisible
-              ? HitTestBehavior.deferToChild
-              : HitTestBehavior.translucent,
+          onLongPress: _showControls, // Long press anywhere to show controls
+          behavior: HitTestBehavior
+              .deferToChild, // Only respond to taps on actual control elements
           child: Stack(
             children: [
               // Floating controls
@@ -105,7 +114,9 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                             color: AppColors.uiBlack.withValues(
                               alpha: AppTypography.opacityMedium,
                             ),
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(
+                              AppTypography.radiusXXLarge,
+                            ),
                             border: Border.all(
                               color: AppColors.uiWhite.withValues(
                                 alpha: AppTypography.opacityVeryFaint,
@@ -148,7 +159,9 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                                 isPrimary: true,
                               ),
 
-                              const SizedBox(width: 12),
+                              const SizedBox(
+                                width: AppTypography.spacingMedium,
+                              ),
 
                               // Reset Button
                               _buildControlButton(
@@ -202,7 +215,7 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
         color: Colors.transparent,
         child: InkWell(
           onTap: onPressed,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             child: Column(
@@ -219,7 +232,9 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                         : AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityVeryFaint,
                           ),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(
+                      AppTypography.radiusXXLarge,
+                    ),
                     border: isPrimary
                         ? null
                         : Border.all(
@@ -239,7 +254,7 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                     size: 20,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTypography.spacingXSmall),
                 Text(
                   tooltip,
                   style: TextStyle(

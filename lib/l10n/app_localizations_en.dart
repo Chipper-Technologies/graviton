@@ -77,6 +77,63 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectScenarioTooltip => 'Select Scenario';
 
   @override
+  String get moreOptionsTooltip => 'More options';
+
+  @override
+  String get physicsSettingsTitle => 'Physics Settings';
+
+  @override
+  String get physicsSettingsDescription => 'Simulation parameters';
+
+  @override
+  String get physicsSection => 'Physics';
+
+  @override
+  String get gravitationalConstant => 'Gravitational Constant';
+
+  @override
+  String get softeningParameter => 'Softening Parameter';
+
+  @override
+  String get simulationSpeed => 'Simulation Speed';
+
+  @override
+  String get collisionsSection => 'Collisions';
+
+  @override
+  String get collisionSensitivity => 'Collision Sensitivity';
+
+  @override
+  String get trailsSection => 'Trails';
+
+  @override
+  String get trailLength => 'Trail Length';
+
+  @override
+  String get trailFadeRate => 'Trail Fade Rate';
+
+  @override
+  String get hapticsSection => 'Haptics';
+
+  @override
+  String get vibrationEnabled => 'Vibration Enabled';
+
+  @override
+  String get hapticFeedbackCollisions => 'Haptic feedback on collisions';
+
+  @override
+  String get vibrationThrottle => 'Vibration Throttle';
+
+  @override
+  String get scenariosMenuDescription => 'Explore different scenarios';
+
+  @override
+  String get settingsMenuDescription => 'Visual & behavior options';
+
+  @override
+  String get helpMenuDescription => 'Tutorial & objectives';
+
+  @override
   String get showTrails => 'Show Trails';
 
   @override
@@ -270,6 +327,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get habitabilityUnknown => 'Unknown';
 
   @override
+  String get temperatureFrozen => 'Frozen';
+
+  @override
+  String get temperatureCold => 'Cold';
+
+  @override
+  String get temperatureModerate => 'Moderate';
+
+  @override
+  String get temperatureHot => 'Hot';
+
+  @override
+  String get temperatureScorching => 'Scorching';
+
+  @override
+  String get temperatureNotApplicable => 'N/A';
+
+  @override
+  String get temperatureUnitCelsius => '°C';
+
+  @override
+  String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitFahrenheit => '°F';
+
+  @override
   String get toggleHabitableZonesTooltip => 'Toggle Habitable Zones';
 
   @override
@@ -369,6 +453,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bodySun => 'Sun';
+
+  @override
+  String get bodyPropertiesTitle => 'Body Properties';
+
+  @override
+  String get bodyPropertiesName => 'Name';
+
+  @override
+  String get bodyPropertiesNameHint => 'Enter body name';
+
+  @override
+  String get bodyPropertiesType => 'Body Type';
+
+  @override
+  String get bodyPropertiesColor => 'Color';
+
+  @override
+  String get bodyPropertiesMass => 'Mass';
+
+  @override
+  String get bodyPropertiesRadius => 'Radius';
+
+  @override
+  String get bodyPropertiesLuminosity => 'Stellar Luminosity';
+
+  @override
+  String get bodyPropertiesVelocity => 'Velocity';
+
+  @override
+  String get bodyPropertiesAxisX => 'X:';
+
+  @override
+  String get bodyPropertiesAxisY => 'Y:';
+
+  @override
+  String get bodyPropertiesAxisZ => 'Z:';
 
   @override
   String get bodyEarth => 'Earth';

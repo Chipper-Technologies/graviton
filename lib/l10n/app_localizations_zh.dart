@@ -75,6 +75,63 @@ class AppLocalizationsZh extends AppLocalizations {
   String get selectScenarioTooltip => '选择场景';
 
   @override
+  String get moreOptionsTooltip => '更多选项';
+
+  @override
+  String get physicsSettingsTitle => '物理设置';
+
+  @override
+  String get physicsSettingsDescription => '模拟参数';
+
+  @override
+  String get physicsSection => '物理学';
+
+  @override
+  String get gravitationalConstant => '重力常数';
+
+  @override
+  String get softeningParameter => '软化参数';
+
+  @override
+  String get simulationSpeed => '模拟速度';
+
+  @override
+  String get collisionsSection => '碰撞';
+
+  @override
+  String get collisionSensitivity => '碰撞敏感度';
+
+  @override
+  String get trailsSection => '轨迹';
+
+  @override
+  String get trailLength => '轨迹长度';
+
+  @override
+  String get trailFadeRate => '轨迹淡化率';
+
+  @override
+  String get hapticsSection => '触觉反馈';
+
+  @override
+  String get vibrationEnabled => '启用振动';
+
+  @override
+  String get hapticFeedbackCollisions => '碰撞时的触觉反馈';
+
+  @override
+  String get vibrationThrottle => '振动节流';
+
+  @override
+  String get scenariosMenuDescription => '探索不同场景';
+
+  @override
+  String get settingsMenuDescription => '视觉和行为选项';
+
+  @override
+  String get helpMenuDescription => '教程和目标';
+
+  @override
   String get showTrails => '显示轨迹';
 
   @override
@@ -259,6 +316,33 @@ class AppLocalizationsZh extends AppLocalizations {
   String get habitabilityUnknown => '未知';
 
   @override
+  String get temperatureFrozen => '极寒';
+
+  @override
+  String get temperatureCold => '寒冷';
+
+  @override
+  String get temperatureModerate => '温和';
+
+  @override
+  String get temperatureHot => '炎热';
+
+  @override
+  String get temperatureScorching => '灼热';
+
+  @override
+  String get temperatureNotApplicable => '不适用';
+
+  @override
+  String get temperatureUnitCelsius => '°C';
+
+  @override
+  String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitFahrenheit => '°F';
+
+  @override
   String get toggleHabitableZonesTooltip => '切换宜居带';
 
   @override
@@ -353,6 +437,42 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bodySun => '太阳';
+
+  @override
+  String get bodyPropertiesTitle => '天体属性';
+
+  @override
+  String get bodyPropertiesName => '名称';
+
+  @override
+  String get bodyPropertiesNameHint => '输入天体名称';
+
+  @override
+  String get bodyPropertiesType => '天体类型';
+
+  @override
+  String get bodyPropertiesColor => '颜色';
+
+  @override
+  String get bodyPropertiesMass => '质量';
+
+  @override
+  String get bodyPropertiesRadius => '半径';
+
+  @override
+  String get bodyPropertiesLuminosity => '恒星光度';
+
+  @override
+  String get bodyPropertiesVelocity => '速度';
+
+  @override
+  String get bodyPropertiesAxisX => 'X:';
+
+  @override
+  String get bodyPropertiesAxisY => 'Y:';
+
+  @override
+  String get bodyPropertiesAxisZ => 'Z:';
 
   @override
   String get bodyEarth => '地球';

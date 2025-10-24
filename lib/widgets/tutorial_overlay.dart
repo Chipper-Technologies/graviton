@@ -183,14 +183,18 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                         }
                       },
                       child: Material(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(
+                          AppTypography.radiusXLarge,
+                        ),
                         elevation: 8,
                         color: theme.colorScheme.surface,
                         child: Container(
                           margin: const EdgeInsets.all(32),
                           padding: const EdgeInsets.all(24),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(
+                              AppTypography.radiusXLarge,
+                            ),
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -215,7 +219,9 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                   );
                                 }),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(
+                                height: AppTypography.spacingSmall,
+                              ),
 
                               // Swipe hint
                               Text(
@@ -228,7 +234,9 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(
+                                height: AppTypography.spacingLarge,
+                              ),
 
                               // Icon or Logo
                               Container(
@@ -269,7 +277,9 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(
+                                height: AppTypography.spacingLarge,
+                              ),
 
                               // Description - left aligned
                               SizedBox(
@@ -279,7 +289,9 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                   theme,
                                 ),
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(
+                                height: AppTypography.spacingXXXLarge,
+                              ),
 
                               // Navigation buttons
                               Row(
@@ -305,7 +317,9 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                           ),
                                           child: Text(l10n.previous),
                                         ),
-                                      const SizedBox(width: 8),
+                                      const SizedBox(
+                                        width: AppTypography.spacingSmall,
+                                      ),
                                       ElevatedButton(
                                         onPressed: _nextStep,
                                         style: ElevatedButton.styleFrom(
@@ -500,7 +514,10 @@ class HighlightPainter extends CustomPainter {
       ..strokeWidth = 2;
 
     canvas.drawRRect(
-      RRect.fromRectAndRadius(highlightArea, const Radius.circular(8)),
+      RRect.fromRectAndRadius(
+        highlightArea,
+        const Radius.circular(AppTypography.radiusMedium),
+      ),
       paint,
     );
   }

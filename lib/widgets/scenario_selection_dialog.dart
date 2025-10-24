@@ -3,9 +3,9 @@ import 'package:graviton/constants/educational_focus_keys.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/scenario_config.dart';
-import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
+import 'package:graviton/theme/app_typography.dart';
 
 /// A dialog that allows users to select a preset astronomical scenario
 class ScenarioSelectionDialog extends StatelessWidget {
@@ -29,44 +29,83 @@ class ScenarioSelectionDialog extends StatelessWidget {
     }).toList();
 
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
+      ),
       child: Container(
         constraints: AppConstraints.dialogMedium,
-        padding: AppConstraints.dialogPadding,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Title with close button
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.uiCyanAccent.withValues(alpha: 0.15),
+                    AppColors.uiCyanAccent.withValues(alpha: 0.05),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(AppTypography.radiusXLarge),
+                  topRight: Radius.circular(AppTypography.radiusXLarge),
+                ),
+              ),
+              padding: EdgeInsets.all(AppTypography.spacingLarge),
+              child: Row(
+                children: [
+                  Icon(Icons.explore, color: AppColors.uiCyanAccent, size: 28),
+                  SizedBox(width: AppTypography.spacingMedium),
+                  Text(
+                    l10n.selectScenarioTooltip,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+            ),
             // Scenario list
             Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                itemCount: availableScenarios.length,
-                itemBuilder: (context, index) {
-                  final scenario = availableScenarios[index];
-                  final config = ScenarioConfig.defaults[scenario]!;
-                  final isSelected = scenario == currentScenario;
+              child: Padding(
+                padding: AppConstraints.dialogPadding,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  itemCount: availableScenarios.length,
+                  itemBuilder: (context, index) {
+                    final scenario = availableScenarios[index];
+                    final config = ScenarioConfig.defaults[scenario]!;
+                    final isSelected = scenario == currentScenario;
 
-                  return _ScenarioTile(
-                    scenario: scenario,
-                    config: config,
-                    isSelected: isSelected,
-                    onTap: () => _selectScenario(context, scenario),
-                  );
-                },
+                    return _ScenarioTile(
+                      scenario: scenario,
+                      config: config,
+                      isSelected: isSelected,
+                      onTap: () => _selectScenario(context, scenario),
+                    );
+                  },
+                ),
               ),
             ),
 
             // Footer
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text(l10n.cancel),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(l10n.cancel),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -109,9 +148,9 @@ class _ScenarioTile extends StatelessWidget {
           : null,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(AppTypography.spacingLarge),
           child: Row(
             children: [
               // Icon
@@ -122,12 +161,14 @@ class _ScenarioTile extends StatelessWidget {
                   color: config.primaryColor.withValues(
                     alpha: AppTypography.opacityVeryFaint,
                   ),
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.spacingXXLarge,
+                  ),
                 ),
                 child: Icon(config.icon, color: config.primaryColor, size: 24),
               ),
 
-              const SizedBox(width: 16),
+              SizedBox(width: AppTypography.spacingLarge),
 
               // Content
               Expanded(
@@ -156,7 +197,7 @@ class _ScenarioTile extends StatelessWidget {
                       ],
                     ),
 
-                    const SizedBox(height: 4),
+                    SizedBox(height: AppTypography.spacingXSmall),
 
                     Text(
                       description,
@@ -169,15 +210,18 @@ class _ScenarioTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
 
-                    const SizedBox(height: 8),
+                    SizedBox(height: AppTypography.spacingSmall),
 
                     // Learning objectives
                     Container(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      padding: EdgeInsets.only(
+                        left: AppTypography.spacingSmall,
+                        right: AppTypography.spacingSmall,
+                      ),
                       child: _buildScenarioObjectives(l10n, scenario),
                     ),
 
-                    const SizedBox(height: 12),
+                    SizedBox(height: AppTypography.spacingMedium),
 
                     // Metadata
                     Row(
@@ -189,7 +233,7 @@ class _ScenarioTile extends StatelessWidget {
                             alpha: AppTypography.opacityMediumHigh,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: AppTypography.spacingXSmall),
                         Text(
                           '${config.expectedBodyCount} ${l10n.bodies}',
                           style: AppTypography.smallText.copyWith(
@@ -198,7 +242,7 @@ class _ScenarioTile extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        SizedBox(width: AppTypography.spacingLarge),
                         Icon(
                           Icons.school,
                           size: 14,
@@ -206,7 +250,7 @@ class _ScenarioTile extends StatelessWidget {
                             alpha: AppTypography.opacityMediumHigh,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: AppTypography.spacingXSmall),
                         Expanded(
                           child: Text(
                             _getLocalizedEducationalFocus(l10n, scenario),
@@ -364,7 +408,7 @@ class _ScenarioTile extends StatelessWidget {
                 fontSize: 11,
               ),
             ),
-            const SizedBox(width: 4),
+            SizedBox(width: AppTypography.spacingXSmall),
             Expanded(
               child: Text(
                 learnText,
@@ -379,7 +423,7 @@ class _ScenarioTile extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: AppTypography.spacingXSmall),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -390,7 +434,7 @@ class _ScenarioTile extends StatelessWidget {
                 fontSize: 11,
               ),
             ),
-            const SizedBox(width: 4),
+            SizedBox(width: AppTypography.spacingXSmall),
             Expanded(
               child: Text(
                 bestText,

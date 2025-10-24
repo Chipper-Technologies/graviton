@@ -75,6 +75,63 @@ class AppLocalizationsKo extends AppLocalizations {
   String get selectScenarioTooltip => '시나리오 선택';
 
   @override
+  String get moreOptionsTooltip => '더 많은 옵션';
+
+  @override
+  String get physicsSettingsTitle => '물리 설정';
+
+  @override
+  String get physicsSettingsDescription => '시뮬레이션 매개변수';
+
+  @override
+  String get physicsSection => '물리학';
+
+  @override
+  String get gravitationalConstant => '중력 상수';
+
+  @override
+  String get softeningParameter => '소프트닝 매개변수';
+
+  @override
+  String get simulationSpeed => '시뮬레이션 속도';
+
+  @override
+  String get collisionsSection => '충돌';
+
+  @override
+  String get collisionSensitivity => '충돌 감도';
+
+  @override
+  String get trailsSection => '궤적';
+
+  @override
+  String get trailLength => '궤적 길이';
+
+  @override
+  String get trailFadeRate => '궤적 페이드 비율';
+
+  @override
+  String get hapticsSection => '햅틱';
+
+  @override
+  String get vibrationEnabled => '진동 활성화';
+
+  @override
+  String get hapticFeedbackCollisions => '충돌 시 햅틱 피드백';
+
+  @override
+  String get vibrationThrottle => '진동 제한';
+
+  @override
+  String get scenariosMenuDescription => '다양한 시나리오 탐색';
+
+  @override
+  String get settingsMenuDescription => '시각적 및 동작 옵션';
+
+  @override
+  String get helpMenuDescription => '튜토리얼 및 목표';
+
+  @override
   String get showTrails => '궤적 표시';
 
   @override
@@ -261,6 +318,33 @@ class AppLocalizationsKo extends AppLocalizations {
   String get habitabilityUnknown => '알 수 없음';
 
   @override
+  String get temperatureFrozen => '얼어붙음';
+
+  @override
+  String get temperatureCold => '추위';
+
+  @override
+  String get temperatureModerate => '온화함';
+
+  @override
+  String get temperatureHot => '뜨거움';
+
+  @override
+  String get temperatureScorching => '타는 듯함';
+
+  @override
+  String get temperatureNotApplicable => '해당 없음';
+
+  @override
+  String get temperatureUnitCelsius => '°C';
+
+  @override
+  String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitFahrenheit => '°F';
+
+  @override
   String get toggleHabitableZonesTooltip => '거주 가능 지역 전환';
 
   @override
@@ -357,6 +441,42 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get bodySun => '태양';
+
+  @override
+  String get bodyPropertiesTitle => '천체 속성';
+
+  @override
+  String get bodyPropertiesName => '이름';
+
+  @override
+  String get bodyPropertiesNameHint => '천체 이름 입력';
+
+  @override
+  String get bodyPropertiesType => '천체 유형';
+
+  @override
+  String get bodyPropertiesColor => '색상';
+
+  @override
+  String get bodyPropertiesMass => '질량';
+
+  @override
+  String get bodyPropertiesRadius => '반지름';
+
+  @override
+  String get bodyPropertiesLuminosity => '항성 광도';
+
+  @override
+  String get bodyPropertiesVelocity => '속도';
+
+  @override
+  String get bodyPropertiesAxisX => 'X:';
+
+  @override
+  String get bodyPropertiesAxisY => 'Y:';
+
+  @override
+  String get bodyPropertiesAxisZ => 'Z:';
 
   @override
   String get bodyEarth => '지구';

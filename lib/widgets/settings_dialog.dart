@@ -27,416 +27,449 @@ class SettingsDialog extends StatelessWidget {
       builder: (context, appState, child) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
           ),
           child: Container(
             constraints: AppConstraints.dialogMedium,
-            padding: AppConstraints.dialogPadding,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Title with close button
-                Row(
-                  children: [
-                    const Icon(Icons.settings),
-                    const SizedBox(width: 8),
-                    Text(
-                      l10n.settingsTitle,
-                      style: Theme.of(context).textTheme.headlineSmall,
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.uiOrangeAccent.withValues(alpha: 0.15),
+                        AppColors.uiOrangeAccent.withValues(alpha: 0.05),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.of(context).pop(),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(AppTypography.radiusXLarge),
+                      topRight: Radius.circular(AppTypography.radiusXLarge),
                     ),
-                  ],
+                  ),
+                  padding: EdgeInsets.all(AppTypography.spacingLarge),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.tune,
+                        color: AppColors.uiOrangeAccent,
+                        size: 28,
+                      ),
+                      SizedBox(width: AppTypography.spacingMedium),
+                      Text(
+                        l10n.settingsTitle,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 16),
                 // Scrollable content
                 Flexible(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Speed Control
-                        Text(
-                          l10n.speedLabel,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(color: AppColors.sectionTitlePurple),
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            const Icon(Icons.speed, size: 20),
-                            const SizedBox(width: 8),
-                            Text(
-                              '${appState.simulation.timeScale.toStringAsFixed(1)}x',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        SizedBox(
-                          width: double.infinity,
-                          child: SliderTheme(
-                            data: SliderTheme.of(context).copyWith(
-                              inactiveTrackColor: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withValues(
-                                    alpha: AppTypography.opacityVeryFaint,
-                                  ),
-                              activeTrackColor: Theme.of(
-                                context,
-                              ).colorScheme.primary,
-                            ),
-                            child: Slider(
-                              min: 0.1,
-                              max: 16.0,
-                              divisions: 159,
-                              value: appState.simulation.timeScale.clamp(
-                                0.1,
-                                16.0,
-                              ),
-                              label:
-                                  '${appState.simulation.timeScale.toStringAsFixed(1)}x',
-                              onChanged: (v) =>
-                                  appState.simulation.setTimeScale(v),
-                            ),
+                  child: Padding(
+                    padding: AppConstraints.dialogPadding,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Speed Control
+                          Text(
+                            l10n.speedLabel,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppColors.sectionTitlePurple),
                           ),
-                        ),
-
-                        Divider(color: AppColors.uiDividerGrey),
-                        const SizedBox(height: 8),
-
-                        // Trails Section
-                        Text(
-                          l10n.trailsLabel,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(color: AppColors.sectionTitlePurple),
-                        ),
-                        const SizedBox(height: 8),
-
-                        // Trails Toggle
-                        SwitchListTile(
-                          title: Text(l10n.showTrails),
-                          subtitle: Text(
-                            l10n.showTrailsDescription,
-                            style: TextStyle(
-                              color: AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacitySemiTransparent,
+                          SizedBox(height: AppTypography.spacingSmall),
+                          Row(
+                            children: [
+                              const Icon(Icons.speed, size: 20),
+                              SizedBox(width: AppTypography.spacingSmall),
+                              Text(
+                                '${appState.simulation.timeScale.toStringAsFixed(1)}x',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: AppTypography.spacingXSmall),
+                          SizedBox(
+                            width: double.infinity,
+                            child: SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                inactiveTrackColor: Theme.of(context)
+                                    .colorScheme
+                                    .onSurface
+                                    .withValues(
+                                      alpha: AppTypography.opacityVeryFaint,
+                                    ),
+                                activeTrackColor: Theme.of(
+                                  context,
+                                ).colorScheme.primary,
+                              ),
+                              child: Slider(
+                                min: 0.1,
+                                max: 16.0,
+                                divisions: 159,
+                                value: appState.simulation.timeScale.clamp(
+                                  0.1,
+                                  16.0,
+                                ),
+                                label:
+                                    '${appState.simulation.timeScale.toStringAsFixed(1)}x',
+                                onChanged: (v) =>
+                                    appState.simulation.setTimeScale(v),
                               ),
                             ),
                           ),
-                          value: appState.ui.showTrails,
-                          onChanged: (v) => appState.ui.toggleTrails(),
-                          secondary: const Icon(Icons.timeline),
-                        ),
 
-                        // Orbital Paths Toggle
-                        SwitchListTile(
-                          title: Text(l10n.showOrbitalPaths),
-                          subtitle: Text(
-                            l10n.showOrbitalPathsDescription,
-                            style: TextStyle(
-                              color: AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacitySemiTransparent,
-                              ),
-                            ),
+                          Divider(color: AppColors.uiDividerGrey),
+                          SizedBox(height: AppTypography.spacingSmall),
+
+                          // Trails Section
+                          Text(
+                            l10n.trailsLabel,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppColors.sectionTitlePurple),
                           ),
-                          value: appState.ui.showOrbitalPaths,
-                          onChanged: (v) => appState.ui.toggleOrbitalPaths(),
-                          secondary: const Icon(Icons.radio_button_unchecked),
-                        ),
+                          SizedBox(height: AppTypography.spacingSmall),
 
-                        // Dual Orbital Paths Toggle (only show if orbital paths are enabled)
-                        if (appState.ui.showOrbitalPaths)
+                          // Trails Toggle
                           SwitchListTile(
-                            title: Text(l10n.dualOrbitalPaths),
+                            title: Text(l10n.showTrails),
                             subtitle: Text(
-                              l10n.dualOrbitalPathsDescription,
+                              l10n.showTrailsDescription,
                               style: TextStyle(
                                 color: AppColors.uiWhite.withValues(
                                   alpha: AppTypography.opacitySemiTransparent,
                                 ),
                               ),
                             ),
-                            value: appState.ui.dualOrbitalPaths,
+                            value: appState.ui.showTrails,
+                            onChanged: (v) => appState.ui.toggleTrails(),
+                            secondary: const Icon(Icons.timeline),
+                          ),
+
+                          // Orbital Paths Toggle
+                          SwitchListTile(
+                            title: Text(l10n.showOrbitalPaths),
+                            subtitle: Text(
+                              l10n.showOrbitalPathsDescription,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacitySemiTransparent,
+                                ),
+                              ),
+                            ),
+                            value: appState.ui.showOrbitalPaths,
+                            onChanged: (v) => appState.ui.toggleOrbitalPaths(),
+                            secondary: const Icon(Icons.radio_button_unchecked),
+                          ),
+
+                          // Dual Orbital Paths Toggle (only show if orbital paths are enabled)
+                          if (appState.ui.showOrbitalPaths)
+                            SwitchListTile(
+                              title: Text(l10n.dualOrbitalPaths),
+                              subtitle: Text(
+                                l10n.dualOrbitalPathsDescription,
+                                style: TextStyle(
+                                  color: AppColors.uiWhite.withValues(
+                                    alpha: AppTypography.opacitySemiTransparent,
+                                  ),
+                                ),
+                              ),
+                              value: appState.ui.dualOrbitalPaths,
+                              onChanged: (v) =>
+                                  appState.ui.toggleDualOrbitalPaths(),
+                              secondary: const Icon(Icons.donut_small),
+                            ),
+
+                          SizedBox(height: AppTypography.spacingLarge),
+
+                          // Body Labels Toggle
+                          SwitchListTile(
+                            title: Text(l10n.toggleLabelsTooltip),
+                            subtitle: Text(
+                              l10n.showLabelsDescription,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacitySemiTransparent,
+                                ),
+                              ),
+                            ),
+                            value: appState.ui.showLabels,
+                            onChanged: (v) => appState.ui.toggleLabels(),
+                            secondary: const Icon(Icons.label),
+                          ),
+
+                          // Off-Screen Indicators Toggle
+                          SwitchListTile(
+                            title: Text(l10n.offScreenIndicatorsTitle),
+                            subtitle: Text(
+                              l10n.offScreenIndicatorsDescription,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacitySemiTransparent,
+                                ),
+                              ),
+                            ),
+                            value: appState.ui.showOffScreenIndicators,
                             onChanged: (v) =>
-                                appState.ui.toggleDualOrbitalPaths(),
-                            secondary: const Icon(Icons.donut_small),
+                                appState.ui.toggleOffScreenIndicators(),
+                            secondary: const Icon(Icons.navigation),
                           ),
 
-                        const SizedBox(height: 16),
+                          Divider(color: AppColors.uiDividerGrey),
+                          SizedBox(height: AppTypography.spacingSmall),
 
-                        // Body Labels Toggle
-                        SwitchListTile(
-                          title: Text(l10n.toggleLabelsTooltip),
-                          subtitle: Text(
-                            l10n.showLabelsDescription,
-                            style: TextStyle(
-                              color: AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacitySemiTransparent,
-                              ),
-                            ),
-                          ),
-                          value: appState.ui.showLabels,
-                          onChanged: (v) => appState.ui.toggleLabels(),
-                          secondary: const Icon(Icons.label),
-                        ),
+                          // Habitability Section - only show if there are planets or moons
+                          ..._buildHabitabilitySection(context, l10n, appState),
 
-                        // Off-Screen Indicators Toggle
-                        SwitchListTile(
-                          title: Text(l10n.offScreenIndicatorsTitle),
-                          subtitle: Text(
-                            l10n.offScreenIndicatorsDescription,
-                            style: TextStyle(
-                              color: AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacitySemiTransparent,
-                              ),
-                            ),
-                          ),
-                          value: appState.ui.showOffScreenIndicators,
-                          onChanged: (v) =>
-                              appState.ui.toggleOffScreenIndicators(),
-                          secondary: const Icon(Icons.navigation),
-                        ),
-
-                        Divider(color: AppColors.uiDividerGrey),
-                        const SizedBox(height: 8),
-
-                        // Habitability Section - only show if there are planets or moons
-                        ..._buildHabitabilitySection(context, l10n, appState),
-
-                        // Camera Controls Section
-                        Text(
-                          l10n.cameraControlsLabel,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(color: AppColors.sectionTitlePurple),
-                        ),
-                        const SizedBox(height: 8),
-
-                        // Invert Pitch Toggle
-                        SwitchListTile(
-                          title: Text(l10n.invertPitchControlsLabel),
-                          subtitle: Text(
-                            l10n.invertPitchControlsDescription,
-                            style: TextStyle(
-                              color: AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacitySemiTransparent,
-                              ),
-                            ),
-                          ),
-                          value: appState.camera.invertPitch,
-                          onChanged: (v) => appState.camera.toggleInvertPitch(),
-                          secondary: const Icon(Icons.swap_vert),
-                        ),
-
-                        const SizedBox(height: 16),
-                        Divider(color: AppColors.uiDividerGrey),
-
-                        // Screenshot Mode Section (Dev only)
-                        if (ScreenshotModeService().isAvailable) ...[
+                          // Camera Controls Section
                           Text(
-                            l10n.marketingLabel,
+                            l10n.cameraControlsLabel,
                             style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(color: AppColors.sectionTitlePurple),
                           ),
-                          const SizedBox(height: 8),
-                          const ScreenshotModeWidget(),
-                          const SizedBox(height: 16),
-                          Divider(color: AppColors.uiDividerGrey),
-                        ],
+                          SizedBox(height: AppTypography.spacingSmall),
 
-                        // Language Section
-                        Text(
-                          l10n.languageLabel,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(color: AppColors.sectionTitlePurple),
-                        ),
-                        const SizedBox(height: 8),
-
-                        // Language Selection
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.uiBorderGrey),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Header with icon and text
-                              Row(
-                                children: [
-                                  const Icon(Icons.language),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(l10n.languageLabel),
-                                        Text(
-                                          l10n.languageDescription,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall
-                                              ?.copyWith(
-                                                color: AppColors.uiWhite
-                                                    .withValues(
-                                                      alpha: AppTypography
-                                                          .opacitySemiTransparent,
-                                                    ),
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              // Dropdown below
-                              SizedBox(
-                                width: double.infinity,
-                                child: DropdownButton<String?>(
-                                  value: appState.ui.selectedLanguageCode,
-                                  underline: Container(),
-                                  isExpanded: true,
-                                  onChanged: (String? newValue) {
-                                    appState.ui.setLanguage(newValue);
-                                  },
-                                  items: [
-                                    DropdownMenuItem<String?>(
-                                      value: null,
-                                      child: Text(l10n.languageSystem),
-                                    ),
-                                    DropdownMenuItem<String?>(
-                                      value: 'en',
-                                      child: Text(l10n.languageEnglish),
-                                    ),
-                                    DropdownMenuItem<String?>(
-                                      value: 'de',
-                                      child: Text(l10n.languageGerman),
-                                    ),
-                                    DropdownMenuItem<String?>(
-                                      value: 'es',
-                                      child: Text(l10n.languageSpanish),
-                                    ),
-                                    DropdownMenuItem<String?>(
-                                      value: 'fr',
-                                      child: Text(l10n.languageFrench),
-                                    ),
-                                    DropdownMenuItem<String?>(
-                                      value: 'zh',
-                                      child: Text(l10n.languageChinese),
-                                    ),
-                                    DropdownMenuItem<String?>(
-                                      value: 'ja',
-                                      child: Text(l10n.languageJapanese),
-                                    ),
-                                    DropdownMenuItem<String?>(
-                                      value: 'ko',
-                                      child: Text(l10n.languageKorean),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Trail Color Selection
-                        if (appState.ui.showTrails) ...[
-                          const SizedBox(height: 16),
-                          Divider(color: AppColors.uiDividerGrey),
-                          Text(
-                            l10n.trailColorLabel,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SegmentedButton<bool>(
-                                  segments: [
-                                    ButtonSegment<bool>(
-                                      value: true,
-                                      label: Text(l10n.warmTrails),
-                                      icon: const Icon(
-                                        Icons.local_fire_department,
-                                        size: 16,
-                                      ),
-                                    ),
-                                    ButtonSegment<bool>(
-                                      value: false,
-                                      label: Text(l10n.coolTrails),
-                                      icon: const Icon(Icons.ac_unit, size: 16),
-                                    ),
-                                  ],
-                                  selected: {appState.ui.useWarmTrails},
-                                  onSelectionChanged: (Set<bool> selection) {
-                                    if (selection.isNotEmpty) {
-                                      final useWarm = selection.first;
-                                      if (useWarm !=
-                                          appState.ui.useWarmTrails) {
-                                        appState.ui.toggleWarmTrails();
-                                      }
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-
-                        // Tutorial Section (moved to bottom)
-                        const SizedBox(height: 16),
-                        Divider(color: AppColors.uiDividerGrey),
-                        const SizedBox(height: 16),
-                        Text(
-                          l10n.helpAndObjectivesTitle,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(color: AppColors.sectionTitlePurple),
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton.icon(
-                                onPressed: () =>
-                                    _showTutorialFromSettings(context),
-                                icon: const Icon(Icons.school),
-                                label: Text(l10n.tutorialButton),
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 10,
-                                  ),
+                          // Invert Pitch Toggle
+                          SwitchListTile(
+                            title: Text(l10n.invertPitchControlsLabel),
+                            subtitle: Text(
+                              l10n.invertPitchControlsDescription,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacitySemiTransparent,
                                 ),
                               ),
                             ),
-                            // Debug: Reset tutorial state (only in debug mode)
-                            if (kDebugMode) ...[
-                              const SizedBox(width: 12),
+                            value: appState.camera.invertPitch,
+                            onChanged: (v) =>
+                                appState.camera.toggleInvertPitch(),
+                            secondary: const Icon(Icons.swap_vert),
+                          ),
+
+                          SizedBox(height: AppTypography.spacingLarge),
+                          Divider(color: AppColors.uiDividerGrey),
+
+                          // Screenshot Mode Section (Dev only)
+                          if (ScreenshotModeService().isAvailable) ...[
+                            Text(
+                              l10n.marketingLabel,
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    color: AppColors.sectionTitlePurple,
+                                  ),
+                            ),
+                            SizedBox(height: AppTypography.spacingSmall),
+                            const ScreenshotModeWidget(),
+                            SizedBox(height: AppTypography.spacingLarge),
+                            Divider(color: AppColors.uiDividerGrey),
+                          ],
+
+                          // Language Section
+                          Text(
+                            l10n.languageLabel,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppColors.sectionTitlePurple),
+                          ),
+                          SizedBox(height: AppTypography.spacingSmall),
+
+                          // Language Selection
+                          Container(
+                            padding: EdgeInsets.all(AppTypography.spacingLarge),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.uiBorderGrey),
+                              borderRadius: BorderRadius.circular(
+                                AppTypography.radiusMedium,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Header with icon and text
+                                Row(
+                                  children: [
+                                    const Icon(Icons.language),
+                                    SizedBox(
+                                      width: AppTypography.spacingMedium,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(l10n.languageLabel),
+                                          Text(
+                                            l10n.languageDescription,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall
+                                                ?.copyWith(
+                                                  color: AppColors.uiWhite
+                                                      .withValues(
+                                                        alpha: AppTypography
+                                                            .opacitySemiTransparent,
+                                                      ),
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: AppTypography.spacingMedium),
+                                // Dropdown below
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: DropdownButton<String?>(
+                                    value: appState.ui.selectedLanguageCode,
+                                    underline: Container(),
+                                    isExpanded: true,
+                                    onChanged: (String? newValue) {
+                                      appState.ui.setLanguage(newValue);
+                                    },
+                                    items: [
+                                      DropdownMenuItem<String?>(
+                                        value: null,
+                                        child: Text(l10n.languageSystem),
+                                      ),
+                                      DropdownMenuItem<String?>(
+                                        value: 'en',
+                                        child: Text(l10n.languageEnglish),
+                                      ),
+                                      DropdownMenuItem<String?>(
+                                        value: 'de',
+                                        child: Text(l10n.languageGerman),
+                                      ),
+                                      DropdownMenuItem<String?>(
+                                        value: 'es',
+                                        child: Text(l10n.languageSpanish),
+                                      ),
+                                      DropdownMenuItem<String?>(
+                                        value: 'fr',
+                                        child: Text(l10n.languageFrench),
+                                      ),
+                                      DropdownMenuItem<String?>(
+                                        value: 'zh',
+                                        child: Text(l10n.languageChinese),
+                                      ),
+                                      DropdownMenuItem<String?>(
+                                        value: 'ja',
+                                        child: Text(l10n.languageJapanese),
+                                      ),
+                                      DropdownMenuItem<String?>(
+                                        value: 'ko',
+                                        child: Text(l10n.languageKorean),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Trail Color Selection
+                          if (appState.ui.showTrails) ...[
+                            SizedBox(height: AppTypography.spacingLarge),
+                            Divider(color: AppColors.uiDividerGrey),
+                            Text(
+                              l10n.trailColorLabel,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            SizedBox(height: AppTypography.spacingSmall),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: SegmentedButton<bool>(
+                                    segments: [
+                                      ButtonSegment<bool>(
+                                        value: true,
+                                        label: Text(l10n.warmTrails),
+                                        icon: const Icon(
+                                          Icons.local_fire_department,
+                                          size: 16,
+                                        ),
+                                      ),
+                                      ButtonSegment<bool>(
+                                        value: false,
+                                        label: Text(l10n.coolTrails),
+                                        icon: const Icon(
+                                          Icons.ac_unit,
+                                          size: 16,
+                                        ),
+                                      ),
+                                    ],
+                                    selected: {appState.ui.useWarmTrails},
+                                    onSelectionChanged: (Set<bool> selection) {
+                                      if (selection.isNotEmpty) {
+                                        final useWarm = selection.first;
+                                        if (useWarm !=
+                                            appState.ui.useWarmTrails) {
+                                          appState.ui.toggleWarmTrails();
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+
+                          // Tutorial Section (moved to bottom)
+                          SizedBox(height: AppTypography.spacingLarge),
+                          Divider(color: AppColors.uiDividerGrey),
+                          SizedBox(height: AppTypography.spacingLarge),
+                          Text(
+                            l10n.helpAndObjectivesTitle,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppColors.sectionTitlePurple),
+                          ),
+                          SizedBox(height: AppTypography.spacingLarge),
+                          Row(
+                            children: [
                               Expanded(
-                                child: TextButton.icon(
-                                  onPressed: () => _resetTutorialState(context),
-                                  icon: const Icon(Icons.refresh, size: 16),
-                                  label: Text(l10n.resetTutorialButton),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
+                                child: ElevatedButton.icon(
+                                  onPressed: () =>
+                                      _showTutorialFromSettings(context),
+                                  icon: const Icon(Icons.school),
+                                  label: Text(l10n.tutorialButton),
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: AppTypography.spacingMedium,
                                       vertical: 10,
                                     ),
                                   ),
                                 ),
                               ),
+                              // Debug: Reset tutorial state (only in debug mode)
+                              if (kDebugMode) ...[
+                                SizedBox(width: AppTypography.spacingMedium),
+                                Expanded(
+                                  child: TextButton.icon(
+                                    onPressed: () =>
+                                        _resetTutorialState(context),
+                                    icon: const Icon(Icons.refresh, size: 16),
+                                    label: Text(l10n.resetTutorialButton),
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: AppTypography.spacingMedium,
+                                        vertical: 10,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ],
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -470,7 +503,7 @@ class SettingsDialog extends StatelessWidget {
           context,
         ).textTheme.titleMedium?.copyWith(color: AppColors.sectionTitlePurple),
       ),
-      const SizedBox(height: 8),
+      SizedBox(height: AppTypography.spacingSmall),
 
       // Habitable Zones Toggle
       SwitchListTile(
@@ -488,7 +521,7 @@ class SettingsDialog extends StatelessWidget {
         secondary: const Icon(Icons.circle_outlined),
       ),
 
-      const SizedBox(height: 16),
+      SizedBox(height: AppTypography.spacingLarge),
 
       // Habitability Indicators Toggle
       SwitchListTile(
@@ -506,9 +539,9 @@ class SettingsDialog extends StatelessWidget {
         secondary: const Icon(Icons.public),
       ),
 
-      const SizedBox(height: 16),
+      SizedBox(height: AppTypography.spacingLarge),
       Divider(color: AppColors.uiDividerGrey),
-      const SizedBox(height: 16),
+      SizedBox(height: AppTypography.spacingLarge),
     ];
   }
 

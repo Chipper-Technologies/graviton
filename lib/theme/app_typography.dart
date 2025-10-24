@@ -63,12 +63,16 @@ class AppTypography {
   static const double spacingLarge = 16.0;
   static const double spacingXLarge = 20.0;
   static const double spacingXXLarge = 24.0;
+  static const double spacingXXXLarge = 32.0;
 
   /// Border radius values
   static const double radiusSmall = 4.0;
   static const double radiusMedium = 8.0;
   static const double radiusLarge = 12.0;
   static const double radiusXLarge = 16.0;
+  static const double radiusXXLarge = 20.0;
+  static const double radiusXXXLarge = 24.0;
+  static const double radiusRound = 25.0;
 
   /// Border widths
   static const double borderThin = 1.0;

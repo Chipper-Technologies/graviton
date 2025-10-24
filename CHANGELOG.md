@@ -12,10 +12,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Comprehensive UI/UX Improvements**: Standardized dialog layouts, consistent spacing, and improved visual hierarchy
 - **Floating Controls Enhancement**: Added text labels under icons in video-style simulation controls
 - **Dialog Consistency**: Unified padding, constraints, and styling across all dialogs (help, settings, scenarios)
+- **Temperature Tracking System**: Real-time planetary temperature calculation based on stellar radiation
+- **Physics-Based Heating**: Blackbody radiation model with inverse square law for realistic thermal dynamics
+- **Temperature Categories**: Classification system (Frozen, Cold, Moderate, Hot, Scorching) with color-coded visualization
+- **Greenhouse Effect Modeling**: Atmospheric temperature enhancement for massive planets
+- **Temperature Unit Support**: Display in Celsius, Kelvin, and Fahrenheit with proper localization
+
+### Improved
+- **Collision Sensitivity**: Reduced collision radius multiplier from 0.2 to 0.1 for more realistic body merging
+- **Merge Physics**: Mass-weighted temperature averaging during collisions to preserve thermal properties
+- **Simulation Integration**: Throttled temperature updates (0.5s intervals) for optimal performance
 
 ### Technical Improvements
 - **ARB Localization**: Updated all 7 language files with individual list items and parameterized strings
 - **Code Organization**: Improved dialog structure, consistent imports, and standardized component patterns
+- **Full Internationalization**: Complete translations for temperature system in 6 languages (German, Spanish, French, Japanese, Korean, Chinese)
+- **Theme Integration**: Centralized temperature colors in AppColors with consistent theming
+- **Code Quality**: Proper formatting, linting compliance, and maintainable architecture
+- **Localization Infrastructure**: Enhanced i18n support with temperature-specific strings and units
 
 ## [1.0.0] - 2025-10-21
 

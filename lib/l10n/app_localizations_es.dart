@@ -77,6 +77,64 @@ class AppLocalizationsEs extends AppLocalizations {
   String get selectScenarioTooltip => 'Seleccionar Escenario';
 
   @override
+  String get moreOptionsTooltip => 'Más opciones';
+
+  @override
+  String get physicsSettingsTitle => 'Configuración de Física';
+
+  @override
+  String get physicsSettingsDescription => 'Parámetros de simulación';
+
+  @override
+  String get physicsSection => 'Física';
+
+  @override
+  String get gravitationalConstant => 'Constante gravitacional';
+
+  @override
+  String get softeningParameter => 'Parámetro de suavizado';
+
+  @override
+  String get simulationSpeed => 'Velocidad de simulación';
+
+  @override
+  String get collisionsSection => 'Colisiones';
+
+  @override
+  String get collisionSensitivity => 'Sensibilidad de colisión';
+
+  @override
+  String get trailsSection => 'Rastros';
+
+  @override
+  String get trailLength => 'Longitud del rastro';
+
+  @override
+  String get trailFadeRate => 'Tasa de desvanecimiento del rastro';
+
+  @override
+  String get hapticsSection => 'Hápticos';
+
+  @override
+  String get vibrationEnabled => 'Vibración habilitada';
+
+  @override
+  String get hapticFeedbackCollisions =>
+      'Retroalimentación háptica en colisiones';
+
+  @override
+  String get vibrationThrottle => 'Control de vibración';
+
+  @override
+  String get scenariosMenuDescription => 'Explorar diferentes escenarios';
+
+  @override
+  String get settingsMenuDescription => 'Opciones visuales y de comportamiento';
+
+  @override
+  String get helpMenuDescription => 'Tutorial y objetivos';
+
+  @override
   String get showTrails => 'Mostrar Rastros';
 
   @override
@@ -272,6 +330,33 @@ class AppLocalizationsEs extends AppLocalizations {
   String get habitabilityUnknown => 'Desconocido';
 
   @override
+  String get temperatureFrozen => 'Congelado';
+
+  @override
+  String get temperatureCold => 'Frío';
+
+  @override
+  String get temperatureModerate => 'Moderado';
+
+  @override
+  String get temperatureHot => 'Caliente';
+
+  @override
+  String get temperatureScorching => 'Abrasador';
+
+  @override
+  String get temperatureNotApplicable => 'N/A';
+
+  @override
+  String get temperatureUnitCelsius => '°C';
+
+  @override
+  String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitFahrenheit => '°F';
+
+  @override
   String get toggleHabitableZonesTooltip => 'Alternar Zonas Habitables';
 
   @override
@@ -371,6 +456,42 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get bodySun => 'Sol';
+
+  @override
+  String get bodyPropertiesTitle => 'Propiedades del Cuerpo';
+
+  @override
+  String get bodyPropertiesName => 'Nombre';
+
+  @override
+  String get bodyPropertiesNameHint => 'Introducir nombre del cuerpo';
+
+  @override
+  String get bodyPropertiesType => 'Tipo de Cuerpo';
+
+  @override
+  String get bodyPropertiesColor => 'Color';
+
+  @override
+  String get bodyPropertiesMass => 'Masa';
+
+  @override
+  String get bodyPropertiesRadius => 'Radio';
+
+  @override
+  String get bodyPropertiesLuminosity => 'Luminosidad Estelar';
+
+  @override
+  String get bodyPropertiesVelocity => 'Velocidad';
+
+  @override
+  String get bodyPropertiesAxisX => 'X:';
+
+  @override
+  String get bodyPropertiesAxisY => 'Y:';
+
+  @override
+  String get bodyPropertiesAxisZ => 'Z:';
 
   @override
   String get bodyEarth => 'Tierra';

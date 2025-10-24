@@ -20,7 +20,7 @@ class WelcomeMessageCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
         boxShadow: [
           BoxShadow(
             color: AppColors.uiBlackOverlay,
@@ -44,7 +44,7 @@ class WelcomeMessageCard extends StatelessWidget {
                 color: AppColors.primaryColor,
                 size: 24,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTypography.spacingSmall),
               Expanded(
                 child: Text(
                   l10n.tutorialWelcomeTitle,
@@ -63,12 +63,12 @@ class WelcomeMessageCard extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTypography.spacingSmall),
           Text(
             'Explore gravitational physics through interactive simulations. Try different scenarios, adjust controls, and watch the cosmos unfold!',
             style: AppTypography.mediumText.copyWith(height: 1.4),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTypography.spacingMedium),
           Row(
             children: [
               if (onTutorial != null)
@@ -86,7 +86,7 @@ class WelcomeMessageCard extends StatelessWidget {
                   ),
                 ),
               if (onTutorial != null && onDismiss != null)
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTypography.spacingSmall),
               if (onDismiss != null)
                 Expanded(
                   child: TextButton(
