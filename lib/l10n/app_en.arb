@@ -877,8 +877,257 @@
   "presetThreeBodyBallet": "Three-Body Ballet",
   "presetThreeBodyBalletDesc": "Classic three-body problem in elegant motion",
   
+  "scenarioLearnEmoji": "🎯",
+  "@scenarioLearnEmoji": {
+    "description": "Emoji for learning objectives"
+  },
+  
+  "scenarioBestEmoji": "⭐",
+  "@scenarioBestEmoji": {
+    "description": "Emoji for best for section"
+  },
+  
+  "scenarioLearnSolar": "Learn: Planetary motion, orbital mechanics, familiar celestial bodies",
+  "@scenarioLearnSolar": {
+    "description": "Learning content for solar system scenario"
+  },
+  
+  "scenarioBestSolar": "Best for: Beginners, astronomy enthusiasts",
+  "@scenarioBestSolar": {
+    "description": "Best for content for solar system scenario"
+  },
+  
+  "scenarioLearnEarthMoon": "Learn: Three-body dynamics, lunar mechanics, tidal forces",
+  "@scenarioLearnEarthMoon": {
+    "description": "Learning content for Earth-Moon scenario"
+  },
+  
+  "scenarioBestEarthMoon": "Best for: Understanding Earth-Moon system",
+  "@scenarioBestEarthMoon": {
+    "description": "Best for content for Earth-Moon scenario"
+  },
+  
+  "scenarioLearnBinary": "Learn: Stellar evolution, binary systems, extreme gravity",
+  "@scenarioLearnBinary": {
+    "description": "Learning content for binary star scenario"
+  },
+  
+  "scenarioBestBinary": "Best for: Advanced physics exploration",
+  "@scenarioBestBinary": {
+    "description": "Best for content for binary star scenario"
+  },
+  
+  "scenarioLearnThreeBody": "Learn: Chaos theory, unpredictable motion, unstable systems",
+  "@scenarioLearnThreeBody": {
+    "description": "Learning content for three-body scenario"
+  },
+  
+  "scenarioBestThreeBody": "Best for: Mathematical physics enthusiasts",
+  "@scenarioBestThreeBody": {
+    "description": "Best for content for three-body scenario"
+  },
+  
+  "scenarioLearnRandom": "Learn: Discover unknown configurations, experimental physics",
+  "@scenarioLearnRandom": {
+    "description": "Learning content for random scenario"
+  },
+  
+  "scenarioBestRandom": "Best for: Exploration and experimentation",
+  "@scenarioBestRandom": {
+    "description": "Best for content for random scenario"
+  },
+  
   "privacyPolicyLabel": "Privacy Policy",
   "@privacyPolicyLabel": {
     "description": "Label for privacy policy link"
+  },
+
+  "tutorialWelcomeTitle": "Welcome to Graviton!",
+  "@tutorialWelcomeTitle": {
+    "description": "Title for tutorial welcome step"
+  },
+  
+  "tutorialWelcomeDescription": "Welcome to Graviton, your window into the fascinating world of gravitational physics! This app lets you explore how celestial bodies interact through gravity, creating beautiful orbital dances across space and time.",
+  "@tutorialWelcomeDescription": {
+    "description": "Description for tutorial welcome step"
+  },
+  
+  "tutorialObjectivesTitle": "What Can You Do?",
+  "@tutorialObjectivesTitle": {
+    "description": "Title for tutorial objectives step"
+  },
+  
+  "tutorialObjectivesDescription": "• Observe realistic orbital mechanics\n• Explore different astronomical scenarios\n• Experiment with gravitational interactions\n• Watch collisions and mergers\n• Learn about planetary motion\n• Discover chaotic three-body dynamics",
+  "@tutorialObjectivesDescription": {
+    "description": "Description for tutorial objectives step"
+  },
+  
+  "tutorialControlsTitle": "Basic Controls",
+  "@tutorialControlsTitle": {
+    "description": "Title for tutorial controls step"
+  },
+  
+  "tutorialControlsDescription": "Use the top controls to Play/Pause the simulation, Reset for new scenarios, and adjust simulation Speed. The Settings button lets you customize trails and other visual options.",
+  "@tutorialControlsDescription": {
+    "description": "Description for tutorial controls step"
+  },
+  
+  "tutorialCameraTitle": "Camera Controls",
+  "@tutorialCameraTitle": {
+    "description": "Title for tutorial camera step"
+  },
+  
+  "tutorialCameraDescription": "Drag to rotate your view, pinch to zoom, and use two fingers to roll the camera. The bottom controls help you focus on objects, center the view, and enable auto-rotation for a cinematic experience.",
+  "@tutorialCameraDescription": {
+    "description": "Description for tutorial camera step"
+  },
+  
+  "tutorialScenariosTitle": "Choose Your Adventure",
+  "@tutorialScenariosTitle": {
+    "description": "Title for tutorial scenarios step"
+  },
+  
+  "tutorialScenariosDescription": "Tap the Science button to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the classic chaotic Three-Body Problem. Each offers unique physics to discover!",
+  "@tutorialScenariosDescription": {
+    "description": "Description for tutorial scenarios step"
+  },
+  
+  "tutorialExploreTitle": "Ready to Explore!",
+  "@tutorialExploreTitle": {
+    "description": "Title for tutorial final step"
+  },
+  
+  "tutorialExploreDescription": "You're all set! Start with the Solar System to see familiar planets, or dive into the Three-Body Problem for some chaotic fun. Remember: every reset creates a new universe to explore!",
+  "@tutorialExploreDescription": {
+    "description": "Description for tutorial final step"
+  },
+  
+  "skipTutorial": "Skip",
+  "@skipTutorial": {
+    "description": "Button to skip tutorial"
+  },
+  
+  "previous": "Previous",
+  "@previous": {
+    "description": "Previous button"
+  },
+  
+  "next": "Next",
+  "@next": {
+    "description": "Next button"
+  },
+  
+  "getStarted": "Get Started!",
+  "@getStarted": {
+    "description": "Final tutorial button to start using the app"
+  },
+
+  "showTutorialTooltip": "Show Tutorial",
+  "@showTutorialTooltip": {
+    "description": "Tooltip for tutorial button"
+  },
+
+  "helpAndObjectivesTitle": "Help & Objectives",
+  "@helpAndObjectivesTitle": {
+    "description": "Title for help dialog"
+  },
+
+  "whatToDoTitle": "What to Do in Graviton",
+  "@whatToDoTitle": {
+    "description": "Title for what to do section"
+  },
+
+  "whatToDoDescription": "Graviton is a physics playground where you can:\n\n🪐 Explore realistic orbital mechanics\n🌟 Watch stellar evolution and collisions\n🎯 Learn about gravitational forces\n🎮 Experiment with different scenarios\n📚 Understand celestial dynamics\n🔄 Create endless random configurations",
+  "@whatToDoDescription": {
+    "description": "Description of what users can do"
+  },
+
+  "objectivesTitle": "Learning Objectives",
+  "@objectivesTitle": {
+    "description": "Title for learning objectives section"
+  },
+
+  "objectives1": "Understand how gravity shapes the cosmos",
+  "objectives2": "Observe stable vs. chaotic orbital systems", 
+  "objectives3": "Learn why planets move in elliptical orbits",
+  "objectives4": "Discover how binary stars interact",
+  "objectives5": "See what happens when objects collide",
+  "objectives6": "Appreciate the three-body problem's complexity",
+
+  "quickStartTitle": "Quick Start Guide",
+  "@quickStartTitle": {
+    "description": "Title for quick start section"
+  },
+
+  "quickStart1": "Choose a scenario (Solar System recommended for beginners)",
+  "quickStart2": "Press Play to start the simulation",
+  "quickStart3": "Drag to rotate your view, pinch to zoom",
+  "quickStart4": "Tap the Speed slider to control time",
+  "quickStart5": "Try Reset for new random configurations",
+  "quickStart6": "Enable Trails to see orbital paths",
+
+  "objectivesDescription": "• Understand how gravity shapes the cosmos\n• Observe stable vs. chaotic orbital systems\n• Learn why planets move in elliptical orbits\n• Discover how binary stars interact\n• See what happens when objects collide\n• Appreciate the three-body problem's complexity",
+  "@objectivesDescription": {
+    "description": "Description of learning objectives (fallback for languages without individual items)"
+  },
+
+  "quickStartDescription": "1. Choose a scenario (Solar System recommended for beginners)\n2. Press Play to start the simulation\n3. Drag to rotate your view, pinch to zoom\n4. Tap the Speed slider to control time\n5. Try Reset for new random configurations\n6. Enable Trails to see orbital paths",
+  "@quickStartDescription": {
+    "description": "Quick start instructions (fallback for languages without individual items)"
+  },
+
+  "showHelpTooltip": "Help & Objectives",
+  "@showHelpTooltip": {
+    "description": "Tooltip for help button"
+  },
+
+  "tutorialButton": "Tutorial",
+  "@tutorialButton": {
+    "description": "Button to show tutorial"
+  },
+
+  "resetTutorialButton": "Reset",
+  "@resetTutorialButton": {
+    "description": "Button to reset tutorial state (debug only)"
+  },
+
+  "tutorialResetMessage": "Tutorial state reset! Restart app to see first-time experience.",
+  "@tutorialResetMessage": {
+    "description": "Message shown when tutorial state is reset"
+  },
+
+  "copyButton": "Copy",
+  "@copyButton": {
+    "description": "Button to copy text to clipboard"
+  },
+
+  "couldNotOpenUrl": "Could not open {url}",
+  "@couldNotOpenUrl": {
+    "description": "Error message when URL cannot be opened",
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+
+  "errorOpeningLink": "Error opening link: {error}",
+  "@errorOpeningLink": {
+    "description": "Error message when link fails to open",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "copiedToClipboard": "Copied to clipboard: {text}",
+  "@copiedToClipboard": {
+    "description": "Message shown when text is copied to clipboard",
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
   }
 }

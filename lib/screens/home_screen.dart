@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/models/body.dart';
 import 'package:graviton/painters/graviton_painter.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
@@ -24,6 +25,12 @@ import 'package:graviton/widgets/screenshot_countdown.dart';
 import 'package:graviton/widgets/settings_dialog.dart';
 import 'package:graviton/widgets/stats_overlay.dart';
 import 'package:graviton/widgets/version_check_dialog.dart';
+import 'package:graviton/widgets/help_dialog.dart';
+import 'package:graviton/widgets/tutorial_overlay.dart';
+import 'package:graviton/widgets/app_bar_speed_control.dart';
+import 'package:graviton/widgets/app_bar_more_menu.dart';
+import 'package:graviton/widgets/floating_simulation_controls.dart';
+import 'package:graviton/services/onboarding_service.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -35,8 +42,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final Ticker _ticker;
   Offset? _lastPan;
   late final List<StarData> _stars = StarGenerator.generateStars(
@@ -71,6 +77,8 @@ class _HomeScreenState extends State<HomeScreen>
           MaintenanceDialog.showIfNeeded(context);
         }
       });
+      // Check if first-time user needs tutorial
+      _checkFirstTimeUser();
     });
   }
 
@@ -90,10 +98,7 @@ class _HomeScreenState extends State<HomeScreen>
     final appState = Provider.of<AppState>(context, listen: false);
     // Calculate deltaTime, but clamp it to prevent huge jumps after reset
     double deltaTime = (elapsed - _lastElapsed).inMicroseconds / 1000000.0;
-    deltaTime = deltaTime.clamp(
-      0.0,
-      1.0 / 30.0,
-    ); // Max 30 FPS worth of time per frame
+    deltaTime = deltaTime.clamp(0.0, 1.0 / 30.0); // Max 30 FPS worth of time per frame
     _lastElapsed = elapsed;
 
     // Update simulation
@@ -116,44 +121,110 @@ class _HomeScreenState extends State<HomeScreen>
     AppState appState,
     Size size,
     AppLocalizations l10n,
+    Offset tapPosition,
   ) {
     // Use Timer instead of Future.delayed to avoid async context issues
     Timer(const Duration(milliseconds: 50), () {
       if (!_hasMoved && mounted) {
-        FirebaseService.instance.logUIEventWithEnums(
-          UIAction.tap,
-          element: UIElement.simulationViewport,
-        );
+        FirebaseService.instance.logUIEventWithEnums(UIAction.tap, element: UIElement.simulationViewport);
 
         // Check if screenshot mode is active and show navigation controls
         final screenshotService = ScreenshotModeService();
         if (screenshotService.isActive) {
-          _showScreenshotNavigationControls(
-            context,
-            appState,
-            screenshotService,
-            l10n,
-          );
+          _showScreenshotNavigationControls(context, appState, screenshotService, l10n);
         } else {
-          _selectObjectAtTapLocation(appState, size);
+          _selectObjectAtTapLocation(appState, size, tapPosition);
         }
       }
     });
   }
 
-  void _selectObjectAtTapLocation(AppState appState, Size size) {
-    // For now, cycle through objects on tap (simple selection mechanism)
-    // TODO: Implement proper screen-space to world-space collision detection
+  void _selectObjectAtTapLocation(AppState appState, Size size, Offset? tapPosition) {
     final bodies = appState.simulation.bodies;
     if (bodies.isEmpty) return;
 
-    final currentSelection = appState.camera.selectedBody ?? -1;
-    final nextSelection = (currentSelection + 1) % bodies.length;
+    // If we don't have a tap position, fall back to cycling
+    if (tapPosition == null) {
+      final currentSelection = appState.camera.selectedBody ?? -1;
+      final nextSelection = (currentSelection + 1) % bodies.length;
+      _selectBody(appState, nextSelection, bodies);
+      return;
+    }
 
-    appState.camera.selectBody(nextSelection);
+    // Find the body closest to the tap position
+    final view = _buildView();
+    final proj = _buildProjection(size.aspectRatio);
 
-    // Focus on the selected body for better zoom behavior
-    appState.camera.focusOnBody(nextSelection, bodies);
+    int? closestBodyIndex;
+    double closestDistance = double.infinity;
+    const double baseHitRadius = 40.0; // Base hit radius in pixels
+
+    for (int i = 0; i < bodies.length; i++) {
+      final body = bodies[i];
+
+      // Project 3D world position to 2D screen coordinates
+      final screenPos = _projectToScreen(body.position, view, proj, size);
+
+      if (screenPos != null) {
+        final distance = (tapPosition - screenPos).distance;
+
+        // Use a generous hit radius that scales with camera distance
+        final distanceScale = math.max(1.0, appState.camera.distance / 300.0);
+        final hitRadius = baseHitRadius * distanceScale;
+
+        // Check if tap is within body's hit radius and is the closest
+        if (distance <= hitRadius && distance < closestDistance) {
+          closestDistance = distance;
+          closestBodyIndex = i;
+        }
+      }
+    }
+
+    // Select the closest body, or cycle if no body was tapped
+    if (closestBodyIndex != null) {
+      _selectBody(appState, closestBodyIndex, bodies);
+    } else {
+      // No body was directly tapped, cycle to next body
+      final currentSelection = appState.camera.selectedBody ?? -1;
+      final nextSelection = (currentSelection + 1) % bodies.length;
+      _selectBody(appState, nextSelection, bodies);
+    }
+  }
+
+  void _selectBody(AppState appState, int bodyIndex, List<Body> bodies) {
+    appState.camera.selectBody(bodyIndex);
+
+    // If follow mode is active, update the follow target to the newly selected body
+    if (appState.camera.followMode) {
+      appState.camera.setFollowBody(bodyIndex, bodies);
+    } else {
+      // Focus on the selected body for better zoom behavior
+      appState.camera.focusOnBody(bodyIndex, bodies);
+    }
+  }
+
+  /// Project a 3D world position to 2D screen coordinates
+  Offset? _projectToScreen(vm.Vector3 worldPos, vm.Matrix4 view, vm.Matrix4 proj, Size screenSize) {
+    // Transform world position to homogeneous coordinates
+    final worldPos4 = vm.Vector4(worldPos.x, worldPos.y, worldPos.z, 1.0);
+
+    // Transform to camera space then to clip space
+    final clipPos = proj * view * worldPos4;
+
+    // Check if point is in front of camera (w should be positive)
+    if (clipPos.w <= 0) return null;
+
+    // Convert to normalized device coordinates (NDC)
+    final ndc = vm.Vector3(clipPos.x / clipPos.w, clipPos.y / clipPos.w, clipPos.z / clipPos.w);
+
+    // Check if point is within the viewing frustum
+    if (ndc.z > 1.0 || ndc.z < -1.0) return null;
+
+    // Convert NDC to screen coordinates
+    final screenX = (ndc.x + 1.0) * 0.5 * screenSize.width;
+    final screenY = (1.0 - ndc.y) * 0.5 * screenSize.height; // Flip Y axis
+
+    return Offset(screenX, screenY);
   }
 
   vm.Matrix4 _buildView() {
@@ -205,10 +276,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   void _showScenarioSelection(BuildContext context) {
     final appState = Provider.of<AppState>(context, listen: false);
-    FirebaseService.instance.logUIEventWithEnums(
-      UIAction.dialogOpened,
-      element: UIElement.scenarioSelection,
-    );
+    FirebaseService.instance.logUIEventWithEnums(UIAction.dialogOpened, element: UIElement.scenarioSelection);
 
     showDialog<void>(
       context: context,
@@ -223,24 +291,53 @@ class _HomeScreenState extends State<HomeScreen>
           );
           appState.simulation.resetWithScenario(scenario, l10n: l10n);
           // Auto-zoom camera to fit the new scenario
-          appState.camera.resetViewForScenario(
-            scenario,
-            appState.simulation.bodies,
-          );
+          appState.camera.resetViewForScenario(scenario, appState.simulation.bodies);
         },
       ),
     );
   }
 
   void _showSettings(BuildContext context) {
-    FirebaseService.instance.logUIEventWithEnums(
-      UIAction.dialogOpened,
-      element: UIElement.settings,
-    );
+    FirebaseService.instance.logUIEventWithEnums(UIAction.dialogOpened, element: UIElement.settings);
+
+    showDialog<void>(context: context, builder: (context) => const SettingsDialog());
+  }
+
+  void _showHelpDialog(BuildContext context) {
+    FirebaseService.instance.logUIEventWithEnums(UIAction.dialogOpened, element: UIElement.help);
+
+    showDialog<void>(context: context, builder: (context) => const HelpDialog());
+  }
+
+  void _showTutorial(BuildContext context) {
+    FirebaseService.instance.logUIEventWithEnums(UIAction.tutorialStarted, element: UIElement.tutorial);
+
     showDialog<void>(
       context: context,
-      builder: (context) => const SettingsDialog(),
+      barrierDismissible: false,
+      builder: (context) => TutorialOverlay(
+        onComplete: () async {
+          await OnboardingService.markTutorialCompleted();
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
+
+          FirebaseService.instance.logUIEventWithEnums(UIAction.tutorialCompleted, element: UIElement.tutorial);
+        },
+      ),
     );
+  }
+
+  void _checkFirstTimeUser() async {
+    final hasSeenTutorial = await OnboardingService.hasSeenTutorial();
+    if (!hasSeenTutorial && mounted) {
+      // Show tutorial after a short delay to let the app initialize
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        if (mounted) {
+          _showTutorial(context);
+        }
+      });
+    }
   }
 
   @override
@@ -259,9 +356,7 @@ class _HomeScreenState extends State<HomeScreen>
           }
         });
 
-        final shouldHideUI =
-            _screenshotModeService.isActive &&
-            appState.ui.hideUIInScreenshotMode;
+        final shouldHideUI = _screenshotModeService.isActive && appState.ui.hideUIInScreenshotMode;
 
         return Scaffold(
           appBar: shouldHideUI
@@ -271,15 +366,13 @@ class _HomeScreenState extends State<HomeScreen>
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        width: 32,
-                        height: 32,
-                        margin: const EdgeInsets.only(right: 12),
+                        width: 28,
+                        height: 28,
+                        margin: const EdgeInsets.only(right: 8),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: AppColors.uiWhite.withValues(
-                              alpha: AppTypography.opacityVeryFaint,
-                            ),
+                            color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryFaint),
                             width: 1.5,
                           ),
                           image: const DecorationImage(
@@ -288,64 +381,19 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),
                       ),
-                      Text(l10n.appTitle),
+                      Flexible(child: Text(l10n.appTitle, overflow: TextOverflow.ellipsis)),
                     ],
                   ),
-                  backgroundColor: AppColors.uiBlack.withValues(
-                    alpha: AppTypography.opacityMedium,
-                  ),
+                  backgroundColor: AppColors.uiBlack.withValues(alpha: AppTypography.opacityMedium),
                   actions: [
-                    IconButton(
-                      tooltip: l10n.settingsTooltip,
-                      onPressed: () => _showSettings(context),
-                      icon: const Icon(Icons.settings),
-                    ),
-                    IconButton(
-                      tooltip: l10n.selectScenarioTooltip,
-                      onPressed: () => _showScenarioSelection(context),
-                      icon: const Icon(Icons.science),
-                    ),
-                    IconButton(
-                      tooltip: appState.simulation.isPaused
-                          ? l10n.playButton
-                          : l10n.pauseButton,
-                      onPressed: () {
-                        final action = appState.simulation.isPaused
-                            ? 'play'
-                            : 'pause';
-                        FirebaseService.instance.logUIEventWithEnums(
-                          UIAction.buttonPressed,
-                          element: UIElement.simulationControl,
-                          value: action,
-                        );
-                        appState.simulation.pause();
-                      },
-                      icon: Icon(
-                        appState.simulation.isPaused
-                            ? Icons.play_arrow
-                            : Icons.pause,
-                      ),
-                    ),
-                    IconButton(
-                      tooltip: l10n.resetButton,
-                      onPressed: () {
-                        FirebaseService.instance.logUIEventWithEnums(
-                          UIAction.buttonPressed,
-                          element: UIElement.simulationControl,
-                          value: 'reset',
-                        );
+                    // Speed control - now prominent in app bar
+                    const AppBarSpeedControl(),
 
-                        // Check if screenshot mode is active and deactivate it first
-                        final screenshotService = ScreenshotModeService();
-                        if (screenshotService.isActive) {
-                          screenshotService.deactivate(uiState: appState.ui);
-                        }
-
-                        // Reset timing to prevent timing issues after reset
-                        _lastElapsed = Duration.zero;
-                        appState.resetAll();
-                      },
-                      icon: const Icon(Icons.refresh),
+                    // Secondary functions in more menu
+                    AppBarMoreMenu(
+                      onShowHelp: () => _showHelpDialog(context),
+                      onShowSettings: () => _showSettings(context),
+                      onShowScenarios: () => _showScenarioSelection(context),
                     ),
                   ],
                 ),
@@ -356,8 +404,8 @@ class _HomeScreenState extends State<HomeScreen>
 
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  _handleTapWithDelay(context, appState, size, l10n);
+                onTapUp: (details) {
+                  _handleTapWithDelay(context, appState, size, l10n, details.localPosition);
                 },
                 onScaleStart: (d) {
                   _lastPan = d.focalPoint;
@@ -397,15 +445,11 @@ class _HomeScreenState extends State<HomeScreen>
                   if (d.pointerCount >= 2) {
                     // Handle two-finger gestures: zoom and roll
                     final dz = (1 - d.scale) * 0.1;
-                    appState.camera.zoomTowardBody(
-                      dz,
-                      appState.simulation.bodies,
-                    );
+                    appState.camera.zoomTowardBody(dz, appState.simulation.bodies);
 
                     // Handle roll rotation
                     if (_lastTwoFingerRotation != null) {
-                      final deltaRotation =
-                          d.rotation - _lastTwoFingerRotation!;
+                      final deltaRotation = d.rotation - _lastTwoFingerRotation!;
                       appState.camera.rotateRoll(deltaRotation);
                     }
                     _lastTwoFingerRotation = d.rotation;
@@ -441,8 +485,7 @@ class _HomeScreenState extends State<HomeScreen>
                         showOrbitalPaths: appState.ui.showOrbitalPaths,
                         dualOrbitalPaths: appState.ui.dualOrbitalPaths,
                         showHabitableZones: appState.ui.showHabitableZones,
-                        showHabitabilityIndicators:
-                            appState.ui.showHabitabilityIndicators,
+                        showHabitabilityIndicators: appState.ui.showHabitabilityIndicators,
                         showGravityWells: appState.ui.showGravityWells,
                         selectedBodyIndex: appState.camera.selectedBody,
                         followMode: appState.camera.followMode,
@@ -467,9 +510,9 @@ class _HomeScreenState extends State<HomeScreen>
                         selectedBodyIndex: appState.camera.selectedBody,
                       ),
                     if (appState.ui.showStats) StatsOverlay(appState: appState),
-                    ScreenshotCountdown(
-                      screenshotService: _screenshotModeService,
-                    ),
+                    ScreenshotCountdown(screenshotService: _screenshotModeService),
+                    // Floating video-style simulation controls
+                    if (!shouldHideUI) const FloatingSimulationControls(),
                     if (!shouldHideUI) const CopyrightText(),
                   ],
                 ),
@@ -519,9 +562,7 @@ class _HomeScreenState extends State<HomeScreen>
               borderRadius: BorderRadius.circular(8),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.uiBlack.withValues(
-                    alpha: AppTypography.opacityFaint,
-                  ),
+                  color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityFaint),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -551,10 +592,7 @@ class _HomeScreenState extends State<HomeScreen>
                 // Current preset info
                 Expanded(
                   child: Text(
-                    screenshotService.getPresetDisplayName(
-                      screenshotService.currentPresetIndex,
-                      l10n,
-                    ),
+                    screenshotService.getPresetDisplayName(screenshotService.currentPresetIndex, l10n),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
@@ -592,12 +630,7 @@ class _HomeScreenState extends State<HomeScreen>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          l10n.appliedPreset(
-            screenshotService.getPresetDisplayName(
-              screenshotService.currentPresetIndex,
-              l10n,
-            ),
-          ),
+          l10n.appliedPreset(screenshotService.getPresetDisplayName(screenshotService.currentPresetIndex, l10n)),
         ),
         duration: const Duration(seconds: 3),
         action: SnackBarAction(
@@ -614,10 +647,7 @@ class _HomeScreenState extends State<HomeScreen>
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
             // Deactivate screenshot mode and ensure simulation is unpaused
-            screenshotService.deactivate(
-              uiState: appState.ui,
-              simulationState: appState.simulation,
-            );
+            screenshotService.deactivate(uiState: appState.ui, simulationState: appState.simulation);
           },
         ),
       ),

@@ -30,7 +30,14 @@ class ScreenshotModeWidget extends StatelessWidget {
                 // Screenshot Mode Toggle
                 SwitchListTile(
                   title: Text(l10n.screenshotMode),
-                  subtitle: Text(l10n.screenshotModeSubtitle),
+                  subtitle: Text(
+                    l10n.screenshotModeSubtitle,
+                    style: TextStyle(
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacitySemiTransparent,
+                      ),
+                    ),
+                  ),
                   value: screenshotService.isEnabled,
                   onChanged: (v) {
                     if (v) {
@@ -53,7 +60,14 @@ class ScreenshotModeWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: SwitchListTile(
                       title: Text(l10n.hideUIInScreenshotMode),
-                      subtitle: Text(l10n.hideUIInScreenshotModeSubtitle),
+                      subtitle: Text(
+                        l10n.hideUIInScreenshotModeSubtitle,
+                        style: TextStyle(
+                          color: AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacitySemiTransparent,
+                          ),
+                        ),
+                      ),
                       value: appState.ui.hideUIInScreenshotMode,
                       onChanged: (v) =>
                           appState.ui.toggleHideUIInScreenshotMode(),

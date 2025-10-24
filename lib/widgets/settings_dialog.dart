@@ -1,11 +1,18 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/services/onboarding_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/screenshot_mode_widget.dart';
+import 'package:graviton/widgets/tutorial_overlay.dart';
 import 'package:provider/provider.dart';
 
 /// Dialog for adjusting simulation settings
@@ -19,10 +26,12 @@ class SettingsDialog extends StatelessWidget {
     return Consumer<AppState>(
       builder: (context, appState, child) {
         return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Container(
-            width: 400,
-            constraints: const BoxConstraints(maxHeight: 600),
-            padding: const EdgeInsets.all(24),
+            constraints: AppConstraints.dialogMedium,
+            padding: AppConstraints.dialogPadding,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -53,7 +62,8 @@ class SettingsDialog extends StatelessWidget {
                         // Speed Control
                         Text(
                           l10n.speedLabel,
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: AppColors.sectionTitlePurple),
                         ),
                         const SizedBox(height: 8),
                         Row(
@@ -103,14 +113,22 @@ class SettingsDialog extends StatelessWidget {
                         // Trails Section
                         Text(
                           l10n.trailsLabel,
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: AppColors.sectionTitlePurple),
                         ),
                         const SizedBox(height: 8),
 
                         // Trails Toggle
                         SwitchListTile(
                           title: Text(l10n.showTrails),
-                          subtitle: Text(l10n.showTrailsDescription),
+                          subtitle: Text(
+                            l10n.showTrailsDescription,
+                            style: TextStyle(
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacitySemiTransparent,
+                              ),
+                            ),
+                          ),
                           value: appState.ui.showTrails,
                           onChanged: (v) => appState.ui.toggleTrails(),
                           secondary: const Icon(Icons.timeline),
@@ -119,7 +137,14 @@ class SettingsDialog extends StatelessWidget {
                         // Orbital Paths Toggle
                         SwitchListTile(
                           title: Text(l10n.showOrbitalPaths),
-                          subtitle: Text(l10n.showOrbitalPathsDescription),
+                          subtitle: Text(
+                            l10n.showOrbitalPathsDescription,
+                            style: TextStyle(
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacitySemiTransparent,
+                              ),
+                            ),
+                          ),
                           value: appState.ui.showOrbitalPaths,
                           onChanged: (v) => appState.ui.toggleOrbitalPaths(),
                           secondary: const Icon(Icons.radio_button_unchecked),
@@ -129,7 +154,14 @@ class SettingsDialog extends StatelessWidget {
                         if (appState.ui.showOrbitalPaths)
                           SwitchListTile(
                             title: Text(l10n.dualOrbitalPaths),
-                            subtitle: Text(l10n.dualOrbitalPathsDescription),
+                            subtitle: Text(
+                              l10n.dualOrbitalPathsDescription,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacitySemiTransparent,
+                                ),
+                              ),
+                            ),
                             value: appState.ui.dualOrbitalPaths,
                             onChanged: (v) =>
                                 appState.ui.toggleDualOrbitalPaths(),
@@ -141,7 +173,14 @@ class SettingsDialog extends StatelessWidget {
                         // Body Labels Toggle
                         SwitchListTile(
                           title: Text(l10n.toggleLabelsTooltip),
-                          subtitle: Text(l10n.showLabelsDescription),
+                          subtitle: Text(
+                            l10n.showLabelsDescription,
+                            style: TextStyle(
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacitySemiTransparent,
+                              ),
+                            ),
+                          ),
                           value: appState.ui.showLabels,
                           onChanged: (v) => appState.ui.toggleLabels(),
                           secondary: const Icon(Icons.label),
@@ -150,7 +189,14 @@ class SettingsDialog extends StatelessWidget {
                         // Off-Screen Indicators Toggle
                         SwitchListTile(
                           title: Text(l10n.offScreenIndicatorsTitle),
-                          subtitle: Text(l10n.offScreenIndicatorsDescription),
+                          subtitle: Text(
+                            l10n.offScreenIndicatorsDescription,
+                            style: TextStyle(
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacitySemiTransparent,
+                              ),
+                            ),
+                          ),
                           value: appState.ui.showOffScreenIndicators,
                           onChanged: (v) =>
                               appState.ui.toggleOffScreenIndicators(),
@@ -163,29 +209,25 @@ class SettingsDialog extends StatelessWidget {
                         // Habitability Section - only show if there are planets or moons
                         ..._buildHabitabilitySection(context, l10n, appState),
 
-                        // Gravity Wells Toggle - Commented out for reimplementation later
-                        // SwitchListTile(
-                        //   title: Text(l10n.gravityWellsLabel),
-                        //   subtitle: Text(l10n.gravityWellsDescription),
-                        //   value: appState.ui.showGravityWells,
-                        //   onChanged: (v) => appState.ui.toggleGravityWells(),
-                        //   secondary: const Icon(Icons.waves),
-                        // ),
-
-                        // Divider(color: AppColors.uiDividerGrey),
-                        const SizedBox(height: 16),
-
                         // Camera Controls Section
                         Text(
                           l10n.cameraControlsLabel,
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: AppColors.sectionTitlePurple),
                         ),
                         const SizedBox(height: 8),
 
                         // Invert Pitch Toggle
                         SwitchListTile(
                           title: Text(l10n.invertPitchControlsLabel),
-                          subtitle: Text(l10n.invertPitchControlsDescription),
+                          subtitle: Text(
+                            l10n.invertPitchControlsDescription,
+                            style: TextStyle(
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacitySemiTransparent,
+                              ),
+                            ),
+                          ),
                           value: appState.camera.invertPitch,
                           onChanged: (v) => appState.camera.toggleInvertPitch(),
                           secondary: const Icon(Icons.swap_vert),
@@ -198,7 +240,8 @@ class SettingsDialog extends StatelessWidget {
                         if (ScreenshotModeService().isAvailable) ...[
                           Text(
                             l10n.marketingLabel,
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppColors.sectionTitlePurple),
                           ),
                           const SizedBox(height: 8),
                           const ScreenshotModeWidget(),
@@ -209,7 +252,8 @@ class SettingsDialog extends StatelessWidget {
                         // Language Section
                         Text(
                           l10n.languageLabel,
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: AppColors.sectionTitlePurple),
                         ),
                         const SizedBox(height: 8),
 
@@ -236,9 +280,16 @@ class SettingsDialog extends StatelessWidget {
                                         Text(l10n.languageLabel),
                                         Text(
                                           l10n.languageDescription,
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.bodySmall,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall
+                                              ?.copyWith(
+                                                color: AppColors.uiWhite
+                                                    .withValues(
+                                                      alpha: AppTypography
+                                                          .opacitySemiTransparent,
+                                                    ),
+                                              ),
                                         ),
                                       ],
                                     ),
@@ -339,6 +390,52 @@ class SettingsDialog extends StatelessWidget {
                             ],
                           ),
                         ],
+
+                        // Tutorial Section (moved to bottom)
+                        const SizedBox(height: 16),
+                        Divider(color: AppColors.uiDividerGrey),
+                        const SizedBox(height: 16),
+                        Text(
+                          l10n.helpAndObjectivesTitle,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: AppColors.sectionTitlePurple),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                onPressed: () =>
+                                    _showTutorialFromSettings(context),
+                                icon: const Icon(Icons.school),
+                                label: Text(l10n.tutorialButton),
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 10,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Debug: Reset tutorial state (only in debug mode)
+                            if (kDebugMode) ...[
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: TextButton.icon(
+                                  onPressed: () => _resetTutorialState(context),
+                                  icon: const Icon(Icons.refresh, size: 16),
+                                  label: Text(l10n.resetTutorialButton),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 10,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -369,14 +466,23 @@ class SettingsDialog extends StatelessWidget {
     return [
       Text(
         l10n.habitabilityLabel,
-        style: Theme.of(context).textTheme.titleMedium,
+        style: Theme.of(
+          context,
+        ).textTheme.titleMedium?.copyWith(color: AppColors.sectionTitlePurple),
       ),
       const SizedBox(height: 8),
 
       // Habitable Zones Toggle
       SwitchListTile(
         title: Text(l10n.habitableZonesLabel),
-        subtitle: Text(l10n.habitableZonesDescription),
+        subtitle: Text(
+          l10n.habitableZonesDescription,
+          style: TextStyle(
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacitySemiTransparent,
+            ),
+          ),
+        ),
         value: appState.ui.showHabitableZones,
         onChanged: (v) => appState.ui.toggleHabitableZones(),
         secondary: const Icon(Icons.circle_outlined),
@@ -387,13 +493,68 @@ class SettingsDialog extends StatelessWidget {
       // Habitability Indicators Toggle
       SwitchListTile(
         title: Text(l10n.habitabilityIndicatorsLabel),
-        subtitle: Text(l10n.habitabilityIndicatorsDescription),
+        subtitle: Text(
+          l10n.habitabilityIndicatorsDescription,
+          style: TextStyle(
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacitySemiTransparent,
+            ),
+          ),
+        ),
         value: appState.ui.showHabitabilityIndicators,
         onChanged: (v) => appState.ui.toggleHabitabilityIndicators(),
         secondary: const Icon(Icons.public),
       ),
 
       const SizedBox(height: 16),
+      Divider(color: AppColors.uiDividerGrey),
+      const SizedBox(height: 16),
     ];
+  }
+
+  /// Show tutorial overlay from settings
+  void _showTutorialFromSettings(BuildContext context) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.tutorialStarted,
+      element: UIElement.tutorial,
+    );
+
+    final currentContext = context;
+
+    // Close the settings dialog first
+    Navigator.of(context).pop();
+
+    // Then show the tutorial
+    showDialog<void>(
+      context: currentContext,
+      barrierDismissible: false,
+      builder: (dialogContext) => TutorialOverlay(
+        onComplete: () async {
+          await OnboardingService.markTutorialCompleted();
+          if (dialogContext.mounted) {
+            Navigator.of(dialogContext).pop();
+          }
+
+          FirebaseService.instance.logUIEventWithEnums(
+            UIAction.tutorialCompleted,
+            element: UIElement.tutorial,
+          );
+        },
+      ),
+    );
+  }
+
+  /// Reset tutorial state for testing (debug only)
+  void _resetTutorialState(BuildContext context) async {
+    await OnboardingService.resetTutorialState();
+    if (context.mounted) {
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.tutorialResetMessage),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
   }
 }

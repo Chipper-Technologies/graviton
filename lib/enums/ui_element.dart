@@ -28,7 +28,13 @@ enum UIElement {
   body('body'),
 
   /// Scenario-related interactions
-  scenario('scenario');
+  scenario('scenario'),
+
+  /// Help dialog
+  help('help'),
+
+  /// Tutorial overlay
+  tutorial('tutorial');
 
   const UIElement(this.value);
 
