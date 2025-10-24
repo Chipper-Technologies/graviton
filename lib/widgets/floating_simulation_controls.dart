@@ -6,6 +6,7 @@ import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:provider/provider.dart';
 
 /// Floating video-style controls for play/pause and reset
@@ -107,15 +108,21 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                             vertical: 8,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.uiBlack.withValues(alpha: 0.7),
+                            color: AppColors.uiBlack.withValues(
+                              alpha: AppTypography.opacityMedium,
+                            ),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: AppColors.uiWhite.withValues(alpha: 0.15),
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityVeryFaint,
+                              ),
                               width: 1,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.uiBlack.withValues(alpha: 0.2),
+                                color: AppColors.uiBlack.withValues(
+                                  alpha: AppTypography.opacityFaint,
+                                ),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
@@ -203,26 +210,53 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
           onTap: onPressed,
           borderRadius: BorderRadius.circular(20),
           child: Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: isPrimary
-                  ? AppColors.primaryColor.withValues(alpha: 0.9)
-                  : AppColors.uiWhite.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(20),
-              border: isPrimary
-                  ? null
-                  : Border.all(
-                      color: AppColors.uiWhite.withValues(alpha: 0.3),
-                      width: 1,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: isPrimary
+                        ? AppColors.primaryColor.withValues(
+                            alpha: AppTypography.opacityNearlyOpaque,
+                          )
+                        : AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacityVeryFaint,
+                          ),
+                    borderRadius: BorderRadius.circular(20),
+                    border: isPrimary
+                        ? null
+                        : Border.all(
+                            color: AppColors.uiWhite.withValues(
+                              alpha: AppTypography.opacityFaint,
+                            ),
+                            width: 1,
+                          ),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: isPrimary
+                        ? AppColors.uiWhite
+                        : AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacityNearlyOpaque,
+                          ),
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  tooltip,
+                  style: TextStyle(
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityVeryHigh,
                     ),
-            ),
-            child: Icon(
-              icon,
-              color: isPrimary
-                  ? AppColors.uiWhite
-                  : AppColors.uiWhite.withValues(alpha: 0.9),
-              size: 20,
+                    fontSize: AppTypography.fontSizeSmall,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
