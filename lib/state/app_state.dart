@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 
 import 'camera_state.dart';
+import 'physics_state.dart';
 import 'simulation_state.dart';
 import 'ui_state.dart';
 
@@ -10,6 +12,7 @@ class AppState extends ChangeNotifier {
   final SimulationState simulation = SimulationState();
   final UIState ui = UIState();
   final CameraState camera = CameraState();
+  final PhysicsState physics = PhysicsState();
 
   bool _isInitialized = false;
   String? _lastError;
@@ -28,6 +31,7 @@ class AppState extends ChangeNotifier {
     simulation.addListener(_onChildStateChanged);
     ui.addListener(_onUIStateChanged); // Use specific UI listener
     camera.addListener(_onChildStateChanged);
+    physics.addListener(_onChildStateChanged);
 
     _isInitialized = true;
     notifyListeners();
@@ -37,6 +41,7 @@ class AppState extends ChangeNotifier {
   Future<void> initializeAsync() async {
     await ui.initialize();
     await simulation.initialize();
+    await physics.initialize();
     // Set optimal camera zoom for initial scenario
     camera.resetViewForScenario(simulation.currentScenario, simulation.bodies);
   }
@@ -88,6 +93,24 @@ class AppState extends ChangeNotifier {
     clearError();
   }
 
+  /// Switch to a scenario with appropriate physics settings
+  void switchToScenarioWithPhysics(
+    ScenarioType scenario, {
+    AppLocalizations? l10n,
+  }) {
+    // Update physics state for the new scenario
+    physics.switchToScenario(scenario);
+
+    // Reset simulation with the new scenario
+    simulation.resetWithScenario(scenario, l10n: l10n);
+
+    // Apply the physics settings for this scenario
+    simulation.applyPhysicsSettings(physics.currentSettings);
+
+    // Reset camera view
+    camera.resetViewForScenario(scenario, simulation.bodies);
+  }
+
   /// Initialize language tracking on first app load
   void initializeLanguageTracking(AppLocalizations l10n) {
     _lastLanguageCode = ui.selectedLanguageCode;
@@ -112,9 +135,11 @@ class AppState extends ChangeNotifier {
     simulation.removeListener(_onChildStateChanged);
     ui.removeListener(_onChildStateChanged);
     camera.removeListener(_onChildStateChanged);
+    physics.removeListener(_onChildStateChanged);
     simulation.dispose();
     ui.dispose();
     camera.dispose();
+    // physics.dispose(); // PhysicsState doesn't have dispose method yet
     super.dispose();
   }
 }

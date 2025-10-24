@@ -5,6 +5,7 @@ import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/merge_flash.dart';
+import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/models/trail_point.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/simulation.dart' as physics;
@@ -192,6 +193,19 @@ class SimulationState extends ChangeNotifier {
     _saveSetting(_keyTimeScale, _timeScale);
     FirebaseService.instance.logSettingsChange('time_scale', _timeScale);
     notifyListeners();
+  }
+
+  /// Apply physics settings to the simulation
+  void applyPhysicsSettings(PhysicsSettings settings) {
+    _simulation.updatePhysicsSettings(
+      gravitationalConstant: settings.gravitationalConstant,
+      softening: settings.softening,
+      collisionRadiusMultiplier: settings.collisionRadiusMultiplier,
+      maxTrailPoints: settings.maxTrailPoints,
+      trailFadeRate: settings.trailFadeRate,
+      vibrationThrottleTime: settings.vibrationThrottleTime,
+      vibrationEnabled: settings.vibrationEnabled,
+    );
   }
 
   void step(double deltaTime) {

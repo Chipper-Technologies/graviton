@@ -3,6 +3,8 @@ import 'package:graviton/constants/educational_focus_keys.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/scenario_config.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 
 /// A dialog that allows users to select a preset astronomical scenario
@@ -19,7 +21,6 @@ class ScenarioSelectionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
 
     // Filter scenarios to only show those available in the main selection
     // (excluding screenshot-only scenarios: threeBodyClassic, collisionDemo, deepSpace)
@@ -30,7 +31,7 @@ class ScenarioSelectionDialog extends StatelessWidget {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 600),
+        constraints: AppConstraints.dialogMedium,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -38,7 +39,7 @@ class ScenarioSelectionDialog extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: theme.primaryColor.withValues(
+                color: AppColors.uiCyanAccent.withValues(
                   alpha: AppTypography.opacityDisabled,
                 ),
                 borderRadius: const BorderRadius.only(
@@ -48,13 +49,16 @@ class ScenarioSelectionDialog extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.science, color: theme.primaryColor, size: 28),
+                  Icon(Icons.explore, color: AppColors.uiCyanAccent, size: 28),
                   const SizedBox(width: 12),
-                  Text(
-                    l10n.scenarioSelectionTitle,
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      color: theme.primaryColor,
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Text(
+                      l10n.scenarioSelectionTitle,
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            color: AppColors.uiCyanAccent,
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                   ),
                 ],
@@ -63,21 +67,25 @@ class ScenarioSelectionDialog extends StatelessWidget {
 
             // Scenario list
             Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: availableScenarios.length,
-                itemBuilder: (context, index) {
-                  final scenario = availableScenarios[index];
-                  final config = ScenarioConfig.defaults[scenario]!;
-                  final isSelected = scenario == currentScenario;
+              child: Container(
+                padding: AppConstraints.dialogPadding,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  itemCount: availableScenarios.length,
+                  itemBuilder: (context, index) {
+                    final scenario = availableScenarios[index];
+                    final config = ScenarioConfig.defaults[scenario]!;
+                    final isSelected = scenario == currentScenario;
 
-                  return _ScenarioTile(
-                    scenario: scenario,
-                    config: config,
-                    isSelected: isSelected,
-                    onTap: () => _selectScenario(context, scenario),
-                  );
-                },
+                    return _ScenarioTile(
+                      scenario: scenario,
+                      config: config,
+                      isSelected: isSelected,
+                      onTap: () => _selectScenario(context, scenario),
+                    );
+                  },
+                ),
               ),
             ),
 
@@ -122,7 +130,6 @@ class _ScenarioTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
 
     // Get localized name and description
     final name = _getLocalizedName(l10n, scenario);
@@ -166,7 +173,7 @@ class _ScenarioTile extends StatelessWidget {
                         Expanded(
                           child: Text(
                             name,
-                            style: theme.textTheme.titleMedium?.copyWith(
+                            style: AppTypography.largeText.copyWith(
                               fontWeight: isSelected
                                   ? FontWeight.bold
                                   : FontWeight.w500,
@@ -187,8 +194,8 @@ class _ScenarioTile extends StatelessWidget {
 
                     Text(
                       description,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.textTheme.bodySmall?.color?.withValues(
+                      style: AppTypography.smallText.copyWith(
+                        color: AppColors.uiWhite.withValues(
                           alpha: AppTypography.opacityVeryHigh,
                         ),
                       ),
@@ -204,15 +211,15 @@ class _ScenarioTile extends StatelessWidget {
                         Icon(
                           Icons.group,
                           size: 14,
-                          color: theme.textTheme.bodySmall?.color?.withValues(
+                          color: AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityMediumHigh,
                           ),
                         ),
                         const SizedBox(width: 4),
                         Text(
                           '${config.expectedBodyCount} ${l10n.bodies}',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.textTheme.bodySmall?.color?.withValues(
+                          style: AppTypography.smallText.copyWith(
+                            color: AppColors.uiWhite.withValues(
                               alpha: AppTypography.opacityMediumHigh,
                             ),
                           ),
@@ -221,7 +228,7 @@ class _ScenarioTile extends StatelessWidget {
                         Icon(
                           Icons.school,
                           size: 14,
-                          color: theme.textTheme.bodySmall?.color?.withValues(
+                          color: AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityMediumHigh,
                           ),
                         ),
@@ -229,11 +236,10 @@ class _ScenarioTile extends StatelessWidget {
                         Expanded(
                           child: Text(
                             _getLocalizedEducationalFocus(l10n, scenario),
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.textTheme.bodySmall?.color
-                                  ?.withValues(
-                                    alpha: AppTypography.opacityMediumHigh,
-                                  ),
+                            style: AppTypography.smallText.copyWith(
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityMediumHigh,
+                              ),
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),

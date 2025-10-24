@@ -593,4 +593,111 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get privacyPolicyLabel => '개인정보 보호정책';
+
+  @override
+  String get helpAndObjectivesTitle => '도움말 및 목표';
+
+  @override
+  String get whatToDoTitle => '해야 할 일';
+
+  @override
+  String get whatToDoDescription => '삼체 중력 시뮬레이션을 탐색하고 상호 작용하는 방법을 학습하세요.';
+
+  @override
+  String get getStarted => '시작하기';
+
+  @override
+  String get objectivesTitle => '목표';
+
+  @override
+  String get objectivesDescription => '삼체 중력 시스템의 매혹적인 역학을 탐색하고 궤도 역학을 학습하세요.';
+
+  @override
+  String get quickStartTitle => '빠른 시작 가이드';
+
+  @override
+  String get quickStartDescription =>
+      '시나리오를 선택하고 컨트롤을 조정하며 중력 상호작용을 관찰하여 시뮬레이션 탐색을 시작하세요.';
+
+  @override
+  String get showHelpTooltip => '도움말 표시';
+
+  @override
+  String get tutorialButton => '튜토리얼';
+
+  @override
+  String get resetTutorialButton => '튜토리얼 재설정';
+
+  @override
+  String get tutorialComingSoon => '튜토리얼 기능이 곧 출시됩니다!';
+
+  @override
+  String get tutorialResetMessage => '튜토리얼 상태가 재설정되었습니다!';
+
+  @override
+  String get tutorialOverlayTitle => '튜토리얼 곧 출시!';
+
+  @override
+  String get tutorialOverlayDescription =>
+      '인터랙티브 튜토리얼 기능은 향후 업데이트에서 사용할 수 있습니다.';
+
+  @override
+  String get continueButton => '계속';
+
+  @override
+  String get objectives1 => '세 개체 간의 중력 상호작용 이해';
+
+  @override
+  String get objectives2 => '궤도 역학과 카오스 이론의 실제 관찰';
+
+  @override
+  String get objectives3 => '다양한 초기 조건 실험';
+
+  @override
+  String get objectives4 => '라그랑주 포인트와 안정적인 구성에 대한 학습';
+
+  @override
+  String get objectives5 => '작은 변화가 극적으로 다른 결과를 가져오는 방식 탐색';
+
+  @override
+  String get objectives6 => 'N-체 중력 시스템에 대한 직관 개발';
+
+  @override
+  String get quickStart1 => '미리 정의된 조건으로 시작하려면 메뉴에서 시나리오를 선택하세요';
+
+  @override
+  String get quickStart2 => '재생/일시정지 컨트롤을 사용하여 시뮬레이션을 시작하고 중지하세요';
+
+  @override
+  String get quickStart3 => '다양한 시간 스케일에서 관찰하려면 시뮬레이션 속도를 조정하세요';
+
+  @override
+  String get quickStart4 => '시간에 따른 궤도 경로를 보려면 궤적을 토글하세요';
+
+  @override
+  String get quickStart5 => '개체를 탭하여 선택하고 자세한 정보를 확인하세요';
+
+  @override
+  String get quickStart6 => '다양한 설정을 실험하여 다양한 결과를 탐색하세요';
+
+  @override
+  String get moreOptionsTooltip => '추가 옵션';
+
+  @override
+  String get exploreScenarios => '다양한 시나리오 탐색';
+
+  @override
+  String get physicsSettingsTitle => '물리 설정';
+
+  @override
+  String get customParametersActive => '사용자 정의 매개변수 활성화됨';
+
+  @override
+  String get advancedSimulationParameters => '고급 시뮬레이션 매개변수';
+
+  @override
+  String get visualBehaviorOptions => '시각적 및 동작 옵션';
+
+  @override
+  String get tutorialObjectives => '튜토리얼 및 목표';
 }

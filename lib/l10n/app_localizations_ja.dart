@@ -591,4 +591,121 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get privacyPolicyLabel => 'プライバシーポリシー';
+
+  @override
+  String get helpAndObjectivesTitle => 'ヘルプと目標';
+
+  @override
+  String get whatToDoTitle => '何をするか';
+
+  @override
+  String get whatToDoDescription => '三体重力シミュレーションをナビゲートし、操作する方法を学習します。';
+
+  @override
+  String get getStarted => '開始';
+
+  @override
+  String get objectivesTitle => '目標';
+
+  @override
+  String get objectivesDescription => '三体重力システムの魅力的なダイナミクスを探索し、軌道力学について学習します。';
+
+  @override
+  String get quickStartTitle => 'クイックスタートガイド';
+
+  @override
+  String get quickStartDescription =>
+      'シナリオを選択し、コントロールを調整し、重力相互作用を観察してシミュレーションの探索を開始します。';
+
+  @override
+  String get showHelpTooltip => 'ヘルプを表示';
+
+  @override
+  String get tutorialButton => 'チュートリアル';
+
+  @override
+  String get resetTutorialButton => 'チュートリアルをリセット';
+
+  @override
+  String get tutorialComingSoon => 'チュートリアル機能は近日公開予定です！';
+
+  @override
+  String get tutorialResetMessage => 'チュートリアルの状態がリセットされました！';
+
+  @override
+  String get tutorialOverlayTitle => 'チュートリアル近日公開！';
+
+  @override
+  String get tutorialOverlayDescription =>
+      'インタラクティブなチュートリアル機能は今後のアップデートで利用可能になります。';
+
+  @override
+  String get continueButton => '続行';
+
+  @override
+  String get objectives1 =>
+      'Understand gravitational interactions between three bodies';
+
+  @override
+  String get objectives2 =>
+      'Observe orbital mechanics and chaos theory in action';
+
+  @override
+  String get objectives3 => 'Experiment with different initial conditions';
+
+  @override
+  String get objectives4 =>
+      'Learn about Lagrange points and stable configurations';
+
+  @override
+  String get objectives5 =>
+      'Explore how small changes lead to dramatically different outcomes';
+
+  @override
+  String get objectives6 =>
+      'Develop intuition for N-body gravitational systems';
+
+  @override
+  String get quickStart1 =>
+      'Select a scenario from the menu to start with predefined conditions';
+
+  @override
+  String get quickStart2 =>
+      'Use play/pause controls to start and stop the simulation';
+
+  @override
+  String get quickStart3 =>
+      'Adjust simulation speed to observe at different time scales';
+
+  @override
+  String get quickStart4 => 'Toggle trails to see orbital paths over time';
+
+  @override
+  String get quickStart5 =>
+      'Tap bodies to select and view detailed information';
+
+  @override
+  String get quickStart6 =>
+      'Experiment with different settings to explore various outcomes';
+
+  @override
+  String get moreOptionsTooltip => 'その他のオプション';
+
+  @override
+  String get exploreScenarios => 'さまざまなシナリオを探索';
+
+  @override
+  String get physicsSettingsTitle => '物理設定';
+
+  @override
+  String get customParametersActive => 'カスタムパラメータが有効';
+
+  @override
+  String get advancedSimulationParameters => '高度なシミュレーションパラメータ';
+
+  @override
+  String get visualBehaviorOptions => '視覚的および動作オプション';
+
+  @override
+  String get tutorialObjectives => 'チュートリアルと目標';
 }

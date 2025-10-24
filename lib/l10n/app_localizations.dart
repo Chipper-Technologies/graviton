@@ -1217,6 +1217,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Privacy Policy'**
   String get privacyPolicyLabel;
+
+  /// Title for the help and objectives section
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Objectives'**
+  String get helpAndObjectivesTitle;
+
+  /// Title for the what to do section
+  ///
+  /// In en, this message translates to:
+  /// **'What to Do'**
+  String get whatToDoTitle;
+
+  /// Description of what users should do in the simulation
+  ///
+  /// In en, this message translates to:
+  /// **'Learn how to navigate and interact with the three-body gravitational simulation.'**
+  String get whatToDoDescription;
+
+  /// Button text to get started with the tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// Title for the objectives section
+  ///
+  /// In en, this message translates to:
+  /// **'Objectives'**
+  String get objectivesTitle;
+
+  /// Description of the learning objectives
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the fascinating dynamics of three-body gravitational systems and learn about orbital mechanics.'**
+  String get objectivesDescription;
+
+  /// Title for the quick start guide section
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Start Guide'**
+  String get quickStartTitle;
+
+  /// Description of how to quickly start using the app
+  ///
+  /// In en, this message translates to:
+  /// **'Start exploring the simulation by selecting a scenario, adjusting controls, and observing gravitational interactions.'**
+  String get quickStartDescription;
+
+  /// Tooltip for the show help button
+  ///
+  /// In en, this message translates to:
+  /// **'Show Help'**
+  String get showHelpTooltip;
+
+  /// Button text for starting the tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial'**
+  String get tutorialButton;
+
+  /// Button text for resetting tutorial progress
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Tutorial'**
+  String get resetTutorialButton;
+
+  /// Message shown when tutorial is not yet implemented
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial functionality coming soon!'**
+  String get tutorialComingSoon;
+
+  /// Message shown when tutorial state is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial state reset!'**
+  String get tutorialResetMessage;
+
+  /// Title for the tutorial overlay placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial Coming Soon!'**
+  String get tutorialOverlayTitle;
+
+  /// Description for the tutorial overlay placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Interactive tutorial functionality will be available in a future update.'**
+  String get tutorialOverlayDescription;
+
+  /// Button text to continue
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueButton;
+
+  /// First learning objective
+  ///
+  /// In en, this message translates to:
+  /// **'Understand gravitational interactions between three bodies'**
+  String get objectives1;
+
+  /// Second learning objective
+  ///
+  /// In en, this message translates to:
+  /// **'Observe orbital mechanics and chaos theory in action'**
+  String get objectives2;
+
+  /// Third learning objective
+  ///
+  /// In en, this message translates to:
+  /// **'Experiment with different initial conditions'**
+  String get objectives3;
+
+  /// Fourth learning objective
+  ///
+  /// In en, this message translates to:
+  /// **'Learn about Lagrange points and stable configurations'**
+  String get objectives4;
+
+  /// Fifth learning objective
+  ///
+  /// In en, this message translates to:
+  /// **'Explore how small changes lead to dramatically different outcomes'**
+  String get objectives5;
+
+  /// Sixth learning objective
+  ///
+  /// In en, this message translates to:
+  /// **'Develop intuition for N-body gravitational systems'**
+  String get objectives6;
+
+  /// First quick start step
+  ///
+  /// In en, this message translates to:
+  /// **'Select a scenario from the menu to start with predefined conditions'**
+  String get quickStart1;
+
+  /// Second quick start step
+  ///
+  /// In en, this message translates to:
+  /// **'Use play/pause controls to start and stop the simulation'**
+  String get quickStart2;
+
+  /// Third quick start step
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust simulation speed to observe at different time scales'**
+  String get quickStart3;
+
+  /// Fourth quick start step
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle trails to see orbital paths over time'**
+  String get quickStart4;
+
+  /// Fifth quick start step
+  ///
+  /// In en, this message translates to:
+  /// **'Tap bodies to select and view detailed information'**
+  String get quickStart5;
+
+  /// Sixth quick start step
+  ///
+  /// In en, this message translates to:
+  /// **'Experiment with different settings to explore various outcomes'**
+  String get quickStart6;
+
+  /// Tooltip for the more options menu button
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptionsTooltip;
+
+  /// Description for the scenarios menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Explore different scenarios'**
+  String get exploreScenarios;
+
+  /// Title for the physics settings menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Physics Settings'**
+  String get physicsSettingsTitle;
+
+  /// Status message when custom physics parameters are active
+  ///
+  /// In en, this message translates to:
+  /// **'Custom parameters active'**
+  String get customParametersActive;
+
+  /// Description for the physics settings menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced simulation parameters'**
+  String get advancedSimulationParameters;
+
+  /// Description for the settings menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Visual & behavior options'**
+  String get visualBehaviorOptions;
+
+  /// Description for the help menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial & objectives'**
+  String get tutorialObjectives;
 }
 
 class _AppLocalizationsDelegate

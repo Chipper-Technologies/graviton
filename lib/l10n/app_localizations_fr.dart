@@ -622,4 +622,124 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get privacyPolicyLabel => 'Politique de Confidentialité';
+
+  @override
+  String get helpAndObjectivesTitle => 'Aide et Objectifs';
+
+  @override
+  String get whatToDoTitle => 'Que Faire';
+
+  @override
+  String get whatToDoDescription =>
+      'Apprenez à naviguer et interagir avec la simulation gravitationnelle à trois corps.';
+
+  @override
+  String get getStarted => 'Commencer';
+
+  @override
+  String get objectivesTitle => 'Objectifs';
+
+  @override
+  String get objectivesDescription =>
+      'Explorez la dynamique fascinante des systèmes gravitationnels à trois corps et apprenez la mécanique orbitale.';
+
+  @override
+  String get quickStartTitle => 'Guide de Démarrage Rapide';
+
+  @override
+  String get quickStartDescription =>
+      'Commencez à explorer la simulation en sélectionnant un scénario, en ajustant les contrôles et en observant les interactions gravitationnelles.';
+
+  @override
+  String get showHelpTooltip => 'Afficher l\'Aide';
+
+  @override
+  String get tutorialButton => 'Tutoriel';
+
+  @override
+  String get resetTutorialButton => 'Réinitialiser le Tutoriel';
+
+  @override
+  String get tutorialComingSoon =>
+      'Fonctionnalité de tutoriel bientôt disponible !';
+
+  @override
+  String get tutorialResetMessage => 'État du tutoriel réinitialisé !';
+
+  @override
+  String get tutorialOverlayTitle => 'Tutoriel Bientôt Disponible !';
+
+  @override
+  String get tutorialOverlayDescription =>
+      'La fonctionnalité de tutoriel interactif sera disponible dans une mise à jour future.';
+
+  @override
+  String get continueButton => 'Continuer';
+
+  @override
+  String get objectives1 =>
+      'Understand gravitational interactions between three bodies';
+
+  @override
+  String get objectives2 =>
+      'Observe orbital mechanics and chaos theory in action';
+
+  @override
+  String get objectives3 => 'Experiment with different initial conditions';
+
+  @override
+  String get objectives4 =>
+      'Learn about Lagrange points and stable configurations';
+
+  @override
+  String get objectives5 =>
+      'Explore how small changes lead to dramatically different outcomes';
+
+  @override
+  String get objectives6 =>
+      'Develop intuition for N-body gravitational systems';
+
+  @override
+  String get quickStart1 =>
+      'Select a scenario from the menu to start with predefined conditions';
+
+  @override
+  String get quickStart2 =>
+      'Use play/pause controls to start and stop the simulation';
+
+  @override
+  String get quickStart3 =>
+      'Adjust simulation speed to observe at different time scales';
+
+  @override
+  String get quickStart4 => 'Toggle trails to see orbital paths over time';
+
+  @override
+  String get quickStart5 =>
+      'Tap bodies to select and view detailed information';
+
+  @override
+  String get quickStart6 =>
+      'Experiment with different settings to explore various outcomes';
+
+  @override
+  String get moreOptionsTooltip => 'Plus d\'options';
+
+  @override
+  String get exploreScenarios => 'Explorer différents scénarios';
+
+  @override
+  String get physicsSettingsTitle => 'Paramètres de Physique';
+
+  @override
+  String get customParametersActive => 'Paramètres personnalisés actifs';
+
+  @override
+  String get advancedSimulationParameters => 'Paramètres de simulation avancés';
+
+  @override
+  String get visualBehaviorOptions => 'Options visuelles et de comportement';
+
+  @override
+  String get tutorialObjectives => 'Tutoriel et objectifs';
 }

@@ -880,5 +880,180 @@
   "privacyPolicyLabel": "Privacy Policy",
   "@privacyPolicyLabel": {
     "description": "Label for privacy policy link"
+  },
+
+  "helpAndObjectivesTitle": "Help & Objectives",
+  "@helpAndObjectivesTitle": {
+    "description": "Title for the help and objectives section"
+  },
+
+  "whatToDoTitle": "What to Do",
+  "@whatToDoTitle": {
+    "description": "Title for the what to do section"
+  },
+
+  "whatToDoDescription": "Learn how to navigate and interact with the three-body gravitational simulation.",
+  "@whatToDoDescription": {
+    "description": "Description of what users should do in the simulation"
+  },
+
+  "getStarted": "Get Started",
+  "@getStarted": {
+    "description": "Button text to get started with the tutorial"
+  },
+
+  "objectivesTitle": "Objectives",
+  "@objectivesTitle": {
+    "description": "Title for the objectives section"
+  },
+
+  "objectivesDescription": "Explore the fascinating dynamics of three-body gravitational systems and learn about orbital mechanics.",
+  "@objectivesDescription": {
+    "description": "Description of the learning objectives"
+  },
+
+  "quickStartTitle": "Quick Start Guide",
+  "@quickStartTitle": {
+    "description": "Title for the quick start guide section"
+  },
+
+  "quickStartDescription": "Start exploring the simulation by selecting a scenario, adjusting controls, and observing gravitational interactions.",
+  "@quickStartDescription": {
+    "description": "Description of how to quickly start using the app"
+  },
+
+  "showHelpTooltip": "Show Help",
+  "@showHelpTooltip": {
+    "description": "Tooltip for the show help button"
+  },
+
+  "tutorialButton": "Tutorial",
+  "@tutorialButton": {
+    "description": "Button text for starting the tutorial"
+  },
+
+  "resetTutorialButton": "Reset Tutorial",
+  "@resetTutorialButton": {
+    "description": "Button text for resetting tutorial progress"
+  },
+
+  "tutorialComingSoon": "Tutorial functionality coming soon!",
+  "@tutorialComingSoon": {
+    "description": "Message shown when tutorial is not yet implemented"
+  },
+
+  "tutorialResetMessage": "Tutorial state reset!",
+  "@tutorialResetMessage": {
+    "description": "Message shown when tutorial state is reset"
+  },
+
+  "tutorialOverlayTitle": "Tutorial Coming Soon!",
+  "@tutorialOverlayTitle": {
+    "description": "Title for the tutorial overlay placeholder"
+  },
+
+  "tutorialOverlayDescription": "Interactive tutorial functionality will be available in a future update.",
+  "@tutorialOverlayDescription": {
+    "description": "Description for the tutorial overlay placeholder"
+  },
+
+  "continueButton": "Continue",
+  "@continueButton": {
+    "description": "Button text to continue"
+  },
+
+  "objectives1": "Understand gravitational interactions between three bodies",
+  "@objectives1": {
+    "description": "First learning objective"
+  },
+
+  "objectives2": "Observe orbital mechanics and chaos theory in action",
+  "@objectives2": {
+    "description": "Second learning objective"
+  },
+
+  "objectives3": "Experiment with different initial conditions",
+  "@objectives3": {
+    "description": "Third learning objective"
+  },
+
+  "objectives4": "Learn about Lagrange points and stable configurations",
+  "@objectives4": {
+    "description": "Fourth learning objective"
+  },
+
+  "objectives5": "Explore how small changes lead to dramatically different outcomes",
+  "@objectives5": {
+    "description": "Fifth learning objective"
+  },
+
+  "objectives6": "Develop intuition for N-body gravitational systems",
+  "@objectives6": {
+    "description": "Sixth learning objective"
+  },
+
+  "quickStart1": "Select a scenario from the menu to start with predefined conditions",
+  "@quickStart1": {
+    "description": "First quick start step"
+  },
+
+  "quickStart2": "Use play/pause controls to start and stop the simulation",
+  "@quickStart2": {
+    "description": "Second quick start step"
+  },
+
+  "quickStart3": "Adjust simulation speed to observe at different time scales",
+  "@quickStart3": {
+    "description": "Third quick start step"
+  },
+
+  "quickStart4": "Toggle trails to see orbital paths over time",
+  "@quickStart4": {
+    "description": "Fourth quick start step"
+  },
+
+  "quickStart5": "Tap bodies to select and view detailed information",
+  "@quickStart5": {
+    "description": "Fifth quick start step"
+  },
+
+  "quickStart6": "Experiment with different settings to explore various outcomes",
+  "@quickStart6": {
+    "description": "Sixth quick start step"
+  },
+
+  "moreOptionsTooltip": "More options",
+  "@moreOptionsTooltip": {
+    "description": "Tooltip for the more options menu button"
+  },
+
+  "exploreScenarios": "Explore different scenarios",
+  "@exploreScenarios": {
+    "description": "Description for the scenarios menu item"
+  },
+
+  "physicsSettingsTitle": "Physics Settings",
+  "@physicsSettingsTitle": {
+    "description": "Title for the physics settings menu item"
+  },
+
+  "customParametersActive": "Custom parameters active",
+  "@customParametersActive": {
+    "description": "Status message when custom physics parameters are active"
+  },
+
+  "advancedSimulationParameters": "Advanced simulation parameters",
+  "@advancedSimulationParameters": {
+    "description": "Description for the physics settings menu item"
+  },
+
+  "visualBehaviorOptions": "Visual & behavior options",
+  "@visualBehaviorOptions": {
+    "description": "Description for the settings menu item"
+  },
+
+  "tutorialObjectives": "Tutorial & objectives",
+  "@tutorialObjectives": {
+    "description": "Description for the help menu item"
   }
 }

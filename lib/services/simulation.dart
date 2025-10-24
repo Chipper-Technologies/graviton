@@ -21,7 +21,15 @@ import 'package:vibration/vibration.dart';
 
 /// Core physics simulation for Graviton
 class Simulation {
-  static const double G = SimulationConstants.gravitationalConstant;
+  // Physics parameters (now instance variables for real-time adjustment)
+  double gravitationalConstant = SimulationConstants.gravitationalConstant;
+  double softening = SimulationConstants.softening;
+  double collisionRadiusMultiplier = SimulationConstants.collisionRadiusMultiplier;
+  int maxTrail = SimulationConstants.maxTrailPoints;
+  double fadeRate = SimulationConstants.trailFadeRate;
+  double vibrationThrottleTime = SimulationConstants.vibrationThrottleTime;
+  bool vibrationEnabled = true;
+
   List<Body> bodies = [];
   List<List<TrailPoint>> trails = [];
   List<MergeFlash> mergeFlashes = [];
@@ -30,8 +38,6 @@ class Simulation {
   final AsteroidBeltSystem asteroidBelt = AsteroidBeltSystem();
   final AsteroidBeltSystem kuiperBelt = AsteroidBeltSystem();
 
-  final int maxTrail = SimulationConstants.maxTrailPoints;
-  final double fadeRate = SimulationConstants.trailFadeRate;
   double _timeSinceLastVibe = 0; // throttle vibration
   final ScenarioService _scenarioService = ScenarioService();
   final HabitableZoneService _habitableZoneService = HabitableZoneService();
@@ -39,8 +45,7 @@ class Simulation {
 
   // Habitability update throttling
   double _timeSinceLastHabitabilityUpdate = 0.0;
-  static const double _habitabilityUpdateInterval =
-      0.1; // Update every 0.1 seconds
+  static const double _habitabilityUpdateInterval = 0.1; // Update every 0.1 seconds
 
   Simulation() {
     reset();
@@ -48,6 +53,74 @@ class Simulation {
 
   /// Get the current scenario type
   ScenarioType get currentScenario => _currentScenario;
+
+  /// Update physics parameters for real-time adjustment
+  void updatePhysicsSettings({
+    double? gravitationalConstant,
+    double? softening,
+    double? collisionRadiusMultiplier,
+    int? maxTrailPoints,
+    double? trailFadeRate,
+    double? vibrationThrottleTime,
+    bool? vibrationEnabled,
+  }) {
+    if (gravitationalConstant != null) {
+      this.gravitationalConstant = gravitationalConstant;
+    }
+    if (softening != null) {
+      this.softening = softening;
+    }
+    if (collisionRadiusMultiplier != null) {
+      this.collisionRadiusMultiplier = collisionRadiusMultiplier;
+    }
+    if (maxTrailPoints != null) {
+      maxTrail = maxTrailPoints;
+    }
+    if (trailFadeRate != null) {
+      fadeRate = trailFadeRate;
+    }
+    if (vibrationThrottleTime != null) {
+      this.vibrationThrottleTime = vibrationThrottleTime;
+    }
+    if (vibrationEnabled != null) {
+      this.vibrationEnabled = vibrationEnabled;
+    }
+  }
+
+  /// Set gravitational constant
+  void setGravitationalConstant(double value) {
+    gravitationalConstant = value;
+  }
+
+  /// Set softening parameter
+  void setSoftening(double value) {
+    softening = value;
+  }
+
+  /// Set collision radius multiplier
+  void setCollisionRadiusMultiplier(double value) {
+    collisionRadiusMultiplier = value;
+  }
+
+  /// Set maximum trail points
+  void setMaxTrailPoints(int value) {
+    maxTrail = value;
+  }
+
+  /// Set trail fade rate
+  void setTrailFadeRate(double value) {
+    fadeRate = value;
+  }
+
+  /// Set vibration throttle time
+  void setVibrationThrottleTime(double value) {
+    vibrationThrottleTime = value;
+  }
+
+  /// Set vibration enabled
+  void setVibrationEnabled(bool value) {
+    vibrationEnabled = value;
+  }
 
   /// Reset simulation with current scenario
   void reset() {
@@ -72,8 +145,7 @@ class Simulation {
       // Belt parameters: fits perfectly within outer planet orbit
       asteroidBelt.generateBelt(
         innerRadius: 8.0, // Closer to center
-        outerRadius:
-            22.0, // Reduced to fit neatly within outer planet orbit (30.0)
+        outerRadius: 22.0, // Reduced to fit neatly within outer planet orbit (30.0)
         particleCount: 2500, // More particles for denser belt
         centralMass: 20.0, // Match the central star mass
         gravitationalConstant: 1.2,
@@ -122,12 +194,10 @@ class Simulation {
       asteroidBelt.generateBelt(
         innerRadius: 10.0, // Start closer to center
         outerRadius: 300.0, // Much wider disk to encompass all stars (was 150)
-        particleCount:
-            15000, // Optimal density for good performance (was 100000)
+        particleCount: 15000, // Optimal density for good performance (was 100000)
         centralMass: 200.0, // Match the supermassive black hole mass
         gravitationalConstant: 1.2,
-        baseColor:
-            AppColors.accretionGold, // Bright gold - intense galactic core glow
+        baseColor: AppColors.accretionGold, // Bright gold - intense galactic core glow
         colorVariation: 0.6, // High variation for dynamic glow effect
         useXZPlane: false, // Galaxy in XY plane (vertical) to match main stars
         minSize: 0.03, // Larger particles for stronger glow
@@ -141,8 +211,7 @@ class Simulation {
         particleCount: 8000, // Reasonable outer structure (was 50000)
         centralMass: 200.0, // Match the supermassive black hole mass
         gravitationalConstant: 1.2,
-        baseColor: AppColors
-            .accretionMoccasin, // Moccasin - warm outer glow extending from center
+        baseColor: AppColors.accretionMoccasin, // Moccasin - warm outer glow extending from center
         colorVariation: 0.5, // Strong variation for glow effect
         useXZPlane: false, // Galaxy in XY plane (vertical) to match main stars
         minSize: 0.025, // Larger halo particles for extended glow
@@ -174,10 +243,7 @@ class Simulation {
         // For asteroid belt scenario: shorten inner planet trail (body index 2)
         if (i == 2 && bodies[i].name.contains('Inner')) {
           customFadeRate = fadeRate * 20.0; // Fade 20x faster (almost instant)
-          customMaxTrail = math.max(
-            1,
-            maxTrail ~/ 20,
-          ); // 1/20 the length (tiny trail)
+          customMaxTrail = math.max(1, maxTrail ~/ 20); // 1/20 the length (tiny trail)
         }
       } else if (_currentScenario == ScenarioType.galaxyFormation) {
         // For galaxy formation: dynamic trails based on velocity and distance from black hole
@@ -193,39 +259,25 @@ class Simulation {
           if (distanceFromCenter < 100.0) {
             // Within galaxy disk
             // Combine distance and velocity effects for realistic physics
-            final proximityFactor = math.max(
-              0.0,
-              (100.0 - distanceFromCenter) / 100.0,
-            ); // 0 to 1
+            final proximityFactor = math.max(0.0, (100.0 - distanceFromCenter) / 100.0); // 0 to 1
 
             // Velocity factor: faster stars = shorter trails (more frantic motion)
-            final velocityFactor = math.min(
-              1.0,
-              velocity / 5.0,
-            ); // Normalize to 0-1
+            final velocityFactor = math.min(1.0, velocity / 5.0); // Normalize to 0-1
 
             // Combined effect: both proximity and velocity shorten trails
-            final combinedFactor =
-                (proximityFactor * 0.7) + (velocityFactor * 0.3);
+            final combinedFactor = (proximityFactor * 0.7) + (velocityFactor * 0.3);
 
             // Trail length decreases dramatically near black hole and with high velocity
-            final lengthReduction =
-                1.0 - (combinedFactor * 0.95); // Reduce up to 95%
+            final lengthReduction = 1.0 - (combinedFactor * 0.95); // Reduce up to 95%
             customMaxTrail = math.max(2, (maxTrail * lengthReduction).round());
 
             // Fade rate increases with both proximity and velocity
-            final fadeIncrease =
-                1.0 +
-                (combinedFactor *
-                    6.0); // Up to 7x faster fade for fast, close stars
+            final fadeIncrease = 1.0 + (combinedFactor * 6.0); // Up to 7x faster fade for fast, close stars
             customFadeRate = fadeRate * fadeIncrease;
 
             // Very close to black hole: short but visible trails
             if (distanceFromCenter < 20.0) {
-              customMaxTrail = math.max(
-                3,
-                customMaxTrail ~/ 2,
-              ); // Short but visible
+              customMaxTrail = math.max(3, customMaxTrail ~/ 2); // Short but visible
               customFadeRate *= 2.0; // Faster fade
             }
           }
@@ -236,9 +288,7 @@ class Simulation {
       for (final pt in trails[i]) {
         pt.alpha *= math.exp(-customFadeRate * dt);
       }
-      trails[i].removeWhere(
-        (pt) => pt.alpha < SimulationConstants.trailAlphaThreshold,
-      );
+      trails[i].removeWhere((pt) => pt.alpha < SimulationConstants.trailAlphaThreshold);
 
       // Add newest trail point with full alpha (don't fade this one)
       trails[i].add(TrailPoint(bodies[i].position.clone(), 1.0));
@@ -297,7 +347,7 @@ class Simulation {
           final softDist2 = dist2 + softening;
           final invR = 1.0 / math.sqrt(softDist2);
           final invR3 = invR * invR * invR;
-          a[i] += r * (G * bodies[j].mass * invR3);
+          a[i] += r * (gravitationalConstant * bodies[j].mass * invR3);
         }
       }
       return a;
@@ -322,27 +372,21 @@ class Simulation {
     final k4v = accelerations(p4);
 
     for (int i = 0; i < n; i++) {
-      bodies[i].position =
-          initPos[i] + (k1x[i] + k2x[i] * 2 + k3x[i] * 2 + k4x[i]) * (dt / 6);
-      bodies[i].velocity =
-          initVel[i] + (k1v[i] + k2v[i] * 2 + k3v[i] * 2 + k4v[i]) * (dt / 6);
+      bodies[i].position = initPos[i] + (k1x[i] + k2x[i] * 2 + k3x[i] * 2 + k4x[i]) * (dt / 6);
+      bodies[i].velocity = initVel[i] + (k1v[i] + k2v[i] * 2 + k3v[i] * 2 + k4v[i]) * (dt / 6);
     }
 
     // Special case: Keep central star fixed in asteroid belt scenario
     if (_currentScenario == ScenarioType.asteroidBelt && bodies.isNotEmpty) {
-      bodies[0].position =
-          vm.Vector3.zero(); // Force central star to stay at origin
-      bodies[0].velocity =
-          vm.Vector3.zero(); // Force central star to have zero velocity
+      bodies[0].position = vm.Vector3.zero(); // Force central star to stay at origin
+      bodies[0].velocity = vm.Vector3.zero(); // Force central star to have zero velocity
       // Allow other bodies (companions) to move normally
     }
 
     // Special case: Keep supermassive black hole fixed at galaxy center
     if (_currentScenario == ScenarioType.galaxyFormation && bodies.isNotEmpty) {
-      bodies[0].position =
-          vm.Vector3.zero(); // Force black hole to stay at galactic center
-      bodies[0].velocity =
-          vm.Vector3.zero(); // Force black hole to have zero velocity
+      bodies[0].position = vm.Vector3.zero(); // Force black hole to stay at galactic center
+      bodies[0].velocity = vm.Vector3.zero(); // Force black hole to have zero velocity
 
       // Allow natural orbital dynamics - no artificial barriers or damping
       // Allow all stars to orbit around the fixed black hole
@@ -393,11 +437,8 @@ class Simulation {
 
         final r = b2.position - b1.position;
         final dist = r.length;
-        // Make collision radius ultra-small - stars almost never collide
-        final collisionRadius =
-            (b1.radius + b2.radius) *
-            SimulationConstants
-                .collisionRadiusMultiplier; // Only 5% of visual radius
+        // Make collision radius adjustable for different scenarios
+        final collisionRadius = (b1.radius + b2.radius) * collisionRadiusMultiplier;
         if (dist < collisionRadius) {
           _merge(i, j);
           // do not advance j; current j now points to the next body after removal
@@ -457,15 +498,9 @@ class Simulation {
     final b2 = bodies[j];
 
     final m = b1.mass + b2.mass;
-    final p =
-        (b1.position * b1.mass + b2.position * b2.mass) /
-        m; // mass-weighted position
-    final v =
-        (b1.velocity * b1.mass + b2.velocity * b2.mass) /
-        m; // momentum conservation
-    final r = math
-        .pow(math.pow(b1.radius, 3) + math.pow(b2.radius, 3), 1 / 3)
-        .toDouble();
+    final p = (b1.position * b1.mass + b2.position * b2.mass) / m; // mass-weighted position
+    final v = (b1.velocity * b1.mass + b2.velocity * b2.mass) / m; // momentum conservation
+    final r = math.pow(math.pow(b1.radius, 3) + math.pow(b2.radius, 3), 1 / 3).toDouble();
     final color = _blendColor(b1.color, b2.color, b2.mass / m);
 
     // Collision flash
@@ -481,16 +516,10 @@ class Simulation {
     final mergedName = '${b1.name}+${b2.name}';
 
     // Determine merged body type - stars take precedence over planets
-    final mergedBodyType =
-        (b1.bodyType == BodyType.star || b2.bodyType == BodyType.star)
-        ? BodyType.star
-        : b1.bodyType;
+    final mergedBodyType = (b1.bodyType == BodyType.star || b2.bodyType == BodyType.star) ? BodyType.star : b1.bodyType;
 
     // Determine merged stellar luminosity - use the higher value
-    final mergedLuminosity = math.max(
-      b1.stellarLuminosity,
-      b2.stellarLuminosity,
-    );
+    final mergedLuminosity = math.max(b1.stellarLuminosity, b2.stellarLuminosity);
 
     // Replace b1 and remove b2
     bodies[i] = Body(
@@ -524,31 +553,24 @@ class Simulation {
 
   void _vibrateForEnergy(double energy) {
     // Normalize via log to keep in reasonable range, clamp to [0.1, 1.0]
-    final intensity =
-        (math.log(1 + energy) /
-                SimulationConstants.vibrationIntensityLogDivisor)
-            .clamp(
-              SimulationConstants.vibrationIntensityMin,
-              SimulationConstants.vibrationIntensityMax,
-            );
+    final intensity = (math.log(1 + energy) / SimulationConstants.vibrationIntensityLogDivisor).clamp(
+      SimulationConstants.vibrationIntensityMin,
+      SimulationConstants.vibrationIntensityMax,
+    );
 
     final duration =
         (SimulationConstants.vibrationDurationMin +
-                (SimulationConstants.vibrationDurationMax -
-                        SimulationConstants.vibrationDurationMin) *
-                    intensity)
+                (SimulationConstants.vibrationDurationMax - SimulationConstants.vibrationDurationMin) * intensity)
             .toInt();
 
     final amplitude =
         (SimulationConstants.vibrationAmplitudeMin +
-                (SimulationConstants.vibrationAmplitudeMax -
-                        SimulationConstants.vibrationAmplitudeMin) *
-                    intensity)
+                (SimulationConstants.vibrationAmplitudeMax - SimulationConstants.vibrationAmplitudeMin) * intensity)
             .clamp(0, 255)
             .toInt();
 
-    // throttle to at most one every 180 ms of sim time
-    if (_timeSinceLastVibe < SimulationConstants.vibrationThrottleTime) return;
+    // throttle to at most one vibration per throttle time
+    if (!vibrationEnabled || _timeSinceLastVibe < vibrationThrottleTime) return;
     _timeSinceLastVibe = 0;
 
     Vibration.hasVibrator().then((has) {
@@ -582,21 +604,15 @@ class Simulation {
       } else if (distanceFromCenter > 80.0) {
         // Medium distance: green to yellow transition
         final t = (120.0 - distanceFromCenter) / 40.0; // 0 to 1
-        newColor =
-            Color.lerp(AppColors.uiGreen, AppColors.uiYellow, t) ??
-            AppColors.uiYellow;
+        newColor = Color.lerp(AppColors.uiGreen, AppColors.uiYellow, t) ?? AppColors.uiYellow;
       } else if (distanceFromCenter > 50.0) {
         // Getting closer: yellow to orange transition
         final t = (80.0 - distanceFromCenter) / 30.0; // 0 to 1
-        newColor =
-            Color.lerp(AppColors.uiYellow, AppColors.uiOrange, t) ??
-            AppColors.uiOrange;
+        newColor = Color.lerp(AppColors.uiYellow, AppColors.uiOrange, t) ?? AppColors.uiOrange;
       } else {
         // Close to black hole: orange to red transition (hot, stressed)
         final t = math.min(1.0, (50.0 - distanceFromCenter) / 50.0); // 0 to 1
-        newColor =
-            Color.lerp(AppColors.uiOrange, AppColors.uiRed, t) ??
-            AppColors.uiRed;
+        newColor = Color.lerp(AppColors.uiOrange, AppColors.uiRed, t) ?? AppColors.uiRed;
       }
 
       // Add velocity-based intensity (faster = more intense/brighter)
@@ -638,8 +654,7 @@ class Simulation {
     final dist = r.length;
 
     // True event horizon - much smaller than visual representation (accretion disk)
-    final eventHorizonRadius =
-        blackHole.radius * 0.3; // True event horizon size
+    final eventHorizonRadius = blackHole.radius * 0.3; // True event horizon size
     final willAbsorb = dist < eventHorizonRadius;
     return willAbsorb;
   }
@@ -657,8 +672,7 @@ class Simulation {
     final victimIndex = isB1BlackHole ? j : i;
 
     // Create dramatic absorption flash - much brighter than regular merges
-    final flashColor =
-        Color.lerp(victim.color, AppColors.uiWhite, 0.7) ?? AppColors.uiWhite;
+    final flashColor = Color.lerp(victim.color, AppColors.uiWhite, 0.7) ?? AppColors.uiWhite;
     mergeFlashes.add(MergeFlash(victim.position.clone(), flashColor, age: 0));
 
     // Strong haptic feedback for black hole absorption
@@ -666,8 +680,7 @@ class Simulation {
 
     // Black hole grows slightly (conservation of mass)
     final newMass = blackHole.mass + victim.mass;
-    final newRadius =
-        blackHole.radius * math.pow(newMass / blackHole.mass, 1 / 3);
+    final newRadius = blackHole.radius * math.pow(newMass / blackHole.mass, 1 / 3);
 
     // Update black hole with new mass
     bodies[blackHoleIndex] = Body(

@@ -586,4 +586,119 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get privacyPolicyLabel => '隐私政策';
+
+  @override
+  String get helpAndObjectivesTitle => '帮助和目标';
+
+  @override
+  String get whatToDoTitle => '要做什么';
+
+  @override
+  String get whatToDoDescription => '学习如何导航和与三体引力模拟进行交互。';
+
+  @override
+  String get getStarted => '开始';
+
+  @override
+  String get objectivesTitle => '目标';
+
+  @override
+  String get objectivesDescription => '探索三体引力系统的迷人动力学，学习轨道力学。';
+
+  @override
+  String get quickStartTitle => '快速入门指南';
+
+  @override
+  String get quickStartDescription => '通过选择场景、调整控件和观察引力相互作用来开始探索模拟。';
+
+  @override
+  String get showHelpTooltip => '显示帮助';
+
+  @override
+  String get tutorialButton => '教程';
+
+  @override
+  String get resetTutorialButton => '重置教程';
+
+  @override
+  String get tutorialComingSoon => '教程功能即将推出！';
+
+  @override
+  String get tutorialResetMessage => '教程状态已重置！';
+
+  @override
+  String get tutorialOverlayTitle => '教程即将推出！';
+
+  @override
+  String get tutorialOverlayDescription => '交互式教程功能将在未来的更新中提供。';
+
+  @override
+  String get continueButton => '继续';
+
+  @override
+  String get objectives1 =>
+      'Understand gravitational interactions between three bodies';
+
+  @override
+  String get objectives2 =>
+      'Observe orbital mechanics and chaos theory in action';
+
+  @override
+  String get objectives3 => 'Experiment with different initial conditions';
+
+  @override
+  String get objectives4 =>
+      'Learn about Lagrange points and stable configurations';
+
+  @override
+  String get objectives5 =>
+      'Explore how small changes lead to dramatically different outcomes';
+
+  @override
+  String get objectives6 =>
+      'Develop intuition for N-body gravitational systems';
+
+  @override
+  String get quickStart1 =>
+      'Select a scenario from the menu to start with predefined conditions';
+
+  @override
+  String get quickStart2 =>
+      'Use play/pause controls to start and stop the simulation';
+
+  @override
+  String get quickStart3 =>
+      'Adjust simulation speed to observe at different time scales';
+
+  @override
+  String get quickStart4 => 'Toggle trails to see orbital paths over time';
+
+  @override
+  String get quickStart5 =>
+      'Tap bodies to select and view detailed information';
+
+  @override
+  String get quickStart6 =>
+      'Experiment with different settings to explore various outcomes';
+
+  @override
+  String get moreOptionsTooltip => '更多选项';
+
+  @override
+  String get exploreScenarios => '探索不同场景';
+
+  @override
+  String get physicsSettingsTitle => '物理设置';
+
+  @override
+  String get customParametersActive => '自定义参数已激活';
+
+  @override
+  String get advancedSimulationParameters => '高级仿真参数';
+
+  @override
+  String get visualBehaviorOptions => '视觉和行为选项';
+
+  @override
+  String get tutorialObjectives => '教程和目标';
 }
