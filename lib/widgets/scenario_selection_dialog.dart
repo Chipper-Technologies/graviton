@@ -4,6 +4,8 @@ import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/theme/app_constraints.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 /// A dialog that allows users to select a preset astronomical scenario
 class ScenarioSelectionDialog extends StatelessWidget {
@@ -19,7 +21,6 @@ class ScenarioSelectionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
 
     // Filter scenarios to only show those available in the main selection
     // (excluding screenshot-only scenarios: threeBodyClassic, collisionDemo, deepSpace)
@@ -30,40 +31,16 @@ class ScenarioSelectionDialog extends StatelessWidget {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 600),
+        constraints: AppConstraints.dialogMedium,
+        padding: AppConstraints.dialogPadding,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: theme.primaryColor.withValues(
-                  alpha: AppTypography.opacityDisabled,
-                ),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.science, color: theme.primaryColor, size: 28),
-                  const SizedBox(width: 12),
-                  Text(
-                    l10n.scenarioSelectionTitle,
-                    style: AppTypography.titleText.copyWith(
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
             // Scenario list
             Flexible(
               child: ListView.builder(
                 shrinkWrap: true,
+                padding: EdgeInsets.zero,
                 itemCount: availableScenarios.length,
                 itemBuilder: (context, index) {
                   final scenario = availableScenarios[index];
@@ -81,17 +58,15 @@ class ScenarioSelectionDialog extends StatelessWidget {
             ),
 
             // Footer
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(l10n.cancel),
-                  ),
-                ],
-              ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(l10n.cancel),
+                ),
+              ],
             ),
           ],
         ),
@@ -121,14 +96,13 @@ class _ScenarioTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
 
     // Get localized name and description
     final name = _getLocalizedName(l10n, scenario);
     final description = _getLocalizedDescription(l10n, scenario);
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
       elevation: isSelected ? 8 : 2,
       color: isSelected
           ? config.primaryColor.withValues(alpha: AppTypography.opacityDisabled)
@@ -187,7 +161,7 @@ class _ScenarioTile extends StatelessWidget {
                     Text(
                       description,
                       style: AppTypography.smallText.copyWith(
-                        color: theme.textTheme.bodySmall?.color?.withValues(
+                        color: AppColors.uiWhite.withValues(
                           alpha: AppTypography.opacityVeryHigh,
                         ),
                       ),
@@ -195,21 +169,15 @@ class _ScenarioTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
 
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
 
                     // Learning objectives
-                    Text(
-                      _getScenarioObjectives(l10n, scenario),
-                      style: AppTypography.smallText.copyWith(
-                        color: config.primaryColor,
-                        fontSize: 11,
-                        height: 1.3,
-                      ),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
+                    Container(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: _buildScenarioObjectives(l10n, scenario),
                     ),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
 
                     // Metadata
                     Row(
@@ -217,7 +185,7 @@ class _ScenarioTile extends StatelessWidget {
                         Icon(
                           Icons.group,
                           size: 14,
-                          color: theme.textTheme.bodySmall?.color?.withValues(
+                          color: AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityMediumHigh,
                           ),
                         ),
@@ -225,7 +193,7 @@ class _ScenarioTile extends StatelessWidget {
                         Text(
                           '${config.expectedBodyCount} ${l10n.bodies}',
                           style: AppTypography.smallText.copyWith(
-                            color: theme.textTheme.bodySmall?.color?.withValues(
+                            color: AppColors.uiWhite.withValues(
                               alpha: AppTypography.opacityMediumHigh,
                             ),
                           ),
@@ -234,7 +202,7 @@ class _ScenarioTile extends StatelessWidget {
                         Icon(
                           Icons.school,
                           size: 14,
-                          color: theme.textTheme.bodySmall?.color?.withValues(
+                          color: AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityMediumHigh,
                           ),
                         ),
@@ -243,10 +211,9 @@ class _ScenarioTile extends StatelessWidget {
                           child: Text(
                             _getLocalizedEducationalFocus(l10n, scenario),
                             style: AppTypography.smallText.copyWith(
-                              color: theme.textTheme.bodySmall?.color
-                                  ?.withValues(
-                                    alpha: AppTypography.opacityMediumHigh,
-                                  ),
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityMediumHigh,
+                              ),
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -341,24 +308,104 @@ class _ScenarioTile extends StatelessWidget {
     }
   }
 
-  String _getScenarioObjectives(AppLocalizations l10n, ScenarioType scenario) {
+  Widget _buildScenarioObjectives(
+    AppLocalizations l10n,
+    ScenarioType scenario,
+  ) {
+    String learnEmoji = l10n.scenarioLearnEmoji;
+    String bestEmoji = l10n.scenarioBestEmoji;
+    String learnText = '';
+    String bestText = '';
+
     switch (scenario) {
       case ScenarioType.solarSystem:
-        return l10n.scenarioObjectivesSolar;
+        learnText = l10n.scenarioLearnSolar;
+        bestText = l10n.scenarioBestSolar;
+        break;
       case ScenarioType.earthMoonSun:
-        return l10n.scenarioObjectivesEarthMoon;
+        learnText = l10n.scenarioLearnEarthMoon;
+        bestText = l10n.scenarioBestEarthMoon;
+        break;
       case ScenarioType.binaryStars:
-        return l10n.scenarioObjectivesBinary;
+        learnText = l10n.scenarioLearnBinary;
+        bestText = l10n.scenarioBestBinary;
+        break;
       case ScenarioType.threeBodyClassic:
-        return l10n.scenarioObjectivesThreeBody;
+        learnText = l10n.scenarioLearnThreeBody;
+        bestText = l10n.scenarioBestThreeBody;
+        break;
       case ScenarioType.random:
-        return l10n.scenarioObjectivesRandom;
+        learnText = l10n.scenarioLearnRandom;
+        bestText = l10n.scenarioBestRandom;
+        break;
       case ScenarioType.asteroidBelt:
-        return l10n.scenarioObjectivesRandom; // Fallback to random objectives
+        learnText = l10n.scenarioLearnRandom; // Fallback to random objectives
+        bestText = l10n.scenarioBestRandom;
+        break;
       case ScenarioType.galaxyFormation:
-        return l10n.scenarioObjectivesRandom; // Fallback to random objectives
+        learnText = l10n.scenarioLearnRandom; // Fallback to random objectives
+        bestText = l10n.scenarioBestRandom;
+        break;
       default:
-        return l10n.scenarioObjectivesRandom; // Safe fallback
+        learnText = l10n.scenarioLearnRandom; // Safe fallback
+        bestText = l10n.scenarioBestRandom;
     }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              learnEmoji,
+              style: AppTypography.smallText.copyWith(
+                color: config.primaryColor,
+                fontSize: 11,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: Text(
+                learnText,
+                style: AppTypography.smallText.copyWith(
+                  color: config.primaryColor,
+                  fontSize: 11,
+                  height: 1.4,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              bestEmoji,
+              style: AppTypography.smallText.copyWith(
+                color: config.primaryColor,
+                fontSize: 11,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: Text(
+                bestText,
+                style: AppTypography.smallText.copyWith(
+                  color: config.primaryColor,
+                  fontSize: 11,
+                  height: 1.4,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }

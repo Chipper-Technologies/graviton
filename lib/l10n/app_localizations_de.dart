@@ -618,24 +618,49 @@ class AppLocalizationsDe extends AppLocalizations {
       'Klassisches Dreikörperproblem in eleganter Bewegung';
 
   @override
-  String get scenarioObjectivesSolar =>
-      '🎯 Lernen: Planetenbewegung, Orbitalmechanik, vertraute Himmelskörper\n⭐ Ideal für: Anfänger, Astronomie-Enthusiasten';
+  String get scenarioLearnEmoji => '🎯';
 
   @override
-  String get scenarioObjectivesEarthMoon =>
-      '🎯 Lernen: Dreikörperdynamik, Mondmechanik, Gezeitenkräfte\n⭐ Ideal für: Verständnis des Erde-Mond-Systems';
+  String get scenarioBestEmoji => '⭐';
 
   @override
-  String get scenarioObjectivesBinary =>
-      '🎯 Lernen: Sternentwicklung, Doppelsternsysteme, extreme Gravitation\n⭐ Ideal für: Fortgeschrittene Physikerkundung';
+  String get scenarioLearnSolar =>
+      'Lernen: Planetenbewegung, Orbitalmechanik, vertraute Himmelskörper';
 
   @override
-  String get scenarioObjectivesThreeBody =>
-      '🎯 Lernen: Chaostheorie, unvorhersagbare Bewegung, instabile Systeme\n⭐ Ideal für: Mathematische Physik-Enthusiasten';
+  String get scenarioBestSolar =>
+      'Ideal für: Anfänger, Astronomie-Enthusiasten';
 
   @override
-  String get scenarioObjectivesRandom =>
-      '🎯 Lernen: Unbekannte Konfigurationen entdecken, experimentelle Physik\n⭐ Ideal für: Erkundung und Experimente';
+  String get scenarioLearnEarthMoon =>
+      'Lernen: Dreikörperdynamik, Mondmechanik, Gezeitenkräfte';
+
+  @override
+  String get scenarioBestEarthMoon =>
+      'Ideal für: Verständnis des Erde-Mond-Systems';
+
+  @override
+  String get scenarioLearnBinary =>
+      'Lernen: Sternentwicklung, Doppelsternsysteme, extreme Gravitation';
+
+  @override
+  String get scenarioBestBinary =>
+      'Ideal für: Fortgeschrittene Physikerkundung';
+
+  @override
+  String get scenarioLearnThreeBody =>
+      'Lernen: Chaostheorie, unvorhersagbare Bewegung, instabile Systeme';
+
+  @override
+  String get scenarioBestThreeBody =>
+      'Ideal für: Mathematische Physik-Enthusiasten';
+
+  @override
+  String get scenarioLearnRandom =>
+      'Lernen: Unbekannte Konfigurationen entdecken, experimentelle Physik';
+
+  @override
+  String get scenarioBestRandom => 'Ideal für: Erkundung und Experimente';
 
   @override
   String get privacyPolicyLabel => 'Datenschutzrichtlinie';
@@ -711,16 +736,86 @@ class AppLocalizationsDe extends AppLocalizations {
   String get objectivesTitle => 'Lernziele';
 
   @override
-  String get objectivesDescription =>
-      '• Verstehen, wie Gravitation den Kosmos formt\n• Stabile vs. chaotische Orbitalsysteme beobachten\n• Lernen, warum Planeten sich in elliptischen Bahnen bewegen\n• Entdecken, wie Doppelsterne interagieren\n• Sehen, was passiert, wenn Objekte kollidieren\n• Die Komplexität des Dreikörperproblems schätzen';
+  String get objectives1 => 'Verstehen, wie Gravitation den Kosmos formt';
+
+  @override
+  String get objectives2 => 'Stabile vs. chaotische Orbitalsysteme beobachten';
+
+  @override
+  String get objectives3 =>
+      'Lernen, warum Planeten sich in elliptischen Bahnen bewegen';
+
+  @override
+  String get objectives4 => 'Entdecken, wie Doppelsterne interagieren';
+
+  @override
+  String get objectives5 => 'Sehen, was passiert, wenn Objekte kollidieren';
+
+  @override
+  String get objectives6 => 'Die Komplexität des Dreikörperproblems schätzen';
 
   @override
   String get quickStartTitle => 'Schnellstart-Anleitung';
 
   @override
+  String get quickStart1 =>
+      'Wählen Sie ein Szenario (Sonnensystem für Anfänger empfohlen)';
+
+  @override
+  String get quickStart2 =>
+      'Drücken Sie Abspielen, um die Simulation zu starten';
+
+  @override
+  String get quickStart3 =>
+      'Ziehen Sie, um Ihre Ansicht zu drehen, kneifen Sie zum Zoomen';
+
+  @override
+  String get quickStart4 =>
+      'Tippen Sie auf den Geschwindigkeitsregler, um die Zeit zu steuern';
+
+  @override
+  String get quickStart5 =>
+      'Versuchen Sie Zurücksetzen für neue zufällige Konfigurationen';
+
+  @override
+  String get quickStart6 => 'Aktivieren Sie Spuren, um Orbitalbahnen zu sehen';
+
+  @override
+  String get objectivesDescription =>
+      '• Verstehen Sie, wie die Schwerkraft den Kosmos formt\n• Beobachten Sie stabile vs. chaotische Orbitalsysteme\n• Lernen Sie, warum sich Planeten in elliptischen Bahnen bewegen\n• Entdecken Sie, wie Doppelsterne interagieren\n• Sehen Sie, was passiert, wenn Objekte kollidieren\n• Schätzen Sie die Komplexität des Drei-Körper-Problems';
+
+  @override
   String get quickStartDescription =>
-      '1. Wählen Sie ein Szenario (Sonnensystem für Anfänger empfohlen)\n2. Drücken Sie Abspielen, um die Simulation zu starten\n3. Ziehen Sie, um Ihre Ansicht zu drehen, kneifen Sie zum Zoomen\n4. Tippen Sie auf den Geschwindigkeitsregler, um die Zeit zu steuern\n5. Versuchen Sie Zurücksetzen für neue zufällige Konfigurationen\n6. Aktivieren Sie Spuren, um Orbitalbahnen zu sehen';
+      '1. Wählen Sie ein Szenario (Sonnensystem für Anfänger empfohlen)\n2. Drücken Sie Play, um die Simulation zu starten\n3. Ziehen Sie, um die Ansicht zu drehen, kneifen Sie zum Zoomen\n4. Tippen Sie auf den Geschwindigkeitsregler, um die Zeit zu kontrollieren\n5. Versuchen Sie Reset für neue zufällige Konfigurationen\n6. Aktivieren Sie Spuren, um Orbitalbahnen zu sehen';
 
   @override
   String get showHelpTooltip => 'Hilfe & Ziele';
+
+  @override
+  String get tutorialButton => 'Tutorial';
+
+  @override
+  String get resetTutorialButton => 'Zurücksetzen';
+
+  @override
+  String get tutorialResetMessage =>
+      'Tutorial-Status zurückgesetzt! Starten Sie die App neu, um das erste Mal-Erlebnis zu sehen.';
+
+  @override
+  String get copyButton => 'Kopieren';
+
+  @override
+  String couldNotOpenUrl(String url) {
+    return 'Konnte $url nicht öffnen';
+  }
+
+  @override
+  String errorOpeningLink(String error) {
+    return 'Fehler beim Öffnen des Links: $error';
+  }
+
+  @override
+  String copiedToClipboard(String text) {
+    return 'In die Zwischenablage kopiert: $text';
+  }
 }

@@ -592,24 +592,40 @@ class AppLocalizationsKo extends AppLocalizations {
   String get presetThreeBodyBalletDesc => '우아한 움직임의 고전적 삼체 문제';
 
   @override
-  String get scenarioObjectivesSolar =>
-      '🎯 학습 내용: 행성 운동, 궤도 역학, 친숙한 천체\n⭐ 최적 대상: 초보자, 천문학 애호가';
+  String get scenarioLearnEmoji => '🎯';
 
   @override
-  String get scenarioObjectivesEarthMoon =>
-      '🎯 학습 내용: 삼체 역학, 달의 역학, 조석력\n⭐ 최적 대상: 지구-달 시스템 이해';
+  String get scenarioBestEmoji => '⭐';
 
   @override
-  String get scenarioObjectivesBinary =>
-      '🎯 학습 내용: 항성 진화, 쌍성계, 극한 중력\n⭐ 최적 대상: 고급 물리학 탐구';
+  String get scenarioLearnSolar => '학습 내용: 행성 운동, 궤도 역학, 친숙한 천체';
 
   @override
-  String get scenarioObjectivesThreeBody =>
-      '🎯 학습 내용: 카오스 이론, 예측 불가능한 운동, 불안정 시스템\n⭐ 최적 대상: 수리물리학 애호가';
+  String get scenarioBestSolar => '최적 대상: 초보자, 천문학 애호가';
 
   @override
-  String get scenarioObjectivesRandom =>
-      '🎯 학습 내용: 알려지지 않은 구성 발견, 실험 물리학\n⭐ 최적 대상: 탐색과 실험';
+  String get scenarioLearnEarthMoon => '학습 내용: 삼체 역학, 달의 역학, 조석력';
+
+  @override
+  String get scenarioBestEarthMoon => '최적 대상: 지구-달 시스템 이해';
+
+  @override
+  String get scenarioLearnBinary => '학습 내용: 항성 진화, 쌍성계, 극한 중력';
+
+  @override
+  String get scenarioBestBinary => '최적 대상: 고급 물리학 탐구';
+
+  @override
+  String get scenarioLearnThreeBody => '학습 내용: 카오스 이론, 예측 불가능한 운동, 불안정 시스템';
+
+  @override
+  String get scenarioBestThreeBody => '최적 대상: 수리물리학 애호가';
+
+  @override
+  String get scenarioLearnRandom => '학습 내용: 알려지지 않은 구성 발견, 실험 물리학';
+
+  @override
+  String get scenarioBestRandom => '최적 대상: 탐색과 실험';
 
   @override
   String get privacyPolicyLabel => '개인정보 보호정책';
@@ -685,11 +701,47 @@ class AppLocalizationsKo extends AppLocalizations {
   String get objectivesTitle => '학습 목표';
 
   @override
-  String get objectivesDescription =>
-      '• 중력이 우주를 어떻게 형성하는지 이해\n• 안정적 vs 혼돈적 궤도 시스템 관찰\n• 행성이 왜 타원 궤도로 움직이는지 학습\n• 쌍성이 어떻게 상호작용하는지 발견\n• 객체가 충돌할 때 무슨 일이 일어나는지 관찰\n• 삼체 문제의 복잡성 이해';
+  String get objectives1 => '중력이 우주를 어떻게 형성하는지 이해';
+
+  @override
+  String get objectives2 => '안정적 vs 혼돈적 궤도 시스템 관찰';
+
+  @override
+  String get objectives3 => '행성이 왜 타원 궤도로 움직이는지 학습';
+
+  @override
+  String get objectives4 => '쌍성이 어떻게 상호작용하는지 발견';
+
+  @override
+  String get objectives5 => '객체가 충돌할 때 무슨 일이 일어나는지 관찰';
+
+  @override
+  String get objectives6 => '삼체 문제의 복잡성 이해';
 
   @override
   String get quickStartTitle => '빠른 시작 가이드';
+
+  @override
+  String get quickStart1 => '시나리오 선택 (초보자에게는 태양계 추천)';
+
+  @override
+  String get quickStart2 => '재생을 눌러 시뮬레이션 시작';
+
+  @override
+  String get quickStart3 => '드래그하여 뷰 회전, 핀치하여 줌';
+
+  @override
+  String get quickStart4 => '속도 슬라이더를 터치하여 시간 제어';
+
+  @override
+  String get quickStart5 => '새로운 랜덤 구성을 위해 리셋 시도';
+
+  @override
+  String get quickStart6 => '궤도 경로를 보려면 궤적 활성화';
+
+  @override
+  String get objectivesDescription =>
+      '• 중력이 우주를 어떻게 형성하는지 이해\n• 안정적 vs 혼돈적 궤도 시스템 관찰\n• 행성이 왜 타원 궤도로 움직이는지 학습\n• 쌍성이 어떻게 상호작용하는지 발견\n• 객체가 충돌할 때 무슨 일이 일어나는지 관찰\n• 삼체 문제의 복잡성 이해';
 
   @override
   String get quickStartDescription =>
@@ -697,4 +749,32 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get showHelpTooltip => '도움말 및 목표';
+
+  @override
+  String get tutorialButton => '튜토리얼';
+
+  @override
+  String get resetTutorialButton => '재설정';
+
+  @override
+  String get tutorialResetMessage =>
+      '튜토리얼 상태가 재설정되었습니다! 앱을 다시 시작하여 첫 사용 경험을 확인하세요.';
+
+  @override
+  String get copyButton => '복사';
+
+  @override
+  String couldNotOpenUrl(String url) {
+    return '$url을 열 수 없습니다';
+  }
+
+  @override
+  String errorOpeningLink(String error) {
+    return '링크 열기 오류: $error';
+  }
+
+  @override
+  String copiedToClipboard(String text) {
+    return '클립보드에 복사됨: $text';
+  }
 }

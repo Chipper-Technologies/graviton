@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 
 /// Dialog that explains what users can do and the app's objectives
@@ -9,49 +11,18 @@ class HelpDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 500, maxHeight: 700),
+        constraints: AppConstraints.dialogLarge,
+        padding: AppConstraints.dialogPadding,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: theme.primaryColor.withValues(alpha: 0.1),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.help_outline, color: theme.primaryColor, size: 28),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      l10n.helpAndObjectivesTitle,
-                      style: AppTypography.titleText.copyWith(
-                        color: theme.primaryColor,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ),
-            ),
-
             // Content
             Flexible(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -62,24 +33,14 @@ class HelpDialog extends StatelessWidget {
                       title: l10n.whatToDoTitle,
                       content: l10n.whatToDoDescription,
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
 
                     // Learning Objectives section
-                    _buildSection(
-                      context,
-                      icon: Icons.school,
-                      title: l10n.objectivesTitle,
-                      content: l10n.objectivesDescription,
-                    ),
-                    const SizedBox(height: 24),
+                    _buildObjectivesSection(context, l10n),
+                    const SizedBox(height: 20),
 
                     // Quick Start section
-                    _buildSection(
-                      context,
-                      icon: Icons.play_circle_outline,
-                      title: l10n.quickStartTitle,
-                      content: l10n.quickStartDescription,
-                    ),
+                    _buildQuickStartSection(context, l10n),
                     const SizedBox(height: 24),
 
                     // Call to action
@@ -112,41 +73,269 @@ class HelpDialog extends StatelessWidget {
     required String title,
     required String content,
   }) {
-    final theme = Theme.of(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: theme.primaryColor.withValues(alpha: 0.1),
-              ),
-              child: Icon(icon, color: theme.primaryColor, size: 20),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                title,
-                style: AppTypography.largeText.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Padding(
-          padding: const EdgeInsets.only(left: 44),
-          child: Text(
-            content,
-            style: AppTypography.mediumText.copyWith(height: 1.5),
+        // Header like settings dialog
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppColors.sectionTitlePurple,
           ),
         ),
+        const SizedBox(height: 8),
+        // Content with emoji formatting if needed
+        _buildFormattedContent(content),
       ],
+    );
+  }
+
+  /// Build formatted content that handles emoji lists properly
+  Widget _buildFormattedContent(String content) {
+    // Split into lines and handle emoji formatting
+    final lines = content.split('\n');
+    final List<Widget> widgets = [];
+
+    for (int i = 0; i < lines.length; i++) {
+      final line = lines[i];
+      if (line.trim().isEmpty) continue;
+
+      // Check if line starts with an emoji (any emoji character followed by space)
+      // Using a more general approach to detect emojis
+      if (line.trim().length > 2 && _isEmoji(line.trim().substring(0, 2))) {
+        // Find where the emoji ends and text begins
+        int textStart = 0;
+        for (int j = 0; j < line.length; j++) {
+          if (line[j] == ' ') {
+            textStart = j + 1;
+            break;
+          }
+        }
+
+        if (textStart > 0) {
+          final emoji = line.substring(0, textStart - 1);
+          final text = line.substring(textStart);
+
+          widgets.add(
+            Padding(
+              padding: EdgeInsets.only(bottom: i < lines.length - 1 ? 4.0 : 0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 24,
+                    child: Text(
+                      emoji,
+                      style: AppTypography.mediumText.copyWith(height: 1.6),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      text,
+                      style: AppTypography.mediumText.copyWith(height: 1.6),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          // Fallback to regular text if parsing fails
+          widgets.add(
+            Padding(
+              padding: EdgeInsets.only(bottom: i < lines.length - 1 ? 4.0 : 0),
+              child: Text(
+                line.trim(),
+                style: AppTypography.mediumText.copyWith(height: 1.6),
+              ),
+            ),
+          );
+        }
+      } else {
+        // Regular text line
+        widgets.add(
+          Padding(
+            padding: EdgeInsets.only(bottom: i < lines.length - 1 ? 4.0 : 0),
+            child: Text(
+              line.trim(),
+              style: AppTypography.mediumText.copyWith(height: 1.6),
+            ),
+          ),
+        );
+      }
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: widgets,
+    );
+  }
+
+  /// Simple emoji detection helper
+  bool _isEmoji(String char) {
+    // Check for common emoji ranges in Unicode
+    final runes = char.runes.toList();
+    if (runes.isEmpty) return false;
+
+    final code = runes[0];
+    // Basic emoji ranges (simplified)
+    return (code >= 0x1F600 && code <= 0x1F64F) || // Emoticons
+        (code >= 0x1F300 && code <= 0x1F5FF) || // Misc Symbols
+        (code >= 0x1F680 && code <= 0x1F6FF) || // Transport
+        (code >= 0x1F1E6 && code <= 0x1F1FF) || // Flags
+        (code >= 0x2600 && code <= 0x26FF) || // Misc symbols
+        (code >= 0x2700 && code <= 0x27BF); // Dingbats
+  }
+
+  /// Build objectives section using individual list items
+  Widget _buildObjectivesSection(BuildContext context, AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.objectivesTitle,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppColors.sectionTitlePurple,
+          ),
+        ),
+        const SizedBox(height: 8),
+        // Try to use individual list items, fall back to description if they don't exist
+        _tryBuildObjectivesList(l10n) ??
+            Text(
+              l10n.objectivesDescription,
+              style: AppTypography.mediumText.copyWith(height: 1.6),
+            ),
+      ],
+    );
+  }
+
+  /// Build quick start section using individual list items
+  Widget _buildQuickStartSection(BuildContext context, AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.quickStartTitle,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppColors.sectionTitlePurple,
+          ),
+        ),
+        const SizedBox(height: 8),
+        // Try to use individual list items, fall back to description if they don't exist
+        _tryBuildQuickStartList(l10n) ??
+            Text(
+              l10n.quickStartDescription,
+              style: AppTypography.mediumText.copyWith(height: 1.6),
+            ),
+      ],
+    );
+  }
+
+  /// Try to build objectives list from individual items, return null if not available
+  Widget? _tryBuildObjectivesList(AppLocalizations l10n) {
+    try {
+      return _buildBulletList([
+        l10n.objectives1,
+        l10n.objectives2,
+        l10n.objectives3,
+        l10n.objectives4,
+        l10n.objectives5,
+        l10n.objectives6,
+      ]);
+    } catch (e) {
+      // Individual items not available for this language
+      return null;
+    }
+  }
+
+  /// Try to build quick start list from individual items, return null if not available
+  Widget? _tryBuildQuickStartList(AppLocalizations l10n) {
+    try {
+      return _buildNumberedList([
+        l10n.quickStart1,
+        l10n.quickStart2,
+        l10n.quickStart3,
+        l10n.quickStart4,
+        l10n.quickStart5,
+        l10n.quickStart6,
+      ]);
+    } catch (e) {
+      // Individual items not available for this language
+      return null;
+    }
+  }
+
+  /// Build a bullet list with proper text alignment
+  Widget _buildBulletList(List<String> items) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: items
+          .map(
+            (item) => Padding(
+              padding: const EdgeInsets.only(bottom: 4.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 24,
+                    child: Text(
+                      '•',
+                      style: AppTypography.mediumText.copyWith(
+                        height: 1.6,
+                        color: AppColors.sectionTitlePurple,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      item,
+                      style: AppTypography.mediumText.copyWith(height: 1.6),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  /// Build a numbered list with proper text alignment
+  Widget _buildNumberedList(List<String> items) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: items.asMap().entries.map((entry) {
+        final index = entry.key + 1;
+        final item = entry.value;
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 4.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 24,
+                child: Text(
+                  '$index.',
+                  style: AppTypography.mediumText.copyWith(
+                    height: 1.6,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.sectionTitlePurple,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Text(
+                  item,
+                  style: AppTypography.mediumText.copyWith(height: 1.6),
+                ),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }

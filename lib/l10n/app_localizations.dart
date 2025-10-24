@@ -1212,35 +1212,77 @@ abstract class AppLocalizations {
   /// **'Classic three-body problem in elegant motion'**
   String get presetThreeBodyBalletDesc;
 
-  /// Learning objectives for solar system scenario
+  /// Emoji for learning objectives
   ///
   /// In en, this message translates to:
-  /// **'🎯 Learn: Planetary motion, orbital mechanics, familiar celestial bodies\n⭐ Best for: Beginners, astronomy enthusiasts'**
-  String get scenarioObjectivesSolar;
+  /// **'🎯'**
+  String get scenarioLearnEmoji;
 
-  /// Learning objectives for Earth-Moon scenario
+  /// Emoji for best for section
   ///
   /// In en, this message translates to:
-  /// **'🎯 Learn: Three-body dynamics, lunar mechanics, tidal forces\n⭐ Best for: Understanding Earth-Moon system'**
-  String get scenarioObjectivesEarthMoon;
+  /// **'⭐'**
+  String get scenarioBestEmoji;
 
-  /// Learning objectives for binary star scenario
+  /// Learning content for solar system scenario
   ///
   /// In en, this message translates to:
-  /// **'🎯 Learn: Stellar evolution, binary systems, extreme gravity\n⭐ Best for: Advanced physics exploration'**
-  String get scenarioObjectivesBinary;
+  /// **'Learn: Planetary motion, orbital mechanics, familiar celestial bodies'**
+  String get scenarioLearnSolar;
 
-  /// Learning objectives for three-body scenario
+  /// Best for content for solar system scenario
   ///
   /// In en, this message translates to:
-  /// **'🎯 Learn: Chaos theory, unpredictable motion, unstable systems\n⭐ Best for: Mathematical physics enthusiasts'**
-  String get scenarioObjectivesThreeBody;
+  /// **'Best for: Beginners, astronomy enthusiasts'**
+  String get scenarioBestSolar;
 
-  /// Learning objectives for random scenario
+  /// Learning content for Earth-Moon scenario
   ///
   /// In en, this message translates to:
-  /// **'🎯 Learn: Discover unknown configurations, experimental physics\n⭐ Best for: Exploration and experimentation'**
-  String get scenarioObjectivesRandom;
+  /// **'Learn: Three-body dynamics, lunar mechanics, tidal forces'**
+  String get scenarioLearnEarthMoon;
+
+  /// Best for content for Earth-Moon scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Best for: Understanding Earth-Moon system'**
+  String get scenarioBestEarthMoon;
+
+  /// Learning content for binary star scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Learn: Stellar evolution, binary systems, extreme gravity'**
+  String get scenarioLearnBinary;
+
+  /// Best for content for binary star scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Best for: Advanced physics exploration'**
+  String get scenarioBestBinary;
+
+  /// Learning content for three-body scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Learn: Chaos theory, unpredictable motion, unstable systems'**
+  String get scenarioLearnThreeBody;
+
+  /// Best for content for three-body scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Best for: Mathematical physics enthusiasts'**
+  String get scenarioBestThreeBody;
+
+  /// Learning content for random scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Learn: Discover unknown configurations, experimental physics'**
+  String get scenarioLearnRandom;
+
+  /// Best for content for random scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Best for: Exploration and experimentation'**
+  String get scenarioBestRandom;
 
   /// Label for privacy policy link
   ///
@@ -1374,11 +1416,41 @@ abstract class AppLocalizations {
   /// **'Learning Objectives'**
   String get objectivesTitle;
 
-  /// Description of learning objectives
+  /// No description provided for @objectives1.
   ///
   /// In en, this message translates to:
-  /// **'• Understand how gravity shapes the cosmos\n• Observe stable vs. chaotic orbital systems\n• Learn why planets move in elliptical orbits\n• Discover how binary stars interact\n• See what happens when objects collide\n• Appreciate the three-body problem\'s complexity'**
-  String get objectivesDescription;
+  /// **'Understand how gravity shapes the cosmos'**
+  String get objectives1;
+
+  /// No description provided for @objectives2.
+  ///
+  /// In en, this message translates to:
+  /// **'Observe stable vs. chaotic orbital systems'**
+  String get objectives2;
+
+  /// No description provided for @objectives3.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn why planets move in elliptical orbits'**
+  String get objectives3;
+
+  /// No description provided for @objectives4.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover how binary stars interact'**
+  String get objectives4;
+
+  /// No description provided for @objectives5.
+  ///
+  /// In en, this message translates to:
+  /// **'See what happens when objects collide'**
+  String get objectives5;
+
+  /// No description provided for @objectives6.
+  ///
+  /// In en, this message translates to:
+  /// **'Appreciate the three-body problem\'s complexity'**
+  String get objectives6;
 
   /// Title for quick start section
   ///
@@ -1386,7 +1458,49 @@ abstract class AppLocalizations {
   /// **'Quick Start Guide'**
   String get quickStartTitle;
 
-  /// Quick start instructions
+  /// No description provided for @quickStart1.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a scenario (Solar System recommended for beginners)'**
+  String get quickStart1;
+
+  /// No description provided for @quickStart2.
+  ///
+  /// In en, this message translates to:
+  /// **'Press Play to start the simulation'**
+  String get quickStart2;
+
+  /// No description provided for @quickStart3.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to rotate your view, pinch to zoom'**
+  String get quickStart3;
+
+  /// No description provided for @quickStart4.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the Speed slider to control time'**
+  String get quickStart4;
+
+  /// No description provided for @quickStart5.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Reset for new random configurations'**
+  String get quickStart5;
+
+  /// No description provided for @quickStart6.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Trails to see orbital paths'**
+  String get quickStart6;
+
+  /// Description of learning objectives (fallback for languages without individual items)
+  ///
+  /// In en, this message translates to:
+  /// **'• Understand how gravity shapes the cosmos\n• Observe stable vs. chaotic orbital systems\n• Learn why planets move in elliptical orbits\n• Discover how binary stars interact\n• See what happens when objects collide\n• Appreciate the three-body problem\'s complexity'**
+  String get objectivesDescription;
+
+  /// Quick start instructions (fallback for languages without individual items)
   ///
   /// In en, this message translates to:
   /// **'1. Choose a scenario (Solar System recommended for beginners)\n2. Press Play to start the simulation\n3. Drag to rotate your view, pinch to zoom\n4. Tap the Speed slider to control time\n5. Try Reset for new random configurations\n6. Enable Trails to see orbital paths'**
@@ -1397,6 +1511,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Help & Objectives'**
   String get showHelpTooltip;
+
+  /// Button to show tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial'**
+  String get tutorialButton;
+
+  /// Button to reset tutorial state (debug only)
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetTutorialButton;
+
+  /// Message shown when tutorial state is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial state reset! Restart app to see first-time experience.'**
+  String get tutorialResetMessage;
+
+  /// Button to copy text to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copyButton;
+
+  /// Error message when URL cannot be opened
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open {url}'**
+  String couldNotOpenUrl(String url);
+
+  /// Error message when link fails to open
+  ///
+  /// In en, this message translates to:
+  /// **'Error opening link: {error}'**
+  String errorOpeningLink(String error);
+
+  /// Message shown when text is copied to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard: {text}'**
+  String copiedToClipboard(String text);
 }
 
 class _AppLocalizationsDelegate

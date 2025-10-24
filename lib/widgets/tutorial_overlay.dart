@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 
 /// Tutorial overlay that guides new users through the app
@@ -90,6 +91,26 @@ class _TutorialOverlayState extends State<TutorialOverlay>
     ]);
   }
 
+  /// Returns a different color for each tutorial icon
+  Color _getIconColor(int stepIndex) {
+    switch (stepIndex) {
+      case 0: // rocket_launch - Launch/Welcome
+        return AppColors.gravitonOrangeRed;
+      case 1: // school - Objectives/Learning
+        return AppColors.celestialTeal;
+      case 2: // smart_button - Controls
+        return AppColors.accretionGold;
+      case 3: // videocam - Camera
+        return AppColors.celestialBlue;
+      case 4: // science - Scenarios
+        return AppColors.spaceVibrantPurple;
+      case 5: // explore - Explore
+        return AppColors.celestialAmber;
+      default:
+        return AppColors.primaryColor; // Fallback
+    }
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -150,127 +171,162 @@ class _TutorialOverlayState extends State<TutorialOverlay>
 
                   // Tutorial content
                   Center(
-                    child: Container(
-                      margin: const EdgeInsets.all(32),
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.surface,
+                    child: GestureDetector(
+                      onPanEnd: (details) {
+                        // Detect swipe direction
+                        if (details.velocity.pixelsPerSecond.dx > 300) {
+                          // Swipe right - go to previous step
+                          _previousStep();
+                        } else if (details.velocity.pixelsPerSecond.dx < -300) {
+                          // Swipe left - go to next step
+                          _nextStep();
+                        }
+                      },
+                      child: Material(
                         borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.3),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
+                        elevation: 8,
+                        color: theme.colorScheme.surface,
+                        child: Container(
+                          margin: const EdgeInsets.all(32),
+                          padding: const EdgeInsets.all(24),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Step indicator
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(_steps.length, (index) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 4,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Step indicator
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(_steps.length, (index) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                    ),
+                                    width: 8,
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: index == _currentStep
+                                          ? _getIconColor(_currentStep)
+                                          : theme.colorScheme.onSurface
+                                                .withValues(alpha: 0.3),
+                                    ),
+                                  );
+                                }),
+                              ),
+                              const SizedBox(height: 8),
+
+                              // Swipe hint
+                              Text(
+                                'Swipe left/right or use buttons to navigate',
+                                style: AppTypography.smallText.copyWith(
+                                  color: theme.colorScheme.onSurface.withValues(
+                                    alpha: 0.6,
+                                  ),
+                                  fontSize: 11,
                                 ),
-                                width: 8,
-                                height: 8,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Icon or Logo
+                              Container(
+                                padding: const EdgeInsets.all(16),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: index == _currentStep
-                                      ? theme.colorScheme.primary
-                                      : theme.colorScheme.onSurface.withValues(
-                                          alpha: 0.3,
-                                        ),
-                                ),
-                              );
-                            }),
-                          ),
-                          const SizedBox(height: 24),
-
-                          // Icon or Logo
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: theme.colorScheme.primary.withValues(
-                                alpha: 0.1,
-                              ),
-                            ),
-                            child: step.isLogoStep
-                                ? Container(
-                                    width: 48,
-                                    height: 48,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                          'assets/images/app-logo.png',
-                                        ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  )
-                                : Icon(
-                                    step.icon,
-                                    size: 48,
-                                    color: theme.colorScheme.primary,
+                                  color: theme.colorScheme.primary.withValues(
+                                    alpha: 0.1,
                                   ),
-                          ),
-                          const SizedBox(height: 24),
-
-                          // Title
-                          Text(
-                            step.title,
-                            style: AppTypography.titleText,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 16),
-
-                          // Description - left aligned
-                          SizedBox(
-                            width: double.infinity,
-                            child: _buildDescriptionText(
-                              step.description,
-                              theme,
-                            ),
-                          ),
-                          const SizedBox(height: 32),
-
-                          // Navigation buttons
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Skip button
-                              TextButton(
-                                onPressed: _skipTutorial,
-                                child: Text(l10n.skipTutorial),
+                                ),
+                                child: step.isLogoStep
+                                    ? Container(
+                                        width: 48,
+                                        height: 48,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                              'assets/images/app-logo.png',
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      )
+                                    : Icon(
+                                        step.icon,
+                                        size: 48,
+                                        color: _getIconColor(_currentStep),
+                                      ),
                               ),
+                              const SizedBox(height: 24),
 
-                              // Previous/Next buttons
+                              // Title
+                              Text(
+                                step.title,
+                                style: AppTypography.titleText.copyWith(
+                                  color: theme.colorScheme.onSurface,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Description - left aligned
+                              SizedBox(
+                                width: double.infinity,
+                                child: _buildDescriptionText(
+                                  step.description,
+                                  theme,
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+
+                              // Navigation buttons
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  if (_currentStep > 0)
-                                    TextButton(
-                                      onPressed: _previousStep,
-                                      child: Text(l10n.previous),
-                                    ),
-                                  const SizedBox(width: 8),
-                                  ElevatedButton(
-                                    onPressed: _nextStep,
-                                    child: Text(
-                                      _currentStep == _steps.length - 1
-                                          ? l10n.getStarted
-                                          : l10n.next,
-                                    ),
+                                  // Skip button
+                                  TextButton(
+                                    onPressed: _skipTutorial,
+                                    child: Text(l10n.skipTutorial),
+                                  ),
+
+                                  // Previous/Next buttons
+                                  Row(
+                                    children: [
+                                      if (_currentStep > 0)
+                                        TextButton(
+                                          onPressed: _previousStep,
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: _getIconColor(
+                                              _currentStep,
+                                            ),
+                                          ),
+                                          child: Text(l10n.previous),
+                                        ),
+                                      const SizedBox(width: 8),
+                                      ElevatedButton(
+                                        onPressed: _nextStep,
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: _getIconColor(
+                                            _currentStep,
+                                          ),
+                                          foregroundColor: Colors.white,
+                                        ),
+                                        child: Text(
+                                          _currentStep == _steps.length - 1
+                                              ? l10n.getStarted
+                                              : l10n.next,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -294,7 +350,11 @@ class _TutorialOverlayState extends State<TutorialOverlay>
       // Regular text - left aligned for consistency
       return Text(
         description,
-        style: AppTypography.largeText.copyWith(height: 1.4),
+        style: AppTypography.largeText.copyWith(
+          height: 1.5,
+          color: theme.colorScheme.onSurface,
+          decoration: TextDecoration.none,
+        ),
         textAlign: TextAlign.left,
       );
     }
@@ -310,7 +370,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
       listItems.add(
         Padding(
           padding: EdgeInsets.only(
-            bottom: i < lines.length - 1 ? 8.0 : 0, // More space between items
+            bottom: i < lines.length - 1 ? 6.0 : 0, // More space between items
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,14 +400,18 @@ class _TutorialOverlayState extends State<TutorialOverlay>
       Text(
         '• ',
         style: AppTypography.largeText.copyWith(
-          height: 1.6,
+          height: 1.5,
           color: theme.colorScheme.primary,
         ),
       ),
       Expanded(
         child: Text(
           line.substring(2), // Remove the bullet
-          style: AppTypography.largeText.copyWith(height: 1.6),
+          style: AppTypography.largeText.copyWith(
+            height: 1.5,
+            color: theme.colorScheme.onSurface,
+            decoration: TextDecoration.none,
+          ),
         ),
       ),
     ];
@@ -361,7 +425,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
         Text(
           match.group(1)!, // The number part
           style: AppTypography.largeText.copyWith(
-            height: 1.6,
+            height: 1.5,
             fontWeight: FontWeight.w600,
             color: theme.colorScheme.primary,
           ),
@@ -369,7 +433,11 @@ class _TutorialOverlayState extends State<TutorialOverlay>
         Expanded(
           child: Text(
             match.group(2)!, // The text part
-            style: AppTypography.largeText.copyWith(height: 1.6),
+            style: AppTypography.largeText.copyWith(
+              height: 1.5,
+              color: theme.colorScheme.onSurface,
+              decoration: TextDecoration.none,
+            ),
           ),
         ),
       ];
@@ -382,7 +450,14 @@ class _TutorialOverlayState extends State<TutorialOverlay>
   List<Widget> _buildFallbackItem(String line, ThemeData theme) {
     return [
       Expanded(
-        child: Text(line, style: AppTypography.largeText.copyWith(height: 1.6)),
+        child: Text(
+          line,
+          style: AppTypography.largeText.copyWith(
+            height: 1.5,
+            color: theme.colorScheme.onSurface,
+            decoration: TextDecoration.none,
+          ),
+        ),
       ),
     ];
   }

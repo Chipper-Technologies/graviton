@@ -619,24 +619,48 @@ class AppLocalizationsEs extends AppLocalizations {
       'Problema clásico de tres cuerpos en movimiento elegante';
 
   @override
-  String get scenarioObjectivesSolar =>
-      '🎯 Aprende: Movimiento planetario, mecánica orbital, cuerpos celestes familiares\n⭐ Ideal para: Principiantes, entusiastas de la astronomía';
+  String get scenarioLearnEmoji => '🎯';
 
   @override
-  String get scenarioObjectivesEarthMoon =>
-      '🎯 Aprende: Dinámicas de tres cuerpos, mecánica lunar, fuerzas de marea\n⭐ Ideal para: Entender el sistema Tierra-Luna';
+  String get scenarioBestEmoji => '⭐';
 
   @override
-  String get scenarioObjectivesBinary =>
-      '🎯 Aprende: Evolución estelar, sistemas binarios, gravedad extrema\n⭐ Ideal para: Exploración avanzada de física';
+  String get scenarioLearnSolar =>
+      'Aprende: Movimiento planetario, mecánica orbital, cuerpos celestes familiares';
 
   @override
-  String get scenarioObjectivesThreeBody =>
-      '🎯 Aprende: Teoría del caos, movimiento impredecible, sistemas inestables\n⭐ Ideal para: Entusiastas de la física matemática';
+  String get scenarioBestSolar =>
+      'Ideal para: Principiantes, entusiastas de la astronomía';
 
   @override
-  String get scenarioObjectivesRandom =>
-      '🎯 Aprende: Descubre configuraciones desconocidas, física experimental\n⭐ Ideal para: Exploración y experimentación';
+  String get scenarioLearnEarthMoon =>
+      'Aprende: Dinámicas de tres cuerpos, mecánica lunar, fuerzas de marea';
+
+  @override
+  String get scenarioBestEarthMoon =>
+      'Ideal para: Entender el sistema Tierra-Luna';
+
+  @override
+  String get scenarioLearnBinary =>
+      'Aprende: Evolución estelar, sistemas binarios, gravedad extrema';
+
+  @override
+  String get scenarioBestBinary => 'Ideal para: Exploración avanzada de física';
+
+  @override
+  String get scenarioLearnThreeBody =>
+      'Aprende: Teoría del caos, movimiento impredecible, sistemas inestables';
+
+  @override
+  String get scenarioBestThreeBody =>
+      'Ideal para: Entusiastas de la física matemática';
+
+  @override
+  String get scenarioLearnRandom =>
+      'Aprende: Descubre configuraciones desconocidas, física experimental';
+
+  @override
+  String get scenarioBestRandom => 'Ideal para: Exploración y experimentación';
 
   @override
   String get privacyPolicyLabel => 'Política de Privacidad';
@@ -712,16 +736,87 @@ class AppLocalizationsEs extends AppLocalizations {
   String get objectivesTitle => 'Objetivos';
 
   @override
-  String get objectivesDescription =>
-      'Cada escenario tiene objetivos de aprendizaje específicos. Úsalos como guía para enfocar tu exploración.';
+  String get objectives1 => 'Comprender cómo la gravedad da forma al cosmos';
+
+  @override
+  String get objectives2 => 'Observar sistemas orbitales estables vs. caóticos';
+
+  @override
+  String get objectives3 =>
+      'Aprender por qué los planetas se mueven en órbitas elípticas';
+
+  @override
+  String get objectives4 => 'Descubrir cómo interactúan las estrellas binarias';
+
+  @override
+  String get objectives5 => 'Ver qué sucede cuando los objetos colisionan';
+
+  @override
+  String get objectives6 =>
+      'Apreciar la complejidad del problema de tres cuerpos';
 
   @override
   String get quickStartTitle => 'Inicio Rápido';
 
   @override
+  String get quickStart1 =>
+      'Elige un escenario (Sistema Solar recomendado para principiantes)';
+
+  @override
+  String get quickStart2 => 'Presiona Play para iniciar la simulación';
+
+  @override
+  String get quickStart3 =>
+      'Arrastra para rotar tu vista, pellizca para hacer zoom';
+
+  @override
+  String get quickStart4 =>
+      'Toca el deslizador de Velocidad para controlar el tiempo';
+
+  @override
+  String get quickStart5 =>
+      'Prueba Reiniciar para nuevas configuraciones aleatorias';
+
+  @override
+  String get quickStart6 =>
+      'Activa Rastros para ver las trayectorias orbitales';
+
+  @override
+  String get objectivesDescription =>
+      '• Comprender cómo la gravedad da forma al cosmos\n• Observar sistemas orbitales estables vs. caóticos\n• Aprender por qué los planetas se mueven en órbitas elípticas\n• Descubrir cómo interactúan las estrellas binarias\n• Ver qué sucede cuando los objetos colisionan\n• Apreciar la complejidad del problema de tres cuerpos';
+
+  @override
   String get quickStartDescription =>
-      'Nuevo en simulaciones de gravedad? Comienza con el escenario del Sistema Solar para familiarizarte con los controles básicos.';
+      '1. Elige un escenario (Sistema Solar recomendado para principiantes)\n2. Presiona Play para iniciar la simulación\n3. Arrastra para rotar tu vista, pellizca para hacer zoom\n4. Toca el deslizador de Velocidad para controlar el tiempo\n5. Prueba Reiniciar para nuevas configuraciones aleatorias\n6. Activa Rastros para ver las trayectorias orbitales';
 
   @override
   String get showHelpTooltip => 'Mostrar Ayuda';
+
+  @override
+  String get tutorialButton => 'Tutorial';
+
+  @override
+  String get resetTutorialButton => 'Reiniciar';
+
+  @override
+  String get tutorialResetMessage =>
+      '¡Estado del tutorial reiniciado! Reinicia la aplicación para ver la experiencia de primera vez.';
+
+  @override
+  String get copyButton => 'Copiar';
+
+  @override
+  String couldNotOpenUrl(String url) {
+    return 'No se pudo abrir $url';
+  }
+
+  @override
+  String errorOpeningLink(String error) {
+    return 'Error al abrir el enlace: $error';
+  }
+
+  @override
+  String copiedToClipboard(String text) {
+    return 'Copiado al portapapeles: $text';
+  }
 }

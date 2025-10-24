@@ -877,29 +877,64 @@
   "presetThreeBodyBallet": "Three-Body Ballet",
   "presetThreeBodyBalletDesc": "Classic three-body problem in elegant motion",
   
-  "scenarioObjectivesSolar": "🎯 Learn: Planetary motion, orbital mechanics, familiar celestial bodies\n⭐ Best for: Beginners, astronomy enthusiasts",
-  "@scenarioObjectivesSolar": {
-    "description": "Learning objectives for solar system scenario"
+  "scenarioLearnEmoji": "🎯",
+  "@scenarioLearnEmoji": {
+    "description": "Emoji for learning objectives"
   },
   
-  "scenarioObjectivesEarthMoon": "🎯 Learn: Three-body dynamics, lunar mechanics, tidal forces\n⭐ Best for: Understanding Earth-Moon system",
-  "@scenarioObjectivesEarthMoon": {
-    "description": "Learning objectives for Earth-Moon scenario"
+  "scenarioBestEmoji": "⭐",
+  "@scenarioBestEmoji": {
+    "description": "Emoji for best for section"
   },
   
-  "scenarioObjectivesBinary": "🎯 Learn: Stellar evolution, binary systems, extreme gravity\n⭐ Best for: Advanced physics exploration",
-  "@scenarioObjectivesBinary": {
-    "description": "Learning objectives for binary star scenario"
+  "scenarioLearnSolar": "Learn: Planetary motion, orbital mechanics, familiar celestial bodies",
+  "@scenarioLearnSolar": {
+    "description": "Learning content for solar system scenario"
   },
   
-  "scenarioObjectivesThreeBody": "🎯 Learn: Chaos theory, unpredictable motion, unstable systems\n⭐ Best for: Mathematical physics enthusiasts",
-  "@scenarioObjectivesThreeBody": {
-    "description": "Learning objectives for three-body scenario"
+  "scenarioBestSolar": "Best for: Beginners, astronomy enthusiasts",
+  "@scenarioBestSolar": {
+    "description": "Best for content for solar system scenario"
   },
   
-  "scenarioObjectivesRandom": "🎯 Learn: Discover unknown configurations, experimental physics\n⭐ Best for: Exploration and experimentation",
-  "@scenarioObjectivesRandom": {
-    "description": "Learning objectives for random scenario"
+  "scenarioLearnEarthMoon": "Learn: Three-body dynamics, lunar mechanics, tidal forces",
+  "@scenarioLearnEarthMoon": {
+    "description": "Learning content for Earth-Moon scenario"
+  },
+  
+  "scenarioBestEarthMoon": "Best for: Understanding Earth-Moon system",
+  "@scenarioBestEarthMoon": {
+    "description": "Best for content for Earth-Moon scenario"
+  },
+  
+  "scenarioLearnBinary": "Learn: Stellar evolution, binary systems, extreme gravity",
+  "@scenarioLearnBinary": {
+    "description": "Learning content for binary star scenario"
+  },
+  
+  "scenarioBestBinary": "Best for: Advanced physics exploration",
+  "@scenarioBestBinary": {
+    "description": "Best for content for binary star scenario"
+  },
+  
+  "scenarioLearnThreeBody": "Learn: Chaos theory, unpredictable motion, unstable systems",
+  "@scenarioLearnThreeBody": {
+    "description": "Learning content for three-body scenario"
+  },
+  
+  "scenarioBestThreeBody": "Best for: Mathematical physics enthusiasts",
+  "@scenarioBestThreeBody": {
+    "description": "Best for content for three-body scenario"
+  },
+  
+  "scenarioLearnRandom": "Learn: Discover unknown configurations, experimental physics",
+  "@scenarioLearnRandom": {
+    "description": "Learning content for random scenario"
+  },
+  
+  "scenarioBestRandom": "Best for: Exploration and experimentation",
+  "@scenarioBestRandom": {
+    "description": "Best for content for random scenario"
   },
   
   "privacyPolicyLabel": "Privacy Policy",
@@ -1012,23 +1047,87 @@
     "description": "Title for learning objectives section"
   },
 
-  "objectivesDescription": "• Understand how gravity shapes the cosmos\n• Observe stable vs. chaotic orbital systems\n• Learn why planets move in elliptical orbits\n• Discover how binary stars interact\n• See what happens when objects collide\n• Appreciate the three-body problem's complexity",
-  "@objectivesDescription": {
-    "description": "Description of learning objectives"
-  },
+  "objectives1": "Understand how gravity shapes the cosmos",
+  "objectives2": "Observe stable vs. chaotic orbital systems", 
+  "objectives3": "Learn why planets move in elliptical orbits",
+  "objectives4": "Discover how binary stars interact",
+  "objectives5": "See what happens when objects collide",
+  "objectives6": "Appreciate the three-body problem's complexity",
 
   "quickStartTitle": "Quick Start Guide",
   "@quickStartTitle": {
     "description": "Title for quick start section"
   },
 
+  "quickStart1": "Choose a scenario (Solar System recommended for beginners)",
+  "quickStart2": "Press Play to start the simulation",
+  "quickStart3": "Drag to rotate your view, pinch to zoom",
+  "quickStart4": "Tap the Speed slider to control time",
+  "quickStart5": "Try Reset for new random configurations",
+  "quickStart6": "Enable Trails to see orbital paths",
+
+  "objectivesDescription": "• Understand how gravity shapes the cosmos\n• Observe stable vs. chaotic orbital systems\n• Learn why planets move in elliptical orbits\n• Discover how binary stars interact\n• See what happens when objects collide\n• Appreciate the three-body problem's complexity",
+  "@objectivesDescription": {
+    "description": "Description of learning objectives (fallback for languages without individual items)"
+  },
+
   "quickStartDescription": "1. Choose a scenario (Solar System recommended for beginners)\n2. Press Play to start the simulation\n3. Drag to rotate your view, pinch to zoom\n4. Tap the Speed slider to control time\n5. Try Reset for new random configurations\n6. Enable Trails to see orbital paths",
   "@quickStartDescription": {
-    "description": "Quick start instructions"
+    "description": "Quick start instructions (fallback for languages without individual items)"
   },
 
   "showHelpTooltip": "Help & Objectives",
   "@showHelpTooltip": {
     "description": "Tooltip for help button"
+  },
+
+  "tutorialButton": "Tutorial",
+  "@tutorialButton": {
+    "description": "Button to show tutorial"
+  },
+
+  "resetTutorialButton": "Reset",
+  "@resetTutorialButton": {
+    "description": "Button to reset tutorial state (debug only)"
+  },
+
+  "tutorialResetMessage": "Tutorial state reset! Restart app to see first-time experience.",
+  "@tutorialResetMessage": {
+    "description": "Message shown when tutorial state is reset"
+  },
+
+  "copyButton": "Copy",
+  "@copyButton": {
+    "description": "Button to copy text to clipboard"
+  },
+
+  "couldNotOpenUrl": "Could not open {url}",
+  "@couldNotOpenUrl": {
+    "description": "Error message when URL cannot be opened",
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+
+  "errorOpeningLink": "Error opening link: {error}",
+  "@errorOpeningLink": {
+    "description": "Error message when link fails to open",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "copiedToClipboard": "Copied to clipboard: {text}",
+  "@copiedToClipboard": {
+    "description": "Message shown when text is copied to clipboard",
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
   }
 }

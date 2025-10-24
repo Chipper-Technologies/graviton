@@ -617,24 +617,47 @@ class AppLocalizationsEn extends AppLocalizations {
       'Classic three-body problem in elegant motion';
 
   @override
-  String get scenarioObjectivesSolar =>
-      '🎯 Learn: Planetary motion, orbital mechanics, familiar celestial bodies\n⭐ Best for: Beginners, astronomy enthusiasts';
+  String get scenarioLearnEmoji => '🎯';
 
   @override
-  String get scenarioObjectivesEarthMoon =>
-      '🎯 Learn: Three-body dynamics, lunar mechanics, tidal forces\n⭐ Best for: Understanding Earth-Moon system';
+  String get scenarioBestEmoji => '⭐';
 
   @override
-  String get scenarioObjectivesBinary =>
-      '🎯 Learn: Stellar evolution, binary systems, extreme gravity\n⭐ Best for: Advanced physics exploration';
+  String get scenarioLearnSolar =>
+      'Learn: Planetary motion, orbital mechanics, familiar celestial bodies';
 
   @override
-  String get scenarioObjectivesThreeBody =>
-      '🎯 Learn: Chaos theory, unpredictable motion, unstable systems\n⭐ Best for: Mathematical physics enthusiasts';
+  String get scenarioBestSolar => 'Best for: Beginners, astronomy enthusiasts';
 
   @override
-  String get scenarioObjectivesRandom =>
-      '🎯 Learn: Discover unknown configurations, experimental physics\n⭐ Best for: Exploration and experimentation';
+  String get scenarioLearnEarthMoon =>
+      'Learn: Three-body dynamics, lunar mechanics, tidal forces';
+
+  @override
+  String get scenarioBestEarthMoon =>
+      'Best for: Understanding Earth-Moon system';
+
+  @override
+  String get scenarioLearnBinary =>
+      'Learn: Stellar evolution, binary systems, extreme gravity';
+
+  @override
+  String get scenarioBestBinary => 'Best for: Advanced physics exploration';
+
+  @override
+  String get scenarioLearnThreeBody =>
+      'Learn: Chaos theory, unpredictable motion, unstable systems';
+
+  @override
+  String get scenarioBestThreeBody =>
+      'Best for: Mathematical physics enthusiasts';
+
+  @override
+  String get scenarioLearnRandom =>
+      'Learn: Discover unknown configurations, experimental physics';
+
+  @override
+  String get scenarioBestRandom => 'Best for: Exploration and experimentation';
 
   @override
   String get privacyPolicyLabel => 'Privacy Policy';
@@ -710,11 +733,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get objectivesTitle => 'Learning Objectives';
 
   @override
-  String get objectivesDescription =>
-      '• Understand how gravity shapes the cosmos\n• Observe stable vs. chaotic orbital systems\n• Learn why planets move in elliptical orbits\n• Discover how binary stars interact\n• See what happens when objects collide\n• Appreciate the three-body problem\'s complexity';
+  String get objectives1 => 'Understand how gravity shapes the cosmos';
+
+  @override
+  String get objectives2 => 'Observe stable vs. chaotic orbital systems';
+
+  @override
+  String get objectives3 => 'Learn why planets move in elliptical orbits';
+
+  @override
+  String get objectives4 => 'Discover how binary stars interact';
+
+  @override
+  String get objectives5 => 'See what happens when objects collide';
+
+  @override
+  String get objectives6 => 'Appreciate the three-body problem\'s complexity';
 
   @override
   String get quickStartTitle => 'Quick Start Guide';
+
+  @override
+  String get quickStart1 =>
+      'Choose a scenario (Solar System recommended for beginners)';
+
+  @override
+  String get quickStart2 => 'Press Play to start the simulation';
+
+  @override
+  String get quickStart3 => 'Drag to rotate your view, pinch to zoom';
+
+  @override
+  String get quickStart4 => 'Tap the Speed slider to control time';
+
+  @override
+  String get quickStart5 => 'Try Reset for new random configurations';
+
+  @override
+  String get quickStart6 => 'Enable Trails to see orbital paths';
+
+  @override
+  String get objectivesDescription =>
+      '• Understand how gravity shapes the cosmos\n• Observe stable vs. chaotic orbital systems\n• Learn why planets move in elliptical orbits\n• Discover how binary stars interact\n• See what happens when objects collide\n• Appreciate the three-body problem\'s complexity';
 
   @override
   String get quickStartDescription =>
@@ -722,4 +782,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get showHelpTooltip => 'Help & Objectives';
+
+  @override
+  String get tutorialButton => 'Tutorial';
+
+  @override
+  String get resetTutorialButton => 'Reset';
+
+  @override
+  String get tutorialResetMessage =>
+      'Tutorial state reset! Restart app to see first-time experience.';
+
+  @override
+  String get copyButton => 'Copy';
+
+  @override
+  String couldNotOpenUrl(String url) {
+    return 'Could not open $url';
+  }
+
+  @override
+  String errorOpeningLink(String error) {
+    return 'Error opening link: $error';
+  }
+
+  @override
+  String copiedToClipboard(String text) {
+    return 'Copied to clipboard: $text';
+  }
 }

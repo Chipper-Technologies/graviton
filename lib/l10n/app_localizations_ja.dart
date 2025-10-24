@@ -590,24 +590,40 @@ class AppLocalizationsJa extends AppLocalizations {
   String get presetThreeBodyBalletDesc => 'エレガントな動きの古典的三体問題';
 
   @override
-  String get scenarioObjectivesSolar =>
-      '🎯 学習内容: 惑星運動、軌道力学、身近な天体\n⭐ 最適対象: 初心者、天文学愛好家';
+  String get scenarioLearnEmoji => '🎯';
 
   @override
-  String get scenarioObjectivesEarthMoon =>
-      '🎯 学習内容: 三体力学、月の力学、潮汐力\n⭐ 最適対象: 地球-月システムの理解';
+  String get scenarioBestEmoji => '⭐';
 
   @override
-  String get scenarioObjectivesBinary =>
-      '🎯 学習内容: 恒星進化、連星系、極端重力\n⭐ 最適対象: 高度な物理学探究';
+  String get scenarioLearnSolar => '学習内容: 惑星運動、軌道力学、身近な天体';
 
   @override
-  String get scenarioObjectivesThreeBody =>
-      '🎯 学習内容: カオス理論、予測不可能な運動、不安定システム\n⭐ 最適対象: 数理物理学愛好家';
+  String get scenarioBestSolar => '最適対象: 初心者、天文学愛好家';
 
   @override
-  String get scenarioObjectivesRandom =>
-      '🎯 学習内容: 未知の構成発見、実験物理学\n⭐ 最適対象: 探索と実験';
+  String get scenarioLearnEarthMoon => '学習内容: 三体力学、月の力学、潮汐力';
+
+  @override
+  String get scenarioBestEarthMoon => '最適対象: 地球-月システムの理解';
+
+  @override
+  String get scenarioLearnBinary => '学習内容: 恒星進化、連星系、極端重力';
+
+  @override
+  String get scenarioBestBinary => '最適対象: 高度な物理学探究';
+
+  @override
+  String get scenarioLearnThreeBody => '学習内容: カオス理論、予測不可能な運動、不安定システム';
+
+  @override
+  String get scenarioBestThreeBody => '最適対象: 数理物理学愛好家';
+
+  @override
+  String get scenarioLearnRandom => '学習内容: 未知の構成発見、実験物理学';
+
+  @override
+  String get scenarioBestRandom => '最適対象: 探索と実験';
 
   @override
   String get privacyPolicyLabel => 'プライバシーポリシー';
@@ -683,11 +699,47 @@ class AppLocalizationsJa extends AppLocalizations {
   String get objectivesTitle => '学習目標';
 
   @override
-  String get objectivesDescription =>
-      '• 重力が宇宙をどう形作るかを理解\n• 安定対混沌軌道系を観察\n• なぜ惑星が楕円軌道で動くかを学習\n• 連星がどう相互作用するかを発見\n• オブジェクトが衝突するとどうなるかを観察\n• 三体問題の複雑さを理解';
+  String get objectives1 => '重力が宇宙をどう形作るかを理解';
+
+  @override
+  String get objectives2 => '安定対混沌軌道系を観察';
+
+  @override
+  String get objectives3 => 'なぜ惑星が楕円軌道で動くかを学習';
+
+  @override
+  String get objectives4 => '連星がどう相互作用するかを発見';
+
+  @override
+  String get objectives5 => 'オブジェクトが衝突するとどうなるかを観察';
+
+  @override
+  String get objectives6 => '三体問題の複雑さを理解';
 
   @override
   String get quickStartTitle => 'クイックスタートガイド';
+
+  @override
+  String get quickStart1 => 'シナリオを選択（初心者には太陽系推奨）';
+
+  @override
+  String get quickStart2 => '再生を押してシミュレーション開始';
+
+  @override
+  String get quickStart3 => 'ドラッグでビュー回転、ピンチでズーム';
+
+  @override
+  String get quickStart4 => '速度スライダーをタップして時間制御';
+
+  @override
+  String get quickStart5 => 'リセットで新しいランダム構成を試行';
+
+  @override
+  String get quickStart6 => '軌跡を有効にして軌道パスを表示';
+
+  @override
+  String get objectivesDescription =>
+      '• 重力が宇宙をどう形作るかを理解\n• 安定対混沌軌道系を観察\n• なぜ惑星が楕円軌道で動くかを学習\n• 連星がどう相互作用するかを発見\n• オブジェクトが衝突するとどうなるかを観察\n• 三体問題の複雑さを理解';
 
   @override
   String get quickStartDescription =>
@@ -695,4 +747,32 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get showHelpTooltip => 'ヘルプと目標';
+
+  @override
+  String get tutorialButton => 'チュートリアル';
+
+  @override
+  String get resetTutorialButton => 'リセット';
+
+  @override
+  String get tutorialResetMessage =>
+      'チュートリアルの状態がリセットされました！アプリを再起動して初回体験を確認してください。';
+
+  @override
+  String get copyButton => 'コピー';
+
+  @override
+  String couldNotOpenUrl(String url) {
+    return '$urlを開けませんでした';
+  }
+
+  @override
+  String errorOpeningLink(String error) {
+    return 'リンクを開くエラー：$error';
+  }
+
+  @override
+  String copiedToClipboard(String text) {
+    return 'クリップボードにコピーしました：$text';
+  }
 }

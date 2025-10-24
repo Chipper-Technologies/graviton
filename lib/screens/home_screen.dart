@@ -26,6 +26,9 @@ import 'package:graviton/widgets/stats_overlay.dart';
 import 'package:graviton/widgets/version_check_dialog.dart';
 import 'package:graviton/widgets/help_dialog.dart';
 import 'package:graviton/widgets/tutorial_overlay.dart';
+import 'package:graviton/widgets/app_bar_speed_control.dart';
+import 'package:graviton/widgets/app_bar_more_menu.dart';
+import 'package:graviton/widgets/floating_simulation_controls.dart';
 import 'package:graviton/services/onboarding_service.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
@@ -242,6 +245,7 @@ class _HomeScreenState extends State<HomeScreen>
       UIAction.dialogOpened,
       element: UIElement.settings,
     );
+
     showDialog<void>(
       context: context,
       builder: (context) => const SettingsDialog(),
@@ -253,6 +257,7 @@ class _HomeScreenState extends State<HomeScreen>
       UIAction.dialogOpened,
       element: UIElement.help,
     );
+
     showDialog<void>(
       context: context,
       builder: (context) => const HelpDialog(),
@@ -324,9 +329,9 @@ class _HomeScreenState extends State<HomeScreen>
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        width: 32,
-                        height: 32,
-                        margin: const EdgeInsets.only(right: 12),
+                        width: 28,
+                        height: 28,
+                        margin: const EdgeInsets.only(right: 8),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
@@ -341,69 +346,26 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),
                       ),
-                      Text(l10n.appTitle),
+                      Flexible(
+                        child: Text(
+                          l10n.appTitle,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                   backgroundColor: AppColors.uiBlack.withValues(
                     alpha: AppTypography.opacityMedium,
                   ),
                   actions: [
-                    IconButton(
-                      tooltip: l10n.showHelpTooltip,
-                      onPressed: () => _showHelpDialog(context),
-                      icon: const Icon(Icons.help_outline),
-                    ),
-                    IconButton(
-                      tooltip: l10n.settingsTooltip,
-                      onPressed: () => _showSettings(context),
-                      icon: const Icon(Icons.settings),
-                    ),
-                    IconButton(
-                      tooltip: l10n.selectScenarioTooltip,
-                      onPressed: () => _showScenarioSelection(context),
-                      icon: const Icon(Icons.science),
-                    ),
-                    IconButton(
-                      tooltip: appState.simulation.isPaused
-                          ? l10n.playButton
-                          : l10n.pauseButton,
-                      onPressed: () {
-                        final action = appState.simulation.isPaused
-                            ? 'play'
-                            : 'pause';
-                        FirebaseService.instance.logUIEventWithEnums(
-                          UIAction.buttonPressed,
-                          element: UIElement.simulationControl,
-                          value: action,
-                        );
-                        appState.simulation.pause();
-                      },
-                      icon: Icon(
-                        appState.simulation.isPaused
-                            ? Icons.play_arrow
-                            : Icons.pause,
-                      ),
-                    ),
-                    IconButton(
-                      tooltip: l10n.resetButton,
-                      onPressed: () {
-                        FirebaseService.instance.logUIEventWithEnums(
-                          UIAction.buttonPressed,
-                          element: UIElement.simulationControl,
-                          value: 'reset',
-                        );
+                    // Speed control - now prominent in app bar
+                    const AppBarSpeedControl(),
 
-                        // Check if screenshot mode is active and deactivate it first
-                        final screenshotService = ScreenshotModeService();
-                        if (screenshotService.isActive) {
-                          screenshotService.deactivate(uiState: appState.ui);
-                        }
-
-                        // Reset timing to prevent timing issues after reset
-                        _lastElapsed = Duration.zero;
-                        appState.resetAll();
-                      },
-                      icon: const Icon(Icons.refresh),
+                    // Secondary functions in more menu
+                    AppBarMoreMenu(
+                      onShowHelp: () => _showHelpDialog(context),
+                      onShowSettings: () => _showSettings(context),
+                      onShowScenarios: () => _showScenarioSelection(context),
                     ),
                   ],
                 ),
@@ -528,6 +490,8 @@ class _HomeScreenState extends State<HomeScreen>
                     ScreenshotCountdown(
                       screenshotService: _screenshotModeService,
                     ),
+                    // Floating video-style simulation controls
+                    if (!shouldHideUI) const FloatingSimulationControls(),
                     if (!shouldHideUI) const CopyrightText(),
                   ],
                 ),
