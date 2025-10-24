@@ -114,7 +114,9 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                             color: AppColors.uiBlack.withValues(
                               alpha: AppTypography.opacityMedium,
                             ),
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(
+                              AppTypography.radiusXXLarge,
+                            ),
                             border: Border.all(
                               color: AppColors.uiWhite.withValues(
                                 alpha: AppTypography.opacityVeryFaint,
@@ -157,7 +159,9 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                                 isPrimary: true,
                               ),
 
-                              const SizedBox(width: 12),
+                              const SizedBox(
+                                width: AppTypography.spacingMedium,
+                              ),
 
                               // Reset Button
                               _buildControlButton(
@@ -211,7 +215,7 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
         color: Colors.transparent,
         child: InkWell(
           onTap: onPressed,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             child: Column(
@@ -228,7 +232,9 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                         : AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityVeryFaint,
                           ),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(
+                      AppTypography.radiusXXLarge,
+                    ),
                     border: isPrimary
                         ? null
                         : Border.all(
@@ -248,7 +254,7 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                     size: 20,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTypography.spacingXSmall),
                 Text(
                   tooltip,
                   style: TextStyle(

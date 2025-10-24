@@ -258,6 +258,84 @@ abstract class AppLocalizations {
   /// **'Simulation parameters'**
   String get physicsSettingsDescription;
 
+  /// Physics section header in simulation settings
+  ///
+  /// In en, this message translates to:
+  /// **'Physics'**
+  String get physicsSection;
+
+  /// Label for gravitational constant slider
+  ///
+  /// In en, this message translates to:
+  /// **'Gravitational Constant'**
+  String get gravitationalConstant;
+
+  /// Label for softening parameter slider
+  ///
+  /// In en, this message translates to:
+  /// **'Softening Parameter'**
+  String get softeningParameter;
+
+  /// Label for simulation speed slider
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation Speed'**
+  String get simulationSpeed;
+
+  /// Collisions section header in simulation settings
+  ///
+  /// In en, this message translates to:
+  /// **'Collisions'**
+  String get collisionsSection;
+
+  /// Label for collision sensitivity slider
+  ///
+  /// In en, this message translates to:
+  /// **'Collision Sensitivity'**
+  String get collisionSensitivity;
+
+  /// Trails section header in simulation settings
+  ///
+  /// In en, this message translates to:
+  /// **'Trails'**
+  String get trailsSection;
+
+  /// Label for trail length slider
+  ///
+  /// In en, this message translates to:
+  /// **'Trail Length'**
+  String get trailLength;
+
+  /// Label for trail fade rate slider
+  ///
+  /// In en, this message translates to:
+  /// **'Trail Fade Rate'**
+  String get trailFadeRate;
+
+  /// Haptics section header in simulation settings
+  ///
+  /// In en, this message translates to:
+  /// **'Haptics'**
+  String get hapticsSection;
+
+  /// Label for vibration enabled toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration Enabled'**
+  String get vibrationEnabled;
+
+  /// Description for vibration enabled toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Haptic feedback on collisions'**
+  String get hapticFeedbackCollisions;
+
+  /// Label for vibration throttle slider
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration Throttle'**
+  String get vibrationThrottle;
+
   /// Description for the scenarios menu item
   ///
   /// In en, this message translates to:
@@ -857,6 +935,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sun'**
   String get bodySun;
+
+  /// Title for the body properties dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Body Properties'**
+  String get bodyPropertiesTitle;
+
+  /// Label for body name field
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get bodyPropertiesName;
+
+  /// Hint text for body name input field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter body name'**
+  String get bodyPropertiesNameHint;
+
+  /// Label for body type field
+  ///
+  /// In en, this message translates to:
+  /// **'Body Type'**
+  String get bodyPropertiesType;
+
+  /// Label for body color field
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get bodyPropertiesColor;
+
+  /// Label for body mass field
+  ///
+  /// In en, this message translates to:
+  /// **'Mass'**
+  String get bodyPropertiesMass;
+
+  /// Label for body radius field
+  ///
+  /// In en, this message translates to:
+  /// **'Radius'**
+  String get bodyPropertiesRadius;
+
+  /// Label for stellar luminosity field
+  ///
+  /// In en, this message translates to:
+  /// **'Stellar Luminosity'**
+  String get bodyPropertiesLuminosity;
+
+  /// Label for velocity field
+  ///
+  /// In en, this message translates to:
+  /// **'Velocity'**
+  String get bodyPropertiesVelocity;
+
+  /// Label for X axis
+  ///
+  /// In en, this message translates to:
+  /// **'X:'**
+  String get bodyPropertiesAxisX;
+
+  /// Label for Y axis
+  ///
+  /// In en, this message translates to:
+  /// **'Y:'**
+  String get bodyPropertiesAxisY;
+
+  /// Label for Z axis
+  ///
+  /// In en, this message translates to:
+  /// **'Z:'**
+  String get bodyPropertiesAxisZ;
 
   /// Name for Earth
   ///

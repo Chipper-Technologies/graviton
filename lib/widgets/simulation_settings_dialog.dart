@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/physics_settings.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
+import 'package:graviton/theme/app_typography.dart';
 
 class SimulationSettingsDialog extends StatefulWidget {
   final double gravitationalConstant;
@@ -73,211 +76,232 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
+      ),
       child: Container(
         constraints: AppConstraints.dialogMedium,
-        padding: AppConstraints.dialogPadding,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Header
-            Row(
-              children: [
-                Icon(
-                  Icons.settings,
-                  color: theme.colorScheme.primary,
-                  size: 28,
+            // Header with gradient
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityMidFade,
+                    ),
+                    AppColors.primaryColor.withValues(
+                      alpha: 0.05,
+                    ), // No exact constant available
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                const SizedBox(width: 12),
-                Text(
-                  'Simulation Settings',
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    color: theme.colorScheme.onSurface,
-                    fontWeight: FontWeight.bold,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(AppTypography.radiusXLarge),
+                  topRight: Radius.circular(AppTypography.radiusXLarge),
+                ),
+              ),
+              padding: const EdgeInsets.all(AppTypography.spacingLarge),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.science,
+                    color: AppColors.primaryColor,
+                    size: AppTypography.fontSizeHeader,
                   ),
-                ),
-              ],
+                  const SizedBox(width: AppTypography.spacingMedium),
+                  Text(
+                    l10n.physicsSettingsTitle,
+                    style: theme.textTheme.headlineSmall,
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 24),
-
-            // Settings content
+            // Content section
             Flexible(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Physics section
-                    _buildSectionHeader('Physics', Icons.science),
-                    const SizedBox(height: 16),
+              child: Padding(
+                padding: AppConstraints.dialogPadding,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Physics section
+                      _buildSectionHeader(l10n.physicsSection, Icons.science),
+                      const SizedBox(height: AppTypography.spacingLarge),
 
-                    _buildSlider(
-                      label: 'Gravitational Constant',
-                      value: _gravitationalConstant,
-                      min: 0.1,
-                      max: 10.0,
-                      divisions: 99,
-                      icon: Icons.public,
-                      onChanged: (value) {
-                        setState(() => _gravitationalConstant = value);
-                        _updateSettings();
-                      },
-                      formatter: (value) => value.toStringAsFixed(2),
-                    ),
-
-                    _buildSlider(
-                      label: 'Softening Parameter',
-                      value: _softening,
-                      min: 0.01,
-                      max: 2.0,
-                      divisions: 199,
-                      icon: Icons.blur_on,
-                      onChanged: (value) {
-                        setState(() => _softening = value);
-                        _updateSettings();
-                      },
-                      formatter: (value) => value.toStringAsFixed(3),
-                    ),
-
-                    _buildSlider(
-                      label: 'Simulation Speed',
-                      value: _timeScale,
-                      min: 0.1,
-                      max: 16.0,
-                      divisions: 159,
-                      icon: Icons.speed,
-                      onChanged: (value) {
-                        setState(() => _timeScale = value);
-                        _updateSettings();
-                      },
-                      formatter: (value) => '${value.toStringAsFixed(1)}x',
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // Collision section
-                    _buildSectionHeader('Collisions', Icons.adjust),
-                    const SizedBox(height: 16),
-
-                    _buildSlider(
-                      label: 'Collision Sensitivity',
-                      value: _collisionRadiusMultiplier,
-                      min: 0.05,
-                      max: 1.0,
-                      divisions: 95,
-                      icon: Icons.radio_button_unchecked,
-                      onChanged: (value) {
-                        setState(() => _collisionRadiusMultiplier = value);
-                        _updateSettings();
-                      },
-                      formatter: (value) =>
-                          '${(value * 100).toStringAsFixed(0)}%',
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // Trails section
-                    _buildSectionHeader('Trails', Icons.timeline),
-                    const SizedBox(height: 16),
-
-                    _buildSlider(
-                      label: 'Trail Length',
-                      value: _maxTrailPoints,
-                      min: 50,
-                      max: 1000,
-                      divisions: 95,
-                      icon: Icons.linear_scale,
-                      onChanged: (value) {
-                        setState(() => _maxTrailPoints = value);
-                        _updateSettings();
-                      },
-                      formatter: (value) => value.toStringAsFixed(0),
-                    ),
-
-                    _buildSlider(
-                      label: 'Trail Fade Rate',
-                      value: _trailFadeRate,
-                      min: 0.1,
-                      max: 2.0,
-                      divisions: 19,
-                      icon: Icons.opacity,
-                      onChanged: (value) {
-                        setState(() => _trailFadeRate = value);
-                        _updateSettings();
-                      },
-                      formatter: (value) => value.toStringAsFixed(1),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // Haptics section
-                    _buildSectionHeader('Haptics', Icons.vibration),
-                    const SizedBox(height: 16),
-
-                    SwitchListTile(
-                      title: Text(
-                        'Vibration Enabled',
-                        style: theme.textTheme.bodyLarge,
-                      ),
-                      subtitle: Text(
-                        'Haptic feedback on collisions',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                      value: _vibrationEnabled,
-                      onChanged: (value) {
-                        setState(() => _vibrationEnabled = value);
-                        _updateSettings();
-                      },
-                      activeThumbColor: theme.colorScheme.primary,
-                      contentPadding: EdgeInsets.zero,
-                    ),
-
-                    if (_vibrationEnabled) ...[
-                      const SizedBox(height: 8),
                       _buildSlider(
-                        label: 'Vibration Throttle',
-                        value: _vibrationThrottleTime,
+                        label: l10n.gravitationalConstant,
+                        value: _gravitationalConstant,
+                        min: 0.1,
+                        max: 10.0,
+                        divisions: 99,
+                        icon: Icons.public,
+                        onChanged: (value) {
+                          setState(() => _gravitationalConstant = value);
+                          _updateSettings();
+                        },
+                        formatter: (value) => value.toStringAsFixed(2),
+                      ),
+
+                      _buildSlider(
+                        label: l10n.softeningParameter,
+                        value: _softening,
+                        min: 0.01,
+                        max: 2.0,
+                        divisions: 199,
+                        icon: Icons.blur_on,
+                        onChanged: (value) {
+                          setState(() => _softening = value);
+                          _updateSettings();
+                        },
+                        formatter: (value) => value.toStringAsFixed(3),
+                      ),
+
+                      _buildSlider(
+                        label: l10n.simulationSpeed,
+                        value: _timeScale,
+                        min: 0.1,
+                        max: 16.0,
+                        divisions: 159,
+                        icon: Icons.speed,
+                        onChanged: (value) {
+                          setState(() => _timeScale = value);
+                          _updateSettings();
+                        },
+                        formatter: (value) => '${value.toStringAsFixed(1)}x',
+                      ),
+
+                      const SizedBox(height: AppTypography.spacingXXLarge),
+
+                      // Collision section
+                      _buildSectionHeader(l10n.collisionsSection, Icons.adjust),
+                      const SizedBox(height: AppTypography.spacingLarge),
+
+                      _buildSlider(
+                        label: l10n.collisionSensitivity,
+                        value: _collisionRadiusMultiplier,
                         min: 0.05,
                         max: 1.0,
                         divisions: 95,
-                        icon: Icons.timer,
+                        icon: Icons.radio_button_unchecked,
                         onChanged: (value) {
-                          setState(() => _vibrationThrottleTime = value);
+                          setState(() => _collisionRadiusMultiplier = value);
                           _updateSettings();
                         },
                         formatter: (value) =>
-                            '${(value * 1000).toStringAsFixed(0)}ms',
+                            '${(value * 100).toStringAsFixed(0)}%',
                       ),
+
+                      const SizedBox(height: AppTypography.spacingXXLarge),
+
+                      // Trails section
+                      _buildSectionHeader(l10n.trailsSection, Icons.timeline),
+                      const SizedBox(height: AppTypography.spacingLarge),
+
+                      _buildSlider(
+                        label: l10n.trailLength,
+                        value: _maxTrailPoints,
+                        min: 50,
+                        max: 1000,
+                        divisions: 95,
+                        icon: Icons.linear_scale,
+                        onChanged: (value) {
+                          setState(() => _maxTrailPoints = value);
+                          _updateSettings();
+                        },
+                        formatter: (value) => value.toStringAsFixed(0),
+                      ),
+
+                      _buildSlider(
+                        label: l10n.trailFadeRate,
+                        value: _trailFadeRate,
+                        min: 0.1,
+                        max: 2.0,
+                        divisions: 19,
+                        icon: Icons.opacity,
+                        onChanged: (value) {
+                          setState(() => _trailFadeRate = value);
+                          _updateSettings();
+                        },
+                        formatter: (value) => value.toStringAsFixed(1),
+                      ),
+
+                      const SizedBox(height: AppTypography.spacingXXLarge),
+
+                      // Haptics section
+                      _buildSectionHeader(l10n.hapticsSection, Icons.vibration),
+                      const SizedBox(height: AppTypography.spacingLarge),
+
+                      SwitchListTile(
+                        title: Text(
+                          l10n.vibrationEnabled,
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                        subtitle: Text(
+                          l10n.hapticFeedbackCollisions,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                        value: _vibrationEnabled,
+                        onChanged: (value) {
+                          setState(() => _vibrationEnabled = value);
+                          _updateSettings();
+                        },
+                        activeThumbColor: theme.colorScheme.primary,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+
+                      if (_vibrationEnabled) ...[
+                        const SizedBox(height: 8),
+                        _buildSlider(
+                          label: l10n.vibrationThrottle,
+                          value: _vibrationThrottleTime,
+                          min: 0.05,
+                          max: 1.0,
+                          divisions: 95,
+                          icon: Icons.timer,
+                          onChanged: (value) {
+                            setState(() => _vibrationThrottleTime = value);
+                            _updateSettings();
+                          },
+                          formatter: (value) =>
+                              '${(value * 1000).toStringAsFixed(0)}ms',
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),
 
-            const SizedBox(height: 24),
-
-            // Reset and Close buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton.icon(
-                  onPressed: _resetToDefaults,
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('Reset'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: theme.colorScheme.onSurfaceVariant,
+            // Footer
+            Padding(
+              padding: const EdgeInsets.all(AppTypography.spacingLarge),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton.icon(
+                    onPressed: _resetToDefaults,
+                    icon: const Icon(Icons.refresh),
+                    label: Text(l10n.resetButton),
+                    style: TextButton.styleFrom(
+                      foregroundColor: theme.colorScheme.primary,
+                    ),
                   ),
-                ),
-                FilledButton.icon(
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: const Icon(Icons.check),
-                  label: const Text('Done'),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -289,8 +313,12 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
     final theme = Theme.of(context);
     return Row(
       children: [
-        Icon(icon, size: 20, color: theme.colorScheme.primary),
-        const SizedBox(width: 8),
+        Icon(
+          icon,
+          size: AppTypography.iconSizeXLarge,
+          color: theme.colorScheme.primary,
+        ),
+        const SizedBox(width: AppTypography.spacingSmall),
         Text(
           title,
           style: theme.textTheme.titleMedium?.copyWith(
@@ -319,8 +347,12 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
       children: [
         Row(
           children: [
-            Icon(icon, size: 16, color: theme.colorScheme.onSurfaceVariant),
-            const SizedBox(width: 8),
+            Icon(
+              icon,
+              size: AppTypography.iconSizeMedium,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+            const SizedBox(width: AppTypography.spacingSmall),
             Expanded(
               child: Text(
                 label,
@@ -346,9 +378,11 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
           divisions: divisions,
           onChanged: onChanged,
           activeColor: theme.colorScheme.primary,
-          inactiveColor: theme.colorScheme.outline.withValues(alpha: 0.2),
+          inactiveColor: theme.colorScheme.outline.withValues(
+            alpha: AppTypography.opacityVeryFaint,
+          ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTypography.spacingSmall),
       ],
     );
   }

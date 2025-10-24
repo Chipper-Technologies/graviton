@@ -86,6 +86,46 @@ class AppLocalizationsEs extends AppLocalizations {
   String get physicsSettingsDescription => 'Parámetros de simulación';
 
   @override
+  String get physicsSection => 'Física';
+
+  @override
+  String get gravitationalConstant => 'Constante gravitacional';
+
+  @override
+  String get softeningParameter => 'Parámetro de suavizado';
+
+  @override
+  String get simulationSpeed => 'Velocidad de simulación';
+
+  @override
+  String get collisionsSection => 'Colisiones';
+
+  @override
+  String get collisionSensitivity => 'Sensibilidad de colisión';
+
+  @override
+  String get trailsSection => 'Rastros';
+
+  @override
+  String get trailLength => 'Longitud del rastro';
+
+  @override
+  String get trailFadeRate => 'Tasa de desvanecimiento del rastro';
+
+  @override
+  String get hapticsSection => 'Hápticos';
+
+  @override
+  String get vibrationEnabled => 'Vibración habilitada';
+
+  @override
+  String get hapticFeedbackCollisions =>
+      'Retroalimentación háptica en colisiones';
+
+  @override
+  String get vibrationThrottle => 'Control de vibración';
+
+  @override
   String get scenariosMenuDescription => 'Explorar diferentes escenarios';
 
   @override
@@ -416,6 +456,42 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get bodySun => 'Sol';
+
+  @override
+  String get bodyPropertiesTitle => 'Propiedades del Cuerpo';
+
+  @override
+  String get bodyPropertiesName => 'Nombre';
+
+  @override
+  String get bodyPropertiesNameHint => 'Introducir nombre del cuerpo';
+
+  @override
+  String get bodyPropertiesType => 'Tipo de Cuerpo';
+
+  @override
+  String get bodyPropertiesColor => 'Color';
+
+  @override
+  String get bodyPropertiesMass => 'Masa';
+
+  @override
+  String get bodyPropertiesRadius => 'Radio';
+
+  @override
+  String get bodyPropertiesLuminosity => 'Luminosidad Estelar';
+
+  @override
+  String get bodyPropertiesVelocity => 'Velocidad';
+
+  @override
+  String get bodyPropertiesAxisX => 'X:';
+
+  @override
+  String get bodyPropertiesAxisY => 'Y:';
+
+  @override
+  String get bodyPropertiesAxisZ => 'Z:';
 
   @override
   String get bodyEarth => 'Tierra';

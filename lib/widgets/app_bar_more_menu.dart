@@ -51,7 +51,7 @@ class AppBarMoreMenu extends StatelessWidget {
                 size: 20,
                 color: AppColors.uiCyanAccent,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTypography.spacingMedium),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -94,7 +94,7 @@ class AppBarMoreMenu extends StatelessWidget {
                 size: 20,
                 color: AppColors.primaryColor,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTypography.spacingMedium),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -133,7 +133,7 @@ class AppBarMoreMenu extends StatelessWidget {
           child: Row(
             children: [
               const Icon(Icons.tune, size: 20, color: AppColors.uiOrangeAccent),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTypography.spacingMedium),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -176,7 +176,7 @@ class AppBarMoreMenu extends StatelessWidget {
                 size: 20,
                 color: AppColors.primaryColor,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTypography.spacingMedium),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -204,7 +204,7 @@ class AppBarMoreMenu extends StatelessWidget {
       ],
       color: AppColors.uiBlack.withValues(alpha: 0.9),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
         side: BorderSide(
           color: AppColors.uiWhite.withValues(alpha: 0.2),
           width: 1,

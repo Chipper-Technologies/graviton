@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -64,167 +65,188 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
+      ),
       child: Container(
         constraints: AppConstraints.dialogMedium,
-        padding: AppConstraints.dialogPadding,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Header
-            Row(
-              children: [
-                Icon(Icons.tune, color: AppColors.uiOrangeAccent, size: 28),
-                const SizedBox(width: 12),
-                Text(
-                  'Body Properties',
-                  style: Theme.of(context).textTheme.headlineSmall,
+            // Title with close button
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.uiOrangeAccent.withValues(alpha: 0.15),
+                    AppColors.uiOrangeAccent.withValues(alpha: 0.05),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.of(context).pop(),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(AppTypography.radiusXLarge),
+                  topRight: Radius.circular(AppTypography.radiusXLarge),
                 ),
-              ],
+              ),
+              padding: EdgeInsets.all(AppTypography.spacingLarge),
+              child: Row(
+                children: [
+                  Icon(Icons.tune, color: AppColors.uiOrangeAccent, size: 28),
+                  SizedBox(width: AppTypography.spacingMedium),
+                  Text(
+                    l10n.bodyPropertiesTitle,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 16),
-
             // Scrollable content
             Flexible(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Name
-                    _buildSectionTitle('Name'),
-                    TextField(
-                      controller: _nameController,
-                      onChanged: (value) {
-                        setState(() {});
-                        _updateBody();
-                      },
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter body name',
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Body Type
-                    _buildSectionTitle('Body Type'),
-                    DropdownButtonFormField<BodyType>(
-                      initialValue: _bodyType,
-                      onChanged: (BodyType? newValue) {
-                        if (newValue != null) {
-                          setState(() {
-                            _bodyType = newValue;
-                          });
+              child: Padding(
+                padding: AppConstraints.dialogPadding,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Name
+                      _buildSectionTitle(l10n.bodyPropertiesName),
+                      TextField(
+                        controller: _nameController,
+                        onChanged: (value) {
+                          setState(() {});
                           _updateBody();
-                        }
-                      },
-                      dropdownColor: AppColors.uiBlack,
-                      style: TextStyle(color: AppColors.uiWhite),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: AppColors.uiBlack.withValues(
-                          alpha: AppTypography.opacityFaint,
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          hintText: l10n.bodyPropertiesNameHint,
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            AppTypography.radiusMedium,
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Body Type
+                      _buildSectionTitle(l10n.bodyPropertiesType),
+                      DropdownButtonFormField<BodyType>(
+                        initialValue: _bodyType,
+                        onChanged: (BodyType? newValue) {
+                          if (newValue != null) {
+                            setState(() {
+                              _bodyType = newValue;
+                            });
+                            _updateBody();
+                          }
+                        },
+                        dropdownColor: AppColors.uiBlack,
+                        style: TextStyle(color: AppColors.uiWhite),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: AppColors.uiBlack.withValues(
+                            alpha: AppTypography.opacityFaint,
                           ),
-                          borderSide: BorderSide(
-                            color: AppColors.uiWhite.withValues(
-                              alpha: AppTypography.opacityFaint,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(
+                              AppTypography.radiusMedium,
+                            ),
+                            borderSide: BorderSide(
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityFaint,
+                              ),
                             ),
                           ),
                         ),
+                        items: BodyType.values.map((BodyType type) {
+                          return DropdownMenuItem<BodyType>(
+                            value: type,
+                            child: Text(
+                              type.displayName,
+                              style: TextStyle(color: AppColors.uiWhite),
+                            ),
+                          );
+                        }).toList(),
                       ),
-                      items: BodyType.values.map((BodyType type) {
-                        return DropdownMenuItem<BodyType>(
-                          value: type,
-                          child: Text(
-                            type.displayName,
-                            style: TextStyle(color: AppColors.uiWhite),
-                          ),
-                        );
-                      }).toList(),
-                    ),
 
-                    const SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
-                    // Color
-                    _buildSectionTitle('Color'),
-                    const SizedBox(height: AppTypography.spacingSmall),
-                    _buildColorPicker(),
+                      // Color
+                      _buildSectionTitle(l10n.bodyPropertiesColor),
+                      const SizedBox(height: AppTypography.spacingSmall),
+                      _buildColorPicker(),
 
-                    const SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
-                    // Mass
-                    _buildSectionTitle('Mass'),
-                    _buildSlider(
-                      value: _mass,
-                      min: 0.1,
-                      max: 1000.0,
-                      divisions: 100,
-                      label: _mass.toStringAsFixed(1),
-                      icon: Icons.scale,
-                      onChanged: (value) {
-                        setState(() {
-                          _mass = value;
-                        });
-                        _updateBody();
-                      },
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Radius
-                    _buildSectionTitle('Radius'),
-                    _buildSlider(
-                      value: _radius,
-                      min: 0.1,
-                      max: 100.0,
-                      divisions: 100,
-                      label: _radius.toStringAsFixed(1),
-                      icon: Icons.radio_button_unchecked,
-                      onChanged: (value) {
-                        setState(() {
-                          _radius = value;
-                        });
-                        _updateBody();
-                      },
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Stellar Luminosity (only for stars)
-                    if (_bodyType == BodyType.star) ...[
-                      _buildSectionTitle('Stellar Luminosity'),
+                      // Mass
+                      _buildSectionTitle(l10n.bodyPropertiesMass),
                       _buildSlider(
-                        value: _stellarLuminosity,
-                        min: 0.0,
-                        max: 10.0,
+                        value: _mass,
+                        min: 0.1,
+                        max: 1000.0,
                         divisions: 100,
-                        label: _stellarLuminosity.toStringAsFixed(2),
-                        icon: Icons.brightness_7,
+                        label: _mass.toStringAsFixed(1),
+                        icon: Icons.scale,
                         onChanged: (value) {
                           setState(() {
-                            _stellarLuminosity = value;
+                            _mass = value;
                           });
                           _updateBody();
                         },
                       ),
-                      const SizedBox(height: 16),
-                    ],
 
-                    // Velocity
-                    _buildSectionTitle('Velocity'),
-                    _buildVelocityControls(),
-                  ],
+                      const SizedBox(height: 16),
+
+                      // Radius
+                      _buildSectionTitle(l10n.bodyPropertiesRadius),
+                      _buildSlider(
+                        value: _radius,
+                        min: 0.1,
+                        max: 100.0,
+                        divisions: 100,
+                        label: _radius.toStringAsFixed(1),
+                        icon: Icons.radio_button_unchecked,
+                        onChanged: (value) {
+                          setState(() {
+                            _radius = value;
+                          });
+                          _updateBody();
+                        },
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Stellar Luminosity (only for stars)
+                      if (_bodyType == BodyType.star) ...[
+                        _buildSectionTitle(l10n.bodyPropertiesLuminosity),
+                        _buildSlider(
+                          value: _stellarLuminosity,
+                          min: 0.0,
+                          max: 10.0,
+                          divisions: 100,
+                          label: _stellarLuminosity.toStringAsFixed(2),
+                          icon: Icons.brightness_7,
+                          onChanged: (value) {
+                            setState(() {
+                              _stellarLuminosity = value;
+                            });
+                            _updateBody();
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+
+                      // Velocity
+                      _buildSectionTitle(l10n.bodyPropertiesVelocity),
+                      _buildVelocityControls(context),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -293,16 +315,10 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
       runSpacing: AppTypography.spacingSmall,
       children:
           [
-            Colors.red,
-            Colors.orange,
-            Colors.yellow,
-            Colors.green,
-            Colors.blue,
-            Colors.indigo,
-            Colors.purple,
-            Colors.white,
-            Colors.grey,
-            Colors.brown,
+            ...AppColors.basicPrimaries,
+            AppColors.uiWhite,
+            AppColors.basicGrey,
+            AppColors.randomPlanetBrown,
           ].map((color) {
             final isSelected = _color == color;
             return GestureDetector(
@@ -342,7 +358,8 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
     );
   }
 
-  Widget _buildVelocityControls() {
+  Widget _buildVelocityControls(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         // X velocity
@@ -350,7 +367,10 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
           children: [
             SizedBox(
               width: AppTypography.spacingXLarge,
-              child: Text('X:', style: TextStyle(color: AppColors.uiWhite)),
+              child: Text(
+                l10n.bodyPropertiesAxisX,
+                style: TextStyle(color: AppColors.uiWhite),
+              ),
             ),
             Expanded(
               child: _buildSlider(
@@ -375,7 +395,10 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
           children: [
             SizedBox(
               width: AppTypography.spacingXLarge,
-              child: Text('Y:', style: TextStyle(color: AppColors.uiWhite)),
+              child: Text(
+                l10n.bodyPropertiesAxisY,
+                style: TextStyle(color: AppColors.uiWhite),
+              ),
             ),
             Expanded(
               child: _buildSlider(
@@ -400,7 +423,10 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
           children: [
             SizedBox(
               width: AppTypography.spacingXLarge,
-              child: Text('Z:', style: TextStyle(color: AppColors.uiWhite)),
+              child: Text(
+                l10n.bodyPropertiesAxisZ,
+                style: TextStyle(color: AppColors.uiWhite),
+              ),
             ),
             Expanded(
               child: _buildSlider(

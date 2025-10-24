@@ -84,6 +84,45 @@ class AppLocalizationsJa extends AppLocalizations {
   String get physicsSettingsDescription => 'シミュレーションパラメータ';
 
   @override
+  String get physicsSection => '物理学';
+
+  @override
+  String get gravitationalConstant => '重力定数';
+
+  @override
+  String get softeningParameter => 'ソフト化パラメータ';
+
+  @override
+  String get simulationSpeed => 'シミュレーション速度';
+
+  @override
+  String get collisionsSection => '衝突';
+
+  @override
+  String get collisionSensitivity => '衝突感度';
+
+  @override
+  String get trailsSection => '軌跡';
+
+  @override
+  String get trailLength => '軌跡の長さ';
+
+  @override
+  String get trailFadeRate => '軌跡のフェード率';
+
+  @override
+  String get hapticsSection => 'ハプティクス';
+
+  @override
+  String get vibrationEnabled => '振動有効';
+
+  @override
+  String get hapticFeedbackCollisions => '衝突時のハプティックフィードバック';
+
+  @override
+  String get vibrationThrottle => '振動スロットル';
+
+  @override
   String get scenariosMenuDescription => 'さまざまなシナリオを探索';
 
   @override
@@ -401,6 +440,42 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get bodySun => '太陽';
+
+  @override
+  String get bodyPropertiesTitle => '天体のプロパティ';
+
+  @override
+  String get bodyPropertiesName => '名前';
+
+  @override
+  String get bodyPropertiesNameHint => '天体名を入力';
+
+  @override
+  String get bodyPropertiesType => '天体タイプ';
+
+  @override
+  String get bodyPropertiesColor => '色';
+
+  @override
+  String get bodyPropertiesMass => '質量';
+
+  @override
+  String get bodyPropertiesRadius => '半径';
+
+  @override
+  String get bodyPropertiesLuminosity => '恒星光度';
+
+  @override
+  String get bodyPropertiesVelocity => '速度';
+
+  @override
+  String get bodyPropertiesAxisX => 'X:';
+
+  @override
+  String get bodyPropertiesAxisY => 'Y:';
+
+  @override
+  String get bodyPropertiesAxisZ => 'Z:';
 
   @override
   String get bodyEarth => '地球';

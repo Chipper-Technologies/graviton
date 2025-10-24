@@ -124,6 +124,71 @@
   "@physicsSettingsDescription": {
     "description": "Description for the physics settings menu item"
   },
+
+  "physicsSection": "Physics",
+  "@physicsSection": {
+    "description": "Physics section header in simulation settings"
+  },
+  
+  "gravitationalConstant": "Gravitational Constant",
+  "@gravitationalConstant": {
+    "description": "Label for gravitational constant slider"
+  },
+  
+  "softeningParameter": "Softening Parameter", 
+  "@softeningParameter": {
+    "description": "Label for softening parameter slider"
+  },
+  
+  "simulationSpeed": "Simulation Speed",
+  "@simulationSpeed": {
+    "description": "Label for simulation speed slider"
+  },
+  
+  "collisionsSection": "Collisions",
+  "@collisionsSection": {
+    "description": "Collisions section header in simulation settings"
+  },
+  
+  "collisionSensitivity": "Collision Sensitivity",
+  "@collisionSensitivity": {
+    "description": "Label for collision sensitivity slider"
+  },
+  
+  "trailsSection": "Trails",
+  "@trailsSection": {
+    "description": "Trails section header in simulation settings"
+  },
+  
+  "trailLength": "Trail Length",
+  "@trailLength": {
+    "description": "Label for trail length slider"
+  },
+  
+  "trailFadeRate": "Trail Fade Rate",
+  "@trailFadeRate": {
+    "description": "Label for trail fade rate slider"
+  },
+  
+  "hapticsSection": "Haptics",
+  "@hapticsSection": {
+    "description": "Haptics section header in simulation settings"
+  },
+  
+  "vibrationEnabled": "Vibration Enabled",
+  "@vibrationEnabled": {
+    "description": "Label for vibration enabled toggle"
+  },
+  
+  "hapticFeedbackCollisions": "Haptic feedback on collisions",
+  "@hapticFeedbackCollisions": {
+    "description": "Description for vibration enabled toggle"
+  },
+  
+  "vibrationThrottle": "Vibration Throttle",
+  "@vibrationThrottle": {
+    "description": "Label for vibration throttle slider"
+  },
   
   "scenariosMenuDescription": "Explore different scenarios",
   "@scenariosMenuDescription": {
@@ -654,6 +719,66 @@
   "bodySun": "Sun",
   "@bodySun": {
     "description": "Name for the Sun"
+  },
+  
+  "bodyPropertiesTitle": "Body Properties",
+  "@bodyPropertiesTitle": {
+    "description": "Title for the body properties dialog"
+  },
+  
+  "bodyPropertiesName": "Name",
+  "@bodyPropertiesName": {
+    "description": "Label for body name field"
+  },
+  
+  "bodyPropertiesNameHint": "Enter body name",
+  "@bodyPropertiesNameHint": {
+    "description": "Hint text for body name input field"
+  },
+  
+  "bodyPropertiesType": "Body Type",
+  "@bodyPropertiesType": {
+    "description": "Label for body type field"
+  },
+  
+  "bodyPropertiesColor": "Color",
+  "@bodyPropertiesColor": {
+    "description": "Label for body color field"
+  },
+  
+  "bodyPropertiesMass": "Mass",
+  "@bodyPropertiesMass": {
+    "description": "Label for body mass field"
+  },
+  
+  "bodyPropertiesRadius": "Radius",
+  "@bodyPropertiesRadius": {
+    "description": "Label for body radius field"
+  },
+  
+  "bodyPropertiesLuminosity": "Stellar Luminosity",
+  "@bodyPropertiesLuminosity": {
+    "description": "Label for stellar luminosity field"
+  },
+  
+  "bodyPropertiesVelocity": "Velocity",
+  "@bodyPropertiesVelocity": {
+    "description": "Label for velocity field"
+  },
+  
+  "bodyPropertiesAxisX": "X:",
+  "@bodyPropertiesAxisX": {
+    "description": "Label for X axis"
+  },
+  
+  "bodyPropertiesAxisY": "Y:",
+  "@bodyPropertiesAxisY": {
+    "description": "Label for Y axis"
+  },
+  
+  "bodyPropertiesAxisZ": "Z:",
+  "@bodyPropertiesAxisZ": {
+    "description": "Label for Z axis"
   },
   
   "bodyEarth": "Earth",

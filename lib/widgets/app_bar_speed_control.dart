@@ -22,7 +22,7 @@ class AppBarSpeedControl extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
             color: AppColors.uiBlack.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
             border: Border.all(
               color: AppColors.uiWhite.withValues(alpha: 0.2),
               width: 1,
@@ -47,7 +47,7 @@ class AppBarSpeedControl extends StatelessWidget {
             ],
             color: AppColors.uiBlack.withValues(alpha: 0.9),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
               side: BorderSide(
                 color: AppColors.uiWhite.withValues(alpha: 0.2),
                 width: 1,
@@ -95,7 +95,7 @@ class AppBarSpeedControl extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, size: 16, color: AppColors.uiWhite.withValues(alpha: 0.7)),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTypography.spacingSmall),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,

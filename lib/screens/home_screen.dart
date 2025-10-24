@@ -752,7 +752,7 @@ class _HomeScreenState extends State<HomeScreen>
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
               boxShadow: [
                 BoxShadow(
                   color: AppColors.uiBlack.withValues(

@@ -119,14 +119,17 @@ class BottomControls extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onPressed,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppTypography.spacingSmall,
+              vertical: 6,
+            ),
             decoration: BoxDecoration(
               color: isActive
                   ? AppColors.primaryColor.withValues(alpha: 0.2)
                   : Colors.transparent,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
               border: isActive
                   ? Border.all(
                       color: AppColors.primaryColor.withValues(alpha: 0.4),
