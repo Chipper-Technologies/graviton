@@ -78,6 +78,24 @@ class AppLocalizationsFr extends AppLocalizations {
   String get selectScenarioTooltip => 'Sélectionner un Scénario';
 
   @override
+  String get moreOptionsTooltip => 'Plus d\'options';
+
+  @override
+  String get physicsSettingsTitle => 'Paramètres de Physique';
+
+  @override
+  String get physicsSettingsDescription => 'Paramètres de simulation';
+
+  @override
+  String get scenariosMenuDescription => 'Explorer différents scénarios';
+
+  @override
+  String get settingsMenuDescription => 'Options visuelles et de comportement';
+
+  @override
+  String get helpMenuDescription => 'Tutoriel et objectifs';
+
+  @override
   String get showTrails => 'Afficher les Traînées';
 
   @override
@@ -271,6 +289,33 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get habitabilityUnknown => 'Inconnu';
+
+  @override
+  String get temperatureFrozen => 'Gelé';
+
+  @override
+  String get temperatureCold => 'Froid';
+
+  @override
+  String get temperatureModerate => 'Modéré';
+
+  @override
+  String get temperatureHot => 'Chaud';
+
+  @override
+  String get temperatureScorching => 'Brûlant';
+
+  @override
+  String get temperatureNotApplicable => 'N/A';
+
+  @override
+  String get temperatureUnitCelsius => '°C';
+
+  @override
+  String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitFahrenheit => '°F';
 
   @override
   String get toggleHabitableZonesTooltip => 'Basculer les Zones Habitables';

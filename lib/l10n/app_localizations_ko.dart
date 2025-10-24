@@ -75,6 +75,24 @@ class AppLocalizationsKo extends AppLocalizations {
   String get selectScenarioTooltip => '시나리오 선택';
 
   @override
+  String get moreOptionsTooltip => '더 많은 옵션';
+
+  @override
+  String get physicsSettingsTitle => '물리 설정';
+
+  @override
+  String get physicsSettingsDescription => '시뮬레이션 매개변수';
+
+  @override
+  String get scenariosMenuDescription => '다양한 시나리오 탐색';
+
+  @override
+  String get settingsMenuDescription => '시각적 및 동작 옵션';
+
+  @override
+  String get helpMenuDescription => '튜토리얼 및 목표';
+
+  @override
   String get showTrails => '궤적 표시';
 
   @override
@@ -259,6 +277,33 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get habitabilityUnknown => '알 수 없음';
+
+  @override
+  String get temperatureFrozen => '얼어붙음';
+
+  @override
+  String get temperatureCold => '추위';
+
+  @override
+  String get temperatureModerate => '온화함';
+
+  @override
+  String get temperatureHot => '뜨거움';
+
+  @override
+  String get temperatureScorching => '타는 듯함';
+
+  @override
+  String get temperatureNotApplicable => '해당 없음';
+
+  @override
+  String get temperatureUnitCelsius => '°C';
+
+  @override
+  String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitFahrenheit => '°F';
 
   @override
   String get toggleHabitableZonesTooltip => '거주 가능 지역 전환';

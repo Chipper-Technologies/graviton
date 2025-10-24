@@ -75,6 +75,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get selectScenarioTooltip => '选择场景';
 
   @override
+  String get moreOptionsTooltip => '更多选项';
+
+  @override
+  String get physicsSettingsTitle => '物理设置';
+
+  @override
+  String get physicsSettingsDescription => '模拟参数';
+
+  @override
+  String get scenariosMenuDescription => '探索不同场景';
+
+  @override
+  String get settingsMenuDescription => '视觉和行为选项';
+
+  @override
+  String get helpMenuDescription => '教程和目标';
+
+  @override
   String get showTrails => '显示轨迹';
 
   @override
@@ -257,6 +275,33 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get habitabilityUnknown => '未知';
+
+  @override
+  String get temperatureFrozen => '极寒';
+
+  @override
+  String get temperatureCold => '寒冷';
+
+  @override
+  String get temperatureModerate => '温和';
+
+  @override
+  String get temperatureHot => '炎热';
+
+  @override
+  String get temperatureScorching => '灼热';
+
+  @override
+  String get temperatureNotApplicable => '不适用';
+
+  @override
+  String get temperatureUnitCelsius => '°C';
+
+  @override
+  String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitFahrenheit => '°F';
 
   @override
   String get toggleHabitableZonesTooltip => '切换宜居带';

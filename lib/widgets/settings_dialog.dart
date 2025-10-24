@@ -40,9 +40,15 @@ class SettingsDialog extends StatelessWidget {
                   children: [
                     Icon(Icons.tune, color: AppColors.uiOrangeAccent, size: 28),
                     const SizedBox(width: 12),
-                    Text(l10n.settingsTitle, style: Theme.of(context).textTheme.headlineSmall),
+                    Text(
+                      l10n.settingsTitle,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
                     const Spacer(),
-                    IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.of(context).pop()),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -75,18 +81,28 @@ class SettingsDialog extends StatelessWidget {
                           width: double.infinity,
                           child: SliderTheme(
                             data: SliderTheme.of(context).copyWith(
-                              inactiveTrackColor: Theme.of(
+                              inactiveTrackColor: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(
+                                    alpha: AppTypography.opacityVeryFaint,
+                                  ),
+                              activeTrackColor: Theme.of(
                                 context,
-                              ).colorScheme.onSurface.withValues(alpha: AppTypography.opacityVeryFaint),
-                              activeTrackColor: Theme.of(context).colorScheme.primary,
+                              ).colorScheme.primary,
                             ),
                             child: Slider(
                               min: 0.1,
                               max: 16.0,
                               divisions: 159,
-                              value: appState.simulation.timeScale.clamp(0.1, 16.0),
-                              label: '${appState.simulation.timeScale.toStringAsFixed(1)}x',
-                              onChanged: (v) => appState.simulation.setTimeScale(v),
+                              value: appState.simulation.timeScale.clamp(
+                                0.1,
+                                16.0,
+                              ),
+                              label:
+                                  '${appState.simulation.timeScale.toStringAsFixed(1)}x',
+                              onChanged: (v) =>
+                                  appState.simulation.setTimeScale(v),
                             ),
                           ),
                         ),
@@ -147,7 +163,8 @@ class SettingsDialog extends StatelessWidget {
                               ),
                             ),
                             value: appState.ui.dualOrbitalPaths,
-                            onChanged: (v) => appState.ui.toggleDualOrbitalPaths(),
+                            onChanged: (v) =>
+                                appState.ui.toggleDualOrbitalPaths(),
                             secondary: const Icon(Icons.donut_small),
                           ),
 
@@ -181,7 +198,8 @@ class SettingsDialog extends StatelessWidget {
                             ),
                           ),
                           value: appState.ui.showOffScreenIndicators,
-                          onChanged: (v) => appState.ui.toggleOffScreenIndicators(),
+                          onChanged: (v) =>
+                              appState.ui.toggleOffScreenIndicators(),
                           secondary: const Icon(Icons.navigation),
                         ),
 
@@ -256,7 +274,8 @@ class SettingsDialog extends StatelessWidget {
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(l10n.languageLabel),
                                         Text(
@@ -289,14 +308,38 @@ class SettingsDialog extends StatelessWidget {
                                     appState.ui.setLanguage(newValue);
                                   },
                                   items: [
-                                    DropdownMenuItem<String?>(value: null, child: Text(l10n.languageSystem)),
-                                    DropdownMenuItem<String?>(value: 'en', child: Text(l10n.languageEnglish)),
-                                    DropdownMenuItem<String?>(value: 'de', child: Text(l10n.languageGerman)),
-                                    DropdownMenuItem<String?>(value: 'es', child: Text(l10n.languageSpanish)),
-                                    DropdownMenuItem<String?>(value: 'fr', child: Text(l10n.languageFrench)),
-                                    DropdownMenuItem<String?>(value: 'zh', child: Text(l10n.languageChinese)),
-                                    DropdownMenuItem<String?>(value: 'ja', child: Text(l10n.languageJapanese)),
-                                    DropdownMenuItem<String?>(value: 'ko', child: Text(l10n.languageKorean)),
+                                    DropdownMenuItem<String?>(
+                                      value: null,
+                                      child: Text(l10n.languageSystem),
+                                    ),
+                                    DropdownMenuItem<String?>(
+                                      value: 'en',
+                                      child: Text(l10n.languageEnglish),
+                                    ),
+                                    DropdownMenuItem<String?>(
+                                      value: 'de',
+                                      child: Text(l10n.languageGerman),
+                                    ),
+                                    DropdownMenuItem<String?>(
+                                      value: 'es',
+                                      child: Text(l10n.languageSpanish),
+                                    ),
+                                    DropdownMenuItem<String?>(
+                                      value: 'fr',
+                                      child: Text(l10n.languageFrench),
+                                    ),
+                                    DropdownMenuItem<String?>(
+                                      value: 'zh',
+                                      child: Text(l10n.languageChinese),
+                                    ),
+                                    DropdownMenuItem<String?>(
+                                      value: 'ja',
+                                      child: Text(l10n.languageJapanese),
+                                    ),
+                                    DropdownMenuItem<String?>(
+                                      value: 'ko',
+                                      child: Text(l10n.languageKorean),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -308,7 +351,10 @@ class SettingsDialog extends StatelessWidget {
                         if (appState.ui.showTrails) ...[
                           const SizedBox(height: 16),
                           Divider(color: AppColors.uiDividerGrey),
-                          Text(l10n.trailColorLabel, style: Theme.of(context).textTheme.bodyLarge),
+                          Text(
+                            l10n.trailColorLabel,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
                           const SizedBox(height: 8),
                           Row(
                             children: [
@@ -318,7 +364,10 @@ class SettingsDialog extends StatelessWidget {
                                     ButtonSegment<bool>(
                                       value: true,
                                       label: Text(l10n.warmTrails),
-                                      icon: const Icon(Icons.local_fire_department, size: 16),
+                                      icon: const Icon(
+                                        Icons.local_fire_department,
+                                        size: 16,
+                                      ),
                                     ),
                                     ButtonSegment<bool>(
                                       value: false,
@@ -330,7 +379,8 @@ class SettingsDialog extends StatelessWidget {
                                   onSelectionChanged: (Set<bool> selection) {
                                     if (selection.isNotEmpty) {
                                       final useWarm = selection.first;
-                                      if (useWarm != appState.ui.useWarmTrails) {
+                                      if (useWarm !=
+                                          appState.ui.useWarmTrails) {
                                         appState.ui.toggleWarmTrails();
                                       }
                                     }
@@ -399,9 +449,14 @@ class SettingsDialog extends StatelessWidget {
   }
 
   /// Build habitability section only if there are planets or moons
-  List<Widget> _buildHabitabilitySection(BuildContext context, AppLocalizations l10n, AppState appState) {
+  List<Widget> _buildHabitabilitySection(
+    BuildContext context,
+    AppLocalizations l10n,
+    AppState appState,
+  ) {
     final hasPlanetsOrMoons = appState.simulation.bodies.any(
-      (body) => body.bodyType == BodyType.planet || body.bodyType == BodyType.moon,
+      (body) =>
+          body.bodyType == BodyType.planet || body.bodyType == BodyType.moon,
     );
 
     if (!hasPlanetsOrMoons) {

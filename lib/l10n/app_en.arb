@@ -110,6 +110,36 @@
     "description": "Tooltip for the scenario selection button in the app bar"
   },
   
+  "moreOptionsTooltip": "More options",
+  "@moreOptionsTooltip": {
+    "description": "Tooltip for the more options menu button"
+  },
+  
+  "physicsSettingsTitle": "Physics Settings",
+  "@physicsSettingsTitle": {
+    "description": "Title for the physics settings menu item"
+  },
+  
+  "physicsSettingsDescription": "Simulation parameters",
+  "@physicsSettingsDescription": {
+    "description": "Description for the physics settings menu item"
+  },
+  
+  "scenariosMenuDescription": "Explore different scenarios",
+  "@scenariosMenuDescription": {
+    "description": "Description for the scenarios menu item"
+  },
+  
+  "settingsMenuDescription": "Visual & behavior options",
+  "@settingsMenuDescription": {
+    "description": "Description for the settings menu item"
+  },
+  
+  "helpMenuDescription": "Tutorial & objectives",
+  "@helpMenuDescription": {
+    "description": "Description for the help menu item"
+  },
+  
   "showTrails": "Show Trails",
   "@showTrails": {
     "description": "Label for the show trails switch"
@@ -419,6 +449,51 @@
   "habitabilityUnknown": "Unknown",
   "@habitabilityUnknown": {
     "description": "Status for bodies with unknown habitability"
+  },
+  
+  "temperatureFrozen": "Frozen",
+  "@temperatureFrozen": {
+    "description": "Temperature category for extremely cold bodies (below -100°C)"
+  },
+  
+  "temperatureCold": "Cold",
+  "@temperatureCold": {
+    "description": "Temperature category for cold bodies (-100°C to 0°C)"
+  },
+  
+  "temperatureModerate": "Moderate",
+  "@temperatureModerate": {
+    "description": "Temperature category for moderate temperature bodies (0°C to 50°C)"
+  },
+  
+  "temperatureHot": "Hot",
+  "@temperatureHot": {
+    "description": "Temperature category for hot bodies (50°C to 150°C)"
+  },
+  
+  "temperatureScorching": "Scorching",
+  "@temperatureScorching": {
+    "description": "Temperature category for extremely hot bodies (above 150°C)"
+  },
+  
+  "temperatureNotApplicable": "N/A",
+  "@temperatureNotApplicable": {
+    "description": "Temperature category for bodies where temperature doesn't apply"
+  },
+  
+  "temperatureUnitCelsius": "°C",
+  "@temperatureUnitCelsius": {
+    "description": "Celsius temperature unit symbol"
+  },
+  
+  "temperatureUnitKelvin": "K",
+  "@temperatureUnitKelvin": {
+    "description": "Kelvin temperature unit symbol"
+  },
+  
+  "temperatureUnitFahrenheit": "°F",
+  "@temperatureUnitFahrenheit": {
+    "description": "Fahrenheit temperature unit symbol"
   },
   
   "toggleHabitableZonesTooltip": "Toggle Habitable Zones",

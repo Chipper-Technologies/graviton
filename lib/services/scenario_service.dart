@@ -6,6 +6,7 @@ import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
+import 'package:graviton/services/temperature_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -149,6 +150,10 @@ class ScenarioService {
           isPlanet: false,
           bodyType: BodyType.star,
           stellarLuminosity: stellarLuminosity,
+          temperature: TemperatureService.getInitialTemperature(
+            BodyType.star,
+            starMass,
+          ),
         ),
       );
     }
@@ -271,6 +276,11 @@ class ScenarioService {
         isPlanet: true,
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0, // Planets don't emit significant light
+        temperature: TemperatureService.getInitialTemperature(
+          BodyType.planet,
+          planetMass,
+          distance: planetDistance,
+        ),
       ),
     );
 

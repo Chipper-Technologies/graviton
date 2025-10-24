@@ -75,6 +75,24 @@ class AppLocalizationsJa extends AppLocalizations {
   String get selectScenarioTooltip => 'シナリオを選択';
 
   @override
+  String get moreOptionsTooltip => 'その他のオプション';
+
+  @override
+  String get physicsSettingsTitle => '物理設定';
+
+  @override
+  String get physicsSettingsDescription => 'シミュレーションパラメータ';
+
+  @override
+  String get scenariosMenuDescription => 'さまざまなシナリオを探索';
+
+  @override
+  String get settingsMenuDescription => '視覚的および動作オプション';
+
+  @override
+  String get helpMenuDescription => 'チュートリアルと目標';
+
+  @override
   String get showTrails => '軌跡を表示';
 
   @override
@@ -258,6 +276,33 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get habitabilityUnknown => '不明';
+
+  @override
+  String get temperatureFrozen => '凍結';
+
+  @override
+  String get temperatureCold => '寒冷';
+
+  @override
+  String get temperatureModerate => '温和';
+
+  @override
+  String get temperatureHot => '高温';
+
+  @override
+  String get temperatureScorching => '灼熱';
+
+  @override
+  String get temperatureNotApplicable => '該当なし';
+
+  @override
+  String get temperatureUnitCelsius => '°C';
+
+  @override
+  String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitFahrenheit => '°F';
 
   @override
   String get toggleHabitableZonesTooltip => 'ハビタブルゾーンの切り替え';

@@ -240,6 +240,42 @@ abstract class AppLocalizations {
   /// **'Select Scenario'**
   String get selectScenarioTooltip;
 
+  /// Tooltip for the more options menu button
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptionsTooltip;
+
+  /// Title for the physics settings menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Physics Settings'**
+  String get physicsSettingsTitle;
+
+  /// Description for the physics settings menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation parameters'**
+  String get physicsSettingsDescription;
+
+  /// Description for the scenarios menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Explore different scenarios'**
+  String get scenariosMenuDescription;
+
+  /// Description for the settings menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Visual & behavior options'**
+  String get settingsMenuDescription;
+
+  /// Description for the help menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial & objectives'**
+  String get helpMenuDescription;
+
   /// Label for the show trails switch
   ///
   /// In en, this message translates to:
@@ -575,6 +611,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown'**
   String get habitabilityUnknown;
+
+  /// Temperature category for extremely cold bodies (below -100°C)
+  ///
+  /// In en, this message translates to:
+  /// **'Frozen'**
+  String get temperatureFrozen;
+
+  /// Temperature category for cold bodies (-100°C to 0°C)
+  ///
+  /// In en, this message translates to:
+  /// **'Cold'**
+  String get temperatureCold;
+
+  /// Temperature category for moderate temperature bodies (0°C to 50°C)
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get temperatureModerate;
+
+  /// Temperature category for hot bodies (50°C to 150°C)
+  ///
+  /// In en, this message translates to:
+  /// **'Hot'**
+  String get temperatureHot;
+
+  /// Temperature category for extremely hot bodies (above 150°C)
+  ///
+  /// In en, this message translates to:
+  /// **'Scorching'**
+  String get temperatureScorching;
+
+  /// Temperature category for bodies where temperature doesn't apply
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get temperatureNotApplicable;
+
+  /// Celsius temperature unit symbol
+  ///
+  /// In en, this message translates to:
+  /// **'°C'**
+  String get temperatureUnitCelsius;
+
+  /// Kelvin temperature unit symbol
+  ///
+  /// In en, this message translates to:
+  /// **'K'**
+  String get temperatureUnitKelvin;
+
+  /// Fahrenheit temperature unit symbol
+  ///
+  /// In en, this message translates to:
+  /// **'°F'**
+  String get temperatureUnitFahrenheit;
 
   /// Tooltip for habitable zones toggle button
   ///

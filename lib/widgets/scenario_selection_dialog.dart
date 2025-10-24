@@ -6,8 +6,6 @@ import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/theme/app_constraints.dart';
-import 'package:graviton/theme/app_colors.dart';
 
 /// A dialog that allows users to select a preset astronomical scenario
 class ScenarioSelectionDialog extends StatelessWidget {
@@ -49,14 +47,13 @@ class ScenarioSelectionDialog extends StatelessWidget {
                   final config = ScenarioConfig.defaults[scenario]!;
                   final isSelected = scenario == currentScenario;
 
-                    return _ScenarioTile(
-                      scenario: scenario,
-                      config: config,
-                      isSelected: isSelected,
-                      onTap: () => _selectScenario(context, scenario),
-                    );
-                  },
-                ),
+                  return _ScenarioTile(
+                    scenario: scenario,
+                    config: config,
+                    isSelected: isSelected,
+                    onTap: () => _selectScenario(context, scenario),
+                  );
+                },
               ),
             ),
 

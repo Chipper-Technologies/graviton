@@ -11,7 +11,9 @@ import 'package:provider/provider.dart';
 
 /// Floating video-style controls for play/pause and reset
 class FloatingSimulationControls extends StatefulWidget {
-  const FloatingSimulationControls({super.key});
+  final void Function(VoidCallback)? onRegisterShowControls;
+
+  const FloatingSimulationControls({super.key, this.onRegisterShowControls});
 
   @override
   State<FloatingSimulationControls> createState() =>
@@ -36,6 +38,9 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
     );
     _animationController.forward();
     _startAutoHideTimer();
+
+    // Register the show controls callback with parent
+    widget.onRegisterShowControls?.call(_showControls);
   }
 
   @override
@@ -62,6 +67,11 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
     }
   }
 
+  /// Public method to show controls from external widgets
+  void showControls() {
+    _showControls();
+  }
+
   void _hideControls() {
     if (_isVisible) {
       setState(() {
@@ -78,10 +88,9 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
     return Consumer<AppState>(
       builder: (context, appState, child) {
         return GestureDetector(
-          onTap: _showControls,
-          behavior: _isVisible
-              ? HitTestBehavior.deferToChild
-              : HitTestBehavior.translucent,
+          onLongPress: _showControls, // Long press anywhere to show controls
+          behavior: HitTestBehavior
+              .deferToChild, // Only respond to taps on actual control elements
           child: Stack(
             children: [
               // Floating controls

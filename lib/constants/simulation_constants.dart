@@ -68,7 +68,7 @@ class SimulationConstants {
 
   // Collision detection
   static const double collisionRadiusMultiplier =
-      0.2; // 20% of visual radius for realistic collisions without excessive merging
+      0.05; // only 5% of visual radius
 
   // Emergency system regeneration
   static const double centralBodyMass = 50.0;
