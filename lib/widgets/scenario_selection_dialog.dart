@@ -6,6 +6,8 @@ import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/theme/app_constraints.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 /// A dialog that allows users to select a preset astronomical scenario
 class ScenarioSelectionDialog extends StatelessWidget {
@@ -32,51 +34,20 @@ class ScenarioSelectionDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         constraints: AppConstraints.dialogMedium,
+        padding: AppConstraints.dialogPadding,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppColors.uiCyanAccent.withValues(
-                  alpha: AppTypography.opacityDisabled,
-                ),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.explore, color: AppColors.uiCyanAccent, size: 28),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      l10n.scenarioSelectionTitle,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: AppColors.uiCyanAccent,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
             // Scenario list
             Flexible(
-              child: Container(
-                padding: AppConstraints.dialogPadding,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  itemCount: availableScenarios.length,
-                  itemBuilder: (context, index) {
-                    final scenario = availableScenarios[index];
-                    final config = ScenarioConfig.defaults[scenario]!;
-                    final isSelected = scenario == currentScenario;
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                itemCount: availableScenarios.length,
+                itemBuilder: (context, index) {
+                  final scenario = availableScenarios[index];
+                  final config = ScenarioConfig.defaults[scenario]!;
+                  final isSelected = scenario == currentScenario;
 
                     return _ScenarioTile(
                       scenario: scenario,
@@ -90,17 +61,15 @@ class ScenarioSelectionDialog extends StatelessWidget {
             ),
 
             // Footer
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(l10n.cancel),
-                  ),
-                ],
-              ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(l10n.cancel),
+                ),
+              ],
             ),
           ],
         ),
@@ -136,7 +105,7 @@ class _ScenarioTile extends StatelessWidget {
     final description = _getLocalizedDescription(l10n, scenario);
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
       elevation: isSelected ? 8 : 2,
       color: isSelected
           ? config.primaryColor.withValues(alpha: AppTypography.opacityDisabled)
@@ -204,6 +173,14 @@ class _ScenarioTile extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 8),
+
+                    // Learning objectives
+                    Container(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: _buildScenarioObjectives(l10n, scenario),
+                    ),
+
+                    const SizedBox(height: 12),
 
                     // Metadata
                     Row(
@@ -332,5 +309,106 @@ class _ScenarioTile extends StatelessWidget {
         // Fallback for unknown keys
         return config.educationalFocus;
     }
+  }
+
+  Widget _buildScenarioObjectives(
+    AppLocalizations l10n,
+    ScenarioType scenario,
+  ) {
+    String learnEmoji = l10n.scenarioLearnEmoji;
+    String bestEmoji = l10n.scenarioBestEmoji;
+    String learnText = '';
+    String bestText = '';
+
+    switch (scenario) {
+      case ScenarioType.solarSystem:
+        learnText = l10n.scenarioLearnSolar;
+        bestText = l10n.scenarioBestSolar;
+        break;
+      case ScenarioType.earthMoonSun:
+        learnText = l10n.scenarioLearnEarthMoon;
+        bestText = l10n.scenarioBestEarthMoon;
+        break;
+      case ScenarioType.binaryStars:
+        learnText = l10n.scenarioLearnBinary;
+        bestText = l10n.scenarioBestBinary;
+        break;
+      case ScenarioType.threeBodyClassic:
+        learnText = l10n.scenarioLearnThreeBody;
+        bestText = l10n.scenarioBestThreeBody;
+        break;
+      case ScenarioType.random:
+        learnText = l10n.scenarioLearnRandom;
+        bestText = l10n.scenarioBestRandom;
+        break;
+      case ScenarioType.asteroidBelt:
+        learnText = l10n.scenarioLearnRandom; // Fallback to random objectives
+        bestText = l10n.scenarioBestRandom;
+        break;
+      case ScenarioType.galaxyFormation:
+        learnText = l10n.scenarioLearnRandom; // Fallback to random objectives
+        bestText = l10n.scenarioBestRandom;
+        break;
+      default:
+        learnText = l10n.scenarioLearnRandom; // Safe fallback
+        bestText = l10n.scenarioBestRandom;
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              learnEmoji,
+              style: AppTypography.smallText.copyWith(
+                color: config.primaryColor,
+                fontSize: 11,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: Text(
+                learnText,
+                style: AppTypography.smallText.copyWith(
+                  color: config.primaryColor,
+                  fontSize: 11,
+                  height: 1.4,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              bestEmoji,
+              style: AppTypography.smallText.copyWith(
+                color: config.primaryColor,
+                fontSize: 11,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: Text(
+                bestText,
+                style: AppTypography.smallText.copyWith(
+                  color: config.primaryColor,
+                  fontSize: 11,
+                  height: 1.4,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }

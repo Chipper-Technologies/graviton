@@ -15,25 +15,14 @@ class FloatingSimulationControls extends StatefulWidget {
 
   @override
   State<FloatingSimulationControls> createState() =>
-      FloatingSimulationControlsState();
+      _FloatingSimulationControlsState();
 }
 
-class FloatingSimulationControlsState extends State<FloatingSimulationControls>
+class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   bool _isVisible = true;
-
-  // Expose show controls method to parent
-  void showControls() {
-    if (!_isVisible) {
-      setState(() {
-        _isVisible = true;
-      });
-      _animationController.forward();
-      _startAutoHideTimer();
-    }
-  }
 
   @override
   void initState() {
@@ -88,99 +77,112 @@ class FloatingSimulationControlsState extends State<FloatingSimulationControls>
 
     return Consumer<AppState>(
       builder: (context, appState, child) {
-        return Positioned(
-          bottom: 45,
-          left: 0,
-          right: 0,
-          child: AnimatedBuilder(
-            animation: _fadeAnimation,
-            builder: (context, child) {
-              return Opacity(
-                opacity: _fadeAnimation.value,
-                child: Center(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.uiBlack.withValues(
-                        alpha: AppTypography.opacityMedium,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: AppColors.uiWhite.withValues(
-                          alpha: AppTypography.opacityVeryFaint,
-                        ),
-                        width: 1,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.uiBlack.withValues(
-                            alpha: AppTypography.opacityFaint,
+        return GestureDetector(
+          onTap: _showControls,
+          behavior: _isVisible
+              ? HitTestBehavior.deferToChild
+              : HitTestBehavior.translucent,
+          child: Stack(
+            children: [
+              // Floating controls
+              AnimatedBuilder(
+                animation: _fadeAnimation,
+                builder: (context, child) {
+                  return Positioned(
+                    bottom:
+                        45, // Moved up from 30 to give more space above copyright
+                    left: 0,
+                    right: 0,
+                    child: Opacity(
+                      opacity: _fadeAnimation.value,
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
                           ),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
+                          decoration: BoxDecoration(
+                            color: AppColors.uiBlack.withValues(
+                              alpha: AppTypography.opacityMedium,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityVeryFaint,
+                              ),
+                              width: 1,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.uiBlack.withValues(
+                                  alpha: AppTypography.opacityFaint,
+                                ),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Play/Pause Button
+                              _buildControlButton(
+                                icon: appState.simulation.isPaused
+                                    ? Icons.play_arrow
+                                    : Icons.pause,
+                                onPressed: () {
+                                  final action = appState.simulation.isPaused
+                                      ? 'play'
+                                      : 'pause';
+                                  FirebaseService.instance.logUIEventWithEnums(
+                                    UIAction.buttonPressed,
+                                    element: UIElement.simulationControl,
+                                    value: action,
+                                  );
+                                  appState.simulation.pause();
+                                  _showControls(); // Keep controls visible after interaction
+                                },
+                                tooltip: appState.simulation.isPaused
+                                    ? l10n.playButton
+                                    : l10n.pauseButton,
+                                isPrimary: true,
+                              ),
+
+                              const SizedBox(width: 12),
+
+                              // Reset Button
+                              _buildControlButton(
+                                icon: Icons.refresh,
+                                onPressed: () {
+                                  FirebaseService.instance.logUIEventWithEnums(
+                                    UIAction.buttonPressed,
+                                    element: UIElement.simulationControl,
+                                    value: 'reset',
+                                  );
+
+                                  // Check if screenshot mode is active and deactivate it first
+                                  final screenshotService =
+                                      ScreenshotModeService();
+                                  if (screenshotService.isActive) {
+                                    screenshotService.deactivate(
+                                      uiState: appState.ui,
+                                    );
+                                  }
+
+                                  appState.resetAll();
+                                  _showControls(); // Keep controls visible after interaction
+                                },
+                                tooltip: l10n.resetButton,
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                      ),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Play/Pause Button
-                        _buildControlButton(
-                          icon: appState.simulation.isPaused
-                              ? Icons.play_arrow
-                              : Icons.pause,
-                          onPressed: () {
-                            final action = appState.simulation.isPaused
-                                ? 'play'
-                                : 'pause';
-                            FirebaseService.instance.logUIEventWithEnums(
-                              UIAction.buttonPressed,
-                              element: UIElement.simulationControl,
-                              value: action,
-                            );
-                            appState.simulation.pause();
-                            _showControls(); // Keep controls visible after interaction
-                          },
-                          tooltip: appState.simulation.isPaused
-                              ? l10n.playButton
-                              : l10n.pauseButton,
-                          isPrimary: true,
-                        ),
-
-                        const SizedBox(width: 12),
-
-                        // Reset Button
-                        _buildControlButton(
-                          icon: Icons.refresh,
-                          onPressed: () {
-                            FirebaseService.instance.logUIEventWithEnums(
-                              UIAction.buttonPressed,
-                              element: UIElement.simulationControl,
-                              value: 'reset',
-                            );
-
-                            // Check if screenshot mode is active and deactivate it first
-                            final screenshotService = ScreenshotModeService();
-                            if (screenshotService.isActive) {
-                              screenshotService.deactivate(
-                                uiState: appState.ui,
-                              );
-                            }
-
-                            appState.resetAll();
-                            _showControls(); // Keep controls visible after interaction
-                          },
-                          tooltip: l10n.resetButton,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
+                  );
+                },
+              ),
+            ],
           ),
         );
       },

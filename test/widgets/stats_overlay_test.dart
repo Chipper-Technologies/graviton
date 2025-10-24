@@ -63,7 +63,10 @@ void main() {
         );
 
         expect(find.textContaining('Bodies: 4'), findsOneWidget);
-        expect(find.textContaining('Speed: 1.0x'), findsOneWidget);
+        expect(
+          find.textContaining('Speed: 8.0x'),
+          findsOneWidget,
+        ); // Default timeScale is 8.0
       });
     });
 
@@ -240,7 +243,10 @@ void main() {
         );
 
         // Initial speed - speedFormatted adds "x" suffix
-        expect(find.textContaining('Speed: 1.0x'), findsOneWidget);
+        expect(
+          find.textContaining('Speed: 8.0x'),
+          findsOneWidget,
+        ); // Default timeScale is 8.0
 
         // Note: Dynamic update testing is complex with provider setup
       }, skip: true);

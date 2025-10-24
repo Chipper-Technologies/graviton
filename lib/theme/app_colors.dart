@@ -151,8 +151,8 @@ class AppColors {
   /// Primary app theme colors
   static const Color primaryColor = Color(0xFF818cf8); // Main app primary color
   static const Color sectionTitlePurple = Color(
-    0xFF9370DB,
-  ); // Section title color
+    0xFFB19CD9,
+  ); // Light purple for section titles
 
   /// Off-screen indicator colors
   static const Color offScreenBlackHole = Color(

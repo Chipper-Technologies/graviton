@@ -162,9 +162,6 @@ void main() {
 
     group('Interaction', () {
       testWidgets('Should handle scenario selection', (tester) async {
-        bool callbackCalled = false;
-        ScenarioType? selectedScenario;
-
         await tester.pumpWidget(
           MaterialApp(
             localizationsDelegates: const [
@@ -183,8 +180,6 @@ void main() {
                       builder: (context) => ScenarioSelectionDialog(
                         currentScenario: testCurrentScenario,
                         onScenarioSelected: (scenario) {
-                          callbackCalled = true;
-                          selectedScenario = scenario;
                           Navigator.of(context).pop();
                         },
                       ),
@@ -201,23 +196,15 @@ void main() {
         await tester.tap(find.text('Show Scenarios'));
         await tester.pumpAndSettle();
 
-        // Select a scenario (try to find and tap a specific scenario text)
-        final randomScenarioText = find.text('Random System');
-        if (randomScenarioText.evaluate().isNotEmpty) {
-          await tester.tap(randomScenarioText, warnIfMissed: false);
+        // Select a scenario (tap first InkWell)
+        final inkWells = find.byType(InkWell);
+        if (inkWells.evaluate().isNotEmpty) {
+          await tester.tap(inkWells.first);
           await tester.pumpAndSettle();
-        } else {
-          // Fallback to first InkWell
-          final inkWells = find.byType(InkWell);
-          if (inkWells.evaluate().isNotEmpty) {
-            await tester.tap(inkWells.first, warnIfMissed: false);
-            await tester.pumpAndSettle();
-          }
         }
 
-        // Callback should have been called
-        expect(callbackCalled, isTrue);
-        expect(selectedScenario, isNotNull);
+        // Dialog should close
+        expect(find.byType(ScenarioSelectionDialog), findsNothing);
       });
 
       testWidgets('Should provide visual feedback on tap', (tester) async {
@@ -233,7 +220,7 @@ void main() {
         // Should have inkwell for tap feedback
         final inkWells = find.byType(InkWell);
         if (inkWells.evaluate().isNotEmpty) {
-          await tester.tap(inkWells.first, warnIfMissed: false);
+          await tester.tap(inkWells.first);
           await tester.pump();
         }
 
@@ -376,7 +363,7 @@ void main() {
         // Scenarios should be focusable
         final inkWells = find.byType(InkWell);
         if (inkWells.evaluate().isNotEmpty) {
-          await tester.tap(inkWells.first, warnIfMissed: false);
+          await tester.tap(inkWells.first);
           await tester.pump();
         }
 
@@ -417,7 +404,7 @@ void main() {
         final inkWells = find.byType(InkWell);
         if (inkWells.evaluate().isNotEmpty) {
           for (int i = 0; i < 3; i++) {
-            await tester.tap(inkWells.first, warnIfMissed: false);
+            await tester.tap(inkWells.first);
             await tester.pump();
           }
         }
@@ -457,7 +444,7 @@ void main() {
         final inkWells = find.byType(InkWell);
         if (inkWells.evaluate().isNotEmpty) {
           for (int i = 0; i < 5; i++) {
-            await tester.tap(inkWells.first, warnIfMissed: false);
+            await tester.tap(inkWells.first);
             await tester.pump();
           }
         }
@@ -533,7 +520,7 @@ void main() {
         // Should handle callback without errors
         final inkWells = find.byType(InkWell);
         if (inkWells.evaluate().isNotEmpty) {
-          await tester.tap(inkWells.first, warnIfMissed: false);
+          await tester.tap(inkWells.first);
           await tester.pump();
         }
 

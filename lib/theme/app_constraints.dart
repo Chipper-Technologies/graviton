@@ -1,36 +1,66 @@
 import 'package:flutter/material.dart';
 
-/// App-wide constraint constants for consistent layout and design
+/// Centralized UI constraints for consistent sizing across the app
 class AppConstraints {
-  // Dialog constraints
-  static const BoxConstraints dialogSmall = BoxConstraints(
-    maxWidth: 300,
-    maxHeight: 400,
+  AppConstraints._();
+
+  // Dialog Constraints
+  /// Standard width for most dialogs
+  static const double dialogStandardWidth = 600;
+
+  /// Compact height for simple dialogs (About)
+  static const double dialogCompactHeight = 600;
+
+  /// Medium height for content-rich dialogs (Settings)
+  static const double dialogMediumHeight = 800;
+
+  /// Large height for text-heavy dialogs (Help)
+  static const double dialogLargeHeight = 900;
+
+  /// Standard dialog constraints for about/info dialogs
+  static const BoxConstraints dialogCompact = BoxConstraints(
+    maxWidth: dialogStandardWidth,
+    maxHeight: dialogCompactHeight,
   );
+
+  /// Medium dialog constraints for settings/configuration dialogs
   static const BoxConstraints dialogMedium = BoxConstraints(
-    maxWidth: 400,
-    maxHeight: 600,
+    maxWidth: dialogStandardWidth,
+    maxHeight: dialogMediumHeight,
   );
+
+  /// Large dialog constraints for help/documentation dialogs
   static const BoxConstraints dialogLarge = BoxConstraints(
-    maxWidth: 500,
-    maxHeight: 700,
+    maxWidth: dialogStandardWidth,
+    maxHeight: dialogLargeHeight,
   );
 
-  // Padding constants
-  static const EdgeInsets dialogPadding = EdgeInsets.all(20);
-  static const EdgeInsets cardPadding = EdgeInsets.all(16);
-  static const EdgeInsets sectionPadding = EdgeInsets.symmetric(
-    vertical: 12,
-    horizontal: 16,
-  );
+  /// Custom dialog constraints with specified dimensions
+  static BoxConstraints customDialog({
+    double? width,
+    double? height,
+    double? maxWidth,
+    double? maxHeight,
+  }) {
+    return BoxConstraints(
+      minWidth: width ?? 0,
+      maxWidth: maxWidth ?? width ?? dialogStandardWidth,
+      minHeight: height ?? 0,
+      maxHeight: maxHeight ?? height ?? double.infinity,
+    );
+  }
 
-  // Spacing constants
-  static const double smallSpacing = 8.0;
-  static const double mediumSpacing = 16.0;
-  static const double largeSpacing = 24.0;
+  // Dialog Padding
+  /// Standard padding for dialog content areas
+  static const EdgeInsets dialogPadding = EdgeInsets.all(24);
 
-  // Border radius constants
-  static const double cardRadius = 12.0;
-  static const double dialogRadius = 16.0;
-  static const double buttonRadius = 8.0;
+  /// Compact padding for dialog content with less space
+  static const EdgeInsets dialogPaddingCompact = EdgeInsets.all(16);
+
+  // Future UI constraints can be added here:
+  // - Button sizes
+  // - Card dimensions
+  // - Modal sizes
+  // - Panel widths
+  // - etc.
 }

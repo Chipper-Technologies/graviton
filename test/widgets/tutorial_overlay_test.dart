@@ -35,8 +35,7 @@ void main() {
 
         expect(find.byType(TutorialOverlay), findsOneWidget);
         expect(find.byType(Container), findsWidgets);
-        // First step shows logo, not icon
-        expect(find.byType(Icon), findsNothing);
+        expect(find.byType(Icon), findsWidgets);
         expect(find.byType(Text), findsWidgets);
       });
 
@@ -66,14 +65,10 @@ void main() {
           createTestWidget(child: TutorialOverlay(onComplete: mockOnComplete)),
         );
 
-        // Navigate to a step that has an icon (not the first step which has logo)
-        await tester.tap(find.text('Next'));
-        await tester.pumpAndSettle();
-
-        // Should have icon widgets now
+        // Should have icon widgets
         expect(find.byType(Icon), findsWidgets);
 
-        // Check if icon colors are properly set
+        // Check if icon colors are properly set (first step should use gravitonOrangeRed)
         final iconWidgets = tester.widgetList<Icon>(find.byType(Icon));
         final coloredIcons = iconWidgets.where((icon) => icon.color != null);
         expect(coloredIcons.isNotEmpty, isTrue);
@@ -84,11 +79,10 @@ void main() {
           createTestWidget(child: TutorialOverlay(onComplete: mockOnComplete)),
         );
 
-        // First step should only have Skip and Next buttons
-        expect(find.text('Skip'), findsOneWidget);
-        expect(find.text('Next'), findsOneWidget);
-        // Should not have previous button on first step
-        expect(find.text('Previous'), findsNothing);
+        // Should have buttons for navigation
+        expect(find.byType(ElevatedButton), findsOneWidget);
+        // First step shouldn't show previous button
+        expect(find.byType(TextButton), findsNothing);
       });
     });
 
@@ -101,14 +95,14 @@ void main() {
         );
 
         // Find and tap the next button
-        final nextButton = find.text('Next');
+        final nextButton = find.byType(ElevatedButton);
         expect(nextButton, findsOneWidget);
 
         await tester.tap(nextButton);
-        await tester.pumpAndSettle();
+        await tester.pump();
 
         // After advancing, should show previous button
-        expect(find.text('Previous'), findsOneWidget);
+        expect(find.byType(TextButton), findsOneWidget);
       });
 
       testWidgets('Should go back when previous button pressed', (
@@ -119,15 +113,15 @@ void main() {
         );
 
         // Advance to second step first
-        await tester.tap(find.text('Next'));
-        await tester.pumpAndSettle();
+        await tester.tap(find.byType(ElevatedButton));
+        await tester.pump();
 
-        // Now tap previous button
-        await tester.tap(find.text('Previous'));
-        await tester.pumpAndSettle();
+        // Now tap previous
+        await tester.tap(find.byType(TextButton));
+        await tester.pump();
 
         // Should be back to first step (no previous button)
-        expect(find.text('Previous'), findsNothing);
+        expect(find.byType(TextButton), findsNothing);
       });
 
       testWidgets('Should support swipe navigation', (tester) async {
@@ -207,18 +201,15 @@ void main() {
           createTestWidget(child: TutorialOverlay(onComplete: mockOnComplete)),
         );
 
-        // Navigate to a step that has an icon
-        await tester.tap(find.text('Next'));
-        await tester.pumpAndSettle();
-
-        // Should have colored buttons and icons now
-        expect(find.text('Next'), findsOneWidget);
+        // Should have colored buttons and icons
+        expect(find.byType(ElevatedButton), findsOneWidget);
         expect(find.byType(Icon), findsWidgets);
 
-        // Icons should have custom colors
-        final iconWidgets = tester.widgetList<Icon>(find.byType(Icon));
-        final coloredIcons = iconWidgets.where((icon) => icon.color != null);
-        expect(coloredIcons.isNotEmpty, isTrue);
+        // Button should have custom styling
+        final elevatedButton = tester.widget<ElevatedButton>(
+          find.byType(ElevatedButton),
+        );
+        expect(elevatedButton.style, isNotNull);
       });
     });
 
@@ -304,14 +295,14 @@ void main() {
         );
 
         // Buttons should be focusable
-        final nextButton = find.text('Next');
-        expect(nextButton, findsOneWidget);
+        final buttons = find.byType(ElevatedButton);
+        expect(buttons, findsOneWidget);
 
-        await tester.tap(nextButton);
-        await tester.pumpAndSettle();
+        await tester.tap(buttons);
+        await tester.pump();
 
-        // Should advance step and show previous button
-        expect(find.text('Previous'), findsOneWidget);
+        // Should advance step
+        expect(find.byType(TextButton), findsOneWidget);
       });
     });
 

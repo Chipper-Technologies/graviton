@@ -37,9 +37,7 @@ void main() {
 
     testWidgets('Should create widget without crashing', (tester) async {
       await tester.pumpWidget(
-        createTestWidget(
-          child: const Stack(children: [FloatingSimulationControls()]),
-        ),
+        createTestWidget(child: const FloatingSimulationControls()),
       );
       await tester.pump();
 

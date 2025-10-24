@@ -5,6 +5,7 @@ import 'package:graviton/enums/version_status.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/version_service.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -57,12 +58,12 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
-    return AlertDialog(
-      contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
-      content: SizedBox(
-        width: 350,
-        height: 400, // Add max height constraint
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Container(
+        constraints: AppConstraints.dialogCompact,
         child: SingleChildScrollView(
+          padding: AppConstraints.dialogPadding,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -183,17 +184,19 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
                     'https://chippertechnology.com/privacy-policy/graviton',
                 isLink: true,
               ),
+              const SizedBox(height: 24),
+
+              // Close button
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(l10n.closeButton),
+                ),
+              ),
             ],
           ),
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.closeButton),
-        ),
-      ],
-      actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 2),
     );
   }
 
@@ -252,11 +255,12 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         if (mounted) {
+          final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Could not open $url'),
+              content: Text(l10n.couldNotOpenUrl(url)),
               action: SnackBarAction(
-                label: 'Copy',
+                label: l10n.copyButton,
                 onPressed: () {
                   // Copy URL to clipboard as fallback
                   _copyToClipboard(url);
@@ -269,11 +273,12 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
     } catch (e) {
       debugPrint('Could not launch URL: $url, error: $e');
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error opening link: ${e.toString()}'),
+            content: Text(l10n.errorOpeningLink(e.toString())),
             action: SnackBarAction(
-              label: 'Copy',
+              label: l10n.copyButton,
               onPressed: () {
                 _copyToClipboard(url);
               },
@@ -367,9 +372,10 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
   void _copyToClipboard(String text) {
     Clipboard.setData(ClipboardData(text: text));
     if (mounted) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Copied to clipboard: $text'),
+          content: Text(l10n.copiedToClipboard(text)),
           duration: const Duration(seconds: 2),
         ),
       );
