@@ -79,17 +79,11 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
       builder: (context, appState, child) {
         return GestureDetector(
           onTap: _showControls,
-          behavior: HitTestBehavior.translucent,
+          behavior: _isVisible
+              ? HitTestBehavior.deferToChild
+              : HitTestBehavior.translucent,
           child: Stack(
             children: [
-              // Invisible overlay to detect taps and show controls
-              Positioned.fill(
-                child: GestureDetector(
-                  onTap: _showControls,
-                  child: const SizedBox.expand(),
-                ),
-              ),
-
               // Floating controls
               AnimatedBuilder(
                 animation: _fadeAnimation,
