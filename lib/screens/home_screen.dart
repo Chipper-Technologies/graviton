@@ -415,10 +415,9 @@ class _HomeScreenState extends State<HomeScreen>
         body: selectedBody,
         bodyIndex: selectedIndex,
         onBodyChanged: (updatedBody) {
-          // The dialog updates the body directly, just trigger a rebuild
-          // by notifying the simulation state that something changed
-          appState.simulation.addListener(() {});
-          appState.simulation.removeListener(() {});
+          // The dialog updates the body directly, trigger a rebuild
+          // by notifying that body properties have changed
+          appState.simulation.notifyBodyPropertiesChanged();
         },
       ),
     );

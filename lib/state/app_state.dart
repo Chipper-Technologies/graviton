@@ -139,7 +139,6 @@ class AppState extends ChangeNotifier {
     simulation.dispose();
     ui.dispose();
     camera.dispose();
-    // physics.dispose(); // PhysicsState doesn't have dispose method yet
     super.dispose();
   }
 }

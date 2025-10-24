@@ -224,4 +224,9 @@ class SimulationState extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  /// Notify that body properties have been updated externally
+  void notifyBodyPropertiesChanged() {
+    notifyListeners();
+  }
 }

@@ -5,9 +5,13 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.0] - 2025-10-24
+## [1.1.0] - 2025-10-23
 
 ### Added
+- **Enhanced Tutorial System**: Interactive tutorial overlay with colored icons, dynamic buttons, and page indicators
+- **Comprehensive UI/UX Improvements**: Standardized dialog layouts, consistent spacing, and improved visual hierarchy
+- **Floating Controls Enhancement**: Added text labels under icons in video-style simulation controls
+- **Dialog Consistency**: Unified padding, constraints, and styling across all dialogs (help, settings, scenarios)
 - **Temperature Tracking System**: Real-time planetary temperature calculation based on stellar radiation
 - **Physics-Based Heating**: Blackbody radiation model with inverse square law for realistic thermal dynamics
 - **Temperature Categories**: Classification system (Frozen, Cold, Moderate, Hot, Scorching) with color-coded visualization
@@ -20,22 +24,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Simulation Integration**: Throttled temperature updates (0.5s intervals) for optimal performance
 
 ### Technical Improvements
+- **ARB Localization**: Updated all 7 language files with individual list items and parameterized strings
+- **Code Organization**: Improved dialog structure, consistent imports, and standardized component patterns
 - **Full Internationalization**: Complete translations for temperature system in 6 languages (German, Spanish, French, Japanese, Korean, Chinese)
 - **Theme Integration**: Centralized temperature colors in AppColors with consistent theming
 - **Code Quality**: Proper formatting, linting compliance, and maintainable architecture
 - **Localization Infrastructure**: Enhanced i18n support with temperature-specific strings and units
-
-## [1.1.0] - 2025-10-23
-
-### Added
-- **Enhanced Tutorial System**: Interactive tutorial overlay with colored icons, dynamic buttons, and page indicators
-- **Comprehensive UI/UX Improvements**: Standardized dialog layouts, consistent spacing, and improved visual hierarchy
-- **Floating Controls Enhancement**: Added text labels under icons in video-style simulation controls
-- **Dialog Consistency**: Unified padding, constraints, and styling across all dialogs (help, settings, scenarios)
-
-### Technical Improvements
-- **ARB Localization**: Updated all 7 language files with individual list items and parameterized strings
-- **Code Organization**: Improved dialog structure, consistent imports, and standardized component patterns
 
 ## [1.0.0] - 2025-10-21
 
