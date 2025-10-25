@@ -91,12 +91,18 @@ jobs:
       run: |
         echo "Running specialized physics validation..."
         # Check for magic numbers in physics calculations (using extended regex)
-        # Look for const declarations with decimal numbers, excluding SimulationConstants usage
-        if grep -rE "const\s+[a-zA-Z_][a-zA-Z0-9_]*\s*=\s*[0-9]+\.[0-9]+" lib/services/ --include="*.dart" | grep -v "SimulationConstants"; then
+        # Look for const declarations with numeric values (integers and decimals), including type annotations
+        # Pattern breakdown:
+        # - const\s+ : "const" keyword followed by whitespace
+        # - ([a-zA-Z_][a-zA-Z0-9_]*\s+)? : optional type annotation (e.g., "double ")
+        # - [a-zA-Z_][a-zA-Z0-9_]*\s* : variable name
+        # - =\s* : assignment operator
+        # - [0-9]+(\.[0-9]+)? : numeric value (integer or decimal)
+        if grep -rE "const\s+([a-zA-Z_][a-zA-Z0-9_]*\s+)?[a-zA-Z_][a-zA-Z0-9_]*\s*=\s*[0-9]+(\.[0-9]+)?" lib/services/ --include="*.dart" | grep -v "SimulationConstants"; then
           echo "⚠️  Warning: Found potential magic numbers in physics calculations"
           echo "Please consider moving constants to SimulationConstants class"
           echo "Found:"
-          grep -rE "const\s+[a-zA-Z_][a-zA-Z0-9_]*\s*=\s*[0-9]+\.[0-9]+" lib/services/ --include="*.dart" | grep -v "SimulationConstants" || true
+          grep -rE "const\s+([a-zA-Z_][a-zA-Z0-9_]*\s+)?[a-zA-Z_][a-zA-Z0-9_]*\s*=\s*[0-9]+(\.[0-9]+)?" lib/services/ --include="*.dart" | grep -v "SimulationConstants" || true
         fi
         
         # Check for hardcoded strings (using extended regex)
