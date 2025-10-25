@@ -1,0 +1,84 @@
+name: Copilot Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'lib/**/*.dart'
+      - 'test/**/*.dart'
+      - 'pubspec.yaml'
+
+jobs:
+  copilot-review:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.6'
+        channel: 'stable'
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Run static analysis
+      run: flutter analyze --fatal-infos
+
+    - name: Run tests
+      run: flutter test
+
+    - name: Copilot Review
+      uses: github/copilot-review-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        instructions_file: '.github/copilot-review-config.md'
+        review_simple_changes: false
+        review_comment_lgtm: false
+        path_filters: |
+          lib/**/*.dart
+          test/**/*.dart
+        exclude_paths: |
+          lib/l10n/app_localizations*.dart
+        max_files: 25
+        max_lines: 1000
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+    - name: Physics Validation Check
+      run: |
+        echo "Running specialized physics validation..."
+        # Check for magic numbers in physics calculations
+        if grep -r "const.*[0-9]\+\.[0-9]\+" lib/services/ --include="*.dart" | grep -v "SimulationConstants"; then
+          echo "⚠️  Warning: Found potential magic numbers in physics calculations"
+          echo "Please consider moving constants to SimulationConstants class"
+        fi
+        
+        # Check for hardcoded strings
+        if grep -r "Text\s*(\s*['\"]" lib/widgets/ --include="*.dart" | grep -v "l10n\."; then
+          echo "⚠️  Warning: Found potential hardcoded strings"
+          echo "Please use AppLocalizations for all user-facing text"
+        fi
+        
+        # Check for missing test coverage in critical files
+        CRITICAL_FILES=(
+          "lib/services/simulation.dart"
+          "lib/services/temperature_service.dart"
+          "lib/utils/physics_utils.dart"
+        )
+        
+        for file in "${CRITICAL_FILES[@]}"; do
+          if [ -f "$file" ]; then
+            test_file="test/${file#lib/}"
+            test_file="${test_file%.dart}_test.dart"
+            if [ ! -f "$test_file" ]; then
+              echo "⚠️  Warning: Missing test file for critical component: $file"
+            fi
+          fi
+        done
