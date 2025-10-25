@@ -101,7 +101,9 @@
         "prod",
         "--dart-define-from-file",
         "config/prod.json",
-        "--release"
+        "--release",
+        "--obfuscate",
+        "--split-debug-info=build/flutter_symbols/"
       ],
       "group": {
         "kind": "build",
@@ -157,7 +159,9 @@
         "prod",
         "--dart-define-from-file",
         "config/prod.json",
-        "--release"
+        "--release",
+        "--obfuscate",
+        "--split-debug-info=build/flutter_symbols/"
       ],
       "group": {
         "kind": "build",
@@ -213,7 +217,9 @@
         "ios",
         "--dart-define-from-file",
         "config/prod.json",
-        "--release"
+        "--release",
+        "--obfuscate",
+        "--split-debug-info=build/flutter_symbols/"
       ],
       "group": {
         "kind": "build",
@@ -265,7 +271,9 @@
         "ipa",
         "--dart-define-from-file",
         "config/prod.json",
-        "--release"
+        "--release",
+        "--obfuscate",
+        "--split-debug-info=build/flutter_symbols/"
       ],
       "group": {
         "kind": "build",

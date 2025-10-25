@@ -6,6 +6,9 @@ enum UIAction {
   /// Tap gesture
   tap('tap'),
 
+  /// Double tap gesture
+  doubleTap('double_tap'),
+
   /// Dialog opened
   dialogOpened('dialog_opened'),
 
@@ -49,7 +52,13 @@ enum UIAction {
   cameraCenter('camera_center'),
 
   /// Camera follow toggle
-  followToggle('follow_toggle');
+  followToggle('follow_toggle'),
+
+  /// Tutorial started
+  tutorialStarted('tutorial_started'),
+
+  /// Tutorial completed
+  tutorialCompleted('tutorial_completed');
 
   const UIAction(this.value);
 

@@ -25,7 +25,7 @@ class StatsOverlay extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: AppColors.uiBlackOverlay,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +37,7 @@ class StatsOverlay extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTypography.spacingSmall),
               Text(
                 '${l10n.stepsLabel}: ${l10n.stepsCount(appState.simulation.stepCount)}',
                 style: const TextStyle(
@@ -82,7 +82,7 @@ class StatsOverlay extends StatelessWidget {
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTypography.spacingSmall),
               Text(
                 l10n.cameraLabel,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -132,7 +132,7 @@ class StatsOverlay extends StatelessWidget {
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTypography.spacingSmall),
               // Only show habitability section if there are habitable bodies
               if (appState.simulation.bodies.any(
                 (body) => body.canBeHabitable,

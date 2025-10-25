@@ -156,7 +156,9 @@ class GravitonApp extends StatelessWidget {
                   alpha: AppTypography.opacityMedium,
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusLarge,
+                  ),
                   side: BorderSide(
                     color: AppColors.primaryColor.withValues(
                       alpha: AppTypography.opacitySemiTransparent,

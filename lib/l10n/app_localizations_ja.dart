@@ -75,6 +75,63 @@ class AppLocalizationsJa extends AppLocalizations {
   String get selectScenarioTooltip => 'シナリオを選択';
 
   @override
+  String get moreOptionsTooltip => 'その他のオプション';
+
+  @override
+  String get physicsSettingsTitle => '物理設定';
+
+  @override
+  String get physicsSettingsDescription => 'シミュレーションパラメータ';
+
+  @override
+  String get physicsSection => '物理学';
+
+  @override
+  String get gravitationalConstant => '重力定数';
+
+  @override
+  String get softeningParameter => 'ソフト化パラメータ';
+
+  @override
+  String get simulationSpeed => 'シミュレーション速度';
+
+  @override
+  String get collisionsSection => '衝突';
+
+  @override
+  String get collisionSensitivity => '衝突感度';
+
+  @override
+  String get trailsSection => '軌跡';
+
+  @override
+  String get trailLength => '軌跡の長さ';
+
+  @override
+  String get trailFadeRate => '軌跡のフェード率';
+
+  @override
+  String get hapticsSection => 'ハプティクス';
+
+  @override
+  String get vibrationEnabled => '振動有効';
+
+  @override
+  String get hapticFeedbackCollisions => '衝突時のハプティックフィードバック';
+
+  @override
+  String get vibrationThrottle => '振動スロットル';
+
+  @override
+  String get scenariosMenuDescription => 'さまざまなシナリオを探索';
+
+  @override
+  String get settingsMenuDescription => '視覚的および動作オプション';
+
+  @override
+  String get helpMenuDescription => 'チュートリアルと目標';
+
+  @override
   String get showTrails => '軌跡を表示';
 
   @override
@@ -260,6 +317,33 @@ class AppLocalizationsJa extends AppLocalizations {
   String get habitabilityUnknown => '不明';
 
   @override
+  String get temperatureFrozen => '凍結';
+
+  @override
+  String get temperatureCold => '寒冷';
+
+  @override
+  String get temperatureModerate => '温和';
+
+  @override
+  String get temperatureHot => '高温';
+
+  @override
+  String get temperatureScorching => '灼熱';
+
+  @override
+  String get temperatureNotApplicable => '該当なし';
+
+  @override
+  String get temperatureUnitCelsius => '°C';
+
+  @override
+  String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitFahrenheit => '°F';
+
+  @override
   String get toggleHabitableZonesTooltip => 'ハビタブルゾーンの切り替え';
 
   @override
@@ -356,6 +440,42 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get bodySun => '太陽';
+
+  @override
+  String get bodyPropertiesTitle => '天体のプロパティ';
+
+  @override
+  String get bodyPropertiesName => '名前';
+
+  @override
+  String get bodyPropertiesNameHint => '天体名を入力';
+
+  @override
+  String get bodyPropertiesType => '天体タイプ';
+
+  @override
+  String get bodyPropertiesColor => '色';
+
+  @override
+  String get bodyPropertiesMass => '質量';
+
+  @override
+  String get bodyPropertiesRadius => '半径';
+
+  @override
+  String get bodyPropertiesLuminosity => '恒星光度';
+
+  @override
+  String get bodyPropertiesVelocity => '速度';
+
+  @override
+  String get bodyPropertiesAxisX => 'X:';
+
+  @override
+  String get bodyPropertiesAxisY => 'Y:';
+
+  @override
+  String get bodyPropertiesAxisZ => 'Z:';
 
   @override
   String get bodyEarth => '地球';
@@ -590,5 +710,216 @@ class AppLocalizationsJa extends AppLocalizations {
   String get presetThreeBodyBalletDesc => 'エレガントな動きの古典的三体問題';
 
   @override
+  String get scenarioLearnEmoji => '🎯';
+
+  @override
+  String get scenarioBestEmoji => '⭐';
+
+  @override
+  String get scenarioLearnSolar => '学習内容: 惑星運動、軌道力学、身近な天体';
+
+  @override
+  String get scenarioBestSolar => '最適対象: 初心者、天文学愛好家';
+
+  @override
+  String get scenarioLearnEarthMoon => '学習内容: 三体力学、月の力学、潮汐力';
+
+  @override
+  String get scenarioBestEarthMoon => '最適対象: 地球-月システムの理解';
+
+  @override
+  String get scenarioLearnBinary => '学習内容: 恒星進化、連星系、極端重力';
+
+  @override
+  String get scenarioBestBinary => '最適対象: 高度な物理学探究';
+
+  @override
+  String get scenarioLearnThreeBody => '学習内容: カオス理論、予測不可能な運動、不安定システム';
+
+  @override
+  String get scenarioBestThreeBody => '最適対象: 数理物理学愛好家';
+
+  @override
+  String get scenarioLearnRandom => '学習内容: 未知の構成発見、実験物理学';
+
+  @override
+  String get scenarioBestRandom => '最適対象: 探索と実験';
+
+  @override
   String get privacyPolicyLabel => 'プライバシーポリシー';
+
+  @override
+  String get tutorialWelcomeTitle => 'Gravitonへようこそ！';
+
+  @override
+  String get tutorialWelcomeDescription =>
+      'Gravitonへようこそ。重力物理学の魅力的な世界への窓です！このアプリでは、天体が重力を通じてどのように相互作用し、空間と時間を通じて美しい軌道ダンスを作り出すかを探索できます。';
+
+  @override
+  String get welcomeCardDescription =>
+      'インタラクティブなシミュレーションを通じて重力物理学を探索しましょう。さまざまなシナリオを試し、コントロールを調整し、宇宙の展開を観察してください！';
+
+  @override
+  String get quickTutorialButton => 'クイックチュートリアル';
+
+  @override
+  String get gotItButton => '了解！';
+
+  @override
+  String get tutorialNavigationHint => '左右にスワイプするか、ボタンを使用してナビゲートしてください';
+
+  @override
+  String get tutorialObjectivesTitle => '何ができますか？';
+
+  @override
+  String get tutorialObjectivesDescription =>
+      '• リアルな軌道力学を観察\n• さまざまな天文シナリオを探索\n• 重力相互作用を実験\n• 衝突と合体を観察\n• 惑星運動について学習\n• 混沌とした三体力学を発見';
+
+  @override
+  String get tutorialControlsTitle => 'シミュレーション操作';
+
+  @override
+  String get tutorialControlsDescription =>
+      'どこでもタップしてシミュレーションのフローティング再生/一時停止コントロールを表示します。速度コントロールは右上角にあります。シナリオ、設定、物理調整のためにメニュー（⋮）をタップしてください。';
+
+  @override
+  String get tutorialControlsDescriptionPart1 =>
+      'どこでもタップしてシミュレーションのフローティング再生/一時停止コントロールを表示します。速度コントロールは右上角にあります。メニュー';
+
+  @override
+  String get tutorialControlsDescriptionPart2 => 'をタップしてシナリオ、設定、物理調整を行ってください。';
+
+  @override
+  String get tutorialCameraTitle => 'カメラ & ビュー操作';
+
+  @override
+  String get tutorialCameraDescription =>
+      'ドラッグしてビューを回転、ピンチしてズーム、2本指でカメラをロールします。下部バーには映画的な体験のためのフォーカス、センタリング、自動回転コントロールがあります。';
+
+  @override
+  String get tutorialScenariosTitle => '冒険を選択';
+
+  @override
+  String get tutorialScenariosDescription =>
+      '右上角のメニュー（⋮）にアクセスして異なるシナリオを探索：太陽系、地球-月力学、連星、または混沌とした三体問題。それぞれが発見すべき独特な物理学を提供します！';
+
+  @override
+  String get tutorialScenariosDescriptionPart1 => '右上角のメニュー';
+
+  @override
+  String get tutorialScenariosDescriptionPart2 =>
+      'にアクセスして異なるシナリオを探索：太陽系、地球-月力学、連星、または混沌とした三体問題。それぞれが発見すべき独特な物理学を提供します！';
+
+  @override
+  String get tutorialExploreTitle => '探索の準備完了！';
+
+  @override
+  String get tutorialExploreDescription =>
+      '準備完了です！身近な惑星を見るには太陽系から始めるか、混沌とした楽しみのために三体問題に飛び込んでください。覚えておいてください：リセットするたびに探索する新しい宇宙が作られます！';
+
+  @override
+  String get skipTutorial => 'スキップ';
+
+  @override
+  String get previous => '前へ';
+
+  @override
+  String get next => '次へ';
+
+  @override
+  String get getStarted => '始める！';
+
+  @override
+  String get showTutorialTooltip => 'チュートリアルを表示';
+
+  @override
+  String get helpAndObjectivesTitle => 'ヘルプと目標';
+
+  @override
+  String get whatToDoTitle => 'Gravitonでできること';
+
+  @override
+  String get whatToDoDescription =>
+      'Gravitonは物理学の遊び場です：\n\n🪐 リアルな軌道力学を探索\n🌟 恒星進化と衝突を観察\n🎯 重力について学習\n🎮 異なるシナリオで実験\n📚 天体力学を理解\n🔄 無限のランダム構成を作成';
+
+  @override
+  String get objectivesTitle => '学習目標';
+
+  @override
+  String get objectives1 => '重力が宇宙をどう形作るかを理解';
+
+  @override
+  String get objectives2 => '安定対混沌軌道系を観察';
+
+  @override
+  String get objectives3 => 'なぜ惑星が楕円軌道で動くかを学習';
+
+  @override
+  String get objectives4 => '連星がどう相互作用するかを発見';
+
+  @override
+  String get objectives5 => 'オブジェクトが衝突するとどうなるかを観察';
+
+  @override
+  String get objectives6 => '三体問題の複雑さを理解';
+
+  @override
+  String get quickStartTitle => 'クイックスタートガイド';
+
+  @override
+  String get quickStart1 => 'シナリオを選択（初心者には太陽系推奨）';
+
+  @override
+  String get quickStart2 => '再生を押してシミュレーション開始';
+
+  @override
+  String get quickStart3 => 'ドラッグでビュー回転、ピンチでズーム';
+
+  @override
+  String get quickStart4 => '速度スライダーをタップして時間制御';
+
+  @override
+  String get quickStart5 => 'リセットで新しいランダム構成を試行';
+
+  @override
+  String get quickStart6 => '軌跡を有効にして軌道パスを表示';
+
+  @override
+  String get objectivesDescription =>
+      '• 重力が宇宙をどう形作るかを理解\n• 安定対混沌軌道系を観察\n• なぜ惑星が楕円軌道で動くかを学習\n• 連星がどう相互作用するかを発見\n• オブジェクトが衝突するとどうなるかを観察\n• 三体問題の複雑さを理解';
+
+  @override
+  String get quickStartDescription =>
+      '1. シナリオを選択（初心者には太陽系推奨）\n2. 再生を押してシミュレーション開始\n3. ドラッグでビュー回転、ピンチでズーム\n4. 速度スライダーをタップして時間制御\n5. リセットで新しいランダム構成を試行\n6. 軌跡を有効にして軌道パスを表示';
+
+  @override
+  String get showHelpTooltip => 'ヘルプと目標';
+
+  @override
+  String get tutorialButton => 'チュートリアル';
+
+  @override
+  String get resetTutorialButton => 'リセット';
+
+  @override
+  String get tutorialResetMessage =>
+      'チュートリアルの状態がリセットされました！アプリを再起動して初回体験を確認してください。';
+
+  @override
+  String get copyButton => 'コピー';
+
+  @override
+  String couldNotOpenUrl(String url) {
+    return '$urlを開けませんでした';
+  }
+
+  @override
+  String errorOpeningLink(String error) {
+    return 'リンクを開くエラー：$error';
+  }
+
+  @override
+  String copiedToClipboard(String text) {
+    return 'クリップボードにコピーしました：$text';
+  }
 }

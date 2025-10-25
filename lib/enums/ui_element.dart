@@ -28,7 +28,19 @@ enum UIElement {
   body('body'),
 
   /// Scenario-related interactions
-  scenario('scenario');
+  scenario('scenario'),
+
+  /// Help dialog
+  help('help'),
+
+  /// Tutorial overlay
+  tutorial('tutorial'),
+
+  /// Body properties dialog
+  bodyProperties('body_properties'),
+
+  /// Physics/simulation settings dialog
+  physicsSettings('physics_settings');
 
   const UIElement(this.value);
 

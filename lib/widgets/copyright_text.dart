@@ -14,24 +14,13 @@ class CopyrightText extends StatelessWidget {
     final currentYear = DateTime.now().year;
 
     return Positioned(
-      bottom: 20,
+      bottom: 10, // Moved down from 20
       left: 0,
       right: 0,
       child: Center(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: AppColors.uiBlack.withValues(
-              alpha: AppTypography.opacitySemiTransparent,
-            ),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityDisabled,
-              ),
-              width: 1,
-            ),
-          ),
+          // Removed background and border for cleaner look
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
