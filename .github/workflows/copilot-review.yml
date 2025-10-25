@@ -1,0 +1,129 @@
+name: Copilot Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'lib/**/*.dart'
+      - 'test/**/*.dart'
+      - 'pubspec.yaml'
+
+jobs:
+  copilot-review:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.6'
+        channel: 'stable'
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Run static analysis
+      run: flutter analyze --fatal-infos
+
+    - name: Run tests
+      run: flutter test
+
+    - name: Copilot Review
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          // Read the custom instructions
+          const fs = require('fs');
+          const instructions = fs.readFileSync('.github/copilot-review-config.md', 'utf8');
+          
+          // Get the list of changed files
+          const { data: files } = await github.rest.pulls.listFiles({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.issue.number
+          });
+          
+          // Filter for Dart files
+          const dartFiles = files.filter(file => 
+            file.filename.endsWith('.dart') && 
+            !file.filename.includes('app_localizations') &&
+            (file.status === 'added' || file.status === 'modified')
+          );
+          
+          if (dartFiles.length === 0) {
+            console.log('No Dart files to review');
+            return;
+          }
+          
+          // Create a review comment with our custom instructions
+          const reviewBody = `
+          ## 🤖 Copilot Code Review Guidelines
+          
+          Based on our custom instructions, please review the following areas:
+          
+          ### 🎯 Focus Areas for This PR:
+          ${dartFiles.map(f => `- \`${f.filename}\` (${f.status})`).join('\n')}
+          
+          ### 📋 Review Checklist:
+          ${instructions.includes('Physics') ? '- ✅ Physics calculations use SimulationConstants' : ''}
+          ${instructions.includes('Localization') ? '- ✅ All text uses AppLocalizations' : ''}
+          ${instructions.includes('Performance') ? '- ✅ No expensive operations in render loops' : ''}
+          ${instructions.includes('Testing') ? '- ✅ Adequate test coverage for changes' : ''}
+          
+          Please review according to the guidelines in \`.github/copilot-review-config.md\`
+          `;
+          
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: reviewBody
+          });
+
+    - name: Physics Validation Check
+      run: |
+        echo "Running specialized physics validation..."
+        # Check for magic numbers in physics calculations (using extended regex)
+        # Look for const declarations with numeric values (integers and decimals), including type annotations
+        # Pattern breakdown:
+        # - const\s+ : "const" keyword followed by whitespace
+        # - ([a-zA-Z_][a-zA-Z0-9_]*\s+)? : optional type annotation (e.g., "double ")
+        # - [a-zA-Z_][a-zA-Z0-9_]*\s* : variable name
+        # - =\s* : assignment operator
+        # - [0-9]+(\.[0-9]+)? : numeric value (integer or decimal)
+        if grep -rE "const\s+([a-zA-Z_][a-zA-Z0-9_]*\s+)?[a-zA-Z_][a-zA-Z0-9_]*\s*=\s*[0-9]+(\.[0-9]+)?" lib/services/ --include="*.dart" | grep -v "SimulationConstants"; then
+          echo "⚠️  Warning: Found potential magic numbers in physics calculations"
+          echo "Please consider moving constants to SimulationConstants class"
+          echo "Found:"
+          grep -rE "const\s+([a-zA-Z_][a-zA-Z0-9_]*\s+)?[a-zA-Z_][a-zA-Z0-9_]*\s*=\s*[0-9]+(\.[0-9]+)?" lib/services/ --include="*.dart" | grep -v "SimulationConstants" || true
+        fi
+        
+        # Check for hardcoded strings (using extended regex)
+        if grep -rE "Text\s*\(\s*['\"]" lib/widgets/ --include="*.dart" | grep -v "l10n\."; then
+          echo "⚠️  Warning: Found potential hardcoded strings"
+          echo "Please use AppLocalizations for all user-facing text"
+        fi
+        
+        # Check for missing test coverage in critical files
+        CRITICAL_FILES=(
+          "lib/services/simulation.dart"
+          "lib/services/temperature_service.dart"
+          "lib/utils/physics_utils.dart"
+        )
+        
+        for file in "${CRITICAL_FILES[@]}"; do
+          if [ -f "$file" ]; then
+            test_file="test/${file#lib/}"
+            test_file="${test_file%.dart}_test.dart"
+            if [ ! -f "$test_file" ]; then
+              echo "⚠️  Warning: Missing test file for critical component: $file"
+            fi
+          fi
+        done
