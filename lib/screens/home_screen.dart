@@ -350,7 +350,6 @@ class _HomeScreenState extends State<HomeScreen>
       UIAction.dialogOpened,
       element: UIElement.settings,
     );
-
     showDialog<void>(
       context: context,
       builder: (context) => const SettingsDialog(),
