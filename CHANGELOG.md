@@ -5,31 +5,27 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2025-10-23
+## [1.1.0] - 2025-10-25
 
 ### Added
-- **Enhanced Tutorial System**: Interactive tutorial overlay with colored icons, dynamic buttons, and page indicators
-- **Comprehensive UI/UX Improvements**: Standardized dialog layouts, consistent spacing, and improved visual hierarchy
-- **Floating Controls Enhancement**: Added text labels under icons in video-style simulation controls
-- **Dialog Consistency**: Unified padding, constraints, and styling across all dialogs (help, settings, scenarios)
-- **Temperature Tracking System**: Real-time planetary temperature calculation based on stellar radiation
-- **Physics-Based Heating**: Blackbody radiation model with inverse square law for realistic thermal dynamics
-- **Temperature Categories**: Classification system (Frozen, Cold, Moderate, Hot, Scorching) with color-coded visualization
-- **Greenhouse Effect Modeling**: Atmospheric temperature enhancement for massive planets
-- **Temperature Unit Support**: Display in Celsius, Kelvin, and Fahrenheit with proper localization
+- **Interactive Tutorial Overlay**: Swipe navigation and colored step indicators with visual guidance for new users
+- **Standardized Dialog System**: Consistent constraints, padding, and visual styling across all app dialogs
+- **Real-time Temperature Physics**: Planetary temperature calculation based on stellar radiation using blackbody physics
+- **Enhanced Floating Controls**: Labeled buttons in video-style simulation controls for improved usability
+- **Menu Icon Integration**: Tutorial now displays actual three-dot menu icons instead of text symbols
 
 ### Improved
-- **Collision Sensitivity**: Reduced collision radius multiplier from 0.2 to 0.1 for more realistic body merging
-- **Merge Physics**: Mass-weighted temperature averaging during collisions to preserve thermal properties
-- **Simulation Integration**: Throttled temperature updates (0.5s intervals) for optimal performance
+- **Collision Physics**: Reduced collision sensitivity for more realistic planetary interactions and merging behavior
+- **Tutorial Accuracy**: Updated all tutorial descriptions to reflect current app control layout and navigation
+- **Multi-language Support**: Enhanced localization with split text support for inline icon display across all 7 languages
+- **User Experience**: More intuitive interface with proper visual cues and standardized interaction patterns
 
 ### Technical Improvements
-- **ARB Localization**: Updated all 7 language files with individual list items and parameterized strings
-- **Code Organization**: Improved dialog structure, consistent imports, and standardized component patterns
-- **Full Internationalization**: Complete translations for temperature system in 6 languages (German, Spanish, French, Japanese, Korean, Chinese)
-- **Theme Integration**: Centralized temperature colors in AppColors with consistent theming
-- **Code Quality**: Proper formatting, linting compliance, and maintainable architecture
-- **Localization Infrastructure**: Enhanced i18n support with temperature-specific strings and units
+- **ARB Localization**: Updated all language files with split text keys for enhanced tutorial icon integration
+- **Tutorial System**: Sophisticated text rendering with inline icon display capabilities
+- **Code Organization**: Improved dialog structure and consistent component patterns throughout the app
+- **Temperature Integration**: Throttled temperature updates with mass-weighted averaging during collisions
+- **Internationalization**: Complete tutorial translations with proper icon placement for 7 languages
 
 ## [1.0.0] - 2025-10-21
 
