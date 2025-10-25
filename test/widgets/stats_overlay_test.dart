@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
-import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/stats_overlay.dart';
 
 void main() {
@@ -27,6 +26,9 @@ void main() {
         home: Scaffold(body: Stack(children: [child])),
       );
     }
+
+    // Test constants to reduce coupling to implementation details
+    const expectedBorderRadius = BorderRadius.all(Radius.circular(8.0));
 
     group('Rendering', () {
       testWidgets('Should display stats overlay with default values', (
@@ -132,10 +134,7 @@ void main() {
 
         expect(container.padding, equals(const EdgeInsets.all(12)));
         expect(decoration.color, equals(AppColors.basicBlack54));
-        expect(
-          decoration.borderRadius,
-          equals(BorderRadius.circular(AppTypography.radiusMedium)),
-        );
+        expect(decoration.borderRadius, equals(expectedBorderRadius));
       });
 
       testWidgets('Should have proper text styles', (tester) async {

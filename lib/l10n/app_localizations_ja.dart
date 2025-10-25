@@ -756,6 +756,19 @@ class AppLocalizationsJa extends AppLocalizations {
       'Gravitonへようこそ。重力物理学の魅力的な世界への窓です！このアプリでは、天体が重力を通じてどのように相互作用し、空間と時間を通じて美しい軌道ダンスを作り出すかを探索できます。';
 
   @override
+  String get welcomeCardDescription =>
+      'インタラクティブなシミュレーションを通じて重力物理学を探索しましょう。さまざまなシナリオを試し、コントロールを調整し、宇宙の展開を観察してください！';
+
+  @override
+  String get quickTutorialButton => 'クイックチュートリアル';
+
+  @override
+  String get gotItButton => '了解！';
+
+  @override
+  String get tutorialNavigationHint => '左右にスワイプするか、ボタンを使用してナビゲートしてください';
+
+  @override
   String get tutorialObjectivesTitle => '何ができますか？';
 
   @override

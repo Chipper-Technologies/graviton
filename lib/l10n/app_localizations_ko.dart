@@ -758,6 +758,19 @@ class AppLocalizationsKo extends AppLocalizations {
       '중력 물리학의 매혹적인 세계로의 창문인 Graviton에 오신 것을 환영합니다! 이 앱을 통해 천체들이 중력을 통해 어떻게 상호작용하며 공간과 시간을 통해 아름다운 궤도 춤을 만들어내는지 탐구할 수 있습니다.';
 
   @override
+  String get welcomeCardDescription =>
+      '대화형 시뮬레이션을 통해 중력 물리학을 탐구하세요. 다양한 시나리오를 시도하고, 조작을 조정하며, 우주의 전개를 관찰하세요!';
+
+  @override
+  String get quickTutorialButton => '빠른 튜토리얼';
+
+  @override
+  String get gotItButton => '알겠습니다!';
+
+  @override
+  String get tutorialNavigationHint => '좌우로 스와이프하거나 버튼을 사용하여 탐색하세요';
+
+  @override
   String get tutorialObjectivesTitle => '무엇을 할 수 있나요?';
 
   @override

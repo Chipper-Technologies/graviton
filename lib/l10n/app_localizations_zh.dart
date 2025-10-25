@@ -751,6 +751,18 @@ class AppLocalizationsZh extends AppLocalizations {
       '欢迎来到Graviton，这是您进入引力物理学迷人世界的窗口！这个应用程序让您探索天体如何通过重力相互作用，在空间和时间中创造美丽的轨道舞蹈。';
 
   @override
+  String get welcomeCardDescription => '通过交互式模拟探索引力物理学。尝试不同的场景，调整控制，观看宇宙的展开！';
+
+  @override
+  String get quickTutorialButton => '快速教程';
+
+  @override
+  String get gotItButton => '明白了！';
+
+  @override
+  String get tutorialNavigationHint => '左右滑动或使用按钮进行导航';
+
+  @override
   String get tutorialObjectivesTitle => '您可以做什么？';
 
   @override
