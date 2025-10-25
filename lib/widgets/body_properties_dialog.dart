@@ -32,16 +32,69 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
   late double _stellarLuminosity;
   late vm.Vector3 _velocity;
 
+  // Slider range constants to prevent out-of-bounds errors
+  static const double _massMin = 0.001;
+  static const double _massMax = 1000.0;
+  static const double _radiusMin = 0.01;
+  static const double _radiusMax = 100.0;
+  static const double _luminosityMin = 0.0;
+  static const double _luminosityMax = 10.0;
+  static const double _velocityMin = -50.0;
+  static const double _velocityMax = 50.0;
+
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.body.name);
-    _mass = widget.body.mass;
-    _radius = widget.body.radius;
+
+    debugPrint(
+      '📖 DIALOG OPENED: ${widget.body.name} has mass ${widget.body.mass}',
+    );
+
+    // Clamp initial values to ensure they're within slider bounds
+    // Log warnings for developers when values are out of range
+    final originalMass = widget.body.mass;
+    _mass = originalMass.clamp(_massMin, _massMax);
+    if (_mass != originalMass) {
+      debugPrint(
+        'Warning: Body ${widget.body.name} mass $originalMass clamped to $_mass (range: $_massMin-$_massMax)',
+      );
+    }
+
+    final originalRadius = widget.body.radius;
+    _radius = originalRadius.clamp(_radiusMin, _radiusMax);
+    if (_radius != originalRadius) {
+      debugPrint(
+        'Warning: Body ${widget.body.name} radius $originalRadius clamped to $_radius (range: $_radiusMin-$_radiusMax)',
+      );
+    }
+
     _color = widget.body.color;
     _bodyType = widget.body.bodyType;
-    _stellarLuminosity = widget.body.stellarLuminosity;
-    _velocity = widget.body.velocity.clone();
+
+    final originalLuminosity = widget.body.stellarLuminosity;
+    _stellarLuminosity = originalLuminosity.clamp(
+      _luminosityMin,
+      _luminosityMax,
+    );
+    if (_stellarLuminosity != originalLuminosity) {
+      debugPrint(
+        'Warning: Body ${widget.body.name} luminosity $originalLuminosity clamped to $_stellarLuminosity (range: $_luminosityMin-$_luminosityMax)',
+      );
+    }
+
+    _velocity = vm.Vector3(
+      widget.body.velocity.x.clamp(_velocityMin, _velocityMax),
+      widget.body.velocity.y.clamp(_velocityMin, _velocityMax),
+      widget.body.velocity.z.clamp(_velocityMin, _velocityMax),
+    );
+    if (widget.body.velocity.x != _velocity.x ||
+        widget.body.velocity.y != _velocity.y ||
+        widget.body.velocity.z != _velocity.z) {
+      debugPrint(
+        'Warning: Body ${widget.body.name} velocity ${widget.body.velocity} clamped to $_velocity (range: $_velocityMin-$_velocityMax)',
+      );
+    }
   }
 
   @override
@@ -51,6 +104,10 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
   }
 
   void _updateBody() {
+    debugPrint(
+      '🔧 BODY UPDATE: ${widget.body.name} mass changing from ${widget.body.mass} to $_mass',
+    );
+
     // Update the original body's properties directly
     widget.body.velocity = _velocity;
     widget.body.mass = _mass;
@@ -61,6 +118,10 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
     widget.body.stellarLuminosity = _stellarLuminosity;
 
     widget.onBodyChanged(widget.body);
+
+    debugPrint(
+      '🔧 BODY UPDATE COMPLETE: ${widget.body.name} mass is now ${widget.body.mass}',
+    );
   }
 
   @override
@@ -188,10 +249,10 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                       _buildSectionTitle(l10n.bodyPropertiesMass),
                       _buildSlider(
                         value: _mass,
-                        min: 0.1,
-                        max: 1000.0,
+                        min: _massMin,
+                        max: _massMax,
                         divisions: 100,
-                        label: _mass.toStringAsFixed(1),
+                        label: _mass.toStringAsFixed(3),
                         icon: Icons.scale,
                         onChanged: (value) {
                           setState(() {
@@ -207,10 +268,10 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                       _buildSectionTitle(l10n.bodyPropertiesRadius),
                       _buildSlider(
                         value: _radius,
-                        min: 0.1,
-                        max: 100.0,
+                        min: _radiusMin,
+                        max: _radiusMax,
                         divisions: 100,
-                        label: _radius.toStringAsFixed(1),
+                        label: _radius.toStringAsFixed(2),
                         icon: Icons.radio_button_unchecked,
                         onChanged: (value) {
                           setState(() {
@@ -227,8 +288,8 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                         _buildSectionTitle(l10n.bodyPropertiesLuminosity),
                         _buildSlider(
                           value: _stellarLuminosity,
-                          min: 0.0,
-                          max: 10.0,
+                          min: _luminosityMin,
+                          max: _luminosityMax,
                           divisions: 100,
                           label: _stellarLuminosity.toStringAsFixed(2),
                           icon: Icons.brightness_7,
@@ -277,6 +338,10 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
     required ValueChanged<double> onChanged,
     IconData? icon,
   }) {
+    // Clamp the value to ensure it's within the valid range
+    // This prevents slider assertion errors when body values are outside bounds
+    final clampedValue = value.clamp(min, max);
+
     return Column(
       children: [
         Row(
@@ -296,7 +361,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
               activeTrackColor: Theme.of(context).colorScheme.primary,
             ),
             child: Slider(
-              value: value,
+              value: clampedValue,
               min: min,
               max: max,
               divisions: divisions,
@@ -375,8 +440,8 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
             Expanded(
               child: _buildSlider(
                 value: _velocity.x,
-                min: -50.0,
-                max: 50.0,
+                min: _velocityMin,
+                max: _velocityMax,
                 divisions: 100,
                 label: _velocity.x.toStringAsFixed(1),
                 icon: Icons.east,
@@ -403,8 +468,8 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
             Expanded(
               child: _buildSlider(
                 value: _velocity.y,
-                min: -50.0,
-                max: 50.0,
+                min: _velocityMin,
+                max: _velocityMax,
                 divisions: 100,
                 label: _velocity.y.toStringAsFixed(1),
                 icon: Icons.north,
@@ -431,8 +496,8 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
             Expanded(
               child: _buildSlider(
                 value: _velocity.z,
-                min: -50.0,
-                max: 50.0,
+                min: _velocityMin,
+                max: _velocityMax,
                 divisions: 100,
                 label: _velocity.z.toStringAsFixed(1),
                 icon: Icons.flight_takeoff,
