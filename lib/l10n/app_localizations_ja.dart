@@ -763,25 +763,39 @@ class AppLocalizationsJa extends AppLocalizations {
       '• リアルな軌道力学を観察\n• さまざまな天文シナリオを探索\n• 重力相互作用を実験\n• 衝突と合体を観察\n• 惑星運動について学習\n• 混沌とした三体力学を発見';
 
   @override
-  String get tutorialControlsTitle => '基本操作';
+  String get tutorialControlsTitle => 'シミュレーション操作';
 
   @override
   String get tutorialControlsDescription =>
-      '上部のコントロールを使用してシミュレーションの再生/一時停止、新しいシナリオのリセット、シミュレーション速度の調整を行います。設定ボタンでは軌跡やその他の視覚オプションをカスタマイズできます。';
+      'どこでもタップしてシミュレーションのフローティング再生/一時停止コントロールを表示します。速度コントロールは右上角にあります。シナリオ、設定、物理調整のためにメニュー（⋮）をタップしてください。';
 
   @override
-  String get tutorialCameraTitle => 'カメラ操作';
+  String get tutorialControlsDescriptionPart1 =>
+      'どこでもタップしてシミュレーションのフローティング再生/一時停止コントロールを表示します。速度コントロールは右上角にあります。メニュー';
+
+  @override
+  String get tutorialControlsDescriptionPart2 => 'をタップしてシナリオ、設定、物理調整を行ってください。';
+
+  @override
+  String get tutorialCameraTitle => 'カメラ & ビュー操作';
 
   @override
   String get tutorialCameraDescription =>
-      'ドラッグしてビューを回転、ピンチしてズーム、2本指でカメラをロールします。下部のコントロールでオブジェクトへのフォーカス、ビューの中央配置、映画的な体験のための自動回転を有効にできます。';
+      'ドラッグしてビューを回転、ピンチしてズーム、2本指でカメラをロールします。下部バーには映画的な体験のためのフォーカス、センタリング、自動回転コントロールがあります。';
 
   @override
   String get tutorialScenariosTitle => '冒険を選択';
 
   @override
   String get tutorialScenariosDescription =>
-      '科学ボタンをタップして異なるシナリオを探索：太陽系、地球-月力学、連星、または古典的な混沌の三体問題。それぞれが発見すべき独特な物理学を提供します！';
+      '右上角のメニュー（⋮）にアクセスして異なるシナリオを探索：太陽系、地球-月力学、連星、または混沌とした三体問題。それぞれが発見すべき独特な物理学を提供します！';
+
+  @override
+  String get tutorialScenariosDescriptionPart1 => '右上角のメニュー';
+
+  @override
+  String get tutorialScenariosDescriptionPart2 =>
+      'にアクセスして異なるシナリオを探索：太陽系、地球-月力学、連星、または混沌とした三体問題。それぞれが発見すべき独特な物理学を提供します！';
 
   @override
   String get tutorialExploreTitle => '探索の準備完了！';

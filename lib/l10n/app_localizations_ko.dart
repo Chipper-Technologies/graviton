@@ -765,25 +765,39 @@ class AppLocalizationsKo extends AppLocalizations {
       '• 현실적인 궤도 역학 관찰\n• 다양한 천문학적 시나리오 탐구\n• 중력 상호작용 실험\n• 충돌과 합병 관찰\n• 행성 운동에 대해 학습\n• 혼돈스러운 삼체 역학 발견';
 
   @override
-  String get tutorialControlsTitle => '기본 조작';
+  String get tutorialControlsTitle => '시뮬레이션 조작';
 
   @override
   String get tutorialControlsDescription =>
-      '상단 컨트롤을 사용하여 시뮬레이션 재생/일시정지, 새로운 시나리오를 위한 리셋, 시뮬레이션 속도 조정을 하세요. 설정 버튼을 통해 궤적과 기타 시각적 옵션을 사용자 정의할 수 있습니다.';
+      '아무 곳이나 탭하여 시뮬레이션의 플로팅 재생/일시정지 컨트롤을 불러오세요. 속도 컨트롤은 우상단 모서리에 있습니다. 시나리오, 설정, 물리 조정을 위해 메뉴(⋮)를 탭하세요.';
 
   @override
-  String get tutorialCameraTitle => '카메라 조작';
+  String get tutorialControlsDescriptionPart1 =>
+      '아무 곳이나 탭하여 시뮬레이션의 플로팅 재생/일시정지 컨트롤을 불러오세요. 속도 컨트롤은 우상단 모서리에 있습니다. 메뉴';
+
+  @override
+  String get tutorialControlsDescriptionPart2 => '를 탭하여 시나리오, 설정, 물리 조정을 하세요.';
+
+  @override
+  String get tutorialCameraTitle => '카메라 & 뷰 조작';
 
   @override
   String get tutorialCameraDescription =>
-      '드래그하여 뷰 회전, 핀치하여 줌, 두 손가락으로 카메라 롤을 조작하세요. 하단 컨트롤은 객체에 초점을 맞추고, 뷰를 중앙에 배치하며, 영화적 경험을 위한 자동 회전을 활성화하는 데 도움이 됩니다.';
+      '드래그하여 뷰 회전, 핀치하여 줌, 두 손가락으로 카메라를 롤하세요. 하단 바에는 영화적 경험을 위한 포커스, 중앙 배치, 자동 회전 컨트롤이 있습니다.';
 
   @override
   String get tutorialScenariosTitle => '모험을 선택하세요';
 
   @override
   String get tutorialScenariosDescription =>
-      '과학 버튼을 눌러 다양한 시나리오를 탐구하세요: 우리의 태양계, 지구-달 역학, 쌍성, 또는 고전적인 혼돈의 삼체 문제. 각각은 발견할 독특한 물리학을 제공합니다!';
+      '우상단 모서리의 메뉴(⋮)에 접근하여 다양한 시나리오를 탐구하세요: 우리의 태양계, 지구-달 역학, 쌍성, 또는 혼돈의 삼체 문제. 각각은 발견할 독특한 물리학을 제공합니다!';
+
+  @override
+  String get tutorialScenariosDescriptionPart1 => '우상단 모서리의 메뉴';
+
+  @override
+  String get tutorialScenariosDescriptionPart2 =>
+      '에 접근하여 다양한 시나리오를 탐구하세요: 우리의 태양계, 지구-달 역학, 쌍성, 또는 혼돈의 삼체 문제. 각각은 발견할 독특한 물리학을 제공합니다!';
 
   @override
   String get tutorialExploreTitle => '탐구할 준비 완료!';

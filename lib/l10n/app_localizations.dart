@@ -1557,25 +1557,37 @@ abstract class AppLocalizations {
   /// Title for tutorial controls step
   ///
   /// In en, this message translates to:
-  /// **'Basic Controls'**
+  /// **'Simulation Controls'**
   String get tutorialControlsTitle;
 
   /// Description for tutorial controls step
   ///
   /// In en, this message translates to:
-  /// **'Use the top controls to Play/Pause the simulation, Reset for new scenarios, and adjust simulation Speed. The Settings button lets you customize trails and other visual options.'**
+  /// **'Tap anywhere to bring up the floating Play/Pause controls for the simulation. The speed control is in the top-right corner. Tap the menu (⋮) for scenarios, settings, and physics adjustments.'**
   String get tutorialControlsDescription;
+
+  /// First part of tutorial controls description (before menu icon)
+  ///
+  /// In en, this message translates to:
+  /// **'Tap anywhere to bring up the floating Play/Pause controls for the simulation. The speed control is in the top-right corner. Tap the menu'**
+  String get tutorialControlsDescriptionPart1;
+
+  /// Second part of tutorial controls description (after menu icon)
+  ///
+  /// In en, this message translates to:
+  /// **'for scenarios, settings, and physics adjustments.'**
+  String get tutorialControlsDescriptionPart2;
 
   /// Title for tutorial camera step
   ///
   /// In en, this message translates to:
-  /// **'Camera Controls'**
+  /// **'Camera & View Controls'**
   String get tutorialCameraTitle;
 
   /// Description for tutorial camera step
   ///
   /// In en, this message translates to:
-  /// **'Drag to rotate your view, pinch to zoom, and use two fingers to roll the camera. The bottom controls help you focus on objects, center the view, and enable auto-rotation for a cinematic experience.'**
+  /// **'Drag to rotate your view, pinch to zoom, and use two fingers to roll the camera. The bottom bar has focus, center, and auto-rotation controls for a cinematic experience.'**
   String get tutorialCameraDescription;
 
   /// Title for tutorial scenarios step
@@ -1587,8 +1599,20 @@ abstract class AppLocalizations {
   /// Description for tutorial scenarios step
   ///
   /// In en, this message translates to:
-  /// **'Tap the Science button to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the classic chaotic Three-Body Problem. Each offers unique physics to discover!'**
+  /// **'Access the menu (⋮) in the top-right to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the chaotic Three-Body Problem. Each offers unique physics to discover!'**
   String get tutorialScenariosDescription;
+
+  /// First part of tutorial scenarios description (before menu icon)
+  ///
+  /// In en, this message translates to:
+  /// **'Access the menu'**
+  String get tutorialScenariosDescriptionPart1;
+
+  /// Second part of tutorial scenarios description (after menu icon)
+  ///
+  /// In en, this message translates to:
+  /// **'in the top-right to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the chaotic Three-Body Problem. Each offers unique physics to discover!'**
+  String get tutorialScenariosDescriptionPart2;
 
   /// Title for tutorial final step
   ///

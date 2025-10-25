@@ -758,25 +758,39 @@ class AppLocalizationsZh extends AppLocalizations {
       '• 观察真实的轨道力学\n• 探索不同的天文场景\n• 实验引力相互作用\n• 观看碰撞和合并\n• 学习行星运动\n• 发现混沌的三体动力学';
 
   @override
-  String get tutorialControlsTitle => '基本控制';
+  String get tutorialControlsTitle => '模拟控制';
 
   @override
   String get tutorialControlsDescription =>
-      '使用顶部控件来播放/暂停模拟，重置新场景，并调整模拟速度。设置按钮让您可以自定义轨迹和其他视觉选项。';
+      '点击任何地方显示模拟的浮动播放/暂停控件。速度控制在右上角。点击菜单(⋮)获取场景、设置和物理调整。';
 
   @override
-  String get tutorialCameraTitle => '相机控制';
+  String get tutorialControlsDescriptionPart1 =>
+      '点击任何地方显示模拟的浮动播放/暂停控件。速度控制在右上角。点击菜单';
+
+  @override
+  String get tutorialControlsDescriptionPart2 => '获取场景、设置和物理调整。';
+
+  @override
+  String get tutorialCameraTitle => '相机和视图控制';
 
   @override
   String get tutorialCameraDescription =>
-      '拖动来旋转视图，捏合缩放，使用两个手指旋转相机。底部控件帮助您聚焦物体，居中视图，并启用自动旋转以获得电影般的体验。';
+      '拖动来旋转视图，捏合缩放，使用两个手指滚动相机。底部栏有焦点、居中和自动旋转控件，提供电影般的体验。';
 
   @override
   String get tutorialScenariosTitle => '选择您的冒险';
 
   @override
   String get tutorialScenariosDescription =>
-      '点击科学按钮探索不同场景：我们的太阳系、地月动力学、双星，或经典混沌的三体问题。每个都提供独特的物理学供您发现！';
+      '访问右上角的菜单(⋮)探索不同场景：我们的太阳系、地月动力学、双星，或混沌的三体问题。每个都提供独特的物理学供您发现！';
+
+  @override
+  String get tutorialScenariosDescriptionPart1 => '访问右上角的菜单';
+
+  @override
+  String get tutorialScenariosDescriptionPart2 =>
+      '探索不同场景：我们的太阳系、地月动力学、双星，或混沌的三体问题。每个都提供独特的物理学供您发现！';
 
   @override
   String get tutorialExploreTitle => '准备探索！';

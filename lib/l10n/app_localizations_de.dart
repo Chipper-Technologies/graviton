@@ -800,25 +800,40 @@ class AppLocalizationsDe extends AppLocalizations {
       '• Realistische Orbitalmechanik beobachten\n• Verschiedene astronomische Szenarien erkunden\n• Mit Gravitationsinteraktionen experimentieren\n• Kollisionen und Verschmelzungen beobachten\n• Über Planetenbewegung lernen\n• Chaotische Dreikörperdynamik entdecken';
 
   @override
-  String get tutorialControlsTitle => 'Grundsteuerung';
+  String get tutorialControlsTitle => 'Simulationssteuerung';
 
   @override
   String get tutorialControlsDescription =>
-      'Verwenden Sie die oberen Steuerelemente zum Abspielen/Pausieren der Simulation, Zurücksetzen für neue Szenarien und Anpassen der Simulationsgeschwindigkeit. Die Einstellungen-Schaltfläche ermöglicht die Anpassung von Spuren und anderen visuellen Optionen.';
+      'Tippen Sie überall hin, um die schwebenden Play/Pause-Steuerelemente für die Simulation aufzurufen. Die Geschwindigkeitssteuerung befindet sich oben rechts. Tippen Sie auf das Menü (⋮) für Szenarien, Einstellungen und Physik-Anpassungen.';
 
   @override
-  String get tutorialCameraTitle => 'Kamerasteuerung';
+  String get tutorialControlsDescriptionPart1 =>
+      'Tippen Sie überall hin, um die schwebenden Play/Pause-Steuerelemente für die Simulation aufzurufen. Die Geschwindigkeitssteuerung befindet sich oben rechts. Tippen Sie auf das Menü';
+
+  @override
+  String get tutorialControlsDescriptionPart2 =>
+      'für Szenarien, Einstellungen und Physik-Anpassungen.';
+
+  @override
+  String get tutorialCameraTitle => 'Kamera- & Ansichtssteuerung';
 
   @override
   String get tutorialCameraDescription =>
-      'Ziehen Sie, um Ihre Ansicht zu drehen, kneifen Sie zum Zoomen und verwenden Sie zwei Finger zum Rollen der Kamera. Die unteren Steuerelemente helfen Ihnen, sich auf Objekte zu fokussieren, die Ansicht zu zentrieren und die automatische Rotation für ein kinoreifes Erlebnis zu aktivieren.';
+      'Ziehen Sie, um Ihre Ansicht zu drehen, kneifen Sie zum Zoomen und verwenden Sie zwei Finger zum Rollen der Kamera. Die untere Leiste hat Fokus-, Zentrier- und automatische Rotationssteuerelemente für ein kinoreifes Erlebnis.';
 
   @override
   String get tutorialScenariosTitle => 'Wählen Sie Ihr Abenteuer';
 
   @override
   String get tutorialScenariosDescription =>
-      'Tippen Sie auf die Wissenschafts-Schaltfläche, um verschiedene Szenarien zu erkunden: unser Sonnensystem, Erde-Mond-Dynamik, Doppelsterne oder das klassisch chaotische Dreikörperproblem. Jedes bietet einzigartige Physik zum Entdecken!';
+      'Öffnen Sie das Menü (⋮) oben rechts, um verschiedene Szenarien zu erkunden: unser Sonnensystem, Erde-Mond-Dynamik, Doppelsterne oder das chaotische Dreikörperproblem. Jedes bietet einzigartige Physik zum Entdecken!';
+
+  @override
+  String get tutorialScenariosDescriptionPart1 => 'Öffnen Sie das Menü';
+
+  @override
+  String get tutorialScenariosDescriptionPart2 =>
+      'oben rechts, um verschiedene Szenarien zu erkunden: unser Sonnensystem, Erde-Mond-Dynamik, Doppelsterne oder das chaotische Dreikörperproblem. Jedes bietet einzigartige Physik zum Entdecken!';
 
   @override
   String get tutorialExploreTitle => 'Bereit zum Erkunden!';

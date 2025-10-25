@@ -1162,22 +1162,32 @@
     "description": "Description for tutorial objectives step"
   },
   
-  "tutorialControlsTitle": "Basic Controls",
+  "tutorialControlsTitle": "Simulation Controls",
   "@tutorialControlsTitle": {
     "description": "Title for tutorial controls step"
   },
   
-  "tutorialControlsDescription": "Use the top controls to Play/Pause the simulation, Reset for new scenarios, and adjust simulation Speed. The Settings button lets you customize trails and other visual options.",
+  "tutorialControlsDescription": "Tap anywhere to bring up the floating Play/Pause controls for the simulation. The speed control is in the top-right corner. Tap the menu (⋮) for scenarios, settings, and physics adjustments.",
   "@tutorialControlsDescription": {
     "description": "Description for tutorial controls step"
   },
+
+  "tutorialControlsDescriptionPart1": "Tap anywhere to bring up the floating Play/Pause controls for the simulation. The speed control is in the top-right corner. Tap the menu",
+  "@tutorialControlsDescriptionPart1": {
+    "description": "First part of tutorial controls description (before menu icon)"
+  },
+
+  "tutorialControlsDescriptionPart2": "for scenarios, settings, and physics adjustments.",
+  "@tutorialControlsDescriptionPart2": {
+    "description": "Second part of tutorial controls description (after menu icon)"
+  },
   
-  "tutorialCameraTitle": "Camera Controls",
+  "tutorialCameraTitle": "Camera & View Controls",
   "@tutorialCameraTitle": {
     "description": "Title for tutorial camera step"
   },
   
-  "tutorialCameraDescription": "Drag to rotate your view, pinch to zoom, and use two fingers to roll the camera. The bottom controls help you focus on objects, center the view, and enable auto-rotation for a cinematic experience.",
+  "tutorialCameraDescription": "Drag to rotate your view, pinch to zoom, and use two fingers to roll the camera. The bottom bar has focus, center, and auto-rotation controls for a cinematic experience.",
   "@tutorialCameraDescription": {
     "description": "Description for tutorial camera step"
   },
@@ -1187,9 +1197,19 @@
     "description": "Title for tutorial scenarios step"
   },
   
-  "tutorialScenariosDescription": "Tap the Science button to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the classic chaotic Three-Body Problem. Each offers unique physics to discover!",
+  "tutorialScenariosDescription": "Access the menu (⋮) in the top-right to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the chaotic Three-Body Problem. Each offers unique physics to discover!",
   "@tutorialScenariosDescription": {
     "description": "Description for tutorial scenarios step"
+  },
+
+  "tutorialScenariosDescriptionPart1": "Access the menu",
+  "@tutorialScenariosDescriptionPart1": {
+    "description": "First part of tutorial scenarios description (before menu icon)"
+  },
+
+  "tutorialScenariosDescriptionPart2": "in the top-right to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the chaotic Three-Body Problem. Each offers unique physics to discover!",
+  "@tutorialScenariosDescriptionPart2": {
+    "description": "Second part of tutorial scenarios description (after menu icon)"
   },
   
   "tutorialExploreTitle": "Ready to Explore!",

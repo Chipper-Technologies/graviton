@@ -804,25 +804,40 @@ class AppLocalizationsFr extends AppLocalizations {
       '• Observer une mécanique orbitale réaliste\n• Explorer différents scénarios astronomiques\n• Expérimenter avec les interactions gravitationnelles\n• Regarder les collisions et fusions\n• Apprendre le mouvement planétaire\n• Découvrir les dynamiques chaotiques à trois corps';
 
   @override
-  String get tutorialControlsTitle => 'Contrôles de Base';
+  String get tutorialControlsTitle => 'Contrôles de Simulation';
 
   @override
   String get tutorialControlsDescription =>
-      'Utilisez les contrôles du haut pour Lecture/Pause de la simulation, Réinitialiser pour de nouveaux scénarios, et ajuster la Vitesse de simulation. Le bouton Paramètres vous permet de personnaliser les traînées et autres options visuelles.';
+      'Touchez n\'importe où pour afficher les contrôles flottants de Lecture/Pause pour la simulation. Le contrôle de vitesse est dans le coin supérieur droit. Touchez le menu (⋮) pour les scénarios, paramètres et ajustements physiques.';
 
   @override
-  String get tutorialCameraTitle => 'Contrôles de Caméra';
+  String get tutorialControlsDescriptionPart1 =>
+      'Touchez n\'importe où pour afficher les contrôles flottants de Lecture/Pause pour la simulation. Le contrôle de vitesse est dans le coin supérieur droit. Touchez le menu';
+
+  @override
+  String get tutorialControlsDescriptionPart2 =>
+      'pour les scénarios, paramètres et ajustements physiques.';
+
+  @override
+  String get tutorialCameraTitle => 'Contrôles de Caméra et Vue';
 
   @override
   String get tutorialCameraDescription =>
-      'Glissez pour faire pivoter la vue, pincez pour zoomer, et utilisez les boutons du bas pour centrer la vue ou suivre des objets spécifiques. Touchez n\'importe quel corps céleste pour le sélectionner et suivre son mouvement.';
+      'Glissez pour faire pivoter la vue, pincez pour zoomer, et utilisez deux doigts pour faire rouler la caméra. La barre inférieure a des contrôles de focus, centrage et rotation automatique pour une expérience cinématographique.';
 
   @override
   String get tutorialScenariosTitle => 'Explorer les Scénarios';
 
   @override
   String get tutorialScenariosDescription =>
-      'Touchez le bouton de scénario en bas pour explorer différentes configurations : de notre système solaire aux systèmes stellaires exotiques et problèmes classiques à trois corps. Chaque scénario offre des perspectives uniques sur la mécanique gravitationnelle.';
+      'Accédez au menu (⋮) dans le coin supérieur droit pour explorer différents scénarios : notre Système Solaire, dynamiques Terre-Lune, Étoiles Binaires, ou le chaotique Problème à Trois Corps. Chacun offre une physique unique à découvrir !';
+
+  @override
+  String get tutorialScenariosDescriptionPart1 => 'Accédez au menu';
+
+  @override
+  String get tutorialScenariosDescriptionPart2 =>
+      'dans le coin supérieur droit pour explorer différents scénarios : notre Système Solaire, dynamiques Terre-Lune, Étoiles Binaires, ou le chaotique Problème à Trois Corps. Chacun offre une physique unique à découvrir !';
 
   @override
   String get tutorialExploreTitle => 'Commencez à Explorer !';

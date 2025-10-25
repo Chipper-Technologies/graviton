@@ -797,25 +797,40 @@ class AppLocalizationsEn extends AppLocalizations {
       '• Observe realistic orbital mechanics\n• Explore different astronomical scenarios\n• Experiment with gravitational interactions\n• Watch collisions and mergers\n• Learn about planetary motion\n• Discover chaotic three-body dynamics';
 
   @override
-  String get tutorialControlsTitle => 'Basic Controls';
+  String get tutorialControlsTitle => 'Simulation Controls';
 
   @override
   String get tutorialControlsDescription =>
-      'Use the top controls to Play/Pause the simulation, Reset for new scenarios, and adjust simulation Speed. The Settings button lets you customize trails and other visual options.';
+      'Tap anywhere to bring up the floating Play/Pause controls for the simulation. The speed control is in the top-right corner. Tap the menu (⋮) for scenarios, settings, and physics adjustments.';
 
   @override
-  String get tutorialCameraTitle => 'Camera Controls';
+  String get tutorialControlsDescriptionPart1 =>
+      'Tap anywhere to bring up the floating Play/Pause controls for the simulation. The speed control is in the top-right corner. Tap the menu';
+
+  @override
+  String get tutorialControlsDescriptionPart2 =>
+      'for scenarios, settings, and physics adjustments.';
+
+  @override
+  String get tutorialCameraTitle => 'Camera & View Controls';
 
   @override
   String get tutorialCameraDescription =>
-      'Drag to rotate your view, pinch to zoom, and use two fingers to roll the camera. The bottom controls help you focus on objects, center the view, and enable auto-rotation for a cinematic experience.';
+      'Drag to rotate your view, pinch to zoom, and use two fingers to roll the camera. The bottom bar has focus, center, and auto-rotation controls for a cinematic experience.';
 
   @override
   String get tutorialScenariosTitle => 'Choose Your Adventure';
 
   @override
   String get tutorialScenariosDescription =>
-      'Tap the Science button to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the classic chaotic Three-Body Problem. Each offers unique physics to discover!';
+      'Access the menu (⋮) in the top-right to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the chaotic Three-Body Problem. Each offers unique physics to discover!';
+
+  @override
+  String get tutorialScenariosDescriptionPart1 => 'Access the menu';
+
+  @override
+  String get tutorialScenariosDescriptionPart2 =>
+      'in the top-right to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the chaotic Three-Body Problem. Each offers unique physics to discover!';
 
   @override
   String get tutorialExploreTitle => 'Ready to Explore!';

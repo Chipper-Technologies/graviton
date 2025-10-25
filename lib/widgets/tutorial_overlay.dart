@@ -63,7 +63,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
       TutorialStep(
         title: l10n.tutorialControlsTitle,
         description: l10n.tutorialControlsDescription,
-        icon: Icons.smart_button,
+        icon: Icons.play_circle_filled,
         highlightArea: const Rect.fromLTWH(0, 0, double.infinity, 100),
         action: TutorialAction.highlightAppBar,
       ),
@@ -78,13 +78,13 @@ class _TutorialOverlayState extends State<TutorialOverlay>
         title: l10n.tutorialScenariosTitle,
         description: l10n.tutorialScenariosDescription,
         icon: Icons.science,
-        highlightArea: const Rect.fromLTWH(-50, 0, 100, 100),
-        action: TutorialAction.highlightScenarioButton,
+        highlightArea: const Rect.fromLTWH(-80, 0, 160, 100),
+        action: TutorialAction.highlightAppBar,
       ),
       TutorialStep(
         title: l10n.tutorialExploreTitle,
         description: l10n.tutorialExploreDescription,
-        icon: Icons.explore,
+        icon: Icons.touch_app,
         highlightArea: null,
         action: null,
       ),
@@ -98,13 +98,13 @@ class _TutorialOverlayState extends State<TutorialOverlay>
         return AppColors.gravitonOrangeRed;
       case 1: // school - Objectives/Learning
         return AppColors.celestialTeal;
-      case 2: // smart_button - Controls
+      case 2: // play_circle_filled - Simulation Controls
         return AppColors.accretionGold;
-      case 3: // videocam - Camera
+      case 3: // videocam - Camera & View Controls
         return AppColors.celestialBlue;
       case 4: // science - Scenarios
         return AppColors.spaceVibrantPurple;
-      case 5: // explore - Explore
+      case 5: // touch_app - Body Properties & Physics
         return AppColors.celestialAmber;
       default:
         return AppColors.primaryColor; // Fallback
@@ -353,8 +353,67 @@ class _TutorialOverlayState extends State<TutorialOverlay>
     );
   }
 
-  /// Build description text with proper list formatting
+  /// Build description text with proper list formatting and menu icon support
   Widget _buildDescriptionText(String description, ThemeData theme) {
+    final l10n = AppLocalizations.of(context)!;
+
+    // Check if this description needs to be split for menu icon display
+    bool needsSplitForMenuIcon = false;
+    String? part1;
+    String? part2;
+
+    // Controls step (step 2)
+    if (description == l10n.tutorialControlsDescription) {
+      needsSplitForMenuIcon = true;
+      part1 = l10n.tutorialControlsDescriptionPart1;
+      part2 = l10n.tutorialControlsDescriptionPart2;
+    }
+    // Scenarios step (step 4)
+    else if (description == l10n.tutorialScenariosDescription) {
+      needsSplitForMenuIcon = true;
+      part1 = l10n.tutorialScenariosDescriptionPart1;
+      part2 = l10n.tutorialScenariosDescriptionPart2;
+    }
+
+    // If we need to split for menu icon, create special layout
+    if (needsSplitForMenuIcon && part1 != null && part2 != null) {
+      return RichText(
+        textAlign: TextAlign.left,
+        text: TextSpan(
+          style: AppTypography.largeText.copyWith(
+            height: 1.5,
+            color: theme.colorScheme.onSurface,
+            decoration: TextDecoration.none,
+          ),
+          children: [
+            TextSpan(text: part1),
+            TextSpan(text: ' '), // Space before icon
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Icon(
+                  Icons.more_vert,
+                  size: 16,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+            ),
+            TextSpan(text: ' '), // Space after icon
+            TextSpan(text: part2),
+          ],
+        ),
+      );
+    }
+
     // Check if this is a list (contains bullets or numbers)
     final bool isBulletList = description.contains('•');
     final bool isNumberedList = description.contains(RegExp(r'\d\.'));
@@ -499,6 +558,7 @@ enum TutorialAction {
   highlightAppBar,
   highlightBottomControls,
   highlightScenarioButton,
+  highlightFloatingControls,
 }
 
 class HighlightPainter extends CustomPainter {
