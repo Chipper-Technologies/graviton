@@ -240,6 +240,120 @@ abstract class AppLocalizations {
   /// **'Select Scenario'**
   String get selectScenarioTooltip;
 
+  /// Tooltip for the more options menu button
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptionsTooltip;
+
+  /// Title for the physics settings menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Physics Settings'**
+  String get physicsSettingsTitle;
+
+  /// Description for the physics settings menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation parameters'**
+  String get physicsSettingsDescription;
+
+  /// Physics section header in simulation settings
+  ///
+  /// In en, this message translates to:
+  /// **'Physics'**
+  String get physicsSection;
+
+  /// Label for gravitational constant slider
+  ///
+  /// In en, this message translates to:
+  /// **'Gravitational Constant'**
+  String get gravitationalConstant;
+
+  /// Label for softening parameter slider
+  ///
+  /// In en, this message translates to:
+  /// **'Softening Parameter'**
+  String get softeningParameter;
+
+  /// Label for simulation speed slider
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation Speed'**
+  String get simulationSpeed;
+
+  /// Collisions section header in simulation settings
+  ///
+  /// In en, this message translates to:
+  /// **'Collisions'**
+  String get collisionsSection;
+
+  /// Label for collision sensitivity slider
+  ///
+  /// In en, this message translates to:
+  /// **'Collision Sensitivity'**
+  String get collisionSensitivity;
+
+  /// Trails section header in simulation settings
+  ///
+  /// In en, this message translates to:
+  /// **'Trails'**
+  String get trailsSection;
+
+  /// Label for trail length slider
+  ///
+  /// In en, this message translates to:
+  /// **'Trail Length'**
+  String get trailLength;
+
+  /// Label for trail fade rate slider
+  ///
+  /// In en, this message translates to:
+  /// **'Trail Fade Rate'**
+  String get trailFadeRate;
+
+  /// Haptics section header in simulation settings
+  ///
+  /// In en, this message translates to:
+  /// **'Haptics'**
+  String get hapticsSection;
+
+  /// Label for vibration enabled toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration Enabled'**
+  String get vibrationEnabled;
+
+  /// Description for vibration enabled toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Haptic feedback on collisions'**
+  String get hapticFeedbackCollisions;
+
+  /// Label for vibration throttle slider
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration Throttle'**
+  String get vibrationThrottle;
+
+  /// Description for the scenarios menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Explore different scenarios'**
+  String get scenariosMenuDescription;
+
+  /// Description for the settings menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Visual & behavior options'**
+  String get settingsMenuDescription;
+
+  /// Description for the help menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial & objectives'**
+  String get helpMenuDescription;
+
   /// Label for the show trails switch
   ///
   /// In en, this message translates to:
@@ -576,6 +690,60 @@ abstract class AppLocalizations {
   /// **'Unknown'**
   String get habitabilityUnknown;
 
+  /// Temperature category for extremely cold bodies (below -100°C)
+  ///
+  /// In en, this message translates to:
+  /// **'Frozen'**
+  String get temperatureFrozen;
+
+  /// Temperature category for cold bodies (-100°C to 0°C)
+  ///
+  /// In en, this message translates to:
+  /// **'Cold'**
+  String get temperatureCold;
+
+  /// Temperature category for moderate temperature bodies (0°C to 50°C)
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get temperatureModerate;
+
+  /// Temperature category for hot bodies (50°C to 150°C)
+  ///
+  /// In en, this message translates to:
+  /// **'Hot'**
+  String get temperatureHot;
+
+  /// Temperature category for extremely hot bodies (above 150°C)
+  ///
+  /// In en, this message translates to:
+  /// **'Scorching'**
+  String get temperatureScorching;
+
+  /// Temperature category for bodies where temperature doesn't apply
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get temperatureNotApplicable;
+
+  /// Celsius temperature unit symbol
+  ///
+  /// In en, this message translates to:
+  /// **'°C'**
+  String get temperatureUnitCelsius;
+
+  /// Kelvin temperature unit symbol
+  ///
+  /// In en, this message translates to:
+  /// **'K'**
+  String get temperatureUnitKelvin;
+
+  /// Fahrenheit temperature unit symbol
+  ///
+  /// In en, this message translates to:
+  /// **'°F'**
+  String get temperatureUnitFahrenheit;
+
   /// Tooltip for habitable zones toggle button
   ///
   /// In en, this message translates to:
@@ -767,6 +935,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sun'**
   String get bodySun;
+
+  /// Title for the body properties dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Body Properties'**
+  String get bodyPropertiesTitle;
+
+  /// Label for body name field
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get bodyPropertiesName;
+
+  /// Hint text for body name input field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter body name'**
+  String get bodyPropertiesNameHint;
+
+  /// Label for body type field
+  ///
+  /// In en, this message translates to:
+  /// **'Body Type'**
+  String get bodyPropertiesType;
+
+  /// Label for body color field
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get bodyPropertiesColor;
+
+  /// Label for body mass field
+  ///
+  /// In en, this message translates to:
+  /// **'Mass'**
+  String get bodyPropertiesMass;
+
+  /// Label for body radius field
+  ///
+  /// In en, this message translates to:
+  /// **'Radius'**
+  String get bodyPropertiesRadius;
+
+  /// Label for stellar luminosity field
+  ///
+  /// In en, this message translates to:
+  /// **'Stellar Luminosity'**
+  String get bodyPropertiesLuminosity;
+
+  /// Label for velocity field
+  ///
+  /// In en, this message translates to:
+  /// **'Velocity'**
+  String get bodyPropertiesVelocity;
+
+  /// Label for X axis
+  ///
+  /// In en, this message translates to:
+  /// **'X:'**
+  String get bodyPropertiesAxisX;
+
+  /// Label for Y axis
+  ///
+  /// In en, this message translates to:
+  /// **'Y:'**
+  String get bodyPropertiesAxisY;
+
+  /// Label for Z axis
+  ///
+  /// In en, this message translates to:
+  /// **'Z:'**
+  String get bodyPropertiesAxisZ;
 
   /// Name for Earth
   ///
@@ -1212,11 +1452,371 @@ abstract class AppLocalizations {
   /// **'Classic three-body problem in elegant motion'**
   String get presetThreeBodyBalletDesc;
 
+  /// Emoji for learning objectives
+  ///
+  /// In en, this message translates to:
+  /// **'🎯'**
+  String get scenarioLearnEmoji;
+
+  /// Emoji for best for section
+  ///
+  /// In en, this message translates to:
+  /// **'⭐'**
+  String get scenarioBestEmoji;
+
+  /// Learning content for solar system scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Learn: Planetary motion, orbital mechanics, familiar celestial bodies'**
+  String get scenarioLearnSolar;
+
+  /// Best for content for solar system scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Best for: Beginners, astronomy enthusiasts'**
+  String get scenarioBestSolar;
+
+  /// Learning content for Earth-Moon scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Learn: Three-body dynamics, lunar mechanics, tidal forces'**
+  String get scenarioLearnEarthMoon;
+
+  /// Best for content for Earth-Moon scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Best for: Understanding Earth-Moon system'**
+  String get scenarioBestEarthMoon;
+
+  /// Learning content for binary star scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Learn: Stellar evolution, binary systems, extreme gravity'**
+  String get scenarioLearnBinary;
+
+  /// Best for content for binary star scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Best for: Advanced physics exploration'**
+  String get scenarioBestBinary;
+
+  /// Learning content for three-body scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Learn: Chaos theory, unpredictable motion, unstable systems'**
+  String get scenarioLearnThreeBody;
+
+  /// Best for content for three-body scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Best for: Mathematical physics enthusiasts'**
+  String get scenarioBestThreeBody;
+
+  /// Learning content for random scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Learn: Discover unknown configurations, experimental physics'**
+  String get scenarioLearnRandom;
+
+  /// Best for content for random scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Best for: Exploration and experimentation'**
+  String get scenarioBestRandom;
+
   /// Label for privacy policy link
   ///
   /// In en, this message translates to:
   /// **'Privacy Policy'**
   String get privacyPolicyLabel;
+
+  /// Title for tutorial welcome step
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Graviton!'**
+  String get tutorialWelcomeTitle;
+
+  /// Description for tutorial welcome step
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Graviton, your window into the fascinating world of gravitational physics! This app lets you explore how celestial bodies interact through gravity, creating beautiful orbital dances across space and time.'**
+  String get tutorialWelcomeDescription;
+
+  /// Title for tutorial objectives step
+  ///
+  /// In en, this message translates to:
+  /// **'What Can You Do?'**
+  String get tutorialObjectivesTitle;
+
+  /// Description for tutorial objectives step
+  ///
+  /// In en, this message translates to:
+  /// **'• Observe realistic orbital mechanics\n• Explore different astronomical scenarios\n• Experiment with gravitational interactions\n• Watch collisions and mergers\n• Learn about planetary motion\n• Discover chaotic three-body dynamics'**
+  String get tutorialObjectivesDescription;
+
+  /// Title for tutorial controls step
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation Controls'**
+  String get tutorialControlsTitle;
+
+  /// Description for tutorial controls step
+  ///
+  /// In en, this message translates to:
+  /// **'Tap anywhere to bring up the floating Play/Pause controls for the simulation. The speed control is in the top-right corner. Tap the menu (⋮) for scenarios, settings, and physics adjustments.'**
+  String get tutorialControlsDescription;
+
+  /// First part of tutorial controls description (before menu icon)
+  ///
+  /// In en, this message translates to:
+  /// **'Tap anywhere to bring up the floating Play/Pause controls for the simulation. The speed control is in the top-right corner. Tap the menu'**
+  String get tutorialControlsDescriptionPart1;
+
+  /// Second part of tutorial controls description (after menu icon)
+  ///
+  /// In en, this message translates to:
+  /// **'for scenarios, settings, and physics adjustments.'**
+  String get tutorialControlsDescriptionPart2;
+
+  /// Title for tutorial camera step
+  ///
+  /// In en, this message translates to:
+  /// **'Camera & View Controls'**
+  String get tutorialCameraTitle;
+
+  /// Description for tutorial camera step
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to rotate your view, pinch to zoom, and use two fingers to roll the camera. The bottom bar has focus, center, and auto-rotation controls for a cinematic experience.'**
+  String get tutorialCameraDescription;
+
+  /// Title for tutorial scenarios step
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Adventure'**
+  String get tutorialScenariosTitle;
+
+  /// Description for tutorial scenarios step
+  ///
+  /// In en, this message translates to:
+  /// **'Access the menu (⋮) in the top-right to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the chaotic Three-Body Problem. Each offers unique physics to discover!'**
+  String get tutorialScenariosDescription;
+
+  /// First part of tutorial scenarios description (before menu icon)
+  ///
+  /// In en, this message translates to:
+  /// **'Access the menu'**
+  String get tutorialScenariosDescriptionPart1;
+
+  /// Second part of tutorial scenarios description (after menu icon)
+  ///
+  /// In en, this message translates to:
+  /// **'in the top-right to explore different scenarios: our Solar System, Earth-Moon dynamics, Binary Stars, or the chaotic Three-Body Problem. Each offers unique physics to discover!'**
+  String get tutorialScenariosDescriptionPart2;
+
+  /// Title for tutorial final step
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to Explore!'**
+  String get tutorialExploreTitle;
+
+  /// Description for tutorial final step
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all set! Start with the Solar System to see familiar planets, or dive into the Three-Body Problem for some chaotic fun. Remember: every reset creates a new universe to explore!'**
+  String get tutorialExploreDescription;
+
+  /// Button to skip tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skipTutorial;
+
+  /// Previous button
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previous;
+
+  /// Next button
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// Final tutorial button to start using the app
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started!'**
+  String get getStarted;
+
+  /// Tooltip for tutorial button
+  ///
+  /// In en, this message translates to:
+  /// **'Show Tutorial'**
+  String get showTutorialTooltip;
+
+  /// Title for help dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Objectives'**
+  String get helpAndObjectivesTitle;
+
+  /// Title for what to do section
+  ///
+  /// In en, this message translates to:
+  /// **'What to Do in Graviton'**
+  String get whatToDoTitle;
+
+  /// Description of what users can do
+  ///
+  /// In en, this message translates to:
+  /// **'Graviton is a physics playground where you can:\n\n🪐 Explore realistic orbital mechanics\n🌟 Watch stellar evolution and collisions\n🎯 Learn about gravitational forces\n🎮 Experiment with different scenarios\n📚 Understand celestial dynamics\n🔄 Create endless random configurations'**
+  String get whatToDoDescription;
+
+  /// Title for learning objectives section
+  ///
+  /// In en, this message translates to:
+  /// **'Learning Objectives'**
+  String get objectivesTitle;
+
+  /// No description provided for @objectives1.
+  ///
+  /// In en, this message translates to:
+  /// **'Understand how gravity shapes the cosmos'**
+  String get objectives1;
+
+  /// No description provided for @objectives2.
+  ///
+  /// In en, this message translates to:
+  /// **'Observe stable vs. chaotic orbital systems'**
+  String get objectives2;
+
+  /// No description provided for @objectives3.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn why planets move in elliptical orbits'**
+  String get objectives3;
+
+  /// No description provided for @objectives4.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover how binary stars interact'**
+  String get objectives4;
+
+  /// No description provided for @objectives5.
+  ///
+  /// In en, this message translates to:
+  /// **'See what happens when objects collide'**
+  String get objectives5;
+
+  /// No description provided for @objectives6.
+  ///
+  /// In en, this message translates to:
+  /// **'Appreciate the three-body problem\'s complexity'**
+  String get objectives6;
+
+  /// Title for quick start section
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Start Guide'**
+  String get quickStartTitle;
+
+  /// No description provided for @quickStart1.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a scenario (Solar System recommended for beginners)'**
+  String get quickStart1;
+
+  /// No description provided for @quickStart2.
+  ///
+  /// In en, this message translates to:
+  /// **'Press Play to start the simulation'**
+  String get quickStart2;
+
+  /// No description provided for @quickStart3.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to rotate your view, pinch to zoom'**
+  String get quickStart3;
+
+  /// No description provided for @quickStart4.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the Speed slider to control time'**
+  String get quickStart4;
+
+  /// No description provided for @quickStart5.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Reset for new random configurations'**
+  String get quickStart5;
+
+  /// No description provided for @quickStart6.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Trails to see orbital paths'**
+  String get quickStart6;
+
+  /// Description of learning objectives (fallback for languages without individual items)
+  ///
+  /// In en, this message translates to:
+  /// **'• Understand how gravity shapes the cosmos\n• Observe stable vs. chaotic orbital systems\n• Learn why planets move in elliptical orbits\n• Discover how binary stars interact\n• See what happens when objects collide\n• Appreciate the three-body problem\'s complexity'**
+  String get objectivesDescription;
+
+  /// Quick start instructions (fallback for languages without individual items)
+  ///
+  /// In en, this message translates to:
+  /// **'1. Choose a scenario (Solar System recommended for beginners)\n2. Press Play to start the simulation\n3. Drag to rotate your view, pinch to zoom\n4. Tap the Speed slider to control time\n5. Try Reset for new random configurations\n6. Enable Trails to see orbital paths'**
+  String get quickStartDescription;
+
+  /// Tooltip for help button
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Objectives'**
+  String get showHelpTooltip;
+
+  /// Button to show tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial'**
+  String get tutorialButton;
+
+  /// Button to reset tutorial state (debug only)
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetTutorialButton;
+
+  /// Message shown when tutorial state is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial state reset! Restart app to see first-time experience.'**
+  String get tutorialResetMessage;
+
+  /// Button to copy text to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copyButton;
+
+  /// Error message when URL cannot be opened
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open {url}'**
+  String couldNotOpenUrl(String url);
+
+  /// Error message when link fails to open
+  ///
+  /// In en, this message translates to:
+  /// **'Error opening link: {error}'**
+  String errorOpeningLink(String error);
+
+  /// Message shown when text is copied to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard: {text}'**
+  String copiedToClipboard(String text);
 }
 
 class _AppLocalizationsDelegate

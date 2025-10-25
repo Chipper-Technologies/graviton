@@ -21,7 +21,7 @@ void main() {
     });
 
     test('Simulation should have correct gravitational constant', () {
-      expect(physics.Simulation.G, equals(1.2));
+      expect(simulation.gravitationalConstant, equals(1.2));
     });
 
     test('Reset should generate new random bodies', () {

@@ -19,6 +19,13 @@
     <img src="https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20Web-lightgrey?style=for-the-badge" alt="Platform Support" />
     <img src="https://img.shields.io/badge/Languages-7_Languages_Supported-green?style=for-the-badge" alt="Internationalization" />
   </p>
+  
+  <p align="center">
+    <a href="https://apps.apple.com/us/app/graviton-sim/id6754208416" target="_blank">
+      <img src="https://img.shields.io/badge/iOS-Available_on_App_Store-007AFF?style=for-the-badge&logo=apple&logoColor=white" alt="Available on iOS App Store" />
+    </a>
+    <img src="https://img.shields.io/badge/Android-Coming_Soon-lightgrey?style=for-the-badge&logo=android&logoColor=white" alt="Coming Soon on Google Play" />
+  </p>
 </div>
 
 ---

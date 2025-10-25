@@ -75,6 +75,63 @@ class AppLocalizationsZh extends AppLocalizations {
   String get selectScenarioTooltip => '选择场景';
 
   @override
+  String get moreOptionsTooltip => '更多选项';
+
+  @override
+  String get physicsSettingsTitle => '物理设置';
+
+  @override
+  String get physicsSettingsDescription => '模拟参数';
+
+  @override
+  String get physicsSection => '物理学';
+
+  @override
+  String get gravitationalConstant => '重力常数';
+
+  @override
+  String get softeningParameter => '软化参数';
+
+  @override
+  String get simulationSpeed => '模拟速度';
+
+  @override
+  String get collisionsSection => '碰撞';
+
+  @override
+  String get collisionSensitivity => '碰撞敏感度';
+
+  @override
+  String get trailsSection => '轨迹';
+
+  @override
+  String get trailLength => '轨迹长度';
+
+  @override
+  String get trailFadeRate => '轨迹淡化率';
+
+  @override
+  String get hapticsSection => '触觉反馈';
+
+  @override
+  String get vibrationEnabled => '启用振动';
+
+  @override
+  String get hapticFeedbackCollisions => '碰撞时的触觉反馈';
+
+  @override
+  String get vibrationThrottle => '振动节流';
+
+  @override
+  String get scenariosMenuDescription => '探索不同场景';
+
+  @override
+  String get settingsMenuDescription => '视觉和行为选项';
+
+  @override
+  String get helpMenuDescription => '教程和目标';
+
+  @override
   String get showTrails => '显示轨迹';
 
   @override
@@ -259,6 +316,33 @@ class AppLocalizationsZh extends AppLocalizations {
   String get habitabilityUnknown => '未知';
 
   @override
+  String get temperatureFrozen => '极寒';
+
+  @override
+  String get temperatureCold => '寒冷';
+
+  @override
+  String get temperatureModerate => '温和';
+
+  @override
+  String get temperatureHot => '炎热';
+
+  @override
+  String get temperatureScorching => '灼热';
+
+  @override
+  String get temperatureNotApplicable => '不适用';
+
+  @override
+  String get temperatureUnitCelsius => '°C';
+
+  @override
+  String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitFahrenheit => '°F';
+
+  @override
   String get toggleHabitableZonesTooltip => '切换宜居带';
 
   @override
@@ -353,6 +437,42 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bodySun => '太阳';
+
+  @override
+  String get bodyPropertiesTitle => '天体属性';
+
+  @override
+  String get bodyPropertiesName => '名称';
+
+  @override
+  String get bodyPropertiesNameHint => '输入天体名称';
+
+  @override
+  String get bodyPropertiesType => '天体类型';
+
+  @override
+  String get bodyPropertiesColor => '颜色';
+
+  @override
+  String get bodyPropertiesMass => '质量';
+
+  @override
+  String get bodyPropertiesRadius => '半径';
+
+  @override
+  String get bodyPropertiesLuminosity => '恒星光度';
+
+  @override
+  String get bodyPropertiesVelocity => '速度';
+
+  @override
+  String get bodyPropertiesAxisX => 'X:';
+
+  @override
+  String get bodyPropertiesAxisY => 'Y:';
+
+  @override
+  String get bodyPropertiesAxisZ => 'Z:';
 
   @override
   String get bodyEarth => '地球';
@@ -585,5 +705,202 @@ class AppLocalizationsZh extends AppLocalizations {
   String get presetThreeBodyBalletDesc => '经典三体问题的优雅运动';
 
   @override
+  String get scenarioLearnEmoji => '🎯';
+
+  @override
+  String get scenarioBestEmoji => '⭐';
+
+  @override
+  String get scenarioLearnSolar => '学习内容：行星运动、轨道力学、熟悉的天体';
+
+  @override
+  String get scenarioBestSolar => '适合对象：初学者、天文爱好者';
+
+  @override
+  String get scenarioLearnEarthMoon => '学习内容：三体动力学、月球力学、潮汐力';
+
+  @override
+  String get scenarioBestEarthMoon => '适合对象：理解地月系统';
+
+  @override
+  String get scenarioLearnBinary => '学习内容：恒星演化、双星系统、极端重力';
+
+  @override
+  String get scenarioBestBinary => '适合对象：高级物理探索';
+
+  @override
+  String get scenarioLearnThreeBody => '学习内容：混沌理论、不可预测运动、不稳定系统';
+
+  @override
+  String get scenarioBestThreeBody => '适合对象：数理物理爱好者';
+
+  @override
+  String get scenarioLearnRandom => '学习内容：发现未知配置、实验物理';
+
+  @override
+  String get scenarioBestRandom => '适合对象：探索和实验';
+
+  @override
   String get privacyPolicyLabel => '隐私政策';
+
+  @override
+  String get tutorialWelcomeTitle => '欢迎来到Graviton！';
+
+  @override
+  String get tutorialWelcomeDescription =>
+      '欢迎来到Graviton，这是您进入引力物理学迷人世界的窗口！这个应用程序让您探索天体如何通过重力相互作用，在空间和时间中创造美丽的轨道舞蹈。';
+
+  @override
+  String get tutorialObjectivesTitle => '您可以做什么？';
+
+  @override
+  String get tutorialObjectivesDescription =>
+      '• 观察真实的轨道力学\n• 探索不同的天文场景\n• 实验引力相互作用\n• 观看碰撞和合并\n• 学习行星运动\n• 发现混沌的三体动力学';
+
+  @override
+  String get tutorialControlsTitle => '模拟控制';
+
+  @override
+  String get tutorialControlsDescription =>
+      '点击任何地方显示模拟的浮动播放/暂停控件。速度控制在右上角。点击菜单(⋮)获取场景、设置和物理调整。';
+
+  @override
+  String get tutorialControlsDescriptionPart1 =>
+      '点击任何地方显示模拟的浮动播放/暂停控件。速度控制在右上角。点击菜单';
+
+  @override
+  String get tutorialControlsDescriptionPart2 => '获取场景、设置和物理调整。';
+
+  @override
+  String get tutorialCameraTitle => '相机和视图控制';
+
+  @override
+  String get tutorialCameraDescription =>
+      '拖动来旋转视图，捏合缩放，使用两个手指滚动相机。底部栏有焦点、居中和自动旋转控件，提供电影般的体验。';
+
+  @override
+  String get tutorialScenariosTitle => '选择您的冒险';
+
+  @override
+  String get tutorialScenariosDescription =>
+      '访问右上角的菜单(⋮)探索不同场景：我们的太阳系、地月动力学、双星，或混沌的三体问题。每个都提供独特的物理学供您发现！';
+
+  @override
+  String get tutorialScenariosDescriptionPart1 => '访问右上角的菜单';
+
+  @override
+  String get tutorialScenariosDescriptionPart2 =>
+      '探索不同场景：我们的太阳系、地月动力学、双星，或混沌的三体问题。每个都提供独特的物理学供您发现！';
+
+  @override
+  String get tutorialExploreTitle => '准备探索！';
+
+  @override
+  String get tutorialExploreDescription =>
+      '您已准备就绪！从太阳系开始看熟悉的行星，或深入三体问题享受混沌乐趣。记住：每次重置都会创造一个新的宇宙供您探索！';
+
+  @override
+  String get skipTutorial => '跳过';
+
+  @override
+  String get previous => '上一个';
+
+  @override
+  String get next => '下一个';
+
+  @override
+  String get getStarted => '开始！';
+
+  @override
+  String get showTutorialTooltip => '显示教程';
+
+  @override
+  String get helpAndObjectivesTitle => '帮助和目标';
+
+  @override
+  String get whatToDoTitle => '在Graviton中可以做什么';
+
+  @override
+  String get whatToDoDescription =>
+      'Graviton是一个物理游乐场，您可以：\n\n🪐 探索真实的轨道力学\n🌟 观看恒星演化和碰撞\n🎯 学习引力\n🎮 用不同场景实验\n📚 理解天体动力学\n🔄 创建无限随机配置';
+
+  @override
+  String get objectivesTitle => '学习目标';
+
+  @override
+  String get objectives1 => '理解重力如何塑造宇宙';
+
+  @override
+  String get objectives2 => '观察稳定与混沌轨道系统';
+
+  @override
+  String get objectives3 => '学习为什么行星在椭圆轨道中运动';
+
+  @override
+  String get objectives4 => '发现双星如何相互作用';
+
+  @override
+  String get objectives5 => '看看物体碰撞时会发生什么';
+
+  @override
+  String get objectives6 => '理解三体问题的复杂性';
+
+  @override
+  String get quickStartTitle => '快速入门指南';
+
+  @override
+  String get quickStart1 => '选择场景（建议初学者选择太阳系）';
+
+  @override
+  String get quickStart2 => '按播放开始模拟';
+
+  @override
+  String get quickStart3 => '拖动旋转视图，捏合缩放';
+
+  @override
+  String get quickStart4 => '触摸速度滑块控制时间';
+
+  @override
+  String get quickStart5 => '尝试重置获得新的随机配置';
+
+  @override
+  String get quickStart6 => '启用轨迹查看轨道路径';
+
+  @override
+  String get objectivesDescription =>
+      '• 理解重力如何塑造宇宙\n• 观察稳定与混沌轨道系统\n• 学习为什么行星在椭圆轨道中运动\n• 发现双星如何相互作用\n• 看看物体碰撞时会发生什么\n• 理解三体问题的复杂性';
+
+  @override
+  String get quickStartDescription =>
+      '1. 选择场景（建议初学者选择太阳系）\n2. 按播放开始模拟\n3. 拖动旋转视图，捏合缩放\n4. 触摸速度滑块控制时间\n5. 尝试重置获得新的随机配置\n6. 启用轨迹查看轨道路径';
+
+  @override
+  String get showHelpTooltip => '帮助和目标';
+
+  @override
+  String get tutorialButton => '教程';
+
+  @override
+  String get resetTutorialButton => '重置';
+
+  @override
+  String get tutorialResetMessage => '教程状态已重置！重启应用程序以查看首次体验。';
+
+  @override
+  String get copyButton => '复制';
+
+  @override
+  String couldNotOpenUrl(String url) {
+    return '无法打开 $url';
+  }
+
+  @override
+  String errorOpeningLink(String error) {
+    return '打开链接时出错：$error';
+  }
+
+  @override
+  String copiedToClipboard(String text) {
+    return '已复制到剪贴板：$text';
+  }
 }
