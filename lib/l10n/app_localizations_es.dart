@@ -794,6 +794,20 @@ class AppLocalizationsEs extends AppLocalizations {
       '¡Bienvenido a Graviton, tu ventana al fascinante mundo de la física gravitacional! Esta aplicación te permite explorar cómo los cuerpos celestes interactúan a través de la gravedad, creando hermosas danzas orbitales a través del espacio y el tiempo.';
 
   @override
+  String get welcomeCardDescription =>
+      'Explora la física gravitacional a través de simulaciones interactivas. ¡Prueba diferentes escenarios, ajusta los controles y observa cómo se desarrolla el cosmos!';
+
+  @override
+  String get quickTutorialButton => 'Tutorial Rápido';
+
+  @override
+  String get gotItButton => '¡Entendido!';
+
+  @override
+  String get tutorialNavigationHint =>
+      'Desliza izquierda/derecha o usa botones para navegar';
+
+  @override
   String get tutorialObjectivesTitle => '¿Qué puedes hacer?';
 
   @override

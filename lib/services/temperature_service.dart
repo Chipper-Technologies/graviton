@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
@@ -34,9 +35,10 @@ class TemperatureService {
     // Convert radiation to temperature using Stefan-Boltzmann approximation
     // T = (L/(4πσr²))^(1/4) where σ is Stefan-Boltzmann constant
     // Simplified for our simulation units
-    const double baseTemperature = 2.7; // Cosmic microwave background (Kelvin)
+    const double baseTemperature =
+        SimulationConstants.cosmicMicrowaveBackgroundTemperature;
     const double radiationConstant =
-        300.0; // Calibration constant for our units
+        SimulationConstants.stellarRadiationToTemperatureConstant;
 
     final effectiveTemperature =
         baseTemperature + radiationConstant * math.pow(totalRadiation, 0.25);

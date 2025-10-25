@@ -1542,6 +1542,30 @@ abstract class AppLocalizations {
   /// **'Welcome to Graviton, your window into the fascinating world of gravitational physics! This app lets you explore how celestial bodies interact through gravity, creating beautiful orbital dances across space and time.'**
   String get tutorialWelcomeDescription;
 
+  /// Description text for the welcome message card
+  ///
+  /// In en, this message translates to:
+  /// **'Explore gravitational physics through interactive simulations. Try different scenarios, adjust controls, and watch the cosmos unfold!'**
+  String get welcomeCardDescription;
+
+  /// Button text to start quick tutorial
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Tutorial'**
+  String get quickTutorialButton;
+
+  /// Button text to dismiss welcome card
+  ///
+  /// In en, this message translates to:
+  /// **'Got it!'**
+  String get gotItButton;
+
+  /// Hint text for tutorial navigation
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe left/right or use buttons to navigate'**
+  String get tutorialNavigationHint;
+
   /// Title for tutorial objectives step
   ///
   /// In en, this message translates to:

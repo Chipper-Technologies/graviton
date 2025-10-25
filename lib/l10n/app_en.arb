@@ -1152,6 +1152,26 @@
     "description": "Description for tutorial welcome step"
   },
   
+  "welcomeCardDescription": "Explore gravitational physics through interactive simulations. Try different scenarios, adjust controls, and watch the cosmos unfold!",
+  "@welcomeCardDescription": {
+    "description": "Description text for the welcome message card"
+  },
+  
+  "quickTutorialButton": "Quick Tutorial",
+  "@quickTutorialButton": {
+    "description": "Button text to start quick tutorial"
+  },
+  
+  "gotItButton": "Got it!",
+  "@gotItButton": {
+    "description": "Button text to dismiss welcome card"
+  },
+  
+  "tutorialNavigationHint": "Swipe left/right or use buttons to navigate",
+  "@tutorialNavigationHint": {
+    "description": "Hint text for tutorial navigation"
+  },
+  
   "tutorialObjectivesTitle": "What Can You Do?",
   "@tutorialObjectivesTitle": {
     "description": "Title for tutorial objectives step"

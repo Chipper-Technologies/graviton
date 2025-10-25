@@ -225,7 +225,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
 
                               // Swipe hint
                               Text(
-                                'Swipe left/right or use buttons to navigate',
+                                l10n.tutorialNavigationHint,
                                 style: AppTypography.smallText.copyWith(
                                   color: theme.colorScheme.onSurface.withValues(
                                     alpha: 0.6,

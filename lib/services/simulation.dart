@@ -22,15 +22,24 @@ import 'package:vibration/vibration.dart';
 
 /// Core physics simulation for Graviton
 class Simulation {
-  // Physics parameters (now instance variables for real-time adjustment)
-  double gravitationalConstant = SimulationConstants.gravitationalConstant;
-  double softening = SimulationConstants.softening;
-  double collisionRadiusMultiplier =
+  // Physics parameters
+  double _gravitationalConstant = SimulationConstants.gravitationalConstant;
+  double _softening = SimulationConstants.softening;
+  double _collisionRadiusMultiplier =
       SimulationConstants.collisionRadiusMultiplier;
-  int maxTrail = SimulationConstants.maxTrailPoints;
-  double fadeRate = SimulationConstants.trailFadeRate;
-  double vibrationThrottleTime = SimulationConstants.vibrationThrottleTime;
-  bool vibrationEnabled = true;
+  int _maxTrail = SimulationConstants.maxTrailPoints;
+  double _fadeRate = SimulationConstants.trailFadeRate;
+  double _vibrationThrottleTime = SimulationConstants.vibrationThrottleTime;
+  bool _vibrationEnabled = true;
+
+  // Public getters for physics parameters
+  double get gravitationalConstant => _gravitationalConstant;
+  double get softening => _softening;
+  double get collisionRadiusMultiplier => _collisionRadiusMultiplier;
+  int get maxTrail => _maxTrail;
+  double get fadeRate => _fadeRate;
+  double get vibrationThrottleTime => _vibrationThrottleTime;
+  bool get vibrationEnabled => _vibrationEnabled;
 
   List<Body> bodies = [];
   List<List<TrailPoint>> trails = [];
@@ -73,61 +82,61 @@ class Simulation {
     bool? vibrationEnabled,
   }) {
     if (gravitationalConstant != null) {
-      this.gravitationalConstant = gravitationalConstant;
+      _gravitationalConstant = gravitationalConstant;
     }
     if (softening != null) {
-      this.softening = softening;
+      _softening = softening;
     }
     if (collisionRadiusMultiplier != null) {
-      this.collisionRadiusMultiplier = collisionRadiusMultiplier;
+      _collisionRadiusMultiplier = collisionRadiusMultiplier;
     }
     if (maxTrailPoints != null) {
-      maxTrail = maxTrailPoints;
+      _maxTrail = maxTrailPoints;
     }
     if (trailFadeRate != null) {
-      fadeRate = trailFadeRate;
+      _fadeRate = trailFadeRate;
     }
     if (vibrationThrottleTime != null) {
-      this.vibrationThrottleTime = vibrationThrottleTime;
+      _vibrationThrottleTime = vibrationThrottleTime;
     }
     if (vibrationEnabled != null) {
-      this.vibrationEnabled = vibrationEnabled;
+      _vibrationEnabled = vibrationEnabled;
     }
   }
 
   /// Set gravitational constant
   void setGravitationalConstant(double value) {
-    gravitationalConstant = value;
+    _gravitationalConstant = value;
   }
 
   /// Set softening parameter
   void setSoftening(double value) {
-    softening = value;
+    _softening = value;
   }
 
   /// Set collision radius multiplier
   void setCollisionRadiusMultiplier(double value) {
-    collisionRadiusMultiplier = value;
+    _collisionRadiusMultiplier = value;
   }
 
   /// Set maximum trail points
   void setMaxTrailPoints(int value) {
-    maxTrail = value;
+    _maxTrail = value;
   }
 
   /// Set trail fade rate
   void setTrailFadeRate(double value) {
-    fadeRate = value;
+    _fadeRate = value;
   }
 
   /// Set vibration throttle time
   void setVibrationThrottleTime(double value) {
-    vibrationThrottleTime = value;
+    _vibrationThrottleTime = value;
   }
 
   /// Set vibration enabled
   void setVibrationEnabled(bool value) {
-    vibrationEnabled = value;
+    _vibrationEnabled = value;
   }
 
   /// Reset simulation with current scenario

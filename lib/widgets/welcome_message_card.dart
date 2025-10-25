@@ -65,7 +65,7 @@ class WelcomeMessageCard extends StatelessWidget {
           ),
           const SizedBox(height: AppTypography.spacingSmall),
           Text(
-            'Explore gravitational physics through interactive simulations. Try different scenarios, adjust controls, and watch the cosmos unfold!',
+            l10n.welcomeCardDescription,
             style: AppTypography.mediumText.copyWith(height: 1.4),
           ),
           const SizedBox(height: AppTypography.spacingMedium),
@@ -76,7 +76,7 @@ class WelcomeMessageCard extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: onTutorial,
                     icon: const Icon(Icons.school, size: 16),
-                    label: const Text('Quick Tutorial'),
+                    label: Text(l10n.quickTutorialButton),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
@@ -97,7 +97,7 @@ class WelcomeMessageCard extends StatelessWidget {
                         vertical: 8,
                       ),
                     ),
-                    child: const Text('Got it!'),
+                    child: Text(l10n.gotItButton),
                   ),
                 ),
             ],

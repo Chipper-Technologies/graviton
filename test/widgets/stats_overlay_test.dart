@@ -28,6 +28,9 @@ void main() {
       );
     }
 
+    // Test constants to reduce coupling to implementation details
+    const expectedBorderRadius = BorderRadius.all(Radius.circular(8.0));
+
     group('Rendering', () {
       testWidgets('Should display stats overlay with default values', (
         tester,
@@ -132,10 +135,7 @@ void main() {
 
         expect(container.padding, equals(const EdgeInsets.all(12)));
         expect(decoration.color, equals(AppColors.basicBlack54));
-        expect(
-          decoration.borderRadius,
-          equals(BorderRadius.circular(AppTypography.radiusMedium)),
-        );
+        expect(decoration.borderRadius, equals(expectedBorderRadius));
       });
 
       testWidgets('Should have proper text styles', (tester) async {
