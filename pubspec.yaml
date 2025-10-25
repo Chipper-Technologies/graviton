@@ -1,7 +1,7 @@
 name: graviton
 description: "A physics simulation exploring gravitational dynamics and orbital mechanics."
 publish_to: "none"
-version: 1.1.0+7
+version: 1.1.0+6
 repository: https://github.com/Chipper-Technologies/graviton
 license: MIT
 
