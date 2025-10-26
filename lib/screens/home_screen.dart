@@ -4,11 +4,13 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/painters/graviton_painter.dart';
+import 'package:graviton/services/cinematic_camera_controller.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
@@ -59,6 +61,9 @@ class _HomeScreenState extends State<HomeScreen>
   double? _lastTwoFingerRotation; // Track rotation angle for two-finger roll
   bool _languageInitialized = false;
   late final ScreenshotModeService _screenshotModeService;
+  final CinematicCameraController _cinematicCameraController =
+      CinematicCameraController();
+  CinematicCameraTechnique? _lastCameraTechnique;
 
   // Function to show simulation controls
   VoidCallback? _showSimulationControls;
@@ -119,6 +124,21 @@ class _HomeScreenState extends State<HomeScreen>
 
     // Update camera auto-rotation
     appState.camera.updateAutoRotation(deltaTime);
+
+    // Check if camera technique changed and reset controller if needed
+    if (_lastCameraTechnique != appState.ui.cinematicCameraTechnique) {
+      _cinematicCameraController.reset();
+      _lastCameraTechnique = appState.ui.cinematicCameraTechnique;
+    }
+
+    // Update cinematic camera controller based on selected technique
+    _cinematicCameraController.updateCamera(
+      appState.ui.cinematicCameraTechnique,
+      appState.simulation,
+      appState.camera,
+      appState.ui,
+      deltaTime,
+    );
 
     // Push trails if enabled and simulation is running (not paused)
     if (appState.ui.showTrails && !appState.simulation.isPaused) {
