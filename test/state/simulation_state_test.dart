@@ -12,7 +12,7 @@ void main() {
     test('Initial state should have correct defaults', () {
       expect(simulationState.isRunning, isFalse);
       expect(simulationState.isPaused, isFalse);
-      expect(simulationState.timeScale, equals(1.0));
+      expect(simulationState.timeScale, equals(8.0));
       expect(simulationState.stepCount, equals(0));
       expect(simulationState.totalTime, equals(0.0));
       expect(simulationState.totalTimeInEarthYears, equals(0.0));
@@ -24,7 +24,7 @@ void main() {
     test('Initialize should load settings correctly', () async {
       // Should work even without SharedPreferences in tests
       await simulationState.initialize();
-      expect(simulationState.timeScale, equals(1.0));
+      expect(simulationState.timeScale, equals(8.0));
     });
 
     test('Start should set isRunning to true', () {

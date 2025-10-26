@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -253,6 +254,130 @@ class SettingsDialog extends StatelessWidget {
                             onChanged: (v) =>
                                 appState.camera.toggleInvertPitch(),
                             secondary: const Icon(Icons.swap_vert),
+                          ),
+
+                          SizedBox(height: AppTypography.spacingLarge),
+
+                          // Cinematic Camera Technique Selection
+                          Container(
+                            padding: EdgeInsets.all(AppTypography.spacingLarge),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.uiBorderGrey),
+                              borderRadius: BorderRadius.circular(
+                                AppTypography.radiusMedium,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Header with icon and text
+                                Row(
+                                  children: [
+                                    const Icon(Icons.smart_toy),
+                                    SizedBox(
+                                      width: AppTypography.spacingMedium,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            l10n.cinematicCameraTechniqueLabel,
+                                          ),
+                                          Text(
+                                            l10n.cinematicCameraTechniqueDescription,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall
+                                                ?.copyWith(
+                                                  color: AppColors.uiWhite
+                                                      .withValues(
+                                                        alpha: AppTypography
+                                                            .opacitySemiTransparent,
+                                                      ),
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: AppTypography.spacingMedium),
+                                // Dropdown below
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: DropdownButton<CinematicCameraTechnique>(
+                                    value: appState.ui.cinematicCameraTechnique,
+                                    underline: Container(),
+                                    isExpanded: true,
+                                    onChanged:
+                                        (CinematicCameraTechnique? newValue) {
+                                          if (newValue != null) {
+                                            appState.ui
+                                                .setCinematicCameraTechnique(
+                                                  newValue,
+                                                );
+                                          }
+                                        },
+                                    items: CinematicCameraTechnique.values
+                                        .map(
+                                          (
+                                            technique,
+                                          ) => DropdownMenuItem<CinematicCameraTechnique>(
+                                            value: technique,
+                                            child: SizedBox(
+                                              height:
+                                                  44, // Ensure we fit within the dropdown constraints
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    technique.displayName,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                          height:
+                                                              1.1, // Tighter line height
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    technique.description,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.copyWith(
+                                                          color: Theme.of(context)
+                                                              .textTheme
+                                                              .bodySmall
+                                                              ?.color
+                                                              ?.withValues(
+                                                                alpha: AppTypography
+                                                                    .opacityHigh,
+                                                              ),
+                                                          height:
+                                                              1.1, // Tighter line height
+                                                        ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines:
+                                                        1, // Reduce to 1 line to fit
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
 
                           SizedBox(height: AppTypography.spacingLarge),

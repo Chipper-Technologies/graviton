@@ -330,6 +330,76 @@
     "description": "Description for invert pitch controls toggle"
   },
   
+  "cinematicCameraTechniqueLabel": "AI Camera Technique",
+  "@cinematicCameraTechniqueLabel": {
+    "description": "Label for cinematic camera technique selection"
+  },
+  
+  "cinematicCameraTechniqueDescription": "Choose how AI controls the camera when following objects",
+  "@cinematicCameraTechniqueDescription": {
+    "description": "Description for cinematic camera technique setting"
+  },
+  
+  "cinematicTechniqueManual": "Manual Control",
+  "@cinematicTechniqueManual": {
+    "description": "Manual camera control technique"
+  },
+  
+  "cinematicTechniqueManualDesc": "Traditional manual camera controls with follow mode",
+  "@cinematicTechniqueManualDesc": {
+    "description": "Description for manual camera technique"
+  },
+  
+  "cinematicTechniquePredictiveOrbital": "Predictive Orbital",
+  "@cinematicTechniquePredictiveOrbital": {
+    "description": "Predictive orbital camera technique"
+  },
+  
+  "cinematicTechniquePredictiveOrbitalDesc": "AI predicts orbital paths for dramatic camera movements",
+  "@cinematicTechniquePredictiveOrbitalDesc": {
+    "description": "Description for predictive orbital camera technique"
+  },
+  
+  "cinematicTechniqueDynamicFraming": "Dynamic Framing",
+  "@cinematicTechniqueDynamicFraming": {
+    "description": "Dynamic framing camera technique"
+  },
+  
+  "cinematicTechniqueDynamicFramingDesc": "Automatically adjusts framing based on scene content",
+  "@cinematicTechniqueDynamicFramingDesc": {
+    "description": "Description for dynamic framing camera technique"
+  },
+  
+  "cinematicTechniquePhysicsAware": "Physics-Aware",
+  "@cinematicTechniquePhysicsAware": {
+    "description": "Physics-aware camera technique"
+  },
+  
+  "cinematicTechniquePhysicsAwareDesc": "Camera follows physics principles for natural movement",
+  "@cinematicTechniquePhysicsAwareDesc": {
+    "description": "Description for physics-aware camera technique"
+  },
+  
+  "cinematicTechniqueContextualShots": "Contextual Shots",
+  "@cinematicTechniqueContextualShots": {
+    "description": "Contextual shots camera technique"
+  },
+  
+  "cinematicTechniqueContextualShotsDesc": "AI selects optimal angles based on simulation state",
+  "@cinematicTechniqueContextualShotsDesc": {
+    "description": "Description for contextual shots camera technique"
+  },
+  
+  "cinematicTechniqueEmotionalPacing": "Emotional Pacing",
+  "@cinematicTechniqueEmotionalPacing": {
+    "description": "Emotional pacing camera technique"
+  },
+  
+  "cinematicTechniqueEmotionalPacingDesc": "Adjusts camera speed based on simulation tension",
+  "@cinematicTechniqueEmotionalPacingDesc": {
+    "description": "Description for emotional pacing camera technique"
+  },
+  
   "marketingLabel": "Marketing",
   "@marketingLabel": {
     "description": "Header for marketing tools section"

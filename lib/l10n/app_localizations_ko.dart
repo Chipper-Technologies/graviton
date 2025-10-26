@@ -207,6 +207,55 @@ class AppLocalizationsKo extends AppLocalizations {
   String get invertPitchControlsDescription => '위/아래 드래그 방향 반전';
 
   @override
+  String get cinematicCameraTechniqueLabel => 'AI Camera Technique';
+
+  @override
+  String get cinematicCameraTechniqueDescription =>
+      'Choose how AI controls the camera when following objects';
+
+  @override
+  String get cinematicTechniqueManual => 'Manual Control';
+
+  @override
+  String get cinematicTechniqueManualDesc =>
+      'Traditional manual camera controls with follow mode';
+
+  @override
+  String get cinematicTechniquePredictiveOrbital => 'Predictive Orbital';
+
+  @override
+  String get cinematicTechniquePredictiveOrbitalDesc =>
+      'AI predicts orbital paths for dramatic camera movements';
+
+  @override
+  String get cinematicTechniqueDynamicFraming => 'Dynamic Framing';
+
+  @override
+  String get cinematicTechniqueDynamicFramingDesc =>
+      'Automatically adjusts framing based on scene content';
+
+  @override
+  String get cinematicTechniquePhysicsAware => 'Physics-Aware';
+
+  @override
+  String get cinematicTechniquePhysicsAwareDesc =>
+      'Camera follows physics principles for natural movement';
+
+  @override
+  String get cinematicTechniqueContextualShots => 'Contextual Shots';
+
+  @override
+  String get cinematicTechniqueContextualShotsDesc =>
+      'AI selects optimal angles based on simulation state';
+
+  @override
+  String get cinematicTechniqueEmotionalPacing => 'Emotional Pacing';
+
+  @override
+  String get cinematicTechniqueEmotionalPacingDesc =>
+      'Adjusts camera speed based on simulation tension';
+
+  @override
   String get marketingLabel => '마케팅';
 
   @override

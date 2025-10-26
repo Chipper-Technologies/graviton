@@ -504,6 +504,90 @@ abstract class AppLocalizations {
   /// **'Reverse up/down drag direction'**
   String get invertPitchControlsDescription;
 
+  /// Label for cinematic camera technique selection
+  ///
+  /// In en, this message translates to:
+  /// **'AI Camera Technique'**
+  String get cinematicCameraTechniqueLabel;
+
+  /// Description for cinematic camera technique setting
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how AI controls the camera when following objects'**
+  String get cinematicCameraTechniqueDescription;
+
+  /// Manual camera control technique
+  ///
+  /// In en, this message translates to:
+  /// **'Manual Control'**
+  String get cinematicTechniqueManual;
+
+  /// Description for manual camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional manual camera controls with follow mode'**
+  String get cinematicTechniqueManualDesc;
+
+  /// Predictive orbital camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Predictive Orbital'**
+  String get cinematicTechniquePredictiveOrbital;
+
+  /// Description for predictive orbital camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'AI predicts orbital paths for dramatic camera movements'**
+  String get cinematicTechniquePredictiveOrbitalDesc;
+
+  /// Dynamic framing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Dynamic Framing'**
+  String get cinematicTechniqueDynamicFraming;
+
+  /// Description for dynamic framing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically adjusts framing based on scene content'**
+  String get cinematicTechniqueDynamicFramingDesc;
+
+  /// Physics-aware camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Physics-Aware'**
+  String get cinematicTechniquePhysicsAware;
+
+  /// Description for physics-aware camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Camera follows physics principles for natural movement'**
+  String get cinematicTechniquePhysicsAwareDesc;
+
+  /// Contextual shots camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Contextual Shots'**
+  String get cinematicTechniqueContextualShots;
+
+  /// Description for contextual shots camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'AI selects optimal angles based on simulation state'**
+  String get cinematicTechniqueContextualShotsDesc;
+
+  /// Emotional pacing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Emotional Pacing'**
+  String get cinematicTechniqueEmotionalPacing;
+
+  /// Description for emotional pacing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Adjusts camera speed based on simulation tension'**
+  String get cinematicTechniqueEmotionalPacingDesc;
+
   /// Header for marketing tools section
   ///
   /// In en, this message translates to:

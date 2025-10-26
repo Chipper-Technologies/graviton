@@ -35,7 +35,7 @@ void main() {
 
         expect(find.byType(TutorialOverlay), findsOneWidget);
         expect(find.byType(Container), findsWidgets);
-        expect(find.byType(Icon), findsWidgets);
+        // First step is logo step, so no Icon widget expected
         expect(find.byType(Text), findsWidgets);
       });
 
@@ -65,10 +65,14 @@ void main() {
           createTestWidget(child: TutorialOverlay(onComplete: mockOnComplete)),
         );
 
+        // Advance to second step (which has an icon, unlike the first logo step)
+        await tester.tap(find.byType(ElevatedButton));
+        await tester.pumpAndSettle();
+
         // Should have icon widgets
         expect(find.byType(Icon), findsWidgets);
 
-        // Check if icon colors are properly set (first step should use gravitonOrangeRed)
+        // Check if icon colors are properly set
         final iconWidgets = tester.widgetList<Icon>(find.byType(Icon));
         final coloredIcons = iconWidgets.where((icon) => icon.color != null);
         expect(coloredIcons.isNotEmpty, isTrue);
@@ -81,8 +85,8 @@ void main() {
 
         // Should have buttons for navigation
         expect(find.byType(ElevatedButton), findsOneWidget);
-        // First step shouldn't show previous button
-        expect(find.byType(TextButton), findsNothing);
+        // First step shows only Skip button (no Previous button)
+        expect(find.byType(TextButton), findsOneWidget); // Skip button
       });
     });
 
@@ -101,8 +105,8 @@ void main() {
         await tester.tap(nextButton);
         await tester.pump();
 
-        // After advancing, should show previous button
-        expect(find.byType(TextButton), findsOneWidget);
+        // After advancing, should show both Skip and Previous buttons
+        expect(find.byType(TextButton), findsNWidgets(2)); // Skip + Previous
       });
 
       testWidgets('Should go back when previous button pressed', (
@@ -116,12 +120,12 @@ void main() {
         await tester.tap(find.byType(ElevatedButton));
         await tester.pump();
 
-        // Now tap previous
-        await tester.tap(find.byType(TextButton));
+        // Now tap the previous button
+        await tester.tap(find.text('Previous'));
         await tester.pump();
 
-        // Should be back to first step (no previous button)
-        expect(find.byType(TextButton), findsNothing);
+        // Should be back to first step (only Skip button)
+        expect(find.byType(TextButton), findsOneWidget); // Only Skip button
       });
 
       testWidgets('Should support swipe navigation', (tester) async {
@@ -201,9 +205,10 @@ void main() {
           createTestWidget(child: TutorialOverlay(onComplete: mockOnComplete)),
         );
 
-        // Should have colored buttons and icons
+        // Should have colored buttons
         expect(find.byType(ElevatedButton), findsOneWidget);
-        expect(find.byType(Icon), findsWidgets);
+        // First step is logo step, so no icons
+        expect(find.byType(Icon), findsNothing);
 
         // Button should have custom styling
         final elevatedButton = tester.widget<ElevatedButton>(
@@ -301,8 +306,8 @@ void main() {
         await tester.tap(buttons);
         await tester.pump();
 
-        // Should advance step
-        expect(find.byType(TextButton), findsOneWidget);
+        // Should advance step (now has Skip + Previous buttons)
+        expect(find.byType(TextButton), findsNWidgets(2));
       });
     });
 

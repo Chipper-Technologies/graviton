@@ -1061,6 +1061,19 @@ a = F / m
 - **Complete orientation control**: Full 3D rotation including roll axis
 - **Smart reset**: One-button return to perfect viewing position and orientation
 
+### 🎬 AI-Driven Cinematic Camera Techniques
+Experience celestial dynamics through intelligent camera control with six advanced AI techniques designed to create cinematic viewing experiences. Each technique uses physics-based algorithms to predict optimal camera positions and movements for maximum visual impact.
+
+#### Available Techniques:
+- **📍 Manual**: Traditional user-controlled camera positioning
+- **🔮 Predictive Orbital**: AI predicts future orbital events and positions camera for optimal viewing
+- **🖼️ Dynamic Framing**: Automatically frames multiple bodies using composition rules
+- **⚖️ Physics-Aware**: Camera movements that respond to gravitational forces and momentum
+- **🎭 Contextual Shots**: Context-sensitive camera angles based on simulation state
+- **❤️ Emotional Pacing**: Camera timing synchronized with dramatic orbital moments
+
+For detailed information about each technique and implementation details, see [Cinematic Camera Techniques Documentation](docs/CAMERA_TECHNIQUES.md).
+
 ## Development
 
 ### 🧪 Comprehensive Testing
