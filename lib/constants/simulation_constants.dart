@@ -124,4 +124,15 @@ class SimulationConstants {
   static const double mainSequenceStarLuminosityMax = 2.0;
   static const double giantStarLuminosityMin = 2.0;
   static const double giantStarLuminosityMax = 10.0;
+
+  // Temperature calculation constants
+  // Base temperature representing cosmic microwave background radiation
+  // This is the minimum temperature any object can have in deep space
+  static const double cosmicMicrowaveBackgroundTemperature = 2.7; // Kelvin
+
+  // Calibration constant for converting stellar radiation to temperature
+  // This scales our simulation's arbitrary radiation units to realistic temperatures
+  // Derived from Stefan-Boltzmann law: T = (L/(4πσr²))^(1/4)
+  // Value calibrated to produce Earth-like temperatures (~288K) at Earth's distance
+  static const double stellarRadiationToTemperatureConstant = 300.0;
 }

@@ -16,12 +16,31 @@ import 'package:graviton/models/trail_point.dart';
 import 'package:graviton/services/asteroid_belt_system.dart';
 import 'package:graviton/services/habitable_zone_service.dart';
 import 'package:graviton/services/scenario_service.dart';
+import 'package:graviton/services/temperature_service.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:vibration/vibration.dart';
 
 /// Core physics simulation for Graviton
 class Simulation {
-  static const double G = SimulationConstants.gravitationalConstant;
+  // Physics parameters
+  double _gravitationalConstant = SimulationConstants.gravitationalConstant;
+  double _softening = SimulationConstants.softening;
+  double _collisionRadiusMultiplier =
+      SimulationConstants.collisionRadiusMultiplier;
+  int _maxTrail = SimulationConstants.maxTrailPoints;
+  double _fadeRate = SimulationConstants.trailFadeRate;
+  double _vibrationThrottleTime = SimulationConstants.vibrationThrottleTime;
+  bool _vibrationEnabled = true;
+
+  // Public getters for physics parameters
+  double get gravitationalConstant => _gravitationalConstant;
+  double get softening => _softening;
+  double get collisionRadiusMultiplier => _collisionRadiusMultiplier;
+  int get maxTrail => _maxTrail;
+  double get fadeRate => _fadeRate;
+  double get vibrationThrottleTime => _vibrationThrottleTime;
+  bool get vibrationEnabled => _vibrationEnabled;
+
   List<Body> bodies = [];
   List<List<TrailPoint>> trails = [];
   List<MergeFlash> mergeFlashes = [];
@@ -30,8 +49,6 @@ class Simulation {
   final AsteroidBeltSystem asteroidBelt = AsteroidBeltSystem();
   final AsteroidBeltSystem kuiperBelt = AsteroidBeltSystem();
 
-  final int maxTrail = SimulationConstants.maxTrailPoints;
-  final double fadeRate = SimulationConstants.trailFadeRate;
   double _timeSinceLastVibe = 0; // throttle vibration
   final ScenarioService _scenarioService = ScenarioService();
   final HabitableZoneService _habitableZoneService = HabitableZoneService();
@@ -42,12 +59,85 @@ class Simulation {
   static const double _habitabilityUpdateInterval =
       0.1; // Update every 0.1 seconds
 
+  // Temperature update throttling
+  double _timeSinceLastTemperatureUpdate = 0.0;
+  static const double _temperatureUpdateInterval =
+      0.5; // Update every 0.5 seconds (less frequent than habitability)
+
   Simulation() {
     reset();
   }
 
   /// Get the current scenario type
   ScenarioType get currentScenario => _currentScenario;
+
+  /// Update physics parameters for real-time adjustment
+  void updatePhysicsSettings({
+    double? gravitationalConstant,
+    double? softening,
+    double? collisionRadiusMultiplier,
+    int? maxTrailPoints,
+    double? trailFadeRate,
+    double? vibrationThrottleTime,
+    bool? vibrationEnabled,
+  }) {
+    if (gravitationalConstant != null) {
+      _gravitationalConstant = gravitationalConstant;
+    }
+    if (softening != null) {
+      _softening = softening;
+    }
+    if (collisionRadiusMultiplier != null) {
+      _collisionRadiusMultiplier = collisionRadiusMultiplier;
+    }
+    if (maxTrailPoints != null) {
+      _maxTrail = maxTrailPoints;
+    }
+    if (trailFadeRate != null) {
+      _fadeRate = trailFadeRate;
+    }
+    if (vibrationThrottleTime != null) {
+      _vibrationThrottleTime = vibrationThrottleTime;
+    }
+    if (vibrationEnabled != null) {
+      _vibrationEnabled = vibrationEnabled;
+    }
+  }
+
+  /// Set gravitational constant
+  void setGravitationalConstant(double value) {
+    _gravitationalConstant = value;
+  }
+
+  /// Set softening parameter
+  void setSoftening(double value) {
+    _softening = value;
+  }
+
+  /// Set collision radius multiplier
+  void setCollisionRadiusMultiplier(double value) {
+    _collisionRadiusMultiplier = value;
+  }
+
+  /// Set maximum trail points
+  void setMaxTrailPoints(int value) {
+    _maxTrail = value;
+  }
+
+  /// Set trail fade rate
+  void setTrailFadeRate(double value) {
+    _fadeRate = value;
+  }
+
+  /// Set vibration throttle time
+  void setVibrationThrottleTime(double value) {
+    _vibrationThrottleTime = value;
+  }
+
+  /// Set vibration enabled
+  void setVibrationEnabled(bool value) {
+    _vibrationEnabled = value;
+  }
 
   /// Reset simulation with current scenario
   void reset() {
@@ -297,7 +387,7 @@ class Simulation {
           final softDist2 = dist2 + softening;
           final invR = 1.0 / math.sqrt(softDist2);
           final invR3 = invR * invR * invR;
-          a[i] += r * (G * bodies[j].mass * invR3);
+          a[i] += r * (gravitationalConstant * bodies[j].mass * invR3);
         }
       }
       return a;
@@ -365,6 +455,10 @@ class Simulation {
       asteroidBelt.update(dt); // Galactic disk
       kuiperBelt.update(dt); // Galactic halo
     }
+
+    // Update temperatures and habitability (throttled for performance)
+    updateTemperatures(dt);
+    updateHabitability(dt);
   }
 
   // --- Collisions (sticky merge) --------------------------------------------
@@ -393,11 +487,9 @@ class Simulation {
 
         final r = b2.position - b1.position;
         final dist = r.length;
-        // Make collision radius ultra-small - stars almost never collide
+        // Make collision radius adjustable for different scenarios
         final collisionRadius =
-            (b1.radius + b2.radius) *
-            SimulationConstants
-                .collisionRadiusMultiplier; // Only 5% of visual radius
+            (b1.radius + b2.radius) * collisionRadiusMultiplier;
         if (dist < collisionRadius) {
           _merge(i, j);
           // do not advance j; current j now points to the next body after removal
@@ -492,6 +584,10 @@ class Simulation {
       b2.stellarLuminosity,
     );
 
+    // Determine merged temperature - mass-weighted average
+    final mergedTemperature =
+        (b1.temperature * b1.mass + b2.temperature * b2.mass) / m;
+
     // Replace b1 and remove b2
     bodies[i] = Body(
       position: p,
@@ -503,6 +599,7 @@ class Simulation {
       isPlanet: b1.isPlanet || b2.isPlanet,
       bodyType: mergedBodyType,
       stellarLuminosity: mergedLuminosity,
+      temperature: mergedTemperature,
     );
 
     // Handle trails synchronization safely
@@ -547,8 +644,8 @@ class Simulation {
             .clamp(0, 255)
             .toInt();
 
-    // throttle to at most one every 180 ms of sim time
-    if (_timeSinceLastVibe < SimulationConstants.vibrationThrottleTime) return;
+    // throttle to at most one vibration per throttle time
+    if (!vibrationEnabled || _timeSinceLastVibe < vibrationThrottleTime) return;
     _timeSinceLastVibe = 0;
 
     Vibration.hasVibrator().then((has) {
@@ -702,6 +799,16 @@ class Simulation {
         pattern: [0, 200, 100, 300], // Strong double pulse
         intensities: [0, 255, 0, 255], // Maximum intensity
       );
+    }
+  }
+
+  /// Update temperatures for all bodies (throttled for performance)
+  void updateTemperatures(double deltaTime) {
+    _timeSinceLastTemperatureUpdate += deltaTime;
+
+    if (_timeSinceLastTemperatureUpdate >= _temperatureUpdateInterval) {
+      TemperatureService.updateAllTemperatures(bodies);
+      _timeSinceLastTemperatureUpdate = 0.0;
     }
   }
 

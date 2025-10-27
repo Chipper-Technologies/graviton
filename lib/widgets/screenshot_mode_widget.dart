@@ -30,7 +30,14 @@ class ScreenshotModeWidget extends StatelessWidget {
                 // Screenshot Mode Toggle
                 SwitchListTile(
                   title: Text(l10n.screenshotMode),
-                  subtitle: Text(l10n.screenshotModeSubtitle),
+                  subtitle: Text(
+                    l10n.screenshotModeSubtitle,
+                    style: TextStyle(
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacitySemiTransparent,
+                      ),
+                    ),
+                  ),
                   value: screenshotService.isEnabled,
                   onChanged: (v) {
                     if (v) {
@@ -48,12 +55,19 @@ class ScreenshotModeWidget extends StatelessWidget {
 
                 // Hide UI Toggle (only show when screenshot mode is enabled)
                 if (screenshotService.isEnabled) ...[
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTypography.spacingSmall),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: SwitchListTile(
                       title: Text(l10n.hideUIInScreenshotMode),
-                      subtitle: Text(l10n.hideUIInScreenshotModeSubtitle),
+                      subtitle: Text(
+                        l10n.hideUIInScreenshotModeSubtitle,
+                        style: TextStyle(
+                          color: AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacitySemiTransparent,
+                          ),
+                        ),
+                      ),
                       value: appState.ui.hideUIInScreenshotMode,
                       onChanged: (v) =>
                           appState.ui.toggleHideUIInScreenshotMode(),
@@ -64,7 +78,7 @@ class ScreenshotModeWidget extends StatelessWidget {
 
                 // Preset Selection (only show when enabled)
                 if (screenshotService.isEnabled) ...[
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTypography.spacingSmall),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
@@ -74,13 +88,15 @@ class ScreenshotModeWidget extends StatelessWidget {
                           l10n.scenePreset,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTypography.spacingSmall),
                         Container(
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           decoration: BoxDecoration(
                             border: Border.all(color: AppColors.uiBorderGrey),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(
+                              AppTypography.radiusMedium,
+                            ),
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<int>(
@@ -136,7 +152,7 @@ class ScreenshotModeWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppTypography.spacingMedium),
 
                         // Apply/Navigation Buttons
                         Row(
@@ -217,14 +233,16 @@ class ScreenshotModeWidget extends StatelessWidget {
 
                         // Active indicator
                         if (screenshotService.isActive) ...[
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTypography.spacingSmall),
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: Theme.of(
                                 context,
                               ).colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(
+                                AppTypography.radiusMedium,
+                              ),
                             ),
                             child: Row(
                               children: [
@@ -235,7 +253,9 @@ class ScreenshotModeWidget extends StatelessWidget {
                                     context,
                                   ).colorScheme.onPrimaryContainer,
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(
+                                  width: AppTypography.spacingSmall,
+                                ),
                                 Expanded(
                                   child: Text(
                                     l10n.sceneActive,
