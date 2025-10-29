@@ -214,32 +214,32 @@ class AppLocalizationsEs extends AppLocalizations {
       'Invertir la dirección de arrastre arriba/abajo';
 
   @override
-  String get cinematicCameraTechniqueLabel => 'AI Camera Technique';
+  String get cinematicCameraTechniqueLabel => 'Técnica de Cámara IA';
 
   @override
   String get cinematicCameraTechniqueDescription =>
-      'Choose how AI controls the camera when following objects';
+      'Elija cómo la IA controla la cámara al seguir objetos';
 
   @override
-  String get cinematicTechniqueManual => 'Manual Control';
+  String get cinematicTechniqueManual => 'Control Manual';
 
   @override
   String get cinematicTechniqueManualDesc =>
-      'Traditional manual camera controls with follow mode';
+      'Controles de cámara manuales tradicionales con modo de seguimiento';
 
   @override
-  String get cinematicTechniquePredictiveOrbital => 'Predictive Orbital';
+  String get cinematicTechniquePredictiveOrbital => 'Orbital Predictivo';
 
   @override
   String get cinematicTechniquePredictiveOrbitalDesc =>
-      'AI tours and orbital predictions for educational scenarios';
+      'Tours de IA y predicciones orbitales para escenarios educativos';
 
   @override
-  String get cinematicTechniqueDynamicFraming => 'Dynamic Framing';
+  String get cinematicTechniqueDynamicFraming => 'Encuadre Dinámico';
 
   @override
   String get cinematicTechniqueDynamicFramingDesc =>
-      'Real-time dramatic targeting for chaotic scenarios';
+      'Objetivo dramático en tiempo real para escenarios caóticos';
 
   @override
   String get marketingLabel => 'Marketing';
@@ -444,25 +444,25 @@ class AppLocalizationsEs extends AppLocalizations {
   String get languageSystem => 'Predeterminado del Sistema';
 
   @override
-  String get languageEnglish => 'English';
+  String get languageEnglish => 'Inglés';
 
   @override
-  String get languageGerman => 'Deutsch';
+  String get languageGerman => 'Alemán';
 
   @override
   String get languageSpanish => 'Español';
 
   @override
-  String get languageFrench => 'Français';
+  String get languageFrench => 'Francés';
 
   @override
-  String get languageChinese => '中文';
+  String get languageChinese => 'Chino';
 
   @override
-  String get languageJapanese => '日本語';
+  String get languageJapanese => 'Japonés';
 
   @override
-  String get languageKorean => '한국어';
+  String get languageKorean => 'Coreano';
 
   @override
   String get bodyAlpha => 'Alfa';
