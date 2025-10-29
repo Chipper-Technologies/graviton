@@ -120,6 +120,7 @@ Tests for service layer components:
 - `screenshot_mode_service_test.dart` - Screenshot mode functionality
 - `simulation_physics_test.dart` - Physics engine and calculations
 - `simulation_test.dart` - Core simulation engine
+- `temperature_service_test.dart` - Temperature calculations and stellar radiation modeling
 - `version_service_test.dart` - App version management and updates
 
 ### 🎯 State (`test/state/`)
