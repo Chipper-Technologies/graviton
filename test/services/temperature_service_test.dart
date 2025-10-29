@@ -1,14 +1,14 @@
-/// Tests for temperature service calculations and conversions.
-///
-/// This module tests the temperature calculation system including:
-/// - Planetary temperature calculations based on stellar radiation
-/// - Initial temperature assignment for different body types
-/// - Temperature formatting and localization
-/// - Greenhouse effect modeling
-/// - Mass-based temperature scaling
-///
-/// The temperature service is critical for accurate habitability zone
-/// calculations and realistic thermal modeling in the simulation.
+// Tests for temperature service calculations and conversions.
+//
+// This module tests the temperature calculation system including:
+// - Planetary temperature calculations based on stellar radiation
+// - Initial temperature assignment for different body types
+// - Temperature formatting and localization
+// - Greenhouse effect modeling
+// - Mass-based temperature scaling
+//
+// The temperature service is critical for accurate habitability zone
+// calculations and realistic thermal modeling in the simulation.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/constants/simulation_constants.dart';
@@ -352,7 +352,7 @@ void main() {
         final color = TemperatureService.getTemperatureColor(288.15);
 
         expect(color, isA<Color>());
-        expect(color.alpha, equals(255)); // Should be opaque
+        expect((color.a * 255.0).round() & 0xff, equals(255)); // Should be opaque
       });
 
       test('Should handle extreme temperatures', () {
