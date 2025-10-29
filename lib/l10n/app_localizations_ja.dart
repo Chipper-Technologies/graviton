@@ -225,35 +225,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get cinematicTechniquePredictiveOrbitalDesc =>
-      'AI predicts orbital paths for dramatic camera movements';
+      'AI tours and orbital predictions for educational scenarios';
 
   @override
   String get cinematicTechniqueDynamicFraming => 'Dynamic Framing';
 
   @override
   String get cinematicTechniqueDynamicFramingDesc =>
-      'Automatically adjusts framing based on scene content';
-
-  @override
-  String get cinematicTechniquePhysicsAware => 'Physics-Aware';
-
-  @override
-  String get cinematicTechniquePhysicsAwareDesc =>
-      'Camera follows physics principles for natural movement';
-
-  @override
-  String get cinematicTechniqueContextualShots => 'Contextual Shots';
-
-  @override
-  String get cinematicTechniqueContextualShotsDesc =>
-      'AI selects optimal angles based on simulation state';
-
-  @override
-  String get cinematicTechniqueEmotionalPacing => 'Emotional Pacing';
-
-  @override
-  String get cinematicTechniqueEmotionalPacingDesc =>
-      'Adjusts camera speed based on simulation tension';
+      'Real-time dramatic targeting for chaotic scenarios';
 
   @override
   String get marketingLabel => 'マーケティング';

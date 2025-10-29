@@ -64,6 +64,9 @@ class Simulation {
   static const double _temperatureUpdateInterval =
       0.5; // Update every 0.5 seconds (less frequent than habitability)
 
+  // Track if we're in a legitimate reset operation to avoid aggressive trail clearing
+  bool _isResetting = false;
+
   Simulation() {
     reset();
   }
@@ -146,11 +149,15 @@ class Simulation {
 
   /// Reset simulation with a specific scenario
   void resetWithScenario(ScenarioType scenario, {AppLocalizations? l10n}) {
+    _isResetting = true; // Mark that we're in a legitimate reset operation
+
     _currentScenario = scenario;
     bodies = _scenarioService.generateScenario(scenario, l10n: l10n);
     trails = List.generate(bodies.length, (_) => <TrailPoint>[]);
     mergeFlashes.clear();
     _timeSinceLastVibe = 0;
+
+    _isResetting = false; // Reset operation complete
 
     // Initialize belt systems based on scenario
     if (scenario == ScenarioType.asteroidBelt) {
@@ -246,6 +253,22 @@ class Simulation {
   }
 
   void pushTrails(double dt) {
+    // Intelligent safety check: ensure bodies array is valid and not empty
+    if (bodies.isEmpty) {
+      // If we're in a legitimate reset operation, trails are handled by resetWithScenario
+      // Skip trail clearing during reset to prevent data loss during the brief moment when
+      // bodies is temporarily empty but new bodies are about to be assigned. This prevents
+      // losing existing trail data during legitimate transitions between scenarios.
+      if (_isResetting) {
+        return; // Let the reset operation handle trail management
+      }
+
+      // If not resetting and bodies is empty, this might be corruption or end of simulation
+      // Clear trails only in this case to avoid losing valid trail data during transitions
+      trails.clear();
+      return;
+    }
+
     // Ensure trails array matches bodies array length
     while (trails.length > bodies.length) {
       trails.removeLast();
@@ -331,7 +354,15 @@ class Simulation {
       );
 
       // Add newest trail point with full alpha (don't fade this one)
-      trails[i].add(TrailPoint(bodies[i].position.clone(), 1.0));
+      // Create a completely independent copy of the position vector
+      final trailPos = bodies[i].position.clone();
+
+      // Check for trail discontinuity and handle accordingly
+      if (_shouldSkipTrailPush(trailPos, trails[i])) {
+        trails[i].clear(); // Clear potentially corrupted trail
+      }
+
+      trails[i].add(TrailPoint(trailPos, 1.0));
 
       // keep memory in check with custom max trail
       if (trails[i].length > customMaxTrail) {
@@ -588,8 +619,8 @@ class Simulation {
     final mergedTemperature =
         (b1.temperature * b1.mass + b2.temperature * b2.mass) / m;
 
-    // Replace b1 and remove b2
-    bodies[i] = Body(
+    // Create the merged body once
+    final mergedBody = Body(
       position: p,
       velocity: v,
       mass: m,
@@ -602,12 +633,29 @@ class Simulation {
       temperature: mergedTemperature,
     );
 
-    // Handle trails synchronization safely
-    if (j < trails.length) {
-      trails.removeAt(j);
+    // Handle trails synchronization correctly to maintain index correspondence
+    // Note: While _handleCollisions() always calls with i < j ordering (nested loops ensure this),
+    // defensive coding handles both cases since future collision detection modifications or other
+    // callers might pass indices in either order. Both cases use careful removal order to prevent index shifting.
+    if (i < j) {
+      // Case 1: i < j - Replace body at index i with merged body
+      bodies[i] = mergedBody;
+      // Remove higher index first to avoid shifting the lower index
+      if (j < trails.length) {
+        trails.removeAt(j);
+      }
+      bodies.removeAt(j);
+      // trails[i] still corresponds to bodies[i] (the merged body)
+    } else {
+      // Case 2: i > j - Remove higher index body and trail first
+      if (i < trails.length) {
+        trails.removeAt(i);
+      }
+      bodies.removeAt(i);
+      // Now place the merged body at index j
+      bodies[j] = mergedBody;
+      // trails[j] now corresponds to bodies[j] (the merged body)
     }
-
-    bodies.removeAt(j);
 
     // Ensure trails array matches bodies array length
     while (trails.length > bodies.length) {
@@ -717,6 +765,26 @@ class Simulation {
         stellarLuminosity: body.stellarLuminosity,
       );
     }
+  }
+
+  /// Check if trail push should be skipped due to position discontinuity
+  ///
+  /// Returns true if the body has moved an unreasonably large distance since the last
+  /// trail point, indicating potential corruption or chaotic dynamics that would cause
+  /// visual artifacts. This is particularly important for random scenarios where
+  /// unpredictable body behavior can cause sudden position jumps.
+  bool _shouldSkipTrailPush(vm.Vector3 newPosition, List<TrailPoint> trail) {
+    // Only apply this safety check for random scenarios with existing trail data
+    if (_currentScenario != ScenarioType.random || trail.isEmpty) {
+      return false;
+    }
+
+    final lastTrailPos = trail.last.pos;
+    final positionDelta = (newPosition - lastTrailPos).length;
+
+    // If the body has moved an unreasonably large distance, skip the trail push
+    // and clear the existing trail to prevent visual artifacts
+    return positionDelta > SimulationConstants.maxReasonableDistance;
   }
 
   /// Check if this is a black hole absorption event

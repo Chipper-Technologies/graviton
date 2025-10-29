@@ -60,13 +60,13 @@ class _OffScreenIndicatorPainter extends CustomPainter {
 
     for (int i = 0; i < bodies.length; i++) {
       final body = bodies[i];
-      final worldPos = vm.Vector4(
+      final homogeneousPos = vm.Vector4(
         body.position.x,
         body.position.y,
         body.position.z,
         1.0,
       );
-      final clipPos = mvp * worldPos;
+      final clipPos = mvp * homogeneousPos;
 
       // Skip if behind camera
       if (clipPos.w <= 0) continue;
@@ -296,13 +296,13 @@ class _OffScreenIndicatorPainter extends CustomPainter {
         final parentPlanet = _findParentPlanet(otherBody);
         if (parentPlanet == body) {
           // This moon belongs to the current planet, check if moon is off-screen
-          final moonWorldPos = vm.Vector4(
+          final moonHomogeneousPos = vm.Vector4(
             otherBody.position.x,
             otherBody.position.y,
             otherBody.position.z,
             1.0,
           );
-          final moonClipPos = mvp * moonWorldPos;
+          final moonClipPos = mvp * moonHomogeneousPos;
 
           // Skip if moon is behind camera
           if (moonClipPos.w <= 0) continue;

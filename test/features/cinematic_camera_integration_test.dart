@@ -16,14 +16,7 @@ void main() {
           .toList();
       expect(
         techniqueNames,
-        containsAll([
-          'manual',
-          'predictiveOrbital',
-          'dynamicFraming',
-          'physicsAware',
-          'contextualShots',
-          'emotionalPacing',
-        ]),
+        containsAll(['manual', 'predictiveOrbital', 'dynamicFraming']),
       );
     });
 

@@ -13,25 +13,7 @@ enum CinematicCameraTechnique {
   /// - Rule of thirds positioning for primary bodies
   /// - Leading space for moving objects in direction of travel
   /// - Scale awareness (zoom out for multi-body, zoom in for detail)
-  dynamicFraming('dynamic_framing'),
-
-  /// Camera follows physics principles for natural movement
-  /// - Camera "orbits" the target with simulated physics
-  /// - Smooth banking into turns following curved trajectories
-  /// - Natural shake/vibration during high-energy events
-  physicsAware('physics_aware'),
-
-  /// AI chooses camera angles based on current simulation state
-  /// - Switches between wide shots and close-ups intelligently
-  /// - Creates "establishing shots" for new scenarios
-  /// - Educational vs dramatic vs overview mode switching
-  contextualShots('contextual_shots'),
-
-  /// Emotional pacing control based on simulation "tension"
-  /// - Analyzes proximity, velocities, and chaos level
-  /// - Adjusts camera movement speed accordingly
-  /// - Creates buildup to dramatic moments
-  emotionalPacing('emotional_pacing');
+  dynamicFraming('dynamic_framing');
 
   const CinematicCameraTechnique(this.value);
 
@@ -47,12 +29,6 @@ enum CinematicCameraTechnique {
         return 'Predictive Orbital';
       case CinematicCameraTechnique.dynamicFraming:
         return 'Dynamic Framing';
-      case CinematicCameraTechnique.physicsAware:
-        return 'Physics-Aware';
-      case CinematicCameraTechnique.contextualShots:
-        return 'Contextual Shots';
-      case CinematicCameraTechnique.emotionalPacing:
-        return 'Emotional Pacing';
     }
   }
 
@@ -65,12 +41,6 @@ enum CinematicCameraTechnique {
         return 'AI predicts orbital paths for dramatic camera movements';
       case CinematicCameraTechnique.dynamicFraming:
         return 'Automatically adjusts framing based on scene content';
-      case CinematicCameraTechnique.physicsAware:
-        return 'Camera follows physics principles for natural movement';
-      case CinematicCameraTechnique.contextualShots:
-        return 'AI selects optimal angles based on simulation state';
-      case CinematicCameraTechnique.emotionalPacing:
-        return 'Adjusts camera speed based on simulation tension';
     }
   }
 

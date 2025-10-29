@@ -8,12 +8,10 @@ class CinematicCameraTechniqueDemo extends StatefulWidget {
   const CinematicCameraTechniqueDemo({super.key});
 
   @override
-  State<CinematicCameraTechniqueDemo> createState() =>
-      _CinematicCameraTechniqueDemoState();
+  State<CinematicCameraTechniqueDemo> createState() => _CinematicCameraTechniqueDemoState();
 }
 
-class _CinematicCameraTechniqueDemoState
-    extends State<CinematicCameraTechniqueDemo> {
+class _CinematicCameraTechniqueDemoState extends State<CinematicCameraTechniqueDemo> {
   final UIState _uiState = UIState();
 
   @override
@@ -27,10 +25,7 @@ class _CinematicCameraTechniqueDemoState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Select an AI Camera Technique:',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
+            Text('Select an AI Camera Technique:', style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 24),
 
             // Current selection display
@@ -43,23 +38,16 @@ class _CinematicCameraTechniqueDemoState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Current Selection:',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  Text('Current Selection:', style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 8),
                   Text(
                     _uiState.cinematicCameraTechnique.displayName,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleLarge?.copyWith(color: Colors.blue, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    _uiState.cinematicCameraTechnique.description,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
+                  Text(_uiState.cinematicCameraTechnique.description, style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ),
             ),
@@ -67,10 +55,7 @@ class _CinematicCameraTechniqueDemoState
             const SizedBox(height: 24),
 
             // Technique selection buttons
-            Text(
-              'Available Techniques:',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+            Text('Available Techniques:', style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 16),
 
             Expanded(
@@ -78,23 +63,17 @@ class _CinematicCameraTechniqueDemoState
                 itemCount: CinematicCameraTechnique.values.length,
                 itemBuilder: (context, index) {
                   final technique = CinematicCameraTechnique.values[index];
-                  final isSelected =
-                      _uiState.cinematicCameraTechnique == technique;
+                  final isSelected = _uiState.cinematicCameraTechnique == technique;
 
                   return Card(
                     margin: const EdgeInsets.only(bottom: 8),
-                    color: isSelected ? Colors.blue.withOpacity(0.1) : null,
+                    color: isSelected ? Colors.blue.withValues(alpha: 0.1) : null,
                     child: ListTile(
-                      leading: Icon(
-                        _getIconForTechnique(technique),
-                        color: isSelected ? Colors.blue : null,
-                      ),
+                      leading: Icon(_getIconForTechnique(technique), color: isSelected ? Colors.blue : null),
                       title: Text(
                         technique.displayName,
                         style: TextStyle(
-                          fontWeight: isSelected
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                           color: isSelected ? Colors.blue : null,
                         ),
                       ),
@@ -126,12 +105,6 @@ class _CinematicCameraTechniqueDemoState
         return Icons.track_changes;
       case CinematicCameraTechnique.dynamicFraming:
         return Icons.aspect_ratio;
-      case CinematicCameraTechnique.physicsAware:
-        return Icons.science;
-      case CinematicCameraTechnique.contextualShots:
-        return Icons.camera_alt;
-      case CinematicCameraTechnique.emotionalPacing:
-        return Icons.favorite;
     }
   }
 }

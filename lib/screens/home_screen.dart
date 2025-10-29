@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
+import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -64,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen>
   final CinematicCameraController _cinematicCameraController =
       CinematicCameraController();
   CinematicCameraTechnique? _lastCameraTechnique;
+  ScenarioType? _lastScenario;
 
   // Function to show simulation controls
   VoidCallback? _showSimulationControls;
@@ -131,6 +133,12 @@ class _HomeScreenState extends State<HomeScreen>
       _lastCameraTechnique = appState.ui.cinematicCameraTechnique;
     }
 
+    // Check if scenario changed and reset controller if needed
+    if (_lastScenario != appState.simulation.currentScenario) {
+      _cinematicCameraController.reset();
+      _lastScenario = appState.simulation.currentScenario;
+    }
+
     // Update cinematic camera controller based on selected technique
     _cinematicCameraController.updateCamera(
       appState.ui.cinematicCameraTechnique,
@@ -141,7 +149,9 @@ class _HomeScreenState extends State<HomeScreen>
     );
 
     // Push trails if enabled and simulation is running (not paused)
-    if (appState.ui.showTrails && !appState.simulation.isPaused) {
+    if (appState.ui.showTrails &&
+        appState.simulation.isRunning &&
+        !appState.simulation.isPaused) {
       appState.simulation.simulation.pushTrails(1 / 240.0);
     }
   }
@@ -264,10 +274,10 @@ class _HomeScreenState extends State<HomeScreen>
     Size screenSize,
   ) {
     // Transform world position to homogeneous coordinates
-    final worldPos4 = vm.Vector4(worldPos.x, worldPos.y, worldPos.z, 1.0);
+    final homogeneousPos = vm.Vector4(worldPos.x, worldPos.y, worldPos.z, 1.0);
 
     // Transform to camera space then to clip space
-    final clipPos = proj * view * worldPos4;
+    final clipPos = proj * view * homogeneousPos;
 
     // Check if point is in front of camera (w should be positive)
     if (clipPos.w <= 0) return null;
@@ -355,6 +365,8 @@ class _HomeScreenState extends State<HomeScreen>
             value: scenario.name,
           );
           appState.simulation.resetWithScenario(scenario, l10n: l10n);
+          // Reset cinematic camera controller for new scenario
+          _cinematicCameraController.reset();
           // Auto-zoom camera to fit the new scenario
           appState.camera.resetViewForScenario(
             scenario,

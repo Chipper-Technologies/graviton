@@ -16,6 +16,8 @@ class SimulationConstants {
   static const double trailFadeRate = 0.5;
   static const double trailAlphaThreshold = 0.01;
   static const double trailStrokeWidth = 1.2;
+  static const double maxReasonableDistance =
+      50.0; // Trail discontinuity threshold
 
   // Body generation - Star configuration
   static const int numberOfStars = 3;

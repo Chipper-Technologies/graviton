@@ -537,7 +537,7 @@ abstract class AppLocalizations {
   /// Description for predictive orbital camera technique
   ///
   /// In en, this message translates to:
-  /// **'AI predicts orbital paths for dramatic camera movements'**
+  /// **'AI tours and orbital predictions for educational scenarios'**
   String get cinematicTechniquePredictiveOrbitalDesc;
 
   /// Dynamic framing camera technique
@@ -549,44 +549,8 @@ abstract class AppLocalizations {
   /// Description for dynamic framing camera technique
   ///
   /// In en, this message translates to:
-  /// **'Automatically adjusts framing based on scene content'**
+  /// **'Real-time dramatic targeting for chaotic scenarios'**
   String get cinematicTechniqueDynamicFramingDesc;
-
-  /// Physics-aware camera technique
-  ///
-  /// In en, this message translates to:
-  /// **'Physics-Aware'**
-  String get cinematicTechniquePhysicsAware;
-
-  /// Description for physics-aware camera technique
-  ///
-  /// In en, this message translates to:
-  /// **'Camera follows physics principles for natural movement'**
-  String get cinematicTechniquePhysicsAwareDesc;
-
-  /// Contextual shots camera technique
-  ///
-  /// In en, this message translates to:
-  /// **'Contextual Shots'**
-  String get cinematicTechniqueContextualShots;
-
-  /// Description for contextual shots camera technique
-  ///
-  /// In en, this message translates to:
-  /// **'AI selects optimal angles based on simulation state'**
-  String get cinematicTechniqueContextualShotsDesc;
-
-  /// Emotional pacing camera technique
-  ///
-  /// In en, this message translates to:
-  /// **'Emotional Pacing'**
-  String get cinematicTechniqueEmotionalPacing;
-
-  /// Description for emotional pacing camera technique
-  ///
-  /// In en, this message translates to:
-  /// **'Adjusts camera speed based on simulation tension'**
-  String get cinematicTechniqueEmotionalPacingDesc;
 
   /// Header for marketing tools section
   ///

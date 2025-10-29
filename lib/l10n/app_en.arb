@@ -355,7 +355,7 @@
     "description": "Predictive orbital camera technique"
   },
   
-  "cinematicTechniquePredictiveOrbitalDesc": "AI predicts orbital paths for dramatic camera movements",
+  "cinematicTechniquePredictiveOrbitalDesc": "AI tours and orbital predictions for educational scenarios",
   "@cinematicTechniquePredictiveOrbitalDesc": {
     "description": "Description for predictive orbital camera technique"
   },
@@ -365,39 +365,9 @@
     "description": "Dynamic framing camera technique"
   },
   
-  "cinematicTechniqueDynamicFramingDesc": "Automatically adjusts framing based on scene content",
+  "cinematicTechniqueDynamicFramingDesc": "Real-time dramatic targeting for chaotic scenarios",
   "@cinematicTechniqueDynamicFramingDesc": {
     "description": "Description for dynamic framing camera technique"
-  },
-  
-  "cinematicTechniquePhysicsAware": "Physics-Aware",
-  "@cinematicTechniquePhysicsAware": {
-    "description": "Physics-aware camera technique"
-  },
-  
-  "cinematicTechniquePhysicsAwareDesc": "Camera follows physics principles for natural movement",
-  "@cinematicTechniquePhysicsAwareDesc": {
-    "description": "Description for physics-aware camera technique"
-  },
-  
-  "cinematicTechniqueContextualShots": "Contextual Shots",
-  "@cinematicTechniqueContextualShots": {
-    "description": "Contextual shots camera technique"
-  },
-  
-  "cinematicTechniqueContextualShotsDesc": "AI selects optimal angles based on simulation state",
-  "@cinematicTechniqueContextualShotsDesc": {
-    "description": "Description for contextual shots camera technique"
-  },
-  
-  "cinematicTechniqueEmotionalPacing": "Emotional Pacing",
-  "@cinematicTechniqueEmotionalPacing": {
-    "description": "Emotional pacing camera technique"
-  },
-  
-  "cinematicTechniqueEmotionalPacingDesc": "Adjusts camera speed based on simulation tension",
-  "@cinematicTechniqueEmotionalPacingDesc": {
-    "description": "Description for emotional pacing camera technique"
   },
   
   "marketingLabel": "Marketing",

@@ -12,6 +12,24 @@ import 'package:graviton/utils/painter_utils.dart';
 import 'package:graviton/utils/physics_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
+/// Represents a point on an orbital path with visibility information
+class OrbitalPathPoint {
+  final Offset position;
+  final bool isVisible;
+
+  const OrbitalPathPoint({required this.position, required this.isVisible});
+
+  /// Creates an invalid point (behind camera or failed projection)
+  static const OrbitalPathPoint invalid = OrbitalPathPoint(
+    position: Offset.zero,
+    isVisible: false,
+  );
+
+  /// Creates a valid visible point
+  static OrbitalPathPoint visible(Offset position) =>
+      OrbitalPathPoint(position: position, isVisible: true);
+}
+
 /// Painter for drawing predicted orbital paths
 class OrbitalPathPainter {
   OrbitalPathPainter._(); // Private constructor
@@ -552,7 +570,11 @@ class OrbitalPathPainter {
     physics.Simulation? sim,
   }) {
     const int numPoints = 128; // Number of points to draw the ellipse
-    final points = <Offset>[];
+
+    // Generate orbital path points with explicit visibility tracking
+    // Invalid points (behind camera or failed projection) are marked as invisible
+    // This allows clear separation between valid path segments without relying on null checks
+    final points = <OrbitalPathPoint>[];
 
     // Determine orbital direction from angular momentum (if body provided)
     bool clockwise = false;
@@ -647,10 +669,13 @@ class OrbitalPathPainter {
       // Transform to world space (relative to orbital center)
       final worldPos = params.center + vm.Vector3(x, y, z);
 
-      // Project to screen space
+      // Project to screen space (handles behind-camera check internally)
       final screenPos = PainterUtils.project(vp, worldPos, size);
       if (screenPos != null) {
-        points.add(screenPos);
+        points.add(OrbitalPathPoint.visible(screenPos));
+      } else {
+        // Point is behind camera or projection failed, mark as invisible
+        points.add(OrbitalPathPoint.invalid);
       }
     }
 
@@ -665,49 +690,82 @@ class OrbitalPathPainter {
       ..strokeCap = StrokeCap.round;
 
     // Draw path as connected line segments (dashed or solid)
-    if (isDashed) {
-      // Draw dashed line
-      const dashLength = 8.0;
-      const gapLength = 4.0;
+    // Handle invisible points to break orbital paths when portions go behind the camera
+    // This prevents unsightly lines drawn across the screen from visible to non-visible sections
+    final pathSegments = <List<Offset>>[];
+    var currentSegment = <Offset>[];
 
-      for (int i = 0; i < points.length - 1; i++) {
-        final start = points[i];
-        final end = points[i + 1];
-        final segmentLength = (end - start).distance;
-
-        // Draw dashed segments
-        double currentDistance = 0.0;
-
-        while (currentDistance < segmentLength) {
-          final progress1 = currentDistance / segmentLength;
-          final progress2 = math.min(
-            (currentDistance + dashLength) / segmentLength,
-            1.0,
-          );
-
-          final dashStart = Offset.lerp(start, end, progress1)!;
-          final dashEnd = Offset.lerp(start, end, progress2)!;
-
-          canvas.drawLine(dashStart, dashEnd, pathPaint);
-          currentDistance += dashLength + gapLength;
+    for (final point in points) {
+      if (!point.isVisible) {
+        // Invalid point (behind camera) - break the path here
+        if (currentSegment.isNotEmpty) {
+          pathSegments.add(List.from(currentSegment));
+          currentSegment.clear();
         }
-      }
-    } else {
-      // Draw solid line
-      for (int i = 0; i < points.length - 1; i++) {
-        canvas.drawLine(points[i], points[i + 1], pathPaint);
+      } else {
+        currentSegment.add(point.position);
       }
     }
 
-    // Draw some orbital direction indicators (small arrows)
-    _drawOrbitalDirectionIndicators(
-      canvas,
-      points,
-      bodyColor,
-      body: body,
-      orbitalCenter: params.center,
-      scenario: scenario,
-    );
+    // Add final segment if any points remain
+    if (currentSegment.isNotEmpty) {
+      pathSegments.add(currentSegment);
+    }
+
+    // Draw each continuous path segment separately
+    for (final segment in pathSegments) {
+      if (segment.length < 2) continue; // Need at least 2 points to draw
+
+      if (isDashed) {
+        // Draw dashed line
+        const dashLength = 8.0;
+        const gapLength = 4.0;
+
+        for (int i = 0; i < segment.length - 1; i++) {
+          final start = segment[i];
+          final end = segment[i + 1];
+          final segmentLength = (end - start).distance;
+
+          // Draw dashed segments
+          double currentDistance = 0.0;
+
+          while (currentDistance < segmentLength) {
+            final progress1 = currentDistance / segmentLength;
+            final progress2 = math.min(
+              (currentDistance + dashLength) / segmentLength,
+              1.0,
+            );
+
+            final dashStart = Offset.lerp(start, end, progress1)!;
+            final dashEnd = Offset.lerp(start, end, progress2)!;
+
+            canvas.drawLine(dashStart, dashEnd, pathPaint);
+            currentDistance += dashLength + gapLength;
+          }
+        }
+      } else {
+        // Draw solid line
+        for (int i = 0; i < segment.length - 1; i++) {
+          canvas.drawLine(segment[i], segment[i + 1], pathPaint);
+        }
+      }
+    }
+
+    // Draw some orbital direction indicators (small arrows) - use the largest segment
+    final largestSegment = pathSegments.isEmpty
+        ? <Offset>[]
+        : pathSegments.reduce((a, b) => a.length > b.length ? a : b);
+
+    if (largestSegment.isNotEmpty) {
+      _drawOrbitalDirectionIndicators(
+        canvas,
+        largestSegment,
+        bodyColor,
+        body: body,
+        orbitalCenter: params.center,
+        scenario: scenario,
+      );
+    }
   }
 
   /// Draw small arrows to indicate orbital direction

@@ -17,18 +17,6 @@ void main() {
         CinematicCameraTechnique.values,
         contains(CinematicCameraTechnique.dynamicFraming),
       );
-      expect(
-        CinematicCameraTechnique.values,
-        contains(CinematicCameraTechnique.physicsAware),
-      );
-      expect(
-        CinematicCameraTechnique.values,
-        contains(CinematicCameraTechnique.contextualShots),
-      );
-      expect(
-        CinematicCameraTechnique.values,
-        contains(CinematicCameraTechnique.emotionalPacing),
-      );
     });
 
     test('displayName should return correct strings', () {
@@ -43,18 +31,6 @@ void main() {
       expect(
         CinematicCameraTechnique.dynamicFraming.displayName,
         equals('Dynamic Framing'),
-      );
-      expect(
-        CinematicCameraTechnique.physicsAware.displayName,
-        equals('Physics-Aware'),
-      );
-      expect(
-        CinematicCameraTechnique.contextualShots.displayName,
-        equals('Contextual Shots'),
-      );
-      expect(
-        CinematicCameraTechnique.emotionalPacing.displayName,
-        equals('Emotional Pacing'),
       );
     });
 
@@ -82,18 +58,6 @@ void main() {
         CinematicCameraTechnique.dynamicFraming.description,
         equals('Automatically adjusts framing based on scene content'),
       );
-      expect(
-        CinematicCameraTechnique.physicsAware.description,
-        equals('Camera follows physics principles for natural movement'),
-      );
-      expect(
-        CinematicCameraTechnique.contextualShots.description,
-        equals('AI selects optimal angles based on simulation state'),
-      );
-      expect(
-        CinematicCameraTechnique.emotionalPacing.description,
-        equals('Adjusts camera speed based on simulation tension'),
-      );
     });
 
     test('requiresAI should return correct values', () {
@@ -103,9 +67,6 @@ void main() {
       // All other techniques should require AI
       expect(CinematicCameraTechnique.predictiveOrbital.requiresAI, isTrue);
       expect(CinematicCameraTechnique.dynamicFraming.requiresAI, isTrue);
-      expect(CinematicCameraTechnique.physicsAware.requiresAI, isTrue);
-      expect(CinematicCameraTechnique.contextualShots.requiresAI, isTrue);
-      expect(CinematicCameraTechnique.emotionalPacing.requiresAI, isTrue);
     });
 
     test('value property should return correct string values', () {
@@ -117,18 +78,6 @@ void main() {
       expect(
         CinematicCameraTechnique.dynamicFraming.value,
         equals('dynamic_framing'),
-      );
-      expect(
-        CinematicCameraTechnique.physicsAware.value,
-        equals('physics_aware'),
-      );
-      expect(
-        CinematicCameraTechnique.contextualShots.value,
-        equals('contextual_shots'),
-      );
-      expect(
-        CinematicCameraTechnique.emotionalPacing.value,
-        equals('emotional_pacing'),
       );
     });
 
@@ -144,18 +93,6 @@ void main() {
       expect(
         CinematicCameraTechnique.fromValue('dynamic_framing'),
         equals(CinematicCameraTechnique.dynamicFraming),
-      );
-      expect(
-        CinematicCameraTechnique.fromValue('physics_aware'),
-        equals(CinematicCameraTechnique.physicsAware),
-      );
-      expect(
-        CinematicCameraTechnique.fromValue('contextual_shots'),
-        equals(CinematicCameraTechnique.contextualShots),
-      );
-      expect(
-        CinematicCameraTechnique.fromValue('emotional_pacing'),
-        equals(CinematicCameraTechnique.emotionalPacing),
       );
     });
 

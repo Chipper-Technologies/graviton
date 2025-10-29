@@ -2,7 +2,7 @@
 
 ## Overview
 
-Graviton's AI-driven cinematic camera system transforms the viewing experience by intelligently controlling camera movement to highlight the most dramatic and educational moments in gravitational simulations. Each technique uses physics-based algorithms to predict optimal camera positions and create compelling visual narratives.
+Graviton's AI-driven cinematic camera system transforms the viewing experience by intelligently controlling camera movement to highlight the most dramatic and educational moments in gravitational simulations. The system offers three distinct approaches: manual control for traditional interaction, predictive orbital for educational tours, and dynamic framing for chaotic action tracking.
 
 ## Table of Contents
 
@@ -11,9 +11,6 @@ Graviton's AI-driven cinematic camera system transforms the viewing experience b
   - [Manual Control](#1-manual-control)
   - [Predictive Orbital](#2-predictive-orbital)
   - [Dynamic Framing](#3-dynamic-framing)
-  - [Physics-Aware](#4-physics-aware)
-  - [Contextual Shots](#5-contextual-shots)
-  - [Emotional Pacing](#6-emotional-pacing)
 - [Technical Implementation](#technical-implementation)
 - [Configuration](#configuration)
 - [Usage Guidelines](#usage-guidelines)
@@ -22,11 +19,18 @@ Graviton's AI-driven cinematic camera system transforms the viewing experience b
 
 ## System Architecture
 
-The cinematic camera system is built on three core components:
+The cinematic camera system is built on two core approaches:
 
-1. **Prediction Engine**: Physics-based algorithms that analyze current simulation state and predict future events
-2. **Camera Controller**: Intelligent positioning system that translates predicted events into optimal camera movements
-3. **Transition Manager**: Smooth interpolation system that creates natural camera movements between positions
+1. **Predictive Orbital**: Tours and orbital predictions for educational scenarios
+   - Predetermined cinematic tours for specific scenarios
+   - Orbital mechanics predictions for event anticipation
+   - Smooth, educational camera movements
+
+2. **Dynamic Framing**: Real-time dramatic interactions for chaotic scenarios
+   - Dramatic targeting system for random scenarios
+   - Ultra-aggressive close-ups for chaotic interactions
+   - Emergency transition interruption for dramatic moments
+   - Real-time framing validation and ejection detection
 
 ### Key Technologies
 - **Runge-Kutta 4th Order Integration**: For precise orbital predictions
@@ -54,66 +58,63 @@ The cinematic camera system is built on three core components:
 ---
 
 ### 2. 🔮 Predictive Orbital
-**Description**: AI predicts future orbital events and positions the camera for optimal viewing of dramatic moments.
+**Description**: AI tours and orbital predictions for educational scenarios. Provides predetermined cinematic tours for specific scenarios and uses orbital mechanics predictions for event anticipation.
 
-**Use Case**: Automatically captures close approaches, orbital resonances, and gravitational slingshot effects before they happen.
+**Use Case**: Educational scenarios with known orbital patterns - solar system tours, earth-moon-sun dynamics, binary star interactions, asteroid belt navigation, and galaxy formation visualization.
 
 **Technical Implementation**:
+- **Predetermined Tours**: Smooth cinematic paths designed for specific scenarios
 - **Orbital Prediction Engine**: Uses RK4 integration to simulate future body positions
 - **Event Detection**: Identifies close approaches, periapsis/apoapsis passages, and orbital crossings
-- **Camera Positioning**: Calculates optimal viewing angles using compositional rules
-- **Smooth Transitions**: Interpolates camera movement to arrive at position before event occurs
+- **Smooth Transitions**: Interpolates camera movement with educational pacing
 
-**Key Algorithms**:
-```dart
-// Future position prediction
-List<Vector3> predictFuturePositions(Body body, double timeStep, int steps)
-
-// Event detection
-List<OrbitalEvent> detectEvents(List<Body> bodies, double lookAheadTime)
-
-// Optimal positioning
-Vector3 calculateOptimalCameraPosition(OrbitalEvent event)
-```
+**Key Features**:
+- Solar system planet tour with smooth transitions
+- Earth-moon-sun phase-based viewing
+- Binary star balanced perspectives
+- Asteroid belt smooth navigation
+- Galaxy formation sweeping orbital views
 
 **Configuration Options**:
 - **Look-ahead time**: How far into the future to predict (1-60 seconds)
-- **Event sensitivity**: Threshold for detecting significant events
-- **Camera lead time**: How early to move camera before event occurs
+- **Tour duration**: Length of each tour phase
 - **Transition speed**: Speed of camera movements between positions
+- **Educational pacing**: Timing optimized for learning
 
-**Best for**: Binary star systems, three-body problems, any scenario with close encounters
+**Best for**: Educational content, known scenarios, smooth cinematic experiences
 
 ---
 
 ### 3. 🖼️ Dynamic Framing
-**Description**: Automatically frames multiple bodies using cinematographic composition rules.
+**Description**: Real-time dramatic targeting for chaotic scenarios. Provides ultra-aggressive close-ups and reactive camera work for unpredictable interactions.
 
-**Use Case**: Ensures all important bodies remain visible and well-composed in the frame, adjusting zoom and position as orbits evolve.
+**Use Case**: Random scenarios, chaotic three-body problems, collision detection, ejection events, and any unpredictable gravitational dynamics.
 
 **Technical Implementation**:
-- **Bounding Box Calculation**: Dynamically calculates optimal frame to include all bodies
-- **Composition Rules**: Applies rule of thirds, leading lines, and symmetry principles
-- **Adaptive Zoom**: Automatically adjusts zoom level to maintain good composition
-- **Weighting System**: Prioritizes larger or more active bodies in composition
+- **Dramatic Targeting System**: Exponential scoring for close encounters and collisions
+- **Ejection Detection**: Multi-layer filtering to identify separated vs interacting bodies
+- **Emergency Interruption**: Breaks transitions immediately for highly dramatic moments
+- **Real-time Framing Validation**: Continuously ensures bodies stay in view
+- **Ultra-aggressive Parameters**: Tight safety margins for maximum drama
 
 **Key Features**:
-- Real-time bounding box adjustment
-- Intelligent zoom scaling based on body distribution
-- Composition score calculation for optimal positioning
-- Smooth camera movements that maintain visual continuity
+- Ultra-close dramatic shots (1.5-35 unit distance range)
+- 4x faster transitions for reactive tracking
+- Emergency drama interruption (< 5 units or score > 80)
+- Aggressive ejection detection (2.5 separation threshold)
+- Real-time framing correction to prevent losing action
 
 **Configuration Options**:
-- **Framing margin**: Extra space around bodies (5-50% padding)
-- **Composition strictness**: How rigidly to follow composition rules
-- **Priority weighting**: Relative importance of different bodies
-- **Update frequency**: How often to recalculate optimal framing
+- **Drama sensitivity**: Threshold for detecting dramatic interactions
+- **Safety margin**: Minimum distance multiplier (0.8-2.0)
+- **Transition speed**: 4x faster for chaotic scenarios
+- **Stickiness**: How long to hold on dramatic moments
 
-**Best for**: Solar system views, multi-body scenarios, educational overviews
+**Best for**: Random scenarios, chaotic dynamics, collision courses, ejection events
 
 ---
 
-### 4. ⚖️ Physics-Aware
+## Technical Implementation
 **Description**: Camera movements that respond to gravitational forces and momentum changes.
 
 **Use Case**: Creates camera motion that mirrors the physics of the simulation, making gravitational effects more intuitive and visceral.
@@ -140,113 +141,113 @@ Vector3 calculateOptimalCameraPosition(OrbitalEvent event)
 
 ---
 
-### 5. 🎭 Contextual Shots
-**Description**: Context-sensitive camera angles that adapt based on current simulation state and dominant interactions.
-
-**Use Case**: Provides the most relevant camera angle for whatever is currently happening in the simulation.
-
-**Technical Implementation**:
-- **State Analysis**: Continuously analyzes simulation for dominant patterns
-- **Context Recognition**: Identifies scenarios like orbit formation, ejection events, or stable systems
-- **Shot Library**: Pre-defined optimal camera positions for different contexts
-- **Transition Logic**: Smart switching between different contextual modes
-
-**Context Types**:
-- **Formation Phase**: Wide shots showing initial body distribution
-- **Orbit Establishment**: Medium shots focusing on emerging orbital patterns
-- **Close Encounter**: Tight shots highlighting body interactions
-- **Stable System**: Gentle orbital following shots
-- **Chaotic Period**: Dynamic shots capturing unpredictable motion
-- **Collision Event**: Impact-focused dramatic angles
-
-**Configuration Options**:
-- **Context sensitivity**: How quickly to switch between contexts
-- **Shot duration**: Minimum time to hold each contextual shot
-- **Transition speed**: Speed of movement between contextual positions
-- **Context priority**: Which contexts take precedence
-
-**Best for**: Educational scenarios, general viewing, automatic demonstrations
-
----
-
-### 6. ❤️ Emotional Pacing
-**Description**: Camera timing and movement synchronized with the dramatic intensity of orbital interactions.
-
-**Use Case**: Creates emotional engagement by matching camera behavior to the "drama" of gravitational interactions.
-
-**Technical Implementation**:
-- **Drama Scoring**: Calculates "excitement level" based on relative velocities, distances, and accelerations
-- **Tension Building**: Slower, closer movements during approach phases
-- **Climax Moments**: Dynamic movement during closest approaches or collisions
-- **Resolution Phases**: Calm, stable shots during post-interaction periods
-- **Emotional Curves**: Long-form pacing that builds and releases tension
-
-**Dramatic Elements**:
-- **Tension**: Slow zoom-ins during approach phases
-- **Suspense**: Camera holds position just before closest approach
-- **Climax**: Fast, dynamic movement during peak interactions
-- **Release**: Slow pullout shots showing aftermath
-- **Reflection**: Stable shots allowing viewer to process events
-
-**Configuration Options**:
-- **Drama sensitivity**: How dramatic events must be to trigger responses
-- **Pacing speed**: Overall speed of emotional progression
-- **Tension duration**: How long to build tension before climax
-- **Calm periods**: Duration of stable shots between dramatic moments
-
-**Best for**: Three-body chaos, binary star dynamics, storytelling scenarios
-
----
-
 ## Technical Implementation
 
-### Core Services
+### Core Architecture
 
-#### OrbitalPredictionEngine
-```dart
-class OrbitalPredictionEngine {
-  // Predicts future body positions using RK4 integration
-  List<Vector3> predictFuturePositions(Body body, double timeStep, int steps);
-  
-  // Detects significant orbital events
-  List<OrbitalEvent> detectEvents(List<Body> bodies, double lookAheadTime);
-  
-  // Calculates optimal camera position for events
-  Vector3 calculateOptimalCameraPosition(OrbitalEvent event);
-}
-```
+The cinematic camera system is implemented through two main approaches:
 
 #### CinematicCameraController
 ```dart
 class CinematicCameraController {
-  // Main camera control based on selected technique
+  // Main camera control dispatcher
   void updateCamera(CameraTechnique technique, SimulationState state);
   
-  // Smooth camera transitions
-  void transitionToPosition(Vector3 target, double duration);
-  
-  // Technique-specific implementations
+  // Predictive orbital: Tours and predictions
   void _handlePredictiveOrbital(SimulationState state);
+  
+  // Dynamic framing: Real-time dramatic targeting
   void _handleDynamicFraming(SimulationState state);
-  // ... other techniques
+  
+  // Smooth camera transitions with scenario-specific speeds
+  void _updateCameraForBodies(List<Body> bodies, CameraState camera);
 }
 ```
 
-### Data Models
+#### Key Features
 
-#### OrbitalEvent
+**Predictive Orbital Implementation**:
+- Predetermined tour phases for educational scenarios
+- Orbital prediction engine for unknown scenarios
+- Smooth transitions with educational pacing
+- Phase-based camera positioning
+
+**Dynamic Framing Implementation**:
+- Dramatic interaction scoring with exponential distance weighting
+- Emergency transition interruption for highly dramatic moments
+- Real-time framing validation to keep action in view
+- Ultra-aggressive camera parameters for maximum drama
+
+### Configuration
+
+#### Scenario-Specific Parameters
 ```dart
-class OrbitalEvent {
-  final OrbitalEventType type;          // closeApproach, periapsis, apoapsis
-  final DateTime timeToEvent;           // When event will occur
-  final Vector3 eventPosition;          // Where event will happen
-  final List<String> involvedBodies;    // Which bodies are involved
-  final double significance;            // Importance score (0.0-1.0)
+class ScenarioCameraParameters {
+  final double safetyMargin;      // Distance multiplier for framing
+  final double minDistance;       // Closest camera position
+  final double maxDistance;       // Furthest camera position
+  final int targetLockFrames;     // How long to hold dramatic shots
+  final double orbitSpeed;        // Camera movement speed
 }
 ```
 
-#### CameraMovement
-```dart
+**Random Scenario (Dynamic Framing)**:
+- `safetyMargin: 1.3` - Dramatic but safe framing
+- `minDistance: 1.5` - Ultra-close shots
+- `maxDistance: 35.0` - Tight maximum framing
+- `targetLockFrames: 360` - 6 seconds for intense action
+
+**Educational Scenarios (Predictive Orbital)**:
+- Higher safety margins for stable viewing
+- Longer lock frames for educational pacing
+- Smoother transition speeds
+
+---
+
+## Usage Guidelines
+
+### When to Use Each Technique
+
+**Manual Control**:
+- Traditional user interaction
+- Custom camera work
+- When AI techniques don't suit the scenario
+
+**Predictive Orbital**:
+- Educational content creation
+- Known orbital scenarios (solar system, binary stars)
+- Smooth, cinematic presentations
+- Tours and guided experiences
+
+**Dynamic Framing**:
+- Chaotic scenarios (random, three-body)
+- Action-focused viewing
+- Collision and ejection events
+- Maximum drama and engagement
+
+### Performance Considerations
+
+1. **Predictive Orbital**: Low performance impact, predetermined paths
+2. **Dynamic Framing**: Moderate impact due to real-time calculations
+3. **Manual**: Minimal performance impact
+
+### Accessibility
+
+All techniques support:
+- Smooth motion for motion sensitivity
+- Configurable transition speeds
+- Manual override capability
+- Educational timing options
+
+---
+
+## Future Development
+
+The simplified architecture provides a solid foundation for:
+- Enhanced tour creation tools
+- More sophisticated dramatic targeting
+- User-customizable camera behaviors
+- Integration with educational content systems
 class CameraMovement {
   final Vector3 targetPosition;         // Where camera should move
   final Vector3 targetLookAt;          // What camera should look at
@@ -286,9 +287,14 @@ All cinematic camera techniques can be configured through the app settings:
 DropdownButton<CinematicCameraTechnique>(
   value: currentTechnique,
   items: CinematicCameraTechnique.values.map((technique) =>
+```dart
+// Example of technique selection in UI
+DropdownButton<CinematicCameraTechnique>(
+  value: currentTechnique,
+  items: CinematicCameraTechnique.values.map((technique) =>
     DropdownMenuItem(
       value: technique,
-      child: Text(technique.displayName(context)),
+      child: Text(technique.displayName),
     )
   ).toList(),
   onChanged: (technique) => uiState.setCinematicCameraTechnique(technique),
@@ -297,79 +303,10 @@ DropdownButton<CinematicCameraTechnique>(
 
 ### Advanced Configuration
 For developers and advanced users, technique parameters can be modified in:
-- `lib/services/cinematic_camera_service.dart`
-- `lib/models/camera_configuration.dart`
-- `lib/constants/camera_constants.dart`
+- `lib/services/cinematic_camera_controller.dart`
+- `lib/enums/cinematic_camera_technique.dart`
 
 ---
 
-## Usage Guidelines
-
-### When to Use Each Technique
-
-#### Educational Context
-- **Manual**: Demonstrations requiring specific angles
-- **Dynamic Framing**: Overview of multi-body systems
-- **Contextual Shots**: Automatic educational presentations
-
-#### Entertainment/Visualization
-- **Predictive Orbital**: Dramatic close encounters
-- **Physics-Aware**: Immersive gravitational experience
-- **Emotional Pacing**: Storytelling and engagement
-
-#### Research/Analysis
-- **Manual**: Precise scientific observation
-- **Dynamic Framing**: Comprehensive system monitoring
-- **Predictive Orbital**: Event-focused analysis
-
-### Performance Considerations
-
-#### Computational Cost (Low to High)
-1. **Manual**: No AI processing
-2. **Dynamic Framing**: Real-time bounding calculations
-3. **Contextual Shots**: State analysis overhead
-4. **Physics-Aware**: Continuous force calculations
-5. **Emotional Pacing**: Complex drama scoring
-6. **Predictive Orbital**: Future simulation overhead
-
-#### Recommended Settings by Device
-- **High-end devices**: Any technique, maximum look-ahead times
-- **Mid-range devices**: Avoid predictive orbital with long look-ahead
-- **Lower-end devices**: Manual or dynamic framing recommended
-
-### Best Practices
-
-1. **Start Simple**: Begin with Manual or Dynamic Framing
-2. **Match Content**: Choose technique appropriate for scenario
-3. **Consider Audience**: Educational vs entertainment contexts
-4. **Monitor Performance**: Watch for frame rate impacts
-5. **Experiment**: Try different techniques for same scenario
-
----
-
-## Future Enhancements
-
-### Planned Features
-- **Machine Learning Integration**: Learn user preferences for camera positioning
-- **Custom Technique Creation**: User-defined camera behavior patterns
-- **Multi-Camera Views**: Simultaneous views from different techniques
-- **Replay System**: Record and replay optimal camera movements
-- **Export Capabilities**: Export camera paths for external video creation
-
-### Community Contributions
-We welcome contributions for new camera techniques! See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines on implementing new cinematic algorithms.
-
----
-
-## Technical Support
-
-For questions about cinematic camera techniques:
-- Review this documentation
-- Check [GitHub Issues](https://github.com/your-repo/issues) for known problems
-- Submit new issues with detailed descriptions and device information
-- Join our community discussions for tips and best practices
-
----
-
-*Last updated: 2024*
+*Last updated: October 2025*
 *Part of the Graviton Physics Simulator project*
