@@ -36,6 +36,7 @@ void main() {
         stars: stars,
         showTrails: true,
         useWarmTrails: false,
+        useRealisticColors: false,
         showOrbitalPaths: true,
         showHabitableZones: false,
         showHabitabilityIndicators: false,
@@ -65,6 +66,7 @@ void main() {
           stars: stars,
           showTrails: false,
           useWarmTrails: true,
+          useRealisticColors: false,
           showOrbitalPaths: true,
           showHabitableZones: true,
           showHabitabilityIndicators: true,
@@ -112,6 +114,7 @@ void main() {
           stars: stars,
           showTrails: true,
           useWarmTrails: false,
+          useRealisticColors: false,
           showOrbitalPaths: false,
           cameraDistance: 300.0,
         );
@@ -162,6 +165,7 @@ void main() {
           stars: [],
           showTrails: true,
           useWarmTrails: false,
+          useRealisticColors: false,
           showOrbitalPaths: false,
           cameraDistance: 300.0,
         );
@@ -198,6 +202,7 @@ void main() {
           stars: stars,
           showTrails: true,
           useWarmTrails: false,
+          useRealisticColors: false,
           showOrbitalPaths: false,
           cameraDistance: 300.0,
         );

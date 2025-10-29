@@ -396,6 +396,18 @@ abstract class AppLocalizations {
   /// **'Trail Color'**
   String get trailColorLabel;
 
+  /// Label for realistic colors toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Realistic Colors'**
+  String get realisticColors;
+
+  /// Description for realistic colors toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Use scientifically accurate colors based on temperature and stellar classification'**
+  String get realisticColorsDescription;
+
   /// Label for close button
   ///
   /// In en, this message translates to:

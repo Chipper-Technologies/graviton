@@ -128,6 +128,10 @@ class SimulationConstants {
   static const double giantStarLuminosityMax = 10.0;
 
   // Temperature calculation constants
+  // Kelvin to Celsius conversion offset - the freezing point of water
+  // 0°C = 273.15K, used for temperature conversions and stellar physics
+  static const double kelvinToCelsiusOffset = 273.15;
+
   // Base temperature representing cosmic microwave background radiation
   // This is the minimum temperature any object can have in deep space
   static const double cosmicMicrowaveBackgroundTemperature = 2.7; // Kelvin

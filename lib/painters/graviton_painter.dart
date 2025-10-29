@@ -28,6 +28,7 @@ class GravitonPainter extends CustomPainter {
   final List<StarData> stars;
   final bool showTrails;
   final bool useWarmTrails;
+  final bool useRealisticColors;
   final bool showOrbitalPaths;
   final bool dualOrbitalPaths;
   final bool showHabitableZones;
@@ -44,6 +45,7 @@ class GravitonPainter extends CustomPainter {
     required this.stars,
     required this.showTrails,
     required this.useWarmTrails,
+    this.useRealisticColors = false,
     this.showOrbitalPaths = true,
     this.dualOrbitalPaths = false,
     this.showHabitableZones = false,
@@ -71,7 +73,15 @@ class GravitonPainter extends CustomPainter {
     EffectsPainter.drawMergeFlashes(canvas, size, vp, sim);
 
     // Draw trails
-    TrailPainter.drawTrails(canvas, size, vp, sim, showTrails, useWarmTrails);
+    TrailPainter.drawTrails(
+      canvas,
+      size,
+      vp,
+      sim,
+      showTrails,
+      useWarmTrails,
+      useRealisticColors,
+    );
 
     // Draw orbital paths (predictive paths showing where bodies will go)
     OrbitalPathPainter.drawOrbitalPaths(
@@ -208,6 +218,7 @@ class GravitonPainter extends CustomPainter {
           viewMatrix: vp,
           canvasSize: size,
           opacity: opacity,
+          useRealisticColors: useRealisticColors,
         );
       }
 
@@ -990,6 +1001,7 @@ class GravitonPainter extends CustomPainter {
         stars != oldDelegate.stars ||
         showTrails != oldDelegate.showTrails ||
         useWarmTrails != oldDelegate.useWarmTrails ||
+        useRealisticColors != oldDelegate.useRealisticColors ||
         showOrbitalPaths != oldDelegate.showOrbitalPaths ||
         dualOrbitalPaths != oldDelegate.dualOrbitalPaths ||
         showHabitableZones != oldDelegate.showHabitableZones ||

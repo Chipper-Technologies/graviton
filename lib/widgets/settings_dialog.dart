@@ -500,10 +500,29 @@ class SettingsDialog extends StatelessWidget {
                             ),
                           ),
 
-                          // Trail Color Selection
-                          if (appState.ui.showTrails) ...[
+                          // Realistic Colors Toggle
+                          SizedBox(height: AppTypography.spacingLarge),
+                          Divider(color: AppColors.uiDividerGrey),
+                          SwitchListTile(
+                            title: Text(l10n.realisticColors),
+                            subtitle: Text(
+                              l10n.realisticColorsDescription,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacitySemiTransparent,
+                                ),
+                              ),
+                            ),
+                            value: appState.ui.useRealisticColors,
+                            onChanged: (v) =>
+                                appState.ui.toggleRealisticColors(),
+                            secondary: const Icon(Icons.palette),
+                          ),
+
+                          // Trail Color Selection (only show when NOT using realistic colors)
+                          if (appState.ui.showTrails &&
+                              !appState.ui.useRealisticColors) ...[
                             SizedBox(height: AppTypography.spacingLarge),
-                            Divider(color: AppColors.uiDividerGrey),
                             Text(
                               l10n.trailColorLabel,
                               style: Theme.of(context).textTheme.bodyLarge,

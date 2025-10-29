@@ -294,7 +294,11 @@ void main() {
         );
 
         expect(asteroidTemp, equals(200.0));
-        expect(asteroidTemp, lessThan(273.15)); // Below freezing
+        // Below freezing point of water (273.15K) in Kelvin
+        expect(
+          asteroidTemp,
+          lessThan(SimulationConstants.kelvinToCelsiusOffset),
+        );
       });
     });
 
@@ -317,7 +321,9 @@ void main() {
       });
 
       test('Should handle very high temperatures with k suffix', () {
-        final formatted = TemperatureService.formatTemperature(1273.15);
+        final formatted = TemperatureService.formatTemperature(
+          1000 + SimulationConstants.kelvinToCelsiusOffset,
+        );
 
         expect(formatted, contains('k'));
         expect(formatted, contains('1.0k°C'));

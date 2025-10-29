@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/simulation.dart' as physics;
+import 'package:graviton/services/stellar_color_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/utils/painter_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
@@ -18,11 +19,15 @@ class TrailPainter {
     physics.Simulation sim,
     bool showTrails,
     bool useWarmTrails,
+    bool useRealisticColors,
   ) {
     if (!showTrails) return;
 
     for (int i = 0; i < sim.bodies.length && i < sim.trails.length; i++) {
-      final bodyColor = sim.bodies[i].color;
+      // Use realistic colors based on stellar properties when enabled, otherwise use body color
+      final bodyColor = useRealisticColors
+          ? StellarColorService.getRealisticBodyColor(sim.bodies[i])
+          : sim.bodies[i].color;
       final hueTarget = useWarmTrails
           ? AppColors.uiOrangeAccent
           : AppColors.uiLightBlueAccent;
@@ -38,8 +43,10 @@ class TrailPainter {
         final alpha = math.min(a.alpha, b.alpha);
 
         Color color;
-        if (sim.currentScenario == ScenarioType.galaxyFormation) {
+        if (sim.currentScenario == ScenarioType.galaxyFormation &&
+            !useRealisticColors) {
           // For galaxy formation, calculate dynamic color based on trail segment distance from black hole
+          // Only when realistic colors are disabled
           final segmentPos = (a.pos + b.pos) * 0.5; // Midpoint of trail segment
           final distanceFromCenter = segmentPos.length;
 
@@ -66,11 +73,16 @@ class TrailPainter {
 
           color = segmentColor.withValues(alpha: alpha);
         } else {
-          color = Color.lerp(
-            bodyColor,
-            hueTarget,
-            1.0 - alpha,
-          )!.withValues(alpha: alpha);
+          // Use realistic colors when enabled, otherwise mix with warm/cool hue target
+          if (useRealisticColors) {
+            color = bodyColor.withValues(alpha: alpha);
+          } else {
+            color = Color.lerp(
+              bodyColor,
+              hueTarget,
+              1.0 - alpha,
+            )!.withValues(alpha: alpha);
+          }
         }
 
         final p = Paint()

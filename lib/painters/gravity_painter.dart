@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/simulation.dart' as physics;
@@ -46,10 +47,14 @@ class GravityPainter {
           0.0,
           1.0,
         );
-        final alpha = (normalizedStrength * 0.4 * (ring / ringCount)).clamp(
-          0.02,
-          0.3,
-        );
+        final alpha =
+            (normalizedStrength *
+                    RenderingConstants.gravityFieldAlphaMultiplier *
+                    (ring / ringCount))
+                .clamp(
+                  RenderingConstants.gravityFieldMinAlpha,
+                  RenderingConstants.gravityFieldMaxAlpha,
+                );
 
         // Color based on object type and field strength
         Color wellColor;

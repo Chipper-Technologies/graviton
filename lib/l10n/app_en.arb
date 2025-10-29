@@ -240,6 +240,16 @@
     "description": "Label for trail color selection"
   },
   
+  "realisticColors": "Realistic Colors",
+  "@realisticColors": {
+    "description": "Label for realistic colors toggle"
+  },
+  
+  "realisticColorsDescription": "Use scientifically accurate colors based on temperature and stellar classification",
+  "@realisticColorsDescription": {
+    "description": "Description for realistic colors toggle"
+  },
+  
   "closeButton": "Close",
   "@closeButton": {
     "description": "Label for close button"

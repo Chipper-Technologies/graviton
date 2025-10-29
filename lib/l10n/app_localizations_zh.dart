@@ -153,6 +153,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get trailColorLabel => '轨迹颜色';
 
   @override
+  String get realisticColors => '真实色彩';
+
+  @override
+  String get realisticColorsDescription => '基于温度和恒星分类使用科学准确的颜色';
+
+  @override
   String get closeButton => '关闭';
 
   @override

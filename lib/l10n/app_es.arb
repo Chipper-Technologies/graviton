@@ -34,6 +34,8 @@
   "dualOrbitalPaths": "Trayectorias Orbitales Duales",
   "dualOrbitalPathsDescription": "Mostrar tanto trayectorias orbitales circulares ideales como elípticas reales",
   "trailColorLabel": "Color de Rastro",
+  "realisticColors": "Colores Realistas",
+  "realisticColorsDescription": "Usar colores científicamente precisos basados en temperatura y clasificación estelar",
   "closeButton": "Cerrar",
   "simulationStats": "Estadísticas de Simulación",
   "stepsLabel": "Pasos",

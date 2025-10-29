@@ -159,6 +159,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get trailColorLabel => 'Couleur des Traînées';
 
   @override
+  String get realisticColors => 'Couleurs Réalistes';
+
+  @override
+  String get realisticColorsDescription =>
+      'Utiliser des couleurs scientifiquement précises basées sur la température et la classification stellaire';
+
+  @override
   String get closeButton => 'Fermer';
 
   @override

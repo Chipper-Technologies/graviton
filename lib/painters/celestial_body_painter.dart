@@ -5,6 +5,7 @@ import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/sunspot_data.dart';
+import 'package:graviton/services/stellar_color_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/painter_utils.dart';
@@ -45,6 +46,7 @@ class CelestialBodyPainter {
     vm.Matrix4? viewMatrix,
     Size? canvasSize,
     double opacity = 1.0,
+    bool useRealisticColors = false,
   }) {
     // Special rendering for celestial bodies
     if (body.name.contains('Black Hole') ||
@@ -55,7 +57,24 @@ class CelestialBodyPainter {
         (body.bodyType == BodyType.star &&
             (body.name == 'Central Star' ||
                 body.name.contains('Central Star')))) {
-      drawSun(canvas, center, radius);
+      drawSun(
+        canvas,
+        center,
+        radius,
+        body,
+        useRealisticColors: useRealisticColors,
+      );
+    } else if (body.bodyType == BodyType.star &&
+        useRealisticColors &&
+        _shouldHaveSunspots(body)) {
+      // Other stars that should have magnetic activity (sunspots) - ONLY in realistic mode
+      drawSun(
+        canvas,
+        center,
+        radius,
+        body,
+        useRealisticColors: useRealisticColors,
+      );
     } else if (body.name == 'Mercury') {
       drawMercury(canvas, center, radius);
     } else if (body.name == 'Venus') {
@@ -88,10 +107,15 @@ class CelestialBodyPainter {
       drawNeptune(canvas, center, radius);
     } else {
       // Normal body rendering
+      // Use realistic colors based on stellar properties when enabled
+      final bodyColor = useRealisticColors
+          ? StellarColorService.getRealisticBodyColor(body)
+          : body.color;
+
       final glow = RadialGradient(
         colors: [
-          body.color.withValues(alpha: RenderingConstants.bodyAlpha),
-          body.color.withValues(alpha: RenderingConstants.bodyGlowAlpha),
+          bodyColor.withValues(alpha: RenderingConstants.bodyAlpha),
+          bodyColor.withValues(alpha: RenderingConstants.bodyGlowAlpha),
         ],
       );
 
@@ -105,7 +129,7 @@ class CelestialBodyPainter {
         Paint()..shader = glow.createShader(rect),
       );
 
-      canvas.drawCircle(center, radius, Paint()..color = body.color);
+      canvas.drawCircle(center, radius, Paint()..color = bodyColor);
     }
   }
 
@@ -117,7 +141,10 @@ class CelestialBodyPainter {
     double opacity = 1.0,
   }) {
     // Enhanced accretion disk for supermassive black hole - clean glow
-    final accretionDiskRadius = radius * 5.0; // Large disk for presence
+    final accretionDiskRadius =
+        radius *
+        RenderingConstants
+            .blackHoleAccretionDiskMultiplier; // Large disk for presence
 
     // Single clean glow - no color mixing issues (with opacity adjustment)
     final cleanGlow = RadialGradient(
@@ -155,10 +182,14 @@ class CelestialBodyPainter {
 
     for (int i = 0; i < 5; i++) {
       final ringRadius = radius * (1.3 + i * 0.4);
-      final alpha = ((0.6 - i * 0.1) * opacity).clamp(
-        0.0,
-        1.0,
-      ); // Clean intensity progression with opacity
+      final alpha =
+          ((RenderingConstants.blackHoleRingBaseAlpha -
+                      i * RenderingConstants.blackHoleRingAlphaDecrement) *
+                  opacity)
+              .clamp(
+                AppTypography.opacityTransparent,
+                AppTypography.opacityFull,
+              ); // Clean intensity progression with opacity
 
       // Clean color progression - no green mixing
       Color ringColor;
@@ -199,7 +230,7 @@ class CelestialBodyPainter {
     // Schwarzschild radius indicator - menacing edge of no return (with opacity)
     final schwarzschildPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0
+      ..strokeWidth = RenderingConstants.blackHoleEventHorizonStrokeWidth
       ..color = AppColors.starGlowWhite.withValues(
         alpha: AppTypography.opacityMediumHigh * opacity,
       );
@@ -211,7 +242,7 @@ class CelestialBodyPainter {
       final distortionRadius = radius * (1.0 + i * 0.15);
       final distortionPaint = Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 0.5
+        ..strokeWidth = RenderingConstants.blackHoleDistortionStrokeWidth
         ..color = AppColors.starGlowWhite.withValues(
           alpha: (AppTypography.opacityVeryFaint / i) * opacity,
         );
@@ -220,20 +251,42 @@ class CelestialBodyPainter {
     }
   }
 
-  /// Draw the Sun with solar flares and corona
-  static void drawSun(Canvas canvas, Offset center, double radius) {
+  /// Draw the Sun with solar flares and corona, adapted for realistic stellar colors
+  static void drawSun(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    Body body, {
+    bool useRealisticColors = false,
+  }) {
     // Get current time once for all solar animations
     final currentTimeSeconds = DateTime.now().millisecondsSinceEpoch / 1000.0;
 
-    // Corona - outer solar atmosphere
+    // Determine stellar surface color based on realistic colors setting
+    final stellarColor = useRealisticColors
+        ? StellarColorService.getRealisticBodyColor(body)
+        : (body.name == 'Sun'
+              ? AppColors.coronaGold
+              : body.color); // Use warmer gold instead of pure yellow
+
+    // Calculate stellar temperature for color adaptation
+    final stellarTemperature =
+        body.temperature >
+            1000.0 // Has a meaningful stellar temperature (threshold: 1000K)
+        ? body.temperature
+        : _calculateStellarTemperature(
+            body.mass,
+          ); // Corona - outer solar atmosphere (adapt color to stellar type)
     final coronaGlow = RadialGradient(
       colors: [
-        AppColors.accretionDiskGold.withValues(
+        _getCoronaColor(stellarTemperature, useRealisticColors).withValues(
           alpha: AppTypography.opacityVeryHigh,
-        ), // Bright gold center
-        AppColors.accretionDiskOrange.withValues(
-          alpha: AppTypography.opacityMediumHigh,
-        ), // Orange middle
+        ), // Bright center adapted to star type
+        _getCoronaColor(
+          stellarTemperature,
+          useRealisticColors,
+          isOuter: true,
+        ).withValues(alpha: AppTypography.opacityMediumHigh), // Outer color
         AppColors.accretionDiskRed.withValues(
           alpha: AppTypography.opacityFaint,
         ), // Red outer
@@ -248,12 +301,18 @@ class CelestialBodyPainter {
       Paint()..shader = coronaGlow.createShader(coronaRect),
     );
 
-    // Solar surface with slight texture
+    // Solar surface with stellar color adaptation
     final surfaceGlow = RadialGradient(
       colors: [
-        AppColors.coronaYellow, // Bright yellow center
-        AppColors.coronaGold, // Gold
-        AppColors.coronaOrange, // Orange edge
+        stellarColor, // Center color based on stellar type
+        stellarColor.withValues(alpha: 0.8), // Slightly transparent middle
+        useRealisticColors
+            ? _getSurfaceEdgeColor(
+                stellarTemperature,
+                stellarColor,
+              ) // Realistic: temperature-adapted edge
+            : AppColors
+                  .coronaOrange, // Non-realistic: simple orange edge like before
       ],
     );
 
@@ -264,15 +323,28 @@ class CelestialBodyPainter {
       Paint()..shader = surfaceGlow.createShader(surfaceRect),
     );
 
-    // Add random sunspots (dark regions on solar surface)
-    _drawSunspots(canvas, center, radius);
+    // Add random sunspots (dark regions on solar surface) - adapted to stellar temperature
+    _drawSunspots(canvas, center, radius, stellarTemperature, stellarColor);
 
-    // Add dynamic solar flares (bright eruptions from surface)
-    _drawSolarFlares(canvas, center, radius, currentTimeSeconds);
+    // Add dynamic solar flares (bright eruptions from surface) - adapted to stellar type
+    _drawSolarFlares(
+      canvas,
+      center,
+      radius,
+      currentTimeSeconds,
+      stellarTemperature,
+      stellarColor,
+    );
   }
 
-  /// Draw realistic sunspots on the sun's surface
-  static void _drawSunspots(Canvas canvas, Offset center, double radius) {
+  /// Draw realistic sunspots on the sun's surface - adapted to stellar temperature
+  static void _drawSunspots(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    double stellarTemperature,
+    Color stellarColor,
+  ) {
     // Use a fixed seed for consistent sunspot placement regardless of camera position
     // Use a seed based on the current day of year for short-term stable but varying sunspot positions
     final now = DateTime.now().toUtc();
@@ -284,7 +356,13 @@ class CelestialBodyPainter {
 
     // Generate sunspots if not cached for this day
     if (cachedSunspots == null) {
-      cachedSunspots = _generateSunspotsForDay(dayOfYear, center, radius);
+      cachedSunspots = _generateSunspotsForDay(
+        dayOfYear,
+        center,
+        radius,
+        stellarTemperature,
+        stellarColor,
+      );
       _sunspotCache.clear(); // Clear old cache to prevent memory growth
       _sunspotCache[cacheKey] = cachedSunspots;
     }
@@ -302,7 +380,8 @@ class CelestialBodyPainter {
 
       // Check if adjusted spot is still within sun's visible area
       final distanceFromCenter = (adjustedCenter - center).distance;
-      if (distanceFromCenter + adjustedRadius > radius * 0.9) {
+      if (distanceFromCenter + adjustedRadius >
+          radius * RenderingConstants.sunspotMaxDistanceMultiplier) {
         continue; // Skip spots that would extend too far outside
       }
 
@@ -321,7 +400,8 @@ class CelestialBodyPainter {
       );
 
       // Draw umbra with adjusted rect
-      final adjustedUmbraRadius = adjustedRadius * 0.4;
+      final adjustedUmbraRadius =
+          adjustedRadius * RenderingConstants.sunspotUmbraMultiplier;
       final adjustedUmbraRect = Rect.fromCircle(
         center: adjustedCenter,
         radius: adjustedUmbraRadius,
@@ -354,6 +434,8 @@ class CelestialBodyPainter {
     int dayOfYear,
     Offset center,
     double radius,
+    double stellarTemperature,
+    Color stellarColor,
   ) {
     final random = math.Random(dayOfYear);
     final sunspots = <SunspotData>[];
@@ -369,7 +451,8 @@ class CelestialBodyPainter {
       final distance =
           random.nextDouble() *
           _baseSunRadius *
-          0.7; // Keep within 70% of base radius
+          RenderingConstants
+              .sunspotPositionLimitMultiplier; // Keep within 70% of base radius
       final spotCenter = Offset(
         _baseSunCenter.dx + distance * math.cos(angle),
         _baseSunCenter.dy + distance * math.sin(angle),
@@ -378,38 +461,68 @@ class CelestialBodyPainter {
       // Random size for each sunspot (smaller ones more common)
       final sizeRandom = random.nextDouble();
       double spotRadius;
-      if (sizeRandom < 0.6) {
+      if (sizeRandom < RenderingConstants.sunspotSizeProbabilityThreshold) {
         // 60% chance of small sunspot
         spotRadius =
             _baseSunRadius *
-            (0.03 + random.nextDouble() * 0.05); // 3-8% of sun radius
-      } else if (sizeRandom < 0.9) {
+            (RenderingConstants.sunspotSizePercentMin +
+                random.nextDouble() *
+                    RenderingConstants
+                        .sunspotSizeRangeSmall); // 3-8% of sun radius
+      } else if (sizeRandom < RenderingConstants.sunspotSizeProbabilityMedium) {
         // 30% chance of medium sunspot
         spotRadius =
             _baseSunRadius *
-            (0.08 + random.nextDouble() * 0.07); // 8-15% of sun radius
+            (RenderingConstants.sunspotSizeMediumMin +
+                random.nextDouble() *
+                    RenderingConstants
+                        .sunspotSizeRangeMedium); // 8-15% of sun radius
       } else {
         // 10% chance of large sunspot
         spotRadius =
             _baseSunRadius *
-            (0.12 + random.nextDouble() * 0.08); // 12-20% of sun radius
+            (RenderingConstants.sunspotSizeLargeMin +
+                random.nextDouble() *
+                    RenderingConstants
+                        .sunspotSizeRangeLarge); // 12-20% of sun radius
       }
 
-      // Create gradient paint objects (these are lightweight to cache)
+      // Create gradient paint objects with temperature-adaptive colors
+      final penumbraColor = _getSunspotPenumbraColor(
+        stellarTemperature,
+        stellarColor,
+      );
+      final umbraColor = _getSunspotUmbraColor(
+        stellarTemperature,
+        stellarColor,
+      );
+
       final penumbraGradient = RadialGradient(
         colors: [
-          AppColors.coronaOrange.withValues(alpha: 0.3), // Lighter orange
-          AppColors.coronaGold.withValues(alpha: 0.5), // Medium gold
-          AppColors.coronaOrange.withValues(alpha: 0.2), // Fade to surface
+          penumbraColor.withValues(
+            alpha: AppTypography.opacityMedium,
+          ), // Lighter penumbra adapted to star type
+          penumbraColor.withValues(
+            alpha: AppTypography.opacityHigh,
+          ), // Medium penumbra
+          penumbraColor.withValues(
+            alpha: AppTypography.opacityFaint,
+          ), // Fade to surface
         ],
         stops: const [0.0, 0.6, 1.0],
       );
 
       final umbraGradient = RadialGradient(
         colors: [
-          AppColors.uiBlack.withValues(alpha: 0.8), // Very dark center
-          AppColors.coronaOrange.withValues(alpha: 0.6), // Dark orange
-          AppColors.coronaOrange.withValues(alpha: 0.4), // Fade to penumbra
+          umbraColor.withValues(
+            alpha: AppTypography.opacityVeryHigh,
+          ), // Very dark center adapted to star type
+          penumbraColor.withValues(
+            alpha: AppTypography.opacityMediumHigh,
+          ), // Dark penumbra color
+          penumbraColor.withValues(
+            alpha: AppTypography.opacityMedium,
+          ), // Fade to penumbra
         ],
         stops: const [0.0, 0.7, 1.0],
       );
@@ -432,12 +545,14 @@ class CelestialBodyPainter {
     return sunspots;
   }
 
-  /// Draw dynamic solar flares erupting from the sun's surface
+  /// Draw dynamic solar flares erupting from the sun's surface - adapted to stellar type
   static void _drawSolarFlares(
     Canvas canvas,
     Offset center,
     double radius,
     double currentTimeSeconds,
+    double stellarTemperature,
+    Color stellarColor,
   ) {
     // Use multiple time scales for different flare phases
     final currentTime =
@@ -609,10 +724,14 @@ class CelestialBodyPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          AppColors.coronaYellow.withValues(alpha: animatedIntensity * 0.95),
-          AppColors.coronaOrange.withValues(alpha: animatedIntensity * 0.75),
+          AppColors.coronaYellow.withValues(
+            alpha: animatedIntensity * RenderingConstants.sunFlareAlphaCenter,
+          ),
+          AppColors.coronaOrange.withValues(
+            alpha: animatedIntensity * RenderingConstants.sunFlareAlphaMid,
+          ),
           AppColors.accretionDiskRed.withValues(
-            alpha: animatedIntensity * 0.45,
+            alpha: animatedIntensity * RenderingConstants.sunFlareAlphaEdge,
           ),
           AppColors.transparentColor,
         ],
@@ -640,7 +759,7 @@ class CelestialBodyPainter {
         ..strokeWidth = flareWidth * 0.3
         ..strokeCap = StrokeCap.round
         ..color = AppColors.starGlowWhite.withValues(
-          alpha: animatedIntensity * 0.9,
+          alpha: animatedIntensity * RenderingConstants.sunFlareBaseAlpha,
         );
 
       canvas.drawPath(path, corePaint);
@@ -651,7 +770,7 @@ class CelestialBodyPainter {
         ..strokeWidth = flareWidth * 1.5
         ..strokeCap = StrokeCap.round
         ..color = AppColors.coronaYellow.withValues(
-          alpha: animatedIntensity * 0.15,
+          alpha: animatedIntensity * RenderingConstants.sunFlareRingAlpha,
         );
 
       canvas.drawPath(path, glowPaint);
@@ -1339,8 +1458,10 @@ class CelestialBodyPainter {
           // Only draw texture when ring is not too close to camera
           final texturePaint = Paint()
             ..style = PaintingStyle.stroke
-            ..strokeWidth = 0.5
-            ..color = color.withValues(alpha: opacity * 0.3);
+            ..strokeWidth = RenderingConstants.ringTextureStrokeWidth
+            ..color = color.withValues(
+              alpha: opacity * RenderingConstants.ringTextureAlpha,
+            );
 
           // Draw some radial texture lines for ring particle effect
           for (int i = 0; i < numPoints; i += 8) {
@@ -1404,8 +1525,10 @@ class CelestialBodyPainter {
         // Only draw texture when Saturn is not too large on screen
         final texturePaint = Paint()
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 0.3
-          ..color = color.withValues(alpha: opacity * 0.2);
+          ..strokeWidth = RenderingConstants.ringTextureStrokeWidth
+          ..color = color.withValues(
+            alpha: opacity * RenderingConstants.ringGlowAlpha,
+          );
 
         const int textureLines = 32;
         for (int i = 0; i < textureLines; i++) {
@@ -1530,6 +1653,139 @@ class CelestialBodyPainter {
         ),
         ringPaint,
       );
+    }
+  }
+
+  /// Helper method to calculate stellar temperature from mass
+  static double _calculateStellarTemperature(double mass) {
+    // Sun has mass ~10 units in our simulation, temperature ~5778K
+    const sunMass = 10.0;
+    const sunTemperature = 5778.0;
+
+    // Mass-temperature relationship for main sequence stars
+    final massRatio = mass / sunMass;
+
+    if (massRatio > 1.5) {
+      // High mass stars: stronger dependence
+      return sunTemperature * math.pow(massRatio, 0.8);
+    } else {
+      // Lower mass stars: weaker dependence
+      return sunTemperature * math.pow(massRatio, 0.5);
+    }
+  }
+
+  /// Helper method to determine if a star should have sunspots based on temperature
+  static bool _shouldHaveSunspots(Body body) {
+    if (body.bodyType != BodyType.star) return false;
+
+    // Stars with magnetic activity (roughly F, G, K, M types)
+    // Very hot stars (O, B, A types > 7500K) have different magnetic field structures
+    final temperature =
+        body.temperature >
+            1000.0 // Has a meaningful stellar temperature (threshold: 1000K)
+        ? body.temperature
+        : _calculateStellarTemperature(body.mass);
+
+    // Stars between 2000K and 7500K typically have convective zones that generate magnetic activity.
+    // This temperature range corresponds to spectral types F, G, K, and M, which are known to exhibit sunspots due to their convective outer layers.
+    return temperature >= 2000.0 && temperature <= 7500.0;
+  }
+
+  /// Get corona color based on stellar temperature
+  static Color _getCoronaColor(
+    double temperature,
+    bool useRealisticColors, {
+    bool isOuter = false,
+  }) {
+    if (!useRealisticColors) {
+      return isOuter
+          ? AppColors.accretionDiskOrange
+          : AppColors.accretionDiskGold;
+    }
+
+    // Adapt corona color to stellar temperature
+    if (temperature > 6000) {
+      // Hot stars (F, A, B, O types) - bluish corona
+      return isOuter
+          ? AppColors.stellarFType.withValues(alpha: 0.8)
+          : AppColors.stellarAType;
+    } else if (temperature > 5000) {
+      // Sun-like stars (G type) - yellowish corona
+      return isOuter
+          ? AppColors.stellarGType.withValues(alpha: 0.8)
+          : AppColors.coronaGold;
+    } else if (temperature > 3500) {
+      // Cool stars (K type) - orange corona
+      return isOuter
+          ? AppColors.stellarKType.withValues(alpha: 0.8)
+          : AppColors.accretionDiskOrange;
+    } else {
+      // Very cool stars (M type) - reddish corona
+      return isOuter
+          ? AppColors.stellarMType.withValues(alpha: 0.8)
+          : AppColors.accretionDiskRed;
+    }
+  }
+
+  /// Get surface edge color based on stellar temperature
+  static Color _getSurfaceEdgeColor(double temperature, Color baseColor) {
+    // Create a slightly darker/cooler edge version of the base stellar color
+    final hsv = HSVColor.fromColor(baseColor);
+    final newSaturation = (hsv.saturation * 1.2).clamp(0.0, 1.0);
+    final newValue = (hsv.value * 0.7).clamp(0.0, 1.0);
+    return hsv.withValue(newValue).withSaturation(newSaturation).toColor();
+  }
+
+  /// Get sunspot penumbra color based on stellar temperature and surface color
+  static Color _getSunspotPenumbraColor(
+    double temperature,
+    Color stellarColor,
+  ) {
+    // Sunspot penumbra should be a darker, cooler version of the stellar surface
+    final hsv = HSVColor.fromColor(stellarColor);
+
+    if (temperature > 6000) {
+      // Hot stars (F, A, B, O types) - bluish penumbra
+      final newValue = (hsv.value * 0.6).clamp(0.0, 1.0);
+      final newSaturation = (hsv.saturation * 0.8).clamp(0.0, 1.0);
+      return hsv.withValue(newValue).withSaturation(newSaturation).toColor();
+    } else if (temperature > 5000) {
+      // Sun-like stars (G type) - golden penumbra
+      return AppColors.coronaGold.withValues(alpha: 0.8);
+    } else if (temperature > 3500) {
+      // Cool stars (K type) - orange penumbra
+      return AppColors.coronaOrange.withValues(alpha: 0.8);
+    } else {
+      // Very cool stars (M type) - reddish penumbra
+      final newValue = (hsv.value * 0.5).clamp(0.0, 1.0);
+      final newHue = (hsv.hue + 10) % 360;
+      return hsv.withValue(newValue).withHue(newHue).toColor();
+    }
+  }
+
+  /// Get sunspot umbra color based on stellar temperature and surface color
+  static Color _getSunspotUmbraColor(double temperature, Color stellarColor) {
+    // Umbra should be much darker than penumbra but still reflect the star's basic character
+    final hsv = HSVColor.fromColor(stellarColor);
+
+    if (temperature > 6000) {
+      // Hot stars - very dark blue-black umbra
+      final newValue = (hsv.value * 0.15).clamp(0.0, 1.0);
+      final newSaturation = (hsv.saturation * 0.5).clamp(0.0, 1.0);
+      return hsv.withValue(newValue).withSaturation(newSaturation).toColor();
+    } else if (temperature > 5000) {
+      // Sun-like stars - black with slight golden tint
+      return AppColors.uiBlack.withValues(alpha: 0.95);
+    } else if (temperature > 3500) {
+      // Cool stars - dark reddish-brown umbra
+      final newValue = (hsv.value * 0.2).clamp(0.0, 1.0);
+      final newHue = (hsv.hue + 15) % 360;
+      return hsv.withValue(newValue).withHue(newHue).toColor();
+    } else {
+      // Very cool stars - very dark red umbra
+      final newValue = (hsv.value * 0.1).clamp(0.0, 1.0);
+      final newHue = (hsv.hue + 20) % 360;
+      return hsv.withValue(newValue).withHue(newHue).toColor();
     }
   }
 }

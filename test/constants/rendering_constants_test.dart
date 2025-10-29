@@ -231,5 +231,149 @@ void main() {
         ); // Not too large
       });
     });
+
+    group('Black Hole Rendering Constants', () {
+      test('should have realistic black hole constants', () {
+        // Accretion disk multiplier should be reasonable
+        expect(
+          RenderingConstants.blackHoleAccretionDiskMultiplier,
+          isA<double>(),
+        );
+        expect(
+          RenderingConstants.blackHoleAccretionDiskMultiplier,
+          greaterThan(1.0),
+        );
+        expect(
+          RenderingConstants.blackHoleAccretionDiskMultiplier,
+          lessThan(10.0),
+        );
+
+        // Ring alpha values should be valid opacity values
+        expect(RenderingConstants.blackHoleRingBaseAlpha, greaterThan(0.0));
+        expect(
+          RenderingConstants.blackHoleRingBaseAlpha,
+          lessThanOrEqualTo(1.0),
+        );
+        expect(
+          RenderingConstants.blackHoleRingAlphaDecrement,
+          greaterThan(0.0),
+        );
+        expect(RenderingConstants.blackHoleRingAlphaDecrement, lessThan(0.5));
+
+        // Stroke widths should be reasonable
+        expect(
+          RenderingConstants.blackHoleEventHorizonStrokeWidth,
+          greaterThan(0.0),
+        );
+        expect(
+          RenderingConstants.blackHoleDistortionStrokeWidth,
+          greaterThan(0.0),
+        );
+        expect(
+          RenderingConstants.blackHoleDistortionStrokeWidth,
+          lessThan(RenderingConstants.blackHoleEventHorizonStrokeWidth),
+        );
+      });
+    });
+
+    group('Solar Feature Constants', () {
+      test('should have realistic solar flare constants', () {
+        // Solar flare alpha values should be valid opacity values
+        expect(RenderingConstants.sunFlareAlphaCenter, greaterThan(0.0));
+        expect(RenderingConstants.sunFlareAlphaCenter, lessThanOrEqualTo(1.0));
+        expect(RenderingConstants.sunFlareAlphaMid, greaterThan(0.0));
+        expect(RenderingConstants.sunFlareAlphaMid, lessThanOrEqualTo(1.0));
+        expect(RenderingConstants.sunFlareAlphaEdge, greaterThan(0.0));
+        expect(RenderingConstants.sunFlareAlphaEdge, lessThanOrEqualTo(1.0));
+
+        // Alpha progression should make sense (center > mid > edge)
+        expect(
+          RenderingConstants.sunFlareAlphaCenter,
+          greaterThan(RenderingConstants.sunFlareAlphaMid),
+        );
+        expect(
+          RenderingConstants.sunFlareAlphaMid,
+          greaterThan(RenderingConstants.sunFlareAlphaEdge),
+        );
+      });
+
+      test('should have realistic sunspot size constants', () {
+        // Size percentages should be reasonable
+        expect(RenderingConstants.sunspotSizePercentMin, greaterThan(0.0));
+        expect(
+          RenderingConstants.sunspotSizePercentMin,
+          lessThan(0.5),
+        ); // Not too large
+        expect(
+          RenderingConstants.sunspotSizePercentMax,
+          greaterThan(RenderingConstants.sunspotSizePercentMin),
+        );
+
+        // Probability thresholds should be valid probabilities
+        expect(
+          RenderingConstants.sunspotSizeProbabilityThreshold,
+          greaterThan(0.0),
+        );
+        expect(
+          RenderingConstants.sunspotSizeProbabilityThreshold,
+          lessThan(1.0),
+        );
+        expect(
+          RenderingConstants.sunspotSizeProbabilityMedium,
+          greaterThan(RenderingConstants.sunspotSizeProbabilityThreshold),
+        );
+        expect(RenderingConstants.sunspotSizeProbabilityMedium, lessThan(1.0));
+
+        // Multipliers should be reasonable
+        expect(RenderingConstants.sunspotUmbraMultiplier, greaterThan(0.0));
+        expect(
+          RenderingConstants.sunspotUmbraMultiplier,
+          lessThan(1.0),
+        ); // Umbra smaller than penumbra
+      });
+    });
+
+    group('Ring System Constants', () {
+      test('should have realistic ring texture constants', () {
+        // Stroke width should be reasonable
+        expect(RenderingConstants.ringTextureStrokeWidth, greaterThan(0.0));
+        expect(RenderingConstants.ringTextureStrokeWidth, lessThan(5.0));
+
+        // Alpha values should be valid opacity values
+        expect(RenderingConstants.ringTextureAlpha, greaterThan(0.0));
+        expect(
+          RenderingConstants.ringTextureAlpha,
+          lessThan(1.0),
+        ); // Should be somewhat transparent
+        expect(RenderingConstants.ringGlowAlpha, greaterThan(0.0));
+        expect(
+          RenderingConstants.ringGlowAlpha,
+          lessThan(RenderingConstants.ringTextureAlpha),
+        ); // Glow should be more transparent
+
+        // Distance and radius thresholds should be reasonable
+        expect(RenderingConstants.ringTextureMinDistance, greaterThan(0.0));
+        expect(RenderingConstants.ringTextureMaxRadius, greaterThan(0.0));
+      });
+    });
+
+    group('Gravity Field Constants', () {
+      test('should have realistic gravity field constants', () {
+        // Alpha multiplier should be reasonable
+        expect(
+          RenderingConstants.gravityFieldAlphaMultiplier,
+          greaterThan(0.0),
+        );
+        expect(RenderingConstants.gravityFieldAlphaMultiplier, lessThan(2.0));
+
+        // Min and max alpha should be valid and properly ordered
+        expect(RenderingConstants.gravityFieldMinAlpha, greaterThan(0.0));
+        expect(
+          RenderingConstants.gravityFieldMaxAlpha,
+          greaterThan(RenderingConstants.gravityFieldMinAlpha),
+        );
+        expect(RenderingConstants.gravityFieldMaxAlpha, lessThan(1.0));
+      });
+    });
   });
 }

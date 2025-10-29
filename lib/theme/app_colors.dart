@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:graviton/constants/simulation_constants.dart';
+
 /// Comprehensive color theme for the Graviton app.
 class AppColors {
   // Private constructor to prevent instantiation
@@ -51,6 +53,22 @@ class AppColors {
   static const Color starCornflowerBlue = Color(0xFF6495ED);
   static const Color starSkyBlue = Color(0xFF87CEEB);
 
+  /// Stellar classification colors (Harvard spectral classification)
+  /// Based on main sequence stellar temperatures and realistic blackbody colors
+  static const Color stellarOType = Color(0xFF9BB0FF); // > 30,000K (blue)
+  static const Color stellarBType = Color(
+    0xFFAABFFF,
+  ); // 10,000-30,000K (blue-white)
+  static const Color stellarAType = Color(0xFFCAD7FF); // 7,500-10,000K (white)
+  static const Color stellarFType = Color(
+    0xFFF8F7FF,
+  ); // 6,000-7,500K (yellow-white)
+  static const Color stellarGType = Color(
+    0xFFFFE4B5,
+  ); // 5,200-6,000K (yellow, Sun-like)
+  static const Color stellarKType = Color(0xFFFFD2A1); // 3,700-5,200K (orange)
+  static const Color stellarMType = Color(0xFFFFAD51); // < 3,700K (red dwarf)
+
   // =============================================================================
   // CELESTIAL BODY COLORS
   // =============================================================================
@@ -64,6 +82,39 @@ class AppColors {
   static const Color planetSaturn = Color(0xFFFFE4B5);
   static const Color planetUranus = Color(0xFF4CC9F0);
   static const Color planetNeptune = Color(0xFF4169E1);
+
+  /// Planetary type colors based on composition and temperature
+  /// Gas giants
+  static const Color gasGiantJupiterLike = Color(
+    0xFFFAD5A5,
+  ); // Tan/beige (very massive)
+  static const Color gasGiantSaturnLike = Color(0xFFFFC649); // Golden (massive)
+  static const Color iceGiantUranusLike = Color(0xFF4FD0E4); // Ice blue (cold)
+  static const Color iceGiantNeptuneLike = Color(0xFF4B70DD); // Deep blue
+
+  /// Terrestrial planets
+  static const Color terrestrialHotVenus = Color(
+    0xFFFFC649,
+  ); // Hot, thick atmosphere
+  static const Color terrestrialEarthLike = Color(
+    0xFF6B93D6,
+  ); // Temperate, water
+  static const Color terrestrialColdMars = Color(0xFFE27D00); // Cold, red
+  static const Color terrestrialRockyMercury = Color(
+    0xFF8C7853,
+  ); // Rocky, no atmosphere
+
+  /// Super-Earths and mini-Neptunes
+  static const Color superEarthHot = Color(0xFFFF6B6B); // Hot super-Earth
+  static const Color superEarthTemperate = Color(
+    0xFF4ECDC4,
+  ); // Temperate super-Earth
+  static const Color superEarthCold = Color(0xFF95A5A6); // Cold super-Earth
+
+  /// Moon colors
+  static const Color moonIcy = Color(0xFFD5DBDB); // Icy moon (very cold)
+  static const Color moonRocky = Color(0xFFBDC3C7); // Rocky moon (cold)
+  static const Color moonWarm = Color(0xFF95A5A6); // Warm moon
 
   /// General celestial body colors for scenarios
   static const Color celestialAmber = Color(0xFFFFD166);
@@ -485,7 +536,8 @@ class AppColors {
 
   /// Get temperature visualization color based on temperature in Kelvin
   static Color getTemperatureColor(double temperatureKelvin) {
-    final celsius = temperatureKelvin - 273.15;
+    final celsius =
+        temperatureKelvin - SimulationConstants.kelvinToCelsiusOffset;
 
     // Color scale from blue (cold) to red (hot)
     if (celsius < -50) return temperatureFrozen;

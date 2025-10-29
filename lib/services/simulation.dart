@@ -16,6 +16,7 @@ import 'package:graviton/models/trail_point.dart';
 import 'package:graviton/services/asteroid_belt_system.dart';
 import 'package:graviton/services/habitable_zone_service.dart';
 import 'package:graviton/services/scenario_service.dart';
+import 'package:graviton/services/stellar_color_service.dart';
 import 'package:graviton/services/temperature_service.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:vibration/vibration.dart';
@@ -31,6 +32,7 @@ class Simulation {
   double _fadeRate = SimulationConstants.trailFadeRate;
   double _vibrationThrottleTime = SimulationConstants.vibrationThrottleTime;
   bool _vibrationEnabled = true;
+  bool _useRealisticColors = false; // Track realistic colors setting
 
   // Public getters for physics parameters
   double get gravitationalConstant => _gravitationalConstant;
@@ -40,6 +42,7 @@ class Simulation {
   double get fadeRate => _fadeRate;
   double get vibrationThrottleTime => _vibrationThrottleTime;
   bool get vibrationEnabled => _vibrationEnabled;
+  bool get useRealisticColors => _useRealisticColors;
 
   List<Body> bodies = [];
   List<List<TrailPoint>> trails = [];
@@ -140,6 +143,13 @@ class Simulation {
   /// Set vibration enabled
   void setVibrationEnabled(bool value) {
     _vibrationEnabled = value;
+  }
+
+  /// Set realistic colors enabled
+  void setUseRealisticColors(bool value) {
+    _useRealisticColors = value;
+    // Apply realistic colors immediately if enabled
+    _applyRealisticColorsIfEnabled();
   }
 
   /// Reset simulation with current scenario
@@ -250,6 +260,9 @@ class Simulation {
       asteroidBelt.clear();
       kuiperBelt.clear();
     }
+
+    // Apply realistic colors if enabled
+    _applyRealisticColorsIfEnabled();
   }
 
   void pushTrails(double dt) {
@@ -471,8 +484,9 @@ class Simulation {
 
     _handleCollisions();
 
-    // Update dynamic star colors for galaxy formation
-    if (_currentScenario == ScenarioType.galaxyFormation) {
+    // Update dynamic star colors for galaxy formation (only when realistic colors disabled)
+    if (_currentScenario == ScenarioType.galaxyFormation &&
+        !_useRealisticColors) {
       _updateDynamicStarColors();
     }
 
@@ -589,16 +603,6 @@ class Simulation {
     final r = math
         .pow(math.pow(b1.radius, 3) + math.pow(b2.radius, 3), 1 / 3)
         .toDouble();
-    final color = _blendColor(b1.color, b2.color, b2.mass / m);
-
-    // Collision flash
-    mergeFlashes.add(MergeFlash(p.clone(), color, age: 0));
-
-    // Energy-scaled vibration
-    final rel = (b1.velocity - b2.velocity).length;
-    final mu = (b1.mass * b2.mass) / m;
-    final energy = 0.5 * mu * rel * rel; // reduced-mass kinetic energy
-    _vibrateForEnergy(energy);
 
     // Create merged body name
     final mergedName = '${b1.name}+${b2.name}';
@@ -619,19 +623,47 @@ class Simulation {
     final mergedTemperature =
         (b1.temperature * b1.mass + b2.temperature * b2.mass) / m;
 
-    // Create the merged body once
-    final mergedBody = Body(
+    // Create the merged body initially with blended color
+    final mergedBodyWithBlendedColor = Body(
       position: p,
       velocity: v,
       mass: m,
       radius: r,
-      color: color,
+      color: _blendColor(b1.color, b2.color, b2.mass / m),
       name: mergedName,
       isPlanet: b1.isPlanet || b2.isPlanet,
       bodyType: mergedBodyType,
       stellarLuminosity: mergedLuminosity,
       temperature: mergedTemperature,
     );
+
+    // If realistic colors are enabled, recalculate the color based on merged body properties
+    final finalColor = _useRealisticColors
+        ? StellarColorService.getRealisticBodyColor(mergedBodyWithBlendedColor)
+        : mergedBodyWithBlendedColor.color;
+
+    // Create the final merged body with correct color
+    final mergedBody = Body(
+      position: p,
+      velocity: v,
+      mass: m,
+      radius: r,
+      color: finalColor,
+      name: mergedName,
+      isPlanet: b1.isPlanet || b2.isPlanet,
+      bodyType: mergedBodyType,
+      stellarLuminosity: mergedLuminosity,
+      temperature: mergedTemperature,
+    );
+
+    // Use the final color for collision flash too
+    mergeFlashes.add(MergeFlash(p.clone(), finalColor, age: 0));
+
+    // Energy-scaled vibration
+    final rel = (b1.velocity - b2.velocity).length;
+    final mu = (b1.mass * b2.mass) / m;
+    final energy = 0.5 * mu * rel * rel; // reduced-mass kinetic energy
+    _vibrateForEnergy(energy);
 
     // Handle trails synchronization correctly to maintain index correspondence
     // Note: While _handleCollisions() always calls with i < j ordering (nested loops ensure this),
@@ -764,6 +796,33 @@ class Simulation {
         bodyType: body.bodyType,
         stellarLuminosity: body.stellarLuminosity,
       );
+    }
+  }
+
+  /// Apply realistic colors to all bodies if realistic colors are enabled
+  void _applyRealisticColorsIfEnabled() {
+    if (!_useRealisticColors) return;
+
+    for (int i = 0; i < bodies.length; i++) {
+      final body = bodies[i];
+      final realisticColor = StellarColorService.getRealisticBodyColor(body);
+
+      // Only update if the color would change
+      if (body.color != realisticColor) {
+        bodies[i] = Body(
+          position: body.position,
+          velocity: body.velocity,
+          mass: body.mass,
+          radius: body.radius,
+          color: realisticColor,
+          name: body.name,
+          isPlanet: body.isPlanet,
+          bodyType: body.bodyType,
+          stellarLuminosity: body.stellarLuminosity,
+          temperature: body
+              .temperature, // Preserve the body's temperature: temperature must be retained when applying realistic colors because it is used for stellar classification and physical calculations, and should not be recalculated or lost during color updates.
+        );
+      }
     }
   }
 

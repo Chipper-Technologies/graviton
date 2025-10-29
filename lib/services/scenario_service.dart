@@ -649,6 +649,7 @@ class ScenarioService {
         bodyType: BodyType.star, // Behaves like a star gravitationally
         stellarLuminosity:
             0.0, // Black holes don't emit light (except accretion disk)
+        temperature: 100000.0, // Very hot accretion disk around black hole
       ),
     );
 
@@ -747,6 +748,30 @@ class ScenarioService {
         final stellarLuminosity =
             SimulationConstants.solarLuminosity * math.pow(massRatio, 3.5);
 
+        // Calculate stellar temperature based on distance from black hole
+        // Stars closer to the black hole are heated by tidal forces and high-energy radiation
+        final distanceFromBlackHole = safeRadius;
+        final baseTemperature = TemperatureService.getInitialTemperature(
+          BodyType.star,
+          massVariation,
+        );
+
+        // Apply black hole proximity heating
+        // Closer stars get significantly hotter due to tidal heating and radiation
+        double temperatureMultiplier = 1.0;
+        if (distanceFromBlackHole < 100.0) {
+          // Very close to black hole - extreme heating
+          temperatureMultiplier =
+              1.0 + (100.0 - distanceFromBlackHole) / 50.0; // Up to 3x hotter
+        } else if (distanceFromBlackHole < 150.0) {
+          // Moderate distance - some heating
+          temperatureMultiplier =
+              1.0 +
+              (150.0 - distanceFromBlackHole) / 200.0; // Up to 1.25x hotter
+        }
+
+        final stellarTemperature = baseTemperature * temperatureMultiplier;
+
         // Color based on stellar type and position
         Color color;
         if (arm == 0 && i < 2) {
@@ -778,6 +803,7 @@ class ScenarioService {
                 'Star ${(arm * starsPerArm) + i + 1}',
             bodyType: BodyType.star,
             stellarLuminosity: stellarLuminosity,
+            temperature: stellarTemperature,
           ),
         );
       }

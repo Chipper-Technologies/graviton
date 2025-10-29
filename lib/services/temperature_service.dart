@@ -106,7 +106,8 @@ class TemperatureService {
     bool showUnit = true,
     AppLocalizations? l10n,
   }) {
-    final celsius = temperatureKelvin - 273.15;
+    final celsius =
+        temperatureKelvin - SimulationConstants.kelvinToCelsiusOffset;
     final unitSymbol = l10n?.temperatureUnitCelsius ?? '°C';
 
     if (showUnit) {

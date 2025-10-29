@@ -195,6 +195,11 @@ class SimulationState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Update realistic colors setting in the simulation
+  void setUseRealisticColors(bool useRealisticColors) {
+    _simulation.setUseRealisticColors(useRealisticColors);
+  }
+
   /// Apply physics settings to the simulation
   void applyPhysicsSettings(PhysicsSettings settings) {
     _simulation.updatePhysicsSettings(

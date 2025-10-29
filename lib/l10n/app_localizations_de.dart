@@ -158,6 +158,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get trailColorLabel => 'Spurenfarbe';
 
   @override
+  String get realisticColors => 'Realistische Farben';
+
+  @override
+  String get realisticColorsDescription =>
+      'Wissenschaftlich genaue Farben basierend auf Temperatur und Sternklassifikation verwenden';
+
+  @override
   String get closeButton => 'Schließen';
 
   @override

@@ -34,6 +34,8 @@
   "dualOrbitalPaths": "双轨道路径",
   "dualOrbitalPathsDescription": "显示理想圆形轨道和实际椭圆轨道",
   "trailColorLabel": "轨迹颜色",
+  "realisticColors": "真实色彩",
+  "realisticColorsDescription": "基于温度和恒星分类使用科学准确的颜色",
   "closeButton": "关闭",
   "simulationStats": "模拟统计",
   "stepsLabel": "步数",

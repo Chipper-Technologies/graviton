@@ -35,6 +35,8 @@
   "dualOrbitalPaths": "Doppelte Orbitalbahnen",
   "dualOrbitalPathsDescription": "Sowohl ideale kreisförmige als auch tatsächliche elliptische Orbitalbahnen anzeigen",
   "trailColorLabel": "Spurenfarbe",
+  "realisticColors": "Realistische Farben",
+  "realisticColorsDescription": "Wissenschaftlich genaue Farben basierend auf Temperatur und Sternklassifikation verwenden",
   "closeButton": "Schließen",
   "simulationStats": "Simulationsstatistiken",
   "stepsLabel": "Schritte",
