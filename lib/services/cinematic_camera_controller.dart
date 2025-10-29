@@ -3966,6 +3966,16 @@ class CinematicCameraController {
   /// This ensures continuous tracking of the same physical bodies even when their
   /// object representations change, which is critical for maintaining smooth camera
   /// transitions and avoiding jarring perspective changes in dramatic scenarios.
+  ///
+  /// ### Handling of Body Mergers and Removals
+  /// If one or both bodies in a pair have been merged or removed from the simulation,
+  /// this method may return `false` if their positions no longer correspond within the
+  /// adaptive tolerance. The method assumes that all input bodies are currently present
+  /// in the simulation and have valid position and velocity data. If a body has been
+  /// merged into another or removed, it is the responsibility of the caller to ensure
+  /// that only valid, existing bodies are passed to this method. This method does not
+  /// perform explicit checks for merged or removed bodies, but will naturally fail to
+  /// match pairs whose positions have diverged due to such events.
   bool _isSameBodiesPair(Body body1, Body body2, Body tracked1, Body tracked2) {
     // Compare by position similarity since body objects can change during mergers
     // Use velocity-aware tolerance that adapts based on bodies' speeds
