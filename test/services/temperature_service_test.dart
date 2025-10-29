@@ -352,7 +352,10 @@ void main() {
         final color = TemperatureService.getTemperatureColor(288.15);
 
         expect(color, isA<Color>());
-        expect((color.a * 255.0).round() & 0xff, equals(255)); // Should be opaque
+        expect(
+          (color.a * 255.0).round() & 0xff,
+          equals(255),
+        ); // Should be opaque
       });
 
       test('Should handle extreme temperatures', () {
