@@ -8,6 +8,11 @@ on:
       - 'test/**/*.dart'
       - 'pubspec.yaml'
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   copilot-review:
     runs-on: ubuntu-latest
@@ -39,53 +44,60 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          // Read the custom instructions
-          const fs = require('fs');
-          const instructions = fs.readFileSync('.github/copilot-review-config.md', 'utf8');
-          
-          // Get the list of changed files
-          const { data: files } = await github.rest.pulls.listFiles({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: context.issue.number
-          });
-          
-          // Filter for Dart files
-          const dartFiles = files.filter(file => 
-            file.filename.endsWith('.dart') && 
-            !file.filename.includes('app_localizations') &&
-            (file.status === 'added' || file.status === 'modified')
-          );
-          
-          if (dartFiles.length === 0) {
-            console.log('No Dart files to review');
-            return;
+          try {
+            // Read the custom instructions
+            const fs = require('fs');
+            const instructions = fs.readFileSync('.github/copilot-review-config.md', 'utf8');
+            
+            // Get the list of changed files
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            
+            // Filter for Dart files
+            const dartFiles = files.filter(file => 
+              file.filename.endsWith('.dart') && 
+              !file.filename.includes('app_localizations') &&
+              (file.status === 'added' || file.status === 'modified')
+            );
+            
+            if (dartFiles.length === 0) {
+              console.log('No Dart files to review');
+              return;
+            }
+            
+            // Create a review comment with our custom instructions
+            const reviewBody = `
+            ## 🤖 Copilot Code Review Guidelines
+            
+            Based on our custom instructions, please review the following areas:
+            
+            ### 🎯 Focus Areas for This PR:
+            ${dartFiles.map(f => `- \`${f.filename}\` (${f.status})`).join('\n')}
+            
+            ### 📋 Review Checklist:
+            ${instructions.includes('Physics') ? '- ✅ Physics calculations use SimulationConstants' : ''}
+            ${instructions.includes('Localization') ? '- ✅ All text uses AppLocalizations' : ''}
+            ${instructions.includes('Performance') ? '- ✅ No expensive operations in render loops' : ''}
+            ${instructions.includes('Testing') ? '- ✅ Adequate test coverage for changes' : ''}
+            
+            Please review according to the guidelines in \`.github/copilot-review-config.md\`
+            `;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: reviewBody
+            });
+            
+            console.log('✅ Successfully created Copilot review comment');
+          } catch (error) {
+            console.error('❌ Error during Copilot review:', error.message);
+            core.setFailed(`Copilot review failed: ${error.message}`);
           }
-          
-          // Create a review comment with our custom instructions
-          const reviewBody = `
-          ## 🤖 Copilot Code Review Guidelines
-          
-          Based on our custom instructions, please review the following areas:
-          
-          ### 🎯 Focus Areas for This PR:
-          ${dartFiles.map(f => `- \`${f.filename}\` (${f.status})`).join('\n')}
-          
-          ### 📋 Review Checklist:
-          ${instructions.includes('Physics') ? '- ✅ Physics calculations use SimulationConstants' : ''}
-          ${instructions.includes('Localization') ? '- ✅ All text uses AppLocalizations' : ''}
-          ${instructions.includes('Performance') ? '- ✅ No expensive operations in render loops' : ''}
-          ${instructions.includes('Testing') ? '- ✅ Adequate test coverage for changes' : ''}
-          
-          Please review according to the guidelines in \`.github/copilot-review-config.md\`
-          `;
-          
-          await github.rest.issues.createComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: context.issue.number,
-            body: reviewBody
-          });
 
     - name: Physics Validation Check
       run: |
