@@ -32,347 +32,134 @@ Graviton follows a **clean architecture** approach with clear separation of conc
 ## 📊 Architecture Diagram
 
 ```mermaid
-graph TB
+flowchart TD
     %% Entry Point
-    Main["`**main.dart**
-    App Entry Point
-    - Flutter app initialization
-    - Firebase setup
-    - Flavor configuration
-    - Device orientation setup`"]
+    Main["🚀 main.dart<br/>App Entry Point"]
+    GravitonApp["📱 GravitonApp<br/>Root Widget"]
+    HomeScreen["🏠 HomeScreen<br/>Main Screen"]
 
-    %% App Layer
-    GravitonApp["`**GravitonApp**
-    Root Application Widget
-    - Provider setup
-    - Localization
-    - Theme configuration
-    - Navigation setup`"]
-
-    %% Screen Layer
-    HomeScreen["`**HomeScreen**
-    Main Application Screen
-    - Simulation canvas
-    - UI controls overlay
-    - Gesture handling
-    - Screenshot mode`"]
-
-    %% State Management Layer (Provider Pattern)
-    subgraph StateManagement["State Management (Provider)"]
-        AppState["`**AppState**
-        Central State Coordinator
-        - Manages child states
-        - Language handling
-        - Error management
-        - State synchronization`"]
-        
-        SimulationState["`**SimulationState**
-        Physics Simulation Control
-        - Start/stop/pause
-        - Time scaling
-        - Step counting
-        - Scenario management`"]
-        
-        UIState["`**UIState**
-        UI Settings & Preferences
-        - Visual toggles
-        - Opacity settings
-        - Language selection
-        - Persistent storage`"]
-        
-        CameraState["`**CameraState**
-        3D Camera Control
-        - View matrices
-        - Auto-rotation
-        - Zoom/pan handling
-        - Scenario positioning`"]
-        
-        PhysicsState["`**PhysicsState**
-        Physics Parameters
-        - Per-scenario settings
-        - Constants management
-        - Parameter persistence`"]
+    %% State Management
+    subgraph SM ["🔄 State Management"]
+        direction TB
+        AppState["🎛️ AppState<br/>Central Coordinator"]
+        SimulationState["⚛️ SimulationState<br/>Physics Control"]
+        UIState["🎨 UIState<br/>UI Preferences"]
+        CameraState["📷 CameraState<br/>3D Camera"]
+        PhysicsState["🧪 PhysicsState<br/>Physics Parameters"]
     end
 
-    %% Service Layer
-    subgraph ServiceLayer["Service Layer"]
-        SimulationService["`**Simulation Service**
-        Core Physics Engine
-        - Gravitational calculations
-        - Collision detection
-        - Body management
-        - Trail system`"]
-        
-        ScenarioService["`**Scenario Service**
-        Scenario Generation
-        - Predefined setups
-        - Body initialization
-        - Astronomical accuracy`"]
-        
-        TemperatureService["`**Temperature Service**
-        Thermal Modeling
-        - Stellar radiation
-        - Planetary temperatures
-        - Habitability calculations`"]
-        
-        HabitableZoneService["`**Habitable Zone Service**
-        Life Zone Calculations
-        - Zone boundaries
-        - Habitability status
-        - Dynamic updates`"]
-        
-        FirebaseService["`**Firebase Service**
-        Analytics & Crashlytics
-        - Event tracking
-        - Performance monitoring
-        - Error reporting`"]
-        
-        RemoteConfigService["`**Remote Config Service**
-        Feature Flags
-        - A/B testing
-        - Configuration management
-        - Maintenance mode`"]
-        
-        VersionService["`**Version Service**
-        App Updates
-        - Version checking
-        - Update prompts
-        - Store redirects`"]
-        
-        ScreenshotModeService["`**Screenshot Mode Service**
-        Screenshot Features
-        - UI hiding
-        - Preset configurations
-        - Timer functionality`"]
+    %% Services
+    subgraph SVC ["⚙️ Services"]
+        direction TB
+        SimulationSvc["🌌 Simulation<br/>Physics Engine"]
+        ScenarioSvc["🪐 Scenario<br/>Content Generation"]
+        TempSvc["🌡️ Temperature<br/>Thermal Modeling"]
+        HabSvc["🌿 Habitable Zone<br/>Life Zone Calc"]
+        FirebaseSvc["🔥 Firebase<br/>Analytics"]
+        ConfigSvc["⚙️ Remote Config<br/>Feature Flags"]
+        VersionSvc["📦 Version<br/>Update Management"]
+        ScreenshotSvc["📸 Screenshot<br/>Dev Features"]
     end
 
-    %% Rendering Layer (Custom Painters)
-    subgraph RenderingLayer["Rendering Layer (Custom Painters)"]
-        GravitonPainter["`**GravitonPainter**
-        Main Orchestrator
-        - Coordinates all painters
-        - 3D transformations
-        - Depth sorting`"]
+    %% Rendering
+    subgraph RENDER ["🎨 Rendering System"]
+        direction TB
+        MainPainter["🎭 GravitonPainter<br/>Main Orchestrator"]
         
-        CelestialBodyPainter["`**CelestialBody Painter**
-        Planet Rendering
-        - Realistic planets
-        - Ring systems
-        - Special effects`"]
-        
-        TrailPainter["`**Trail Painter**
-        Motion History
-        - Orbital trails
-        - Warm/cool modes
-        - Fade effects`"]
-        
-        BackgroundPainter["`**Background Painter**
-        Space Environment
-        - Starfield
-        - Distant galaxies
-        - Space gradients`"]
-        
-        OrbitalPathPainter["`**Orbital Path Painter**
-        Predictive Paths
-        - Future trajectories
-        - Dual mode display`"]
-        
-        HabitabilityPainter["`**Habitability Painter**
-        Life Zone Indicators
-        - Zone visualization
-        - Status indicators`"]
-        
-        GravityPainter["`**Gravity Painter**
-        Field Visualization
-        - Gravity wells
-        - Field strength`"]
-        
-        EffectsPainter["`**Effects Painter**
-        Visual Effects
-        - Merge flashes
-        - Collision effects`"]
-        
-        AsteroidBeltPainter["`**Asteroid Belt Painter**
-        Particle Systems
-        - Belt rendering
-        - Particle management`"]
+        subgraph PAINTERS ["Specialized Painters"]
+            BodyPainter["🪐 CelestialBody<br/>Planet Rendering"]
+            TrailPainter["✨ Trail<br/>Motion History"]
+            BgPainter["🌌 Background<br/>Starfield"]
+            PathPainter["🛤️ Orbital Path<br/>Trajectories"]
+            HabPainter["🌿 Habitability<br/>Life Zones"]
+            GravPainter["🌀 Gravity<br/>Field Visualization"]
+            FxPainter["💥 Effects<br/>Visual Effects"]
+            AsteroidPainter["☄️ Asteroid Belt<br/>Particle Systems"]
+        end
     end
 
-    %% Widget Layer
-    subgraph WidgetLayer["Widget Layer"]
-        FloatingControls["`**Floating Controls**
-        Simulation Control
-        - Play/pause/reset
-        - Auto-hide timer`"]
-        
-        SettingsDialog["`**Settings Dialog**
-        Configuration UI
-        - Physics parameters
-        - Visual settings
-        - Language selection`"]
-        
-        BottomControls["`**Bottom Controls**
-        Camera & UI Controls
-        - Stats toggle
-        - Camera controls`"]
-        
-        StatsOverlay["`**Stats Overlay**
-        Performance Info
-        - FPS counter
-        - Physics data
-        - Time information`"]
-        
-        ScenarioSelector["`**Scenario Selector**
-        Scenario Selection
-        - Preset scenarios
-        - Descriptions`"]
+    %% UI Components
+    subgraph UI ["🎮 UI Components"]
+        direction TB
+        FloatingControls["▶️ Floating Controls<br/>Play/Pause/Reset"]
+        SettingsDialog["⚙️ Settings Dialog<br/>Configuration"]
+        BottomControls["📱 Bottom Controls<br/>Camera & UI"]
+        StatsOverlay["📊 Stats Overlay<br/>Performance Info"]
+        ScenarioSelector["🎯 Scenario Selector<br/>Content Picker"]
     end
 
-    %% Model Layer
-    subgraph ModelLayer["Model Layer"]
-        Body["`**Body Model**
-        Celestial Objects
-        - Position/velocity
-        - Mass/radius
-        - Visual properties`"]
-        
-        TrailPoint["`**Trail Point**
-        Motion History
-        - Position data
-        - Timestamp`"]
-        
-        PhysicsSettings["`**Physics Settings**
-        Parameter Storage
-        - Scenario-specific
-        - Serialization`"]
-        
-        ScreenshotModels["`**Screenshot Models**
-        Screenshot Config
-        - Preset definitions
-        - UI state storage`"]
-    end
-
-    %% Utils Layer
-    subgraph UtilsLayer["Utilities"]
-        PainterUtils["`**Painter Utils**
-        3D Mathematics
-        - Projections
-        - Transformations`"]
-        
-        StarGenerator["`**Star Generator**
-        Background Stars
-        - Random generation
-        - 3D positioning`"]
-        
-        VectorUtils["`**Vector Utils**
-        Math Operations
-        - Vector calculations
-        - Utility functions`"]
-    end
-
-    %% Configuration
-    subgraph ConfigLayer["Configuration"]
-        FlavorConfig["`**Flavor Config**
-        Build Variants
-        - Dev/Prod modes
-        - Feature flags`"]
-        
-        Constants["`**Constants**
-        Physics & Rendering
-        - Simulation constants
-        - Rendering parameters`"]
-        
-        LocalizationFiles["`**Localization**
-        Multi-language Support
-        - 7 languages
-        - ARB files`"]
+    %% Models
+    subgraph MODELS ["📊 Data Models"]
+        direction TB
+        Body["🪐 Body<br/>Celestial Objects"]
+        TrailPoint["📍 Trail Point<br/>Motion Data"]
+        PhysicsSettings["⚛️ Physics Settings<br/>Parameters"]
+        ScreenshotModels["📸 Screenshot Models<br/>Config Data"]
     end
 
     %% External Dependencies
-    subgraph ExternalDeps["External Dependencies"]
-        Firebase["`**Firebase**
-        - Analytics
-        - Crashlytics
-        - Remote Config`"]
-        
-        SharedPrefs["`**Shared Preferences**
-        - Settings persistence
-        - User preferences`"]
-        
-        VectorMath["`**Vector Math**
-        - 3D mathematics
-        - Matrix operations`"]
-        
-        Provider["`**Provider**
-        - State management
-        - Dependency injection`"]
+    subgraph EXT ["🔌 External"]
+        direction TB
+        Firebase["🔥 Firebase"]
+        SharedPrefs["💾 SharedPreferences"]
+        VectorMath["📐 Vector Math"]
+        Provider["🔗 Provider"]
     end
 
-    %% Connections
+    %% Main Flow
     Main --> GravitonApp
     GravitonApp --> HomeScreen
-    GravitonApp --> StateManagement
+    GravitonApp --> SM
     
-    HomeScreen --> WidgetLayer
-    HomeScreen --> RenderingLayer
+    %% Screen to Components
+    HomeScreen --> UI
+    HomeScreen --> RENDER
     
-    StateManagement --> ServiceLayer
-    StateManagement --> SharedPrefs
+    %% State to Services
+    SM --> SVC
+    SM --> SharedPrefs
     
-    ServiceLayer --> ModelLayer
-    ServiceLayer --> Firebase
+    %% Services to Models and External
+    SVC --> MODELS
+    SVC --> Firebase
     
-    RenderingLayer --> UtilsLayer
-    RenderingLayer --> ModelLayer
-    RenderingLayer --> VectorMath
+    %% Rendering to Utils and Models
+    RENDER --> MODELS
+    RENDER --> VectorMath
     
-    WidgetLayer --> StateManagement
-    WidgetLayer --> Provider
-    
-    ConfigLayer --> StateManagement
-    ConfigLayer --> ServiceLayer
+    %% UI to State
+    UI --> SM
+    UI --> Provider
     
     %% State relationships
-    AppState --> SimulationState
-    AppState --> UIState
-    AppState --> CameraState
-    AppState --> PhysicsState
-    
-    SimulationState --> SimulationService
-    UIState --> LocalizationFiles
-    PhysicsState --> PhysicsSettings
+    AppState -.-> SimulationState
+    AppState -.-> UIState
+    AppState -.-> CameraState
+    AppState -.-> PhysicsState
     
     %% Service relationships
-    SimulationService --> ScenarioService
-    SimulationService --> TemperatureService
-    SimulationService --> HabitableZoneService
+    SimulationSvc -.-> ScenarioSvc
+    SimulationSvc -.-> TempSvc
+    SimulationSvc -.-> HabSvc
     
     %% Painter orchestration
-    GravitonPainter --> CelestialBodyPainter
-    GravitonPainter --> TrailPainter
-    GravitonPainter --> BackgroundPainter
-    GravitonPainter --> OrbitalPathPainter
-    GravitonPainter --> HabitabilityPainter
-    GravitonPainter --> GravityPainter
-    GravitonPainter --> EffectsPainter
-    GravitonPainter --> AsteroidBeltPainter
+    MainPainter --> PAINTERS
 
     %% Styling
-    classDef stateClass fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef serviceClass fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef painterClass fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
-    classDef widgetClass fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef modelClass fill:#fce4ec,stroke:#880e4f,stroke-width:2px
-    classDef configClass fill:#f1f8e9,stroke:#33691e,stroke-width:2px
-    classDef externalClass fill:#fafafa,stroke:#424242,stroke-width:2px
+    classDef primaryNode fill:#2196F3,stroke:#1976D2,stroke-width:3px,color:#fff
+    classDef stateNode fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:#fff
+    classDef serviceNode fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+    classDef renderNode fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    classDef uiNode fill:#FF5722,stroke:#D84315,stroke-width:2px,color:#fff
+    classDef modelNode fill:#607D8B,stroke:#455A64,stroke-width:2px,color:#fff
+    classDef extNode fill:#795548,stroke:#5D4037,stroke-width:2px,color:#fff
     
-    class AppState,SimulationState,UIState,CameraState,PhysicsState stateClass
-    class SimulationService,ScenarioService,TemperatureService,HabitableZoneService,FirebaseService,RemoteConfigService,VersionService,ScreenshotModeService serviceClass
-    class GravitonPainter,CelestialBodyPainter,TrailPainter,BackgroundPainter,OrbitalPathPainter,HabitabilityPainter,GravityPainter,EffectsPainter,AsteroidBeltPainter painterClass
-    class FloatingControls,SettingsDialog,BottomControls,StatsOverlay,ScenarioSelector widgetClass
-    class Body,TrailPoint,PhysicsSettings,ScreenshotModels modelClass
-    class FlavorConfig,Constants,LocalizationFiles configClass
-    class Firebase,SharedPrefs,VectorMath,Provider externalClass
+    class Main,GravitonApp,HomeScreen primaryNode
+    class AppState,SimulationState,UIState,CameraState,PhysicsState stateNode
+    class SimulationSvc,ScenarioSvc,TempSvc,HabSvc,FirebaseSvc,ConfigSvc,VersionSvc,ScreenshotSvc serviceNode
+    class MainPainter,BodyPainter,TrailPainter,BgPainter,PathPainter,HabPainter,GravPainter,FxPainter,AsteroidPainter renderNode
+    class FloatingControls,SettingsDialog,BottomControls,StatsOverlay,ScenarioSelector uiNode
+    class Body,TrailPoint,PhysicsSettings,ScreenshotModels modelNode
 ```
 
 ## 🏗️ Layer Breakdown
