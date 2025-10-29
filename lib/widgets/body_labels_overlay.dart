@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -54,72 +55,30 @@ class _BodyLabelsPainter extends CustomPainter {
   String _getLocalizedBodyName(String storedName) {
     if (l10n == null) return storedName;
 
-    // Map stored English names to localized names
+    // Try to find a matching enum value
+    final bodyEnum = CelestialBodyName.fromString(storedName);
+    if (bodyEnum != null) {
+      // Handle numbered bodies like "Asteroid 1"
+      final RegExp numberedPattern = RegExp(r'^(\w+(?:\s+\w+)*)\s+(\d+)$');
+      final match = numberedPattern.firstMatch(storedName);
+      if (match != null) {
+        final number = int.tryParse(match.group(2)!);
+        if (number != null) {
+          return bodyEnum.getNumberedLocalizedName(l10n, number);
+        }
+      }
+
+      // Regular body name
+      return bodyEnum.getLocalizedName(l10n);
+    }
+
+    // Handle special cases that don't have enums yet
     switch (storedName) {
-      case 'Alpha':
-        return l10n!.bodyAlpha;
-      case 'Beta':
-        return l10n!.bodyBeta;
-      case 'Gamma':
-        return l10n!.bodyGamma;
       case 'Rocky Planet':
         return l10n!.bodyRockyPlanet;
-      case 'Sun':
-        return l10n!.bodySun;
-      case 'Earth':
-        return l10n!.bodyEarth;
-      case 'Moon':
-        return l10n!.bodyMoon;
-      case 'Star A':
-        return l10n!.bodyStarA;
-      case 'Star B':
-        return l10n!.bodyStarB;
-      case 'Planet P':
-        return l10n!.bodyPlanetP;
-      case 'Moon M':
-        return l10n!.bodyMoonM;
-      case 'Central Star':
-        return l10n!.bodyCentralStar;
-      case 'Black Hole':
-        return l10n!.bodyBlackHole;
       case 'Ringed Planet':
         return l10n!.bodyRingedPlanet;
-      case 'Mercury':
-        return l10n!.bodyMercury;
-      case 'Venus':
-        return l10n!.bodyVenus;
-      case 'Mars':
-        return l10n!.bodyMars;
-      case 'Jupiter':
-        return l10n!.bodyJupiter;
-      case 'Saturn':
-        return l10n!.bodySaturn;
-      case 'Uranus':
-        return l10n!.bodyUranus;
-      case 'Neptune':
-        return l10n!.bodyNeptune;
       default:
-        // Handle numbered bodies like "Asteroid 1", "Star 2", "Ring 3"
-        if (storedName.startsWith('Asteroid ')) {
-          final number = storedName.substring(9);
-          final numInt = int.tryParse(number);
-          if (numInt != null) {
-            return l10n!.bodyAsteroid(numInt);
-          }
-        } else if (storedName.startsWith('Star ')) {
-          final number = storedName.substring(5);
-          final numInt = int.tryParse(number);
-          if (numInt != null) {
-            return l10n!.bodyStar(numInt);
-          }
-        } else if (storedName.startsWith('Ring ')) {
-          final number = storedName.substring(5);
-          final numInt = int.tryParse(number);
-          if (numInt != null) {
-            return l10n!.bodyRing(numInt);
-          }
-        }
-
         return storedName; // Fallback to original name
     }
   }

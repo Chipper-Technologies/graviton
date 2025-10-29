@@ -42,6 +42,10 @@ class AppState extends ChangeNotifier {
     await ui.initialize();
     await simulation.initialize();
     await physics.initialize();
+
+    // Initialize realistic colors setting in simulation
+    simulation.setUseRealisticColors(ui.useRealisticColors);
+
     // Set optimal camera zoom for initial scenario
     camera.resetViewForScenario(simulation.currentScenario, simulation.bodies);
   }
@@ -59,6 +63,9 @@ class AppState extends ChangeNotifier {
       _lastLanguageCode = currentLanguageCode;
       _languageChanged = true; // Flag for later handling
     }
+
+    // Propagate realistic colors setting to simulation
+    simulation.setUseRealisticColors(ui.useRealisticColors);
 
     notifyListeners();
   }

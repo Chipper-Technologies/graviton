@@ -144,6 +144,36 @@ abstract class AppLocalizations {
   /// **'Trails'**
   String get trailsLabel;
 
+  /// Label for statistics display button
+  ///
+  /// In en, this message translates to:
+  /// **'Stats'**
+  String get statsLabel;
+
+  /// Label for select nearest object button
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get selectLabel;
+
+  /// Label for follow object button
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get followLabel;
+
+  /// Label for center view button
+  ///
+  /// In en, this message translates to:
+  /// **'Center'**
+  String get centerLabel;
+
+  /// Label for auto-rotate button
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate'**
+  String get rotateLabel;
+
   /// Option for warm-colored trails
   ///
   /// In en, this message translates to:
@@ -395,6 +425,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Trail Color'**
   String get trailColorLabel;
+
+  /// Label for realistic colors toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Realistic Colors'**
+  String get realisticColors;
+
+  /// Description for realistic colors toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Use scientifically accurate colors based on temperature and stellar classification'**
+  String get realisticColorsDescription;
 
   /// Label for close button
   ///
@@ -1181,6 +1223,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Outer Planet'**
   String get bodyOuterPlanet;
+
+  /// Name for center of mass point in calculations
+  ///
+  /// In en, this message translates to:
+  /// **'Center of Mass'**
+  String get bodyCenterOfMass;
+
+  /// Name pattern for numbered stars in galaxy scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Star {number}'**
+  String bodyStarNumber(int number);
 
   /// Educational focus for random scenario
   ///

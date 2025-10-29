@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
@@ -114,7 +115,11 @@ class ScenarioService {
       // Assign star names
       final starNames = l10n != null
           ? [l10n.bodyAlpha, l10n.bodyBeta, l10n.bodyGamma]
-          : ['Alpha', 'Beta', 'Gamma'];
+          : [
+              CelestialBodyName.alpha.value,
+              CelestialBodyName.beta.value,
+              CelestialBodyName.gamma.value,
+            ];
 
       // Generate star mass and radius first
       final starMass =
@@ -304,7 +309,7 @@ class ScenarioService {
             45.0, // Further reduced from 60.0 to minimize Sun's disruptive influence
         radius: 4.8, // Same realistic Sun size as solar system scenario
         color: AppColors.celestialGold, // Gold
-        name: l10n?.bodySun ?? 'Sun',
+        name: l10n?.bodySun ?? CelestialBodyName.sun.value,
         bodyType: BodyType.star,
         stellarLuminosity: SimulationConstants.solarLuminosity,
       ),
@@ -346,7 +351,7 @@ class ScenarioService {
             0.30, // Maximally increased from 0.20 to completely dominate Moon's orbit
         radius: 0.6,
         color: AppColors.planetEarth, // Same blue as solar system Earth
-        name: l10n?.bodyEarth ?? 'Earth',
+        name: l10n?.bodyEarth ?? CelestialBodyName.earth.value,
         isPlanet: true,
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0,
@@ -403,7 +408,7 @@ class ScenarioService {
             0.015, // Significantly increased Moon mass from 0.008 for maximum Earth-Moon coupling
         radius: 0.162, // Accurate Moon radius: 0.27x Earth (0.60) = 0.162
         color: AppColors.celestialSilver, // Silver
-        name: l10n?.bodyMoon ?? 'Moon',
+        name: l10n?.bodyMoon ?? CelestialBodyName.moon.value,
         bodyType: BodyType.moon,
         stellarLuminosity: 0.0,
       ),
@@ -454,7 +459,7 @@ class ScenarioService {
         mass: starMass,
         radius: 1.5,
         color: AppColors.celestialRedPlanet, // Red
-        name: l10n?.bodyStarA ?? 'Star A',
+        name: l10n?.bodyStarA ?? CelestialBodyName.starA.value,
         bodyType: BodyType.star,
         stellarLuminosity: stellarLuminosity,
       ),
@@ -472,7 +477,7 @@ class ScenarioService {
         mass: starMass,
         radius: 1.5,
         color: AppColors.celestialTealPlanet, // Teal
-        name: l10n?.bodyStarB ?? 'Star B',
+        name: l10n?.bodyStarB ?? CelestialBodyName.starB.value,
         bodyType: BodyType.star,
         stellarLuminosity: stellarLuminosity,
       ),
@@ -561,7 +566,7 @@ class ScenarioService {
         mass: 20.0, // Increased mass for more stable belt
         radius: 2.0, // Larger for better visibility
         color: AppColors.celestialGold, // Gold
-        name: l10n?.bodyCentralStar ?? 'Central Star',
+        name: l10n?.bodyCentralStar ?? CelestialBodyName.centralStar.value,
         bodyType: BodyType.star,
         stellarLuminosity: 15.0, // Bright star
       ),
@@ -645,17 +650,21 @@ class ScenarioService {
             300.0, // Increased from 200 to 300 for stronger gravitational binding
         radius: 2.5, // Larger, more menacing presence
         color: AppColors.celestialBlackHole, // Black (event horizon)
-        name: l10n?.bodyBlackHole ?? 'Supermassive Black Hole',
+        name:
+            l10n?.bodyBlackHole ??
+            CelestialBodyName.supermassiveBlackHole.value,
         bodyType: BodyType.star, // Behaves like a star gravitationally
         stellarLuminosity:
             0.0, // Black holes don't emit light (except accretion disk)
+        temperature: 100000.0, // Very hot accretion disk around black hole
       ),
     );
 
     // Generate stars in galactic disk formation (3 spiral arms + 2 inner close stars)
     // Most stars should remain in stable orbits - stellar ejections are rare in real galaxies
-    const starsPerArm = 10; // Increased to include 2 inner stars per arm
-    const numArms = 3;
+    const starsPerArm = SimulationConstants
+        .galaxyStarsPerArm; // Increased to include 2 inner stars per arm
+    const numArms = SimulationConstants.galaxySpiralArms;
 
     for (int arm = 0; arm < numArms; arm++) {
       final armAngleOffset =
@@ -747,6 +756,39 @@ class ScenarioService {
         final stellarLuminosity =
             SimulationConstants.solarLuminosity * math.pow(massRatio, 3.5);
 
+        // Calculate stellar temperature based on distance from black hole
+        // Stars closer to the black hole are heated by tidal forces and high-energy radiation
+        final distanceFromBlackHole = safeRadius;
+        final baseTemperature = TemperatureService.getInitialTemperature(
+          BodyType.star,
+          massVariation,
+        );
+
+        // Apply black hole proximity heating
+        // Closer stars get significantly hotter due to tidal heating and radiation
+        double temperatureMultiplier = 1.0;
+        if (distanceFromBlackHole <
+            SimulationConstants.blackHoleHeatingInnerRadius) {
+          // Very close to black hole - extreme heating
+          temperatureMultiplier =
+              1.0 +
+              (SimulationConstants.blackHoleHeatingInnerRadius -
+                      distanceFromBlackHole) /
+                  SimulationConstants
+                      .blackHoleHeatingInnerFactor; // Up to 3x hotter
+        } else if (distanceFromBlackHole <
+            SimulationConstants.blackHoleHeatingOuterRadius) {
+          // Moderate distance - some heating
+          temperatureMultiplier =
+              1.0 +
+              (SimulationConstants.blackHoleHeatingOuterRadius -
+                      distanceFromBlackHole) /
+                  SimulationConstants
+                      .blackHoleHeatingOuterFactor; // Up to 1.25x hotter
+        }
+
+        final stellarTemperature = baseTemperature * temperatureMultiplier;
+
         // Color based on stellar type and position
         Color color;
         if (arm == 0 && i < 2) {
@@ -774,10 +816,11 @@ class ScenarioService {
             radius: radiusBody,
             color: color,
             name:
-                l10n?.bodyStar((arm * starsPerArm) + i + 1) ??
+                l10n?.bodyStarNumber((arm * starsPerArm) + i + 1) ??
                 'Star ${(arm * starsPerArm) + i + 1}',
             bodyType: BodyType.star,
             stellarLuminosity: stellarLuminosity,
+            temperature: stellarTemperature,
           ),
         );
       }
@@ -799,7 +842,7 @@ class ScenarioService {
         mass: 50.0, // Much more massive to dominate the system
         radius: 4.8, // 8x Earth (0.6) = visibly larger star
         color: AppColors.celestialGold, // Gold
-        name: l10n?.bodySun ?? 'Sun',
+        name: l10n?.bodySun ?? CelestialBodyName.sun.value,
         bodyType: BodyType.star,
         stellarLuminosity: SimulationConstants.solarLuminosity,
       ),
@@ -860,14 +903,14 @@ class ScenarioService {
 
     // Planet names
     final planetNames = [
-      l10n?.bodyMercury ?? 'Mercury',
-      l10n?.bodyVenus ?? 'Venus',
-      l10n?.bodyEarth ?? 'Earth',
-      l10n?.bodyMars ?? 'Mars',
-      l10n?.bodyJupiter ?? 'Jupiter',
-      l10n?.bodySaturn ?? 'Saturn',
-      l10n?.bodyUranus ?? 'Uranus',
-      l10n?.bodyNeptune ?? 'Neptune',
+      l10n?.bodyMercury ?? CelestialBodyName.mercury.value,
+      l10n?.bodyVenus ?? CelestialBodyName.venus.value,
+      l10n?.bodyEarth ?? CelestialBodyName.earth.value,
+      l10n?.bodyMars ?? CelestialBodyName.mars.value,
+      l10n?.bodyJupiter ?? CelestialBodyName.jupiter.value,
+      l10n?.bodySaturn ?? CelestialBodyName.saturn.value,
+      l10n?.bodyUranus ?? CelestialBodyName.uranus.value,
+      l10n?.bodyNeptune ?? CelestialBodyName.neptune.value,
     ];
 
     // Generate planets with stable circular orbits and realistic inclinations

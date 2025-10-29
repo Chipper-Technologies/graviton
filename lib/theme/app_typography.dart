@@ -12,6 +12,7 @@ class AppTypography {
   // =============================================================================
 
   /// Standard font sizes used throughout the app
+  static const double fontSizeXSmall = 10.0;
   static const double fontSizeSmall = 12.0;
   static const double fontSizeMedium = 14.0;
   static const double fontSizeLarge = 16.0;

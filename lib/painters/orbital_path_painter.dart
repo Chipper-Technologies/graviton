@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/orbital_parameters.dart';
@@ -88,7 +89,7 @@ class OrbitalPathPainter {
               mass: totalMass,
               radius: 1.0,
               color: AppColors.transparentColor,
-              name: 'Center of Mass',
+              name: 'Center of Mass', // This is a computed value, not localized
             );
 
             // Calculate orbital parameters for planet around center of mass
@@ -286,9 +287,11 @@ class OrbitalPathPainter {
   /// Find the central body that the given body orbits around
   static Body? _findCentralBody(List<Body> bodies, Body orbitingBody) {
     // Special case for Moon - it orbits Earth, not the Sun
-    if (orbitingBody.name == 'Moon') {
+    final orbitingBodyEnum = CelestialBodyName.fromString(orbitingBody.name);
+    if (orbitingBodyEnum?.isMoon == true) {
+      final earthEnum = CelestialBodyName.earth;
       return bodies.firstWhere(
-        (body) => body.name == 'Earth',
+        (body) => CelestialBodyName.fromString(body.name) == earthEnum,
         orElse: () => bodies.first,
       );
     }
@@ -310,35 +313,37 @@ class OrbitalPathPainter {
 
   /// Get the orbital inclination for a specific body based on scenario (in degrees)
   static double _getBodyInclination(String bodyName, ScenarioType scenario) {
+    final celestialBody = CelestialBodyName.fromString(bodyName);
+
     switch (scenario) {
       case ScenarioType.solarSystem:
         // Real orbital inclinations relative to Earth's orbital plane (ecliptic)
-        switch (bodyName) {
-          case 'Mercury':
+        switch (celestialBody) {
+          case CelestialBodyName.mercury:
             return 7.0;
-          case 'Venus':
+          case CelestialBodyName.venus:
             return 3.4;
-          case 'Earth':
+          case CelestialBodyName.earth:
             return 0.0;
-          case 'Mars':
+          case CelestialBodyName.mars:
             return 1.9;
-          case 'Jupiter':
+          case CelestialBodyName.jupiter:
             return 1.3;
-          case 'Saturn':
+          case CelestialBodyName.saturn:
             return 2.5;
-          case 'Uranus':
+          case CelestialBodyName.uranus:
             return 0.8;
-          case 'Neptune':
+          case CelestialBodyName.neptune:
             return 1.8;
           default:
             return 0.0;
         }
       case ScenarioType.earthMoonSun:
         // Earth-Moon-Sun system inclinations
-        switch (bodyName) {
-          case 'Earth':
+        switch (celestialBody) {
+          case CelestialBodyName.earth:
             return 0.0; // Earth's orbit defines the reference plane
-          case 'Moon':
+          case CelestialBodyName.moon:
             return 1.0; // Reduced from 5.14° for visual stability in three-body system
           default:
             return 0.0;
@@ -394,7 +399,8 @@ class OrbitalPathPainter {
     final speedRatio = speed / expectedSpeed;
 
     // Be more lenient for moons in three-body systems (they get perturbed)
-    final isThreeBodySystem = (orbitingBody.name == 'Moon');
+    final orbitingBodyEnum = CelestialBodyName.fromString(orbitingBody.name);
+    final isThreeBodySystem = (orbitingBodyEnum?.isMoon == true);
     final minRatio = isThreeBodySystem ? 0.5 : 0.8;
     final maxRatio = isThreeBodySystem ? 2.0 : 1.2;
 
@@ -480,31 +486,33 @@ class OrbitalPathPainter {
     // Use FIXED average orbital radius - but make it LARGER than current distance
     // so the circular orbit can intersect it at periapsis and apoapsis
     double fixedSemiMajor;
+    final celestialBody = CelestialBodyName.fromString(body.name);
 
-    if (body.name == 'Moon' || body.name == 'Moon M') {
+    if (celestialBody == CelestialBodyName.moon ||
+        celestialBody == CelestialBodyName.moonM) {
       fixedSemiMajor =
           0.35; // Larger than typical Moon distance (0.25) so circle can intersect
-    } else if (body.name == 'Planet P') {
+    } else if (celestialBody == CelestialBodyName.planetP) {
       // Binary star planet orbits at distance 60.0, make ellipse slightly larger
       fixedSemiMajor =
           65.0; // Slightly larger than actual binary planet distance (60.0)
     } else if (body.bodyType == BodyType.planet) {
-      switch (body.name) {
-        case 'Mercury':
+      switch (celestialBody) {
+        case CelestialBodyName.mercury:
           fixedSemiMajor = 18.0; // Closer to actual Mercury distance
-        case 'Venus':
+        case CelestialBodyName.venus:
           fixedSemiMajor = 23.0; // Closer to actual Venus distance
-        case 'Earth':
+        case CelestialBodyName.earth:
           fixedSemiMajor = 52.0; // Even closer to actual Earth distance
-        case 'Mars':
+        case CelestialBodyName.mars:
           fixedSemiMajor = 85.0; // Closer to actual Mars distance
-        case 'Jupiter':
+        case CelestialBodyName.jupiter:
           fixedSemiMajor = 160.0; // Closer to actual Jupiter distance
-        case 'Saturn':
+        case CelestialBodyName.saturn:
           fixedSemiMajor = 220.0; // Closer to actual Saturn distance
-        case 'Uranus':
+        case CelestialBodyName.uranus:
           fixedSemiMajor = 320.0; // Closer to actual Uranus distance
-        case 'Neptune':
+        case CelestialBodyName.neptune:
           fixedSemiMajor = 420.0; // Closer to actual Neptune distance
         default:
           fixedSemiMajor = 55.0; // Closer default
@@ -516,26 +524,26 @@ class OrbitalPathPainter {
     // Set moderate eccentricity for oval shape that's wide enough to intersect at both extremes
     double eccentricity = 0.0;
 
-    if (body.name == 'Moon') {
+    if (celestialBody == CelestialBodyName.moon) {
       eccentricity =
           0.4; // Moderate oval for Moon - wide enough for both intersections
     } else if (body.bodyType == BodyType.planet) {
-      switch (body.name) {
-        case 'Mercury':
+      switch (celestialBody) {
+        case CelestialBodyName.mercury:
           eccentricity = 0.5; // Moderate oval - wide enough
-        case 'Venus':
+        case CelestialBodyName.venus:
           eccentricity = 0.3; // Moderate oval - wide enough
-        case 'Earth':
+        case CelestialBodyName.earth:
           eccentricity = 0.3; // Moderate oval - wide enough
-        case 'Mars':
+        case CelestialBodyName.mars:
           eccentricity = 0.4; // Moderate oval - wide enough
-        case 'Jupiter':
+        case CelestialBodyName.jupiter:
           eccentricity = 0.3; // Moderate oval - wide enough
-        case 'Saturn':
+        case CelestialBodyName.saturn:
           eccentricity = 0.4; // Moderate oval - wide enough
-        case 'Uranus':
+        case CelestialBodyName.uranus:
           eccentricity = 0.3; // Moderate oval - wide enough
-        case 'Neptune':
+        case CelestialBodyName.neptune:
           eccentricity = 0.3; // Moderate oval - wide enough
         default:
           eccentricity = 0.4; // Moderate oval - wide enough

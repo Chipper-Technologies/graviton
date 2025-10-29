@@ -687,6 +687,7 @@ class _HomeScreenState extends State<HomeScreen>
                         stars: _stars,
                         showTrails: appState.ui.showTrails,
                         useWarmTrails: appState.ui.useWarmTrails,
+                        useRealisticColors: appState.ui.useRealisticColors,
                         showOrbitalPaths: appState.ui.showOrbitalPaths,
                         dualOrbitalPaths: appState.ui.dualOrbitalPaths,
                         showHabitableZones: appState.ui.showHabitableZones,

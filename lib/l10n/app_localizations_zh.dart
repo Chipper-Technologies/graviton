@@ -27,6 +27,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get trailsLabel => '轨迹';
 
   @override
+  String get statsLabel => '统计';
+
+  @override
+  String get selectLabel => '选择';
+
+  @override
+  String get followLabel => '跟随';
+
+  @override
+  String get centerLabel => '居中';
+
+  @override
+  String get rotateLabel => '旋转';
+
+  @override
   String get warmTrails => '🔥 热';
 
   @override
@@ -151,6 +166,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get trailColorLabel => '轨迹颜色';
+
+  @override
+  String get realisticColors => '真实色彩';
+
+  @override
+  String get realisticColorsDescription => '基于温度和恒星分类使用科学准确的颜色';
 
   @override
   String get closeButton => '关闭';
@@ -566,6 +587,14 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bodyOuterPlanet => '外行星';
+
+  @override
+  String get bodyCenterOfMass => '质心';
+
+  @override
+  String bodyStarNumber(int number) {
+    return '恒星 $number';
+  }
 
   @override
   String get educationalFocusChaoticDynamics => '混沌动力学';

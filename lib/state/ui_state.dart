@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UIState extends ChangeNotifier {
   bool _showTrails = true;
   bool _useWarmTrails = true;
+  bool _useRealisticColors = false;
   bool _showOrbitalPaths = true;
   bool _dualOrbitalPaths = false;
   bool _showControls = true;
@@ -38,6 +39,7 @@ class UIState extends ChangeNotifier {
   // SharedPreferences keys
   static const String _keyShowTrails = 'showTrails';
   static const String _keyUseWarmTrails = 'useWarmTrails';
+  static const String _keyUseRealisticColors = 'useRealisticColors';
   static const String _keyShowOrbitalPaths = 'showOrbitalPaths';
   static const String _keyDualOrbitalPaths = 'dualOrbitalPaths';
   static const String _keyShowControls = 'showControls';
@@ -66,6 +68,7 @@ class UIState extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       _showTrails = prefs.getBool(_keyShowTrails) ?? true;
       _useWarmTrails = prefs.getBool(_keyUseWarmTrails) ?? true;
+      _useRealisticColors = prefs.getBool(_keyUseRealisticColors) ?? false;
       _showOrbitalPaths = prefs.getBool(_keyShowOrbitalPaths) ?? true;
       _dualOrbitalPaths = prefs.getBool(_keyDualOrbitalPaths) ?? false;
       _showControls = prefs.getBool(_keyShowControls) ?? true;
@@ -124,6 +127,7 @@ class UIState extends ChangeNotifier {
   // Getters
   bool get showTrails => _showTrails;
   bool get useWarmTrails => _useWarmTrails;
+  bool get useRealisticColors => _useRealisticColors;
   bool get showOrbitalPaths => _showOrbitalPaths;
   bool get dualOrbitalPaths => _dualOrbitalPaths;
   bool get showControls => _showControls;
@@ -163,6 +167,16 @@ class UIState extends ChangeNotifier {
     _useWarmTrails = !_useWarmTrails;
     _saveSetting(_keyUseWarmTrails, _useWarmTrails);
     FirebaseService.instance.logSettingsChange('warm_trails', _useWarmTrails);
+    notifyListeners();
+  }
+
+  void toggleRealisticColors() {
+    _useRealisticColors = !_useRealisticColors;
+    _saveSetting(_keyUseRealisticColors, _useRealisticColors);
+    FirebaseService.instance.logSettingsChange(
+      'realistic_colors',
+      _useRealisticColors,
+    );
     notifyListeners();
   }
 

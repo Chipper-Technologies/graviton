@@ -71,6 +71,7 @@ void main() {
             simulation,
             true, // showTrails
             false, // useWarmTrails
+            false, // useRealisticColors
           ),
           returnsNormally,
         );
@@ -85,6 +86,7 @@ void main() {
             simulation,
             false, // showTrails
             false, // useWarmTrails
+            false, // useRealisticColors
           ),
           returnsNormally,
         );
@@ -99,6 +101,7 @@ void main() {
             simulation,
             true, // showTrails
             true, // useWarmTrails
+            false, // useRealisticColors
           ),
           returnsNormally,
         );
@@ -113,6 +116,7 @@ void main() {
             simulation,
             true, // showTrails
             false, // useWarmTrails
+            false, // useRealisticColors
           ),
           returnsNormally,
         );
@@ -130,6 +134,7 @@ void main() {
             viewProjectionMatrix,
             emptySimulation,
             true,
+            false,
             false,
           ),
           returnsNormally,
@@ -156,6 +161,7 @@ void main() {
             viewProjectionMatrix,
             bodyOnlySimulation,
             true,
+            false,
             false,
           ),
           returnsNormally,
@@ -188,6 +194,7 @@ void main() {
             viewProjectionMatrix,
             behindSimulation,
             true,
+            false,
             false,
           ),
           returnsNormally,
@@ -224,6 +231,7 @@ void main() {
             longTrailSimulation,
             true,
             false,
+            false,
           ),
           returnsNormally,
         );
@@ -237,6 +245,7 @@ void main() {
             viewProjectionMatrix,
             simulation,
             true,
+            false,
             false,
           ),
           returnsNormally,
@@ -256,6 +265,7 @@ void main() {
             extremeView,
             simulation,
             true,
+            false,
             false,
           ),
           returnsNormally,

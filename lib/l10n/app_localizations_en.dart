@@ -27,6 +27,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trailsLabel => 'Trails';
 
   @override
+  String get statsLabel => 'Stats';
+
+  @override
+  String get selectLabel => 'Select';
+
+  @override
+  String get followLabel => 'Follow';
+
+  @override
+  String get centerLabel => 'Center';
+
+  @override
+  String get rotateLabel => 'Rotate';
+
+  @override
   String get warmTrails => '🔥 Warm';
 
   @override
@@ -155,6 +170,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trailColorLabel => 'Trail Color';
+
+  @override
+  String get realisticColors => 'Realistic Colors';
+
+  @override
+  String get realisticColorsDescription =>
+      'Use scientifically accurate colors based on temperature and stellar classification';
 
   @override
   String get closeButton => 'Close';
@@ -586,6 +608,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bodyOuterPlanet => 'Outer Planet';
+
+  @override
+  String get bodyCenterOfMass => 'Center of Mass';
+
+  @override
+  String bodyStarNumber(int number) {
+    return 'Star $number';
+  }
 
   @override
   String get educationalFocusChaoticDynamics => 'chaotic dynamics';

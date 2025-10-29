@@ -27,6 +27,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get trailsLabel => '궤적';
 
   @override
+  String get statsLabel => '통계';
+
+  @override
+  String get selectLabel => '선택';
+
+  @override
+  String get followLabel => '추적';
+
+  @override
+  String get centerLabel => '중앙';
+
+  @override
+  String get rotateLabel => '회전';
+
+  @override
   String get warmTrails => '🔥 따뜻한';
 
   @override
@@ -151,6 +166,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get trailColorLabel => '궤적 색상';
+
+  @override
+  String get realisticColors => '사실적 색상';
+
+  @override
+  String get realisticColorsDescription => '온도와 항성 분류에 기반한 과학적으로 정확한 색상 사용';
 
   @override
   String get closeButton => '닫기';
@@ -572,6 +593,14 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get bodyOuterPlanet => '외행성';
+
+  @override
+  String get bodyCenterOfMass => '질량 중심';
+
+  @override
+  String bodyStarNumber(int number) {
+    return '별 $number';
+  }
 
   @override
   String get educationalFocusChaoticDynamics => '혼돈 역학';

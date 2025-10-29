@@ -27,6 +27,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get trailsLabel => '軌跡';
 
   @override
+  String get statsLabel => '統計';
+
+  @override
+  String get selectLabel => '選択';
+
+  @override
+  String get followLabel => '追従';
+
+  @override
+  String get centerLabel => '中央';
+
+  @override
+  String get rotateLabel => '回転';
+
+  @override
   String get warmTrails => '🔥 暖色';
 
   @override
@@ -151,6 +166,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get trailColorLabel => '軌跡の色';
+
+  @override
+  String get realisticColors => 'リアルな色彩';
+
+  @override
+  String get realisticColorsDescription => '温度と恒星分類に基づく科学的に正確な色を使用';
 
   @override
   String get closeButton => '閉じる';
@@ -569,6 +590,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get bodyOuterPlanet => '外惑星';
+
+  @override
+  String get bodyCenterOfMass => '質量中心';
+
+  @override
+  String bodyStarNumber(int number) {
+    return '恒星 $number';
+  }
 
   @override
   String get educationalFocusChaoticDynamics => 'カオス力学';

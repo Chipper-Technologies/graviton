@@ -30,6 +30,31 @@
     "description": "Label for trail visibility toggle"
   },
   
+  "statsLabel": "Stats",
+  "@statsLabel": {
+    "description": "Label for statistics display button"
+  },
+  
+  "selectLabel": "Select",
+  "@selectLabel": {
+    "description": "Label for select nearest object button"
+  },
+  
+  "followLabel": "Follow",
+  "@followLabel": {
+    "description": "Label for follow object button"
+  },
+  
+  "centerLabel": "Center",
+  "@centerLabel": {
+    "description": "Label for center view button"
+  },
+  
+  "rotateLabel": "Rotate",
+  "@rotateLabel": {
+    "description": "Label for auto-rotate button"
+  },
+  
   "warmTrails": "🔥 Warm",
   "@warmTrails": {
     "description": "Option for warm-colored trails"
@@ -238,6 +263,16 @@
   "trailColorLabel": "Trail Color",
   "@trailColorLabel": {
     "description": "Label for trail color selection"
+  },
+  
+  "realisticColors": "Realistic Colors",
+  "@realisticColors": {
+    "description": "Label for realistic colors toggle"
+  },
+  
+  "realisticColorsDescription": "Use scientifically accurate colors based on temperature and stellar classification",
+  "@realisticColorsDescription": {
+    "description": "Description for realistic colors toggle"
   },
   
   "closeButton": "Close",
@@ -939,6 +974,22 @@
   "bodyOuterPlanet": "Outer Planet",
   "@bodyOuterPlanet": {
     "description": "Name for outer companion planet in asteroid belt scenario"
+  },
+
+  "bodyCenterOfMass": "Center of Mass",
+  "@bodyCenterOfMass": {
+    "description": "Name for center of mass point in calculations"
+  },
+
+  "bodyStarNumber": "Star {number}",
+  "@bodyStarNumber": {
+    "description": "Name pattern for numbered stars in galaxy scenarios",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "description": "The star number"
+      }
+    }
   },
 
   "educationalFocusChaoticDynamics": "chaotic dynamics",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -107,8 +108,8 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                       child: Center(
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
+                            horizontal: 12,
+                            vertical: 6,
                           ),
                           decoration: BoxDecoration(
                             color: AppColors.uiBlack.withValues(
@@ -159,9 +160,31 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                                 isPrimary: true,
                               ),
 
-                              const SizedBox(
-                                width: AppTypography.spacingMedium,
-                              ),
+                              const SizedBox(width: AppTypography.spacingSmall),
+
+                              // Manual Camera Mode Button (only show when AI camera is active)
+                              if (appState.ui.cinematicCameraTechnique !=
+                                  CinematicCameraTechnique.manual) ...[
+                                _buildControlButton(
+                                  icon: Icons.pan_tool,
+                                  onPressed: () {
+                                    FirebaseService.instance
+                                        .logUIEventWithEnums(
+                                          UIAction.buttonPressed,
+                                          element: UIElement.simulationControl,
+                                          value: 'manual_camera',
+                                        );
+                                    appState.ui.setCinematicCameraTechnique(
+                                      CinematicCameraTechnique.manual,
+                                    );
+                                    _showControls(); // Keep controls visible after interaction
+                                  },
+                                  tooltip: l10n.cinematicTechniqueManual,
+                                ),
+                                const SizedBox(
+                                  width: AppTypography.spacingSmall,
+                                ),
+                              ],
 
                               // Reset Button
                               _buildControlButton(
@@ -217,13 +240,13 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
           onTap: onPressed,
           borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: 28,
+                  height: 28,
                   decoration: BoxDecoration(
                     color: isPrimary
                         ? AppColors.primaryColor.withValues(
@@ -251,7 +274,7 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                         : AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityNearlyOpaque,
                           ),
-                    size: 20,
+                    size: 16,
                   ),
                 ),
                 const SizedBox(height: AppTypography.spacingXSmall),
@@ -261,7 +284,7 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                     color: AppColors.uiWhite.withValues(
                       alpha: AppTypography.opacityVeryHigh,
                     ),
-                    fontSize: AppTypography.fontSizeSmall,
+                    fontSize: AppTypography.fontSizeXSmall,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

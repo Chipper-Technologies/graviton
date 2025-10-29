@@ -17,6 +17,32 @@ class RenderingConstants {
   static const double bodyAlpha = 0.8;
   static const double bodyGlowAlpha = 0.0; // for gradient end
 
+  // Celestial body specific rendering
+  static const double blackHoleAccretionDiskMultiplier = 5.0;
+  static const double blackHoleRingBaseAlpha = 0.6;
+  static const double blackHoleRingAlphaDecrement = 0.1;
+  static const double blackHoleEventHorizonStrokeWidth = 1.0;
+  static const double blackHoleDistortionStrokeWidth = 0.5;
+  static const double sunCoronaMultiplier = 3.0;
+  static const double sunFlareAlphaCenter = 0.95;
+  static const double sunFlareAlphaMid = 0.75;
+  static const double sunFlareAlphaEdge = 0.45;
+  static const double sunFlareBaseAlpha = 0.9;
+  static const double sunFlareRingAlpha = 0.15;
+  static const double sunspotUmbraMultiplier = 0.4;
+  static const double sunspotSizePercentMin = 0.03; // 3% of sun radius
+  static const double sunspotSizePercentMax = 0.08; // 8% of sun radius
+  static const double sunspotSizeProbabilityThreshold = 0.6;
+  static const double sunspotSizeProbabilityMedium = 0.9;
+  static const double sunspotSizeRangeSmall = 0.05; // 3-8% range
+  static const double sunspotSizeRangeMedium = 0.07; // 8-15% range
+  static const double sunspotSizeRangeLarge = 0.08; // 12-20% range
+  static const double sunspotSizeMediumMin = 0.08; // 8% of sun radius
+  static const double sunspotSizeLargeMin = 0.12; // 12% of sun radius
+  static const double sunspotMaxDistanceMultiplier = 0.9; // 90% of sun radius
+  static const double sunspotPositionLimitMultiplier =
+      0.7; // 70% of base radius
+
   // Ring texture rendering thresholds to prevent visual artifacts
 
   /// Minimum distance (in screen pixels) from camera before drawing detailed ring texture.
@@ -28,6 +54,16 @@ class RenderingConstants {
   /// Above this threshold, the planet is too large on screen and texture lines would be too prominent.
   /// Value chosen to maintain visual quality across different zoom levels.
   static const double ringTextureMaxRadius = 200.0;
+
+  // Ring texture rendering constants
+  static const double ringTextureStrokeWidth = 0.5;
+  static const double ringTextureAlpha = 0.3;
+  static const double ringGlowAlpha = 0.2;
+
+  // Gravity field rendering constants
+  static const double gravityFieldAlphaMultiplier = 0.4;
+  static const double gravityFieldMinAlpha = 0.02;
+  static const double gravityFieldMaxAlpha = 0.3;
 
   // Star field rendering
   static const double starSize = 0.7;
