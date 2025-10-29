@@ -613,6 +613,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bodyOuterPlanet => 'Planeta Exterior';
 
   @override
+  String get bodyCenterOfMass => 'Centro de Masa';
+
+  @override
+  String bodyStarNumber(int number) {
+    return 'Estrella $number';
+  }
+
+  @override
   String get educationalFocusChaoticDynamics => 'dinámicas caóticas';
 
   @override

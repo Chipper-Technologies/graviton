@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/sunspot_data.dart';
 import 'package:graviton/services/stellar_color_service.dart';
@@ -49,14 +50,12 @@ class CelestialBodyPainter {
     bool useRealisticColors = false,
   }) {
     // Special rendering for celestial bodies
-    if (body.name.contains('Black Hole') ||
-        body.name == 'Black Hole' ||
-        body.name == 'Supermassive Black Hole') {
+    final bodyEnum = CelestialBodyName.fromString(body.name);
+    if (bodyEnum?.isBlackHole == true) {
       drawBlackHole(canvas, center, radius, opacity: opacity);
-    } else if (body.name == 'Sun' ||
+    } else if (bodyEnum == CelestialBodyName.sun ||
         (body.bodyType == BodyType.star &&
-            (body.name == 'Central Star' ||
-                body.name.contains('Central Star')))) {
+            bodyEnum == CelestialBodyName.centralStar)) {
       drawSun(
         canvas,
         center,
@@ -75,61 +74,67 @@ class CelestialBodyPainter {
         body,
         useRealisticColors: useRealisticColors,
       );
-    } else if (body.name == 'Mercury') {
-      drawMercury(canvas, center, radius);
-    } else if (body.name == 'Venus') {
-      drawVenus(canvas, center, radius);
-    } else if (body.name == 'Earth') {
-      drawEarth(canvas, center, radius);
-    } else if (body.name == 'Mars') {
-      drawMars(canvas, center, radius);
-    } else if (body.name == 'Jupiter') {
-      drawJupiter(canvas, center, radius);
-    } else if (body.name == 'Saturn') {
-      drawSaturn(
-        canvas,
-        center,
-        radius,
-        body,
-        viewMatrix: viewMatrix,
-        canvasSize: canvasSize,
-      );
-    } else if (body.name == 'Uranus') {
-      drawUranus(
-        canvas,
-        center,
-        radius,
-        body,
-        viewMatrix: viewMatrix,
-        canvasSize: canvasSize,
-      );
-    } else if (body.name == 'Neptune') {
-      drawNeptune(canvas, center, radius);
     } else {
-      // Normal body rendering
-      // Use realistic colors based on stellar properties when enabled
-      final bodyColor = useRealisticColors
-          ? StellarColorService.getRealisticBodyColor(body)
-          : body.color;
+      // Check for specific celestial body types using enum
+      final celestialBody = CelestialBodyName.fromString(body.name);
 
-      final glow = RadialGradient(
-        colors: [
-          bodyColor.withValues(alpha: RenderingConstants.bodyAlpha),
-          bodyColor.withValues(alpha: RenderingConstants.bodyGlowAlpha),
-        ],
-      );
+      switch (celestialBody) {
+        case CelestialBodyName.mercury:
+          drawMercury(canvas, center, radius);
+        case CelestialBodyName.venus:
+          drawVenus(canvas, center, radius);
+        case CelestialBodyName.earth:
+          drawEarth(canvas, center, radius);
+        case CelestialBodyName.mars:
+          drawMars(canvas, center, radius);
+        case CelestialBodyName.jupiter:
+          drawJupiter(canvas, center, radius);
+        case CelestialBodyName.saturn:
+          drawSaturn(
+            canvas,
+            center,
+            radius,
+            body,
+            viewMatrix: viewMatrix,
+            canvasSize: canvasSize,
+          );
+        case CelestialBodyName.uranus:
+          drawUranus(
+            canvas,
+            center,
+            radius,
+            body,
+            viewMatrix: viewMatrix,
+            canvasSize: canvasSize,
+          );
+        case CelestialBodyName.neptune:
+          drawNeptune(canvas, center, radius);
+        default:
+          // Normal body rendering
+          // Use realistic colors based on stellar properties when enabled
+          final bodyColor = useRealisticColors
+              ? StellarColorService.getRealisticBodyColor(body)
+              : body.color;
 
-      final rect = Rect.fromCircle(
-        center: center,
-        radius: radius * RenderingConstants.bodyGlowMultiplier,
-      );
-      canvas.drawCircle(
-        center,
-        radius * RenderingConstants.bodyGlowMultiplier,
-        Paint()..shader = glow.createShader(rect),
-      );
+          final glow = RadialGradient(
+            colors: [
+              bodyColor.withValues(alpha: RenderingConstants.bodyAlpha),
+              bodyColor.withValues(alpha: RenderingConstants.bodyGlowAlpha),
+            ],
+          );
 
-      canvas.drawCircle(center, radius, Paint()..color = bodyColor);
+          final rect = Rect.fromCircle(
+            center: center,
+            radius: radius * RenderingConstants.bodyGlowMultiplier,
+          );
+          canvas.drawCircle(
+            center,
+            radius * RenderingConstants.bodyGlowMultiplier,
+            Paint()..shader = glow.createShader(rect),
+          );
+
+          canvas.drawCircle(center, radius, Paint()..color = bodyColor);
+      }
     }
   }
 

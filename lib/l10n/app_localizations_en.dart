@@ -610,6 +610,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bodyOuterPlanet => 'Outer Planet';
 
   @override
+  String get bodyCenterOfMass => 'Center of Mass';
+
+  @override
+  String bodyStarNumber(int number) {
+    return 'Star $number';
+  }
+
+  @override
   String get educationalFocusChaoticDynamics => 'chaotic dynamics';
 
   @override

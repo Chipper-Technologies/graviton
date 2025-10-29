@@ -163,6 +163,8 @@
   "bodyRingedPlanet": "环状行星",
   "bodyInnerPlanet": "内行星",
   "bodyOuterPlanet": "外行星",
+  "bodyCenterOfMass": "质心",
+  "bodyStarNumber": "恒星 {number}",
   "bodyAsteroid": "小行星 {number}",
   "bodyRing": "环 {number}",
   "bodyStar": "恒星 {number}",

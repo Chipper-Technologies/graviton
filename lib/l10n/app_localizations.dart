@@ -1224,6 +1224,18 @@ abstract class AppLocalizations {
   /// **'Outer Planet'**
   String get bodyOuterPlanet;
 
+  /// Name for center of mass point in calculations
+  ///
+  /// In en, this message translates to:
+  /// **'Center of Mass'**
+  String get bodyCenterOfMass;
+
+  /// Name pattern for numbered stars in galaxy scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Star {number}'**
+  String bodyStarNumber(int number);
+
   /// Educational focus for random scenario
   ///
   /// In en, this message translates to:

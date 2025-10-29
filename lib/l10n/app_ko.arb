@@ -163,6 +163,8 @@
   "bodyRingedPlanet": "고리 행성",
   "bodyInnerPlanet": "내행성",
   "bodyOuterPlanet": "외행성",
+  "bodyCenterOfMass": "질량 중심",
+  "bodyStarNumber": "별 {number}",
   "bodyAsteroid": "소행성 {number}",
   "bodyRing": "고리 {number}",
   "bodyStar": "별 {number}",

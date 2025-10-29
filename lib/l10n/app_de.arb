@@ -188,6 +188,8 @@
   },
   "bodyInnerPlanet": "Innerer Planet",
   "bodyOuterPlanet": "Äußerer Planet",
+  "bodyCenterOfMass": "Massenzentrum",
+  "bodyStarNumber": "Stern {number}",
   "cameraControlsLabel": "Kamera-Steuerung",
   "invertPitchControlsLabel": "Nickbewegung Umkehren",
   "invertPitchControlsDescription": "Auf/Ab-Ziehrichtung umkehren",

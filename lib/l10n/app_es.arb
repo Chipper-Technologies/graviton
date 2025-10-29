@@ -163,6 +163,8 @@
   "bodyRingedPlanet": "Planeta con Anillos",
   "bodyInnerPlanet": "Planeta Interior",
   "bodyOuterPlanet": "Planeta Exterior",
+  "bodyCenterOfMass": "Centro de Masa",
+  "bodyStarNumber": "Estrella {number}",
   "bodyAsteroid": "Asteroide {number}",
   "bodyRing": "Anillo {number}",
   "bodyStar": "Estrella {number}",

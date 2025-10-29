@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -47,16 +48,17 @@ class StellarColorService {
   /// Returns null if body is not a recognized specific celestial object
   /// Note: ALL planets and moons are excluded to preserve their original designed appearance and trail colors
   static Color? _getSpecificBodyColor(Body body) {
-    final bodyName = body.name.toLowerCase();
+    final bodyEnum = CelestialBodyName.fromString(body.name);
 
     // Only apply realistic colors to stars and asteroids
-    if (bodyName.contains('sun')) {
+    if (bodyEnum == CelestialBodyName.sun) {
       return AppColors.stellarGType; // G-type star (yellow, like our Sun)
-    } else if (bodyName.contains('asteroid')) {
+    } else if (bodyEnum == CelestialBodyName.asteroid ||
+        body.name.toLowerCase().contains('asteroid')) {
       return AppColors.asteroidBrownish; // Brownish rocky asteroids
-    } else if (bodyName.contains('central star') ||
-        bodyName.contains('star a') ||
-        bodyName.contains('star b')) {
+    } else if (bodyEnum == CelestialBodyName.centralStar ||
+        bodyEnum == CelestialBodyName.starA ||
+        bodyEnum == CelestialBodyName.starB) {
       // Binary star system stars - use realistic stellar classification
       final effectiveTemperature = _calculateStellarTemperature(body.mass);
       return _getColorFromTemperature(effectiveTemperature);

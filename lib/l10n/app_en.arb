@@ -976,6 +976,22 @@
     "description": "Name for outer companion planet in asteroid belt scenario"
   },
 
+  "bodyCenterOfMass": "Center of Mass",
+  "@bodyCenterOfMass": {
+    "description": "Name for center of mass point in calculations"
+  },
+
+  "bodyStarNumber": "Star {number}",
+  "@bodyStarNumber": {
+    "description": "Name pattern for numbered stars in galaxy scenarios",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "description": "The star number"
+      }
+    }
+  },
+
   "educationalFocusChaoticDynamics": "chaotic dynamics",
   "@educationalFocusChaoticDynamics": {
     "description": "Educational focus for random scenario"

@@ -592,6 +592,14 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bodyOuterPlanet => '外惑星';
 
   @override
+  String get bodyCenterOfMass => '質量中心';
+
+  @override
+  String bodyStarNumber(int number) {
+    return '恒星 $number';
+  }
+
+  @override
   String get educationalFocusChaoticDynamics => 'カオス力学';
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:graviton/constants/simulation_constants.dart';
+import 'package:graviton/enums/celestial_body_name.dart';
 
 /// Comprehensive color theme for the Graviton app.
 class AppColors {
@@ -551,22 +552,24 @@ class AppColors {
 
   /// Get planet color by name
   static Color getPlanetColor(String planetName) {
-    switch (planetName.toLowerCase()) {
-      case 'mercury':
+    final celestialBody = CelestialBodyName.fromString(planetName);
+
+    switch (celestialBody) {
+      case CelestialBodyName.mercury:
         return planetMercury;
-      case 'venus':
+      case CelestialBodyName.venus:
         return planetVenus;
-      case 'earth':
+      case CelestialBodyName.earth:
         return planetEarth;
-      case 'mars':
+      case CelestialBodyName.mars:
         return planetMars;
-      case 'jupiter':
+      case CelestialBodyName.jupiter:
         return planetJupiter;
-      case 'saturn':
+      case CelestialBodyName.saturn:
         return planetSaturn;
-      case 'uranus':
+      case CelestialBodyName.uranus:
         return planetUranus;
-      case 'neptune':
+      case CelestialBodyName.neptune:
         return planetNeptune;
       default:
         return celestialBlue;

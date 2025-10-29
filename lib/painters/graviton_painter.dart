@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/painters/asteroid_belt_painter.dart';
 import 'package:graviton/services/simulation.dart' as physics;
@@ -182,9 +183,8 @@ class GravitonPainter extends CustomPainter {
       bool shouldRenderBody = true;
 
       // Check if this is a black hole in any scenario that should have distance-based visibility
-      if ((b.name.contains('Black Hole') ||
-          b.name == 'Black Hole' ||
-          b.name == 'Supermassive Black Hole')) {
+      final bodyEnum = CelestialBodyName.fromString(b.name);
+      if (bodyEnum?.isBlackHole == true) {
         // Black hole visibility based on actual camera zoom level (cameraDistance)
         // Hide completely when camera distance > 550, start easing in from 550 down to 285
         const double hideDistance = 550.0;

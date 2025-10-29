@@ -17,10 +17,12 @@ class FloatingSimulationControls extends StatefulWidget {
   const FloatingSimulationControls({super.key, this.onRegisterShowControls});
 
   @override
-  State<FloatingSimulationControls> createState() => _FloatingSimulationControlsState();
+  State<FloatingSimulationControls> createState() =>
+      _FloatingSimulationControlsState();
 }
 
-class _FloatingSimulationControlsState extends State<FloatingSimulationControls> with SingleTickerProviderStateMixin {
+class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   bool _isVisible = true;
@@ -28,11 +30,13 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
     _animationController.forward();
     _startAutoHideTimer();
 
@@ -86,7 +90,8 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
       builder: (context, appState, child) {
         return GestureDetector(
           onLongPress: _showControls, // Long press anywhere to show controls
-          behavior: HitTestBehavior.deferToChild, // Only respond to taps on actual control elements
+          behavior: HitTestBehavior
+              .deferToChild, // Only respond to taps on actual control elements
           child: Stack(
             children: [
               // Floating controls
@@ -94,24 +99,36 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                 animation: _fadeAnimation,
                 builder: (context, child) {
                   return Positioned(
-                    bottom: 45, // Moved up from 30 to give more space above copyright
+                    bottom:
+                        45, // Moved up from 30 to give more space above copyright
                     left: 0,
                     right: 0,
                     child: Opacity(
                       opacity: _fadeAnimation.value,
                       child: Center(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
-                            color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityMedium),
-                            borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
+                            color: AppColors.uiBlack.withValues(
+                              alpha: AppTypography.opacityMedium,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              AppTypography.radiusXXLarge,
+                            ),
                             border: Border.all(
-                              color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryFaint),
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityVeryFaint,
+                              ),
                               width: 1,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityFaint),
+                                color: AppColors.uiBlack.withValues(
+                                  alpha: AppTypography.opacityFaint,
+                                ),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
@@ -122,9 +139,13 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                             children: [
                               // Play/Pause Button
                               _buildControlButton(
-                                icon: appState.simulation.isPaused ? Icons.play_arrow : Icons.pause,
+                                icon: appState.simulation.isPaused
+                                    ? Icons.play_arrow
+                                    : Icons.pause,
                                 onPressed: () {
-                                  final action = appState.simulation.isPaused ? 'play' : 'pause';
+                                  final action = appState.simulation.isPaused
+                                      ? 'play'
+                                      : 'pause';
                                   FirebaseService.instance.logUIEventWithEnums(
                                     UIAction.buttonPressed,
                                     element: UIElement.simulationControl,
@@ -133,28 +154,36 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                                   appState.simulation.pause();
                                   _showControls(); // Keep controls visible after interaction
                                 },
-                                tooltip: appState.simulation.isPaused ? l10n.playButton : l10n.pauseButton,
+                                tooltip: appState.simulation.isPaused
+                                    ? l10n.playButton
+                                    : l10n.pauseButton,
                                 isPrimary: true,
                               ),
 
                               const SizedBox(width: AppTypography.spacingSmall),
 
                               // Manual Camera Mode Button (only show when AI camera is active)
-                              if (appState.ui.cinematicCameraTechnique != CinematicCameraTechnique.manual) ...[
+                              if (appState.ui.cinematicCameraTechnique !=
+                                  CinematicCameraTechnique.manual) ...[
                                 _buildControlButton(
                                   icon: Icons.pan_tool,
                                   onPressed: () {
-                                    FirebaseService.instance.logUIEventWithEnums(
-                                      UIAction.buttonPressed,
-                                      element: UIElement.simulationControl,
-                                      value: 'manual_camera',
+                                    FirebaseService.instance
+                                        .logUIEventWithEnums(
+                                          UIAction.buttonPressed,
+                                          element: UIElement.simulationControl,
+                                          value: 'manual_camera',
+                                        );
+                                    appState.ui.setCinematicCameraTechnique(
+                                      CinematicCameraTechnique.manual,
                                     );
-                                    appState.ui.setCinematicCameraTechnique(CinematicCameraTechnique.manual);
                                     _showControls(); // Keep controls visible after interaction
                                   },
                                   tooltip: l10n.cinematicTechniqueManual,
                                 ),
-                                const SizedBox(width: AppTypography.spacingSmall),
+                                const SizedBox(
+                                  width: AppTypography.spacingSmall,
+                                ),
                               ],
 
                               // Reset Button
@@ -168,9 +197,12 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                                   );
 
                                   // Check if screenshot mode is active and deactivate it first
-                                  final screenshotService = ScreenshotModeService();
+                                  final screenshotService =
+                                      ScreenshotModeService();
                                   if (screenshotService.isActive) {
-                                    screenshotService.deactivate(uiState: appState.ui);
+                                    screenshotService.deactivate(
+                                      uiState: appState.ui,
+                                    );
                                   }
 
                                   appState.resetAll();
@@ -217,18 +249,31 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                   height: 28,
                   decoration: BoxDecoration(
                     color: isPrimary
-                        ? AppColors.primaryColor.withValues(alpha: AppTypography.opacityNearlyOpaque)
-                        : AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryFaint),
-                    borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
+                        ? AppColors.primaryColor.withValues(
+                            alpha: AppTypography.opacityNearlyOpaque,
+                          )
+                        : AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacityVeryFaint,
+                          ),
+                    borderRadius: BorderRadius.circular(
+                      AppTypography.radiusXXLarge,
+                    ),
                     border: isPrimary
                         ? null
-                        : Border.all(color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityFaint), width: 1),
+                        : Border.all(
+                            color: AppColors.uiWhite.withValues(
+                              alpha: AppTypography.opacityFaint,
+                            ),
+                            width: 1,
+                          ),
                   ),
                   child: Icon(
                     icon,
                     color: isPrimary
                         ? AppColors.uiWhite
-                        : AppColors.uiWhite.withValues(alpha: AppTypography.opacityNearlyOpaque),
+                        : AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacityNearlyOpaque,
+                          ),
                     size: 16,
                   ),
                 ),
@@ -236,7 +281,9 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                 Text(
                   tooltip,
                   style: TextStyle(
-                    color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryHigh),
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityVeryHigh,
+                    ),
                     fontSize: AppTypography.fontSizeXSmall,
                     fontWeight: FontWeight.w500,
                   ),

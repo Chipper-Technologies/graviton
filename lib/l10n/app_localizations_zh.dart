@@ -589,6 +589,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bodyOuterPlanet => '外行星';
 
   @override
+  String get bodyCenterOfMass => '质心';
+
+  @override
+  String bodyStarNumber(int number) {
+    return '恒星 $number';
+  }
+
+  @override
   String get educationalFocusChaoticDynamics => '混沌动力学';
 
   @override

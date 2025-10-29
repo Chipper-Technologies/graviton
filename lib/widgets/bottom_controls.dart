@@ -26,7 +26,9 @@ class BottomControls extends StatelessWidget {
                 // Stats toggle (standalone)
                 _buildControlButton(
                   context: context,
-                  icon: appState.ui.showStats ? Icons.analytics : Icons.analytics_outlined,
+                  icon: appState.ui.showStats
+                      ? Icons.analytics
+                      : Icons.analytics_outlined,
                   label: l10n.statsLabel,
                   tooltip: l10n.toggleStatsTooltip,
                   onPressed: () => appState.ui.toggleStats(),
@@ -49,14 +51,19 @@ class BottomControls extends StatelessWidget {
                   tooltip: l10n.focusOnNearestTooltip,
                   onPressed:
                       (appState.simulation.bodies.isNotEmpty &&
-                          appState.ui.cinematicCameraTechnique == CinematicCameraTechnique.manual)
-                      ? () => appState.camera.focusOnNearestBody(appState.simulation.bodies)
+                          appState.ui.cinematicCameraTechnique ==
+                              CinematicCameraTechnique.manual)
+                      ? () => appState.camera.focusOnNearestBody(
+                          appState.simulation.bodies,
+                        )
                       : null,
                 ),
 
                 _buildControlButton(
                   context: context,
-                  icon: appState.camera.followMode ? Icons.track_changes : Icons.track_changes_outlined,
+                  icon: appState.camera.followMode
+                      ? Icons.track_changes
+                      : Icons.track_changes_outlined,
                   label: l10n.followLabel,
                   tooltip: appState.camera.followMode
                       ? l10n.stopFollowingTooltip
@@ -65,8 +72,11 @@ class BottomControls extends StatelessWidget {
                             : l10n.selectObjectToFollowTooltip),
                   onPressed:
                       (appState.camera.selectedBody != null &&
-                          appState.ui.cinematicCameraTechnique == CinematicCameraTechnique.manual)
-                      ? () => appState.camera.toggleFollowMode(appState.simulation.bodies)
+                          appState.ui.cinematicCameraTechnique ==
+                              CinematicCameraTechnique.manual)
+                      ? () => appState.camera.toggleFollowMode(
+                          appState.simulation.bodies,
+                        )
                       : null,
                   isActive: appState.camera.followMode,
                 ),
@@ -76,17 +86,25 @@ class BottomControls extends StatelessWidget {
                   icon: Icons.center_focus_strong,
                   label: l10n.centerLabel,
                   tooltip: l10n.centerViewTooltip,
-                  onPressed: appState.ui.cinematicCameraTechnique == CinematicCameraTechnique.manual
-                      ? () => appState.camera.resetView(appState.simulation.currentScenario)
+                  onPressed:
+                      appState.ui.cinematicCameraTechnique ==
+                          CinematicCameraTechnique.manual
+                      ? () => appState.camera.resetView(
+                          appState.simulation.currentScenario,
+                        )
                       : null,
                 ),
 
                 _buildControlButton(
                   context: context,
-                  icon: appState.camera.autoRotate ? Icons.rotate_right : Icons.rotate_right_outlined,
+                  icon: appState.camera.autoRotate
+                      ? Icons.rotate_right
+                      : Icons.rotate_right_outlined,
                   label: l10n.rotateLabel,
                   tooltip: l10n.autoRotateTooltip,
-                  onPressed: appState.ui.cinematicCameraTechnique == CinematicCameraTechnique.manual
+                  onPressed:
+                      appState.ui.cinematicCameraTechnique ==
+                          CinematicCameraTechnique.manual
                       ? () => appState.camera.toggleAutoRotate()
                       : null,
                   isActive: appState.camera.autoRotate,
@@ -118,11 +136,21 @@ class BottomControls extends StatelessWidget {
           onTap: onPressed,
           borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: AppTypography.spacingSmall, vertical: 6),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppTypography.spacingSmall,
+              vertical: 6,
+            ),
             decoration: BoxDecoration(
-              color: isActive ? AppColors.primaryColor.withValues(alpha: 0.2) : Colors.transparent,
+              color: isActive
+                  ? AppColors.primaryColor.withValues(alpha: 0.2)
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-              border: isActive ? Border.all(color: AppColors.primaryColor.withValues(alpha: 0.4), width: 1) : null,
+              border: isActive
+                  ? Border.all(
+                      color: AppColors.primaryColor.withValues(alpha: 0.4),
+                      width: 1,
+                    )
+                  : null,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -130,7 +158,9 @@ class BottomControls extends StatelessWidget {
                 Icon(
                   icon,
                   color: isEnabled
-                      ? (isActive ? AppColors.primaryColor : AppColors.uiWhite.withValues(alpha: 0.9))
+                      ? (isActive
+                            ? AppColors.primaryColor
+                            : AppColors.uiWhite.withValues(alpha: 0.9))
                       : AppColors.uiWhite.withValues(alpha: 0.3),
                   size: 20,
                 ),
@@ -139,7 +169,9 @@ class BottomControls extends StatelessWidget {
                   label,
                   style: TextStyle(
                     color: isEnabled
-                        ? (isActive ? AppColors.primaryColor : AppColors.uiWhite.withValues(alpha: 0.8))
+                        ? (isActive
+                              ? AppColors.primaryColor
+                              : AppColors.uiWhite.withValues(alpha: 0.8))
                         : AppColors.uiWhite.withValues(alpha: 0.3),
                     fontSize: AppTypography.fontSizeXSmall,
                     fontWeight: isActive ? FontWeight.w500 : FontWeight.normal,

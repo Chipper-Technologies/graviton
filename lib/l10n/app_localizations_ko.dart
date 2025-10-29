@@ -595,6 +595,14 @@ class AppLocalizationsKo extends AppLocalizations {
   String get bodyOuterPlanet => '외행성';
 
   @override
+  String get bodyCenterOfMass => '질량 중심';
+
+  @override
+  String bodyStarNumber(int number) {
+    return '별 $number';
+  }
+
+  @override
   String get educationalFocusChaoticDynamics => '혼돈 역학';
 
   @override

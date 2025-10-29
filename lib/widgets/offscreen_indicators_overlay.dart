@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -179,7 +180,8 @@ class _OffScreenIndicatorPainter extends CustomPainter {
         : _getBodyColor(body);
 
     // Special handling for black hole - use dark gray with white border for visibility
-    final circleColor = body.name == 'Black Hole' && !isSelected
+    final bodyEnum = CelestialBodyName.fromString(body.name);
+    final circleColor = bodyEnum?.isBlackHole == true && !isSelected
         ? AppColors.offScreenBlackHole
         : baseColor;
 
@@ -377,31 +379,38 @@ class _OffScreenIndicatorPainter extends CustomPainter {
 
   Color _getBodyColor(Body body) {
     // Match the exact colors used in CelestialBodyPainter
-    switch (body.name) {
-      case 'Black Hole':
-        return AppColors.uiBlack;
-      case 'Sun':
-        return AppColors.offScreenSun; // Gold
-      case 'Mercury':
-        return AppColors.offScreenMercury; // Brownish gray
-      case 'Venus':
-        return AppColors.offScreenVenus; // Yellowish
-      case 'Earth':
-        return AppColors.offScreenEarth; // Blue
-      case 'Mars':
-        return AppColors.offScreenMars; // Red
-      case 'Jupiter':
-        return AppColors.offScreenJupiter; // Tan/beige
-      case 'Saturn':
-        return AppColors.offScreenSaturn; // Light gold
-      case 'Uranus':
-        return AppColors.offScreenUranus; // Light blue
-      case 'Neptune':
-        return AppColors.offScreenNeptune; // Deep blue
-      default:
-        // Use the body's default color property for other objects
-        return body.color;
+    final bodyEnum = CelestialBodyName.fromString(body.name);
+    if (bodyEnum != null) {
+      switch (bodyEnum) {
+        case CelestialBodyName.blackHole:
+        case CelestialBodyName.supermassiveBlackHole:
+          return AppColors.uiBlack;
+        case CelestialBodyName.sun:
+          return AppColors.offScreenSun; // Gold
+        case CelestialBodyName.mercury:
+          return AppColors.offScreenMercury; // Brownish gray
+        case CelestialBodyName.venus:
+          return AppColors.offScreenVenus; // Yellowish
+        case CelestialBodyName.earth:
+          return AppColors.offScreenEarth; // Blue
+        case CelestialBodyName.mars:
+          return AppColors.offScreenMars; // Red
+        case CelestialBodyName.jupiter:
+          return AppColors.offScreenJupiter; // Tan/beige
+        case CelestialBodyName.saturn:
+          return AppColors.offScreenSaturn; // Light gold
+        case CelestialBodyName.uranus:
+          return AppColors.offScreenUranus; // Light blue
+        case CelestialBodyName.neptune:
+          return AppColors.offScreenNeptune; // Deep blue
+        default:
+          // Use the body's default color property for other objects
+          return body.color;
+      }
     }
+
+    // Use the body's default color property for unrecognized objects
+    return body.color;
   }
 
   @override
