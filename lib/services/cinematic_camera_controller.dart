@@ -3955,6 +3955,8 @@ class CinematicCameraController {
   /// motion (where position differences between frames are naturally larger) while
   /// maintaining precision for slower-moving bodies.
   ///
+  /// ## Algorithm Details
+  ///
   /// Example tolerance calculation (velocities are in simulation units per time step):
   /// - Two planets moving at velocities 0.5 and 1.2 units/time step
   /// - Average velocity: (0.5 + 1.2) / 2 = 0.85 units/time step
@@ -3967,7 +3969,8 @@ class CinematicCameraController {
   /// object representations change, which is critical for maintaining smooth camera
   /// transitions and avoiding jarring perspective changes in dramatic scenarios.
   ///
-  /// ### Handling of Body Mergers and Removals
+  /// ## Handling of Body Mergers and Removals
+  ///
   /// If one or both bodies in a pair have been merged or removed from the simulation,
   /// this method may return `false` if their positions no longer correspond within the
   /// adaptive tolerance. The method assumes that all input bodies are currently present
@@ -3976,43 +3979,36 @@ class CinematicCameraController {
   /// that only valid, existing bodies are passed to this method. This method does not
   /// perform explicit checks for merged or removed bodies, but will naturally fail to
   /// match pairs whose positions have diverged due to such events.
+  ///
+  /// ## Parameters
+  ///
+  /// * [body1] - First body from the current frame's body pair
+  /// * [body2] - Second body from the current frame's body pair
+  /// * [tracked1] - First body from the previously tracked pair
+  /// * [tracked2] - Second body from the previously tracked pair
+  ///
+  /// ## Returns
+  ///
+  /// Returns `true` if the body pairs represent the same physical bodies within
+  /// the calculated velocity-aware tolerance, `false` otherwise.
   bool _isSameBodiesPair(Body body1, Body body2, Body tracked1, Body tracked2) {
     // Compare by position similarity since body objects can change during mergers
     // Use velocity-aware tolerance that adapts based on bodies' speeds
 
-    // Step 1: Extract velocity magnitudes for all four bodies
-    final velocityMagnitude1 = body1.velocity.length;
-    final velocityMagnitude2 = body2.velocity.length;
-    final trackedVelocityMagnitude1 = tracked1.velocity.length;
-    final trackedVelocityMagnitude2 = tracked2.velocity.length;
-
-    // Step 2: Calculate average velocity magnitude for the entire body pair
-    // This represents the overall motion intensity of the tracked system
-    final avgVelocity =
-        (velocityMagnitude1 +
-            velocityMagnitude2 +
-            trackedVelocityMagnitude1 +
-            trackedVelocityMagnitude2) /
-        4.0;
-
-    // Step 3: Calculate adaptive tolerance using velocity-aware formula
-    // Formula: tolerance = base + (avgVelocity * scaling), capped at maximum
-    // - Base tolerance: minimum matching precision for slow-moving bodies
-    // - Velocity component: additional tolerance proportional to motion speed
-    // - Maximum cap: prevents tolerance from becoming too lenient for very fast bodies
-    final adaptiveTolerance = math.min(
-      RenderingConstants.bodyMatchingBaseTolerance +
-          (avgVelocity * RenderingConstants.bodyMatchingVelocityScaling),
-      RenderingConstants.bodyMatchingMaxTolerance,
+    final adaptiveTolerance = _calculateAdaptiveTolerance(
+      body1,
+      body2,
+      tracked1,
+      tracked2,
     );
 
-    // Step 4: Extract current positions for distance comparison
+    // Extract current positions for distance comparison
     final pos1 = body1.position;
     final pos2 = body2.position;
     final trackedPos1 = tracked1.position;
     final trackedPos2 = tracked2.position;
 
-    // Step 5: Check both possible body correspondence patterns
+    // Check both possible body correspondence patterns
     // Pattern 1: body1↔tracked1 AND body2↔tracked2 (same order)
     final match1 =
         (pos1 - trackedPos1).length < adaptiveTolerance &&
@@ -4024,7 +4020,69 @@ class CinematicCameraController {
         (pos1 - trackedPos2).length < adaptiveTolerance &&
         (pos2 - trackedPos1).length < adaptiveTolerance;
 
-    // Step 6: Return true if either correspondence pattern matches
+    // Return true if either correspondence pattern matches
     return match1 || match2;
+  }
+
+  /// Calculate adaptive tolerance for body matching based on velocity magnitudes
+  ///
+  /// This method implements velocity-aware tolerance calculation that adapts the
+  /// position matching threshold based on how fast the bodies are moving. This allows
+  /// for more lenient matching when bodies are in rapid motion while maintaining
+  /// precision for slower-moving bodies.
+  ///
+  /// ## Algorithm
+  ///
+  /// The tolerance is calculated using the formula:
+  /// ```
+  /// tolerance = base + (avgVelocity * scaling), capped at maximum
+  /// ```
+  /// Where:
+  /// - `base`: Minimum matching precision for slow-moving bodies
+  /// - `avgVelocity`: Average velocity magnitude across all four bodies
+  /// - `scaling`: Proportional factor for velocity contribution
+  /// - `maximum`: Cap to prevent tolerance from becoming too lenient
+  ///
+  /// ## Parameters
+  ///
+  /// * [body1] - First body from the current frame
+  /// * [body2] - Second body from the current frame
+  /// * [tracked1] - First body from the previously tracked pair
+  /// * [tracked2] - Second body from the previously tracked pair
+  ///
+  /// ## Returns
+  ///
+  /// Returns the calculated adaptive tolerance value in simulation units.
+  double _calculateAdaptiveTolerance(
+    Body body1,
+    Body body2,
+    Body tracked1,
+    Body tracked2,
+  ) {
+    // Extract velocity magnitudes for all four bodies
+    final velocityMagnitude1 = body1.velocity.length;
+    final velocityMagnitude2 = body2.velocity.length;
+    final trackedVelocityMagnitude1 = tracked1.velocity.length;
+    final trackedVelocityMagnitude2 = tracked2.velocity.length;
+
+    // Calculate average velocity magnitude for the entire body pair
+    // This represents the overall motion intensity of the tracked system
+    final avgVelocity =
+        (velocityMagnitude1 +
+            velocityMagnitude2 +
+            trackedVelocityMagnitude1 +
+            trackedVelocityMagnitude2) /
+        4.0;
+
+    // Calculate adaptive tolerance using velocity-aware formula
+    // Formula: tolerance = base + (avgVelocity * scaling), capped at maximum
+    // - Base tolerance: minimum matching precision for slow-moving bodies
+    // - Velocity component: additional tolerance proportional to motion speed
+    // - Maximum cap: prevents tolerance from becoming too lenient for very fast bodies
+    return math.min(
+      RenderingConstants.bodyMatchingBaseTolerance +
+          (avgVelocity * RenderingConstants.bodyMatchingVelocityScaling),
+      RenderingConstants.bodyMatchingMaxTolerance,
+    );
   }
 }

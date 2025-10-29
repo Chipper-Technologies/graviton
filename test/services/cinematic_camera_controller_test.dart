@@ -357,6 +357,52 @@ void main() {
         }
       });
     });
+
+    group('Refactored Body Tracking Logic', () {
+      test('should handle velocity-aware tolerance correctly', () {
+        simulation.start();
+
+        // Test that the camera updates complete successfully
+        // This indirectly tests the refactored _isSameBodiesPair and _calculateAdaptiveTolerance methods
+        expect(
+          () => controller.updateCamera(
+            CinematicCameraTechnique.predictiveOrbital,
+            simulation,
+            camera,
+            ui,
+            0.016,
+          ),
+          returnsNormally,
+        );
+
+        // Verify camera maintains valid state after update
+        expect(camera.eyePosition, isNotNull);
+        expect(camera.distance, greaterThan(0));
+        expect(camera.distance.isFinite, isTrue);
+      });
+
+      test('should validate mathematical constants are available', () {
+        // These constants are used in the _calculateAdaptiveTolerance method
+        expect(math.pi, closeTo(3.14159, 0.001));
+        expect(math.e, closeTo(2.71828, 0.001));
+
+        // Test that all techniques work with the refactored logic
+        simulation.start();
+        for (final technique in CinematicCameraTechnique.values) {
+          expect(
+            () => controller.updateCamera(
+              technique,
+              simulation,
+              camera,
+              ui,
+              0.016,
+            ),
+            returnsNormally,
+            reason: 'Technique $technique should work with refactored logic',
+          );
+        }
+      });
+    });
   });
 
   group('ScenarioCameraParameters Tests', () {

@@ -81,7 +81,7 @@ void main() {
         );
         star2.stellarLuminosity = 0.5;
 
-        final tempOnestar = TemperatureService.calculatePlanetaryTemperature(
+        final tempOneStar = TemperatureService.calculatePlanetaryTemperature(
           testPlanet,
           [testStar],
         );
@@ -91,7 +91,7 @@ void main() {
         );
 
         // Temperature should be higher with two stars
-        expect(tempTwoStars, greaterThan(tempOnestar));
+        expect(tempTwoStars, greaterThan(tempOneStar));
       });
 
       test('Should return original temperature for non-habitable bodies', () {
