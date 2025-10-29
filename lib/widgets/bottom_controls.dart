@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -28,7 +29,7 @@ class BottomControls extends StatelessWidget {
                   icon: appState.ui.showStats
                       ? Icons.analytics
                       : Icons.analytics_outlined,
-                  label: 'Stats',
+                  label: l10n.statsLabel,
                   tooltip: l10n.toggleStatsTooltip,
                   onPressed: () => appState.ui.toggleStats(),
                   isActive: appState.ui.showStats,
@@ -46,9 +47,12 @@ class BottomControls extends StatelessWidget {
                 _buildControlButton(
                   context: context,
                   icon: Icons.my_location,
-                  label: 'Select',
+                  label: l10n.selectLabel,
                   tooltip: l10n.focusOnNearestTooltip,
-                  onPressed: appState.simulation.bodies.isNotEmpty
+                  onPressed:
+                      (appState.simulation.bodies.isNotEmpty &&
+                          appState.ui.cinematicCameraTechnique ==
+                              CinematicCameraTechnique.manual)
                       ? () => appState.camera.focusOnNearestBody(
                           appState.simulation.bodies,
                         )
@@ -60,13 +64,16 @@ class BottomControls extends StatelessWidget {
                   icon: appState.camera.followMode
                       ? Icons.track_changes
                       : Icons.track_changes_outlined,
-                  label: 'Follow',
+                  label: l10n.followLabel,
                   tooltip: appState.camera.followMode
                       ? l10n.stopFollowingTooltip
                       : (appState.camera.selectedBody != null
                             ? l10n.followObjectTooltip
                             : l10n.selectObjectToFollowTooltip),
-                  onPressed: appState.camera.selectedBody != null
+                  onPressed:
+                      (appState.camera.selectedBody != null &&
+                          appState.ui.cinematicCameraTechnique ==
+                              CinematicCameraTechnique.manual)
                       ? () => appState.camera.toggleFollowMode(
                           appState.simulation.bodies,
                         )
@@ -77,11 +84,15 @@ class BottomControls extends StatelessWidget {
                 _buildControlButton(
                   context: context,
                   icon: Icons.center_focus_strong,
-                  label: 'Center',
+                  label: l10n.centerLabel,
                   tooltip: l10n.centerViewTooltip,
-                  onPressed: () => appState.camera.resetView(
-                    appState.simulation.currentScenario,
-                  ),
+                  onPressed:
+                      appState.ui.cinematicCameraTechnique ==
+                          CinematicCameraTechnique.manual
+                      ? () => appState.camera.resetView(
+                          appState.simulation.currentScenario,
+                        )
+                      : null,
                 ),
 
                 _buildControlButton(
@@ -89,9 +100,13 @@ class BottomControls extends StatelessWidget {
                   icon: appState.camera.autoRotate
                       ? Icons.rotate_right
                       : Icons.rotate_right_outlined,
-                  label: 'Rotate',
+                  label: l10n.rotateLabel,
                   tooltip: l10n.autoRotateTooltip,
-                  onPressed: () => appState.camera.toggleAutoRotate(),
+                  onPressed:
+                      appState.ui.cinematicCameraTechnique ==
+                          CinematicCameraTechnique.manual
+                      ? () => appState.camera.toggleAutoRotate()
+                      : null,
                   isActive: appState.camera.autoRotate,
                 ),
               ],

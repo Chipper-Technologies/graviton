@@ -27,6 +27,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get trailsLabel => 'Traînées';
 
   @override
+  String get statsLabel => 'Statistiques';
+
+  @override
+  String get selectLabel => 'Sélectionner';
+
+  @override
+  String get followLabel => 'Suivre';
+
+  @override
+  String get centerLabel => 'Centrer';
+
+  @override
+  String get rotateLabel => 'Rotation';
+
+  @override
   String get warmTrails => '🔥 Chaud';
 
   @override

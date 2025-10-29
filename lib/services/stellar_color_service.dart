@@ -54,7 +54,9 @@ class StellarColorService {
       return AppColors.stellarGType; // G-type star (yellow, like our Sun)
     } else if (bodyName.contains('asteroid')) {
       return AppColors.asteroidBrownish; // Brownish rocky asteroids
-    } else if (bodyName.contains('central star') || bodyName.contains('star a') || bodyName.contains('star b')) {
+    } else if (bodyName.contains('central star') ||
+        bodyName.contains('star a') ||
+        bodyName.contains('star b')) {
       // Binary star system stars - use realistic stellar classification
       final effectiveTemperature = _calculateStellarTemperature(body.mass);
       return _getColorFromTemperature(effectiveTemperature);

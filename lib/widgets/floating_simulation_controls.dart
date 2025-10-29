@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -160,6 +161,30 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                               ),
 
                               const SizedBox(width: AppTypography.spacingSmall),
+
+                              // Manual Camera Mode Button (only show when AI camera is active)
+                              if (appState.ui.cinematicCameraTechnique !=
+                                  CinematicCameraTechnique.manual) ...[
+                                _buildControlButton(
+                                  icon: Icons.pan_tool,
+                                  onPressed: () {
+                                    FirebaseService.instance
+                                        .logUIEventWithEnums(
+                                          UIAction.buttonPressed,
+                                          element: UIElement.simulationControl,
+                                          value: 'manual_camera',
+                                        );
+                                    appState.ui.setCinematicCameraTechnique(
+                                      CinematicCameraTechnique.manual,
+                                    );
+                                    _showControls(); // Keep controls visible after interaction
+                                  },
+                                  tooltip: l10n.cinematicTechniqueManual,
+                                ),
+                                const SizedBox(
+                                  width: AppTypography.spacingSmall,
+                                ),
+                              ],
 
                               // Reset Button
                               _buildControlButton(

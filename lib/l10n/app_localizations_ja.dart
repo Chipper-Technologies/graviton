@@ -27,6 +27,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get trailsLabel => '軌跡';
 
   @override
+  String get statsLabel => '統計';
+
+  @override
+  String get selectLabel => '選択';
+
+  @override
+  String get followLabel => '追従';
+
+  @override
+  String get centerLabel => '中央';
+
+  @override
+  String get rotateLabel => '回転';
+
+  @override
   String get warmTrails => '🔥 暖色';
 
   @override

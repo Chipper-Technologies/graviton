@@ -27,6 +27,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get trailsLabel => 'Rastros';
 
   @override
+  String get statsLabel => 'Estadísticas';
+
+  @override
+  String get selectLabel => 'Seleccionar';
+
+  @override
+  String get followLabel => 'Seguir';
+
+  @override
+  String get centerLabel => 'Centrar';
+
+  @override
+  String get rotateLabel => 'Rotar';
+
+  @override
   String get warmTrails => '🔥 Cálido';
 
   @override

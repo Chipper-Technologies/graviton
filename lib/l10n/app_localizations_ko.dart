@@ -27,6 +27,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get trailsLabel => '궤적';
 
   @override
+  String get statsLabel => '통계';
+
+  @override
+  String get selectLabel => '선택';
+
+  @override
+  String get followLabel => '추적';
+
+  @override
+  String get centerLabel => '중앙';
+
+  @override
+  String get rotateLabel => '회전';
+
+  @override
   String get warmTrails => '🔥 따뜻한';
 
   @override

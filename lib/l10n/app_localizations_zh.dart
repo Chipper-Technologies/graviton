@@ -27,6 +27,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get trailsLabel => '轨迹';
 
   @override
+  String get statsLabel => '统计';
+
+  @override
+  String get selectLabel => '选择';
+
+  @override
+  String get followLabel => '跟随';
+
+  @override
+  String get centerLabel => '居中';
+
+  @override
+  String get rotateLabel => '旋转';
+
+  @override
   String get warmTrails => '🔥 热';
 
   @override

@@ -30,6 +30,31 @@
     "description": "Label for trail visibility toggle"
   },
   
+  "statsLabel": "Stats",
+  "@statsLabel": {
+    "description": "Label for statistics display button"
+  },
+  
+  "selectLabel": "Select",
+  "@selectLabel": {
+    "description": "Label for select nearest object button"
+  },
+  
+  "followLabel": "Follow",
+  "@followLabel": {
+    "description": "Label for follow object button"
+  },
+  
+  "centerLabel": "Center",
+  "@centerLabel": {
+    "description": "Label for center view button"
+  },
+  
+  "rotateLabel": "Rotate",
+  "@rotateLabel": {
+    "description": "Label for auto-rotate button"
+  },
+  
   "warmTrails": "🔥 Warm",
   "@warmTrails": {
     "description": "Option for warm-colored trails"
