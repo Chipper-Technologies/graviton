@@ -17,6 +17,7 @@ void main() {
     });
 
     test('Should initialize without throwing', () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
       expect(() async => await service.initialize(), returnsNormally);
     });
 
@@ -123,6 +124,7 @@ void main() {
     });
 
     test('Should handle remote config integration gracefully', () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
       // Should not throw when remote config is not available
       await service.initialize();
 

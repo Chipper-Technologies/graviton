@@ -504,6 +504,54 @@ abstract class AppLocalizations {
   /// **'Reverse up/down drag direction'**
   String get invertPitchControlsDescription;
 
+  /// Label for cinematic camera technique selection
+  ///
+  /// In en, this message translates to:
+  /// **'AI Camera Technique'**
+  String get cinematicCameraTechniqueLabel;
+
+  /// Description for cinematic camera technique setting
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how AI controls the camera when following objects'**
+  String get cinematicCameraTechniqueDescription;
+
+  /// Manual camera control technique
+  ///
+  /// In en, this message translates to:
+  /// **'Manual Control'**
+  String get cinematicTechniqueManual;
+
+  /// Description for manual camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional manual camera controls with follow mode'**
+  String get cinematicTechniqueManualDesc;
+
+  /// Predictive orbital camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Predictive Orbital'**
+  String get cinematicTechniquePredictiveOrbital;
+
+  /// Description for predictive orbital camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'AI tours and orbital predictions for educational scenarios'**
+  String get cinematicTechniquePredictiveOrbitalDesc;
+
+  /// Dynamic framing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Dynamic Framing'**
+  String get cinematicTechniqueDynamicFraming;
+
+  /// Description for dynamic framing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time dramatic targeting for chaotic scenarios'**
+  String get cinematicTechniqueDynamicFramingDesc;
+
   /// Header for marketing tools section
   ///
   /// In en, this message translates to:

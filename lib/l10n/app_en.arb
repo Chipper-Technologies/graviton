@@ -330,6 +330,46 @@
     "description": "Description for invert pitch controls toggle"
   },
   
+  "cinematicCameraTechniqueLabel": "AI Camera Technique",
+  "@cinematicCameraTechniqueLabel": {
+    "description": "Label for cinematic camera technique selection"
+  },
+  
+  "cinematicCameraTechniqueDescription": "Choose how AI controls the camera when following objects",
+  "@cinematicCameraTechniqueDescription": {
+    "description": "Description for cinematic camera technique setting"
+  },
+  
+  "cinematicTechniqueManual": "Manual Control",
+  "@cinematicTechniqueManual": {
+    "description": "Manual camera control technique"
+  },
+  
+  "cinematicTechniqueManualDesc": "Traditional manual camera controls with follow mode",
+  "@cinematicTechniqueManualDesc": {
+    "description": "Description for manual camera technique"
+  },
+  
+  "cinematicTechniquePredictiveOrbital": "Predictive Orbital",
+  "@cinematicTechniquePredictiveOrbital": {
+    "description": "Predictive orbital camera technique"
+  },
+  
+  "cinematicTechniquePredictiveOrbitalDesc": "AI tours and orbital predictions for educational scenarios",
+  "@cinematicTechniquePredictiveOrbitalDesc": {
+    "description": "Description for predictive orbital camera technique"
+  },
+  
+  "cinematicTechniqueDynamicFraming": "Dynamic Framing",
+  "@cinematicTechniqueDynamicFraming": {
+    "description": "Dynamic framing camera technique"
+  },
+  
+  "cinematicTechniqueDynamicFramingDesc": "Real-time dramatic targeting for chaotic scenarios",
+  "@cinematicTechniqueDynamicFramingDesc": {
+    "description": "Description for dynamic framing camera technique"
+  },
+  
   "marketingLabel": "Marketing",
   "@marketingLabel": {
     "description": "Header for marketing tools section"

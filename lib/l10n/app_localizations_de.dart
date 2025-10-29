@@ -212,6 +212,34 @@ class AppLocalizationsDe extends AppLocalizations {
   String get invertPitchControlsDescription => 'Auf/Ab-Ziehrichtung umkehren';
 
   @override
+  String get cinematicCameraTechniqueLabel => 'KI-Kamera-Technik';
+
+  @override
+  String get cinematicCameraTechniqueDescription =>
+      'Wählen Sie, wie die KI die Kamera beim Verfolgen von Objekten steuert';
+
+  @override
+  String get cinematicTechniqueManual => 'Manuelle Steuerung';
+
+  @override
+  String get cinematicTechniqueManualDesc =>
+      'Traditionelle manuelle Kamerasteuerung mit Verfolgungsmodus';
+
+  @override
+  String get cinematicTechniquePredictiveOrbital => 'Vorhersagende Umlaufbahn';
+
+  @override
+  String get cinematicTechniquePredictiveOrbitalDesc =>
+      'KI-Touren und Umlaufbahnvorhersagen für Bildungsszenarien';
+
+  @override
+  String get cinematicTechniqueDynamicFraming => 'Dynamischer Bildaufbau';
+
+  @override
+  String get cinematicTechniqueDynamicFramingDesc =>
+      'Echtzeit-dramatische Zielerfassung für chaotische Szenarien';
+
+  @override
   String get marketingLabel => 'Marketing';
 
   @override
@@ -414,25 +442,25 @@ class AppLocalizationsDe extends AppLocalizations {
   String get languageSystem => 'Systemstandard';
 
   @override
-  String get languageEnglish => 'English';
+  String get languageEnglish => 'Englisch';
 
   @override
   String get languageGerman => 'Deutsch';
 
   @override
-  String get languageSpanish => 'Español';
+  String get languageSpanish => 'Spanisch';
 
   @override
-  String get languageFrench => 'Français';
+  String get languageFrench => 'Französisch';
 
   @override
-  String get languageChinese => '中文';
+  String get languageChinese => 'Chinesisch';
 
   @override
-  String get languageJapanese => '日本語';
+  String get languageJapanese => 'Japanisch';
 
   @override
-  String get languageKorean => '한국어';
+  String get languageKorean => 'Koreanisch';
 
   @override
   String get bodyAlpha => 'Alpha';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,6 +28,10 @@ class UIState extends ChangeNotifier {
   // Language settings
   String? _selectedLanguageCode; // null means system default
 
+  // Cinematic camera settings
+  CinematicCameraTechnique _cinematicCameraTechnique =
+      CinematicCameraTechnique.manual;
+
   // Screenshot mode settings
   bool _hideUIInScreenshotMode = false;
 
@@ -47,6 +52,7 @@ class UIState extends ChangeNotifier {
       'showHabitabilityIndicators';
   static const String _keyShowGravityWells = 'showGravityWells';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
+  static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
 
   /// Initialize and load saved settings
@@ -76,6 +82,15 @@ class UIState extends ChangeNotifier {
           prefs.getBool(_keyShowHabitabilityIndicators) ?? false;
       _showGravityWells = prefs.getBool(_keyShowGravityWells) ?? false;
       _selectedLanguageCode = prefs.getString(_keySelectedLanguageCode);
+
+      // Load cinematic camera technique setting
+      final cinematicTechniqueValue = prefs.getString(
+        _keyCinematicCameraTechnique,
+      );
+      _cinematicCameraTechnique = cinematicTechniqueValue != null
+          ? CinematicCameraTechnique.fromValue(cinematicTechniqueValue)
+          : CinematicCameraTechnique.manual;
+
       _hideUIInScreenshotMode =
           prefs.getBool(_keyHideUIInScreenshotMode) ?? false;
 
@@ -128,6 +143,10 @@ class UIState extends ChangeNotifier {
 
   // Language getters
   String? get selectedLanguageCode => _selectedLanguageCode;
+
+  // Cinematic camera getters
+  CinematicCameraTechnique get cinematicCameraTechnique =>
+      _cinematicCameraTechnique;
 
   // Screenshot mode getters
   bool get hideUIInScreenshotMode => _hideUIInScreenshotMode;
@@ -264,6 +283,17 @@ class UIState extends ChangeNotifier {
     FirebaseService.instance.logSettingsChange(
       'language',
       languageCode ?? 'system',
+    );
+    notifyListeners();
+  }
+
+  // Cinematic camera setters
+  void setCinematicCameraTechnique(CinematicCameraTechnique technique) {
+    _cinematicCameraTechnique = technique;
+    _saveSetting(_keyCinematicCameraTechnique, technique.value);
+    FirebaseService.instance.logSettingsChange(
+      'cinematic_camera_technique',
+      technique.value,
     );
     notifyListeners();
   }

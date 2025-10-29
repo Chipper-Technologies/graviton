@@ -207,6 +207,30 @@ class AppLocalizationsZh extends AppLocalizations {
   String get invertPitchControlsDescription => '反转上下拖拽方向';
 
   @override
+  String get cinematicCameraTechniqueLabel => 'AI相机技术';
+
+  @override
+  String get cinematicCameraTechniqueDescription => '选择AI在跟踪对象时如何控制相机';
+
+  @override
+  String get cinematicTechniqueManual => '手动控制';
+
+  @override
+  String get cinematicTechniqueManualDesc => '传统的手动相机控制，带有跟踪模式';
+
+  @override
+  String get cinematicTechniquePredictiveOrbital => '预测轨道';
+
+  @override
+  String get cinematicTechniquePredictiveOrbitalDesc => '用于教育场景的AI导览和轨道预测';
+
+  @override
+  String get cinematicTechniqueDynamicFraming => '动态取景';
+
+  @override
+  String get cinematicTechniqueDynamicFramingDesc => '用于混沌场景的实时戏剧性目标选择';
+
+  @override
   String get marketingLabel => '营销';
 
   @override
@@ -397,25 +421,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get languageSystem => '系统默认';
 
   @override
-  String get languageEnglish => 'English';
+  String get languageEnglish => '英语';
 
   @override
-  String get languageGerman => 'Deutsch';
+  String get languageGerman => '德语';
 
   @override
-  String get languageSpanish => 'Español';
+  String get languageSpanish => '西班牙语';
 
   @override
-  String get languageFrench => 'Français';
+  String get languageFrench => '法语';
 
   @override
   String get languageChinese => '中文';
 
   @override
-  String get languageJapanese => '日本語';
+  String get languageJapanese => '日语';
 
   @override
-  String get languageKorean => '한국어';
+  String get languageKorean => '韩语';
 
   @override
   String get bodyAlpha => '阿尔法';

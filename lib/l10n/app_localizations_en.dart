@@ -211,6 +211,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invertPitchControlsDescription => 'Reverse up/down drag direction';
 
   @override
+  String get cinematicCameraTechniqueLabel => 'AI Camera Technique';
+
+  @override
+  String get cinematicCameraTechniqueDescription =>
+      'Choose how AI controls the camera when following objects';
+
+  @override
+  String get cinematicTechniqueManual => 'Manual Control';
+
+  @override
+  String get cinematicTechniqueManualDesc =>
+      'Traditional manual camera controls with follow mode';
+
+  @override
+  String get cinematicTechniquePredictiveOrbital => 'Predictive Orbital';
+
+  @override
+  String get cinematicTechniquePredictiveOrbitalDesc =>
+      'AI tours and orbital predictions for educational scenarios';
+
+  @override
+  String get cinematicTechniqueDynamicFraming => 'Dynamic Framing';
+
+  @override
+  String get cinematicTechniqueDynamicFramingDesc =>
+      'Real-time dramatic targeting for chaotic scenarios';
+
+  @override
   String get marketingLabel => 'Marketing';
 
   @override
