@@ -662,8 +662,9 @@ class ScenarioService {
 
     // Generate stars in galactic disk formation (3 spiral arms + 2 inner close stars)
     // Most stars should remain in stable orbits - stellar ejections are rare in real galaxies
-    const starsPerArm = 10; // Increased to include 2 inner stars per arm
-    const numArms = 3;
+    const starsPerArm = SimulationConstants
+        .galaxyStarsPerArm; // Increased to include 2 inner stars per arm
+    const numArms = SimulationConstants.galaxySpiralArms;
 
     for (int arm = 0; arm < numArms; arm++) {
       final armAngleOffset =

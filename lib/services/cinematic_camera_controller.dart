@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
@@ -239,8 +240,8 @@ class CinematicCameraController {
     double deltaTime,
   ) {
     // Get orbital predictions
-    const timeFrame = 10.0;
-    const timeStep = 0.1;
+    const timeFrame = SimulationConstants.predictiveTimeFrame;
+    const timeStep = SimulationConstants.predictiveTimeStep;
     final predictions = _predictionEngine.predictFuturePositions(
       simulation.bodies,
       timeFrame,
@@ -2016,7 +2017,7 @@ class CinematicCameraController {
     // For random scenarios, add center smoothing to reduce chaotic camera movement
     if (scenario == ScenarioType.random) {
       // Smooth the target center with previous center to reduce jitter
-      const smoothingFactor = 0.4;
+      const smoothingFactor = SimulationConstants.cameraSmoothing;
       if (_previousCenter.length > 0) {
         targetCenter =
             _previousCenter * (1.0 - smoothingFactor) +
@@ -2547,11 +2548,14 @@ class CinematicCameraController {
 
     // Tour cycle: Wide View (1s) → Sun Focus (4s) → Earth Focus (4s) → Wide Return (2s) → repeat
     // Note: Never targets the moon directly
-    const double wideViewDuration = 1.0; // Brief overview
-    const double sunFocusDuration = 4.0; // AI explores the sun
-    const double earthFocusDuration =
-        4.0; // AI explores earth (moon visible but not targeted)
-    const double wideReturnDuration = 2.0; // Return to wide view
+    const double wideViewDuration =
+        SimulationConstants.solarSystemWideViewDuration; // Brief overview
+    const double sunFocusDuration =
+        SimulationConstants.solarSystemSunFocusDuration; // AI explores the sun
+    const double earthFocusDuration = SimulationConstants
+        .solarSystemEarthFocusDuration; // AI explores earth (moon visible but not targeted)
+    const double wideReturnDuration = SimulationConstants
+        .solarSystemWideReturnDuration; // Return to wide view
     const double totalCycleDuration =
         wideViewDuration +
         sunFocusDuration +
@@ -2797,14 +2801,16 @@ class CinematicCameraController {
         : <Body>[];
 
     // Tour cycle: Quick Wide View (1s) → Zoom In (4s) → Direct Planet Transition (2s) → Planet Survey (3s) → Wide View Return (2s) → repeat
-    const double wideViewDuration =
-        1.0; // Very brief overview - start zooming in quickly
-    const double zoomInDuration = 4.0; // Zoom in to binary stars
-    const double planetTransitionDuration =
-        2.0; // Direct transition from binary to planets
-    const double planetSurveyDuration = 3.0; // Survey any planets
-    const double wideViewReturnDuration =
-        2.0; // Return to wide view before repeating
+    const double wideViewDuration = SimulationConstants
+        .binaryStarWideViewDuration; // Very brief overview - start zooming in quickly
+    const double zoomInDuration =
+        SimulationConstants.binaryStarZoomInDuration; // Zoom in to binary stars
+    const double planetTransitionDuration = SimulationConstants
+        .binaryStarPlanetTransitionDuration; // Direct transition from binary to planets
+    const double planetSurveyDuration = SimulationConstants
+        .binaryStarPlanetSurveyDuration; // Survey any planets
+    const double wideViewReturnDuration = SimulationConstants
+        .binaryStarWideViewReturnDuration; // Return to wide view before repeating
     const double totalCycleDuration =
         wideViewDuration +
         zoomInDuration +
@@ -3257,12 +3263,16 @@ class CinematicCameraController {
     if (asteroids.isEmpty) return;
 
     // Enhanced phase timing with AI control periods
-    const double wideViewDuration =
-        2.0; // Wide view to center star + inner planets
-    const double centralStarAIDuration = 2.0; // AI control at central star
-    const double outerTransitionDuration = 2.0; // Transition to outer planets
-    const double outerPlanetAIDuration = 2.0; // AI control at outer planet
-    const double wideViewReturnDuration = 2.0; // Return to starting wide view
+    const double wideViewDuration = SimulationConstants
+        .planetarySystemWideViewDuration; // Wide view to center star + inner planets
+    const double centralStarAIDuration = SimulationConstants
+        .planetarySystemCentralStarDuration; // AI control at central star
+    const double outerTransitionDuration = SimulationConstants
+        .planetarySystemOuterTransitionDuration; // Transition to outer planets
+    const double outerPlanetAIDuration = SimulationConstants
+        .planetarySystemOuterPlanetDuration; // AI control at outer planet
+    const double wideViewReturnDuration = SimulationConstants
+        .planetarySystemWideViewReturnDuration; // Return to starting wide view
     const double totalCycleDuration =
         wideViewDuration +
         centralStarAIDuration +
@@ -3293,7 +3303,8 @@ class CinematicCameraController {
           .toList();
       final innerBodies = [centralStar, ...innerPlanets];
       final innerCenter = _calculateCenter(innerBodies);
-      const innerDistance = 20.0; // Distance to see center star + inner planets
+      const innerDistance = SimulationConstants
+          .cameraInnerDistance; // Distance to see center star + inner planets
 
       // Smooth transition from wide view to inner system
       final targetCenter = _lerpVector3(wideCenter, innerCenter, smoothT);
@@ -3325,7 +3336,7 @@ class CinematicCameraController {
           .toList();
       final innerBodies = [centralStar, ...innerPlanets];
       final innerCenter = _calculateCenter(innerBodies);
-      const innerDistance = 20.0;
+      const innerDistance = SimulationConstants.cameraInnerDistance;
 
       // Set the basic target and distance, then let AI handle movement
       camera.setCameraParameters(
@@ -3375,7 +3386,8 @@ class CinematicCameraController {
 
         final farthestBody = sortedByDistance.first;
         final outerCenter = farthestBody.position;
-        const outerDistance = 25.0; // Good distance to see the target body
+        const outerDistance = SimulationConstants
+            .cameraOuterDistance; // Good distance to see the target body
 
         // Smooth transition from current AI position to the farthest body
         final targetCenter = _lerpVector3(startCenter, outerCenter, smoothT);
@@ -3391,9 +3403,9 @@ class CinematicCameraController {
         final startRoll = camera.roll;
 
         // Target angles for outer planet viewing
-        const targetYaw = 0.0;
-        const targetPitch = 0.25;
-        const targetRoll = 0.0;
+        const targetYaw = SimulationConstants.cameraTargetYaw;
+        const targetPitch = SimulationConstants.cameraTargetPitch;
+        const targetRoll = SimulationConstants.cameraTargetRoll;
 
         final transitionYaw = _lerpDouble(startYaw, targetYaw, smoothT);
         final transitionPitch = _lerpDouble(startPitch, targetPitch, smoothT);
@@ -3426,7 +3438,7 @@ class CinematicCameraController {
         });
 
         final farthestBody = sortedByDistance.first;
-        const outerDistance = 25.0;
+        const outerDistance = SimulationConstants.cameraOuterDistance;
 
         // Set the basic target and distance, then let AI handle movement
         camera.setCameraParameters(
@@ -3548,15 +3560,18 @@ class CinematicCameraController {
     if (stars.isEmpty) return;
 
     // 6-phase tour structure
-    const double wideViewDuration =
-        4.0; // Wide galaxy view with gentle movement
-    const double blackHoleTransitionDuration =
-        12.0; // Much slower transition with orbital movement
-    const double blackHoleAIDuration = 6.0; // Extended AI control at black hole
-    const double starTransitionDuration =
-        6.0; // Slower transition to random star
-    const double starAIDuration = 6.0; // Extended AI control at star
-    const double returnDuration = 8.0; // Slower return with orbital movement
+    const double wideViewDuration = SimulationConstants
+        .galaxyWideViewDuration; // Wide galaxy view with gentle movement
+    const double blackHoleTransitionDuration = SimulationConstants
+        .galaxyBlackHoleTransitionDuration; // Much slower transition with orbital movement
+    const double blackHoleAIDuration = SimulationConstants
+        .galaxyBlackHoleDuration; // Extended AI control at black hole
+    const double starTransitionDuration = SimulationConstants
+        .galaxyStarTransitionDuration; // Slower transition to random star
+    const double starAIDuration =
+        SimulationConstants.galaxyStarDuration; // Extended AI control at star
+    const double returnDuration = SimulationConstants
+        .galaxyReturnDuration; // Slower return with orbital movement
     const double totalCycleDuration =
         wideViewDuration +
         blackHoleTransitionDuration +
@@ -3576,7 +3591,8 @@ class CinematicCameraController {
       // Calculate wide view to see the entire galaxy
       final allBodies = [blackHole, ...stars];
       final galaxyCenter = _calculateCenter(allBodies);
-      const wideDistance = 600.0; // Much wider to see full galactic structure
+      const wideDistance = SimulationConstants
+          .cameraWideDistance; // Much wider to see full galactic structure
 
       // Very gentle camera movement for dramatic galactic overview
       // Start from default galaxy formation camera angles
@@ -3607,7 +3623,8 @@ class CinematicCameraController {
       // Start from ACTUAL wide galaxy view distance (match Phase 1)
       final allBodies = [blackHole, ...stars];
       final startCenter = _calculateCenter(allBodies);
-      const startDistance = 600.0; // Match the actual wide view distance
+      const startDistance = SimulationConstants
+          .cameraWideDistance; // Match the actual wide view distance
 
       // Target: black hole
       final blackHoleCenter = blackHole.position;
@@ -3671,7 +3688,7 @@ class CinematicCameraController {
       // Phase 3: AI control around black hole
 
       // Set up the black hole as target
-      const blackHoleDistance = 40.0;
+      const blackHoleDistance = SimulationConstants.cameraBlackHoleDistance;
 
       // Set the basic target and distance, then let AI handle movement
       camera.setCameraParameters(
@@ -3738,7 +3755,8 @@ class CinematicCameraController {
       final cycleRandom = math.Random(cycleSeed);
       final starIndex = cycleRandom.nextInt(stars.length);
       final targetStar = stars[starIndex];
-      const starDistance = 30.0; // Good distance to see the star
+      const starDistance = SimulationConstants
+          .cameraStarDistance; // Good distance to see the star
 
       // Smooth transition
       final targetCenter = _lerpVector3(
@@ -3780,7 +3798,7 @@ class CinematicCameraController {
       final cycleRandom = math.Random(cycleSeed);
       final starIndex = cycleRandom.nextInt(stars.length);
       final targetStar = stars[starIndex];
-      const starDistance = 30.0;
+      const starDistance = SimulationConstants.cameraStarDistance;
 
       // Set the basic target and distance, then let AI handle movement
       camera.setCameraParameters(
@@ -3843,7 +3861,8 @@ class CinematicCameraController {
       // Calculate wide view parameters
       final allBodies = [blackHole, ...stars];
       final wideCenter = _calculateCenter(allBodies);
-      const wideDistance = 600.0; // Same wide distance as Phase 1
+      const wideDistance = SimulationConstants
+          .cameraWideDistance; // Same wide distance as Phase 1
 
       // Add orbital movement around the galaxy as we zoom out
       final orbitProgress =

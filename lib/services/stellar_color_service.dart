@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/models/body.dart';
@@ -72,8 +73,8 @@ class StellarColorService {
   /// Based on main sequence mass-temperature relationship
   static double _calculateStellarTemperature(double mass) {
     // Sun has mass ~10 units in our simulation, temperature ~5778K
-    const sunMass = 10.0;
-    const sunTemperature = 5778.0;
+    final sunMass = SimulationConstants.sunMassReference;
+    final sunTemperature = SimulationConstants.sunTemperatureReference;
 
     // Mass-temperature relationship for main sequence stars
     // More massive stars are hotter: T ∝ M^0.5 to M^0.8 depending on mass range
