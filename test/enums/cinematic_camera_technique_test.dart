@@ -4,7 +4,7 @@ import 'package:graviton/enums/cinematic_camera_technique.dart';
 void main() {
   group('CinematicCameraTechnique Enum Tests', () {
     test('enum should have all expected values', () {
-      expect(CinematicCameraTechnique.values, hasLength(6));
+      expect(CinematicCameraTechnique.values, hasLength(3));
       expect(
         CinematicCameraTechnique.values,
         contains(CinematicCameraTechnique.manual),
@@ -121,7 +121,10 @@ void main() {
           .toList();
 
       expect(nonAiTechniques, hasLength(1)); // Only manual
-      expect(aiTechniques, hasLength(5)); // All others
+      expect(
+        aiTechniques,
+        hasLength(2),
+      ); // predictiveOrbital and dynamicFraming
       expect(nonAiTechniques.first, equals(CinematicCameraTechnique.manual));
     });
 

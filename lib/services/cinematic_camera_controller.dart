@@ -79,7 +79,8 @@ class CinematicCameraController {
   double _multiBodyFramingTime = 0.0;
 
   // Target locking state
-  List<Body>? _nextTargetBodies; // Queue the next target instead of switching immediately
+  List<Body>?
+  _nextTargetBodies; // Queue the next target instead of switching immediately
   bool _hasQueuedTarget = false;
   int _framesSinceLastSwitch = 0; // Track frames since last switch
   int _totalFrames = 0; // Total frame counter
@@ -109,7 +110,9 @@ class CinematicCameraController {
     double deltaTime,
   ) {
     // Only update frame counter and apply cinematic techniques if simulation is running and not paused
-    if (!simulation.isRunning || simulation.isPaused || simulation.bodies.isEmpty) {
+    if (!simulation.isRunning ||
+        simulation.isPaused ||
+        simulation.bodies.isEmpty) {
       return;
     }
 
@@ -166,9 +169,15 @@ class CinematicCameraController {
     _lastBodyCount = currentBodyCount;
 
     // Check if any tracked bodies are no longer in the simulation
-    _currentFramedBodies.removeWhere((trackedBody) => !currentBodies.contains(trackedBody));
-    _targetFramedBodies.removeWhere((trackedBody) => !currentBodies.contains(trackedBody));
-    _allInterestingBodies.removeWhere((trackedBody) => !currentBodies.contains(trackedBody));
+    _currentFramedBodies.removeWhere(
+      (trackedBody) => !currentBodies.contains(trackedBody),
+    );
+    _targetFramedBodies.removeWhere(
+      (trackedBody) => !currentBodies.contains(trackedBody),
+    );
+    _allInterestingBodies.removeWhere(
+      (trackedBody) => !currentBodies.contains(trackedBody),
+    );
 
     // If we've lost our tracked bodies due to mergers, reset the framing state
     if (_currentFramedBodies.isEmpty && _isTransitioning) {
@@ -184,7 +193,11 @@ class CinematicCameraController {
   }
 
   /// Handle predictive orbital camera technique
-  void _handlePredictiveOrbital(SimulationState simulation, CameraState camera, double deltaTime) {
+  void _handlePredictiveOrbital(
+    SimulationState simulation,
+    CameraState camera,
+    double deltaTime,
+  ) {
     // For solar system, use direct tour instead of predictions
     if (simulation.currentScenario == ScenarioType.solarSystem) {
       _handleSolarSystemTour(simulation, camera, deltaTime);
@@ -220,15 +233,28 @@ class CinematicCameraController {
   }
 
   /// Handle orbital predictions for scenarios without predetermined tours
-  void _handleOrbitalPredictions(SimulationState simulation, CameraState camera, double deltaTime) {
+  void _handleOrbitalPredictions(
+    SimulationState simulation,
+    CameraState camera,
+    double deltaTime,
+  ) {
     // Get orbital predictions
     const timeFrame = 10.0;
     const timeStep = 0.1;
-    final predictions = _predictionEngine.predictFuturePositions(simulation.bodies, timeFrame, timeStep: timeStep);
+    final predictions = _predictionEngine.predictFuturePositions(
+      simulation.bodies,
+      timeFrame,
+      timeStep: timeStep,
+    );
 
     // Detect events using predictions
     final config = PredictiveOrbitalConfig.forScenario('three_body');
-    final events = _predictionEngine.detectEvents(simulation.bodies, predictions, timeStep, config);
+    final events = _predictionEngine.detectEvents(
+      simulation.bodies,
+      predictions,
+      timeStep,
+      config,
+    );
 
     if (events.isNotEmpty) {
       // Focus on the most imminent dramatic event
@@ -242,13 +268,23 @@ class CinematicCameraController {
 
       if (involvedBodies.isNotEmpty) {
         // Use standard orbital framing for predicted events
-        _updateStandardOrbitalFraming(simulation, camera, deltaTime, involvedBodies);
+        _updateStandardOrbitalFraming(
+          simulation,
+          camera,
+          deltaTime,
+          involvedBodies,
+        );
         return;
       }
     }
 
     // No specific events - use standard orbital framing for all bodies
-    _updateStandardOrbitalFraming(simulation, camera, deltaTime, simulation.bodies);
+    _updateStandardOrbitalFraming(
+      simulation,
+      camera,
+      deltaTime,
+      simulation.bodies,
+    );
   }
 
   /// Standard orbital framing based on predictions (less aggressive than dynamic framing)
@@ -263,15 +299,24 @@ class CinematicCameraController {
     }
 
     // Find the most interesting pair of bodies for orbital mechanics
-    final candidates = _findMostInterestingBodies(targetBodies, simulation.currentScenario);
+    final candidates = _findMostInterestingBodies(
+      targetBodies,
+      simulation.currentScenario,
+    );
 
     // Update framed bodies with standard orbital logic (less dramatic than dynamic framing)
-    if (candidates.isNotEmpty && _shouldUpdateFramedBodiesOrbital(candidates, simulation.currentScenario)) {
+    if (candidates.isNotEmpty &&
+        _shouldUpdateFramedBodiesOrbital(
+          candidates,
+          simulation.currentScenario,
+        )) {
       _currentFramedBodies = candidates;
       _framesSinceLastSwitch = 0;
 
       // Start smooth transition for orbital technique
-      _previousCenter = _currentFramedBodies.isNotEmpty ? _calculateCenter(_currentFramedBodies) : vm.Vector3.zero();
+      _previousCenter = _currentFramedBodies.isNotEmpty
+          ? _calculateCenter(_currentFramedBodies)
+          : vm.Vector3.zero();
       _previousDistance = camera.distance;
       _isTransitioning = true;
       _transitionProgress = 0.0;
@@ -287,7 +332,10 @@ class CinematicCameraController {
   }
 
   /// Orbital-specific logic for updating framed bodies (less dramatic than dynamic framing)
-  bool _shouldUpdateFramedBodiesOrbital(List<Body> candidateBodies, ScenarioType scenario) {
+  bool _shouldUpdateFramedBodiesOrbital(
+    List<Body> candidateBodies,
+    ScenarioType scenario,
+  ) {
     final cameraParams = _getScenarioCameraParameters(scenario);
     final minLockFrames = cameraParams.targetLockFrames;
 
@@ -310,7 +358,11 @@ class CinematicCameraController {
   }
 
   /// Handle dedicated solar system tour with smooth transitions
-  void _handleSolarSystemTour(SimulationState simulation, CameraState camera, double deltaTime) {
+  void _handleSolarSystemTour(
+    SimulationState simulation,
+    CameraState camera,
+    double deltaTime,
+  ) {
     final bodies = simulation.bodies;
     final stars = bodies.where((b) => b.bodyType == BodyType.star).toList();
     final planets = bodies.where((b) => b.bodyType == BodyType.planet).toList();
@@ -339,8 +391,12 @@ class CinematicCameraController {
     final targetDuration = 5.0;
     final wideTransitionDuration = 3.0;
     final totalCycleDuration =
-        panZoomDuration + sunFocusDuration + (planetsOnly.length * targetDuration) + wideTransitionDuration;
-    final cycleTime = currentTime % totalCycleDuration; // Restart the entire cycle
+        panZoomDuration +
+        sunFocusDuration +
+        (planetsOnly.length * targetDuration) +
+        wideTransitionDuration;
+    final cycleTime =
+        currentTime % totalCycleDuration; // Restart the entire cycle
 
     double targetDistance;
     vm.Vector3 targetCenter;
@@ -353,9 +409,18 @@ class CinematicCameraController {
       // Interpolate from wide view to sun focus
       final wideCenter = _calculateCenter(bodies);
       final wideDistance =
-          _calculateSafeDistance(bodies, wideCenter, simulation.currentScenario) * 2.5; // Extra wide start
+          _calculateSafeDistance(
+            bodies,
+            wideCenter,
+            simulation.currentScenario,
+          ) *
+          2.5; // Extra wide start
       final sunCenter = stars[0].position;
-      final sunDistance = _calculateSafeDistance([stars[0]], sunCenter, simulation.currentScenario);
+      final sunDistance = _calculateSafeDistance(
+        [stars[0]],
+        sunCenter,
+        simulation.currentScenario,
+      );
 
       targetCenter = _lerpVector3(wideCenter, sunCenter, t);
       targetDistance = _lerpDouble(wideDistance, sunDistance, t);
@@ -366,10 +431,15 @@ class CinematicCameraController {
       if (focusProgress < 0.6) {
         // First 60% of phase: stay on sun
         final sunCenter = stars[0].position;
-        final sunDistance = _calculateSafeDistance([stars[0]], sunCenter, simulation.currentScenario);
+        final sunDistance = _calculateSafeDistance(
+          [stars[0]],
+          sunCenter,
+          simulation.currentScenario,
+        );
 
         // Add subtle movement while focused on sun
-        final gentleMovement = math.sin(focusProgress * math.pi * 6) * 0.05; // Reduced movement
+        final gentleMovement =
+            math.sin(focusProgress * math.pi * 6) * 0.05; // Reduced movement
 
         targetCenter = sunCenter;
         targetDistance = sunDistance * (1.0 + gentleMovement);
@@ -379,13 +449,22 @@ class CinematicCameraController {
         final t = _easeInOutQuad(transitionProgress);
 
         final sunCenter = stars[0].position;
-        final sunDistance = _calculateSafeDistance([stars[0]], sunCenter, simulation.currentScenario);
+        final sunDistance = _calculateSafeDistance(
+          [stars[0]],
+          sunCenter,
+          simulation.currentScenario,
+        );
 
         // Get Mercury (first planet)
         final mercury = planetsOnly[0];
         final mercuryCenter = mercury.position;
         final mercuryDistance =
-            _calculateSafeDistance([mercury], mercuryCenter, simulation.currentScenario) * 0.6; // Closer to planets
+            _calculateSafeDistance(
+              [mercury],
+              mercuryCenter,
+              simulation.currentScenario,
+            ) *
+            0.6; // Closer to planets
 
         // Smooth transition from sun to Mercury
         targetCenter = _lerpVector3(sunCenter, mercuryCenter, t);
@@ -395,13 +474,20 @@ class CinematicCameraController {
           t,
         ); // Start a bit further from Mercury but still closer
       }
-    } else if (cycleTime < panZoomDuration + sunFocusDuration + (planetsOnly.length * targetDuration)) {
+    } else if (cycleTime <
+        panZoomDuration +
+            sunFocusDuration +
+            (planetsOnly.length * targetDuration)) {
       // Phase 3: Continuous movement between planets - no pause at each target
       final targetCycleTime = cycleTime - panZoomDuration - sunFocusDuration;
-      final targetIndex = (targetCycleTime / targetDuration).floor(); // Simplified - no modulo needed
+      final targetIndex = (targetCycleTime / targetDuration)
+          .floor(); // Simplified - no modulo needed
       final timeInCurrentTarget =
-          targetCycleTime - (targetIndex * targetDuration); // Time within current target's duration
-      final transitionDuration = targetDuration; // Use full duration for smooth continuous movement
+          targetCycleTime -
+          (targetIndex *
+              targetDuration); // Time within current target's duration
+      final transitionDuration =
+          targetDuration; // Use full duration for smooth continuous movement
 
       // Ensure we don't go beyond the planet array bounds
       final safeTargetIndex = targetIndex.clamp(0, planetsOnly.length - 1);
@@ -416,11 +502,17 @@ class CinematicCameraController {
         // Last planet (Neptune) - just stay focused on it for the full duration
         targetCenter = currentTargetBody.position;
         targetDistance =
-            _calculateSafeDistance([currentTargetBody], targetCenter, simulation.currentScenario) *
+            _calculateSafeDistance(
+              [currentTargetBody],
+              targetCenter,
+              simulation.currentScenario,
+            ) *
             0.6; // Closer to planets
       } else {
         // Regular planet transition to next planet
-        final nextTargetIndex = safeTargetIndex + 1; // No modulo since we handle last planet separately
+        final nextTargetIndex =
+            safeTargetIndex +
+            1; // No modulo since we handle last planet separately
         final nextTargetBody = planetsOnly[nextTargetIndex];
 
         // Always in transition - continuous movement to next target
@@ -430,13 +522,21 @@ class CinematicCameraController {
         // Calculate current target parameters with enhanced safety
         final currentCenter = currentTargetBody.position;
         final currentDistance =
-            _calculateTransitionSafeDistance([currentTargetBody], currentCenter, simulation.currentScenario) *
+            _calculateTransitionSafeDistance(
+              [currentTargetBody],
+              currentCenter,
+              simulation.currentScenario,
+            ) *
             0.8; // Conservative distance for planets
 
         // Calculate next target's orbital position and approach from behind
         final nextCenter = nextTargetBody.position;
         final nextDistance =
-            _calculateTransitionSafeDistance([nextTargetBody], nextCenter, simulation.currentScenario) *
+            _calculateTransitionSafeDistance(
+              [nextTargetBody],
+              nextCenter,
+              simulation.currentScenario,
+            ) *
             0.8; // Conservative distance for planets
 
         if (nextTargetBody.bodyType == BodyType.planet && stars.isNotEmpty) {
@@ -468,7 +568,8 @@ class CinematicCameraController {
 
           // If the angular difference is greater than π/2, consider using the opposite direction
           final useShortestPath = angleDiff.abs() > math.pi / 2;
-          final shouldReverseDirection = useShortestPath && angleDiff.abs() > math.pi;
+          final shouldReverseDirection =
+              useShortestPath && angleDiff.abs() > math.pi;
 
           // Create a smooth path that follows the optimal orbital flow
           final progressAlongOrbit = t;
@@ -478,31 +579,48 @@ class CinematicCameraController {
           vm.Vector3 calculateVisibleIntermediatePosition(double progress) {
             // Always ensure we can see the target planet during transition
             final currentToTarget = nextCenter - currentCenter;
-            final targetVisibilityOffset = currentToTarget.normalized() * (currentToTarget.length * 0.3);
+            final targetVisibilityOffset =
+                currentToTarget.normalized() * (currentToTarget.length * 0.3);
 
             if (useShortestPath && shouldReverseDirection) {
               // Use the shorter arc in the opposite direction
-              final reverseAngleDiff = angleDiff > 0 ? angleDiff - 2 * math.pi : angleDiff + 2 * math.pi;
-              final intermediateAngle = currentAngle + reverseAngleDiff * progress;
+              final reverseAngleDiff = angleDiff > 0
+                  ? angleDiff - 2 * math.pi
+                  : angleDiff + 2 * math.pi;
+              final intermediateAngle =
+                  currentAngle + reverseAngleDiff * progress;
               final avgRadius = (currentOrbitRadius + nextOrbitRadius) * 0.5;
 
               final basePosition =
                   starPosition +
-                  vm.Vector3(avgRadius * math.cos(intermediateAngle), 0.0, avgRadius * math.sin(intermediateAngle));
+                  vm.Vector3(
+                    avgRadius * math.cos(intermediateAngle),
+                    0.0,
+                    avgRadius * math.sin(intermediateAngle),
+                  );
 
               // Adjust position to keep target in view
               return basePosition + targetVisibilityOffset * (1.0 - progress);
             } else {
               // Use direct path with target visibility consideration
-              final directPath = _lerpVector3(currentCenter, nextCenter, progress);
+              final directPath = _lerpVector3(
+                currentCenter,
+                nextCenter,
+                progress,
+              );
 
               // Add orbital arc for more natural movement while keeping target visible
               if (currentOrbitRadius > 0 && nextOrbitRadius > 0) {
                 final avgRadius = (currentOrbitRadius + nextOrbitRadius) * 0.5;
-                final arcHeight = avgRadius * 0.1 * math.sin(progress * math.pi); // Reduced arc
+                final arcHeight =
+                    avgRadius *
+                    0.1 *
+                    math.sin(progress * math.pi); // Reduced arc
                 final toDirectPath = directPath - starPosition;
                 final arcOffset = toDirectPath.normalized() * arcHeight;
-                return directPath + arcOffset + targetVisibilityOffset * (1.0 - progress * 0.5);
+                return directPath +
+                    arcOffset +
+                    targetVisibilityOffset * (1.0 - progress * 0.5);
               }
 
               return directPath + targetVisibilityOffset * (1.0 - progress);
@@ -513,32 +631,56 @@ class CinematicCameraController {
           final maxPlanetDistance = (currentCenter - nextCenter).length;
           final targetVisibleDistance = math.max(
             maxPlanetDistance * 1.2, // Ensure both planets fit in frame
-            math.max(currentDistance, nextDistance) * 1.5, // Minimum safe distance
+            math.max(currentDistance, nextDistance) *
+                1.5, // Minimum safe distance
           );
 
           if (smoothT < 0.2) {
             // First 20%: Pull back to get both planets in view, with emphasis on target
             final lookAheadT = smoothT / 0.2;
-            final intermediatePos = calculateVisibleIntermediatePosition(0.3); // Look ahead position
-            targetCenter = _lerpVector3(currentCenter, intermediatePos, _easeInOutQuad(lookAheadT));
-            targetDistance = _lerpDouble(currentDistance, targetVisibleDistance, _easeInOutQuad(lookAheadT));
+            final intermediatePos = calculateVisibleIntermediatePosition(
+              0.3,
+            ); // Look ahead position
+            targetCenter = _lerpVector3(
+              currentCenter,
+              intermediatePos,
+              _easeInOutQuad(lookAheadT),
+            );
+            targetDistance = _lerpDouble(
+              currentDistance,
+              targetVisibleDistance,
+              _easeInOutQuad(lookAheadT),
+            );
           } else if (smoothT < 0.8) {
             // Middle 60%: Smoothly transition along path while keeping target visible
             final transitionT = (smoothT - 0.2) / 0.6;
-            final intermediatePos = calculateVisibleIntermediatePosition(transitionT);
+            final intermediatePos = calculateVisibleIntermediatePosition(
+              transitionT,
+            );
 
             // Ensure we're always oriented towards the target
             final targetDirection = (nextCenter - intermediatePos).normalized();
-            final adjustedPos = intermediatePos + targetDirection * maxPlanetDistance * 0.1;
+            final adjustedPos =
+                intermediatePos + targetDirection * maxPlanetDistance * 0.1;
 
             targetCenter = adjustedPos;
-            targetDistance = targetVisibleDistance * (1.0 + math.sin(transitionT * math.pi) * 0.1);
+            targetDistance =
+                targetVisibleDistance *
+                (1.0 + math.sin(transitionT * math.pi) * 0.1);
           } else {
             // Last 20%: Focus smoothly on the target planet
             final focusT = (smoothT - 0.8) / 0.2;
             final intermediatePos = calculateVisibleIntermediatePosition(0.9);
-            targetCenter = _lerpVector3(intermediatePos, nextCenter, _easeInOutQuad(focusT));
-            targetDistance = _lerpDouble(targetVisibleDistance, nextDistance, _easeInOutQuad(focusT));
+            targetCenter = _lerpVector3(
+              intermediatePos,
+              nextCenter,
+              _easeInOutQuad(focusT),
+            );
+            targetDistance = _lerpDouble(
+              targetVisibleDistance,
+              nextDistance,
+              _easeInOutQuad(focusT),
+            );
           }
         } else {
           // For non-planets (like stars), use improved interpolation with look-ahead
@@ -554,35 +696,65 @@ class CinematicCameraController {
           if (smoothT < 0.2) {
             // First 20%: Move to see both targets
             final lookAheadT = smoothT / 0.2;
-            targetCenter = _lerpVector3(currentCenter, bothTargetsCenter, lookAheadT);
-            targetDistance = _lerpDouble(currentDistance, bothTargetsDistance, lookAheadT);
+            targetCenter = _lerpVector3(
+              currentCenter,
+              bothTargetsCenter,
+              lookAheadT,
+            );
+            targetDistance = _lerpDouble(
+              currentDistance,
+              bothTargetsDistance,
+              lookAheadT,
+            );
           } else if (smoothT < 0.8) {
             // Middle 60%: Smooth transition while maintaining view
             final transitionT = (smoothT - 0.2) / 0.6;
-            targetCenter = _lerpVector3(bothTargetsCenter, bothTargetsCenter, transitionT);
+            targetCenter = _lerpVector3(
+              bothTargetsCenter,
+              bothTargetsCenter,
+              transitionT,
+            );
             targetDistance = bothTargetsDistance;
           } else {
             // Last 20%: Focus on target
             final focusT = (smoothT - 0.8) / 0.2;
             targetCenter = _lerpVector3(bothTargetsCenter, nextCenter, focusT);
-            targetDistance = _lerpDouble(bothTargetsDistance, nextDistance, focusT);
+            targetDistance = _lerpDouble(
+              bothTargetsDistance,
+              nextDistance,
+              focusT,
+            );
           }
         }
       }
     } else {
       // Phase 4: Transition back to wide view to restart the cycle
-      final wideTransitionTime = cycleTime - panZoomDuration - sunFocusDuration - (planetsOnly.length * targetDuration);
+      final wideTransitionTime =
+          cycleTime -
+          panZoomDuration -
+          sunFocusDuration -
+          (planetsOnly.length * targetDuration);
       final transitionProgress = wideTransitionTime / wideTransitionDuration;
       final t = _easeInOutQuad(transitionProgress);
 
       // Get the last planet position and transition to wide view
       final lastPlanet = planetsOnly.last;
       final lastPlanetCenter = lastPlanet.position;
-      final lastPlanetDistance = _calculateSafeDistance([lastPlanet], lastPlanetCenter, simulation.currentScenario);
+      final lastPlanetDistance = _calculateSafeDistance(
+        [lastPlanet],
+        lastPlanetCenter,
+        simulation.currentScenario,
+      );
 
       // Transition to wide view
       final wideCenter = _calculateCenter(bodies);
-      final wideDistance = _calculateSafeDistance(bodies, wideCenter, simulation.currentScenario) * 2.5;
+      final wideDistance =
+          _calculateSafeDistance(
+            bodies,
+            wideCenter,
+            simulation.currentScenario,
+          ) *
+          2.5;
 
       targetCenter = _lerpVector3(lastPlanetCenter, wideCenter, t);
       targetDistance = _lerpDouble(lastPlanetDistance, wideDistance, t);
@@ -615,10 +787,15 @@ class CinematicCameraController {
     final pitchBase = 0.25; // Base height above plane
     final pitchRange = 0.2; // Oscillation range
     final pitchOscillation =
-        pitchBase + math.sin(_verticalOscillation).abs() * pitchRange; // Always positive oscillation
+        pitchBase +
+        math.sin(_verticalOscillation).abs() *
+            pitchRange; // Always positive oscillation
 
-    final distanceOscillation = 1.0 + math.sin(_orbitTime * 0.4) * 0.25; // Slower and less distance variation
-    final yawVariation = cameraYaw + math.sin(_orbitTime * 0.2) * 0.15; // Slower yaw variation
+    final distanceOscillation =
+        1.0 +
+        math.sin(_orbitTime * 0.4) * 0.25; // Slower and less distance variation
+    final yawVariation =
+        cameraYaw + math.sin(_orbitTime * 0.2) * 0.15; // Slower yaw variation
 
     camera.setCameraParameters(
       yaw: yawVariation,
@@ -630,7 +807,11 @@ class CinematicCameraController {
   }
 
   /// Intelligently frame multiple bodies with stable camera movement (no aggressive roll)
-  void _updateIntelligentFramingStable(SimulationState simulation, CameraState camera, double deltaTime) {
+  void _updateIntelligentFramingStable(
+    SimulationState simulation,
+    CameraState camera,
+    double deltaTime,
+  ) {
     final bodies = simulation.bodies;
     if (bodies.length < 2) {
       return;
@@ -638,10 +819,15 @@ class CinematicCameraController {
 
     // Find all interesting body pairs and check for conflicts
     final allInterestingPairs = _findAllInterestingPairs(bodies);
-    final topPair = _getBestTargetBodies(bodies); // Use queued target if available
+    final topPair = _getBestTargetBodies(
+      bodies,
+    ); // Use queued target if available
 
     // Check if there are multiple competing interesting pairs
-    final shouldFrameMultiple = _shouldFrameMultipleBodies(allInterestingPairs, topPair);
+    final shouldFrameMultiple = _shouldFrameMultipleBodies(
+      allInterestingPairs,
+      topPair,
+    );
 
     if (shouldFrameMultiple && !_isFramingMultipleBodies) {
       // Start framing multiple bodies
@@ -661,7 +847,11 @@ class CinematicCameraController {
         currentCenter /= _currentFramedBodies.length.toDouble();
         _previousCenter = currentCenter;
 
-        _previousDistance = _calculateSafeDistance(_currentFramedBodies, currentCenter, simulation.currentScenario);
+        _previousDistance = _calculateSafeDistance(
+          _currentFramedBodies,
+          currentCenter,
+          simulation.currentScenario,
+        );
       } else {
         // Initialize from current camera state
         _isTransitioning = true;
@@ -691,10 +881,16 @@ class CinematicCameraController {
           currentCenter /= _allInterestingBodies.length.toDouble();
           _previousCenter = currentCenter;
 
-          _previousDistance = _calculateSafeDistance(_allInterestingBodies, currentCenter, simulation.currentScenario);
+          _previousDistance = _calculateSafeDistance(
+            _allInterestingBodies,
+            currentCenter,
+            simulation.currentScenario,
+          );
 
           // Determine which target to switch to (queued target takes priority)
-          final targetBodies = _hasQueuedTarget && _nextTargetBodies != null ? _nextTargetBodies! : topPair;
+          final targetBodies = _hasQueuedTarget && _nextTargetBodies != null
+              ? _nextTargetBodies!
+              : topPair;
           _targetFramedBodies = targetBodies;
 
           // Clear queued target since we're switching
@@ -708,7 +904,8 @@ class CinematicCameraController {
     _multiBodyFramingTime += deltaTime;
 
     // Check if we should switch to a new pair when not framing multiple bodies
-    if (!_isFramingMultipleBodies && _shouldUpdateFramedBodies(topPair, simulation.currentScenario)) {
+    if (!_isFramingMultipleBodies &&
+        _shouldUpdateFramedBodies(topPair, simulation.currentScenario)) {
       _isTransitioning = true;
       _transitionProgress = 0.0;
 
@@ -725,7 +922,8 @@ class CinematicCameraController {
 
     // Handle transitions with stable movement
     if (_isTransitioning) {
-      _transitionProgress += deltaTime * 0.5; // Slower transitions for stability
+      _transitionProgress +=
+          deltaTime * 0.5; // Slower transitions for stability
       if (_transitionProgress >= 1.0) {
         _transitionProgress = 1.0;
         _isTransitioning = false;
@@ -737,10 +935,16 @@ class CinematicCameraController {
   }
 
   /// Update stable camera parameters without aggressive roll movements
-  void _updateStableCameraParameters(SimulationState simulation, CameraState camera, double deltaTime) {
+  void _updateStableCameraParameters(
+    SimulationState simulation,
+    CameraState camera,
+    double deltaTime,
+  ) {
     final bodies = simulation.bodies;
 
-    final targetBodies = _isFramingMultipleBodies ? _allInterestingBodies : _currentFramedBodies;
+    final targetBodies = _isFramingMultipleBodies
+        ? _allInterestingBodies
+        : _currentFramedBodies;
 
     if (targetBodies.isEmpty) {
       targetBodies.addAll(bodies.take(2));
@@ -754,7 +958,11 @@ class CinematicCameraController {
     targetCenter /= targetBodies.length.toDouble();
 
     // Calculate optimal distance for framing
-    double targetDistance = _calculateSafeDistance(targetBodies, targetCenter, simulation.currentScenario);
+    double targetDistance = _calculateSafeDistance(
+      targetBodies,
+      targetCenter,
+      simulation.currentScenario,
+    );
 
     // Stable camera angles with minimal movement
     double yaw = 0.0;
@@ -765,7 +973,8 @@ class CinematicCameraController {
     if (_isTransitioning && _transitionProgress < 1.0) {
       final t = _transitionProgress;
       targetCenter = _previousCenter + (targetCenter - _previousCenter) * t;
-      targetDistance = _previousDistance + (targetDistance - _previousDistance) * t;
+      targetDistance =
+          _previousDistance + (targetDistance - _previousDistance) * t;
 
       // Gentle angle interpolation - but NO ROLL for stable framing
       yaw = _currentCameraYaw * (1.0 - t);
@@ -781,11 +990,21 @@ class CinematicCameraController {
       roll = 0.0; // No roll for stable framing
     }
 
-    camera.setCameraParameters(yaw: yaw, pitch: pitch, roll: roll, distance: targetDistance, target: targetCenter);
+    camera.setCameraParameters(
+      yaw: yaw,
+      pitch: pitch,
+      roll: roll,
+      distance: targetDistance,
+      target: targetCenter,
+    );
   }
 
   /// Intelligently frame multiple bodies with dynamic movement
-  void _updateIntelligentFraming(SimulationState simulation, CameraState camera, double deltaTime) {
+  void _updateIntelligentFraming(
+    SimulationState simulation,
+    CameraState camera,
+    double deltaTime,
+  ) {
     final bodies = simulation.bodies;
     if (bodies.length < 2) {
       return;
@@ -793,10 +1012,15 @@ class CinematicCameraController {
 
     // Find all interesting body pairs and check for conflicts
     final allInterestingPairs = _findAllInterestingPairs(bodies);
-    final topPair = _getBestTargetBodies(bodies); // Use queued target if available
+    final topPair = _getBestTargetBodies(
+      bodies,
+    ); // Use queued target if available
 
     // Check if there are multiple competing interesting pairs
-    final shouldFrameMultiple = _shouldFrameMultipleBodies(allInterestingPairs, topPair);
+    final shouldFrameMultiple = _shouldFrameMultipleBodies(
+      allInterestingPairs,
+      topPair,
+    );
 
     if (shouldFrameMultiple && !_isFramingMultipleBodies) {
       // Start framing multiple bodies
@@ -816,7 +1040,11 @@ class CinematicCameraController {
         currentCenter /= _currentFramedBodies.length.toDouble();
         _previousCenter = currentCenter;
 
-        _previousDistance = _calculateSafeDistance(_currentFramedBodies, currentCenter, simulation.currentScenario);
+        _previousDistance = _calculateSafeDistance(
+          _currentFramedBodies,
+          currentCenter,
+          simulation.currentScenario,
+        );
       } else {
         // Initialize from current camera state
         _isTransitioning = true;
@@ -846,10 +1074,16 @@ class CinematicCameraController {
           currentCenter /= _allInterestingBodies.length.toDouble();
           _previousCenter = currentCenter;
 
-          _previousDistance = _calculateSafeDistance(_allInterestingBodies, currentCenter, simulation.currentScenario);
+          _previousDistance = _calculateSafeDistance(
+            _allInterestingBodies,
+            currentCenter,
+            simulation.currentScenario,
+          );
 
           // Determine which target to switch to (queued target takes priority)
-          final targetBodies = _hasQueuedTarget && _nextTargetBodies != null ? _nextTargetBodies! : topPair;
+          final targetBodies = _hasQueuedTarget && _nextTargetBodies != null
+              ? _nextTargetBodies!
+              : topPair;
           _targetFramedBodies = targetBodies;
 
           // Clear queued target since we're switching
@@ -860,11 +1094,19 @@ class CinematicCameraController {
     } else if (!_isFramingMultipleBodies) {
       // Normal pair-based framing with target locking
       // Check if we should switch targets based on current framed bodies vs new candidates
-      final candidateBodies = _findMostInterestingBodies(bodies, simulation.currentScenario);
+      final candidateBodies = _findMostInterestingBodies(
+        bodies,
+        simulation.currentScenario,
+      );
 
-      if (_shouldUpdateFramedBodies(candidateBodies, simulation.currentScenario)) {
+      if (_shouldUpdateFramedBodies(
+        candidateBodies,
+        simulation.currentScenario,
+      )) {
         // Determine which target to switch to BEFORE starting transition
-        final targetBodies = _hasQueuedTarget && _nextTargetBodies != null ? _nextTargetBodies! : candidateBodies;
+        final targetBodies = _hasQueuedTarget && _nextTargetBodies != null
+            ? _nextTargetBodies!
+            : candidateBodies;
 
         // Store the old framed bodies for transition calculations
         final oldFramedBodies = List<Body>.from(_currentFramedBodies);
@@ -874,7 +1116,8 @@ class CinematicCameraController {
 
         _isTransitioning = true;
         _transitionProgress = 0.0;
-        _targetFramedBodies = targetBodies; // Set the target we're transitioning TO
+        _targetFramedBodies =
+            targetBodies; // Set the target we're transitioning TO
 
         // Clear queued target since we're using it
         if (_hasQueuedTarget) {
@@ -890,7 +1133,11 @@ class CinematicCameraController {
           currentCenter /= oldFramedBodies.length.toDouble();
           _previousCenter = currentCenter;
 
-          _previousDistance = _calculateSafeDistance(oldFramedBodies, currentCenter, simulation.currentScenario);
+          _previousDistance = _calculateSafeDistance(
+            oldFramedBodies,
+            currentCenter,
+            simulation.currentScenario,
+          );
 
           // Store current camera angles for smooth transition
           _currentCameraYaw = _currentCameraYaw;
@@ -919,7 +1166,9 @@ class CinematicCameraController {
 
     // Handle transitions
     if (_isTransitioning) {
-      _transitionProgress += deltaTime * 0.25; // Slower 4 second transitions for more graceful movement
+      _transitionProgress +=
+          deltaTime *
+          0.25; // Slower 4 second transitions for more graceful movement
       if (_transitionProgress >= 1.0) {
         _isTransitioning = false;
         _transitionProgress = 1.0;
@@ -946,12 +1195,20 @@ class CinematicCameraController {
 
     // Only update camera if we have bodies to frame and we're not in an inconsistent state
     if (bodiesToFrame.isNotEmpty) {
-      _updateCameraForBodies(bodiesToFrame, camera, deltaTime, simulation.currentScenario);
+      _updateCameraForBodies(
+        bodiesToFrame,
+        camera,
+        deltaTime,
+        simulation.currentScenario,
+      );
     }
   }
 
   /// Find the most interesting pair of bodies to focus on with hierarchical targeting
-  List<Body> _findMostInterestingBodies(List<Body> bodies, ScenarioType scenario) {
+  List<Body> _findMostInterestingBodies(
+    List<Body> bodies,
+    ScenarioType scenario,
+  ) {
     // For random scenarios, filter out ejected bodies to focus on the main action
     List<Body> filteredBodies = bodies;
     if (bodies.length > 2) {
@@ -960,7 +1217,9 @@ class CinematicCameraController {
     }
 
     // For star-containing scenarios, implement cinematic sequencing
-    final hasStars = filteredBodies.any((body) => body.bodyType == BodyType.star);
+    final hasStars = filteredBodies.any(
+      (body) => body.bodyType == BodyType.star,
+    );
     if (hasStars) {
       return _findCinematicTargets(filteredBodies, scenario);
     }
@@ -1042,7 +1301,8 @@ class CinematicCameraController {
     // Check if all bodies are widely separated (all ejected scenario)
     final minDistance = bodyDistances[0].value;
     final maxDistance = bodyDistances.last.value;
-    final separationRatio = maxDistance / (minDistance + 1.0); // +1 to avoid division by zero
+    final separationRatio =
+        maxDistance / (minDistance + 1.0); // +1 to avoid division by zero
 
     // If separation ratio is very high, all bodies are likely ejected
     if (separationRatio > 2.5 && bodies.length > 2) {
@@ -1069,7 +1329,8 @@ class CinematicCameraController {
 
     // More aggressive normal filtering for active interactions
     // Filter out bodies that are farther than 1.2x median distance (was 1.5x)
-    final ejectionThreshold = medianDistance * 1.2; // More aggressive ejection filtering
+    final ejectionThreshold =
+        medianDistance * 1.2; // More aggressive ejection filtering
     final filteredBodies = <Body>[];
 
     for (final entry in bodyDistances) {
@@ -1141,7 +1402,8 @@ class CinematicCameraController {
     // Phase 2: Transition to star-planet interactions
     // Phase 3: Show planet-moon details (shorter duration)
 
-    final currentTime = _totalFrames / 60.0; // Convert frames to approximate seconds
+    final currentTime =
+        _totalFrames / 60.0; // Convert frames to approximate seconds
     final phaseDuration = 30.0; // 30 seconds per phase (increased from 20)
     final currentPhase = ((currentTime / phaseDuration) % 3).floor();
 
@@ -1197,7 +1459,8 @@ class CinematicCameraController {
         // Add "stickiness" bonus if this is the current pair being tracked
         if (_currentFramedBodies.isNotEmpty &&
             _currentFramedBodies.length == 2 &&
-            ((_currentFramedBodies.contains(body1) && _currentFramedBodies.contains(body2)))) {
+            ((_currentFramedBodies.contains(body1) &&
+                _currentFramedBodies.contains(body2)))) {
           score *= 1.3; // 30% bonus for currently tracked pair (hysteresis)
         }
 
@@ -1296,8 +1559,14 @@ class CinematicCameraController {
         // Add "stickiness" bonus if this is the current pair being tracked
         if (_currentFramedBodies.isNotEmpty &&
             _currentFramedBodies.length == 2 &&
-            _isSameBodiesPair(body1, body2, _currentFramedBodies[0], _currentFramedBodies[1])) {
-          score *= 2.5; // Much stronger stickiness for dramatic moments (was 1.4)
+            _isSameBodiesPair(
+              body1,
+              body2,
+              _currentFramedBodies[0],
+              _currentFramedBodies[1],
+            )) {
+          score *=
+              2.5; // Much stronger stickiness for dramatic moments (was 1.4)
 
           // Extra stickiness for very close interactions
           final currentDistance = (body1.position - body2.position).length;
@@ -1323,26 +1592,41 @@ class CinematicCameraController {
   }
 
   /// Score dramatic interactions for random scenarios
-  double _scoreDramaticInteraction(Body body1, Body body2, List<Body> allBodies) {
+  double _scoreDramaticInteraction(
+    Body body1,
+    Body body2,
+    List<Body> allBodies,
+  ) {
     double score = 0.0;
 
     // Distance factor - Use smoother function to avoid dramatic score swings
     final distance = (body1.position - body2.position).length;
     // Use a more stable logarithmic-based scoring to prevent sudden jumps
-    final stabilizedDistance = math.max(1.0, distance); // Prevent division by zero
+    final stabilizedDistance = math.max(
+      1.0,
+      distance,
+    ); // Prevent division by zero
     final closeEncounterBonus =
         RenderingConstants.dramaticScoringCloseEncounterBase /
-        (1.0 + stabilizedDistance * RenderingConstants.dramaticScoringDistanceFalloff); // More gradual falloff
+        (1.0 +
+            stabilizedDistance *
+                RenderingConstants
+                    .dramaticScoringDistanceFalloff); // More gradual falloff
     score += closeEncounterBonus;
 
     // Relative velocity - high speed interactions are dramatic
     final relativeVelocity = (body1.velocity - body2.velocity).length;
-    score += relativeVelocity * RenderingConstants.dramaticScoringVelocityMultiplier; // Much higher weight for speed
+    score +=
+        relativeVelocity *
+        RenderingConstants
+            .dramaticScoringVelocityMultiplier; // Much higher weight for speed
 
     // Combined mass for impact potential
     final combinedMass = body1.mass + body2.mass;
     score +=
-        combinedMass * RenderingConstants.dramaticScoringMassMultiplier; // Reduced mass importance vs proximity/speed
+        combinedMass *
+        RenderingConstants
+            .dramaticScoringMassMultiplier; // Reduced mass importance vs proximity/speed
 
     // Acceleration toward each other (potential collision or close flyby)
     final relativePosition = body2.position - body1.position;
@@ -1354,12 +1638,15 @@ class CinematicCameraController {
       // Negative means approaching - HUGE bonus for incoming collisions
       score +=
           (-approachingFactor) *
-          RenderingConstants.dramaticScoringApproachingMultiplier; // Massive bonus for approaching bodies
+          RenderingConstants
+              .dramaticScoringApproachingMultiplier; // Massive bonus for approaching bodies
     }
 
     // Imminent collision detection - extremely close and approaching
-    if (distance < RenderingConstants.dramaticScoringCollisionDistance && approachingFactor < 0) {
-      score += RenderingConstants.dramaticScoringCollisionBonus; // Massive bonus for imminent collisions
+    if (distance < RenderingConstants.dramaticScoringCollisionDistance &&
+        approachingFactor < 0) {
+      score += RenderingConstants
+          .dramaticScoringCollisionBonus; // Massive bonus for imminent collisions
     }
 
     // Orbital instability bonus - erratic movement patterns
@@ -1367,13 +1654,18 @@ class CinematicCameraController {
     final body2Speed = body2.velocity.length;
     final speedDifference = (body1Speed - body2Speed).abs();
     score +=
-        speedDifference * RenderingConstants.dramaticScoringInstabilityMultiplier; // Higher bonus for chaotic motion
+        speedDifference *
+        RenderingConstants
+            .dramaticScoringInstabilityMultiplier; // Higher bonus for chaotic motion
 
     return score;
   }
 
   /// Check if we should update the currently framed bodies with target locking
-  bool _shouldUpdateFramedBodies(List<Body> candidateBodies, ScenarioType scenario) {
+  bool _shouldUpdateFramedBodies(
+    List<Body> candidateBodies,
+    ScenarioType scenario,
+  ) {
     // Get scenario-specific parameters
     final cameraParams = _getScenarioCameraParameters(scenario);
     final minLockFrames = cameraParams.targetLockFrames;
@@ -1386,11 +1678,20 @@ class CinematicCameraController {
     }
 
     // Special handling for random scenarios during transitions
-    if (scenario == ScenarioType.random && _isTransitioning && candidateBodies.length >= 2) {
+    if (scenario == ScenarioType.random &&
+        _isTransitioning &&
+        candidateBodies.length >= 2) {
       // Check if there's a highly dramatic interaction happening that we should interrupt for
-      final candidateScore = _scoreDramaticInteraction(candidateBodies[0], candidateBodies[1], candidateBodies);
-      final candidateDistance = (candidateBodies[0].position - candidateBodies[1].position).length;
-      final isEmergentDrama = candidateDistance < 5.0 || candidateScore > 80.0; // Very high drama threshold
+      final candidateScore = _scoreDramaticInteraction(
+        candidateBodies[0],
+        candidateBodies[1],
+        candidateBodies,
+      );
+      final candidateDistance =
+          (candidateBodies[0].position - candidateBodies[1].position).length;
+      final isEmergentDrama =
+          candidateDistance < 5.0 ||
+          candidateScore > 80.0; // Very high drama threshold
 
       if (isEmergentDrama) {
         // Force transition to complete immediately for dramatic moments
@@ -1408,33 +1709,55 @@ class CinematicCameraController {
     }
 
     // Special stability check for dynamic framing - prevent rapid switching during plane crossings
-    if (scenario == ScenarioType.random && _currentFramedBodies.length == 2 && candidateBodies.length >= 2) {
+    if (scenario == ScenarioType.random &&
+        _currentFramedBodies.length == 2 &&
+        candidateBodies.length >= 2) {
       // Check if the candidate bodies are the same as current (using robust comparison)
-      if (_isSameBodiesPair(candidateBodies[0], candidateBodies[1], _currentFramedBodies[0], _currentFramedBodies[1])) {
+      if (_isSameBodiesPair(
+        candidateBodies[0],
+        candidateBodies[1],
+        _currentFramedBodies[0],
+        _currentFramedBodies[1],
+      )) {
         // Same bodies - no need to switch
         return false;
       }
 
       // For dynamic framing, require longer lock time to prevent trail confusion during plane crossings
-      final dynamicFramingMinLock = minLockFrames * 2; // Double the minimum lock time
+      final dynamicFramingMinLock =
+          minLockFrames * 2; // Double the minimum lock time
       if (_framesSinceLastSwitch < dynamicFramingMinLock) {
         return false; // Stay locked longer for dynamic framing stability
       }
     }
 
     // Special handling for random scenarios - prioritize dramatic interactions
-    if (scenario == ScenarioType.random && _currentFramedBodies.length == 2 && candidateBodies.length >= 2) {
-      final currentScore = _scoreDramaticInteraction(_currentFramedBodies[0], _currentFramedBodies[1], candidateBodies);
-      final candidateScore = _scoreDramaticInteraction(candidateBodies[0], candidateBodies[1], candidateBodies);
+    if (scenario == ScenarioType.random &&
+        _currentFramedBodies.length == 2 &&
+        candidateBodies.length >= 2) {
+      final currentScore = _scoreDramaticInteraction(
+        _currentFramedBodies[0],
+        _currentFramedBodies[1],
+        candidateBodies,
+      );
+      final candidateScore = _scoreDramaticInteraction(
+        candidateBodies[0],
+        candidateBodies[1],
+        candidateBodies,
+      );
 
       // Check if current interaction is highly dramatic (close encounter or collision)
-      final currentDistance = (_currentFramedBodies[0].position - _currentFramedBodies[1].position).length;
+      final currentDistance =
+          (_currentFramedBodies[0].position - _currentFramedBodies[1].position)
+              .length;
       final isHighlyDramatic = currentDistance < 8.0 || currentScore > 50.0;
 
       if (isHighlyDramatic) {
         // During highly dramatic moments, require MUCH higher score to switch
-        final requiredImprovement = candidateScore > currentScore * 3.0; // Need 3x better score
-        if (!requiredImprovement && _framesSinceLastSwitch < minLockFrames * 2) {
+        final requiredImprovement =
+            candidateScore > currentScore * 3.0; // Need 3x better score
+        if (!requiredImprovement &&
+            _framesSinceLastSwitch < minLockFrames * 2) {
           return false; // Stay locked on dramatic moment longer
         }
       }
@@ -1447,7 +1770,9 @@ class CinematicCameraController {
     }
 
     // For star scenarios, apply cinematic phase targeting with normal locking
-    final hasStars = candidateBodies.any((body) => body.bodyType == BodyType.star);
+    final hasStars = candidateBodies.any(
+      (body) => body.bodyType == BodyType.star,
+    );
     if (hasStars) {
       // Calculate current phase and allow override every phase change
       final currentTime = _totalFrames / 60.0;
@@ -1469,7 +1794,9 @@ class CinematicCameraController {
     }
 
     // Check if we have a queued target that's ready to be used
-    if (_hasQueuedTarget && _nextTargetBodies != null && _framesSinceLastSwitch >= minLockFrames) {
+    if (_hasQueuedTarget &&
+        _nextTargetBodies != null &&
+        _framesSinceLastSwitch >= minLockFrames) {
       // Time to switch to the queued target
       _framesSinceLastSwitch = 0; // Reset frame counter
       return true;
@@ -1478,9 +1805,19 @@ class CinematicCameraController {
     // Force minimum lock frames - ABSOLUTELY no switching allowed during this period
     if (_framesSinceLastSwitch < minLockFrames) {
       // During lock frames, we can queue targets but NEVER switch
-      if (!_hasQueuedTarget && candidateBodies.length >= 2 && _currentFramedBodies.length >= 2) {
-        final currentScore = _scoreBodiesPair(_currentFramedBodies[0], _currentFramedBodies[1], []);
-        final candidateScore = _scoreBodiesPair(candidateBodies[0], candidateBodies[1], []);
+      if (!_hasQueuedTarget &&
+          candidateBodies.length >= 2 &&
+          _currentFramedBodies.length >= 2) {
+        final currentScore = _scoreBodiesPair(
+          _currentFramedBodies[0],
+          _currentFramedBodies[1],
+          [],
+        );
+        final candidateScore = _scoreBodiesPair(
+          candidateBodies[0],
+          candidateBodies[1],
+          [],
+        );
 
         if (candidateScore > currentScore * 1.5) {
           // 50% better - queue for later
@@ -1493,9 +1830,19 @@ class CinematicCameraController {
     }
 
     // After lock frames expire, be very conservative about switching
-    if (!_hasQueuedTarget && candidateBodies.length >= 2 && _currentFramedBodies.length >= 2) {
-      final currentScore = _scoreBodiesPair(_currentFramedBodies[0], _currentFramedBodies[1], []);
-      final candidateScore = _scoreBodiesPair(candidateBodies[0], candidateBodies[1], []);
+    if (!_hasQueuedTarget &&
+        candidateBodies.length >= 2 &&
+        _currentFramedBodies.length >= 2) {
+      final currentScore = _scoreBodiesPair(
+        _currentFramedBodies[0],
+        _currentFramedBodies[1],
+        [],
+      );
+      final candidateScore = _scoreBodiesPair(
+        candidateBodies[0],
+        candidateBodies[1],
+        [],
+      );
 
       // Require massive improvement to switch without queue (2x better)
       if (candidateScore > currentScore * 2.0) {
@@ -1508,9 +1855,13 @@ class CinematicCameraController {
   }
 
   /// Check if current cinematic phase suggests a different target type for star scenarios
-  bool _shouldOverrideForStarScenarioPhase(List<Body> candidateBodies, ScenarioType scenario) {
+  bool _shouldOverrideForStarScenarioPhase(
+    List<Body> candidateBodies,
+    ScenarioType scenario,
+  ) {
     if (_currentFramedBodies.isEmpty || candidateBodies.isEmpty) return false;
-    if (scenario != ScenarioType.earthMoonSun && scenario != ScenarioType.binaryStars) {
+    if (scenario != ScenarioType.earthMoonSun &&
+        scenario != ScenarioType.binaryStars) {
       return false;
     }
 
@@ -1535,20 +1886,31 @@ class CinematicCameraController {
         break;
 
       case 1: // Phase 2: Star-planet interactions
-        final wantStarPlanet = candidateTypes.contains(BodyType.star) && candidateTypes.contains(BodyType.planet);
-        final haveStarPlanet = currentTypes.contains(BodyType.star) && currentTypes.contains(BodyType.planet);
+        final wantStarPlanet =
+            candidateTypes.contains(BodyType.star) &&
+            candidateTypes.contains(BodyType.planet);
+        final haveStarPlanet =
+            currentTypes.contains(BodyType.star) &&
+            currentTypes.contains(BodyType.planet);
         if (wantStarPlanet && !haveStarPlanet && _framesSinceLastSwitch > 180) {
           return true;
         }
         break;
 
       case 2: // Phase 3: Planet-moon focus
-        final wantPlanetMoon = candidateTypes.contains(BodyType.planet) && candidateTypes.contains(BodyType.moon);
+        final wantPlanetMoon =
+            candidateTypes.contains(BodyType.planet) &&
+            candidateTypes.contains(BodyType.moon);
         final wantPlanetOnly = candidateTypes.contains(BodyType.planet);
-        final havePlanetMoon = currentTypes.contains(BodyType.planet) && currentTypes.contains(BodyType.moon);
-        final havePlanetOnly = currentTypes.contains(BodyType.planet) && !currentTypes.contains(BodyType.star);
+        final havePlanetMoon =
+            currentTypes.contains(BodyType.planet) &&
+            currentTypes.contains(BodyType.moon);
+        final havePlanetOnly =
+            currentTypes.contains(BodyType.planet) &&
+            !currentTypes.contains(BodyType.star);
 
-        if ((wantPlanetMoon && !havePlanetMoon) || (wantPlanetOnly && !havePlanetOnly)) {
+        if ((wantPlanetMoon && !havePlanetMoon) ||
+            (wantPlanetOnly && !havePlanetOnly)) {
           if (_framesSinceLastSwitch > 180) {
             return true;
           }
@@ -1573,23 +1935,33 @@ class CinematicCameraController {
 
     // For planet-moon pairs in phase 3, focus heavily on the planet
     if (currentPhase == 2) {
-      if (body1.bodyType == BodyType.planet && body2.bodyType == BodyType.moon) {
+      if (body1.bodyType == BodyType.planet &&
+          body2.bodyType == BodyType.moon) {
         return 0.95; // 95% focus on planet, 5% on moon (almost pure planet focus)
-      } else if (body1.bodyType == BodyType.moon && body2.bodyType == BodyType.planet) {
+      } else if (body1.bodyType == BodyType.moon &&
+          body2.bodyType == BodyType.planet) {
         return 0.05; // 5% focus on moon, 95% on planet (swap order)
       }
     }
 
     // For star-planet pairs, balance based on phase
-    if ((body1.bodyType == BodyType.star && body2.bodyType == BodyType.planet) ||
-        (body1.bodyType == BodyType.planet && body2.bodyType == BodyType.star)) {
+    if ((body1.bodyType == BodyType.star &&
+            body2.bodyType == BodyType.planet) ||
+        (body1.bodyType == BodyType.planet &&
+            body2.bodyType == BodyType.star)) {
       switch (currentPhase) {
         case 0: // Star focus phase
-          return body1.bodyType == BodyType.star ? 0.85 : 0.15; // Heavy star focus
+          return body1.bodyType == BodyType.star
+              ? 0.85
+              : 0.15; // Heavy star focus
         case 1: // Star-planet interaction phase
-          return body1.bodyType == BodyType.star ? 0.6 : 0.4; // Balanced but star-leaning
+          return body1.bodyType == BodyType.star
+              ? 0.6
+              : 0.4; // Balanced but star-leaning
         case 2: // Planet focus phase
-          return body1.bodyType == BodyType.planet ? 0.85 : 0.15; // Heavy planet focus
+          return body1.bodyType == BodyType.planet
+              ? 0.85
+              : 0.15; // Heavy planet focus
       }
     }
 
@@ -1605,11 +1977,19 @@ class CinematicCameraController {
   /// Get the best target bodies (does not consider timing - just finds best available)
   List<Body> _getBestTargetBodies(List<Body> bodies) {
     // Always return the best available target, timing is handled elsewhere
-    return _findMostInterestingBodies(bodies, ScenarioType.threeBodyClassic); // Default scenario
+    return _findMostInterestingBodies(
+      bodies,
+      ScenarioType.threeBodyClassic,
+    ); // Default scenario
   }
 
   /// Update camera to optimally frame a set of bodies
-  void _updateCameraForBodies(List<Body> bodies, CameraState camera, double deltaTime, ScenarioType scenario) {
+  void _updateCameraForBodies(
+    List<Body> bodies,
+    CameraState camera,
+    double deltaTime,
+    ScenarioType scenario,
+  ) {
     if (bodies.isEmpty) {
       return;
     }
@@ -1622,7 +2002,9 @@ class CinematicCameraController {
       // Determine weighting based on cinematic phase and body types
       final primaryWeight = _getPrimaryBodyWeight(bodies);
       final secondaryWeight = 1.0 - primaryWeight;
-      targetCenter = bodies[0].position * primaryWeight + bodies[1].position * secondaryWeight;
+      targetCenter =
+          bodies[0].position * primaryWeight +
+          bodies[1].position * secondaryWeight;
     } else {
       // For more than 2 bodies, use standard average
       for (final body in bodies) {
@@ -1636,12 +2018,18 @@ class CinematicCameraController {
       // Smooth the target center with previous center to reduce jitter
       const smoothingFactor = 0.4;
       if (_previousCenter.length > 0) {
-        targetCenter = _previousCenter * (1.0 - smoothingFactor) + targetCenter * smoothingFactor;
+        targetCenter =
+            _previousCenter * (1.0 - smoothingFactor) +
+            targetCenter * smoothingFactor;
       }
     }
 
     // Calculate optimal camera distance using scenario-aware parameters
-    final targetOptimalDistance = _calculateSafeDistance(bodies, targetCenter, scenario);
+    final targetOptimalDistance = _calculateSafeDistance(
+      bodies,
+      targetCenter,
+      scenario,
+    );
 
     // Get scenario-specific parameters for orbit behavior
     final cameraParams = _getScenarioCameraParameters(scenario);
@@ -1667,7 +2055,9 @@ class CinematicCameraController {
     final targetRadius = baseRadius * radiusVariation;
 
     // For solar system, maintain a stable pitch above the plane
-    final pitchVariation = scenario == ScenarioType.solarSystem ? 0.0 : math.sin(_verticalOscillation) * 0.6;
+    final pitchVariation = scenario == ScenarioType.solarSystem
+        ? 0.0
+        : math.sin(_verticalOscillation) * 0.6;
     final targetPitch = scenario == ScenarioType.solarSystem
         ? 0.3 +
               math.sin(_verticalOscillation) *
@@ -1675,7 +2065,9 @@ class CinematicCameraController {
         : 0.2 + pitchVariation;
     final targetYaw = _orbitTime;
     // Disable barrel roll for solar system scenarios
-    final targetRoll = scenario == ScenarioType.solarSystem ? 0.0 : math.sin(_orbitTime * 0.3) * 0.1;
+    final targetRoll = scenario == ScenarioType.solarSystem
+        ? 0.0
+        : math.sin(_orbitTime * 0.3) * 0.1;
 
     // Use smooth transition for both position and camera angles
     vm.Vector3 center;
@@ -1698,7 +2090,11 @@ class CinematicCameraController {
       // Smooth transition between previous and current states
       final t = _easeInOutQuad(_transitionProgress);
       center = _lerpVector3(_previousCenter, targetCenter, t);
-      optimalDistance = _lerpDouble(_previousDistance, targetOptimalDistance, t);
+      optimalDistance = _lerpDouble(
+        _previousDistance,
+        targetOptimalDistance,
+        t,
+      );
 
       // Smoothly transition camera angles too
       currentYaw = _lerpDouble(_currentCameraYaw, targetYaw, t);
@@ -1738,7 +2134,11 @@ class CinematicCameraController {
   }
 
   /// Real-time validation to ensure bodies are properly framed
-  void _validateAndCorrectFraming(List<Body> bodies, CameraState camera, ScenarioType scenario) {
+  void _validateAndCorrectFraming(
+    List<Body> bodies,
+    CameraState camera,
+    ScenarioType scenario,
+  ) {
     if (bodies.isEmpty) return;
 
     // Calculate screen positions to check if bodies are visible
@@ -1755,7 +2155,10 @@ class CinematicCameraController {
     for (final body in bodies) {
       // Calculate distance from target center
       final distanceFromCenter = (body.position - target).length;
-      maxDistanceFromCenter = math.max(maxDistanceFromCenter, distanceFromCenter);
+      maxDistanceFromCenter = math.max(
+        maxDistanceFromCenter,
+        distanceFromCenter,
+      );
 
       // If body is getting close to the edge of the view frustum, we need correction
       final fieldOfViewRadius = distance * math.tan(fieldOfViewRadians / 2.0);
@@ -1770,10 +2173,16 @@ class CinematicCameraController {
     if (needsFramingCorrection) {
       // Calculate a more conservative distance that keeps all bodies visible
       final fieldOfViewTan = math.tan(fieldOfViewRadians / 2.0);
-      final requiredDistance = (maxDistanceFromCenter * 2.2) / fieldOfViewTan; // More conservative margin
+      final requiredDistance =
+          (maxDistanceFromCenter * 2.2) /
+          fieldOfViewTan; // More conservative margin
 
       // Apply correction with some smoothing to avoid jarring changes
-      final correctedDistance = _lerpDouble(distance, math.max(requiredDistance, distance * 1.1), 0.4);
+      final correctedDistance = _lerpDouble(
+        distance,
+        math.max(requiredDistance, distance * 1.1),
+        0.4,
+      );
       camera.setCameraParameters(
         yaw: camera.yaw,
         pitch: camera.pitch,
@@ -1785,7 +2194,11 @@ class CinematicCameraController {
   }
 
   /// Calculate safe camera distance to keep all bodies visible (scenario-aware)
-  double _calculateSafeDistance(List<Body> bodies, vm.Vector3 center, ScenarioType scenario) {
+  double _calculateSafeDistance(
+    List<Body> bodies,
+    vm.Vector3 center,
+    ScenarioType scenario,
+  ) {
     if (bodies.isEmpty) {
       return 100.0;
     }
@@ -1800,21 +2213,26 @@ class CinematicCameraController {
     // Enhanced safety margin - more conservative for random scenarios to ensure framing
     double guaranteedSafetyMargin = 1.8; // Default for most scenarios
     if (scenario == ScenarioType.random) {
-      guaranteedSafetyMargin = 1.3; // Still dramatic but ensures bodies stay in frame
+      guaranteedSafetyMargin =
+          1.3; // Still dramatic but ensures bodies stay in frame
     }
 
     // Calculate optimal camera distance based on field of view
     final fieldOfViewRadians = math.pi / 3; // Assume 60-degree FOV
 
     // Calculate required distance to fit all bodies in FOV with extra margin
-    final baseFovDistance = (maxDistance * 2.0 * guaranteedSafetyMargin) / math.tan(fieldOfViewRadians / 2.0);
+    final baseFovDistance =
+        (maxDistance * 2.0 * guaranteedSafetyMargin) /
+        math.tan(fieldOfViewRadians / 2.0);
 
     // For random scenarios, check if we're framing widely separated bodies
     // Only apply wide framing if we didn't filter down to an interacting pair
     bool framingAllSeparatedBodies = false;
     if (scenario == ScenarioType.random && bodies.length > 2) {
       // Calculate the spread of bodies to detect "frame everything" mode
-      final distances = bodies.map((body) => (body.position - center).length).toList();
+      final distances = bodies
+          .map((body) => (body.position - center).length)
+          .toList();
       distances.sort();
       final minDist = distances.first;
       final maxDist = distances.last;
@@ -1830,7 +2248,8 @@ class CinematicCameraController {
     // For random scenarios with all separated bodies, use even wider framing
     double adjustedSafetyMargin = guaranteedSafetyMargin;
     if (framingAllSeparatedBodies) {
-      adjustedSafetyMargin = 2.2; // Even wider margin to frame all separated bodies
+      adjustedSafetyMargin =
+          2.2; // Even wider margin to frame all separated bodies
     }
 
     // Apply pitch correction to account for viewing angle
@@ -1838,21 +2257,27 @@ class CinematicCameraController {
         ? 0.3 // Fixed angle above the plane for solar system
         : 0.2 + math.sin(_verticalOscillation) * 0.6; // Current pitch
 
-    final pitchCorrection = 1.0 + math.sin(pitchAngle.abs()) * 0.3; // Reduced sensitivity
+    final pitchCorrection =
+        1.0 + math.sin(pitchAngle.abs()) * 0.3; // Reduced sensitivity
 
     // Calculate final safe distance
-    final safeDistance = baseFovDistance * pitchCorrection * adjustedSafetyMargin;
+    final safeDistance =
+        baseFovDistance * pitchCorrection * adjustedSafetyMargin;
 
     // Check if we're primarily focusing on stars for special handling
     final starBodies = bodies.where((body) => body.bodyType == BodyType.star);
     final isStarFocused =
-        starBodies.isNotEmpty && (scenario == ScenarioType.earthMoonSun || scenario == ScenarioType.binaryStars);
+        starBodies.isNotEmpty &&
+        (scenario == ScenarioType.earthMoonSun ||
+            scenario == ScenarioType.binaryStars);
 
     // Apply star-specific adjustments while maintaining safety
     double finalDistance = safeDistance;
     if (isStarFocused && bodies.length <= 2) {
       // Only apply close-up factor when focusing on individual stars or binary pairs
-      final starCloseUpFactor = scenario == ScenarioType.binaryStars ? 0.8 : 0.9; // Less aggressive
+      final starCloseUpFactor = scenario == ScenarioType.binaryStars
+          ? 0.8
+          : 0.9; // Less aggressive
       finalDistance = safeDistance * starCloseUpFactor;
     }
 
@@ -1862,18 +2287,31 @@ class CinematicCameraController {
       final planetBody = bodies.first;
       if (planetBody.bodyType == BodyType.planet) {
         // Set distance relative to planet size with safety margin
-        finalDistance = math.max(planetBody.radius * 12.0, safeDistance * 0.6); // Increased from 8x
+        finalDistance = math.max(
+          planetBody.radius * 12.0,
+          safeDistance * 0.6,
+        ); // Increased from 8x
       }
     }
 
     // Ensure we stay within scenario limits but prioritize keeping bodies in frame
-    final minSafeDistance = math.max(cameraParams.minDistance, maxDistance * 1.2);
-    return math.max(math.min(finalDistance, cameraParams.maxDistance), minSafeDistance);
+    final minSafeDistance = math.max(
+      cameraParams.minDistance,
+      maxDistance * 1.2,
+    );
+    return math.max(
+      math.min(finalDistance, cameraParams.maxDistance),
+      minSafeDistance,
+    );
   }
 
   /// Ensure all specified bodies remain in frame during transitions
   /// This method calculates a conservative distance that guarantees visibility
-  double _calculateTransitionSafeDistance(List<Body> allRelevantBodies, vm.Vector3 center, ScenarioType scenario) {
+  double _calculateTransitionSafeDistance(
+    List<Body> allRelevantBodies,
+    vm.Vector3 center,
+    ScenarioType scenario,
+  ) {
     if (allRelevantBodies.isEmpty) return 100.0;
 
     // Find the maximum distance from center for ALL relevant bodies
@@ -1884,11 +2322,14 @@ class CinematicCameraController {
     }
 
     // Use a very conservative safety margin for transitions
-    const double transitionSafetyMargin = 2.5; // Extra wide to guarantee visibility
+    const double transitionSafetyMargin =
+        2.5; // Extra wide to guarantee visibility
 
     // Calculate required distance to fit all bodies in FOV
     final fieldOfViewRadians = math.pi / 3; // Assume 60-degree FOV
-    final requiredDistance = (maxDistance * 2.0 * transitionSafetyMargin) / math.tan(fieldOfViewRadians / 2.0);
+    final requiredDistance =
+        (maxDistance * 2.0 * transitionSafetyMargin) /
+        math.tan(fieldOfViewRadians / 2.0);
 
     // Apply minimal pitch correction for transitions
     final pitchCorrection = 1.2; // Conservative correction
@@ -1899,7 +2340,10 @@ class CinematicCameraController {
 
     // Ensure we respect scenario limits while prioritizing visibility
     final minDistance = math.max(cameraParams.minDistance, maxDistance * 1.5);
-    return math.max(math.min(safeTransitionDistance, cameraParams.maxDistance), minDistance);
+    return math.max(
+      math.min(safeTransitionDistance, cameraParams.maxDistance),
+      minDistance,
+    );
   }
 
   /// Get camera parameters based on simulation scenario
@@ -1912,7 +2356,8 @@ class CinematicCameraController {
           minDistance: 80.0, // Further back for galactic scale
           maxDistance: 800.0, // Very wide shots
           pitchSensitivity: 0.3, // Less pitch correction
-          targetLockFrames: 900, // 15 seconds - longer locks for galaxy evolution
+          targetLockFrames:
+              900, // 15 seconds - longer locks for galaxy evolution
           orbitSpeed: 0.15, // Slower, more majestic movement
         );
 
@@ -1967,7 +2412,8 @@ class CinematicCameraController {
           minDistance: 1.5, // Ultra-close dramatic shots (was 3.0)
           maxDistance: 35.0, // Very tight maximum framing (was 60.0)
           pitchSensitivity: 0.6, // High sensitivity for dynamic angles
-          targetLockFrames: 360, // 6 seconds - faster switching for intense action
+          targetLockFrames:
+              360, // 6 seconds - faster switching for intense action
           orbitSpeed: 0.4, // More dynamic movement for chaos
         );
 
@@ -2030,7 +2476,10 @@ class CinematicCameraController {
   }
 
   /// Check if we should frame multiple bodies due to competing interests
-  bool _shouldFrameMultipleBodies(List<List<Body>> allPairs, List<Body> topPair) {
+  bool _shouldFrameMultipleBodies(
+    List<List<Body>> allPairs,
+    List<Body> topPair,
+  ) {
     if (allPairs.length < 2) return false;
 
     final topScore = _scoreBodiesPair(topPair[0], topPair[1], []);
@@ -2080,12 +2529,17 @@ class CinematicCameraController {
   }
 
   /// Handle dedicated Earth-Moon-Sun tour with AI control and never targeting moon
-  void _handleEarthMoonSunTour(SimulationState simulation, CameraState camera, double deltaTime) {
+  void _handleEarthMoonSunTour(
+    SimulationState simulation,
+    CameraState camera,
+    double deltaTime,
+  ) {
     final bodies = simulation.bodies;
     if (bodies.length < 3) return;
 
     // Identify the bodies - Sun (largest), Earth (medium), Moon (smallest)
-    final sortedBodies = List<Body>.from(bodies)..sort((a, b) => b.mass.compareTo(a.mass));
+    final sortedBodies = List<Body>.from(bodies)
+      ..sort((a, b) => b.mass.compareTo(a.mass));
 
     final sun = sortedBodies[0]; // Largest mass
     final earth = sortedBodies[1]; // Medium mass
@@ -2095,9 +2549,14 @@ class CinematicCameraController {
     // Note: Never targets the moon directly
     const double wideViewDuration = 1.0; // Brief overview
     const double sunFocusDuration = 4.0; // AI explores the sun
-    const double earthFocusDuration = 4.0; // AI explores earth (moon visible but not targeted)
+    const double earthFocusDuration =
+        4.0; // AI explores earth (moon visible but not targeted)
     const double wideReturnDuration = 2.0; // Return to wide view
-    const double totalCycleDuration = wideViewDuration + sunFocusDuration + earthFocusDuration + wideReturnDuration;
+    const double totalCycleDuration =
+        wideViewDuration +
+        sunFocusDuration +
+        earthFocusDuration +
+        wideReturnDuration;
 
     final cycleTime = (_totalFrames / 60.0) % totalCycleDuration;
 
@@ -2111,10 +2570,18 @@ class CinematicCameraController {
 
     if (cycleTime < wideViewDuration) {
       // Phase 1: AI-controlled wide view
-      final allBodies = [sun, earth]; // Include earth but not moon in wide framing
+      final allBodies = [
+        sun,
+        earth,
+      ]; // Include earth but not moon in wide framing
       final wideCenter = _calculateCenter(allBodies);
       final wideDistance =
-          _calculateSafeDistance(allBodies, wideCenter, simulation.currentScenario) * 0.8; // Closer starting view
+          _calculateSafeDistance(
+            allBodies,
+            wideCenter,
+            simulation.currentScenario,
+          ) *
+          0.8; // Closer starting view
 
       // Set wide view position and let AI control movement
       camera.setCameraParameters(
@@ -2148,9 +2615,20 @@ class CinematicCameraController {
 
       // Calculate sun focus parameters
       final startCenter = _calculateCenter([sun, earth]);
-      final startDistance = _calculateSafeDistance([sun, earth], startCenter, simulation.currentScenario) * 0.8;
+      final startDistance =
+          _calculateSafeDistance(
+            [sun, earth],
+            startCenter,
+            simulation.currentScenario,
+          ) *
+          0.8;
       final sunDistance =
-          _calculateSafeDistance([sun], sun.position, simulation.currentScenario) * 3.5; // Stay further from sun
+          _calculateSafeDistance(
+            [sun],
+            sun.position,
+            simulation.currentScenario,
+          ) *
+          3.5; // Stay further from sun
 
       // Initialize AI base state when starting this phase
       if (sunTime < 0.1) {
@@ -2173,24 +2651,40 @@ class CinematicCameraController {
       // Apply transition position with AI movement relative to base state
       camera.setCameraParameters(
         yaw: (_emsAiBaseYaw ?? camera.yaw) + yawMovement,
-        pitch: math.max(0.1, math.min(0.4, (_emsAiBasePitch ?? camera.pitch) + pitchMovement)),
+        pitch: math.max(
+          0.1,
+          math.min(0.4, (_emsAiBasePitch ?? camera.pitch) + pitchMovement),
+        ),
         roll: (_emsAiBaseRoll ?? camera.roll) + rollMovement,
         distance: targetDistance,
         target: targetCenter,
       );
 
       return; // Exit early since AI handled the camera directly
-    } else if (cycleTime < wideViewDuration + sunFocusDuration + earthFocusDuration) {
+    } else if (cycleTime <
+        wideViewDuration + sunFocusDuration + earthFocusDuration) {
       // Phase 3: AI-controlled transition to and exploration of earth (moon visible but not targeted)
       final earthTime = cycleTime - wideViewDuration - sunFocusDuration;
       final progress = earthTime / earthFocusDuration;
       final smoothT = _easeInOutQuad(progress);
 
       // Calculate earth focus parameters - frame earth but moon may be visible
-      final earthDistance = _calculateSafeDistance([earth], earth.position, simulation.currentScenario) * 1.8;
+      final earthDistance =
+          _calculateSafeDistance(
+            [earth],
+            earth.position,
+            simulation.currentScenario,
+          ) *
+          1.8;
 
       // Calculate starting position from end of sun phase to avoid jumps
-      final sunDistance = _calculateSafeDistance([sun], sun.position, simulation.currentScenario) * 3.5;
+      final sunDistance =
+          _calculateSafeDistance(
+            [sun],
+            sun.position,
+            simulation.currentScenario,
+          ) *
+          3.5;
 
       // Initialize AI base state when starting this phase
       if (earthTime < 0.1) {
@@ -2213,7 +2707,10 @@ class CinematicCameraController {
       // Apply transition with AI movement in single call
       camera.setCameraParameters(
         yaw: (_emsAiBaseYaw ?? camera.yaw) + yawMovement,
-        pitch: math.max(0.1, math.min(0.4, (_emsAiBasePitch ?? camera.pitch) + pitchMovement)),
+        pitch: math.max(
+          0.1,
+          math.min(0.4, (_emsAiBasePitch ?? camera.pitch) + pitchMovement),
+        ),
         roll: (_emsAiBaseRoll ?? camera.roll) + rollMovement,
         distance: targetDistance,
         target: targetCenter,
@@ -2222,7 +2719,8 @@ class CinematicCameraController {
       return; // Exit early since AI handled the camera directly
     } else {
       // Phase 4: Smooth return to wide view with simultaneous zoom-out and reorientation
-      final returnTime = cycleTime - wideViewDuration - sunFocusDuration - earthFocusDuration;
+      final returnTime =
+          cycleTime - wideViewDuration - sunFocusDuration - earthFocusDuration;
       final progress = returnTime / wideReturnDuration;
       final smoothT = _easeInOutQuad(progress);
 
@@ -2234,14 +2732,26 @@ class CinematicCameraController {
       final currentRoll = camera.roll;
 
       // Calculate wide view parameters
-      final allBodies = [sun, earth]; // Include earth but not moon in wide framing
+      final allBodies = [
+        sun,
+        earth,
+      ]; // Include earth but not moon in wide framing
       final wideCenter = _calculateCenter(allBodies);
       final wideDistance =
-          _calculateSafeDistance(allBodies, wideCenter, simulation.currentScenario) * 0.8; // Match closer starting view
+          _calculateSafeDistance(
+            allBodies,
+            wideCenter,
+            simulation.currentScenario,
+          ) *
+          0.8; // Match closer starting view
 
       // Start zoom out and reorientation simultaneously
       final targetCenter = _lerpVector3(currentCenter, wideCenter, smoothT);
-      final targetDistance = _lerpDouble(currentDistance, wideDistance, smoothT);
+      final targetDistance = _lerpDouble(
+        currentDistance,
+        wideDistance,
+        smoothT,
+      );
 
       // Reorient camera angles simultaneously with zoom-out
       final targetYaw = currentYaw + (smoothT * 0.08);
@@ -2262,12 +2772,17 @@ class CinematicCameraController {
   }
 
   /// Handle cinematic tour for binary star systems
-  void _handleBinaryStarTour(SimulationState simulation, CameraState camera, double deltaTime) {
+  void _handleBinaryStarTour(
+    SimulationState simulation,
+    CameraState camera,
+    double deltaTime,
+  ) {
     final bodies = simulation.bodies;
     if (bodies.length < 2) return;
 
     // Identify stars and planets - sort by mass, stars are typically the largest
-    final sortedBodies = List<Body>.from(bodies)..sort((a, b) => b.mass.compareTo(a.mass));
+    final sortedBodies = List<Body>.from(bodies)
+      ..sort((a, b) => b.mass.compareTo(a.mass));
 
     // Take the two most massive bodies as binary stars
     final star1 = sortedBodies[0]; // Primary star (largest mass)
@@ -2275,17 +2790,27 @@ class CinematicCameraController {
 
     // Filter for actual planets only - exclude moons and other small bodies
     final planets = sortedBodies.length > 2
-        ? sortedBodies.sublist(2).where((body) => body.bodyType == BodyType.planet).toList()
+        ? sortedBodies
+              .sublist(2)
+              .where((body) => body.bodyType == BodyType.planet)
+              .toList()
         : <Body>[];
 
     // Tour cycle: Quick Wide View (1s) → Zoom In (4s) → Direct Planet Transition (2s) → Planet Survey (3s) → Wide View Return (2s) → repeat
-    const double wideViewDuration = 1.0; // Very brief overview - start zooming in quickly
+    const double wideViewDuration =
+        1.0; // Very brief overview - start zooming in quickly
     const double zoomInDuration = 4.0; // Zoom in to binary stars
-    const double planetTransitionDuration = 2.0; // Direct transition from binary to planets
+    const double planetTransitionDuration =
+        2.0; // Direct transition from binary to planets
     const double planetSurveyDuration = 3.0; // Survey any planets
-    const double wideViewReturnDuration = 2.0; // Return to wide view before repeating
+    const double wideViewReturnDuration =
+        2.0; // Return to wide view before repeating
     const double totalCycleDuration =
-        wideViewDuration + zoomInDuration + planetTransitionDuration + planetSurveyDuration + wideViewReturnDuration;
+        wideViewDuration +
+        zoomInDuration +
+        planetTransitionDuration +
+        planetSurveyDuration +
+        wideViewReturnDuration;
 
     final cycleTime = (_totalFrames / 60.0) % totalCycleDuration;
 
@@ -2294,10 +2819,17 @@ class CinematicCameraController {
 
     if (cycleTime < wideViewDuration) {
       // Phase 1: Pure AI-controlled wide view (no zoom yet)
-      final allBodies = planets.isNotEmpty ? [star1, star2, ...planets] : [star1, star2];
+      final allBodies = planets.isNotEmpty
+          ? [star1, star2, ...planets]
+          : [star1, star2];
       final wideCenter = _calculateCenter(allBodies);
       final wideDistance =
-          _calculateSafeDistance(allBodies, wideCenter, simulation.currentScenario) * 1.2; // Closer wide view
+          _calculateSafeDistance(
+            allBodies,
+            wideCenter,
+            simulation.currentScenario,
+          ) *
+          1.2; // Closer wide view
 
       // Set wide view position and let AI control movement
       camera.setCameraParameters(
@@ -2347,11 +2879,16 @@ class CinematicCameraController {
       // Calculate target binary position
       final binaryCenter = _calculateCenter([star1, star2]);
       final starSeparation = (star1.position - star2.position).length;
-      final binaryDistance = starSeparation * 1.5; // Close-up view of binary stars
+      final binaryDistance =
+          starSeparation * 1.5; // Close-up view of binary stars
 
       // Smooth zoom transition from AI's final position to binary close-up
       final targetCenter = _lerpVector3(startCenter, binaryCenter, smoothT);
-      final targetDistance = _lerpDouble(startDistance, binaryDistance, smoothT);
+      final targetDistance = _lerpDouble(
+        startDistance,
+        binaryDistance,
+        smoothT,
+      );
 
       // Set the basic zoom target and distance
       camera.setCameraParameters(
@@ -2366,7 +2903,8 @@ class CinematicCameraController {
       if (simulation.currentScenario == ScenarioType.binaryStars) {
         // Implement custom AI-like movement during zoom to binary stars
         _orbitTime += deltaTime * 0.35;
-        final yawMovement = math.sin(_orbitTime * 0.8) * 0.025; // More dynamic during zoom
+        final yawMovement =
+            math.sin(_orbitTime * 0.8) * 0.025; // More dynamic during zoom
         final pitchMovement = math.sin(_orbitTime * 0.6) * 0.012;
         final rollMovement = math.sin(_orbitTime * 0.4) * 0.008;
 
@@ -2382,7 +2920,8 @@ class CinematicCameraController {
       }
 
       return; // Exit early since AI handled the camera directly
-    } else if (cycleTime < wideViewDuration + zoomInDuration + planetTransitionDuration) {
+    } else if (cycleTime <
+        wideViewDuration + zoomInDuration + planetTransitionDuration) {
       // Phase 3: Direct transition from binary stars to planets (if planets exist)
       final transitionTime = cycleTime - wideViewDuration - zoomInDuration;
       final progress = transitionTime / planetTransitionDuration;
@@ -2397,18 +2936,33 @@ class CinematicCameraController {
         // Use camera's current distance as starting point
         final currentCameraDistance = camera.distance;
         final planetDistance =
-            _calculateTransitionSafeDistance([firstPlanet], firstPlanet.position, simulation.currentScenario) * 0.8;
+            _calculateTransitionSafeDistance(
+              [firstPlanet],
+              firstPlanet.position,
+              simulation.currentScenario,
+            ) *
+            0.8;
 
         // Smoothly transition target position and distance
-        targetCenter = _lerpVector3(binaryCenter, firstPlanet.position, smoothT);
-        targetDistance = _lerpDouble(currentCameraDistance, planetDistance, smoothT);
+        targetCenter = _lerpVector3(
+          binaryCenter,
+          firstPlanet.position,
+          smoothT,
+        );
+        targetDistance = _lerpDouble(
+          currentCameraDistance,
+          planetDistance,
+          smoothT,
+        );
 
         // Simple, stable angle transitions without complex calculations
         final startYaw = camera.yaw;
         final startRoll = camera.roll;
 
         // Target stable viewing angles for the planet (avoid extreme angles)
-        final targetYaw = startYaw + (smoothT * 0.05); // Much less spinning - was 0.2, now 0.05
+        final targetYaw =
+            startYaw +
+            (smoothT * 0.05); // Much less spinning - was 0.2, now 0.05
         final targetPitch = 0.25; // Safe, stable pitch for planet viewing
         final targetRoll = startRoll * (1.0 - smoothT); // Gradually reduce roll
 
@@ -2424,7 +2978,13 @@ class CinematicCameraController {
       } else {
         // No planets - continue focusing on binary system
         final binaryCenter = _calculateCenter([star1, star2]);
-        final binaryDistance = _calculateSafeDistance([star1, star2], binaryCenter, simulation.currentScenario) * 0.9;
+        final binaryDistance =
+            _calculateSafeDistance(
+              [star1, star2],
+              binaryCenter,
+              simulation.currentScenario,
+            ) *
+            0.9;
 
         targetCenter = binaryCenter;
 
@@ -2442,14 +3002,23 @@ class CinematicCameraController {
         );
         return; // Exit early since we handled the camera directly
       }
-    } else if (cycleTime < wideViewDuration + zoomInDuration + planetTransitionDuration + planetSurveyDuration) {
+    } else if (cycleTime <
+        wideViewDuration +
+            zoomInDuration +
+            planetTransitionDuration +
+            planetSurveyDuration) {
       // Phase 4: Planet survey (if planets exist)
-      final surveyTime = cycleTime - wideViewDuration - zoomInDuration - planetTransitionDuration;
+      final surveyTime =
+          cycleTime -
+          wideViewDuration -
+          zoomInDuration -
+          planetTransitionDuration;
       final progress = surveyTime / planetSurveyDuration;
 
       if (planets.isNotEmpty) {
         // Cycle through planets
-        final planetIndex = (progress * planets.length).floor() % planets.length;
+        final planetIndex =
+            (progress * planets.length).floor() % planets.length;
         final planetProgress = (progress * planets.length) % 1.0;
         final currentPlanet = planets[planetIndex];
 
@@ -2460,12 +3029,30 @@ class CinematicCameraController {
 
           final previousPlanet = planets[planetIndex - 1];
           final previousDistance =
-              _calculateSafeDistance([previousPlanet], previousPlanet.position, simulation.currentScenario) * 1.5;
+              _calculateSafeDistance(
+                [previousPlanet],
+                previousPlanet.position,
+                simulation.currentScenario,
+              ) *
+              1.5;
           final currentDistance =
-              _calculateSafeDistance([currentPlanet], currentPlanet.position, simulation.currentScenario) * 1.5;
+              _calculateSafeDistance(
+                [currentPlanet],
+                currentPlanet.position,
+                simulation.currentScenario,
+              ) *
+              1.5;
 
-          targetCenter = _lerpVector3(previousPlanet.position, currentPlanet.position, smoothT);
-          targetDistance = _lerpDouble(previousDistance, currentDistance, smoothT);
+          targetCenter = _lerpVector3(
+            previousPlanet.position,
+            currentPlanet.position,
+            smoothT,
+          );
+          targetDistance = _lerpDouble(
+            previousDistance,
+            currentDistance,
+            smoothT,
+          );
 
           // Apply transition directly and return early
           camera.setCameraParameters(
@@ -2480,7 +3067,12 @@ class CinematicCameraController {
           // Focus on current planet with AI-controlled cinematic movement
           targetCenter = currentPlanet.position;
           final baseDistance =
-              _calculateSafeDistance([currentPlanet], currentPlanet.position, simulation.currentScenario) * 1.5;
+              _calculateSafeDistance(
+                [currentPlanet],
+                currentPlanet.position,
+                simulation.currentScenario,
+              ) *
+              1.5;
 
           // Set the basic target and distance, then let AI handle all camera movements
           camera.setCameraParameters(
@@ -2515,7 +3107,13 @@ class CinematicCameraController {
       } else {
         // No planets - continue focusing on binary system with different movement
         final binaryCenter = _calculateCenter([star1, star2]);
-        final binaryDistance = _calculateSafeDistance([star1, star2], binaryCenter, simulation.currentScenario) * 0.9;
+        final binaryDistance =
+            _calculateSafeDistance(
+              [star1, star2],
+              binaryCenter,
+              simulation.currentScenario,
+            ) *
+            0.9;
 
         targetCenter = binaryCenter;
 
@@ -2536,7 +3134,11 @@ class CinematicCameraController {
     } else {
       // Phase 5: Return to wide view with AI control before restarting cycle
       final returnTime =
-          cycleTime - wideViewDuration - zoomInDuration - planetTransitionDuration - planetSurveyDuration;
+          cycleTime -
+          wideViewDuration -
+          zoomInDuration -
+          planetTransitionDuration -
+          planetSurveyDuration;
       final progress = returnTime / wideViewReturnDuration;
 
       if (progress < 0.7) {
@@ -2549,8 +3151,10 @@ class CinematicCameraController {
           // Implement custom AI-like movement for binary star return phase
           // Make it more dynamic to avoid the "sitting there" feeling
           _orbitTime += deltaTime * 0.4; // Faster movement
-          final yawMovement = math.sin(_orbitTime * 0.8) * 0.035; // More pronounced
-          final pitchMovement = math.sin(_orbitTime * 0.6) * 0.018; // More dynamic
+          final yawMovement =
+              math.sin(_orbitTime * 0.8) * 0.035; // More pronounced
+          final pitchMovement =
+              math.sin(_orbitTime * 0.6) * 0.018; // More dynamic
           final rollMovement = math.sin(_orbitTime * 0.7) * 0.01; // More roll
 
           camera.setCameraParameters(
@@ -2566,7 +3170,8 @@ class CinematicCameraController {
         return; // Exit early since AI handled the camera directly
       } else {
         // Last 30% of Phase 5: Start zooming out immediately while smoothly reorienting
-        final transitionProgress = (progress - 0.7) / 0.3; // 0.0 to 1.0 over last 30%
+        final transitionProgress =
+            (progress - 0.7) / 0.3; // 0.0 to 1.0 over last 30%
         final smoothT = _easeInOutQuad(transitionProgress);
 
         // Get current position (where AI is/was) and start transitioning immediately
@@ -2577,18 +3182,40 @@ class CinematicCameraController {
         final currentRoll = camera.roll;
 
         // Calculate wide view parameters for next cycle
-        final allBodies = planets.isNotEmpty ? [star1, star2, ...planets] : [star1, star2];
+        final allBodies = planets.isNotEmpty
+            ? [star1, star2, ...planets]
+            : [star1, star2];
         final wideCenter = _calculateCenter(allBodies);
-        final wideDistance = _calculateSafeDistance(allBodies, wideCenter, simulation.currentScenario) * 1.2;
+        final wideDistance =
+            _calculateSafeDistance(
+              allBodies,
+              wideCenter,
+              simulation.currentScenario,
+            ) *
+            1.2;
 
         // Start zoom out and reorientation simultaneously for dynamic transition
         final targetCenter = _lerpVector3(currentCenter, wideCenter, smoothT);
-        final targetDistance = _lerpDouble(currentDistance, wideDistance, smoothT);
+        final targetDistance = _lerpDouble(
+          currentDistance,
+          wideDistance,
+          smoothT,
+        );
 
         // Reorient camera angles simultaneously with zoom-out for fluid movement
-        final targetYaw = currentYaw + (smoothT * 0.08); // Slightly more rotation during zoom-out
-        final targetPitch = _lerpDouble(currentPitch, 0.3, smoothT); // Move to neutral wide view angle
-        final targetRoll = _lerpDouble(currentRoll, 0.0, smoothT); // Reduce roll to neutral
+        final targetYaw =
+            currentYaw +
+            (smoothT * 0.08); // Slightly more rotation during zoom-out
+        final targetPitch = _lerpDouble(
+          currentPitch,
+          0.3,
+          smoothT,
+        ); // Move to neutral wide view angle
+        final targetRoll = _lerpDouble(
+          currentRoll,
+          0.0,
+          smoothT,
+        ); // Reduce roll to neutral
 
         // Apply simultaneous zoom-out and reorientation for cinematic effect
         camera.setCameraParameters(
@@ -2604,24 +3231,34 @@ class CinematicCameraController {
   }
 
   /// Handles cinematic tour for asteroid belt scenarios with AI-controlled phases
-  void _handleAsteroidBeltTour(SimulationState simulation, CameraState camera, double deltaTime) {
+  void _handleAsteroidBeltTour(
+    SimulationState simulation,
+    CameraState camera,
+    double deltaTime,
+  ) {
     final bodies = simulation.bodies;
     if (bodies.isEmpty) return;
 
     // Find central star (typically the largest body)
-    final sortedBodies = List<Body>.from(bodies)..sort((a, b) => b.mass.compareTo(a.mass));
+    final sortedBodies = List<Body>.from(bodies)
+      ..sort((a, b) => b.mass.compareTo(a.mass));
     final centralStar = sortedBodies.isNotEmpty ? sortedBodies.first : null;
     if (centralStar == null) return;
 
     // Find asteroids/small bodies for the tour
     final asteroids = bodies
-        .where((body) => body.bodyType == BodyType.asteroid || body.bodyType == BodyType.planet)
+        .where(
+          (body) =>
+              body.bodyType == BodyType.asteroid ||
+              body.bodyType == BodyType.planet,
+        )
         .toList();
 
     if (asteroids.isEmpty) return;
 
     // Enhanced phase timing with AI control periods
-    const double wideViewDuration = 2.0; // Wide view to center star + inner planets
+    const double wideViewDuration =
+        2.0; // Wide view to center star + inner planets
     const double centralStarAIDuration = 2.0; // AI control at central star
     const double outerTransitionDuration = 2.0; // Transition to outer planets
     const double outerPlanetAIDuration = 2.0; // AI control at outer planet
@@ -2643,12 +3280,15 @@ class CinematicCameraController {
       // Calculate starting wide view to see everything
       final allBodies = [centralStar, ...asteroids];
       final wideCenter = _calculateCenter(allBodies);
-      const wideDistance = 50.0; // Farther starting distance to see the full scene
+      const wideDistance =
+          50.0; // Farther starting distance to see the full scene
 
       // Target: center star with inner planets visible
       final innerPlanets = asteroids
           .where(
-            (body) => (body.position - centralStar.position).length < 3.0, // Inner region
+            (body) =>
+                (body.position - centralStar.position).length <
+                3.0, // Inner region
           )
           .toList();
       final innerBodies = [centralStar, ...innerPlanets];
@@ -2659,7 +3299,13 @@ class CinematicCameraController {
       final targetCenter = _lerpVector3(wideCenter, innerCenter, smoothT);
       final targetDistance = _lerpDouble(wideDistance, innerDistance, smoothT);
 
-      camera.setCameraParameters(yaw: 0.0, pitch: 0.25, roll: 0.0, distance: targetDistance, target: targetCenter);
+      camera.setCameraParameters(
+        yaw: 0.0,
+        pitch: 0.25,
+        roll: 0.0,
+        distance: targetDistance,
+        target: targetCenter,
+      );
 
       // Store position for next phase
       _aiLastTarget = vm.Vector3.copy(targetCenter);
@@ -2672,7 +3318,9 @@ class CinematicCameraController {
       // Set up the target for central star + inner planets
       final innerPlanets = asteroids
           .where(
-            (body) => (body.position - centralStar.position).length < 3.0, // Inner region
+            (body) =>
+                (body.position - centralStar.position).length <
+                3.0, // Inner region
           )
           .toList();
       final innerBodies = [centralStar, ...innerPlanets];
@@ -2703,9 +3351,11 @@ class CinematicCameraController {
       );
 
       return; // Exit early since AI handled the camera directly
-    } else if (cycleTime < wideViewDuration + centralStarAIDuration + outerTransitionDuration) {
+    } else if (cycleTime <
+        wideViewDuration + centralStarAIDuration + outerTransitionDuration) {
       // Phase 3: Transition from current AI position to outer planets
-      final transitionTime = cycleTime - wideViewDuration - centralStarAIDuration;
+      final transitionTime =
+          cycleTime - wideViewDuration - centralStarAIDuration;
       final progress = transitionTime / outerTransitionDuration;
       final smoothT = _easeInOutQuad(progress);
 
@@ -2729,7 +3379,11 @@ class CinematicCameraController {
 
         // Smooth transition from current AI position to the farthest body
         final targetCenter = _lerpVector3(startCenter, outerCenter, smoothT);
-        final targetDistance = _lerpDouble(startDistance, outerDistance, smoothT);
+        final targetDistance = _lerpDouble(
+          startDistance,
+          outerDistance,
+          smoothT,
+        );
 
         // Also smoothly transition camera angles from current AI position
         final startYaw = camera.yaw;
@@ -2755,7 +3409,11 @@ class CinematicCameraController {
       }
 
       return; // Exit early since we handled the camera directly
-    } else if (cycleTime < wideViewDuration + centralStarAIDuration + outerTransitionDuration + outerPlanetAIDuration) {
+    } else if (cycleTime <
+        wideViewDuration +
+            centralStarAIDuration +
+            outerTransitionDuration +
+            outerPlanetAIDuration) {
       // Phase 4: AI control at outer planet
 
       // Find the farthest body again for consistency
@@ -2798,7 +3456,11 @@ class CinematicCameraController {
     } else {
       // Phase 5: Return to starting wide view
       final returnTime =
-          cycleTime - wideViewDuration - centralStarAIDuration - outerTransitionDuration - outerPlanetAIDuration;
+          cycleTime -
+          wideViewDuration -
+          centralStarAIDuration -
+          outerTransitionDuration -
+          outerPlanetAIDuration;
       final progress = returnTime / wideViewReturnDuration;
       final smoothT = _easeInOutQuad(progress);
 
@@ -2812,16 +3474,33 @@ class CinematicCameraController {
       // Calculate wide view parameters for next cycle - use SAME distance as Phase 1
       final allBodies = [centralStar, ...asteroids];
       final wideCenter = _calculateCenter(allBodies);
-      const wideDistance = 50.0; // Same fixed distance as Phase 1 starting position
+      const wideDistance =
+          50.0; // Same fixed distance as Phase 1 starting position
 
       // Smooth transition back to starting position
       final targetCenter = _lerpVector3(currentCenter, wideCenter, smoothT);
-      final targetDistance = _lerpDouble(currentDistance, wideDistance, smoothT);
+      final targetDistance = _lerpDouble(
+        currentDistance,
+        wideDistance,
+        smoothT,
+      );
 
       // Return to exact starting angles from Phase 1
-      final targetYaw = _lerpDouble(currentYaw, 0.0, smoothT); // Return to starting yaw
-      final targetPitch = _lerpDouble(currentPitch, 0.25, smoothT); // Return to starting pitch
-      final targetRoll = _lerpDouble(currentRoll, 0.0, smoothT); // Return to starting roll
+      final targetYaw = _lerpDouble(
+        currentYaw,
+        0.0,
+        smoothT,
+      ); // Return to starting yaw
+      final targetPitch = _lerpDouble(
+        currentPitch,
+        0.25,
+        smoothT,
+      ); // Return to starting pitch
+      final targetRoll = _lerpDouble(
+        currentRoll,
+        0.0,
+        smoothT,
+      ); // Return to starting roll
 
       // Apply smooth transition back to starting state
       camera.setCameraParameters(
@@ -2836,7 +3515,11 @@ class CinematicCameraController {
   }
 
   /// Handles cinematic tour for galaxy formation scenarios
-  void _handleGalaxyFormationTour(SimulationState simulation, CameraState camera, double deltaTime) {
+  void _handleGalaxyFormationTour(
+    SimulationState simulation,
+    CameraState camera,
+    double deltaTime,
+  ) {
     final bodies = simulation.bodies;
     if (bodies.isEmpty) return;
 
@@ -2847,22 +3530,31 @@ class CinematicCameraController {
     }
 
     // Find the supermassive black hole (typically the most massive body)
-    final sortedBodies = List<Body>.from(bodies)..sort((a, b) => b.mass.compareTo(a.mass));
+    final sortedBodies = List<Body>.from(bodies)
+      ..sort((a, b) => b.mass.compareTo(a.mass));
     final blackHole = sortedBodies.isNotEmpty ? sortedBodies.first : null;
     if (blackHole == null) return;
 
     // Find other interesting bodies (stars)
     final stars = bodies
-        .where((body) => body != blackHole && (body.bodyType == BodyType.star || body.bodyType == BodyType.planet))
+        .where(
+          (body) =>
+              body != blackHole &&
+              (body.bodyType == BodyType.star ||
+                  body.bodyType == BodyType.planet),
+        )
         .toList();
 
     if (stars.isEmpty) return;
 
     // 6-phase tour structure
-    const double wideViewDuration = 4.0; // Wide galaxy view with gentle movement
-    const double blackHoleTransitionDuration = 12.0; // Much slower transition with orbital movement
+    const double wideViewDuration =
+        4.0; // Wide galaxy view with gentle movement
+    const double blackHoleTransitionDuration =
+        12.0; // Much slower transition with orbital movement
     const double blackHoleAIDuration = 6.0; // Extended AI control at black hole
-    const double starTransitionDuration = 6.0; // Slower transition to random star
+    const double starTransitionDuration =
+        6.0; // Slower transition to random star
     const double starAIDuration = 6.0; // Extended AI control at star
     const double returnDuration = 8.0; // Slower return with orbital movement
     const double totalCycleDuration =
@@ -2889,9 +3581,13 @@ class CinematicCameraController {
       // Very gentle camera movement for dramatic galactic overview
       // Start from default galaxy formation camera angles
       final time = DateTime.now().millisecondsSinceEpoch / 1000.0;
-      final gentleYaw = 0.77 + math.sin(time * 0.1) * 0.05; // Start from default yaw (0.77)
-      final gentlePitch = -0.89 + math.sin(time * 0.08) * 0.05; // Start from default pitch (-0.89)
-      final gentleRoll = 0.0 + math.sin(time * 0.06) * 0.03; // Start from default roll (0.0)
+      final gentleYaw =
+          0.77 + math.sin(time * 0.1) * 0.05; // Start from default yaw (0.77)
+      final gentlePitch =
+          -0.89 +
+          math.sin(time * 0.08) * 0.05; // Start from default pitch (-0.89)
+      final gentleRoll =
+          0.0 + math.sin(time * 0.06) * 0.03; // Start from default roll (0.0)
 
       camera.setCameraParameters(
         yaw: gentleYaw,
@@ -2915,27 +3611,51 @@ class CinematicCameraController {
 
       // Target: black hole
       final blackHoleCenter = blackHole.position;
-      const blackHoleDistance = 40.0; // Close enough to see the black hole's accretion disk
+      const blackHoleDistance =
+          40.0; // Close enough to see the black hole's accretion disk
 
       // Add sweeping orbital movement around the galaxy as we zoom in
-      final orbitProgress = progress * 2.0 * math.pi * 0.8; // More complete orbit for dramatic sweep
-      final orbitRadius = (1.0 - progress) * 120.0; // Larger orbital radius for more dramatic sweep
+      final orbitProgress =
+          progress *
+          2.0 *
+          math.pi *
+          0.8; // More complete orbit for dramatic sweep
+      final orbitRadius =
+          (1.0 - progress) *
+          120.0; // Larger orbital radius for more dramatic sweep
       final orbitX = math.cos(orbitProgress) * orbitRadius;
       final orbitY = math.sin(orbitProgress) * orbitRadius;
-      final orbitZ = math.sin(orbitProgress * 0.5) * orbitRadius * 0.3; // Add vertical sweep component
+      final orbitZ =
+          math.sin(orbitProgress * 0.5) *
+          orbitRadius *
+          0.3; // Add vertical sweep component
       final orbitOffset = vm.Vector3(orbitX, orbitY, orbitZ);
 
       // Smooth transition from actual wide view (600.0) to black hole (40.0) with sweeping movement
-      final targetCenter = _lerpVector3(startCenter + orbitOffset, blackHoleCenter, smoothT);
-      final targetDistance = _lerpDouble(startDistance, blackHoleDistance, smoothT);
+      final targetCenter = _lerpVector3(
+        startCenter + orbitOffset,
+        blackHoleCenter,
+        smoothT,
+      );
+      final targetDistance = _lerpDouble(
+        startDistance,
+        blackHoleDistance,
+        smoothT,
+      );
 
       // Smoothly transition camera angles with dramatic orbital influence
       final startYaw = 0.77; // Default galaxy yaw
       final startPitch = -0.89; // Default galaxy pitch
-      final orbitYawInfluence = orbitProgress * 0.6; // More pronounced orbital yaw influence
-      final orbitPitchInfluence = math.sin(orbitProgress * 0.5) * 0.2; // Vertical sweep affects pitch
+      final orbitYawInfluence =
+          orbitProgress * 0.6; // More pronounced orbital yaw influence
+      final orbitPitchInfluence =
+          math.sin(orbitProgress * 0.5) * 0.2; // Vertical sweep affects pitch
       final targetYaw = _lerpDouble(startYaw + orbitYawInfluence, 0.0, smoothT);
-      final targetPitch = _lerpDouble(startPitch + orbitPitchInfluence, 0.25, smoothT);
+      final targetPitch = _lerpDouble(
+        startPitch + orbitPitchInfluence,
+        0.25,
+        smoothT,
+      );
 
       camera.setCameraParameters(
         yaw: targetYaw,
@@ -2946,7 +3666,8 @@ class CinematicCameraController {
       );
 
       return; // Exit early since we handled the camera directly
-    } else if (cycleTime < wideViewDuration + blackHoleTransitionDuration + blackHoleAIDuration) {
+    } else if (cycleTime <
+        wideViewDuration + blackHoleTransitionDuration + blackHoleAIDuration) {
       // Phase 3: AI control around black hole
 
       // Set up the black hole as target
@@ -2971,10 +3692,13 @@ class CinematicCameraController {
 
       // Add some variety with different movement patterns
       final time = _orbitTime;
-      final yawMovement = math.sin(time * 0.8) * orbitRadius + math.sin(time * 0.3) * 0.02; // Combined movements
+      final yawMovement =
+          math.sin(time * 0.8) * orbitRadius +
+          math.sin(time * 0.3) * 0.02; // Combined movements
       final pitchMovement = math.sin(time * 0.6) * verticalMotion;
       final rollMovement = math.sin(time * 0.4) * rollIntensity;
-      final distanceVariation = 35.0 + math.sin(time * 0.3) * 6.0; // Slower distance changes
+      final distanceVariation =
+          35.0 + math.sin(time * 0.3) * 6.0; // Slower distance changes
 
       // Add occasional dramatic sweeps
       final sweepTime = time * 0.2;
@@ -2990,9 +3714,16 @@ class CinematicCameraController {
 
       return; // Exit early since AI handled the camera directly
     } else if (cycleTime <
-        wideViewDuration + blackHoleTransitionDuration + blackHoleAIDuration + starTransitionDuration) {
+        wideViewDuration +
+            blackHoleTransitionDuration +
+            blackHoleAIDuration +
+            starTransitionDuration) {
       // Phase 4: Transition from black hole to random star
-      final transitionTime = cycleTime - wideViewDuration - blackHoleTransitionDuration - blackHoleAIDuration;
+      final transitionTime =
+          cycleTime -
+          wideViewDuration -
+          blackHoleTransitionDuration -
+          blackHoleAIDuration;
       final progress = transitionTime / starTransitionDuration;
       final smoothT = _easeInOutQuad(progress);
 
@@ -3010,7 +3741,11 @@ class CinematicCameraController {
       const starDistance = 30.0; // Good distance to see the star
 
       // Smooth transition
-      final targetCenter = _lerpVector3(startCenter, targetStar.position, smoothT);
+      final targetCenter = _lerpVector3(
+        startCenter,
+        targetStar.position,
+        smoothT,
+      );
       final targetDistance = _lerpDouble(startDistance, starDistance, smoothT);
 
       // Also smooth transition of camera angles
@@ -3066,10 +3801,13 @@ class CinematicCameraController {
 
       // Add layered movement patterns for organic feel
       final time = _orbitTime;
-      final yawMovement = math.sin(time * 0.5) * orbitRadius + math.sin(time * 1.3) * 0.015; // Layered movement
+      final yawMovement =
+          math.sin(time * 0.5) * orbitRadius +
+          math.sin(time * 1.3) * 0.015; // Layered movement
       final pitchMovement = math.sin(time * 0.7) * verticalMotion;
       final rollMovement = math.sin(time * 0.3) * rollIntensity;
-      final distanceVariation = 28.0 + math.sin(time * 0.25) * 4.0; // Gentler distance breathing
+      final distanceVariation =
+          28.0 + math.sin(time * 0.25) * 4.0; // Gentler distance breathing
 
       // Add subtle focus pulls (closer inspection moments)
       final focusPull = math.sin(time * 0.15) * 2.0;
@@ -3108,21 +3846,49 @@ class CinematicCameraController {
       const wideDistance = 600.0; // Same wide distance as Phase 1
 
       // Add orbital movement around the galaxy as we zoom out
-      final orbitProgress = progress * 2.0 * math.pi * 0.5; // Slightly more than zoom-in for variety
-      final orbitRadius = progress * 60.0; // Orbital radius increases as we zoom out
-      final orbitX = math.cos(orbitProgress + math.pi) * orbitRadius; // Start from opposite side
+      final orbitProgress =
+          progress *
+          2.0 *
+          math.pi *
+          0.5; // Slightly more than zoom-in for variety
+      final orbitRadius =
+          progress * 60.0; // Orbital radius increases as we zoom out
+      final orbitX =
+          math.cos(orbitProgress + math.pi) *
+          orbitRadius; // Start from opposite side
       final orbitY = math.sin(orbitProgress + math.pi) * orbitRadius;
       final orbitOffset = vm.Vector3(orbitX, orbitY, 0.0);
 
       // Smooth transition back to wide view with orbital movement
-      final targetCenter = _lerpVector3(currentCenter, wideCenter + orbitOffset, smoothT);
-      final targetDistance = _lerpDouble(currentDistance, wideDistance, smoothT);
+      final targetCenter = _lerpVector3(
+        currentCenter,
+        wideCenter + orbitOffset,
+        smoothT,
+      );
+      final targetDistance = _lerpDouble(
+        currentDistance,
+        wideDistance,
+        smoothT,
+      );
 
       // Return to default galaxy formation camera angles with orbital influence
-      final orbitYawInfluence = math.sin(orbitProgress) * 0.2; // Orbital movement affects yaw
-      final targetYaw = _lerpDouble(currentYaw, 0.77 + orbitYawInfluence, smoothT); // Default galaxy yaw + orbit
-      final targetPitch = _lerpDouble(currentPitch, -0.89, smoothT); // Default galaxy pitch
-      final targetRoll = _lerpDouble(currentRoll, 0.0, smoothT); // Default galaxy roll
+      final orbitYawInfluence =
+          math.sin(orbitProgress) * 0.2; // Orbital movement affects yaw
+      final targetYaw = _lerpDouble(
+        currentYaw,
+        0.77 + orbitYawInfluence,
+        smoothT,
+      ); // Default galaxy yaw + orbit
+      final targetPitch = _lerpDouble(
+        currentPitch,
+        -0.89,
+        smoothT,
+      ); // Default galaxy pitch
+      final targetRoll = _lerpDouble(
+        currentRoll,
+        0.0,
+        smoothT,
+      ); // Default galaxy roll
 
       camera.setCameraParameters(
         yaw: targetYaw,
@@ -3136,7 +3902,11 @@ class CinematicCameraController {
   }
 
   /// Handle dynamic framing camera technique - focuses on dramatic real-time interactions
-  void _handleDynamicFraming(SimulationState simulation, CameraState camera, double deltaTime) {
+  void _handleDynamicFraming(
+    SimulationState simulation,
+    CameraState camera,
+    double deltaTime,
+  ) {
     // For solar system, use intelligent framing but with stable camera movement (no barrel roll)
     if (simulation.currentScenario == ScenarioType.solarSystem) {
       _updateIntelligentFramingStable(simulation, camera, deltaTime);
@@ -3209,7 +3979,11 @@ class CinematicCameraController {
     // Step 2: Calculate average velocity magnitude for the entire body pair
     // This represents the overall motion intensity of the tracked system
     final avgVelocity =
-        (velocityMagnitude1 + velocityMagnitude2 + trackedVelocityMagnitude1 + trackedVelocityMagnitude2) / 4.0;
+        (velocityMagnitude1 +
+            velocityMagnitude2 +
+            trackedVelocityMagnitude1 +
+            trackedVelocityMagnitude2) /
+        4.0;
 
     // Step 3: Calculate adaptive tolerance using velocity-aware formula
     // Formula: tolerance = base + (avgVelocity * scaling), capped at maximum
@@ -3217,7 +3991,8 @@ class CinematicCameraController {
     // - Velocity component: additional tolerance proportional to motion speed
     // - Maximum cap: prevents tolerance from becoming too lenient for very fast bodies
     final adaptiveTolerance = math.min(
-      RenderingConstants.bodyMatchingBaseTolerance + (avgVelocity * RenderingConstants.bodyMatchingVelocityScaling),
+      RenderingConstants.bodyMatchingBaseTolerance +
+          (avgVelocity * RenderingConstants.bodyMatchingVelocityScaling),
       RenderingConstants.bodyMatchingMaxTolerance,
     );
 
@@ -3229,11 +4004,15 @@ class CinematicCameraController {
 
     // Step 5: Check both possible body correspondence patterns
     // Pattern 1: body1↔tracked1 AND body2↔tracked2 (same order)
-    final match1 = (pos1 - trackedPos1).length < adaptiveTolerance && (pos2 - trackedPos2).length < adaptiveTolerance;
+    final match1 =
+        (pos1 - trackedPos1).length < adaptiveTolerance &&
+        (pos2 - trackedPos2).length < adaptiveTolerance;
 
     // Pattern 2: body1↔tracked2 AND body2↔tracked1 (swapped order)
     // This handles cases where body indices may have been reordered during simulation updates
-    final match2 = (pos1 - trackedPos2).length < adaptiveTolerance && (pos2 - trackedPos1).length < adaptiveTolerance;
+    final match2 =
+        (pos1 - trackedPos2).length < adaptiveTolerance &&
+        (pos2 - trackedPos1).length < adaptiveTolerance;
 
     // Step 6: Return true if either correspondence pattern matches
     return match1 || match2;

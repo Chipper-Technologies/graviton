@@ -7,8 +7,8 @@ import 'package:vector_math/vector_math_64.dart' as vm;
 /// Integration tests for the complete cinematic camera techniques system
 void main() {
   group('Cinematic Camera Techniques System Integration', () {
-    test('system should support all six camera techniques', () {
-      expect(CinematicCameraTechnique.values, hasLength(6));
+    test('system should support all three camera techniques', () {
+      expect(CinematicCameraTechnique.values, hasLength(3));
 
       // Verify all techniques are present
       final techniqueNames = CinematicCameraTechnique.values
