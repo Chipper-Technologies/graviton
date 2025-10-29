@@ -51,7 +51,7 @@ class SimulationConstants {
       0.7; // cumulative (0.3-0.7 = 0.4)
 
   // Small rocky planets (Mercury to Mars size)
-  static const double smallPlanetMassMin = 0.8;
+  static const double smallPlanetMassMin = 1.0;
   static const double smallPlanetMassMax = 2.0;
   static const double smallPlanetRadiusMin = 0.5;
   static const double smallPlanetRadiusMax = 0.8;
