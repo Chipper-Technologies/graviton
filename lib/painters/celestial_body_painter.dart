@@ -1687,7 +1687,10 @@ class CelestialBodyPainter {
         : _calculateStellarTemperature(body.mass);
 
     // Stars between 2000K and 7500K typically have convective zones that generate magnetic activity.
-    // This temperature range corresponds to spectral types F, G, K, and M, which are known to exhibit sunspots due to their convective outer layers.
+    // This temperature range corresponds to spectral types F, G, K, and M. Note: F, G, K stars have
+    // partially convective exteriors similar to the Sun, while M-type stars (< 3700K) have fully
+    // convective interiors with different magnetic field structures. This sunspot model is simplified
+    // and most accurately represents solar-type (F, G, K) magnetic activity patterns.
     return temperature >= 2000.0 && temperature <= 7500.0;
   }
 

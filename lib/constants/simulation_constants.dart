@@ -136,6 +136,17 @@ class SimulationConstants {
   // This is the minimum temperature any object can have in deep space
   static const double cosmicMicrowaveBackgroundTemperature = 2.7; // Kelvin
 
+  // Black hole proximity heating constants for galaxy formation
+  // Stars closer to black holes experience tidal heating and high-energy radiation
+  static const double blackHoleHeatingInnerRadius =
+      100.0; // Distance units - extreme heating zone
+  static const double blackHoleHeatingOuterRadius =
+      150.0; // Distance units - moderate heating zone
+  static const double blackHoleHeatingInnerFactor =
+      50.0; // Divisor for inner zone heating calculation
+  static const double blackHoleHeatingOuterFactor =
+      200.0; // Divisor for outer zone heating calculation
+
   // Calibration constant for converting stellar radiation to temperature
   // This scales our simulation's arbitrary radiation units to realistic temperatures
   // Derived from Stefan-Boltzmann law: T = (L/(4πσr²))^(1/4)

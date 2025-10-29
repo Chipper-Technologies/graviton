@@ -809,6 +809,9 @@ class Simulation {
 
       // Only update if the color would change
       if (body.color != realisticColor) {
+        // Preserve the body's temperature when applying realistic colors because it is used for
+        // stellar classification and physical calculations, and should not be recalculated or
+        // lost during color updates.
         bodies[i] = Body(
           position: body.position,
           velocity: body.velocity,
@@ -819,8 +822,7 @@ class Simulation {
           isPlanet: body.isPlanet,
           bodyType: body.bodyType,
           stellarLuminosity: body.stellarLuminosity,
-          temperature: body
-              .temperature, // Preserve the body's temperature: temperature must be retained when applying realistic colors because it is used for stellar classification and physical calculations, and should not be recalculated or lost during color updates.
+          temperature: body.temperature,
         );
       }
     }

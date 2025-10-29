@@ -259,7 +259,7 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                     color: AppColors.uiWhite.withValues(
                       alpha: AppTypography.opacityVeryHigh,
                     ),
-                    fontSize: AppTypography.fontSizeSmall - 2,
+                    fontSize: AppTypography.fontSizeXSmall,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

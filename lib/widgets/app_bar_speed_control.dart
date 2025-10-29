@@ -112,7 +112,7 @@ class AppBarSpeedControl extends StatelessWidget {
                 description,
                 style: TextStyle(
                   color: AppColors.uiWhite.withValues(alpha: 0.6),
-                  fontSize: AppTypography.fontSizeSmall - 2,
+                  fontSize: AppTypography.fontSizeXSmall,
                 ),
               ),
             ],

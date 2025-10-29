@@ -158,7 +158,7 @@ class BottomControls extends StatelessWidget {
                               ? AppColors.primaryColor
                               : AppColors.uiWhite.withValues(alpha: 0.8))
                         : AppColors.uiWhite.withValues(alpha: 0.3),
-                    fontSize: AppTypography.fontSizeSmall - 2,
+                    fontSize: AppTypography.fontSizeXSmall,
                     fontWeight: isActive ? FontWeight.w500 : FontWeight.normal,
                   ),
                 ),

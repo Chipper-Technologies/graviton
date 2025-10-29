@@ -759,15 +759,24 @@ class ScenarioService {
         // Apply black hole proximity heating
         // Closer stars get significantly hotter due to tidal heating and radiation
         double temperatureMultiplier = 1.0;
-        if (distanceFromBlackHole < 100.0) {
+        if (distanceFromBlackHole <
+            SimulationConstants.blackHoleHeatingInnerRadius) {
           // Very close to black hole - extreme heating
           temperatureMultiplier =
-              1.0 + (100.0 - distanceFromBlackHole) / 50.0; // Up to 3x hotter
-        } else if (distanceFromBlackHole < 150.0) {
+              1.0 +
+              (SimulationConstants.blackHoleHeatingInnerRadius -
+                      distanceFromBlackHole) /
+                  SimulationConstants
+                      .blackHoleHeatingInnerFactor; // Up to 3x hotter
+        } else if (distanceFromBlackHole <
+            SimulationConstants.blackHoleHeatingOuterRadius) {
           // Moderate distance - some heating
           temperatureMultiplier =
               1.0 +
-              (150.0 - distanceFromBlackHole) / 200.0; // Up to 1.25x hotter
+              (SimulationConstants.blackHoleHeatingOuterRadius -
+                      distanceFromBlackHole) /
+                  SimulationConstants
+                      .blackHoleHeatingOuterFactor; // Up to 1.25x hotter
         }
 
         final stellarTemperature = baseTemperature * temperatureMultiplier;

@@ -49,19 +49,12 @@ class StellarColorService {
   static Color? _getSpecificBodyColor(Body body) {
     final bodyName = body.name.toLowerCase();
 
-    // Exclude ALL planets and moons to preserve their designed appearance
-    if (body.bodyType == BodyType.planet || body.bodyType == BodyType.moon) {
-      return null; // Let planets and moons use their original colors
-    }
-
     // Only apply realistic colors to stars and asteroids
     if (bodyName.contains('sun')) {
       return AppColors.stellarGType; // G-type star (yellow, like our Sun)
     } else if (bodyName.contains('asteroid')) {
       return AppColors.asteroidBrownish; // Brownish rocky asteroids
-    } else if (bodyName.contains('central star') ||
-        bodyName.contains('star a') ||
-        bodyName.contains('star b')) {
+    } else if (bodyName.contains('central star') || bodyName.contains('star a') || bodyName.contains('star b')) {
       // Binary star system stars - use realistic stellar classification
       final effectiveTemperature = _calculateStellarTemperature(body.mass);
       return _getColorFromTemperature(effectiveTemperature);
@@ -126,74 +119,20 @@ class StellarColorService {
     }
   }
 
-  /// Get realistic colors for non-stellar bodies based on their properties
+  /// Get realistic colors for non-stellar, non-planetary bodies (primarily asteroids)
+  /// Note: Planets and moons are excluded by early return in getRealisticBodyColor
   static Color _getPlanetaryColor(Body body) {
     switch (body.bodyType) {
-      case BodyType.planet:
-        return _getPlanetColor(body);
-      case BodyType.moon:
-        return _getMoonColor(body);
       case BodyType.asteroid:
         return AppColors.asteroidBrownish;
       case BodyType.star:
-        // Fallback for edge cases
+        // Fallback for edge cases where a non-luminous star reaches this point
         return AppColors.celestialGold;
-    }
-  }
-
-  /// Calculate planet color based on temperature and mass
-  static Color _getPlanetColor(Body body) {
-    final tempCelsius = body.temperatureCelsius;
-
-    // Mass-based categorization
-    final isGasGiant = body.mass > 15.0; // Rough threshold for gas giants
-    final isTerrestrial = body.mass < 5.0;
-
-    if (isGasGiant) {
-      // Gas giants: color based on atmospheric composition (simplified)
-      if (body.mass > 50.0) {
-        return AppColors.gasGiantJupiterLike; // Jupiter-like (tan/beige)
-      } else if (body.mass > 30.0) {
-        return AppColors.gasGiantSaturnLike; // Saturn-like (golden)
-      } else if (tempCelsius < -150) {
-        return AppColors.iceGiantUranusLike; // Uranus-like (ice blue)
-      } else {
-        return AppColors.iceGiantNeptuneLike; // Neptune-like (deep blue)
-      }
-    } else if (isTerrestrial) {
-      // Terrestrial planets: color based on temperature and atmosphere
-      if (tempCelsius > 400) {
-        return AppColors
-            .terrestrialHotVenus; // Venus-like (hot, thick atmosphere)
-      } else if (tempCelsius > 0 && tempCelsius < 50) {
-        return AppColors.terrestrialEarthLike; // Earth-like (blue)
-      } else if (tempCelsius < -50) {
-        return AppColors.terrestrialColdMars; // Mars-like (cold, red)
-      } else {
-        return AppColors.terrestrialRockyMercury; // Mercury-like (rocky)
-      }
-    } else {
-      // Super-Earth or mini-Neptune
-      if (tempCelsius > 100) {
-        return AppColors.superEarthHot; // Hot super-Earth (red)
-      } else if (tempCelsius > 0) {
-        return AppColors.superEarthTemperate; // Temperate super-Earth (teal)
-      } else {
-        return AppColors.superEarthCold; // Cold super-Earth (gray)
-      }
-    }
-  }
-
-  /// Calculate moon color (simpler than planets)
-  static Color _getMoonColor(Body body) {
-    final tempCelsius = body.temperatureCelsius;
-
-    if (tempCelsius < -100) {
-      return AppColors.moonIcy; // Icy moon (light gray)
-    } else if (tempCelsius < 0) {
-      return AppColors.moonRocky; // Rocky moon (medium gray)
-    } else {
-      return AppColors.moonWarm; // Warm moon (dark gray)
+      case BodyType.planet:
+      case BodyType.moon:
+        // These cases should never be reached due to early return in getRealisticBodyColor,
+        // but included for completeness and to handle potential future changes
+        return body.color;
     }
   }
 
