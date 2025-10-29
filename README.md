@@ -42,7 +42,7 @@
   - [📸 Screenshot Mode](#-screenshot-mode-development-feature)
 - [🏗️ Technical Architecture](#️-technical-architecture)
 - [🚀 Getting Started](#-getting-started)
-  - [📋 Prerequisites](#-prerequisites)
+  - [📋 Prerequisites](#-prerequisites) 
   - [🛠️ Installation](#️-installation)
   - [📦 Dependencies](#-dependencies)
   - [🎯 Quick Start Guide](#-quick-start-guide)
@@ -52,6 +52,7 @@
 - [🛠️ Development Tools](#️-development-tools)
   - [🚀 Fastlane Automation](#-fastlane-automation)
 - [🏗️ Technical Architecture](#️-technical-architecture)
+- [📚 Documentation](#-documentation)
 - [🔥 Firebase Integration](#-firebase-integration)
 - [🔧 Troubleshooting](#-troubleshooting)
 - [🤝 Contributing](#-contributing)
@@ -567,6 +568,10 @@ cd ios && bundle exec fastlane build_and_upload_dsyms      # Build and upload dS
 
 ## 🏗️ Technical Architecture
 
+Graviton follows a **clean architecture** approach with clear separation of concerns, ensuring maintainability, testability, and scalability. The app uses the Provider pattern for state management and custom painters for high-performance 3D rendering.
+
+**[📖 View Complete Architecture Documentation →](docs/ARCHITECTURE.md)**
+
 ### 🏗️ Clean Architecture
 The project follows clean architecture principles with clear separation of concerns and namespace imports:
 
@@ -686,6 +691,31 @@ lib/
 - **Vector Mathematics**: Comprehensive 3D transformations using `vector_math` library
 - **Optimized Performance**: Efficient trail rendering with configurable opacity and warm/cool modes
 - **Astronomical Accuracy**: Counterclockwise orbital motion matching real celestial mechanics
+
+---
+
+## 📚 Documentation
+
+For detailed technical information and development guides, please refer to our comprehensive documentation:
+
+### 🏗️ Architecture Documentation
+- **[Architecture Overview](docs/ARCHITECTURE.md)** - Complete architectural design, patterns, and implementation details
+  - Layer-by-layer breakdown
+  - State management patterns
+  - Rendering system architecture
+  - Service layer organization
+  - Design patterns and principles
+
+### 🎥 Camera System Documentation  
+- **[Camera Techniques](docs/CAMERA_TECHNIQUES.md)** - Advanced 3D camera system and cinematic controls
+
+### 🧪 Testing Documentation
+- **[Testing Guide](test/README.md)** - Comprehensive testing strategy and test organization
+
+### 📋 Development Guides
+- **[Contributing Guidelines](CONTRIBUTING.md)** - How to contribute to the project
+- **[Fastlane Documentation](docs/FASTLANE.md)** - CI/CD and automated deployment setup
+- **[Marketing Documentation](docs/MARKETING.md)** - Marketing materials and app store optimization
 
 ## 🔥 Firebase Integration
 
