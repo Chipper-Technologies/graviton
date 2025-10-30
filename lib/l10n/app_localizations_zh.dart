@@ -168,6 +168,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get trailColorLabel => '轨迹颜色';
 
   @override
+  String get colorsLabel => '颜色';
+
+  @override
   String get realisticColors => '真实色彩';
 
   @override

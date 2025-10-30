@@ -265,6 +265,11 @@
     "description": "Label for trail color selection"
   },
   
+  "colorsLabel": "Colors",
+  "@colorsLabel": {
+    "description": "Section header for color-related settings"
+  },
+  
   "realisticColors": "Realistic Colors",
   "@realisticColors": {
     "description": "Label for realistic colors toggle"

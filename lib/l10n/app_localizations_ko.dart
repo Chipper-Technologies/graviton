@@ -168,7 +168,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get trailColorLabel => '궤적 색상';
 
   @override
-  String get realisticColors => '사실적 색상';
+  String get colorsLabel => '색상';
+
+  @override
+  String get realisticColors => '현실적인 색상';
 
   @override
   String get realisticColorsDescription => '온도와 항성 분류에 기반한 과학적으로 정확한 색상 사용';

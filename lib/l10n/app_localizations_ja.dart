@@ -168,7 +168,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get trailColorLabel => '軌跡の色';
 
   @override
-  String get realisticColors => 'リアルな色彩';
+  String get colorsLabel => '色';
+
+  @override
+  String get realisticColors => 'リアルな色';
 
   @override
   String get realisticColorsDescription => '温度と恒星分類に基づく科学的に正確な色を使用';

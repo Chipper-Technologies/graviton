@@ -174,6 +174,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get trailColorLabel => 'Color de Rastro';
 
   @override
+  String get colorsLabel => 'Colores';
+
+  @override
   String get realisticColors => 'Colores Realistas';
 
   @override

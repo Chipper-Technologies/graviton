@@ -503,6 +503,15 @@ class SettingsDialog extends StatelessWidget {
                           // Realistic Colors Toggle
                           SizedBox(height: AppTypography.spacingLarge),
                           Divider(color: AppColors.uiDividerGrey),
+
+                          // Colors Section
+                          Text(
+                            l10n.colorsLabel,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppColors.sectionTitlePurple),
+                          ),
+                          SizedBox(height: AppTypography.spacingSmall),
+
                           SwitchListTile(
                             title: Text(l10n.realisticColors),
                             subtitle: Text(

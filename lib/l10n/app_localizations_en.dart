@@ -172,6 +172,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trailColorLabel => 'Trail Color';
 
   @override
+  String get colorsLabel => 'Colors';
+
+  @override
   String get realisticColors => 'Realistic Colors';
 
   @override

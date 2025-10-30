@@ -426,6 +426,12 @@ abstract class AppLocalizations {
   /// **'Trail Color'**
   String get trailColorLabel;
 
+  /// Section header for color-related settings
+  ///
+  /// In en, this message translates to:
+  /// **'Colors'**
+  String get colorsLabel;
+
   /// Label for realistic colors toggle
   ///
   /// In en, this message translates to:

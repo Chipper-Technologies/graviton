@@ -171,7 +171,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Afficher à la fois les trajectoires orbitales circulaires idéales et elliptiques réelles';
 
   @override
-  String get trailColorLabel => 'Couleur des Traînées';
+  String get trailColorLabel => 'Couleur de Traînée';
+
+  @override
+  String get colorsLabel => 'Couleurs';
 
   @override
   String get realisticColors => 'Couleurs Réalistes';

@@ -170,7 +170,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Sowohl ideale kreisförmige als auch tatsächliche elliptische Orbitalbahnen anzeigen';
 
   @override
-  String get trailColorLabel => 'Spurenfarbe';
+  String get trailColorLabel => 'Spurfarbe';
+
+  @override
+  String get colorsLabel => 'Farben';
 
   @override
   String get realisticColors => 'Realistische Farben';
