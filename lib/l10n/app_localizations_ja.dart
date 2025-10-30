@@ -445,25 +445,25 @@ class AppLocalizationsJa extends AppLocalizations {
   String get languageSystem => 'システムデフォルト';
 
   @override
-  String get languageEnglish => '英語';
+  String get languageEnglish => 'English';
 
   @override
-  String get languageGerman => 'ドイツ語';
+  String get languageGerman => 'Deutsch';
 
   @override
-  String get languageSpanish => 'スペイン語';
+  String get languageSpanish => 'Español';
 
   @override
-  String get languageFrench => 'フランス語';
+  String get languageFrench => 'Français';
 
   @override
-  String get languageChinese => '中国語';
+  String get languageChinese => '中文';
 
   @override
   String get languageJapanese => '日本語';
 
   @override
-  String get languageKorean => '韓国語';
+  String get languageKorean => '한국어';
 
   @override
   String get bodyAlpha => 'アルファ';

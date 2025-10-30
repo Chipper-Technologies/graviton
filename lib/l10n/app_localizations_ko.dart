@@ -448,22 +448,22 @@ class AppLocalizationsKo extends AppLocalizations {
   String get languageSystem => '시스템 기본값';
 
   @override
-  String get languageEnglish => '영어';
+  String get languageEnglish => 'English';
 
   @override
-  String get languageGerman => '독일어';
+  String get languageGerman => 'Deutsch';
 
   @override
-  String get languageSpanish => '스페인어';
+  String get languageSpanish => 'Español';
 
   @override
-  String get languageFrench => '프랑스어';
+  String get languageFrench => 'Français';
 
   @override
-  String get languageChinese => '중국어';
+  String get languageChinese => '中文';
 
   @override
-  String get languageJapanese => '일본어';
+  String get languageJapanese => '日本語';
 
   @override
   String get languageKorean => '한국어';

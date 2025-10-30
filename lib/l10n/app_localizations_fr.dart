@@ -466,25 +466,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get languageSystem => 'Par Défaut du Système';
 
   @override
-  String get languageEnglish => 'Anglais';
+  String get languageEnglish => 'English';
 
   @override
-  String get languageGerman => 'Allemand';
+  String get languageGerman => 'Deutsch';
 
   @override
-  String get languageSpanish => 'Espagnol';
+  String get languageSpanish => 'Español';
 
   @override
   String get languageFrench => 'Français';
 
   @override
-  String get languageChinese => 'Chinois';
+  String get languageChinese => '中文';
 
   @override
-  String get languageJapanese => 'Japonais';
+  String get languageJapanese => '日本語';
 
   @override
-  String get languageKorean => 'Coréen';
+  String get languageKorean => '한국어';
 
   @override
   String get bodyAlpha => 'Alpha';

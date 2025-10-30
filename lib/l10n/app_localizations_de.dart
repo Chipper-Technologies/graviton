@@ -464,25 +464,25 @@ class AppLocalizationsDe extends AppLocalizations {
   String get languageSystem => 'Systemstandard';
 
   @override
-  String get languageEnglish => 'Englisch';
+  String get languageEnglish => 'English';
 
   @override
   String get languageGerman => 'Deutsch';
 
   @override
-  String get languageSpanish => 'Spanisch';
+  String get languageSpanish => 'Español';
 
   @override
-  String get languageFrench => 'Französisch';
+  String get languageFrench => 'Français';
 
   @override
-  String get languageChinese => 'Chinesisch';
+  String get languageChinese => '中文';
 
   @override
-  String get languageJapanese => 'Japanisch';
+  String get languageJapanese => '日本語';
 
   @override
-  String get languageKorean => 'Koreanisch';
+  String get languageKorean => '한국어';
 
   @override
   String get bodyAlpha => 'Alpha';

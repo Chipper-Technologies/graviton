@@ -327,8 +327,8 @@ class SettingsDialog extends StatelessWidget {
                                           ) => DropdownMenuItem<CinematicCameraTechnique>(
                                             value: technique,
                                             child: SizedBox(
-                                              height:
-                                                  44, // Ensure we fit within the dropdown constraints
+                                              height: AppTypography
+                                                  .dropdownItemHeight, // Ensure we fit within the dropdown constraints
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,

@@ -80,6 +80,9 @@ class AppTypography {
   static const double borderMedium = 1.5;
   static const double borderThick = 2.0;
 
+  /// UI component dimensions
+  static const double dropdownItemHeight = 44.0;
+
   // =============================================================================
   // TEXT STYLES
   // =============================================================================

@@ -466,25 +466,25 @@ class AppLocalizationsEs extends AppLocalizations {
   String get languageSystem => 'Predeterminado del Sistema';
 
   @override
-  String get languageEnglish => 'Inglés';
+  String get languageEnglish => 'English';
 
   @override
-  String get languageGerman => 'Alemán';
+  String get languageGerman => 'Deutsch';
 
   @override
   String get languageSpanish => 'Español';
 
   @override
-  String get languageFrench => 'Francés';
+  String get languageFrench => 'Français';
 
   @override
-  String get languageChinese => 'Chino';
+  String get languageChinese => '中文';
 
   @override
-  String get languageJapanese => 'Japonés';
+  String get languageJapanese => '日本語';
 
   @override
-  String get languageKorean => 'Coreano';
+  String get languageKorean => '한국어';
 
   @override
   String get bodyAlpha => 'Alfa';
