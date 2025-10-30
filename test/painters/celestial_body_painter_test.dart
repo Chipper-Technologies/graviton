@@ -118,7 +118,7 @@ void main() {
           radius: 6.96e8,
           position: vm.Vector3.zero(),
           velocity: vm.Vector3.zero(),
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
         );
         expect(
           () => CelestialBodyPainter.drawSun(canvas, center, radius, testBody),

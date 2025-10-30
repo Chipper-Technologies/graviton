@@ -424,7 +424,9 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                   color: color,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isSelected ? AppColors.uiWhite : Colors.transparent,
+                    color: isSelected
+                        ? AppColors.uiWhite
+                        : AppColors.transparentColor,
                     width: AppTypography.borderThick,
                   ),
                 ),
@@ -432,8 +434,8 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                     ? Icon(
                         Icons.check,
                         color: color.computeLuminance() > 0.5
-                            ? Colors.black
-                            : Colors.white,
+                            ? AppColors.uiBlack
+                            : AppColors.uiWhite,
                         size: AppTypography.iconSizeMedium,
                       )
                     : null,

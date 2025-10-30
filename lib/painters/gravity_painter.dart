@@ -97,8 +97,10 @@ import 'package:vector_math/vector_math_64.dart' as vm;
 /// allowing selective visualization of gravitational fields for educational purposes.
 class GravityPainter {
   /// Storage for tracking gravity well orientation history for temporal indicators
-  static final Map<String, List<({vm.Vector3 normal, double timestamp})>> _wellOrientationHistory = {};
-  static const int _maxHistoryLength = 30; // Keep last 30 orientations (about 0.5 seconds at 60fps)
+  static final Map<String, List<({vm.Vector3 normal, double timestamp})>>
+  _wellOrientationHistory = {};
+  static const int _maxHistoryLength =
+      30; // Keep last 30 orientations (about 0.5 seconds at 60fps)
 
   /// Draw gravity wells showing gravitational field strength around objects
   ///
@@ -119,7 +121,13 @@ class GravityPainter {
   /// - Applies physics-based scaling for radius and depth
   /// - Renders additional spacetime curvature grids for massive objects (mass > 10.0)
   /// - Tracks orientation changes for temporal visualization
-  static void drawGravityWells(Canvas canvas, Size size, vm.Matrix4 vp, physics.Simulation sim, double cameraDistance) {
+  static void drawGravityWells(
+    Canvas canvas,
+    Size size,
+    vm.Matrix4 vp,
+    physics.Simulation sim,
+    double cameraDistance,
+  ) {
     final currentTime = DateTime.now().millisecondsSinceEpoch.toDouble();
 
     for (int i = 0; i < sim.bodies.length; i++) {
@@ -133,7 +141,15 @@ class GravityPainter {
       _trackOrientationChange(body.name, orbitalPlane.normal, currentTime);
 
       // Draw 3D funnel-shaped gravity well with zoom-responsive detail and temporal indicators
-      _draw3DGravityWell(canvas, size, vp, body, sim, cameraDistance, orbitalPlane);
+      _draw3DGravityWell(
+        canvas,
+        size,
+        vp,
+        body,
+        sim,
+        cameraDistance,
+        orbitalPlane,
+      );
 
       // Draw curved grid for massive objects to show space-time curvature
       if (body.mass > SimulationConstants.spacetimeCurvatureMassThreshold) {
@@ -176,10 +192,8 @@ class GravityPainter {
 
   static const double minAngularMomentumThreshold = 1e-9;
 
-  static ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2}) _calculateOrbitalPlane(
-    Body centralBody,
-    physics.Simulation sim,
-  ) {
+  static ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2})
+  _calculateOrbitalPlane(Body centralBody, physics.Simulation sim) {
     // Find orbiting bodies (bodies with significant velocity relative to central body)
     // Enhanced sensitivity for more responsive gravity well orientations
     final orbitingBodies = <Body>[];
@@ -191,7 +205,9 @@ class GravityPainter {
 
       // Enhanced responsiveness: lower velocity threshold and wider distance range
       // This makes wells respond to even subtle orbital interactions
-      if (relativeVelocity > 0.01 && distance < 2000.0 && distance > centralBody.radius * 1.5) {
+      if (relativeVelocity > 0.01 &&
+          distance < 2000.0 &&
+          distance > centralBody.radius * 1.5) {
         orbitingBodies.add(body);
       }
     }
@@ -240,7 +256,11 @@ class GravityPainter {
     }
 
     // Fallback to default horizontal plane
-    return (normal: vm.Vector3(0, 1, 0), tangent1: vm.Vector3(1, 0, 0), tangent2: vm.Vector3(0, 0, 1));
+    return (
+      normal: vm.Vector3(0, 1, 0),
+      tangent1: vm.Vector3(1, 0, 0),
+      tangent2: vm.Vector3(0, 0, 1),
+    );
   }
 
   /// Track gravity well orientation changes over time for temporal visualization
@@ -252,7 +272,11 @@ class GravityPainter {
   /// - [bodyName]: Unique identifier for the body
   /// - [normal]: Current orbital plane normal vector
   /// - [timestamp]: Current time in milliseconds
-  static void _trackOrientationChange(String bodyName, vm.Vector3 normal, double timestamp) {
+  static void _trackOrientationChange(
+    String bodyName,
+    vm.Vector3 normal,
+    double timestamp,
+  ) {
     // Initialize history for this body if it doesn't exist
     _wellOrientationHistory[bodyName] ??= [];
 
@@ -284,7 +308,9 @@ class GravityPainter {
 
     // Calculate angular difference (dot product gives cosine of angle between vectors)
     final dot = current.dot(previous).clamp(-1.0, 1.0);
-    final angleDifference = math.acos(dot.abs()); // Use abs() to handle orientation flips
+    final angleDifference = math.acos(
+      dot.abs(),
+    ); // Use abs() to handle orientation flips
 
     // Enhanced sensitivity: lower threshold (π/8 = 22.5 degrees) for more visible changes
     // Also amplify small changes with a power function
@@ -333,7 +359,8 @@ class GravityPainter {
   ///
   /// ## Returns:
   /// A record containing the appropriate detail settings for the given distance.
-  static ({int ringCount, int segments, int radialLineCount}) _calculateDetailLevel(double cameraDistance) {
+  static ({int ringCount, int segments, int radialLineCount})
+  _calculateDetailLevel(double cameraDistance) {
     // Zoom levels: Close (< 100) -> Medium (100-400) -> Far (> 400)
     if (cameraDistance < SimulationConstants.gravityWellCloseViewThreshold) {
       // High detail when zoomed in close
@@ -342,7 +369,8 @@ class GravityPainter {
         segments: SimulationConstants.gravityWellCloseSegments,
         radialLineCount: SimulationConstants.gravityWellCloseRadialLines,
       );
-    } else if (cameraDistance < SimulationConstants.gravityWellMediumViewThreshold) {
+    } else if (cameraDistance <
+        SimulationConstants.gravityWellMediumViewThreshold) {
       // Medium detail for normal viewing
       return (
         ringCount: SimulationConstants.gravityWellMediumRingCount,
@@ -396,7 +424,12 @@ class GravityPainter {
   /// ## Returns:
   /// The calculated depth at the specified radius, smoothly varying from 0 at
   /// the edge to maximum depth near the center.
-  static double _calculateDepthForRadius(Body body, double radius, double maxRadius, double maxDepth) {
+  static double _calculateDepthForRadius(
+    Body body,
+    double radius,
+    double maxRadius,
+    double maxDepth,
+  ) {
     final normalizedRadius = radius / maxRadius;
     final depthFactor = 1.0 - normalizedRadius;
     final bowlCurve = depthFactor * depthFactor * (3.0 - 2.0 * depthFactor);
@@ -406,9 +439,16 @@ class GravityPainter {
 
     // Create smooth rounded bottom by limiting depth near center
     final centerDistance = radius / maxRadius; // 0.0 at center, 1.0 at edge
-    final centerSmoothing = math.max(0.1, centerDistance); // Minimum 10% radius from center
-    final smoothedPotential = body.mass / (centerSmoothing * maxRadius + body.radius);
-    final normalizedPotential = (smoothedPotential / surfacePotential).clamp(0.0, 1.0);
+    final centerSmoothing = math.max(
+      0.1,
+      centerDistance,
+    ); // Minimum 10% radius from center
+    final smoothedPotential =
+        body.mass / (centerSmoothing * maxRadius + body.radius);
+    final normalizedPotential = (smoothedPotential / surfacePotential).clamp(
+      0.0,
+      1.0,
+    );
 
     return normalizedPotential * maxDepth * bowlCurve;
   }
@@ -421,12 +461,15 @@ class GravityPainter {
     Body body,
     physics.Simulation sim,
     double cameraDistance,
-    ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2}) orbitalPlane,
+    ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2})
+    orbitalPlane,
   ) {
     // Calculate well properties based on physics: gravitational influence radius
     // Using Hill sphere approximation but scaled down to represent the inner gravitational zone
     // where objects would spiral inward rather than maintain stable orbits
-    final isBlackHole = body.bodyType == BodyType.star && body.mass > SimulationConstants.blackHoleMassThreshold;
+    final isBlackHole =
+        body.bodyType == BodyType.star &&
+        body.mass > SimulationConstants.blackHoleMassThreshold;
 
     // Gravity well radius should scale with mass to show true gravitational influence
     // Base calculation includes both physical size and gravitational reach
@@ -435,7 +478,8 @@ class GravityPainter {
           body.mass / SimulationConstants.gravityWellMassScalingDivisor,
           SimulationConstants.gravityWellMassScalingExponent,
         ) *
-        SimulationConstants.gravityWellMassRadiusMultiplier; // Mass-based radius scaling
+        SimulationConstants
+            .gravityWellMassRadiusMultiplier; // Mass-based radius scaling
 
     final baseGravitationalRadius = isBlackHole
         ? math.max(
@@ -444,17 +488,22 @@ class GravityPainter {
           ) // Black holes: larger of physical or mass-based radius
         : math.max(
             body.radius * SimulationConstants.normalBodyRadiusMultiplier,
-            massInfluenceRadius * SimulationConstants.normalBodyMassInfluenceReduction,
+            massInfluenceRadius *
+                SimulationConstants.normalBodyMassInfluenceReduction,
           ); // Normal bodies: smaller mass influence
 
     // Expanded well diameter for better visual effect - increased by 40%
-    final maxRadius = (baseGravitationalRadius * SimulationConstants.gravityWellDiameterExpansion).clamp(
-      body.radius *
-          SimulationConstants.gravityWellMinimumRadiusMultiplier, // Expanded minimum: 2.8x physical radius (was 2.0x)
-      body.radius *
-          SimulationConstants
-              .gravityWellMaximumRadiusMultiplier, // Expanded maximum to allow for larger visual impact (was 20.0x)
-    );
+    final maxRadius =
+        (baseGravitationalRadius *
+                SimulationConstants.gravityWellDiameterExpansion)
+            .clamp(
+              body.radius *
+                  SimulationConstants
+                      .gravityWellMinimumRadiusMultiplier, // Expanded minimum: 2.8x physical radius (was 2.0x)
+              body.radius *
+                  SimulationConstants
+                      .gravityWellMaximumRadiusMultiplier, // Expanded maximum to allow for larger visual impact (was 20.0x)
+            );
 
     // Depth calculation that balances physics accuracy with visual proportionality
     // Use mass-based scaling with radius consideration for proper visual impact
@@ -465,12 +514,16 @@ class GravityPainter {
 
     // Scale depth based on mass and visual body size for proper proportionality
     // Special treatment for black holes to make them dramatically deeper
-    final maxDepth = body.bodyType == BodyType.star && body.mass > SimulationConstants.blackHoleMassThreshold
+    final maxDepth =
+        body.bodyType == BodyType.star &&
+            body.mass > SimulationConstants.blackHoleMassThreshold
         ? massScale *
               body.radius *
               SimulationConstants
                   .blackHoleDepthMultiplier // Black holes get MASSIVE deeper wells!
-        : massScale * body.radius * SimulationConstants.normalBodyDepthMultiplier; // Normal bodies
+        : massScale *
+              body.radius *
+              SimulationConstants.normalBodyDepthMultiplier; // Normal bodies
 
     // Zoom-responsive detail levels
     final detailLevel = _calculateDetailLevel(cameraDistance);
@@ -482,13 +535,21 @@ class GravityPainter {
           ) // Triple rings for black holes, minimum 30!
         : detailLevel.ringCount;
     final segments = isBlackHole
-        ? math.max(detailLevel.segments, 32) // Black holes always get high segment count
+        ? math.max(
+            detailLevel.segments,
+            32,
+          ) // Black holes always get high segment count
         : detailLevel.segments;
 
     // Use the body's actual color for the gravity well with enhanced vibrancy
     // Black holes get special visual treatment for dramatic effect
     final baseColor = isBlackHole
-        ? Color.fromARGB(255, 180, 50, 255) // Bright purple/magenta for black holes - much more visible!
+        ? Color.fromARGB(
+            255,
+            180,
+            50,
+            255,
+          ) // Bright purple/magenta for black holes - much more visible!
         : body.color;
 
     // Calculate orientation change rate for dynamic coloring (Enhancement 4)
@@ -501,20 +562,38 @@ class GravityPainter {
       final ringRadius = normalizedRing * maxRadius;
 
       // Use shared depth calculation for perfect connectivity with radial lines
-      final depth = _calculateDepthForRadius(body, ringRadius, maxRadius, maxDepth);
+      final depth = _calculateDepthForRadius(
+        body,
+        ringRadius,
+        maxRadius,
+        maxDepth,
+      );
 
       // Calculate field strength for opacity with higher baseline
       final fieldStrength = body.mass / (ringRadius * ringRadius + 1.0);
-      final normalizedStrength = (fieldStrength / (body.mass + 1.0)).clamp(0.0, 1.0);
+      final normalizedStrength = (fieldStrength / (body.mass + 1.0)).clamp(
+        0.0,
+        1.0,
+      );
 
       // More aggressive edge fade: affect the outer 40% of rings
-      final edgeFadeAmount = normalizedRing > 0.6 ? (normalizedRing - 0.6) / 0.4 : 0.0; // Outer 40% fade
+      final edgeFadeAmount = normalizedRing > 0.6
+          ? (normalizedRing - 0.6) / 0.4
+          : 0.0; // Outer 40% fade
       // Use exponential curve for more aggressive fade near edge
-      final edgeFade = 1.0 - (edgeFadeAmount * edgeFadeAmount * 0.8); // Up to 80% reduction with curve
+      final edgeFade =
+          1.0 -
+          (edgeFadeAmount *
+              edgeFadeAmount *
+              0.8); // Up to 80% reduction with curve
 
       // Much more visible alpha values - black holes get extra intensity
-      final baseAlpha = isBlackHole ? 0.4 : 0.15; // Black holes start MUCH more opaque
-      final maxAlpha = isBlackHole ? 0.9 : 0.6; // Black holes can be almost fully opaque
+      final baseAlpha = isBlackHole
+          ? 0.4
+          : 0.15; // Black holes start MUCH more opaque
+      final maxAlpha = isBlackHole
+          ? 0.9
+          : 0.6; // Black holes can be almost fully opaque
 
       // Apply very subtle fade-out only to outer rings
       final calculatedAlpha = baseAlpha + normalizedStrength * 0.5;
@@ -525,14 +604,21 @@ class GravityPainter {
 
       // Enhancement 4: Dynamic color coding based on orientation change rate
       // Blend base color with a highlighting color when wells are changing orientation
-      final highlightColor = const Color.fromARGB(255, 255, 100, 100); // Bright red for changes
-      final dynamicColor = Color.lerp(baseColor, highlightColor, changeRate * 0.7) ?? baseColor;
+      final highlightColor = const Color.fromARGB(
+        255,
+        255,
+        100,
+        100,
+      ); // Bright red for changes
+      final dynamicColor =
+          Color.lerp(baseColor, highlightColor, changeRate * 0.7) ?? baseColor;
 
       final ringColor = dynamicColor.withValues(alpha: alpha);
       final ringPaint = Paint()
         ..color = ringColor
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 2.0 + (changeRate * 2.0); // Keep stroke width consistent
+        ..strokeWidth =
+            2.0 + (changeRate * 2.0); // Keep stroke width consistent
 
       // Generate 3D ring points
       final ringPoints = <Offset>[];
@@ -555,7 +641,11 @@ class GravityPainter {
             depth * orbitalPlane.normal.z;
 
         // Transform to world coordinates
-        final worldPos = vm.Vector3(body.position.x + localX, body.position.y + localY, body.position.z + localZ);
+        final worldPos = vm.Vector3(
+          body.position.x + localX,
+          body.position.y + localY,
+          body.position.z + localZ,
+        );
 
         // Project to screen coordinates
         final screenPos = PainterUtils.project(vp, worldPos, size);
@@ -576,14 +666,34 @@ class GravityPainter {
     }
 
     // Enhancement 3: Draw visual orientation trails showing recent well orientations
-    _drawOrientationTrails(canvas, size, vp, body, orbitalPlane, maxRadius * 1.2);
+    _drawOrientationTrails(
+      canvas,
+      size,
+      vp,
+      body,
+      orbitalPlane,
+      maxRadius * 1.2,
+    );
 
     // Draw a small central circle at the bottom of the well for radial lines to connect to
-    _drawCentralCircle(canvas, size, vp, body, maxDepth, maxRadius, baseColor, sim, orbitalPlane);
+    _drawCentralCircle(
+      canvas,
+      size,
+      vp,
+      body,
+      maxDepth,
+      maxRadius,
+      baseColor,
+      sim,
+      orbitalPlane,
+    );
 
     // Draw radial lines connecting the rings to the central circle with zoom-responsive detail
     final radialLineCount = isBlackHole
-        ? math.max(detailLevel.radialLineCount * 2, 24) // Black holes get more radial lines too
+        ? math.max(
+            detailLevel.radialLineCount * 2,
+            24,
+          ) // Black holes get more radial lines too
         : detailLevel.radialLineCount;
 
     _drawRadialLines(
@@ -611,17 +721,29 @@ class GravityPainter {
     double maxRadius,
     Color baseColor,
     physics.Simulation sim,
-    ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2}) orbitalPlane,
+    ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2})
+    orbitalPlane,
   ) {
     // Central circle radius should be much smaller but still visible
-    final centralRadius = maxRadius * SimulationConstants.centralCircleRadiusRatio; // 1.5% of max radius - much smaller
+    final centralRadius =
+        maxRadius *
+        SimulationConstants
+            .centralCircleRadiusRatio; // 1.5% of max radius - much smaller
 
     // Central circle should be slightly deeper than the innermost ring for natural funnel effect
-    final baseCentralDepth = _calculateDepthForRadius(body, centralRadius, maxRadius, maxDepth);
+    final baseCentralDepth = _calculateDepthForRadius(
+      body,
+      centralRadius,
+      maxRadius,
+      maxDepth,
+    );
     final centralDepth =
-        baseCentralDepth * SimulationConstants.centralCircleDepthMultiplier; // Just 3% deeper than physics calculation
+        baseCentralDepth *
+        SimulationConstants
+            .centralCircleDepthMultiplier; // Just 3% deeper than physics calculation
 
-    const int segments = SimulationConstants.centralCircleSegments; // Fewer segments since it's small
+    const int segments = SimulationConstants
+        .centralCircleSegments; // Fewer segments since it's small
 
     // Create paint for central circle - same transparency as radial lines
     final centralPaint = Paint()
@@ -648,7 +770,11 @@ class GravityPainter {
           centralDepth * orbitalPlane.normal.z;
 
       // Transform to world coordinates
-      final worldPos = vm.Vector3(body.position.x + localX, body.position.y + localY, body.position.z + localZ);
+      final worldPos = vm.Vector3(
+        body.position.x + localX,
+        body.position.y + localY,
+        body.position.z + localZ,
+      );
 
       // Project to screen coordinates
       final screenPos = PainterUtils.project(vp, worldPos, size);
@@ -680,7 +806,8 @@ class GravityPainter {
     physics.Simulation sim,
     int radialLineCount,
     int ringCount,
-    ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2}) orbitalPlane,
+    ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2})
+    orbitalPlane,
   ) {
     // Draw radial lines at regular angular intervals with alternating colors
     for (int lineIndex = 0; lineIndex < radialLineCount; lineIndex++) {
@@ -688,14 +815,20 @@ class GravityPainter {
       final radialPoints = <Offset>[];
 
       // Check if this is a black hole for enhanced visibility
-      final isBlackHole = body.bodyType == BodyType.star && body.mass > SimulationConstants.blackHoleMassThreshold;
+      final isBlackHole =
+          body.bodyType == BodyType.star &&
+          body.mass > SimulationConstants.blackHoleMassThreshold;
 
       // Every 5th radial line gets the normal color, others are darker
       final isMainLine = (lineIndex % 5) == 0;
 
       // Enhanced alpha with fade-out effect for smoother visual transition
-      final baseNormalAlpha = isBlackHole ? 0.5 : 0.25; // Black holes get much brighter lines
-      final baseDimAlpha = isBlackHole ? 0.3 : 0.15; // Even dim lines are brighter for black holes
+      final baseNormalAlpha = isBlackHole
+          ? 0.5
+          : 0.25; // Black holes get much brighter lines
+      final baseDimAlpha = isBlackHole
+          ? 0.3
+          : 0.15; // Even dim lines are brighter for black holes
 
       final baseAlpha = isMainLine ? baseNormalAlpha : baseDimAlpha;
 
@@ -710,11 +843,17 @@ class GravityPainter {
         final radius = normalizedRing * maxRadius;
 
         // Use EXACT same depth calculation as rings for perfect connectivity
-        final depth = _calculateDepthForRadius(body, radius, maxRadius, maxDepth);
+        final depth = _calculateDepthForRadius(
+          body,
+          radius,
+          maxRadius,
+          maxDepth,
+        );
 
         // Calculate 3D position using the same orbital plane as rings
         final localX =
-            radius * math.cos(angle) * orbitalPlane.tangent1.x + radius * math.sin(angle) * orbitalPlane.tangent2.x;
+            radius * math.cos(angle) * orbitalPlane.tangent1.x +
+            radius * math.sin(angle) * orbitalPlane.tangent2.x;
         final localY =
             radius * math.cos(angle) * orbitalPlane.tangent1.y +
             radius * math.sin(angle) * orbitalPlane.tangent2.y -
@@ -725,7 +864,11 @@ class GravityPainter {
             depth * orbitalPlane.normal.z;
 
         // Transform to world coordinates
-        final worldPos = vm.Vector3(body.position.x + localX, body.position.y + localY, body.position.z + localZ);
+        final worldPos = vm.Vector3(
+          body.position.x + localX,
+          body.position.y + localY,
+          body.position.z + localZ,
+        );
 
         // Project to screen coordinates
         final screenPos = PainterUtils.project(vp, worldPos, size);
@@ -735,16 +878,27 @@ class GravityPainter {
       }
 
       // Add the center point where all radial lines converge
-      final centralRadius = maxRadius * SimulationConstants.centralCircleRadiusRatio; // For depth calculation only
-      final baseCentralDepth = _calculateDepthForRadius(body, centralRadius, maxRadius, maxDepth);
+      final centralRadius =
+          maxRadius *
+          SimulationConstants
+              .centralCircleRadiusRatio; // For depth calculation only
+      final baseCentralDepth = _calculateDepthForRadius(
+        body,
+        centralRadius,
+        maxRadius,
+        maxDepth,
+      );
       final centralDepth =
           baseCentralDepth *
-          SimulationConstants.centralCircleDepthMultiplier; // Same 3% deeper adjustment as central circle
+          SimulationConstants
+              .centralCircleDepthMultiplier; // Same 3% deeper adjustment as central circle
 
       // All radial lines converge to the exact center using orbital plane
       final centralX = 0.0; // Center in orbital plane
-      final centralY = -centralDepth * orbitalPlane.normal.y; // Depth along normal
-      final centralZ = -centralDepth * orbitalPlane.normal.z; // Depth along normal
+      final centralY =
+          -centralDepth * orbitalPlane.normal.y; // Depth along normal
+      final centralZ =
+          -centralDepth * orbitalPlane.normal.z; // Depth along normal
 
       // Transform central point to world coordinates
       final centralWorldPos = vm.Vector3(
@@ -780,10 +934,21 @@ class GravityPainter {
   }
 
   /// Draw 3D curved grid lines to visualize space-time curvature
-  static void _draw3DSpaceTimeGrid(Canvas canvas, Size size, vm.Matrix4 vp, Body body, physics.Simulation sim) {
+  static void _draw3DSpaceTimeGrid(
+    Canvas canvas,
+    Size size,
+    vm.Matrix4 vp,
+    Body body,
+    physics.Simulation sim,
+  ) {
     // Calculate grid properties based on gravitational influence - more subtle than main well
-    final gravitationalRadius = body.radius + math.pow(body.mass / 3.0, 1.0 / 3.0) * 6.0; // Smaller than main well
-    final maxRadius = gravitationalRadius.clamp(body.radius * 1.5, body.radius * 8.0); // Smaller bounds
+    final gravitationalRadius =
+        body.radius +
+        math.pow(body.mass / 3.0, 1.0 / 3.0) * 6.0; // Smaller than main well
+    final maxRadius = gravitationalRadius.clamp(
+      body.radius * 1.5,
+      body.radius * 8.0,
+    ); // Smaller bounds
     const int gridLines = 4; // Fewer lines to reduce clutter
     const int gridSegments = 12; // Fewer segments for better performance
 
@@ -875,7 +1040,9 @@ class GravityPainter {
       if (sim.currentScenario == ScenarioType.asteroidBelt) {
         // Asteroid belt uses XY plane (appears vertical)
         finalX = localX;
-        finalY = isXDirection ? localZ : coordinate; // Adjust based on direction
+        finalY = isXDirection
+            ? localZ
+            : coordinate; // Adjust based on direction
         finalZ = -curvatureDepth; // Depth along Z axis
       } else {
         // Other scenarios use XZ plane (appears horizontal)
@@ -885,7 +1052,11 @@ class GravityPainter {
       }
 
       // Transform to world coordinates
-      final worldPos = vm.Vector3(body.position.x + finalX, body.position.y + finalY, body.position.z + finalZ);
+      final worldPos = vm.Vector3(
+        body.position.x + finalX,
+        body.position.y + finalY,
+        body.position.z + finalZ,
+      );
 
       // Project to screen coordinates
       final screenPos = PainterUtils.project(vp, worldPos, size);
@@ -914,7 +1085,8 @@ class GravityPainter {
     Size size,
     vm.Matrix4 vp,
     Body body,
-    ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2}) currentPlane,
+    ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2})
+    currentPlane,
     double indicatorRadius,
   ) {
     final history = _wellOrientationHistory[body.name];
@@ -947,15 +1119,28 @@ class GravityPainter {
 
       if (startScreen != null && endScreen != null) {
         final paint = Paint()
-          ..color = const Color.fromARGB(255, 255, 255, 100).withValues(alpha: alpha)
+          ..color = const Color.fromARGB(
+            255,
+            255,
+            255,
+            100,
+          ).withValues(alpha: alpha)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1.0;
 
         // Draw a line indicating the orientation
-        canvas.drawLine(Offset(startScreen.dx, startScreen.dy), Offset(endScreen.dx, endScreen.dy), paint);
+        canvas.drawLine(
+          Offset(startScreen.dx, startScreen.dy),
+          Offset(endScreen.dx, endScreen.dy),
+          paint,
+        );
 
         // Draw a small circle at the end to make it more visible
-        canvas.drawCircle(Offset(endScreen.dx, endScreen.dy), 2.0, paint..style = PaintingStyle.fill);
+        canvas.drawCircle(
+          Offset(endScreen.dx, endScreen.dy),
+          2.0,
+          paint..style = PaintingStyle.fill,
+        );
       }
     }
   }
@@ -966,15 +1151,17 @@ class GravityPainter {
   // These methods expose private functionality for unit testing
 
   /// Testing method to access the private _calculateOrbitalPlane method
-  static ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2}) calculateOrbitalPlaneForTesting(
-    Body centralBody,
-    physics.Simulation sim,
-  ) {
+  static ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2})
+  calculateOrbitalPlaneForTesting(Body centralBody, physics.Simulation sim) {
     return _calculateOrbitalPlane(centralBody, sim);
   }
 
   /// Testing method to access the private _trackOrientationChange method
-  static void trackOrientationChangeForTesting(String bodyName, vm.Vector3 normal, double timestamp) {
+  static void trackOrientationChangeForTesting(
+    String bodyName,
+    vm.Vector3 normal,
+    double timestamp,
+  ) {
     _trackOrientationChange(bodyName, normal, timestamp);
   }
 
@@ -984,7 +1171,8 @@ class GravityPainter {
   }
 
   /// Testing method to access the private orientation history
-  static List<({vm.Vector3 normal, double timestamp})>? getOrientationHistoryForTesting(String bodyName) {
+  static List<({vm.Vector3 normal, double timestamp})>?
+  getOrientationHistoryForTesting(String bodyName) {
     return _wellOrientationHistory[bodyName];
   }
 

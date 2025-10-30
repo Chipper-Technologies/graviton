@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/ui_state.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 /// Demo widget showing the cinematic camera technique selection
 class CinematicCameraTechniqueDemo extends StatefulWidget {
@@ -37,7 +38,7 @@ class _CinematicCameraTechniqueDemoState
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue),
+                border: Border.all(color: AppColors.basicBlue),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
@@ -51,7 +52,7 @@ class _CinematicCameraTechniqueDemoState
                   Text(
                     _uiState.cinematicCameraTechnique.displayName,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Colors.blue,
+                      color: AppColors.basicBlue,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -84,12 +85,12 @@ class _CinematicCameraTechniqueDemoState
                   return Card(
                     margin: const EdgeInsets.only(bottom: 8),
                     color: isSelected
-                        ? Colors.blue.withValues(alpha: 0.1)
+                        ? AppColors.basicBlue.withValues(alpha: 0.1)
                         : null,
                     child: ListTile(
                       leading: Icon(
                         _getIconForTechnique(technique),
-                        color: isSelected ? Colors.blue : null,
+                        color: isSelected ? AppColors.basicBlue : null,
                       ),
                       title: Text(
                         technique.displayName,
@@ -97,12 +98,15 @@ class _CinematicCameraTechniqueDemoState
                           fontWeight: isSelected
                               ? FontWeight.bold
                               : FontWeight.normal,
-                          color: isSelected ? Colors.blue : null,
+                          color: isSelected ? AppColors.basicBlue : null,
                         ),
                       ),
                       subtitle: Text(technique.description),
                       trailing: technique.requiresAI
-                          ? const Icon(Icons.psychology, color: Colors.orange)
+                          ? const Icon(
+                              Icons.psychology,
+                              color: AppColors.basicOrange,
+                            )
                           : const Icon(Icons.person),
                       onTap: () {
                         setState(() {

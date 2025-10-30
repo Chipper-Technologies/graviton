@@ -235,7 +235,7 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
       message: tooltip,
       preferBelow: false,
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparentColor,
         child: InkWell(
           onTap: onPressed,
           borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),

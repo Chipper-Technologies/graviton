@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/painters/gravity_painter.dart';
 import 'package:graviton/services/simulation.dart' as physics;
+import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 void main() {
@@ -21,7 +21,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 10.0,
           radius: 1.0,
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
           name: 'Central Star',
           bodyType: BodyType.star,
         );
@@ -49,7 +49,7 @@ void main() {
             velocity: vm.Vector3.zero(),
             mass: 50.0,
             radius: 2.0,
-            color: Colors.yellow,
+            color: AppColors.basicYellow,
             name: 'Sun',
             bodyType: BodyType.star,
           );
@@ -59,7 +59,7 @@ void main() {
             velocity: vm.Vector3(0.0, 0.0, 2.0), // Moving in Z direction
             mass: 1.0,
             radius: 0.5,
-            color: Colors.blue,
+            color: AppColors.basicBlue,
             name: 'Planet',
             bodyType: BodyType.planet,
           );
@@ -87,7 +87,7 @@ void main() {
             velocity: vm.Vector3.zero(),
             mass: 50.0,
             radius: 2.0,
-            color: Colors.yellow,
+            color: AppColors.basicYellow,
             name: 'Sun',
             bodyType: BodyType.star,
           );
@@ -97,7 +97,7 @@ void main() {
             velocity: vm.Vector3(0.0, 0.0, 2.0),
             mass: 1.0,
             radius: 0.5,
-            color: Colors.blue,
+            color: AppColors.basicBlue,
             name: 'Planet1',
             bodyType: BodyType.planet,
           );
@@ -107,7 +107,7 @@ void main() {
             velocity: vm.Vector3(0.0, 0.0, 1.5),
             mass: 2.0,
             radius: 0.6,
-            color: Colors.red,
+            color: AppColors.basicRed,
             name: 'Planet2',
             bodyType: BodyType.planet,
           );
@@ -136,7 +136,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 50.0,
           radius: 2.0,
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
           name: 'Sun',
           bodyType: BodyType.star,
         );
@@ -147,7 +147,7 @@ void main() {
           velocity: vm.Vector3(0.0, 0.0, 0.005), // Below 0.01 threshold
           mass: 1.0,
           radius: 0.5,
-          color: Colors.grey,
+          color: AppColors.basicGrey,
           name: 'SlowBody',
           bodyType: BodyType.planet,
         );
@@ -158,7 +158,7 @@ void main() {
           velocity: vm.Vector3(0.0, 0.0, 2.0),
           mass: 1.0,
           radius: 0.5,
-          color: Colors.purple,
+          color: AppColors.basicPurple,
           name: 'FarBody',
           bodyType: BodyType.planet,
         );
@@ -300,7 +300,7 @@ void main() {
             velocity: vm.Vector3.zero(),
             mass: 50.0,
             radius: 2.0,
-            color: Colors.yellow,
+            color: AppColors.basicYellow,
             name: 'Sun',
             bodyType: BodyType.star,
           );
@@ -311,7 +311,7 @@ void main() {
             velocity: vm.Vector3(0.0, 0.0, 0.015), // Just above 0.01
             mass: 1.0,
             radius: 0.5,
-            color: Colors.blue,
+            color: AppColors.basicBlue,
             name: 'SubtleBody',
             bodyType: BodyType.planet,
           );
@@ -334,7 +334,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 50.0,
           radius: 2.0,
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
           name: 'Sun',
           bodyType: BodyType.star,
         );
@@ -345,7 +345,7 @@ void main() {
           velocity: vm.Vector3(0.0, 0.0, 1.0),
           mass: 1.0,
           radius: 0.5,
-          color: Colors.blue,
+          color: AppColors.basicBlue,
           name: 'DistantBody',
           bodyType: BodyType.planet,
         );
@@ -367,7 +367,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 50.0,
           radius: 2.0,
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
           name: 'Sun',
           bodyType: BodyType.star,
         );
@@ -378,7 +378,7 @@ void main() {
           velocity: vm.Vector3(0.0, 0.0, 2.0),
           mass: 1.0,
           radius: 0.3,
-          color: Colors.blue,
+          color: AppColors.basicBlue,
           name: 'LightBody',
           bodyType: BodyType.planet,
         );
@@ -389,7 +389,7 @@ void main() {
           velocity: vm.Vector3(0.0, 0.0, 1.5),
           mass: 100.0,
           radius: 1.5,
-          color: Colors.red,
+          color: AppColors.basicRed,
           name: 'HeavyBody',
           bodyType: BodyType.planet,
         );
@@ -428,7 +428,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1e6, // Very massive
           radius: 10.0,
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
           name: 'MassiveBody',
           bodyType: BodyType.star,
         );
@@ -438,7 +438,7 @@ void main() {
           velocity: vm.Vector3(0.0, 0.0, 1.0),
           mass: 1e-6, // Tiny mass
           radius: 0.01,
-          color: Colors.blue,
+          color: AppColors.basicBlue,
           name: 'TinyBody',
           bodyType: BodyType.planet,
         );
@@ -460,7 +460,7 @@ void main() {
           velocity: vm.Vector3(1.0, 0.0, 0.0),
           mass: 10.0,
           radius: 1.0,
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
           name: 'Body1',
           bodyType: BodyType.star,
         );
@@ -470,7 +470,7 @@ void main() {
           velocity: vm.Vector3(0.0, 1.0, 0.0),
           mass: 10.0,
           radius: 1.0,
-          color: Colors.blue,
+          color: AppColors.basicBlue,
           name: 'Body2',
           bodyType: BodyType.star,
         );

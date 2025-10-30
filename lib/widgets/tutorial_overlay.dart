@@ -157,7 +157,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
         return Opacity(
           opacity: _fadeAnimation.value,
           child: Container(
-            color: Colors.black.withValues(alpha: 0.8),
+            color: AppColors.uiBlack.withValues(alpha: 0.8),
             child: SafeArea(
               child: Stack(
                 children: [
@@ -326,7 +326,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                           backgroundColor: _getIconColor(
                                             _currentStep,
                                           ),
-                                          foregroundColor: Colors.white,
+                                          foregroundColor: AppColors.uiWhite,
                                         ),
                                         child: Text(
                                           _currentStep == _steps.length - 1
@@ -569,7 +569,7 @@ class HighlightPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.1)
+      ..color = AppColors.uiWhite.withValues(alpha: 0.1)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 

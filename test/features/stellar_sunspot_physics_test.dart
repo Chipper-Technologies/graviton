@@ -6,6 +6,7 @@ import 'package:graviton/models/body.dart';
 import 'package:graviton/painters/celestial_body_painter.dart';
 import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/services/stellar_color_service.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'dart:ui' as ui;
 
@@ -71,7 +72,7 @@ void main() {
         velocity: vm.Vector3.zero(),
         mass: 15.0,
         radius: 5.0,
-        color: Colors.white,
+        color: AppColors.uiWhite,
         name: 'Hot Star',
         bodyType: BodyType.star,
         temperature: 6500.0, // F-type star
@@ -82,7 +83,7 @@ void main() {
         velocity: vm.Vector3.zero(),
         mass: 8.0,
         radius: 4.0,
-        color: Colors.orange,
+        color: AppColors.basicOrange,
         name: 'Cool Star',
         bodyType: BodyType.star,
         temperature: 4000.0, // K-type star
@@ -123,7 +124,7 @@ void main() {
         velocity: vm.Vector3.zero(),
         mass: 10.0,
         radius: 4.0,
-        color: Colors.yellow,
+        color: AppColors.basicYellow,
         name: 'Central Star', // This should trigger sunspot rendering
         bodyType: BodyType.star,
         temperature: 5778.0, // Sun temperature

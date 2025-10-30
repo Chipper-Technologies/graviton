@@ -15,6 +15,7 @@ import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/temperature_service.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Custom matcher for checking if a number is finite
@@ -35,7 +36,7 @@ void main() {
         radius: 0.1,
         name: 'Test Planet',
         bodyType: BodyType.planet,
-        color: Colors.blue,
+        color: AppColors.basicBlue,
       );
 
       // Create test star
@@ -46,7 +47,7 @@ void main() {
         radius: 0.5,
         name: 'Test Star',
         bodyType: BodyType.star,
-        color: Colors.yellow,
+        color: AppColors.basicYellow,
       );
       testStar.stellarLuminosity = 1.0;
 
@@ -77,7 +78,7 @@ void main() {
           radius: 0.3,
           name: 'Second Star',
           bodyType: BodyType.star,
-          color: Colors.orange,
+          color: AppColors.basicOrange,
         );
         star2.stellarLuminosity = 0.5;
 
@@ -102,7 +103,7 @@ void main() {
           radius: 0.05,
           name: 'Test Asteroid',
           bodyType: BodyType.asteroid,
-          color: Colors.grey,
+          color: AppColors.basicGrey,
         );
         final originalTemp = asteroid.temperature;
 
@@ -131,7 +132,7 @@ void main() {
           radius: 0.5,
           name: 'Close Star',
           bodyType: BodyType.star,
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
         );
         closeStar.stellarLuminosity = 1.0;
 
@@ -153,7 +154,7 @@ void main() {
           radius: 0.1,
           name: 'Light Planet',
           bodyType: BodyType.planet,
-          color: Colors.blue,
+          color: AppColors.basicBlue,
         );
 
         final heavyPlanet = Body(
@@ -163,7 +164,7 @@ void main() {
           radius: 0.1,
           name: 'Heavy Planet',
           bodyType: BodyType.planet,
-          color: Colors.blue,
+          color: AppColors.basicBlue,
         );
 
         final lightTemp = TemperatureService.calculatePlanetaryTemperature(
@@ -187,7 +188,7 @@ void main() {
           radius: 0.1,
           name: 'Super Massive Planet',
           bodyType: BodyType.planet,
-          color: Colors.blue,
+          color: AppColors.basicBlue,
         );
 
         final temperature = TemperatureService.calculatePlanetaryTemperature(
@@ -383,7 +384,7 @@ void main() {
           radius: 0.5,
           name: 'Dim Star',
           bodyType: BodyType.star,
-          color: Colors.red,
+          color: AppColors.basicRed,
         );
         dimStar.stellarLuminosity = 0.0; // No luminosity
 
