@@ -15,14 +15,10 @@ void main() {
       expect(uiState.showTrails, isTrue);
       expect(uiState.showLabels, isTrue);
       expect(uiState.showStats, isFalse);
-      expect(uiState.showGravityWells, isFalse);
 
       // Test that we can toggle values (this will attempt to save but gracefully fail in tests)
       uiState.toggleStats();
       expect(uiState.showStats, isTrue);
-
-      uiState.toggleGravityWells();
-      expect(uiState.showGravityWells, isTrue);
     });
 
     test('AppState should initialize UIState properly', () async {

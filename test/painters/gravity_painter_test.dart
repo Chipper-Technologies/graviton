@@ -1,372 +1,536 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/models/body.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/models/body.dart';
 import 'package:graviton/painters/gravity_painter.dart';
 import 'package:graviton/services/simulation.dart' as physics;
 import 'package:vector_math/vector_math_64.dart' as vm;
-import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('GravityPainter', () {
-    late Canvas canvas;
-    late ui.PictureRecorder recorder;
-    late Size canvasSize;
-    late vm.Matrix4 viewProjectionMatrix;
     late physics.Simulation simulation;
 
     setUp(() {
-      recorder = ui.PictureRecorder();
-      canvas = Canvas(recorder);
-      canvasSize = const Size(800, 600);
-      viewProjectionMatrix = vm.Matrix4.identity();
       simulation = physics.Simulation();
+    });
 
-      // Add bodies with different masses for testing gravity wells
-      simulation.bodies.add(
-        Body(
-          position: vm.Vector3(0, 0, -20),
+    group('Orbital Plane Calculation', () {
+      test('should return default horizontal plane for empty simulation', () {
+        final centralBody = Body(
+          position: vm.Vector3.zero(),
           velocity: vm.Vector3.zero(),
-          mass: 1000.0, // Massive star
-          radius: 10.0,
-          color: AppColors.basicYellow,
-          name: 'Massive Star',
+          mass: 10.0,
+          radius: 1.0,
+          color: Colors.yellow,
+          name: 'Central Star',
           bodyType: BodyType.star,
-        ),
-      );
-
-      simulation.bodies.add(
-        Body(
-          position: vm.Vector3(30, 0, -20),
-          velocity: vm.Vector3.zero(),
-          mass: 50.0, // Large planet
-          radius: 5.0,
-          color: AppColors.basicBlue,
-          name: 'Large Planet',
-          bodyType: BodyType.planet,
-        ),
-      );
-
-      simulation.bodies.add(
-        Body(
-          position: vm.Vector3(-30, 0, -20),
-          velocity: vm.Vector3.zero(),
-          mass: 5.0, // Small planet
-          radius: 2.0,
-          color: AppColors.basicGreen,
-          name: 'Small Planet',
-          bodyType: BodyType.planet,
-        ),
-      );
-    });
-
-    group('drawGravityWells', () {
-      test('should draw gravity wells when enabled', () {
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            simulation,
-            true, // showGravityWells
-          ),
-          returnsNormally,
         );
+
+        simulation.bodies = [centralBody];
+
+        // Use reflection to access private method for testing
+        final result = GravityPainter.calculateOrbitalPlaneForTesting(
+          centralBody,
+          simulation,
+        );
+
+        expect(result.normal.x, closeTo(0.0, 1e-10));
+        expect(result.normal.y, closeTo(1.0, 1e-10)); // Y-up normal
+        expect(result.normal.z, closeTo(0.0, 1e-10));
+        expect(result.tangent1.x, closeTo(1.0, 1e-10)); // X-axis tangent
+        expect(result.tangent2.z, closeTo(1.0, 1e-10)); // Z-axis tangent
       });
 
-      test('should not draw gravity wells when disabled', () {
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            simulation,
-            false, // showGravityWells
-          ),
-          returnsNormally,
-        );
-      });
-
-      test('should handle empty simulation', () {
-        final emptySimulation = physics.Simulation();
-
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            emptySimulation,
-            true,
-          ),
-          returnsNormally,
-        );
-      });
-
-      test('should draw wells for bodies of different masses', () {
-        // Test already has bodies with different masses
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            simulation,
-            true,
-          ),
-          returnsNormally,
-        );
-      });
-
-      test('should handle bodies with zero mass', () {
-        final zeroMassSimulation = physics.Simulation();
-        zeroMassSimulation.bodies.add(
-          Body(
+      test(
+        'should calculate correct orbital plane for single orbiting body',
+        () {
+          final centralBody = Body(
             position: vm.Vector3.zero(),
-            velocity: vm.Vector3.zero(),
-            mass: 0.0, // Zero mass
-            radius: 1.0,
-            color: AppColors.basicGrey,
-            name: 'Massless Body',
-          ),
-        );
-
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            zeroMassSimulation,
-            true,
-          ),
-          returnsNormally,
-        );
-      });
-
-      test('should handle bodies with very large mass', () {
-        final largeMassSimulation = physics.Simulation();
-        largeMassSimulation.bodies.add(
-          Body(
-            position: vm.Vector3.zero(),
-            velocity: vm.Vector3.zero(),
-            mass: 1000000.0, // Very large mass
-            radius: 50.0,
-            color: AppColors.basicRed,
-            name: 'Super Massive Body',
-          ),
-        );
-
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            largeMassSimulation,
-            true,
-          ),
-          returnsNormally,
-        );
-      });
-    });
-
-    group('Gravity Grid Drawing', () {
-      test('should draw gravity grid for massive objects', () {
-        // The massive star (mass > 10.0) should trigger grid drawing
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            simulation,
-            true,
-          ),
-          returnsNormally,
-        );
-      });
-
-      test('should not draw grid for low mass objects', () {
-        final lowMassSimulation = physics.Simulation();
-        lowMassSimulation.bodies.add(
-          Body(
-            position: vm.Vector3.zero(),
-            velocity: vm.Vector3.zero(),
-            mass: 5.0, // Mass <= 10.0, no grid expected
-            radius: 2.0,
-            color: AppColors.basicBlue,
-            name: 'Low Mass Body',
-          ),
-        );
-
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            lowMassSimulation,
-            true,
-          ),
-          returnsNormally,
-        );
-      });
-    });
-
-    group('Field Strength and Colors', () {
-      test('should handle different body types with different colors', () {
-        final mixedSimulation = physics.Simulation();
-
-        // Add star
-        mixedSimulation.bodies.add(
-          Body(
-            position: vm.Vector3(0, 0, -20),
-            velocity: vm.Vector3.zero(),
-            mass: 100.0,
-            radius: 8.0,
-            color: AppColors.basicYellow,
-            name: 'Star',
-            bodyType: BodyType.star,
-          ),
-        );
-
-        // Add planet
-        mixedSimulation.bodies.add(
-          Body(
-            position: vm.Vector3(20, 0, -20),
             velocity: vm.Vector3.zero(),
             mass: 50.0,
-            radius: 4.0,
-            color: AppColors.basicBlue,
+            radius: 2.0,
+            color: Colors.yellow,
+            name: 'Sun',
+            bodyType: BodyType.star,
+          );
+
+          final orbitingBody = Body(
+            position: vm.Vector3(10.0, 0.0, 0.0), // On X-axis
+            velocity: vm.Vector3(0.0, 0.0, 2.0), // Moving in Z direction
+            mass: 1.0,
+            radius: 0.5,
+            color: Colors.blue,
             name: 'Planet',
             bodyType: BodyType.planet,
-          ),
+          );
+
+          simulation.bodies = [centralBody, orbitingBody];
+
+          final result = GravityPainter.calculateOrbitalPlaneForTesting(
+            centralBody,
+            simulation,
+          );
+
+          // Angular momentum L = r × v = (10,0,0) × (0,0,2) = (0,-20,0)
+          // Normal should be in -Y direction (normalized)
+          expect(result.normal.x, closeTo(0.0, 1e-10));
+          expect(result.normal.y, closeTo(-1.0, 1e-10));
+          expect(result.normal.z, closeTo(0.0, 1e-10));
+        },
+      );
+
+      test(
+        'should handle multiple orbiting bodies with combined angular momentum',
+        () {
+          final centralBody = Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 50.0,
+            radius: 2.0,
+            color: Colors.yellow,
+            name: 'Sun',
+            bodyType: BodyType.star,
+          );
+
+          final planet1 = Body(
+            position: vm.Vector3(10.0, 0.0, 0.0),
+            velocity: vm.Vector3(0.0, 0.0, 2.0),
+            mass: 1.0,
+            radius: 0.5,
+            color: Colors.blue,
+            name: 'Planet1',
+            bodyType: BodyType.planet,
+          );
+
+          final planet2 = Body(
+            position: vm.Vector3(15.0, 0.0, 0.0),
+            velocity: vm.Vector3(0.0, 0.0, 1.5),
+            mass: 2.0,
+            radius: 0.6,
+            color: Colors.red,
+            name: 'Planet2',
+            bodyType: BodyType.planet,
+          );
+
+          simulation.bodies = [centralBody, planet1, planet2];
+
+          final result = GravityPainter.calculateOrbitalPlaneForTesting(
+            centralBody,
+            simulation,
+          );
+
+          // Combined angular momentum should still point in -Y direction
+          expect(result.normal.x, closeTo(0.0, 1e-6));
+          expect(result.normal.y, lessThan(0.0)); // Should be negative
+          expect(result.normal.z, closeTo(0.0, 1e-6));
+          expect(
+            result.normal.length,
+            closeTo(1.0, 1e-10),
+          ); // Should be normalized
+        },
+      );
+
+      test('should filter out non-orbiting bodies correctly', () {
+        final centralBody = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 50.0,
+          radius: 2.0,
+          color: Colors.yellow,
+          name: 'Sun',
+          bodyType: BodyType.star,
         );
 
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            mixedSimulation,
-            true,
-          ),
-          returnsNormally,
+        // Very slow body - should be filtered out
+        final slowBody = Body(
+          position: vm.Vector3(10.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.0, 0.0, 0.005), // Below 0.01 threshold
+          mass: 1.0,
+          radius: 0.5,
+          color: Colors.grey,
+          name: 'SlowBody',
+          bodyType: BodyType.planet,
         );
+
+        // Far body - should be filtered out
+        final farBody = Body(
+          position: vm.Vector3(3000.0, 0.0, 0.0), // Beyond 2000 distance
+          velocity: vm.Vector3(0.0, 0.0, 2.0),
+          mass: 1.0,
+          radius: 0.5,
+          color: Colors.purple,
+          name: 'FarBody',
+          bodyType: BodyType.planet,
+        );
+
+        simulation.bodies = [centralBody, slowBody, farBody];
+
+        final result = GravityPainter.calculateOrbitalPlaneForTesting(
+          centralBody,
+          simulation,
+        );
+
+        // Should return default plane since no bodies pass the filtering
+        expect(result.normal.y, closeTo(1.0, 1e-10)); // Default Y-up
       });
     });
 
-    group('Edge Cases', () {
-      test('should handle bodies behind camera', () {
-        final behindSimulation = physics.Simulation();
-        behindSimulation.bodies.add(
-          Body(
-            position: vm.Vector3(0, 0, 10), // Positive Z (behind camera)
-            velocity: vm.Vector3.zero(),
-            mass: 100.0,
-            radius: 5.0,
-            color: AppColors.basicPurple,
-            name: 'Behind Body',
-          ),
+    group('Orientation Change Tracking', () {
+      test('should initialize history for new bodies', () {
+        const bodyName = 'TestBody';
+        final normal = vm.Vector3(0.0, 1.0, 0.0);
+        const timestamp = 1000.0;
+
+        GravityPainter.trackOrientationChangeForTesting(
+          bodyName,
+          normal,
+          timestamp,
         );
 
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            behindSimulation,
-            true,
-          ),
-          returnsNormally,
+        final history = GravityPainter.getOrientationHistoryForTesting(
+          bodyName,
         );
+        expect(history, isNotNull);
+        expect(history!.length, equals(1));
+        expect(history.first.normal.y, closeTo(1.0, 1e-10));
+        expect(history.first.timestamp, equals(timestamp));
       });
 
-      test('should handle zero-size canvas', () {
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            Size.zero,
-            viewProjectionMatrix,
-            simulation,
-            true,
-          ),
-          returnsNormally,
-        );
-      });
+      test('should maintain history within maximum length', () {
+        const bodyName = 'TestBody';
+        final normal = vm.Vector3(0.0, 1.0, 0.0);
 
-      test('should handle extreme view transformations', () {
-        final extremeView = vm.Matrix4.identity()
-          ..translateByVector3(vm.Vector3(1000, 1000, 1000))
-          ..rotateX(3.14159)
-          ..scaleByVector3(vm.Vector3(0.001, 0.001, 0.001));
-
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            extremeView,
-            simulation,
-            true,
-          ),
-          returnsNormally,
-        );
-      });
-
-      test('should handle many bodies performance test', () {
-        final manyBodiesSimulation = physics.Simulation();
-
-        // Add 100 bodies to test performance
-        for (int i = 0; i < 100; i++) {
-          manyBodiesSimulation.bodies.add(
-            Body(
-              position: vm.Vector3(i.toDouble(), 0, -20),
-              velocity: vm.Vector3.zero(),
-              mass: 10.0 + i,
-              radius: 2.0,
-              color: AppColors.basicOrange,
-              name: 'Body $i',
-            ),
+        // Add more than max history length (30)
+        for (
+          int historyEntryCount = 0;
+          historyEntryCount < 35;
+          historyEntryCount++
+        ) {
+          GravityPainter.trackOrientationChangeForTesting(
+            bodyName,
+            normal,
+            historyEntryCount.toDouble(),
           );
         }
 
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            manyBodiesSimulation,
-            true,
-          ),
-          returnsNormally,
+        final history = GravityPainter.getOrientationHistoryForTesting(
+          bodyName,
         );
+        expect(history!.length, equals(30)); // Should be limited to max
+        expect(
+          history.first.timestamp,
+          equals(5.0),
+        ); // Oldest should be removed
+        expect(history.last.timestamp, equals(34.0)); // Newest should be kept
       });
 
-      test('should handle negative mass bodies', () {
-        final negativeMassSimulation = physics.Simulation();
-        negativeMassSimulation.bodies.add(
-          Body(
-            position: vm.Vector3.zero(),
-            velocity: vm.Vector3.zero(),
-            mass: -10.0, // Negative mass (exotic matter)
-            radius: 3.0,
-            color: AppColors.uiBlack,
-            name: 'Exotic Matter',
-          ),
-        );
+      test('should calculate orientation change rate correctly', () {
+        const bodyName = 'TestBody';
 
-        expect(
-          () => GravityPainter.drawGravityWells(
-            canvas,
-            canvasSize,
-            viewProjectionMatrix,
-            negativeMassSimulation,
-            true,
-          ),
-          returnsNormally,
+        // Add initial orientation (pointing up)
+        for (int timeStep = 0; timeStep < 10; timeStep++) {
+          GravityPainter.trackOrientationChangeForTesting(
+            bodyName,
+            vm.Vector3(0.0, 1.0, 0.0),
+            timeStep.toDouble(),
+          );
+        }
+
+        // Add recent orientations with different direction (pointing at 45 degrees)
+        final newNormal = vm.Vector3(1.0, 1.0, 0.0).normalized();
+        for (int timeStep = 10; timeStep < 15; timeStep++) {
+          GravityPainter.trackOrientationChangeForTesting(
+            bodyName,
+            newNormal,
+            timeStep.toDouble(),
+          );
+        }
+
+        final changeRate =
+            GravityPainter.calculateOrientationChangeRateForTesting(bodyName);
+
+        expect(changeRate, greaterThan(0.0));
+        expect(changeRate, lessThanOrEqualTo(1.0));
+      });
+
+      test('should return zero change rate for insufficient history', () {
+        const bodyName = 'NewBody';
+
+        // No history
+        final changeRate1 =
+            GravityPainter.calculateOrientationChangeRateForTesting(bodyName);
+        expect(changeRate1, equals(0.0));
+
+        // Single entry
+        GravityPainter.trackOrientationChangeForTesting(
+          bodyName,
+          vm.Vector3(0.0, 1.0, 0.0),
+          1.0,
         );
+        final changeRate2 =
+            GravityPainter.calculateOrientationChangeRateForTesting(bodyName);
+        expect(changeRate2, equals(0.0));
+      });
+
+      test('should handle identical orientations', () {
+        const bodyName = 'StableBody';
+        final normal = vm.Vector3(0.0, 1.0, 0.0);
+
+        // Add identical orientations
+        for (int timeStep = 0; timeStep < 10; timeStep++) {
+          GravityPainter.trackOrientationChangeForTesting(
+            bodyName,
+            normal,
+            timeStep.toDouble(),
+          );
+        }
+
+        final changeRate =
+            GravityPainter.calculateOrientationChangeRateForTesting(bodyName);
+        expect(changeRate, closeTo(0.0, 1e-10));
       });
     });
 
-    tearDown(() {
-      recorder.endRecording();
+    group('Enhanced Responsiveness', () {
+      test(
+        'should detect subtle orbital interactions with low velocity threshold',
+        () {
+          final centralBody = Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 50.0,
+            radius: 2.0,
+            color: Colors.yellow,
+            name: 'Sun',
+            bodyType: BodyType.star,
+          );
+
+          // Body with velocity just above threshold (0.01)
+          final subtleBody = Body(
+            position: vm.Vector3(10.0, 0.0, 0.0),
+            velocity: vm.Vector3(0.0, 0.0, 0.015), // Just above 0.01
+            mass: 1.0,
+            radius: 0.5,
+            color: Colors.blue,
+            name: 'SubtleBody',
+            bodyType: BodyType.planet,
+          );
+
+          simulation.bodies = [centralBody, subtleBody];
+
+          final result = GravityPainter.calculateOrbitalPlaneForTesting(
+            centralBody,
+            simulation,
+          );
+
+          // Should not be default plane (subtle interaction detected)
+          expect(result.normal.y, isNot(closeTo(1.0, 1e-6)));
+        },
+      );
+
+      test('should use expanded distance range for orbital detection', () {
+        final centralBody = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 50.0,
+          radius: 2.0,
+          color: Colors.yellow,
+          name: 'Sun',
+          bodyType: BodyType.star,
+        );
+
+        // Body at extended distance (within 2000 but beyond old 1000 limit)
+        final distantBody = Body(
+          position: vm.Vector3(1500.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.0, 0.0, 1.0),
+          mass: 1.0,
+          radius: 0.5,
+          color: Colors.blue,
+          name: 'DistantBody',
+          bodyType: BodyType.planet,
+        );
+
+        simulation.bodies = [centralBody, distantBody];
+
+        final result = GravityPainter.calculateOrbitalPlaneForTesting(
+          centralBody,
+          simulation,
+        );
+
+        // Should detect the distant body (not default plane)
+        expect(result.normal.y, isNot(closeTo(1.0, 1e-6)));
+      });
+
+      test('should apply square root mass weighting', () {
+        final centralBody = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 50.0,
+          radius: 2.0,
+          color: Colors.yellow,
+          name: 'Sun',
+          bodyType: BodyType.star,
+        );
+
+        // Light body
+        final lightBody = Body(
+          position: vm.Vector3(10.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.0, 0.0, 2.0),
+          mass: 1.0,
+          radius: 0.3,
+          color: Colors.blue,
+          name: 'LightBody',
+          bodyType: BodyType.planet,
+        );
+
+        // Very heavy body
+        final heavyBody = Body(
+          position: vm.Vector3(15.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.0, 0.0, 1.5),
+          mass: 100.0,
+          radius: 1.5,
+          color: Colors.red,
+          name: 'HeavyBody',
+          bodyType: BodyType.planet,
+        );
+
+        simulation.bodies = [centralBody, lightBody, heavyBody];
+
+        final result = GravityPainter.calculateOrbitalPlaneForTesting(
+          centralBody,
+          simulation,
+        );
+
+        // With square root weighting, heavy body influence should be reduced
+        // compared to linear mass weighting
+        expect(result.normal, isNotNull);
+        expect(result.normal.length, closeTo(1.0, 1e-10));
+      });
+    });
+
+    group('Edge Cases and Error Handling', () {
+      test('should handle null or invalid vectors', () {
+        const bodyName = 'TestBody';
+        final invalidNormal = vm.Vector3(0.0, 0.0, 0.0); // Zero vector
+
+        expect(() {
+          GravityPainter.trackOrientationChangeForTesting(
+            bodyName,
+            invalidNormal,
+            1.0,
+          );
+        }, returnsNormally);
+      });
+
+      test('should handle very large mass differences', () {
+        final centralBody = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1e6, // Very massive
+          radius: 10.0,
+          color: Colors.yellow,
+          name: 'MassiveBody',
+          bodyType: BodyType.star,
+        );
+
+        final tinyBody = Body(
+          position: vm.Vector3(10.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.0, 0.0, 1.0),
+          mass: 1e-6, // Tiny mass
+          radius: 0.01,
+          color: Colors.blue,
+          name: 'TinyBody',
+          bodyType: BodyType.planet,
+        );
+
+        simulation.bodies = [centralBody, tinyBody];
+
+        expect(() {
+          final result = GravityPainter.calculateOrbitalPlaneForTesting(
+            centralBody,
+            simulation,
+          );
+          expect(result.normal.length, closeTo(1.0, 1e-10));
+        }, returnsNormally);
+      });
+
+      test('should handle bodies at same position', () {
+        final body1 = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3(1.0, 0.0, 0.0),
+          mass: 10.0,
+          radius: 1.0,
+          color: Colors.yellow,
+          name: 'Body1',
+          bodyType: BodyType.star,
+        );
+
+        final body2 = Body(
+          position: vm.Vector3.zero(), // Same position
+          velocity: vm.Vector3(0.0, 1.0, 0.0),
+          mass: 10.0,
+          radius: 1.0,
+          color: Colors.blue,
+          name: 'Body2',
+          bodyType: BodyType.star,
+        );
+
+        simulation.bodies = [body1, body2];
+
+        expect(() {
+          GravityPainter.calculateOrbitalPlaneForTesting(body1, simulation);
+        }, returnsNormally);
+      });
+    });
+
+    group('Performance and Memory', () {
+      test('should clean up old orientation history entries', () {
+        const bodyName = 'TestBody';
+        final normal = vm.Vector3(0.0, 1.0, 0.0);
+
+        // Add many entries to trigger cleanup
+        for (int timeStep = 0; timeStep < 50; timeStep++) {
+          GravityPainter.trackOrientationChangeForTesting(
+            bodyName,
+            normal,
+            timeStep.toDouble(),
+          );
+        }
+
+        final history = GravityPainter.getOrientationHistoryForTesting(
+          bodyName,
+        );
+        expect(history!.length, lessThanOrEqualTo(30)); // Should be cleaned up
+      });
+
+      test('should handle multiple bodies tracking simultaneously', () {
+        final normal = vm.Vector3(0.0, 1.0, 0.0);
+
+        // Track multiple bodies
+        for (int bodyIndex = 0; bodyIndex < 10; bodyIndex++) {
+          for (int timeIndex = 0; timeIndex < 20; timeIndex++) {
+            GravityPainter.trackOrientationChangeForTesting(
+              'Body$bodyIndex',
+              normal,
+              timeIndex.toDouble(),
+            );
+          }
+        }
+
+        // All bodies should have their own history
+        for (int bodyIndex = 0; bodyIndex < 10; bodyIndex++) {
+          final history = GravityPainter.getOrientationHistoryForTesting(
+            'Body$bodyIndex',
+          );
+          expect(history, isNotNull);
+          expect(history!.length, equals(20));
+        }
+      });
+
+      tearDown(() {
+        // Clean up static state between tests
+        GravityPainter.clearOrientationHistoryForTesting();
+      });
     });
   });
 }

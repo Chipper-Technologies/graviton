@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
@@ -31,6 +31,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
   late BodyType _bodyType;
   late double _stellarLuminosity;
   late vm.Vector3 _velocity;
+  late bool _showGravityWell;
 
   // Slider range constants to prevent out-of-bounds errors
   static const double _massMin = 0.001;
@@ -46,10 +47,6 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.body.name);
-
-    debugPrint(
-      '📖 DIALOG OPENED: ${widget.body.name} has mass ${widget.body.mass}',
-    );
 
     // Clamp initial values to ensure they're within slider bounds
     // Log warnings for developers when values are out of range
@@ -95,6 +92,8 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
         'Warning: Body ${widget.body.name} velocity ${widget.body.velocity} clamped to $_velocity (range: $_velocityMin-$_velocityMax)',
       );
     }
+
+    _showGravityWell = widget.body.showGravityWell;
   }
 
   @override
@@ -104,10 +103,6 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
   }
 
   void _updateBody() {
-    debugPrint(
-      '🔧 BODY UPDATE: ${widget.body.name} mass changing from ${widget.body.mass} to $_mass',
-    );
-
     // Update the original body's properties directly
     widget.body.velocity = _velocity;
     widget.body.mass = _mass;
@@ -116,12 +111,9 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
     widget.body.name = _nameController.text;
     widget.body.bodyType = _bodyType;
     widget.body.stellarLuminosity = _stellarLuminosity;
+    widget.body.showGravityWell = _showGravityWell;
 
     widget.onBodyChanged(widget.body);
-
-    debugPrint(
-      '🔧 BODY UPDATE COMPLETE: ${widget.body.name} mass is now ${widget.body.mass}',
-    );
   }
 
   @override
@@ -165,7 +157,10 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                   const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {
+                      _updateBody(); // Ensure all changes are saved before closing
+                      Navigator.of(context).pop();
+                    },
                   ),
                 ],
               ),
@@ -242,6 +237,31 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                       _buildSectionTitle(l10n.bodyPropertiesColor),
                       const SizedBox(height: AppTypography.spacingSmall),
                       _buildColorPicker(),
+
+                      const SizedBox(height: 16),
+
+                      // Gravity Well Visualization
+                      _buildSectionTitle(l10n.gravityWellsLabel),
+                      SwitchListTile(
+                        title: Text(
+                          l10n.gravityWellsDescription,
+                          style: TextStyle(
+                            color: AppColors.uiWhite.withValues(
+                              alpha: AppTypography.opacitySemiTransparent,
+                            ),
+                          ),
+                        ),
+                        value: _showGravityWell,
+                        onChanged: (value) {
+                          setState(() {
+                            _showGravityWell = value;
+                          });
+                          // Immediately update the body property
+                          widget.body.showGravityWell = value;
+                        },
+                        secondary: const Icon(Icons.grain),
+                        contentPadding: EdgeInsets.zero,
+                      ),
 
                       const SizedBox(height: 16),
 

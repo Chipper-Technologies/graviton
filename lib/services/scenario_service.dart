@@ -312,6 +312,8 @@ class ScenarioService {
         name: l10n?.bodySun ?? CelestialBodyName.sun.value,
         bodyType: BodyType.star,
         stellarLuminosity: SimulationConstants.solarLuminosity,
+        showGravityWell:
+            true, // Enable Sun's gravity well by default for educational value
       ),
     );
 
@@ -657,6 +659,8 @@ class ScenarioService {
         stellarLuminosity:
             0.0, // Black holes don't emit light (except accretion disk)
         temperature: 100000.0, // Very hot accretion disk around black hole
+        showGravityWell:
+            true, // Black hole gravity well enabled by default - centerpiece of galaxy
       ),
     );
 
@@ -821,6 +825,8 @@ class ScenarioService {
             bodyType: BodyType.star,
             stellarLuminosity: stellarLuminosity,
             temperature: stellarTemperature,
+            showGravityWell:
+                false, // Disable star gravity wells by default - users can enable via body properties
           ),
         );
       }
@@ -845,6 +851,8 @@ class ScenarioService {
         name: l10n?.bodySun ?? CelestialBodyName.sun.value,
         bodyType: BodyType.star,
         stellarLuminosity: SimulationConstants.solarLuminosity,
+        showGravityWell:
+            true, // Enable Sun's gravity well by default for educational value
       ),
     );
 
@@ -974,4 +982,10 @@ class ScenarioService {
 
     return bodies;
   }
+
+  /// Generate hyperbolic flyby scenario demonstrating gravitational slingshot physics
+  ///
+  /// This scenario creates a massive central star and a small body approaching on a
+  /// hyperbolic trajectory, designed to showcase the dramatic "plunge and escape"
+  /// gravitational slingshot effect.
 }

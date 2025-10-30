@@ -23,9 +23,6 @@ class UIState extends ChangeNotifier {
   bool _showHabitableZones = false;
   bool _showHabitabilityIndicators = false;
 
-  // Gravity visualization settings
-  bool _showGravityWells = false;
-
   // Language settings
   String? _selectedLanguageCode; // null means system default
 
@@ -52,7 +49,6 @@ class UIState extends ChangeNotifier {
   static const String _keyShowHabitableZones = 'showHabitableZones';
   static const String _keyShowHabitabilityIndicators =
       'showHabitabilityIndicators';
-  static const String _keyShowGravityWells = 'showGravityWells';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
@@ -83,7 +79,6 @@ class UIState extends ChangeNotifier {
       _showHabitableZones = prefs.getBool(_keyShowHabitableZones) ?? false;
       _showHabitabilityIndicators =
           prefs.getBool(_keyShowHabitabilityIndicators) ?? false;
-      _showGravityWells = prefs.getBool(_keyShowGravityWells) ?? false;
       _selectedLanguageCode = prefs.getString(_keySelectedLanguageCode);
 
       // Load cinematic camera technique setting
@@ -141,9 +136,6 @@ class UIState extends ChangeNotifier {
   // Habitability getters
   bool get showHabitableZones => _showHabitableZones;
   bool get showHabitabilityIndicators => _showHabitabilityIndicators;
-
-  // Gravity visualization getters
-  bool get showGravityWells => _showGravityWells;
 
   // Language getters
   String? get selectedLanguageCode => _selectedLanguageCode;
@@ -275,17 +267,6 @@ class UIState extends ChangeNotifier {
     FirebaseService.instance.logSettingsChange(
       'show_habitability_indicators',
       _showHabitabilityIndicators,
-    );
-    notifyListeners();
-  }
-
-  // Gravity visualization setters
-  void toggleGravityWells() {
-    _showGravityWells = !_showGravityWells;
-    _saveSetting(_keyShowGravityWells, _showGravityWells);
-    FirebaseService.instance.logSettingsChange(
-      'show_gravity_wells',
-      _showGravityWells,
     );
     notifyListeners();
   }

@@ -122,7 +122,8 @@ class AppState extends ChangeNotifier {
   void initializeLanguageTracking(AppLocalizations l10n) {
     _lastLanguageCode = ui.selectedLanguageCode;
     // Regenerate scenario with correct localization on first load
-    if (_isInitialized) {
+    if (_isInitialized &&
+        simulation.currentScenario != ScenarioType.galaxyFormation) {
       simulation.regenerateScenarioWithLocalization(l10n);
       camera.resetViewForScenario(
         simulation.currentScenario,
