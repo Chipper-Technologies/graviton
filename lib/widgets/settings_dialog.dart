@@ -190,6 +190,22 @@ class SettingsDialog extends StatelessWidget {
                               secondary: const Icon(Icons.donut_small),
                             ),
 
+                          // Gravity Wells Toggle
+                          SwitchListTile(
+                            title: Text(l10n.gravityWellsLabel),
+                            subtitle: Text(
+                              l10n.gravityWellsDescription,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacitySemiTransparent,
+                                ),
+                              ),
+                            ),
+                            value: appState.ui.showGravityWells,
+                            onChanged: (v) => appState.ui.toggleGravityWells(),
+                            secondary: const Icon(Icons.grain),
+                          ),
+
                           SizedBox(height: AppTypography.spacingLarge),
 
                           // Body Labels Toggle
