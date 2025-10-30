@@ -168,7 +168,6 @@
   "bodyStarNumber": "恒星 {number}",
   "bodyAsteroid": "小行星 {number}",
   "bodyRing": "环 {number}",
-  "bodyStar": "恒星 {number}",
   "focusOnNearestTooltip": "聚焦最近的天体",
   "cameraControlsLabel": "相机控制",
   "invertPitchControlsLabel": "反转俯仰控制",

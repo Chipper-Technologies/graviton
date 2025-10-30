@@ -168,7 +168,6 @@
   "bodyStarNumber": "恒星 {number}",
   "bodyAsteroid": "小惑星 {number}",
   "bodyRing": "リング {number}",
-  "bodyStar": "恒星 {number}",
   "focusOnNearestTooltip": "最寄りの天体にフォーカス",
   "cameraControlsLabel": "カメラ操作",
   "invertPitchControlsLabel": "ピッチ操作を反転",

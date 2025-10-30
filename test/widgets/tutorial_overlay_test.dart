@@ -36,7 +36,7 @@ void main() {
         expect(find.byType(TutorialOverlay), findsOneWidget);
         expect(find.byType(Container), findsWidgets);
 
-        // The first step displays a logo instead of an icon, so no Icon widget is expected to be found.
+        // The first step displays a logo instead of an icon, so no Icon widget is expected to be found
         expect(find.byType(Text), findsWidgets);
       });
 

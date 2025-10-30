@@ -168,7 +168,6 @@
   "bodyStarNumber": "별 {number}",
   "bodyAsteroid": "소행성 {number}",
   "bodyRing": "고리 {number}",
-  "bodyStar": "별 {number}",
   "focusOnNearestTooltip": "가장 가까운 천체에 초점 맞추기",
   "cameraControlsLabel": "카메라 조작",
   "invertPitchControlsLabel": "피치 조작 반전",

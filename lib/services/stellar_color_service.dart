@@ -38,7 +38,8 @@ class StellarColorService {
     // otherwise calculate effective temperature from mass using mass-temperature relationship
     final effectiveTemperature =
         body.temperature >
-            1000.0 // Has a meaningful stellar temperature (threshold: 1000K)
+            SimulationConstants
+                .meaningfulStellarTemperatureThreshold // Has a meaningful stellar temperature
         ? body.temperature
         : _calculateStellarTemperature(body.mass);
 

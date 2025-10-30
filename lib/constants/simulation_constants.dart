@@ -159,6 +159,10 @@ class SimulationConstants {
   static const double sunTemperatureReference =
       5778.0; // Sun surface temperature in Kelvin
 
+  // Minimum temperature threshold to be considered a meaningful stellar temperature
+  // Bodies below this threshold use calculated temperature from mass instead
+  static const double meaningfulStellarTemperatureThreshold = 1000.0; // Kelvin
+
   // Galaxy formation constants
   static const int galaxyStarsPerArm = 10; // Stars per spiral arm
   static const int galaxySpiralArms = 3; // Number of spiral arms

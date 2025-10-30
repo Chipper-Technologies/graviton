@@ -118,7 +118,7 @@ enum CelestialBodyName {
         case CelestialBodyName.asteroid:
           return l10n.bodyAsteroid(number) ?? '$value $number';
         case CelestialBodyName.star:
-          return l10n.bodyStar(number) ?? '$value $number';
+          return l10n.bodyStarNumber(number) ?? '$value $number';
         case CelestialBodyName.ring:
           return l10n.bodyRing(number) ?? '$value $number';
         case CelestialBodyName.fragment:

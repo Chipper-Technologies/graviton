@@ -168,7 +168,6 @@
   "bodyStarNumber": "Estrella {number}",
   "bodyAsteroid": "Asteroide {number}",
   "bodyRing": "Anillo {number}",
-  "bodyStar": "Estrella {number}",
   "focusOnNearestTooltip": "Enfocar en el Cuerpo Más Cercano",
   "cameraControlsLabel": "Controles de Cámara",
   "invertPitchControlsLabel": "Invertir Controles de Inclinación",

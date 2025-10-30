@@ -555,11 +555,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bodyBlackHole => 'ブラックホール';
 
   @override
-  String bodyStar(int number) {
-    return '恒星 $number';
-  }
-
-  @override
   String get bodyRingedPlanet => '環状惑星';
 
   @override

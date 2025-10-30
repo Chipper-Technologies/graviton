@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/models/body.dart';
@@ -277,7 +278,8 @@ class CelestialBodyPainter {
     // Calculate stellar temperature for color adaptation
     final stellarTemperature =
         body.temperature >
-            1000.0 // Has a meaningful stellar temperature (threshold: 1000K)
+            SimulationConstants
+                .meaningfulStellarTemperatureThreshold // Has a meaningful stellar temperature
         ? body.temperature
         : _calculateStellarTemperature(
             body.mass,
@@ -1687,7 +1689,8 @@ class CelestialBodyPainter {
     // Very hot stars (O, B, A types > 7500K) have different magnetic field structures
     final temperature =
         body.temperature >
-            1000.0 // Has a meaningful stellar temperature (threshold: 1000K)
+            SimulationConstants
+                .meaningfulStellarTemperatureThreshold // Has a meaningful stellar temperature
         ? body.temperature
         : _calculateStellarTemperature(body.mass);
 

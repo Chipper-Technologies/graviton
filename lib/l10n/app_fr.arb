@@ -168,7 +168,6 @@
   "bodyStarNumber": "Étoile {number}",
   "bodyAsteroid": "Astéroïde {number}",
   "bodyRing": "Anneau {number}",
-  "bodyStar": "Étoile {number}",
   "focusOnNearestTooltip": "Se Concentrer sur le Corps le Plus Proche",
   "cameraControlsLabel": "Contrôles de Caméra",
   "invertPitchControlsLabel": "Inverser les Contrôles de Tangage",

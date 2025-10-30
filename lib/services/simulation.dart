@@ -371,7 +371,7 @@ class Simulation {
       final trailPos = bodies[i].position.clone();
 
       // Check for trail discontinuity and handle accordingly
-      if (_shouldSkipTrailPush(trailPos, trails[i])) {
+      if (_shouldSkipTrailPushForRandomScenario(trailPos, trails[i])) {
         trails[i].clear(); // Clear potentially corrupted trail
       }
 
@@ -828,13 +828,16 @@ class Simulation {
     }
   }
 
-  /// Check if trail push should be skipped due to position discontinuity
+  /// Check if trail push should be skipped due to position discontinuity for random scenarios
   ///
   /// Returns true if the body has moved an unreasonably large distance since the last
   /// trail point, indicating potential corruption or chaotic dynamics that would cause
-  /// visual artifacts. This is particularly important for random scenarios where
-  /// unpredictable body behavior can cause sudden position jumps.
-  bool _shouldSkipTrailPush(vm.Vector3 newPosition, List<TrailPoint> trail) {
+  /// visual artifacts. This safety check is specifically applied only to random scenarios
+  /// where unpredictable body behavior can cause sudden position jumps.
+  bool _shouldSkipTrailPushForRandomScenario(
+    vm.Vector3 newPosition,
+    List<TrailPoint> trail,
+  ) {
     // Only apply this safety check for random scenarios with existing trail data
     if (_currentScenario != ScenarioType.random || trail.isEmpty) {
       return false;

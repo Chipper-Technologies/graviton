@@ -911,16 +911,6 @@
     "description": "Name for black hole in galaxy formation"
   },
   
-  "bodyStar": "Star {number}",
-  "@bodyStar": {
-    "description": "Name for stars with number",
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
-  
   "bodyRingedPlanet": "Ringed Planet",
   "@bodyRingedPlanet": {
     "description": "Name for planet with rings"

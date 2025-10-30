@@ -574,11 +574,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bodyBlackHole => 'Schwarzes Loch';
 
   @override
-  String bodyStar(int number) {
-    return 'Stern $number';
-  }
-
-  @override
   String get bodyRingedPlanet => 'Ringplanet';
 
   @override

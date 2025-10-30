@@ -1158,12 +1158,6 @@ abstract class AppLocalizations {
   /// **'Black Hole'**
   String get bodyBlackHole;
 
-  /// Name for stars with number
-  ///
-  /// In en, this message translates to:
-  /// **'Star {number}'**
-  String bodyStar(int number);
-
   /// Name for planet with rings
   ///
   /// In en, this message translates to:

@@ -81,6 +81,8 @@ class AppTypography {
   static const double borderThick = 2.0;
 
   /// UI component dimensions
+  /// Height for dropdown items, specifically used for cinematic camera technique
+  /// selection dropdowns to ensure consistent sizing and proper text display
   static const double dropdownItemHeight = 44.0;
 
   // =============================================================================

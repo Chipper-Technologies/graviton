@@ -558,11 +558,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get bodyBlackHole => '블랙홀';
 
   @override
-  String bodyStar(int number) {
-    return '별 $number';
-  }
-
-  @override
   String get bodyRingedPlanet => '고리 행성';
 
   @override

@@ -171,14 +171,6 @@
       }
     }
   },
-  "bodyStar": "Stern {number}",
-  "@bodyStar": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "bodyRing": "Ring {number}",
   "@bodyRing": {
     "placeholders": {

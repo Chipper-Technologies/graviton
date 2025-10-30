@@ -552,11 +552,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bodyBlackHole => '黑洞';
 
   @override
-  String bodyStar(int number) {
-    return '恒星 $number';
-  }
-
-  @override
   String get bodyRingedPlanet => '环状行星';
 
   @override
