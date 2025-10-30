@@ -966,7 +966,7 @@ class GravitonPainter extends CustomPainter {
 
     // Apply global opacity - this affects all subsequent drawing operations
     final alphaLayer = Paint()
-      ..color = Color.fromARGB((255 * ringOpacity).round(), 255, 255, 255);
+      ..color = AppColors.uiWhite.withValues(alpha: ringOpacity);
     canvas.saveLayer(null, alphaLayer);
 
     // First, draw a bright orange/red base ring (warmer colors show better)

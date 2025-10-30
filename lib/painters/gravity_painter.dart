@@ -53,6 +53,7 @@ import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/simulation.dart' as physics;
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/utils/painter_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -544,12 +545,8 @@ class GravityPainter {
     // Use the body's actual color for the gravity well with enhanced vibrancy
     // Black holes get special visual treatment for dramatic effect
     final baseColor = isBlackHole
-        ? Color.fromARGB(
-            255,
-            180,
-            50,
-            255,
-          ) // Bright purple/magenta for black holes - much more visible!
+        ? AppColors
+              .accretionMediumPurple // Bright purple for black holes - much more visible!
         : body.color;
 
     // Calculate orientation change rate for dynamic coloring (Enhancement 4)
@@ -604,12 +601,7 @@ class GravityPainter {
 
       // Enhancement 4: Dynamic color coding based on orientation change rate
       // Blend base color with a highlighting color when wells are changing orientation
-      final highlightColor = const Color.fromARGB(
-        255,
-        255,
-        100,
-        100,
-      ); // Bright red for changes
+      final highlightColor = AppColors.uiRed; // Bright red for changes
       final dynamicColor =
           Color.lerp(baseColor, highlightColor, changeRate * 0.7) ?? baseColor;
 
@@ -1119,12 +1111,7 @@ class GravityPainter {
 
       if (startScreen != null && endScreen != null) {
         final paint = Paint()
-          ..color = const Color.fromARGB(
-            255,
-            255,
-            255,
-            100,
-          ).withValues(alpha: alpha)
+          ..color = AppColors.uiYellow.withValues(alpha: alpha)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1.0;
 
