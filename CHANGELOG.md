@@ -31,6 +31,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Detailed parameter documentation with expected ranges and usage guidelines
   - Sunspot generation constants for realistic solar surface features
   - Body matching tolerance system for stable object identification across frames
+- **Advanced Gravity Well Visualization**: Sophisticated 3D funnel-shaped gravity wells with per-body control and orbital plane alignment
+  - **Per-Body Control**: Migrated from global toggle to individual body gravity well settings for selective educational visualization
+  - **Dynamic Orbital Detection**: Real-time orbital plane calculation using angular momentum for accurate 3D funnel orientation
+  - **Zoom-Responsive Detail**: Adaptive visualization complexity based on camera distance for optimal performance
+  - **Black Hole Enhancement**: Dramatic visual effects with enhanced depth and intensity for extreme gravity wells
+  - **Temporal Orientation Tracking**: Historical gravity well orientation data for visualizing changing orbital dynamics
 
 ### Improved
 - **Camera Performance**: Optimized camera update cycles with 16ms target execution time for smooth 60fps operation
