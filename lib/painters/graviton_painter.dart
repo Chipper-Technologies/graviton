@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/painters/asteroid_belt_painter.dart';
@@ -34,7 +35,6 @@ class GravitonPainter extends CustomPainter {
   final bool dualOrbitalPaths;
   final bool showHabitableZones;
   final bool showHabitabilityIndicators;
-  final bool showGravityWells;
   final int? selectedBodyIndex;
   final bool followMode;
   final double cameraDistance;
@@ -51,7 +51,6 @@ class GravitonPainter extends CustomPainter {
     this.dualOrbitalPaths = false,
     this.showHabitableZones = false,
     this.showHabitabilityIndicators = false,
-    this.showGravityWells = false,
     this.selectedBodyIndex,
     this.followMode = false,
     required this.cameraDistance,
@@ -105,7 +104,8 @@ class GravitonPainter extends CustomPainter {
     );
 
     // Draw gravity wells (before bodies as background elements)
-    GravityPainter.drawGravityWells(canvas, size, vp, sim, showGravityWells);
+    // Now controlled per-body via Body.showGravityWell property
+    GravityPainter.drawGravityWells(canvas, size, vp, sim, cameraDistance);
 
     // Draw asteroid belt particles (before bodies but after background elements)
     if (sim.currentScenario == ScenarioType.asteroidBelt) {
@@ -252,7 +252,11 @@ class GravitonPainter extends CustomPainter {
     double cameraDistance,
   ) {
     // Find the galactic center (supermassive black hole - the most massive body at origin)
-    final galacticCenter = sim.bodies.where((b) => b.mass > 100.0).firstOrNull;
+    final galacticCenter = sim.bodies
+        .where(
+          (b) => b.mass > SimulationConstants.stellarBlackHoleMassThreshold,
+        )
+        .firstOrNull;
     if (galacticCenter == null) return;
 
     // Project the galactic center position to screen coordinates
@@ -349,7 +353,11 @@ class GravitonPainter extends CustomPainter {
     physics.Simulation sim,
   ) {
     // Find the galactic center (supermassive black hole - the most massive body at origin)
-    final galacticCenter = sim.bodies.where((b) => b.mass > 100.0).firstOrNull;
+    final galacticCenter = sim.bodies
+        .where(
+          (b) => b.mass > SimulationConstants.stellarBlackHoleMassThreshold,
+        )
+        .firstOrNull;
     if (galacticCenter == null) return;
 
     // Calculate distance-based scaling (same as particles)
@@ -958,7 +966,7 @@ class GravitonPainter extends CustomPainter {
 
     // Apply global opacity - this affects all subsequent drawing operations
     final alphaLayer = Paint()
-      ..color = Color.fromARGB((255 * ringOpacity).round(), 255, 255, 255);
+      ..color = AppColors.uiWhite.withValues(alpha: ringOpacity);
     canvas.saveLayer(null, alphaLayer);
 
     // First, draw a bright orange/red base ring (warmer colors show better)
@@ -1006,7 +1014,6 @@ class GravitonPainter extends CustomPainter {
         dualOrbitalPaths != oldDelegate.dualOrbitalPaths ||
         showHabitableZones != oldDelegate.showHabitableZones ||
         showHabitabilityIndicators != oldDelegate.showHabitabilityIndicators ||
-        showGravityWells != oldDelegate.showGravityWells ||
         selectedBodyIndex != oldDelegate.selectedBodyIndex ||
         followMode != oldDelegate.followMode;
   }

@@ -167,6 +167,88 @@ class SimulationConstants {
   static const int galaxyStarsPerArm = 10; // Stars per spiral arm
   static const int galaxySpiralArms = 3; // Number of spiral arms
 
+  // Black hole classification constants
+  // Mass threshold for distinguishing black holes from regular stars
+  static const double blackHoleMassThreshold =
+      200.0; // Supermassive black holes
+  static const double stellarBlackHoleMassThreshold =
+      100.0; // Stellar black holes
+
+  // Spacetime curvature visualization threshold
+  static const double spacetimeCurvatureMassThreshold =
+      10.0; // Mass threshold for showing spacetime grid
+
+  // Gravity well visualization constants
+  // Mass-based radius scaling for gravitational influence visualization
+  static const double gravityWellMassScalingDivisor =
+      50.0; // Base mass for scaling calculation
+  static const double gravityWellMassScalingExponent =
+      0.3; // Sublinear scaling for mass influence
+  static const double gravityWellMassRadiusMultiplier =
+      10.0; // Converts mass scale to radius units
+
+  // Black hole gravity well parameters - dramatic visual representation of extreme curvature
+  static const double blackHoleRadiusMultiplier =
+      4.0; // Physical radius multiplier for black holes
+  static const double blackHoleDepthMultiplier =
+      25.0; // Dramatic depth scaling for black holes (25x deeper)
+  static const int blackHoleRingMultiplier =
+      3; // Triple ring count for black holes
+  static const int blackHoleMinimumRings =
+      30; // Minimum rings for black holes regardless of distance
+
+  // Normal body gravity well parameters - realistic but visible gravitational effects
+  static const double normalBodyRadiusMultiplier =
+      2.5; // Physical radius multiplier for normal bodies
+  static const double normalBodyMassInfluenceReduction =
+      0.7; // Reduced mass influence for normal bodies
+  static const double normalBodyDepthMultiplier =
+      0.8; // Conservative depth scaling for normal bodies
+
+  // Gravity well diameter scaling - enhanced visual impact
+  static const double gravityWellDiameterExpansion =
+      1.4; // 40% larger diameter for better visibility
+  static const double gravityWellMinimumRadiusMultiplier =
+      2.8; // Minimum well radius (2.8x body radius)
+  static const double gravityWellMaximumRadiusMultiplier =
+      28.0; // Maximum well radius (28x body radius)
+
+  // Depth calculation parameters - balances physics accuracy with visual clarity
+  static const double gravityWellMassDepthExponent =
+      0.4; // Sublinear mass scaling for depth calculation
+
+  // Gravity well detail level constants - adaptive LOD based on camera distance
+  // Close view parameters (< 100 units) - high detail for scientific examination
+  static const double gravityWellCloseViewThreshold =
+      100.0; // Distance threshold for close view
+  static const int gravityWellCloseRingCount =
+      20; // High ring count for detailed curvature
+  static const int gravityWellCloseSegments =
+      32; // High segment count for smooth circles
+  static const int gravityWellCloseRadialLines =
+      24; // Many radial lines for detailed structure
+
+  // Medium view parameters (100-400 units) - balanced detail for normal interaction
+  static const double gravityWellMediumViewThreshold =
+      400.0; // Distance threshold for medium view
+  static const int gravityWellMediumRingCount = 12; // Moderate ring count
+  static const int gravityWellMediumSegments = 24; // Moderate segment count
+  static const int gravityWellMediumRadialLines = 12; // Moderate radial lines
+
+  // Far view parameters (> 400 units) - simplified geometry for performance
+  static const int gravityWellFarRingCount =
+      8; // Low ring count for performance
+  static const int gravityWellFarSegments = 16; // Low segment count
+  static const int gravityWellFarRadialLines = 8; // Few radial lines
+
+  // Central circle visualization parameters - the convergence point of gravity wells
+  static const double centralCircleRadiusRatio =
+      0.015; // Central circle radius as 1.5% of max well radius
+  static const double centralCircleDepthMultiplier =
+      1.03; // Central circle is 3% deeper for natural funnel effect
+  static const int centralCircleSegments =
+      16; // Fewer segments since central circle is small
+
   // Cinematic camera constants
   // Predictive orbital simulation parameters
   static const double predictiveTimeFrame =

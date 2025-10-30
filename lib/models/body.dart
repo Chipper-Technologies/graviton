@@ -9,7 +9,7 @@ import 'package:graviton/enums/habitability_status.dart';
 class Body {
   vm.Vector3 position;
   vm.Vector3 velocity;
-  double mass; // arbitrary units
+  double mass;
   double radius; // visual size only
   Color color;
   bool isPlanet; // larger gravitational influence, fixed or slow-moving
@@ -21,6 +21,16 @@ class Body {
   stellarLuminosity; // relative to Sun (1.0 = Sun's luminosity), only relevant for stars
   HabitabilityStatus habitabilityStatus;
   double temperature; // surface temperature in Kelvin (for planets/moons)
+  bool
+  _showGravityWell; // whether to display gravity well visualization for this body
+
+  // Getter and setter for showGravityWell
+  bool get showGravityWell => _showGravityWell;
+  set showGravityWell(bool value) {
+    if (_showGravityWell != value) {
+      _showGravityWell = value;
+    }
+  }
 
   Body({
     required this.position,
@@ -35,7 +45,8 @@ class Body {
     this.habitabilityStatus = HabitabilityStatus.unknown,
     this.temperature =
         SimulationConstants.kelvinToCelsiusOffset, // Default to 0°C
-  });
+    bool showGravityWell = false, // Disabled by default
+  }) : _showGravityWell = showGravityWell;
 
   /// Whether this body is a star that emits light
   bool get isLuminous => bodyType.isLuminous;

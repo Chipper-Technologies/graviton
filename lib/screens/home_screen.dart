@@ -519,7 +519,11 @@ class _HomeScreenState extends State<HomeScreen>
             _languageInitialized = true;
             appState.initializeLanguageTracking(l10n);
           } else if (appState.checkForPendingLanguageChange()) {
-            appState.handleLanguageChangeWithContext(l10n);
+            // Skip language change handling for galaxy formation to preserve custom body properties
+            if (appState.simulation.currentScenario !=
+                ScenarioType.galaxyFormation) {
+              appState.handleLanguageChangeWithContext(l10n);
+            }
           }
         });
 
@@ -693,7 +697,6 @@ class _HomeScreenState extends State<HomeScreen>
                         showHabitableZones: appState.ui.showHabitableZones,
                         showHabitabilityIndicators:
                             appState.ui.showHabitabilityIndicators,
-                        showGravityWells: appState.ui.showGravityWells,
                         selectedBodyIndex: appState.camera.selectedBody,
                         followMode: appState.camera.followMode,
                         cameraDistance: appState.camera.distance,

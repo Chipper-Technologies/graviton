@@ -29,7 +29,7 @@ void main() {
         radius: 5.0,
         position: vm.Vector3.zero(),
         velocity: vm.Vector3.zero(),
-        color: Colors.blue, // Should keep this blue color
+        color: AppColors.basicBlue, // Should keep this blue color
         bodyType: BodyType.star,
       );
 
@@ -54,7 +54,7 @@ void main() {
         radius: 5.0,
         position: vm.Vector3.zero(),
         velocity: vm.Vector3.zero(),
-        color: Colors.blue, // Should be overridden by realistic colors
+        color: AppColors.basicBlue, // Should be overridden by realistic colors
         bodyType: BodyType.star,
       );
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/widgets/tutorial_overlay.dart';
 
 void main() {
@@ -166,7 +167,7 @@ void main() {
         for (final container in initialPageIndicators) {
           final decoration = container.decoration as BoxDecoration;
           if (decoration.color != null &&
-              decoration.color != Colors.transparent) {
+              decoration.color != AppColors.transparentColor) {
             firstStepColor = decoration.color;
             break;
           }
@@ -189,7 +190,7 @@ void main() {
         for (final container in nextPageIndicators) {
           final decoration = container.decoration as BoxDecoration;
           if (decoration.color != null &&
-              decoration.color != Colors.transparent) {
+              decoration.color != AppColors.transparentColor) {
             secondStepColor = decoration.color;
             break;
           }

@@ -158,11 +158,46 @@ class Simulation {
   }
 
   /// Reset simulation with a specific scenario
-  void resetWithScenario(ScenarioType scenario, {AppLocalizations? l10n}) {
+  void resetWithScenario(
+    ScenarioType scenario, {
+    AppLocalizations? l10n,
+    bool preserveCustomSettings = false,
+  }) {
     _isResetting = true; // Mark that we're in a legitimate reset operation
+
+    // Preserve custom body settings if requested (for localization updates)
+    List<bool> gravityWellSettings = [];
+    if (preserveCustomSettings) {
+      // Store settings by index instead of name for more reliable preservation
+      gravityWellSettings = bodies.map((body) => body.showGravityWell).toList();
+    }
 
     _currentScenario = scenario;
     bodies = _scenarioService.generateScenario(scenario, l10n: l10n);
+
+    // Restore custom settings by index (more reliable than name matching)
+    if (preserveCustomSettings && gravityWellSettings.isNotEmpty) {
+      for (
+        int i = 0;
+        i < math.min(bodies.length, gravityWellSettings.length);
+        i++
+      ) {
+        bodies[i].showGravityWell = gravityWellSettings[i];
+      }
+    }
+
+    // Special handling for galaxy formation: ensure black hole gravity well remains enabled
+    // This helps maintain visual consistency for the centerpiece black hole
+    if (scenario == ScenarioType.galaxyFormation) {
+      for (final body in bodies) {
+        // Only force-enable gravity wells for black holes (mass > blackHoleMassThreshold), not stars
+        if (body.mass > SimulationConstants.blackHoleMassThreshold &&
+            !body.showGravityWell) {
+          body.showGravityWell = true;
+        }
+      }
+    }
+
     trails = List.generate(bodies.length, (_) => <TrailPoint>[]);
     mergeFlashes.clear();
     _timeSinceLastVibe = 0;
@@ -623,6 +658,9 @@ class Simulation {
     final mergedTemperature =
         (b1.temperature * b1.mass + b2.temperature * b2.mass) / m;
 
+    // Preserve gravity well setting - if either body had it enabled, keep it enabled
+    final showGravityWell = b1.showGravityWell || b2.showGravityWell;
+
     // Create the merged body initially with blended color
     final mergedBodyWithBlendedColor = Body(
       position: p,
@@ -635,6 +673,7 @@ class Simulation {
       bodyType: mergedBodyType,
       stellarLuminosity: mergedLuminosity,
       temperature: mergedTemperature,
+      showGravityWell: showGravityWell,
     );
 
     // If realistic colors are enabled, recalculate the color based on merged body properties
@@ -654,6 +693,7 @@ class Simulation {
       bodyType: mergedBodyType,
       stellarLuminosity: mergedLuminosity,
       temperature: mergedTemperature,
+      showGravityWell: showGravityWell,
     );
 
     // Use the final color for collision flash too
@@ -784,18 +824,10 @@ class Simulation {
       final hsv = HSVColor.fromColor(newColor);
       newColor = hsv.withValue(intensity).toColor();
 
-      // Update the body's color
-      bodies[i] = Body(
-        position: body.position,
-        velocity: body.velocity,
-        mass: body.mass,
-        radius: body.radius,
-        color: newColor,
-        name: body.name,
-        isPlanet: body.isPlanet,
-        bodyType: body.bodyType,
-        stellarLuminosity: body.stellarLuminosity,
-      );
+      // Only update the body's color if it actually changed to avoid overwriting user modifications
+      if (body.color != newColor) {
+        body.color = newColor;
+      }
     }
   }
 
@@ -812,18 +844,7 @@ class Simulation {
         // Preserve the body's temperature when applying realistic colors because it is used for
         // stellar classification and physical calculations, and should not be recalculated or
         // lost during color updates.
-        bodies[i] = Body(
-          position: body.position,
-          velocity: body.velocity,
-          mass: body.mass,
-          radius: body.radius,
-          color: realisticColor,
-          name: body.name,
-          isPlanet: body.isPlanet,
-          bodyType: body.bodyType,
-          stellarLuminosity: body.stellarLuminosity,
-          temperature: body.temperature,
-        );
+        body.color = realisticColor;
       }
     }
   }
@@ -854,9 +875,12 @@ class Simulation {
   /// Check if this is a black hole absorption event
   bool _isBlackHoleAbsorption(Body b1, Body b2) {
     // Find which body is the supermassive black hole (most massive star)
-    final blackHole = (b1.mass > 100.0 && b1.bodyType == BodyType.star)
+    final blackHole =
+        (b1.mass > SimulationConstants.stellarBlackHoleMassThreshold &&
+            b1.bodyType == BodyType.star)
         ? b1
-        : (b2.mass > 100.0 && b2.bodyType == BodyType.star)
+        : (b2.mass > SimulationConstants.stellarBlackHoleMassThreshold &&
+              b2.bodyType == BodyType.star)
         ? b2
         : null;
 
@@ -879,7 +903,9 @@ class Simulation {
     final b2 = bodies[j];
 
     // Determine which is the black hole and which is being absorbed
-    final isB1BlackHole = b1.mass > 100.0 && b1.bodyType == BodyType.star;
+    final isB1BlackHole =
+        b1.mass > SimulationConstants.stellarBlackHoleMassThreshold &&
+        b1.bodyType == BodyType.star;
     final blackHole = isB1BlackHole ? b1 : b2;
     final victim = isB1BlackHole ? b2 : b1;
     final blackHoleIndex = isB1BlackHole ? i : j;
@@ -898,18 +924,9 @@ class Simulation {
     final newRadius =
         blackHole.radius * math.pow(newMass / blackHole.mass, 1 / 3);
 
-    // Update black hole with new mass
-    bodies[blackHoleIndex] = Body(
-      position: blackHole.position,
-      velocity: blackHole.velocity, // Black hole velocity barely changes
-      mass: newMass,
-      radius: newRadius,
-      color: blackHole.color,
-      name: blackHole.name,
-      isPlanet: false,
-      bodyType: BodyType.star,
-      stellarLuminosity: blackHole.stellarLuminosity,
-    );
+    // Update black hole with new mass - modify properties directly to preserve user changes
+    blackHole.mass = newMass;
+    blackHole.radius = newRadius;
 
     // Remove the absorbed body
     bodies.removeAt(victimIndex);

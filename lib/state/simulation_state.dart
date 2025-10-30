@@ -164,11 +164,19 @@ class SimulationState extends ChangeNotifier {
   }
 
   /// Reset simulation with a specific scenario and save the preference
-  void resetWithScenario(ScenarioType scenario, {AppLocalizations? l10n}) {
+  void resetWithScenario(
+    ScenarioType scenario, {
+    AppLocalizations? l10n,
+    bool preserveCustomSettings = false,
+  }) {
     stop();
 
     // Reset physics simulation to the specified scenario
-    _simulation.resetWithScenario(scenario, l10n: l10n);
+    _simulation.resetWithScenario(
+      scenario,
+      l10n: l10n,
+      preserveCustomSettings: preserveCustomSettings,
+    );
     _stepCount = 0;
     _totalTime = 0.0;
 
@@ -185,7 +193,18 @@ class SimulationState extends ChangeNotifier {
   /// Regenerate the current scenario with new localization
   void regenerateScenarioWithLocalization(AppLocalizations l10n) {
     final currentScenario = _simulation.currentScenario;
-    resetWithScenario(currentScenario, l10n: l10n);
+
+    // For galaxy formation, avoid regeneration to preserve custom body properties
+    if (currentScenario == ScenarioType.galaxyFormation) {
+      // Skip regeneration - galaxy formation should preserve custom settings
+      return;
+    }
+
+    resetWithScenario(
+      currentScenario,
+      l10n: l10n,
+      preserveCustomSettings: true,
+    );
   }
 
   void setTimeScale(double scale) {

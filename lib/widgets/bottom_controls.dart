@@ -131,7 +131,7 @@ class BottomControls extends StatelessWidget {
       message: tooltip,
       preferBelow: false,
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparentColor,
         child: InkWell(
           onTap: onPressed,
           borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
@@ -143,7 +143,7 @@ class BottomControls extends StatelessWidget {
             decoration: BoxDecoration(
               color: isActive
                   ? AppColors.primaryColor.withValues(alpha: 0.2)
-                  : Colors.transparent,
+                  : AppColors.transparentColor,
               borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
               border: isActive
                   ? Border.all(
