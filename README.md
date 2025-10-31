@@ -135,6 +135,12 @@ Advanced dual-threshold version management system with Firebase Remote Config in
 - **Preferred Updates**: Optional updates with "Later" dismissal option
 - Flexible policy configuration without app store releases
 
+#### 🌐 **Platform-Specific Configuration**
+- **Independent Version Control**: Set different current and minimum versions for Android and iOS
+- **Flexible Release Schedules**: Track separate current versions per platform for staggered rollouts
+- **Backward Compatibility**: Supports legacy configuration format during migration
+- **Platform-Specific Enforcement**: Customize update policies based on app store review times
+
 #### 📱 **Smart User Experience**  
 - Context-aware update dialogs
 - Direct app store navigation (iOS App Store / Google Play Store)
@@ -832,25 +838,100 @@ service cloud.firestore {
 
 ##### Version Checker Configuration
 
-The app includes an advanced dual-threshold version management system that uses Firebase Remote Config to control app updates with flexible enforcement policies. Configure the following parameters in your Firebase console:
+The app includes an advanced dual-threshold version management system that uses Firebase Remote Config to control app updates with flexible enforcement policies. The system supports both legacy (single configuration) and modern (platform-specific) configurations.
 
-**Required Parameters:**
+**New Platform-Specific Configuration (Recommended):**
+
+Configure separate JSON data type parameters in Firebase Remote Config:
+
+**Parameter Name:** `android`  
+**Parameter Type:** JSON  
+**Parameter Value:**
 ```json
 {
-  "current_version": "1.0.0",
+  "current_version": "1.2.0",
   "minimum_enforced_version": "0.9.0",
   "minimum_preferred_version": "1.0.0",
-  "app_store_url": "https://apps.apple.com/app/your-app-id",
-  "play_store_url": "https://play.google.com/store/apps/details?id=your.package.name"
+  "store_url": "https://play.google.com/store/apps/details?id=your.package.name"
 }
 ```
 
+**Parameter Name:** `ios`  
+**Parameter Type:** JSON  
+**Parameter Value:**
+```json
+{
+  "current_version": "1.1.0",
+  "minimum_enforced_version": "0.8.0",
+  "minimum_preferred_version": "0.9.0",
+  "store_url": "https://apps.apple.com/app/your-app-id"
+}
+```
+
+**Alternative: Mixed Configuration with Global Fallback:**
+
+You can combine platform-specific JSON parameters with global string parameters:
+
+**Parameter Name:** `current_version` (String): `"1.0.0"`  
+**Parameter Name:** `android` (JSON):
+```json
+{
+  "current_version": "1.2.0",
+  "minimum_enforced_version": "0.9.0",
+  "minimum_preferred_version": "1.0.0",
+  "store_url": "https://play.google.com/store/apps/details?id=your.package.name"
+}
+```
+**Parameter Name:** `ios` (JSON):
+```json
+{
+  "minimum_enforced_version": "0.8.0",
+  "minimum_preferred_version": "0.9.0",
+  "store_url": "https://apps.apple.com/app/your-app-id"
+}
+```
+*Note: iOS will use global current_version "1.0.0" since no platform-specific current_version is set.*
+
+**Legacy Configuration (Still Supported):**
+
+Configure individual string parameters in Firebase Remote Config:
+
+**Parameter Name:** `current_version` (String): `"1.0.0"`  
+**Parameter Name:** `minimum_enforced_version` (String): `"0.9.0"`  
+**Parameter Name:** `minimum_preferred_version` (String): `"1.0.0"`  
+**Parameter Name:** `app_store_url` (String): `"https://apps.apple.com/app/your-app-id"`  
+**Parameter Name:** `play_store_url` (String): `"https://play.google.com/store/apps/details?id=your.package.name"`
+
+**Platform-Specific Configuration Benefits:**
+- **Independent Version Control**: Set different current and minimum versions for Android and iOS
+- **Flexible Release Schedules**: Track different current versions per platform (e.g., staggered rollouts)
+- **Platform-Specific Enforcement**: Customize update policies based on app store review times and requirements
+- **Simplified Store URLs**: Each platform has its own dedicated store URL
+- **Future-Proof**: Easier to extend for additional platforms or platform-specific features
+
+**Configuration Priority:**
+1. **Platform-Specific Config**: Uses `android` or `ios` object if present and valid
+2. **Legacy Fallback**: Falls back to legacy fields (`minimum_enforced_version`, etc.) when platform config missing
+3. **Graceful Degradation**: Continues working if Remote Config is unavailable
+
 **Parameter Details:**
 - `current_version`: Latest available app version (used for status indication and badges)
+  - **Platform-Specific**: Can be set independently per platform (e.g., different iOS vs Android release schedules)
+  - **Legacy Global**: Single version applied to all platforms
+  - **Priority**: Platform-specific takes precedence over global when both are present
 - `minimum_enforced_version`: **Hard minimum version** - triggers mandatory update with no dismissal option
 - `minimum_preferred_version`: **Recommended minimum version** - shows optional update with "Later" button
-- `app_store_url`: iOS App Store URL for updates
-- `play_store_url`: Google Play Store URL for updates
+- `store_url`: Platform-specific store URL for updates
+
+**Version Resolution Logic:**
+1. **Platform Current Version**: Uses platform-specific `current_version` if present and non-empty
+2. **Global Fallback**: Falls back to global `current_version` when platform-specific is missing
+3. **Default Behavior**: Treats app as current when no version information is available
+
+**Configuration Flexibility:**
+- **Full Platform-Specific**: All version fields can be platform-specific
+- **Mixed Configuration**: Combine global fallbacks with platform-specific overrides
+- **Legacy Support**: Existing global configurations continue working unchanged
 
 **Dual-Threshold System:**
 The version management system uses two thresholds for flexible update policies:
