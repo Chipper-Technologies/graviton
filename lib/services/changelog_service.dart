@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graviton/models/changelog.dart';
+import 'package:graviton/utils/version_utils.dart';
 
 /// Service for fetching and managing changelog data from Firestore
 class ChangelogService {
@@ -109,13 +110,12 @@ class ChangelogService {
     try {
       final collection = _firestore?.collection('changelogs');
       if (collection == null) {
-        debugPrint('Firestore not available');
         return null;
       }
 
       final doc = await collection.doc(version).get();
+
       if (!doc.exists) {
-        debugPrint('Changelog version $version not found');
         return null;
       }
 
@@ -125,7 +125,9 @@ class ChangelogService {
       if (!_cachedChangelogs.any((c) => c.version == version)) {
         _cachedChangelogs.add(changelog);
         // Re-sort cache by version descending
-        _cachedChangelogs.sort((a, b) => b.version.compareTo(a.version));
+        _cachedChangelogs.sort(
+          (a, b) => VersionUtils.compareVersions(b.version, a.version),
+        );
       }
 
       return changelog;
@@ -150,6 +152,88 @@ class ChangelogService {
   Future<bool> hasNewChangelogsSince(String version) async {
     final newChangelogs = await getChangelogsSince(version);
     return newChangelogs.isNotEmpty;
+  }
+
+  /// Fetch changelogs with fallback to specific versions
+  ///
+  /// This method combines the logic used in both home_screen.dart and settings_dialog.dart
+  /// to fetch changelogs with fallback strategies.
+  ///
+  /// First tries to fetch all changelogs, then falls back to specific versions
+  /// based on the current version if the bulk fetch returns empty results.
+  Future<List<ChangelogVersion>> fetchChangelogsWithFallback({
+    String? currentVersion,
+    List<String>? fallbackVersions,
+  }) async {
+    try {
+      // First, try to fetch all changelogs
+      final allChangelogs = await fetchChangelogs();
+
+      if (allChangelogs.isNotEmpty) {
+        return allChangelogs;
+      }
+
+      // If no changelogs found, try fallback versions
+      final List<String> versionsToTry =
+          fallbackVersions ?? _generateFallbackVersions(currentVersion);
+
+      List<ChangelogVersion> foundChangelogs = [];
+
+      for (final version in versionsToTry) {
+        final changelog = await fetchChangelogVersion(version);
+        if (changelog != null) {
+          foundChangelogs.add(changelog);
+        }
+      }
+
+      // Sort by version descending (newest first)
+      foundChangelogs.sort(
+        (a, b) => VersionUtils.compareVersions(b.version, a.version),
+      );
+
+      return foundChangelogs;
+    } catch (e) {
+      debugPrint('Error in fetchChangelogsWithFallback: $e');
+      return [];
+    }
+  }
+
+  /// Generate fallback versions based on current version
+  List<String> _generateFallbackVersions(String? currentVersion) {
+    if (currentVersion == null || currentVersion.isEmpty) {
+      // Default fallback versions if no current version provided
+      return ['1.2.0', '1.1.0', '1.0.0'];
+    }
+
+    try {
+      // Parse current version to get next minor version
+      final versionParts = currentVersion.split('.');
+      if (versionParts.length < 3) {
+        return ['1.2.0', '1.1.0', '1.0.0'];
+      }
+
+      final major = int.tryParse(versionParts[0]);
+      final minor = int.tryParse(versionParts[1]);
+
+      if (major == null || minor == null) {
+        return ['1.2.0', '1.1.0', '1.0.0'];
+      }
+
+      // Generate fallback versions similar to home_screen.dart logic
+      final versionsToTry = [
+        '$major.${minor + 1}.0', // Next minor version (highest priority)
+        currentVersion, // Current version
+        '$major.$minor.0', // Current minor version base
+        '$major.${minor - 1}.0', // Previous minor version
+        '1.0.0', // Always try 1.0.0 as final fallback
+      ];
+
+      // Remove duplicates while preserving order
+      return versionsToTry.toSet().toList();
+    } catch (e) {
+      debugPrint('Error generating fallback versions: $e');
+      return ['1.2.0', '1.1.0', '1.0.0'];
+    }
   }
 
   /// Clear cached changelogs (useful for testing or refresh)
@@ -196,7 +280,9 @@ class ChangelogService {
   Future<void> addMockChangelog(ChangelogVersion changelog) async {
     if (kDebugMode) {
       _cachedChangelogs.add(changelog);
-      _cachedChangelogs.sort((a, b) => b.version.compareTo(a.version));
+      _cachedChangelogs.sort(
+        (a, b) => VersionUtils.compareVersions(b.version, a.version),
+      );
       debugPrint('Mock changelog added: ${changelog.version}');
     }
   }

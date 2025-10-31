@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/copyright_text.dart';
+import 'package:graviton/widgets/auto_pause_dialog_wrapper.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -97,6 +98,26 @@ void main() {
 
       // Verify dialog is closed
       expect(find.byType(Dialog), findsNothing);
+    });
+
+    testWidgets('Should use auto-pause dialog wrapper when About is tapped', (
+      WidgetTester tester,
+    ) async {
+      await tester.binding.setSurfaceSize(const Size(800, 600));
+
+      await tester.pumpWidget(createTestWidget(const CopyrightText()));
+
+      await tester.pumpAndSettle();
+
+      // Tap the About link
+      await tester.tap(find.text('About'));
+      await tester.pumpAndSettle();
+
+      // Check that the AutoPauseDialogWrapper is present in the widget tree
+      expect(find.byType(AutoPauseDialogWrapper), findsOneWidget);
+
+      // Check that the dialog appears
+      expect(find.byType(Dialog), findsOneWidget);
     });
   });
 }

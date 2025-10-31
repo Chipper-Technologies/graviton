@@ -148,6 +148,13 @@ Advanced dual-threshold version management system with Firebase Remote Config in
 - 🚫 **Enforced**: Mandatory update required
 - 💡 **Preferred**: Optional update recommended
 
+#### 📝 **In-App Changelog System**
+- **Dynamic Delivery**: Changelogs delivered via Firebase Firestore
+- **Smart Display Logic**: Shows only current version changelog for focused user experience
+- **Offline Support**: Cached changelog data for offline access
+- **Developer Tools**: Debug-only testing options for changelog functionality
+- **Multi-Language**: Fully localized changelog content in all 7 supported languages
+
 ### 📸 Screenshot Mode (Development Feature)
 Professional screenshot capture system for creating marketing materials:
 
@@ -741,6 +748,87 @@ The app includes comprehensive Firebase integration with development and product
 - **A/B Testing**: Test different configurations with user groups
 - **Maintenance Mode**: Gracefully handle app maintenance periods
 - **Version Management**: Automatic app update enforcement and user notifications
+
+#### 📝 Firestore Database - Changelog System
+- **In-App Changelog Management**: Dynamic changelog delivery via Cloud Firestore
+- **Version-Based Display**: Shows relevant changelogs based on user's app version
+- **Offline Support**: Cached changelog data for offline access
+- **Multi-Language Ready**: Supports all 7 app languages with localized content
+- **Developer Testing Tools**: Debug-only options for testing changelog functionality
+
+##### Firestore Database Structure
+
+The changelog system uses a `changelogs` collection in Cloud Firestore with the following structure:
+
+**Collection**: `changelogs`
+**Document ID**: Version number (e.g., `1.0.0`, `1.1.0`, `2.0.0`)
+
+**Document Structure**:
+```javascript
+{
+  "title": "Feature Update",           // Version title/name
+  "releaseDate": "2024-10-30T00:00:00Z", // Timestamp of release
+  "entries": [                         // Array of changelog entries
+    {
+      "title": "New Physics Engine",
+      "description": "Enhanced gravitational calculations with improved accuracy",
+      "category": "added"              // One of: "added", "improved", "fixed"
+    },
+    {
+      "title": "Performance Optimization",
+      "description": "Reduced memory usage by 30% during simulations",
+      "category": "improved"
+    },
+    {
+      "title": "Collision Detection Bug",
+      "description": "Fixed issue where small bodies wouldn't collide properly",
+      "category": "fixed"
+    }
+  ]
+}
+```
+
+**Entry Categories**:
+- `"added"`: New features and functionality
+- `"improved"`: Enhancements to existing features
+- `"fixed"`: Bug fixes and corrections
+
+**Firestore Rules Example**:
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read access to changelogs for authenticated and unauthenticated users
+    match /changelogs/{version} {
+      allow read: if true;
+      // Only admin users can write changelogs
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+  }
+}
+```
+
+##### Changelog Display Logic
+
+**User Experience Flow**:
+1. **App Launch**: Automatic check for new changelog versions
+2. **Version Comparison**: Compare user's last seen version with current app version
+3. **Single Version Display**: Show only current version changelog (not cumulative)
+4. **Smart Triggering**: 
+   - First-time users: Show changelog for current version
+   - Returning users: Show changelog if they haven't seen current version
+   - Version jumpers: Show only latest version (not intermediate versions)
+
+**Developer Testing Features**:
+- **Show Changelog Button**: Manually trigger changelog dialog (debug builds only)
+- **Reset Changelog State**: Clear last seen version to re-test changelog flow
+- **Settings Integration**: Accessible via Settings > Developer Options (debug mode)
+
+**Technical Implementation**:
+- **Caching Strategy**: Local storage for offline access
+- **Firebase Integration**: Real-time data fetching with fallback to cache
+- **Version Tracking**: SharedPreferences storage of last seen changelog version
+- **Error Handling**: Graceful degradation when Firebase is unavailable
 
 ##### Version Checker Configuration
 

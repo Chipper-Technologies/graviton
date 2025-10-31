@@ -628,88 +628,49 @@ class SettingsDialog extends StatelessWidget {
                           // Changelog section (Debug only)
                           if (kDebugMode) ...[
                             SizedBox(height: AppTypography.spacingLarge),
-                            Container(
-                              padding: EdgeInsets.all(
-                                AppTypography.spacingLarge,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.uiBorderGrey,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  AppTypography.radiusMedium,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.assignment),
-                                      SizedBox(
-                                        width: AppTypography.spacingMedium,
-                                      ),
-                                      Text(
-                                        'Changelog (Debug)',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium
-                                            ?.copyWith(
-                                              color: AppColors.uiWhite,
-                                            ),
-                                      ),
-                                    ],
+                            Divider(color: AppColors.uiDividerGrey),
+                            SizedBox(height: AppTypography.spacingLarge),
+                            Text(
+                              'Changelog (Debug)',
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    color: AppColors.sectionTitlePurple,
                                   ),
-                                  SizedBox(height: AppTypography.spacingMedium),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextButton.icon(
-                                          onPressed: () =>
-                                              _showChangelogFromSettings(
-                                                context,
-                                              ),
-                                          icon: const Icon(
-                                            Icons.assignment,
-                                            size: 16,
-                                          ),
-                                          label: Text(l10n.changelogButton),
-                                          style: TextButton.styleFrom(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  AppTypography.spacingMedium,
-                                              vertical: 10,
-                                            ),
-                                          ),
-                                        ),
+                            ),
+                            SizedBox(height: AppTypography.spacingLarge),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      _showChangelogFromSettings(context);
+                                    },
+                                    icon: const Icon(Icons.assignment),
+                                    label: Text(l10n.changelogButton),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: AppTypography.spacingMedium,
+                                        vertical: 10,
                                       ),
-                                      SizedBox(
-                                        width: AppTypography.spacingMedium,
-                                      ),
-                                      Expanded(
-                                        child: TextButton.icon(
-                                          onPressed: () =>
-                                              _resetChangelogState(context),
-                                          icon: const Icon(
-                                            Icons.refresh,
-                                            size: 16,
-                                          ),
-                                          label: Text(
-                                            l10n.resetChangelogButton,
-                                          ),
-                                          style: TextButton.styleFrom(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  AppTypography.spacingMedium,
-                                              vertical: 10,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                ],
-                              ),
+                                ),
+                                SizedBox(width: AppTypography.spacingMedium),
+                                Expanded(
+                                  child: TextButton.icon(
+                                    onPressed: () =>
+                                        _resetChangelogState(context),
+                                    icon: const Icon(Icons.refresh, size: 16),
+                                    label: Text(l10n.resetChangelogButton),
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: AppTypography.spacingMedium,
+                                        vertical: 10,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ],
@@ -842,26 +803,33 @@ class SettingsDialog extends StatelessWidget {
       element: UIElement.changelog,
     );
 
-    final currentContext = context;
-
-    // Close the settings dialog first
-    Navigator.of(context).pop();
-
     try {
-      final currentVersion = VersionService.instance.appVersion;
-      final changelogVersion = await ChangelogService.instance
-          .fetchChangelogVersion(currentVersion);
+      // Use the shared method from ChangelogService with fallback logic
+      final changelogsToShow = await ChangelogService.instance
+          .fetchChangelogsWithFallback(
+            fallbackVersions: [
+              '1.2.0',
+              '1.1.0',
+              '1.0.0',
+            ], // Default fallback versions for settings
+          );
 
-      if (changelogVersion != null && currentContext.mounted) {
-        showDialog<void>(
-          context: currentContext,
+      // Check if context is still mounted before proceeding
+      if (!context.mounted) {
+        return;
+      }
+
+      if (changelogsToShow.isNotEmpty) {
+        // Show changelog as a nested dialog, don't close settings first
+        // Since settings already paused the simulation, changelog won't need to pause again
+        await showDialog<void>(
+          context: context,
           barrierDismissible: false,
           builder: (dialogContext) => ChangelogDialog(
-            changelogs: [changelogVersion],
+            changelogs: changelogsToShow,
             onComplete: () async {
-              if (dialogContext.mounted) {
-                Navigator.of(dialogContext).pop();
-              }
+              // Close the changelog dialog
+              Navigator.of(dialogContext).pop();
 
               FirebaseService.instance.logUIEventWithEnums(
                 UIAction.changelogCompleted,
@@ -870,14 +838,27 @@ class SettingsDialog extends StatelessWidget {
             },
           ),
         );
+
+        // Keep the settings dialog open - don't close it
+      } else {
+        final currentVersion = VersionService.instance.appVersion;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'No changelog found. Add changelog data to Firestore first.\nCurrent version: $currentVersion',
+            ),
+            duration: const Duration(seconds: 5),
+          ),
+        );
       }
     } catch (e) {
+      debugPrint('Error in changelog method: $e');
       // Handle error gracefully
-      if (currentContext.mounted) {
-        ScaffoldMessenger.of(currentContext).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to load changelog'),
-            duration: Duration(seconds: 3),
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to load changelog: ${e.toString()}'),
+            duration: const Duration(seconds: 5),
           ),
         );
       }

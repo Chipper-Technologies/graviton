@@ -65,6 +65,9 @@ class RenderingConstants {
   static const double gravityFieldMinAlpha = 0.02;
   static const double gravityFieldMaxAlpha = 0.3;
 
+  // Gravity well rendering constants
+  static const double gravityWellSurfaceRingAlphaMultiplier = 1.5;
+
   // Star field rendering
   static const double starSize = 0.7;
   static const double starDefaultRadius = 3000.0;

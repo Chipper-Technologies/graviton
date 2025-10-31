@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/changelog_category.dart';
 import 'package:graviton/models/changelog.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,36 +13,36 @@ void main() {
     setUp(() {
       testChangelogs = [
         ChangelogVersion(
-          version: '1.0.0',
-          title: 'Initial Release',
-          releaseDate: DateTime(2024, 1, 1),
-          entries: [
-            ChangelogEntry(
-              title: 'Initial release',
-              category: 'added',
-              description: 'Welcome to Graviton!',
-            ),
-          ],
-        ),
-        ChangelogVersion(
           version: '1.1.0',
           title: 'Feature Update',
           releaseDate: DateTime(2024, 2, 1),
           entries: [
             ChangelogEntry(
               title: 'New simulation',
-              category: 'added',
+              category: ChangelogCategory.added,
               description: 'Added binary star system',
             ),
             ChangelogEntry(
               title: 'Performance',
-              category: 'improved',
+              category: ChangelogCategory.improved,
               description: 'Faster rendering',
             ),
             ChangelogEntry(
               title: 'Bug fix',
-              category: 'fixed',
+              category: ChangelogCategory.fixed,
               description: 'Fixed camera controls',
+            ),
+          ],
+        ),
+        ChangelogVersion(
+          version: '1.0.0',
+          title: 'Initial Release',
+          releaseDate: DateTime(2024, 1, 1),
+          entries: [
+            ChangelogEntry(
+              title: 'Initial release',
+              category: ChangelogCategory.added,
+              description: 'Welcome to Graviton!',
             ),
           ],
         ),
@@ -88,11 +89,24 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      // Verify the dialog renders
-      expect(find.byType(ChangelogDialog), findsOneWidget);
+      // Verify we start with the newest changelog (1.1.0)
+      expect(find.text('Feature Update'), findsOneWidget);
+      expect(find.textContaining('1.1.0'), findsOneWidget);
 
-      // Just check that we can interact with it
-      expect(find.byType(GestureDetector), findsWidgets);
+      // Tap the left chevron to navigate to the previous (older) changelog version
+      final previousButton = find.byIcon(Icons.chevron_left);
+      if (previousButton.evaluate().isNotEmpty) {
+        final previousButtonFinder = find.ancestor(
+          of: previousButton,
+          matching: find.byType(IconButton),
+        );
+        await tester.tap(previousButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Should now show the 1.0.0 changelog
+        expect(find.text('Initial Release'), findsOneWidget);
+        expect(find.textContaining('1.0.0'), findsOneWidget);
+      }
     });
 
     testWidgets('should display correct step indicators', (tester) async {
@@ -108,16 +122,18 @@ void main() {
 
     testWidgets('should categorize entries correctly', (tester) async {
       await tester.pumpWidget(createTestWidget());
-
-      // Navigate to second changelog which has multiple categories
-      await tester.fling(
-        find.byType(ChangelogDialog),
-        const Offset(-300, 0),
-        800,
-      );
       await tester.pumpAndSettle();
 
-      // Check for different category sections
+      // We start with the newest changelog (1.1.0) which has the categories we want to test
+      expect(find.text('Feature Update'), findsOneWidget);
+
+      // Check for different category sections in the 1.1.0 changelog
+      // Check for entry titles
+      expect(find.text('New simulation'), findsOneWidget);
+      expect(find.text('Performance'), findsOneWidget);
+      expect(find.text('Bug fix'), findsOneWidget);
+
+      // Check for entry descriptions
       expect(find.text('Added binary star system'), findsOneWidget);
       expect(find.text('Faster rendering'), findsOneWidget);
       expect(find.text('Fixed camera controls'), findsOneWidget);

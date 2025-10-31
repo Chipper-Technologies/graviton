@@ -4,6 +4,7 @@ import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 
 import 'about_dialog.dart';
+import 'auto_pause_dialog_wrapper.dart';
 
 /// Copyright text widget positioned in bottom center
 class CopyrightText extends StatelessWidget {
@@ -58,9 +59,9 @@ class CopyrightText extends StatelessWidget {
   }
 
   void _showAbout(BuildContext context) {
-    showDialog<void>(
+    AutoPauseDialogWrapper.show<void>(
       context: context,
-      builder: (context) => const AppAboutDialog(),
+      child: const AppAboutDialog(),
     );
   }
 }

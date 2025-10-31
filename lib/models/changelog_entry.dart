@@ -1,8 +1,10 @@
+import '../enums/changelog_category.dart';
+
 /// Represents a changelog entry (feature, improvement, or fix)
 class ChangelogEntry {
   final String title;
   final String? description;
-  final String category; // 'added', 'improved', 'fixed'
+  final ChangelogCategory category;
 
   const ChangelogEntry({
     required this.title,
@@ -12,16 +14,23 @@ class ChangelogEntry {
 
   /// Create from Firestore document data
   factory ChangelogEntry.fromMap(Map<String, dynamic> map) {
+    final categoryValue = map['category'] as String?;
+    final category = ChangelogCategory.fromString(categoryValue);
+
     return ChangelogEntry(
       title: map['title'] as String? ?? '',
       description: map['description'] as String?,
-      category: map['category'] as String? ?? 'added',
+      category: category,
     );
   }
 
   /// Convert to Firestore document data
   Map<String, dynamic> toMap() {
-    return {'title': title, 'description': description, 'category': category};
+    return {
+      'title': title,
+      'description': description,
+      'category': category.value,
+    };
   }
 
   @override

@@ -105,7 +105,14 @@ class GravitonPainter extends CustomPainter {
 
     // Draw gravity wells (before bodies as background elements)
     // Now controlled per-body via Body.showGravityWell property
-    GravityPainter.drawGravityWells(canvas, size, vp, sim, cameraDistance);
+    GravityPainter.drawGravityWells(
+      canvas,
+      size,
+      vp,
+      sim,
+      cameraDistance,
+      view,
+    );
 
     // Draw asteroid belt particles (before bodies but after background elements)
     if (sim.currentScenario == ScenarioType.asteroidBelt) {
