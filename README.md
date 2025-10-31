@@ -42,7 +42,7 @@
   - [📸 Screenshot Mode](#-screenshot-mode-development-feature)
 - [🏗️ Technical Architecture](#️-technical-architecture)
 - [🚀 Getting Started](#-getting-started)
-  - [📋 Prerequisites](#-prerequisites)
+  - [📋 Prerequisites](#-prerequisites) 
   - [🛠️ Installation](#️-installation)
   - [📦 Dependencies](#-dependencies)
   - [🎯 Quick Start Guide](#-quick-start-guide)
@@ -52,6 +52,7 @@
 - [🛠️ Development Tools](#️-development-tools)
   - [🚀 Fastlane Automation](#-fastlane-automation)
 - [🏗️ Technical Architecture](#️-technical-architecture)
+- [📚 Documentation](#-documentation)
 - [🔥 Firebase Integration](#-firebase-integration)
 - [🔧 Troubleshooting](#-troubleshooting)
 - [🤝 Contributing](#-contributing)
@@ -134,6 +135,12 @@ Advanced dual-threshold version management system with Firebase Remote Config in
 - **Preferred Updates**: Optional updates with "Later" dismissal option
 - Flexible policy configuration without app store releases
 
+#### 🌐 **Platform-Specific Configuration**
+- **Independent Version Control**: Set different current and minimum versions for Android and iOS
+- **Flexible Release Schedules**: Track separate current versions per platform for staggered rollouts
+- **Backward Compatibility**: Supports legacy configuration format during migration
+- **Platform-Specific Enforcement**: Customize update policies based on app store review times
+
 #### 📱 **Smart User Experience**  
 - Context-aware update dialogs
 - Direct app store navigation (iOS App Store / Google Play Store)
@@ -146,6 +153,13 @@ Advanced dual-threshold version management system with Firebase Remote Config in
 - 🔴 **Outdated**: Upgrade available but not required
 - 🚫 **Enforced**: Mandatory update required
 - 💡 **Preferred**: Optional update recommended
+
+#### 📝 **In-App Changelog System**
+- **Dynamic Delivery**: Changelogs delivered via Firebase Firestore
+- **Smart Display Logic**: Shows only current version changelog for focused user experience
+- **Offline Support**: Cached changelog data for offline access
+- **Developer Tools**: Debug-only testing options for changelog functionality
+- **Multi-Language**: Fully localized changelog content in all 7 supported languages
 
 ### 📸 Screenshot Mode (Development Feature)
 Professional screenshot capture system for creating marketing materials:
@@ -567,6 +581,10 @@ cd ios && bundle exec fastlane build_and_upload_dsyms      # Build and upload dS
 
 ## 🏗️ Technical Architecture
 
+Graviton follows a **clean architecture** approach with clear separation of concerns, ensuring maintainability, testability, and scalability. The app uses the Provider pattern for state management and custom painters for high-performance 3D rendering.
+
+**[📖 View Complete Architecture Documentation →](docs/ARCHITECTURE.md)**
+
 ### 🏗️ Clean Architecture
 The project follows clean architecture principles with clear separation of concerns and namespace imports:
 
@@ -687,6 +705,31 @@ lib/
 - **Optimized Performance**: Efficient trail rendering with configurable opacity and warm/cool modes
 - **Astronomical Accuracy**: Counterclockwise orbital motion matching real celestial mechanics
 
+---
+
+## 📚 Documentation
+
+For detailed technical information and development guides, please refer to our comprehensive documentation:
+
+### 🏗️ Architecture Documentation
+- **[Architecture Overview](docs/ARCHITECTURE.md)** - Complete architectural design, patterns, and implementation details
+  - Layer-by-layer breakdown
+  - State management patterns
+  - Rendering system architecture
+  - Service layer organization
+  - Design patterns and principles
+
+### 🎥 Camera System Documentation  
+- **[Camera Techniques](docs/CAMERA_TECHNIQUES.md)** - Advanced 3D camera system and cinematic controls
+
+### 🧪 Testing Documentation
+- **[Testing Guide](test/README.md)** - Comprehensive testing strategy and test organization
+
+### 📋 Development Guides
+- **[Contributing Guidelines](CONTRIBUTING.md)** - How to contribute to the project
+- **[Fastlane Documentation](docs/FASTLANE.md)** - CI/CD and automated deployment setup
+- **[Marketing Documentation](docs/MARKETING.md)** - Marketing materials and app store optimization
+
 ## 🔥 Firebase Integration
 
 The app includes comprehensive Firebase integration with development and production flavors for robust analytics, crash reporting, and remote configuration.
@@ -712,27 +755,183 @@ The app includes comprehensive Firebase integration with development and product
 - **Maintenance Mode**: Gracefully handle app maintenance periods
 - **Version Management**: Automatic app update enforcement and user notifications
 
-##### Version Checker Configuration
+#### 📝 Firestore Database - Changelog System
+- **In-App Changelog Management**: Dynamic changelog delivery via Cloud Firestore
+- **Version-Based Display**: Shows relevant changelogs based on user's app version
+- **Offline Support**: Cached changelog data for offline access
+- **Multi-Language Ready**: Supports all 7 app languages with localized content
+- **Developer Testing Tools**: Debug-only options for testing changelog functionality
 
-The app includes an advanced dual-threshold version management system that uses Firebase Remote Config to control app updates with flexible enforcement policies. Configure the following parameters in your Firebase console:
+##### Firestore Database Structure
 
-**Required Parameters:**
-```json
+The changelog system uses a `changelogs` collection in Cloud Firestore with the following structure:
+
+**Collection**: `changelogs`
+**Document ID**: Version number (e.g., `1.0.0`, `1.1.0`, `2.0.0`)
+
+**Document Structure**:
+```javascript
 {
-  "current_version": "1.0.0",
-  "minimum_enforced_version": "0.9.0",
-  "minimum_preferred_version": "1.0.0",
-  "app_store_url": "https://apps.apple.com/app/your-app-id",
-  "play_store_url": "https://play.google.com/store/apps/details?id=your.package.name"
+  "title": "Feature Update",           // Version title/name
+  "releaseDate": "2024-10-30T00:00:00Z", // Timestamp of release
+  "entries": [                         // Array of changelog entries
+    {
+      "title": "New Physics Engine",
+      "description": "Enhanced gravitational calculations with improved accuracy",
+      "category": "added"              // One of: "added", "improved", "fixed"
+    },
+    {
+      "title": "Performance Optimization",
+      "description": "Reduced memory usage by 30% during simulations",
+      "category": "improved"
+    },
+    {
+      "title": "Collision Detection Bug",
+      "description": "Fixed issue where small bodies wouldn't collide properly",
+      "category": "fixed"
+    }
+  ]
 }
 ```
 
+**Entry Categories**:
+- `"added"`: New features and functionality
+- `"improved"`: Enhancements to existing features
+- `"fixed"`: Bug fixes and corrections
+
+**Firestore Rules Example**:
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read access to changelogs for authenticated and unauthenticated users
+    match /changelogs/{version} {
+      allow read: if true;
+      // Only admin users can write changelogs
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+  }
+}
+```
+
+##### Changelog Display Logic
+
+**User Experience Flow**:
+1. **App Launch**: Automatic check for new changelog versions
+2. **Version Comparison**: Compare user's last seen version with current app version
+3. **Single Version Display**: Show only current version changelog (not cumulative)
+4. **Smart Triggering**: 
+   - First-time users: Show changelog for current version
+   - Returning users: Show changelog if they haven't seen current version
+   - Version jumpers: Show only latest version (not intermediate versions)
+
+**Developer Testing Features**:
+- **Show Changelog Button**: Manually trigger changelog dialog (debug builds only)
+- **Reset Changelog State**: Clear last seen version to re-test changelog flow
+- **Settings Integration**: Accessible via Settings > Developer Options (debug mode)
+
+**Technical Implementation**:
+- **Caching Strategy**: Local storage for offline access
+- **Firebase Integration**: Real-time data fetching with fallback to cache
+- **Version Tracking**: SharedPreferences storage of last seen changelog version
+- **Error Handling**: Graceful degradation when Firebase is unavailable
+
+##### Version Checker Configuration
+
+The app includes an advanced dual-threshold version management system that uses Firebase Remote Config to control app updates with flexible enforcement policies. The system supports both legacy (single configuration) and modern (platform-specific) configurations.
+
+**New Platform-Specific Configuration (Recommended):**
+
+Configure separate JSON data type parameters in Firebase Remote Config:
+
+**Parameter Name:** `android`  
+**Parameter Type:** JSON  
+**Parameter Value:**
+```json
+{
+  "current_version": "1.2.0",
+  "minimum_enforced_version": "0.9.0",
+  "minimum_preferred_version": "1.0.0",
+  "store_url": "https://play.google.com/store/apps/details?id=your.package.name"
+}
+```
+
+**Parameter Name:** `ios`  
+**Parameter Type:** JSON  
+**Parameter Value:**
+```json
+{
+  "current_version": "1.1.0",
+  "minimum_enforced_version": "0.8.0",
+  "minimum_preferred_version": "0.9.0",
+  "store_url": "https://apps.apple.com/app/your-app-id"
+}
+```
+
+**Alternative: Mixed Configuration with Global Fallback:**
+
+You can combine platform-specific JSON parameters with global string parameters:
+
+**Parameter Name:** `current_version` (String): `"1.0.0"`  
+**Parameter Name:** `android` (JSON):
+```json
+{
+  "current_version": "1.2.0",
+  "minimum_enforced_version": "0.9.0",
+  "minimum_preferred_version": "1.0.0",
+  "store_url": "https://play.google.com/store/apps/details?id=your.package.name"
+}
+```
+**Parameter Name:** `ios` (JSON):
+```json
+{
+  "minimum_enforced_version": "0.8.0",
+  "minimum_preferred_version": "0.9.0",
+  "store_url": "https://apps.apple.com/app/your-app-id"
+}
+```
+*Note: iOS will use global current_version "1.0.0" since no platform-specific current_version is set.*
+
+**Legacy Configuration (Still Supported):**
+
+Configure individual string parameters in Firebase Remote Config:
+
+**Parameter Name:** `current_version` (String): `"1.0.0"`  
+**Parameter Name:** `minimum_enforced_version` (String): `"0.9.0"`  
+**Parameter Name:** `minimum_preferred_version` (String): `"1.0.0"`  
+**Parameter Name:** `app_store_url` (String): `"https://apps.apple.com/app/your-app-id"`  
+**Parameter Name:** `play_store_url` (String): `"https://play.google.com/store/apps/details?id=your.package.name"`
+
+**Platform-Specific Configuration Benefits:**
+- **Independent Version Control**: Set different current and minimum versions for Android and iOS
+- **Flexible Release Schedules**: Track different current versions per platform (e.g., staggered rollouts)
+- **Platform-Specific Enforcement**: Customize update policies based on app store review times and requirements
+- **Simplified Store URLs**: Each platform has its own dedicated store URL
+- **Future-Proof**: Easier to extend for additional platforms or platform-specific features
+
+**Configuration Priority:**
+1. **Platform-Specific Config**: Uses `android` or `ios` object if present and valid
+2. **Legacy Fallback**: Falls back to legacy fields (`minimum_enforced_version`, etc.) when platform config missing
+3. **Graceful Degradation**: Continues working if Remote Config is unavailable
+
 **Parameter Details:**
 - `current_version`: Latest available app version (used for status indication and badges)
+  - **Platform-Specific**: Can be set independently per platform (e.g., different iOS vs Android release schedules)
+  - **Legacy Global**: Single version applied to all platforms
+  - **Priority**: Platform-specific takes precedence over global when both are present
 - `minimum_enforced_version`: **Hard minimum version** - triggers mandatory update with no dismissal option
 - `minimum_preferred_version`: **Recommended minimum version** - shows optional update with "Later" button
-- `app_store_url`: iOS App Store URL for updates
-- `play_store_url`: Google Play Store URL for updates
+- `store_url`: Platform-specific store URL for updates
+
+**Version Resolution Logic:**
+1. **Platform Current Version**: Uses platform-specific `current_version` if present and non-empty
+2. **Global Fallback**: Falls back to global `current_version` when platform-specific is missing
+3. **Default Behavior**: Treats app as current when no version information is available
+
+**Configuration Flexibility:**
+- **Full Platform-Specific**: All version fields can be platform-specific
+- **Mixed Configuration**: Combine global fallbacks with platform-specific overrides
+- **Legacy Support**: Existing global configurations continue working unchanged
 
 **Dual-Threshold System:**
 The version management system uses two thresholds for flexible update policies:
@@ -1060,6 +1259,16 @@ a = F / m
 - **Enhanced zoom range**: From close planetary inspection to full solar system overview
 - **Complete orientation control**: Full 3D rotation including roll axis
 - **Smart reset**: One-button return to perfect viewing position and orientation
+
+### 🎬 AI-Driven Cinematic Camera Techniques
+Experience celestial dynamics through intelligent camera control with advanced AI techniques designed to create cinematic viewing experiences. Each technique uses different approaches to provide optimal camera positioning and movement for various simulation scenarios.
+
+#### Available Techniques:
+- **📍 Manual**: Traditional user-controlled camera positioning
+- **🔮 Predictive Orbital**: AI tours and orbital predictions for educational scenarios
+- **🖼️ Dynamic Framing**: Real-time dramatic targeting for chaotic scenarios
+
+For detailed information about each technique and implementation details, see [Cinematic Camera Techniques Documentation](docs/CAMERA_TECHNIQUES.md).
 
 ## Development
 

@@ -12,7 +12,7 @@ void main() {
     test('Initial state should have correct defaults', () {
       expect(simulationState.isRunning, isFalse);
       expect(simulationState.isPaused, isFalse);
-      expect(simulationState.timeScale, equals(1.0));
+      expect(simulationState.timeScale, equals(8.0));
       expect(simulationState.stepCount, equals(0));
       expect(simulationState.totalTime, equals(0.0));
       expect(simulationState.totalTimeInEarthYears, equals(0.0));
@@ -24,7 +24,7 @@ void main() {
     test('Initialize should load settings correctly', () async {
       // Should work even without SharedPreferences in tests
       await simulationState.initialize();
-      expect(simulationState.timeScale, equals(1.0));
+      expect(simulationState.timeScale, equals(8.0));
     });
 
     test('Start should set isRunning to true', () {
@@ -162,6 +162,75 @@ void main() {
       simulationState.reset();
       // Reset calls stop(), notifyListeners(), then start() - so expect multiple notifications
       expect(notificationCount, greaterThan(countBeforeReset));
+    });
+
+    group('AutoPause functionality', () {
+      test(
+        'pauseSimulation should pause only if running and not already paused',
+        () {
+          // Test when simulation is not running - should not pause
+          simulationState.pauseSimulation();
+          expect(simulationState.isPaused, isFalse);
+
+          // Start simulation and test pause
+          simulationState.start();
+          expect(simulationState.isRunning, isTrue);
+          expect(simulationState.isPaused, isFalse);
+
+          simulationState.pauseSimulation();
+          expect(simulationState.isRunning, isTrue);
+          expect(simulationState.isPaused, isTrue);
+
+          // Calling pauseSimulation again should not change state
+          simulationState.pauseSimulation();
+          expect(simulationState.isRunning, isTrue);
+          expect(simulationState.isPaused, isTrue);
+        },
+      );
+
+      test('resumeSimulation should resume only if running and paused', () {
+        // Test when simulation is not running - should not resume
+        simulationState.resumeSimulation();
+        expect(simulationState.isPaused, isFalse);
+
+        // Start and pause simulation
+        simulationState.start();
+        simulationState.pauseSimulation();
+        expect(simulationState.isRunning, isTrue);
+        expect(simulationState.isPaused, isTrue);
+
+        simulationState.resumeSimulation();
+        expect(simulationState.isRunning, isTrue);
+        expect(simulationState.isPaused, isFalse);
+
+        // Calling resumeSimulation again should not change state
+        simulationState.resumeSimulation();
+        expect(simulationState.isRunning, isTrue);
+        expect(simulationState.isPaused, isFalse);
+      });
+
+      test('pauseSimulation and resumeSimulation should work together', () {
+        // Start simulation
+        simulationState.start();
+
+        // Pause using pauseSimulation
+        simulationState.pauseSimulation();
+        expect(simulationState.isRunning, isTrue);
+        expect(simulationState.isPaused, isTrue);
+
+        // Resume using resumeSimulation
+        simulationState.resumeSimulation();
+        expect(simulationState.isRunning, isTrue);
+        expect(simulationState.isPaused, isFalse);
+
+        // Test that regular pause() still works
+        simulationState.pause();
+        expect(simulationState.isPaused, isTrue);
+
+        // resumeSimulation should work with regular pause too
+        simulationState.resumeSimulation();
+        expect(simulationState.isPaused, isFalse);
+      });
     });
   });
 }

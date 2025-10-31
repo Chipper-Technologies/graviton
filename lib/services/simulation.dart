@@ -16,6 +16,7 @@ import 'package:graviton/models/trail_point.dart';
 import 'package:graviton/services/asteroid_belt_system.dart';
 import 'package:graviton/services/habitable_zone_service.dart';
 import 'package:graviton/services/scenario_service.dart';
+import 'package:graviton/services/stellar_color_service.dart';
 import 'package:graviton/services/temperature_service.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:vibration/vibration.dart';
@@ -31,6 +32,7 @@ class Simulation {
   double _fadeRate = SimulationConstants.trailFadeRate;
   double _vibrationThrottleTime = SimulationConstants.vibrationThrottleTime;
   bool _vibrationEnabled = true;
+  bool _useRealisticColors = false; // Track realistic colors setting
 
   // Public getters for physics parameters
   double get gravitationalConstant => _gravitationalConstant;
@@ -40,6 +42,7 @@ class Simulation {
   double get fadeRate => _fadeRate;
   double get vibrationThrottleTime => _vibrationThrottleTime;
   bool get vibrationEnabled => _vibrationEnabled;
+  bool get useRealisticColors => _useRealisticColors;
 
   List<Body> bodies = [];
   List<List<TrailPoint>> trails = [];
@@ -63,6 +66,9 @@ class Simulation {
   double _timeSinceLastTemperatureUpdate = 0.0;
   static const double _temperatureUpdateInterval =
       0.5; // Update every 0.5 seconds (less frequent than habitability)
+
+  // Track if we're in a legitimate reset operation to avoid aggressive trail clearing
+  bool _isResetting = false;
 
   Simulation() {
     reset();
@@ -139,18 +145,64 @@ class Simulation {
     _vibrationEnabled = value;
   }
 
+  /// Set realistic colors enabled
+  void setUseRealisticColors(bool value) {
+    _useRealisticColors = value;
+    // Apply realistic colors immediately if enabled
+    _applyRealisticColorsIfEnabled();
+  }
+
   /// Reset simulation with current scenario
   void reset() {
     resetWithScenario(_currentScenario);
   }
 
   /// Reset simulation with a specific scenario
-  void resetWithScenario(ScenarioType scenario, {AppLocalizations? l10n}) {
+  void resetWithScenario(
+    ScenarioType scenario, {
+    AppLocalizations? l10n,
+    bool preserveCustomSettings = false,
+  }) {
+    _isResetting = true; // Mark that we're in a legitimate reset operation
+
+    // Preserve custom body settings if requested (for localization updates)
+    List<bool> gravityWellSettings = [];
+    if (preserveCustomSettings) {
+      // Store settings by index instead of name for more reliable preservation
+      gravityWellSettings = bodies.map((body) => body.showGravityWell).toList();
+    }
+
     _currentScenario = scenario;
     bodies = _scenarioService.generateScenario(scenario, l10n: l10n);
+
+    // Restore custom settings by index (more reliable than name matching)
+    if (preserveCustomSettings && gravityWellSettings.isNotEmpty) {
+      for (
+        int i = 0;
+        i < math.min(bodies.length, gravityWellSettings.length);
+        i++
+      ) {
+        bodies[i].showGravityWell = gravityWellSettings[i];
+      }
+    }
+
+    // Special handling for galaxy formation: ensure black hole gravity well remains enabled
+    // This helps maintain visual consistency for the centerpiece black hole
+    if (scenario == ScenarioType.galaxyFormation) {
+      for (final body in bodies) {
+        // Only force-enable gravity wells for black holes (mass > blackHoleMassThreshold), not stars
+        if (body.mass > SimulationConstants.blackHoleMassThreshold &&
+            !body.showGravityWell) {
+          body.showGravityWell = true;
+        }
+      }
+    }
+
     trails = List.generate(bodies.length, (_) => <TrailPoint>[]);
     mergeFlashes.clear();
     _timeSinceLastVibe = 0;
+
+    _isResetting = false; // Reset operation complete
 
     // Initialize belt systems based on scenario
     if (scenario == ScenarioType.asteroidBelt) {
@@ -243,9 +295,28 @@ class Simulation {
       asteroidBelt.clear();
       kuiperBelt.clear();
     }
+
+    // Apply realistic colors if enabled
+    _applyRealisticColorsIfEnabled();
   }
 
   void pushTrails(double dt) {
+    // Intelligent safety check: ensure bodies array is valid and not empty
+    if (bodies.isEmpty) {
+      // If we're in a legitimate reset operation, trails are handled by resetWithScenario
+      // Skip trail clearing during reset to prevent data loss during the brief moment when
+      // bodies is temporarily empty but new bodies are about to be assigned. This prevents
+      // losing existing trail data during legitimate transitions between scenarios.
+      if (_isResetting) {
+        return; // Let the reset operation handle trail management
+      }
+
+      // If not resetting and bodies is empty, this might be corruption or end of simulation
+      // Clear trails only in this case to avoid losing valid trail data during transitions
+      trails.clear();
+      return;
+    }
+
     // Ensure trails array matches bodies array length
     while (trails.length > bodies.length) {
       trails.removeLast();
@@ -331,7 +402,15 @@ class Simulation {
       );
 
       // Add newest trail point with full alpha (don't fade this one)
-      trails[i].add(TrailPoint(bodies[i].position.clone(), 1.0));
+      // Create a completely independent copy of the position vector
+      final trailPos = bodies[i].position.clone();
+
+      // Check for trail discontinuity and handle accordingly
+      if (_shouldSkipTrailPushForRandomScenario(trailPos, trails[i])) {
+        trails[i].clear(); // Clear potentially corrupted trail
+      }
+
+      trails[i].add(TrailPoint(trailPos, 1.0));
 
       // keep memory in check with custom max trail
       if (trails[i].length > customMaxTrail) {
@@ -440,8 +519,9 @@ class Simulation {
 
     _handleCollisions();
 
-    // Update dynamic star colors for galaxy formation
-    if (_currentScenario == ScenarioType.galaxyFormation) {
+    // Update dynamic star colors for galaxy formation (only when realistic colors disabled)
+    if (_currentScenario == ScenarioType.galaxyFormation &&
+        !_useRealisticColors) {
       _updateDynamicStarColors();
     }
 
@@ -558,16 +638,6 @@ class Simulation {
     final r = math
         .pow(math.pow(b1.radius, 3) + math.pow(b2.radius, 3), 1 / 3)
         .toDouble();
-    final color = _blendColor(b1.color, b2.color, b2.mass / m);
-
-    // Collision flash
-    mergeFlashes.add(MergeFlash(p.clone(), color, age: 0));
-
-    // Energy-scaled vibration
-    final rel = (b1.velocity - b2.velocity).length;
-    final mu = (b1.mass * b2.mass) / m;
-    final energy = 0.5 * mu * rel * rel; // reduced-mass kinetic energy
-    _vibrateForEnergy(energy);
 
     // Create merged body name
     final mergedName = '${b1.name}+${b2.name}';
@@ -588,26 +658,76 @@ class Simulation {
     final mergedTemperature =
         (b1.temperature * b1.mass + b2.temperature * b2.mass) / m;
 
-    // Replace b1 and remove b2
-    bodies[i] = Body(
+    // Preserve gravity well setting - if either body had it enabled, keep it enabled
+    final showGravityWell = b1.showGravityWell || b2.showGravityWell;
+
+    // Create the merged body initially with blended color
+    final mergedBodyWithBlendedColor = Body(
       position: p,
       velocity: v,
       mass: m,
       radius: r,
-      color: color,
+      color: _blendColor(b1.color, b2.color, b2.mass / m),
       name: mergedName,
       isPlanet: b1.isPlanet || b2.isPlanet,
       bodyType: mergedBodyType,
       stellarLuminosity: mergedLuminosity,
       temperature: mergedTemperature,
+      showGravityWell: showGravityWell,
     );
 
-    // Handle trails synchronization safely
-    if (j < trails.length) {
-      trails.removeAt(j);
-    }
+    // If realistic colors are enabled, recalculate the color based on merged body properties
+    final finalColor = _useRealisticColors
+        ? StellarColorService.getRealisticBodyColor(mergedBodyWithBlendedColor)
+        : mergedBodyWithBlendedColor.color;
 
-    bodies.removeAt(j);
+    // Create the final merged body with correct color
+    final mergedBody = Body(
+      position: p,
+      velocity: v,
+      mass: m,
+      radius: r,
+      color: finalColor,
+      name: mergedName,
+      isPlanet: b1.isPlanet || b2.isPlanet,
+      bodyType: mergedBodyType,
+      stellarLuminosity: mergedLuminosity,
+      temperature: mergedTemperature,
+      showGravityWell: showGravityWell,
+    );
+
+    // Use the final color for collision flash too
+    mergeFlashes.add(MergeFlash(p.clone(), finalColor, age: 0));
+
+    // Energy-scaled vibration
+    final rel = (b1.velocity - b2.velocity).length;
+    final mu = (b1.mass * b2.mass) / m;
+    final energy = 0.5 * mu * rel * rel; // reduced-mass kinetic energy
+    _vibrateForEnergy(energy);
+
+    // Handle trails synchronization correctly to maintain index correspondence
+    // Note: While _handleCollisions() always calls with i < j ordering (nested loops ensure this),
+    // defensive coding handles both cases since future collision detection modifications or other
+    // callers might pass indices in either order. Both cases use careful removal order to prevent index shifting.
+    if (i < j) {
+      // Case 1: i < j - Replace body at index i with merged body
+      bodies[i] = mergedBody;
+      // Remove higher index first to avoid shifting the lower index
+      if (j < trails.length) {
+        trails.removeAt(j);
+      }
+      bodies.removeAt(j);
+      // trails[i] still corresponds to bodies[i] (the merged body)
+    } else {
+      // Case 2: i > j - Remove higher index body and trail first
+      if (i < trails.length) {
+        trails.removeAt(i);
+      }
+      bodies.removeAt(i);
+      // Now place the merged body at index j
+      bodies[j] = mergedBody;
+      // trails[j] now corresponds to bodies[j] (the merged body)
+    }
 
     // Ensure trails array matches bodies array length
     while (trails.length > bodies.length) {
@@ -704,27 +824,63 @@ class Simulation {
       final hsv = HSVColor.fromColor(newColor);
       newColor = hsv.withValue(intensity).toColor();
 
-      // Update the body's color
-      bodies[i] = Body(
-        position: body.position,
-        velocity: body.velocity,
-        mass: body.mass,
-        radius: body.radius,
-        color: newColor,
-        name: body.name,
-        isPlanet: body.isPlanet,
-        bodyType: body.bodyType,
-        stellarLuminosity: body.stellarLuminosity,
-      );
+      // Only update the body's color if it actually changed to avoid overwriting user modifications
+      if (body.color != newColor) {
+        body.color = newColor;
+      }
     }
+  }
+
+  /// Apply realistic colors to all bodies if realistic colors are enabled
+  void _applyRealisticColorsIfEnabled() {
+    if (!_useRealisticColors) return;
+
+    for (int i = 0; i < bodies.length; i++) {
+      final body = bodies[i];
+      final realisticColor = StellarColorService.getRealisticBodyColor(body);
+
+      // Only update if the color would change
+      if (body.color != realisticColor) {
+        // Preserve the body's temperature when applying realistic colors because it is used for
+        // stellar classification and physical calculations, and should not be recalculated or
+        // lost during color updates.
+        body.color = realisticColor;
+      }
+    }
+  }
+
+  /// Check if trail push should be skipped due to position discontinuity for random scenarios
+  ///
+  /// Returns true if the body has moved an unreasonably large distance since the last
+  /// trail point, indicating potential corruption or chaotic dynamics that would cause
+  /// visual artifacts. This safety check is specifically applied only to random scenarios
+  /// where unpredictable body behavior can cause sudden position jumps.
+  bool _shouldSkipTrailPushForRandomScenario(
+    vm.Vector3 newPosition,
+    List<TrailPoint> trail,
+  ) {
+    // Only apply this safety check for random scenarios with existing trail data
+    if (_currentScenario != ScenarioType.random || trail.isEmpty) {
+      return false;
+    }
+
+    final lastTrailPos = trail.last.pos;
+    final positionDelta = (newPosition - lastTrailPos).length;
+
+    // If the body has moved an unreasonably large distance, skip the trail push
+    // and clear the existing trail to prevent visual artifacts
+    return positionDelta > SimulationConstants.maxReasonableDistance;
   }
 
   /// Check if this is a black hole absorption event
   bool _isBlackHoleAbsorption(Body b1, Body b2) {
     // Find which body is the supermassive black hole (most massive star)
-    final blackHole = (b1.mass > 100.0 && b1.bodyType == BodyType.star)
+    final blackHole =
+        (b1.mass > SimulationConstants.stellarBlackHoleMassThreshold &&
+            b1.bodyType == BodyType.star)
         ? b1
-        : (b2.mass > 100.0 && b2.bodyType == BodyType.star)
+        : (b2.mass > SimulationConstants.stellarBlackHoleMassThreshold &&
+              b2.bodyType == BodyType.star)
         ? b2
         : null;
 
@@ -747,7 +903,9 @@ class Simulation {
     final b2 = bodies[j];
 
     // Determine which is the black hole and which is being absorbed
-    final isB1BlackHole = b1.mass > 100.0 && b1.bodyType == BodyType.star;
+    final isB1BlackHole =
+        b1.mass > SimulationConstants.stellarBlackHoleMassThreshold &&
+        b1.bodyType == BodyType.star;
     final blackHole = isB1BlackHole ? b1 : b2;
     final victim = isB1BlackHole ? b2 : b1;
     final blackHoleIndex = isB1BlackHole ? i : j;
@@ -766,18 +924,9 @@ class Simulation {
     final newRadius =
         blackHole.radius * math.pow(newMass / blackHole.mass, 1 / 3);
 
-    // Update black hole with new mass
-    bodies[blackHoleIndex] = Body(
-      position: blackHole.position,
-      velocity: blackHole.velocity, // Black hole velocity barely changes
-      mass: newMass,
-      radius: newRadius,
-      color: blackHole.color,
-      name: blackHole.name,
-      isPlanet: false,
-      bodyType: BodyType.star,
-      stellarLuminosity: blackHole.stellarLuminosity,
-    );
+    // Update black hole with new mass - modify properties directly to preserve user changes
+    blackHole.mass = newMass;
+    blackHole.radius = newRadius;
 
     // Remove the absorbed body
     bodies.removeAt(victimIndex);

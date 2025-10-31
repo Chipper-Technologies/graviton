@@ -27,6 +27,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trailsLabel => 'Trails';
 
   @override
+  String get statsLabel => 'Stats';
+
+  @override
+  String get selectLabel => 'Select';
+
+  @override
+  String get followLabel => 'Follow';
+
+  @override
+  String get centerLabel => 'Center';
+
+  @override
+  String get rotateLabel => 'Rotate';
+
+  @override
   String get warmTrails => '🔥 Warm';
 
   @override
@@ -157,6 +172,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trailColorLabel => 'Trail Color';
 
   @override
+  String get colorsLabel => 'Colors';
+
+  @override
+  String get realisticColors => 'Realistic Colors';
+
+  @override
+  String get realisticColorsDescription =>
+      'Use scientifically accurate colors based on temperature and stellar classification';
+
+  @override
   String get closeButton => 'Close';
 
   @override
@@ -209,6 +234,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invertPitchControlsDescription => 'Reverse up/down drag direction';
+
+  @override
+  String get cinematicCameraTechniqueLabel => 'AI Camera Technique';
+
+  @override
+  String get cinematicCameraTechniqueDescription =>
+      'Choose how AI controls the camera when following objects';
+
+  @override
+  String get cinematicTechniqueManual => 'Manual Control';
+
+  @override
+  String get cinematicTechniqueManualDesc =>
+      'Traditional manual camera controls with follow mode';
+
+  @override
+  String get cinematicTechniquePredictiveOrbital => 'Predictive Orbital';
+
+  @override
+  String get cinematicTechniquePredictiveOrbitalDesc =>
+      'AI tours and orbital predictions for educational scenarios';
+
+  @override
+  String get cinematicTechniqueDynamicFraming => 'Dynamic Framing';
+
+  @override
+  String get cinematicTechniqueDynamicFramingDesc =>
+      'Real-time dramatic targeting for chaotic scenarios';
 
   @override
   String get marketingLabel => 'Marketing';
@@ -520,11 +573,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bodyBlackHole => 'Black Hole';
 
   @override
-  String bodyStar(int number) {
-    return 'Star $number';
-  }
-
-  @override
   String get bodyRingedPlanet => 'Ringed Planet';
 
   @override
@@ -558,6 +606,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bodyOuterPlanet => 'Outer Planet';
+
+  @override
+  String get bodyCenterOfMass => 'Center of Mass';
+
+  @override
+  String bodyStarNumber(int number) {
+    return 'Star $number';
+  }
 
   @override
   String get educationalFocusChaoticDynamics => 'chaotic dynamics';
@@ -958,5 +1014,53 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String copiedToClipboard(String text) {
     return 'Copied to clipboard: $text';
+  }
+
+  @override
+  String get changelogTitle => 'What\'s New';
+
+  @override
+  String get closeDialog => 'Close';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return 'Released $date';
+  }
+
+  @override
+  String get changelogAdded => 'New Features';
+
+  @override
+  String get changelogImproved => 'Improvements';
+
+  @override
+  String get changelogFixed => 'Bug Fixes';
+
+  @override
+  String get changelogSkip => 'Skip';
+
+  @override
+  String get changelogDone => 'Done';
+
+  @override
+  String get changelogButton => 'Show Changelog';
+
+  @override
+  String get resetChangelogButton => 'Reset Changelog State';
+
+  @override
+  String get changelogResetMessage => 'Changelog state has been reset';
+
+  @override
+  String get changelogDebugTitle => 'Changelog (Debug)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return 'No changelog found. Add changelog data to Firestore first.\nCurrent version: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return 'Failed to load changelog: $error';
   }
 }

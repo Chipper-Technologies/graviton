@@ -27,6 +27,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get trailsLabel => 'Traînées';
 
   @override
+  String get statsLabel => 'Statistiques';
+
+  @override
+  String get selectLabel => 'Sélectionner';
+
+  @override
+  String get followLabel => 'Suivre';
+
+  @override
+  String get centerLabel => 'Centrer';
+
+  @override
+  String get rotateLabel => 'Rotation';
+
+  @override
   String get warmTrails => '🔥 Chaud';
 
   @override
@@ -156,7 +171,17 @@ class AppLocalizationsFr extends AppLocalizations {
       'Afficher à la fois les trajectoires orbitales circulaires idéales et elliptiques réelles';
 
   @override
-  String get trailColorLabel => 'Couleur des Traînées';
+  String get trailColorLabel => 'Couleur de Traînée';
+
+  @override
+  String get colorsLabel => 'Couleurs';
+
+  @override
+  String get realisticColors => 'Couleurs Réalistes';
+
+  @override
+  String get realisticColorsDescription =>
+      'Utiliser des couleurs scientifiquement précises basées sur la température et la classification stellaire';
 
   @override
   String get closeButton => 'Fermer';
@@ -212,6 +237,34 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get invertPitchControlsDescription =>
       'Inverser la direction de glissement haut/bas';
+
+  @override
+  String get cinematicCameraTechniqueLabel => 'Technique de Caméra IA';
+
+  @override
+  String get cinematicCameraTechniqueDescription =>
+      'Choisissez comment l\'IA contrôle la caméra lors du suivi d\'objets';
+
+  @override
+  String get cinematicTechniqueManual => 'Contrôle Manuel';
+
+  @override
+  String get cinematicTechniqueManualDesc =>
+      'Contrôles de caméra manuels traditionnels avec mode de suivi';
+
+  @override
+  String get cinematicTechniquePredictiveOrbital => 'Orbital Prédictif';
+
+  @override
+  String get cinematicTechniquePredictiveOrbitalDesc =>
+      'Tours IA et prédictions orbitales pour scénarios éducatifs';
+
+  @override
+  String get cinematicTechniqueDynamicFraming => 'Cadrage Dynamique';
+
+  @override
+  String get cinematicTechniqueDynamicFramingDesc =>
+      'Ciblage dramatique en temps réel pour scénarios chaotiques';
 
   @override
   String get marketingLabel => 'Marketing';
@@ -523,11 +576,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get bodyBlackHole => 'Trou Noir';
 
   @override
-  String bodyStar(int number) {
-    return 'Étoile $number';
-  }
-
-  @override
   String get bodyRingedPlanet => 'Planète à Anneaux';
 
   @override
@@ -561,6 +609,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get bodyOuterPlanet => 'Planète Extérieure';
+
+  @override
+  String get bodyCenterOfMass => 'Centre de Masse';
+
+  @override
+  String bodyStarNumber(int number) {
+    return 'Étoile $number';
+  }
 
   @override
   String get educationalFocusChaoticDynamics => 'dynamique chaotique';
@@ -973,5 +1029,54 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String copiedToClipboard(String text) {
     return 'Copié dans le presse-papiers : $text';
+  }
+
+  @override
+  String get changelogTitle => 'Nouveautés';
+
+  @override
+  String get closeDialog => 'Fermer';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return 'Publié le $date';
+  }
+
+  @override
+  String get changelogAdded => 'Nouvelles fonctionnalités';
+
+  @override
+  String get changelogImproved => 'Améliorations';
+
+  @override
+  String get changelogFixed => 'Corrections de bugs';
+
+  @override
+  String get changelogSkip => 'Ignorer';
+
+  @override
+  String get changelogDone => 'Terminé';
+
+  @override
+  String get changelogButton => 'Afficher le journal des modifications';
+
+  @override
+  String get resetChangelogButton => 'Réinitialiser l\'état du journal';
+
+  @override
+  String get changelogResetMessage =>
+      'L\'état du journal des modifications a été réinitialisé';
+
+  @override
+  String get changelogDebugTitle => 'Journal des modifications (Debug)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return 'Aucun journal de modifications trouvé. Ajoutez d\'abord les données du journal à Firestore.\nVersion actuelle : $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return 'Échec du chargement du journal des modifications : $error';
   }
 }

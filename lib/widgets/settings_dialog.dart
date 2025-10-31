@@ -1,16 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/changelog_service.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/onboarding_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
+import 'package:graviton/services/version_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/screenshot_mode_widget.dart';
 import 'package:graviton/widgets/tutorial_overlay.dart';
 import 'package:provider/provider.dart';
@@ -256,6 +260,130 @@ class SettingsDialog extends StatelessWidget {
                           ),
 
                           SizedBox(height: AppTypography.spacingLarge),
+
+                          // Cinematic Camera Technique Selection
+                          Container(
+                            padding: EdgeInsets.all(AppTypography.spacingLarge),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.uiBorderGrey),
+                              borderRadius: BorderRadius.circular(
+                                AppTypography.radiusMedium,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Header with icon and text
+                                Row(
+                                  children: [
+                                    const Icon(Icons.smart_toy),
+                                    SizedBox(
+                                      width: AppTypography.spacingMedium,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            l10n.cinematicCameraTechniqueLabel,
+                                          ),
+                                          Text(
+                                            l10n.cinematicCameraTechniqueDescription,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall
+                                                ?.copyWith(
+                                                  color: AppColors.uiWhite
+                                                      .withValues(
+                                                        alpha: AppTypography
+                                                            .opacitySemiTransparent,
+                                                      ),
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: AppTypography.spacingMedium),
+                                // Dropdown below
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: DropdownButton<CinematicCameraTechnique>(
+                                    value: appState.ui.cinematicCameraTechnique,
+                                    underline: Container(),
+                                    isExpanded: true,
+                                    onChanged:
+                                        (CinematicCameraTechnique? newValue) {
+                                          if (newValue != null) {
+                                            appState.ui
+                                                .setCinematicCameraTechnique(
+                                                  newValue,
+                                                );
+                                          }
+                                        },
+                                    items: CinematicCameraTechnique.values
+                                        .map(
+                                          (
+                                            technique,
+                                          ) => DropdownMenuItem<CinematicCameraTechnique>(
+                                            value: technique,
+                                            child: SizedBox(
+                                              height: AppTypography
+                                                  .dropdownItemHeight, // Ensure we fit within the dropdown constraints
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    technique.displayName,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                          height:
+                                                              1.1, // Tighter line height
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    technique.description,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.copyWith(
+                                                          color: Theme.of(context)
+                                                              .textTheme
+                                                              .bodySmall
+                                                              ?.color
+                                                              ?.withValues(
+                                                                alpha: AppTypography
+                                                                    .opacityHigh,
+                                                              ),
+                                                          height:
+                                                              1.1, // Tighter line height
+                                                        ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines:
+                                                        1, // Reduce to 1 line to fit
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          SizedBox(height: AppTypography.spacingLarge),
                           Divider(color: AppColors.uiDividerGrey),
 
                           // Screenshot Mode Section (Dev only)
@@ -375,10 +503,38 @@ class SettingsDialog extends StatelessWidget {
                             ),
                           ),
 
-                          // Trail Color Selection
-                          if (appState.ui.showTrails) ...[
+                          // Realistic Colors Toggle
+                          SizedBox(height: AppTypography.spacingLarge),
+                          Divider(color: AppColors.uiDividerGrey),
+
+                          // Colors Section
+                          Text(
+                            l10n.colorsLabel,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppColors.sectionTitlePurple),
+                          ),
+                          SizedBox(height: AppTypography.spacingSmall),
+
+                          SwitchListTile(
+                            title: Text(l10n.realisticColors),
+                            subtitle: Text(
+                              l10n.realisticColorsDescription,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacitySemiTransparent,
+                                ),
+                              ),
+                            ),
+                            value: appState.ui.useRealisticColors,
+                            onChanged: (v) =>
+                                appState.ui.toggleRealisticColors(),
+                            secondary: const Icon(Icons.palette),
+                          ),
+
+                          // Trail Color Selection (only show when NOT using realistic colors)
+                          if (appState.ui.showTrails &&
+                              !appState.ui.useRealisticColors) ...[
                             SizedBox(height: AppTypography.spacingLarge),
-                            Divider(color: AppColors.uiDividerGrey),
                             Text(
                               l10n.trailColorLabel,
                               style: Theme.of(context).textTheme.bodyLarge,
@@ -468,6 +624,55 @@ class SettingsDialog extends StatelessWidget {
                               ],
                             ],
                           ),
+
+                          // Changelog section (Debug only)
+                          if (kDebugMode) ...[
+                            SizedBox(height: AppTypography.spacingLarge),
+                            Divider(color: AppColors.uiDividerGrey),
+                            SizedBox(height: AppTypography.spacingLarge),
+                            Text(
+                              l10n.changelogDebugTitle,
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    color: AppColors.sectionTitlePurple,
+                                  ),
+                            ),
+                            SizedBox(height: AppTypography.spacingLarge),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      _showChangelogFromSettings(context);
+                                    },
+                                    icon: const Icon(Icons.assignment),
+                                    label: Text(l10n.changelogButton),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: AppTypography.spacingMedium,
+                                        vertical: 10,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: AppTypography.spacingMedium),
+                                Expanded(
+                                  child: TextButton.icon(
+                                    onPressed: () =>
+                                        _resetChangelogState(context),
+                                    icon: const Icon(Icons.refresh, size: 16),
+                                    label: Text(l10n.resetChangelogButton),
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: AppTypography.spacingMedium,
+                                        vertical: 10,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -585,6 +790,93 @@ class SettingsDialog extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.tutorialResetMessage),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+  /// Show changelog dialog for testing (debug only)
+  void _showChangelogFromSettings(BuildContext context) async {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.changelogShown,
+      element: UIElement.changelog,
+    );
+
+    try {
+      // Use the shared method from ChangelogService with fallback logic
+      final changelogsToShow = await ChangelogService.instance
+          .fetchChangelogsWithFallback(
+            fallbackVersions: [
+              '1.2.0',
+              '1.1.0',
+              '1.0.0',
+            ], // Default fallback versions for settings
+          );
+
+      // Check if context is still mounted before proceeding
+      if (!context.mounted) {
+        return;
+      }
+
+      if (changelogsToShow.isNotEmpty) {
+        // Show changelog as a nested dialog, don't close settings first
+        // Since settings already paused the simulation, changelog won't need to pause again
+        await showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (dialogContext) => ChangelogDialog(
+            changelogs: changelogsToShow,
+            onComplete: () async {
+              // Close the changelog dialog
+              Navigator.of(dialogContext).pop();
+
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.changelogCompleted,
+                element: UIElement.changelog,
+              );
+            },
+          ),
+        );
+
+        // Keep the settings dialog open - don't close it
+      } else {
+        final currentVersion = VersionService.instance.appVersion;
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.changelogNotFoundError(currentVersion)),
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error in changelog method: $e');
+      // Handle error gracefully
+      if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.changelogLoadError(e.toString())),
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    }
+  }
+
+  /// Reset changelog state for testing (debug only)
+  void _resetChangelogState(BuildContext context) async {
+    final appState = Provider.of<AppState>(context, listen: false);
+    appState.ui.setLastSeenChangelogVersion(
+      '0.0.0',
+    ); // Reset to very old version
+
+    if (context.mounted) {
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.changelogResetMessage),
           duration: const Duration(seconds: 3),
         ),
       );

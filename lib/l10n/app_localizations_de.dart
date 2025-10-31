@@ -27,6 +27,21 @@ class AppLocalizationsDe extends AppLocalizations {
   String get trailsLabel => 'Spuren';
 
   @override
+  String get statsLabel => 'Statistiken';
+
+  @override
+  String get selectLabel => 'Auswählen';
+
+  @override
+  String get followLabel => 'Verfolgen';
+
+  @override
+  String get centerLabel => 'Zentrieren';
+
+  @override
+  String get rotateLabel => 'Rotieren';
+
+  @override
   String get warmTrails => '🔥 Warm';
 
   @override
@@ -155,7 +170,17 @@ class AppLocalizationsDe extends AppLocalizations {
       'Sowohl ideale kreisförmige als auch tatsächliche elliptische Orbitalbahnen anzeigen';
 
   @override
-  String get trailColorLabel => 'Spurenfarbe';
+  String get trailColorLabel => 'Spurfarbe';
+
+  @override
+  String get colorsLabel => 'Farben';
+
+  @override
+  String get realisticColors => 'Realistische Farben';
+
+  @override
+  String get realisticColorsDescription =>
+      'Wissenschaftlich genaue Farben basierend auf Temperatur und Sternklassifikation verwenden';
 
   @override
   String get closeButton => 'Schließen';
@@ -210,6 +235,34 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get invertPitchControlsDescription => 'Auf/Ab-Ziehrichtung umkehren';
+
+  @override
+  String get cinematicCameraTechniqueLabel => 'KI-Kamera-Technik';
+
+  @override
+  String get cinematicCameraTechniqueDescription =>
+      'Wählen Sie, wie die KI die Kamera beim Verfolgen von Objekten steuert';
+
+  @override
+  String get cinematicTechniqueManual => 'Manuelle Steuerung';
+
+  @override
+  String get cinematicTechniqueManualDesc =>
+      'Traditionelle manuelle Kamerasteuerung mit Verfolgungsmodus';
+
+  @override
+  String get cinematicTechniquePredictiveOrbital => 'Vorhersagende Umlaufbahn';
+
+  @override
+  String get cinematicTechniquePredictiveOrbitalDesc =>
+      'KI-Touren und Umlaufbahnvorhersagen für Bildungsszenarien';
+
+  @override
+  String get cinematicTechniqueDynamicFraming => 'Dynamischer Bildaufbau';
+
+  @override
+  String get cinematicTechniqueDynamicFramingDesc =>
+      'Echtzeit-dramatische Zielerfassung für chaotische Szenarien';
 
   @override
   String get marketingLabel => 'Marketing';
@@ -521,11 +574,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bodyBlackHole => 'Schwarzes Loch';
 
   @override
-  String bodyStar(int number) {
-    return 'Stern $number';
-  }
-
-  @override
   String get bodyRingedPlanet => 'Ringplanet';
 
   @override
@@ -559,6 +607,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get bodyOuterPlanet => 'Äußerer Planet';
+
+  @override
+  String get bodyCenterOfMass => 'Massenzentrum';
+
+  @override
+  String bodyStarNumber(int number) {
+    return 'Stern $number';
+  }
 
   @override
   String get educationalFocusChaoticDynamics => 'chaotische Dynamik';
@@ -966,5 +1022,53 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String copiedToClipboard(String text) {
     return 'In die Zwischenablage kopiert: $text';
+  }
+
+  @override
+  String get changelogTitle => 'Was ist neu';
+
+  @override
+  String get closeDialog => 'Schließen';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return 'Veröffentlicht am $date';
+  }
+
+  @override
+  String get changelogAdded => 'Neue Funktionen';
+
+  @override
+  String get changelogImproved => 'Verbesserungen';
+
+  @override
+  String get changelogFixed => 'Fehlerbehebungen';
+
+  @override
+  String get changelogSkip => 'Überspringen';
+
+  @override
+  String get changelogDone => 'Fertig';
+
+  @override
+  String get changelogButton => 'Changelog anzeigen';
+
+  @override
+  String get resetChangelogButton => 'Changelog-Status zurücksetzen';
+
+  @override
+  String get changelogResetMessage => 'Changelog-Status wurde zurückgesetzt';
+
+  @override
+  String get changelogDebugTitle => 'Changelog (Debug)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return 'Kein Changelog gefunden. Fügen Sie zuerst Changelog-Daten zu Firestore hinzu.\nAktuelle Version: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return 'Fehler beim Laden des Changelogs: $error';
   }
 }
