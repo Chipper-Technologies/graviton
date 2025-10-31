@@ -10,10 +10,13 @@ import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
+import 'package:graviton/models/changelog.dart';
 import 'package:graviton/painters/graviton_painter.dart';
 import 'package:graviton/services/cinematic_camera_controller.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
+import 'package:graviton/services/changelog_service.dart';
+import 'package:graviton/services/version_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -22,6 +25,7 @@ import 'package:graviton/widgets/body_labels_overlay.dart';
 import 'package:graviton/widgets/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
 import 'package:graviton/widgets/bottom_controls.dart';
+import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/copyright_text.dart';
 import 'package:graviton/widgets/floating_simulation_controls.dart';
 import 'package:graviton/widgets/help_dialog.dart';
@@ -414,6 +418,9 @@ class _HomeScreenState extends State<HomeScreen>
           await OnboardingService.markTutorialCompleted();
           if (context.mounted) {
             Navigator.of(context).pop();
+
+            // Check for changelogs after tutorial completion
+            _checkForNewChangelogs(context);
           }
 
           FirebaseService.instance.logUIEventWithEnums(
@@ -505,6 +512,71 @@ class _HomeScreenState extends State<HomeScreen>
         }
       });
     }
+  }
+
+  void _checkForNewChangelogs(BuildContext context) async {
+    try {
+      // Get current app version
+      final currentVersion = VersionService.instance.appVersion;
+
+      // Check if user should see changelog for this version
+      final appState = Provider.of<AppState>(context, listen: false);
+      if (!appState.ui.shouldShowChangelogFor(currentVersion)) {
+        return; // Already seen changelog for this version
+      }
+
+      // Initialize and fetch changelogs
+      await ChangelogService.instance.initialize();
+
+      // Try to get the changelog for the current version specifically
+      final currentVersionChangelog = await ChangelogService.instance
+          .fetchChangelogVersion(currentVersion);
+
+      if (currentVersionChangelog != null && mounted) {
+        // Show changelog dialog for current version after a short delay
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) {
+            _showChangelogDialog([currentVersionChangelog]);
+          }
+        });
+      } else {
+        // No changelog available for current version, mark as seen
+        appState.ui.setLastSeenChangelogVersion(currentVersion);
+      }
+    } catch (e) {
+      debugPrint('Error checking for changelogs: $e');
+      // Silently fail - app should continue normally
+    }
+  }
+
+  void _showChangelogDialog(List<ChangelogVersion> changelogs) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.changelogShown,
+      element: UIElement.changelog,
+    );
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => ChangelogDialog(
+        changelogs: changelogs,
+        onComplete: () async {
+          if (context.mounted) {
+            Navigator.of(context).pop();
+
+            // Mark the latest changelog version as seen
+            final appState = Provider.of<AppState>(context, listen: false);
+            final currentVersion = VersionService.instance.appVersion;
+            appState.ui.setLastSeenChangelogVersion(currentVersion);
+          }
+
+          FirebaseService.instance.logUIEventWithEnums(
+            UIAction.changelogCompleted,
+            element: UIElement.changelog,
+          );
+        },
+      ),
+    );
   }
 
   @override

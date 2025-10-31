@@ -325,5 +325,16 @@
   "hapticsSection": "Haptik",
   "vibrationEnabled": "Vibration aktiviert",
   "hapticFeedbackCollisions": "Haptisches Feedback bei Kollisionen",
-  "vibrationThrottle": "Vibrationsdrosselung"
+  "vibrationThrottle": "Vibrationsdrosselung",
+  "changelogTitle": "Was ist neu",
+  "closeDialog": "Schließen",
+  "changelogReleaseDate": "Veröffentlicht am {date}",
+  "changelogAdded": "Neue Funktionen",
+  "changelogImproved": "Verbesserungen",
+  "changelogFixed": "Fehlerbehebungen",
+  "changelogSkip": "Überspringen",
+  "changelogDone": "Fertig",
+  "changelogButton": "Changelog anzeigen",
+  "resetChangelogButton": "Changelog-Status zurücksetzen",
+  "changelogResetMessage": "Changelog-Status wurde zurückgesetzt"
 }

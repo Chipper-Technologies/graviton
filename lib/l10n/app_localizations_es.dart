@@ -1025,4 +1025,40 @@ class AppLocalizationsEs extends AppLocalizations {
   String copiedToClipboard(String text) {
     return 'Copiado al portapapeles: $text';
   }
+
+  @override
+  String get changelogTitle => 'Novedades';
+
+  @override
+  String get closeDialog => 'Cerrar';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return 'Publicado el $date';
+  }
+
+  @override
+  String get changelogAdded => 'Nuevas características';
+
+  @override
+  String get changelogImproved => 'Mejoras';
+
+  @override
+  String get changelogFixed => 'Correcciones de errores';
+
+  @override
+  String get changelogSkip => 'Omitir';
+
+  @override
+  String get changelogDone => 'Hecho';
+
+  @override
+  String get changelogButton => 'Mostrar registro de cambios';
+
+  @override
+  String get resetChangelogButton => 'Restablecer estado del registro';
+
+  @override
+  String get changelogResetMessage =>
+      'El estado del registro de cambios ha sido restablecido';
 }

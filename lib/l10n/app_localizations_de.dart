@@ -1023,4 +1023,39 @@ class AppLocalizationsDe extends AppLocalizations {
   String copiedToClipboard(String text) {
     return 'In die Zwischenablage kopiert: $text';
   }
+
+  @override
+  String get changelogTitle => 'Was ist neu';
+
+  @override
+  String get closeDialog => 'Schließen';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return 'Veröffentlicht am $date';
+  }
+
+  @override
+  String get changelogAdded => 'Neue Funktionen';
+
+  @override
+  String get changelogImproved => 'Verbesserungen';
+
+  @override
+  String get changelogFixed => 'Fehlerbehebungen';
+
+  @override
+  String get changelogSkip => 'Überspringen';
+
+  @override
+  String get changelogDone => 'Fertig';
+
+  @override
+  String get changelogButton => 'Changelog anzeigen';
+
+  @override
+  String get resetChangelogButton => 'Changelog-Status zurücksetzen';
+
+  @override
+  String get changelogResetMessage => 'Changelog-Status wurde zurückgesetzt';
 }

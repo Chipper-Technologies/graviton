@@ -973,4 +973,39 @@ class AppLocalizationsJa extends AppLocalizations {
   String copiedToClipboard(String text) {
     return 'クリップボードにコピーしました：$text';
   }
+
+  @override
+  String get changelogTitle => '新機能';
+
+  @override
+  String get closeDialog => '閉じる';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return '$dateにリリース';
+  }
+
+  @override
+  String get changelogAdded => '新機能';
+
+  @override
+  String get changelogImproved => '改善';
+
+  @override
+  String get changelogFixed => 'バグ修正';
+
+  @override
+  String get changelogSkip => 'スキップ';
+
+  @override
+  String get changelogDone => '完了';
+
+  @override
+  String get changelogButton => '変更履歴を表示';
+
+  @override
+  String get resetChangelogButton => '変更履歴の状態をリセット';
+
+  @override
+  String get changelogResetMessage => '変更履歴の状態がリセットされました';
 }

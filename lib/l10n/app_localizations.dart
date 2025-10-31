@@ -1943,6 +1943,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copied to clipboard: {text}'**
   String copiedToClipboard(String text);
+
+  /// Title for changelog dialog
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s New'**
+  String get changelogTitle;
+
+  /// Tooltip for close dialog button
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get closeDialog;
+
+  /// Format for changelog release date
+  ///
+  /// In en, this message translates to:
+  /// **'Released {date}'**
+  String changelogReleaseDate(String date);
+
+  /// Section header for added features
+  ///
+  /// In en, this message translates to:
+  /// **'New Features'**
+  String get changelogAdded;
+
+  /// Section header for improvements
+  ///
+  /// In en, this message translates to:
+  /// **'Improvements'**
+  String get changelogImproved;
+
+  /// Section header for bug fixes
+  ///
+  /// In en, this message translates to:
+  /// **'Bug Fixes'**
+  String get changelogFixed;
+
+  /// Button to skip changelog
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get changelogSkip;
+
+  /// Button to finish changelog
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get changelogDone;
+
+  /// Button to show changelog dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Show Changelog'**
+  String get changelogButton;
+
+  /// Developer button to reset changelog state
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Changelog State'**
+  String get resetChangelogButton;
+
+  /// Message shown when changelog state is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Changelog state has been reset'**
+  String get changelogResetMessage;
 }
 
 class _AppLocalizationsDelegate

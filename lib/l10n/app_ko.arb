@@ -311,5 +311,16 @@
   "hapticsSection": "햅틱",
   "vibrationEnabled": "진동 활성화",
   "hapticFeedbackCollisions": "충돌 시 햅틱 피드백",
-  "vibrationThrottle": "진동 제한"
+  "vibrationThrottle": "진동 제한",
+  "changelogTitle": "새로운 기능",
+  "closeDialog": "닫기",
+  "changelogReleaseDate": "{date}에 출시",
+  "changelogAdded": "새로운 기능",
+  "changelogImproved": "개선사항",
+  "changelogFixed": "버그 수정",
+  "changelogSkip": "건너뛰기",
+  "changelogDone": "완료",
+  "changelogButton": "변경 로그 표시",
+  "resetChangelogButton": "변경 로그 상태 재설정",
+  "changelogResetMessage": "변경 로그 상태가 재설정되었습니다"
 }

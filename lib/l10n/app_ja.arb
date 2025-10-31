@@ -311,5 +311,16 @@
   "hapticsSection": "ハプティクス",
   "vibrationEnabled": "振動有効",
   "hapticFeedbackCollisions": "衝突時のハプティックフィードバック",
-  "vibrationThrottle": "振動スロットル"
+  "vibrationThrottle": "振動スロットル",
+  "changelogTitle": "新機能",
+  "closeDialog": "閉じる",
+  "changelogReleaseDate": "{date}にリリース",
+  "changelogAdded": "新機能",
+  "changelogImproved": "改善",
+  "changelogFixed": "バグ修正",
+  "changelogSkip": "スキップ",
+  "changelogDone": "完了",
+  "changelogButton": "変更履歴を表示",
+  "resetChangelogButton": "変更履歴の状態をリセット",
+  "changelogResetMessage": "変更履歴の状態がリセットされました"
 }

@@ -1030,4 +1030,40 @@ class AppLocalizationsFr extends AppLocalizations {
   String copiedToClipboard(String text) {
     return 'Copié dans le presse-papiers : $text';
   }
+
+  @override
+  String get changelogTitle => 'Nouveautés';
+
+  @override
+  String get closeDialog => 'Fermer';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return 'Publié le $date';
+  }
+
+  @override
+  String get changelogAdded => 'Nouvelles fonctionnalités';
+
+  @override
+  String get changelogImproved => 'Améliorations';
+
+  @override
+  String get changelogFixed => 'Corrections de bugs';
+
+  @override
+  String get changelogSkip => 'Ignorer';
+
+  @override
+  String get changelogDone => 'Terminé';
+
+  @override
+  String get changelogButton => 'Afficher le journal des modifications';
+
+  @override
+  String get resetChangelogButton => 'Réinitialiser l\'état du journal';
+
+  @override
+  String get changelogResetMessage =>
+      'L\'état du journal des modifications a été réinitialisé';
 }

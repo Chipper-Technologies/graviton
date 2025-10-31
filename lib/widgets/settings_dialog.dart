@@ -5,13 +5,16 @@ import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/changelog_service.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/onboarding_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
+import 'package:graviton/services/version_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/screenshot_mode_widget.dart';
 import 'package:graviton/widgets/tutorial_overlay.dart';
 import 'package:provider/provider.dart';
@@ -621,6 +624,94 @@ class SettingsDialog extends StatelessWidget {
                               ],
                             ],
                           ),
+
+                          // Changelog section (Debug only)
+                          if (kDebugMode) ...[
+                            SizedBox(height: AppTypography.spacingLarge),
+                            Container(
+                              padding: EdgeInsets.all(
+                                AppTypography.spacingLarge,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.uiBorderGrey,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  AppTypography.radiusMedium,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.assignment),
+                                      SizedBox(
+                                        width: AppTypography.spacingMedium,
+                                      ),
+                                      Text(
+                                        'Changelog (Debug)',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              color: AppColors.uiWhite,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: AppTypography.spacingMedium),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: TextButton.icon(
+                                          onPressed: () =>
+                                              _showChangelogFromSettings(
+                                                context,
+                                              ),
+                                          icon: const Icon(
+                                            Icons.assignment,
+                                            size: 16,
+                                          ),
+                                          label: Text(l10n.changelogButton),
+                                          style: TextButton.styleFrom(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  AppTypography.spacingMedium,
+                                              vertical: 10,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: AppTypography.spacingMedium,
+                                      ),
+                                      Expanded(
+                                        child: TextButton.icon(
+                                          onPressed: () =>
+                                              _resetChangelogState(context),
+                                          icon: const Icon(
+                                            Icons.refresh,
+                                            size: 16,
+                                          ),
+                                          label: Text(
+                                            l10n.resetChangelogButton,
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  AppTypography.spacingMedium,
+                                              vertical: 10,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -738,6 +829,73 @@ class SettingsDialog extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.tutorialResetMessage),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+  /// Show changelog dialog for testing (debug only)
+  void _showChangelogFromSettings(BuildContext context) async {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.changelogShown,
+      element: UIElement.changelog,
+    );
+
+    final currentContext = context;
+
+    // Close the settings dialog first
+    Navigator.of(context).pop();
+
+    try {
+      final currentVersion = VersionService.instance.appVersion;
+      final changelogVersion = await ChangelogService.instance
+          .fetchChangelogVersion(currentVersion);
+
+      if (changelogVersion != null && currentContext.mounted) {
+        showDialog<void>(
+          context: currentContext,
+          barrierDismissible: false,
+          builder: (dialogContext) => ChangelogDialog(
+            changelogs: [changelogVersion],
+            onComplete: () async {
+              if (dialogContext.mounted) {
+                Navigator.of(dialogContext).pop();
+              }
+
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.changelogCompleted,
+                element: UIElement.changelog,
+              );
+            },
+          ),
+        );
+      }
+    } catch (e) {
+      // Handle error gracefully
+      if (currentContext.mounted) {
+        ScaffoldMessenger.of(currentContext).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to load changelog'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  }
+
+  /// Reset changelog state for testing (debug only)
+  void _resetChangelogState(BuildContext context) async {
+    final appState = Provider.of<AppState>(context, listen: false);
+    appState.ui.setLastSeenChangelogVersion(
+      '0.0.0',
+    ); // Reset to very old version
+
+    if (context.mounted) {
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.changelogResetMessage),
           duration: const Duration(seconds: 3),
         ),
       );

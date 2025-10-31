@@ -977,4 +977,39 @@ class AppLocalizationsKo extends AppLocalizations {
   String copiedToClipboard(String text) {
     return '클립보드에 복사됨: $text';
   }
+
+  @override
+  String get changelogTitle => '새로운 기능';
+
+  @override
+  String get closeDialog => '닫기';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return '$date에 출시';
+  }
+
+  @override
+  String get changelogAdded => '새로운 기능';
+
+  @override
+  String get changelogImproved => '개선사항';
+
+  @override
+  String get changelogFixed => '버그 수정';
+
+  @override
+  String get changelogSkip => '건너뛰기';
+
+  @override
+  String get changelogDone => '완료';
+
+  @override
+  String get changelogButton => '변경 로그 표시';
+
+  @override
+  String get resetChangelogButton => '변경 로그 상태 재설정';
+
+  @override
+  String get changelogResetMessage => '변경 로그 상태가 재설정되었습니다';
 }
