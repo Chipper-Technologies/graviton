@@ -1066,4 +1066,17 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get changelogResetMessage =>
       'L\'état du journal des modifications a été réinitialisé';
+
+  @override
+  String get changelogDebugTitle => 'Journal des modifications (Debug)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return 'Aucun journal de modifications trouvé. Ajoutez d\'abord les données du journal à Firestore.\nVersion actuelle : $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return 'Échec du chargement du journal des modifications : $error';
+  }
 }

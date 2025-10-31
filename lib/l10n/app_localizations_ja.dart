@@ -1008,4 +1008,17 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get changelogResetMessage => '変更履歴の状態がリセットされました';
+
+  @override
+  String get changelogDebugTitle => '変更履歴 (デバッグ)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return '変更履歴が見つかりません。まずFirestoreに変更履歴データを追加してください。\n現在のバージョン: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return '変更履歴の読み込みに失敗しました: $error';
+  }
 }

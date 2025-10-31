@@ -1012,4 +1012,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get changelogResetMessage => '변경 로그 상태가 재설정되었습니다';
+
+  @override
+  String get changelogDebugTitle => '변경 로그 (디버그)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return '변경 로그를 찾을 수 없습니다. 먼저 Firestore에 변경 로그 데이터를 추가하세요.\n현재 버전: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return '변경 로그 로드 실패: $error';
+  }
 }

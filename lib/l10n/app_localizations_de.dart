@@ -1058,4 +1058,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get changelogResetMessage => 'Changelog-Status wurde zurückgesetzt';
+
+  @override
+  String get changelogDebugTitle => 'Changelog (Debug)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return 'Kein Changelog gefunden. Fügen Sie zuerst Changelog-Daten zu Firestore hinzu.\nAktuelle Version: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return 'Fehler beim Laden des Changelogs: $error';
+  }
 }

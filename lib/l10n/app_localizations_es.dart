@@ -1061,4 +1061,17 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get changelogResetMessage =>
       'El estado del registro de cambios ha sido restablecido';
+
+  @override
+  String get changelogDebugTitle => 'Registro de cambios (Debug)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return 'No se encontró registro de cambios. Agregue primero los datos del registro de cambios a Firestore.\nVersión actual: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return 'Error al cargar el registro de cambios: $error';
+  }
 }

@@ -2009,6 +2009,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Changelog state has been reset'**
   String get changelogResetMessage;
+
+  /// Debug section title for changelog in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Changelog (Debug)'**
+  String get changelogDebugTitle;
+
+  /// Error message when no changelog data is found
+  ///
+  /// In en, this message translates to:
+  /// **'No changelog found. Add changelog data to Firestore first.\nCurrent version: {version}'**
+  String changelogNotFoundError(String version);
+
+  /// Error message when changelog fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load changelog: {error}'**
+  String changelogLoadError(String error);
 }
 
 class _AppLocalizationsDelegate

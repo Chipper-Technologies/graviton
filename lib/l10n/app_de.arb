@@ -336,5 +336,8 @@
   "changelogDone": "Fertig",
   "changelogButton": "Changelog anzeigen",
   "resetChangelogButton": "Changelog-Status zurücksetzen",
-  "changelogResetMessage": "Changelog-Status wurde zurückgesetzt"
+  "changelogResetMessage": "Changelog-Status wurde zurückgesetzt",
+  "changelogDebugTitle": "Changelog (Debug)",
+  "changelogNotFoundError": "Kein Changelog gefunden. Fügen Sie zuerst Changelog-Daten zu Firestore hinzu.\nAktuelle Version: {version}",
+  "changelogLoadError": "Fehler beim Laden des Changelogs: {error}"
 }

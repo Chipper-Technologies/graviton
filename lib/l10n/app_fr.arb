@@ -322,5 +322,8 @@
   "changelogDone": "Terminé",
   "changelogButton": "Afficher le journal des modifications",
   "resetChangelogButton": "Réinitialiser l'état du journal",
-  "changelogResetMessage": "L'état du journal des modifications a été réinitialisé"
+  "changelogResetMessage": "L'état du journal des modifications a été réinitialisé",
+  "changelogDebugTitle": "Journal des modifications (Debug)",
+  "changelogNotFoundError": "Aucun journal de modifications trouvé. Ajoutez d'abord les données du journal à Firestore.\nVersion actuelle : {version}",
+  "changelogLoadError": "Échec du chargement du journal des modifications : {error}"
 }

@@ -631,7 +631,7 @@ class SettingsDialog extends StatelessWidget {
                             Divider(color: AppColors.uiDividerGrey),
                             SizedBox(height: AppTypography.spacingLarge),
                             Text(
-                              'Changelog (Debug)',
+                              l10n.changelogDebugTitle,
                               style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(
                                     color: AppColors.sectionTitlePurple,
@@ -842,11 +842,10 @@ class SettingsDialog extends StatelessWidget {
         // Keep the settings dialog open - don't close it
       } else {
         final currentVersion = VersionService.instance.appVersion;
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              'No changelog found. Add changelog data to Firestore first.\nCurrent version: $currentVersion',
-            ),
+            content: Text(l10n.changelogNotFoundError(currentVersion)),
             duration: const Duration(seconds: 5),
           ),
         );
@@ -855,9 +854,10 @@ class SettingsDialog extends StatelessWidget {
       debugPrint('Error in changelog method: $e');
       // Handle error gracefully
       if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to load changelog: ${e.toString()}'),
+            content: Text(l10n.changelogLoadError(e.toString())),
             duration: const Duration(seconds: 5),
           ),
         );

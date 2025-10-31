@@ -322,5 +322,8 @@
   "changelogDone": "完了",
   "changelogButton": "変更履歴を表示",
   "resetChangelogButton": "変更履歴の状態をリセット",
-  "changelogResetMessage": "変更履歴の状態がリセットされました"
+  "changelogResetMessage": "変更履歴の状態がリセットされました",
+  "changelogDebugTitle": "変更履歴 (デバッグ)",
+  "changelogNotFoundError": "変更履歴が見つかりません。まずFirestoreに変更履歴データを追加してください。\n現在のバージョン: {version}",
+  "changelogLoadError": "変更履歴の読み込みに失敗しました: {error}"
 }

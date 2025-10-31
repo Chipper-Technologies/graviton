@@ -322,5 +322,8 @@
   "changelogDone": "Hecho",
   "changelogButton": "Mostrar registro de cambios",
   "resetChangelogButton": "Restablecer estado del registro",
-  "changelogResetMessage": "El estado del registro de cambios ha sido restablecido"
+  "changelogResetMessage": "El estado del registro de cambios ha sido restablecido",
+  "changelogDebugTitle": "Registro de cambios (Debug)",
+  "changelogNotFoundError": "No se encontró registro de cambios. Agregue primero los datos del registro de cambios a Firestore.\nVersión actual: {version}",
+  "changelogLoadError": "Error al cargar el registro de cambios: {error}"
 }

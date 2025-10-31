@@ -1001,4 +1001,17 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get changelogResetMessage => '更新日志状态已重置';
+
+  @override
+  String get changelogDebugTitle => '更新日志 (调试)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return '未找到更新日志。请先将更新日志数据添加到Firestore。\n当前版本: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return '加载更新日志失败: $error';
+  }
 }
