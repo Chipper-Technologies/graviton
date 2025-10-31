@@ -73,9 +73,6 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      // Print widget tree for debugging
-      debugDumpApp();
-
       // Check if the dialog is displayed
       expect(find.byType(ChangelogDialog), findsOneWidget);
 
