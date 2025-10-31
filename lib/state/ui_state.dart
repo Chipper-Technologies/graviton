@@ -33,6 +33,9 @@ class UIState extends ChangeNotifier {
   // Screenshot mode settings
   bool _hideUIInScreenshotMode = false;
 
+  // Changelog settings
+  String? _lastSeenChangelogVersion;
+
   // SharedPreferences keys
   static const String _keyShowTrails = 'showTrails';
   static const String _keyUseWarmTrails = 'useWarmTrails';
@@ -52,6 +55,7 @@ class UIState extends ChangeNotifier {
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
+  static const String _keyLastSeenChangelogVersion = 'lastSeenChangelogVersion';
 
   /// Initialize and load saved settings
   Future<void> initialize() async {
@@ -91,6 +95,9 @@ class UIState extends ChangeNotifier {
 
       _hideUIInScreenshotMode =
           prefs.getBool(_keyHideUIInScreenshotMode) ?? false;
+
+      // Load changelog tracking
+      _lastSeenChangelogVersion = prefs.getString(_keyLastSeenChangelogVersion);
 
       notifyListeners();
     } catch (e) {
@@ -132,6 +139,9 @@ class UIState extends ChangeNotifier {
   bool get showOffScreenIndicators => _showOffScreenIndicators;
   bool get enableVibration => _enableVibration;
   double get uiOpacity => _uiOpacity;
+
+  // Changelog getters
+  String? get lastSeenChangelogVersion => _lastSeenChangelogVersion;
 
   // Habitability getters
   bool get showHabitableZones => _showHabitableZones;
@@ -302,5 +312,25 @@ class UIState extends ChangeNotifier {
       _hideUIInScreenshotMode,
     );
     notifyListeners();
+  }
+
+  // Changelog setters
+  void setLastSeenChangelogVersion(String version) {
+    _lastSeenChangelogVersion = version;
+    _saveSetting(_keyLastSeenChangelogVersion, version);
+    FirebaseService.instance.logSettingsChange(
+      'last_seen_changelog_version',
+      version,
+    );
+    notifyListeners();
+  }
+
+  /// Check if there's a new changelog version to show
+  bool shouldShowChangelogFor(String currentAppVersion) {
+    // If never seen any changelog, show for current version
+    if (_lastSeenChangelogVersion == null) return true;
+
+    // If last seen version is different from current, show changelog
+    return _lastSeenChangelogVersion != currentAppVersion;
   }
 }

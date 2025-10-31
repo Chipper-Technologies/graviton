@@ -40,7 +40,10 @@ enum UIElement {
   bodyProperties('body_properties'),
 
   /// Physics/simulation settings dialog
-  physicsSettings('physics_settings');
+  physicsSettings('physics_settings'),
+
+  /// Changelog dialog
+  changelog('changelog');
 
   const UIElement(this.value);
 

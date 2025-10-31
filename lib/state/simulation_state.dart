@@ -141,6 +141,26 @@ class SimulationState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Pause the simulation if it's currently running
+  void pauseSimulation() {
+    if (_isRunning && !_isPaused) {
+      _isPaused = true;
+      FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationPaused);
+      notifyListeners();
+    }
+  }
+
+  /// Resume the simulation if it's currently paused
+  void resumeSimulation() {
+    if (_isRunning && _isPaused) {
+      _isPaused = false;
+      FirebaseService.instance.logEventWithEnum(
+        FirebaseEvent.simulationResumed,
+      );
+      notifyListeners();
+    }
+  }
+
   void stop() {
     _isRunning = false;
     _isPaused = false;

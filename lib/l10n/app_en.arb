@@ -1455,5 +1455,86 @@
         "type": "String"
       }
     }
+  },
+
+  "changelogTitle": "What's New",
+  "@changelogTitle": {
+    "description": "Title for changelog dialog"
+  },
+
+  "closeDialog": "Close",
+  "@closeDialog": {
+    "description": "Tooltip for close dialog button"
+  },
+
+  "changelogReleaseDate": "Released {date}",
+  "@changelogReleaseDate": {
+    "description": "Format for changelog release date",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+
+  "changelogAdded": "New Features",
+  "@changelogAdded": {
+    "description": "Section header for added features"
+  },
+
+  "changelogImproved": "Improvements",
+  "@changelogImproved": {
+    "description": "Section header for improvements"
+  },
+
+  "changelogFixed": "Bug Fixes",
+  "@changelogFixed": {
+    "description": "Section header for bug fixes"
+  },
+
+  "changelogSkip": "Skip",
+  "@changelogSkip": {
+    "description": "Button to skip changelog"
+  },
+
+  "changelogDone": "Done",
+  "@changelogDone": {
+    "description": "Button to finish changelog"
+  },
+  "changelogButton": "Show Changelog",
+  "@changelogButton": {
+    "description": "Button to show changelog dialog"
+  },
+  "resetChangelogButton": "Reset Changelog State",
+  "@resetChangelogButton": {
+    "description": "Developer button to reset changelog state"
+  },
+  "changelogResetMessage": "Changelog state has been reset",
+  "@changelogResetMessage": {
+    "description": "Message shown when changelog state is reset"
+  },
+  "changelogDebugTitle": "Changelog (Debug)",
+  "@changelogDebugTitle": {
+    "description": "Debug section title for changelog in settings"
+  },
+  "changelogNotFoundError": "No changelog found. Add changelog data to Firestore first.\nCurrent version: {version}",
+  "@changelogNotFoundError": {
+    "description": "Error message when no changelog data is found",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "description": "Current app version"
+      }
+    }
+  },
+  "changelogLoadError": "Failed to load changelog: {error}",
+  "@changelogLoadError": {
+    "description": "Error message when changelog fails to load",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Error details"
+      }
+    }
   }
 }

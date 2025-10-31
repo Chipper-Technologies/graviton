@@ -311,5 +311,19 @@
   "hapticsSection": "Haptique",
   "vibrationEnabled": "Vibration activée",
   "hapticFeedbackCollisions": "Retour haptique sur les collisions",
-  "vibrationThrottle": "Limitation de vibration"
+  "vibrationThrottle": "Limitation de vibration",
+  "changelogTitle": "Nouveautés",
+  "closeDialog": "Fermer",
+  "changelogReleaseDate": "Publié le {date}",
+  "changelogAdded": "Nouvelles fonctionnalités",
+  "changelogImproved": "Améliorations",
+  "changelogFixed": "Corrections de bugs",
+  "changelogSkip": "Ignorer",
+  "changelogDone": "Terminé",
+  "changelogButton": "Afficher le journal des modifications",
+  "resetChangelogButton": "Réinitialiser l'état du journal",
+  "changelogResetMessage": "L'état du journal des modifications a été réinitialisé",
+  "changelogDebugTitle": "Journal des modifications (Debug)",
+  "changelogNotFoundError": "Aucun journal de modifications trouvé. Ajoutez d'abord les données du journal à Firestore.\nVersion actuelle : {version}",
+  "changelogLoadError": "Échec du chargement du journal des modifications : {error}"
 }

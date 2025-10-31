@@ -5,7 +5,7 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.0] - 2025-10-28
+## [1.2.0] - 2025-11-01
 
 ### Added
 - **Realistic Colors Feature**: Scientifically accurate color rendering based on stellar physics and Harvard spectral classification
@@ -37,10 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Zoom-Responsive Detail**: Adaptive visualization complexity based on camera distance for optimal performance
   - **Black Hole Enhancement**: Dramatic visual effects with enhanced depth and intensity for extreme gravity wells
   - **Temporal Orientation Tracking**: Historical gravity well orientation data for visualizing changing orbital dynamics
+- **Dynamic In-App Changelog System**: Firebase Firestore-powered changelog delivery with smart single-version display
 
 ### Improved
 - **Camera Performance**: Optimized camera update cycles with 16ms target execution time for smooth 60fps operation
-- **Test Coverage**: Comprehensive test suite with 64+ passing tests covering all camera techniques and edge cases
 - **Code Documentation**: Enhanced constants documentation with scoring scales, units, and tuning guidance
 - **Internationalization**: Fixed language display issues across all 7 supported languages
   - Corrected English language names appearing in non-English translations

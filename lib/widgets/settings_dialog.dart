@@ -5,13 +5,16 @@ import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/changelog_service.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/onboarding_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
+import 'package:graviton/services/version_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/screenshot_mode_widget.dart';
 import 'package:graviton/widgets/tutorial_overlay.dart';
 import 'package:provider/provider.dart';
@@ -621,6 +624,55 @@ class SettingsDialog extends StatelessWidget {
                               ],
                             ],
                           ),
+
+                          // Changelog section (Debug only)
+                          if (kDebugMode) ...[
+                            SizedBox(height: AppTypography.spacingLarge),
+                            Divider(color: AppColors.uiDividerGrey),
+                            SizedBox(height: AppTypography.spacingLarge),
+                            Text(
+                              l10n.changelogDebugTitle,
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    color: AppColors.sectionTitlePurple,
+                                  ),
+                            ),
+                            SizedBox(height: AppTypography.spacingLarge),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      _showChangelogFromSettings(context);
+                                    },
+                                    icon: const Icon(Icons.assignment),
+                                    label: Text(l10n.changelogButton),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: AppTypography.spacingMedium,
+                                        vertical: 10,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: AppTypography.spacingMedium),
+                                Expanded(
+                                  child: TextButton.icon(
+                                    onPressed: () =>
+                                        _resetChangelogState(context),
+                                    icon: const Icon(Icons.refresh, size: 16),
+                                    label: Text(l10n.resetChangelogButton),
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: AppTypography.spacingMedium,
+                                        vertical: 10,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -738,6 +790,93 @@ class SettingsDialog extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.tutorialResetMessage),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+  /// Show changelog dialog for testing (debug only)
+  void _showChangelogFromSettings(BuildContext context) async {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.changelogShown,
+      element: UIElement.changelog,
+    );
+
+    try {
+      // Use the shared method from ChangelogService with fallback logic
+      final changelogsToShow = await ChangelogService.instance
+          .fetchChangelogsWithFallback(
+            fallbackVersions: [
+              '1.2.0',
+              '1.1.0',
+              '1.0.0',
+            ], // Default fallback versions for settings
+          );
+
+      // Check if context is still mounted before proceeding
+      if (!context.mounted) {
+        return;
+      }
+
+      if (changelogsToShow.isNotEmpty) {
+        // Show changelog as a nested dialog, don't close settings first
+        // Since settings already paused the simulation, changelog won't need to pause again
+        await showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (dialogContext) => ChangelogDialog(
+            changelogs: changelogsToShow,
+            onComplete: () async {
+              // Close the changelog dialog
+              Navigator.of(dialogContext).pop();
+
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.changelogCompleted,
+                element: UIElement.changelog,
+              );
+            },
+          ),
+        );
+
+        // Keep the settings dialog open - don't close it
+      } else {
+        final currentVersion = VersionService.instance.appVersion;
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.changelogNotFoundError(currentVersion)),
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error in changelog method: $e');
+      // Handle error gracefully
+      if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.changelogLoadError(e.toString())),
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    }
+  }
+
+  /// Reset changelog state for testing (debug only)
+  void _resetChangelogState(BuildContext context) async {
+    final appState = Provider.of<AppState>(context, listen: false);
+    appState.ui.setLastSeenChangelogVersion(
+      '0.0.0',
+    ); // Reset to very old version
+
+    if (context.mounted) {
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.changelogResetMessage),
           duration: const Duration(seconds: 3),
         ),
       );

@@ -977,4 +977,52 @@ class AppLocalizationsKo extends AppLocalizations {
   String copiedToClipboard(String text) {
     return '클립보드에 복사됨: $text';
   }
+
+  @override
+  String get changelogTitle => '새로운 기능';
+
+  @override
+  String get closeDialog => '닫기';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return '$date에 출시';
+  }
+
+  @override
+  String get changelogAdded => '새로운 기능';
+
+  @override
+  String get changelogImproved => '개선사항';
+
+  @override
+  String get changelogFixed => '버그 수정';
+
+  @override
+  String get changelogSkip => '건너뛰기';
+
+  @override
+  String get changelogDone => '완료';
+
+  @override
+  String get changelogButton => '변경 로그 표시';
+
+  @override
+  String get resetChangelogButton => '변경 로그 상태 재설정';
+
+  @override
+  String get changelogResetMessage => '변경 로그 상태가 재설정되었습니다';
+
+  @override
+  String get changelogDebugTitle => '변경 로그 (디버그)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return '변경 로그를 찾을 수 없습니다. 먼저 Firestore에 변경 로그 데이터를 추가하세요.\n현재 버전: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return '변경 로그 로드 실패: $error';
+  }
 }

@@ -48,6 +48,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/scenario_type.dart';
@@ -115,6 +116,7 @@ class GravityPainter {
   /// - [vp]: Combined view-projection matrix for 3D-to-2D transformation
   /// - [sim]: Physics simulation containing body positions, velocities, and masses
   /// - [cameraDistance]: Current camera distance for zoom-responsive detail levels
+  /// - [view]: View matrix for calculating perspective distance
   ///
   /// The method automatically:
   /// - Detects orbital planes using angular momentum calculations
@@ -128,6 +130,7 @@ class GravityPainter {
     vm.Matrix4 vp,
     physics.Simulation sim,
     double cameraDistance,
+    vm.Matrix4 view,
   ) {
     final currentTime = DateTime.now().millisecondsSinceEpoch.toDouble();
 
@@ -136,6 +139,18 @@ class GravityPainter {
 
       // Only draw gravity well if enabled for this specific body
       if (!body.showGravityWell) continue;
+
+      // Calculate the same projection and radius as used for body rendering
+      final bodyScreenPosition = PainterUtils.project(vp, body.position, size);
+      if (bodyScreenPosition == null) {
+        continue; // Body is behind camera or outside view
+      }
+
+      final eyeSpace =
+          (view *
+          vm.Vector4(body.position.x, body.position.y, body.position.z, 1));
+      final dist = (-eyeSpace.z).abs().clamp(0.1, 1e9);
+      final bodyScreenRadius = (body.radius * 175.0 / dist).clamp(2.0, 875.0);
 
       // Calculate orbital plane and track orientation changes
       final orbitalPlane = _calculateOrbitalPlane(body, sim);
@@ -150,6 +165,8 @@ class GravityPainter {
         sim,
         cameraDistance,
         orbitalPlane,
+        bodyScreenPosition,
+        bodyScreenRadius,
       );
 
       // Draw curved grid for massive objects to show space-time curvature
@@ -464,6 +481,8 @@ class GravityPainter {
     double cameraDistance,
     ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2})
     orbitalPlane,
+    Offset bodyScreenPosition,
+    double bodyScreenRadius,
   ) {
     // Calculate well properties based on physics: gravitational influence radius
     // Using Hill sphere approximation but scaled down to represent the inner gravitational zone
@@ -553,18 +572,18 @@ class GravityPainter {
     final changeRate = _calculateOrientationChangeRate(body.name);
 
     // Draw concentric rings at different depths to create funnel shape
-    // Use more rings for smoother appearance and better connectivity
-    for (int ring = 1; ring <= ringCount; ring++) {
+    // Start with ring 0 at the body's surface (depth = 0) for perfect alignment
+    for (int ring = 0; ring <= ringCount; ring++) {
       final normalizedRing = ring / ringCount;
-      final ringRadius = normalizedRing * maxRadius;
+      final ringRadius = ring == 0
+          ? body.radius * 1.1
+          : normalizedRing * maxRadius; // Surface ring matches body size
 
       // Use shared depth calculation for perfect connectivity with radial lines
-      final depth = _calculateDepthForRadius(
-        body,
-        ringRadius,
-        maxRadius,
-        maxDepth,
-      );
+      // IMPORTANT: Surface ring (ring 0) has NO depth offset to perfectly align with body
+      final depth = ring == 0
+          ? 0.0
+          : _calculateDepthForRadius(body, ringRadius, maxRadius, maxDepth);
 
       // Calculate field strength for opacity with higher baseline
       final fieldStrength = body.mass / (ringRadius * ringRadius + 1.0);
@@ -573,10 +592,12 @@ class GravityPainter {
         1.0,
       );
 
-      // More aggressive edge fade: affect the outer 40% of rings
-      final edgeFadeAmount = normalizedRing > 0.6
-          ? (normalizedRing - 0.6) / 0.4
-          : 0.0; // Outer 40% fade
+      // Surface ring (ring 0) should be more visible to align with the body
+      final edgeFadeAmount = ring == 0
+          ? 0.0
+          : (normalizedRing > 0.6
+                ? (normalizedRing - 0.6) / 0.4
+                : 0.0); // No fade for surface ring
       // Use exponential curve for more aggressive fade near edge
       final edgeFade =
           1.0 -
@@ -592,8 +613,12 @@ class GravityPainter {
           ? 0.9
           : 0.6; // Black holes can be almost fully opaque
 
-      // Apply very subtle fade-out only to outer rings
-      final calculatedAlpha = baseAlpha + normalizedStrength * 0.5;
+      // Surface ring gets enhanced visibility, other rings use normal calculation
+      final calculatedAlpha = ring == 0
+          ? baseAlpha *
+                RenderingConstants
+                    .gravityWellSurfaceRingAlphaMultiplier // Surface ring is more opaque
+          : baseAlpha + normalizedStrength * 0.5;
       final alpha = (calculatedAlpha * edgeFade).clamp(
         isBlackHole ? 0.15 : 0.08, // Keep minimum high enough to see wells
         maxAlpha,
@@ -614,35 +639,52 @@ class GravityPainter {
 
       // Generate 3D ring points
       final ringPoints = <Offset>[];
-      for (int segment = 0; segment <= segments; segment++) {
-        // Calculate 3D position of point on the ring
-        // Use the dynamically calculated orbital plane orientation
-        final ringAngle = (segment / segments) * 2 * math.pi;
 
-        // Create point in the orbital plane using the calculated tangent vectors
-        final localX =
-            ringRadius * math.cos(ringAngle) * orbitalPlane.tangent1.x +
-            ringRadius * math.sin(ringAngle) * orbitalPlane.tangent2.x;
-        final localY =
-            ringRadius * math.cos(ringAngle) * orbitalPlane.tangent1.y +
-            ringRadius * math.sin(ringAngle) * orbitalPlane.tangent2.y -
-            depth * orbitalPlane.normal.y;
-        final localZ =
-            ringRadius * math.cos(ringAngle) * orbitalPlane.tangent1.z +
-            ringRadius * math.sin(ringAngle) * orbitalPlane.tangent2.z -
-            depth * orbitalPlane.normal.z;
+      if (ring == 0) {
+        // Surface ring: Use the exact body screen position and radius for perfect alignment
+        // Generate a circle directly in screen space around the body center
+        final segmentCount = segments;
+        for (int segment = 0; segment <= segmentCount; segment++) {
+          final ringAngle = (segment / segmentCount) * 2 * math.pi;
+          final screenRadius =
+              bodyScreenRadius * 1.1; // Slightly larger than body
 
-        // Transform to world coordinates
-        final worldPos = vm.Vector3(
-          body.position.x + localX,
-          body.position.y + localY,
-          body.position.z + localZ,
-        );
+          final screenX =
+              bodyScreenPosition.dx + screenRadius * math.cos(ringAngle);
+          final screenY =
+              bodyScreenPosition.dy + screenRadius * math.sin(ringAngle);
 
-        // Project to screen coordinates
-        final screenPos = PainterUtils.project(vp, worldPos, size);
-        if (screenPos != null) {
-          ringPoints.add(screenPos);
+          ringPoints.add(Offset(screenX, screenY));
+        }
+      } else {
+        // Deeper rings: Use the dynamically calculated orbital plane orientation
+        for (int segment = 0; segment <= segments; segment++) {
+          final ringAngle = (segment / segments) * 2 * math.pi;
+
+          final localX =
+              ringRadius * math.cos(ringAngle) * orbitalPlane.tangent1.x +
+              ringRadius * math.sin(ringAngle) * orbitalPlane.tangent2.x;
+          final localY =
+              ringRadius * math.cos(ringAngle) * orbitalPlane.tangent1.y +
+              ringRadius * math.sin(ringAngle) * orbitalPlane.tangent2.y -
+              depth * orbitalPlane.normal.y;
+          final localZ =
+              ringRadius * math.cos(ringAngle) * orbitalPlane.tangent1.z +
+              ringRadius * math.sin(ringAngle) * orbitalPlane.tangent2.z -
+              depth * orbitalPlane.normal.z;
+
+          // Transform to world coordinates
+          final worldPos = vm.Vector3(
+            body.position.x + localX,
+            body.position.y + localY,
+            body.position.z + localZ,
+          );
+
+          // Project to screen coordinates
+          final screenPos = PainterUtils.project(vp, worldPos, size);
+          if (screenPos != null) {
+            ringPoints.add(screenPos);
+          }
         }
       }
 
@@ -700,6 +742,8 @@ class GravityPainter {
       radialLineCount,
       ringCount,
       orbitalPlane,
+      bodyScreenPosition,
+      bodyScreenRadius,
     );
   }
 
@@ -800,6 +844,8 @@ class GravityPainter {
     int ringCount,
     ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2})
     orbitalPlane,
+    Offset bodyScreenPosition,
+    double bodyScreenRadius,
   ) {
     // Draw radial lines at regular angular intervals with alternating colors
     for (int lineIndex = 0; lineIndex < radialLineCount; lineIndex++) {
@@ -829,12 +875,9 @@ class GravityPainter {
           : (isBlackHole ? 1.0 : 0.7); // Black holes get thicker lines
 
       // Draw line from outer edge through rings to central circle
-      // First, add all the ring points (from outer to inner)
       for (int ringIndex = ringCount; ringIndex >= 1; ringIndex--) {
         final normalizedRing = ringIndex / ringCount;
         final radius = normalizedRing * maxRadius;
-
-        // Use EXACT same depth calculation as rings for perfect connectivity
         final depth = _calculateDepthForRadius(
           body,
           radius,
@@ -842,7 +885,7 @@ class GravityPainter {
           maxDepth,
         );
 
-        // Calculate 3D position using the same orbital plane as rings
+        // Calculate 3D position of point on the radial line using orbital plane
         final localX =
             radius * math.cos(angle) * orbitalPlane.tangent1.x +
             radius * math.sin(angle) * orbitalPlane.tangent2.x;
@@ -868,6 +911,15 @@ class GravityPainter {
           radialPoints.add(screenPos);
         }
       }
+
+      // Add the surface connection point using exact body screen position for perfect alignment
+      final surfaceRadius = bodyScreenRadius * 1.1; // Same as surface ring
+      final surfaceX = bodyScreenPosition.dx + surfaceRadius * math.cos(angle);
+      final surfaceY = bodyScreenPosition.dy + surfaceRadius * math.sin(angle);
+      radialPoints.insert(
+        0,
+        Offset(surfaceX, surfaceY),
+      ); // Insert at beginning for outer-to-center order
 
       // Add the center point where all radial lines converge
       final centralRadius =

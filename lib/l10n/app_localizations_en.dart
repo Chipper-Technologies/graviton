@@ -1015,4 +1015,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String copiedToClipboard(String text) {
     return 'Copied to clipboard: $text';
   }
+
+  @override
+  String get changelogTitle => 'What\'s New';
+
+  @override
+  String get closeDialog => 'Close';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return 'Released $date';
+  }
+
+  @override
+  String get changelogAdded => 'New Features';
+
+  @override
+  String get changelogImproved => 'Improvements';
+
+  @override
+  String get changelogFixed => 'Bug Fixes';
+
+  @override
+  String get changelogSkip => 'Skip';
+
+  @override
+  String get changelogDone => 'Done';
+
+  @override
+  String get changelogButton => 'Show Changelog';
+
+  @override
+  String get resetChangelogButton => 'Reset Changelog State';
+
+  @override
+  String get changelogResetMessage => 'Changelog state has been reset';
+
+  @override
+  String get changelogDebugTitle => 'Changelog (Debug)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return 'No changelog found. Add changelog data to Firestore first.\nCurrent version: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return 'Failed to load changelog: $error';
+  }
 }

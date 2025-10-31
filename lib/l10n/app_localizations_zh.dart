@@ -966,4 +966,52 @@ class AppLocalizationsZh extends AppLocalizations {
   String copiedToClipboard(String text) {
     return '已复制到剪贴板：$text';
   }
+
+  @override
+  String get changelogTitle => '新功能';
+
+  @override
+  String get closeDialog => '关闭';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return '发布于$date';
+  }
+
+  @override
+  String get changelogAdded => '新功能';
+
+  @override
+  String get changelogImproved => '改进';
+
+  @override
+  String get changelogFixed => '错误修复';
+
+  @override
+  String get changelogSkip => '跳过';
+
+  @override
+  String get changelogDone => '完成';
+
+  @override
+  String get changelogButton => '显示更新日志';
+
+  @override
+  String get resetChangelogButton => '重置更新日志状态';
+
+  @override
+  String get changelogResetMessage => '更新日志状态已重置';
+
+  @override
+  String get changelogDebugTitle => '更新日志 (调试)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return '未找到更新日志。请先将更新日志数据添加到Firestore。\n当前版本: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return '加载更新日志失败: $error';
+  }
 }

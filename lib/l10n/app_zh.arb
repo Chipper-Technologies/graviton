@@ -312,5 +312,19 @@
   "hapticsSection": "触觉反馈",
   "vibrationEnabled": "启用振动",
   "hapticFeedbackCollisions": "碰撞时的触觉反馈",
-  "vibrationThrottle": "振动节流"
+  "vibrationThrottle": "振动节流",
+  "changelogTitle": "新功能",
+  "closeDialog": "关闭",
+  "changelogReleaseDate": "发布于{date}",
+  "changelogAdded": "新功能",
+  "changelogImproved": "改进",
+  "changelogFixed": "错误修复",
+  "changelogSkip": "跳过",
+  "changelogDone": "完成",
+  "changelogButton": "显示更新日志",
+  "resetChangelogButton": "重置更新日志状态",
+  "changelogResetMessage": "更新日志状态已重置",
+  "changelogDebugTitle": "更新日志 (调试)",
+  "changelogNotFoundError": "未找到更新日志。请先将更新日志数据添加到Firestore。\n当前版本: {version}",
+  "changelogLoadError": "加载更新日志失败: {error}"
 }
