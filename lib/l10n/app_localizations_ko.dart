@@ -27,6 +27,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get trailsLabel => '궤적';
 
   @override
+  String get statsLabel => '통계';
+
+  @override
+  String get selectLabel => '선택';
+
+  @override
+  String get followLabel => '추적';
+
+  @override
+  String get centerLabel => '중앙';
+
+  @override
+  String get rotateLabel => '회전';
+
+  @override
   String get warmTrails => '🔥 따뜻한';
 
   @override
@@ -153,6 +168,15 @@ class AppLocalizationsKo extends AppLocalizations {
   String get trailColorLabel => '궤적 색상';
 
   @override
+  String get colorsLabel => '색상';
+
+  @override
+  String get realisticColors => '현실적인 색상';
+
+  @override
+  String get realisticColorsDescription => '온도와 항성 분류에 기반한 과학적으로 정확한 색상 사용';
+
+  @override
   String get closeButton => '닫기';
 
   @override
@@ -205,6 +229,32 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get invertPitchControlsDescription => '위/아래 드래그 방향 반전';
+
+  @override
+  String get cinematicCameraTechniqueLabel => 'AI 카메라 기술';
+
+  @override
+  String get cinematicCameraTechniqueDescription =>
+      '객체를 추적할 때 AI가 카메라를 제어하는 방법 선택';
+
+  @override
+  String get cinematicTechniqueManual => '수동 제어';
+
+  @override
+  String get cinematicTechniqueManualDesc => '팔로우 모드가 있는 전통적인 수동 카메라 제어';
+
+  @override
+  String get cinematicTechniquePredictiveOrbital => '예측 궤도';
+
+  @override
+  String get cinematicTechniquePredictiveOrbitalDesc =>
+      '교육 시나리오용 AI 투어 및 궤도 예측';
+
+  @override
+  String get cinematicTechniqueDynamicFraming => '동적 프레이밍';
+
+  @override
+  String get cinematicTechniqueDynamicFramingDesc => '혼돈 시나리오용 실시간 극적 타겟팅';
 
   @override
   String get marketingLabel => '마케팅';
@@ -508,11 +558,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get bodyBlackHole => '블랙홀';
 
   @override
-  String bodyStar(int number) {
-    return '별 $number';
-  }
-
-  @override
   String get bodyRingedPlanet => '고리 행성';
 
   @override
@@ -546,6 +591,14 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get bodyOuterPlanet => '외행성';
+
+  @override
+  String get bodyCenterOfMass => '질량 중심';
+
+  @override
+  String bodyStarNumber(int number) {
+    return '별 $number';
+  }
 
   @override
   String get educationalFocusChaoticDynamics => '혼돈 역학';
@@ -923,5 +976,53 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String copiedToClipboard(String text) {
     return '클립보드에 복사됨: $text';
+  }
+
+  @override
+  String get changelogTitle => '새로운 기능';
+
+  @override
+  String get closeDialog => '닫기';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return '$date에 출시';
+  }
+
+  @override
+  String get changelogAdded => '새로운 기능';
+
+  @override
+  String get changelogImproved => '개선사항';
+
+  @override
+  String get changelogFixed => '버그 수정';
+
+  @override
+  String get changelogSkip => '건너뛰기';
+
+  @override
+  String get changelogDone => '완료';
+
+  @override
+  String get changelogButton => '변경 로그 표시';
+
+  @override
+  String get resetChangelogButton => '변경 로그 상태 재설정';
+
+  @override
+  String get changelogResetMessage => '변경 로그 상태가 재설정되었습니다';
+
+  @override
+  String get changelogDebugTitle => '변경 로그 (디버그)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return '변경 로그를 찾을 수 없습니다. 먼저 Firestore에 변경 로그 데이터를 추가하세요.\n현재 버전: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return '변경 로그 로드 실패: $error';
   }
 }

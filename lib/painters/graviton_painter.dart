@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/constants/simulation_constants.dart';
+import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/painters/asteroid_belt_painter.dart';
 import 'package:graviton/services/simulation.dart' as physics;
@@ -28,11 +30,11 @@ class GravitonPainter extends CustomPainter {
   final List<StarData> stars;
   final bool showTrails;
   final bool useWarmTrails;
+  final bool useRealisticColors;
   final bool showOrbitalPaths;
   final bool dualOrbitalPaths;
   final bool showHabitableZones;
   final bool showHabitabilityIndicators;
-  final bool showGravityWells;
   final int? selectedBodyIndex;
   final bool followMode;
   final double cameraDistance;
@@ -44,11 +46,11 @@ class GravitonPainter extends CustomPainter {
     required this.stars,
     required this.showTrails,
     required this.useWarmTrails,
+    this.useRealisticColors = false,
     this.showOrbitalPaths = true,
     this.dualOrbitalPaths = false,
     this.showHabitableZones = false,
     this.showHabitabilityIndicators = false,
-    this.showGravityWells = false,
     this.selectedBodyIndex,
     this.followMode = false,
     required this.cameraDistance,
@@ -71,7 +73,15 @@ class GravitonPainter extends CustomPainter {
     EffectsPainter.drawMergeFlashes(canvas, size, vp, sim);
 
     // Draw trails
-    TrailPainter.drawTrails(canvas, size, vp, sim, showTrails, useWarmTrails);
+    TrailPainter.drawTrails(
+      canvas,
+      size,
+      vp,
+      sim,
+      showTrails,
+      useWarmTrails,
+      useRealisticColors,
+    );
 
     // Draw orbital paths (predictive paths showing where bodies will go)
     OrbitalPathPainter.drawOrbitalPaths(
@@ -94,7 +104,15 @@ class GravitonPainter extends CustomPainter {
     );
 
     // Draw gravity wells (before bodies as background elements)
-    GravityPainter.drawGravityWells(canvas, size, vp, sim, showGravityWells);
+    // Now controlled per-body via Body.showGravityWell property
+    GravityPainter.drawGravityWells(
+      canvas,
+      size,
+      vp,
+      sim,
+      cameraDistance,
+      view,
+    );
 
     // Draw asteroid belt particles (before bodies but after background elements)
     if (sim.currentScenario == ScenarioType.asteroidBelt) {
@@ -172,9 +190,8 @@ class GravitonPainter extends CustomPainter {
       bool shouldRenderBody = true;
 
       // Check if this is a black hole in any scenario that should have distance-based visibility
-      if ((b.name.contains('Black Hole') ||
-          b.name == 'Black Hole' ||
-          b.name == 'Supermassive Black Hole')) {
+      final bodyEnum = CelestialBodyName.fromString(b.name);
+      if (bodyEnum?.isBlackHole == true) {
         // Black hole visibility based on actual camera zoom level (cameraDistance)
         // Hide completely when camera distance > 550, start easing in from 550 down to 285
         const double hideDistance = 550.0;
@@ -208,6 +225,7 @@ class GravitonPainter extends CustomPainter {
           viewMatrix: vp,
           canvasSize: size,
           opacity: opacity,
+          useRealisticColors: useRealisticColors,
         );
       }
 
@@ -241,7 +259,11 @@ class GravitonPainter extends CustomPainter {
     double cameraDistance,
   ) {
     // Find the galactic center (supermassive black hole - the most massive body at origin)
-    final galacticCenter = sim.bodies.where((b) => b.mass > 100.0).firstOrNull;
+    final galacticCenter = sim.bodies
+        .where(
+          (b) => b.mass > SimulationConstants.stellarBlackHoleMassThreshold,
+        )
+        .firstOrNull;
     if (galacticCenter == null) return;
 
     // Project the galactic center position to screen coordinates
@@ -338,7 +360,11 @@ class GravitonPainter extends CustomPainter {
     physics.Simulation sim,
   ) {
     // Find the galactic center (supermassive black hole - the most massive body at origin)
-    final galacticCenter = sim.bodies.where((b) => b.mass > 100.0).firstOrNull;
+    final galacticCenter = sim.bodies
+        .where(
+          (b) => b.mass > SimulationConstants.stellarBlackHoleMassThreshold,
+        )
+        .firstOrNull;
     if (galacticCenter == null) return;
 
     // Calculate distance-based scaling (same as particles)
@@ -947,7 +973,7 @@ class GravitonPainter extends CustomPainter {
 
     // Apply global opacity - this affects all subsequent drawing operations
     final alphaLayer = Paint()
-      ..color = Color.fromARGB((255 * ringOpacity).round(), 255, 255, 255);
+      ..color = AppColors.uiWhite.withValues(alpha: ringOpacity);
     canvas.saveLayer(null, alphaLayer);
 
     // First, draw a bright orange/red base ring (warmer colors show better)
@@ -990,11 +1016,11 @@ class GravitonPainter extends CustomPainter {
         stars != oldDelegate.stars ||
         showTrails != oldDelegate.showTrails ||
         useWarmTrails != oldDelegate.useWarmTrails ||
+        useRealisticColors != oldDelegate.useRealisticColors ||
         showOrbitalPaths != oldDelegate.showOrbitalPaths ||
         dualOrbitalPaths != oldDelegate.dualOrbitalPaths ||
         showHabitableZones != oldDelegate.showHabitableZones ||
         showHabitabilityIndicators != oldDelegate.showHabitabilityIndicators ||
-        showGravityWells != oldDelegate.showGravityWells ||
         selectedBodyIndex != oldDelegate.selectedBodyIndex ||
         followMode != oldDelegate.followMode;
   }

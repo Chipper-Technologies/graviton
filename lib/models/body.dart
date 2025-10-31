@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/habitability_status.dart';
 
@@ -8,7 +9,7 @@ import 'package:graviton/enums/habitability_status.dart';
 class Body {
   vm.Vector3 position;
   vm.Vector3 velocity;
-  double mass; // arbitrary units
+  double mass;
   double radius; // visual size only
   Color color;
   bool isPlanet; // larger gravitational influence, fixed or slow-moving
@@ -20,6 +21,16 @@ class Body {
   stellarLuminosity; // relative to Sun (1.0 = Sun's luminosity), only relevant for stars
   HabitabilityStatus habitabilityStatus;
   double temperature; // surface temperature in Kelvin (for planets/moons)
+  bool
+  _showGravityWell; // whether to display gravity well visualization for this body
+
+  // Getter and setter for showGravityWell
+  bool get showGravityWell => _showGravityWell;
+  set showGravityWell(bool value) {
+    if (_showGravityWell != value) {
+      _showGravityWell = value;
+    }
+  }
 
   Body({
     required this.position,
@@ -32,8 +43,10 @@ class Body {
     this.bodyType = BodyType.planet,
     this.stellarLuminosity = 0.0,
     this.habitabilityStatus = HabitabilityStatus.unknown,
-    this.temperature = 273.15, // Default to 0°C (273.15K)
-  });
+    this.temperature =
+        SimulationConstants.kelvinToCelsiusOffset, // Default to 0°C
+    bool showGravityWell = false, // Disabled by default
+  }) : _showGravityWell = showGravityWell;
 
   /// Whether this body is a star that emits light
   bool get isLuminous => bodyType.isLuminous;
@@ -42,10 +55,12 @@ class Body {
   bool get canBeHabitable => bodyType.canBeHabitable;
 
   /// Get temperature in Celsius
-  double get temperatureCelsius => temperature - 273.15;
+  double get temperatureCelsius =>
+      temperature - SimulationConstants.kelvinToCelsiusOffset;
 
   /// Get temperature in Fahrenheit
-  double get temperatureFahrenheit => (temperature - 273.15) * 9 / 5 + 32;
+  double get temperatureFahrenheit =>
+      (temperature - SimulationConstants.kelvinToCelsiusOffset) * 9 / 5 + 32;
 
   /// Whether this planet has a reasonable temperature for life (0-100°C)
   bool get hasReasonableTemperature =>

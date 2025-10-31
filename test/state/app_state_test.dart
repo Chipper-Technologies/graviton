@@ -27,6 +27,7 @@ void main() {
     });
 
     test('InitializeAsync should initialize both UI and simulation', () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
       await appState.initializeAsync();
 
       // Should complete without error
@@ -104,7 +105,7 @@ void main() {
 
     test('Simulation state should be accessible and functional', () {
       expect(appState.simulation.isRunning, isFalse);
-      expect(appState.simulation.timeScale, equals(1.0));
+      expect(appState.simulation.timeScale, equals(8.0));
 
       appState.simulation.start();
       expect(appState.simulation.isRunning, isTrue);
@@ -183,6 +184,7 @@ void main() {
     });
 
     test('Async initialization should handle errors gracefully', () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
       // Should complete without throwing, even if SharedPreferences isn't available
       await expectLater(appState.initializeAsync(), completes);
       expect(appState.isInitialized, isTrue);

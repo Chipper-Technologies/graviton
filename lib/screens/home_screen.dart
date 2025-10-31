@@ -4,21 +4,29 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:graviton/enums/cinematic_camera_technique.dart';
+import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
+import 'package:graviton/models/changelog.dart';
 import 'package:graviton/painters/graviton_painter.dart';
+import 'package:graviton/services/cinematic_camera_controller.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
+import 'package:graviton/services/changelog_service.dart';
+import 'package:graviton/services/version_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/star_generator.dart';
+import 'package:graviton/widgets/auto_pause_dialog_wrapper.dart';
 import 'package:graviton/widgets/body_labels_overlay.dart';
 import 'package:graviton/widgets/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
 import 'package:graviton/widgets/bottom_controls.dart';
+import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/copyright_text.dart';
 import 'package:graviton/widgets/floating_simulation_controls.dart';
 import 'package:graviton/widgets/help_dialog.dart';
@@ -58,7 +66,12 @@ class _HomeScreenState extends State<HomeScreen>
   bool _hasMoved = false; // Track if any movement occurred during gesture
   double? _lastTwoFingerRotation; // Track rotation angle for two-finger roll
   bool _languageInitialized = false;
+  bool _tutorialJustCompleted = false; // Flag to track tutorial completion
   late final ScreenshotModeService _screenshotModeService;
+  final CinematicCameraController _cinematicCameraController =
+      CinematicCameraController();
+  CinematicCameraTechnique? _lastCameraTechnique;
+  ScenarioType? _lastScenario;
 
   // Function to show simulation controls
   VoidCallback? _showSimulationControls;
@@ -120,8 +133,31 @@ class _HomeScreenState extends State<HomeScreen>
     // Update camera auto-rotation
     appState.camera.updateAutoRotation(deltaTime);
 
+    // Check if camera technique changed and reset controller if needed
+    if (_lastCameraTechnique != appState.ui.cinematicCameraTechnique) {
+      _cinematicCameraController.reset();
+      _lastCameraTechnique = appState.ui.cinematicCameraTechnique;
+    }
+
+    // Check if scenario changed and reset controller if needed
+    if (_lastScenario != appState.simulation.currentScenario) {
+      _cinematicCameraController.reset();
+      _lastScenario = appState.simulation.currentScenario;
+    }
+
+    // Update cinematic camera controller based on selected technique
+    _cinematicCameraController.updateCamera(
+      appState.ui.cinematicCameraTechnique,
+      appState.simulation,
+      appState.camera,
+      appState.ui,
+      deltaTime,
+    );
+
     // Push trails if enabled and simulation is running (not paused)
-    if (appState.ui.showTrails && !appState.simulation.isPaused) {
+    if (appState.ui.showTrails &&
+        appState.simulation.isRunning &&
+        !appState.simulation.isPaused) {
       appState.simulation.simulation.pushTrails(1 / 240.0);
     }
   }
@@ -244,10 +280,10 @@ class _HomeScreenState extends State<HomeScreen>
     Size screenSize,
   ) {
     // Transform world position to homogeneous coordinates
-    final worldPos4 = vm.Vector4(worldPos.x, worldPos.y, worldPos.z, 1.0);
+    final homogeneousPos = vm.Vector4(worldPos.x, worldPos.y, worldPos.z, 1.0);
 
     // Transform to camera space then to clip space
-    final clipPos = proj * view * worldPos4;
+    final clipPos = proj * view * homogeneousPos;
 
     // Check if point is in front of camera (w should be positive)
     if (clipPos.w <= 0) return null;
@@ -323,9 +359,9 @@ class _HomeScreenState extends State<HomeScreen>
       element: UIElement.scenarioSelection,
     );
 
-    showDialog<void>(
+    AutoPauseDialogWrapper.show<void>(
       context: context,
-      builder: (context) => ScenarioSelectionDialog(
+      child: ScenarioSelectionDialog(
         currentScenario: appState.simulation.simulation.currentScenario,
         onScenarioSelected: (scenario) {
           final l10n = AppLocalizations.of(context)!;
@@ -335,6 +371,8 @@ class _HomeScreenState extends State<HomeScreen>
             value: scenario.name,
           );
           appState.simulation.resetWithScenario(scenario, l10n: l10n);
+          // Reset cinematic camera controller for new scenario
+          _cinematicCameraController.reset();
           // Auto-zoom camera to fit the new scenario
           appState.camera.resetViewForScenario(
             scenario,
@@ -350,9 +388,9 @@ class _HomeScreenState extends State<HomeScreen>
       UIAction.dialogOpened,
       element: UIElement.settings,
     );
-    showDialog<void>(
+    AutoPauseDialogWrapper.show<void>(
       context: context,
-      builder: (context) => const SettingsDialog(),
+      child: const SettingsDialog(),
     );
   }
 
@@ -362,9 +400,9 @@ class _HomeScreenState extends State<HomeScreen>
       element: UIElement.help,
     );
 
-    showDialog<void>(
+    AutoPauseDialogWrapper.show<void>(
       context: context,
-      builder: (context) => const HelpDialog(),
+      child: const HelpDialog(),
     );
   }
 
@@ -374,14 +412,19 @@ class _HomeScreenState extends State<HomeScreen>
       element: UIElement.tutorial,
     );
 
-    showDialog<void>(
+    AutoPauseDialogWrapper.show<void>(
       context: context,
       barrierDismissible: false,
-      builder: (context) => TutorialOverlay(
+      child: TutorialOverlay(
         onComplete: () async {
           await OnboardingService.markTutorialCompleted();
           if (context.mounted) {
             Navigator.of(context).pop();
+
+            // Set flag to trigger changelog check in next build cycle
+            setState(() {
+              _tutorialJustCompleted = true;
+            });
           }
 
           FirebaseService.instance.logUIEventWithEnums(
@@ -408,9 +451,9 @@ class _HomeScreenState extends State<HomeScreen>
       element: UIElement.bodyProperties,
     );
 
-    showDialog<void>(
+    AutoPauseDialogWrapper.show<void>(
       context: context,
-      builder: (context) => BodyPropertiesDialog(
+      child: BodyPropertiesDialog(
         body: selectedBody,
         bodyIndex: selectedIndex,
         onBodyChanged: (updatedBody) {
@@ -430,9 +473,9 @@ class _HomeScreenState extends State<HomeScreen>
       element: UIElement.physicsSettings,
     );
 
-    showDialog<void>(
+    AutoPauseDialogWrapper.show<void>(
       context: context,
-      builder: (context) => SimulationSettingsDialog(
+      child: SimulationSettingsDialog(
         gravitationalConstant: sim.gravitationalConstant,
         softening: sim.softening,
         timeScale: appState.simulation.timeScale,
@@ -472,7 +515,78 @@ class _HomeScreenState extends State<HomeScreen>
           _showTutorial(context);
         }
       });
+    } else {
+      // For existing users, check for new changelogs with a longer delay to ensure Firebase is ready
+      Future.delayed(const Duration(milliseconds: 2000), () {
+        if (mounted) {
+          _checkForNewChangelogs(context);
+        }
+      });
     }
+  }
+
+  Future<void> _checkForNewChangelogs(BuildContext context) async {
+    try {
+      if (!context.mounted) return;
+      final appState = Provider.of<AppState>(context, listen: false);
+
+      // Ensure version service is initialized
+      await VersionService.instance.initialize();
+
+      // Get current app version
+      final currentVersion = VersionService.instance.appVersion;
+      if (currentVersion.isEmpty) {
+        return;
+      }
+
+      // Check if user should see changelog for this version
+      if (!appState.ui.shouldShowChangelogFor(currentVersion)) {
+        return; // Already seen changelog for this version
+      }
+
+      // Initialize and fetch changelogs using the shared method with fallback logic
+      await ChangelogService.instance.initialize();
+
+      final changelogsToShow = await ChangelogService.instance
+          .fetchChangelogsWithFallback(currentVersion: currentVersion);
+
+      if (changelogsToShow.isNotEmpty && mounted) {
+        // Show changelog dialog with available changelogs
+        _showChangelogDialog(changelogsToShow);
+      }
+    } catch (e) {
+      // Silently fail - app should continue normally
+    }
+  }
+
+  void _showChangelogDialog(List<ChangelogVersion> changelogs) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.changelogShown,
+      element: UIElement.changelog,
+    );
+
+    AutoPauseDialogWrapper.show<void>(
+      context: context,
+      barrierDismissible: false,
+      child: ChangelogDialog(
+        changelogs: changelogs,
+        onComplete: () async {
+          if (context.mounted) {
+            Navigator.of(context).pop();
+
+            // Mark the latest changelog version as seen
+            final appState = Provider.of<AppState>(context, listen: false);
+            final currentVersion = VersionService.instance.appVersion;
+            appState.ui.setLastSeenChangelogVersion(currentVersion);
+          }
+
+          FirebaseService.instance.logUIEventWithEnums(
+            UIAction.changelogCompleted,
+            element: UIElement.changelog,
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -487,7 +601,22 @@ class _HomeScreenState extends State<HomeScreen>
             _languageInitialized = true;
             appState.initializeLanguageTracking(l10n);
           } else if (appState.checkForPendingLanguageChange()) {
-            appState.handleLanguageChangeWithContext(l10n);
+            // Skip language change handling for galaxy formation to preserve custom body properties
+            if (appState.simulation.currentScenario !=
+                ScenarioType.galaxyFormation) {
+              appState.handleLanguageChangeWithContext(l10n);
+            }
+          }
+
+          // Check for changelog after tutorial completion
+          if (_tutorialJustCompleted) {
+            _tutorialJustCompleted = false; // Reset flag
+            // Add a small delay to ensure the UI is stable
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              if (mounted && context.mounted) {
+                _checkForNewChangelogs(context);
+              }
+            });
           }
         });
 
@@ -655,12 +784,12 @@ class _HomeScreenState extends State<HomeScreen>
                         stars: _stars,
                         showTrails: appState.ui.showTrails,
                         useWarmTrails: appState.ui.useWarmTrails,
+                        useRealisticColors: appState.ui.useRealisticColors,
                         showOrbitalPaths: appState.ui.showOrbitalPaths,
                         dualOrbitalPaths: appState.ui.dualOrbitalPaths,
                         showHabitableZones: appState.ui.showHabitableZones,
                         showHabitabilityIndicators:
                             appState.ui.showHabitabilityIndicators,
-                        showGravityWells: appState.ui.showGravityWells,
                         selectedBodyIndex: appState.camera.selectedBody,
                         followMode: appState.camera.followMode,
                         cameraDistance: appState.camera.distance,
@@ -682,6 +811,13 @@ class _HomeScreenState extends State<HomeScreen>
                         projMatrix: _buildProjection(size.aspectRatio),
                         screenSize: size,
                         selectedBodyIndex: appState.camera.selectedBody,
+                        onIndicatorTapped: (bodyIndex) {
+                          _selectBody(
+                            appState,
+                            bodyIndex,
+                            appState.simulation.bodies,
+                          );
+                        },
                       ),
                     // Body property editor overlay for selected bodies
                     if (!shouldHideUI && appState.camera.selectedBody != null)
