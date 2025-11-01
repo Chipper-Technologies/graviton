@@ -29,8 +29,10 @@ class WelcomeMessageCard extends StatelessWidget {
           ),
         ],
         border: Border.all(
-          color: AppColors.primaryColor.withValues(alpha: 0.3),
-          width: 1,
+          color: AppColors.primaryColor.withValues(
+            alpha: AppTypography.opacityFaint,
+          ),
+          width: AppTypography.borderThin,
         ),
       ),
       child: Column(

@@ -27,8 +27,12 @@ class HelpDialog extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.primaryColor.withValues(alpha: 0.15),
-                    AppColors.primaryColor.withValues(alpha: 0.05),
+                    AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityMidFade,
+                    ),
+                    AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityBarely,
+                    ),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,

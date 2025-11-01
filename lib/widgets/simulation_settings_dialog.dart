@@ -96,8 +96,8 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
                       alpha: AppTypography.opacityMidFade,
                     ),
                     AppColors.primaryColor.withValues(
-                      alpha: 0.05,
-                    ), // No exact constant available
+                      alpha: AppTypography.opacityBarely,
+                    ),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,

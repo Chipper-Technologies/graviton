@@ -46,11 +46,7 @@ class AppBarMoreMenu extends StatelessWidget {
           value: 'scenarios',
           child: Row(
             children: [
-              const Icon(
-                Icons.explore,
-                size: 20,
-                color: AppColors.uiCyanAccent,
-              ),
+              const Icon(Icons.explore, size: 20, color: AppColors.uiCyanAccent),
               const SizedBox(width: AppTypography.spacingMedium),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,17 +54,12 @@ class AppBarMoreMenu extends StatelessWidget {
                 children: [
                   Text(
                     l10n.selectScenarioTooltip,
-                    style: AppTypography.mediumText.copyWith(
-                      color: AppColors.uiWhite,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite, fontWeight: FontWeight.w500),
                   ),
                   Text(
                     l10n.scenariosMenuDescription,
                     style: AppTypography.smallText.copyWith(
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacitySemiTransparent,
-                      ),
+                      color: AppColors.uiWhite.withValues(alpha: AppTypography.opacitySemiTransparent),
                     ),
                   ),
                 ],
@@ -79,21 +70,13 @@ class AppBarMoreMenu extends StatelessWidget {
         PopupMenuItem<String>(
           enabled: false,
           height: 1,
-          child: Divider(
-            color: AppColors.uiDividerGrey,
-            thickness: 1,
-            height: 1,
-          ),
+          child: Divider(color: AppColors.uiDividerGrey, thickness: 1, height: 1),
         ),
         PopupMenuItem<String>(
           value: 'physics',
           child: Row(
             children: [
-              const Icon(
-                Icons.science,
-                size: 20,
-                color: AppColors.primaryColor,
-              ),
+              const Icon(Icons.science, size: 20, color: AppColors.primaryColor),
               const SizedBox(width: AppTypography.spacingMedium),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,17 +84,12 @@ class AppBarMoreMenu extends StatelessWidget {
                 children: [
                   Text(
                     l10n.physicsSettingsTitle,
-                    style: AppTypography.mediumText.copyWith(
-                      color: AppColors.uiWhite,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite, fontWeight: FontWeight.w500),
                   ),
                   Text(
                     l10n.physicsSettingsDescription,
                     style: AppTypography.smallText.copyWith(
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacitySemiTransparent,
-                      ),
+                      color: AppColors.uiWhite.withValues(alpha: AppTypography.opacitySemiTransparent),
                     ),
                   ),
                 ],
@@ -122,11 +100,7 @@ class AppBarMoreMenu extends StatelessWidget {
         PopupMenuItem<String>(
           enabled: false,
           height: 1,
-          child: Divider(
-            color: AppColors.uiDividerGrey,
-            thickness: 1,
-            height: 1,
-          ),
+          child: Divider(color: AppColors.uiDividerGrey, thickness: 1, height: 1),
         ),
         PopupMenuItem<String>(
           value: 'settings',
@@ -140,17 +114,12 @@ class AppBarMoreMenu extends StatelessWidget {
                 children: [
                   Text(
                     l10n.settingsTitle,
-                    style: AppTypography.mediumText.copyWith(
-                      color: AppColors.uiWhite,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite, fontWeight: FontWeight.w500),
                   ),
                   Text(
                     l10n.settingsMenuDescription,
                     style: AppTypography.smallText.copyWith(
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacitySemiTransparent,
-                      ),
+                      color: AppColors.uiWhite.withValues(alpha: AppTypography.opacitySemiTransparent),
                     ),
                   ),
                 ],
@@ -161,21 +130,13 @@ class AppBarMoreMenu extends StatelessWidget {
         PopupMenuItem<String>(
           enabled: false,
           height: 1,
-          child: Divider(
-            color: AppColors.uiDividerGrey,
-            thickness: 1,
-            height: 1,
-          ),
+          child: Divider(color: AppColors.uiDividerGrey, thickness: 1, height: 1),
         ),
         PopupMenuItem<String>(
           value: 'help',
           child: Row(
             children: [
-              const Icon(
-                Icons.lightbulb_outline,
-                size: 20,
-                color: AppColors.primaryColor,
-              ),
+              const Icon(Icons.lightbulb_outline, size: 20, color: AppColors.primaryColor),
               const SizedBox(width: AppTypography.spacingMedium),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,17 +144,12 @@ class AppBarMoreMenu extends StatelessWidget {
                 children: [
                   Text(
                     l10n.showHelpTooltip,
-                    style: AppTypography.mediumText.copyWith(
-                      color: AppColors.uiWhite,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite, fontWeight: FontWeight.w500),
                   ),
                   Text(
                     l10n.helpMenuDescription,
                     style: AppTypography.smallText.copyWith(
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacitySemiTransparent,
-                      ),
+                      color: AppColors.uiWhite.withValues(alpha: AppTypography.opacitySemiTransparent),
                     ),
                   ),
                 ],
@@ -202,13 +158,10 @@ class AppBarMoreMenu extends StatelessWidget {
           ),
         ),
       ],
-      color: AppColors.uiBlack.withValues(alpha: 0.9),
+      color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityNearlyOpaque),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-        side: BorderSide(
-          color: AppColors.uiWhite.withValues(alpha: 0.2),
-          width: 1,
-        ),
+        side: BorderSide(color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryFaint), width: 1),
       ),
     );
   }

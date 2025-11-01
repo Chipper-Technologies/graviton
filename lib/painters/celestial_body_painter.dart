@@ -23,10 +23,7 @@ class CelestialBodyPainter {
   static final DateFormat _dayOfYearFormat = DateFormat("D");
 
   /// Calculate the average distance of points from the screen center
-  static double _calculateAverageDistanceFromCenter(
-    List<Offset> points,
-    Size canvasSize,
-  ) {
+  static double _calculateAverageDistanceFromCenter(List<Offset> points, Size canvasSize) {
     if (points.isEmpty) {
       return double.infinity;
     }
@@ -55,26 +52,11 @@ class CelestialBodyPainter {
     if (bodyEnum?.isBlackHole == true) {
       drawBlackHole(canvas, center, radius, opacity: opacity);
     } else if (bodyEnum == CelestialBodyName.sun ||
-        (body.bodyType == BodyType.star &&
-            bodyEnum == CelestialBodyName.centralStar)) {
-      drawSun(
-        canvas,
-        center,
-        radius,
-        body,
-        useRealisticColors: useRealisticColors,
-      );
-    } else if (body.bodyType == BodyType.star &&
-        useRealisticColors &&
-        _shouldHaveSunspots(body)) {
+        (body.bodyType == BodyType.star && bodyEnum == CelestialBodyName.centralStar)) {
+      drawSun(canvas, center, radius, body, useRealisticColors: useRealisticColors);
+    } else if (body.bodyType == BodyType.star && useRealisticColors && _shouldHaveSunspots(body)) {
       // Other stars that should have magnetic activity (sunspots) - ONLY in realistic mode
-      drawSun(
-        canvas,
-        center,
-        radius,
-        body,
-        useRealisticColors: useRealisticColors,
-      );
+      drawSun(canvas, center, radius, body, useRealisticColors: useRealisticColors);
     } else {
       // Check for specific celestial body types using enum
       final celestialBody = CelestialBodyName.fromString(body.name);
@@ -91,31 +73,15 @@ class CelestialBodyPainter {
         case CelestialBodyName.jupiter:
           drawJupiter(canvas, center, radius);
         case CelestialBodyName.saturn:
-          drawSaturn(
-            canvas,
-            center,
-            radius,
-            body,
-            viewMatrix: viewMatrix,
-            canvasSize: canvasSize,
-          );
+          drawSaturn(canvas, center, radius, body, viewMatrix: viewMatrix, canvasSize: canvasSize);
         case CelestialBodyName.uranus:
-          drawUranus(
-            canvas,
-            center,
-            radius,
-            body,
-            viewMatrix: viewMatrix,
-            canvasSize: canvasSize,
-          );
+          drawUranus(canvas, center, radius, body, viewMatrix: viewMatrix, canvasSize: canvasSize);
         case CelestialBodyName.neptune:
           drawNeptune(canvas, center, radius);
         default:
           // Normal body rendering
           // Use realistic colors based on stellar properties when enabled
-          final bodyColor = useRealisticColors
-              ? StellarColorService.getRealisticBodyColor(body)
-              : body.color;
+          final bodyColor = useRealisticColors ? StellarColorService.getRealisticBodyColor(body) : body.color;
 
           final glow = RadialGradient(
             colors: [
@@ -124,10 +90,7 @@ class CelestialBodyPainter {
             ],
           );
 
-          final rect = Rect.fromCircle(
-            center: center,
-            radius: radius * RenderingConstants.bodyGlowMultiplier,
-          );
+          final rect = Rect.fromCircle(center: center, radius: radius * RenderingConstants.bodyGlowMultiplier);
           canvas.drawCircle(
             center,
             radius * RenderingConstants.bodyGlowMultiplier,
@@ -140,46 +103,23 @@ class CelestialBodyPainter {
   }
 
   /// Draw a realistic black hole with accretion disk and event horizon
-  static void drawBlackHole(
-    Canvas canvas,
-    Offset center,
-    double radius, {
-    double opacity = 1.0,
-  }) {
+  static void drawBlackHole(Canvas canvas, Offset center, double radius, {double opacity = 1.0}) {
     // Enhanced accretion disk for supermassive black hole - clean glow
-    final accretionDiskRadius =
-        radius *
-        RenderingConstants
-            .blackHoleAccretionDiskMultiplier; // Large disk for presence
+    final accretionDiskRadius = radius * RenderingConstants.blackHoleAccretionDiskMultiplier; // Large disk for presence
 
     // Single clean glow - no color mixing issues (with opacity adjustment)
     final cleanGlow = RadialGradient(
       colors: [
-        AppColors.starGlowWhite.withValues(
-          alpha: AppTypography.opacityHigh * opacity,
-        ), // Bright white center
-        AppColors.starGlowGold.withValues(
-          alpha: AppTypography.opacityMedium * opacity,
-        ), // Golden ring
-        AppColors.starGlowOrange.withValues(
-          alpha: AppTypography.opacityFaint * opacity,
-        ), // Orange outer
-        AppColors.starGlowRedOrange.withValues(
-          alpha: AppTypography.opacityMidFade * opacity,
-        ), // Dim orange edge
+        AppColors.starGlowWhite.withValues(alpha: AppTypography.opacityHigh * opacity), // Bright white center
+        AppColors.starGlowGold.withValues(alpha: AppTypography.opacityMedium * opacity), // Golden ring
+        AppColors.starGlowOrange.withValues(alpha: AppTypography.opacityFaint * opacity), // Orange outer
+        AppColors.starGlowRedOrange.withValues(alpha: AppTypography.opacityMidFade * opacity), // Dim orange edge
         AppColors.transparentColor,
       ],
     );
 
-    final glowRect = Rect.fromCircle(
-      center: center,
-      radius: accretionDiskRadius,
-    );
-    canvas.drawCircle(
-      center,
-      accretionDiskRadius,
-      Paint()..shader = cleanGlow.createShader(glowRect),
-    );
+    final glowRect = Rect.fromCircle(center: center, radius: accretionDiskRadius);
+    canvas.drawCircle(center, accretionDiskRadius, Paint()..shader = cleanGlow.createShader(glowRect));
 
     // Clean accretion disk rings - simple and bright
     final diskPaint = Paint()
@@ -189,9 +129,7 @@ class CelestialBodyPainter {
     for (int i = 0; i < 5; i++) {
       final ringRadius = radius * (1.3 + i * 0.4);
       final alpha =
-          ((RenderingConstants.blackHoleRingBaseAlpha -
-                      i * RenderingConstants.blackHoleRingAlphaDecrement) *
-                  opacity)
+          ((RenderingConstants.blackHoleRingBaseAlpha - i * RenderingConstants.blackHoleRingAlphaDecrement) * opacity)
               .clamp(
                 AppTypography.opacityTransparent,
                 AppTypography.opacityFull,
@@ -206,9 +144,7 @@ class CelestialBodyPainter {
       } else if (i == 2) {
         ringColor = AppColors.starGlowOrange.withValues(alpha: alpha); // Orange
       } else {
-        ringColor = AppColors.starGlowRedOrange.withValues(
-          alpha: alpha,
-        ); // Red-orange
+        ringColor = AppColors.starGlowRedOrange.withValues(alpha: alpha); // Red-orange
       }
 
       diskPaint.color = ringColor;
@@ -220,9 +156,7 @@ class CelestialBodyPainter {
     final photonSpherePaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.2
-      ..color = AppColors.starGlowWhite.withValues(
-        alpha: AppTypography.opacityFaint * opacity,
-      );
+      ..color = AppColors.starGlowWhite.withValues(alpha: AppTypography.opacityFaint * opacity);
 
     canvas.drawCircle(center, photonSphereRadius, photonSpherePaint);
 
@@ -237,9 +171,7 @@ class CelestialBodyPainter {
     final schwarzschildPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = RenderingConstants.blackHoleEventHorizonStrokeWidth
-      ..color = AppColors.starGlowWhite.withValues(
-        alpha: AppTypography.opacityMediumHigh * opacity,
-      );
+      ..color = AppColors.starGlowWhite.withValues(alpha: AppTypography.opacityMediumHigh * opacity);
 
     canvas.drawCircle(center, radius, schwarzschildPaint);
 
@@ -249,31 +181,21 @@ class CelestialBodyPainter {
       final distortionPaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = RenderingConstants.blackHoleDistortionStrokeWidth
-        ..color = AppColors.starGlowWhite.withValues(
-          alpha: (AppTypography.opacityVeryFaint / i) * opacity,
-        );
+        ..color = AppColors.starGlowWhite.withValues(alpha: (AppTypography.opacityVeryFaint / i) * opacity);
 
       canvas.drawCircle(center, distortionRadius, distortionPaint);
     }
   }
 
   /// Draw the Sun with solar flares and corona, adapted for realistic stellar colors
-  static void drawSun(
-    Canvas canvas,
-    Offset center,
-    double radius,
-    Body body, {
-    bool useRealisticColors = false,
-  }) {
+  static void drawSun(Canvas canvas, Offset center, double radius, Body body, {bool useRealisticColors = false}) {
     // Get current time once for all solar animations
     final currentTimeSeconds = DateTime.now().millisecondsSinceEpoch / 1000.0;
 
     // Determine stellar surface color based on realistic colors setting
     final stellarColor = useRealisticColors
         ? StellarColorService.getRealisticBodyColor(body)
-        : (body.name == 'Sun'
-              ? AppColors.coronaGold
-              : body.color); // Use warmer gold instead of pure yellow
+        : (body.name == 'Sun' ? AppColors.coronaGold : body.color); // Use warmer gold instead of pure yellow
 
     // Calculate stellar temperature for color adaptation
     final stellarTemperature =
@@ -281,67 +203,45 @@ class CelestialBodyPainter {
             SimulationConstants
                 .meaningfulStellarTemperatureThreshold // Has a meaningful stellar temperature
         ? body.temperature
-        : _calculateStellarTemperature(
-            body.mass,
-          ); // Corona - outer solar atmosphere (adapt color to stellar type)
+        : _calculateStellarTemperature(body.mass); // Corona - outer solar atmosphere (adapt color to stellar type)
     final coronaGlow = RadialGradient(
       colors: [
-        _getCoronaColor(stellarTemperature, useRealisticColors).withValues(
-          alpha: AppTypography.opacityVeryHigh,
-        ), // Bright center adapted to star type
+        _getCoronaColor(
+          stellarTemperature,
+          useRealisticColors,
+        ).withValues(alpha: AppTypography.opacityVeryHigh), // Bright center adapted to star type
         _getCoronaColor(
           stellarTemperature,
           useRealisticColors,
           isOuter: true,
         ).withValues(alpha: AppTypography.opacityMediumHigh), // Outer color
-        AppColors.accretionDiskRed.withValues(
-          alpha: AppTypography.opacityFaint,
-        ), // Red outer
+        AppColors.accretionDiskRed.withValues(alpha: AppTypography.opacityFaint), // Red outer
         AppColors.transparentColor,
       ],
     );
 
     final coronaRect = Rect.fromCircle(center: center, radius: radius * 3.0);
-    canvas.drawCircle(
-      center,
-      radius * 3.0,
-      Paint()..shader = coronaGlow.createShader(coronaRect),
-    );
+    canvas.drawCircle(center, radius * 3.0, Paint()..shader = coronaGlow.createShader(coronaRect));
 
     // Solar surface with stellar color adaptation
     final surfaceGlow = RadialGradient(
       colors: [
         stellarColor, // Center color based on stellar type
-        stellarColor.withValues(alpha: 0.8), // Slightly transparent middle
+        stellarColor.withValues(alpha: AppTypography.opacityVeryHigh), // Slightly transparent middle
         useRealisticColors
-            ? _getSurfaceEdgeColor(
-                stellarTemperature,
-                stellarColor,
-              ) // Realistic: temperature-adapted edge
-            : AppColors
-                  .coronaOrange, // Non-realistic: simple orange edge like before
+            ? _getSurfaceEdgeColor(stellarTemperature, stellarColor) // Realistic: temperature-adapted edge
+            : AppColors.coronaOrange, // Non-realistic: simple orange edge like before
       ],
     );
 
     final surfaceRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(
-      center,
-      radius,
-      Paint()..shader = surfaceGlow.createShader(surfaceRect),
-    );
+    canvas.drawCircle(center, radius, Paint()..shader = surfaceGlow.createShader(surfaceRect));
 
     // Add random sunspots (dark regions on solar surface) - adapted to stellar temperature
     _drawSunspots(canvas, center, radius, stellarTemperature, stellarColor);
 
     // Add dynamic solar flares (bright eruptions from surface) - adapted to stellar type
-    _drawSolarFlares(
-      canvas,
-      center,
-      radius,
-      currentTimeSeconds,
-      stellarTemperature,
-      stellarColor,
-    );
+    _drawSolarFlares(canvas, center, radius, currentTimeSeconds, stellarTemperature, stellarColor);
   }
 
   /// Draw realistic sunspots on the sun's surface - adapted to stellar temperature
@@ -363,13 +263,7 @@ class CelestialBodyPainter {
 
     // Generate sunspots if not cached for this day
     if (cachedSunspots == null) {
-      cachedSunspots = _generateSunspotsForDay(
-        dayOfYear,
-        center,
-        radius,
-        stellarTemperature,
-        stellarColor,
-      );
+      cachedSunspots = _generateSunspotsForDay(dayOfYear, center, radius, stellarTemperature, stellarColor);
       _sunspotCache.clear(); // Clear old cache to prevent memory growth
       _sunspotCache[cacheKey] = cachedSunspots;
     }
@@ -387,32 +281,21 @@ class CelestialBodyPainter {
 
       // Check if adjusted spot is still within sun's visible area
       final distanceFromCenter = (adjustedCenter - center).distance;
-      if (distanceFromCenter + adjustedRadius >
-          radius * RenderingConstants.sunspotMaxDistanceMultiplier) {
+      if (distanceFromCenter + adjustedRadius > radius * RenderingConstants.sunspotMaxDistanceMultiplier) {
         continue; // Skip spots that would extend too far outside
       }
 
       // Draw penumbra with adjusted rect
-      final adjustedPenumbraRect = Rect.fromCircle(
-        center: adjustedCenter,
-        radius: adjustedRadius,
-      );
+      final adjustedPenumbraRect = Rect.fromCircle(center: adjustedCenter, radius: adjustedRadius);
       canvas.drawCircle(
         adjustedCenter,
         adjustedRadius,
-        Paint()
-          ..shader = sunspot.penumbraGradient.createShader(
-            adjustedPenumbraRect,
-          ),
+        Paint()..shader = sunspot.penumbraGradient.createShader(adjustedPenumbraRect),
       );
 
       // Draw umbra with adjusted rect
-      final adjustedUmbraRadius =
-          adjustedRadius * RenderingConstants.sunspotUmbraMultiplier;
-      final adjustedUmbraRect = Rect.fromCircle(
-        center: adjustedCenter,
-        radius: adjustedUmbraRadius,
-      );
+      final adjustedUmbraRadius = adjustedRadius * RenderingConstants.sunspotUmbraMultiplier;
+      final adjustedUmbraRect = Rect.fromCircle(center: adjustedCenter, radius: adjustedUmbraRadius);
       canvas.drawCircle(
         adjustedCenter,
         adjustedUmbraRadius,
@@ -425,12 +308,8 @@ class CelestialBodyPainter {
   // These are NOT absolute positions - they serve as reference coordinates for relative calculations.
   // Cached sunspots are generated using these base values and then scaled/translated to match
   // the actual sun's current center and radius during rendering.
-  static const Offset _baseSunCenter = Offset(
-    0,
-    0,
-  ); // Reference center for relative positioning
-  static const double _baseSunRadius =
-      100.0; // Reference radius for scaling calculations
+  static const Offset _baseSunCenter = Offset(0, 0); // Reference center for relative positioning
+  static const double _baseSunRadius = 100.0; // Reference radius for scaling calculations
 
   /// Generate sunspots for a specific day using base reference coordinates
   ///
@@ -448,9 +327,7 @@ class CelestialBodyPainter {
     final sunspots = <SunspotData>[];
 
     // Generate sunspots using configured constants in base coordinate system
-    final numSpots =
-        RenderingConstants.minSunspots +
-        random.nextInt(RenderingConstants.maxAdditionalSunspots);
+    final numSpots = RenderingConstants.minSunspots + random.nextInt(RenderingConstants.maxAdditionalSunspots);
 
     for (int i = 0; i < numSpots; i++) {
       // Generate random position within base reference coordinates
@@ -458,8 +335,7 @@ class CelestialBodyPainter {
       final distance =
           random.nextDouble() *
           _baseSunRadius *
-          RenderingConstants
-              .sunspotPositionLimitMultiplier; // Keep within 70% of base radius
+          RenderingConstants.sunspotPositionLimitMultiplier; // Keep within 70% of base radius
       final spotCenter = Offset(
         _baseSunCenter.dx + distance * math.cos(angle),
         _baseSunCenter.dy + distance * math.sin(angle),
@@ -473,63 +349,39 @@ class CelestialBodyPainter {
         spotRadius =
             _baseSunRadius *
             (RenderingConstants.sunspotSizePercentMin +
-                random.nextDouble() *
-                    RenderingConstants
-                        .sunspotSizeRangeSmall); // 3-8% of sun radius
+                random.nextDouble() * RenderingConstants.sunspotSizeRangeSmall); // 3-8% of sun radius
       } else if (sizeRandom < RenderingConstants.sunspotSizeProbabilityMedium) {
         // 30% chance of medium sunspot
         spotRadius =
             _baseSunRadius *
             (RenderingConstants.sunspotSizeMediumMin +
-                random.nextDouble() *
-                    RenderingConstants
-                        .sunspotSizeRangeMedium); // 8-15% of sun radius
+                random.nextDouble() * RenderingConstants.sunspotSizeRangeMedium); // 8-15% of sun radius
       } else {
         // 10% chance of large sunspot
         spotRadius =
             _baseSunRadius *
             (RenderingConstants.sunspotSizeLargeMin +
-                random.nextDouble() *
-                    RenderingConstants
-                        .sunspotSizeRangeLarge); // 12-20% of sun radius
+                random.nextDouble() * RenderingConstants.sunspotSizeRangeLarge); // 12-20% of sun radius
       }
 
       // Create gradient paint objects with temperature-adaptive colors
-      final penumbraColor = _getSunspotPenumbraColor(
-        stellarTemperature,
-        stellarColor,
-      );
-      final umbraColor = _getSunspotUmbraColor(
-        stellarTemperature,
-        stellarColor,
-      );
+      final penumbraColor = _getSunspotPenumbraColor(stellarTemperature, stellarColor);
+      final umbraColor = _getSunspotUmbraColor(stellarTemperature, stellarColor);
 
       final penumbraGradient = RadialGradient(
         colors: [
-          penumbraColor.withValues(
-            alpha: AppTypography.opacityMedium,
-          ), // Lighter penumbra adapted to star type
-          penumbraColor.withValues(
-            alpha: AppTypography.opacityHigh,
-          ), // Medium penumbra
-          penumbraColor.withValues(
-            alpha: AppTypography.opacityFaint,
-          ), // Fade to surface
+          penumbraColor.withValues(alpha: AppTypography.opacityMedium), // Lighter penumbra adapted to star type
+          penumbraColor.withValues(alpha: AppTypography.opacityHigh), // Medium penumbra
+          penumbraColor.withValues(alpha: AppTypography.opacityFaint), // Fade to surface
         ],
         stops: const [0.0, 0.6, 1.0],
       );
 
       final umbraGradient = RadialGradient(
         colors: [
-          umbraColor.withValues(
-            alpha: AppTypography.opacityVeryHigh,
-          ), // Very dark center adapted to star type
-          penumbraColor.withValues(
-            alpha: AppTypography.opacityMediumHigh,
-          ), // Dark penumbra color
-          penumbraColor.withValues(
-            alpha: AppTypography.opacityMedium,
-          ), // Fade to penumbra
+          umbraColor.withValues(alpha: AppTypography.opacityVeryHigh), // Very dark center adapted to star type
+          penumbraColor.withValues(alpha: AppTypography.opacityMediumHigh), // Dark penumbra color
+          penumbraColor.withValues(alpha: AppTypography.opacityMedium), // Fade to penumbra
         ],
         stops: const [0.0, 0.7, 1.0],
       );
@@ -541,10 +393,7 @@ class CelestialBodyPainter {
           penumbraGradient: penumbraGradient,
           umbraGradient: umbraGradient,
           penumbraRect: Rect.fromCircle(center: spotCenter, radius: spotRadius),
-          umbraRect: Rect.fromCircle(
-            center: spotCenter,
-            radius: spotRadius * 0.4,
-          ),
+          umbraRect: Rect.fromCircle(center: spotCenter, radius: spotRadius * 0.4),
         ),
       );
     }
@@ -562,40 +411,31 @@ class CelestialBodyPainter {
     Color stellarColor,
   ) {
     // Use multiple time scales for different flare phases
-    final currentTime =
-        currentTimeSeconds; // Use passed time instead of DateTime.now()
+    final currentTime = currentTimeSeconds; // Use passed time instead of DateTime.now()
 
     // Create multiple flare cycles with different timing
     const flareLifetime = 8.0; // Each flare lives for 8 seconds
     const maxFlares = 3; // Maximum concurrent flares
 
     // Get sunspot positions for magnetic field correlation
-    final sunspotRandom = math.Random(
-      RenderingConstants.sunspotSeed,
-    ); // Same seed as sunspots
+    final sunspotRandom = math.Random(RenderingConstants.sunspotSeed); // Same seed as sunspots
     final numSunspots =
-        RenderingConstants.minSunspots +
-        sunspotRandom.nextInt(RenderingConstants.maxAdditionalSunspots);
+        RenderingConstants.minSunspots + sunspotRandom.nextInt(RenderingConstants.maxAdditionalSunspots);
     final sunspotPositions = <Offset>[];
 
     // Calculate sunspot positions (same logic as _drawSunspots)
     for (int i = 0; i < numSunspots; i++) {
       final angle = sunspotRandom.nextDouble() * 2 * math.pi;
       final distance = sunspotRandom.nextDouble() * radius * 0.7;
-      final spotCenter = Offset(
-        center.dx + distance * math.cos(angle),
-        center.dy + distance * math.sin(angle),
-      );
+      final spotCenter = Offset(center.dx + distance * math.cos(angle), center.dy + distance * math.sin(angle));
       sunspotPositions.add(spotCenter);
     }
 
     // Generate animated flares with staggered timing
     for (int flareIndex = 0; flareIndex < maxFlares; flareIndex++) {
       // Each flare has its own cycle offset
-      final flareOffset =
-          flareIndex * (flareLifetime / maxFlares); // Stagger flares
-      final flareStartTime =
-          (currentTime + flareOffset) % (flareLifetime * 1.5); // Some overlap
+      final flareOffset = flareIndex * (flareLifetime / maxFlares); // Stagger flares
+      final flareStartTime = (currentTime + flareOffset) % (flareLifetime * 1.5); // Some overlap
 
       // Skip if this flare hasn't started yet or has ended
       if (flareStartTime > flareLifetime) continue;
@@ -604,14 +444,11 @@ class CelestialBodyPainter {
       final flareProgress = flareStartTime / flareLifetime;
 
       // Use flare index as seed for consistent positioning during its lifetime
-      final flareRandom = math.Random(
-        RenderingConstants.sunspotSeed + flareIndex * 123,
-      );
+      final flareRandom = math.Random(RenderingConstants.sunspotSeed + flareIndex * 123);
 
       // Choose flare origin (prefer sunspot areas)
       Offset flareOrigin;
-      final nearSunspot =
-          flareRandom.nextDouble() < 0.75; // 75% chance near sunspot
+      final nearSunspot = flareRandom.nextDouble() < 0.75; // 75% chance near sunspot
 
       if (nearSunspot && sunspotPositions.isNotEmpty) {
         // Place flare near a random sunspot
@@ -630,10 +467,7 @@ class CelestialBodyPainter {
         // Ensure flare origin is still within sun's surface
         final distanceFromCenter = (flareOrigin - center).distance;
         if (distanceFromCenter > radius * 0.9) {
-          final angleToCenter = math.atan2(
-            center.dy - flareOrigin.dy,
-            center.dx - flareOrigin.dx,
-          );
+          final angleToCenter = math.atan2(center.dy - flareOrigin.dy, center.dx - flareOrigin.dx);
           flareOrigin = Offset(
             center.dx + radius * 0.9 * math.cos(angleToCenter + math.pi),
             center.dy + radius * 0.9 * math.sin(angleToCenter + math.pi),
@@ -642,10 +476,7 @@ class CelestialBodyPainter {
       } else {
         // Random position on sun's surface
         final angle = flareRandom.nextDouble() * 2 * math.pi;
-        flareOrigin = Offset(
-          center.dx + radius * 0.9 * math.cos(angle),
-          center.dy + radius * 0.9 * math.sin(angle),
-        );
+        flareOrigin = Offset(center.dx + radius * 0.9 * math.cos(angle), center.dy + radius * 0.9 * math.sin(angle));
       }
 
       // Animate flare emergence and fade
@@ -655,28 +486,20 @@ class CelestialBodyPainter {
       if (flareProgress < 0.3) {
         // Phase 1: Rapid emergence (0-30% of lifetime)
         final emergenceProgress = flareProgress / 0.3;
-        final easeOut = math.sin(
-          emergenceProgress * math.pi * 0.5,
-        ); // Ease out curve
-        animatedLength =
-            easeOut * radius * (0.6 + flareRandom.nextDouble() * 0.8);
+        final easeOut = math.sin(emergenceProgress * math.pi * 0.5); // Ease out curve
+        animatedLength = easeOut * radius * (0.6 + flareRandom.nextDouble() * 0.8);
         animatedIntensity = easeOut * (0.8 + flareRandom.nextDouble() * 0.2);
       } else if (flareProgress < 0.7) {
         // Phase 2: Peak intensity (30-70% of lifetime)
         final peakProgress = (flareProgress - 0.3) / 0.4;
-        final intensity =
-            0.9 +
-            math.sin(peakProgress * math.pi * 2) * 0.1; // Subtle fluctuation
+        final intensity = 0.9 + math.sin(peakProgress * math.pi * 2) * 0.1; // Subtle fluctuation
         animatedLength = radius * (0.6 + flareRandom.nextDouble() * 0.8);
         animatedIntensity = intensity * (0.8 + flareRandom.nextDouble() * 0.2);
       } else {
         // Phase 3: Fade out (70-100% of lifetime)
         final fadeProgress = (flareProgress - 0.7) / 0.3;
-        final fadeEase = math.cos(
-          fadeProgress * math.pi * 0.5,
-        ); // Ease in curve
-        animatedLength =
-            fadeEase * radius * (0.6 + flareRandom.nextDouble() * 0.8);
+        final fadeEase = math.cos(fadeProgress * math.pi * 0.5); // Ease in curve
+        animatedLength = fadeEase * radius * (0.6 + flareRandom.nextDouble() * 0.8);
         animatedIntensity = fadeEase * (0.8 + flareRandom.nextDouble() * 0.2);
       }
 
@@ -690,40 +513,21 @@ class CelestialBodyPainter {
       final isHorseshoeLoop = flareRandom.nextDouble() < 0.4;
 
       // Calculate flare direction (outward from sun center with slight variation)
-      final angleToCenter = math.atan2(
-        flareOrigin.dy - center.dy,
-        flareOrigin.dx - center.dx,
-      );
-      final outwardAngle =
-          angleToCenter + (flareRandom.nextDouble() - 0.5) * 0.15;
+      final angleToCenter = math.atan2(flareOrigin.dy - center.dy, flareOrigin.dx - center.dx);
+      final outwardAngle = angleToCenter + (flareRandom.nextDouble() - 0.5) * 0.15;
 
       late Path path;
 
       if (isHorseshoeLoop) {
         // Create horseshoe-shaped magnetic field loop that returns to sun
-        path = _createHorseshoeFlare(
-          flareOrigin,
-          center,
-          radius,
-          animatedLength,
-          outwardAngle,
-          flareRandom,
-        );
+        path = _createHorseshoeFlare(flareOrigin, center, radius, animatedLength, outwardAngle, flareRandom);
       } else {
         // Create outward arching flare (existing behavior)
-        final flareEndX =
-            flareOrigin.dx + animatedLength * math.cos(outwardAngle);
-        final flareEndY =
-            flareOrigin.dy + animatedLength * math.sin(outwardAngle);
+        final flareEndX = flareOrigin.dx + animatedLength * math.cos(outwardAngle);
+        final flareEndY = flareOrigin.dy + animatedLength * math.sin(outwardAngle);
         final flareEnd = Offset(flareEndX, flareEndY);
 
-        path = _createArchingFlare(
-          flareOrigin,
-          flareEnd,
-          animatedLength,
-          outwardAngle,
-          flareRandom,
-        );
+        path = _createArchingFlare(flareOrigin, flareEnd, animatedLength, outwardAngle, flareRandom);
       }
 
       // Create gradient with animated intensity
@@ -731,15 +535,9 @@ class CelestialBodyPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          AppColors.coronaYellow.withValues(
-            alpha: animatedIntensity * RenderingConstants.sunFlareAlphaCenter,
-          ),
-          AppColors.coronaOrange.withValues(
-            alpha: animatedIntensity * RenderingConstants.sunFlareAlphaMid,
-          ),
-          AppColors.accretionDiskRed.withValues(
-            alpha: animatedIntensity * RenderingConstants.sunFlareAlphaEdge,
-          ),
+          AppColors.coronaYellow.withValues(alpha: animatedIntensity * RenderingConstants.sunFlareAlphaCenter),
+          AppColors.coronaOrange.withValues(alpha: animatedIntensity * RenderingConstants.sunFlareAlphaMid),
+          AppColors.accretionDiskRed.withValues(alpha: animatedIntensity * RenderingConstants.sunFlareAlphaEdge),
           AppColors.transparentColor,
         ],
         stops: const [0.0, 0.3, 0.7, 1.0],
@@ -765,9 +563,7 @@ class CelestialBodyPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = flareWidth * 0.3
         ..strokeCap = StrokeCap.round
-        ..color = AppColors.starGlowWhite.withValues(
-          alpha: animatedIntensity * RenderingConstants.sunFlareBaseAlpha,
-        );
+        ..color = AppColors.starGlowWhite.withValues(alpha: animatedIntensity * RenderingConstants.sunFlareBaseAlpha);
 
       canvas.drawPath(path, corePaint);
 
@@ -776,9 +572,7 @@ class CelestialBodyPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = flareWidth * 1.5
         ..strokeCap = StrokeCap.round
-        ..color = AppColors.coronaYellow.withValues(
-          alpha: animatedIntensity * RenderingConstants.sunFlareRingAlpha,
-        );
+        ..color = AppColors.coronaYellow.withValues(alpha: animatedIntensity * RenderingConstants.sunFlareRingAlpha);
 
       canvas.drawPath(path, glowPaint);
     }
@@ -797,14 +591,11 @@ class CelestialBodyPainter {
     path.moveTo(flareOrigin.dx, flareOrigin.dy);
 
     // Calculate the arch height for the loop (higher than regular arches)
-    final archHeight =
-        flareLength * (0.5 + random.nextDouble() * 0.4); // 50-90% of length
+    final archHeight = flareLength * (0.5 + random.nextDouble() * 0.4); // 50-90% of length
 
     // Find a secondary point on the sun's surface for the flare to reconnect
     // Offset from the original angle to create loop span
-    final loopSpanAngle =
-        (0.3 + random.nextDouble() * 0.6) *
-        (random.nextBool() ? 1 : -1); // 0.3-0.9 radians span
+    final loopSpanAngle = (0.3 + random.nextDouble() * 0.6) * (random.nextBool() ? 1 : -1); // 0.3-0.9 radians span
     final reconnectAngle = outwardAngle + loopSpanAngle;
     final reconnectPoint = Offset(
       sunCenter.dx + sunRadius * 0.9 * math.cos(reconnectAngle),
@@ -817,14 +608,8 @@ class CelestialBodyPainter {
     final perpAngle = outwardAngle + math.pi * 0.5;
 
     // First control point: rise from surface
-    final ctrl1X =
-        flareOrigin.dx +
-        (flareLength * 0.4) * directionX +
-        archHeight * 0.6 * math.cos(perpAngle);
-    final ctrl1Y =
-        flareOrigin.dy +
-        (flareLength * 0.4) * directionY +
-        archHeight * 0.6 * math.sin(perpAngle);
+    final ctrl1X = flareOrigin.dx + (flareLength * 0.4) * directionX + archHeight * 0.6 * math.cos(perpAngle);
+    final ctrl1Y = flareOrigin.dy + (flareLength * 0.4) * directionY + archHeight * 0.6 * math.sin(perpAngle);
 
     // Second control point: peak of the arch
     final midX = (flareOrigin.dx + reconnectPoint.dx) * 0.5;
@@ -833,18 +618,12 @@ class CelestialBodyPainter {
     final ctrl2Y = midY + archHeight * math.sin(perpAngle);
 
     // Third control point: descent toward reconnection
-    final reconnectDirectionX = math.cos(
-      reconnectAngle + math.pi,
-    ); // Inward direction
+    final reconnectDirectionX = math.cos(reconnectAngle + math.pi); // Inward direction
     final reconnectDirectionY = math.sin(reconnectAngle + math.pi);
     final ctrl3X =
-        reconnectPoint.dx +
-        (flareLength * 0.4) * reconnectDirectionX +
-        archHeight * 0.6 * math.cos(perpAngle);
+        reconnectPoint.dx + (flareLength * 0.4) * reconnectDirectionX + archHeight * 0.6 * math.cos(perpAngle);
     final ctrl3Y =
-        reconnectPoint.dy +
-        (flareLength * 0.4) * reconnectDirectionY +
-        archHeight * 0.6 * math.sin(perpAngle);
+        reconnectPoint.dy + (flareLength * 0.4) * reconnectDirectionY + archHeight * 0.6 * math.sin(perpAngle);
 
     // Create smooth horseshoe curve using multiple cubic segments
     path.cubicTo(
@@ -855,14 +634,7 @@ class CelestialBodyPainter {
       midX + archHeight * 0.5 * math.cos(perpAngle),
       midY + archHeight * 0.5 * math.sin(perpAngle),
     );
-    path.cubicTo(
-      ctrl2X,
-      ctrl2Y,
-      ctrl3X,
-      ctrl3Y,
-      reconnectPoint.dx,
-      reconnectPoint.dy,
-    );
+    path.cubicTo(ctrl2X, ctrl2Y, ctrl3X, ctrl3Y, reconnectPoint.dx, reconnectPoint.dy);
 
     return path;
   }
@@ -879,8 +651,7 @@ class CelestialBodyPainter {
     path.moveTo(flareOrigin.dx, flareOrigin.dy);
 
     // Calculate arch height based on flare length
-    final archHeight =
-        flareLength * (0.3 + random.nextDouble() * 0.4); // 30-70% of length
+    final archHeight = flareLength * (0.3 + random.nextDouble() * 0.4); // 30-70% of length
 
     // Create realistic magnetic field arch
     final directionX = math.cos(outwardAngle);
@@ -888,24 +659,12 @@ class CelestialBodyPainter {
 
     // Calculate arch control points for a dramatic curve
     final perpAngle = outwardAngle + math.pi * 0.5; // 90 degrees from outward
-    final archMidX =
-        flareOrigin.dx +
-        (flareLength * 0.6) * directionX +
-        archHeight * math.cos(perpAngle);
-    final archMidY =
-        flareOrigin.dy +
-        (flareLength * 0.6) * directionY +
-        archHeight * math.sin(perpAngle);
+    final archMidX = flareOrigin.dx + (flareLength * 0.6) * directionX + archHeight * math.cos(perpAngle);
+    final archMidY = flareOrigin.dy + (flareLength * 0.6) * directionY + archHeight * math.sin(perpAngle);
 
     // Second control point: curve back toward the original direction
-    final archEndX =
-        flareOrigin.dx +
-        (flareLength * 0.9) * directionX +
-        archHeight * 0.5 * math.cos(perpAngle);
-    final archEndY =
-        flareOrigin.dy +
-        (flareLength * 0.9) * directionY +
-        archHeight * 0.5 * math.sin(perpAngle);
+    final archEndX = flareOrigin.dx + (flareLength * 0.9) * directionX + archHeight * 0.5 * math.cos(perpAngle);
+    final archEndY = flareOrigin.dy + (flareLength * 0.9) * directionY + archHeight * 0.5 * math.sin(perpAngle);
 
     // Create a cubic bezier curve for smooth magnetic field arch
     path.cubicTo(
@@ -931,29 +690,15 @@ class CelestialBodyPainter {
     );
 
     final rect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(
-      center,
-      radius,
-      Paint()..shader = mercuryGlow.createShader(rect),
-    );
+    canvas.drawCircle(center, radius, Paint()..shader = mercuryGlow.createShader(rect));
 
     // Crater details
     final craterPaint = Paint()
-      ..color = AppColors.moonShadow.withValues(
-        alpha: AppTypography.opacityHigh,
-      )
+      ..color = AppColors.moonShadow.withValues(alpha: AppTypography.opacityHigh)
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(
-      Offset(center.dx - radius * 0.3, center.dy - radius * 0.2),
-      radius * 0.2,
-      craterPaint,
-    );
-    canvas.drawCircle(
-      Offset(center.dx + radius * 0.4, center.dy + radius * 0.3),
-      radius * 0.15,
-      craterPaint,
-    );
+    canvas.drawCircle(Offset(center.dx - radius * 0.3, center.dy - radius * 0.2), radius * 0.2, craterPaint);
+    canvas.drawCircle(Offset(center.dx + radius * 0.4, center.dy + radius * 0.3), radius * 0.15, craterPaint);
   }
 
   /// Draw Venus with thick atmosphere
@@ -961,28 +706,15 @@ class CelestialBodyPainter {
     // Thick atmosphere glow
     final atmosphereGlow = RadialGradient(
       colors: [
-        AppColors.venusYellow.withValues(
-          alpha: AppTypography.opacityMediumHigh,
-        ), // Bright center
-        AppColors.venusOrangeMiddle.withValues(
-          alpha: AppTypography.opacitySemiTransparent,
-        ), // Orange middle
-        AppColors.venusOuterGlow.withValues(
-          alpha: AppTypography.opacityVeryFaint,
-        ), // Outer glow
+        AppColors.venusYellow.withValues(alpha: AppTypography.opacityMediumHigh), // Bright center
+        AppColors.venusOrangeMiddle.withValues(alpha: AppTypography.opacitySemiTransparent), // Orange middle
+        AppColors.venusOuterGlow.withValues(alpha: AppTypography.opacityVeryFaint), // Outer glow
         AppColors.transparentColor,
       ],
     );
 
-    final atmosphereRect = Rect.fromCircle(
-      center: center,
-      radius: radius * 2.0,
-    );
-    canvas.drawCircle(
-      center,
-      radius * 2.0,
-      Paint()..shader = atmosphereGlow.createShader(atmosphereRect),
-    );
+    final atmosphereRect = Rect.fromCircle(center: center, radius: radius * 2.0);
+    canvas.drawCircle(center, radius * 2.0, Paint()..shader = atmosphereGlow.createShader(atmosphereRect));
 
     // Planet surface
     final surfaceGlow = RadialGradient(
@@ -993,11 +725,7 @@ class CelestialBodyPainter {
     );
 
     final surfaceRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(
-      center,
-      radius,
-      Paint()..shader = surfaceGlow.createShader(surfaceRect),
-    );
+    canvas.drawCircle(center, radius, Paint()..shader = surfaceGlow.createShader(surfaceRect));
   }
 
   /// Draw Earth with continents and atmosphere
@@ -1005,29 +733,16 @@ class CelestialBodyPainter {
     // Thin blue atmosphere
     final atmosphereGlow = RadialGradient(
       colors: [
-        AppColors.earthSkyBlue.withValues(
-          alpha: AppTypography.opacityFaint,
-        ), // Sky blue
+        AppColors.earthSkyBlue.withValues(alpha: AppTypography.opacityFaint), // Sky blue
         AppColors.transparentColor,
       ],
     );
 
-    final atmosphereRect = Rect.fromCircle(
-      center: center,
-      radius: radius * 1.5,
-    );
-    canvas.drawCircle(
-      center,
-      radius * 1.5,
-      Paint()..shader = atmosphereGlow.createShader(atmosphereRect),
-    );
+    final atmosphereRect = Rect.fromCircle(center: center, radius: radius * 1.5);
+    canvas.drawCircle(center, radius * 1.5, Paint()..shader = atmosphereGlow.createShader(atmosphereRect));
 
     // Ocean base
-    canvas.drawCircle(
-      center,
-      radius,
-      Paint()..color = AppColors.earthDeepBlue,
-    ); // Deep blue
+    canvas.drawCircle(center, radius, Paint()..color = AppColors.earthDeepBlue); // Deep blue
 
     // Continental masses
     final continentPaint = Paint()
@@ -1035,20 +750,8 @@ class CelestialBodyPainter {
       ..style = PaintingStyle.fill;
 
     // Simple continent shapes
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius),
-      -0.5,
-      1.2,
-      true,
-      continentPaint,
-    );
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius * 0.8),
-      1.8,
-      0.8,
-      true,
-      continentPaint,
-    );
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -0.5, 1.2, true, continentPaint);
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.8), 1.8, 0.8, true, continentPaint);
   }
 
   /// Draw Mars with polar ice caps
@@ -1056,22 +759,13 @@ class CelestialBodyPainter {
     // Thin atmosphere
     final atmosphereGlow = RadialGradient(
       colors: [
-        AppColors.marsFaintRed.withValues(
-          alpha: AppTypography.opacityVeryFaint,
-        ), // Faint red
+        AppColors.marsFaintRed.withValues(alpha: AppTypography.opacityVeryFaint), // Faint red
         AppColors.transparentColor,
       ],
     );
 
-    final atmosphereRect = Rect.fromCircle(
-      center: center,
-      radius: radius * 1.3,
-    );
-    canvas.drawCircle(
-      center,
-      radius * 1.3,
-      Paint()..shader = atmosphereGlow.createShader(atmosphereRect),
-    );
+    final atmosphereRect = Rect.fromCircle(center: center, radius: radius * 1.3);
+    canvas.drawCircle(center, radius * 1.3, Paint()..shader = atmosphereGlow.createShader(atmosphereRect));
 
     // Planet surface
     final surfaceGlow = RadialGradient(
@@ -1082,27 +776,12 @@ class CelestialBodyPainter {
     );
 
     final surfaceRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(
-      center,
-      radius,
-      Paint()..shader = surfaceGlow.createShader(surfaceRect),
-    );
+    canvas.drawCircle(center, radius, Paint()..shader = surfaceGlow.createShader(surfaceRect));
 
     // Polar ice caps
-    final icePaint = Paint()
-      ..color = AppColors.marsIceWhite.withValues(
-        alpha: AppTypography.opacityVeryHigh,
-      );
-    canvas.drawCircle(
-      Offset(center.dx, center.dy - radius * 0.7),
-      radius * 0.3,
-      icePaint,
-    );
-    canvas.drawCircle(
-      Offset(center.dx, center.dy + radius * 0.7),
-      radius * 0.25,
-      icePaint,
-    );
+    final icePaint = Paint()..color = AppColors.marsIceWhite.withValues(alpha: AppTypography.opacityVeryHigh);
+    canvas.drawCircle(Offset(center.dx, center.dy - radius * 0.7), radius * 0.3, icePaint);
+    canvas.drawCircle(Offset(center.dx, center.dy + radius * 0.7), radius * 0.25, icePaint);
   }
 
   /// Draw Jupiter with Great Red Spot and bands
@@ -1110,68 +789,33 @@ class CelestialBodyPainter {
     // Gas giant glow
     final giantGlow = RadialGradient(
       colors: [
-        AppColors.jupiterCreamCenter.withValues(
-          alpha: AppTypography.opacityVeryHigh,
-        ), // Cream center
-        AppColors.jupiterGoldEdge.withValues(
-          alpha: AppTypography.opacitySemiTransparent,
-        ), // Gold edge
+        AppColors.jupiterCreamCenter.withValues(alpha: AppTypography.opacityVeryHigh), // Cream center
+        AppColors.jupiterGoldEdge.withValues(alpha: AppTypography.opacitySemiTransparent), // Gold edge
         AppColors.transparentColor,
       ],
     );
 
     final glowRect = Rect.fromCircle(center: center, radius: radius * 2.0);
-    canvas.drawCircle(
-      center,
-      radius * 2.0,
-      Paint()..shader = giantGlow.createShader(glowRect),
-    );
+    canvas.drawCircle(center, radius * 2.0, Paint()..shader = giantGlow.createShader(glowRect));
 
     // Planet base
-    canvas.drawCircle(
-      center,
-      radius,
-      Paint()..color = AppColors.jupiterSurface,
-    );
+    canvas.drawCircle(center, radius, Paint()..color = AppColors.jupiterSurface);
 
     // Atmospheric bands
     final bandPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = radius * 0.1;
 
-    bandPaint.color = AppColors.jupiterBandGold.withValues(
-      alpha: AppTypography.opacityHigh,
-    );
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius * 0.6),
-      0,
-      6.28,
-      false,
-      bandPaint,
-    );
+    bandPaint.color = AppColors.jupiterBandGold.withValues(alpha: AppTypography.opacityHigh);
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.6), 0, 6.28, false, bandPaint);
 
-    bandPaint.color = AppColors.jupiterBandBrown.withValues(
-      alpha: AppTypography.opacityMedium,
-    );
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius * 0.8),
-      0,
-      6.28,
-      false,
-      bandPaint,
-    );
+    bandPaint.color = AppColors.jupiterBandBrown.withValues(alpha: AppTypography.opacityMedium);
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.8), 0, 6.28, false, bandPaint);
 
     // Great Red Spot
-    final redSpotPaint = Paint()
-      ..color = AppColors.jupiterRedSpot.withValues(
-        alpha: AppTypography.opacityVeryHigh,
-      );
+    final redSpotPaint = Paint()..color = AppColors.jupiterRedSpot.withValues(alpha: AppTypography.opacityVeryHigh);
     canvas.drawOval(
-      Rect.fromCenter(
-        center: Offset(center.dx + radius * 0.3, center.dy),
-        width: radius * 0.4,
-        height: radius * 0.2,
-      ),
+      Rect.fromCenter(center: Offset(center.dx + radius * 0.3, center.dy), width: radius * 0.4, height: radius * 0.2),
       redSpotPaint,
     );
   }
@@ -1195,45 +839,20 @@ class CelestialBodyPainter {
     );
 
     final planetRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(
-      center,
-      radius,
-      Paint()..shader = saturnGlow.createShader(planetRect),
-    );
+    canvas.drawCircle(center, radius, Paint()..shader = saturnGlow.createShader(planetRect));
 
     // Add subtle bands to Saturn's atmosphere
     final bandPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = radius * 0.08
-      ..color = AppColors.saturnRingColor.withValues(
-        alpha: AppTypography.opacityFaint,
-      );
+      ..color = AppColors.saturnRingColor.withValues(alpha: AppTypography.opacityFaint);
 
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius * 0.6),
-      0,
-      6.28,
-      false,
-      bandPaint,
-    );
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius * 0.8),
-      0,
-      6.28,
-      false,
-      bandPaint,
-    );
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.6), 0, 6.28, false, bandPaint);
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.8), 0, 6.28, false, bandPaint);
 
     // Draw beautiful 3D inclined ring system if we have the view matrix
     if (viewMatrix != null && canvasSize != null) {
-      _drawSaturnRings(
-        canvas,
-        center,
-        radius,
-        body.position,
-        viewMatrix,
-        canvasSize,
-      );
+      _drawSaturnRings(canvas, center, radius, body.position, viewMatrix, canvasSize);
     } else {
       // Fallback to beautiful circular rings
       _drawSaturnRingsFallback(canvas, center, radius);
@@ -1259,22 +878,11 @@ class CelestialBodyPainter {
     );
 
     final planetRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(
-      center,
-      radius,
-      Paint()..shader = uranusGlow.createShader(planetRect),
-    );
+    canvas.drawCircle(center, radius, Paint()..shader = uranusGlow.createShader(planetRect));
 
     // Draw beautiful 3D inclined ring system if we have the view matrix
     if (viewMatrix != null && canvasSize != null) {
-      _drawUranusRings(
-        canvas,
-        center,
-        radius,
-        body.position,
-        viewMatrix,
-        canvasSize,
-      );
+      _drawUranusRings(canvas, center, radius, body.position, viewMatrix, canvasSize);
     } else {
       // Fallback to beautiful vertical rings
       _drawUranusRingsFallback(canvas, center, radius);
@@ -1292,17 +900,10 @@ class CelestialBodyPainter {
     );
 
     final planetRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawCircle(
-      center,
-      radius,
-      Paint()..shader = neptuneGlow.createShader(planetRect),
-    );
+    canvas.drawCircle(center, radius, Paint()..shader = neptuneGlow.createShader(planetRect));
 
     // Great Dark Spot
-    final darkSpotPaint = Paint()
-      ..color = AppColors.neptuneDarkSpot.withValues(
-        alpha: AppTypography.opacityHigh,
-      );
+    final darkSpotPaint = Paint()..color = AppColors.neptuneDarkSpot.withValues(alpha: AppTypography.opacityHigh);
     canvas.drawOval(
       Rect.fromCenter(
         center: Offset(center.dx - radius * 0.2, center.dy + radius * 0.1),
@@ -1316,17 +917,9 @@ class CelestialBodyPainter {
     final bandPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = radius * 0.05
-      ..color = AppColors.neptuneWindBand.withValues(
-        alpha: AppTypography.opacityMedium,
-      );
+      ..color = AppColors.neptuneWindBand.withValues(alpha: AppTypography.opacityMedium);
 
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius * 0.7),
-      0,
-      6.28,
-      false,
-      bandPaint,
-    );
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius * 0.7), 0, 6.28, false, bandPaint);
   }
 
   /// Draw Saturn's beautiful ring system in 3D
@@ -1342,37 +935,16 @@ class CelestialBodyPainter {
     // Real Saturn rings are much closer to the planet than currently shown
     final ringData = [
       // [innerRadius, outerRadius, color, opacity] - CORRECTED realistic proportions
-      [
-        1.11,
-        1.16,
-        AppColors.saturnDRing,
-        0.3,
-      ], // D Ring - Very close inner ring
+      [1.11, 1.16, AppColors.saturnDRing, 0.3], // D Ring - Very close inner ring
       [1.23, 1.45, AppColors.saturnCRing, 0.5], // C Ring - Crepe ring
-      [
-        1.53,
-        1.88,
-        AppColors.saturnBRing,
-        0.9,
-      ], // B Ring - Main bright ring (much closer)
+      [1.53, 1.88, AppColors.saturnBRing, 0.9], // B Ring - Main bright ring (much closer)
       // Cassini Division gap here (1.88 - 1.95)
-      [
-        1.95,
-        2.27,
-        AppColors.saturnARing,
-        0.8,
-      ], // A Ring - Outer main ring (closer)
-      [
-        2.27,
-        2.32,
-        AppColors.saturnFRing,
-        0.4,
-      ], // F Ring - Very narrow shepherd ring
+      [1.95, 2.27, AppColors.saturnARing, 0.8], // A Ring - Outer main ring (closer)
+      [2.27, 2.32, AppColors.saturnFRing, 0.4], // F Ring - Very narrow shepherd ring
     ];
 
     const int numPoints = 128; // High detail for smooth rings
-    final inclinationRadians =
-        26.7 * math.pi / 180.0; // Saturn's ring inclination
+    final inclinationRadians = 26.7 * math.pi / 180.0; // Saturn's ring inclination
 
     for (final ring in ringData) {
       final innerRadius = radius * (ring[0] as double);
@@ -1399,11 +971,7 @@ class CelestialBodyPainter {
           bodyPosition.z + innerRotatedZ,
         );
 
-        final innerScreenPos = PainterUtils.project(
-          viewMatrix,
-          innerWorldPos,
-          canvasSize,
-        );
+        final innerScreenPos = PainterUtils.project(viewMatrix, innerWorldPos, canvasSize);
 
         // Outer ring edge
         final outerLocalX = outerRadius * math.cos(angle);
@@ -1415,11 +983,7 @@ class CelestialBodyPainter {
           bodyPosition.y + outerRotatedY,
           bodyPosition.z + outerRotatedZ,
         );
-        final outerScreenPos = PainterUtils.project(
-          viewMatrix,
-          outerWorldPos,
-          canvasSize,
-        );
+        final outerScreenPos = PainterUtils.project(viewMatrix, outerWorldPos, canvasSize);
 
         if (innerScreenPos != null && outerScreenPos != null) {
           innerPoints.add(innerScreenPos);
@@ -1456,19 +1020,14 @@ class CelestialBodyPainter {
 
         // Add subtle ring texture with lighter streaks
         // Only draw texture lines when not zoomed in too close to avoid visual artifacts
-        final avgInnerDistance = _calculateAverageDistanceFromCenter(
-          innerPoints,
-          canvasSize,
-        );
+        final avgInnerDistance = _calculateAverageDistanceFromCenter(innerPoints, canvasSize);
 
         if (avgInnerDistance > RenderingConstants.ringTextureMinDistance) {
           // Only draw texture when ring is not too close to camera
           final texturePaint = Paint()
             ..style = PaintingStyle.stroke
             ..strokeWidth = RenderingConstants.ringTextureStrokeWidth
-            ..color = color.withValues(
-              alpha: opacity * RenderingConstants.ringTextureAlpha,
-            );
+            ..color = color.withValues(alpha: opacity * RenderingConstants.ringTextureAlpha);
 
           // Draw some radial texture lines for ring particle effect
           for (int i = 0; i < numPoints; i += 8) {
@@ -1482,22 +1041,13 @@ class CelestialBodyPainter {
   }
 
   /// Draw Saturn's beautiful ring system fallback (2D)
-  static void _drawSaturnRingsFallback(
-    Canvas canvas,
-    Offset center,
-    double radius,
-  ) {
+  static void _drawSaturnRingsFallback(Canvas canvas, Offset center, double radius) {
     // Saturn's ring system with REALISTIC proportions - rings much closer to planet
     final ringData = [
       // [innerRadius, outerRadius, color, opacity] - CORRECTED realistic proportions
       [1.11, 1.16, AppColors.saturnDRing, 0.3], // D Ring
       [1.23, 1.45, AppColors.saturnCRing, 0.5], // C Ring
-      [
-        1.53,
-        1.88,
-        AppColors.saturnBRing,
-        0.9,
-      ], // B Ring (main ring much closer)
+      [1.53, 1.88, AppColors.saturnBRing, 0.9], // B Ring (main ring much closer)
       // Cassini Division gap (1.88 - 1.95)
       [1.95, 2.27, AppColors.saturnARing, 0.8], // A Ring (closer)
       [2.27, 2.32, AppColors.saturnFRing, 0.4], // F Ring (very narrow)
@@ -1533,9 +1083,7 @@ class CelestialBodyPainter {
         final texturePaint = Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = RenderingConstants.ringTextureStrokeWidth
-          ..color = color.withValues(
-            alpha: opacity * RenderingConstants.ringGlowAlpha,
-          );
+          ..color = color.withValues(alpha: opacity * RenderingConstants.ringGlowAlpha);
 
         const int textureLines = 32;
         for (int i = 0; i < textureLines; i++) {
@@ -1545,11 +1093,7 @@ class CelestialBodyPainter {
           final outerX = center.dx + outerRadius * math.cos(angle);
           final outerY = center.dy + outerRadius * math.sin(angle);
 
-          canvas.drawLine(
-            Offset(innerX, innerY),
-            Offset(outerX, outerY),
-            texturePaint,
-          );
+          canvas.drawLine(Offset(innerX, innerY), Offset(outerX, outerY), texturePaint);
         }
       }
     }
@@ -1574,8 +1118,7 @@ class CelestialBodyPainter {
     ];
 
     const int numPoints = 48; // Fewer points needed for simple rings
-    final inclinationRadians =
-        97.8 * math.pi / 180.0; // Uranus is tilted on its side!
+    final inclinationRadians = 97.8 * math.pi / 180.0; // Uranus is tilted on its side!
 
     final ringPaint = Paint()
       ..style = PaintingStyle.stroke
@@ -1600,16 +1143,8 @@ class CelestialBodyPainter {
         final rotatedY = localZ * math.sin(inclinationRadians);
         final rotatedZ = localZ * math.cos(inclinationRadians);
 
-        final worldPos = vm.Vector3(
-          bodyPosition.x + localX,
-          bodyPosition.y + rotatedY,
-          bodyPosition.z + rotatedZ,
-        );
-        final screenPos = PainterUtils.project(
-          viewMatrix,
-          worldPos,
-          canvasSize,
-        );
+        final worldPos = vm.Vector3(bodyPosition.x + localX, bodyPosition.y + rotatedY, bodyPosition.z + rotatedZ);
+        final screenPos = PainterUtils.project(viewMatrix, worldPos, canvasSize);
         if (screenPos != null) {
           ringPoints.add(screenPos);
         }
@@ -1625,11 +1160,7 @@ class CelestialBodyPainter {
   }
 
   /// Draw Uranus's simple ring system fallback (2D)
-  static void _drawUranusRingsFallback(
-    Canvas canvas,
-    Offset center,
-    double radius,
-  ) {
+  static void _drawUranusRingsFallback(Canvas canvas, Offset center, double radius) {
     // Uranus's very narrow, dark ring system - simple fallback version
     // Just a few thin, dark rings to match astronomical reality
     final ringData = [
@@ -1703,37 +1234,27 @@ class CelestialBodyPainter {
   }
 
   /// Get corona color based on stellar temperature
-  static Color _getCoronaColor(
-    double temperature,
-    bool useRealisticColors, {
-    bool isOuter = false,
-  }) {
+  static Color _getCoronaColor(double temperature, bool useRealisticColors, {bool isOuter = false}) {
     if (!useRealisticColors) {
-      return isOuter
-          ? AppColors.accretionDiskOrange
-          : AppColors.accretionDiskGold;
+      return isOuter ? AppColors.accretionDiskOrange : AppColors.accretionDiskGold;
     }
 
     // Adapt corona color to stellar temperature
     if (temperature > 6000) {
       // Hot stars (F, A, B, O types) - bluish corona
-      return isOuter
-          ? AppColors.stellarFType.withValues(alpha: 0.8)
-          : AppColors.stellarAType;
+      return isOuter ? AppColors.stellarFType.withValues(alpha: AppTypography.opacityVeryHigh) : AppColors.stellarAType;
     } else if (temperature > 5000) {
       // Sun-like stars (G type) - yellowish corona
-      return isOuter
-          ? AppColors.stellarGType.withValues(alpha: 0.8)
-          : AppColors.coronaGold;
+      return isOuter ? AppColors.stellarGType.withValues(alpha: AppTypography.opacityVeryHigh) : AppColors.coronaGold;
     } else if (temperature > 3500) {
       // Cool stars (K type) - orange corona
       return isOuter
-          ? AppColors.stellarKType.withValues(alpha: 0.8)
+          ? AppColors.stellarKType.withValues(alpha: AppTypography.opacityVeryHigh)
           : AppColors.accretionDiskOrange;
     } else {
       // Very cool stars (M type) - reddish corona
       return isOuter
-          ? AppColors.stellarMType.withValues(alpha: 0.8)
+          ? AppColors.stellarMType.withValues(alpha: AppTypography.opacityVeryHigh)
           : AppColors.accretionDiskRed;
     }
   }
@@ -1748,10 +1269,7 @@ class CelestialBodyPainter {
   }
 
   /// Get sunspot penumbra color based on stellar temperature and surface color
-  static Color _getSunspotPenumbraColor(
-    double temperature,
-    Color stellarColor,
-  ) {
+  static Color _getSunspotPenumbraColor(double temperature, Color stellarColor) {
     // Sunspot penumbra should be a darker, cooler version of the stellar surface
     final hsv = HSVColor.fromColor(stellarColor);
 
@@ -1762,10 +1280,10 @@ class CelestialBodyPainter {
       return hsv.withValue(newValue).withSaturation(newSaturation).toColor();
     } else if (temperature > 5000) {
       // Sun-like stars (G type) - golden penumbra
-      return AppColors.coronaGold.withValues(alpha: 0.8);
+      return AppColors.coronaGold.withValues(alpha: AppTypography.opacityVeryHigh);
     } else if (temperature > 3500) {
       // Cool stars (K type) - orange penumbra
-      return AppColors.coronaOrange.withValues(alpha: 0.8);
+      return AppColors.coronaOrange.withValues(alpha: AppTypography.opacityVeryHigh);
     } else {
       // Very cool stars (M type) - reddish penumbra
       final newValue = (hsv.value * 0.5).clamp(0.0, 1.0);
@@ -1786,7 +1304,7 @@ class CelestialBodyPainter {
       return hsv.withValue(newValue).withSaturation(newSaturation).toColor();
     } else if (temperature > 5000) {
       // Sun-like stars - black with slight golden tint
-      return AppColors.uiBlack.withValues(alpha: 0.95);
+      return AppColors.uiBlack.withValues(alpha: AppTypography.opacityAlmostOpaque);
     } else if (temperature > 3500) {
       // Cool stars - dark reddish-brown umbra
       final newValue = (hsv.value * 0.2).clamp(0.0, 1.0);

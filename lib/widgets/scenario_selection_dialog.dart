@@ -42,8 +42,12 @@ class ScenarioSelectionDialog extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.uiCyanAccent.withValues(alpha: 0.15),
-                    AppColors.uiCyanAccent.withValues(alpha: 0.05),
+                    AppColors.uiCyanAccent.withValues(
+                      alpha: AppTypography.opacityMidFade,
+                    ),
+                    AppColors.uiCyanAccent.withValues(
+                      alpha: AppTypography.opacityBarely,
+                    ),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,

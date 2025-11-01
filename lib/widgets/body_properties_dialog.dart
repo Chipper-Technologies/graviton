@@ -12,12 +12,7 @@ class BodyPropertiesDialog extends StatefulWidget {
   final int bodyIndex;
   final Function(Body) onBodyChanged;
 
-  const BodyPropertiesDialog({
-    super.key,
-    required this.body,
-    required this.bodyIndex,
-    required this.onBodyChanged,
-  });
+  const BodyPropertiesDialog({super.key, required this.body, required this.bodyIndex, required this.onBodyChanged});
 
   @override
   State<BodyPropertiesDialog> createState() => _BodyPropertiesDialogState();
@@ -53,9 +48,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
     final originalMass = widget.body.mass;
     _mass = originalMass.clamp(_massMin, _massMax);
     if (_mass != originalMass) {
-      debugPrint(
-        'Warning: Body ${widget.body.name} mass $originalMass clamped to $_mass (range: $_massMin-$_massMax)',
-      );
+      debugPrint('Warning: Body ${widget.body.name} mass $originalMass clamped to $_mass (range: $_massMin-$_massMax)');
     }
 
     final originalRadius = widget.body.radius;
@@ -70,10 +63,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
     _bodyType = widget.body.bodyType;
 
     final originalLuminosity = widget.body.stellarLuminosity;
-    _stellarLuminosity = originalLuminosity.clamp(
-      _luminosityMin,
-      _luminosityMax,
-    );
+    _stellarLuminosity = originalLuminosity.clamp(_luminosityMin, _luminosityMax);
     if (_stellarLuminosity != originalLuminosity) {
       debugPrint(
         'Warning: Body ${widget.body.name} luminosity $originalLuminosity clamped to $_stellarLuminosity (range: $_luminosityMin-$_luminosityMax)',
@@ -121,9 +111,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
     final l10n = AppLocalizations.of(context)!;
 
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTypography.radiusXLarge)),
       child: Container(
         constraints: AppConstraints.dialogMedium,
         child: Column(
@@ -134,8 +122,8 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.uiOrangeAccent.withValues(alpha: 0.15),
-                    AppColors.uiOrangeAccent.withValues(alpha: 0.05),
+                    AppColors.uiOrangeAccent.withValues(alpha: AppTypography.opacityMidFade),
+                    AppColors.uiOrangeAccent.withValues(alpha: AppTypography.opacityBarely),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -150,10 +138,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                 children: [
                   Icon(Icons.tune, color: AppColors.uiOrangeAccent, size: 28),
                   SizedBox(width: AppTypography.spacingMedium),
-                  Text(
-                    l10n.bodyPropertiesTitle,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
+                  Text(l10n.bodyPropertiesTitle, style: Theme.of(context).textTheme.headlineSmall),
                   const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.close),
@@ -188,7 +173,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                         ),
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTypography.spacingLarge),
 
                       // Body Type
                       _buildSectionTitle(l10n.bodyPropertiesType),
@@ -206,39 +191,30 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                         style: TextStyle(color: AppColors.uiWhite),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: AppColors.uiBlack.withValues(
-                            alpha: AppTypography.opacityFaint,
-                          ),
+                          fillColor: AppColors.uiBlack.withValues(alpha: AppTypography.opacityFaint),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                              AppTypography.radiusMedium,
-                            ),
+                            borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
                             borderSide: BorderSide(
-                              color: AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacityFaint,
-                              ),
+                              color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityFaint),
                             ),
                           ),
                         ),
                         items: BodyType.values.map((BodyType type) {
                           return DropdownMenuItem<BodyType>(
                             value: type,
-                            child: Text(
-                              type.displayName,
-                              style: TextStyle(color: AppColors.uiWhite),
-                            ),
+                            child: Text(type.displayName, style: TextStyle(color: AppColors.uiWhite)),
                           );
                         }).toList(),
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTypography.spacingLarge),
 
                       // Color
                       _buildSectionTitle(l10n.bodyPropertiesColor),
                       const SizedBox(height: AppTypography.spacingSmall),
                       _buildColorPicker(),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTypography.spacingLarge),
 
                       // Gravity Well Visualization
                       _buildSectionTitle(l10n.gravityWellsLabel),
@@ -246,9 +222,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                         title: Text(
                           l10n.gravityWellsDescription,
                           style: TextStyle(
-                            color: AppColors.uiWhite.withValues(
-                              alpha: AppTypography.opacitySemiTransparent,
-                            ),
+                            color: AppColors.uiWhite.withValues(alpha: AppTypography.opacitySemiTransparent),
                           ),
                         ),
                         value: _showGravityWell,
@@ -340,12 +314,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
   Widget _buildSectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Text(
-        title,
-        style: Theme.of(
-          context,
-        ).textTheme.titleMedium?.copyWith(color: AppColors.sectionTitlePurple),
-      ),
+      child: Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.sectionTitlePurple)),
     );
   }
 
@@ -371,13 +340,14 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
             Text(label, style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTypography.spacingXSmall),
         SizedBox(
           width: double.infinity,
           child: SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              inactiveTrackColor: Theme.of(context).colorScheme.onSurface
-                  .withValues(alpha: AppTypography.opacityVeryFaint),
+              inactiveTrackColor: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: AppTypography.opacityVeryFaint),
               activeTrackColor: Theme.of(context).colorScheme.primary,
             ),
             child: Slider(
@@ -398,50 +368,38 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
     return Wrap(
       spacing: AppTypography.spacingSmall,
       runSpacing: AppTypography.spacingSmall,
-      children:
-          [
-            ...AppColors.basicPrimaries,
-            AppColors.uiWhite,
-            AppColors.basicGrey,
-            AppColors.randomPlanetBrown,
-          ].map((color) {
-            final isSelected = _color == color;
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _color = color;
-                });
-                _updateBody();
-              },
-              child: Container(
-                width:
-                    AppTypography.spacingXXLarge +
-                    AppTypography.spacingSmall, // 32
-                height:
-                    AppTypography.spacingXXLarge +
-                    AppTypography.spacingSmall, // 32
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isSelected
-                        ? AppColors.uiWhite
-                        : AppColors.transparentColor,
-                    width: AppTypography.borderThick,
-                  ),
-                ),
-                child: isSelected
-                    ? Icon(
-                        Icons.check,
-                        color: color.computeLuminance() > 0.5
-                            ? AppColors.uiBlack
-                            : AppColors.uiWhite,
-                        size: AppTypography.iconSizeMedium,
-                      )
-                    : null,
+      children: [...AppColors.basicPrimaries, AppColors.uiWhite, AppColors.basicGrey, AppColors.randomPlanetBrown].map((
+        color,
+      ) {
+        final isSelected = _color == color;
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              _color = color;
+            });
+            _updateBody();
+          },
+          child: Container(
+            width: AppTypography.spacingXXLarge + AppTypography.spacingSmall, // 32
+            height: AppTypography.spacingXXLarge + AppTypography.spacingSmall, // 32
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isSelected ? AppColors.uiWhite : AppColors.transparentColor,
+                width: AppTypography.borderThick,
               ),
-            );
-          }).toList(),
+            ),
+            child: isSelected
+                ? Icon(
+                    Icons.check,
+                    color: color.computeLuminance() > 0.5 ? AppColors.uiBlack : AppColors.uiWhite,
+                    size: AppTypography.iconSizeMedium,
+                  )
+                : null,
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -454,10 +412,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
           children: [
             SizedBox(
               width: AppTypography.spacingXLarge,
-              child: Text(
-                l10n.bodyPropertiesAxisX,
-                style: TextStyle(color: AppColors.uiWhite),
-              ),
+              child: Text(l10n.bodyPropertiesAxisX, style: TextStyle(color: AppColors.uiWhite)),
             ),
             Expanded(
               child: _buildSlider(
@@ -482,10 +437,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
           children: [
             SizedBox(
               width: AppTypography.spacingXLarge,
-              child: Text(
-                l10n.bodyPropertiesAxisY,
-                style: TextStyle(color: AppColors.uiWhite),
-              ),
+              child: Text(l10n.bodyPropertiesAxisY, style: TextStyle(color: AppColors.uiWhite)),
             ),
             Expanded(
               child: _buildSlider(
@@ -510,10 +462,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
           children: [
             SizedBox(
               width: AppTypography.spacingXLarge,
-              child: Text(
-                l10n.bodyPropertiesAxisZ,
-                style: TextStyle(color: AppColors.uiWhite),
-              ),
+              child: Text(l10n.bodyPropertiesAxisZ, style: TextStyle(color: AppColors.uiWhite)),
             ),
             Expanded(
               child: _buildSlider(

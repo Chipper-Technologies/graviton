@@ -87,7 +87,7 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTypography.spacingMedium),
 
               // Centered app name
               Text(
@@ -332,10 +332,13 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
         ),
         const SizedBox(height: 6),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppTypography.spacingSmall,
+            vertical: AppTypography.spacingXSmall,
+          ),
           decoration: BoxDecoration(
             color: badgeColor,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
           ),
           child: Text(
             badgeText,

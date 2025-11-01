@@ -26,6 +26,7 @@ class AppTypography {
   // =============================================================================
 
   /// UI opacity levels for common interface elements
+  static const double opacityBarely = 0.05; // Very subtle effects
   static const double opacityDisabled = 0.1;
   static const double opacityVeryFaint = 0.2;
   static const double opacityFaint = 0.3;
@@ -38,8 +39,10 @@ class AppTypography {
   static const double opacityFull = 1.0;
 
   /// Additional specialized opacity values for visual effects
+  static const double opacitySubtle = 0.1; // Very subtle background color
   static const double opacityMidFade = 0.15; // Between disabled and very faint
   static const double opacityLowMedium = 0.25; // Between very faint and faint
+  static const double opacityAlmostOpaque = 0.95; // Nearly fully opaque
   static const double opacityTransparent = 0.0; // Fully transparent
 
   // =============================================================================
@@ -96,26 +99,16 @@ class AppTypography {
 
   static const TextStyle largeText = TextStyle(fontSize: fontSizeLarge);
 
-  static const TextStyle titleText = TextStyle(
-    fontSize: fontSizeTitle,
-    fontWeight: FontWeight.bold,
-  );
+  static const TextStyle titleText = TextStyle(fontSize: fontSizeTitle, fontWeight: FontWeight.bold);
 
-  static const TextStyle headerText = TextStyle(
-    fontSize: fontSizeHeader,
-    fontWeight: FontWeight.bold,
-  );
+  static const TextStyle headerText = TextStyle(fontSize: fontSizeHeader, fontWeight: FontWeight.bold);
 
   // =============================================================================
   // HELPER METHODS
   // =============================================================================
 
   /// Create a TextStyle with specified color and opacity
-  static TextStyle textWithOpacity(
-    Color color,
-    double opacity, {
-    double? fontSize,
-  }) {
+  static TextStyle textWithOpacity(Color color, double opacity, {double? fontSize}) {
     return TextStyle(
       color: color.withValues(alpha: opacity),
       fontSize: fontSize ?? fontSizeSmall,
@@ -139,11 +132,7 @@ class AppTypography {
   }
 
   /// Create consistent border with opacity
-  static Border createBorder({
-    Color? color,
-    double opacity = opacityVeryFaint,
-    double width = borderThin,
-  }) {
+  static Border createBorder({Color? color, double opacity = opacityVeryFaint, double width = borderThin}) {
     return Border.all(
       color: (color ?? AppColors.uiWhite).withValues(alpha: opacity),
       width: width,

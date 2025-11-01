@@ -37,10 +37,14 @@ class BottomControls extends StatelessWidget {
 
                 // Visual separator
                 Container(
-                  width: 1,
-                  height: 24,
-                  color: AppColors.uiWhite.withValues(alpha: 0.2),
-                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                  width: AppTypography.borderThin,
+                  height: AppTypography.iconSizeXXLarge,
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityVeryFaint,
+                  ),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: AppTypography.spacingSmall,
+                  ),
                 ),
 
                 // Camera controls group
@@ -142,13 +146,17 @@ class BottomControls extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: isActive
-                  ? AppColors.primaryColor.withValues(alpha: 0.2)
+                  ? AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityVeryFaint,
+                    )
                   : AppColors.transparentColor,
               borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
               border: isActive
                   ? Border.all(
-                      color: AppColors.primaryColor.withValues(alpha: 0.4),
-                      width: 1,
+                      color: AppColors.primaryColor.withValues(
+                        alpha: AppTypography.opacitySemiTransparent,
+                      ),
+                      width: AppTypography.borderThin,
                     )
                   : null,
             ),
@@ -160,19 +168,27 @@ class BottomControls extends StatelessWidget {
                   color: isEnabled
                       ? (isActive
                             ? AppColors.primaryColor
-                            : AppColors.uiWhite.withValues(alpha: 0.9))
-                      : AppColors.uiWhite.withValues(alpha: 0.3),
-                  size: 20,
+                            : AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityNearlyOpaque,
+                              ))
+                      : AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityFaint,
+                        ),
+                  size: AppTypography.iconSizeXLarge,
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: AppTypography.spacingXSmall),
                 Text(
                   label,
                   style: TextStyle(
                     color: isEnabled
                         ? (isActive
                               ? AppColors.primaryColor
-                              : AppColors.uiWhite.withValues(alpha: 0.8))
-                        : AppColors.uiWhite.withValues(alpha: 0.3),
+                              : AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacityVeryHigh,
+                                ))
+                        : AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacityFaint,
+                          ),
                     fontSize: AppTypography.fontSizeXSmall,
                     fontWeight: isActive ? FontWeight.w500 : FontWeight.normal,
                   ),
