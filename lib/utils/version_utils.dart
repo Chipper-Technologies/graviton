@@ -96,4 +96,71 @@ class VersionUtils {
 
     return parts.take(3).join('.');
   }
+
+  /// Parse version string into comparable format (handles alpha/beta suffixes)
+  /// Used by services that need to handle non-standard version formats
+  /// Returns list of integers for comparison
+  static List<int> parseVersionForComparison(String version) {
+    return version.split('.').map((part) {
+      // Extract numeric part (ignore any alpha/beta suffixes)
+      final match = RegExp(r'(\d+)').firstMatch(part);
+      return match != null ? int.parse(match.group(1)!) : 0;
+    }).toList();
+  }
+
+  /// Compare two version lists (used by services with custom parsing)
+  /// Returns: -1 if v1 < v2, 0 if equal, 1 if v1 > v2
+  static int compareVersionLists(List<int> v1, List<int> v2) {
+    final maxLength = [v1.length, v2.length].reduce((a, b) => a > b ? a : b);
+
+    for (int i = 0; i < maxLength; i++) {
+      final part1 = i < v1.length ? v1[i] : 0;
+      final part2 = i < v2.length ? v2[i] : 0;
+
+      if (part1 < part2) return -1;
+      if (part1 > part2) return 1;
+    }
+
+    return 0;
+  }
+
+  /// Generate fallback versions for changelog fetching
+  /// For example: from "1.2.3" generates ["1.2.3", "1.2.0", "1.1.0", "1.0.0"]
+  static List<String> generateFallbackVersions(String? currentVersion) {
+    if (currentVersion == null || currentVersion.isEmpty) {
+      return ['1.0.0', '1.1.0', '1.2.0'];
+    }
+
+    final versions = <String>[];
+
+    try {
+      final parsed = parseVersion(currentVersion);
+      final major = parsed['major']!;
+      final minor = parsed['minor']!;
+      final patch = parsed['patch']!;
+
+      // Current exact version
+      versions.add('$major.$minor.$patch');
+
+      // Current minor, patch 0
+      if (patch > 0) {
+        versions.add('$major.$minor.0');
+      }
+
+      // Previous minor versions
+      for (int m = minor - 1; m >= 0 && versions.length < 5; m--) {
+        versions.add('$major.$m.0');
+      }
+
+      // Previous major versions
+      for (int maj = major - 1; maj >= 1 && versions.length < 8; maj--) {
+        versions.add('$maj.0.0');
+      }
+    } catch (e) {
+      // Fallback if parsing fails
+      versions.addAll(['1.0.0', '1.1.0', '1.2.0']);
+    }
+
+    return versions;
+  }
 }

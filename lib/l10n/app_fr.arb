@@ -331,5 +331,12 @@
   "changelogResetMessage": "L'état du journal des modifications a été réinitialisé",
   "changelogDebugTitle": "Journal des modifications (Debug)",
   "changelogNotFoundError": "Aucun journal de modifications trouvé. Ajoutez d'abord les données du journal à Firestore.\nVersion actuelle : {version}",
-  "changelogLoadError": "Échec du chargement du journal des modifications : {error}"
+  "changelogLoadError": "Échec du chargement du journal des modifications : {error}",
+  "stellarColorBlue": "Bleu",
+  "stellarColorBlueWhite": "Bleu-blanc",
+  "stellarColorWhite": "Blanc",
+  "stellarColorYellowWhite": "Blanc-jaune",
+  "stellarColorYellow": "Jaune",
+  "stellarColorOrange": "Orange",
+  "stellarColorRed": "Rouge"
 }

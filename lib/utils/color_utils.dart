@@ -48,7 +48,7 @@ class ColorUtils {
   static Color getContrastingTextColor(Color backgroundColor) {
     // Calculate luminance to determine if we should use light or dark text
     final luminance = backgroundColor.computeLuminance();
-    return luminance > 0.5 ? Colors.black : Colors.white;
+    return luminance > 0.5 ? AppColors.uiBlack : AppColors.uiWhite;
   }
 
   /// Create a color with adjusted opacity

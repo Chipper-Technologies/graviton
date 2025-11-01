@@ -331,5 +331,12 @@
   "changelogResetMessage": "변경 로그 상태가 재설정되었습니다",
   "changelogDebugTitle": "변경 로그 (디버그)",
   "changelogNotFoundError": "변경 로그를 찾을 수 없습니다. 먼저 Firestore에 변경 로그 데이터를 추가하세요.\n현재 버전: {version}",
-  "changelogLoadError": "변경 로그 로드 실패: {error}"
+  "changelogLoadError": "변경 로그 로드 실패: {error}",
+  "stellarColorBlue": "파랑",
+  "stellarColorBlueWhite": "청백색",
+  "stellarColorWhite": "흰색",
+  "stellarColorYellowWhite": "황백색",
+  "stellarColorYellow": "노랑",
+  "stellarColorOrange": "주황",
+  "stellarColorRed": "빨강"
 }

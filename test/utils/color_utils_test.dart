@@ -28,7 +28,7 @@ void main() {
             velocity: vm.Vector3.zero(),
             mass: 1.0,
             radius: 1.0,
-            color: Colors.white, // Default color that should be overridden
+            color: AppColors.uiWhite, // Default color that should be overridden
           );
 
           final result = ColorUtils.getBodyColor(body);
@@ -50,7 +50,7 @@ void main() {
             velocity: vm.Vector3.zero(),
             mass: 1.0,
             radius: 1.0,
-            color: Colors.white,
+            color: AppColors.uiWhite,
           );
 
           final result = ColorUtils.getBodyColor(body);
@@ -59,7 +59,7 @@ void main() {
       });
 
       test('should return body default color for unknown bodies', () {
-        const defaultColor = Colors.red;
+        const defaultColor = AppColors.uiRed;
         final body = Body(
           name: 'Unknown Planet',
           position: vm.Vector3.zero(),
@@ -77,17 +77,17 @@ void main() {
     group('getContrastingTextColor', () {
       test('should return black for light backgrounds', () {
         const lightColors = [
-          Colors.white,
-          Colors.yellow,
-          Color(0xFFFFFFFF),
-          Color(0xFFF0F0F0),
+          AppColors.uiWhite,
+          AppColors.uiYellow,
+          AppColors.uiWhite,
+          AppColors.testLightGray,
         ];
 
         for (final color in lightColors) {
           final result = ColorUtils.getContrastingTextColor(color);
           expect(
             result,
-            equals(Colors.black),
+            equals(AppColors.uiBlack),
             reason: 'Failed for color: $color',
           );
         }
@@ -95,17 +95,17 @@ void main() {
 
       test('should return white for dark backgrounds', () {
         const darkColors = [
-          Colors.black,
-          Colors.blue,
-          Color(0xFF000000),
-          Color(0xFF333333),
+          AppColors.uiBlack,
+          AppColors.basicBlue,
+          AppColors.uiBlack,
+          AppColors.testDarkGray,
         ];
 
         for (final color in darkColors) {
           final result = ColorUtils.getContrastingTextColor(color);
           expect(
             result,
-            equals(Colors.white),
+            equals(AppColors.uiWhite),
             reason: 'Failed for color: $color',
           );
         }
@@ -114,7 +114,7 @@ void main() {
 
     group('withOpacity', () {
       test('should create color with specified opacity', () {
-        const baseColor = Colors.red;
+        const baseColor = AppColors.uiRed;
         const opacity = 0.5;
 
         final result = ColorUtils.withOpacity(baseColor, opacity);
@@ -139,8 +139,8 @@ void main() {
 
     group('blendColors', () {
       test('should blend colors correctly', () {
-        const color1 = Color(0xFFFF0000); // Red
-        const color2 = Color(0xFF0000FF); // Blue
+        const color1 = AppColors.uiRed;
+        const color2 = AppColors.basicBlue;
 
         // At ratio 0, should return color1
         final result0 = ColorUtils.blendColors(color1, color2, 0.0);
@@ -157,8 +157,8 @@ void main() {
       });
 
       test('should clamp ratio values', () {
-        const color1 = Color(0xFFFF0000); // Red
-        const color2 = Color(0xFF0000FF); // Blue
+        const color1 = AppColors.testPureRed;
+        const color2 = AppColors.testPureBlue;
 
         final resultNegative = ColorUtils.blendColors(color1, color2, -0.5);
         final resultOver = ColorUtils.blendColors(color1, color2, 1.5);
@@ -170,7 +170,7 @@ void main() {
 
     group('darken', () {
       test('should darken colors correctly', () {
-        const baseColor = Color(0xFF808080); // Medium gray
+        const baseColor = AppColors.testMediumGray;
         const factor = 0.5;
 
         final result = ColorUtils.darken(baseColor, factor);
@@ -201,7 +201,7 @@ void main() {
 
     group('lighten', () {
       test('should lighten colors correctly', () {
-        const baseColor = Color(0xFF808080); // Medium gray
+        const baseColor = AppColors.testMediumGray;
         const factor = 0.5;
 
         final result = ColorUtils.lighten(baseColor, factor);

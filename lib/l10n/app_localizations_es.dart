@@ -1093,4 +1093,25 @@ class AppLocalizationsEs extends AppLocalizations {
   String changelogLoadError(String error) {
     return 'Error al cargar el registro de cambios: $error';
   }
+
+  @override
+  String get stellarColorBlue => 'Azul';
+
+  @override
+  String get stellarColorBlueWhite => 'Blanco-azulado';
+
+  @override
+  String get stellarColorWhite => 'Blanco';
+
+  @override
+  String get stellarColorYellowWhite => 'Blanco-amarillento';
+
+  @override
+  String get stellarColorYellow => 'Amarillo';
+
+  @override
+  String get stellarColorOrange => 'Naranja';
+
+  @override
+  String get stellarColorRed => 'Rojo';
 }

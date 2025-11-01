@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/offscreen_indicators_overlay.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/constants/simulation_constants.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -21,7 +22,7 @@ void main() {
           mass: SimulationConstants.sunMassReference,
           radius: 1.0,
           bodyType: BodyType.star,
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
         ),
         Body(
           name: 'Test Planet',
@@ -30,7 +31,7 @@ void main() {
           mass: SimulationConstants.earthLikePlanetMassMin,
           radius: 0.5,
           bodyType: BodyType.planet,
-          color: Colors.blue,
+          color: AppColors.basicBlue,
         ),
       ];
 

@@ -55,7 +55,7 @@ class OffScreenIndicatorsOverlay extends StatelessWidget {
                 height: 40,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.transparent,
+                  color: AppColors.transparentColor,
                 ),
                 child: CustomPaint(
                   painter: _IndicatorPainter(

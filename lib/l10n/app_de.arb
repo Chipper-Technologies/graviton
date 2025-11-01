@@ -345,5 +345,12 @@
   "changelogResetMessage": "Changelog-Status wurde zurückgesetzt",
   "changelogDebugTitle": "Changelog (Debug)",
   "changelogNotFoundError": "Kein Changelog gefunden. Fügen Sie zuerst Changelog-Daten zu Firestore hinzu.\nAktuelle Version: {version}",
-  "changelogLoadError": "Fehler beim Laden des Changelogs: {error}"
+  "changelogLoadError": "Fehler beim Laden des Changelogs: {error}",
+  "stellarColorBlue": "Blau",
+  "stellarColorBlueWhite": "Bläulich-weiß",
+  "stellarColorWhite": "Weiß",
+  "stellarColorYellowWhite": "Gelblich-weiß",
+  "stellarColorYellow": "Gelb",
+  "stellarColorOrange": "Orange",
+  "stellarColorRed": "Rot"
 }

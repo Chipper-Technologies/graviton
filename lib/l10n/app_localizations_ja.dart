@@ -1039,4 +1039,25 @@ class AppLocalizationsJa extends AppLocalizations {
   String changelogLoadError(String error) {
     return '変更履歴の読み込みに失敗しました: $error';
   }
+
+  @override
+  String get stellarColorBlue => '青';
+
+  @override
+  String get stellarColorBlueWhite => '青白';
+
+  @override
+  String get stellarColorWhite => '白';
+
+  @override
+  String get stellarColorYellowWhite => '黄白';
+
+  @override
+  String get stellarColorYellow => '黄';
+
+  @override
+  String get stellarColorOrange => '橙';
+
+  @override
+  String get stellarColorRed => '赤';
 }

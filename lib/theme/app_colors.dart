@@ -408,6 +408,29 @@ class AppColors {
   static const Color testPink = Color(0xFFF72585); // pink
   static const Color testLightBlue = Color(0xFF4CC9F0); // light blue
 
+  /// Test utility colors for color operations testing
+  static const Color testLightGray = Color(
+    0xFFF0F0F0,
+  ); // Light gray for contrast testing
+  static const Color testDarkGray = Color(
+    0xFF333333,
+  ); // Dark gray for contrast testing
+  static const Color testMediumGray = Color(
+    0xFF808080,
+  ); // Medium gray for color operations
+  static const Color testPureRed = Color(
+    0xFFFF0000,
+  ); // Pure red for blending tests
+  static const Color testPureBlue = Color(
+    0xFF0000FF,
+  ); // Pure blue for blending tests
+  static const Color testGreen = Color(
+    0xFF4CAF50,
+  ); // Material green for body tests
+  static const Color testYellow = Color(
+    0xFFFFEB3B,
+  ); // Material yellow for body tests
+
   /// Gravity well colors
   static const Color gravityWellYellow = Color(
     0xFFFFEB3B,

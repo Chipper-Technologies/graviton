@@ -1566,5 +1566,40 @@
         "description": "Error details"
       }
     }
+  },
+
+  "stellarColorBlue": "Blue",
+  "@stellarColorBlue": {
+    "description": "Color description for very hot stars (O-type)"
+  },
+
+  "stellarColorBlueWhite": "Blue-white",
+  "@stellarColorBlueWhite": {
+    "description": "Color description for hot stars (B-type)"
+  },
+
+  "stellarColorWhite": "White",
+  "@stellarColorWhite": {
+    "description": "Color description for white stars (A-type)"
+  },
+
+  "stellarColorYellowWhite": "Yellow-white",
+  "@stellarColorYellowWhite": {
+    "description": "Color description for yellow-white stars (F-type)"
+  },
+
+  "stellarColorYellow": "Yellow",
+  "@stellarColorYellow": {
+    "description": "Color description for yellow stars (G-type, like our Sun)"
+  },
+
+  "stellarColorOrange": "Orange",
+  "@stellarColorOrange": {
+    "description": "Color description for orange stars (K-type)"
+  },
+
+  "stellarColorRed": "Red",
+  "@stellarColorRed": {
+    "description": "Color description for cool red stars (M-type)"
   }
 }

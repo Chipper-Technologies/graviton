@@ -2063,6 +2063,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load changelog: {error}'**
   String changelogLoadError(String error);
+
+  /// Color description for very hot stars (O-type)
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
+  String get stellarColorBlue;
+
+  /// Color description for hot stars (B-type)
+  ///
+  /// In en, this message translates to:
+  /// **'Blue-white'**
+  String get stellarColorBlueWhite;
+
+  /// Color description for white stars (A-type)
+  ///
+  /// In en, this message translates to:
+  /// **'White'**
+  String get stellarColorWhite;
+
+  /// Color description for yellow-white stars (F-type)
+  ///
+  /// In en, this message translates to:
+  /// **'Yellow-white'**
+  String get stellarColorYellowWhite;
+
+  /// Color description for yellow stars (G-type, like our Sun)
+  ///
+  /// In en, this message translates to:
+  /// **'Yellow'**
+  String get stellarColorYellow;
+
+  /// Color description for orange stars (K-type)
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get stellarColorOrange;
+
+  /// Color description for cool red stars (M-type)
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get stellarColorRed;
 }
 
 class _AppLocalizationsDelegate

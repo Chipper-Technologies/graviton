@@ -1032,4 +1032,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String changelogLoadError(String error) {
     return '加载更新日志失败: $error';
   }
+
+  @override
+  String get stellarColorBlue => '蓝色';
+
+  @override
+  String get stellarColorBlueWhite => '蓝白色';
+
+  @override
+  String get stellarColorWhite => '白色';
+
+  @override
+  String get stellarColorYellowWhite => '黄白色';
+
+  @override
+  String get stellarColorYellow => '黄色';
+
+  @override
+  String get stellarColorOrange => '橙色';
+
+  @override
+  String get stellarColorRed => '红色';
 }

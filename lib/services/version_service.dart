@@ -4,6 +4,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graviton/enums/version_status.dart';
 import 'package:graviton/models/platform_version_config.dart';
+import 'package:graviton/utils/version_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -192,9 +193,16 @@ class VersionService {
       return VersionStatus.current; // Default to current if no remote config
     }
 
-    final currentAppVersion = _parseVersion(appVersion);
-    final latestVersion = _parseVersion(platformCurrentVersion);
-    final comparison = _compareVersions(currentAppVersion, latestVersion);
+    final currentAppVersion = VersionUtils.parseVersionForComparison(
+      appVersion,
+    );
+    final latestVersion = VersionUtils.parseVersionForComparison(
+      platformCurrentVersion,
+    );
+    final comparison = VersionUtils.compareVersionLists(
+      currentAppVersion,
+      latestVersion,
+    );
     if (comparison > 0) {
       return VersionStatus.beta; // App version is higher than current
     } else if (comparison < 0) {
@@ -221,9 +229,17 @@ class VersionService {
       return true; // No minimum enforced version requirement
     }
 
-    final currentAppVersion = _parseVersion(appVersion);
-    final minimumRequired = _parseVersion(targetVersion);
-    return _compareVersions(currentAppVersion, minimumRequired) >= 0;
+    final currentAppVersion = VersionUtils.parseVersionForComparison(
+      appVersion,
+    );
+    final minimumRequired = VersionUtils.parseVersionForComparison(
+      targetVersion,
+    );
+    return VersionUtils.compareVersionLists(
+          currentAppVersion,
+          minimumRequired,
+        ) >=
+        0;
   }
 
   /// Check if the app version meets the preferred minimum version (recommended)
@@ -243,9 +259,17 @@ class VersionService {
       return true; // No preferred version requirement
     }
 
-    final currentAppVersion = _parseVersion(appVersion);
-    final preferredMinimum = _parseVersion(targetVersion);
-    return _compareVersions(currentAppVersion, preferredMinimum) >= 0;
+    final currentAppVersion = VersionUtils.parseVersionForComparison(
+      appVersion,
+    );
+    final preferredMinimum = VersionUtils.parseVersionForComparison(
+      targetVersion,
+    );
+    return VersionUtils.compareVersionLists(
+          currentAppVersion,
+          preferredMinimum,
+        ) >=
+        0;
   }
 
   /// Get the appropriate store URL for the current platform
@@ -286,30 +310,5 @@ class VersionService {
     }
 
     return false;
-  }
-
-  /// Parse version string into comparable format
-  List<int> _parseVersion(String version) {
-    return version.split('.').map((part) {
-      // Extract numeric part (ignore any alpha/beta suffixes)
-      final match = RegExp(r'(\d+)').firstMatch(part);
-      return match != null ? int.parse(match.group(1)!) : 0;
-    }).toList();
-  }
-
-  /// Compare two version lists
-  /// Returns: -1 if v1 < v2, 0 if equal, 1 if v1 > v2
-  int _compareVersions(List<int> v1, List<int> v2) {
-    final maxLength = [v1.length, v2.length].reduce((a, b) => a > b ? a : b);
-
-    for (int i = 0; i < maxLength; i++) {
-      final part1 = i < v1.length ? v1[i] : 0;
-      final part2 = i < v2.length ? v2[i] : 0;
-
-      if (part1 < part2) return -1;
-      if (part1 > part2) return 1;
-    }
-
-    return 0;
   }
 }

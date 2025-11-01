@@ -331,5 +331,12 @@
   "changelogResetMessage": "変更履歴の状態がリセットされました",
   "changelogDebugTitle": "変更履歴 (デバッグ)",
   "changelogNotFoundError": "変更履歴が見つかりません。まずFirestoreに変更履歴データを追加してください。\n現在のバージョン: {version}",
-  "changelogLoadError": "変更履歴の読み込みに失敗しました: {error}"
+  "changelogLoadError": "変更履歴の読み込みに失敗しました: {error}",
+  "stellarColorBlue": "青",
+  "stellarColorBlueWhite": "青白",
+  "stellarColorWhite": "白",
+  "stellarColorYellowWhite": "黄白",
+  "stellarColorYellow": "黄",
+  "stellarColorOrange": "橙",
+  "stellarColorRed": "赤"
 }

@@ -21,7 +21,7 @@ void main() {
           radius: 6.371e6,
           position: vm.Vector3(0, 0, -10), // Position in front of camera
           velocity: vm.Vector3(0, 0, 0),
-          color: const Color(0xFF4CAF50),
+          color: AppColors.testGreen,
           bodyType: BodyType.planet,
           stellarLuminosity: 0,
         ),
@@ -31,7 +31,7 @@ void main() {
           radius: 6.96e8,
           position: vm.Vector3(10, 5, -15), // Another position
           velocity: vm.Vector3(0, 0, 0),
-          color: const Color(0xFFFFEB3B),
+          color: AppColors.testYellow,
           bodyType: BodyType.star,
           stellarLuminosity: 1.0,
         ),

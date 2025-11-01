@@ -1043,4 +1043,25 @@ class AppLocalizationsKo extends AppLocalizations {
   String changelogLoadError(String error) {
     return '변경 로그 로드 실패: $error';
   }
+
+  @override
+  String get stellarColorBlue => '파랑';
+
+  @override
+  String get stellarColorBlueWhite => '청백색';
+
+  @override
+  String get stellarColorWhite => '흰색';
+
+  @override
+  String get stellarColorYellowWhite => '황백색';
+
+  @override
+  String get stellarColorYellow => '노랑';
+
+  @override
+  String get stellarColorOrange => '주황';
+
+  @override
+  String get stellarColorRed => '빨강';
 }
