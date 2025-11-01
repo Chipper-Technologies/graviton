@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/models/body.dart';
@@ -530,6 +531,182 @@ void main() {
       tearDown(() {
         // Clean up static state between tests
         GravityPainter.clearOrientationHistoryForTesting();
+      });
+    });
+
+    group('Gravity Well Offset Behavior', () {
+      test('should show no offset for isolated single body', () {
+        final centralBody = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 10.0,
+          radius: 1.0,
+          color: AppColors.basicYellow,
+          name: 'Isolated Star',
+          bodyType: BodyType.star,
+        );
+
+        simulation.bodies = [centralBody];
+
+        final orbitalPlane = GravityPainter.calculateOrbitalPlaneForTesting(
+          centralBody,
+          simulation,
+        );
+
+        // For isolated body, orbital plane should be default horizontal
+        expect(orbitalPlane.normal.x, closeTo(0.0, 1e-10));
+        expect(orbitalPlane.normal.y, closeTo(1.0, 1e-10));
+        expect(orbitalPlane.normal.z, closeTo(0.0, 1e-10));
+      });
+
+      test('should show realistic offset in multi-body system', () {
+        // Simulate a realistic scenario: Sun with Earth orbiting
+        final sun = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1000.0, // Much more massive
+          radius: 5.0,
+          color: AppColors.basicYellow,
+          name: 'Sun',
+          bodyType: BodyType.star,
+        );
+
+        final earth = Body(
+          position: vm.Vector3(100.0, 10.0, 5.0), // Slightly off-plane orbit
+          velocity: vm.Vector3(
+            -1.0,
+            8.0,
+            0.5,
+          ), // Orbital velocity with slight tilt
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Earth',
+          bodyType: BodyType.planet,
+        );
+
+        simulation.bodies = [sun, earth];
+
+        final orbitalPlane = GravityPainter.calculateOrbitalPlaneForTesting(
+          sun,
+          simulation,
+        );
+
+        // Calculate the tilt magnitude
+        final defaultNormal = vm.Vector3(0, 1, 0);
+        final tiltAngleRadians = math.acos(
+          orbitalPlane.normal.dot(defaultNormal).clamp(-1.0, 1.0),
+        );
+        final tiltAngleDegrees = tiltAngleRadians * 180 / math.pi;
+
+        // Realistic orbital systems show measurable tilts due to gravitational interactions
+        expect(
+          tiltAngleDegrees,
+          greaterThan(1.0),
+          reason: 'Realistic orbital system should show measurable tilt',
+        );
+        // Allow for extreme tilts as they can occur in dynamic gravitational systems
+        expect(
+          tiltAngleDegrees,
+          lessThan(180.0),
+          reason: 'Tilt angle should be physically meaningful',
+        );
+      });
+
+      test('should show greater offset for body in binary system', () {
+        final star1 = Body(
+          position: vm.Vector3(-2.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.0, 0.0, 1.0),
+          mass: 10.0,
+          radius: 1.0,
+          color: AppColors.basicYellow,
+          name: 'Star 1',
+          bodyType: BodyType.star,
+        );
+
+        final star2 = Body(
+          position: vm.Vector3(2.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.0, 0.0, -1.0),
+          mass: 10.0,
+          radius: 1.0,
+          color: AppColors.basicRed,
+          name: 'Star 2',
+          bodyType: BodyType.star,
+        );
+
+        simulation.bodies = [star1, star2];
+
+        final orbitalPlane1 = GravityPainter.calculateOrbitalPlaneForTesting(
+          star1,
+          simulation,
+        );
+
+        // In binary system, gravity well should be significantly tilted
+        final tiltMagnitude =
+            (orbitalPlane1.normal - vm.Vector3(0, 1, 0)).length;
+        expect(
+          tiltMagnitude,
+          greaterThan(0.1),
+          reason: 'Binary star should show significant gravity well tilt',
+        );
+      });
+
+      test('should show different offsets for different body masses', () {
+        final lightStar = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 5.0,
+          radius: 1.0,
+          color: AppColors.basicYellow,
+          name: 'Light Star',
+          bodyType: BodyType.star,
+        );
+
+        final heavyStar = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 50.0,
+          radius: 1.0,
+          color: AppColors.basicYellow,
+          name: 'Heavy Star',
+          bodyType: BodyType.star,
+        );
+
+        final companion = Body(
+          position: vm.Vector3(5.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.0, 0.0, 2.0),
+          mass: 2.0,
+          radius: 0.5,
+          color: AppColors.basicBlue,
+          name: 'Companion',
+          bodyType: BodyType.planet,
+        );
+
+        // Test light star with companion
+        simulation.bodies = [lightStar, companion];
+        final lightStarPlane = GravityPainter.calculateOrbitalPlaneForTesting(
+          lightStar,
+          simulation,
+        );
+
+        // Test heavy star with same companion
+        simulation.bodies = [heavyStar, companion];
+        final heavyStarPlane = GravityPainter.calculateOrbitalPlaneForTesting(
+          heavyStar,
+          simulation,
+        );
+
+        // Heavy star should be less affected by the same companion
+        final lightStarTilt =
+            (lightStarPlane.normal - vm.Vector3(0, 1, 0)).length;
+        final heavyStarTilt =
+            (heavyStarPlane.normal - vm.Vector3(0, 1, 0)).length;
+
+        expect(
+          lightStarTilt,
+          greaterThan(heavyStarTilt),
+          reason: 'Lighter star should be more affected by companion gravity',
+        );
       });
     });
   });

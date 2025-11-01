@@ -170,9 +170,9 @@ class GravityPainter {
       );
 
       // Draw curved grid for massive objects to show space-time curvature
-      if (body.mass > SimulationConstants.spacetimeCurvatureMassThreshold) {
-        _draw3DSpaceTimeGrid(canvas, size, vp, body, sim);
-      }
+      // if (body.mass > SimulationConstants.spacetimeCurvatureMassThreshold) {
+      //   _draw3DSpaceTimeGrid(canvas, size, vp, body, sim);
+      // }
     }
   }
 
