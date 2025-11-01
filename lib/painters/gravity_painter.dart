@@ -51,7 +51,6 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/simulation.dart' as physics;
 import 'package:graviton/theme/app_colors.dart';
@@ -978,147 +977,141 @@ class GravityPainter {
   }
 
   /// Draw 3D curved grid lines to visualize space-time curvature
-  static void _draw3DSpaceTimeGrid(
-    Canvas canvas,
-    Size size,
-    vm.Matrix4 vp,
-    Body body,
-    physics.Simulation sim,
-  ) {
-    // Calculate grid properties based on gravitational influence - more subtle than main well
-    final gravitationalRadius =
-        body.radius +
-        math.pow(body.mass / 3.0, 1.0 / 3.0) * 6.0; // Smaller than main well
-    final maxRadius = gravitationalRadius.clamp(
-      body.radius * 1.5,
-      body.radius * 8.0,
-    ); // Smaller bounds
-    const int gridLines = 4; // Fewer lines to reduce clutter
-    const int gridSegments = 12; // Fewer segments for better performance
+  // static void _draw3DSpaceTimeGrid(
+  //   Canvas canvas,
+  //   Size size,
+  //   vm.Matrix4 vp,
+  //   Body body,
+  //   physics.Simulation sim,
+  // ) {
+  //   // Calculate grid properties based on gravitational influence - more subtle than main well
+  //   final gravitationalRadius =
+  //       body.radius +
+  //       math.pow(body.mass / 3.0, 1.0 / 3.0) * 6.0; // Smaller than main well
+  //   final maxRadius = gravitationalRadius.clamp(
+  //     body.radius * 1.5,
+  //     body.radius * 8.0,
+  //   ); // Smaller bounds
+  //   const int gridLines = 4; // Fewer lines to reduce clutter
+  //   const int gridSegments = 12; // Fewer segments for better performance
 
-    final gridSpacing = maxRadius / gridLines;
+  //   final gridSpacing = maxRadius / gridLines;
 
-    final gridPaint = Paint()
-      ..color = body.color
-          .withValues(alpha: 0.08) // Use body's color with subtle alpha
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.4; // Thinner lines
+  //   final gridPaint = Paint()
+  //     ..color = body.color
+  //         .withValues(alpha: 0.08) // Use body's color with subtle alpha
+  //     ..style = PaintingStyle.stroke
+  //     ..strokeWidth = 0.4; // Thinner lines
 
-    // Draw fewer curved grid lines to support the funnel visualization
-    for (int lineIndex = -gridLines; lineIndex <= gridLines; lineIndex += 2) {
-      if (lineIndex == 0) continue; // Skip center lines
+  //   // Draw fewer curved grid lines to support the funnel visualization
+  //   for (int lineIndex = -gridLines; lineIndex <= gridLines; lineIndex += 2) {
+  //     if (lineIndex == 0) continue; // Skip center lines
 
-      final lineOffset = lineIndex * gridSpacing;
+  //     final lineOffset = lineIndex * gridSpacing;
 
-      // Draw lines parallel to X-axis (varying Z, constant X)
-      _drawCurvedGridLine(
-        canvas,
-        size,
-        vp,
-        body,
-        gridPaint,
-        lineOffset,
-        0.0,
-        maxRadius,
-        gridSegments,
-        sim,
-        isXDirection: false, // This line varies in Z direction
-      );
+  //     // Draw lines parallel to X-axis (varying Z, constant X)
+  //     _drawCurvedGridLine(
+  //       canvas,
+  //       size,
+  //       vp,
+  //       body,
+  //       gridPaint,
+  //       lineOffset,
+  //       0.0,
+  //       maxRadius,
+  //       gridSegments,
+  //       sim,
+  //       isXDirection: false, // This line varies in Z direction
+  //     );
 
-      // Draw lines parallel to Z-axis (varying X, constant Z)
-      _drawCurvedGridLine(
-        canvas,
-        size,
-        vp,
-        body,
-        gridPaint,
-        0.0,
-        lineOffset,
-        maxRadius,
-        gridSegments,
-        sim,
-        isXDirection: true, // This line varies in X direction
-      );
-    }
-  }
+  //     // Draw lines parallel to Z-axis (varying X, constant Z)
+  //     _drawCurvedGridLine(
+  //       canvas,
+  //       size,
+  //       vp,
+  //       body,
+  //       gridPaint,
+  //       0.0,
+  //       lineOffset,
+  //       maxRadius,
+  //       gridSegments,
+  //       sim,
+  //       isXDirection: true, // This line varies in X direction
+  //     );
+  //   }
+  // }
 
   /// Draw a single curved grid line that bends toward the massive object
-  static void _drawCurvedGridLine(
-    Canvas canvas,
-    Size size,
-    vm.Matrix4 vp,
-    Body body,
-    Paint paint,
-    double fixedX,
-    double fixedZ,
-    double maxRadius,
-    int segments,
-    physics.Simulation sim, {
-    required bool isXDirection,
-  }) {
-    final gridPoints = <Offset>[];
+  // static void _drawCurvedGridLine(
+  //   Canvas canvas,
+  //   Size size,
+  //   vm.Matrix4 vp,
+  //   Body body,
+  //   Paint paint,
+  //   double fixedX,
+  //   double fixedZ,
+  //   double maxRadius,
+  //   int segments,
+  //   physics.Simulation sim, {
+  //   required bool isXDirection,
+  // }) {
+  //   final gridPoints = <Offset>[];
 
-    for (int segment = 0; segment <= segments; segment++) {
-      final t = (segment / segments) * 2.0 - 1.0; // Range from -1 to 1
-      final coordinate = t * maxRadius;
+  //   for (int segment = 0; segment <= segments; segment++) {
+  //     final t = (segment / segments) * 2.0 - 1.0; // Range from -1 to 1
+  //     final coordinate = t * maxRadius;
 
-      double localX, localZ;
-      if (isXDirection) {
-        localX = coordinate;
-        localZ = fixedZ;
-      } else {
-        localX = fixedX;
-        localZ = coordinate;
-      }
+  //     double localX, localZ;
+  //     if (isXDirection) {
+  //       localX = coordinate;
+  //       localZ = fixedZ;
+  //     } else {
+  //       localX = fixedX;
+  //       localZ = coordinate;
+  //     }
 
-      // Calculate distance from center for curvature
-      final distanceFromCenter = math.sqrt(localX * localX + localZ * localZ);
+  //     // Calculate distance from center for curvature
+  //     final distanceFromCenter = math.sqrt(localX * localX + localZ * localZ);
 
-      // Calculate gravitational curvature effect - match the funnel depth
-      // Use similar curve as the funnel rings for consistency
-      final curvatureDepth = body.mass / (distanceFromCenter + 5.0) * 2.5;
+  //     // Calculate gravitational curvature effect - match the funnel depth
+  //     // Use similar curve as the funnel rings for consistency
+  //     final curvatureDepth = body.mass / (distanceFromCenter + 5.0) * 2.5;
 
-      // Calculate final 3D position - coordinate system depends on scenario orientation
-      late double finalX, finalY, finalZ;
+  //     // Calculate final 3D position - coordinate system depends on scenario orientation
+  //     late double finalX, finalY, finalZ;
 
-      if (sim.currentScenario == ScenarioType.asteroidBelt) {
-        // Asteroid belt uses XY plane (appears vertical)
-        finalX = localX;
-        finalY = isXDirection
-            ? localZ
-            : coordinate; // Adjust based on direction
-        finalZ = -curvatureDepth; // Depth along Z axis
-      } else {
-        // Other scenarios use XZ plane (appears horizontal)
-        finalX = localX;
-        finalZ = localZ;
-        finalY = -curvatureDepth; // Depth along Y axis
-      }
+  //     if (sim.currentScenario == ScenarioType.asteroidBelt) {
+  //       // Asteroid belt uses XY plane (appears vertical)
+  //       finalX = localX;
+  //       finalY = isXDirection ? localZ : coordinate; // Adjust based on direction
+  //       finalZ = -curvatureDepth; // Depth along Z axis
+  //     } else {
+  //       // Other scenarios use XZ plane (appears horizontal)
+  //       finalX = localX;
+  //       finalZ = localZ;
+  //       finalY = -curvatureDepth; // Depth along Y axis
+  //     }
 
-      // Transform to world coordinates
-      final worldPos = vm.Vector3(
-        body.position.x + finalX,
-        body.position.y + finalY,
-        body.position.z + finalZ,
-      );
+  //     // Transform to world coordinates
+  //     final worldPos = vm.Vector3(body.position.x + finalX, body.position.y + finalY, body.position.z + finalZ);
 
-      // Project to screen coordinates
-      final screenPos = PainterUtils.project(vp, worldPos, size);
-      if (screenPos != null) {
-        gridPoints.add(screenPos);
-      }
-    }
+  //     // Project to screen coordinates
+  //     final screenPos = PainterUtils.project(vp, worldPos, size);
+  //     if (screenPos != null) {
+  //       gridPoints.add(screenPos);
+  //     }
+  //   }
 
-    // Draw the curved line if we have enough points
-    if (gridPoints.length > 1) {
-      final path = Path();
-      path.moveTo(gridPoints.first.dx, gridPoints.first.dy);
-      for (int i = 1; i < gridPoints.length; i++) {
-        path.lineTo(gridPoints[i].dx, gridPoints[i].dy);
-      }
-      canvas.drawPath(path, paint);
-    }
-  }
+  //   // Draw the curved line if we have enough points
+  //   if (gridPoints.length > 1) {
+  //     final path = Path();
+  //     path.moveTo(gridPoints.first.dx, gridPoints.first.dy);
+  //     for (int i = 1; i < gridPoints.length; i++) {
+  //       path.lineTo(gridPoints[i].dx, gridPoints[i].dy);
+  //     }
+  //     canvas.drawPath(path, paint);
+  //   }
+  // }
 
   /// Enhancement 3: Draw visual trails showing how gravity well orientations have changed
   ///

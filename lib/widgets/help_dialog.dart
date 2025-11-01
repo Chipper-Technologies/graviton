@@ -3,6 +3,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/ui_utils.dart';
 
 /// Dialog that explains what users can do and the app's objectives
 class HelpDialog extends StatelessWidget {
@@ -143,7 +144,8 @@ class HelpDialog extends StatelessWidget {
 
       // Check if line starts with an emoji (any emoji character followed by space)
       // Using a more general approach to detect emojis
-      if (line.trim().length > 2 && _isEmoji(line.trim().substring(0, 2))) {
+      if (line.trim().length > 2 &&
+          UIUtils.isEmoji(line.trim().substring(0, 2))) {
         // Find where the emoji ends and text begins
         int textStart = 0;
         for (int j = 0; j < line.length; j++) {
@@ -213,22 +215,6 @@ class HelpDialog extends StatelessWidget {
     );
   }
 
-  /// Simple emoji detection helper
-  bool _isEmoji(String char) {
-    // Check for common emoji ranges in Unicode
-    final runes = char.runes.toList();
-    if (runes.isEmpty) return false;
-
-    final code = runes[0];
-    // Basic emoji ranges (simplified)
-    return (code >= 0x1F600 && code <= 0x1F64F) || // Emoticons
-        (code >= 0x1F300 && code <= 0x1F5FF) || // Misc Symbols
-        (code >= 0x1F680 && code <= 0x1F6FF) || // Transport
-        (code >= 0x1F1E6 && code <= 0x1F1FF) || // Flags
-        (code >= 0x2600 && code <= 0x26FF) || // Misc symbols
-        (code >= 0x2700 && code <= 0x27BF); // Dingbats
-  }
-
   /// Build objectives section using individual list items
   Widget _buildObjectivesSection(BuildContext context, AppLocalizations l10n) {
     return Column(
@@ -276,7 +262,7 @@ class HelpDialog extends StatelessWidget {
   /// Try to build objectives list from individual items, return null if not available
   Widget? _tryBuildObjectivesList(AppLocalizations l10n) {
     try {
-      return _buildBulletList([
+      return UIUtils.buildBulletList([
         l10n.objectives1,
         l10n.objectives2,
         l10n.objectives3,
@@ -293,7 +279,7 @@ class HelpDialog extends StatelessWidget {
   /// Try to build quick start list from individual items, return null if not available
   Widget? _tryBuildQuickStartList(AppLocalizations l10n) {
     try {
-      return _buildNumberedList([
+      return UIUtils.buildNumberedList([
         l10n.quickStart1,
         l10n.quickStart2,
         l10n.quickStart3,
@@ -305,78 +291,5 @@ class HelpDialog extends StatelessWidget {
       // Individual items not available for this language
       return null;
     }
-  }
-
-  /// Build a bullet list with proper text alignment
-  Widget _buildBulletList(List<String> items) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: items
-          .map(
-            (item) => Padding(
-              padding: const EdgeInsets.only(bottom: 4.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 24,
-                    child: Text(
-                      '•',
-                      style: AppTypography.mediumText.copyWith(
-                        height: 1.6,
-                        color: AppColors.sectionTitlePurple,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: AppTypography.spacingXSmall),
-                  Expanded(
-                    child: Text(
-                      item,
-                      style: AppTypography.mediumText.copyWith(height: 1.6),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  /// Build a numbered list with proper text alignment
-  Widget _buildNumberedList(List<String> items) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: items.asMap().entries.map((entry) {
-        final index = entry.key + 1;
-        final item = entry.value;
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 4.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 24,
-                child: Text(
-                  '$index.',
-                  style: AppTypography.mediumText.copyWith(
-                    height: 1.6,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.sectionTitlePurple,
-                  ),
-                ),
-              ),
-              SizedBox(width: AppTypography.spacingXSmall),
-              Expanded(
-                child: Text(
-                  item,
-                  style: AppTypography.mediumText.copyWith(height: 1.6),
-                ),
-              ),
-            ],
-          ),
-        );
-      }).toList(),
-    );
   }
 }

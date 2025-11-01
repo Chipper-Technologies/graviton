@@ -222,6 +222,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get autoRotateOff => '关闭';
 
   @override
+  String get yawLabel => '偏航';
+
+  @override
+  String get pitchLabel => '俯仰';
+
+  @override
+  String get rollLabel => '翻滚';
+
+  @override
+  String get zoomLabel => '缩放';
+
+  @override
   String get cameraControlsLabel => '相机控制';
 
   @override
@@ -341,6 +353,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get scenarioSolarSystemDescription => '我们太阳系的简化版本，包含内行星和外行星';
+
+  @override
+  String get scenarioSpecial => '特殊场景';
+
+  @override
+  String get scenarioSpecialDescription => '用于截图模式的特殊场景';
 
   @override
   String get habitabilityLabel => '宜居性';

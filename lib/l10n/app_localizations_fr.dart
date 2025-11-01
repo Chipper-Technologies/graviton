@@ -229,6 +229,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get autoRotateOff => 'Désactivé';
 
   @override
+  String get yawLabel => 'Lacet';
+
+  @override
+  String get pitchLabel => 'Tangage';
+
+  @override
+  String get rollLabel => 'Roulis';
+
+  @override
+  String get zoomLabel => 'Zoom';
+
+  @override
   String get cameraControlsLabel => 'Contrôles de Caméra';
 
   @override
@@ -360,6 +372,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get scenarioSolarSystemDescription =>
       'Version simplifiée de notre système solaire avec des planètes intérieures et extérieures';
+
+  @override
+  String get scenarioSpecial => 'Scénario Spécial';
+
+  @override
+  String get scenarioSpecialDescription =>
+      'Scénario spécial pour le mode capture d\'écran';
 
   @override
   String get habitabilityLabel => 'Habitabilité';

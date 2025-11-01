@@ -534,6 +534,30 @@ abstract class AppLocalizations {
   /// **'Off'**
   String get autoRotateOff;
 
+  /// Label for camera yaw rotation
+  ///
+  /// In en, this message translates to:
+  /// **'Yaw'**
+  String get yawLabel;
+
+  /// Label for camera pitch rotation
+  ///
+  /// In en, this message translates to:
+  /// **'Pitch'**
+  String get pitchLabel;
+
+  /// Label for camera roll rotation
+  ///
+  /// In en, this message translates to:
+  /// **'Roll'**
+  String get rollLabel;
+
+  /// Label for camera zoom level
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom'**
+  String get zoomLabel;
+
   /// Header for camera controls section
   ///
   /// In en, this message translates to:
@@ -743,6 +767,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Simplified version of our solar system with inner and outer planets'**
   String get scenarioSolarSystemDescription;
+
+  /// Name for special/internal scenarios not available in main selection
+  ///
+  /// In en, this message translates to:
+  /// **'Special Scenario'**
+  String get scenarioSpecial;
+
+  /// Description for special/internal scenarios used for screenshots
+  ///
+  /// In en, this message translates to:
+  /// **'Special scenario for screenshot mode'**
+  String get scenarioSpecialDescription;
 
   /// Label for habitability features
   ///

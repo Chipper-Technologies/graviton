@@ -222,6 +222,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get autoRotateOff => 'オフ';
 
   @override
+  String get yawLabel => 'ヨー';
+
+  @override
+  String get pitchLabel => 'ピッチ';
+
+  @override
+  String get rollLabel => 'ロール';
+
+  @override
+  String get zoomLabel => 'ズーム';
+
+  @override
   String get cameraControlsLabel => 'カメラ操作';
 
   @override
@@ -342,6 +354,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get scenarioSolarSystemDescription => '内惑星と外惑星を含む太陽系の簡略版';
+
+  @override
+  String get scenarioSpecial => '特別シナリオ';
+
+  @override
+  String get scenarioSpecialDescription => 'スクリーンショットモード用の特別シナリオ';
 
   @override
   String get habitabilityLabel => '居住可能性';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graviton/enums/version_status.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -7,6 +6,7 @@ import 'package:graviton/services/version_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/clipboard_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -265,7 +265,7 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
                 label: l10n.copyButton,
                 onPressed: () {
                   // Copy URL to clipboard as fallback
-                  _copyToClipboard(url);
+                  ClipboardUtils.copyToClipboardSilent(url);
                 },
               ),
             ),
@@ -282,7 +282,7 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
             action: SnackBarAction(
               label: l10n.copyButton,
               onPressed: () {
-                _copyToClipboard(url);
+                ClipboardUtils.copyToClipboardSilent(url);
               },
             ),
           ),
@@ -369,18 +369,5 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
         ],
       ],
     );
-  }
-
-  void _copyToClipboard(String text) {
-    Clipboard.setData(ClipboardData(text: text));
-    if (mounted) {
-      final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.copiedToClipboard(text)),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    }
   }
 }

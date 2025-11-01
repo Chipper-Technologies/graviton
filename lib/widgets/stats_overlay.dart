@@ -5,6 +5,7 @@ import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/localization_utils.dart';
 
 /// Stats overlay widget to display simulation information
 class StatsOverlay extends StatelessWidget {
@@ -105,28 +106,28 @@ class StatsOverlay extends StatelessWidget {
                 ),
               ),
               Text(
-                'Yaw: ${appState.camera.yaw.toStringAsFixed(2)}',
+                '${l10n.yawLabel}: ${appState.camera.yaw.toStringAsFixed(2)}',
                 style: const TextStyle(
                   color: AppColors.uiWhite70,
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
               Text(
-                'Pitch: ${appState.camera.pitch.toStringAsFixed(2)}',
+                '${l10n.pitchLabel}: ${appState.camera.pitch.toStringAsFixed(2)}',
                 style: const TextStyle(
                   color: AppColors.uiWhite70,
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
               Text(
-                'Roll: ${appState.camera.roll.toStringAsFixed(2)}',
+                '${l10n.rollLabel}: ${appState.camera.roll.toStringAsFixed(2)}',
                 style: const TextStyle(
                   color: AppColors.uiWhite70,
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
               Text(
-                'Zoom: ${appState.camera.distance.toStringAsFixed(1)}',
+                '${l10n.zoomLabel}: ${appState.camera.distance.toStringAsFixed(1)}',
                 style: const TextStyle(
                   color: AppColors.uiWhite70,
                   fontSize: AppTypography.fontSizeSmall,
@@ -148,7 +149,7 @@ class StatsOverlay extends StatelessWidget {
                     .where((body) => body.canBeHabitable)
                     .map(
                       (body) => Text(
-                        '${body.name}: ${_getLocalizedHabitabilityStatus(l10n, body.habitabilityStatus)}',
+                        '${body.name}: ${LocalizationUtils.getLocalizedHabitabilityStatus(l10n, body.habitabilityStatus)}',
                         style: TextStyle(
                           color: Color(
                             body.habitabilityStatus.statusColor,
@@ -163,22 +164,5 @@ class StatsOverlay extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  /// Get localized habitability status string
-  String _getLocalizedHabitabilityStatus(
-    AppLocalizations l10n,
-    HabitabilityStatus status,
-  ) {
-    switch (status) {
-      case HabitabilityStatus.habitable:
-        return l10n.habitabilityHabitable;
-      case HabitabilityStatus.tooHot:
-        return l10n.habitabilityTooHot;
-      case HabitabilityStatus.tooCold:
-        return l10n.habitabilityTooCold;
-      case HabitabilityStatus.unknown:
-        return l10n.habitabilityUnknown;
-    }
   }
 }

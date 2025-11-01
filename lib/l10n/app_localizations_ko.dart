@@ -222,6 +222,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get autoRotateOff => '꺼짐';
 
   @override
+  String get yawLabel => '요';
+
+  @override
+  String get pitchLabel => '피치';
+
+  @override
+  String get rollLabel => '롤';
+
+  @override
+  String get zoomLabel => '줌';
+
+  @override
   String get cameraControlsLabel => '카메라 조작';
 
   @override
@@ -345,6 +357,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get scenarioSolarSystemDescription => '내행성과 외행성을 포함한 우리 태양계의 간소화된 버전';
+
+  @override
+  String get scenarioSpecial => '특별 시나리오';
+
+  @override
+  String get scenarioSpecialDescription => '스크린샷 모드용 특별 시나리오';
 
   @override
   String get habitabilityLabel => '거주 가능성';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/constants/educational_focus_keys.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/localization_utils.dart';
 
 /// A dialog that allows users to select a preset astronomical scenario
 class ScenarioSelectionDialog extends StatelessWidget {
@@ -139,8 +139,11 @@ class _ScenarioTile extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     // Get localized name and description
-    final name = _getLocalizedName(l10n, scenario);
-    final description = _getLocalizedDescription(l10n, scenario);
+    final name = LocalizationUtils.getLocalizedScenarioName(l10n, scenario);
+    final description = LocalizationUtils.getLocalizedScenarioDescription(
+      l10n,
+      scenario,
+    );
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
@@ -255,7 +258,10 @@ class _ScenarioTile extends StatelessWidget {
                         SizedBox(width: AppTypography.spacingXSmall),
                         Expanded(
                           child: Text(
-                            _getLocalizedEducationalFocus(l10n, scenario),
+                            LocalizationUtils.getLocalizedEducationalFocus(
+                              l10n,
+                              config.educationalFocus,
+                            ),
                             style: AppTypography.smallText.copyWith(
                               color: AppColors.uiWhite.withValues(
                                 alpha: AppTypography.opacityMediumHigh,
@@ -274,84 +280,6 @@ class _ScenarioTile extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getLocalizedName(AppLocalizations l10n, ScenarioType scenario) {
-    switch (scenario) {
-      case ScenarioType.random:
-        return l10n.scenarioRandom;
-      case ScenarioType.earthMoonSun:
-        return l10n.scenarioEarthMoonSun;
-      case ScenarioType.binaryStars:
-        return l10n.scenarioBinaryStars;
-      case ScenarioType.asteroidBelt:
-        return l10n.scenarioAsteroidBelt;
-      case ScenarioType.galaxyFormation:
-        return l10n.scenarioGalaxyFormation;
-      case ScenarioType.solarSystem:
-        return l10n.scenarioSolarSystem;
-      case ScenarioType.threeBodyClassic:
-      case ScenarioType.collisionDemo:
-      case ScenarioType.deepSpace:
-        // These scenarios are used by screenshot presets but not available in the main scenario selection
-        return 'Special Scenario';
-    }
-  }
-
-  String _getLocalizedDescription(
-    AppLocalizations l10n,
-    ScenarioType scenario,
-  ) {
-    switch (scenario) {
-      case ScenarioType.random:
-        return l10n.scenarioRandomDescription;
-      case ScenarioType.earthMoonSun:
-        return l10n.scenarioEarthMoonSunDescription;
-      case ScenarioType.binaryStars:
-        return l10n.scenarioBinaryStarsDescription;
-      case ScenarioType.asteroidBelt:
-        return l10n.scenarioAsteroidBeltDescription;
-      case ScenarioType.galaxyFormation:
-        return l10n.scenarioGalaxyFormationDescription;
-      case ScenarioType.solarSystem:
-        return l10n.scenarioSolarSystemDescription;
-      case ScenarioType.threeBodyClassic:
-      case ScenarioType.collisionDemo:
-      case ScenarioType.deepSpace:
-        // These scenarios are used by screenshot presets but not available in the main scenario selection
-        return 'Special scenario for screenshot mode.';
-    }
-  }
-
-  String _getLocalizedEducationalFocus(
-    AppLocalizations l10n,
-    ScenarioType scenario,
-  ) {
-    final config = ScenarioConfig.defaults[scenario];
-
-    // Return fallback for scenarios without config (screenshot-only scenarios)
-    if (config == null) {
-      return 'Special scenario';
-    }
-
-    // Map educational focus keys to localized strings
-    switch (config.educationalFocus) {
-      case EducationalFocusKeys.chaoticDynamics:
-        return l10n.educationalFocusChaoticDynamics;
-      case EducationalFocusKeys.realWorldSystem:
-        return l10n.educationalFocusRealWorldSystem;
-      case EducationalFocusKeys.binaryOrbits:
-        return l10n.educationalFocusBinaryOrbits;
-      case EducationalFocusKeys.manyBodyDynamics:
-        return l10n.educationalFocusManyBodyDynamics;
-      case EducationalFocusKeys.structureFormation:
-        return l10n.educationalFocusStructureFormation;
-      case EducationalFocusKeys.planetaryMotion:
-        return l10n.educationalFocusPlanetaryMotion;
-      default:
-        // Fallback for unknown keys
-        return config.educationalFocus;
-    }
   }
 
   Widget _buildScenarioObjectives(

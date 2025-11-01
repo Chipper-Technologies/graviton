@@ -354,6 +354,26 @@
   "@autoRotateOff": {
     "description": "Auto-rotate is disabled"
   },
+
+  "yawLabel": "Yaw",
+  "@yawLabel": {
+    "description": "Label for camera yaw rotation"
+  },
+
+  "pitchLabel": "Pitch", 
+  "@pitchLabel": {
+    "description": "Label for camera pitch rotation"
+  },
+
+  "rollLabel": "Roll",
+  "@rollLabel": {
+    "description": "Label for camera roll rotation"
+  },
+
+  "zoomLabel": "Zoom",
+  "@zoomLabel": {
+    "description": "Label for camera zoom level"
+  },
   
   "cameraControlsLabel": "Camera Controls",
   "@cameraControlsLabel": {
@@ -559,6 +579,16 @@
   "scenarioSolarSystemDescription": "Simplified version of our solar system with inner and outer planets",
   "@scenarioSolarSystemDescription": {
     "description": "Description of the solar system scenario"
+  },
+
+  "scenarioSpecial": "Special Scenario",
+  "@scenarioSpecial": {
+    "description": "Name for special/internal scenarios not available in main selection"
+  },
+
+  "scenarioSpecialDescription": "Special scenario for screenshot mode",
+  "@scenarioSpecialDescription": {
+    "description": "Description for special/internal scenarios used for screenshots"
   },
   
   "habitabilityLabel": "Habitability",
