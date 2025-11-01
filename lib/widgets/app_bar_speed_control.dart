@@ -21,15 +21,27 @@ class AppBarSpeedControl extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 4),
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-            color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityFaint),
+            color: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityFaint,
+            ),
             borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-            border: Border.all(color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryFaint), width: 1),
+            border: Border.all(
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityVeryFaint,
+              ),
+              width: 1,
+            ),
           ),
           child: PopupMenuButton<double>(
             tooltip: l10n.speedLabel,
             onSelected: (value) => appState.simulation.setTimeScale(value),
             itemBuilder: (context) => [
-              _buildSpeedMenuItem(0.1, '0.1x', 'Slow Motion', Icons.slow_motion_video),
+              _buildSpeedMenuItem(
+                0.1,
+                '0.1x',
+                'Slow Motion',
+                Icons.slow_motion_video,
+              ),
               _buildSpeedMenuItem(0.5, '0.5x', 'Half Speed', Icons.play_arrow),
               _buildSpeedMenuItem(1.0, '1.0x', 'Normal', Icons.play_arrow),
               _buildSpeedMenuItem(2.0, '2.0x', 'Double', Icons.fast_forward),
@@ -37,15 +49,28 @@ class AppBarSpeedControl extends StatelessWidget {
               _buildSpeedMenuItem(8.0, '8.0x', 'Very Fast', Icons.fast_forward),
               _buildSpeedMenuItem(16.0, '16.0x', 'Maximum', Icons.fast_forward),
             ],
-            color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityNearlyOpaque),
+            color: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityNearlyOpaque,
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-              side: BorderSide(color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryFaint), width: 1),
+              side: BorderSide(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityVeryFaint,
+                ),
+                width: 1,
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.speed, size: 14, color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryHigh)),
+                Icon(
+                  Icons.speed,
+                  size: 14,
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityVeryHigh,
+                  ),
+                ),
                 const SizedBox(width: 3),
                 Text(
                   '${timeScale.toStringAsFixed(1)}x',
@@ -59,7 +84,9 @@ class AppBarSpeedControl extends StatelessWidget {
                 Icon(
                   Icons.arrow_drop_down,
                   size: 14,
-                  color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityMediumHigh),
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityMediumHigh,
+                  ),
                 ),
               ],
             ),
@@ -69,12 +96,23 @@ class AppBarSpeedControl extends StatelessWidget {
     );
   }
 
-  PopupMenuItem<double> _buildSpeedMenuItem(double value, String speed, String description, IconData icon) {
+  PopupMenuItem<double> _buildSpeedMenuItem(
+    double value,
+    String speed,
+    String description,
+    IconData icon,
+  ) {
     return PopupMenuItem<double>(
       value: value,
       child: Row(
         children: [
-          Icon(icon, size: 16, color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityHigh)),
+          Icon(
+            icon,
+            size: 16,
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityHigh,
+            ),
+          ),
           const SizedBox(width: AppTypography.spacingSmall),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +129,9 @@ class AppBarSpeedControl extends StatelessWidget {
               Text(
                 description,
                 style: TextStyle(
-                  color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityMediumHigh),
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityMediumHigh,
+                  ),
                   fontSize: AppTypography.fontSizeXSmall,
                 ),
               ),

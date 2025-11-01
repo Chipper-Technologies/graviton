@@ -99,16 +99,26 @@ class AppTypography {
 
   static const TextStyle largeText = TextStyle(fontSize: fontSizeLarge);
 
-  static const TextStyle titleText = TextStyle(fontSize: fontSizeTitle, fontWeight: FontWeight.bold);
+  static const TextStyle titleText = TextStyle(
+    fontSize: fontSizeTitle,
+    fontWeight: FontWeight.bold,
+  );
 
-  static const TextStyle headerText = TextStyle(fontSize: fontSizeHeader, fontWeight: FontWeight.bold);
+  static const TextStyle headerText = TextStyle(
+    fontSize: fontSizeHeader,
+    fontWeight: FontWeight.bold,
+  );
 
   // =============================================================================
   // HELPER METHODS
   // =============================================================================
 
   /// Create a TextStyle with specified color and opacity
-  static TextStyle textWithOpacity(Color color, double opacity, {double? fontSize}) {
+  static TextStyle textWithOpacity(
+    Color color,
+    double opacity, {
+    double? fontSize,
+  }) {
     return TextStyle(
       color: color.withValues(alpha: opacity),
       fontSize: fontSize ?? fontSizeSmall,
@@ -132,7 +142,11 @@ class AppTypography {
   }
 
   /// Create consistent border with opacity
-  static Border createBorder({Color? color, double opacity = opacityVeryFaint, double width = borderThin}) {
+  static Border createBorder({
+    Color? color,
+    double opacity = opacityVeryFaint,
+    double width = borderThin,
+  }) {
     return Border.all(
       color: (color ?? AppColors.uiWhite).withValues(alpha: opacity),
       width: width,

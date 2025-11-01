@@ -13,7 +13,8 @@ class TutorialOverlay extends StatefulWidget {
   State<TutorialOverlay> createState() => _TutorialOverlayState();
 }
 
-class _TutorialOverlayState extends State<TutorialOverlay> with SingleTickerProviderStateMixin {
+class _TutorialOverlayState extends State<TutorialOverlay>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   int _currentStep = 0;
@@ -23,11 +24,13 @@ class _TutorialOverlayState extends State<TutorialOverlay> with SingleTickerProv
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
     _animationController.forward();
   }
 
@@ -154,13 +157,19 @@ class _TutorialOverlayState extends State<TutorialOverlay> with SingleTickerProv
         return Opacity(
           opacity: _fadeAnimation.value,
           child: Container(
-            color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityVeryHigh),
+            color: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityVeryHigh,
+            ),
             child: SafeArea(
               child: Stack(
                 children: [
                   // Highlight area (if specified)
                   if (step.highlightArea != null)
-                    Positioned.fill(child: CustomPaint(painter: HighlightPainter(step.highlightArea!))),
+                    Positioned.fill(
+                      child: CustomPaint(
+                        painter: HighlightPainter(step.highlightArea!),
+                      ),
+                    ),
 
                   // Tutorial content
                   Center(
@@ -176,13 +185,19 @@ class _TutorialOverlayState extends State<TutorialOverlay> with SingleTickerProv
                         }
                       },
                       child: Material(
-                        borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
+                        borderRadius: BorderRadius.circular(
+                          AppTypography.radiusXLarge,
+                        ),
                         elevation: 8,
                         color: theme.colorScheme.surface,
                         child: Container(
                           margin: const EdgeInsets.all(32),
                           padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppTypography.radiusXLarge)),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              AppTypography.radiusXLarge,
+                            ),
+                          ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -191,37 +206,51 @@ class _TutorialOverlayState extends State<TutorialOverlay> with SingleTickerProv
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: List.generate(_steps.length, (index) {
                                   return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                    ),
                                     width: 8,
                                     height: 8,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: index == _currentStep
                                           ? _getIconColor(_currentStep)
-                                          : theme.colorScheme.onSurface.withValues(alpha: AppTypography.opacityFaint),
+                                          : theme.colorScheme.onSurface
+                                                .withValues(
+                                                  alpha: AppTypography
+                                                      .opacityFaint,
+                                                ),
                                     ),
                                   );
                                 }),
                               ),
-                              const SizedBox(height: AppTypography.spacingSmall),
+                              const SizedBox(
+                                height: AppTypography.spacingSmall,
+                              ),
 
                               // Swipe hint
                               Text(
                                 l10n.tutorialNavigationHint,
                                 style: AppTypography.smallText.copyWith(
-                                  color: theme.colorScheme.onSurface.withValues(alpha: AppTypography.opacityMediumHigh),
+                                  color: theme.colorScheme.onSurface.withValues(
+                                    alpha: AppTypography.opacityMediumHigh,
+                                  ),
                                   fontSize: 11,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: AppTypography.spacingLarge),
+                              const SizedBox(
+                                height: AppTypography.spacingLarge,
+                              ),
 
                               // Icon or Logo
                               Container(
                                 padding: const EdgeInsets.all(16),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: theme.colorScheme.primary.withValues(alpha: AppTypography.opacitySubtle),
+                                  color: theme.colorScheme.primary.withValues(
+                                    alpha: AppTypography.opacitySubtle,
+                                  ),
                                 ),
                                 child: step.isLogoStep
                                     ? Container(
@@ -230,33 +259,55 @@ class _TutorialOverlayState extends State<TutorialOverlay> with SingleTickerProv
                                         decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
-                                            image: AssetImage('assets/images/app-logo.png'),
+                                            image: AssetImage(
+                                              'assets/images/app-logo.png',
+                                            ),
                                             fit: BoxFit.cover,
                                           ),
                                         ),
                                       )
-                                    : Icon(step.icon, size: 48, color: _getIconColor(_currentStep)),
+                                    : Icon(
+                                        step.icon,
+                                        size: 48,
+                                        color: _getIconColor(_currentStep),
+                                      ),
                               ),
                               const SizedBox(height: 24),
 
                               // Title
                               Text(
                                 step.title,
-                                style: AppTypography.titleText.copyWith(color: theme.colorScheme.onSurface),
+                                style: AppTypography.titleText.copyWith(
+                                  color: theme.colorScheme.onSurface,
+                                ),
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: AppTypography.spacingLarge),
+                              const SizedBox(
+                                height: AppTypography.spacingLarge,
+                              ),
 
                               // Description - left aligned
-                              SizedBox(width: double.infinity, child: _buildDescriptionText(step.description, theme)),
-                              const SizedBox(height: AppTypography.spacingXXXLarge),
+                              SizedBox(
+                                width: double.infinity,
+                                child: _buildDescriptionText(
+                                  step.description,
+                                  theme,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: AppTypography.spacingXXXLarge,
+                              ),
 
                               // Navigation buttons
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   // Skip button
-                                  TextButton(onPressed: _skipTutorial, child: Text(l10n.skipTutorial)),
+                                  TextButton(
+                                    onPressed: _skipTutorial,
+                                    child: Text(l10n.skipTutorial),
+                                  ),
 
                                   // Previous/Next buttons
                                   Row(
@@ -264,17 +315,29 @@ class _TutorialOverlayState extends State<TutorialOverlay> with SingleTickerProv
                                       if (_currentStep > 0)
                                         TextButton(
                                           onPressed: _previousStep,
-                                          style: TextButton.styleFrom(foregroundColor: _getIconColor(_currentStep)),
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: _getIconColor(
+                                              _currentStep,
+                                            ),
+                                          ),
                                           child: Text(l10n.previous),
                                         ),
-                                      const SizedBox(width: AppTypography.spacingSmall),
+                                      const SizedBox(
+                                        width: AppTypography.spacingSmall,
+                                      ),
                                       ElevatedButton(
                                         onPressed: _nextStep,
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: _getIconColor(_currentStep),
+                                          backgroundColor: _getIconColor(
+                                            _currentStep,
+                                          ),
                                           foregroundColor: AppColors.uiWhite,
                                         ),
-                                        child: Text(_currentStep == _steps.length - 1 ? l10n.getStarted : l10n.next),
+                                        child: Text(
+                                          _currentStep == _steps.length - 1
+                                              ? l10n.getStarted
+                                              : l10n.next,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -335,14 +398,24 @@ class _TutorialOverlayState extends State<TutorialOverlay> with SingleTickerProv
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: AppTypography.opacityDisabled),
-                  borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
+                  color: theme.colorScheme.primary.withValues(
+                    alpha: AppTypography.opacityDisabled,
+                  ),
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusSmall,
+                  ),
                   border: Border.all(
-                    color: theme.colorScheme.primary.withValues(alpha: AppTypography.opacityFaint),
+                    color: theme.colorScheme.primary.withValues(
+                      alpha: AppTypography.opacityFaint,
+                    ),
                     width: AppTypography.borderThin,
                   ),
                 ),
-                child: Icon(Icons.more_vert, size: 16, color: theme.colorScheme.primary),
+                child: Icon(
+                  Icons.more_vert,
+                  size: 16,
+                  color: theme.colorScheme.primary,
+                ),
               ),
             ),
             TextSpan(text: ' '), // Space after icon
@@ -399,13 +472,22 @@ class _TutorialOverlayState extends State<TutorialOverlay> with SingleTickerProv
       );
     }
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: listItems);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: listItems,
+    );
   }
 
   /// Build bullet list item
   List<Widget> _buildBulletItem(String line, ThemeData theme) {
     return [
-      Text('• ', style: AppTypography.largeText.copyWith(height: 1.5, color: theme.colorScheme.primary)),
+      Text(
+        '• ',
+        style: AppTypography.largeText.copyWith(
+          height: 1.5,
+          color: theme.colorScheme.primary,
+        ),
+      ),
       Expanded(
         child: Text(
           line.substring(2), // Remove the bullet
@@ -483,7 +565,12 @@ class TutorialStep {
   });
 }
 
-enum TutorialAction { highlightAppBar, highlightBottomControls, highlightScenarioButton, highlightFloatingControls }
+enum TutorialAction {
+  highlightAppBar,
+  highlightBottomControls,
+  highlightScenarioButton,
+  highlightFloatingControls,
+}
 
 class HighlightPainter extends CustomPainter {
   final Rect highlightArea;
@@ -497,7 +584,13 @@ class HighlightPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
-    canvas.drawRRect(RRect.fromRectAndRadius(highlightArea, const Radius.circular(AppTypography.radiusMedium)), paint);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        highlightArea,
+        const Radius.circular(AppTypography.radiusMedium),
+      ),
+      paint,
+    );
   }
 
   @override
