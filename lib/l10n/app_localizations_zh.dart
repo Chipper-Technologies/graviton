@@ -27,6 +27,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get trailsLabel => '轨迹';
 
   @override
+  String get statsLabel => '统计';
+
+  @override
+  String get selectLabel => '选择';
+
+  @override
+  String get followLabel => '跟随';
+
+  @override
+  String get centerLabel => '居中';
+
+  @override
+  String get rotateLabel => '旋转';
+
+  @override
   String get warmTrails => '🔥 热';
 
   @override
@@ -153,6 +168,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get trailColorLabel => '轨迹颜色';
 
   @override
+  String get colorsLabel => '颜色';
+
+  @override
+  String get realisticColors => '真实色彩';
+
+  @override
+  String get realisticColorsDescription => '基于温度和恒星分类使用科学准确的颜色';
+
+  @override
   String get closeButton => '关闭';
 
   @override
@@ -205,6 +229,30 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get invertPitchControlsDescription => '反转上下拖拽方向';
+
+  @override
+  String get cinematicCameraTechniqueLabel => 'AI相机技术';
+
+  @override
+  String get cinematicCameraTechniqueDescription => '选择AI在跟踪对象时如何控制相机';
+
+  @override
+  String get cinematicTechniqueManual => '手动控制';
+
+  @override
+  String get cinematicTechniqueManualDesc => '传统的手动相机控制，带有跟踪模式';
+
+  @override
+  String get cinematicTechniquePredictiveOrbital => '预测轨道';
+
+  @override
+  String get cinematicTechniquePredictiveOrbitalDesc => '用于教育场景的AI导览和轨道预测';
+
+  @override
+  String get cinematicTechniqueDynamicFraming => '动态取景';
+
+  @override
+  String get cinematicTechniqueDynamicFramingDesc => '用于混沌场景的实时戏剧性目标选择';
 
   @override
   String get marketingLabel => '营销';
@@ -504,11 +552,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bodyBlackHole => '黑洞';
 
   @override
-  String bodyStar(int number) {
-    return '恒星 $number';
-  }
-
-  @override
   String get bodyRingedPlanet => '环状行星';
 
   @override
@@ -542,6 +585,14 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bodyOuterPlanet => '外行星';
+
+  @override
+  String get bodyCenterOfMass => '质心';
+
+  @override
+  String bodyStarNumber(int number) {
+    return '恒星 $number';
+  }
 
   @override
   String get educationalFocusChaoticDynamics => '混沌动力学';
@@ -914,5 +965,53 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String copiedToClipboard(String text) {
     return '已复制到剪贴板：$text';
+  }
+
+  @override
+  String get changelogTitle => '新功能';
+
+  @override
+  String get closeDialog => '关闭';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return '发布于$date';
+  }
+
+  @override
+  String get changelogAdded => '新功能';
+
+  @override
+  String get changelogImproved => '改进';
+
+  @override
+  String get changelogFixed => '错误修复';
+
+  @override
+  String get changelogSkip => '跳过';
+
+  @override
+  String get changelogDone => '完成';
+
+  @override
+  String get changelogButton => '显示更新日志';
+
+  @override
+  String get resetChangelogButton => '重置更新日志状态';
+
+  @override
+  String get changelogResetMessage => '更新日志状态已重置';
+
+  @override
+  String get changelogDebugTitle => '更新日志 (调试)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return '未找到更新日志。请先将更新日志数据添加到Firestore。\n当前版本: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return '加载更新日志失败: $error';
   }
 }

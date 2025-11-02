@@ -6,16 +6,25 @@ import 'package:graviton/main.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/widgets/stats_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/test_helpers.dart';
 
 void main() {
   group('Graviton App Integration Tests', () {
+    setUp(() async {
+      // Set up test environment for SharedPreferences
+      SharedPreferences.setMockInitialValues({});
+    });
+
     testWidgets('App should launch successfully', (tester) async {
       final testAppState = AppState();
-      await testAppState.initializeAsync();
-      await tester.pumpWidget(GravitonApp(appState: testAppState));
-      await tester.pump(
-        const Duration(milliseconds: 100),
-      ); // Use pump instead of pumpAndSettle
+
+      await TestHelpers.setupAndPumpApp(
+        tester,
+        testAppState,
+        GravitonApp(appState: testAppState),
+      );
 
       expect(find.byType(MaterialApp), findsOneWidget);
       expect(find.byType(ChangeNotifierProvider<AppState>), findsOneWidget);
@@ -25,11 +34,12 @@ void main() {
       tester,
     ) async {
       final testAppState = AppState();
-      await testAppState.initializeAsync();
-      await tester.pumpWidget(GravitonApp(appState: testAppState));
-      await tester.pump(
-        const Duration(milliseconds: 100),
-      ); // Use pump instead of pumpAndSettle
+
+      await TestHelpers.setupAndPumpApp(
+        tester,
+        testAppState,
+        GravitonApp(appState: testAppState),
+      );
 
       // Should find the main simulation canvas (CustomPaint)
       expect(find.byType(CustomPaint), findsWidgets);
@@ -92,7 +102,8 @@ void main() {
 
     testWidgets('Simulation controls should work', (tester) async {
       final testAppState = AppState();
-      await testAppState.initializeAsync();
+
+      await TestHelpers.initializeAppStateWithTimeout(testAppState);
       await tester.pumpWidget(GravitonApp(appState: testAppState));
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -104,11 +115,15 @@ void main() {
         );
         expect(toggleButtons.children, isNotEmpty);
       }
+
+      // Pump timers to prevent pending timer failures
+      await TestHelpers.pumpAppTimers(tester);
     });
 
     testWidgets('Stats overlay should toggle correctly', (tester) async {
       final testAppState = AppState();
-      await testAppState.initializeAsync();
+
+      await TestHelpers.initializeAppStateWithTimeout(testAppState);
       await tester.pumpWidget(GravitonApp(appState: testAppState));
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -139,11 +154,15 @@ void main() {
         final newStatsCount = find.byType(StatsOverlay).evaluate().length;
         expect(newStatsCount != initialStatsCount, isTrue);
       }
+
+      // Pump timers to prevent pending timer failures
+      await TestHelpers.pumpAppTimers(tester);
     });
 
     testWidgets('Camera controls should respond to gestures', (tester) async {
       final testAppState = AppState();
-      await testAppState.initializeAsync();
+
+      await TestHelpers.initializeAppStateWithTimeout(testAppState);
       await tester.pumpWidget(GravitonApp(appState: testAppState));
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -165,11 +184,15 @@ void main() {
         );
         expect(gestureDetector, isNotNull);
       }
+
+      // Pump timers to prevent pending timer failures
+      await TestHelpers.pumpAppTimers(tester);
     });
 
     testWidgets('Simulation should run and update', (tester) async {
       final testAppState = AppState();
-      await testAppState.initializeAsync();
+
+      await TestHelpers.initializeAppStateWithTimeout(testAppState);
       await tester.pumpWidget(GravitonApp(appState: testAppState));
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -195,11 +218,15 @@ void main() {
         greaterThanOrEqualTo(initialStepCount),
       );
       expect(appState.simulation.totalTime, greaterThanOrEqualTo(initialTime));
+
+      // Pump timers to prevent pending timer failures
+      await TestHelpers.pumpAppTimers(tester);
     });
 
     testWidgets('Reset should work correctly', (tester) async {
       final testAppState = AppState();
-      await testAppState.initializeAsync();
+
+      await TestHelpers.initializeAppStateWithTimeout(testAppState);
       await tester.pumpWidget(GravitonApp(appState: testAppState));
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -224,6 +251,9 @@ void main() {
         appState.simulation.bodies,
         hasLength(4),
       ); // Should still have bodies
+
+      // Pump timers to prevent pending timer failures
+      await TestHelpers.pumpAppTimers(tester);
     });
 
     testWidgets('Multiple locales should be supported', (tester) async {
@@ -279,7 +309,8 @@ void main() {
 
     testWidgets('App should handle errors gracefully', (tester) async {
       final testAppState = AppState();
-      await testAppState.initializeAsync();
+
+      await TestHelpers.initializeAppStateWithTimeout(testAppState);
       await tester.pumpWidget(GravitonApp(appState: testAppState));
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -297,13 +328,17 @@ void main() {
       await tester.pump();
 
       expect(appState.lastError, isNull);
+
+      // Pump timers to prevent pending timer failures
+      await TestHelpers.pumpAppTimers(tester);
     });
 
     testWidgets('Performance - App should handle rapid updates', (
       tester,
     ) async {
       final testAppState = AppState();
-      await testAppState.initializeAsync();
+
+      await TestHelpers.initializeAppStateWithTimeout(testAppState);
       await tester.pumpWidget(GravitonApp(appState: testAppState));
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -324,11 +359,15 @@ void main() {
       // Should complete without errors
       expect(appState.simulation.stepCount, greaterThan(0));
       expect(tester.takeException(), isNull);
+
+      // Pump timers to prevent pending timer failures
+      await TestHelpers.pumpAppTimers(tester);
     });
 
     testWidgets('UI state changes should persist', (tester) async {
       final testAppState = AppState();
-      await testAppState.initializeAsync();
+
+      await TestHelpers.initializeAppStateWithTimeout(testAppState);
       await tester.pumpWidget(GravitonApp(appState: testAppState));
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -349,6 +388,9 @@ void main() {
 
       expect(appState.ui.showTrails, equals(!initialTrails));
       expect(appState.ui.uiOpacity, equals(0.5));
+
+      // Pump timers to prevent pending timer failures
+      await TestHelpers.pumpAppTimers(tester);
     });
   });
 }

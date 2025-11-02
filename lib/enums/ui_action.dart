@@ -58,7 +58,13 @@ enum UIAction {
   tutorialStarted('tutorial_started'),
 
   /// Tutorial completed
-  tutorialCompleted('tutorial_completed');
+  tutorialCompleted('tutorial_completed'),
+
+  /// Changelog shown
+  changelogShown('changelog_shown'),
+
+  /// Changelog completed
+  changelogCompleted('changelog_completed');
 
   const UIAction(this.value);
 

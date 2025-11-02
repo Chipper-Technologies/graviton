@@ -375,13 +375,8 @@ class ScreenshotModeService extends ChangeNotifier {
       uiState.toggleHabitableZones();
     }
 
-    // Apply gravity wells setting - if not specified, default to false
-    final wantGravityWells = preset.showGravityWells ?? false;
-    if (wantGravityWells && !uiState.showGravityWells) {
-      uiState.toggleGravityWells();
-    } else if (!wantGravityWells && uiState.showGravityWells) {
-      uiState.toggleGravityWells();
-    }
+    // Gravity wells are now controlled per-body via Body.showGravityWell property
+    // No global setting to apply
 
     // Apply off-screen indicators setting
     if (preset.showOffScreenIndicators != null) {
@@ -561,7 +556,7 @@ class ScreenshotModeService extends ChangeNotifier {
       'showLabels': uiState.showLabels,
       'showHabitableZones': uiState.showHabitableZones,
       'showOrbitalPaths': uiState.showOrbitalPaths,
-      'showGravityWells': uiState.showGravityWells,
+      // 'showGravityWells': removed - now controlled per-body
       'showOffScreenIndicators': uiState.showOffScreenIndicators,
     };
   }
@@ -580,9 +575,7 @@ class ScreenshotModeService extends ChangeNotifier {
     if (_originalUIState!['showOrbitalPaths'] != uiState.showOrbitalPaths) {
       uiState.toggleOrbitalPaths();
     }
-    if (_originalUIState!['showGravityWells'] != uiState.showGravityWells) {
-      uiState.toggleGravityWells();
-    }
+    // Gravity wells toggle removed - now controlled per-body
     if (_originalUIState!['showOffScreenIndicators'] !=
         uiState.showOffScreenIndicators) {
       uiState.toggleOffScreenIndicators();

@@ -36,10 +36,10 @@ void main() {
         stars: stars,
         showTrails: true,
         useWarmTrails: false,
+        useRealisticColors: false,
         showOrbitalPaths: true,
         showHabitableZones: false,
         showHabitabilityIndicators: false,
-        showGravityWells: false,
         cameraDistance: 300.0,
       );
     });
@@ -54,7 +54,6 @@ void main() {
         expect(painter.useWarmTrails, isFalse);
         expect(painter.showHabitableZones, isFalse);
         expect(painter.showHabitabilityIndicators, isFalse);
-        expect(painter.showGravityWells, isFalse);
       });
 
       test('Should handle different display settings', () {
@@ -65,10 +64,10 @@ void main() {
           stars: stars,
           showTrails: false,
           useWarmTrails: true,
+          useRealisticColors: false,
           showOrbitalPaths: true,
           showHabitableZones: true,
           showHabitabilityIndicators: true,
-          showGravityWells: true,
           cameraDistance: 300.0,
         );
 
@@ -76,7 +75,6 @@ void main() {
         expect(fullFeaturesPainter.useWarmTrails, isTrue);
         expect(fullFeaturesPainter.showHabitableZones, isTrue);
         expect(fullFeaturesPainter.showHabitabilityIndicators, isTrue);
-        expect(fullFeaturesPainter.showGravityWells, isTrue);
       });
     });
 
@@ -112,6 +110,7 @@ void main() {
           stars: stars,
           showTrails: true,
           useWarmTrails: false,
+          useRealisticColors: false,
           showOrbitalPaths: false,
           cameraDistance: 300.0,
         );
@@ -162,6 +161,7 @@ void main() {
           stars: [],
           showTrails: true,
           useWarmTrails: false,
+          useRealisticColors: false,
           showOrbitalPaths: false,
           cameraDistance: 300.0,
         );
@@ -198,6 +198,7 @@ void main() {
           stars: stars,
           showTrails: true,
           useWarmTrails: false,
+          useRealisticColors: false,
           showOrbitalPaths: false,
           cameraDistance: 300.0,
         );
@@ -467,7 +468,6 @@ void main() {
           showOrbitalPaths: true,
           showHabitableZones: true,
           showHabitabilityIndicators: true,
-          showGravityWells: true,
           cameraDistance: 300.0,
         );
 
@@ -507,7 +507,6 @@ void main() {
           showOrbitalPaths: true,
           showHabitableZones: true,
           showHabitabilityIndicators: true,
-          showGravityWells: true,
           cameraDistance: 300.0,
         );
 
@@ -518,7 +517,6 @@ void main() {
         expect(orchestratorPainter.useWarmTrails, isTrue);
         expect(orchestratorPainter.showHabitableZones, isTrue);
         expect(orchestratorPainter.showHabitabilityIndicators, isTrue);
-        expect(orchestratorPainter.showGravityWells, isTrue);
       });
 
       test('Should handle feature toggling', () {
@@ -533,7 +531,6 @@ void main() {
           showOrbitalPaths: false,
           showHabitableZones: false,
           showHabitabilityIndicators: false,
-          showGravityWells: false,
           cameraDistance: 300.0,
         );
 
@@ -541,7 +538,6 @@ void main() {
         expect(minimalPainter.useWarmTrails, isFalse);
         expect(minimalPainter.showHabitableZones, isFalse);
         expect(minimalPainter.showHabitabilityIndicators, isFalse);
-        expect(minimalPainter.showGravityWells, isFalse);
       });
     });
   });

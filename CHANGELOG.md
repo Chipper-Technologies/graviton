@@ -5,6 +5,57 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-11-01
+
+### Added
+- **Realistic Colors Feature**: Scientifically accurate color rendering based on stellar physics and Harvard spectral classification
+  - **Stellar Classification System**: Temperature-based colors for stars using O, B, A, F, G, K, M spectral types
+  - **UI Settings Toggle**: New option to enable/disable realistic colors with seamless switching between modes
+  - **StellarColorService**: Dedicated service for calculating temperature-based colors and stellar physics
+  - **Galaxy Formation Enhancement**: Proximity-based stellar heating system for realistic temperature dynamics
+  - **Visual Effects Integration**: Sunspots, solar flares, and trails adapted to work with realistic stellar colors
+  - **Internationalization Support**: Complete localization across all 7 supported languages for the new feature
+- **AI-Driven Cinematic Camera Controller**: Revolutionary camera system with intelligent scene targeting and dramatic positioning
+  - **Manual Control**: Traditional manual camera controls with enhanced follow mode capabilities
+  - **Predictive Orbital**: AI-powered educational tours with orbital path predictions and automatic camera positioning for optimal viewing angles
+  - **Dynamic Framing**: Real-time dramatic targeting system that automatically identifies and focuses on the most visually interesting events (close encounters, collisions, chaotic motion)
+- **Orbital Prediction Engine**: Advanced physics simulation for anticipating dramatic celestial events
+  - Collision detection and early warning system for imminent impacts
+  - Close encounter prediction with automatic camera pre-positioning
+  - Orbital decay analysis for educational demonstrations
+- **Dramatic Scoring Algorithm**: Sophisticated AI system for rating scene interest levels
+  - Multi-factor scoring considering proximity, velocity, mass, and approaching trajectories
+  - Real-time evaluation of celestial interactions for optimal camera targeting
+  - Configurable scoring parameters with comprehensive documentation for future tuning
+- **Enhanced Rendering Constants**: Organized and documented constants for visual effects
+  - Detailed parameter documentation with expected ranges and usage guidelines
+  - Sunspot generation constants for realistic solar surface features
+  - Body matching tolerance system for stable object identification across frames
+- **Advanced Gravity Well Visualization**: Sophisticated 3D funnel-shaped gravity wells with per-body control and orbital plane alignment
+  - **Per-Body Control**: Migrated from global toggle to individual body gravity well settings for selective educational visualization
+  - **Dynamic Orbital Detection**: Real-time orbital plane calculation using angular momentum for accurate 3D funnel orientation
+  - **Zoom-Responsive Detail**: Adaptive visualization complexity based on camera distance for optimal performance
+  - **Black Hole Enhancement**: Dramatic visual effects with enhanced depth and intensity for extreme gravity wells
+  - **Temporal Orientation Tracking**: Historical gravity well orientation data for visualizing changing orbital dynamics
+- **Dynamic In-App Changelog System**: Firebase Firestore-powered changelog delivery with smart single-version display
+
+### Improved
+- **Camera Performance**: Optimized camera update cycles with 16ms target execution time for smooth 60fps operation
+- **Code Documentation**: Enhanced constants documentation with scoring scales, units, and tuning guidance
+- **Internationalization**: Fixed language display issues across all 7 supported languages
+  - Corrected English language names appearing in non-English translations
+  - Added complete translations for all cinematic camera technique labels and descriptions
+
+### Technical Improvements
+- **Constants Organization**: Extracted magic numbers to named constants in SimulationConstants for better maintainability
+  - Temperature conversion constants with proper physics documentation
+  - Stellar temperature thresholds for accurate physics validation
+- **Camera State Management**: Robust state synchronization between simulation, camera, and UI systems
+- **Mathematical Precision**: Validated coordinate transformations and camera calculations through comprehensive testing
+- **Edge Case Handling**: Enhanced stability for empty scenarios, single bodies, and boundary conditions
+- **Performance Benchmarking**: Automated performance validation ensuring camera updates complete within frame budget
+- **API Compatibility**: Fixed compilation errors and ensured proper integration with existing simulation framework
+
 ## [1.1.0] - 2025-10-25
 
 ### Added

@@ -75,9 +75,9 @@ void main() {
 
       expect(
         minMass,
-        greaterThanOrEqualTo(0.8),
+        greaterThanOrEqualTo(1.0), // Updated from 0.8 to match new constant
         reason:
-            'Minimum planet mass should be at least 0.8 (small rocky planet)',
+            'Minimum planet mass should be at least 1.0 (small rocky planet)',
       );
       expect(
         maxMass,

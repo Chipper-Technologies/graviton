@@ -90,8 +90,8 @@ class BodyPropertyEditorOverlay extends StatelessWidget {
   /// Project a 3D world position to 2D screen coordinates
   Offset? _projectToScreen(vm.Vector3 worldPos, Size screenSize) {
     final mvp = projMatrix * viewMatrix;
-    final worldPos4 = vm.Vector4(worldPos.x, worldPos.y, worldPos.z, 1.0);
-    final clipPos = mvp * worldPos4;
+    final homogeneousPos = vm.Vector4(worldPos.x, worldPos.y, worldPos.z, 1.0);
+    final clipPos = mvp * homogeneousPos;
 
     // Check if point is in front of camera
     if (clipPos.w <= 0) return null;

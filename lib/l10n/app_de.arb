@@ -6,6 +6,11 @@
   "resetButton": "Zurücksetzen",
   "speedLabel": "Geschwindigkeit",
   "trailsLabel": "Spuren",
+  "statsLabel": "Statistiken",
+  "selectLabel": "Auswählen",
+  "followLabel": "Verfolgen",
+  "centerLabel": "Zentrieren",
+  "rotateLabel": "Rotieren",
   "warmTrails": "🔥 Warm",
   "coolTrails": "❄️ Kalt",
   "toggleStatsTooltip": "Statistiken umschalten",
@@ -34,7 +39,10 @@
   "showOrbitalPathsDescription": "Vorhergesagte Orbitalbahnen in Szenarien mit stabilen Orbits anzeigen",
   "dualOrbitalPaths": "Doppelte Orbitalbahnen",
   "dualOrbitalPathsDescription": "Sowohl ideale kreisförmige als auch tatsächliche elliptische Orbitalbahnen anzeigen",
-  "trailColorLabel": "Spurenfarbe",
+  "trailColorLabel": "Spurfarbe",
+  "colorsLabel": "Farben",
+  "realisticColors": "Realistische Farben",
+  "realisticColorsDescription": "Wissenschaftlich genaue Farben basierend auf Temperatur und Sternklassifikation verwenden",
   "closeButton": "Schließen",
   "simulationStats": "Simulationsstatistiken",
   "stepsLabel": "Schritte",
@@ -163,14 +171,6 @@
       }
     }
   },
-  "bodyStar": "Stern {number}",
-  "@bodyStar": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "bodyRing": "Ring {number}",
   "@bodyRing": {
     "placeholders": {
@@ -181,9 +181,19 @@
   },
   "bodyInnerPlanet": "Innerer Planet",
   "bodyOuterPlanet": "Äußerer Planet",
+  "bodyCenterOfMass": "Massenzentrum",
+  "bodyStarNumber": "Stern {number}",
   "cameraControlsLabel": "Kamera-Steuerung",
   "invertPitchControlsLabel": "Nickbewegung Umkehren",
   "invertPitchControlsDescription": "Auf/Ab-Ziehrichtung umkehren",
+  "cinematicCameraTechniqueLabel": "KI-Kamera-Technik",
+  "cinematicCameraTechniqueDescription": "Wählen Sie, wie die KI die Kamera beim Verfolgen von Objekten steuert",
+  "cinematicTechniqueManual": "Manuelle Steuerung",
+  "cinematicTechniqueManualDesc": "Traditionelle manuelle Kamerasteuerung mit Verfolgungsmodus",
+  "cinematicTechniquePredictiveOrbital": "Vorhersagende Umlaufbahn",
+  "cinematicTechniquePredictiveOrbitalDesc": "KI-Touren und Umlaufbahnvorhersagen für Bildungsszenarien",
+  "cinematicTechniqueDynamicFraming": "Dynamischer Bildaufbau",
+  "cinematicTechniqueDynamicFramingDesc": "Echtzeit-dramatische Zielerfassung für chaotische Szenarien",
   "marketingLabel": "Marketing",
   "educationalFocusChaoticDynamics": "chaotische Dynamik",
   "educationalFocusRealWorldSystem": "reales System",
@@ -315,5 +325,19 @@
   "hapticsSection": "Haptik",
   "vibrationEnabled": "Vibration aktiviert",
   "hapticFeedbackCollisions": "Haptisches Feedback bei Kollisionen",
-  "vibrationThrottle": "Vibrationsdrosselung"
+  "vibrationThrottle": "Vibrationsdrosselung",
+  "changelogTitle": "Was ist neu",
+  "closeDialog": "Schließen",
+  "changelogReleaseDate": "Veröffentlicht am {date}",
+  "changelogAdded": "Neue Funktionen",
+  "changelogImproved": "Verbesserungen",
+  "changelogFixed": "Fehlerbehebungen",
+  "changelogSkip": "Überspringen",
+  "changelogDone": "Fertig",
+  "changelogButton": "Changelog anzeigen",
+  "resetChangelogButton": "Changelog-Status zurücksetzen",
+  "changelogResetMessage": "Changelog-Status wurde zurückgesetzt",
+  "changelogDebugTitle": "Changelog (Debug)",
+  "changelogNotFoundError": "Kein Changelog gefunden. Fügen Sie zuerst Changelog-Daten zu Firestore hinzu.\nAktuelle Version: {version}",
+  "changelogLoadError": "Fehler beim Laden des Changelogs: {error}"
 }

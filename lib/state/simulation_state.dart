@@ -141,6 +141,26 @@ class SimulationState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Pause the simulation if it's currently running
+  void pauseSimulation() {
+    if (_isRunning && !_isPaused) {
+      _isPaused = true;
+      FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationPaused);
+      notifyListeners();
+    }
+  }
+
+  /// Resume the simulation if it's currently paused
+  void resumeSimulation() {
+    if (_isRunning && _isPaused) {
+      _isPaused = false;
+      FirebaseService.instance.logEventWithEnum(
+        FirebaseEvent.simulationResumed,
+      );
+      notifyListeners();
+    }
+  }
+
   void stop() {
     _isRunning = false;
     _isPaused = false;
@@ -164,11 +184,19 @@ class SimulationState extends ChangeNotifier {
   }
 
   /// Reset simulation with a specific scenario and save the preference
-  void resetWithScenario(ScenarioType scenario, {AppLocalizations? l10n}) {
+  void resetWithScenario(
+    ScenarioType scenario, {
+    AppLocalizations? l10n,
+    bool preserveCustomSettings = false,
+  }) {
     stop();
 
     // Reset physics simulation to the specified scenario
-    _simulation.resetWithScenario(scenario, l10n: l10n);
+    _simulation.resetWithScenario(
+      scenario,
+      l10n: l10n,
+      preserveCustomSettings: preserveCustomSettings,
+    );
     _stepCount = 0;
     _totalTime = 0.0;
 
@@ -185,7 +213,18 @@ class SimulationState extends ChangeNotifier {
   /// Regenerate the current scenario with new localization
   void regenerateScenarioWithLocalization(AppLocalizations l10n) {
     final currentScenario = _simulation.currentScenario;
-    resetWithScenario(currentScenario, l10n: l10n);
+
+    // For galaxy formation, avoid regeneration to preserve custom body properties
+    if (currentScenario == ScenarioType.galaxyFormation) {
+      // Skip regeneration - galaxy formation should preserve custom settings
+      return;
+    }
+
+    resetWithScenario(
+      currentScenario,
+      l10n: l10n,
+      preserveCustomSettings: true,
+    );
   }
 
   void setTimeScale(double scale) {
@@ -193,6 +232,11 @@ class SimulationState extends ChangeNotifier {
     _saveSetting(_keyTimeScale, _timeScale);
     FirebaseService.instance.logSettingsChange('time_scale', _timeScale);
     notifyListeners();
+  }
+
+  /// Update realistic colors setting in the simulation
+  void setUseRealisticColors(bool useRealisticColors) {
+    _simulation.setUseRealisticColors(useRealisticColors);
   }
 
   /// Apply physics settings to the simulation

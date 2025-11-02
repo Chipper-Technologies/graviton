@@ -30,6 +30,31 @@
     "description": "Label for trail visibility toggle"
   },
   
+  "statsLabel": "Stats",
+  "@statsLabel": {
+    "description": "Label for statistics display button"
+  },
+  
+  "selectLabel": "Select",
+  "@selectLabel": {
+    "description": "Label for select nearest object button"
+  },
+  
+  "followLabel": "Follow",
+  "@followLabel": {
+    "description": "Label for follow object button"
+  },
+  
+  "centerLabel": "Center",
+  "@centerLabel": {
+    "description": "Label for center view button"
+  },
+  
+  "rotateLabel": "Rotate",
+  "@rotateLabel": {
+    "description": "Label for auto-rotate button"
+  },
+  
   "warmTrails": "🔥 Warm",
   "@warmTrails": {
     "description": "Option for warm-colored trails"
@@ -240,6 +265,21 @@
     "description": "Label for trail color selection"
   },
   
+  "colorsLabel": "Colors",
+  "@colorsLabel": {
+    "description": "Section header for color-related settings"
+  },
+  
+  "realisticColors": "Realistic Colors",
+  "@realisticColors": {
+    "description": "Label for realistic colors toggle"
+  },
+  
+  "realisticColorsDescription": "Use scientifically accurate colors based on temperature and stellar classification",
+  "@realisticColorsDescription": {
+    "description": "Description for realistic colors toggle"
+  },
+  
   "closeButton": "Close",
   "@closeButton": {
     "description": "Label for close button"
@@ -328,6 +368,46 @@
   "invertPitchControlsDescription": "Reverse up/down drag direction",
   "@invertPitchControlsDescription": {
     "description": "Description for invert pitch controls toggle"
+  },
+  
+  "cinematicCameraTechniqueLabel": "AI Camera Technique",
+  "@cinematicCameraTechniqueLabel": {
+    "description": "Label for cinematic camera technique selection"
+  },
+  
+  "cinematicCameraTechniqueDescription": "Choose how AI controls the camera when following objects",
+  "@cinematicCameraTechniqueDescription": {
+    "description": "Description for cinematic camera technique setting"
+  },
+  
+  "cinematicTechniqueManual": "Manual Control",
+  "@cinematicTechniqueManual": {
+    "description": "Manual camera control technique"
+  },
+  
+  "cinematicTechniqueManualDesc": "Traditional manual camera controls with follow mode",
+  "@cinematicTechniqueManualDesc": {
+    "description": "Description for manual camera technique"
+  },
+  
+  "cinematicTechniquePredictiveOrbital": "Predictive Orbital",
+  "@cinematicTechniquePredictiveOrbital": {
+    "description": "Predictive orbital camera technique"
+  },
+  
+  "cinematicTechniquePredictiveOrbitalDesc": "AI tours and orbital predictions for educational scenarios",
+  "@cinematicTechniquePredictiveOrbitalDesc": {
+    "description": "Description for predictive orbital camera technique"
+  },
+  
+  "cinematicTechniqueDynamicFraming": "Dynamic Framing",
+  "@cinematicTechniqueDynamicFraming": {
+    "description": "Dynamic framing camera technique"
+  },
+  
+  "cinematicTechniqueDynamicFramingDesc": "Real-time dramatic targeting for chaotic scenarios",
+  "@cinematicTechniqueDynamicFramingDesc": {
+    "description": "Description for dynamic framing camera technique"
   },
   
   "marketingLabel": "Marketing",
@@ -831,16 +911,6 @@
     "description": "Name for black hole in galaxy formation"
   },
   
-  "bodyStar": "Star {number}",
-  "@bodyStar": {
-    "description": "Name for stars with number",
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
-  
   "bodyRingedPlanet": "Ringed Planet",
   "@bodyRingedPlanet": {
     "description": "Name for planet with rings"
@@ -899,6 +969,22 @@
   "bodyOuterPlanet": "Outer Planet",
   "@bodyOuterPlanet": {
     "description": "Name for outer companion planet in asteroid belt scenario"
+  },
+
+  "bodyCenterOfMass": "Center of Mass",
+  "@bodyCenterOfMass": {
+    "description": "Name for center of mass point in calculations"
+  },
+
+  "bodyStarNumber": "Star {number}",
+  "@bodyStarNumber": {
+    "description": "Name pattern for numbered stars in galaxy scenarios",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "description": "The star number"
+      }
+    }
   },
 
   "educationalFocusChaoticDynamics": "chaotic dynamics",
@@ -1367,6 +1453,87 @@
     "placeholders": {
       "text": {
         "type": "String"
+      }
+    }
+  },
+
+  "changelogTitle": "What's New",
+  "@changelogTitle": {
+    "description": "Title for changelog dialog"
+  },
+
+  "closeDialog": "Close",
+  "@closeDialog": {
+    "description": "Tooltip for close dialog button"
+  },
+
+  "changelogReleaseDate": "Released {date}",
+  "@changelogReleaseDate": {
+    "description": "Format for changelog release date",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+
+  "changelogAdded": "New Features",
+  "@changelogAdded": {
+    "description": "Section header for added features"
+  },
+
+  "changelogImproved": "Improvements",
+  "@changelogImproved": {
+    "description": "Section header for improvements"
+  },
+
+  "changelogFixed": "Bug Fixes",
+  "@changelogFixed": {
+    "description": "Section header for bug fixes"
+  },
+
+  "changelogSkip": "Skip",
+  "@changelogSkip": {
+    "description": "Button to skip changelog"
+  },
+
+  "changelogDone": "Done",
+  "@changelogDone": {
+    "description": "Button to finish changelog"
+  },
+  "changelogButton": "Show Changelog",
+  "@changelogButton": {
+    "description": "Button to show changelog dialog"
+  },
+  "resetChangelogButton": "Reset Changelog State",
+  "@resetChangelogButton": {
+    "description": "Developer button to reset changelog state"
+  },
+  "changelogResetMessage": "Changelog state has been reset",
+  "@changelogResetMessage": {
+    "description": "Message shown when changelog state is reset"
+  },
+  "changelogDebugTitle": "Changelog (Debug)",
+  "@changelogDebugTitle": {
+    "description": "Debug section title for changelog in settings"
+  },
+  "changelogNotFoundError": "No changelog found. Add changelog data to Firestore first.\nCurrent version: {version}",
+  "@changelogNotFoundError": {
+    "description": "Error message when no changelog data is found",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "description": "Current app version"
+      }
+    }
+  },
+  "changelogLoadError": "Failed to load changelog: {error}",
+  "@changelogLoadError": {
+    "description": "Error message when changelog fails to load",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Error details"
       }
     }
   }

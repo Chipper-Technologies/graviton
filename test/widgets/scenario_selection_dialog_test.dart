@@ -55,12 +55,12 @@ void main() {
         );
 
         // Should use AppConstraints for consistent padding
-        final containers = tester.widgetList<Container>(find.byType(Container));
-        final paddedContainers = containers.where(
-          (container) => container.padding == AppConstraints.dialogPadding,
+        final paddingWidgets = tester.widgetList<Padding>(find.byType(Padding));
+        final paddedWidgets = paddingWidgets.where(
+          (padding) => padding.padding == AppConstraints.dialogPadding,
         );
 
-        expect(paddedContainers.isNotEmpty, isTrue);
+        expect(paddedWidgets.isNotEmpty, isTrue);
       });
 
       testWidgets('Should display available scenarios', (tester) async {
@@ -196,12 +196,13 @@ void main() {
         await tester.tap(find.text('Show Scenarios'));
         await tester.pumpAndSettle();
 
-        // Select a scenario (tap first InkWell)
-        final inkWells = find.byType(InkWell);
-        if (inkWells.evaluate().isNotEmpty) {
-          await tester.tap(inkWells.first);
-          await tester.pumpAndSettle();
-        }
+        // Select a scenario - find the first scenario tile and tap it
+        final scenarioTiles = find.byType(Card);
+        expect(scenarioTiles, findsAtLeastNWidgets(1));
+
+        // Tap the first scenario card
+        await tester.tap(scenarioTiles.first);
+        await tester.pumpAndSettle();
 
         // Dialog should close
         expect(find.byType(ScenarioSelectionDialog), findsNothing);
@@ -401,10 +402,10 @@ void main() {
         expect(find.byType(ScenarioSelectionDialog), findsOneWidget);
 
         // Should handle multiple interactions
-        final inkWells = find.byType(InkWell);
-        if (inkWells.evaluate().isNotEmpty) {
+        final scenarioTiles = find.byType(Card);
+        if (scenarioTiles.evaluate().isNotEmpty) {
           for (int i = 0; i < 3; i++) {
-            await tester.tap(inkWells.first);
+            await tester.tap(scenarioTiles.first);
             await tester.pump();
           }
         }
@@ -441,10 +442,10 @@ void main() {
         );
 
         // Rapid taps should be handled gracefully
-        final inkWells = find.byType(InkWell);
-        if (inkWells.evaluate().isNotEmpty) {
+        final scenarioTiles = find.byType(Card);
+        if (scenarioTiles.evaluate().isNotEmpty) {
           for (int i = 0; i < 5; i++) {
-            await tester.tap(inkWells.first);
+            await tester.tap(scenarioTiles.first);
             await tester.pump();
           }
         }

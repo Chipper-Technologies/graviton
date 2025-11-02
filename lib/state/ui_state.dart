@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UIState extends ChangeNotifier {
   bool _showTrails = true;
   bool _useWarmTrails = true;
+  bool _useRealisticColors = false;
   bool _showOrbitalPaths = true;
   bool _dualOrbitalPaths = false;
   bool _showControls = true;
@@ -21,18 +23,23 @@ class UIState extends ChangeNotifier {
   bool _showHabitableZones = false;
   bool _showHabitabilityIndicators = false;
 
-  // Gravity visualization settings
-  bool _showGravityWells = false;
-
   // Language settings
   String? _selectedLanguageCode; // null means system default
+
+  // Cinematic camera settings
+  CinematicCameraTechnique _cinematicCameraTechnique =
+      CinematicCameraTechnique.manual;
 
   // Screenshot mode settings
   bool _hideUIInScreenshotMode = false;
 
+  // Changelog settings
+  String? _lastSeenChangelogVersion;
+
   // SharedPreferences keys
   static const String _keyShowTrails = 'showTrails';
   static const String _keyUseWarmTrails = 'useWarmTrails';
+  static const String _keyUseRealisticColors = 'useRealisticColors';
   static const String _keyShowOrbitalPaths = 'showOrbitalPaths';
   static const String _keyDualOrbitalPaths = 'dualOrbitalPaths';
   static const String _keyShowControls = 'showControls';
@@ -45,9 +52,10 @@ class UIState extends ChangeNotifier {
   static const String _keyShowHabitableZones = 'showHabitableZones';
   static const String _keyShowHabitabilityIndicators =
       'showHabitabilityIndicators';
-  static const String _keyShowGravityWells = 'showGravityWells';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
+  static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
+  static const String _keyLastSeenChangelogVersion = 'lastSeenChangelogVersion';
 
   /// Initialize and load saved settings
   Future<void> initialize() async {
@@ -60,6 +68,7 @@ class UIState extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       _showTrails = prefs.getBool(_keyShowTrails) ?? true;
       _useWarmTrails = prefs.getBool(_keyUseWarmTrails) ?? true;
+      _useRealisticColors = prefs.getBool(_keyUseRealisticColors) ?? false;
       _showOrbitalPaths = prefs.getBool(_keyShowOrbitalPaths) ?? true;
       _dualOrbitalPaths = prefs.getBool(_keyDualOrbitalPaths) ?? false;
       _showControls = prefs.getBool(_keyShowControls) ?? true;
@@ -74,10 +83,21 @@ class UIState extends ChangeNotifier {
       _showHabitableZones = prefs.getBool(_keyShowHabitableZones) ?? false;
       _showHabitabilityIndicators =
           prefs.getBool(_keyShowHabitabilityIndicators) ?? false;
-      _showGravityWells = prefs.getBool(_keyShowGravityWells) ?? false;
       _selectedLanguageCode = prefs.getString(_keySelectedLanguageCode);
+
+      // Load cinematic camera technique setting
+      final cinematicTechniqueValue = prefs.getString(
+        _keyCinematicCameraTechnique,
+      );
+      _cinematicCameraTechnique = cinematicTechniqueValue != null
+          ? CinematicCameraTechnique.fromValue(cinematicTechniqueValue)
+          : CinematicCameraTechnique.manual;
+
       _hideUIInScreenshotMode =
           prefs.getBool(_keyHideUIInScreenshotMode) ?? false;
+
+      // Load changelog tracking
+      _lastSeenChangelogVersion = prefs.getString(_keyLastSeenChangelogVersion);
 
       notifyListeners();
     } catch (e) {
@@ -109,6 +129,7 @@ class UIState extends ChangeNotifier {
   // Getters
   bool get showTrails => _showTrails;
   bool get useWarmTrails => _useWarmTrails;
+  bool get useRealisticColors => _useRealisticColors;
   bool get showOrbitalPaths => _showOrbitalPaths;
   bool get dualOrbitalPaths => _dualOrbitalPaths;
   bool get showControls => _showControls;
@@ -119,15 +140,19 @@ class UIState extends ChangeNotifier {
   bool get enableVibration => _enableVibration;
   double get uiOpacity => _uiOpacity;
 
+  // Changelog getters
+  String? get lastSeenChangelogVersion => _lastSeenChangelogVersion;
+
   // Habitability getters
   bool get showHabitableZones => _showHabitableZones;
   bool get showHabitabilityIndicators => _showHabitabilityIndicators;
 
-  // Gravity visualization getters
-  bool get showGravityWells => _showGravityWells;
-
   // Language getters
   String? get selectedLanguageCode => _selectedLanguageCode;
+
+  // Cinematic camera getters
+  CinematicCameraTechnique get cinematicCameraTechnique =>
+      _cinematicCameraTechnique;
 
   // Screenshot mode getters
   bool get hideUIInScreenshotMode => _hideUIInScreenshotMode;
@@ -144,6 +169,16 @@ class UIState extends ChangeNotifier {
     _useWarmTrails = !_useWarmTrails;
     _saveSetting(_keyUseWarmTrails, _useWarmTrails);
     FirebaseService.instance.logSettingsChange('warm_trails', _useWarmTrails);
+    notifyListeners();
+  }
+
+  void toggleRealisticColors() {
+    _useRealisticColors = !_useRealisticColors;
+    _saveSetting(_keyUseRealisticColors, _useRealisticColors);
+    FirebaseService.instance.logSettingsChange(
+      'realistic_colors',
+      _useRealisticColors,
+    );
     notifyListeners();
   }
 
@@ -246,17 +281,6 @@ class UIState extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Gravity visualization setters
-  void toggleGravityWells() {
-    _showGravityWells = !_showGravityWells;
-    _saveSetting(_keyShowGravityWells, _showGravityWells);
-    FirebaseService.instance.logSettingsChange(
-      'show_gravity_wells',
-      _showGravityWells,
-    );
-    notifyListeners();
-  }
-
   // Language setters
   void setLanguage(String? languageCode) {
     _selectedLanguageCode = languageCode;
@@ -264,6 +288,17 @@ class UIState extends ChangeNotifier {
     FirebaseService.instance.logSettingsChange(
       'language',
       languageCode ?? 'system',
+    );
+    notifyListeners();
+  }
+
+  // Cinematic camera setters
+  void setCinematicCameraTechnique(CinematicCameraTechnique technique) {
+    _cinematicCameraTechnique = technique;
+    _saveSetting(_keyCinematicCameraTechnique, technique.value);
+    FirebaseService.instance.logSettingsChange(
+      'cinematic_camera_technique',
+      technique.value,
     );
     notifyListeners();
   }
@@ -277,5 +312,25 @@ class UIState extends ChangeNotifier {
       _hideUIInScreenshotMode,
     );
     notifyListeners();
+  }
+
+  // Changelog setters
+  void setLastSeenChangelogVersion(String version) {
+    _lastSeenChangelogVersion = version;
+    _saveSetting(_keyLastSeenChangelogVersion, version);
+    FirebaseService.instance.logSettingsChange(
+      'last_seen_changelog_version',
+      version,
+    );
+    notifyListeners();
+  }
+
+  /// Check if there's a new changelog version to show
+  bool shouldShowChangelogFor(String currentAppVersion) {
+    // If never seen any changelog, show for current version
+    if (_lastSeenChangelogVersion == null) return true;
+
+    // If last seen version is different from current, show changelog
+    return _lastSeenChangelogVersion != currentAppVersion;
   }
 }

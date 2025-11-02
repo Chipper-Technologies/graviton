@@ -12,6 +12,7 @@ class AppTypography {
   // =============================================================================
 
   /// Standard font sizes used throughout the app
+  static const double fontSizeXSmall = 10.0;
   static const double fontSizeSmall = 12.0;
   static const double fontSizeMedium = 14.0;
   static const double fontSizeLarge = 16.0;
@@ -78,6 +79,11 @@ class AppTypography {
   static const double borderThin = 1.0;
   static const double borderMedium = 1.5;
   static const double borderThick = 2.0;
+
+  /// UI component dimensions
+  /// Height for dropdown items, specifically used for cinematic camera technique
+  /// selection dropdowns to ensure consistent sizing and proper text display
+  static const double dropdownItemHeight = 44.0;
 
   // =============================================================================
   // TEXT STYLES

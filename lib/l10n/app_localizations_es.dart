@@ -27,6 +27,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get trailsLabel => 'Rastros';
 
   @override
+  String get statsLabel => 'Estadísticas';
+
+  @override
+  String get selectLabel => 'Seleccionar';
+
+  @override
+  String get followLabel => 'Seguir';
+
+  @override
+  String get centerLabel => 'Centrar';
+
+  @override
+  String get rotateLabel => 'Rotar';
+
+  @override
   String get warmTrails => '🔥 Cálido';
 
   @override
@@ -159,6 +174,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get trailColorLabel => 'Color de Rastro';
 
   @override
+  String get colorsLabel => 'Colores';
+
+  @override
+  String get realisticColors => 'Colores Realistas';
+
+  @override
+  String get realisticColorsDescription =>
+      'Usar colores científicamente precisos basados en temperatura y clasificación estelar';
+
+  @override
   String get closeButton => 'Cerrar';
 
   @override
@@ -212,6 +237,34 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get invertPitchControlsDescription =>
       'Invertir la dirección de arrastre arriba/abajo';
+
+  @override
+  String get cinematicCameraTechniqueLabel => 'Técnica de Cámara IA';
+
+  @override
+  String get cinematicCameraTechniqueDescription =>
+      'Elija cómo la IA controla la cámara al seguir objetos';
+
+  @override
+  String get cinematicTechniqueManual => 'Control Manual';
+
+  @override
+  String get cinematicTechniqueManualDesc =>
+      'Controles de cámara manuales tradicionales con modo de seguimiento';
+
+  @override
+  String get cinematicTechniquePredictiveOrbital => 'Orbital Predictivo';
+
+  @override
+  String get cinematicTechniquePredictiveOrbitalDesc =>
+      'Tours de IA y predicciones orbitales para escenarios educativos';
+
+  @override
+  String get cinematicTechniqueDynamicFraming => 'Encuadre Dinámico';
+
+  @override
+  String get cinematicTechniqueDynamicFramingDesc =>
+      'Objetivo dramático en tiempo real para escenarios caóticos';
 
   @override
   String get marketingLabel => 'Marketing';
@@ -523,11 +576,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bodyBlackHole => 'Agujero Negro';
 
   @override
-  String bodyStar(int number) {
-    return 'Estrella $number';
-  }
-
-  @override
   String get bodyRingedPlanet => 'Planeta con Anillos';
 
   @override
@@ -561,6 +609,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get bodyOuterPlanet => 'Planeta Exterior';
+
+  @override
+  String get bodyCenterOfMass => 'Centro de Masa';
+
+  @override
+  String bodyStarNumber(int number) {
+    return 'Estrella $number';
+  }
 
   @override
   String get educationalFocusChaoticDynamics => 'dinámicas caóticas';
@@ -968,5 +1024,54 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String copiedToClipboard(String text) {
     return 'Copiado al portapapeles: $text';
+  }
+
+  @override
+  String get changelogTitle => 'Novedades';
+
+  @override
+  String get closeDialog => 'Cerrar';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return 'Publicado el $date';
+  }
+
+  @override
+  String get changelogAdded => 'Nuevas características';
+
+  @override
+  String get changelogImproved => 'Mejoras';
+
+  @override
+  String get changelogFixed => 'Correcciones de errores';
+
+  @override
+  String get changelogSkip => 'Omitir';
+
+  @override
+  String get changelogDone => 'Hecho';
+
+  @override
+  String get changelogButton => 'Mostrar registro de cambios';
+
+  @override
+  String get resetChangelogButton => 'Restablecer estado del registro';
+
+  @override
+  String get changelogResetMessage =>
+      'El estado del registro de cambios ha sido restablecido';
+
+  @override
+  String get changelogDebugTitle => 'Registro de cambios (Debug)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return 'No se encontró registro de cambios. Agregue primero los datos del registro de cambios a Firestore.\nVersión actual: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return 'Error al cargar el registro de cambios: $error';
   }
 }

@@ -394,4 +394,21 @@ class CameraState extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  /// Set camera parameters directly (used by cinematic camera controller)
+  void setCameraParameters({
+    double? yaw,
+    double? pitch,
+    double? roll,
+    double? distance,
+    vm.Vector3? target,
+  }) {
+    if (yaw != null) _yaw = yaw;
+    if (pitch != null) _pitch = pitch;
+    if (roll != null) _roll = roll;
+    if (distance != null) _distance = distance.clamp(5.0, 2000.0);
+    if (target != null) _target = target.clone();
+
+    notifyListeners();
+  }
 }

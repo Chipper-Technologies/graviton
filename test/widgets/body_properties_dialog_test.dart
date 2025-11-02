@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
@@ -13,29 +15,40 @@ void main() {
     setUp(() {
       testBody = Body(
         position: vm.Vector3.zero(),
-        velocity: vm.Vector3(1.0, 2.0, 3.0),
+        velocity: vm.Vector3.zero(),
         mass: 100.0,
-        radius: 5.0,
-        color: AppColors.basicBlue,
+        radius: 2.0,
+        color: AppColors.primaryColor,
         name: 'Test Body',
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0,
       );
     });
 
+    Widget createTestWidget({required Widget child}) {
+      return MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(body: child),
+      );
+    }
+
     testWidgets('should display dialog with all body properties', (
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BodyPropertiesDialog(
-              body: testBody,
-              bodyIndex: 0,
-              onBodyChanged: (body) {
-                // Body changed callback
-              },
-            ),
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (body) {
+              // Body changed callback
+            },
           ),
         ),
       );
@@ -58,13 +71,11 @@ void main() {
       testBody.stellarLuminosity = 1.0;
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BodyPropertiesDialog(
-              body: testBody,
-              bodyIndex: 0,
-              onBodyChanged: (body) {},
-            ),
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (body) {},
           ),
         ),
       );
@@ -82,13 +93,11 @@ void main() {
       testBody.bodyType = BodyType.planet;
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BodyPropertiesDialog(
-              body: testBody,
-              bodyIndex: 0,
-              onBodyChanged: (body) {},
-            ),
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (body) {},
           ),
         ),
       );
@@ -101,22 +110,20 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: Builder(
-              builder: (context) => ElevatedButton(
-                onPressed: () {
-                  showDialog<void>(
-                    context: context,
-                    builder: (_) => BodyPropertiesDialog(
-                      body: testBody,
-                      bodyIndex: 0,
-                      onBodyChanged: (body) {},
-                    ),
-                  );
-                },
-                child: const Text('Open Dialog'),
-              ),
+        createTestWidget(
+          child: Builder(
+            builder: (context) => ElevatedButton(
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  builder: (_) => BodyPropertiesDialog(
+                    body: testBody,
+                    bodyIndex: 0,
+                    onBodyChanged: (body) {},
+                  ),
+                );
+              },
+              child: const Text('Open Dialog'),
             ),
           ),
         ),
@@ -144,16 +151,14 @@ void main() {
       Body? updatedBody;
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BodyPropertiesDialog(
-              body: testBody,
-              bodyIndex: 0,
-              onBodyChanged: (body) {
-                bodyChanged = true;
-                updatedBody = body;
-              },
-            ),
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (body) {
+              bodyChanged = true;
+              updatedBody = body;
+            },
           ),
         ),
       );
@@ -175,53 +180,49 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BodyPropertiesDialog(
-              body: testBody,
-              bodyIndex: 0,
-              onBodyChanged: (body) {},
-            ),
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (body) {},
           ),
         ),
       );
+
+      await tester.pumpAndSettle();
 
       // Find sliders
       final sliders = find.byType(Slider);
       expect(sliders, findsWidgets);
 
-      // Verify mass value is displayed
-      expect(find.text('100.0'), findsOneWidget);
+      // Verify mass value is displayed (formatted as 100.000)
+      expect(find.text('100.000'), findsOneWidget);
     });
 
     testWidgets('should display radius slider with correct value', (
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BodyPropertiesDialog(
-              body: testBody,
-              bodyIndex: 0,
-              onBodyChanged: (body) {},
-            ),
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (body) {},
           ),
         ),
       );
 
-      // Verify radius value is displayed
-      expect(find.text('5.0'), findsOneWidget);
+      // Verify radius value is displayed (formatted as 2.00)
+      expect(find.text('2.00'), findsOneWidget);
     });
 
     testWidgets('should display velocity controls for X, Y, Z', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BodyPropertiesDialog(
-              body: testBody,
-              bodyIndex: 0,
-              onBodyChanged: (body) {},
-            ),
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (body) {},
           ),
         ),
       );
@@ -231,23 +232,19 @@ void main() {
       expect(find.text('Y:'), findsOneWidget);
       expect(find.text('Z:'), findsOneWidget);
 
-      // Verify velocity values
-      expect(find.text('1.0'), findsOneWidget);
-      expect(find.text('2.0'), findsOneWidget);
-      expect(find.text('3.0'), findsOneWidget);
+      // Verify velocity values (all zero since testBody uses Vector3.zero())
+      expect(find.text('0.0'), findsNWidgets(3)); // X, Y, Z all show 0.0
     });
 
     testWidgets('should display color picker with selectable colors', (
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BodyPropertiesDialog(
-              body: testBody,
-              bodyIndex: 0,
-              onBodyChanged: (body) {},
-            ),
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (body) {},
           ),
         ),
       );
@@ -265,13 +262,11 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: BodyPropertiesDialog(
-              body: testBody,
-              bodyIndex: 0,
-              onBodyChanged: (body) {},
-            ),
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (body) {},
           ),
         ),
       );

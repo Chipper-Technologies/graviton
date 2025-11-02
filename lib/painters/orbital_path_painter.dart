@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/orbital_parameters.dart';
@@ -11,6 +12,24 @@ import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/painter_utils.dart';
 import 'package:graviton/utils/physics_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
+
+/// Represents a point on an orbital path with visibility information
+class OrbitalPathPoint {
+  final Offset position;
+  final bool isVisible;
+
+  const OrbitalPathPoint({required this.position, required this.isVisible});
+
+  /// Creates an invalid point (behind camera or failed projection)
+  static const OrbitalPathPoint invalid = OrbitalPathPoint(
+    position: Offset.zero,
+    isVisible: false,
+  );
+
+  /// Creates a valid visible point
+  static OrbitalPathPoint visible(Offset position) =>
+      OrbitalPathPoint(position: position, isVisible: true);
+}
 
 /// Painter for drawing predicted orbital paths
 class OrbitalPathPainter {
@@ -70,7 +89,7 @@ class OrbitalPathPainter {
               mass: totalMass,
               radius: 1.0,
               color: AppColors.transparentColor,
-              name: 'Center of Mass',
+              name: 'Center of Mass', // This is a computed value, not localized
             );
 
             // Calculate orbital parameters for planet around center of mass
@@ -268,9 +287,11 @@ class OrbitalPathPainter {
   /// Find the central body that the given body orbits around
   static Body? _findCentralBody(List<Body> bodies, Body orbitingBody) {
     // Special case for Moon - it orbits Earth, not the Sun
-    if (orbitingBody.name == 'Moon') {
+    final orbitingBodyEnum = CelestialBodyName.fromString(orbitingBody.name);
+    if (orbitingBodyEnum?.isMoon == true) {
+      final earthEnum = CelestialBodyName.earth;
       return bodies.firstWhere(
-        (body) => body.name == 'Earth',
+        (body) => CelestialBodyName.fromString(body.name) == earthEnum,
         orElse: () => bodies.first,
       );
     }
@@ -292,35 +313,37 @@ class OrbitalPathPainter {
 
   /// Get the orbital inclination for a specific body based on scenario (in degrees)
   static double _getBodyInclination(String bodyName, ScenarioType scenario) {
+    final celestialBody = CelestialBodyName.fromString(bodyName);
+
     switch (scenario) {
       case ScenarioType.solarSystem:
         // Real orbital inclinations relative to Earth's orbital plane (ecliptic)
-        switch (bodyName) {
-          case 'Mercury':
+        switch (celestialBody) {
+          case CelestialBodyName.mercury:
             return 7.0;
-          case 'Venus':
+          case CelestialBodyName.venus:
             return 3.4;
-          case 'Earth':
+          case CelestialBodyName.earth:
             return 0.0;
-          case 'Mars':
+          case CelestialBodyName.mars:
             return 1.9;
-          case 'Jupiter':
+          case CelestialBodyName.jupiter:
             return 1.3;
-          case 'Saturn':
+          case CelestialBodyName.saturn:
             return 2.5;
-          case 'Uranus':
+          case CelestialBodyName.uranus:
             return 0.8;
-          case 'Neptune':
+          case CelestialBodyName.neptune:
             return 1.8;
           default:
             return 0.0;
         }
       case ScenarioType.earthMoonSun:
         // Earth-Moon-Sun system inclinations
-        switch (bodyName) {
-          case 'Earth':
+        switch (celestialBody) {
+          case CelestialBodyName.earth:
             return 0.0; // Earth's orbit defines the reference plane
-          case 'Moon':
+          case CelestialBodyName.moon:
             return 1.0; // Reduced from 5.14° for visual stability in three-body system
           default:
             return 0.0;
@@ -376,7 +399,8 @@ class OrbitalPathPainter {
     final speedRatio = speed / expectedSpeed;
 
     // Be more lenient for moons in three-body systems (they get perturbed)
-    final isThreeBodySystem = (orbitingBody.name == 'Moon');
+    final orbitingBodyEnum = CelestialBodyName.fromString(orbitingBody.name);
+    final isThreeBodySystem = (orbitingBodyEnum?.isMoon == true);
     final minRatio = isThreeBodySystem ? 0.5 : 0.8;
     final maxRatio = isThreeBodySystem ? 2.0 : 1.2;
 
@@ -462,31 +486,33 @@ class OrbitalPathPainter {
     // Use FIXED average orbital radius - but make it LARGER than current distance
     // so the circular orbit can intersect it at periapsis and apoapsis
     double fixedSemiMajor;
+    final celestialBody = CelestialBodyName.fromString(body.name);
 
-    if (body.name == 'Moon' || body.name == 'Moon M') {
+    if (celestialBody == CelestialBodyName.moon ||
+        celestialBody == CelestialBodyName.moonM) {
       fixedSemiMajor =
           0.35; // Larger than typical Moon distance (0.25) so circle can intersect
-    } else if (body.name == 'Planet P') {
+    } else if (celestialBody == CelestialBodyName.planetP) {
       // Binary star planet orbits at distance 60.0, make ellipse slightly larger
       fixedSemiMajor =
           65.0; // Slightly larger than actual binary planet distance (60.0)
     } else if (body.bodyType == BodyType.planet) {
-      switch (body.name) {
-        case 'Mercury':
+      switch (celestialBody) {
+        case CelestialBodyName.mercury:
           fixedSemiMajor = 18.0; // Closer to actual Mercury distance
-        case 'Venus':
+        case CelestialBodyName.venus:
           fixedSemiMajor = 23.0; // Closer to actual Venus distance
-        case 'Earth':
+        case CelestialBodyName.earth:
           fixedSemiMajor = 52.0; // Even closer to actual Earth distance
-        case 'Mars':
+        case CelestialBodyName.mars:
           fixedSemiMajor = 85.0; // Closer to actual Mars distance
-        case 'Jupiter':
+        case CelestialBodyName.jupiter:
           fixedSemiMajor = 160.0; // Closer to actual Jupiter distance
-        case 'Saturn':
+        case CelestialBodyName.saturn:
           fixedSemiMajor = 220.0; // Closer to actual Saturn distance
-        case 'Uranus':
+        case CelestialBodyName.uranus:
           fixedSemiMajor = 320.0; // Closer to actual Uranus distance
-        case 'Neptune':
+        case CelestialBodyName.neptune:
           fixedSemiMajor = 420.0; // Closer to actual Neptune distance
         default:
           fixedSemiMajor = 55.0; // Closer default
@@ -498,26 +524,26 @@ class OrbitalPathPainter {
     // Set moderate eccentricity for oval shape that's wide enough to intersect at both extremes
     double eccentricity = 0.0;
 
-    if (body.name == 'Moon') {
+    if (celestialBody == CelestialBodyName.moon) {
       eccentricity =
           0.4; // Moderate oval for Moon - wide enough for both intersections
     } else if (body.bodyType == BodyType.planet) {
-      switch (body.name) {
-        case 'Mercury':
+      switch (celestialBody) {
+        case CelestialBodyName.mercury:
           eccentricity = 0.5; // Moderate oval - wide enough
-        case 'Venus':
+        case CelestialBodyName.venus:
           eccentricity = 0.3; // Moderate oval - wide enough
-        case 'Earth':
+        case CelestialBodyName.earth:
           eccentricity = 0.3; // Moderate oval - wide enough
-        case 'Mars':
+        case CelestialBodyName.mars:
           eccentricity = 0.4; // Moderate oval - wide enough
-        case 'Jupiter':
+        case CelestialBodyName.jupiter:
           eccentricity = 0.3; // Moderate oval - wide enough
-        case 'Saturn':
+        case CelestialBodyName.saturn:
           eccentricity = 0.4; // Moderate oval - wide enough
-        case 'Uranus':
+        case CelestialBodyName.uranus:
           eccentricity = 0.3; // Moderate oval - wide enough
-        case 'Neptune':
+        case CelestialBodyName.neptune:
           eccentricity = 0.3; // Moderate oval - wide enough
         default:
           eccentricity = 0.4; // Moderate oval - wide enough
@@ -552,7 +578,11 @@ class OrbitalPathPainter {
     physics.Simulation? sim,
   }) {
     const int numPoints = 128; // Number of points to draw the ellipse
-    final points = <Offset>[];
+
+    // Generate orbital path points with explicit visibility tracking
+    // Invalid points (behind camera or failed projection) are marked as invisible
+    // This allows clear separation between valid path segments without relying on null checks
+    final points = <OrbitalPathPoint>[];
 
     // Determine orbital direction from angular momentum (if body provided)
     bool clockwise = false;
@@ -647,10 +677,13 @@ class OrbitalPathPainter {
       // Transform to world space (relative to orbital center)
       final worldPos = params.center + vm.Vector3(x, y, z);
 
-      // Project to screen space
+      // Project to screen space (handles behind-camera check internally)
       final screenPos = PainterUtils.project(vp, worldPos, size);
       if (screenPos != null) {
-        points.add(screenPos);
+        points.add(OrbitalPathPoint.visible(screenPos));
+      } else {
+        // Point is behind camera or projection failed, mark as invisible
+        points.add(OrbitalPathPoint.invalid);
       }
     }
 
@@ -665,49 +698,82 @@ class OrbitalPathPainter {
       ..strokeCap = StrokeCap.round;
 
     // Draw path as connected line segments (dashed or solid)
-    if (isDashed) {
-      // Draw dashed line
-      const dashLength = 8.0;
-      const gapLength = 4.0;
+    // Handle invisible points to break orbital paths when portions go behind the camera
+    // This prevents unsightly lines drawn across the screen from visible to non-visible sections
+    final pathSegments = <List<Offset>>[];
+    var currentSegment = <Offset>[];
 
-      for (int i = 0; i < points.length - 1; i++) {
-        final start = points[i];
-        final end = points[i + 1];
-        final segmentLength = (end - start).distance;
-
-        // Draw dashed segments
-        double currentDistance = 0.0;
-
-        while (currentDistance < segmentLength) {
-          final progress1 = currentDistance / segmentLength;
-          final progress2 = math.min(
-            (currentDistance + dashLength) / segmentLength,
-            1.0,
-          );
-
-          final dashStart = Offset.lerp(start, end, progress1)!;
-          final dashEnd = Offset.lerp(start, end, progress2)!;
-
-          canvas.drawLine(dashStart, dashEnd, pathPaint);
-          currentDistance += dashLength + gapLength;
+    for (final point in points) {
+      if (!point.isVisible) {
+        // Invalid point (behind camera) - break the path here
+        if (currentSegment.isNotEmpty) {
+          pathSegments.add(List.from(currentSegment));
+          currentSegment.clear();
         }
-      }
-    } else {
-      // Draw solid line
-      for (int i = 0; i < points.length - 1; i++) {
-        canvas.drawLine(points[i], points[i + 1], pathPaint);
+      } else {
+        currentSegment.add(point.position);
       }
     }
 
-    // Draw some orbital direction indicators (small arrows)
-    _drawOrbitalDirectionIndicators(
-      canvas,
-      points,
-      bodyColor,
-      body: body,
-      orbitalCenter: params.center,
-      scenario: scenario,
-    );
+    // Add final segment if any points remain
+    if (currentSegment.isNotEmpty) {
+      pathSegments.add(currentSegment);
+    }
+
+    // Draw each continuous path segment separately
+    for (final segment in pathSegments) {
+      if (segment.length < 2) continue; // Need at least 2 points to draw
+
+      if (isDashed) {
+        // Draw dashed line
+        const dashLength = 8.0;
+        const gapLength = 4.0;
+
+        for (int i = 0; i < segment.length - 1; i++) {
+          final start = segment[i];
+          final end = segment[i + 1];
+          final segmentLength = (end - start).distance;
+
+          // Draw dashed segments
+          double currentDistance = 0.0;
+
+          while (currentDistance < segmentLength) {
+            final progress1 = currentDistance / segmentLength;
+            final progress2 = math.min(
+              (currentDistance + dashLength) / segmentLength,
+              1.0,
+            );
+
+            final dashStart = Offset.lerp(start, end, progress1)!;
+            final dashEnd = Offset.lerp(start, end, progress2)!;
+
+            canvas.drawLine(dashStart, dashEnd, pathPaint);
+            currentDistance += dashLength + gapLength;
+          }
+        }
+      } else {
+        // Draw solid line
+        for (int i = 0; i < segment.length - 1; i++) {
+          canvas.drawLine(segment[i], segment[i + 1], pathPaint);
+        }
+      }
+    }
+
+    // Draw some orbital direction indicators (small arrows) - use the largest segment
+    final largestSegment = pathSegments.isEmpty
+        ? <Offset>[]
+        : pathSegments.reduce((a, b) => a.length > b.length ? a : b);
+
+    if (largestSegment.isNotEmpty) {
+      _drawOrbitalDirectionIndicators(
+        canvas,
+        largestSegment,
+        bodyColor,
+        body: body,
+        orbitalCenter: params.center,
+        scenario: scenario,
+      );
+    }
   }
 
   /// Draw small arrows to indicate orbital direction

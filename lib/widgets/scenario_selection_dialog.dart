@@ -58,11 +58,13 @@ class ScenarioSelectionDialog extends StatelessWidget {
                 children: [
                   Icon(Icons.explore, color: AppColors.uiCyanAccent, size: 28),
                   SizedBox(width: AppTypography.spacingMedium),
-                  Text(
-                    l10n.selectScenarioTooltip,
-                    style: Theme.of(context).textTheme.headlineSmall,
+                  Expanded(
+                    child: Text(
+                      l10n.selectScenarioTooltip,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () => Navigator.of(context).pop(),

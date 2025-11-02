@@ -106,9 +106,9 @@ void main() {
         );
 
         // All should now use the reduced collision radius multiplier
-        expect(randomSettings.collisionRadiusMultiplier, equals(0.1));
-        expect(threeBodySettings.collisionRadiusMultiplier, equals(0.1));
-        expect(galaxySettings.collisionRadiusMultiplier, equals(0.1));
+        expect(randomSettings.collisionRadiusMultiplier, equals(0.05));
+        expect(threeBodySettings.collisionRadiusMultiplier, equals(0.05));
+        expect(galaxySettings.collisionRadiusMultiplier, equals(0.05));
       });
     });
 

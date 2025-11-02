@@ -27,6 +27,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get trailsLabel => '軌跡';
 
   @override
+  String get statsLabel => '統計';
+
+  @override
+  String get selectLabel => '選択';
+
+  @override
+  String get followLabel => '追従';
+
+  @override
+  String get centerLabel => '中央';
+
+  @override
+  String get rotateLabel => '回転';
+
+  @override
   String get warmTrails => '🔥 暖色';
 
   @override
@@ -153,6 +168,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get trailColorLabel => '軌跡の色';
 
   @override
+  String get colorsLabel => '色';
+
+  @override
+  String get realisticColors => 'リアルな色';
+
+  @override
+  String get realisticColorsDescription => '温度と恒星分類に基づく科学的に正確な色を使用';
+
+  @override
   String get closeButton => '閉じる';
 
   @override
@@ -205,6 +229,30 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get invertPitchControlsDescription => '上下ドラッグ方向を反転';
+
+  @override
+  String get cinematicCameraTechniqueLabel => 'AIカメラ技術';
+
+  @override
+  String get cinematicCameraTechniqueDescription => 'オブジェクトを追跡する際のAIカメラ制御方法を選択';
+
+  @override
+  String get cinematicTechniqueManual => '手動制御';
+
+  @override
+  String get cinematicTechniqueManualDesc => 'フォローモード付きの従来の手動カメラ制御';
+
+  @override
+  String get cinematicTechniquePredictiveOrbital => '予測軌道';
+
+  @override
+  String get cinematicTechniquePredictiveOrbitalDesc => '教育シナリオ用のAIツアーと軌道予測';
+
+  @override
+  String get cinematicTechniqueDynamicFraming => 'ダイナミックフレーミング';
+
+  @override
+  String get cinematicTechniqueDynamicFramingDesc => 'カオスシナリオ用のリアルタイム劇的ターゲティング';
 
   @override
   String get marketingLabel => 'マーケティング';
@@ -507,11 +555,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bodyBlackHole => 'ブラックホール';
 
   @override
-  String bodyStar(int number) {
-    return '恒星 $number';
-  }
-
-  @override
   String get bodyRingedPlanet => '環状惑星';
 
   @override
@@ -545,6 +588,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get bodyOuterPlanet => '外惑星';
+
+  @override
+  String get bodyCenterOfMass => '質量中心';
+
+  @override
+  String bodyStarNumber(int number) {
+    return '恒星 $number';
+  }
 
   @override
   String get educationalFocusChaoticDynamics => 'カオス力学';
@@ -921,5 +972,53 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String copiedToClipboard(String text) {
     return 'クリップボードにコピーしました：$text';
+  }
+
+  @override
+  String get changelogTitle => '新機能';
+
+  @override
+  String get closeDialog => '閉じる';
+
+  @override
+  String changelogReleaseDate(String date) {
+    return '$dateにリリース';
+  }
+
+  @override
+  String get changelogAdded => '新機能';
+
+  @override
+  String get changelogImproved => '改善';
+
+  @override
+  String get changelogFixed => 'バグ修正';
+
+  @override
+  String get changelogSkip => 'スキップ';
+
+  @override
+  String get changelogDone => '完了';
+
+  @override
+  String get changelogButton => '変更履歴を表示';
+
+  @override
+  String get resetChangelogButton => '変更履歴の状態をリセット';
+
+  @override
+  String get changelogResetMessage => '変更履歴の状態がリセットされました';
+
+  @override
+  String get changelogDebugTitle => '変更履歴 (デバッグ)';
+
+  @override
+  String changelogNotFoundError(String version) {
+    return '変更履歴が見つかりません。まずFirestoreに変更履歴データを追加してください。\n現在のバージョン: $version';
+  }
+
+  @override
+  String changelogLoadError(String error) {
+    return '変更履歴の読み込みに失敗しました: $error';
   }
 }

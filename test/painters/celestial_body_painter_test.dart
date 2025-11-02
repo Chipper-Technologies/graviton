@@ -112,8 +112,16 @@ void main() {
       });
 
       test('should draw Sun with corona', () {
+        final testBody = Body(
+          name: 'Sun',
+          mass: 1.989e30,
+          radius: 6.96e8,
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          color: AppColors.basicYellow,
+        );
         expect(
-          () => CelestialBodyPainter.drawSun(canvas, center, radius),
+          () => CelestialBodyPainter.drawSun(canvas, center, radius, testBody),
           returnsNormally,
         );
       });

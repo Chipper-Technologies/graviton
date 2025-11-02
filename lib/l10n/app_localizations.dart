@@ -144,6 +144,36 @@ abstract class AppLocalizations {
   /// **'Trails'**
   String get trailsLabel;
 
+  /// Label for statistics display button
+  ///
+  /// In en, this message translates to:
+  /// **'Stats'**
+  String get statsLabel;
+
+  /// Label for select nearest object button
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get selectLabel;
+
+  /// Label for follow object button
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get followLabel;
+
+  /// Label for center view button
+  ///
+  /// In en, this message translates to:
+  /// **'Center'**
+  String get centerLabel;
+
+  /// Label for auto-rotate button
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate'**
+  String get rotateLabel;
+
   /// Option for warm-colored trails
   ///
   /// In en, this message translates to:
@@ -396,6 +426,24 @@ abstract class AppLocalizations {
   /// **'Trail Color'**
   String get trailColorLabel;
 
+  /// Section header for color-related settings
+  ///
+  /// In en, this message translates to:
+  /// **'Colors'**
+  String get colorsLabel;
+
+  /// Label for realistic colors toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Realistic Colors'**
+  String get realisticColors;
+
+  /// Description for realistic colors toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Use scientifically accurate colors based on temperature and stellar classification'**
+  String get realisticColorsDescription;
+
   /// Label for close button
   ///
   /// In en, this message translates to:
@@ -503,6 +551,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reverse up/down drag direction'**
   String get invertPitchControlsDescription;
+
+  /// Label for cinematic camera technique selection
+  ///
+  /// In en, this message translates to:
+  /// **'AI Camera Technique'**
+  String get cinematicCameraTechniqueLabel;
+
+  /// Description for cinematic camera technique setting
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how AI controls the camera when following objects'**
+  String get cinematicCameraTechniqueDescription;
+
+  /// Manual camera control technique
+  ///
+  /// In en, this message translates to:
+  /// **'Manual Control'**
+  String get cinematicTechniqueManual;
+
+  /// Description for manual camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional manual camera controls with follow mode'**
+  String get cinematicTechniqueManualDesc;
+
+  /// Predictive orbital camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Predictive Orbital'**
+  String get cinematicTechniquePredictiveOrbital;
+
+  /// Description for predictive orbital camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'AI tours and orbital predictions for educational scenarios'**
+  String get cinematicTechniquePredictiveOrbitalDesc;
+
+  /// Dynamic framing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Dynamic Framing'**
+  String get cinematicTechniqueDynamicFraming;
+
+  /// Description for dynamic framing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time dramatic targeting for chaotic scenarios'**
+  String get cinematicTechniqueDynamicFramingDesc;
 
   /// Header for marketing tools section
   ///
@@ -1062,12 +1158,6 @@ abstract class AppLocalizations {
   /// **'Black Hole'**
   String get bodyBlackHole;
 
-  /// Name for stars with number
-  ///
-  /// In en, this message translates to:
-  /// **'Star {number}'**
-  String bodyStar(int number);
-
   /// Name for planet with rings
   ///
   /// In en, this message translates to:
@@ -1133,6 +1223,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Outer Planet'**
   String get bodyOuterPlanet;
+
+  /// Name for center of mass point in calculations
+  ///
+  /// In en, this message translates to:
+  /// **'Center of Mass'**
+  String get bodyCenterOfMass;
+
+  /// Name pattern for numbered stars in galaxy scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Star {number}'**
+  String bodyStarNumber(int number);
 
   /// Educational focus for random scenario
   ///
@@ -1841,6 +1943,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copied to clipboard: {text}'**
   String copiedToClipboard(String text);
+
+  /// Title for changelog dialog
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s New'**
+  String get changelogTitle;
+
+  /// Tooltip for close dialog button
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get closeDialog;
+
+  /// Format for changelog release date
+  ///
+  /// In en, this message translates to:
+  /// **'Released {date}'**
+  String changelogReleaseDate(String date);
+
+  /// Section header for added features
+  ///
+  /// In en, this message translates to:
+  /// **'New Features'**
+  String get changelogAdded;
+
+  /// Section header for improvements
+  ///
+  /// In en, this message translates to:
+  /// **'Improvements'**
+  String get changelogImproved;
+
+  /// Section header for bug fixes
+  ///
+  /// In en, this message translates to:
+  /// **'Bug Fixes'**
+  String get changelogFixed;
+
+  /// Button to skip changelog
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get changelogSkip;
+
+  /// Button to finish changelog
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get changelogDone;
+
+  /// Button to show changelog dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Show Changelog'**
+  String get changelogButton;
+
+  /// Developer button to reset changelog state
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Changelog State'**
+  String get resetChangelogButton;
+
+  /// Message shown when changelog state is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Changelog state has been reset'**
+  String get changelogResetMessage;
+
+  /// Debug section title for changelog in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Changelog (Debug)'**
+  String get changelogDebugTitle;
+
+  /// Error message when no changelog data is found
+  ///
+  /// In en, this message translates to:
+  /// **'No changelog found. Add changelog data to Firestore first.\nCurrent version: {version}'**
+  String changelogNotFoundError(String version);
+
+  /// Error message when changelog fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load changelog: {error}'**
+  String changelogLoadError(String error);
 }
 
 class _AppLocalizationsDelegate
