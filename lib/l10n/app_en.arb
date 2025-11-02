@@ -330,6 +330,16 @@
     "description": "Status when simulation is paused"
   },
   
+  "statusStopped": "Stopped",
+  "@statusStopped": {
+    "description": "Status when simulation is stopped"
+  },
+  
+  "statusError": "Error",
+  "@statusError": {
+    "description": "Status when simulation has an error"
+  },
+  
   "cameraLabel": "Camera",
   "@cameraLabel": {
     "description": "Header for camera information"
@@ -474,6 +484,41 @@
         "type": "String"
       }
     }
+  },
+  
+  "speedQuarter": "Quarter Speed",
+  "@speedQuarter": {
+    "description": "Quarter speed preset (0.25x)"
+  },
+  
+  "speedHalf": "Half Speed",
+  "@speedHalf": {
+    "description": "Half speed preset (0.5x)"
+  },
+  
+  "speedNormal": "Normal",
+  "@speedNormal": {
+    "description": "Normal speed preset (1.0x)"
+  },
+  
+  "speedDouble": "Double",
+  "@speedDouble": {
+    "description": "Double speed preset (2.0x)"
+  },
+  
+  "speedFast": "Fast",
+  "@speedFast": {
+    "description": "Fast speed preset (4.0x)"
+  },
+  
+  "speedVeryFast": "Very Fast",
+  "@speedVeryFast": {
+    "description": "Very fast speed preset (8.0x)"
+  },
+  
+  "speedMaximum": "Maximum",
+  "@speedMaximum": {
+    "description": "Maximum speed preset (16.0x)"
   },
   
   "bodiesCount": "{count}",

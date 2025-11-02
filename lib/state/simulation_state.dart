@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/firebase_event.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/enums/simulation_status.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/merge_flash.dart';
@@ -15,8 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SimulationState extends ChangeNotifier {
   final physics.Simulation _simulation = physics.Simulation();
 
-  bool _isRunning = false;
-  bool _isPaused = false;
+  SimulationStatus _status = SimulationStatus.stopped;
   double _timeScale = 8.0;
   int _stepCount = 0;
   double _totalTime = 0.0;
@@ -110,8 +110,9 @@ class SimulationState extends ChangeNotifier {
 
   // Getters
   physics.Simulation get simulation => _simulation;
-  bool get isRunning => _isRunning;
-  bool get isPaused => _isPaused;
+  SimulationStatus get status => _status;
+  bool get isRunning => _status.isAdvancing;
+  bool get isPaused => _status == SimulationStatus.paused;
   double get timeScale => _timeScale;
   int get stepCount => _stepCount;
   double get totalTime => _totalTime;
@@ -126,25 +127,32 @@ class SimulationState extends ChangeNotifier {
 
   // Physics control
   void start() {
-    _isRunning = true;
-    FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationStarted);
-    notifyListeners();
+    if (_status.canStart) {
+      _status = SimulationStatus.running;
+      FirebaseService.instance.logEventWithEnum(
+        FirebaseEvent.simulationStarted,
+      );
+      notifyListeners();
+    }
   }
 
   void pause() {
-    _isPaused = !_isPaused;
-    FirebaseService.instance.logEventWithEnum(
-      _isPaused
-          ? FirebaseEvent.simulationPaused
-          : FirebaseEvent.simulationResumed,
-    );
+    if (_status.canPause) {
+      _status = SimulationStatus.paused;
+      FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationPaused);
+    } else if (_status.canResume) {
+      _status = SimulationStatus.running;
+      FirebaseService.instance.logEventWithEnum(
+        FirebaseEvent.simulationResumed,
+      );
+    }
     notifyListeners();
   }
 
   /// Pause the simulation if it's currently running
   void pauseSimulation() {
-    if (_isRunning && !_isPaused) {
-      _isPaused = true;
+    if (_status.canPause) {
+      _status = SimulationStatus.paused;
       FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationPaused);
       notifyListeners();
     }
@@ -152,8 +160,8 @@ class SimulationState extends ChangeNotifier {
 
   /// Resume the simulation if it's currently paused
   void resumeSimulation() {
-    if (_isRunning && _isPaused) {
-      _isPaused = false;
+    if (_status.canResume) {
+      _status = SimulationStatus.running;
       FirebaseService.instance.logEventWithEnum(
         FirebaseEvent.simulationResumed,
       );
@@ -162,8 +170,7 @@ class SimulationState extends ChangeNotifier {
   }
 
   void stop() {
-    _isRunning = false;
-    _isPaused = false;
+    _status = SimulationStatus.stopped;
     FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationStopped);
     notifyListeners();
   }
@@ -253,7 +260,7 @@ class SimulationState extends ChangeNotifier {
   }
 
   void step(double deltaTime) {
-    if (_isRunning && !_isPaused) {
+    if (_status.isAdvancing) {
       const baseDt = 1 / 240.0;
       int steps = (_timeScale * 4).clamp(1, 48).toInt();
       for (int i = 0; i < steps; i++) {

@@ -214,6 +214,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get statusPaused => 'En pause';
 
   @override
+  String get statusStopped => 'Arrêté';
+
+  @override
+  String get statusError => 'Erreur';
+
+  @override
   String get cameraLabel => 'Caméra';
 
   @override
@@ -304,6 +310,27 @@ class AppLocalizationsFr extends AppLocalizations {
   String speedFormatted(String speed) {
     return '${speed}x';
   }
+
+  @override
+  String get speedQuarter => 'Vitesse Quart';
+
+  @override
+  String get speedHalf => 'Demi-Vitesse';
+
+  @override
+  String get speedNormal => 'Normal';
+
+  @override
+  String get speedDouble => 'Double';
+
+  @override
+  String get speedFast => 'Rapide';
+
+  @override
+  String get speedVeryFast => 'Très Rapide';
+
+  @override
+  String get speedMaximum => 'Maximum';
 
   @override
   String bodiesCount(int count) {

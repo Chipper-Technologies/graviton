@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/auto_rotate_status.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
@@ -17,7 +18,7 @@ class CameraState extends ChangeNotifier {
   double _distance = 300.0; // Default distance for most scenarios
   vm.Vector3 _target = vm.Vector3.zero();
   int? _selectedBody;
-  bool _autoRotate = false;
+  AutoRotateStatus _autoRotate = AutoRotateStatus.off;
   double _autoRotateSpeed = 0.2;
 
   // Follow object mode
@@ -35,7 +36,8 @@ class CameraState extends ChangeNotifier {
   double get distance => _distance;
   vm.Vector3 get target => _target;
   int? get selectedBody => _selectedBody;
-  bool get autoRotate => _autoRotate;
+  AutoRotateStatus get autoRotateStatus => _autoRotate;
+  bool get autoRotate => _autoRotate.isEnabled;
   double get autoRotateSpeed => _autoRotateSpeed;
   bool get followMode => _followMode;
   int? get followedBodyIndex => _followedBodyIndex;
@@ -245,7 +247,7 @@ class CameraState extends ChangeNotifier {
 
     _target = vm.Vector3.zero(); // Look at center
     _selectedBody = null;
-    _autoRotate = false;
+    _autoRotate = AutoRotateStatus.off;
     _followMode = false;
     _followedBodyIndex = null;
     FirebaseService.instance.logUIEventWithEnums(
@@ -277,7 +279,7 @@ class CameraState extends ChangeNotifier {
     _target = _calculateOptimalTarget(bodies);
     _distance = _calculateOptimalDistance(scenario, bodies);
     _selectedBody = null;
-    _autoRotate = false;
+    _autoRotate = AutoRotateStatus.off;
     _followMode = false;
     _followedBodyIndex = null;
     FirebaseService.instance.logUIEventWithEnums(
@@ -354,12 +356,12 @@ class CameraState extends ChangeNotifier {
   }
 
   void toggleAutoRotate() {
-    _autoRotate = !_autoRotate;
+    _autoRotate = _autoRotate.toggle;
 
     FirebaseService.instance.logUIEventWithEnums(
       UIAction.autoRotateToggle,
       element: UIElement.cameraControls,
-      value: _autoRotate.toString(),
+      value: _autoRotate.isEnabled.toString(),
     );
 
     notifyListeners();
@@ -383,7 +385,7 @@ class CameraState extends ChangeNotifier {
   }
 
   void updateAutoRotation(double deltaTime) {
-    if (_autoRotate) {
+    if (_autoRotate.isEnabled) {
       _yaw += _autoRotateSpeed * deltaTime;
 
       // In follow mode, maintain the follow distance during auto-rotation

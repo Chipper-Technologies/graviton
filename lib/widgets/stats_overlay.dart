@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/enums/auto_rotate_status.dart';
 import 'package:graviton/enums/habitability_status.dart';
+import 'package:graviton/enums/simulation_status.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -75,11 +77,9 @@ class StatsOverlay extends StatelessWidget {
                 ),
               ),
               Text(
-                '${l10n.statusLabel}: ${appState.simulation.isPaused ? l10n.statusPaused : l10n.statusRunning}',
+                '${l10n.statusLabel}: ${_getStatusText(appState.simulation.status, l10n)}',
                 style: TextStyle(
-                  color: appState.simulation.isPaused
-                      ? AppColors.uiStatusOrange
-                      : AppColors.uiStatusGreen,
+                  color: _getStatusColor(appState.simulation.status),
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
@@ -99,7 +99,7 @@ class StatsOverlay extends StatelessWidget {
                 ),
               ),
               Text(
-                '${l10n.autoRotateLabel}: ${appState.camera.autoRotate ? l10n.autoRotateOn : l10n.autoRotateOff}',
+                '${l10n.autoRotateLabel}: ${appState.camera.autoRotateStatus.isEnabled ? l10n.autoRotateOn : l10n.autoRotateOff}',
                 style: const TextStyle(
                   color: AppColors.uiWhite70,
                   fontSize: AppTypography.fontSizeSmall,
@@ -164,5 +164,31 @@ class StatsOverlay extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getStatusText(SimulationStatus status, AppLocalizations l10n) {
+    switch (status) {
+      case SimulationStatus.stopped:
+        return l10n.statusStopped;
+      case SimulationStatus.running:
+        return l10n.statusRunning;
+      case SimulationStatus.paused:
+        return l10n.statusPaused;
+      case SimulationStatus.error:
+        return l10n.statusError;
+    }
+  }
+
+  Color _getStatusColor(SimulationStatus status) {
+    switch (status) {
+      case SimulationStatus.stopped:
+        return AppColors.uiWhite.withValues(alpha: 0.7);
+      case SimulationStatus.running:
+        return AppColors.uiStatusGreen;
+      case SimulationStatus.paused:
+        return AppColors.uiStatusOrange;
+      case SimulationStatus.error:
+        return AppColors.uiRed;
+    }
   }
 }

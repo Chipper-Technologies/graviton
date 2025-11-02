@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/simulation_status.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:provider/provider.dart';
 
@@ -88,9 +89,9 @@ class _AutoPauseDialogWrapperState extends State<AutoPauseDialogWrapper> {
   void _pauseSimulationIfRunning() {
     if (_appState == null) return;
 
-    // Record if simulation was running and not paused before we pause it
+    // Record if simulation was running before we pause it
     _wasRunningBeforePause =
-        _appState!.simulation.isRunning && !_appState!.simulation.isPaused;
+        _appState!.simulation.status == SimulationStatus.running;
 
     // Pause the simulation if it's currently running
     if (_wasRunningBeforePause) {

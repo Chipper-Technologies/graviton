@@ -207,6 +207,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get statusPaused => '已暂停';
 
   @override
+  String get statusStopped => '已停止';
+
+  @override
+  String get statusError => '错误';
+
+  @override
   String get cameraLabel => '相机';
 
   @override
@@ -292,6 +298,27 @@ class AppLocalizationsZh extends AppLocalizations {
   String speedFormatted(String speed) {
     return '$speed倍';
   }
+
+  @override
+  String get speedQuarter => '四分之一速度';
+
+  @override
+  String get speedHalf => '半速';
+
+  @override
+  String get speedNormal => '正常';
+
+  @override
+  String get speedDouble => '二倍速';
+
+  @override
+  String get speedFast => '快速';
+
+  @override
+  String get speedVeryFast => '非常快';
+
+  @override
+  String get speedMaximum => '最大';
 
   @override
   String bodiesCount(int count) {

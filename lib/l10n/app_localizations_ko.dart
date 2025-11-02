@@ -207,6 +207,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get statusPaused => '일시정지됨';
 
   @override
+  String get statusStopped => '정지됨';
+
+  @override
+  String get statusError => '오류';
+
+  @override
   String get cameraLabel => '카메라';
 
   @override
@@ -294,6 +300,27 @@ class AppLocalizationsKo extends AppLocalizations {
   String speedFormatted(String speed) {
     return '$speed배';
   }
+
+  @override
+  String get speedQuarter => '1/4 속도';
+
+  @override
+  String get speedHalf => '절반 속도';
+
+  @override
+  String get speedNormal => '보통';
+
+  @override
+  String get speedDouble => '2배 속도';
+
+  @override
+  String get speedFast => '빠름';
+
+  @override
+  String get speedVeryFast => '매우 빠름';
+
+  @override
+  String get speedMaximum => '최대';
 
   @override
   String bodiesCount(int count) {

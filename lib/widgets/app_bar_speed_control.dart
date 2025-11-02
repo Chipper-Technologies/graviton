@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/speed_preset.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -35,20 +36,16 @@ class AppBarSpeedControl extends StatelessWidget {
           child: PopupMenuButton<double>(
             tooltip: l10n.speedLabel,
             onSelected: (value) => appState.simulation.setTimeScale(value),
-            itemBuilder: (context) => [
-              _buildSpeedMenuItem(
-                0.1,
-                '0.1x',
-                'Slow Motion',
-                Icons.slow_motion_video,
-              ),
-              _buildSpeedMenuItem(0.5, '0.5x', 'Half Speed', Icons.play_arrow),
-              _buildSpeedMenuItem(1.0, '1.0x', 'Normal', Icons.play_arrow),
-              _buildSpeedMenuItem(2.0, '2.0x', 'Double', Icons.fast_forward),
-              _buildSpeedMenuItem(4.0, '4.0x', 'Fast', Icons.fast_forward),
-              _buildSpeedMenuItem(8.0, '8.0x', 'Very Fast', Icons.fast_forward),
-              _buildSpeedMenuItem(16.0, '16.0x', 'Maximum', Icons.fast_forward),
-            ],
+            itemBuilder: (context) => SpeedPreset.values
+                .map(
+                  (preset) => _buildSpeedMenuItem(
+                    preset.multiplier.toDouble(),
+                    preset.formattedSpeed,
+                    preset.getLocalizedDisplayName(l10n),
+                    preset.icon,
+                  ),
+                )
+                .toList(),
             color: AppColors.uiBlack.withValues(
               alpha: AppTypography.opacityNearlyOpaque,
             ),
@@ -73,7 +70,7 @@ class AppBarSpeedControl extends StatelessWidget {
                 ),
                 const SizedBox(width: 3),
                 Text(
-                  '${timeScale.toStringAsFixed(1)}x',
+                  SpeedPresetExtension.fromMultiplier(timeScale).formattedSpeed,
                   style: const TextStyle(
                     color: AppColors.uiWhite,
                     fontSize: AppTypography.fontSizeSmall - 1,

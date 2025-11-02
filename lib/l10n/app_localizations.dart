@@ -504,6 +504,18 @@ abstract class AppLocalizations {
   /// **'Paused'**
   String get statusPaused;
 
+  /// Status when simulation is stopped
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped'**
+  String get statusStopped;
+
+  /// Status when simulation has an error
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get statusError;
+
   /// Header for camera information
   ///
   /// In en, this message translates to:
@@ -653,6 +665,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{speed}x'**
   String speedFormatted(String speed);
+
+  /// Quarter speed preset (0.25x)
+  ///
+  /// In en, this message translates to:
+  /// **'Quarter Speed'**
+  String get speedQuarter;
+
+  /// Half speed preset (0.5x)
+  ///
+  /// In en, this message translates to:
+  /// **'Half Speed'**
+  String get speedHalf;
+
+  /// Normal speed preset (1.0x)
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get speedNormal;
+
+  /// Double speed preset (2.0x)
+  ///
+  /// In en, this message translates to:
+  /// **'Double'**
+  String get speedDouble;
+
+  /// Fast speed preset (4.0x)
+  ///
+  /// In en, this message translates to:
+  /// **'Fast'**
+  String get speedFast;
+
+  /// Very fast speed preset (8.0x)
+  ///
+  /// In en, this message translates to:
+  /// **'Very Fast'**
+  String get speedVeryFast;
+
+  /// Maximum speed preset (16.0x)
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum'**
+  String get speedMaximum;
 
   /// Number of celestial bodies
   ///

@@ -1,36 +1,34 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 
 /// Represents predefined speed settings for the simulation
 enum SpeedPreset {
   /// Quarter speed (0.25x)
-  quarterSpeed(0.25, 'Quarter Speed', Icons.slow_motion_video),
+  quarterSpeed(0.25, Icons.slow_motion_video),
 
   /// Half speed (0.5x)
-  halfSpeed(0.5, 'Half Speed', Icons.play_arrow),
+  halfSpeed(0.5, Icons.play_arrow),
 
   /// Normal speed (1.0x) - default
-  normal(1.0, 'Normal', Icons.play_arrow),
+  normal(1.0, Icons.play_arrow),
 
   /// Double speed (2.0x)
-  double(2.0, 'Double', Icons.fast_forward),
+  double(2.0, Icons.fast_forward),
 
   /// Fast speed (4.0x)
-  fast(4.0, 'Fast', Icons.fast_forward),
+  fast(4.0, Icons.fast_forward),
 
   /// Very fast speed (8.0x)
-  veryFast(8.0, 'Very Fast', Icons.fast_forward),
+  veryFast(8.0, Icons.fast_forward),
 
   /// Maximum speed (16.0x)
-  maximum(16.0, 'Maximum', Icons.fast_forward);
+  maximum(16.0, Icons.fast_forward);
 
-  const SpeedPreset(this.multiplier, this.displayName, this.icon);
+  const SpeedPreset(this.multiplier, this.icon);
 
   /// The speed multiplier value
   final num multiplier;
-
-  /// Human-readable display name
-  final String displayName;
 
   /// Icon representing this speed
   final IconData icon;
@@ -59,6 +57,26 @@ extension SpeedPresetExtension on SpeedPreset {
         return 'speedVeryFast';
       case SpeedPreset.maximum:
         return 'speedMaximum';
+    }
+  }
+
+  /// Get localized display name
+  String getLocalizedDisplayName(AppLocalizations l10n) {
+    switch (this) {
+      case SpeedPreset.quarterSpeed:
+        return l10n.speedQuarter;
+      case SpeedPreset.halfSpeed:
+        return l10n.speedHalf;
+      case SpeedPreset.normal:
+        return l10n.speedNormal;
+      case SpeedPreset.double:
+        return l10n.speedDouble;
+      case SpeedPreset.fast:
+        return l10n.speedFast;
+      case SpeedPreset.veryFast:
+        return l10n.speedVeryFast;
+      case SpeedPreset.maximum:
+        return l10n.speedMaximum;
     }
   }
 
