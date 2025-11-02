@@ -21,6 +21,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get resetButton => '재설정';
 
   @override
+  String get resetSettingsDescription => '모든 설정을 기본값으로 재설정';
+
+  @override
   String get speedLabel => '속도';
 
   @override

@@ -30,22 +30,35 @@ class ScenarioSelectionDialog extends StatelessWidget {
 
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
+        borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
       ),
+      backgroundColor: Colors.transparent,
       child: Container(
         constraints: AppConstraints.dialogMedium,
+        decoration: BoxDecoration(
+          color: AppColors.uiBlack.withValues(
+            alpha: AppTypography.opacityMediumHigh,
+          ),
+          borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
+          border: Border.all(
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityDisabled,
+            ),
+            width: AppTypography.borderThin,
+          ),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Title with close button
+            // Header with gradient background
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.uiCyanAccent.withValues(
+                    AppColors.primaryColor.withValues(
                       alpha: AppTypography.opacityMidFade,
                     ),
-                    AppColors.uiCyanAccent.withValues(
+                    AppColors.primaryColor.withValues(
                       alpha: AppTypography.opacityBarely,
                     ),
                   ],
@@ -53,24 +66,28 @@ class ScenarioSelectionDialog extends StatelessWidget {
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(AppTypography.radiusXLarge),
-                  topRight: Radius.circular(AppTypography.radiusXLarge),
+                  topLeft: Radius.circular(AppTypography.radiusXXLarge),
+                  topRight: Radius.circular(AppTypography.radiusXXLarge),
                 ),
               ),
               padding: EdgeInsets.all(AppTypography.spacingLarge),
               child: Row(
                 children: [
-                  Icon(Icons.explore, color: AppColors.uiCyanAccent, size: 28),
+                  Icon(Icons.explore, color: AppColors.primaryColor, size: 28),
                   SizedBox(width: AppTypography.spacingMedium),
                   Expanded(
                     child: Text(
                       l10n.selectScenarioTooltip,
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            color: AppColors.uiWhite,
+                            fontWeight: FontWeight.w600,
+                          ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close),
+                    icon: const Icon(Icons.close, color: AppColors.uiWhite),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],

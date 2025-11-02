@@ -85,7 +85,7 @@ void main() {
         // These sections should no longer be present
         expect(find.text('Marketing'), findsNothing);
         expect(find.text('Help & Objectives'), findsNothing);
-        expect(find.text('Changelog (Debug)'), findsNothing);
+        expect(find.text('Changelog'), findsNothing);
         expect(find.text('Tutorial'), findsNothing);
         expect(find.text('Reset Tutorial'), findsNothing);
         expect(find.text('Changelog'), findsNothing);

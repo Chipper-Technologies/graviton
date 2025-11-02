@@ -21,6 +21,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get resetButton => 'Zurücksetzen';
 
   @override
+  String get resetSettingsDescription =>
+      'Alle Einstellungen auf Standardwerte zurücksetzen';
+
+  @override
   String get speedLabel => 'Geschwindigkeit';
 
   @override
@@ -1269,7 +1273,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get changelogResetMessage => 'Changelog-Status wurde zurückgesetzt';
 
   @override
-  String get changelogDebugTitle => 'Changelog (Debug)';
+  String get changelogDebugTitle => 'Changelog';
 
   @override
   String changelogNotFoundError(String version) {

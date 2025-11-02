@@ -58,10 +58,10 @@ class AppBarMoreMenu extends StatelessWidget {
           value: AppBarMenuItem.scenarios,
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.explore,
                 size: 20,
-                color: AppColors.uiCyanAccent,
+                color: AppColors.sectionTitlePurple,
               ),
               const SizedBox(width: AppTypography.spacingMedium),
               Expanded(
@@ -105,10 +105,10 @@ class AppBarMoreMenu extends StatelessWidget {
           value: AppBarMenuItem.physics,
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.science,
                 size: 20,
-                color: AppColors.primaryColor,
+                color: AppColors.sectionTitlePurple,
               ),
               const SizedBox(width: AppTypography.spacingMedium),
               Expanded(
@@ -152,7 +152,7 @@ class AppBarMoreMenu extends StatelessWidget {
           value: AppBarMenuItem.settings,
           child: Row(
             children: [
-              const Icon(Icons.tune, size: 20, color: AppColors.uiOrangeAccent),
+              Icon(Icons.tune, size: 20, color: AppColors.sectionTitlePurple),
               const SizedBox(width: AppTypography.spacingMedium),
               Expanded(
                 child: Column(
@@ -195,10 +195,10 @@ class AppBarMoreMenu extends StatelessWidget {
           value: AppBarMenuItem.help,
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.lightbulb_outline,
                 size: 20,
-                color: AppColors.primaryColor,
+                color: AppColors.sectionTitlePurple,
               ),
               const SizedBox(width: AppTypography.spacingMedium),
               Expanded(
@@ -238,44 +238,6 @@ class AppBarMoreMenu extends StatelessWidget {
             height: 1,
           ),
         ),
-        PopupMenuItem<AppBarMenuItem>(
-          value: AppBarMenuItem.about,
-          child: Row(
-            children: [
-              const Icon(
-                Icons.info_outline,
-                size: 20,
-                color: AppColors.uiCyanAccent,
-              ),
-              const SizedBox(width: AppTypography.spacingMedium),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      l10n.aboutButtonTooltip,
-                      style: AppTypography.mediumText.copyWith(
-                        color: AppColors.uiWhite,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(
-                      l10n.aboutMenuDescription,
-                      style: AppTypography.smallText.copyWith(
-                        color: AppColors.uiWhite.withValues(
-                          alpha: AppTypography.opacitySemiTransparent,
-                        ),
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
         // Developer Tools (Debug only)
         if (kDebugMode) ...[
           PopupMenuItem<AppBarMenuItem>(
@@ -291,10 +253,10 @@ class AppBarMoreMenu extends StatelessWidget {
             value: AppBarMenuItem.developerTools,
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.developer_mode,
                   size: 20,
-                  color: AppColors.primaryColor,
+                  color: AppColors.sectionTitlePurple,
                 ),
                 const SizedBox(width: AppTypography.spacingMedium),
                 Expanded(
@@ -325,7 +287,54 @@ class AppBarMoreMenu extends StatelessWidget {
               ],
             ),
           ),
+          PopupMenuItem<AppBarMenuItem>(
+            enabled: false,
+            height: 1,
+            child: Divider(
+              color: AppColors.uiDividerGrey,
+              thickness: 1,
+              height: 1,
+            ),
+          ),
         ],
+        PopupMenuItem<AppBarMenuItem>(
+          value: AppBarMenuItem.about,
+          child: Row(
+            children: [
+              Icon(
+                Icons.info_outline,
+                size: 20,
+                color: AppColors.sectionTitlePurple,
+              ),
+              const SizedBox(width: AppTypography.spacingMedium),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      l10n.aboutButtonTooltip,
+                      style: AppTypography.mediumText.copyWith(
+                        color: AppColors.uiWhite,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      l10n.aboutMenuDescription,
+                      style: AppTypography.smallText.copyWith(
+                        color: AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacitySemiTransparent,
+                        ),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
       color: AppColors.uiBlack.withValues(
         alpha: AppTypography.opacityNearlyOpaque,

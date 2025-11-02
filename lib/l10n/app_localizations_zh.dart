@@ -21,6 +21,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get resetButton => '重置';
 
   @override
+  String get resetSettingsDescription => '将所有设置重置为默认值';
+
+  @override
   String get speedLabel => '速度';
 
   @override

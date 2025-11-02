@@ -6,6 +6,7 @@ import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/widgets/bottom_sheet_handle.dart';
 import 'package:graviton/widgets/bottom_sheet_header.dart';
+import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
 
@@ -55,29 +56,30 @@ class PhysicsBottomSheet extends StatelessWidget {
                 SectionTitle(title: l10n.physicsVisualizationTitle),
                 SizedBox(height: AppTypography.spacingMedium),
 
-                _buildToggleOption(
-                  l10n.gravityFieldsTitle,
-                  l10n.gravityFieldsDescription,
-                  Icons.scatter_plot,
-                  appState.ui.globalGravityFields,
-                  () => appState.ui.toggleGlobalGravityFields(),
+                ToggleOption(
+                  title: l10n.gravityFieldsTitle,
+                  description: l10n.gravityFieldsDescription,
+                  icon: Icons.scatter_plot,
+                  isEnabled: appState.ui.globalGravityFields,
+                  onChanged: (_) => appState.ui.toggleGlobalGravityFields(),
                 ),
 
                 if (appState.ui.globalGravityFields) ...[
-                  _buildToggleOption(
-                    l10n.equipotentialSurfacesLabel,
-                    l10n.equipotentialSurfacesDescription,
-                    Icons.layers,
-                    appState.ui.showEquipotentialSurfaces,
-                    () => appState.ui.toggleEquipotentialSurfaces(),
+                  ToggleOption(
+                    title: l10n.equipotentialSurfacesLabel,
+                    description: l10n.equipotentialSurfacesDescription,
+                    icon: Icons.layers,
+                    isEnabled: appState.ui.showEquipotentialSurfaces,
+                    onChanged: (_) => appState.ui.toggleEquipotentialSurfaces(),
                   ),
 
-                  _buildToggleOption(
-                    l10n.gravityFieldIndicatorsLabel,
-                    l10n.gravityFieldIndicatorsDescription,
-                    Icons.my_location,
-                    appState.ui.showGravityFieldIndicators,
-                    () => appState.ui.toggleGravityFieldIndicators(),
+                  ToggleOption(
+                    title: l10n.gravityFieldIndicatorsLabel,
+                    description: l10n.gravityFieldIndicatorsDescription,
+                    icon: Icons.my_location,
+                    isEnabled: appState.ui.showGravityFieldIndicators,
+                    onChanged: (_) =>
+                        appState.ui.toggleGravityFieldIndicators(),
                   ),
 
                   Container(
@@ -283,12 +285,12 @@ class PhysicsBottomSheet extends StatelessWidget {
                 SectionTitle(title: l10n.debugStatisticsTitle),
                 SizedBox(height: AppTypography.spacingMedium),
 
-                _buildToggleOption(
-                  l10n.showStatisticsTitle,
-                  l10n.showStatisticsDescription,
-                  Icons.analytics,
-                  appState.ui.showStats,
-                  () => appState.ui.toggleStats(),
+                ToggleOption(
+                  title: l10n.showStatisticsTitle,
+                  description: l10n.showStatisticsDescription,
+                  icon: Icons.analytics,
+                  isEnabled: appState.ui.showStats,
+                  onChanged: (_) => appState.ui.toggleStats(),
                 ),
 
                 SizedBox(height: AppTypography.spacingXXLarge),
@@ -344,104 +346,6 @@ class PhysicsBottomSheet extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildToggleOption(
-    String title,
-    String description,
-    IconData icon,
-    bool isEnabled,
-    VoidCallback onToggle,
-  ) {
-    return Container(
-      margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onToggle,
-          borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-          child: Container(
-            padding: EdgeInsets.all(AppTypography.spacingLarge),
-            decoration: BoxDecoration(
-              color: isEnabled
-                  ? AppColors.primaryColor.withValues(
-                      alpha: AppTypography.opacityMidFade,
-                    )
-                  : AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityBarely,
-                    ),
-              borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-              border: isEnabled
-                  ? Border.all(
-                      color: AppColors.primaryColor,
-                      width: AppTypography.borderThin,
-                    )
-                  : Border.all(
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacityDisabled,
-                      ),
-                      width: AppTypography.borderThin,
-                    ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  icon,
-                  color: isEnabled
-                      ? AppColors.primaryColor
-                      : AppColors.uiWhite.withValues(
-                          alpha: AppTypography.opacityHigh,
-                        ),
-                  size: AppTypography.iconSizeXXLarge,
-                ),
-                SizedBox(width: AppTypography.spacingLarge),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          color: isEnabled
-                              ? AppColors.primaryColor
-                              : AppColors.uiWhite,
-                          fontSize: AppTypography.fontSizeLarge,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(height: AppTypography.spacingXSmall),
-                      Text(
-                        description,
-                        style: TextStyle(
-                          color: AppColors.uiWhite.withValues(
-                            alpha: AppTypography.opacityHigh,
-                          ),
-                          fontSize: AppTypography.fontSizeMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Switch(
-                  value: isEnabled,
-                  onChanged: (_) => onToggle(),
-                  activeThumbColor: AppColors.primaryColor,
-                  activeTrackColor: AppColors.primaryColor.withValues(
-                    alpha: AppTypography.opacityFaint,
-                  ),
-                  inactiveThumbColor: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityMedium,
-                  ),
-                  inactiveTrackColor: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityDisabled,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

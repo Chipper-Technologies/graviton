@@ -21,6 +21,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get resetButton => 'Reiniciar';
 
   @override
+  String get resetSettingsDescription =>
+      'Restablecer todos los ajustes a valores predeterminados';
+
+  @override
   String get speedLabel => 'Velocidad';
 
   @override
@@ -1274,7 +1278,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'El estado del registro de cambios ha sido restablecido';
 
   @override
-  String get changelogDebugTitle => 'Registro de cambios (Debug)';
+  String get changelogDebugTitle => 'Registro de cambios';
 
   @override
   String changelogNotFoundError(String version) {

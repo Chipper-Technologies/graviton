@@ -132,6 +132,12 @@ abstract class AppLocalizations {
   /// **'Reset'**
   String get resetButton;
 
+  /// Description for reset settings action
+  ///
+  /// In en, this message translates to:
+  /// **'Reset all settings to default values'**
+  String get resetSettingsDescription;
+
   /// Label for simulation speed control
   ///
   /// In en, this message translates to:
@@ -2409,7 +2415,7 @@ abstract class AppLocalizations {
   /// Debug section title for changelog in settings
   ///
   /// In en, this message translates to:
-  /// **'Changelog (Debug)'**
+  /// **'Changelog'**
   String get changelogDebugTitle;
 
   /// Error message when no changelog data is found

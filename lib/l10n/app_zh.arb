@@ -4,6 +4,7 @@
   "playButton": "播放",
   "pauseButton": "暂停",
   "resetButton": "重置",
+  "resetSettingsDescription": "将所有设置重置为默认值",
   "speedLabel": "速度",
   "trailsLabel": "轨迹",
   "statsLabel": "统计",

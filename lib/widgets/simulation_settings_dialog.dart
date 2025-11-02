@@ -5,6 +5,10 @@ import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/action_option.dart';
+import 'package:graviton/widgets/common/slider_option.dart';
+import 'package:graviton/widgets/common/toggle_option.dart';
+import 'package:graviton/widgets/section_title.dart';
 
 class SimulationSettingsDialog extends StatefulWidget {
   final double gravitationalConstant;
@@ -75,19 +79,31 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
 
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
+        borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
       ),
+      backgroundColor: Colors.transparent,
       child: Container(
         constraints: AppConstraints.dialogMedium,
+        decoration: BoxDecoration(
+          color: AppColors.uiBlack.withValues(
+            alpha: AppTypography.opacityMediumHigh,
+          ),
+          borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
+          border: Border.all(
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityDisabled,
+            ),
+            width: AppTypography.borderThin,
+          ),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Header with gradient
+            // Header with gradient background
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -103,26 +119,25 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(AppTypography.radiusXLarge),
-                  topRight: Radius.circular(AppTypography.radiusXLarge),
+                  topLeft: Radius.circular(AppTypography.radiusXXLarge),
+                  topRight: Radius.circular(AppTypography.radiusXXLarge),
                 ),
               ),
-              padding: const EdgeInsets.all(AppTypography.spacingLarge),
+              padding: EdgeInsets.all(AppTypography.spacingLarge),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.science,
-                    color: AppColors.primaryColor,
-                    size: AppTypography.fontSizeHeader,
-                  ),
-                  const SizedBox(width: AppTypography.spacingMedium),
+                  Icon(Icons.science, color: AppColors.primaryColor, size: 28),
+                  SizedBox(width: AppTypography.spacingMedium),
                   Text(
                     l10n.physicsSettingsTitle,
-                    style: theme.textTheme.headlineSmall,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: AppColors.uiWhite,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const Spacer(),
                   IconButton(
-                    icon: const Icon(Icons.close),
+                    icon: const Icon(Icons.close, color: AppColors.uiWhite),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
@@ -131,16 +146,21 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
             // Content section
             Flexible(
               child: Padding(
-                padding: AppConstraints.dialogPadding,
+                padding: EdgeInsets.only(
+                  left: AppTypography.spacingXLarge,
+                  right: AppTypography.spacingXLarge,
+                  top: AppTypography.spacingXLarge,
+                  bottom: AppTypography.spacingXLarge,
+                ),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // Physics section
-                      _buildSectionHeader(l10n.physicsSection, Icons.science),
-                      const SizedBox(height: AppTypography.spacingLarge),
+                      SectionTitle(title: l10n.physicsSection),
+                      SizedBox(height: AppTypography.spacingMedium),
 
-                      _buildSlider(
+                      SliderOption.detailed(
                         label: l10n.gravitationalConstant,
                         value: _gravitationalConstant,
                         min: 0.1,
@@ -154,7 +174,7 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
                         formatter: (value) => value.toStringAsFixed(2),
                       ),
 
-                      _buildSlider(
+                      SliderOption.detailed(
                         label: l10n.softeningParameter,
                         value: _softening,
                         min: 0.01,
@@ -168,7 +188,7 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
                         formatter: (value) => value.toStringAsFixed(3),
                       ),
 
-                      _buildSlider(
+                      SliderOption.detailed(
                         label: l10n.simulationSpeed,
                         value: _timeScale,
                         min: 0.1,
@@ -182,13 +202,13 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
                         formatter: (value) => '${value.toStringAsFixed(1)}x',
                       ),
 
-                      const SizedBox(height: AppTypography.spacingXXLarge),
+                      SizedBox(height: AppTypography.spacingXXLarge),
 
                       // Collision section
-                      _buildSectionHeader(l10n.collisionsSection, Icons.adjust),
-                      const SizedBox(height: AppTypography.spacingLarge),
+                      SectionTitle(title: l10n.collisionsSection),
+                      SizedBox(height: AppTypography.spacingMedium),
 
-                      _buildSlider(
+                      SliderOption.detailed(
                         label: l10n.collisionSensitivity,
                         value: _collisionRadiusMultiplier,
                         min: 0.05,
@@ -203,13 +223,13 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
                             '${(value * 100).toStringAsFixed(0)}%',
                       ),
 
-                      const SizedBox(height: AppTypography.spacingXXLarge),
+                      SizedBox(height: AppTypography.spacingXXLarge),
 
                       // Trails section
-                      _buildSectionHeader(l10n.trailsSection, Icons.timeline),
-                      const SizedBox(height: AppTypography.spacingLarge),
+                      SectionTitle(title: l10n.trailsSection),
+                      SizedBox(height: AppTypography.spacingMedium),
 
-                      _buildSlider(
+                      SliderOption.detailed(
                         label: l10n.trailLength,
                         value: _maxTrailPoints,
                         min: 50,
@@ -223,7 +243,7 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
                         formatter: (value) => value.toStringAsFixed(0),
                       ),
 
-                      _buildSlider(
+                      SliderOption.detailed(
                         label: l10n.trailFadeRate,
                         value: _trailFadeRate,
                         min: 0.1,
@@ -237,35 +257,26 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
                         formatter: (value) => value.toStringAsFixed(1),
                       ),
 
-                      const SizedBox(height: AppTypography.spacingXXLarge),
+                      SizedBox(height: AppTypography.spacingXXLarge),
 
                       // Haptics section
-                      _buildSectionHeader(l10n.hapticsSection, Icons.vibration),
-                      const SizedBox(height: AppTypography.spacingLarge),
+                      SectionTitle(title: l10n.hapticsSection),
+                      SizedBox(height: AppTypography.spacingMedium),
 
-                      SwitchListTile(
-                        title: Text(
-                          l10n.vibrationEnabled,
-                          style: theme.textTheme.bodyLarge,
-                        ),
-                        subtitle: Text(
-                          l10n.hapticFeedbackCollisions,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                        value: _vibrationEnabled,
+                      ToggleOption(
+                        title: l10n.vibrationEnabled,
+                        description: l10n.hapticFeedbackCollisions,
+                        icon: Icons.vibration,
+                        isEnabled: _vibrationEnabled,
                         onChanged: (value) {
                           setState(() => _vibrationEnabled = value);
                           _updateSettings();
                         },
-                        activeThumbColor: theme.colorScheme.primary,
-                        contentPadding: EdgeInsets.zero,
                       ),
 
                       if (_vibrationEnabled) ...[
-                        const SizedBox(height: 8),
-                        _buildSlider(
+                        SizedBox(height: AppTypography.spacingMedium),
+                        SliderOption.detailed(
                           label: l10n.vibrationThrottle,
                           value: _vibrationThrottleTime,
                           min: 0.05,
@@ -280,110 +291,24 @@ class _SimulationSettingsDialogState extends State<SimulationSettingsDialog> {
                               '${(value * 1000).toStringAsFixed(0)}ms',
                         ),
                       ],
+
+                      SizedBox(height: AppTypography.spacingXLarge),
+
+                      // Reset button
+                      ActionOption(
+                        title: l10n.resetButton,
+                        description: l10n.resetSettingsDescription,
+                        icon: Icons.refresh,
+                        onPressed: _resetToDefaults,
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-
-            // Footer
-            Padding(
-              padding: const EdgeInsets.all(AppTypography.spacingLarge),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton.icon(
-                    onPressed: _resetToDefaults,
-                    icon: const Icon(Icons.refresh),
-                    label: Text(l10n.resetButton),
-                    style: TextButton.styleFrom(
-                      foregroundColor: theme.colorScheme.primary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSectionHeader(String title, IconData icon) {
-    final theme = Theme.of(context);
-    return Row(
-      children: [
-        Icon(
-          icon,
-          size: AppTypography.iconSizeXLarge,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(width: AppTypography.spacingSmall),
-        Text(
-          title,
-          style: theme.textTheme.titleMedium?.copyWith(
-            color: theme.colorScheme.primary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSlider({
-    required String label,
-    required double value,
-    required double min,
-    required double max,
-    required int divisions,
-    required IconData icon,
-    required ValueChanged<double> onChanged,
-    required String Function(double) formatter,
-  }) {
-    final theme = Theme.of(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          children: [
-            Icon(
-              icon,
-              size: AppTypography.iconSizeMedium,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-            const SizedBox(width: AppTypography.spacingSmall),
-            Expanded(
-              child: Text(
-                label,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Text(
-              formatter(value),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.primary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        Slider(
-          value: value,
-          min: min,
-          max: max,
-          divisions: divisions,
-          onChanged: onChanged,
-          activeColor: theme.colorScheme.primary,
-          inactiveColor: theme.colorScheme.outline.withValues(
-            alpha: AppTypography.opacityVeryFaint,
-          ),
-        ),
-        const SizedBox(height: AppTypography.spacingSmall),
-      ],
     );
   }
 

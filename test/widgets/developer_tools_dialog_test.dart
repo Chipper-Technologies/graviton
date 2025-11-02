@@ -85,10 +85,10 @@ void main() {
 
         // Check for Help & Objectives section
         expect(find.text('Help & Objectives'), findsOneWidget);
-        expect(find.byIcon(Icons.help_outline), findsAtLeastNWidgets(1));
+        expect(find.byIcon(Icons.school), findsAtLeastNWidgets(1));
 
         // Check for Changelog section
-        expect(find.text('Changelog (Debug)'), findsOneWidget);
+        expect(find.text('Changelog'), findsOneWidget);
         expect(find.byIcon(Icons.assignment), findsAtLeastNWidgets(1));
       });
 
@@ -146,12 +146,9 @@ void main() {
 
         if (kDebugMode) {
           expect(find.text('Reset'), findsOneWidget);
-          // Look for Material buttons instead of specific button types
+          // Look for InkWell widgets since buttons use InkWell with Material parent
           expect(
-            find.byWidgetPredicate(
-              (widget) =>
-                  widget is Material && widget.type == MaterialType.button,
-            ),
+            find.byType(InkWell),
             findsAtLeastNWidgets(2),
           ); // At least Tutorial and Show Changelog buttons
         } else {
@@ -279,14 +276,8 @@ void main() {
         );
         await tester.pump();
 
-        // Should have Material buttons (Tutorial, Changelog)
-        expect(
-          find.byWidgetPredicate(
-            (widget) =>
-                widget is Material && widget.type == MaterialType.button,
-          ),
-          findsAtLeast(2),
-        );
+        // Should have InkWell widgets for interactive elements
+        expect(find.byType(InkWell), findsAtLeast(2));
 
         // Should have text content for buttons
         expect(find.text('Tutorial'), findsOneWidget);
@@ -366,7 +357,7 @@ void main() {
         // Check for localized strings
         expect(find.text('Developer Tools'), findsOneWidget);
         expect(find.text('Help & Objectives'), findsOneWidget);
-        expect(find.text('Changelog (Debug)'), findsOneWidget);
+        expect(find.text('Changelog'), findsOneWidget);
         expect(find.text('Tutorial'), findsOneWidget);
         expect(find.text('Show Changelog'), findsOneWidget);
 

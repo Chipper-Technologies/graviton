@@ -21,6 +21,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get resetButton => 'リセット';
 
   @override
+  String get resetSettingsDescription => 'すべての設定をデフォルト値にリセット';
+
+  @override
   String get speedLabel => '速度';
 
   @override

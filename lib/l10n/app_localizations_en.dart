@@ -21,6 +21,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetButton => 'Reset';
 
   @override
+  String get resetSettingsDescription => 'Reset all settings to default values';
+
+  @override
   String get speedLabel => 'Speed';
 
   @override
@@ -1260,7 +1263,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changelogResetMessage => 'Changelog state has been reset';
 
   @override
-  String get changelogDebugTitle => 'Changelog (Debug)';
+  String get changelogDebugTitle => 'Changelog';
 
   @override
   String changelogNotFoundError(String version) {

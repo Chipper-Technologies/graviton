@@ -4,6 +4,7 @@
   "playButton": "再生",
   "pauseButton": "一時停止",
   "resetButton": "リセット",
+  "resetSettingsDescription": "すべての設定をデフォルト値にリセット",
   "speedLabel": "速度",
   "trailsLabel": "軌跡",
   "statsLabel": "統計",

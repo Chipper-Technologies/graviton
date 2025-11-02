@@ -20,6 +20,11 @@
     "description": "Button to reset the simulation"
   },
   
+  "resetSettingsDescription": "Reset all settings to default values",
+  "@resetSettingsDescription": {
+    "description": "Description for reset settings action"
+  },
+  
   "speedLabel": "Speed",
   "@speedLabel": {
     "description": "Label for simulation speed control"
@@ -1850,7 +1855,7 @@
   "@changelogResetMessage": {
     "description": "Message shown when changelog state is reset"
   },
-  "changelogDebugTitle": "Changelog (Debug)",
+  "changelogDebugTitle": "Changelog",
   "@changelogDebugTitle": {
     "description": "Debug section title for changelog in settings"
   },

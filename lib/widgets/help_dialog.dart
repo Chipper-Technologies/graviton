@@ -15,14 +15,27 @@ class HelpDialog extends StatelessWidget {
 
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
+        borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
       ),
+      backgroundColor: Colors.transparent,
       child: Container(
         constraints: AppConstraints.dialogLarge,
+        decoration: BoxDecoration(
+          color: AppColors.uiBlack.withValues(
+            alpha: AppTypography.opacityMediumHigh,
+          ),
+          borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
+          border: Border.all(
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityDisabled,
+            ),
+            width: AppTypography.borderThin,
+          ),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Title with close button
+            // Header with gradient background
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -38,8 +51,8 @@ class HelpDialog extends StatelessWidget {
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(AppTypography.radiusXLarge),
-                  topRight: Radius.circular(AppTypography.radiusXLarge),
+                  topLeft: Radius.circular(AppTypography.radiusXXLarge),
+                  topRight: Radius.circular(AppTypography.radiusXXLarge),
                 ),
               ),
               padding: EdgeInsets.all(AppTypography.spacingLarge),
@@ -53,11 +66,14 @@ class HelpDialog extends StatelessWidget {
                   SizedBox(width: AppTypography.spacingMedium),
                   Text(
                     l10n.showHelpTooltip,
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: AppColors.uiWhite,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const Spacer(),
                   IconButton(
-                    icon: const Icon(Icons.close),
+                    icon: const Icon(Icons.close, color: AppColors.uiWhite),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
