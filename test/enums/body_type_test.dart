@@ -25,21 +25,21 @@ void main() {
       expect(BodyType.asteroid.canBeHabitable, isFalse);
     });
 
-    test('should have correct display names', () {
-      expect(BodyType.star.displayName, equals('Star'));
-      expect(BodyType.planet.displayName, equals('Planet'));
-      expect(BodyType.moon.displayName, equals('Moon'));
-      expect(BodyType.asteroid.displayName, equals('Asteroid'));
+    test('should have correct localization keys', () {
+      expect(BodyType.star.localizationKey, equals('bodyTypeStar'));
+      expect(BodyType.planet.localizationKey, equals('bodyTypePlanet'));
+      expect(BodyType.moon.localizationKey, equals('bodyTypeMoon'));
+      expect(BodyType.asteroid.localizationKey, equals('bodyTypeAsteroid'));
     });
 
-    test('should have unique display names', () {
-      final displayNames = BodyType.values
-          .map((type) => type.displayName)
+    test('should have unique localization keys', () {
+      final localizationKeys = BodyType.values
+          .map((type) => type.localizationKey)
           .toSet();
       expect(
-        displayNames.length,
+        localizationKeys.length,
         equals(BodyType.values.length),
-        reason: 'All body types should have unique display names',
+        reason: 'All body types should have unique localization keys',
       );
     });
 

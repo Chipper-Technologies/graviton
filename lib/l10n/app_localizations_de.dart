@@ -1352,4 +1352,93 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get copyrightLabel => 'Urheberrecht';
+
+  @override
+  String get bodyTypeStar => 'Stern';
+
+  @override
+  String get bodyTypePlanet => 'Planet';
+
+  @override
+  String get bodyTypeMoon => 'Mond';
+
+  @override
+  String get bodyTypeAsteroid => 'Asteroid';
+
+  @override
+  String get appFlavorDevelopment => 'Entwicklung';
+
+  @override
+  String get appFlavorProduction => 'Produktion';
+
+  @override
+  String get notificationTypeError => 'Fehler';
+
+  @override
+  String get notificationTypeWarning => 'Warnung';
+
+  @override
+  String get notificationTypeInfo => 'Information';
+
+  @override
+  String get notificationTypeSuccess => 'Erfolg';
+
+  @override
+  String get notificationTypeDebug => 'Debug';
+
+  @override
+  String get trackingModeFull => 'Vollständige Verfolgung';
+
+  @override
+  String get trackingModeEssential => 'Nur Wesentliches';
+
+  @override
+  String get trackingModeNone => 'Keine Verfolgung';
+
+  @override
+  String get trackingModeLimited => 'Begrenzte Verfolgung';
+
+  @override
+  String get trackingModeFullDescription =>
+      'Alle Analysen, Abstürze und Interaktionen';
+
+  @override
+  String get trackingModeEssentialDescription =>
+      'Nur kritische Abstürze und Fehler';
+
+  @override
+  String get trackingModeNoneDescription => 'Keine Datensammlung';
+
+  @override
+  String get trackingModeLimitedDescription => 'Nur Benutzerinteraktionen';
+
+  @override
+  String get changelogCategoryAdded => 'Hinzugefügt';
+
+  @override
+  String get changelogCategoryImproved => 'Verbessert';
+
+  @override
+  String get changelogCategoryFixed => 'Behoben';
+
+  @override
+  String get cameraManual => 'Manuelle Steuerung';
+
+  @override
+  String get cameraPredictiveOrbital => 'Vorhersagende Orbital';
+
+  @override
+  String get cameraDynamicFraming => 'Dynamische Bildkomposition';
+
+  @override
+  String get cameraManualDescription =>
+      'Traditionelle manuelle Kamerasteuerung mit Folgemodus';
+
+  @override
+  String get cameraPredictiveOrbitalDescription =>
+      'KI sagt Orbitalpfade für dramatische Kamerabewegungen voraus';
+
+  @override
+  String get cameraDynamicFramingDescription =>
+      'Passt die Bildkomposition automatisch basierend auf Szeneninhalten an';
 }

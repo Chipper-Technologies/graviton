@@ -93,33 +93,35 @@ void main() {
       });
     });
 
-    group('displayName extension', () {
-      test('should return correct display names', () {
-        expect(HabitabilityStatus.habitable.displayName, equals('Habitable'));
-        expect(HabitabilityStatus.tooHot.displayName, equals('Too Hot'));
-        expect(HabitabilityStatus.tooCold.displayName, equals('Too Cold'));
-        expect(HabitabilityStatus.unknown.displayName, equals('Unknown'));
+    group('localizationKey extension', () {
+      test('should return correct localization keys', () {
+        expect(
+          HabitabilityStatus.habitable.localizationKey,
+          equals('habitabilityHabitable'),
+        );
+        expect(
+          HabitabilityStatus.tooHot.localizationKey,
+          equals('habitabilityTooHot'),
+        );
+        expect(
+          HabitabilityStatus.tooCold.localizationKey,
+          equals('habitabilityTooCold'),
+        );
+        expect(
+          HabitabilityStatus.unknown.localizationKey,
+          equals('habitabilityUnknown'),
+        );
       });
 
-      test('should use proper capitalization', () {
-        for (final status in HabitabilityStatus.values) {
-          final displayName = status.displayName;
-          expect(
-            displayName[0],
-            equals(displayName[0].toUpperCase()),
-            reason: '$displayName should start with uppercase',
-          );
-        }
-      });
-
-      test('should have unique display names', () {
-        final names = HabitabilityStatus.values
-            .map((status) => status.displayName)
+      test('should have unique localization keys', () {
+        final keys = HabitabilityStatus.values
+            .map((status) => status.localizationKey)
             .toSet();
         expect(
-          names.length,
+          keys.length,
           equals(HabitabilityStatus.values.length),
-          reason: 'All habitability statuses should have unique display names',
+          reason:
+              'All habitability statuses should have unique localization keys',
         );
       });
     });
@@ -189,16 +191,13 @@ void main() {
       for (final status in HabitabilityStatus.values) {
         // Verify all extension methods work without throwing
         expect(() => status.statusColor, returnsNormally);
-        expect(() => status.displayName, returnsNormally);
         expect(() => status.localizationKey, returnsNormally);
 
         // Verify return types
         expect(status.statusColor, isA<int>());
-        expect(status.displayName, isA<String>());
         expect(status.localizationKey, isA<String>());
 
         // Verify non-empty returns
-        expect(status.displayName, isNotEmpty);
         expect(status.localizationKey, isNotEmpty);
       }
     });

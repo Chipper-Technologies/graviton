@@ -176,8 +176,7 @@ void main() {
             expect(
               type.dismissDurationSeconds,
               greaterThan(0),
-              reason:
-                  '${type.displayName} should have positive dismiss duration',
+              reason: '${type.name} should have positive dismiss duration',
             );
           }
         }
@@ -189,41 +188,45 @@ void main() {
             expect(
               type.dismissDurationSeconds,
               equals(0),
-              reason: '${type.displayName} should have zero dismiss duration',
+              reason: '${type.name} should have zero dismiss duration',
             );
           }
         }
       });
     });
 
-    group('displayName extension', () {
-      test('should return correct display names', () {
-        expect(NotificationType.error.displayName, equals('Error'));
-        expect(NotificationType.warning.displayName, equals('Warning'));
-        expect(NotificationType.info.displayName, equals('Info'));
-        expect(NotificationType.success.displayName, equals('Success'));
-        expect(NotificationType.debug.displayName, equals('Debug'));
+    group('localizationKey extension', () {
+      test('should return correct localization keys', () {
+        expect(
+          NotificationType.error.localizationKey,
+          equals('notificationTypeError'),
+        );
+        expect(
+          NotificationType.warning.localizationKey,
+          equals('notificationTypeWarning'),
+        );
+        expect(
+          NotificationType.info.localizationKey,
+          equals('notificationTypeInfo'),
+        );
+        expect(
+          NotificationType.success.localizationKey,
+          equals('notificationTypeSuccess'),
+        );
+        expect(
+          NotificationType.debug.localizationKey,
+          equals('notificationTypeDebug'),
+        );
       });
 
-      test('should use proper capitalization', () {
-        for (final type in NotificationType.values) {
-          final displayName = type.displayName;
-          expect(
-            displayName[0],
-            equals(displayName[0].toUpperCase()),
-            reason: '$displayName should start with uppercase',
-          );
-        }
-      });
-
-      test('should have unique display names', () {
-        final names = NotificationType.values
-            .map((type) => type.displayName)
+      test('should have unique localization keys', () {
+        final keys = NotificationType.values
+            .map((type) => type.localizationKey)
             .toSet();
         expect(
-          names.length,
+          keys.length,
           equals(NotificationType.values.length),
-          reason: 'All notification types should have unique display names',
+          reason: 'All notification types should have unique localization keys',
         );
       });
     });

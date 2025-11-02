@@ -2567,6 +2567,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copyright'**
   String get copyrightLabel;
+
+  /// Display name for star body type
+  ///
+  /// In en, this message translates to:
+  /// **'Star'**
+  String get bodyTypeStar;
+
+  /// Display name for planet body type
+  ///
+  /// In en, this message translates to:
+  /// **'Planet'**
+  String get bodyTypePlanet;
+
+  /// Display name for moon body type
+  ///
+  /// In en, this message translates to:
+  /// **'Moon'**
+  String get bodyTypeMoon;
+
+  /// Display name for asteroid body type
+  ///
+  /// In en, this message translates to:
+  /// **'Asteroid'**
+  String get bodyTypeAsteroid;
+
+  /// Display name for development app flavor
+  ///
+  /// In en, this message translates to:
+  /// **'Development'**
+  String get appFlavorDevelopment;
+
+  /// Display name for production app flavor
+  ///
+  /// In en, this message translates to:
+  /// **'Production'**
+  String get appFlavorProduction;
+
+  /// Display name for error notification type
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get notificationTypeError;
+
+  /// Display name for warning notification type
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get notificationTypeWarning;
+
+  /// Display name for info notification type
+  ///
+  /// In en, this message translates to:
+  /// **'Info'**
+  String get notificationTypeInfo;
+
+  /// Display name for success notification type
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get notificationTypeSuccess;
+
+  /// Display name for debug notification type
+  ///
+  /// In en, this message translates to:
+  /// **'Debug'**
+  String get notificationTypeDebug;
+
+  /// Display name for full tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'Full Tracking'**
+  String get trackingModeFull;
+
+  /// Display name for essential tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'Essential Only'**
+  String get trackingModeEssential;
+
+  /// Display name for no tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'No Tracking'**
+  String get trackingModeNone;
+
+  /// Display name for limited tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'Limited Tracking'**
+  String get trackingModeLimited;
+
+  /// Description for full tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'All analytics, crashes, and interactions'**
+  String get trackingModeFullDescription;
+
+  /// Description for essential tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'Critical crashes and errors only'**
+  String get trackingModeEssentialDescription;
+
+  /// Description for no tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'No data collection'**
+  String get trackingModeNoneDescription;
+
+  /// Description for limited tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'User interactions only'**
+  String get trackingModeLimitedDescription;
+
+  /// Display name for added changelog category
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get changelogCategoryAdded;
+
+  /// Display name for improved changelog category
+  ///
+  /// In en, this message translates to:
+  /// **'Improved'**
+  String get changelogCategoryImproved;
+
+  /// Display name for fixed changelog category
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed'**
+  String get changelogCategoryFixed;
+
+  /// Display name for manual camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Manual Control'**
+  String get cameraManual;
+
+  /// Display name for predictive orbital camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Predictive Orbital'**
+  String get cameraPredictiveOrbital;
+
+  /// Display name for dynamic framing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Dynamic Framing'**
+  String get cameraDynamicFraming;
+
+  /// Description for manual camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional manual camera controls with follow mode'**
+  String get cameraManualDescription;
+
+  /// Description for predictive orbital camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'AI predicts orbital paths for dramatic camera movements'**
+  String get cameraPredictiveOrbitalDescription;
+
+  /// Description for dynamic framing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically adjusts framing based on scene content'**
+  String get cameraDynamicFramingDescription;
 }
 
 class _AppLocalizationsDelegate

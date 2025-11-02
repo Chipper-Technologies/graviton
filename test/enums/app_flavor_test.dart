@@ -9,30 +9,21 @@ void main() {
       expect(AppFlavor.values, contains(AppFlavor.prod));
     });
 
-    group('name extension', () {
-      test('should return correct display names', () {
-        expect(AppFlavor.dev.name, equals('Development'));
-        expect(AppFlavor.prod.name, equals('Production'));
+    group('localizationKey extension', () {
+      test('should return correct localization keys', () {
+        expect(AppFlavor.dev.localizationKey, equals('appFlavorDevelopment'));
+        expect(AppFlavor.prod.localizationKey, equals('appFlavorProduction'));
       });
 
-      test('should have unique names', () {
-        final names = AppFlavor.values.map((flavor) => flavor.name).toSet();
+      test('should have unique localization keys', () {
+        final keys = AppFlavor.values
+            .map((flavor) => flavor.localizationKey)
+            .toSet();
         expect(
-          names.length,
+          keys.length,
           equals(AppFlavor.values.length),
-          reason: 'All app flavors should have unique names',
+          reason: 'All app flavors should have unique localization keys',
         );
-      });
-
-      test('should use proper capitalization', () {
-        for (final flavor in AppFlavor.values) {
-          final name = flavor.name;
-          expect(
-            name[0],
-            equals(name[0].toUpperCase()),
-            reason: '$name should start with uppercase',
-          );
-        }
       });
     });
 
@@ -115,12 +106,12 @@ void main() {
     test('should provide clear distinction between flavors', () {
       // Development should be clearly identified
       expect(AppFlavor.dev.isDevelopment, isTrue);
-      expect(AppFlavor.dev.name, contains('Development'));
+      expect(AppFlavor.dev.localizationKey, equals('appFlavorDevelopment'));
       expect(AppFlavor.dev.suffix, isNotEmpty);
 
       // Production should be clearly identified
       expect(AppFlavor.prod.isProduction, isTrue);
-      expect(AppFlavor.prod.name, contains('Production'));
+      expect(AppFlavor.prod.localizationKey, equals('appFlavorProduction'));
       expect(AppFlavor.prod.suffix, isEmpty);
     });
 

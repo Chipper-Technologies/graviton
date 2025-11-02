@@ -1343,4 +1343,93 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get copyrightLabel => 'Copyright';
+
+  @override
+  String get bodyTypeStar => 'Star';
+
+  @override
+  String get bodyTypePlanet => 'Planet';
+
+  @override
+  String get bodyTypeMoon => 'Moon';
+
+  @override
+  String get bodyTypeAsteroid => 'Asteroid';
+
+  @override
+  String get appFlavorDevelopment => 'Development';
+
+  @override
+  String get appFlavorProduction => 'Production';
+
+  @override
+  String get notificationTypeError => 'Error';
+
+  @override
+  String get notificationTypeWarning => 'Warning';
+
+  @override
+  String get notificationTypeInfo => 'Info';
+
+  @override
+  String get notificationTypeSuccess => 'Success';
+
+  @override
+  String get notificationTypeDebug => 'Debug';
+
+  @override
+  String get trackingModeFull => 'Full Tracking';
+
+  @override
+  String get trackingModeEssential => 'Essential Only';
+
+  @override
+  String get trackingModeNone => 'No Tracking';
+
+  @override
+  String get trackingModeLimited => 'Limited Tracking';
+
+  @override
+  String get trackingModeFullDescription =>
+      'All analytics, crashes, and interactions';
+
+  @override
+  String get trackingModeEssentialDescription =>
+      'Critical crashes and errors only';
+
+  @override
+  String get trackingModeNoneDescription => 'No data collection';
+
+  @override
+  String get trackingModeLimitedDescription => 'User interactions only';
+
+  @override
+  String get changelogCategoryAdded => 'Added';
+
+  @override
+  String get changelogCategoryImproved => 'Improved';
+
+  @override
+  String get changelogCategoryFixed => 'Fixed';
+
+  @override
+  String get cameraManual => 'Manual Control';
+
+  @override
+  String get cameraPredictiveOrbital => 'Predictive Orbital';
+
+  @override
+  String get cameraDynamicFraming => 'Dynamic Framing';
+
+  @override
+  String get cameraManualDescription =>
+      'Traditional manual camera controls with follow mode';
+
+  @override
+  String get cameraPredictiveOrbitalDescription =>
+      'AI predicts orbital paths for dramatic camera movements';
+
+  @override
+  String get cameraDynamicFramingDescription =>
+      'Automatically adjusts framing based on scene content';
 }

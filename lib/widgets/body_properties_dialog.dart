@@ -228,7 +228,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                           return DropdownMenuItem<BodyType>(
                             value: type,
                             child: Text(
-                              type.displayName,
+                              _getLocalizedBodyTypeName(l10n, type),
                               style: TextStyle(color: AppColors.uiWhite),
                             ),
                           );
@@ -543,5 +543,18 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
         ),
       ],
     );
+  }
+
+  String _getLocalizedBodyTypeName(AppLocalizations l10n, BodyType type) {
+    switch (type) {
+      case BodyType.star:
+        return l10n.bodyTypeStar;
+      case BodyType.planet:
+        return l10n.bodyTypePlanet;
+      case BodyType.moon:
+        return l10n.bodyTypeMoon;
+      case BodyType.asteroid:
+        return l10n.bodyTypeAsteroid;
+    }
   }
 }

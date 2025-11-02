@@ -104,19 +104,19 @@ extension NotificationTypeExtension on NotificationType {
     }
   }
 
-  /// Display name for UI
-  String get displayName {
+  /// Localization key for the notification type display name
+  String get localizationKey {
     switch (this) {
       case NotificationType.error:
-        return 'Error';
+        return 'notificationTypeError';
       case NotificationType.warning:
-        return 'Warning';
+        return 'notificationTypeWarning';
       case NotificationType.info:
-        return 'Info';
+        return 'notificationTypeInfo';
       case NotificationType.success:
-        return 'Success';
+        return 'notificationTypeSuccess';
       case NotificationType.debug:
-        return 'Debug';
+        return 'notificationTypeDebug';
     }
   }
 

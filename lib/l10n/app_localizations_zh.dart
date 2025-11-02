@@ -1286,4 +1286,88 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get copyrightLabel => '版权';
+
+  @override
+  String get bodyTypeStar => '恒星';
+
+  @override
+  String get bodyTypePlanet => '行星';
+
+  @override
+  String get bodyTypeMoon => '月球';
+
+  @override
+  String get bodyTypeAsteroid => '小行星';
+
+  @override
+  String get appFlavorDevelopment => '开发';
+
+  @override
+  String get appFlavorProduction => '生产';
+
+  @override
+  String get notificationTypeError => '错误';
+
+  @override
+  String get notificationTypeWarning => '警告';
+
+  @override
+  String get notificationTypeInfo => '信息';
+
+  @override
+  String get notificationTypeSuccess => '成功';
+
+  @override
+  String get notificationTypeDebug => '调试';
+
+  @override
+  String get trackingModeFull => '完整跟踪';
+
+  @override
+  String get trackingModeEssential => '仅必要';
+
+  @override
+  String get trackingModeNone => '无跟踪';
+
+  @override
+  String get trackingModeLimited => '有限跟踪';
+
+  @override
+  String get trackingModeFullDescription => '所有分析、崩溃和交互';
+
+  @override
+  String get trackingModeEssentialDescription => '仅关键崩溃和错误';
+
+  @override
+  String get trackingModeNoneDescription => '无数据收集';
+
+  @override
+  String get trackingModeLimitedDescription => '仅用户交互';
+
+  @override
+  String get changelogCategoryAdded => '新增';
+
+  @override
+  String get changelogCategoryImproved => '改进';
+
+  @override
+  String get changelogCategoryFixed => '修复';
+
+  @override
+  String get cameraManual => '手动控制';
+
+  @override
+  String get cameraPredictiveOrbital => '预测轨道';
+
+  @override
+  String get cameraDynamicFraming => '动态构图';
+
+  @override
+  String get cameraManualDescription => '带跟随模式的传统手动相机控制';
+
+  @override
+  String get cameraPredictiveOrbitalDescription => 'AI预测轨道路径以实现戏剧性的相机动作';
+
+  @override
+  String get cameraDynamicFramingDescription => '根据场景内容自动调整构图';
 }

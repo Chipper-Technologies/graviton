@@ -53,13 +53,16 @@ void main() {
         expect(CinematicCameraTechnique.dynamicFraming.requiresAI, isTrue);
       });
 
-      test('should have meaningful display names and descriptions', () {
+      test('should have meaningful localization keys', () {
         for (final technique in CinematicCameraTechnique.values) {
-          expect(technique.displayName, isNotEmpty);
-          expect(technique.description, isNotEmpty);
+          expect(technique.localizationKey, isNotEmpty);
+          expect(technique.descriptionKey, isNotEmpty);
+          expect(technique.localizationKey, startsWith('camera'));
+          expect(technique.descriptionKey, startsWith('camera'));
+          expect(technique.descriptionKey, endsWith('Description'));
           expect(
-            technique.description.length,
-            greaterThan(technique.displayName.length),
+            technique.descriptionKey.length,
+            greaterThan(technique.localizationKey.length),
           );
         }
       });
@@ -527,31 +530,33 @@ void main() {
       expect(CinematicCameraTechnique.dynamicFraming.requiresAI, isTrue);
     });
 
-    test('should have descriptive display names', () {
+    test('should have proper localization keys', () {
       for (final technique in CinematicCameraTechnique.values) {
-        expect(technique.displayName, isNotEmpty);
+        expect(technique.localizationKey, isNotEmpty);
         expect(
-          technique.displayName.length,
+          technique.localizationKey.length,
           greaterThan(5),
         ); // Reasonable length
         expect(
-          technique.displayName,
+          technique.localizationKey,
           isNot(equals(technique.value)),
         ); // Different from value
+        expect(technique.localizationKey, startsWith('camera'));
       }
     });
 
-    test('should have detailed descriptions', () {
+    test('should have proper description keys', () {
       for (final technique in CinematicCameraTechnique.values) {
-        expect(technique.description, isNotEmpty);
+        expect(technique.descriptionKey, isNotEmpty);
         expect(
-          technique.description.length,
+          technique.descriptionKey.length,
           greaterThan(20),
-        ); // Detailed description
+        ); // Detailed description key
         expect(
-          technique.description.length,
-          greaterThan(technique.displayName.length),
+          technique.descriptionKey.length,
+          greaterThan(technique.localizationKey.length),
         );
+        expect(technique.descriptionKey, endsWith('Description'));
       }
     });
   });

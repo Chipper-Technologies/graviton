@@ -3,12 +3,13 @@ enum AppFlavor {
   dev,
   prod;
 
-  String get name {
+  /// Localization key for the flavor display name
+  String get localizationKey {
     switch (this) {
       case AppFlavor.dev:
-        return 'Development';
+        return 'appFlavorDevelopment';
       case AppFlavor.prod:
-        return 'Production';
+        return 'appFlavorProduction';
     }
   }
 

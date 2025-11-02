@@ -165,64 +165,64 @@ void main() {
       });
     });
 
-    group('display strings', () {
-      test('displayName should return appropriate names', () {
+    group('localization keys', () {
+      test('localizationKey should return appropriate keys', () {
         expect(
-          UserBehaviorTrackingMode.full.displayName,
-          equals('Full Tracking'),
+          UserBehaviorTrackingMode.full.localizationKey,
+          equals('trackingModeFull'),
         );
         expect(
-          UserBehaviorTrackingMode.essential.displayName,
-          equals('Essential Only'),
+          UserBehaviorTrackingMode.essential.localizationKey,
+          equals('trackingModeEssential'),
         );
         expect(
-          UserBehaviorTrackingMode.none.displayName,
-          equals('No Tracking'),
+          UserBehaviorTrackingMode.none.localizationKey,
+          equals('trackingModeNone'),
         );
         expect(
-          UserBehaviorTrackingMode.limited.displayName,
-          equals('Limited Tracking'),
-        );
-      });
-
-      test('description should return appropriate descriptions', () {
-        expect(
-          UserBehaviorTrackingMode.full.description,
-          equals('All analytics, crashes, and interactions'),
-        );
-        expect(
-          UserBehaviorTrackingMode.essential.description,
-          equals('Critical crashes and errors only'),
-        );
-        expect(
-          UserBehaviorTrackingMode.none.description,
-          equals('No data collection'),
-        );
-        expect(
-          UserBehaviorTrackingMode.limited.description,
-          equals('User interactions only'),
+          UserBehaviorTrackingMode.limited.localizationKey,
+          equals('trackingModeLimited'),
         );
       });
 
-      test('should have unique display names', () {
-        final names = UserBehaviorTrackingMode.values
-            .map((mode) => mode.displayName)
+      test('descriptionKey should return appropriate keys', () {
+        expect(
+          UserBehaviorTrackingMode.full.descriptionKey,
+          equals('trackingModeFullDescription'),
+        );
+        expect(
+          UserBehaviorTrackingMode.essential.descriptionKey,
+          equals('trackingModeEssentialDescription'),
+        );
+        expect(
+          UserBehaviorTrackingMode.none.descriptionKey,
+          equals('trackingModeNoneDescription'),
+        );
+        expect(
+          UserBehaviorTrackingMode.limited.descriptionKey,
+          equals('trackingModeLimitedDescription'),
+        );
+      });
+
+      test('should have unique localization keys', () {
+        final keys = UserBehaviorTrackingMode.values
+            .map((mode) => mode.localizationKey)
             .toSet();
         expect(
-          names.length,
+          keys.length,
           equals(UserBehaviorTrackingMode.values.length),
-          reason: 'All tracking modes should have unique display names',
+          reason: 'All tracking modes should have unique localization keys',
         );
       });
 
-      test('should have unique descriptions', () {
-        final descriptions = UserBehaviorTrackingMode.values
-            .map((mode) => mode.description)
+      test('should have unique description keys', () {
+        final descriptionKeys = UserBehaviorTrackingMode.values
+            .map((mode) => mode.descriptionKey)
             .toSet();
         expect(
-          descriptions.length,
+          descriptionKeys.length,
           equals(UserBehaviorTrackingMode.values.length),
-          reason: 'All tracking modes should have unique descriptions',
+          reason: 'All tracking modes should have unique description keys',
         );
       });
     });
@@ -309,19 +309,19 @@ void main() {
             mode.allowsCrashReporting,
             isFalse,
             reason:
-                '${mode.displayName} should not allow crash reporting without analytics',
+                '${mode.name} should not allow crash reporting without analytics',
           );
           expect(
             mode.allowsPerformanceMonitoring,
             isFalse,
             reason:
-                '${mode.displayName} should not allow performance monitoring without analytics',
+                '${mode.name} should not allow performance monitoring without analytics',
           );
           expect(
             mode.allowsInteractionTracking,
             isFalse,
             reason:
-                '${mode.displayName} should not allow interaction tracking without analytics',
+                '${mode.name} should not allow interaction tracking without analytics',
           );
         }
 
@@ -331,7 +331,7 @@ void main() {
             mode.allowsCrashReporting,
             isTrue,
             reason:
-                '${mode.displayName} should allow crash reporting if performance monitoring is enabled',
+                '${mode.name} should allow crash reporting if performance monitoring is enabled',
           );
         }
       }

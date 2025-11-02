@@ -1293,4 +1293,89 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get copyrightLabel => '著作権';
+
+  @override
+  String get bodyTypeStar => '恒星';
+
+  @override
+  String get bodyTypePlanet => '惑星';
+
+  @override
+  String get bodyTypeMoon => '月';
+
+  @override
+  String get bodyTypeAsteroid => '小惑星';
+
+  @override
+  String get appFlavorDevelopment => '開発';
+
+  @override
+  String get appFlavorProduction => '本番';
+
+  @override
+  String get notificationTypeError => 'エラー';
+
+  @override
+  String get notificationTypeWarning => '警告';
+
+  @override
+  String get notificationTypeInfo => '情報';
+
+  @override
+  String get notificationTypeSuccess => '成功';
+
+  @override
+  String get notificationTypeDebug => 'デバッグ';
+
+  @override
+  String get trackingModeFull => '完全トラッキング';
+
+  @override
+  String get trackingModeEssential => '必須のみ';
+
+  @override
+  String get trackingModeNone => 'トラッキングなし';
+
+  @override
+  String get trackingModeLimited => '限定トラッキング';
+
+  @override
+  String get trackingModeFullDescription => 'すべての分析、クラッシュ、インタラクション';
+
+  @override
+  String get trackingModeEssentialDescription => '重要なクラッシュとエラーのみ';
+
+  @override
+  String get trackingModeNoneDescription => 'データ収集なし';
+
+  @override
+  String get trackingModeLimitedDescription => 'ユーザーインタラクションのみ';
+
+  @override
+  String get changelogCategoryAdded => '追加';
+
+  @override
+  String get changelogCategoryImproved => '改善';
+
+  @override
+  String get changelogCategoryFixed => '修正';
+
+  @override
+  String get cameraManual => '手動制御';
+
+  @override
+  String get cameraPredictiveOrbital => '予測軌道';
+
+  @override
+  String get cameraDynamicFraming => '動的フレーミング';
+
+  @override
+  String get cameraManualDescription => 'フォローモード付きの従来の手動カメラ制御';
+
+  @override
+  String get cameraPredictiveOrbitalDescription =>
+      'AIが軌道経路を予測してドラマチックなカメラ動作を実現';
+
+  @override
+  String get cameraDynamicFramingDescription => 'シーンコンテンツに基づいてフレーミングを自動調整';
 }

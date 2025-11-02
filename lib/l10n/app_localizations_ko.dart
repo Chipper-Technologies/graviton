@@ -1297,4 +1297,89 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get copyrightLabel => '저작권';
+
+  @override
+  String get bodyTypeStar => '항성';
+
+  @override
+  String get bodyTypePlanet => '행성';
+
+  @override
+  String get bodyTypeMoon => '달';
+
+  @override
+  String get bodyTypeAsteroid => '소행성';
+
+  @override
+  String get appFlavorDevelopment => '개발';
+
+  @override
+  String get appFlavorProduction => '프로덕션';
+
+  @override
+  String get notificationTypeError => '오류';
+
+  @override
+  String get notificationTypeWarning => '경고';
+
+  @override
+  String get notificationTypeInfo => '정보';
+
+  @override
+  String get notificationTypeSuccess => '성공';
+
+  @override
+  String get notificationTypeDebug => '디버그';
+
+  @override
+  String get trackingModeFull => '전체 추적';
+
+  @override
+  String get trackingModeEssential => '필수만';
+
+  @override
+  String get trackingModeNone => '추적 없음';
+
+  @override
+  String get trackingModeLimited => '제한된 추적';
+
+  @override
+  String get trackingModeFullDescription => '모든 분석, 충돌 및 상호작용';
+
+  @override
+  String get trackingModeEssentialDescription => '중요한 충돌 및 오류만';
+
+  @override
+  String get trackingModeNoneDescription => '데이터 수집 없음';
+
+  @override
+  String get trackingModeLimitedDescription => '사용자 상호작용만';
+
+  @override
+  String get changelogCategoryAdded => '추가됨';
+
+  @override
+  String get changelogCategoryImproved => '개선됨';
+
+  @override
+  String get changelogCategoryFixed => '수정됨';
+
+  @override
+  String get cameraManual => '수동 제어';
+
+  @override
+  String get cameraPredictiveOrbital => '예측 궤도';
+
+  @override
+  String get cameraDynamicFraming => '동적 프레이밍';
+
+  @override
+  String get cameraManualDescription => '팔로우 모드가 있는 전통적인 수동 카메라 제어';
+
+  @override
+  String get cameraPredictiveOrbitalDescription =>
+      'AI가 궤도 경로를 예측하여 극적인 카메라 움직임 제공';
+
+  @override
+  String get cameraDynamicFramingDescription => '장면 콘텐츠를 기반으로 프레이밍을 자동 조정';
 }

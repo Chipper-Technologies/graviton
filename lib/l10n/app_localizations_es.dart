@@ -1361,4 +1361,93 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get copyrightLabel => 'Derechos de Autor';
+
+  @override
+  String get bodyTypeStar => 'Estrella';
+
+  @override
+  String get bodyTypePlanet => 'Planeta';
+
+  @override
+  String get bodyTypeMoon => 'Luna';
+
+  @override
+  String get bodyTypeAsteroid => 'Asteroide';
+
+  @override
+  String get appFlavorDevelopment => 'Desarrollo';
+
+  @override
+  String get appFlavorProduction => 'Producción';
+
+  @override
+  String get notificationTypeError => 'Error';
+
+  @override
+  String get notificationTypeWarning => 'Advertencia';
+
+  @override
+  String get notificationTypeInfo => 'Información';
+
+  @override
+  String get notificationTypeSuccess => 'Éxito';
+
+  @override
+  String get notificationTypeDebug => 'Depuración';
+
+  @override
+  String get trackingModeFull => 'Seguimiento Completo';
+
+  @override
+  String get trackingModeEssential => 'Solo Esencial';
+
+  @override
+  String get trackingModeNone => 'Sin Seguimiento';
+
+  @override
+  String get trackingModeLimited => 'Seguimiento Limitado';
+
+  @override
+  String get trackingModeFullDescription =>
+      'Todas las analíticas, fallos e interacciones';
+
+  @override
+  String get trackingModeEssentialDescription =>
+      'Solo fallos críticos y errores';
+
+  @override
+  String get trackingModeNoneDescription => 'Sin recolección de datos';
+
+  @override
+  String get trackingModeLimitedDescription => 'Solo interacciones del usuario';
+
+  @override
+  String get changelogCategoryAdded => 'Añadido';
+
+  @override
+  String get changelogCategoryImproved => 'Mejorado';
+
+  @override
+  String get changelogCategoryFixed => 'Corregido';
+
+  @override
+  String get cameraManual => 'Control Manual';
+
+  @override
+  String get cameraPredictiveOrbital => 'Orbital Predictivo';
+
+  @override
+  String get cameraDynamicFraming => 'Encuadre Dinámico';
+
+  @override
+  String get cameraManualDescription =>
+      'Controles manuales tradicionales de cámara con modo seguimiento';
+
+  @override
+  String get cameraPredictiveOrbitalDescription =>
+      'IA predice trayectorias orbitales para movimientos dramáticos de cámara';
+
+  @override
+  String get cameraDynamicFramingDescription =>
+      'Ajusta automáticamente el encuadre basado en el contenido de la escena';
 }

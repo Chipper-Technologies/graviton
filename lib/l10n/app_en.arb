@@ -1993,5 +1993,145 @@
   "copyrightLabel": "Copyright",
   "@copyrightLabel": {
     "description": "Label for copyright information section"
+  },
+
+  "bodyTypeStar": "Star",
+  "@bodyTypeStar": {
+    "description": "Display name for star body type"
+  },
+
+  "bodyTypePlanet": "Planet",
+  "@bodyTypePlanet": {
+    "description": "Display name for planet body type"
+  },
+
+  "bodyTypeMoon": "Moon",
+  "@bodyTypeMoon": {
+    "description": "Display name for moon body type"
+  },
+
+  "bodyTypeAsteroid": "Asteroid",
+  "@bodyTypeAsteroid": {
+    "description": "Display name for asteroid body type"
+  },
+
+  "appFlavorDevelopment": "Development",
+  "@appFlavorDevelopment": {
+    "description": "Display name for development app flavor"
+  },
+
+  "appFlavorProduction": "Production",
+  "@appFlavorProduction": {
+    "description": "Display name for production app flavor"
+  },
+
+  "notificationTypeError": "Error",
+  "@notificationTypeError": {
+    "description": "Display name for error notification type"
+  },
+
+  "notificationTypeWarning": "Warning",
+  "@notificationTypeWarning": {
+    "description": "Display name for warning notification type"
+  },
+
+  "notificationTypeInfo": "Info",
+  "@notificationTypeInfo": {
+    "description": "Display name for info notification type"
+  },
+
+  "notificationTypeSuccess": "Success",
+  "@notificationTypeSuccess": {
+    "description": "Display name for success notification type"
+  },
+
+  "notificationTypeDebug": "Debug",
+  "@notificationTypeDebug": {
+    "description": "Display name for debug notification type"
+  },
+
+  "trackingModeFull": "Full Tracking",
+  "@trackingModeFull": {
+    "description": "Display name for full tracking mode"
+  },
+
+  "trackingModeEssential": "Essential Only",
+  "@trackingModeEssential": {
+    "description": "Display name for essential tracking mode"
+  },
+
+  "trackingModeNone": "No Tracking",
+  "@trackingModeNone": {
+    "description": "Display name for no tracking mode"
+  },
+
+  "trackingModeLimited": "Limited Tracking",
+  "@trackingModeLimited": {
+    "description": "Display name for limited tracking mode"
+  },
+
+  "trackingModeFullDescription": "All analytics, crashes, and interactions",
+  "@trackingModeFullDescription": {
+    "description": "Description for full tracking mode"
+  },
+
+  "trackingModeEssentialDescription": "Critical crashes and errors only",
+  "@trackingModeEssentialDescription": {
+    "description": "Description for essential tracking mode"
+  },
+
+  "trackingModeNoneDescription": "No data collection",
+  "@trackingModeNoneDescription": {
+    "description": "Description for no tracking mode"
+  },
+
+  "trackingModeLimitedDescription": "User interactions only",
+  "@trackingModeLimitedDescription": {
+    "description": "Description for limited tracking mode"
+  },
+
+  "changelogCategoryAdded": "Added",
+  "@changelogCategoryAdded": {
+    "description": "Display name for added changelog category"
+  },
+
+  "changelogCategoryImproved": "Improved",
+  "@changelogCategoryImproved": {
+    "description": "Display name for improved changelog category"
+  },
+
+  "changelogCategoryFixed": "Fixed",
+  "@changelogCategoryFixed": {
+    "description": "Display name for fixed changelog category"
+  },
+
+  "cameraManual": "Manual Control",
+  "@cameraManual": {
+    "description": "Display name for manual camera technique"
+  },
+
+  "cameraPredictiveOrbital": "Predictive Orbital",
+  "@cameraPredictiveOrbital": {
+    "description": "Display name for predictive orbital camera technique"
+  },
+
+  "cameraDynamicFraming": "Dynamic Framing",
+  "@cameraDynamicFraming": {
+    "description": "Display name for dynamic framing camera technique"
+  },
+
+  "cameraManualDescription": "Traditional manual camera controls with follow mode",
+  "@cameraManualDescription": {
+    "description": "Description for manual camera technique"
+  },
+
+  "cameraPredictiveOrbitalDescription": "AI predicts orbital paths for dramatic camera movements",
+  "@cameraPredictiveOrbitalDescription": {
+    "description": "Description for predictive orbital camera technique"
+  },
+
+  "cameraDynamicFramingDescription": "Automatically adjusts framing based on scene content",
+  "@cameraDynamicFramingDescription": {
+    "description": "Description for dynamic framing camera technique"
   }
 }
