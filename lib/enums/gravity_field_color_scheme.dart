@@ -181,10 +181,6 @@ extension GravityFieldColorSchemeExtension on GravityFieldColorScheme {
     }
   }
 
-  /// Get all available color schemes
-  static List<GravityFieldColorScheme> get allSchemes =>
-      GravityFieldColorScheme.values;
-
   /// Find color scheme from string identifier
   static GravityFieldColorScheme fromString(String value) {
     return GravityFieldColorScheme.values.firstWhere(

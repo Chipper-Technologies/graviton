@@ -1,4 +1,4 @@
-// Copyright 2025 Chipper Technologies, LLC. All rights reserved.
+// Copyright 2025 Chipper Technologies LLC. All rights reserved.
 //
 // Dynamic Gravity Well Visualization System
 // ========================================

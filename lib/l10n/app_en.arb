@@ -776,7 +776,7 @@
     "description": "Text shown while version information is loading"
   },
   
-  "companyName": "Chipper Technologies, LLC",
+  "companyName": "Chipper Technologies LLC",
   "@companyName": {
     "description": "The company name"
   },

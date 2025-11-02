@@ -478,7 +478,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get loadingVersion => '버전 로딩 중...';
 
   @override
-  String get companyName => 'Chipper Technologies, LLC';
+  String get companyName => 'Chipper Technologies LLC';
 
   @override
   String get gravityWellsLabel => '중력장';

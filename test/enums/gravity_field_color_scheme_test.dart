@@ -125,23 +125,20 @@ void main() {
             // In monochrome, R, G, B values should be similar (grayscale)
             final tolerance = 30; // Allow some variation for tinting
             expect(
-              ((color.r * 255.0).round() &
-                      0xff - (color.g * 255.0).round() &
-                      0xff)
+              (((color.r * 255.0).round() & 0xff) -
+                      ((color.g * 255.0).round() & 0xff))
                   .abs(),
               lessThan(tolerance),
             );
             expect(
-              ((color.g * 255.0).round() &
-                      0xff - (color.b * 255.0).round() &
-                      0xff)
+              (((color.g * 255.0).round() & 0xff) -
+                      ((color.b * 255.0).round() & 0xff))
                   .abs(),
               lessThan(tolerance),
             );
             expect(
-              ((color.r * 255.0).round() &
-                      0xff - (color.b * 255.0).round() &
-                      0xff)
+              (((color.r * 255.0).round() & 0xff) -
+                      ((color.b * 255.0).round() & 0xff))
                   .abs(),
               lessThan(tolerance),
             );

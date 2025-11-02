@@ -496,7 +496,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get loadingVersion => 'Chargement de la version...';
 
   @override
-  String get companyName => 'Chipper Technologies, LLC';
+  String get companyName => 'Chipper Technologies LLC';
 
   @override
   String get gravityWellsLabel => 'Puits Gravitationnels';

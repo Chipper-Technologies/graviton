@@ -472,7 +472,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get loadingVersion => '加载版本中...';
 
   @override
-  String get companyName => 'Chipper Technologies, LLC';
+  String get companyName => 'Chipper Technologies LLC';
 
   @override
   String get gravityWellsLabel => '重力井';

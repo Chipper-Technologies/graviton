@@ -475,7 +475,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get loadingVersion => 'バージョンを読み込み中...';
 
   @override
-  String get companyName => 'Chipper Technologies, LLC';
+  String get companyName => 'Chipper Technologies LLC';
 
   @override
   String get gravityWellsLabel => '重力井戸';

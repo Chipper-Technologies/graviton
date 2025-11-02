@@ -1005,7 +1005,7 @@ abstract class AppLocalizations {
   /// The company name
   ///
   /// In en, this message translates to:
-  /// **'Chipper Technologies, LLC'**
+  /// **'Chipper Technologies LLC'**
   String get companyName;
 
   /// Label for gravity wells setting

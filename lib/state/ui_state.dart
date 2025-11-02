@@ -327,12 +327,9 @@ class UIState extends ChangeNotifier {
       _globalGravityFields,
     );
 
-    // When enabling global gravity fields, we need to update all bodies
-    // to have showGravityWell = true by default, so they can be individually toggled off
-    if (_globalGravityFields) {
-      // This will be handled by the simulation state when it gets notified
-      // For now, just notify listeners
-    }
+    // Note: When enabling global gravity fields, AppState listener will automatically
+    // call _ensureAllBodiesHaveGravityWellsEnabled() to set showGravityWell = true
+    // on all bodies so they can be individually toggled off by the user.
 
     notifyListeners();
   }
