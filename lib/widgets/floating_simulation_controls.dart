@@ -274,7 +274,7 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                         : AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityNearlyOpaque,
                           ),
-                    size: 16,
+                    size: AppTypography.iconSizeMedium,
                   ),
                 ),
                 const SizedBox(height: AppTypography.spacingXSmall),

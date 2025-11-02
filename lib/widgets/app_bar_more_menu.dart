@@ -60,7 +60,7 @@ class AppBarMoreMenu extends StatelessWidget {
             children: [
               Icon(
                 Icons.explore,
-                size: 20,
+                size: AppTypography.iconSizeXLarge,
                 color: AppColors.sectionTitlePurple,
               ),
               const SizedBox(width: AppTypography.spacingMedium),
@@ -107,7 +107,7 @@ class AppBarMoreMenu extends StatelessWidget {
             children: [
               Icon(
                 Icons.science,
-                size: 20,
+                size: AppTypography.iconSizeXLarge,
                 color: AppColors.sectionTitlePurple,
               ),
               const SizedBox(width: AppTypography.spacingMedium),
@@ -152,7 +152,11 @@ class AppBarMoreMenu extends StatelessWidget {
           value: AppBarMenuItem.settings,
           child: Row(
             children: [
-              Icon(Icons.tune, size: 20, color: AppColors.sectionTitlePurple),
+              Icon(
+                Icons.tune,
+                size: AppTypography.iconSizeXLarge,
+                color: AppColors.sectionTitlePurple,
+              ),
               const SizedBox(width: AppTypography.spacingMedium),
               Expanded(
                 child: Column(
@@ -197,7 +201,7 @@ class AppBarMoreMenu extends StatelessWidget {
             children: [
               Icon(
                 Icons.lightbulb_outline,
-                size: 20,
+                size: AppTypography.iconSizeXLarge,
                 color: AppColors.sectionTitlePurple,
               ),
               const SizedBox(width: AppTypography.spacingMedium),
@@ -255,7 +259,7 @@ class AppBarMoreMenu extends StatelessWidget {
               children: [
                 Icon(
                   Icons.developer_mode,
-                  size: 20,
+                  size: AppTypography.iconSizeXLarge,
                   color: AppColors.sectionTitlePurple,
                 ),
                 const SizedBox(width: AppTypography.spacingMedium),
@@ -303,7 +307,7 @@ class AppBarMoreMenu extends StatelessWidget {
             children: [
               Icon(
                 Icons.info_outline,
-                size: 20,
+                size: AppTypography.iconSizeXLarge,
                 color: AppColors.sectionTitlePurple,
               ),
               const SizedBox(width: AppTypography.spacingMedium),

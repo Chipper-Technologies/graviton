@@ -18,7 +18,7 @@ class SettingsDialog extends StatelessWidget {
       builder: (context, appState, child) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
+            borderRadius: AppConstraints.dialogRoundedBorder,
           ),
           backgroundColor: Colors.transparent,
           child: Container(
@@ -27,7 +27,7 @@ class SettingsDialog extends StatelessWidget {
               color: AppColors.uiBlack.withValues(
                 alpha: AppTypography.opacityMediumHigh,
               ),
-              borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
+              borderRadius: AppConstraints.dialogRoundedBorder,
               border: Border.all(
                 color: AppColors.uiWhite.withValues(
                   alpha: AppTypography.opacityDisabled,
@@ -53,15 +53,16 @@ class SettingsDialog extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(AppTypography.radiusXXLarge),
-                      topRight: Radius.circular(AppTypography.radiusXXLarge),
-                    ),
+                    borderRadius: AppConstraints.dialogTopBorder,
                   ),
                   padding: EdgeInsets.all(AppTypography.spacingLarge),
                   child: Row(
                     children: [
-                      Icon(Icons.tune, color: AppColors.primaryColor, size: 28),
+                      Icon(
+                        Icons.tune,
+                        color: AppColors.primaryColor,
+                        size: AppTypography.iconSizeXXXLarge,
+                      ),
                       SizedBox(width: AppTypography.spacingMedium),
                       Text(
                         l10n.settingsTitle,

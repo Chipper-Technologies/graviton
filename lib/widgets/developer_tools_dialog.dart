@@ -72,7 +72,7 @@ class DeveloperToolsDialog extends StatelessWidget {
                   Icon(
                     Icons.developer_mode,
                     color: AppColors.primaryColor,
-                    size: 28,
+                    size: AppTypography.iconSizeXXXLarge,
                   ),
                   SizedBox(width: AppTypography.spacingMedium),
                   Text(

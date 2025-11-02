@@ -268,7 +268,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                       )
                                     : Icon(
                                         step.icon,
-                                        size: 48,
+                                        size: AppTypography.iconSizeXXXXLarge,
                                         color: _getIconColor(_currentStep),
                                       ),
                               ),
@@ -413,7 +413,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                 ),
                 child: Icon(
                   Icons.more_vert,
-                  size: 16,
+                  size: AppTypography.iconSizeMedium,
                   color: theme.colorScheme.primary,
                 ),
               ),

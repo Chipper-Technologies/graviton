@@ -73,7 +73,11 @@ class ScenarioSelectionDialog extends StatelessWidget {
               padding: EdgeInsets.all(AppTypography.spacingLarge),
               child: Row(
                 children: [
-                  Icon(Icons.explore, color: AppColors.primaryColor, size: 28),
+                  Icon(
+                    Icons.explore,
+                    color: AppColors.primaryColor,
+                    size: AppTypography.iconSizeXXXLarge,
+                  ),
                   SizedBox(width: AppTypography.spacingMedium),
                   Expanded(
                     child: Text(
@@ -191,7 +195,11 @@ class _ScenarioTile extends StatelessWidget {
                     AppTypography.spacingXXLarge,
                   ),
                 ),
-                child: Icon(config.icon, color: config.primaryColor, size: 24),
+                child: Icon(
+                  config.icon,
+                  color: config.primaryColor,
+                  size: AppTypography.iconSizeXXLarge,
+                ),
               ),
 
               SizedBox(width: AppTypography.spacingLarge),
@@ -218,7 +226,7 @@ class _ScenarioTile extends StatelessWidget {
                           Icon(
                             Icons.check_circle,
                             color: config.primaryColor,
-                            size: 20,
+                            size: AppTypography.iconSizeXLarge,
                           ),
                       ],
                     ),
@@ -254,7 +262,7 @@ class _ScenarioTile extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.group,
-                          size: 14,
+                          size: AppTypography.iconSizeSmall,
                           color: AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityMediumHigh,
                           ),
@@ -271,7 +279,7 @@ class _ScenarioTile extends StatelessWidget {
                         SizedBox(width: AppTypography.spacingLarge),
                         Icon(
                           Icons.school,
-                          size: 14,
+                          size: AppTypography.iconSizeSmall,
                           color: AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityMediumHigh,
                           ),

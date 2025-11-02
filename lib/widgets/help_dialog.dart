@@ -61,7 +61,7 @@ class HelpDialog extends StatelessWidget {
                   Icon(
                     Icons.lightbulb_outline,
                     color: AppColors.primaryColor,
-                    size: 28,
+                    size: AppTypography.iconSizeXXXLarge,
                   ),
                   SizedBox(width: AppTypography.spacingMedium),
                   Text(

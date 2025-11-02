@@ -231,7 +231,7 @@ class ScreenshotModeWidget extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.camera_alt,
-                                  size: 16,
+                                  size: AppTypography.iconSizeMedium,
                                   color: Theme.of(
                                     context,
                                   ).colorScheme.onPrimaryContainer,

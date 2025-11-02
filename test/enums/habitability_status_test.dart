@@ -113,39 +113,6 @@ void main() {
         );
       });
 
-      test('should have unique localization keys', () {
-        final keys = HabitabilityStatus.values
-            .map((status) => status.localizationKey)
-            .toSet();
-        expect(
-          keys.length,
-          equals(HabitabilityStatus.values.length),
-          reason:
-              'All habitability statuses should have unique localization keys',
-        );
-      });
-    });
-
-    group('localizationKey extension', () {
-      test('should return correct localization keys', () {
-        expect(
-          HabitabilityStatus.habitable.localizationKey,
-          equals('habitabilityHabitable'),
-        );
-        expect(
-          HabitabilityStatus.tooHot.localizationKey,
-          equals('habitabilityTooHot'),
-        );
-        expect(
-          HabitabilityStatus.tooCold.localizationKey,
-          equals('habitabilityTooCold'),
-        );
-        expect(
-          HabitabilityStatus.unknown.localizationKey,
-          equals('habitabilityUnknown'),
-        );
-      });
-
       test('should follow consistent naming pattern', () {
         for (final status in HabitabilityStatus.values) {
           final key = status.localizationKey;

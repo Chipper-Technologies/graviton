@@ -75,7 +75,7 @@ class SliderOption extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(icon, size: 20),
+            Icon(icon, size: AppTypography.iconSizeXLarge),
             const SizedBox(width: 8),
             Text(label, style: Theme.of(context).textTheme.bodyMedium),
           ],

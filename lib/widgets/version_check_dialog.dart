@@ -23,7 +23,11 @@ class VersionCheckDialog extends StatelessWidget {
             theme.colorScheme.surface,
         title: Row(
           children: [
-            Icon(Icons.system_update, color: theme.colorScheme.error, size: 24),
+            Icon(
+              Icons.system_update,
+              color: theme.colorScheme.error,
+              size: AppTypography.iconSizeXXLarge,
+            ),
             const SizedBox(width: AppTypography.spacingMedium),
             Text(
               l10n.updateRequiredTitle,
@@ -66,7 +70,7 @@ class VersionCheckDialog extends StatelessWidget {
                   Icon(
                     Icons.warning_rounded,
                     color: theme.colorScheme.error,
-                    size: 20,
+                    size: AppTypography.iconSizeXLarge,
                   ),
                   const SizedBox(width: AppTypography.spacingSmall),
                   Expanded(
@@ -117,7 +121,7 @@ class VersionCheckDialog extends StatelessWidget {
               children: [
                 Icon(
                   Icons.open_in_new,
-                  size: 18,
+                  size: AppTypography.iconSizeLarge,
                   color: theme.colorScheme.onPrimary,
                 ),
                 const SizedBox(width: AppTypography.spacingSmall),

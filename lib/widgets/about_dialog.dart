@@ -129,7 +129,7 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
                 children: [
                   Icon(
                     Icons.business,
-                    size: 20,
+                    size: AppTypography.iconSizeXLarge,
                     color: theme.colorScheme.primary,
                   ),
                   const SizedBox(width: 12),
@@ -225,7 +225,11 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 20, color: theme.colorScheme.primary),
+        Icon(
+          icon,
+          size: AppTypography.iconSizeXLarge,
+          color: theme.colorScheme.primary,
+        ),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -369,7 +373,7 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
             onPressed: () => VersionService.instance.launchStore(),
             icon: Icon(
               Icons.open_in_new,
-              size: 16,
+              size: AppTypography.iconSizeMedium,
               color: theme.colorScheme.primary,
             ),
             label: Text(

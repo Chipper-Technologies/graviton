@@ -60,7 +60,11 @@ class MaintenanceDialog extends StatelessWidget {
         backgroundColor: AppColors.uiBlack,
         title: Row(
           children: [
-            Icon(Icons.build, color: AppColors.uiOrange, size: 24),
+            Icon(
+              Icons.build,
+              color: AppColors.uiOrange,
+              size: AppTypography.iconSizeXXLarge,
+            ),
             const SizedBox(width: AppTypography.spacingSmall),
             Text(
               l10n?.maintenanceTitle ?? 'Maintenance',
@@ -110,7 +114,7 @@ class MaintenanceDialog extends StatelessWidget {
               color: isEmergency
                   ? AppColors.uiRed
                   : AppColors.uiLightBlueAccent,
-              size: 24,
+              size: AppTypography.iconSizeXXLarge,
             ),
             const SizedBox(width: AppTypography.spacingSmall),
             Text(

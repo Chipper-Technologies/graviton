@@ -43,7 +43,7 @@ class ScreenshotCountdown extends StatelessWidget {
                   const Icon(
                     Icons.camera_alt,
                     color: AppColors.uiWhite,
-                    size: 20,
+                    size: AppTypography.iconSizeXLarge,
                   ),
                   const SizedBox(width: AppTypography.spacingSmall),
                   Text(

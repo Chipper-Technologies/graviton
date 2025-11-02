@@ -153,7 +153,11 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
               padding: EdgeInsets.all(AppTypography.spacingLarge),
               child: Row(
                 children: [
-                  Icon(Icons.tune, color: AppColors.uiOrangeAccent, size: 28),
+                  Icon(
+                    Icons.tune,
+                    color: AppColors.uiOrangeAccent,
+                    size: AppTypography.iconSizeXXXLarge,
+                  ),
                   SizedBox(width: AppTypography.spacingMedium),
                   Text(
                     l10n.bodyPropertiesTitle,

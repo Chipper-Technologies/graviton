@@ -178,7 +178,11 @@ class _ChangelogDialogState extends State<ChangelogDialog>
           // Title row with close button
           Row(
             children: [
-              Icon(Icons.assignment, color: AppColors.primaryColor, size: 28),
+              Icon(
+                Icons.assignment,
+                color: AppColors.primaryColor,
+                size: AppTypography.iconSizeXXXLarge,
+              ),
               SizedBox(width: AppTypography.spacingMedium),
               Text(
                 l10n.changelogTitle,
@@ -308,7 +312,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
       padding: const EdgeInsets.only(top: 8),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: color),
+          Icon(icon, size: AppTypography.iconSizeXLarge, color: color),
           const SizedBox(width: 8),
           Text(
             title,

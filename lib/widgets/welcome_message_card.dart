@@ -44,7 +44,7 @@ class WelcomeMessageCard extends StatelessWidget {
               Icon(
                 Icons.rocket_launch,
                 color: AppColors.primaryColor,
-                size: 24,
+                size: AppTypography.iconSizeXXLarge,
               ),
               const SizedBox(width: AppTypography.spacingSmall),
               Expanded(
@@ -58,7 +58,10 @@ class WelcomeMessageCard extends StatelessWidget {
               ),
               if (onDismiss != null)
                 IconButton(
-                  icon: const Icon(Icons.close, size: 20),
+                  icon: const Icon(
+                    Icons.close,
+                    size: AppTypography.iconSizeXLarge,
+                  ),
                   onPressed: onDismiss,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -77,7 +80,10 @@ class WelcomeMessageCard extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: onTutorial,
-                    icon: const Icon(Icons.school, size: 16),
+                    icon: const Icon(
+                      Icons.school,
+                      size: AppTypography.iconSizeMedium,
+                    ),
                     label: Text(l10n.quickTutorialButton),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
