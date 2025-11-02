@@ -150,11 +150,209 @@ abstract class AppLocalizations {
   /// **'Stats'**
   String get statsLabel;
 
-  /// Label for select nearest object button
+  /// Label for bottom navigation camera button
   ///
   /// In en, this message translates to:
-  /// **'Select'**
-  String get selectLabel;
+  /// **'Camera'**
+  String get bottomNavCameraLabel;
+
+  /// Label for bottom navigation visuals button
+  ///
+  /// In en, this message translates to:
+  /// **'Visuals'**
+  String get bottomNavVisualsLabel;
+
+  /// Label for bottom navigation physics button
+  ///
+  /// In en, this message translates to:
+  /// **'Physics'**
+  String get bottomNavPhysicsLabel;
+
+  /// Tooltip for camera tab button
+  ///
+  /// In en, this message translates to:
+  /// **'Camera settings and AI modes'**
+  String get cameraTooltip;
+
+  /// Tooltip for visuals tab button
+  ///
+  /// In en, this message translates to:
+  /// **'Visual display options'**
+  String get visualsTooltip;
+
+  /// Tooltip for physics tab button
+  ///
+  /// In en, this message translates to:
+  /// **'Physics visualization and settings'**
+  String get physicsTooltip;
+
+  /// Section title for AI camera modes
+  ///
+  /// In en, this message translates to:
+  /// **'AI Camera Modes'**
+  String get aiCameraModesTitle;
+
+  /// Title for manual camera control mode
+  ///
+  /// In en, this message translates to:
+  /// **'Manual Control'**
+  String get manualControlTitle;
+
+  /// Description for manual camera control mode
+  ///
+  /// In en, this message translates to:
+  /// **'Full manual camera control'**
+  String get manualControlDescription;
+
+  /// Title for predictive orbital camera mode
+  ///
+  /// In en, this message translates to:
+  /// **'Predictive Orbital'**
+  String get predictiveOrbitalTitle;
+
+  /// Description for predictive orbital camera mode
+  ///
+  /// In en, this message translates to:
+  /// **'AI predicts optimal orbital views'**
+  String get predictiveOrbitalDescription;
+
+  /// Title for dynamic framing camera mode
+  ///
+  /// In en, this message translates to:
+  /// **'Dynamic Framing'**
+  String get dynamicFramingTitle;
+
+  /// Description for dynamic framing camera mode
+  ///
+  /// In en, this message translates to:
+  /// **'AI dynamically frames all objects'**
+  String get dynamicFramingDescription;
+
+  /// Section title for manual camera controls
+  ///
+  /// In en, this message translates to:
+  /// **'Manual Controls'**
+  String get manualControlsTitle;
+
+  /// Button text for selecting nearest celestial body
+  ///
+  /// In en, this message translates to:
+  /// **'Select Nearest'**
+  String get selectNearestTitle;
+
+  /// Button text for stopping follow mode
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Follow'**
+  String get stopFollowTitle;
+
+  /// Button text for starting follow mode
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get followTitle;
+
+  /// Button text for centering the camera view
+  ///
+  /// In en, this message translates to:
+  /// **'Center View'**
+  String get centerViewTitle;
+
+  /// Button text for stopping auto rotation
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Rotate'**
+  String get stopRotateTitle;
+
+  /// Button text for starting auto rotation
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Rotate'**
+  String get autoRotateTitle;
+
+  /// Section title for visual display options
+  ///
+  /// In en, this message translates to:
+  /// **'Display Options'**
+  String get displayOptionsTitle;
+
+  /// Toggle title for showing orbital trails
+  ///
+  /// In en, this message translates to:
+  /// **'Show Trails'**
+  String get showTrailsTitle;
+
+  /// Toggle title for showing body labels
+  ///
+  /// In en, this message translates to:
+  /// **'Show Labels'**
+  String get showLabelsTitle;
+
+  /// Toggle title for realistic color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Realistic Colors'**
+  String get realisticColorsTitle;
+
+  /// Section title for physics visualization options
+  ///
+  /// In en, this message translates to:
+  /// **'Physics Visualization'**
+  String get physicsVisualizationTitle;
+
+  /// Toggle title for gravity field visualization
+  ///
+  /// In en, this message translates to:
+  /// **'Gravity Fields'**
+  String get gravityFieldsTitle;
+
+  /// Description for gravity field visualization toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Show gravitational field visualization'**
+  String get gravityFieldsDescription;
+
+  /// Section title for debug and statistics options
+  ///
+  /// In en, this message translates to:
+  /// **'Debug & Statistics'**
+  String get debugStatisticsTitle;
+
+  /// Toggle title for showing statistics
+  ///
+  /// In en, this message translates to:
+  /// **'Show Statistics'**
+  String get showStatisticsTitle;
+
+  /// Description for statistics display toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Display performance and physics stats'**
+  String get showStatisticsDescription;
+
+  /// Section title for current simulation statistics
+  ///
+  /// In en, this message translates to:
+  /// **'Current Statistics'**
+  String get currentStatisticsTitle;
+
+  /// Statistics label for number of celestial bodies
+  ///
+  /// In en, this message translates to:
+  /// **'Bodies'**
+  String get bodiesStatLabel;
+
+  /// Statistics label for current time scale multiplier
+  ///
+  /// In en, this message translates to:
+  /// **'Time Scale'**
+  String get timeScaleStatLabel;
+
+  /// Statistics label for currently selected body
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get selectedStatLabel;
 
   /// Label for follow object button
   ///
@@ -383,6 +581,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tutorial & objectives'**
   String get helpMenuDescription;
+
+  /// Description for the about menu item
+  ///
+  /// In en, this message translates to:
+  /// **'App information & credits'**
+  String get aboutMenuDescription;
 
   /// Label for the show trails switch
   ///
@@ -2261,6 +2465,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Red'**
   String get stellarColorRed;
+
+  /// Section title for orbital path visualization controls
+  ///
+  /// In en, this message translates to:
+  /// **'Path Visualization'**
+  String get pathVisualizationTitle;
+
+  /// Section title for navigation assistance features
+  ///
+  /// In en, this message translates to:
+  /// **'Navigation Aids'**
+  String get navigationAidsTitle;
+
+  /// Label for classic gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get gravityFieldClassicLabel;
+
+  /// Label for spectral gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Spectral'**
+  String get gravityFieldSpectralLabel;
+
+  /// Label for monochrome gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Monochrome'**
+  String get gravityFieldMonochromeLabel;
+
+  /// Label for neon gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Neon'**
+  String get gravityFieldNeonLabel;
+
+  /// Label for emerald gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Emerald'**
+  String get gravityFieldEmeraldLabel;
+
+  /// Description for app information and credits menu item
+  ///
+  /// In en, this message translates to:
+  /// **'App information and credits'**
+  String get appInformationCredits;
+
+  /// Title for developer tools dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Developer Tools'**
+  String get developerToolsTitle;
+
+  /// Description for developer tools menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Debug tools for development'**
+  String get developerToolsMenuDescription;
+
+  /// Description for tutorial button
+  ///
+  /// In en, this message translates to:
+  /// **'Interactive guided tour of the app'**
+  String get tutorialDescription;
+
+  /// Description for reset tutorial button
+  ///
+  /// In en, this message translates to:
+  /// **'Reset tutorial progress'**
+  String get resetTutorialDescription;
+
+  /// Description for changelog button
+  ///
+  /// In en, this message translates to:
+  /// **'View app updates and changes'**
+  String get changelogDescription;
+
+  /// Description for reset changelog button
+  ///
+  /// In en, this message translates to:
+  /// **'Reset changelog read status'**
+  String get resetChangelogDescription;
+
+  /// Success message when tutorial is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial progress has been reset'**
+  String get tutorialResetSuccess;
+
+  /// Success message when changelog is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Changelog status has been reset'**
+  String get changelogResetSuccess;
+
+  /// Label for copyright information section
+  ///
+  /// In en, this message translates to:
+  /// **'Copyright'**
+  String get copyrightLabel;
 }
 
 class _AppLocalizationsDelegate

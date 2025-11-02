@@ -83,9 +83,12 @@ void main() {
         );
         await tester.pump();
 
-        // Check for essential UI elements
-        expect(find.byType(Switch), findsAtLeastNWidgets(1));
-        expect(find.byType(Slider), findsAtLeastNWidgets(1));
+        // Check for essential UI elements (updated for simplified dialog)
+        expect(find.byType(DropdownButton<String?>), findsOneWidget);
+        expect(
+          find.text('Language'),
+          findsAtLeastNWidgets(1),
+        ); // Allow for duplicates
       });
 
       testWidgets('Should have proper layout structure', (tester) async {

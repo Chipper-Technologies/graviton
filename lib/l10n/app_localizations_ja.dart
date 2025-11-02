@@ -30,7 +30,106 @@ class AppLocalizationsJa extends AppLocalizations {
   String get statsLabel => '統計';
 
   @override
-  String get selectLabel => '選択';
+  String get bottomNavCameraLabel => 'カメラ';
+
+  @override
+  String get bottomNavVisualsLabel => '視覚';
+
+  @override
+  String get bottomNavPhysicsLabel => '物理';
+
+  @override
+  String get cameraTooltip => 'カメラ設定とAIモード';
+
+  @override
+  String get visualsTooltip => '視覚表示オプション';
+
+  @override
+  String get physicsTooltip => '物理可視化と設定';
+
+  @override
+  String get aiCameraModesTitle => 'AIカメラモード';
+
+  @override
+  String get manualControlTitle => '手動制御';
+
+  @override
+  String get manualControlDescription => '完全な手動カメラ制御';
+
+  @override
+  String get predictiveOrbitalTitle => '予測軌道';
+
+  @override
+  String get predictiveOrbitalDescription => 'AIが最適な軌道視点を予測';
+
+  @override
+  String get dynamicFramingTitle => '動的フレーミング';
+
+  @override
+  String get dynamicFramingDescription => 'AIがすべてのオブジェクトを動的にフレーミング';
+
+  @override
+  String get manualControlsTitle => '手動制御';
+
+  @override
+  String get selectNearestTitle => '最近を選択';
+
+  @override
+  String get stopFollowTitle => '追跡停止';
+
+  @override
+  String get followTitle => '追跡';
+
+  @override
+  String get centerViewTitle => '視点中央';
+
+  @override
+  String get stopRotateTitle => '回転停止';
+
+  @override
+  String get autoRotateTitle => '自動回転';
+
+  @override
+  String get displayOptionsTitle => '表示オプション';
+
+  @override
+  String get showTrailsTitle => '軌跡表示';
+
+  @override
+  String get showLabelsTitle => 'ラベル表示';
+
+  @override
+  String get realisticColorsTitle => 'リアルな色彩';
+
+  @override
+  String get physicsVisualizationTitle => '物理可視化';
+
+  @override
+  String get gravityFieldsTitle => '重力場';
+
+  @override
+  String get gravityFieldsDescription => '重力場可視化を表示';
+
+  @override
+  String get debugStatisticsTitle => 'デバッグと統計';
+
+  @override
+  String get showStatisticsTitle => '統計表示';
+
+  @override
+  String get showStatisticsDescription => 'パフォーマンスと物理統計を表示';
+
+  @override
+  String get currentStatisticsTitle => '現在の統計';
+
+  @override
+  String get bodiesStatLabel => '天体';
+
+  @override
+  String get timeScaleStatLabel => '時間スケール';
+
+  @override
+  String get selectedStatLabel => '選択済み';
 
   @override
   String get followLabel => '追従';
@@ -145,6 +244,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get helpMenuDescription => 'チュートリアルと目標';
+
+  @override
+  String get aboutMenuDescription => 'アプリ情報とクレジット';
 
   @override
   String get showTrails => '軌跡を表示';
@@ -1140,4 +1242,55 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get stellarColorRed => '赤';
+
+  @override
+  String get pathVisualizationTitle => '軌道の可視化';
+
+  @override
+  String get navigationAidsTitle => 'ナビゲーション補助';
+
+  @override
+  String get gravityFieldClassicLabel => 'クラシック';
+
+  @override
+  String get gravityFieldSpectralLabel => 'スペクトラル';
+
+  @override
+  String get gravityFieldMonochromeLabel => 'モノクローム';
+
+  @override
+  String get gravityFieldNeonLabel => 'ネオン';
+
+  @override
+  String get gravityFieldEmeraldLabel => 'エメラルド';
+
+  @override
+  String get appInformationCredits => 'アプリ情報とクレジット';
+
+  @override
+  String get developerToolsTitle => '開発者ツール';
+
+  @override
+  String get developerToolsMenuDescription => '開発用デバッグツール';
+
+  @override
+  String get tutorialDescription => 'アプリのインタラクティブガイドツアー';
+
+  @override
+  String get resetTutorialDescription => 'チュートリアルの進行状況をリセット';
+
+  @override
+  String get changelogDescription => 'アプリの更新と変更を表示';
+
+  @override
+  String get resetChangelogDescription => '変更履歴の既読状態をリセット';
+
+  @override
+  String get tutorialResetSuccess => 'チュートリアルの進行状況がリセットされました';
+
+  @override
+  String get changelogResetSuccess => '変更履歴の状態がリセットされました';
+
+  @override
+  String get copyrightLabel => '著作権';
 }

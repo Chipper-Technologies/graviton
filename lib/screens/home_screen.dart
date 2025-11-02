@@ -27,13 +27,14 @@ import 'package:graviton/widgets/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
 import 'package:graviton/widgets/bottom_controls.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
-import 'package:graviton/widgets/copyright_text.dart';
+import 'package:graviton/widgets/developer_tools_dialog.dart';
 import 'package:graviton/widgets/floating_simulation_controls.dart';
 import 'package:graviton/widgets/help_dialog.dart';
 import 'package:graviton/widgets/app_bar_more_menu.dart';
 import 'package:graviton/widgets/maintenance_dialog.dart';
 import 'package:graviton/widgets/offscreen_indicators_overlay.dart';
 import 'package:graviton/widgets/scenario_selection_dialog.dart';
+import 'package:graviton/widgets/about_dialog.dart';
 import 'package:graviton/widgets/screenshot_countdown.dart';
 import 'package:graviton/widgets/settings_dialog.dart';
 import 'package:graviton/widgets/simulation_settings_dialog.dart';
@@ -406,6 +407,25 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  void _showAboutDialog(BuildContext context) {
+    AutoPauseDialogWrapper.show<void>(
+      context: context,
+      child: const AppAboutDialog(),
+    );
+  }
+
+  void _showDeveloperToolsDialog(BuildContext context) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.dialogOpened,
+      element: UIElement
+          .settings, // Using settings element for now since we don't have a developer tools element
+    );
+    AutoPauseDialogWrapper.show<void>(
+      context: context,
+      child: const DeveloperToolsDialog(),
+    );
+  }
+
   void _showTutorial(BuildContext context) {
     FirebaseService.instance.logUIEventWithEnums(
       UIAction.tutorialStarted,
@@ -671,6 +691,9 @@ class _HomeScreenState extends State<HomeScreen>
                       onShowScenarios: () => _showScenarioSelection(context),
                       onShowPhysicsSettings: () =>
                           _showSimulationSettings(context, appState),
+                      onShowAbout: () => _showAboutDialog(context),
+                      onShowDeveloperTools: () =>
+                          _showDeveloperToolsDialog(context),
                     ),
                   ],
                 ),
@@ -848,13 +871,19 @@ class _HomeScreenState extends State<HomeScreen>
                           _showSimulationControls = showControlsCallback;
                         },
                       ),
-                    if (!shouldHideUI) const CopyrightText(),
+                    // Bottom controls positioned at bottom of screen
+                    if (!shouldHideUI)
+                      const Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: BottomControls(),
+                      ),
                   ],
                 ),
               );
             },
           ),
-          bottomNavigationBar: shouldHideUI ? null : const BottomControls(),
         );
       },
     );

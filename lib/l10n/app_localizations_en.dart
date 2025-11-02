@@ -30,7 +30,109 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statsLabel => 'Stats';
 
   @override
-  String get selectLabel => 'Select';
+  String get bottomNavCameraLabel => 'Camera';
+
+  @override
+  String get bottomNavVisualsLabel => 'Visuals';
+
+  @override
+  String get bottomNavPhysicsLabel => 'Physics';
+
+  @override
+  String get cameraTooltip => 'Camera settings and AI modes';
+
+  @override
+  String get visualsTooltip => 'Visual display options';
+
+  @override
+  String get physicsTooltip => 'Physics visualization and settings';
+
+  @override
+  String get aiCameraModesTitle => 'AI Camera Modes';
+
+  @override
+  String get manualControlTitle => 'Manual Control';
+
+  @override
+  String get manualControlDescription => 'Full manual camera control';
+
+  @override
+  String get predictiveOrbitalTitle => 'Predictive Orbital';
+
+  @override
+  String get predictiveOrbitalDescription =>
+      'AI predicts optimal orbital views';
+
+  @override
+  String get dynamicFramingTitle => 'Dynamic Framing';
+
+  @override
+  String get dynamicFramingDescription => 'AI dynamically frames all objects';
+
+  @override
+  String get manualControlsTitle => 'Manual Controls';
+
+  @override
+  String get selectNearestTitle => 'Select Nearest';
+
+  @override
+  String get stopFollowTitle => 'Stop Follow';
+
+  @override
+  String get followTitle => 'Follow';
+
+  @override
+  String get centerViewTitle => 'Center View';
+
+  @override
+  String get stopRotateTitle => 'Stop Rotate';
+
+  @override
+  String get autoRotateTitle => 'Auto Rotate';
+
+  @override
+  String get displayOptionsTitle => 'Display Options';
+
+  @override
+  String get showTrailsTitle => 'Show Trails';
+
+  @override
+  String get showLabelsTitle => 'Show Labels';
+
+  @override
+  String get realisticColorsTitle => 'Realistic Colors';
+
+  @override
+  String get physicsVisualizationTitle => 'Physics Visualization';
+
+  @override
+  String get gravityFieldsTitle => 'Gravity Fields';
+
+  @override
+  String get gravityFieldsDescription =>
+      'Show gravitational field visualization';
+
+  @override
+  String get debugStatisticsTitle => 'Debug & Statistics';
+
+  @override
+  String get showStatisticsTitle => 'Show Statistics';
+
+  @override
+  String get showStatisticsDescription =>
+      'Display performance and physics stats';
+
+  @override
+  String get currentStatisticsTitle => 'Current Statistics';
+
+  @override
+  String get bodiesStatLabel => 'Bodies';
+
+  @override
+  String get timeScaleStatLabel => 'Time Scale';
+
+  @override
+  String get selectedStatLabel => 'Selected';
 
   @override
   String get followLabel => 'Follow';
@@ -147,6 +249,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpMenuDescription => 'Tutorial & objectives';
+
+  @override
+  String get aboutMenuDescription => 'App information & credits';
 
   @override
   String get showTrails => 'Show Trails';
@@ -1187,4 +1292,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stellarColorRed => 'Red';
+
+  @override
+  String get pathVisualizationTitle => 'Path Visualization';
+
+  @override
+  String get navigationAidsTitle => 'Navigation Aids';
+
+  @override
+  String get gravityFieldClassicLabel => 'Classic';
+
+  @override
+  String get gravityFieldSpectralLabel => 'Spectral';
+
+  @override
+  String get gravityFieldMonochromeLabel => 'Monochrome';
+
+  @override
+  String get gravityFieldNeonLabel => 'Neon';
+
+  @override
+  String get gravityFieldEmeraldLabel => 'Emerald';
+
+  @override
+  String get appInformationCredits => 'App information and credits';
+
+  @override
+  String get developerToolsTitle => 'Developer Tools';
+
+  @override
+  String get developerToolsMenuDescription => 'Debug tools for development';
+
+  @override
+  String get tutorialDescription => 'Interactive guided tour of the app';
+
+  @override
+  String get resetTutorialDescription => 'Reset tutorial progress';
+
+  @override
+  String get changelogDescription => 'View app updates and changes';
+
+  @override
+  String get resetChangelogDescription => 'Reset changelog read status';
+
+  @override
+  String get tutorialResetSuccess => 'Tutorial progress has been reset';
+
+  @override
+  String get changelogResetSuccess => 'Changelog status has been reset';
+
+  @override
+  String get copyrightLabel => 'Copyright';
 }

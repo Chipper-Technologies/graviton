@@ -405,7 +405,7 @@ void main() {
         final scenarioTiles = find.byType(Card);
         if (scenarioTiles.evaluate().isNotEmpty) {
           for (int i = 0; i < 3; i++) {
-            await tester.tap(scenarioTiles.first);
+            await tester.tap(scenarioTiles.first, warnIfMissed: false);
             await tester.pump();
           }
         }
@@ -445,7 +445,7 @@ void main() {
         final scenarioTiles = find.byType(Card);
         if (scenarioTiles.evaluate().isNotEmpty) {
           for (int i = 0; i < 5; i++) {
-            await tester.tap(scenarioTiles.first);
+            await tester.tap(scenarioTiles.first, warnIfMissed: false);
             await tester.pump();
           }
         }

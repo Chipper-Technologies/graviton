@@ -192,18 +192,9 @@ void main() {
       testWidgets('changelog button should be visible in debug mode', (
         WidgetTester tester,
       ) async {
-        // This test only runs in debug mode
-        if (kDebugMode) {
-          await tester.pumpWidget(
-            createTestWidget(child: const SettingsDialog()),
-          );
-          await tester.pumpAndSettle();
-
-          // Look for the changelog button
-          expect(find.text('Show Changelog'), findsOneWidget);
-          expect(find.text('Reset Changelog State'), findsOneWidget);
-        }
-      });
+        // Skip this test as changelog functionality has been moved to DeveloperToolsDialog
+        // This test is no longer valid for the simplified SettingsDialog
+      }, skip: true);
 
       testWidgets('changelog section should not be visible in release mode', (
         WidgetTester tester,
@@ -224,41 +215,10 @@ void main() {
       testWidgets(
         'changelog button should have correct styling to match tutorial section',
         (WidgetTester tester) async {
-          if (kDebugMode) {
-            await tester.pumpWidget(
-              createTestWidget(child: const SettingsDialog()),
-            );
-            await tester.pumpAndSettle();
-
-            // Find the changelog button
-            final changelogButton = find.text('Show Changelog');
-            expect(changelogButton, findsOneWidget);
-
-            // Check that it's an ElevatedButton.icon widget
-            final elevatedButton = find.ancestor(
-              of: changelogButton,
-              matching: find.byWidgetPredicate(
-                (widget) =>
-                    widget.runtimeType.toString() == '_ElevatedButtonWithIcon',
-              ),
-            );
-            expect(elevatedButton, findsOneWidget);
-
-            // Find the reset button
-            final resetButton = find.text('Reset Changelog State');
-            expect(resetButton, findsOneWidget);
-
-            // Check that it's a TextButton.icon widget
-            final textButton = find.ancestor(
-              of: resetButton,
-              matching: find.byWidgetPredicate(
-                (widget) =>
-                    widget.runtimeType.toString() == '_TextButtonWithIcon',
-              ),
-            );
-            expect(textButton, findsOneWidget);
-          }
+          // Skip this test as changelog functionality has been moved to DeveloperToolsDialog
+          // This test is no longer valid for the simplified SettingsDialog
         },
+        skip: true,
       );
     });
 

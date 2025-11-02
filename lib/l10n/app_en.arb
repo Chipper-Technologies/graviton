@@ -35,11 +35,175 @@
     "description": "Label for statistics display button"
   },
   
-  "selectLabel": "Select",
-  "@selectLabel": {
-    "description": "Label for select nearest object button"
+  "bottomNavCameraLabel": "Camera",
+  "@bottomNavCameraLabel": {
+    "description": "Label for bottom navigation camera button"
   },
   
+  "bottomNavVisualsLabel": "Visuals", 
+  "@bottomNavVisualsLabel": {
+    "description": "Label for bottom navigation visuals button"
+  },
+  
+  "bottomNavPhysicsLabel": "Physics",
+  "@bottomNavPhysicsLabel": {
+    "description": "Label for bottom navigation physics button"
+  },
+  
+  "cameraTooltip": "Camera settings and AI modes",
+  "@cameraTooltip": {
+    "description": "Tooltip for camera tab button"
+  },
+  
+  "visualsTooltip": "Visual display options", 
+  "@visualsTooltip": {
+    "description": "Tooltip for visuals tab button"
+  },
+  
+  "physicsTooltip": "Physics visualization and settings",
+  "@physicsTooltip": {
+    "description": "Tooltip for physics tab button"
+  },
+  
+  "aiCameraModesTitle": "AI Camera Modes",
+  "@aiCameraModesTitle": {
+    "description": "Section title for AI camera modes"
+  },
+  
+  "manualControlTitle": "Manual Control",
+  "@manualControlTitle": {
+    "description": "Title for manual camera control mode"
+  },
+  
+  "manualControlDescription": "Full manual camera control",
+  "@manualControlDescription": {
+    "description": "Description for manual camera control mode"
+  },
+  
+  "predictiveOrbitalTitle": "Predictive Orbital",
+  "@predictiveOrbitalTitle": {
+    "description": "Title for predictive orbital camera mode"
+  },
+  
+  "predictiveOrbitalDescription": "AI predicts optimal orbital views",
+  "@predictiveOrbitalDescription": {
+    "description": "Description for predictive orbital camera mode"
+  },
+  
+  "dynamicFramingTitle": "Dynamic Framing",
+  "@dynamicFramingTitle": {
+    "description": "Title for dynamic framing camera mode"
+  },
+  
+  "dynamicFramingDescription": "AI dynamically frames all objects",
+  "@dynamicFramingDescription": {
+    "description": "Description for dynamic framing camera mode"
+  },
+  
+  "manualControlsTitle": "Manual Controls",
+  "@manualControlsTitle": {
+    "description": "Section title for manual camera controls"
+  },
+  
+  "selectNearestTitle": "Select Nearest",
+  "@selectNearestTitle": {
+    "description": "Button text for selecting nearest celestial body"
+  },
+  
+  "stopFollowTitle": "Stop Follow",
+  "@stopFollowTitle": {
+    "description": "Button text for stopping follow mode"
+  },
+  
+  "followTitle": "Follow",
+  "@followTitle": {
+    "description": "Button text for starting follow mode"
+  },
+  
+  "centerViewTitle": "Center View",
+  "@centerViewTitle": {
+    "description": "Button text for centering the camera view"
+  },
+  
+  "stopRotateTitle": "Stop Rotate",
+  "@stopRotateTitle": {
+    "description": "Button text for stopping auto rotation"
+  },
+  
+  "autoRotateTitle": "Auto Rotate",
+  "@autoRotateTitle": {
+    "description": "Button text for starting auto rotation"
+  },
+  
+  "displayOptionsTitle": "Display Options",
+  "@displayOptionsTitle": {
+    "description": "Section title for visual display options"
+  },
+  
+  "showTrailsTitle": "Show Trails",
+  "@showTrailsTitle": {
+    "description": "Toggle title for showing orbital trails"
+  },
+  
+  "showLabelsTitle": "Show Labels",
+  "@showLabelsTitle": {
+    "description": "Toggle title for showing body labels"
+  },
+  
+  "realisticColorsTitle": "Realistic Colors",
+  "@realisticColorsTitle": {
+    "description": "Toggle title for realistic color scheme"
+  },
+  
+  "physicsVisualizationTitle": "Physics Visualization",
+  "@physicsVisualizationTitle": {
+    "description": "Section title for physics visualization options"
+  },
+  
+  "gravityFieldsTitle": "Gravity Fields",
+  "@gravityFieldsTitle": {
+    "description": "Toggle title for gravity field visualization"
+  },
+  
+  "gravityFieldsDescription": "Show gravitational field visualization",
+  "@gravityFieldsDescription": {
+    "description": "Description for gravity field visualization toggle"
+  },
+  
+  "debugStatisticsTitle": "Debug & Statistics",
+  "@debugStatisticsTitle": {
+    "description": "Section title for debug and statistics options"
+  },
+  
+  "showStatisticsTitle": "Show Statistics",
+  "@showStatisticsTitle": {
+    "description": "Toggle title for showing statistics"
+  },
+  
+  "showStatisticsDescription": "Display performance and physics stats",
+  "@showStatisticsDescription": {
+    "description": "Description for statistics display toggle"
+  },
+  
+  "currentStatisticsTitle": "Current Statistics",
+  "@currentStatisticsTitle": {
+    "description": "Section title for current simulation statistics"
+  },
+  
+  "bodiesStatLabel": "Bodies",
+  "@bodiesStatLabel": {
+    "description": "Statistics label for number of celestial bodies"
+  },
+  
+  "timeScaleStatLabel": "Time Scale",
+  "@timeScaleStatLabel": {
+    "description": "Statistics label for current time scale multiplier"
+  },
+  
+  "selectedStatLabel": "Selected",
+  "@selectedStatLabel": {
+    "description": "Statistics label for currently selected body"
+  },
   "followLabel": "Follow",
   "@followLabel": {
     "description": "Label for follow object button"
@@ -228,6 +392,11 @@
   "helpMenuDescription": "Tutorial & objectives",
   "@helpMenuDescription": {
     "description": "Description for the help menu item"
+  },
+
+  "aboutMenuDescription": "App information & credits",
+  "@aboutMenuDescription": {
+    "description": "Description for the about menu item"
   },
   
   "showTrails": "Show Trails",
@@ -1739,5 +1908,90 @@
   "stellarColorRed": "Red",
   "@stellarColorRed": {
     "description": "Color description for cool red stars (M-type)"
+  },
+
+  "pathVisualizationTitle": "Path Visualization",
+  "@pathVisualizationTitle": {
+    "description": "Section title for orbital path visualization controls"
+  },
+
+  "navigationAidsTitle": "Navigation Aids",
+  "@navigationAidsTitle": {
+    "description": "Section title for navigation assistance features"
+  },
+
+  "gravityFieldClassicLabel": "Classic",
+  "@gravityFieldClassicLabel": {
+    "description": "Label for classic gravity field color scheme"
+  },
+
+  "gravityFieldSpectralLabel": "Spectral",
+  "@gravityFieldSpectralLabel": {
+    "description": "Label for spectral gravity field color scheme"
+  },
+
+  "gravityFieldMonochromeLabel": "Monochrome",
+  "@gravityFieldMonochromeLabel": {
+    "description": "Label for monochrome gravity field color scheme"
+  },
+
+  "gravityFieldNeonLabel": "Neon",
+  "@gravityFieldNeonLabel": {
+    "description": "Label for neon gravity field color scheme"
+  },
+
+  "gravityFieldEmeraldLabel": "Emerald",
+  "@gravityFieldEmeraldLabel": {
+    "description": "Label for emerald gravity field color scheme"
+  },
+
+  "appInformationCredits": "App information and credits",
+  "@appInformationCredits": {
+    "description": "Description for app information and credits menu item"
+  },
+
+  "developerToolsTitle": "Developer Tools",
+  "@developerToolsTitle": {
+    "description": "Title for developer tools dialog"
+  },
+
+  "developerToolsMenuDescription": "Debug tools for development",
+  "@developerToolsMenuDescription": {
+    "description": "Description for developer tools menu item"
+  },
+
+  "tutorialDescription": "Interactive guided tour of the app",
+  "@tutorialDescription": {
+    "description": "Description for tutorial button"
+  },
+
+  "resetTutorialDescription": "Reset tutorial progress",
+  "@resetTutorialDescription": {
+    "description": "Description for reset tutorial button"
+  },
+
+  "changelogDescription": "View app updates and changes",
+  "@changelogDescription": {
+    "description": "Description for changelog button"
+  },
+
+  "resetChangelogDescription": "Reset changelog read status",
+  "@resetChangelogDescription": {
+    "description": "Description for reset changelog button"
+  },
+
+  "tutorialResetSuccess": "Tutorial progress has been reset",
+  "@tutorialResetSuccess": {
+    "description": "Success message when tutorial is reset"
+  },
+
+  "changelogResetSuccess": "Changelog status has been reset",
+  "@changelogResetSuccess": {
+    "description": "Success message when changelog is reset"
+  },
+
+  "copyrightLabel": "Copyright",
+  "@copyrightLabel": {
+    "description": "Label for copyright information section"
   }
 }

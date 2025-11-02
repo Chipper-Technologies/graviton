@@ -30,7 +30,106 @@ class AppLocalizationsZh extends AppLocalizations {
   String get statsLabel => '统计';
 
   @override
-  String get selectLabel => '选择';
+  String get bottomNavCameraLabel => '相机';
+
+  @override
+  String get bottomNavVisualsLabel => '视觉';
+
+  @override
+  String get bottomNavPhysicsLabel => '物理';
+
+  @override
+  String get cameraTooltip => '相机设置和AI模式';
+
+  @override
+  String get visualsTooltip => '视觉显示选项';
+
+  @override
+  String get physicsTooltip => '物理可视化和设置';
+
+  @override
+  String get aiCameraModesTitle => 'AI相机模式';
+
+  @override
+  String get manualControlTitle => '手动控制';
+
+  @override
+  String get manualControlDescription => '完全手动相机控制';
+
+  @override
+  String get predictiveOrbitalTitle => '预测轨道';
+
+  @override
+  String get predictiveOrbitalDescription => 'AI预测最佳轨道视图';
+
+  @override
+  String get dynamicFramingTitle => '动态构图';
+
+  @override
+  String get dynamicFramingDescription => 'AI动态构图所有对象';
+
+  @override
+  String get manualControlsTitle => '手动控制';
+
+  @override
+  String get selectNearestTitle => '选择最近';
+
+  @override
+  String get stopFollowTitle => '停止跟随';
+
+  @override
+  String get followTitle => '跟随';
+
+  @override
+  String get centerViewTitle => '居中视图';
+
+  @override
+  String get stopRotateTitle => '停止旋转';
+
+  @override
+  String get autoRotateTitle => '自动旋转';
+
+  @override
+  String get displayOptionsTitle => '显示选项';
+
+  @override
+  String get showTrailsTitle => '显示轨迹';
+
+  @override
+  String get showLabelsTitle => '显示标签';
+
+  @override
+  String get realisticColorsTitle => '真实颜色';
+
+  @override
+  String get physicsVisualizationTitle => '物理可视化';
+
+  @override
+  String get gravityFieldsTitle => '重力场';
+
+  @override
+  String get gravityFieldsDescription => '显示重力场可视化';
+
+  @override
+  String get debugStatisticsTitle => '调试和统计';
+
+  @override
+  String get showStatisticsTitle => '显示统计';
+
+  @override
+  String get showStatisticsDescription => '显示性能和物理统计';
+
+  @override
+  String get currentStatisticsTitle => '当前统计';
+
+  @override
+  String get bodiesStatLabel => '天体';
+
+  @override
+  String get timeScaleStatLabel => '时间尺度';
+
+  @override
+  String get selectedStatLabel => '已选择';
 
   @override
   String get followLabel => '跟随';
@@ -145,6 +244,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get helpMenuDescription => '教程和目标';
+
+  @override
+  String get aboutMenuDescription => '应用信息和致谢';
 
   @override
   String get showTrails => '显示轨迹';
@@ -1133,4 +1235,55 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get stellarColorRed => '红色';
+
+  @override
+  String get pathVisualizationTitle => '轨道可视化';
+
+  @override
+  String get navigationAidsTitle => '导航辅助';
+
+  @override
+  String get gravityFieldClassicLabel => '经典';
+
+  @override
+  String get gravityFieldSpectralLabel => '光谱';
+
+  @override
+  String get gravityFieldMonochromeLabel => '单色';
+
+  @override
+  String get gravityFieldNeonLabel => '霓虹';
+
+  @override
+  String get gravityFieldEmeraldLabel => '翡翠';
+
+  @override
+  String get appInformationCredits => '应用信息和致谢';
+
+  @override
+  String get developerToolsTitle => '开发者工具';
+
+  @override
+  String get developerToolsMenuDescription => '开发调试工具';
+
+  @override
+  String get tutorialDescription => '应用的交互式导览';
+
+  @override
+  String get resetTutorialDescription => '重置教程进度';
+
+  @override
+  String get changelogDescription => '查看应用更新和变更';
+
+  @override
+  String get resetChangelogDescription => '重置更新日志阅读状态';
+
+  @override
+  String get tutorialResetSuccess => '教程进度已重置';
+
+  @override
+  String get changelogResetSuccess => '更新日志状态已重置';
+
+  @override
+  String get copyrightLabel => '版权';
 }

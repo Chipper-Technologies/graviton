@@ -30,7 +30,110 @@ class AppLocalizationsDe extends AppLocalizations {
   String get statsLabel => 'Statistiken';
 
   @override
-  String get selectLabel => 'Auswählen';
+  String get bottomNavCameraLabel => 'Kamera';
+
+  @override
+  String get bottomNavVisualsLabel => 'Grafik';
+
+  @override
+  String get bottomNavPhysicsLabel => 'Physik';
+
+  @override
+  String get cameraTooltip => 'Kameraeinstellungen und KI-Modi';
+
+  @override
+  String get visualsTooltip => 'Visuelle Anzeigeoptionen';
+
+  @override
+  String get physicsTooltip => 'Physikvisualisierung und -einstellungen';
+
+  @override
+  String get aiCameraModesTitle => 'KI-Kamera-Modi';
+
+  @override
+  String get manualControlTitle => 'Manuelle Steuerung';
+
+  @override
+  String get manualControlDescription =>
+      'Vollständige manuelle Kamerasteuerung';
+
+  @override
+  String get predictiveOrbitalTitle => 'Prädiktiv Orbital';
+
+  @override
+  String get predictiveOrbitalDescription =>
+      'KI sagt optimale Orbitalansichten voraus';
+
+  @override
+  String get dynamicFramingTitle => 'Dynamische Bildkomposition';
+
+  @override
+  String get dynamicFramingDescription => 'KI rahmt alle Objekte dynamisch ein';
+
+  @override
+  String get manualControlsTitle => 'Manuelle Steuerung';
+
+  @override
+  String get selectNearestTitle => 'Nächstes Auswählen';
+
+  @override
+  String get stopFollowTitle => 'Folgen Stoppen';
+
+  @override
+  String get followTitle => 'Folgen';
+
+  @override
+  String get centerViewTitle => 'Ansicht Zentrieren';
+
+  @override
+  String get stopRotateTitle => 'Rotation Stoppen';
+
+  @override
+  String get autoRotateTitle => 'Auto-Rotation';
+
+  @override
+  String get displayOptionsTitle => 'Anzeigeoptionen';
+
+  @override
+  String get showTrailsTitle => 'Spuren Anzeigen';
+
+  @override
+  String get showLabelsTitle => 'Beschriftungen Anzeigen';
+
+  @override
+  String get realisticColorsTitle => 'Realistische Farben';
+
+  @override
+  String get physicsVisualizationTitle => 'Physikvisualisierung';
+
+  @override
+  String get gravityFieldsTitle => 'Gravitationsfelder';
+
+  @override
+  String get gravityFieldsDescription =>
+      'Gravitationsfeldvisualisierung anzeigen';
+
+  @override
+  String get debugStatisticsTitle => 'Debug und Statistiken';
+
+  @override
+  String get showStatisticsTitle => 'Statistiken Anzeigen';
+
+  @override
+  String get showStatisticsDescription =>
+      'Leistungs- und Physikstatistiken anzeigen';
+
+  @override
+  String get currentStatisticsTitle => 'Aktuelle Statistiken';
+
+  @override
+  String get bodiesStatLabel => 'Körper';
+
+  @override
+  String get timeScaleStatLabel => 'Zeitskala';
+
+  @override
+  String get selectedStatLabel => 'Ausgewählt';
 
   @override
   String get followLabel => 'Verfolgen';
@@ -147,6 +250,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpMenuDescription => 'Tutorial & Ziele';
+
+  @override
+  String get aboutMenuDescription => 'App-Informationen & Credits';
 
   @override
   String get showTrails => 'Spuren anzeigen';
@@ -1195,4 +1301,55 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get stellarColorRed => 'Rot';
+
+  @override
+  String get pathVisualizationTitle => 'Bahnvisualisierung';
+
+  @override
+  String get navigationAidsTitle => 'Navigationshilfen';
+
+  @override
+  String get gravityFieldClassicLabel => 'Klassisch';
+
+  @override
+  String get gravityFieldSpectralLabel => 'Spektral';
+
+  @override
+  String get gravityFieldMonochromeLabel => 'Monochrom';
+
+  @override
+  String get gravityFieldNeonLabel => 'Neon';
+
+  @override
+  String get gravityFieldEmeraldLabel => 'Smaragd';
+
+  @override
+  String get appInformationCredits => 'App-Informationen und Credits';
+
+  @override
+  String get developerToolsTitle => 'Entwicklertools';
+
+  @override
+  String get developerToolsMenuDescription => 'Debug-Tools für die Entwicklung';
+
+  @override
+  String get tutorialDescription => 'Interaktive geführte Tour durch die App';
+
+  @override
+  String get resetTutorialDescription => 'Tutorial-Fortschritt zurücksetzen';
+
+  @override
+  String get changelogDescription => 'App-Updates und Änderungen anzeigen';
+
+  @override
+  String get resetChangelogDescription => 'Changelog-Lesestatus zurücksetzen';
+
+  @override
+  String get tutorialResetSuccess => 'Tutorial-Fortschritt wurde zurückgesetzt';
+
+  @override
+  String get changelogResetSuccess => 'Changelog-Status wurde zurückgesetzt';
+
+  @override
+  String get copyrightLabel => 'Urheberrecht';
 }

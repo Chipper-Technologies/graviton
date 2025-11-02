@@ -188,6 +188,17 @@ class _AppAboutDialogState extends State<AppAboutDialog> {
               ),
               const SizedBox(height: 24),
 
+              // Copyright Section
+              _buildInfoSection(
+                context,
+                icon: Icons.copyright,
+                title: l10n.copyrightLabel,
+                content:
+                    '© ${DateTime.now().year} ${l10n.companyName}. All rights reserved.',
+                isLink: false,
+              ),
+              const SizedBox(height: 24),
+
               // Close button
               Center(
                 child: TextButton(

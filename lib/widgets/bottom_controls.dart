@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
-import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/bottom_tab_button.dart';
+import 'package:graviton/widgets/camera_bottom_sheet.dart';
+import 'package:graviton/widgets/visuals_bottom_sheet.dart';
+import 'package:graviton/widgets/physics_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 /// Bottom control bar with camera and UI toggle buttons
@@ -19,123 +22,55 @@ class BottomControls extends StatelessWidget {
         return SafeArea(
           top: false,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            height: 80,
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppTypography.spacingLarge,
+              vertical: AppTypography.spacingSmall,
+            ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Stats toggle (standalone)
-                _buildControlButton(
-                  context: context,
-                  icon: appState.ui.showStats
-                      ? Icons.analytics
-                      : Icons.analytics_outlined,
-                  label: l10n.statsLabel,
-                  tooltip: l10n.toggleStatsTooltip,
-                  onPressed: () => appState.ui.toggleStats(),
-                  isActive: appState.ui.showStats,
-                ),
-
-                // Visual separator
-                Container(
-                  width: AppTypography.borderThin,
-                  height: AppTypography.iconSizeXXLarge,
-                  color: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityVeryFaint,
-                  ),
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: AppTypography.spacingSmall,
+                // Camera controls
+                Expanded(
+                  child: BottomTabButton(
+                    icon: Icons.videocam,
+                    label: l10n.bottomNavCameraLabel,
+                    tooltip: l10n.cameraTooltip,
+                    onPressed: () => _showCameraBottomSheet(context, appState),
+                    isActive:
+                        appState.ui.cinematicCameraTechnique !=
+                        CinematicCameraTechnique.manual,
                   ),
                 ),
 
-                // Camera controls group
-                _buildControlButton(
-                  context: context,
-                  icon: Icons.my_location,
-                  label: l10n.selectLabel,
-                  tooltip: l10n.focusOnNearestTooltip,
-                  onPressed:
-                      (appState.simulation.bodies.isNotEmpty &&
-                          appState.ui.cinematicCameraTechnique ==
-                              CinematicCameraTechnique.manual)
-                      ? () => appState.camera.focusOnNearestBody(
-                          appState.simulation.bodies,
-                        )
-                      : null,
-                ),
+                const SizedBox(width: AppTypography.spacingMedium),
 
-                _buildControlButton(
-                  context: context,
-                  icon: appState.camera.followMode
-                      ? Icons.track_changes
-                      : Icons.track_changes_outlined,
-                  label: l10n.followLabel,
-                  tooltip: appState.camera.followMode
-                      ? l10n.stopFollowingTooltip
-                      : (appState.camera.selectedBody != null
-                            ? l10n.followObjectTooltip
-                            : l10n.selectObjectToFollowTooltip),
-                  onPressed:
-                      (appState.camera.selectedBody != null &&
-                          appState.ui.cinematicCameraTechnique ==
-                              CinematicCameraTechnique.manual)
-                      ? () => appState.camera.toggleFollowMode(
-                          appState.simulation.bodies,
-                        )
-                      : null,
-                  isActive: appState.camera.followMode,
-                ),
-
-                _buildControlButton(
-                  context: context,
-                  icon: Icons.center_focus_strong,
-                  label: l10n.centerLabel,
-                  tooltip: l10n.centerViewTooltip,
-                  onPressed:
-                      appState.ui.cinematicCameraTechnique ==
-                          CinematicCameraTechnique.manual
-                      ? () => appState.camera.resetView(
-                          appState.simulation.currentScenario,
-                        )
-                      : null,
-                ),
-
-                _buildControlButton(
-                  context: context,
-                  icon: appState.camera.autoRotate
-                      ? Icons.rotate_right
-                      : Icons.rotate_right_outlined,
-                  label: l10n.rotateLabel,
-                  tooltip: l10n.autoRotateTooltip,
-                  onPressed:
-                      appState.ui.cinematicCameraTechnique ==
-                          CinematicCameraTechnique.manual
-                      ? () => appState.camera.toggleAutoRotate()
-                      : null,
-                  isActive: appState.camera.autoRotate,
-                ),
-
-                // Visual separator
-                Container(
-                  width: AppTypography.borderThin,
-                  height: AppTypography.iconSizeXXLarge,
-                  color: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityVeryFaint,
-                  ),
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: AppTypography.spacingSmall,
+                // Visuals controls
+                Expanded(
+                  child: BottomTabButton(
+                    icon: Icons.palette,
+                    label: l10n.bottomNavVisualsLabel,
+                    tooltip: l10n.visualsTooltip,
+                    onPressed: () => _showVisualsBottomSheet(context, appState),
+                    isActive:
+                        appState.ui.showTrails ||
+                        appState.ui.showLabels ||
+                        appState.ui.useRealisticColors,
                   ),
                 ),
 
-                // Gravity fields toggle
-                _buildControlButton(
-                  context: context,
-                  icon: appState.ui.globalGravityFields
-                      ? Icons.grid_4x4
-                      : Icons.grid_4x4_outlined,
-                  label: l10n.gravityFieldStrengthLabel,
-                  tooltip: l10n.toggleGravityFieldsTooltip,
-                  onPressed: () => appState.ui.toggleGlobalGravityFields(),
-                  isActive: appState.ui.globalGravityFields,
+                const SizedBox(width: AppTypography.spacingMedium),
+
+                // Physics controls
+                Expanded(
+                  child: BottomTabButton(
+                    icon: Icons.science,
+                    label: l10n.bottomNavPhysicsLabel,
+                    tooltip: l10n.physicsTooltip,
+                    onPressed: () => _showPhysicsBottomSheet(context, appState),
+                    isActive:
+                        appState.ui.globalGravityFields ||
+                        appState.ui.showStats,
+                  ),
                 ),
               ],
             ),
@@ -145,81 +80,88 @@ class BottomControls extends StatelessWidget {
     );
   }
 
-  Widget _buildControlButton({
-    required BuildContext context,
-    required IconData icon,
-    required String label,
-    required String tooltip,
-    required VoidCallback? onPressed,
-    bool isActive = false,
-  }) {
-    final isEnabled = onPressed != null;
+  void _showCameraBottomSheet(BuildContext context, AppState appState) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenHeight = mediaQuery.size.height;
+    final bottomPadding = mediaQuery.padding.bottom;
+    const bottomNavHeight = 80.0; // Height of our bottom navigation
 
-    return Tooltip(
-      message: tooltip,
-      preferBelow: false,
-      child: Material(
-        color: AppColors.transparentColor,
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppTypography.spacingSmall,
-              vertical: 6,
-            ),
-            decoration: BoxDecoration(
-              color: isActive
-                  ? AppColors.primaryColor.withValues(
-                      alpha: AppTypography.opacityVeryFaint,
-                    )
-                  : AppColors.transparentColor,
-              borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-              border: isActive
-                  ? Border.all(
-                      color: AppColors.primaryColor.withValues(
-                        alpha: AppTypography.opacitySemiTransparent,
-                      ),
-                      width: AppTypography.borderThin,
-                    )
-                  : null,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  icon,
-                  color: isEnabled
-                      ? (isActive
-                            ? AppColors.primaryColor
-                            : AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacityNearlyOpaque,
-                              ))
-                      : AppColors.uiWhite.withValues(
-                          alpha: AppTypography.opacityFaint,
-                        ),
-                  size: AppTypography.iconSizeXLarge,
-                ),
-                const SizedBox(height: AppTypography.spacingXSmall),
-                Text(
-                  label,
-                  style: TextStyle(
-                    color: isEnabled
-                        ? (isActive
-                              ? AppColors.primaryColor
-                              : AppColors.uiWhite.withValues(
-                                  alpha: AppTypography.opacityVeryHigh,
-                                ))
-                        : AppColors.uiWhite.withValues(
-                            alpha: AppTypography.opacityFaint,
-                          ),
-                    fontSize: AppTypography.fontSizeXSmall,
-                    fontWeight: isActive ? FontWeight.w500 : FontWeight.normal,
-                  ),
-                ),
-              ],
-            ),
-          ),
+    // Calculate max height so sheet stays below bottom nav
+    final maxSheetHeight =
+        screenHeight - bottomNavHeight - bottomPadding - 60; // Extra margin
+    final maxChildSize = (maxSheetHeight / screenHeight).clamp(0.1, 0.8);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      enableDrag: true,
+      isDismissible: true, // Allow tap outside to dismiss
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: (maxChildSize * 0.75).clamp(0.3, 0.6), // 75% of max
+        minChildSize: 0.25, // Reasonable min size for dismissal
+        maxChildSize: maxChildSize,
+        builder: (context, scrollController) => CameraBottomSheet(
+          appState: appState,
+          scrollController: scrollController,
+        ),
+      ),
+    );
+  }
+
+  void _showVisualsBottomSheet(BuildContext context, AppState appState) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenHeight = mediaQuery.size.height;
+    final bottomPadding = mediaQuery.padding.bottom;
+    const bottomNavHeight = 80.0; // Height of our bottom navigation
+
+    // Calculate max height so sheet stays below bottom nav
+    final maxSheetHeight =
+        screenHeight - bottomNavHeight - bottomPadding - 60; // Extra margin
+    final maxChildSize = (maxSheetHeight / screenHeight).clamp(0.1, 0.8);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      enableDrag: true,
+      isDismissible: true, // Allow tap outside to dismiss
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: (maxChildSize * 0.75).clamp(0.3, 0.6), // 75% of max
+        minChildSize: 0.25, // Reasonable min size for dismissal
+        maxChildSize: maxChildSize,
+        builder: (context, scrollController) => VisualsBottomSheet(
+          appState: appState,
+          scrollController: scrollController,
+        ),
+      ),
+    );
+  }
+
+  void _showPhysicsBottomSheet(BuildContext context, AppState appState) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenHeight = mediaQuery.size.height;
+    final bottomPadding = mediaQuery.padding.bottom;
+    const bottomNavHeight = 80.0; // Height of our bottom navigation
+
+    // Calculate max height so sheet stays below bottom nav
+    final maxSheetHeight =
+        screenHeight - bottomNavHeight - bottomPadding - 60; // Extra margin
+    final maxChildSize = (maxSheetHeight / screenHeight).clamp(0.1, 0.8);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      enableDrag: true,
+      isDismissible: true, // Allow tap outside to dismiss
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: (maxChildSize * 0.75).clamp(0.3, 0.6), // 75% of max
+        minChildSize: 0.25, // Reasonable min size for dismissal
+        maxChildSize: maxChildSize,
+        builder: (context, scrollController) => PhysicsBottomSheet(
+          appState: appState,
+          scrollController: scrollController,
         ),
       ),
     );

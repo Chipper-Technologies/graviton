@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
@@ -99,8 +100,7 @@ class _FloatingSimulationControlsState extends State<FloatingSimulationControls>
                 animation: _fadeAnimation,
                 builder: (context, child) {
                   return Positioned(
-                    bottom:
-                        45, // Moved up from 30 to give more space above copyright
+                    bottom: RenderingConstants.floatingControlsBottomOffset,
                     left: 0,
                     right: 0,
                     child: Opacity(
