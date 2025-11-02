@@ -864,6 +864,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get hideUIInScreenshotModeSubtitle => '当截图模式激活时隐藏应用栏、底部导航和版权信息';
 
   @override
+  String screenshotCountdown(int seconds) {
+    return '截图倒计时 $seconds秒';
+  }
+
+  @override
   String get scenePreset => '场景预设';
 
   @override

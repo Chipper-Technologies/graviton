@@ -869,6 +869,11 @@ class AppLocalizationsJa extends AppLocalizations {
       'スクリーンショットモードがアクティブな時にアプリバー、ボトムナビゲーション、コピーライトを非表示にする';
 
   @override
+  String screenshotCountdown(int seconds) {
+    return 'スクリーンショット $seconds秒後';
+  }
+
+  @override
   String get scenePreset => 'シーンプリセット';
 
   @override

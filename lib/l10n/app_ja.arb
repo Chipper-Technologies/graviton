@@ -240,6 +240,7 @@
   "screenshotModeSubtitle": "マーケティング用スクリーンショット撮影のプリセットシーンを有効化",
   "hideUIInScreenshotMode": "ナビゲーションを非表示",
   "hideUIInScreenshotModeSubtitle": "スクリーンショットモードがアクティブな時にアプリバー、ボトムナビゲーション、コピーライトを非表示にする",
+  "screenshotCountdown": "スクリーンショット {seconds}秒後",
   "scenePreset": "シーンプリセット",
   "previousPreset": "前のプリセット",
   "nextPreset": "次のプリセット",

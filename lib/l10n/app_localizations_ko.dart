@@ -872,6 +872,11 @@ class AppLocalizationsKo extends AppLocalizations {
       '스크린샷 모드가 활성화될 때 앱 바, 하단 내비게이션, 저작권을 숨김';
 
   @override
+  String screenshotCountdown(int seconds) {
+    return '스크린샷 $seconds초 후';
+  }
+
+  @override
   String get scenePreset => '장면 프리셋';
 
   @override

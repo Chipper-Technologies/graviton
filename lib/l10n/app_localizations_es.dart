@@ -903,6 +903,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Ocultar barra de aplicación, navegación inferior y copyright cuando el modo captura esté activo';
 
   @override
+  String screenshotCountdown(int seconds) {
+    return 'Captura en ${seconds}s';
+  }
+
+  @override
   String get scenePreset => 'Escena Predefinida';
 
   @override

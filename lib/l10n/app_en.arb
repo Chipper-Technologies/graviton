@@ -1439,6 +1439,17 @@
     "description": "Subtitle explaining hide UI in screenshot mode functionality"
   },
 
+  "screenshotCountdown": "Screenshot in {seconds}s",
+  "@screenshotCountdown": {
+    "description": "Countdown message shown before taking a screenshot",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "description": "Number of seconds remaining in countdown"
+      }
+    }
+  },
+
   "scenePreset": "Scene Preset",
   "@scenePreset": {
     "description": "Label for scene preset selection"

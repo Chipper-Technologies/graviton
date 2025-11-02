@@ -254,6 +254,7 @@
   "screenshotModeSubtitle": "Vorgegebene Szenen für Marketing-Screenshots aktivieren",
   "hideUIInScreenshotMode": "Navigation Ausblenden",
   "hideUIInScreenshotModeSubtitle": "App-Leiste, untere Navigation und Copyright ausblenden, wenn Screenshot-Modus aktiv ist",
+  "screenshotCountdown": "Screenshot in {seconds}s",
   "scenePreset": "Szenen-Voreinstellung",
   "previousPreset": "Vorherige Voreinstellung",
   "nextPreset": "Nächste Voreinstellung",

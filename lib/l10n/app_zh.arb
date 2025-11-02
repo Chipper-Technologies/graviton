@@ -240,6 +240,7 @@
   "screenshotModeSubtitle": "启用预设场景以捕获营销截图",
   "hideUIInScreenshotMode": "隐藏导航",
   "hideUIInScreenshotModeSubtitle": "当截图模式激活时隐藏应用栏、底部导航和版权信息",
+  "screenshotCountdown": "截图倒计时 {seconds}秒",
   "scenePreset": "场景预设",
   "previousPreset": "上一个预设",
   "nextPreset": "下一个预设",

@@ -900,6 +900,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'App-Leiste, untere Navigation und Copyright ausblenden, wenn Screenshot-Modus aktiv ist';
 
   @override
+  String screenshotCountdown(int seconds) {
+    return 'Screenshot in ${seconds}s';
+  }
+
+  @override
   String get scenePreset => 'Szenen-Voreinstellung';
 
   @override

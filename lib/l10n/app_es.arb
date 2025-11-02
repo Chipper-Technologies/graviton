@@ -240,6 +240,7 @@
   "screenshotModeSubtitle": "Activar escenas predefinidas para capturas de marketing",
   "hideUIInScreenshotMode": "Ocultar Navegación",
   "hideUIInScreenshotModeSubtitle": "Ocultar barra de aplicación, navegación inferior y copyright cuando el modo captura esté activo",
+  "screenshotCountdown": "Captura en {seconds}s",
   "scenePreset": "Escena Predefinida",
   "previousPreset": "Escena anterior",
   "nextPreset": "Escena siguiente",

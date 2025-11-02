@@ -1770,6 +1770,12 @@ abstract class AppLocalizations {
   /// **'Hide app bar, bottom navigation, and copyright when screenshot mode is active'**
   String get hideUIInScreenshotModeSubtitle;
 
+  /// Countdown message shown before taking a screenshot
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot in {seconds}s'**
+  String screenshotCountdown(int seconds);
+
   /// Label for scene preset selection
   ///
   /// In en, this message translates to:

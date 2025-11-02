@@ -904,6 +904,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Masquer la barre d\'app, la navigation du bas et le copyright quand le mode capture est actif';
 
   @override
+  String screenshotCountdown(int seconds) {
+    return 'Capture dans ${seconds}s';
+  }
+
+  @override
   String get scenePreset => 'Scène Prédéfinie';
 
   @override

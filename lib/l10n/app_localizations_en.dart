@@ -896,6 +896,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Hide app bar, bottom navigation, and copyright when screenshot mode is active';
 
   @override
+  String screenshotCountdown(int seconds) {
+    return 'Screenshot in ${seconds}s';
+  }
+
+  @override
   String get scenePreset => 'Scene Preset';
 
   @override
