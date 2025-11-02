@@ -88,9 +88,9 @@
 - **Advanced Camera Controls**: 
   - **Single finger drag**: Pan and rotate view (yaw/pitch)
   - **Two finger pinch/spread**: Zoom in/out 
-  - **Two finger rotation**: Roll camera around viewing axis ✨ *NEW*
+  - **Two finger rotation**: Roll camera around viewing axis
   - **Auto-rotation mode**: Smooth automatic camera rotation
-  - **Enhanced center button**: Resets position, zoom, AND roll ✨ *NEW*
+  - **Enhanced center button**: Resets position, zoom, AND roll
 - **Trail Visualization**: 
   - Toggle orbital trails on/off
   - Choose between warm (🔥) and cool (❄️) color schemes
@@ -570,7 +570,7 @@ cd ios && bundle exec fastlane build_and_upload_dsyms      # Build and upload dS
 **Features:**
 - Multi-flavor support (dev/prod environments)
 - Automatic version management and Firebase integration
-- **Firebase Crashlytics dSYM upload** for crash symbolication ✨ *NEW*
+- **Firebase Crashlytics dSYM upload** for crash symbolication
 - Screenshot generation and metadata management
 - Code signing and certificate management
 - One-command deployment to app stores

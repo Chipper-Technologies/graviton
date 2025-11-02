@@ -487,6 +487,59 @@ class AppLocalizationsKo extends AppLocalizations {
   String get gravityWellsDescription => '객체 주변의 중력장 강도 표시';
 
   @override
+  String get globalGravityFieldsLabel => '전역 중력장';
+
+  @override
+  String get globalGravityFieldsDescription => '모든 거대한 객체에 대한 중력장 시각화 활성화';
+
+  @override
+  String get gravityFieldColorSchemeLabel => '중력장 색상';
+
+  @override
+  String get gravityFieldColorSchemeDescription => '중력장 시각화를 위한 색상 스키마 선택';
+
+  @override
+  String get gravityColorSchemeClassic => '클래식';
+
+  @override
+  String get gravityColorSchemeSpectral => '스펙트럼';
+
+  @override
+  String get gravityColorSchemeMonochrome => '단색';
+
+  @override
+  String get gravityColorSchemeNeon => '네온';
+
+  @override
+  String get gravityColorSchemeEmerald => '에메랄드';
+
+  @override
+  String get gravityFieldStrengthLabel => '장 강도';
+
+  @override
+  String get gravityFieldStrengthUnit => 'm/s²';
+
+  @override
+  String gravityFieldStrengthFormatted(String strength, String unit) {
+    return '$strength $unit';
+  }
+
+  @override
+  String get equipotentialSurfacesLabel => '등전위면';
+
+  @override
+  String get equipotentialSurfacesDescription => '동일한 중력 위치 에너지의 표면 표시';
+
+  @override
+  String get gravityFieldIndicatorsLabel => '장 강도 지시기';
+
+  @override
+  String get gravityFieldIndicatorsDescription => '중력장 강도의 시각적 지시기 표시';
+
+  @override
+  String get toggleGravityFieldsTooltip => '중력장 전환';
+
+  @override
   String get languageLabel => '언어';
 
   @override

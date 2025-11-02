@@ -506,6 +506,65 @@ class AppLocalizationsEs extends AppLocalizations {
       'Mostrar la intensidad del campo gravitacional alrededor de objetos';
 
   @override
+  String get globalGravityFieldsLabel => 'Campos Gravitacionales Globales';
+
+  @override
+  String get globalGravityFieldsDescription =>
+      'Habilitar la visualización de campos gravitacionales para todos los objetos masivos';
+
+  @override
+  String get gravityFieldColorSchemeLabel =>
+      'Colores de Campos Gravitacionales';
+
+  @override
+  String get gravityFieldColorSchemeDescription =>
+      'Elegir el esquema de colores para la visualización de campos gravitacionales';
+
+  @override
+  String get gravityColorSchemeClassic => 'Clásico';
+
+  @override
+  String get gravityColorSchemeSpectral => 'Espectral';
+
+  @override
+  String get gravityColorSchemeMonochrome => 'Monocromático';
+
+  @override
+  String get gravityColorSchemeNeon => 'Neón';
+
+  @override
+  String get gravityColorSchemeEmerald => 'Esmeralda';
+
+  @override
+  String get gravityFieldStrengthLabel => 'Intensidad del Campo';
+
+  @override
+  String get gravityFieldStrengthUnit => 'm/s²';
+
+  @override
+  String gravityFieldStrengthFormatted(String strength, String unit) {
+    return '$strength $unit';
+  }
+
+  @override
+  String get equipotentialSurfacesLabel => 'Superficies Equipotenciales';
+
+  @override
+  String get equipotentialSurfacesDescription =>
+      'Mostrar superficies de igual energía potencial gravitacional';
+
+  @override
+  String get gravityFieldIndicatorsLabel =>
+      'Indicadores de Intensidad del Campo';
+
+  @override
+  String get gravityFieldIndicatorsDescription =>
+      'Mostrar indicadores visuales de la intensidad del campo gravitacional';
+
+  @override
+  String get toggleGravityFieldsTooltip => 'Alternar Campos Gravitacionales';
+
+  @override
   String get languageLabel => 'Idioma';
 
   @override

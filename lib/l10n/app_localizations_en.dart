@@ -503,6 +503,63 @@ class AppLocalizationsEn extends AppLocalizations {
       'Show gravitational field strength around objects';
 
   @override
+  String get globalGravityFieldsLabel => 'Global Gravity Fields';
+
+  @override
+  String get globalGravityFieldsDescription =>
+      'Enable gravity field visualization for all massive objects';
+
+  @override
+  String get gravityFieldColorSchemeLabel => 'Gravity Field Colors';
+
+  @override
+  String get gravityFieldColorSchemeDescription =>
+      'Choose the color scheme for gravitational field visualization';
+
+  @override
+  String get gravityColorSchemeClassic => 'Classic';
+
+  @override
+  String get gravityColorSchemeSpectral => 'Spectral';
+
+  @override
+  String get gravityColorSchemeMonochrome => 'Monochrome';
+
+  @override
+  String get gravityColorSchemeNeon => 'Neon';
+
+  @override
+  String get gravityColorSchemeEmerald => 'Emerald';
+
+  @override
+  String get gravityFieldStrengthLabel => 'Field Strength';
+
+  @override
+  String get gravityFieldStrengthUnit => 'm/s²';
+
+  @override
+  String gravityFieldStrengthFormatted(String strength, String unit) {
+    return '$strength $unit';
+  }
+
+  @override
+  String get equipotentialSurfacesLabel => 'Equipotential Surfaces';
+
+  @override
+  String get equipotentialSurfacesDescription =>
+      'Show surfaces of equal gravitational potential energy';
+
+  @override
+  String get gravityFieldIndicatorsLabel => 'Field Strength Indicators';
+
+  @override
+  String get gravityFieldIndicatorsDescription =>
+      'Show visual indicators of gravitational field strength';
+
+  @override
+  String get toggleGravityFieldsTooltip => 'Toggle Gravity Fields';
+
+  @override
   String get languageLabel => 'Language';
 
   @override

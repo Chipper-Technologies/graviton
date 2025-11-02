@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
+import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 class BodyPropertiesDialog extends StatefulWidget {
@@ -246,25 +248,34 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
 
                       // Gravity Well Visualization
                       _buildSectionTitle(l10n.gravityWellsLabel),
-                      SwitchListTile(
-                        title: Text(
-                          l10n.gravityWellsDescription,
-                          style: TextStyle(
-                            color: AppColors.uiWhite.withValues(
-                              alpha: AppTypography.opacitySemiTransparent,
-                            ),
-                          ),
-                        ),
-                        value: _showGravityWell,
-                        onChanged: (value) {
-                          setState(() {
-                            _showGravityWell = value;
-                          });
-                          // Immediately update the body property
-                          widget.body.showGravityWell = value;
+                      Consumer<AppState>(
+                        builder: (context, appState, child) {
+                          return Column(
+                            children: [
+                              SwitchListTile(
+                                title: Text(
+                                  l10n.gravityWellsDescription,
+                                  style: TextStyle(
+                                    color: AppColors.uiWhite.withValues(
+                                      alpha:
+                                          AppTypography.opacitySemiTransparent,
+                                    ),
+                                  ),
+                                ),
+                                // Show the individual body's setting (which is now the final decision)
+                                value: _showGravityWell,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _showGravityWell = value;
+                                  });
+                                  _updateBody();
+                                },
+                                secondary: const Icon(Icons.grain),
+                                contentPadding: EdgeInsets.zero,
+                              ),
+                            ],
+                          );
                         },
-                        secondary: const Icon(Icons.grain),
-                        contentPadding: EdgeInsets.zero,
                       ),
 
                       const SizedBox(height: 16),

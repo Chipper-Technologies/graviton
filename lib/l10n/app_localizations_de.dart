@@ -504,6 +504,63 @@ class AppLocalizationsDe extends AppLocalizations {
       'Gravitationsfeldstärke um Objekte anzeigen';
 
   @override
+  String get globalGravityFieldsLabel => 'Globale Gravitationsfelder';
+
+  @override
+  String get globalGravityFieldsDescription =>
+      'Gravitationsfeldvisualisierung für alle massereichen Objekte aktivieren';
+
+  @override
+  String get gravityFieldColorSchemeLabel => 'Gravitationsfeld-Farben';
+
+  @override
+  String get gravityFieldColorSchemeDescription =>
+      'Farbschema für die Gravitationsfeldvisualisierung wählen';
+
+  @override
+  String get gravityColorSchemeClassic => 'Klassisch';
+
+  @override
+  String get gravityColorSchemeSpectral => 'Spektral';
+
+  @override
+  String get gravityColorSchemeMonochrome => 'Monochrom';
+
+  @override
+  String get gravityColorSchemeNeon => 'Neon';
+
+  @override
+  String get gravityColorSchemeEmerald => 'Smaragd';
+
+  @override
+  String get gravityFieldStrengthLabel => 'Feldstärke';
+
+  @override
+  String get gravityFieldStrengthUnit => 'm/s²';
+
+  @override
+  String gravityFieldStrengthFormatted(String strength, String unit) {
+    return '$strength $unit';
+  }
+
+  @override
+  String get equipotentialSurfacesLabel => 'Äquipotentialflächen';
+
+  @override
+  String get equipotentialSurfacesDescription =>
+      'Flächen gleicher gravitativer Potentialenergie anzeigen';
+
+  @override
+  String get gravityFieldIndicatorsLabel => 'Feldstärke-Indikatoren';
+
+  @override
+  String get gravityFieldIndicatorsDescription =>
+      'Visuelle Indikatoren der Gravitationsfeldstärke anzeigen';
+
+  @override
+  String get toggleGravityFieldsTooltip => 'Gravitationsfelder umschalten';
+
+  @override
   String get languageLabel => 'Sprache';
 
   @override

@@ -481,6 +481,59 @@ class AppLocalizationsZh extends AppLocalizations {
   String get gravityWellsDescription => '显示物体周围的引力场强度';
 
   @override
+  String get globalGravityFieldsLabel => '全局引力场';
+
+  @override
+  String get globalGravityFieldsDescription => '为所有大质量物体启用引力场可视化';
+
+  @override
+  String get gravityFieldColorSchemeLabel => '引力场颜色';
+
+  @override
+  String get gravityFieldColorSchemeDescription => '选择引力场可视化的颜色方案';
+
+  @override
+  String get gravityColorSchemeClassic => '经典';
+
+  @override
+  String get gravityColorSchemeSpectral => '光谱';
+
+  @override
+  String get gravityColorSchemeMonochrome => '单色';
+
+  @override
+  String get gravityColorSchemeNeon => '霓虹';
+
+  @override
+  String get gravityColorSchemeEmerald => '翡翠';
+
+  @override
+  String get gravityFieldStrengthLabel => '场强度';
+
+  @override
+  String get gravityFieldStrengthUnit => 'm/s²';
+
+  @override
+  String gravityFieldStrengthFormatted(String strength, String unit) {
+    return '$strength $unit';
+  }
+
+  @override
+  String get equipotentialSurfacesLabel => '等势面';
+
+  @override
+  String get equipotentialSurfacesDescription => '显示相等引力势能的表面';
+
+  @override
+  String get gravityFieldIndicatorsLabel => '场强度指示器';
+
+  @override
+  String get gravityFieldIndicatorsDescription => '显示引力场强度的视觉指示器';
+
+  @override
+  String get toggleGravityFieldsTooltip => '切换引力场';
+
+  @override
   String get languageLabel => '语言';
 
   @override

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/celestial_body_name.dart';
+import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/painters/asteroid_belt_painter.dart';
 import 'package:graviton/services/simulation.dart' as physics;
@@ -38,6 +39,10 @@ class GravitonPainter extends CustomPainter {
   final int? selectedBodyIndex;
   final bool followMode;
   final double cameraDistance;
+  final bool globalGravityFields;
+  final GravityFieldColorScheme gravityFieldColorScheme;
+  final bool showEquipotentialSurfaces;
+  final bool showGravityFieldIndicators;
 
   GravitonPainter({
     required this.sim,
@@ -54,6 +59,10 @@ class GravitonPainter extends CustomPainter {
     this.selectedBodyIndex,
     this.followMode = false,
     required this.cameraDistance,
+    this.globalGravityFields = false,
+    this.gravityFieldColorScheme = GravityFieldColorScheme.classic,
+    this.showEquipotentialSurfaces = false,
+    this.showGravityFieldIndicators = false,
   });
 
   @override
@@ -104,7 +113,7 @@ class GravitonPainter extends CustomPainter {
     );
 
     // Draw gravity wells (before bodies as background elements)
-    // Now controlled per-body via Body.showGravityWell property
+    // Now controlled per-body via Body.showGravityWell property or globally via UI settings
     GravityPainter.drawGravityWells(
       canvas,
       size,
@@ -112,6 +121,10 @@ class GravitonPainter extends CustomPainter {
       sim,
       cameraDistance,
       view,
+      globalGravityFields: globalGravityFields,
+      gravityFieldColorScheme: gravityFieldColorScheme,
+      showEquipotentialSurfaces: showEquipotentialSurfaces,
+      showGravityFieldIndicators: showGravityFieldIndicators,
     );
 
     // Draw asteroid belt particles (before bodies but after background elements)

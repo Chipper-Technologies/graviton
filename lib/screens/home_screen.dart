@@ -793,6 +793,13 @@ class _HomeScreenState extends State<HomeScreen>
                         selectedBodyIndex: appState.camera.selectedBody,
                         followMode: appState.camera.followMode,
                         cameraDistance: appState.camera.distance,
+                        globalGravityFields: appState.ui.globalGravityFields,
+                        gravityFieldColorScheme:
+                            appState.ui.gravityFieldColorScheme,
+                        showEquipotentialSurfaces:
+                            appState.ui.showEquipotentialSurfaces,
+                        showGravityFieldIndicators:
+                            appState.ui.showGravityFieldIndicators,
                       ),
                       child: const SizedBox.expand(),
                     ),
