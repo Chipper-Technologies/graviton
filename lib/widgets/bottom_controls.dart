@@ -113,6 +113,30 @@ class BottomControls extends StatelessWidget {
                       : null,
                   isActive: appState.camera.autoRotate,
                 ),
+
+                // Visual separator
+                Container(
+                  width: AppTypography.borderThin,
+                  height: AppTypography.iconSizeXXLarge,
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityVeryFaint,
+                  ),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: AppTypography.spacingSmall,
+                  ),
+                ),
+
+                // Gravity fields toggle
+                _buildControlButton(
+                  context: context,
+                  icon: appState.ui.globalGravityFields
+                      ? Icons.grid_4x4
+                      : Icons.grid_4x4_outlined,
+                  label: l10n.gravityFieldStrengthLabel,
+                  tooltip: l10n.toggleGravityFieldsTooltip,
+                  onPressed: () => appState.ui.toggleGlobalGravityFields(),
+                  isActive: appState.ui.globalGravityFields,
+                ),
               ],
             ),
           ),

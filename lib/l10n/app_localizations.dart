@@ -1005,7 +1005,7 @@ abstract class AppLocalizations {
   /// The company name
   ///
   /// In en, this message translates to:
-  /// **'Chipper Technologies, LLC'**
+  /// **'Chipper Technologies LLC'**
   String get companyName;
 
   /// Label for gravity wells setting
@@ -1019,6 +1019,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show gravitational field strength around objects'**
   String get gravityWellsDescription;
+
+  /// Label for global gravity fields toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Global Gravity Fields'**
+  String get globalGravityFieldsLabel;
+
+  /// Description for global gravity fields setting
+  ///
+  /// In en, this message translates to:
+  /// **'Enable gravity field visualization for all massive objects'**
+  String get globalGravityFieldsDescription;
+
+  /// Label for gravity field color scheme selection
+  ///
+  /// In en, this message translates to:
+  /// **'Gravity Field Colors'**
+  String get gravityFieldColorSchemeLabel;
+
+  /// Description for gravity field color scheme setting
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the color scheme for gravitational field visualization'**
+  String get gravityFieldColorSchemeDescription;
+
+  /// Classic blue/yellow gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get gravityColorSchemeClassic;
+
+  /// Rainbow spectrum gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Spectral'**
+  String get gravityColorSchemeSpectral;
+
+  /// Grayscale gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Monochrome'**
+  String get gravityColorSchemeMonochrome;
+
+  /// Bright neon gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Neon'**
+  String get gravityColorSchemeNeon;
+
+  /// Green-based gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Emerald'**
+  String get gravityColorSchemeEmerald;
+
+  /// Label for gravity field strength readout
+  ///
+  /// In en, this message translates to:
+  /// **'Field Strength'**
+  String get gravityFieldStrengthLabel;
+
+  /// Unit for gravity field strength (meters per second squared)
+  ///
+  /// In en, this message translates to:
+  /// **'m/s²'**
+  String get gravityFieldStrengthUnit;
+
+  /// Formatted gravity field strength with unit
+  ///
+  /// In en, this message translates to:
+  /// **'{strength} {unit}'**
+  String gravityFieldStrengthFormatted(String strength, String unit);
+
+  /// Label for equipotential surfaces toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Equipotential Surfaces'**
+  String get equipotentialSurfacesLabel;
+
+  /// Description for equipotential surfaces setting
+  ///
+  /// In en, this message translates to:
+  /// **'Show surfaces of equal gravitational potential energy'**
+  String get equipotentialSurfacesDescription;
+
+  /// Label for gravity field strength indicators toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Field Strength Indicators'**
+  String get gravityFieldIndicatorsLabel;
+
+  /// Description for gravity field strength indicators setting
+  ///
+  /// In en, this message translates to:
+  /// **'Show visual indicators of gravitational field strength'**
+  String get gravityFieldIndicatorsDescription;
+
+  /// Tooltip for the gravity fields toggle button
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle Gravity Fields'**
+  String get toggleGravityFieldsTooltip;
 
   /// Label for language selection setting
   ///

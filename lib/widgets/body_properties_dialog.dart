@@ -246,25 +246,29 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
 
                       // Gravity Well Visualization
                       _buildSectionTitle(l10n.gravityWellsLabel),
-                      SwitchListTile(
-                        title: Text(
-                          l10n.gravityWellsDescription,
-                          style: TextStyle(
-                            color: AppColors.uiWhite.withValues(
-                              alpha: AppTypography.opacitySemiTransparent,
+                      Column(
+                        children: [
+                          SwitchListTile(
+                            title: Text(
+                              l10n.gravityWellsDescription,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacitySemiTransparent,
+                                ),
+                              ),
                             ),
+                            // Show the individual body's setting (which is now the final decision)
+                            value: _showGravityWell,
+                            onChanged: (value) {
+                              setState(() {
+                                _showGravityWell = value;
+                              });
+                              _updateBody();
+                            },
+                            secondary: const Icon(Icons.grain),
+                            contentPadding: EdgeInsets.zero,
                           ),
-                        ),
-                        value: _showGravityWell,
-                        onChanged: (value) {
-                          setState(() {
-                            _showGravityWell = value;
-                          });
-                          // Immediately update the body property
-                          widget.body.showGravityWell = value;
-                        },
-                        secondary: const Icon(Icons.grain),
-                        contentPadding: EdgeInsets.zero,
+                        ],
                       ),
 
                       const SizedBox(height: 16),

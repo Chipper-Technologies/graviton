@@ -1,4 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/ab_test_group.dart';
+import 'package:graviton/enums/user_behavior_tracking_mode.dart';
 import 'package:graviton/services/remote_config_service.dart';
 
 void main() {
@@ -20,8 +22,8 @@ void main() {
       expect(service.analyticsSamplingRate, equals(0.1));
       expect(service.crashReportingEnabled, isTrue);
       expect(service.performanceMonitoringEnabled, isTrue);
-      expect(service.userBehaviorTracking, equals('standard'));
-      expect(service.abTestGroup, equals('control'));
+      expect(service.userBehaviorTracking, UserBehaviorTrackingMode.essential);
+      expect(service.abTestGroup, ABTestGroup.control);
 
       // Maintenance & Communication defaults
       expect(service.maintenanceMode, isFalse);
@@ -77,16 +79,21 @@ void main() {
     });
 
     test('Should validate A/B test group values', () {
-      final validGroups = ['control', 'experimental', 'variant_a', 'variant_b'];
+      final validGroups = [
+        ABTestGroup.control,
+        ABTestGroup.experimental,
+        ABTestGroup.variantA,
+        ABTestGroup.variantB,
+      ];
       expect(validGroups, contains(service.abTestGroup));
     });
 
     test('Should validate user behavior tracking values', () {
       final validTrackingModes = [
-        'minimal',
-        'standard',
-        'enhanced',
-        'disabled',
+        UserBehaviorTrackingMode.none,
+        UserBehaviorTrackingMode.essential,
+        UserBehaviorTrackingMode.limited,
+        UserBehaviorTrackingMode.full,
       ];
       expect(validTrackingModes, contains(service.userBehaviorTracking));
     });

@@ -189,5 +189,34 @@ void main() {
       await expectLater(appState.initializeAsync(), completes);
       expect(appState.isInitialized, isTrue);
     });
+
+    test(
+      'InitializeAsync should enable gravity wells when global gravity fields is enabled from settings',
+      () async {
+        TestWidgetsFlutterBinding.ensureInitialized();
+
+        // Enable global gravity fields first (simulates saved setting)
+        appState.ui.toggleGlobalGravityFields();
+
+        // Initialize async which loads simulation with bodies
+        await appState.initializeAsync();
+
+        // Verify that all bodies have gravity wells enabled after initialization
+        expect(
+          appState.simulation.bodies,
+          isNotEmpty,
+          reason: "Simulation should have bodies after initialization",
+        );
+
+        for (final body in appState.simulation.bodies) {
+          expect(
+            body.showGravityWell,
+            isTrue,
+            reason:
+                "All bodies should have gravity wells enabled when global gravity fields is ON at startup",
+          );
+        }
+      },
+    );
   });
 }

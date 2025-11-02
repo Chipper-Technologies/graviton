@@ -475,13 +475,66 @@ class AppLocalizationsJa extends AppLocalizations {
   String get loadingVersion => 'バージョンを読み込み中...';
 
   @override
-  String get companyName => 'Chipper Technologies, LLC';
+  String get companyName => 'Chipper Technologies LLC';
 
   @override
   String get gravityWellsLabel => '重力井戸';
 
   @override
   String get gravityWellsDescription => 'オブジェクト周辺の重力場の強度を表示';
+
+  @override
+  String get globalGravityFieldsLabel => 'グローバル重力場';
+
+  @override
+  String get globalGravityFieldsDescription => 'すべての大質量オブジェクトの重力場可視化を有効にする';
+
+  @override
+  String get gravityFieldColorSchemeLabel => '重力場の色';
+
+  @override
+  String get gravityFieldColorSchemeDescription => '重力場可視化のカラースキームを選択';
+
+  @override
+  String get gravityColorSchemeClassic => 'クラシック';
+
+  @override
+  String get gravityColorSchemeSpectral => 'スペクトラル';
+
+  @override
+  String get gravityColorSchemeMonochrome => 'モノクロ';
+
+  @override
+  String get gravityColorSchemeNeon => 'ネオン';
+
+  @override
+  String get gravityColorSchemeEmerald => 'エメラルド';
+
+  @override
+  String get gravityFieldStrengthLabel => '場の強度';
+
+  @override
+  String get gravityFieldStrengthUnit => 'm/s²';
+
+  @override
+  String gravityFieldStrengthFormatted(String strength, String unit) {
+    return '$strength $unit';
+  }
+
+  @override
+  String get equipotentialSurfacesLabel => '等ポテンシャル面';
+
+  @override
+  String get equipotentialSurfacesDescription => '等しい重力ポテンシャルエネルギーの面を表示';
+
+  @override
+  String get gravityFieldIndicatorsLabel => '場の強度インジケーター';
+
+  @override
+  String get gravityFieldIndicatorsDescription => '重力場の強度の視覚的インジケーターを表示';
+
+  @override
+  String get toggleGravityFieldsTooltip => '重力場を切り替え';
 
   @override
   String get languageLabel => '言語';

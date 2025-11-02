@@ -496,7 +496,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get loadingVersion => 'Chargement de la version...';
 
   @override
-  String get companyName => 'Chipper Technologies, LLC';
+  String get companyName => 'Chipper Technologies LLC';
 
   @override
   String get gravityWellsLabel => 'Puits Gravitationnels';
@@ -504,6 +504,65 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get gravityWellsDescription =>
       'Afficher l\'intensité du champ gravitationnel autour des objets';
+
+  @override
+  String get globalGravityFieldsLabel => 'Champs Gravitationnels Globaux';
+
+  @override
+  String get globalGravityFieldsDescription =>
+      'Activer la visualisation des champs gravitationnels pour tous les objets massifs';
+
+  @override
+  String get gravityFieldColorSchemeLabel =>
+      'Couleurs des Champs Gravitationnels';
+
+  @override
+  String get gravityFieldColorSchemeDescription =>
+      'Choisir le schéma de couleurs pour la visualisation des champs gravitationnels';
+
+  @override
+  String get gravityColorSchemeClassic => 'Classique';
+
+  @override
+  String get gravityColorSchemeSpectral => 'Spectral';
+
+  @override
+  String get gravityColorSchemeMonochrome => 'Monochrome';
+
+  @override
+  String get gravityColorSchemeNeon => 'Néon';
+
+  @override
+  String get gravityColorSchemeEmerald => 'Émeraude';
+
+  @override
+  String get gravityFieldStrengthLabel => 'Intensité du Champ';
+
+  @override
+  String get gravityFieldStrengthUnit => 'm/s²';
+
+  @override
+  String gravityFieldStrengthFormatted(String strength, String unit) {
+    return '$strength $unit';
+  }
+
+  @override
+  String get equipotentialSurfacesLabel => 'Surfaces Équipotentielles';
+
+  @override
+  String get equipotentialSurfacesDescription =>
+      'Afficher les surfaces d\'égale énergie potentielle gravitationnelle';
+
+  @override
+  String get gravityFieldIndicatorsLabel => 'Indicateurs d\'Intensité du Champ';
+
+  @override
+  String get gravityFieldIndicatorsDescription =>
+      'Afficher des indicateurs visuels de l\'intensité du champ gravitationnel';
+
+  @override
+  String get toggleGravityFieldsTooltip =>
+      'Basculer les Champs Gravitationnels';
 
   @override
   String get languageLabel => 'Langue';

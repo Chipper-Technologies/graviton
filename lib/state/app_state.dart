@@ -46,6 +46,12 @@ class AppState extends ChangeNotifier {
     // Initialize realistic colors setting in simulation
     simulation.setUseRealisticColors(ui.useRealisticColors);
 
+    // Now that simulation is initialized with bodies, ensure gravity wells are properly set
+    // if global gravity fields was enabled from saved settings
+    if (ui.globalGravityFields) {
+      _ensureAllBodiesHaveGravityWellsEnabled();
+    }
+
     // Set optimal camera zoom for initial scenario
     camera.resetViewForScenario(simulation.currentScenario, simulation.bodies);
   }
@@ -64,10 +70,28 @@ class AppState extends ChangeNotifier {
       _languageChanged = true; // Flag for later handling
     }
 
+    // Handle global gravity fields toggle
+    // When global gravity fields is enabled, set all bodies to show gravity wells by default
+    // so users can then individually toggle them off
+    if (ui.globalGravityFields) {
+      _ensureAllBodiesHaveGravityWellsEnabled();
+    }
+
     // Propagate realistic colors setting to simulation
     simulation.setUseRealisticColors(ui.useRealisticColors);
 
     notifyListeners();
+  }
+
+  /// When global gravity fields is enabled, ensure all bodies have showGravityWell = true
+  /// so they can be individually toggled off by the user
+  void _ensureAllBodiesHaveGravityWellsEnabled() {
+    final bodies = simulation.bodies;
+    for (final body in bodies) {
+      if (!body.showGravityWell) {
+        body.showGravityWell = true;
+      }
+    }
   }
 
   /// Check if there's a pending language change and handle it

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
+import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -237,6 +238,191 @@ class SettingsDialog extends StatelessWidget {
 
                           // Habitability Section - only show if there are planets or moons
                           ..._buildHabitabilitySection(context, l10n, appState),
+
+                          // Gravity Fields Section
+                          Text(
+                            l10n.globalGravityFieldsLabel,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppColors.sectionTitlePurple),
+                          ),
+                          SizedBox(height: AppTypography.spacingSmall),
+
+                          // Global Gravity Fields Toggle
+                          SwitchListTile(
+                            title: Text(l10n.globalGravityFieldsLabel),
+                            subtitle: Text(
+                              l10n.globalGravityFieldsDescription,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacitySemiTransparent,
+                                ),
+                              ),
+                            ),
+                            value: appState.ui.globalGravityFields,
+                            onChanged: (v) =>
+                                appState.ui.toggleGlobalGravityFields(),
+                            secondary: const Icon(Icons.grid_4x4),
+                          ),
+
+                          // Gravity Field Color Scheme - only show if global gravity fields are enabled
+                          if (appState.ui.globalGravityFields)
+                            Container(
+                              padding: EdgeInsets.all(
+                                AppTypography.spacingMedium,
+                              ),
+                              margin: EdgeInsets.symmetric(
+                                vertical: AppTypography.spacingSmall,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.uiBorderGrey,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  AppTypography.radiusMedium,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.palette),
+                                      SizedBox(
+                                        width: AppTypography.spacingMedium,
+                                      ),
+                                      Text(
+                                        l10n.gravityFieldColorSchemeLabel,
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.titleSmall,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: AppTypography.spacingSmall),
+                                  Text(
+                                    l10n.gravityFieldColorSchemeDescription,
+                                    style: TextStyle(
+                                      color: AppColors.uiWhite.withValues(
+                                        alpha: AppTypography
+                                            .opacitySemiTransparent,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: AppTypography.spacingMedium),
+                                  // Color scheme dropdown
+                                  DropdownButtonFormField<
+                                    GravityFieldColorScheme
+                                  >(
+                                    initialValue:
+                                        appState.ui.gravityFieldColorScheme,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          AppTypography.radiusSmall,
+                                        ),
+                                      ),
+                                      contentPadding: EdgeInsets.symmetric(
+                                        horizontal: AppTypography.spacingMedium,
+                                        vertical: AppTypography.spacingSmall,
+                                      ),
+                                    ),
+                                    items: GravityFieldColorScheme.values.map((
+                                      scheme,
+                                    ) {
+                                      return DropdownMenuItem(
+                                        value: scheme,
+                                        child: Row(
+                                          children: [
+                                            // Color preview
+                                            Container(
+                                              width: 20,
+                                              height: 20,
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    scheme
+                                                        .getEquipotentialColor(
+                                                          0.0,
+                                                        ),
+                                                    scheme
+                                                        .getEquipotentialColor(
+                                                          0.5,
+                                                        ),
+                                                    scheme
+                                                        .getEquipotentialColor(
+                                                          1.0,
+                                                        ),
+                                                  ],
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                      AppTypography.radiusSmall,
+                                                    ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width:
+                                                  AppTypography.spacingMedium,
+                                            ),
+                                            Text(
+                                              scheme.getLocalizedDisplayName(
+                                                l10n,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (scheme) {
+                                      if (scheme != null) {
+                                        appState.ui.setGravityFieldColorScheme(
+                                          scheme,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                          // Equipotential Surfaces Toggle - only show if global gravity fields are enabled
+                          if (appState.ui.globalGravityFields)
+                            SwitchListTile(
+                              title: Text(l10n.equipotentialSurfacesLabel),
+                              subtitle: Text(
+                                l10n.equipotentialSurfacesDescription,
+                                style: TextStyle(
+                                  color: AppColors.uiWhite.withValues(
+                                    alpha: AppTypography.opacitySemiTransparent,
+                                  ),
+                                ),
+                              ),
+                              value: appState.ui.showEquipotentialSurfaces,
+                              onChanged: (v) =>
+                                  appState.ui.toggleEquipotentialSurfaces(),
+                              secondary: const Icon(Icons.waves),
+                            ),
+
+                          // Gravity Field Indicators Toggle - only show if global gravity fields are enabled
+                          if (appState.ui.globalGravityFields)
+                            SwitchListTile(
+                              title: Text(l10n.gravityFieldIndicatorsLabel),
+                              subtitle: Text(
+                                l10n.gravityFieldIndicatorsDescription,
+                                style: TextStyle(
+                                  color: AppColors.uiWhite.withValues(
+                                    alpha: AppTypography.opacitySemiTransparent,
+                                  ),
+                                ),
+                              ),
+                              value: appState.ui.showGravityFieldIndicators,
+                              onChanged: (v) =>
+                                  appState.ui.toggleGravityFieldIndicators(),
+                              secondary: const Icon(Icons.scatter_plot),
+                            ),
+
+                          Divider(color: AppColors.uiDividerGrey),
+                          SizedBox(height: AppTypography.spacingSmall),
 
                           // Camera Controls Section
                           Text(

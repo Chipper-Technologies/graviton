@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
+import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +19,13 @@ class UIState extends ChangeNotifier {
   bool _showOffScreenIndicators = true;
   bool _enableVibration = true;
   double _uiOpacity = RenderingConstants.defaultUIOpacity;
+
+  // Gravity field settings
+  bool _globalGravityFields = false;
+  GravityFieldColorScheme _gravityFieldColorScheme =
+      GravityFieldColorScheme.classic;
+  bool _showEquipotentialSurfaces = false;
+  bool _showGravityFieldIndicators = true;
 
   // Habitability settings
   bool _showHabitableZones = false;
@@ -49,6 +57,12 @@ class UIState extends ChangeNotifier {
   static const String _keyShowOffScreenIndicators = 'showOffScreenIndicators';
   static const String _keyEnableVibration = 'enableVibration';
   static const String _keyUIOpacity = 'uiOpacity';
+  static const String _keyGlobalGravityFields = 'globalGravityFields';
+  static const String _keyGravityFieldColorScheme = 'gravityFieldColorScheme';
+  static const String _keyShowEquipotentialSurfaces =
+      'showEquipotentialSurfaces';
+  static const String _keyShowGravityFieldIndicators =
+      'showGravityFieldIndicators';
   static const String _keyShowHabitableZones = 'showHabitableZones';
   static const String _keyShowHabitabilityIndicators =
       'showHabitabilityIndicators';
@@ -80,6 +94,22 @@ class UIState extends ChangeNotifier {
       _enableVibration = prefs.getBool(_keyEnableVibration) ?? true;
       _uiOpacity =
           prefs.getDouble(_keyUIOpacity) ?? RenderingConstants.defaultUIOpacity;
+
+      // Load gravity field settings
+      _globalGravityFields = prefs.getBool(_keyGlobalGravityFields) ?? false;
+      _showEquipotentialSurfaces =
+          prefs.getBool(_keyShowEquipotentialSurfaces) ?? false;
+      _showGravityFieldIndicators =
+          prefs.getBool(_keyShowGravityFieldIndicators) ?? true;
+
+      // Load gravity field color scheme
+      final gravityColorSchemeValue = prefs.getString(
+        _keyGravityFieldColorScheme,
+      );
+      _gravityFieldColorScheme = gravityColorSchemeValue != null
+          ? GravityFieldColorSchemeExtension.fromString(gravityColorSchemeValue)
+          : GravityFieldColorScheme.classic;
+
       _showHabitableZones = prefs.getBool(_keyShowHabitableZones) ?? false;
       _showHabitabilityIndicators =
           prefs.getBool(_keyShowHabitabilityIndicators) ?? false;
@@ -146,6 +176,13 @@ class UIState extends ChangeNotifier {
   // Habitability getters
   bool get showHabitableZones => _showHabitableZones;
   bool get showHabitabilityIndicators => _showHabitabilityIndicators;
+
+  // Gravity field getters
+  bool get globalGravityFields => _globalGravityFields;
+  GravityFieldColorScheme get gravityFieldColorScheme =>
+      _gravityFieldColorScheme;
+  bool get showEquipotentialSurfaces => _showEquipotentialSurfaces;
+  bool get showGravityFieldIndicators => _showGravityFieldIndicators;
 
   // Language getters
   String? get selectedLanguageCode => _selectedLanguageCode;
@@ -277,6 +314,52 @@ class UIState extends ChangeNotifier {
     FirebaseService.instance.logSettingsChange(
       'show_habitability_indicators',
       _showHabitabilityIndicators,
+    );
+    notifyListeners();
+  }
+
+  // Gravity field setters
+  void toggleGlobalGravityFields() {
+    _globalGravityFields = !_globalGravityFields;
+    _saveSetting(_keyGlobalGravityFields, _globalGravityFields);
+    FirebaseService.instance.logSettingsChange(
+      'global_gravity_fields',
+      _globalGravityFields,
+    );
+
+    // Note: When enabling global gravity fields, AppState listener will automatically
+    // call _ensureAllBodiesHaveGravityWellsEnabled() to set showGravityWell = true
+    // on all bodies so they can be individually toggled off by the user.
+
+    notifyListeners();
+  }
+
+  void setGravityFieldColorScheme(GravityFieldColorScheme scheme) {
+    _gravityFieldColorScheme = scheme;
+    _saveSetting(_keyGravityFieldColorScheme, scheme.name);
+    FirebaseService.instance.logSettingsChange(
+      'gravity_field_color_scheme',
+      scheme.name,
+    );
+    notifyListeners();
+  }
+
+  void toggleEquipotentialSurfaces() {
+    _showEquipotentialSurfaces = !_showEquipotentialSurfaces;
+    _saveSetting(_keyShowEquipotentialSurfaces, _showEquipotentialSurfaces);
+    FirebaseService.instance.logSettingsChange(
+      'show_equipotential_surfaces',
+      _showEquipotentialSurfaces,
+    );
+    notifyListeners();
+  }
+
+  void toggleGravityFieldIndicators() {
+    _showGravityFieldIndicators = !_showGravityFieldIndicators;
+    _saveSetting(_keyShowGravityFieldIndicators, _showGravityFieldIndicators);
+    FirebaseService.instance.logSettingsChange(
+      'show_gravity_field_indicators',
+      _showGravityFieldIndicators,
     );
     notifyListeners();
   }

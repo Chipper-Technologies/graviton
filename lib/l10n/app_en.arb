@@ -776,7 +776,7 @@
     "description": "Text shown while version information is loading"
   },
   
-  "companyName": "Chipper Technologies, LLC",
+  "companyName": "Chipper Technologies LLC",
   "@companyName": {
     "description": "The company name"
   },
@@ -789,6 +789,99 @@
   "gravityWellsDescription": "Show gravitational field strength around objects",
   "@gravityWellsDescription": {
     "description": "Description for gravity wells setting"
+  },
+  
+  "globalGravityFieldsLabel": "Global Gravity Fields",
+  "@globalGravityFieldsLabel": {
+    "description": "Label for global gravity fields toggle"
+  },
+  
+  "globalGravityFieldsDescription": "Enable gravity field visualization for all massive objects",
+  "@globalGravityFieldsDescription": {
+    "description": "Description for global gravity fields setting"
+  },
+  
+  "gravityFieldColorSchemeLabel": "Gravity Field Colors",
+  "@gravityFieldColorSchemeLabel": {
+    "description": "Label for gravity field color scheme selection"
+  },
+  
+  "gravityFieldColorSchemeDescription": "Choose the color scheme for gravitational field visualization",
+  "@gravityFieldColorSchemeDescription": {
+    "description": "Description for gravity field color scheme setting"
+  },
+  
+  "gravityColorSchemeClassic": "Classic",
+  "@gravityColorSchemeClassic": {
+    "description": "Classic blue/yellow gravity field color scheme"
+  },
+  
+  "gravityColorSchemeSpectral": "Spectral",
+  "@gravityColorSchemeSpectral": {
+    "description": "Rainbow spectrum gravity field color scheme"
+  },
+  
+  "gravityColorSchemeMonochrome": "Monochrome",
+  "@gravityColorSchemeMonochrome": {
+    "description": "Grayscale gravity field color scheme"
+  },
+  
+  "gravityColorSchemeNeon": "Neon",
+  "@gravityColorSchemeNeon": {
+    "description": "Bright neon gravity field color scheme"
+  },
+  
+  "gravityColorSchemeEmerald": "Emerald",
+  "@gravityColorSchemeEmerald": {
+    "description": "Green-based gravity field color scheme"
+  },
+  
+  "gravityFieldStrengthLabel": "Field Strength",
+  "@gravityFieldStrengthLabel": {
+    "description": "Label for gravity field strength readout"
+  },
+  
+  "gravityFieldStrengthUnit": "m/s²",
+  "@gravityFieldStrengthUnit": {
+    "description": "Unit for gravity field strength (meters per second squared)"
+  },
+  
+  "gravityFieldStrengthFormatted": "{strength} {unit}",
+  "@gravityFieldStrengthFormatted": {
+    "description": "Formatted gravity field strength with unit",
+    "placeholders": {
+      "strength": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "equipotentialSurfacesLabel": "Equipotential Surfaces",
+  "@equipotentialSurfacesLabel": {
+    "description": "Label for equipotential surfaces toggle"
+  },
+  
+  "equipotentialSurfacesDescription": "Show surfaces of equal gravitational potential energy",
+  "@equipotentialSurfacesDescription": {
+    "description": "Description for equipotential surfaces setting"
+  },
+  
+  "gravityFieldIndicatorsLabel": "Field Strength Indicators",
+  "@gravityFieldIndicatorsLabel": {
+    "description": "Label for gravity field strength indicators toggle"
+  },
+  
+  "gravityFieldIndicatorsDescription": "Show visual indicators of gravitational field strength",
+  "@gravityFieldIndicatorsDescription": {
+    "description": "Description for gravity field strength indicators setting"
+  },
+  
+  "toggleGravityFieldsTooltip": "Toggle Gravity Fields",
+  "@toggleGravityFieldsTooltip": {
+    "description": "Tooltip for the gravity fields toggle button"
   },
   
   "languageLabel": "Language",
