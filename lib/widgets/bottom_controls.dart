@@ -42,7 +42,7 @@ class BottomControls extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(width: AppTypography.spacingMedium),
+                const SizedBox(width: AppTypography.spacingXSmall),
 
                 // Visuals controls
                 Expanded(
@@ -58,7 +58,7 @@ class BottomControls extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(width: AppTypography.spacingMedium),
+                const SizedBox(width: AppTypography.spacingXSmall),
 
                 // Physics controls
                 Expanded(
@@ -69,7 +69,9 @@ class BottomControls extends StatelessWidget {
                     onPressed: () => _showPhysicsBottomSheet(context, appState),
                     isActive:
                         appState.ui.globalGravityFields ||
-                        appState.ui.showStats,
+                        appState.ui.showStats ||
+                        appState.ui.showEquipotentialSurfaces ||
+                        appState.ui.showGravityFieldIndicators,
                   ),
                 ),
               ],

@@ -32,34 +32,36 @@ class ToggleOption extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.all(AppTypography.spacingLarge),
             decoration: BoxDecoration(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityBarely,
-              ),
+              color: isEnabled
+                  ? AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityMidFade,
+                    )
+                  : AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityBarely,
+                    ),
               borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-              border: Border.all(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityDisabled,
-                ),
-                width: AppTypography.borderThin,
-              ),
+              border: isEnabled
+                  ? Border.all(
+                      color: AppColors.primaryColor,
+                      width: AppTypography.borderThin,
+                    )
+                  : Border.all(
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityDisabled,
+                      ),
+                      width: AppTypography.borderThin,
+                    ),
             ),
             child: Row(
               children: [
-                Container(
-                  padding: EdgeInsets.all(AppTypography.spacingMedium),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withValues(
-                      alpha: AppTypography.opacityFaint,
-                    ),
-                    borderRadius: BorderRadius.circular(
-                      AppTypography.radiusMedium,
-                    ),
-                  ),
-                  child: Icon(
-                    icon,
-                    color: AppColors.primaryColor,
-                    size: AppTypography.iconSizeLarge,
-                  ),
+                Icon(
+                  icon,
+                  color: isEnabled
+                      ? AppColors.primaryColor
+                      : AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityHigh,
+                        ),
+                  size: AppTypography.iconSizeXXLarge,
                 ),
                 SizedBox(width: AppTypography.spacingLarge),
                 Expanded(
@@ -69,7 +71,9 @@ class ToggleOption extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyle(
-                          color: AppColors.uiWhite,
+                          color: isEnabled
+                              ? AppColors.primaryColor
+                              : AppColors.uiWhite,
                           fontSize: AppTypography.fontSizeLarge,
                           fontWeight: FontWeight.w600,
                         ),
