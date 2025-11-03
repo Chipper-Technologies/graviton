@@ -1022,8 +1022,13 @@ class GravitonPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant GravitonPainter oldDelegate) {
+    // Check simulation state changes using change counter for better performance
+    if (sim.changeCounter != oldDelegate.sim.changeCounter) {
+      return true;
+    }
+
+    // Check other rendering parameters for changes
     return cameraDistance != oldDelegate.cameraDistance ||
-        sim != oldDelegate.sim ||
         view != oldDelegate.view ||
         proj != oldDelegate.proj ||
         stars != oldDelegate.stars ||
@@ -1035,6 +1040,10 @@ class GravitonPainter extends CustomPainter {
         showHabitableZones != oldDelegate.showHabitableZones ||
         showHabitabilityIndicators != oldDelegate.showHabitabilityIndicators ||
         selectedBodyIndex != oldDelegate.selectedBodyIndex ||
-        followMode != oldDelegate.followMode;
+        followMode != oldDelegate.followMode ||
+        globalGravityFields != oldDelegate.globalGravityFields ||
+        gravityFieldColorScheme != oldDelegate.gravityFieldColorScheme ||
+        showEquipotentialSurfaces != oldDelegate.showEquipotentialSurfaces ||
+        showGravityFieldIndicators != oldDelegate.showGravityFieldIndicators;
   }
 }
