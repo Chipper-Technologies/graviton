@@ -315,52 +315,101 @@ class BottomControls extends StatelessWidget {
                                   ),
                             size: AppTypography.iconSizeXLarge,
                             shadows: [
+                              // Create sharp stroke with dense shadow pattern
+                              Shadow(
+                                offset: const Offset(-2.0, 0.0),
+                                color: !isEnabled
+                                    ? AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
+                                      )
+                                    : isActive
+                                    ? AppColors.uiBlack
+                                    : AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
+                                      ),
+                              ),
+                              Shadow(
+                                offset: const Offset(2.0, 0.0),
+                                color: !isEnabled
+                                    ? AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
+                                      )
+                                    : isActive
+                                    ? AppColors.uiBlack
+                                    : AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
+                                      ),
+                              ),
+                              Shadow(
+                                offset: const Offset(0.0, -2.0),
+                                color: !isEnabled
+                                    ? AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
+                                      )
+                                    : isActive
+                                    ? AppColors.uiBlack
+                                    : AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
+                                      ),
+                              ),
+                              Shadow(
+                                offset: const Offset(0.0, 2.0),
+                                color: !isEnabled
+                                    ? AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
+                                      )
+                                    : isActive
+                                    ? AppColors.uiBlack
+                                    : AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
+                                      ),
+                              ),
                               Shadow(
                                 offset: const Offset(-1.0, -1.0),
                                 color: !isEnabled
-                                    ? AppColors.uiWhite.withValues(
-                                        alpha: AppTypography.opacityDisabled,
+                                    ? AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
                                       )
                                     : isActive
-                                    ? AppColors.primaryColor
-                                    : AppColors.uiWhite.withValues(
-                                        alpha: AppTypography.opacityHigh,
+                                    ? AppColors.uiBlack
+                                    : AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
                                       ),
                               ),
                               Shadow(
                                 offset: const Offset(1.0, -1.0),
                                 color: !isEnabled
-                                    ? AppColors.uiWhite.withValues(
-                                        alpha: AppTypography.opacityDisabled,
+                                    ? AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
                                       )
                                     : isActive
-                                    ? AppColors.primaryColor
-                                    : AppColors.uiWhite.withValues(
-                                        alpha: AppTypography.opacityHigh,
+                                    ? AppColors.uiBlack
+                                    : AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
                                       ),
                               ),
                               Shadow(
                                 offset: const Offset(1.0, 1.0),
                                 color: !isEnabled
-                                    ? AppColors.uiWhite.withValues(
-                                        alpha: AppTypography.opacityDisabled,
+                                    ? AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
                                       )
                                     : isActive
-                                    ? AppColors.primaryColor
-                                    : AppColors.uiWhite.withValues(
-                                        alpha: AppTypography.opacityHigh,
+                                    ? AppColors.uiBlack
+                                    : AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
                                       ),
                               ),
                               Shadow(
                                 offset: const Offset(-1.0, 1.0),
                                 color: !isEnabled
-                                    ? AppColors.uiWhite.withValues(
-                                        alpha: AppTypography.opacityDisabled,
+                                    ? AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
                                       )
                                     : isActive
-                                    ? AppColors.primaryColor
-                                    : AppColors.uiWhite.withValues(
-                                        alpha: AppTypography.opacityHigh,
+                                    ? AppColors.uiBlack
+                                    : AppColors.uiBlack.withValues(
+                                        alpha: AppTypography.opacityMedium,
                                       ),
                               ),
                             ],
@@ -369,13 +418,13 @@ class BottomControls extends StatelessWidget {
                           Icon(
                             icon,
                             color: !isEnabled
-                                ? AppColors.uiBlack.withValues(
-                                    alpha: AppTypography.opacityMedium,
+                                ? AppColors.uiWhite.withValues(
+                                    alpha: AppTypography.opacityDisabled,
                                   )
                                 : isActive
-                                ? AppColors.uiBlack
-                                : AppColors.uiBlack.withValues(
-                                    alpha: AppTypography.opacityMedium,
+                                ? AppColors.primaryColor
+                                : AppColors.uiWhite.withValues(
+                                    alpha: AppTypography.opacityHigh,
                                   ),
                             size: AppTypography.iconSizeXLarge,
                           ),
