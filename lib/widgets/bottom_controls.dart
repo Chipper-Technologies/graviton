@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/painters/gradient_grid_painter.dart';
 import 'package:graviton/state/app_state.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/bottom_tab_button.dart';
 import 'package:graviton/widgets/camera_bottom_sheet.dart';
-import 'package:graviton/widgets/visuals_bottom_sheet.dart';
 import 'package:graviton/widgets/physics_bottom_sheet.dart';
+import 'package:graviton/widgets/visuals_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 /// Bottom control bar with camera and UI toggle buttons
@@ -22,56 +23,130 @@ class BottomControls extends StatelessWidget {
         return SafeArea(
           top: false,
           child: Container(
-            height: 80,
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppTypography.spacingLarge,
-              vertical: AppTypography.spacingSmall,
+            height: 34 + MediaQuery.of(context).padding.bottom,
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(color: AppColors.uiBlack, width: 1.0),
+              ),
+              // Add container shadows for depth
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.uiBlack.withValues(
+                    alpha: AppTypography.opacityVeryFaint,
+                  ),
+                  offset: const Offset(0, 2),
+                  blurRadius: 4,
+                ),
+                BoxShadow(
+                  color: AppColors.uiBlack.withValues(
+                    alpha: AppTypography.opacityDisabled,
+                  ),
+                  offset: const Offset(0, 4),
+                  blurRadius: 8,
+                ),
+                BoxShadow(
+                  color: AppColors.uiBlack.withValues(
+                    alpha: AppTypography.opacityBarely,
+                  ),
+                  offset: const Offset(0, 8),
+                  blurRadius: 16,
+                ),
+              ],
             ),
-            child: Row(
+            child: Stack(
               children: [
-                // Camera controls
-                Expanded(
-                  child: BottomTabButton(
-                    icon: Icons.videocam,
-                    label: l10n.bottomNavCameraLabel,
-                    tooltip: l10n.cameraTooltip,
-                    onPressed: () => _showCameraBottomSheet(context, appState),
-                    isActive:
-                        appState.ui.cinematicCameraTechnique !=
-                        CinematicCameraTechnique.manual,
+                // Background layer - slightly transparent black to match Android system bar
+                Positioned.fill(
+                  child: Container(
+                    color: AppColors.uiBlack.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
                   ),
                 ),
 
-                const SizedBox(width: AppTypography.spacingXSmall),
-
-                // Visuals controls
-                Expanded(
-                  child: BottomTabButton(
-                    icon: Icons.palette,
-                    label: l10n.bottomNavVisualsLabel,
-                    tooltip: l10n.visualsTooltip,
-                    onPressed: () => _showVisualsBottomSheet(context, appState),
-                    isActive:
-                        appState.ui.showTrails ||
-                        appState.ui.showLabels ||
-                        appState.ui.useRealisticColors,
+                // Purple grid overlay with gradient fade
+                Positioned.fill(
+                  child: CustomPaint(
+                    painter: GradientGridPainter(
+                      gridSize: 6.0,
+                      gridColor: AppColors.primaryColor,
+                      opacity: 0.03, // Slightly higher opacity for visibility
+                    ),
                   ),
                 ),
 
-                const SizedBox(width: AppTypography.spacingXSmall),
+                // Button row with borders
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 80,
+                  child: Row(
+                    children: [
+                      // Camera button
+                      Expanded(
+                        child: _buildTabButton(
+                          context: context,
+                          icon: Icons.videocam,
+                          label: l10n.bottomNavCameraLabel,
+                          tooltip: l10n.cameraTooltip,
+                          onPressed: () =>
+                              _showCameraBottomSheet(context, appState),
+                          isActive:
+                              appState.ui.cinematicCameraTechnique !=
+                              CinematicCameraTechnique.manual,
+                          isFirst: true,
+                        ),
+                      ),
 
-                // Physics controls
-                Expanded(
-                  child: BottomTabButton(
-                    icon: Icons.science,
-                    label: l10n.bottomNavPhysicsLabel,
-                    tooltip: l10n.physicsTooltip,
-                    onPressed: () => _showPhysicsBottomSheet(context, appState),
-                    isActive:
-                        appState.ui.globalGravityFields ||
-                        appState.ui.showStats ||
-                        appState.ui.showEquipotentialSurfaces ||
-                        appState.ui.showGravityFieldIndicators,
+                      // Vertical border between Camera and Visuals
+                      Container(
+                        width: 1,
+                        height: double.infinity,
+                        color: AppColors.uiBlack,
+                      ),
+
+                      // Visuals button
+                      Expanded(
+                        child: _buildTabButton(
+                          context: context,
+                          icon: Icons.palette,
+                          label: l10n.bottomNavVisualsLabel,
+                          tooltip: l10n.visualsTooltip,
+                          onPressed: () =>
+                              _showVisualsBottomSheet(context, appState),
+                          isActive:
+                              appState.ui.showTrails ||
+                              appState.ui.showLabels ||
+                              appState.ui.useRealisticColors,
+                        ),
+                      ),
+
+                      // Vertical border between Visuals and Physics
+                      Container(
+                        width: 1,
+                        height: double.infinity,
+                        color: AppColors.uiBlack,
+                      ),
+
+                      // Physics button
+                      Expanded(
+                        child: _buildTabButton(
+                          context: context,
+                          icon: Icons.science,
+                          label: l10n.bottomNavPhysicsLabel,
+                          tooltip: l10n.physicsTooltip,
+                          onPressed: () =>
+                              _showPhysicsBottomSheet(context, appState),
+                          isActive:
+                              appState.ui.globalGravityFields ||
+                              appState.ui.showStats ||
+                              appState.ui.showEquipotentialSurfaces ||
+                              appState.ui.showGravityFieldIndicators,
+                          isLast: true,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -164,6 +239,107 @@ class BottomControls extends StatelessWidget {
         builder: (context, scrollController) => PhysicsBottomSheet(
           appState: appState,
           scrollController: scrollController,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabButton({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required String tooltip,
+    required VoidCallback? onPressed,
+    required bool isActive,
+    bool isFirst = false,
+    bool isLast = false,
+  }) {
+    final isEnabled = onPressed != null;
+
+    return Tooltip(
+      message: tooltip,
+      preferBelow: false,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          splashColor: AppColors.primaryColor.withValues(
+            alpha: AppTypography.opacityDisabled,
+          ),
+          highlightColor: AppColors.primaryColor.withValues(
+            alpha: AppTypography.opacityBarely,
+          ),
+          child: Container(
+            height: double.infinity,
+            child: Stack(
+              children: [
+                // Purple gradient overlay for active buttons
+                if (isActive)
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            AppColors.primaryColor.withValues(
+                              alpha: AppTypography.opacityDisabled,
+                            ),
+                            AppColors.primaryColor.withValues(
+                              alpha: AppTypography.opacityBarely,
+                            ),
+                            AppColors.primaryColor.withValues(alpha: 0.0),
+                          ],
+                          stops: const [0.0, 0.4, 0.7],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                // Content
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        icon,
+                        color: !isEnabled
+                            ? AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityDisabled,
+                              )
+                            : isActive
+                            ? AppColors.primaryColor
+                            : AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityHigh,
+                              ),
+                        size: AppTypography.iconSizeXLarge,
+                      ),
+                      const SizedBox(height: AppTypography.spacingXSmall),
+                      Text(
+                        label,
+                        style: TextStyle(
+                          color: !isEnabled
+                              ? AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacityDisabled,
+                                )
+                              : isActive
+                              ? AppColors.uiWhite
+                              : AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacityHigh,
+                                ),
+                          fontSize: AppTypography.fontSizeMedium,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

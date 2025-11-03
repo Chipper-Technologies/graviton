@@ -21,16 +21,16 @@ class GradientGridPainter extends CustomPainter {
 
     // Create vertical lines
     for (double x = 0; x <= size.width; x += gridSize) {
-      // Calculate fade based on distance from bottom
+      // Calculate fade based on distance from bottom - simple linear fade
       final fadeGradient = LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
           gridColor.withValues(alpha: opacity),
-          gridColor.withValues(alpha: opacity * 0.6),
+          gridColor.withValues(alpha: opacity * 0.3),
           gridColor.withValues(alpha: 0.0),
         ],
-        stops: const [0.0, 0.7, 1.0],
+        stops: const [0.0, 0.6, 1.0],
       );
 
       paint.shader = fadeGradient.createShader(
@@ -40,12 +40,21 @@ class GradientGridPainter extends CustomPainter {
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
     }
 
-    // Create horizontal lines
+    // Create horizontal lines with same fade approach
     for (double y = 0; y <= size.height; y += gridSize) {
       // Calculate fade based on distance from bottom
       final distanceFromBottom = size.height - y;
       final fadeRatio = (distanceFromBottom / size.height).clamp(0.0, 1.0);
-      final lineOpacity = opacity * fadeRatio * fadeRatio; // Quadratic fade
+
+      // Simple fade to transparent
+      double lineOpacity;
+      if (fadeRatio > 0.6) {
+        lineOpacity = opacity;
+      } else if (fadeRatio > 0.0) {
+        lineOpacity = opacity * (fadeRatio / 0.6) * 0.3;
+      } else {
+        lineOpacity = 0.0;
+      }
 
       paint.shader = null;
       paint.color = gridColor.withValues(alpha: lineOpacity);
