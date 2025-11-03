@@ -8,9 +8,35 @@ import 'package:graviton/theme/app_typography.dart';
 /// Dialog for showing maintenance messages, news banners, and emergency notifications
 class MaintenanceDialog extends StatelessWidget {
   final bool _isMaintenanceMode;
+  final String? _testTitle;
+  final String? _testMessage;
+  final VoidCallback? _testOnClose;
 
   const MaintenanceDialog._({required bool isMaintenanceMode})
-    : _isMaintenanceMode = isMaintenanceMode;
+    : _isMaintenanceMode = isMaintenanceMode,
+      _testTitle = null,
+      _testMessage = null,
+      _testOnClose = null;
+
+  /// Public constructor for testing - creates a maintenance mode dialog
+  const MaintenanceDialog.maintenance({
+    String? title,
+    String? message,
+    VoidCallback? onClose,
+  }) : _isMaintenanceMode = true,
+       _testTitle = title,
+       _testMessage = message,
+       _testOnClose = onClose;
+
+  /// Public constructor for testing - creates a notification mode dialog
+  const MaintenanceDialog.notification({
+    String? title,
+    String? message,
+    VoidCallback? onClose,
+  }) : _isMaintenanceMode = false,
+       _testTitle = title,
+       _testMessage = message,
+       _testOnClose = onClose;
 
   static Future<void> showIfNeeded(BuildContext context) async {
     final remoteConfig = RemoteConfigService.instance;
@@ -54,6 +80,10 @@ class MaintenanceDialog extends StatelessWidget {
     AppLocalizations? l10n,
     RemoteConfigService remoteConfig,
   ) {
+    // Use test values if provided, otherwise use remote config values
+    final title = _testTitle ?? l10n?.maintenanceTitle ?? 'Maintenance';
+    final message = _testMessage ?? remoteConfig.maintenanceMessage;
+
     return ConstrainedBox(
       constraints: AppConstraints.dialogCompact,
       child: AlertDialog(
@@ -66,18 +96,20 @@ class MaintenanceDialog extends StatelessWidget {
               size: AppTypography.iconSizeXXLarge,
             ),
             const SizedBox(width: AppTypography.spacingSmall),
-            Text(
-              l10n?.maintenanceTitle ?? 'Maintenance',
-              style: TextStyle(
-                color: AppColors.uiWhite,
-                fontSize: AppTypography.fontSizeXLarge,
-                fontWeight: FontWeight.bold,
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: AppColors.uiWhite,
+                  fontSize: AppTypography.fontSizeXLarge,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
         ),
         content: Text(
-          remoteConfig.maintenanceMessage,
+          message,
           style: TextStyle(
             color: AppColors.uiTextGrey,
             fontSize: AppTypography.fontSizeMedium,
@@ -85,7 +117,7 @@ class MaintenanceDialog extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: _testOnClose ?? () => Navigator.of(context).pop(),
             child: Text(
               l10n?.ok ?? 'OK',
               style: TextStyle(color: AppColors.uiLightBlueAccent),
@@ -103,6 +135,14 @@ class MaintenanceDialog extends StatelessWidget {
   ) {
     final isEmergency = remoteConfig.isEmergencyNotification;
 
+    // Use test values if provided, otherwise use remote config values
+    final title =
+        _testTitle ??
+        (isEmergency
+            ? (l10n?.emergencyNotificationTitle ?? 'Important Notice')
+            : (l10n?.newsTitle ?? 'News'));
+    final message = _testMessage ?? remoteConfig.activeNotificationText;
+
     return ConstrainedBox(
       constraints: AppConstraints.dialogCompact,
       child: AlertDialog(
@@ -117,20 +157,20 @@ class MaintenanceDialog extends StatelessWidget {
               size: AppTypography.iconSizeXXLarge,
             ),
             const SizedBox(width: AppTypography.spacingSmall),
-            Text(
-              isEmergency
-                  ? (l10n?.emergencyNotificationTitle ?? 'Important Notice')
-                  : (l10n?.newsTitle ?? 'News'),
-              style: TextStyle(
-                color: AppColors.uiWhite,
-                fontSize: AppTypography.fontSizeXLarge,
-                fontWeight: FontWeight.bold,
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: AppColors.uiWhite,
+                  fontSize: AppTypography.fontSizeXLarge,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
         ),
         content: Text(
-          remoteConfig.activeNotificationText,
+          message,
           style: TextStyle(
             color: AppColors.uiTextGrey,
             fontSize: AppTypography.fontSizeMedium,
@@ -138,7 +178,7 @@ class MaintenanceDialog extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: _testOnClose ?? () => Navigator.of(context).pop(),
             child: Text(
               l10n?.ok ?? 'OK',
               style: TextStyle(
