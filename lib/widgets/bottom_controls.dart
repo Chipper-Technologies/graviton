@@ -26,32 +26,8 @@ class BottomControls extends StatelessWidget {
             height: 34 + MediaQuery.of(context).padding.bottom,
             decoration: BoxDecoration(
               border: Border(
-                top: BorderSide(color: AppColors.uiBlack, width: 1.0),
+                top: BorderSide(color: AppColors.uiBlack, width: 4.0),
               ),
-              // Add container shadows for depth
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.uiBlack.withValues(
-                    alpha: AppTypography.opacityVeryFaint,
-                  ),
-                  offset: const Offset(0, 2),
-                  blurRadius: 4,
-                ),
-                BoxShadow(
-                  color: AppColors.uiBlack.withValues(
-                    alpha: AppTypography.opacityDisabled,
-                  ),
-                  offset: const Offset(0, 4),
-                  blurRadius: 8,
-                ),
-                BoxShadow(
-                  color: AppColors.uiBlack.withValues(
-                    alpha: AppTypography.opacityBarely,
-                  ),
-                  offset: const Offset(0, 8),
-                  blurRadius: 16,
-                ),
-              ],
             ),
             child: Stack(
               children: [
@@ -59,7 +35,7 @@ class BottomControls extends StatelessWidget {
                 Positioned.fill(
                   child: Container(
                     color: AppColors.uiBlack.withValues(
-                      alpha: AppTypography.opacityHigh,
+                      alpha: AppTypography.opacityVeryHigh,
                     ),
                   ),
                 ),
@@ -83,6 +59,13 @@ class BottomControls extends StatelessWidget {
                   height: 80,
                   child: Row(
                     children: [
+                      // Left border for Camera button
+                      Container(
+                        width: 4,
+                        height: double.infinity,
+                        color: AppColors.uiBlack,
+                      ),
+
                       // Camera button
                       Expanded(
                         child: _buildTabButton(
@@ -101,7 +84,7 @@ class BottomControls extends StatelessWidget {
 
                       // Vertical border between Camera and Visuals
                       Container(
-                        width: 1,
+                        width: 4,
                         height: double.infinity,
                         color: AppColors.uiBlack,
                       ),
@@ -124,7 +107,7 @@ class BottomControls extends StatelessWidget {
 
                       // Vertical border between Visuals and Physics
                       Container(
-                        width: 1,
+                        width: 4,
                         height: double.infinity,
                         color: AppColors.uiBlack,
                       ),
@@ -145,6 +128,13 @@ class BottomControls extends StatelessWidget {
                               appState.ui.showGravityFieldIndicators,
                           isLast: true,
                         ),
+                      ),
+
+                      // Right border for Physics button
+                      Container(
+                        width: 4,
+                        height: double.infinity,
+                        color: AppColors.uiBlack,
                       ),
                     ],
                   ),
@@ -269,6 +259,10 @@ class BottomControls extends StatelessWidget {
           highlightColor: AppColors.primaryColor.withValues(
             alpha: AppTypography.opacityBarely,
           ),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppTypography.radiusMedium),
+            topRight: Radius.circular(AppTypography.radiusMedium),
+          ),
           child: SizedBox(
             height: double.infinity,
             child: Stack(
@@ -278,15 +272,19 @@ class BottomControls extends StatelessWidget {
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(AppTypography.radiusMedium),
+                          topRight: Radius.circular(AppTypography.radiusMedium),
+                        ),
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
                             AppColors.primaryColor.withValues(
-                              alpha: AppTypography.opacityDisabled,
+                              alpha: AppTypography.opacityFaint,
                             ),
                             AppColors.primaryColor.withValues(
-                              alpha: AppTypography.opacityBarely,
+                              alpha: AppTypography.opacityVeryFaint,
                             ),
                             AppColors.primaryColor.withValues(alpha: 0.0),
                           ],
@@ -301,18 +299,87 @@ class BottomControls extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        icon,
-                        color: !isEnabled
-                            ? AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacityDisabled,
-                              )
-                            : isActive
-                            ? AppColors.primaryColor
-                            : AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacityHigh,
+                      Stack(
+                        children: [
+                          // Border/stroke layer
+                          Icon(
+                            icon,
+                            color: !isEnabled
+                                ? AppColors.uiWhite.withValues(
+                                    alpha: AppTypography.opacityDisabled,
+                                  )
+                                : isActive
+                                ? AppColors.primaryColor
+                                : AppColors.uiWhite.withValues(
+                                    alpha: AppTypography.opacityHigh,
+                                  ),
+                            size: AppTypography.iconSizeXLarge,
+                            shadows: [
+                              Shadow(
+                                offset: const Offset(-1.0, -1.0),
+                                color: !isEnabled
+                                    ? AppColors.uiWhite.withValues(
+                                        alpha: AppTypography.opacityDisabled,
+                                      )
+                                    : isActive
+                                    ? AppColors.primaryColor
+                                    : AppColors.uiWhite.withValues(
+                                        alpha: AppTypography.opacityHigh,
+                                      ),
                               ),
-                        size: AppTypography.iconSizeXLarge,
+                              Shadow(
+                                offset: const Offset(1.0, -1.0),
+                                color: !isEnabled
+                                    ? AppColors.uiWhite.withValues(
+                                        alpha: AppTypography.opacityDisabled,
+                                      )
+                                    : isActive
+                                    ? AppColors.primaryColor
+                                    : AppColors.uiWhite.withValues(
+                                        alpha: AppTypography.opacityHigh,
+                                      ),
+                              ),
+                              Shadow(
+                                offset: const Offset(1.0, 1.0),
+                                color: !isEnabled
+                                    ? AppColors.uiWhite.withValues(
+                                        alpha: AppTypography.opacityDisabled,
+                                      )
+                                    : isActive
+                                    ? AppColors.primaryColor
+                                    : AppColors.uiWhite.withValues(
+                                        alpha: AppTypography.opacityHigh,
+                                      ),
+                              ),
+                              Shadow(
+                                offset: const Offset(-1.0, 1.0),
+                                color: !isEnabled
+                                    ? AppColors.uiWhite.withValues(
+                                        alpha: AppTypography.opacityDisabled,
+                                      )
+                                    : isActive
+                                    ? AppColors.primaryColor
+                                    : AppColors.uiWhite.withValues(
+                                        alpha: AppTypography.opacityHigh,
+                                      ),
+                              ),
+                            ],
+                          ),
+                          // Fill layer
+                          Icon(
+                            icon,
+                            color: !isEnabled
+                                ? AppColors.uiBlack.withValues(
+                                    alpha: AppTypography.opacityMedium,
+                                  )
+                                : isActive
+                                ? AppColors.uiBlack
+                                : AppColors.uiBlack.withValues(
+                                    alpha: AppTypography.opacityMedium,
+                                  ),
+                            size: AppTypography.iconSizeXLarge,
+                          ),
+                        ],
                       ),
                       const SizedBox(height: AppTypography.spacingXSmall),
                       Text(
