@@ -105,7 +105,10 @@ void main() {
         // The button should have purple color when active
         final iconWidget = tester.widget<Icon>(cameraButtons);
         // Active buttons should have primaryColor, not just white
-        expect(iconWidget.color?.value, isNot(equals(Colors.white.value)));
+        expect(
+          iconWidget.color?.toARGB32(),
+          isNot(equals(Colors.white.toARGB32())),
+        );
       });
 
       testWidgets('camera button should be inactive when in manual mode', (

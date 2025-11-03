@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/painters/orbital_path_painter.dart';
@@ -227,7 +226,8 @@ void main() {
         }, returnsNormally);
 
         // Scaled matrix
-        final scaled = vm.Matrix4.identity()..scale(2.0);
+        final scaled = vm.Matrix4.identity()
+          ..scaleByVector3(vm.Vector3(2.0, 2.0, 2.0));
         expect(() {
           OrbitalPathPainter.drawOrbitalPaths(
             canvas,
@@ -239,7 +239,8 @@ void main() {
         }, returnsNormally);
 
         // Translated matrix
-        final translated = vm.Matrix4.identity()..translate(100.0, 100.0, 0.0);
+        final translated = vm.Matrix4.identity()
+          ..translateByVector3(vm.Vector3(100.0, 100.0, 0.0));
         expect(() {
           OrbitalPathPainter.drawOrbitalPaths(
             canvas,
@@ -359,7 +360,8 @@ void main() {
         simulation.resetWithScenario(ScenarioType.solarSystem);
 
         // Very large scale
-        final largeScale = vm.Matrix4.identity()..scale(1000.0);
+        final largeScale = vm.Matrix4.identity()
+          ..scaleByVector3(vm.Vector3(1000.0, 1000.0, 1000.0));
         expect(() {
           OrbitalPathPainter.drawOrbitalPaths(
             canvas,
@@ -371,7 +373,8 @@ void main() {
         }, returnsNormally);
 
         // Very small scale
-        final smallScale = vm.Matrix4.identity()..scale(0.001);
+        final smallScale = vm.Matrix4.identity()
+          ..scaleByVector3(vm.Vector3(0.001, 0.001, 0.001));
         expect(() {
           OrbitalPathPainter.drawOrbitalPaths(
             canvas,
@@ -383,7 +386,8 @@ void main() {
         }, returnsNormally);
 
         // Zero scale (edge case)
-        final zeroScale = vm.Matrix4.identity()..scale(0.0);
+        final zeroScale = vm.Matrix4.identity()
+          ..scaleByVector3(vm.Vector3(0.0, 0.0, 0.0));
         expect(() {
           OrbitalPathPainter.drawOrbitalPaths(
             canvas,

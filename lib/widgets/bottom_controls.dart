@@ -269,7 +269,7 @@ class BottomControls extends StatelessWidget {
           highlightColor: AppColors.primaryColor.withValues(
             alpha: AppTypography.opacityBarely,
           ),
-          child: Container(
+          child: SizedBox(
             height: double.infinity,
             child: Stack(
               children: [

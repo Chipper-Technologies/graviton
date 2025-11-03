@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/painters/asteroid_belt_painter.dart';
 import 'package:graviton/services/asteroid_belt_system.dart';
@@ -136,7 +135,8 @@ void main() {
       }, returnsNormally);
 
       // Scaled matrix
-      final scaled = vm.Matrix4.identity()..scale(2.0);
+      final scaled = vm.Matrix4.identity()
+        ..scaleByVector3(vm.Vector3(2.0, 2.0, 2.0));
       expect(() {
         AsteroidBeltPainter.drawAsteroidBelt(
           canvas,
@@ -148,7 +148,8 @@ void main() {
       }, returnsNormally);
 
       // Translated matrix
-      final translated = vm.Matrix4.identity()..translate(100.0, 100.0);
+      final translated = vm.Matrix4.identity()
+        ..translateByVector3(vm.Vector3(100.0, 100.0, 0.0));
       expect(() {
         AsteroidBeltPainter.drawAsteroidBelt(
           canvas,
@@ -259,7 +260,8 @@ void main() {
       );
 
       // Very large scale
-      final largeScale = vm.Matrix4.identity()..scale(1000.0);
+      final largeScale = vm.Matrix4.identity()
+        ..scaleByVector3(vm.Vector3(1000.0, 1000.0, 1000.0));
       expect(() {
         AsteroidBeltPainter.drawAsteroidBelt(
           canvas,
@@ -271,7 +273,8 @@ void main() {
       }, returnsNormally);
 
       // Very small scale
-      final smallScale = vm.Matrix4.identity()..scale(0.001);
+      final smallScale = vm.Matrix4.identity()
+        ..scaleByVector3(vm.Vector3(0.001, 0.001, 0.001));
       expect(() {
         AsteroidBeltPainter.drawAsteroidBelt(
           canvas,

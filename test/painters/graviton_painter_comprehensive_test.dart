@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/enums/scenario_type.dart';
@@ -442,8 +441,9 @@ void main() {
 
         final transformations = [
           vm.Matrix4.identity(),
-          vm.Matrix4.identity()..scale(2.0),
-          vm.Matrix4.identity()..translate(100.0, 100.0, 0.0),
+          vm.Matrix4.identity()..scaleByVector3(vm.Vector3(2.0, 2.0, 2.0)),
+          vm.Matrix4.identity()
+            ..translateByVector3(vm.Vector3(100.0, 100.0, 0.0)),
           vm.Matrix4.identity()..rotateZ(math.pi / 4),
           vm.Matrix4.identity()..rotateX(math.pi / 6),
           vm.Matrix4.identity()..rotateY(math.pi / 3),
@@ -490,9 +490,10 @@ void main() {
 
         final projections = [
           vm.Matrix4.identity(),
-          vm.Matrix4.identity()..scale(0.5),
-          vm.Matrix4.identity()..scale(2.0),
-          vm.Matrix4.identity()..translate(50.0, 50.0, 0.0),
+          vm.Matrix4.identity()..scaleByVector3(vm.Vector3(0.5, 0.5, 0.5)),
+          vm.Matrix4.identity()..scaleByVector3(vm.Vector3(2.0, 2.0, 2.0)),
+          vm.Matrix4.identity()
+            ..translateByVector3(vm.Vector3(50.0, 50.0, 0.0)),
         ];
 
         for (final projection in projections) {
