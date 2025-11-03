@@ -84,10 +84,22 @@ void main() {
 
         final result = AppColors.withAlpha(baseColor, alpha);
 
-        expect(result.alpha, equals((255 * alpha).round()));
-        expect(result.red, equals(baseColor.red));
-        expect(result.green, equals(baseColor.green));
-        expect(result.blue, equals(baseColor.blue));
+        expect(
+          (result.a * 255.0).round() & 0xff,
+          equals((255 * alpha).round()),
+        );
+        expect(
+          (result.r * 255.0).round() & 0xff,
+          equals((baseColor.r * 255.0).round() & 0xff),
+        );
+        expect(
+          (result.g * 255.0).round() & 0xff,
+          equals((baseColor.g * 255.0).round() & 0xff),
+        );
+        expect(
+          (result.b * 255.0).round() & 0xff,
+          equals((baseColor.b * 255.0).round() & 0xff),
+        );
       });
 
       test('should handle alpha values at boundaries', () {
@@ -95,11 +107,11 @@ void main() {
 
         // Test alpha = 0 (fully transparent)
         final transparent = AppColors.withAlpha(baseColor, 0.0);
-        expect(transparent.alpha, equals(0));
+        expect((transparent.a * 255.0).round() & 0xff, equals(0));
 
         // Test alpha = 1 (fully opaque)
         final opaque = AppColors.withAlpha(baseColor, 1.0);
-        expect(opaque.alpha, equals(255));
+        expect((opaque.a * 255.0).round() & 0xff, equals(255));
       });
 
       test('should preserve RGB values with different alpha', () {
@@ -108,10 +120,13 @@ void main() {
 
         final result = AppColors.withAlpha(red, alpha);
 
-        expect(result.red, equals(255));
-        expect(result.green, equals(0));
-        expect(result.blue, equals(0));
-        expect(result.alpha, equals((255 * alpha).round()));
+        expect((result.r * 255.0).round() & 0xff, equals(255));
+        expect((result.g * 255.0).round() & 0xff, equals(0));
+        expect((result.b * 255.0).round() & 0xff, equals(0));
+        expect(
+          (result.a * 255.0).round() & 0xff,
+          equals((255 * alpha).round()),
+        );
       });
     });
 
@@ -125,10 +140,22 @@ void main() {
         expect(gradient, hasLength(alphaStops.length));
 
         for (int i = 0; i < gradient.length; i++) {
-          expect(gradient[i].red, equals(baseColor.red));
-          expect(gradient[i].green, equals(baseColor.green));
-          expect(gradient[i].blue, equals(baseColor.blue));
-          expect(gradient[i].alpha, equals((255 * alphaStops[i]).round()));
+          expect(
+            (gradient[i].r * 255.0).round() & 0xff,
+            equals((baseColor.r * 255.0).round() & 0xff),
+          );
+          expect(
+            (gradient[i].g * 255.0).round() & 0xff,
+            equals((baseColor.g * 255.0).round() & 0xff),
+          );
+          expect(
+            (gradient[i].b * 255.0).round() & 0xff,
+            equals((baseColor.b * 255.0).round() & 0xff),
+          );
+          expect(
+            (gradient[i].a * 255.0).round() & 0xff,
+            equals((255 * alphaStops[i]).round()),
+          );
         }
       });
 
@@ -149,7 +176,7 @@ void main() {
 
         expect(gradient, hasLength(1));
         expect(
-          gradient[0].alpha,
+          (gradient[0].a * 255.0).round() & 0xff,
           equals(128),
         ); // 255 * 0.5 = 127.5, rounds to 128
       });

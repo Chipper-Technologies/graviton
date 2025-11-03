@@ -20,6 +20,7 @@ class MaintenanceDialog extends StatelessWidget {
 
   /// Public constructor for testing - creates a maintenance mode dialog
   const MaintenanceDialog.maintenance({
+    super.key,
     String? title,
     String? message,
     VoidCallback? onClose,
@@ -30,6 +31,7 @@ class MaintenanceDialog extends StatelessWidget {
 
   /// Public constructor for testing - creates a notification mode dialog
   const MaintenanceDialog.notification({
+    super.key,
     String? title,
     String? message,
     VoidCallback? onClose,

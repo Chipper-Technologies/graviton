@@ -30,7 +30,7 @@ import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/developer_tools_dialog.dart';
 import 'package:graviton/widgets/floating_simulation_controls.dart';
 import 'package:graviton/widgets/help_dialog.dart';
-import 'package:graviton/widgets/app_bar_more_menu.dart';
+import 'package:graviton/widgets/options_drawer.dart';
 import 'package:graviton/widgets/maintenance_dialog.dart';
 import 'package:graviton/widgets/offscreen_indicators_overlay.dart';
 import 'package:graviton/widgets/scenario_selection_dialog.dart';
@@ -43,6 +43,7 @@ import 'package:graviton/widgets/version_check_dialog.dart';
 import 'package:graviton/widgets/tutorial_overlay.dart';
 import 'package:graviton/widgets/app_bar_speed_control.dart';
 import 'package:graviton/services/onboarding_service.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -609,6 +610,55 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  Future<void> _showCurrentVersionChangelog() async {
+    try {
+      // Get current app version
+      final packageInfo = await PackageInfo.fromPlatform();
+      final currentVersion = packageInfo.version;
+
+      // Initialize changelog service
+      await ChangelogService.instance.initialize();
+
+      // Get changelogs for current version
+      final changelogsToShow = await ChangelogService.instance
+          .fetchChangelogsWithFallback(currentVersion: currentVersion);
+
+      if (changelogsToShow.isNotEmpty && mounted) {
+        // Show changelog dialog with available changelogs
+        _showChangelogDialog(changelogsToShow);
+      } else {
+        // Show a simple message if no changelog available
+        if (mounted) {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Changelog'),
+              content: Text(
+                'No changelog available for version $currentVersion',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Close'),
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      // Show error message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error loading changelog: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -645,6 +695,16 @@ class _HomeScreenState extends State<HomeScreen>
             appState.ui.hideUIInScreenshotMode;
 
         return Scaffold(
+          endDrawer: OptionsDrawer(
+            onShowHelp: () => _showHelpDialog(context),
+            onShowSettings: () => _showSettings(context),
+            onShowScenarios: () => _showScenarioSelection(context),
+            onShowPhysicsSettings: () =>
+                _showSimulationSettings(context, appState),
+            onShowAbout: () => _showAboutDialog(context),
+            onShowDeveloperTools: () => _showDeveloperToolsDialog(context),
+            onShowChangelog: _showCurrentVersionChangelog,
+          ),
           appBar: shouldHideUI
               ? null
               : AppBar(
@@ -684,16 +744,13 @@ class _HomeScreenState extends State<HomeScreen>
                     // Speed control - now prominent in app bar
                     const AppBarSpeedControl(),
 
-                    // Secondary functions in more menu
-                    AppBarMoreMenu(
-                      onShowHelp: () => _showHelpDialog(context),
-                      onShowSettings: () => _showSettings(context),
-                      onShowScenarios: () => _showScenarioSelection(context),
-                      onShowPhysicsSettings: () =>
-                          _showSimulationSettings(context, appState),
-                      onShowAbout: () => _showAboutDialog(context),
-                      onShowDeveloperTools: () =>
-                          _showDeveloperToolsDialog(context),
+                    // Options drawer toggle
+                    Builder(
+                      builder: (context) => IconButton(
+                        icon: const Icon(Icons.menu),
+                        tooltip: l10n.moreOptionsTooltip,
+                        onPressed: () => Scaffold.of(context).openEndDrawer(),
+                      ),
                     ),
                   ],
                 ),

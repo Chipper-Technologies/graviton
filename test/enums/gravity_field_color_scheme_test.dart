@@ -64,7 +64,10 @@ void main() {
         for (final scheme in GravityFieldColorScheme.values) {
           final color = scheme.starPrimaryColor;
           expect(color, isA<Color>());
-          expect(color.alpha, equals(255)); // Should be opaque
+          expect(
+            (color.a * 255.0).round() & 0xff,
+            equals(255),
+          ); // Should be opaque
         }
       });
 
@@ -88,7 +91,10 @@ void main() {
         for (final scheme in GravityFieldColorScheme.values) {
           final color = scheme.bodyPrimaryColor;
           expect(color, isA<Color>());
-          expect(color.alpha, equals(255)); // Should be opaque
+          expect(
+            (color.a * 255.0).round() & 0xff,
+            equals(255),
+          ); // Should be opaque
         }
       });
 
@@ -112,7 +118,10 @@ void main() {
         for (final scheme in GravityFieldColorScheme.values) {
           final color = scheme.secondaryColor;
           expect(color, isA<Color>());
-          expect(color.alpha, equals(255)); // Should be opaque
+          expect(
+            (color.a * 255.0).round() & 0xff,
+            equals(255),
+          ); // Should be opaque
         }
       });
 
@@ -136,7 +145,10 @@ void main() {
         for (final scheme in GravityFieldColorScheme.values) {
           final color = scheme.accentColor;
           expect(color, isA<Color>());
-          expect(color.alpha, equals(255)); // Should be opaque
+          expect(
+            (color.a * 255.0).round() & 0xff,
+            equals(255),
+          ); // Should be opaque
         }
       });
 
@@ -197,9 +209,9 @@ void main() {
           expect(colorMid, isA<Color>());
 
           // All colors should be fully opaque
-          expect(color0.alpha, equals(255));
-          expect(color1.alpha, equals(255));
-          expect(colorMid.alpha, equals(255));
+          expect((color0.a * 255.0).round() & 0xff, equals(255));
+          expect((color1.a * 255.0).round() & 0xff, equals(255));
+          expect((colorMid.a * 255.0).round() & 0xff, equals(255));
         }
       });
 
@@ -313,9 +325,9 @@ void main() {
             final color = scheme.getEquipotentialColor(ratio);
 
             // In monochrome, RGB values should be similar (allowing some tolerance)
-            final r = (color.red);
-            final g = (color.green);
-            final b = (color.blue);
+            final r = ((color.r * 255.0).round() & 0xff);
+            final g = ((color.g * 255.0).round() & 0xff);
+            final b = ((color.b * 255.0).round() & 0xff);
 
             // Check if it's roughly grayscale (allowing some color tinting)
             final maxDiff = [
@@ -352,9 +364,9 @@ void main() {
 
           for (double ratio in [0.2, 0.5, 0.8]) {
             final color = scheme.getEquipotentialColor(ratio);
-            final r = color.red;
-            final g = color.green;
-            final b = color.blue;
+            final r = (color.r * 255.0).round() & 0xff;
+            final g = (color.g * 255.0).round() & 0xff;
+            final b = (color.b * 255.0).round() & 0xff;
 
             // Green component should be significant in emerald scheme
             expect(g, greaterThan(0));
@@ -468,19 +480,19 @@ void main() {
           ];
 
           for (final color in colors) {
-            expect(color.red, inInclusiveRange(0, 255));
-            expect(color.green, inInclusiveRange(0, 255));
-            expect(color.blue, inInclusiveRange(0, 255));
-            expect(color.alpha, inInclusiveRange(0, 255));
+            expect((color.r * 255.0).round() & 0xff, inInclusiveRange(0, 255));
+            expect((color.g * 255.0).round() & 0xff, inInclusiveRange(0, 255));
+            expect((color.b * 255.0).round() & 0xff, inInclusiveRange(0, 255));
+            expect((color.a * 255.0).round() & 0xff, inInclusiveRange(0, 255));
           }
 
           // Test equipotential colors too
           for (double ratio in [0.0, 0.1, 0.5, 0.9, 1.0]) {
             final color = scheme.getEquipotentialColor(ratio);
-            expect(color.red, inInclusiveRange(0, 255));
-            expect(color.green, inInclusiveRange(0, 255));
-            expect(color.blue, inInclusiveRange(0, 255));
-            expect(color.alpha, inInclusiveRange(0, 255));
+            expect((color.r * 255.0).round() & 0xff, inInclusiveRange(0, 255));
+            expect((color.g * 255.0).round() & 0xff, inInclusiveRange(0, 255));
+            expect((color.b * 255.0).round() & 0xff, inInclusiveRange(0, 255));
+            expect((color.a * 255.0).round() & 0xff, inInclusiveRange(0, 255));
           }
         }
       });
@@ -527,7 +539,7 @@ void main() {
           final color = scheme.getEquipotentialColor(0.5);
 
           // Test common Color operations
-          expect(color.withOpacity(0.5), isA<Color>());
+          expect(color.withValues(alpha: 0.5), isA<Color>());
           expect(color.withAlpha(128), isA<Color>());
           expect(Color.lerp(color, Colors.white, 0.5), isA<Color>());
           expect(HSVColor.fromColor(color), isA<HSVColor>());
