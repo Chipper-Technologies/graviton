@@ -12,6 +12,9 @@ enum UIAction {
   /// Dialog opened
   dialogOpened('dialog_opened'),
 
+  /// Screen opened
+  screenOpened('screen_opened'),
+
   /// Scenario selected
   scenarioSelected('scenario_selected'),
 

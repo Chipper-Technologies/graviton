@@ -149,7 +149,7 @@ class UIUtils {
             if (icon != null) ...[
               Icon(
                 icon,
-                size: 20,
+                size: AppTypography.iconSizeXLarge,
                 color: titleColor ?? AppColors.sectionTitlePurple,
               ),
               SizedBox(width: AppTypography.spacingSmall),
@@ -178,7 +178,11 @@ class UIUtils {
   }) {
     return Row(
       children: [
-        Icon(icon, size: 20, color: color ?? AppColors.sectionTitlePurple),
+        Icon(
+          icon,
+          size: AppTypography.iconSizeXLarge,
+          color: color ?? AppColors.sectionTitlePurple,
+        ),
         SizedBox(width: AppTypography.spacingSmall),
         Text(
           title,

@@ -75,6 +75,9 @@ class AppState extends ChangeNotifier {
     // so users can then individually toggle them off
     if (ui.globalGravityFields) {
       _ensureAllBodiesHaveGravityWellsEnabled();
+    } else {
+      // When global gravity fields is disabled, turn off all gravity wells
+      _disableAllGravityWells();
     }
 
     // Propagate realistic colors setting to simulation
@@ -91,6 +94,14 @@ class AppState extends ChangeNotifier {
       if (!body.showGravityWell) {
         body.showGravityWell = true;
       }
+    }
+  }
+
+  /// When global gravity fields is disabled, turn off all gravity wells
+  void _disableAllGravityWells() {
+    final bodies = simulation.bodies;
+    for (final body in bodies) {
+      body.showGravityWell = false;
     }
   }
 

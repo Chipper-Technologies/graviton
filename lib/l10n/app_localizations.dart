@@ -132,6 +132,12 @@ abstract class AppLocalizations {
   /// **'Reset'**
   String get resetButton;
 
+  /// Description for reset settings action
+  ///
+  /// In en, this message translates to:
+  /// **'Reset all settings to default values'**
+  String get resetSettingsDescription;
+
   /// Label for simulation speed control
   ///
   /// In en, this message translates to:
@@ -150,11 +156,209 @@ abstract class AppLocalizations {
   /// **'Stats'**
   String get statsLabel;
 
-  /// Label for select nearest object button
+  /// Label for bottom navigation camera button
   ///
   /// In en, this message translates to:
-  /// **'Select'**
-  String get selectLabel;
+  /// **'Camera'**
+  String get bottomNavCameraLabel;
+
+  /// Label for bottom navigation visuals button
+  ///
+  /// In en, this message translates to:
+  /// **'Visuals'**
+  String get bottomNavVisualsLabel;
+
+  /// Label for bottom navigation physics button
+  ///
+  /// In en, this message translates to:
+  /// **'Physics'**
+  String get bottomNavPhysicsLabel;
+
+  /// Tooltip for camera tab button
+  ///
+  /// In en, this message translates to:
+  /// **'Camera settings and AI modes'**
+  String get cameraTooltip;
+
+  /// Tooltip for visuals tab button
+  ///
+  /// In en, this message translates to:
+  /// **'Visual display options'**
+  String get visualsTooltip;
+
+  /// Tooltip for physics tab button
+  ///
+  /// In en, this message translates to:
+  /// **'Physics visualization and settings'**
+  String get physicsTooltip;
+
+  /// Section title for AI camera modes
+  ///
+  /// In en, this message translates to:
+  /// **'AI Camera Modes'**
+  String get aiCameraModesTitle;
+
+  /// Title for manual camera control mode
+  ///
+  /// In en, this message translates to:
+  /// **'Manual Control'**
+  String get manualControlTitle;
+
+  /// Description for manual camera control mode
+  ///
+  /// In en, this message translates to:
+  /// **'Full manual camera control'**
+  String get manualControlDescription;
+
+  /// Title for predictive orbital camera mode
+  ///
+  /// In en, this message translates to:
+  /// **'Predictive Orbital'**
+  String get predictiveOrbitalTitle;
+
+  /// Description for predictive orbital camera mode
+  ///
+  /// In en, this message translates to:
+  /// **'AI predicts optimal orbital views'**
+  String get predictiveOrbitalDescription;
+
+  /// Title for dynamic framing camera mode
+  ///
+  /// In en, this message translates to:
+  /// **'Dynamic Framing'**
+  String get dynamicFramingTitle;
+
+  /// Description for dynamic framing camera mode
+  ///
+  /// In en, this message translates to:
+  /// **'AI dynamically frames all objects'**
+  String get dynamicFramingDescription;
+
+  /// Section title for manual camera controls
+  ///
+  /// In en, this message translates to:
+  /// **'Manual Controls'**
+  String get manualControlsTitle;
+
+  /// Button text for selecting nearest celestial body
+  ///
+  /// In en, this message translates to:
+  /// **'Select Nearest'**
+  String get selectNearestTitle;
+
+  /// Button text for stopping follow mode
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Follow'**
+  String get stopFollowTitle;
+
+  /// Button text for starting follow mode
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get followTitle;
+
+  /// Button text for centering the camera view
+  ///
+  /// In en, this message translates to:
+  /// **'Center View'**
+  String get centerViewTitle;
+
+  /// Button text for stopping auto rotation
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Rotate'**
+  String get stopRotateTitle;
+
+  /// Button text for starting auto rotation
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Rotate'**
+  String get autoRotateTitle;
+
+  /// Section title for visual display options
+  ///
+  /// In en, this message translates to:
+  /// **'Display Options'**
+  String get displayOptionsTitle;
+
+  /// Toggle title for showing orbital trails
+  ///
+  /// In en, this message translates to:
+  /// **'Show Trails'**
+  String get showTrailsTitle;
+
+  /// Toggle title for showing body labels
+  ///
+  /// In en, this message translates to:
+  /// **'Show Labels'**
+  String get showLabelsTitle;
+
+  /// Toggle title for realistic color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Realistic Colors'**
+  String get realisticColorsTitle;
+
+  /// Section title for physics visualization options
+  ///
+  /// In en, this message translates to:
+  /// **'Physics Visualization'**
+  String get physicsVisualizationTitle;
+
+  /// Toggle title for gravity field visualization
+  ///
+  /// In en, this message translates to:
+  /// **'Gravity Fields'**
+  String get gravityFieldsTitle;
+
+  /// Description for gravity field visualization toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Show gravitational field visualization'**
+  String get gravityFieldsDescription;
+
+  /// Section title for debug and statistics options
+  ///
+  /// In en, this message translates to:
+  /// **'Debug & Statistics'**
+  String get debugStatisticsTitle;
+
+  /// Toggle title for showing statistics
+  ///
+  /// In en, this message translates to:
+  /// **'Show Statistics'**
+  String get showStatisticsTitle;
+
+  /// Description for statistics display toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Display performance and physics stats'**
+  String get showStatisticsDescription;
+
+  /// Section title for current simulation statistics
+  ///
+  /// In en, this message translates to:
+  /// **'Current Statistics'**
+  String get currentStatisticsTitle;
+
+  /// Statistics label for number of celestial bodies
+  ///
+  /// In en, this message translates to:
+  /// **'Bodies'**
+  String get bodiesStatLabel;
+
+  /// Statistics label for current time scale multiplier
+  ///
+  /// In en, this message translates to:
+  /// **'Time Scale'**
+  String get timeScaleStatLabel;
+
+  /// Statistics label for currently selected body
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get selectedStatLabel;
 
   /// Label for follow object button
   ///
@@ -252,16 +456,16 @@ abstract class AppLocalizations {
   /// **'Select Object to Follow'**
   String get selectObjectToFollowTooltip;
 
-  /// Title for the settings dialog
+  /// Title for the application settings screen
   ///
   /// In en, this message translates to:
-  /// **'Settings'**
+  /// **'Application Settings'**
   String get settingsTitle;
 
   /// Tooltip for the settings button in the app bar
   ///
   /// In en, this message translates to:
-  /// **'Settings'**
+  /// **'Application Settings'**
   String get settingsTooltip;
 
   /// Tooltip for the scenario selection button in the app bar
@@ -383,6 +587,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tutorial & objectives'**
   String get helpMenuDescription;
+
+  /// Description for the about menu item
+  ///
+  /// In en, this message translates to:
+  /// **'App information & credits'**
+  String get aboutMenuDescription;
 
   /// Label for the show trails switch
   ///
@@ -1560,6 +1770,12 @@ abstract class AppLocalizations {
   /// **'Hide app bar, bottom navigation, and copyright when screenshot mode is active'**
   String get hideUIInScreenshotModeSubtitle;
 
+  /// Countdown message shown before taking a screenshot
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot in {seconds}s'**
+  String screenshotCountdown(int seconds);
+
   /// Label for scene preset selection
   ///
   /// In en, this message translates to:
@@ -2205,7 +2421,7 @@ abstract class AppLocalizations {
   /// Debug section title for changelog in settings
   ///
   /// In en, this message translates to:
-  /// **'Changelog (Debug)'**
+  /// **'Changelog'**
   String get changelogDebugTitle;
 
   /// Error message when no changelog data is found
@@ -2219,6 +2435,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load changelog: {error}'**
   String changelogLoadError(String error);
+
+  /// Message when no changelogs are available
+  ///
+  /// In en, this message translates to:
+  /// **'No changelogs available'**
+  String get noChangelogsAvailable;
+
+  /// Error message when failing to load changelogs
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading changelogs: {error}'**
+  String errorLoadingChangelogs(String error);
 
   /// Color description for very hot stars (O-type)
   ///
@@ -2261,6 +2489,282 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Red'**
   String get stellarColorRed;
+
+  /// Section title for orbital path visualization controls
+  ///
+  /// In en, this message translates to:
+  /// **'Path Visualization'**
+  String get pathVisualizationTitle;
+
+  /// Section title for navigation assistance features
+  ///
+  /// In en, this message translates to:
+  /// **'Navigation Aids'**
+  String get navigationAidsTitle;
+
+  /// Label for classic gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get gravityFieldClassicLabel;
+
+  /// Label for spectral gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Spectral'**
+  String get gravityFieldSpectralLabel;
+
+  /// Label for monochrome gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Monochrome'**
+  String get gravityFieldMonochromeLabel;
+
+  /// Label for neon gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Neon'**
+  String get gravityFieldNeonLabel;
+
+  /// Label for emerald gravity field color scheme
+  ///
+  /// In en, this message translates to:
+  /// **'Emerald'**
+  String get gravityFieldEmeraldLabel;
+
+  /// Description for app information and credits menu item
+  ///
+  /// In en, this message translates to:
+  /// **'App information and credits'**
+  String get appInformationCredits;
+
+  /// Title for developer tools dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Developer Tools'**
+  String get developerToolsTitle;
+
+  /// Description for developer tools menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Debug tools for development'**
+  String get developerToolsMenuDescription;
+
+  /// Description for tutorial button
+  ///
+  /// In en, this message translates to:
+  /// **'Interactive guided tour of the app'**
+  String get tutorialDescription;
+
+  /// Description for reset tutorial button
+  ///
+  /// In en, this message translates to:
+  /// **'Reset tutorial progress'**
+  String get resetTutorialDescription;
+
+  /// Description for changelog button
+  ///
+  /// In en, this message translates to:
+  /// **'View app updates and changes'**
+  String get changelogDescription;
+
+  /// Description for reset changelog button
+  ///
+  /// In en, this message translates to:
+  /// **'Reset changelog read status'**
+  String get resetChangelogDescription;
+
+  /// Success message when tutorial is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial progress has been reset'**
+  String get tutorialResetSuccess;
+
+  /// Success message when changelog is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Changelog status has been reset'**
+  String get changelogResetSuccess;
+
+  /// Label for copyright information section
+  ///
+  /// In en, this message translates to:
+  /// **'Copyright'**
+  String get copyrightLabel;
+
+  /// Copyright notice text
+  ///
+  /// In en, this message translates to:
+  /// **'All rights reserved'**
+  String get allRightsReserved;
+
+  /// Display name for star body type
+  ///
+  /// In en, this message translates to:
+  /// **'Star'**
+  String get bodyTypeStar;
+
+  /// Display name for planet body type
+  ///
+  /// In en, this message translates to:
+  /// **'Planet'**
+  String get bodyTypePlanet;
+
+  /// Display name for moon body type
+  ///
+  /// In en, this message translates to:
+  /// **'Moon'**
+  String get bodyTypeMoon;
+
+  /// Display name for asteroid body type
+  ///
+  /// In en, this message translates to:
+  /// **'Asteroid'**
+  String get bodyTypeAsteroid;
+
+  /// Display name for development app flavor
+  ///
+  /// In en, this message translates to:
+  /// **'Development'**
+  String get appFlavorDevelopment;
+
+  /// Display name for production app flavor
+  ///
+  /// In en, this message translates to:
+  /// **'Production'**
+  String get appFlavorProduction;
+
+  /// Display name for error notification type
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get notificationTypeError;
+
+  /// Display name for warning notification type
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get notificationTypeWarning;
+
+  /// Display name for info notification type
+  ///
+  /// In en, this message translates to:
+  /// **'Info'**
+  String get notificationTypeInfo;
+
+  /// Display name for success notification type
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get notificationTypeSuccess;
+
+  /// Display name for debug notification type
+  ///
+  /// In en, this message translates to:
+  /// **'Debug'**
+  String get notificationTypeDebug;
+
+  /// Display name for full tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'Full Tracking'**
+  String get trackingModeFull;
+
+  /// Display name for essential tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'Essential Only'**
+  String get trackingModeEssential;
+
+  /// Display name for no tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'No Tracking'**
+  String get trackingModeNone;
+
+  /// Display name for limited tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'Limited Tracking'**
+  String get trackingModeLimited;
+
+  /// Description for full tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'All analytics, crashes, and interactions'**
+  String get trackingModeFullDescription;
+
+  /// Description for essential tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'Critical crashes and errors only'**
+  String get trackingModeEssentialDescription;
+
+  /// Description for no tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'No data collection'**
+  String get trackingModeNoneDescription;
+
+  /// Description for limited tracking mode
+  ///
+  /// In en, this message translates to:
+  /// **'User interactions only'**
+  String get trackingModeLimitedDescription;
+
+  /// Display name for added changelog category
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get changelogCategoryAdded;
+
+  /// Display name for improved changelog category
+  ///
+  /// In en, this message translates to:
+  /// **'Improved'**
+  String get changelogCategoryImproved;
+
+  /// Display name for fixed changelog category
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed'**
+  String get changelogCategoryFixed;
+
+  /// Display name for manual camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Manual Control'**
+  String get cameraManual;
+
+  /// Display name for predictive orbital camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Predictive Orbital'**
+  String get cameraPredictiveOrbital;
+
+  /// Display name for dynamic framing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Dynamic Framing'**
+  String get cameraDynamicFraming;
+
+  /// Description for manual camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional manual camera controls with follow mode'**
+  String get cameraManualDescription;
+
+  /// Description for predictive orbital camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'AI predicts orbital paths for dramatic camera movements'**
+  String get cameraPredictiveOrbitalDescription;
+
+  /// Description for dynamic framing camera technique
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically adjusts framing based on scene content'**
+  String get cameraDynamicFramingDescription;
 }
 
 class _AppLocalizationsDelegate

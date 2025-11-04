@@ -3,6 +3,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/version_service.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/dialog_title.dart';
 
 /// Dialog that prompts users to update when they're running an outdated version
 class VersionCheckDialog extends StatelessWidget {
@@ -21,18 +22,10 @@ class VersionCheckDialog extends StatelessWidget {
         backgroundColor:
             DialogTheme.of(context).backgroundColor ??
             theme.colorScheme.surface,
-        title: Row(
-          children: [
-            Icon(Icons.system_update, color: theme.colorScheme.error, size: 24),
-            const SizedBox(width: AppTypography.spacingMedium),
-            Text(
-              l10n.updateRequiredTitle,
-              style: theme.textTheme.titleLarge?.copyWith(
-                color: theme.colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        title: DialogTitle(
+          title: l10n.updateRequiredTitle,
+          icon: Icons.system_update,
+          iconColor: theme.colorScheme.error,
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -66,7 +59,7 @@ class VersionCheckDialog extends StatelessWidget {
                   Icon(
                     Icons.warning_rounded,
                     color: theme.colorScheme.error,
-                    size: 20,
+                    size: AppTypography.iconSizeXLarge,
                   ),
                   const SizedBox(width: AppTypography.spacingSmall),
                   Expanded(
@@ -117,7 +110,7 @@ class VersionCheckDialog extends StatelessWidget {
               children: [
                 Icon(
                   Icons.open_in_new,
-                  size: 18,
+                  size: AppTypography.iconSizeLarge,
                   color: theme.colorScheme.onPrimary,
                 ),
                 const SizedBox(width: AppTypography.spacingSmall),

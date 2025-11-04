@@ -28,15 +28,15 @@ enum ChangelogCategory {
     }
   }
 
-  /// Get display name for UI
-  String get displayName {
+  /// Localization key for display name in UI
+  String get localizationKey {
     switch (this) {
       case ChangelogCategory.added:
-        return 'Added';
+        return 'changelogCategoryAdded';
       case ChangelogCategory.improved:
-        return 'Improved';
+        return 'changelogCategoryImproved';
       case ChangelogCategory.fixed:
-        return 'Fixed';
+        return 'changelogCategoryFixed';
     }
   }
 

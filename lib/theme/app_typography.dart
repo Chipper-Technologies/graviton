@@ -55,6 +55,8 @@ class AppTypography {
   static const double iconSizeLarge = 18.0;
   static const double iconSizeXLarge = 20.0;
   static const double iconSizeXXLarge = 24.0;
+  static const double iconSizeXXXLarge = 28.0;
+  static const double iconSizeXXXXLarge = 48.0;
 
   // =============================================================================
   // SPACING & DIMENSIONS

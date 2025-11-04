@@ -63,7 +63,7 @@ class AppBarSpeedControl extends StatelessWidget {
               children: [
                 Icon(
                   Icons.speed,
-                  size: 14,
+                  size: AppTypography.iconSizeSmall,
                   color: AppColors.uiWhite.withValues(
                     alpha: AppTypography.opacityVeryHigh,
                   ),
@@ -80,7 +80,7 @@ class AppBarSpeedControl extends StatelessWidget {
                 const SizedBox(width: 1),
                 Icon(
                   Icons.arrow_drop_down,
-                  size: 14,
+                  size: AppTypography.iconSizeSmall,
                   color: AppColors.uiWhite.withValues(
                     alpha: AppTypography.opacityMediumHigh,
                   ),
@@ -105,7 +105,7 @@ class AppBarSpeedControl extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: 16,
+            size: AppTypography.iconSizeMedium,
             color: AppColors.uiWhite.withValues(
               alpha: AppTypography.opacityHigh,
             ),

@@ -61,31 +61,31 @@ extension UserBehaviorTrackingModeExtension on UserBehaviorTrackingMode {
       this == UserBehaviorTrackingMode.full ||
       this == UserBehaviorTrackingMode.limited;
 
-  /// Display name for settings UI
-  String get displayName {
+  /// Localization key for display name in settings UI
+  String get localizationKey {
     switch (this) {
       case UserBehaviorTrackingMode.full:
-        return 'Full Tracking';
+        return 'trackingModeFull';
       case UserBehaviorTrackingMode.essential:
-        return 'Essential Only';
+        return 'trackingModeEssential';
       case UserBehaviorTrackingMode.none:
-        return 'No Tracking';
+        return 'trackingModeNone';
       case UserBehaviorTrackingMode.limited:
-        return 'Limited Tracking';
+        return 'trackingModeLimited';
     }
   }
 
-  /// Description for settings UI
-  String get description {
+  /// Localization key for description in settings UI
+  String get descriptionKey {
     switch (this) {
       case UserBehaviorTrackingMode.full:
-        return 'All analytics, crashes, and interactions';
+        return 'trackingModeFullDescription';
       case UserBehaviorTrackingMode.essential:
-        return 'Critical crashes and errors only';
+        return 'trackingModeEssentialDescription';
       case UserBehaviorTrackingMode.none:
-        return 'No data collection';
+        return 'trackingModeNoneDescription';
       case UserBehaviorTrackingMode.limited:
-        return 'User interactions only';
+        return 'trackingModeLimitedDescription';
     }
   }
 }

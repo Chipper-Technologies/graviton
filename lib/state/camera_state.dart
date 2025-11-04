@@ -259,6 +259,27 @@ class CameraState extends ChangeNotifier {
 
   /// Reset view with optimal zoom for a specific scenario
   void resetViewForScenario(ScenarioType scenario, List<Body> bodies) {
+    // Safety check: ensure bodies list is valid before proceeding
+    if (bodies.isEmpty) {
+      // Use fallback values for empty bodies as expected by tests
+      _yaw = 0.6;
+      _pitch = 0.3;
+      _roll = 0.0;
+      _target = vm.Vector3.zero();
+      _distance = 50.0; // Fallback distance for empty bodies
+      _selectedBody = null;
+      _autoRotate = AutoRotateStatus.off;
+      _followMode = false;
+      _followedBodyIndex = null;
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.cameraAutoZoom,
+        element: UIElement.scenario,
+        value: scenario.name,
+      );
+      notifyListeners();
+      return;
+    }
+
     // Special camera settings for galaxy formation
     if (scenario == ScenarioType.galaxyFormation) {
       _yaw = 0.77; // Perfect yaw for horizontal galaxy view

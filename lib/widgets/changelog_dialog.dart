@@ -3,6 +3,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/changelog.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/dialog_title.dart';
 import 'package:intl/intl.dart';
 
 /// Dialog that displays changelogs with swipe navigation
@@ -176,23 +177,16 @@ class _ChangelogDialogState extends State<ChangelogDialog>
       child: Column(
         children: [
           // Title row with close button
-          Row(
-            children: [
-              Icon(Icons.assignment, color: AppColors.primaryColor, size: 28),
-              SizedBox(width: AppTypography.spacingMedium),
-              Text(
-                l10n.changelogTitle,
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Spacer(),
-              IconButton(
-                onPressed: _skip,
-                icon: const Icon(Icons.close),
-                tooltip: l10n.closeDialog,
-              ),
-            ],
+          DialogTitle(
+            title: l10n.changelogTitle,
+            icon: Icons.assignment,
+            iconColor: AppColors.primaryColor,
+            iconSize: AppTypography.iconSizeXXXLarge,
+            trailing: IconButton(
+              onPressed: _skip,
+              icon: const Icon(Icons.close),
+              tooltip: l10n.closeDialog,
+            ),
           ),
 
           SizedBox(height: AppTypography.spacingMedium),
@@ -308,7 +302,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
       padding: const EdgeInsets.only(top: 8),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: color),
+          Icon(icon, size: AppTypography.iconSizeXLarge, color: color),
           const SizedBox(width: 8),
           Text(
             title,

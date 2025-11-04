@@ -42,6 +42,43 @@ class AppConfig {
     prod: 'https://api.chipperlabs.com',
   );
 
+  // External URLs
+  static String get githubUrl => const String.fromEnvironment(
+    'GITHUB_URL',
+    defaultValue: 'https://github.com/Chipper-Technologies/graviton',
+  );
+
+  static String get websiteUrl => const String.fromEnvironment(
+    'WEBSITE_URL',
+    defaultValue: 'https://chippertechnology.com',
+  );
+
+  static String get privacyPolicyUrl => const String.fromEnvironment(
+    'PRIVACY_POLICY_URL',
+    defaultValue: 'https://chippertechnology.com/privacy-policy/graviton',
+  );
+
+  static String get companyWebsiteUrl => const String.fromEnvironment(
+    'COMPANY_WEBSITE_URL',
+    defaultValue: 'https://chippertechnology.com',
+  );
+
+  // Asset paths
+  static String get appLogoPath => const String.fromEnvironment(
+    'APP_LOGO_PATH',
+    defaultValue: 'assets/images/app-logo.png',
+  );
+
+  static String get chipperLogoPath => const String.fromEnvironment(
+    'CHIPPER_LOGO_PATH',
+    defaultValue: 'assets/images/chipper-logo.svg',
+  );
+
+  static String get gravitonLogoPath => const String.fromEnvironment(
+    'GRAVITON_LOGO_PATH',
+    defaultValue: 'assets/images/graviton-logo.svg',
+  );
+
   // Analytics
   static bool get enableAnalytics => flavor.getFlavorValue(
     dev: true, // Enable for testing

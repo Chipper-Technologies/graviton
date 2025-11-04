@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/config/flavor_config.dart';
+import 'package:graviton/enums/tutorial_action.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/models/tutorial_step.dart';
+import 'package:graviton/painters/highlight_painter.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 
@@ -256,11 +260,11 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                     ? Container(
                                         width: 48,
                                         height: 48,
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                             image: AssetImage(
-                                              'assets/images/app-logo.png',
+                                              AppConfig.appLogoPath,
                                             ),
                                             fit: BoxFit.cover,
                                           ),
@@ -268,7 +272,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                       )
                                     : Icon(
                                         step.icon,
-                                        size: 48,
+                                        size: AppTypography.iconSizeXXXXLarge,
                                         color: _getIconColor(_currentStep),
                                       ),
                               ),
@@ -413,7 +417,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                 ),
                 child: Icon(
                   Icons.more_vert,
-                  size: 16,
+                  size: AppTypography.iconSizeMedium,
                   color: theme.colorScheme.primary,
                 ),
               ),
@@ -545,54 +549,4 @@ class _TutorialOverlayState extends State<TutorialOverlay>
       ),
     ];
   }
-}
-
-class TutorialStep {
-  final String title;
-  final String description;
-  final IconData icon;
-  final Rect? highlightArea;
-  final TutorialAction? action;
-  final bool isLogoStep;
-
-  const TutorialStep({
-    required this.title,
-    required this.description,
-    required this.icon,
-    this.highlightArea,
-    this.action,
-    this.isLogoStep = false,
-  });
-}
-
-enum TutorialAction {
-  highlightAppBar,
-  highlightBottomControls,
-  highlightScenarioButton,
-  highlightFloatingControls,
-}
-
-class HighlightPainter extends CustomPainter {
-  final Rect highlightArea;
-
-  HighlightPainter(this.highlightArea);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = AppColors.uiWhite.withValues(alpha: AppTypography.opacitySubtle)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        highlightArea,
-        const Radius.circular(AppTypography.radiusMedium),
-      ),
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

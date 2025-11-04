@@ -291,6 +291,8 @@ dev_dependencies:
   flutter_lints: ^6.0.0     # Dart/Flutter linting rules
   flutter_launcher_icons: ^0.14.4 # App icon generation
   flutter_native_splash: ^2.4.7   # Native splash screen generation
+  mockito: ^5.5.1           # Mock generation for testing
+  build_runner: ^2.10.1     # Code generation (mocks, serialization)
 ```
 
 ### 🎯 Quick Start Guide
@@ -527,6 +529,46 @@ Process raw device screenshots into optimized images for documentation and app s
 - Automated markdown generation for clickable galleries
 - Support for Android (16:9, 9:16) and iOS (standard) dimensions
 
+### 🏗️ Code Generation with build_runner
+Generate mock classes and other boilerplate code for testing and development:
+
+```bash
+# Generate all code (mocks, serialization, etc.)
+dart run build_runner build
+
+# Generate with cleanup of old files
+dart run build_runner build --delete-conflicting-outputs
+
+# Watch mode - regenerate on file changes
+dart run build_runner watch
+
+# Clean generated files
+dart run build_runner clean
+```
+
+**Features:**
+- **Mock Generation**: Automatically generates mock classes for testing using `mockito`
+- **Test Development**: Essential for creating comprehensive widget and unit tests
+- **Code Watching**: Monitor file changes and regenerate code automatically
+- **Conflict Resolution**: Clean up and regenerate conflicting files
+- **Development Efficiency**: Streamlines testing infrastructure setup
+
+**Generated Files:**
+- `*.mocks.dart` - Mock classes for testing external dependencies
+- Located in test directories alongside their corresponding test files
+- Automatically excluded from version control via `.gitignore`
+
+**Usage in Testing:**
+```dart
+// Example: Generate mocks for services
+@GenerateMocks([RemoteConfigService, FirebaseService])
+import 'your_test_file.mocks.dart';
+
+// Use generated mocks in tests
+final mockService = MockRemoteConfigService();
+when(mockService.someMethod()).thenReturn(expectedValue);
+```
+
 ### 🔐 Android Keystore Generation
 Create release keystores for Google Play Store distribution:
 
@@ -724,6 +766,7 @@ For detailed technical information and development guides, please refer to our c
 
 ### 🧪 Testing Documentation
 - **[Testing Guide](test/README.md)** - Comprehensive testing strategy and test organization
+- **Code Generation**: Use `dart run build_runner build` to generate mock classes for testing
 
 ### 📋 Development Guides
 - **[Contributing Guidelines](CONTRIBUTING.md)** - How to contribute to the project
@@ -1366,6 +1409,35 @@ flutter clean && flutter pub get
 - **Comprehensive test coverage**: 473+ tests with 41% line coverage across models, services, state, and UI
 - **Modular architecture**: Clean separation between rendering, physics, and state management
 - **Enhanced debugging**: Preserved debug information in comments for future development
+- **Centralized configuration**: `AppConfig` class provides unified access to asset paths, URLs, and environment-specific settings
+
+#### 📋 Configuration Management
+
+The app uses a centralized configuration system (`AppConfig`) that improves maintainability and reduces hardcoded values:
+
+**Asset Path Management:**
+```dart
+// ✅ Centralized approach (recommended)
+image: AssetImage(AppConfig.appLogoPath),
+
+// ❌ Hardcoded approach (avoid)
+image: AssetImage('assets/images/app-logo.png'),
+```
+
+**Benefits:**
+- **Single source of truth**: All asset paths defined in `lib/config/flavor_config.dart`
+- **Environment flexibility**: Asset paths can be overridden via `--dart-define` for different environments
+- **Maintainability**: Changes to asset locations only require updating one file
+- **Type safety**: Compile-time validation of configuration constants
+
+**Available Constants:**
+- `AppConfig.appLogoPath` - Main application logo
+- `AppConfig.chipperLogoPath` - Company logo  
+- `AppConfig.gravitonLogoPath` - Graviton-specific branding
+- `AppConfig.githubUrl` - GitHub repository URL
+- `AppConfig.privacyPolicyUrl` - Privacy policy link
+
+⚠️ **Important**: When moving or renaming assets, update the default values in `AppConfig` to maintain consistency across all usage locations.
 
 ---
 

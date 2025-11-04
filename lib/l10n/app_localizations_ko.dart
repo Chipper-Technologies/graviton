@@ -21,6 +21,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get resetButton => '재설정';
 
   @override
+  String get resetSettingsDescription => '모든 설정을 기본값으로 재설정';
+
+  @override
   String get speedLabel => '속도';
 
   @override
@@ -30,7 +33,106 @@ class AppLocalizationsKo extends AppLocalizations {
   String get statsLabel => '통계';
 
   @override
-  String get selectLabel => '선택';
+  String get bottomNavCameraLabel => '카메라';
+
+  @override
+  String get bottomNavVisualsLabel => '시각적';
+
+  @override
+  String get bottomNavPhysicsLabel => '물리';
+
+  @override
+  String get cameraTooltip => '카메라 설정 및 AI 모드';
+
+  @override
+  String get visualsTooltip => '시각적 디스플레이 옵션';
+
+  @override
+  String get physicsTooltip => '물리 시각화 및 설정';
+
+  @override
+  String get aiCameraModesTitle => 'AI 카메라 모드';
+
+  @override
+  String get manualControlTitle => '수동 제어';
+
+  @override
+  String get manualControlDescription => '완전한 수동 카메라 제어';
+
+  @override
+  String get predictiveOrbitalTitle => '예측 궤도';
+
+  @override
+  String get predictiveOrbitalDescription => 'AI가 최적의 궤도 뷰를 예측';
+
+  @override
+  String get dynamicFramingTitle => '동적 프레이밍';
+
+  @override
+  String get dynamicFramingDescription => 'AI가 모든 객체를 동적으로 프레이밍';
+
+  @override
+  String get manualControlsTitle => '수동 제어';
+
+  @override
+  String get selectNearestTitle => '가장 가까운 선택';
+
+  @override
+  String get stopFollowTitle => '추적 중지';
+
+  @override
+  String get followTitle => '추적';
+
+  @override
+  String get centerViewTitle => '중앙 뷰';
+
+  @override
+  String get stopRotateTitle => '회전 중지';
+
+  @override
+  String get autoRotateTitle => '자동 회전';
+
+  @override
+  String get displayOptionsTitle => '디스플레이 옵션';
+
+  @override
+  String get showTrailsTitle => '궤적 표시';
+
+  @override
+  String get showLabelsTitle => '라벨 표시';
+
+  @override
+  String get realisticColorsTitle => '사실적인 색상';
+
+  @override
+  String get physicsVisualizationTitle => '물리 시각화';
+
+  @override
+  String get gravityFieldsTitle => '중력장';
+
+  @override
+  String get gravityFieldsDescription => '중력장 시각화 표시';
+
+  @override
+  String get debugStatisticsTitle => '디버그 및 통계';
+
+  @override
+  String get showStatisticsTitle => '통계 표시';
+
+  @override
+  String get showStatisticsDescription => '성능 및 물리 통계 표시';
+
+  @override
+  String get currentStatisticsTitle => '현재 통계';
+
+  @override
+  String get bodiesStatLabel => '천체';
+
+  @override
+  String get timeScaleStatLabel => '시간 배율';
+
+  @override
+  String get selectedStatLabel => '선택됨';
 
   @override
   String get followLabel => '추적';
@@ -81,10 +183,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get selectObjectToFollowTooltip => '추적할 객체 선택';
 
   @override
-  String get settingsTitle => '설정';
+  String get settingsTitle => '애플리케이션 설정';
 
   @override
-  String get settingsTooltip => '설정';
+  String get settingsTooltip => '애플리케이션 설정';
 
   @override
   String get selectScenarioTooltip => '시나리오 선택';
@@ -145,6 +247,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get helpMenuDescription => '튜토리얼 및 목표';
+
+  @override
+  String get aboutMenuDescription => '앱 정보 및 크레딧';
 
   @override
   String get showTrails => '궤적 표시';
@@ -767,6 +872,11 @@ class AppLocalizationsKo extends AppLocalizations {
       '스크린샷 모드가 활성화될 때 앱 바, 하단 내비게이션, 저작권을 숨김';
 
   @override
+  String screenshotCountdown(int seconds) {
+    return '스크린샷 $seconds초 후';
+  }
+
+  @override
   String get scenePreset => '장면 프리셋';
 
   @override
@@ -1125,6 +1235,14 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get noChangelogsAvailable => '사용 가능한 변경 로그가 없습니다';
+
+  @override
+  String errorLoadingChangelogs(String error) {
+    return '변경 로그 로드 오류: $error';
+  }
+
+  @override
   String get stellarColorBlue => '파랑';
 
   @override
@@ -1144,4 +1262,143 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get stellarColorRed => '빨강';
+
+  @override
+  String get pathVisualizationTitle => '궤도 시각화';
+
+  @override
+  String get navigationAidsTitle => '탐색 도구';
+
+  @override
+  String get gravityFieldClassicLabel => '클래식';
+
+  @override
+  String get gravityFieldSpectralLabel => '스펙트럼';
+
+  @override
+  String get gravityFieldMonochromeLabel => '모노크롬';
+
+  @override
+  String get gravityFieldNeonLabel => '네온';
+
+  @override
+  String get gravityFieldEmeraldLabel => '에메랄드';
+
+  @override
+  String get appInformationCredits => '앱 정보 및 크레딧';
+
+  @override
+  String get developerToolsTitle => '개발자 도구';
+
+  @override
+  String get developerToolsMenuDescription => '개발용 디버그 도구';
+
+  @override
+  String get tutorialDescription => '앱의 인터랙티브 가이드 투어';
+
+  @override
+  String get resetTutorialDescription => '튜토리얼 진행 상황 재설정';
+
+  @override
+  String get changelogDescription => '앱 업데이트 및 변경 사항 보기';
+
+  @override
+  String get resetChangelogDescription => '변경 로그 읽음 상태 재설정';
+
+  @override
+  String get tutorialResetSuccess => '튜토리얼 진행 상황이 재설정되었습니다';
+
+  @override
+  String get changelogResetSuccess => '변경 로그 상태가 재설정되었습니다';
+
+  @override
+  String get copyrightLabel => '저작권';
+
+  @override
+  String get allRightsReserved => '모든 권리 보유';
+
+  @override
+  String get bodyTypeStar => '항성';
+
+  @override
+  String get bodyTypePlanet => '행성';
+
+  @override
+  String get bodyTypeMoon => '달';
+
+  @override
+  String get bodyTypeAsteroid => '소행성';
+
+  @override
+  String get appFlavorDevelopment => '개발';
+
+  @override
+  String get appFlavorProduction => '프로덕션';
+
+  @override
+  String get notificationTypeError => '오류';
+
+  @override
+  String get notificationTypeWarning => '경고';
+
+  @override
+  String get notificationTypeInfo => '정보';
+
+  @override
+  String get notificationTypeSuccess => '성공';
+
+  @override
+  String get notificationTypeDebug => '디버그';
+
+  @override
+  String get trackingModeFull => '전체 추적';
+
+  @override
+  String get trackingModeEssential => '필수만';
+
+  @override
+  String get trackingModeNone => '추적 없음';
+
+  @override
+  String get trackingModeLimited => '제한된 추적';
+
+  @override
+  String get trackingModeFullDescription => '모든 분석, 충돌 및 상호작용';
+
+  @override
+  String get trackingModeEssentialDescription => '중요한 충돌 및 오류만';
+
+  @override
+  String get trackingModeNoneDescription => '데이터 수집 없음';
+
+  @override
+  String get trackingModeLimitedDescription => '사용자 상호작용만';
+
+  @override
+  String get changelogCategoryAdded => '추가됨';
+
+  @override
+  String get changelogCategoryImproved => '개선됨';
+
+  @override
+  String get changelogCategoryFixed => '수정됨';
+
+  @override
+  String get cameraManual => '수동 제어';
+
+  @override
+  String get cameraPredictiveOrbital => '예측 궤도';
+
+  @override
+  String get cameraDynamicFraming => '동적 프레이밍';
+
+  @override
+  String get cameraManualDescription => '팔로우 모드가 있는 전통적인 수동 카메라 제어';
+
+  @override
+  String get cameraPredictiveOrbitalDescription =>
+      'AI가 궤도 경로를 예측하여 극적인 카메라 움직임 제공';
+
+  @override
+  String get cameraDynamicFramingDescription => '장면 콘텐츠를 기반으로 프레이밍을 자동 조정';
 }

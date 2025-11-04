@@ -21,6 +21,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get resetButton => 'Reiniciar';
 
   @override
+  String get resetSettingsDescription =>
+      'Restablecer todos los ajustes a valores predeterminados';
+
+  @override
   String get speedLabel => 'Velocidad';
 
   @override
@@ -30,7 +34,110 @@ class AppLocalizationsEs extends AppLocalizations {
   String get statsLabel => 'Estadísticas';
 
   @override
-  String get selectLabel => 'Seleccionar';
+  String get bottomNavCameraLabel => 'Cámara';
+
+  @override
+  String get bottomNavVisualsLabel => 'Visuales';
+
+  @override
+  String get bottomNavPhysicsLabel => 'Física';
+
+  @override
+  String get cameraTooltip => 'Configuraciones de cámara y modos de IA';
+
+  @override
+  String get visualsTooltip => 'Opciones de visualización';
+
+  @override
+  String get physicsTooltip => 'Visualización y configuraciones de física';
+
+  @override
+  String get aiCameraModesTitle => 'Modos de Cámara IA';
+
+  @override
+  String get manualControlTitle => 'Control Manual';
+
+  @override
+  String get manualControlDescription => 'Control manual completo de la cámara';
+
+  @override
+  String get predictiveOrbitalTitle => 'Orbital Predictivo';
+
+  @override
+  String get predictiveOrbitalDescription =>
+      'IA predice vistas orbitales óptimas';
+
+  @override
+  String get dynamicFramingTitle => 'Encuadre Dinámico';
+
+  @override
+  String get dynamicFramingDescription =>
+      'IA encuadra dinámicamente todos los objetos';
+
+  @override
+  String get manualControlsTitle => 'Controles Manuales';
+
+  @override
+  String get selectNearestTitle => 'Seleccionar Más Cercano';
+
+  @override
+  String get stopFollowTitle => 'Dejar de Seguir';
+
+  @override
+  String get followTitle => 'Seguir';
+
+  @override
+  String get centerViewTitle => 'Centrar Vista';
+
+  @override
+  String get stopRotateTitle => 'Detener Rotación';
+
+  @override
+  String get autoRotateTitle => 'Rotación Automática';
+
+  @override
+  String get displayOptionsTitle => 'Opciones de Visualización';
+
+  @override
+  String get showTrailsTitle => 'Mostrar Rastros';
+
+  @override
+  String get showLabelsTitle => 'Mostrar Etiquetas';
+
+  @override
+  String get realisticColorsTitle => 'Colores Realistas';
+
+  @override
+  String get physicsVisualizationTitle => 'Visualización de Física';
+
+  @override
+  String get gravityFieldsTitle => 'Campos Gravitatorios';
+
+  @override
+  String get gravityFieldsDescription =>
+      'Mostrar visualización de campo gravitatorio';
+
+  @override
+  String get debugStatisticsTitle => 'Depuración y Estadísticas';
+
+  @override
+  String get showStatisticsTitle => 'Mostrar Estadísticas';
+
+  @override
+  String get showStatisticsDescription =>
+      'Mostrar estadísticas de rendimiento y física';
+
+  @override
+  String get currentStatisticsTitle => 'Estadísticas Actuales';
+
+  @override
+  String get bodiesStatLabel => 'Cuerpos';
+
+  @override
+  String get timeScaleStatLabel => 'Escala de Tiempo';
+
+  @override
+  String get selectedStatLabel => 'Seleccionado';
 
   @override
   String get followLabel => 'Seguir';
@@ -83,10 +190,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get selectObjectToFollowTooltip => 'Seleccionar Objeto para Seguir';
 
   @override
-  String get settingsTitle => 'Configuración';
+  String get settingsTitle => 'Configuración de la Aplicación';
 
   @override
-  String get settingsTooltip => 'Configuración';
+  String get settingsTooltip => 'Configuración de la Aplicación';
 
   @override
   String get selectScenarioTooltip => 'Seleccionar Escenario';
@@ -148,6 +255,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpMenuDescription => 'Tutorial y objetivos';
+
+  @override
+  String get aboutMenuDescription => 'Información de la app y créditos';
 
   @override
   String get showTrails => 'Mostrar Rastros';
@@ -793,6 +903,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Ocultar barra de aplicación, navegación inferior y copyright cuando el modo captura esté activo';
 
   @override
+  String screenshotCountdown(int seconds) {
+    return 'Captura en ${seconds}s';
+  }
+
+  @override
   String get scenePreset => 'Escena Predefinida';
 
   @override
@@ -1168,7 +1283,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'El estado del registro de cambios ha sido restablecido';
 
   @override
-  String get changelogDebugTitle => 'Registro de cambios (Debug)';
+  String get changelogDebugTitle => 'Registro de cambios';
 
   @override
   String changelogNotFoundError(String version) {
@@ -1178,6 +1293,14 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String changelogLoadError(String error) {
     return 'Error al cargar el registro de cambios: $error';
+  }
+
+  @override
+  String get noChangelogsAvailable => 'No hay registros de cambios disponibles';
+
+  @override
+  String errorLoadingChangelogs(String error) {
+    return 'Error al cargar los registros de cambios: $error';
   }
 
   @override
@@ -1200,4 +1323,151 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get stellarColorRed => 'Rojo';
+
+  @override
+  String get pathVisualizationTitle => 'Visualización de Trayectorias';
+
+  @override
+  String get navigationAidsTitle => 'Ayudas de Navegación';
+
+  @override
+  String get gravityFieldClassicLabel => 'Clásico';
+
+  @override
+  String get gravityFieldSpectralLabel => 'Espectral';
+
+  @override
+  String get gravityFieldMonochromeLabel => 'Monocromo';
+
+  @override
+  String get gravityFieldNeonLabel => 'Neón';
+
+  @override
+  String get gravityFieldEmeraldLabel => 'Esmeralda';
+
+  @override
+  String get appInformationCredits => 'Información de la app y créditos';
+
+  @override
+  String get developerToolsTitle => 'Herramientas de Desarrollador';
+
+  @override
+  String get developerToolsMenuDescription =>
+      'Herramientas de depuración para desarrollo';
+
+  @override
+  String get tutorialDescription => 'Tour guiado interactivo de la app';
+
+  @override
+  String get resetTutorialDescription => 'Restablecer progreso del tutorial';
+
+  @override
+  String get changelogDescription => 'Ver actualizaciones y cambios de la app';
+
+  @override
+  String get resetChangelogDescription =>
+      'Restablecer estado de lectura del changelog';
+
+  @override
+  String get tutorialResetSuccess =>
+      'El progreso del tutorial ha sido restablecido';
+
+  @override
+  String get changelogResetSuccess =>
+      'El estado del changelog ha sido restablecido';
+
+  @override
+  String get copyrightLabel => 'Derechos de Autor';
+
+  @override
+  String get allRightsReserved => 'Todos los derechos reservados';
+
+  @override
+  String get bodyTypeStar => 'Estrella';
+
+  @override
+  String get bodyTypePlanet => 'Planeta';
+
+  @override
+  String get bodyTypeMoon => 'Luna';
+
+  @override
+  String get bodyTypeAsteroid => 'Asteroide';
+
+  @override
+  String get appFlavorDevelopment => 'Desarrollo';
+
+  @override
+  String get appFlavorProduction => 'Producción';
+
+  @override
+  String get notificationTypeError => 'Error';
+
+  @override
+  String get notificationTypeWarning => 'Advertencia';
+
+  @override
+  String get notificationTypeInfo => 'Información';
+
+  @override
+  String get notificationTypeSuccess => 'Éxito';
+
+  @override
+  String get notificationTypeDebug => 'Depuración';
+
+  @override
+  String get trackingModeFull => 'Seguimiento Completo';
+
+  @override
+  String get trackingModeEssential => 'Solo Esencial';
+
+  @override
+  String get trackingModeNone => 'Sin Seguimiento';
+
+  @override
+  String get trackingModeLimited => 'Seguimiento Limitado';
+
+  @override
+  String get trackingModeFullDescription =>
+      'Todas las analíticas, fallos e interacciones';
+
+  @override
+  String get trackingModeEssentialDescription =>
+      'Solo fallos críticos y errores';
+
+  @override
+  String get trackingModeNoneDescription => 'Sin recolección de datos';
+
+  @override
+  String get trackingModeLimitedDescription => 'Solo interacciones del usuario';
+
+  @override
+  String get changelogCategoryAdded => 'Añadido';
+
+  @override
+  String get changelogCategoryImproved => 'Mejorado';
+
+  @override
+  String get changelogCategoryFixed => 'Corregido';
+
+  @override
+  String get cameraManual => 'Control Manual';
+
+  @override
+  String get cameraPredictiveOrbital => 'Orbital Predictivo';
+
+  @override
+  String get cameraDynamicFraming => 'Encuadre Dinámico';
+
+  @override
+  String get cameraManualDescription =>
+      'Controles manuales tradicionales de cámara con modo seguimiento';
+
+  @override
+  String get cameraPredictiveOrbitalDescription =>
+      'IA predice trayectorias orbitales para movimientos dramáticos de cámara';
+
+  @override
+  String get cameraDynamicFramingDescription =>
+      'Ajusta automáticamente el encuadre basado en el contenido de la escena';
 }

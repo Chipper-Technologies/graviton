@@ -70,8 +70,20 @@ class Simulation {
   // Track if we're in a legitimate reset operation to avoid aggressive trail clearing
   bool _isResetting = false;
 
+  // Change tracking for painter optimization
+  int _changeCounter = 0;
+
   Simulation() {
     reset();
+  }
+
+  /// Get a change counter that increments whenever simulation state changes
+  /// This helps painters determine if they need to repaint
+  int get changeCounter => _changeCounter;
+
+  /// Increment the change counter to signal state has changed
+  void _markChanged() {
+    _changeCounter++;
   }
 
   /// Get the current scenario type
@@ -203,6 +215,7 @@ class Simulation {
     _timeSinceLastVibe = 0;
 
     _isResetting = false; // Reset operation complete
+    _markChanged(); // Signal state has changed
 
     // Initialize belt systems based on scenario
     if (scenario == ScenarioType.asteroidBelt) {
@@ -427,11 +440,14 @@ class Simulation {
 
     // update vibration throttle
     _timeSinceLastVibe += dt;
+
+    _markChanged(); // Signal trail update
   }
 
   // --- Physics (RK4) ---------------------------------------------------------
 
   void stepRK4(double dt) {
+    _markChanged(); // Signal physics state change
     final n = bodies.length;
     final initPos = [for (var b in bodies) b.position.clone()];
     final initVel = [for (var b in bodies) b.velocity.clone()];
@@ -625,6 +641,7 @@ class Simulation {
   }
 
   void _merge(int i, int j) {
+    _markChanged(); // Signal merge event
     final b1 = bodies[i];
     final b2 = bodies[j];
 

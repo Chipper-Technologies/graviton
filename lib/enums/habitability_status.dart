@@ -19,27 +19,13 @@ extension HabitabilityStatusExtension on HabitabilityStatus {
   int get statusColor {
     switch (this) {
       case HabitabilityStatus.habitable:
-        return 0xFF4CAF50; // Green
+        return 0xFF4CAF50; // AppColors.habitabilityHabitable
       case HabitabilityStatus.tooHot:
-        return 0xFFF44336; // Red
+        return 0xFFF44336; // AppColors.habitabilityTooHot
       case HabitabilityStatus.tooCold:
-        return 0xFF2196F3; // Blue
+        return 0xFF2196F3; // AppColors.habitabilityTooCold
       case HabitabilityStatus.unknown:
-        return 0xFF9E9E9E; // Grey
-    }
-  }
-
-  /// Display name for the status
-  String get displayName {
-    switch (this) {
-      case HabitabilityStatus.habitable:
-        return 'Habitable';
-      case HabitabilityStatus.tooHot:
-        return 'Too Hot';
-      case HabitabilityStatus.tooCold:
-        return 'Too Cold';
-      case HabitabilityStatus.unknown:
-        return 'Unknown';
+        return 0xFF9E9E9E; // AppColors.habitabilityUnknown
     }
   }
 

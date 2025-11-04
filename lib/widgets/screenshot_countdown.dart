@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -11,6 +12,8 @@ class ScreenshotCountdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return ListenableBuilder(
       listenable: screenshotService,
       builder: (context, child) {
@@ -43,11 +46,13 @@ class ScreenshotCountdown extends StatelessWidget {
                   const Icon(
                     Icons.camera_alt,
                     color: AppColors.uiWhite,
-                    size: 20,
+                    size: AppTypography.iconSizeXLarge,
                   ),
                   const SizedBox(width: AppTypography.spacingSmall),
                   Text(
-                    'Screenshot in ${screenshotService.countdownSeconds}s',
+                    l10n.screenshotCountdown(
+                      screenshotService.countdownSeconds,
+                    ),
                     style: const TextStyle(
                       color: AppColors.uiWhite,
                       fontSize: AppTypography.fontSizeLarge,
