@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/speed_preset.dart';
+import 'package:graviton/l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   group('SpeedPreset Enum', () {
@@ -124,6 +126,114 @@ void main() {
           reason: 'All speed presets should have unique localization keys',
         );
       });
+    });
+
+    group('getLocalizedDisplayName extension', () {
+      testWidgets('should return localized display names for all presets', (
+        tester,
+      ) async {
+        const widget = MaterialApp(
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Text('Test'),
+        );
+
+        await tester.pumpWidget(widget);
+        final l10n = AppLocalizations.of(tester.element(find.byType(Text)))!;
+
+        expect(
+          SpeedPreset.quarterSpeed.getLocalizedDisplayName(l10n),
+          isNotEmpty,
+        );
+        expect(SpeedPreset.halfSpeed.getLocalizedDisplayName(l10n), isNotEmpty);
+        expect(SpeedPreset.normal.getLocalizedDisplayName(l10n), isNotEmpty);
+        expect(SpeedPreset.double.getLocalizedDisplayName(l10n), isNotEmpty);
+        expect(SpeedPreset.fast.getLocalizedDisplayName(l10n), isNotEmpty);
+        expect(SpeedPreset.veryFast.getLocalizedDisplayName(l10n), isNotEmpty);
+        expect(SpeedPreset.maximum.getLocalizedDisplayName(l10n), isNotEmpty);
+      });
+
+      testWidgets('should return different names for different presets', (
+        tester,
+      ) async {
+        const widget = MaterialApp(
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Text('Test'),
+        );
+
+        await tester.pumpWidget(widget);
+        final l10n = AppLocalizations.of(tester.element(find.byType(Text)))!;
+
+        final names = SpeedPreset.values
+            .map((preset) => preset.getLocalizedDisplayName(l10n))
+            .toSet();
+
+        expect(
+          names.length,
+          equals(SpeedPreset.values.length),
+          reason: 'All presets should have unique localized names',
+        );
+      });
+
+      testWidgets(
+        'should return strings matching expected localization calls',
+        (tester) async {
+          const widget = MaterialApp(
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Text('Test'),
+          );
+
+          await tester.pumpWidget(widget);
+          final l10n = AppLocalizations.of(tester.element(find.byType(Text)))!;
+
+          // These should match the localization keys
+          expect(
+            SpeedPreset.quarterSpeed.getLocalizedDisplayName(l10n),
+            equals(l10n.speedQuarter),
+          );
+          expect(
+            SpeedPreset.halfSpeed.getLocalizedDisplayName(l10n),
+            equals(l10n.speedHalf),
+          );
+          expect(
+            SpeedPreset.normal.getLocalizedDisplayName(l10n),
+            equals(l10n.speedNormal),
+          );
+          expect(
+            SpeedPreset.double.getLocalizedDisplayName(l10n),
+            equals(l10n.speedDouble),
+          );
+          expect(
+            SpeedPreset.fast.getLocalizedDisplayName(l10n),
+            equals(l10n.speedFast),
+          );
+          expect(
+            SpeedPreset.veryFast.getLocalizedDisplayName(l10n),
+            equals(l10n.speedVeryFast),
+          );
+          expect(
+            SpeedPreset.maximum.getLocalizedDisplayName(l10n),
+            equals(l10n.speedMaximum),
+          );
+        },
+      );
     });
 
     group('fromMultiplier static method', () {
