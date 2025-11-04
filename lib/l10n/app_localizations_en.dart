@@ -236,10 +236,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hapticsSection => 'Haptics';
 
   @override
+  String get uiHapticFeedback => 'UI Haptic Feedback';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      'Enable haptic feedback for UI interactions like button taps, toggles, and navigation';
+
+  @override
+  String get collisionHapticFeedback => 'Collision Haptic Feedback';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      'Enable haptic feedback when celestial bodies collide during simulation';
+
+  @override
   String get vibrationEnabled => 'Vibration Enabled';
 
   @override
   String get hapticFeedbackCollisions => 'Haptic feedback on collisions';
+
+  @override
+  String get hapticFeedbackDescription =>
+      'Enable haptic feedback for UI interactions and collisions';
 
   @override
   String get vibrationThrottle => 'Vibration Throttle';

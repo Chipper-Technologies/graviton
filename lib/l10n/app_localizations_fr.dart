@@ -239,10 +239,28 @@ class AppLocalizationsFr extends AppLocalizations {
   String get hapticsSection => 'Haptique';
 
   @override
+  String get uiHapticFeedback => 'Retour Haptique UI';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      'Activer le retour haptique pour les interactions UI comme les boutons, les commutateurs et la navigation';
+
+  @override
+  String get collisionHapticFeedback => 'Retour Haptique de Collision';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      'Activer le retour haptique lorsque les corps célestes entrent en collision pendant la simulation';
+
+  @override
   String get vibrationEnabled => 'Vibration activée';
 
   @override
   String get hapticFeedbackCollisions => 'Retour haptique sur les collisions';
+
+  @override
+  String get hapticFeedbackDescription =>
+      'Activer le retour haptique pour les interactions UI et les collisions';
 
   @override
   String get vibrationThrottle => 'Limitation de vibration';

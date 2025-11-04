@@ -15,6 +15,7 @@ import 'package:graviton/models/changelog.dart';
 import 'package:graviton/painters/graviton_painter.dart';
 import 'package:graviton/services/cinematic_camera_controller.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/services/changelog_service.dart';
 import 'package:graviton/services/version_service.dart';
@@ -1236,6 +1237,9 @@ class _HomeScreenState extends State<HomeScreen>
           _buildCircularControlButton(
             icon: appState.simulation.isPaused ? Icons.play_arrow : Icons.pause,
             onPressed: () {
+              // Provide haptic feedback for play/pause button
+              HapticFeedbackService.instance.light();
+
               // Reset floating controls timer when button is pressed
               _showFloatingControlsTemporarily();
 
@@ -1258,6 +1262,9 @@ class _HomeScreenState extends State<HomeScreen>
           _buildCircularControlButton(
             icon: Icons.refresh,
             onPressed: () {
+              // Provide medium haptic feedback for reset button (more significant action)
+              HapticFeedbackService.instance.medium();
+
               // Reset floating controls timer when button is pressed
               _showFloatingControlsTemporarily();
 

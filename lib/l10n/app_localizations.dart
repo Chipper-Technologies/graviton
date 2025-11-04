@@ -552,17 +552,47 @@ abstract class AppLocalizations {
   /// **'Haptics'**
   String get hapticsSection;
 
-  /// Label for vibration enabled toggle
+  /// Label for UI haptic feedback toggle
+  ///
+  /// In en, this message translates to:
+  /// **'UI Haptic Feedback'**
+  String get uiHapticFeedback;
+
+  /// Detailed description for UI haptic feedback setting
+  ///
+  /// In en, this message translates to:
+  /// **'Enable haptic feedback for UI interactions like button taps, toggles, and navigation'**
+  String get uiHapticFeedbackDescription;
+
+  /// Label for collision haptic feedback toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Collision Haptic Feedback'**
+  String get collisionHapticFeedback;
+
+  /// Detailed description for collision haptic feedback setting
+  ///
+  /// In en, this message translates to:
+  /// **'Enable haptic feedback when celestial bodies collide during simulation'**
+  String get collisionHapticFeedbackDescription;
+
+  /// Legacy label for vibration enabled toggle
   ///
   /// In en, this message translates to:
   /// **'Vibration Enabled'**
   String get vibrationEnabled;
 
-  /// Description for vibration enabled toggle
+  /// Legacy description for vibration enabled toggle
   ///
   /// In en, this message translates to:
   /// **'Haptic feedback on collisions'**
   String get hapticFeedbackCollisions;
+
+  /// Legacy detailed description for haptic feedback setting
+  ///
+  /// In en, this message translates to:
+  /// **'Enable haptic feedback for UI interactions and collisions'**
+  String get hapticFeedbackDescription;
 
   /// Label for vibration throttle slider
   ///

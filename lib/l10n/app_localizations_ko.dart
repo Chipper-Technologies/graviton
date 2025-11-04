@@ -231,10 +231,27 @@ class AppLocalizationsKo extends AppLocalizations {
   String get hapticsSection => '햅틱';
 
   @override
+  String get uiHapticFeedback => 'UI 햅틱 피드백';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      '버튼 탭, 토글, 내비게이션과 같은 UI 상호작용에 대한 햅틱 피드백 활성화';
+
+  @override
+  String get collisionHapticFeedback => '충돌 햅틱 피드백';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      '시뮬레이션 중 천체가 충돌할 때 햅틱 피드백 활성화';
+
+  @override
   String get vibrationEnabled => '진동 활성화';
 
   @override
   String get hapticFeedbackCollisions => '충돌 시 햅틱 피드백';
+
+  @override
+  String get hapticFeedbackDescription => 'UI 상호작용 및 충돌에 대한 햅틱 피드백 활성화';
 
   @override
   String get vibrationThrottle => '진동 제한';

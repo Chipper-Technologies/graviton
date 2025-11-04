@@ -17,7 +17,8 @@ class UIState extends ChangeNotifier {
   bool _showGrid = false;
   bool _showLabels = true;
   bool _showOffScreenIndicators = true;
-  bool _enableVibration = true;
+  bool _enableUIHapticFeedback = true;
+  bool _enableCollisionHapticFeedback = true;
   double _uiOpacity = RenderingConstants.defaultUIOpacity;
 
   // Gravity field settings
@@ -55,7 +56,11 @@ class UIState extends ChangeNotifier {
   static const String _keyShowGrid = 'showGrid';
   static const String _keyShowLabels = 'showLabels';
   static const String _keyShowOffScreenIndicators = 'showOffScreenIndicators';
-  static const String _keyEnableVibration = 'enableVibration';
+  static const String _keyEnableUIHapticFeedback = 'enableUIHapticFeedback';
+  static const String _keyEnableCollisionHapticFeedback =
+      'enableCollisionHapticFeedback';
+  static const String _keyEnableVibration =
+      'enableVibration'; // Legacy key for migration
   static const String _keyUIOpacity = 'uiOpacity';
   static const String _keyGlobalGravityFields = 'globalGravityFields';
   static const String _keyGravityFieldColorScheme = 'gravityFieldColorScheme';
@@ -91,7 +96,33 @@ class UIState extends ChangeNotifier {
       _showLabels = prefs.getBool(_keyShowLabels) ?? true;
       _showOffScreenIndicators =
           prefs.getBool(_keyShowOffScreenIndicators) ?? true;
-      _enableVibration = prefs.getBool(_keyEnableVibration) ?? true;
+
+      // Handle migration from legacy vibration setting to separate haptic settings
+      if (prefs.containsKey(_keyEnableUIHapticFeedback) ||
+          prefs.containsKey(_keyEnableCollisionHapticFeedback)) {
+        // New settings exist, use them
+        _enableUIHapticFeedback =
+            prefs.getBool(_keyEnableUIHapticFeedback) ?? true;
+        _enableCollisionHapticFeedback =
+            prefs.getBool(_keyEnableCollisionHapticFeedback) ?? true;
+      } else {
+        // Migrate from legacy setting
+        final legacyVibration = prefs.getBool(_keyEnableVibration) ?? true;
+        _enableUIHapticFeedback = legacyVibration;
+        _enableCollisionHapticFeedback = legacyVibration;
+        // Save the new settings
+        await prefs.setBool(
+          _keyEnableUIHapticFeedback,
+          _enableUIHapticFeedback,
+        );
+        await prefs.setBool(
+          _keyEnableCollisionHapticFeedback,
+          _enableCollisionHapticFeedback,
+        );
+        // Remove the old setting
+        await prefs.remove(_keyEnableVibration);
+      }
+
       _uiOpacity =
           prefs.getDouble(_keyUIOpacity) ?? RenderingConstants.defaultUIOpacity;
 
@@ -167,7 +198,10 @@ class UIState extends ChangeNotifier {
   bool get showGrid => _showGrid;
   bool get showLabels => _showLabels;
   bool get showOffScreenIndicators => _showOffScreenIndicators;
-  bool get enableVibration => _enableVibration;
+  bool get enableUIHapticFeedback => _enableUIHapticFeedback;
+  bool get enableCollisionHapticFeedback => _enableCollisionHapticFeedback;
+  bool get enableVibration =>
+      _enableUIHapticFeedback; // Legacy getter for backward compatibility
   double get uiOpacity => _uiOpacity;
 
   // Changelog getters
@@ -277,14 +311,32 @@ class UIState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleVibration() {
-    _enableVibration = !_enableVibration;
-    _saveSetting(_keyEnableVibration, _enableVibration);
+  void toggleUIHapticFeedback() {
+    _enableUIHapticFeedback = !_enableUIHapticFeedback;
+    _saveSetting(_keyEnableUIHapticFeedback, _enableUIHapticFeedback);
     FirebaseService.instance.logSettingsChange(
-      'enable_vibration',
-      _enableVibration,
+      'enable_ui_haptic_feedback',
+      _enableUIHapticFeedback,
     );
     notifyListeners();
+  }
+
+  void toggleCollisionHapticFeedback() {
+    _enableCollisionHapticFeedback = !_enableCollisionHapticFeedback;
+    _saveSetting(
+      _keyEnableCollisionHapticFeedback,
+      _enableCollisionHapticFeedback,
+    );
+    FirebaseService.instance.logSettingsChange(
+      'enable_collision_haptic_feedback',
+      _enableCollisionHapticFeedback,
+    );
+    notifyListeners();
+  }
+
+  // Legacy method for backward compatibility
+  void toggleVibration() {
+    toggleUIHapticFeedback();
   }
 
   void setUIOpacity(double opacity) {

@@ -231,10 +231,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get hapticsSection => '触觉反馈';
 
   @override
+  String get uiHapticFeedback => 'UI触觉反馈';
+
+  @override
+  String get uiHapticFeedbackDescription => '为按钮点击、切换开关和导航等UI交互启用触觉反馈';
+
+  @override
+  String get collisionHapticFeedback => '碰撞触觉反馈';
+
+  @override
+  String get collisionHapticFeedbackDescription => '在模拟过程中天体碰撞时启用触觉反馈';
+
+  @override
   String get vibrationEnabled => '启用振动';
 
   @override
   String get hapticFeedbackCollisions => '碰撞时的触觉反馈';
+
+  @override
+  String get hapticFeedbackDescription => '为UI交互和碰撞启用触觉反馈';
 
   @override
   String get vibrationThrottle => '振动节流';

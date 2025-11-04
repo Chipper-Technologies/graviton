@@ -231,10 +231,27 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hapticsSection => 'ハプティクス';
 
   @override
+  String get uiHapticFeedback => 'UIハプティックフィードバック';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      'ボタンタップ、トグル、ナビゲーションなどのUIインタラクションのハプティックフィードバックを有効にする';
+
+  @override
+  String get collisionHapticFeedback => '衝突ハプティックフィードバック';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      'シミュレーション中に天体が衝突したときのハプティックフィードバックを有効にする';
+
+  @override
   String get vibrationEnabled => '振動有効';
 
   @override
   String get hapticFeedbackCollisions => '衝突時のハプティックフィードバック';
+
+  @override
+  String get hapticFeedbackDescription => 'UIインタラクションと衝突のハプティックフィードバックを有効にする';
 
   @override
   String get vibrationThrottle => '振動スロットル';

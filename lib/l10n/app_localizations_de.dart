@@ -238,10 +238,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hapticsSection => 'Haptik';
 
   @override
+  String get uiHapticFeedback => 'UI-Haptisches Feedback';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      'Haptisches Feedback für UI-Interaktionen wie Tasten, Schalter und Navigation aktivieren';
+
+  @override
+  String get collisionHapticFeedback => 'Kollisions-Haptisches Feedback';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      'Haptisches Feedback aktivieren, wenn Himmelskörper während der Simulation kollidieren';
+
+  @override
   String get vibrationEnabled => 'Vibration aktiviert';
 
   @override
   String get hapticFeedbackCollisions => 'Haptisches Feedback bei Kollisionen';
+
+  @override
+  String get hapticFeedbackDescription =>
+      'Haptisches Feedback für UI-Interaktionen und Kollisionen aktivieren';
 
   @override
   String get vibrationThrottle => 'Vibrationsdrosselung';

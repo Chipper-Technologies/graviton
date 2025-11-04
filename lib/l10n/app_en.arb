@@ -369,14 +369,39 @@
     "description": "Haptics section header in simulation settings"
   },
   
+  "uiHapticFeedback": "UI Haptic Feedback",
+  "@uiHapticFeedback": {
+    "description": "Label for UI haptic feedback toggle"
+  },
+  
+  "uiHapticFeedbackDescription": "Enable haptic feedback for UI interactions like button taps, toggles, and navigation",
+  "@uiHapticFeedbackDescription": {
+    "description": "Detailed description for UI haptic feedback setting"
+  },
+  
+  "collisionHapticFeedback": "Collision Haptic Feedback",
+  "@collisionHapticFeedback": {
+    "description": "Label for collision haptic feedback toggle"
+  },
+  
+  "collisionHapticFeedbackDescription": "Enable haptic feedback when celestial bodies collide during simulation",
+  "@collisionHapticFeedbackDescription": {
+    "description": "Detailed description for collision haptic feedback setting"
+  },
+  
   "vibrationEnabled": "Vibration Enabled",
   "@vibrationEnabled": {
-    "description": "Label for vibration enabled toggle"
+    "description": "Legacy label for vibration enabled toggle"
   },
   
   "hapticFeedbackCollisions": "Haptic feedback on collisions",
   "@hapticFeedbackCollisions": {
-    "description": "Description for vibration enabled toggle"
+    "description": "Legacy description for vibration enabled toggle"
+  },
+  
+  "hapticFeedbackDescription": "Enable haptic feedback for UI interactions and collisions",
+  "@hapticFeedbackDescription": {
+    "description": "Legacy detailed description for haptic feedback setting"
   },
   
   "vibrationThrottle": "Vibration Throttle",

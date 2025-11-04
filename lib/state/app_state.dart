@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/haptic_feedback_service.dart';
 
 import 'camera_state.dart';
 import 'physics_state.dart';
@@ -46,6 +47,12 @@ class AppState extends ChangeNotifier {
     // Initialize realistic colors setting in simulation
     simulation.setUseRealisticColors(ui.useRealisticColors);
 
+    // Initialize vibration setting in simulation
+    simulation.setVibrationEnabled(ui.enableVibration);
+
+    // Initialize haptic feedback service
+    HapticFeedbackService.instance.initialize(ui);
+
     // Now that simulation is initialized with bodies, ensure gravity wells are properly set
     // if global gravity fields was enabled from saved settings
     if (ui.globalGravityFields) {
@@ -82,6 +89,9 @@ class AppState extends ChangeNotifier {
 
     // Propagate realistic colors setting to simulation
     simulation.setUseRealisticColors(ui.useRealisticColors);
+
+    // Propagate vibration setting to simulation
+    simulation.setVibrationEnabled(ui.enableVibration);
 
     notifyListeners();
   }

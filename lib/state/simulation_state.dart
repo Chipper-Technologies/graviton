@@ -246,6 +246,11 @@ class SimulationState extends ChangeNotifier {
     _simulation.setUseRealisticColors(useRealisticColors);
   }
 
+  /// Update vibration setting in the simulation
+  void setVibrationEnabled(bool enabled) {
+    _simulation.setVibrationEnabled(enabled);
+  }
+
   /// Apply physics settings to the simulation
   void applyPhysicsSettings(PhysicsSettings settings) {
     _simulation.updatePhysicsSettings(
