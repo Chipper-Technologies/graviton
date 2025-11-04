@@ -5,6 +5,58 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-11-04
+
+### Added
+- **Unified Bottom Sheet Control System**: Complete redesign of simulation controls with enhanced user experience
+  - **Intelligent Floating Controls**: Context-aware circular buttons that appear above the bottom sheet for quick access to essential simulation functions
+  - **Interaction-Based Visibility**: Smart auto-hide system that shows floating controls only when users interact with the screen, automatically hiding after 3 seconds of inactivity
+  - **Dynamic Height Management**: Bottom sheet now uses 90% minimum height for improved content accessibility and better visual balance
+  - **Seamless Integration**: Floating controls move dynamically with the bottom sheet position, maintaining perfect visual alignment during drag operations
+  - **Touch-Responsive Design**: Enhanced gesture detection system that triggers control visibility through both bottom sheet interactions and general screen touches
+
+### Improved
+- **Bottom Sheet User Experience**: Revolutionary interaction model that combines the best of persistent controls with clean UI design
+  - **Drag Detection Enhancement**: Added sophisticated gesture detection to the bottom sheet for improved interaction tracking
+  - **Visual Hierarchy**: Floating controls positioned with proper Material Design elevation and ordering above the menu system
+  - **Performance Optimization**: Efficient communication system between UI components for minimal performance impact
+  - **Accessibility**: Maintained full accessibility support while adding new interaction patterns
+- **Control System Architecture**: Complete refactoring of simulation control organization
+  - **Unified Control System**: Consolidated floating controls functionality directly into the bottom sheet architecture
+  - **State Management**: Improved state synchronization between UI interactions and control visibility
+  - **Memory Management**: Proper timer cleanup and resource disposal for interaction-based visibility system
+
+### Technical Improvements
+- **UI Architecture Cleanup**: Eliminated redundant floating controls components and consolidated functionality
+  - **Code Simplification**: Removed code duplication by integrating floating controls directly into the persistent bottom sheet
+  - **Component Consolidation**: Streamlined interface structure for better performance and maintainability
+  - **State Synchronization**: Enhanced communication mechanism for seamless interaction between UI components
+- **User Interaction Detection**: Advanced gesture recognition system for intelligent control visibility
+  - **Timer Management**: Sophisticated auto-hide timer system with proper cleanup and state management
+  - **Touch Event Handling**: Comprehensive gesture detection that responds to various user interaction patterns
+  - **Performance Monitoring**: Optimized interaction handling to maintain 60fps performance during UI operations
+- **Bottom Sheet Enhancement**: Advanced implementation with custom interaction detection
+  - **Gesture Integration**: Added precise drag interaction detection with threshold-based triggering
+  - **Dynamic Positioning**: Real-time calculation of floating control positions based on sheet height and interaction state
+  - **Material Design Compliance**: Proper elevation handling and visual effects for floating controls above sheet content
+
+### Quality Assurance
+- **Comprehensive Test Coverage Improvements**: Systematic enhancement of code quality through targeted test coverage expansion
+  - **UI Constants Testing**: Complete test coverage for app constraints with comprehensive test cases covering all dialog constraints, padding, and decoration methods
+  - **Enum Testing Enhancement**: Complete test coverage for speed presets including localization testing with proper setup for all speed multipliers and display methods
+  - **Data-Driven Testing**: Implemented systematic approach using coverage analysis tools to identify and target high-impact testing opportunities
+- **Code Quality Standards**: Elevated testing practices with comprehensive edge case coverage and meaningful validation
+  - **Temperature Physics Testing**: Added tests for Celsius/Fahrenheit conversions, habitability temperature ranges, and temperature categorization logic
+  - **Body Property Testing**: Complete coverage of gravity well settings, stellar luminosity, body type properties, and derived calculation methods
+  - **Localization Testing**: Proper testing setup for internationalization methods with comprehensive locale verification
+  - **Performance Validation**: All new tests designed to maintain build performance while ensuring comprehensive functionality coverage
+
+### Removed
+- **Legacy Floating Controls**: Eliminated redundant floating controls components and associated test files
+  - **Code Simplification**: Removed duplicate control logic and consolidated functionality into the unified bottom sheet system
+  - **Test Cleanup**: Removed obsolete unit tests for the deprecated floating controls components
+  - **Architecture Streamlining**: Simplified component hierarchy by removing intermediate control layers
+
 ## [1.2.0] - 2025-11-01
 
 ### Added
