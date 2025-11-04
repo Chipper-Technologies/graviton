@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
@@ -27,17 +28,17 @@ import 'package:graviton/widgets/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
 import 'package:graviton/widgets/bottom_controls.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
-import 'package:graviton/widgets/developer_tools_dialog.dart';
+import 'package:graviton/screens/developer_tools_screen.dart';
 import 'package:graviton/widgets/floating_simulation_controls.dart';
-import 'package:graviton/widgets/help_dialog.dart';
+import 'package:graviton/screens/help_screen.dart';
+import 'package:graviton/screens/application_settings_screen.dart';
 import 'package:graviton/widgets/options_drawer.dart';
 import 'package:graviton/widgets/maintenance_dialog.dart';
 import 'package:graviton/widgets/offscreen_indicators_overlay.dart';
-import 'package:graviton/widgets/scenario_selection_dialog.dart';
-import 'package:graviton/widgets/about_dialog.dart';
+import 'package:graviton/screens/scenario_selection_screen.dart';
+import 'package:graviton/screens/about_screen.dart';
+import 'package:graviton/screens/physics_settings_screen.dart';
 import 'package:graviton/widgets/screenshot_countdown.dart';
-import 'package:graviton/widgets/settings_dialog.dart';
-import 'package:graviton/widgets/simulation_settings_dialog.dart';
 import 'package:graviton/widgets/stats_overlay.dart';
 import 'package:graviton/widgets/version_check_dialog.dart';
 import 'package:graviton/widgets/tutorial_overlay.dart';
@@ -354,76 +355,118 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-  void _showScenarioSelection(BuildContext context) {
+  void _showScenarioSelectionScreen(BuildContext context) {
     final appState = Provider.of<AppState>(context, listen: false);
     FirebaseService.instance.logUIEventWithEnums(
-      UIAction.dialogOpened,
+      UIAction.screenOpened,
       element: UIElement.scenarioSelection,
     );
 
-    AutoPauseDialogWrapper.show<void>(
-      context: context,
-      child: ScenarioSelectionDialog(
-        currentScenario: appState.simulation.simulation.currentScenario,
-        onScenarioSelected: (scenario) {
-          final l10n = AppLocalizations.of(context)!;
-          FirebaseService.instance.logUIEventWithEnums(
-            UIAction.scenarioSelected,
-            element: UIElement.scenarioDialog,
-            value: scenario.name,
-          );
-          appState.simulation.resetWithScenario(scenario, l10n: l10n);
-          // Reset cinematic camera controller for new scenario
-          _cinematicCameraController.reset();
-          // Auto-zoom camera to fit the new scenario
-          appState.camera.resetViewForScenario(
-            scenario,
-            appState.simulation.bodies,
-          );
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            ScenarioSelectionScreen(
+              currentScenario: appState.simulation.simulation.currentScenario,
+              onScenarioSelected: (scenario) {
+                final l10n = AppLocalizations.of(context)!;
+                FirebaseService.instance.logUIEventWithEnums(
+                  UIAction.scenarioSelected,
+                  element: UIElement.scenarioDialog,
+                  value: scenario.name,
+                );
+                appState.simulation.resetWithScenario(scenario, l10n: l10n);
+                // Reset cinematic camera controller for new scenario
+                _cinematicCameraController.reset();
+                // Auto-zoom camera to fit the new scenario
+                appState.camera.resetViewForScenario(
+                  scenario,
+                  appState.simulation.bodies,
+                );
+                Navigator.of(context).pop(); // Close the screen
+              },
+            ),
+        opaque: false,
+        transitionDuration: const Duration(milliseconds: 300),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
         },
       ),
     );
   }
 
-  void _showSettings(BuildContext context) {
+  void _showApplicationSettingsScreen(BuildContext context) {
     FirebaseService.instance.logUIEventWithEnums(
-      UIAction.dialogOpened,
+      UIAction.screenOpened,
       element: UIElement.settings,
     );
-    AutoPauseDialogWrapper.show<void>(
-      context: context,
-      child: const SettingsDialog(),
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const ApplicationSettingsScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        opaque: false, // This makes the route transparent
+      ),
     );
   }
 
-  void _showHelpDialog(BuildContext context) {
+  void _showHelpScreen(BuildContext context) {
     FirebaseService.instance.logUIEventWithEnums(
-      UIAction.dialogOpened,
+      UIAction.screenOpened,
       element: UIElement.help,
     );
 
-    AutoPauseDialogWrapper.show<void>(
-      context: context,
-      child: const HelpDialog(),
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const HelpScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        opaque: false, // This makes the route transparent
+      ),
     );
   }
 
-  void _showAboutDialog(BuildContext context) {
-    AutoPauseDialogWrapper.show<void>(
-      context: context,
-      child: const AppAboutDialog(),
-    );
-  }
-
-  void _showDeveloperToolsDialog(BuildContext context) {
+  void _showAboutScreen(BuildContext context) {
     FirebaseService.instance.logUIEventWithEnums(
-      UIAction.dialogOpened,
-      element: UIElement
-          .settings, // Using settings element for now since we don't have a developer tools element
+      UIAction.screenOpened,
+      element: UIElement.about,
     );
-    AutoPauseDialogWrapper.show<void>(
-      context: context,
-      child: const DeveloperToolsDialog(),
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const AboutScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        opaque: false,
+      ),
+    );
+  }
+
+  void _showDeveloperToolsScreen(BuildContext context) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.screenOpened,
+      element: UIElement.developerTools,
+    );
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const DeveloperToolsScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        opaque: false, // This makes the route transparent
+      ),
     );
   }
 
@@ -486,42 +529,50 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  void _showSimulationSettings(BuildContext context, AppState appState) {
+  void _showPhysicsSettingsScreen(BuildContext context, AppState appState) {
     final sim = appState.simulation.simulation;
 
     FirebaseService.instance.logUIEventWithEnums(
-      UIAction.dialogOpened,
+      UIAction.screenOpened,
       element: UIElement.physicsSettings,
     );
 
-    AutoPauseDialogWrapper.show<void>(
-      context: context,
-      child: SimulationSettingsDialog(
-        gravitationalConstant: sim.gravitationalConstant,
-        softening: sim.softening,
-        timeScale: appState.simulation.timeScale,
-        collisionRadiusMultiplier: sim.collisionRadiusMultiplier,
-        maxTrailPoints: sim.maxTrail,
-        trailFadeRate: sim.fadeRate,
-        vibrationThrottleTime: sim.vibrationThrottleTime,
-        vibrationEnabled: sim.vibrationEnabled,
-        currentScenario: sim.currentScenario,
-        onSettingsChanged: (settings) {
-          // Apply physics settings to simulation
-          sim.updatePhysicsSettings(
-            gravitationalConstant: settings['gravitationalConstant'],
-            softening: settings['softening'],
-            collisionRadiusMultiplier: settings['collisionRadiusMultiplier'],
-            maxTrailPoints: settings['maxTrailPoints']?.round(),
-            trailFadeRate: settings['trailFadeRate'],
-            vibrationThrottleTime: settings['vibrationThrottleTime'],
-            vibrationEnabled: settings['vibrationEnabled'],
-          );
+    Navigator.of(context).push(
+      PageRouteBuilder<void>(
+        opaque: false,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return FadeTransition(
+            opacity: animation,
+            child: PhysicsSettingsScreen(
+              gravitationalConstant: sim.gravitationalConstant,
+              softening: sim.softening,
+              timeScale: appState.simulation.timeScale,
+              collisionRadiusMultiplier: sim.collisionRadiusMultiplier,
+              maxTrailPoints: sim.maxTrail,
+              trailFadeRate: sim.fadeRate,
+              vibrationThrottleTime: sim.vibrationThrottleTime,
+              vibrationEnabled: sim.vibrationEnabled,
+              currentScenario: sim.currentScenario,
+              onSettingsChanged: (settings) {
+                // Apply physics settings to simulation
+                sim.updatePhysicsSettings(
+                  gravitationalConstant: settings['gravitationalConstant'],
+                  softening: settings['softening'],
+                  collisionRadiusMultiplier:
+                      settings['collisionRadiusMultiplier'],
+                  maxTrailPoints: settings['maxTrailPoints']?.round(),
+                  trailFadeRate: settings['trailFadeRate'],
+                  vibrationThrottleTime: settings['vibrationThrottleTime'],
+                  vibrationEnabled: settings['vibrationEnabled'],
+                );
 
-          // Update time scale if provided
-          if (settings['timeScale'] != null) {
-            appState.simulation.setTimeScale(settings['timeScale']);
-          }
+                // Update time scale if provided
+                if (settings['timeScale'] != null) {
+                  appState.simulation.setTimeScale(settings['timeScale']);
+                }
+              },
+            ),
+          );
         },
       ),
     );
@@ -696,13 +747,13 @@ class _HomeScreenState extends State<HomeScreen>
 
         return Scaffold(
           endDrawer: OptionsDrawer(
-            onShowHelp: () => _showHelpDialog(context),
-            onShowSettings: () => _showSettings(context),
-            onShowScenarios: () => _showScenarioSelection(context),
+            onShowHelp: () => _showHelpScreen(context),
+            onShowSettings: () => _showApplicationSettingsScreen(context),
+            onShowScenarios: () => _showScenarioSelectionScreen(context),
             onShowPhysicsSettings: () =>
-                _showSimulationSettings(context, appState),
-            onShowAbout: () => _showAboutDialog(context),
-            onShowDeveloperTools: () => _showDeveloperToolsDialog(context),
+                _showPhysicsSettingsScreen(context, appState),
+            onShowAbout: () => _showAboutScreen(context),
+            onShowDeveloperTools: () => _showDeveloperToolsScreen(context),
             onShowChangelog: _showCurrentVersionChangelog,
           ),
           appBar: shouldHideUI
@@ -723,8 +774,8 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                             width: 1.5,
                           ),
-                          image: const DecorationImage(
-                            image: AssetImage('assets/images/app-logo.png'),
+                          image: DecorationImage(
+                            image: AssetImage(AppConfig.appLogoPath),
                             fit: BoxFit.cover,
                           ),
                         ),

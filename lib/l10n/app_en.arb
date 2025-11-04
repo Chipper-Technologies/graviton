@@ -289,12 +289,12 @@
     "description": "Tooltip for the follow object button when no object is selected"
   },
   
-  "settingsTitle": "Settings",
+  "settingsTitle": "Application Settings",
   "@settingsTitle": {
-    "description": "Title for the settings dialog"
+    "description": "Title for the application settings screen"
   },
   
-  "settingsTooltip": "Settings",
+  "settingsTooltip": "Application Settings",
   "@settingsTooltip": {
     "description": "Tooltip for the settings button in the app bar"
   },
@@ -1890,6 +1890,20 @@
       }
     }
   },
+  "noChangelogsAvailable": "No changelogs available",
+  "@noChangelogsAvailable": {
+    "description": "Message when no changelogs are available"
+  },
+  "errorLoadingChangelogs": "Error loading changelogs: {error}",
+  "@errorLoadingChangelogs": {
+    "description": "Error message when failing to load changelogs",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Error details"
+      }
+    }
+  },
 
   "stellarColorBlue": "Blue",
   "@stellarColorBlue": {
@@ -2009,6 +2023,11 @@
   "copyrightLabel": "Copyright",
   "@copyrightLabel": {
     "description": "Label for copyright information section"
+  },
+
+  "allRightsReserved": "All rights reserved",
+  "@allRightsReserved": {
+    "description": "Copyright notice text"
   },
 
   "bodyTypeStar": "Star",

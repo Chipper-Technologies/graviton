@@ -190,10 +190,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get selectObjectToFollowTooltip => 'Objekt zum Verfolgen Auswählen';
 
   @override
-  String get settingsTitle => 'Einstellungen';
+  String get settingsTitle => 'Anwendungseinstellungen';
 
   @override
-  String get settingsTooltip => 'Einstellungen';
+  String get settingsTooltip => 'Anwendungseinstellungen';
 
   @override
   String get selectScenarioTooltip => 'Szenario Auswählen';
@@ -1291,6 +1291,14 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get noChangelogsAvailable => 'Keine Changelogs verfügbar';
+
+  @override
+  String errorLoadingChangelogs(String error) {
+    return 'Fehler beim Laden der Changelogs: $error';
+  }
+
+  @override
   String get stellarColorBlue => 'Blau';
 
   @override
@@ -1361,6 +1369,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get copyrightLabel => 'Urheberrecht';
+
+  @override
+  String get allRightsReserved => 'Alle Rechte vorbehalten';
 
   @override
   String get bodyTypeStar => 'Stern';

@@ -43,10 +43,15 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        // Check for button icons
-        expect(find.byIcon(Icons.videocam), findsOneWidget); // Camera
-        expect(find.byIcon(Icons.palette), findsOneWidget); // Visuals
-        expect(find.byIcon(Icons.science), findsOneWidget); // Physics
+        // Check for button icons - each icon appears twice (stroke + fill)
+        expect(find.byIcon(Icons.videocam), findsNWidgets(2)); // Camera
+        expect(find.byIcon(Icons.palette), findsNWidgets(2)); // Visuals
+        expect(find.byIcon(Icons.science), findsNWidgets(2)); // Physics
+
+        // Check for button labels
+        expect(find.text('Camera'), findsOneWidget);
+        expect(find.text('Visuals'), findsOneWidget);
+        expect(find.text('Physics'), findsOneWidget);
       });
     });
 
@@ -98,15 +103,16 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        // Find the camera button and check if it's active (purple color)
+        // Find the camera button icons and check if they're active (purple color)
         final cameraButtons = find.byIcon(Icons.videocam);
-        expect(cameraButtons, findsOneWidget);
+        expect(cameraButtons, findsNWidgets(2));
 
-        // The button should have purple color when active
-        final iconWidget = tester.widget<Icon>(cameraButtons);
+        // The fill layer icon (second one) should have purple color when active
+        final iconWidgets = tester.widgetList<Icon>(cameraButtons).toList();
+        final fillIcon = iconWidgets[1]; // Second icon is the fill layer
         // Active buttons should have primaryColor, not just white
         expect(
-          iconWidget.color?.toARGB32(),
+          fillIcon.color?.toARGB32(),
           isNot(equals(Colors.white.toARGB32())),
         );
       });
@@ -125,12 +131,13 @@ void main() {
 
         // Find the camera button and check if it's inactive
         final cameraButtons = find.byIcon(Icons.videocam);
-        expect(cameraButtons, findsOneWidget);
+        expect(cameraButtons, findsNWidgets(2));
 
         // Inactive buttons should have white/transparent color
-        final iconWidget = tester.widget<Icon>(cameraButtons);
+        final iconWidgets = tester.widgetList<Icon>(cameraButtons).toList();
+        final fillIcon = iconWidgets[1]; // Second icon is the fill layer
         // We can't easily test the exact color due to opacity, but we can test it exists
-        expect(iconWidget.color, isNotNull);
+        expect(fillIcon.color, isNotNull);
       });
 
       testWidgets(
@@ -144,11 +151,12 @@ void main() {
           await tester.pumpAndSettle();
 
           final visualButtons = find.byIcon(Icons.palette);
-          expect(visualButtons, findsOneWidget);
+          expect(visualButtons, findsNWidgets(2));
 
           // Button should exist and be tappable
-          final iconWidget = tester.widget<Icon>(visualButtons);
-          expect(iconWidget.color, isNotNull);
+          final iconWidgets = tester.widgetList<Icon>(visualButtons).toList();
+          final fillIcon = iconWidgets[1]; // Second icon is the fill layer
+          expect(fillIcon.color, isNotNull);
         },
       );
 
@@ -163,11 +171,12 @@ void main() {
           await tester.pumpAndSettle();
 
           final physicsButtons = find.byIcon(Icons.science);
-          expect(physicsButtons, findsOneWidget);
+          expect(physicsButtons, findsNWidgets(2));
 
           // Button should exist and be tappable
-          final iconWidget = tester.widget<Icon>(physicsButtons);
-          expect(iconWidget.color, isNotNull);
+          final iconWidgets = tester.widgetList<Icon>(physicsButtons).toList();
+          final fillIcon = iconWidgets[1]; // Second icon is the fill layer
+          expect(fillIcon.color, isNotNull);
         },
       );
     });
@@ -178,8 +187,12 @@ void main() {
         (tester) async {
           await tester.pumpWidget(createTestWidget(child: BottomControls()));
 
-          // Tap the camera button
-          await tester.tap(find.byIcon(Icons.videocam));
+          // Find the first InkWell widget (camera button)
+          final inkWells = find.byType(InkWell);
+          expect(inkWells, findsNWidgets(3));
+
+          // Tap the first InkWell (camera button)
+          await tester.tap(inkWells.first);
           await tester.pumpAndSettle();
 
           // Check if bottom sheet is shown (modal overlay)
@@ -192,8 +205,12 @@ void main() {
         (tester) async {
           await tester.pumpWidget(createTestWidget(child: BottomControls()));
 
-          // Tap the visuals button
-          await tester.tap(find.byIcon(Icons.palette));
+          // Find the InkWell widgets and tap the second one (visuals button)
+          final inkWells = find.byType(InkWell);
+          expect(inkWells, findsNWidgets(3));
+
+          // Tap the second InkWell (visuals button)
+          await tester.tap(inkWells.at(1));
           await tester.pumpAndSettle();
 
           // Check if bottom sheet is shown
@@ -206,8 +223,12 @@ void main() {
         (tester) async {
           await tester.pumpWidget(createTestWidget(child: BottomControls()));
 
-          // Tap the physics button
-          await tester.tap(find.byIcon(Icons.science));
+          // Find the InkWell widgets and tap the third one (physics button)
+          final inkWells = find.byType(InkWell);
+          expect(inkWells, findsNWidgets(3));
+
+          // Tap the third InkWell (physics button)
+          await tester.tap(inkWells.at(2));
           await tester.pumpAndSettle();
 
           // Check if bottom sheet is shown
@@ -220,8 +241,9 @@ void main() {
       ) async {
         await tester.pumpWidget(createTestWidget(child: BottomControls()));
 
-        // Open bottom sheet by tapping camera button
-        await tester.tap(find.byIcon(Icons.videocam));
+        // Open bottom sheet by tapping first InkWell (camera button)
+        final inkWells = find.byType(InkWell);
+        await tester.tap(inkWells.first);
         await tester.pumpAndSettle();
 
         // Bottom sheet should be visible
@@ -278,7 +300,7 @@ void main() {
 
         // UI should update - visual button should still be findable
         final visualButtons = find.byIcon(Icons.palette);
-        expect(visualButtons, findsOneWidget);
+        expect(visualButtons, findsNWidgets(2));
       });
 
       testWidgets('should handle multiple state changes', (tester) async {
@@ -303,17 +325,18 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        // Check for basic button accessibility
-        expect(find.byIcon(Icons.videocam), findsOneWidget);
-        expect(find.byIcon(Icons.palette), findsOneWidget);
-        expect(find.byIcon(Icons.science), findsOneWidget);
+        // Check for basic button accessibility - each icon appears twice
+        expect(find.byIcon(Icons.videocam), findsNWidgets(2));
+        expect(find.byIcon(Icons.palette), findsNWidgets(2));
+        expect(find.byIcon(Icons.science), findsNWidgets(2));
       });
 
       testWidgets('should support semantic actions', (tester) async {
         await tester.pumpWidget(createTestWidget(child: BottomControls()));
 
-        // Should be able to tap buttons
-        await tester.tap(find.byIcon(Icons.videocam));
+        // Should be able to tap buttons using InkWell
+        final inkWells = find.byType(InkWell);
+        await tester.tap(inkWells.first);
         await tester.pumpAndSettle();
 
         expect(find.byType(ModalBarrier), findsAtLeastNWidgets(1));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/enums/tutorial_action.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/tutorial_step.dart';
@@ -259,11 +260,11 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                     ? Container(
                                         width: 48,
                                         height: 48,
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                             image: AssetImage(
-                                              'assets/images/app-logo.png',
+                                              AppConfig.appLogoPath,
                                             ),
                                             fit: BoxFit.cover,
                                           ),

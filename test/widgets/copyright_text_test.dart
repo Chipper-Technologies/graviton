@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/copyright_text.dart';
-import 'package:graviton/widgets/auto_pause_dialog_wrapper.dart';
+import 'package:graviton/screens/about_screen.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -39,7 +39,7 @@ void main() {
       expect(find.textContaining('©'), findsOneWidget);
     });
 
-    testWidgets('Should open About dialog when About link is tapped', (
+    testWidgets('Should navigate to About screen when About link is tapped', (
       WidgetTester tester,
     ) async {
       // Use a larger screen size to avoid overflow
@@ -53,9 +53,9 @@ void main() {
       await tester.tap(find.text('About'));
       await tester.pumpAndSettle();
 
-      // Check that the dialog appears
-      expect(find.byType(Dialog), findsOneWidget);
-      expect(find.text('Graviton'), findsOneWidget);
+      // Check that the AboutScreen appears
+      expect(find.byType(AboutScreen), findsOneWidget);
+      expect(find.text('Graviton'), findsAtLeastNWidgets(1));
     });
 
     testWidgets('Should have proper styling', (WidgetTester tester) async {
@@ -78,37 +78,34 @@ void main() {
       expect(find.textContaining('©'), findsOneWidget);
     });
 
-    testWidgets('Should close dialog correctly', (WidgetTester tester) async {
+    testWidgets('Should close screen correctly using navigation', (
+      WidgetTester tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(800, 600));
 
       await tester.pumpWidget(createTestWidget(const CopyrightText()));
 
       await tester.pumpAndSettle();
 
-      // Open the dialog
+      // Open the About screen
       await tester.tap(find.text('About'));
       await tester.pumpAndSettle();
 
-      // Verify dialog is open
-      expect(find.byType(Dialog), findsOneWidget);
+      // Verify AboutScreen is displayed
+      expect(find.byType(AboutScreen), findsOneWidget);
 
-      // Verify the close button exists and has the correct callback
-      final closeButton = find.widgetWithText(TextButton, 'Close');
-      expect(closeButton, findsOneWidget);
+      // Find and tap the back button (AppBar automatically provides this)
+      final backButton = find.byTooltip('Back');
+      expect(backButton, findsOneWidget);
 
-      // Extract the button widget and verify it has an onPressed callback
-      final buttonWidget = tester.widget<TextButton>(closeButton);
-      expect(buttonWidget.onPressed, isNotNull);
-
-      // Instead of trying to tap the off-screen button, call the callback directly
-      buttonWidget.onPressed!();
+      await tester.tap(backButton);
       await tester.pumpAndSettle();
 
-      // Verify dialog is closed
-      expect(find.byType(Dialog), findsNothing);
+      // Verify we're back to the original screen
+      expect(find.byType(AboutScreen), findsNothing);
     });
 
-    testWidgets('Should use auto-pause dialog wrapper when About is tapped', (
+    testWidgets('Should use transparent page route when About is tapped', (
       WidgetTester tester,
     ) async {
       await tester.binding.setSurfaceSize(const Size(800, 600));
@@ -121,11 +118,12 @@ void main() {
       await tester.tap(find.text('About'));
       await tester.pumpAndSettle();
 
-      // Check that the AutoPauseDialogWrapper is present in the widget tree
-      expect(find.byType(AutoPauseDialogWrapper), findsOneWidget);
+      // Check that the AboutScreen appears with transparent background
+      expect(find.byType(AboutScreen), findsOneWidget);
 
-      // Check that the dialog appears
-      expect(find.byType(Dialog), findsOneWidget);
+      // Verify the AboutScreen uses transparent scaffold
+      final scaffold = tester.widget<Scaffold>(find.byType(Scaffold).last);
+      expect(scaffold.backgroundColor, Colors.transparent);
     });
   });
 }

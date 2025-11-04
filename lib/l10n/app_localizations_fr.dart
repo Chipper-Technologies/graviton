@@ -191,10 +191,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get selectObjectToFollowTooltip => 'Sélectionner un Objet à Suivre';
 
   @override
-  String get settingsTitle => 'Paramètres';
+  String get settingsTitle => 'Paramètres de l\'Application';
 
   @override
-  String get settingsTooltip => 'Paramètres';
+  String get settingsTooltip => 'Paramètres de l\'Application';
 
   @override
   String get selectScenarioTooltip => 'Sélectionner un Scénario';
@@ -1301,6 +1301,15 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get noChangelogsAvailable =>
+      'Aucun journal de modifications disponible';
+
+  @override
+  String errorLoadingChangelogs(String error) {
+    return 'Erreur lors du chargement des journaux de modifications : $error';
+  }
+
+  @override
   String get stellarColorBlue => 'Bleu';
 
   @override
@@ -1376,6 +1385,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get copyrightLabel => 'Droits d\'Auteur';
+
+  @override
+  String get allRightsReserved => 'Tous droits réservés';
 
   @override
   String get bodyTypeStar => 'Étoile';

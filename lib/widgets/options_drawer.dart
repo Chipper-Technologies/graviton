@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -92,8 +93,8 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                         color: AppColors.primaryColor,
                         width: 2,
                       ),
-                      image: const DecorationImage(
-                        image: AssetImage('assets/images/app-logo.png'),
+                      image: DecorationImage(
+                        image: AssetImage(AppConfig.appLogoPath),
                         fit: BoxFit.cover,
                       ),
                     ),

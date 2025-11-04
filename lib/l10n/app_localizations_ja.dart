@@ -183,10 +183,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get selectObjectToFollowTooltip => '追跡するオブジェクトを選択';
 
   @override
-  String get settingsTitle => '設定';
+  String get settingsTitle => 'アプリケーション設定';
 
   @override
-  String get settingsTooltip => '設定';
+  String get settingsTooltip => 'アプリケーション設定';
 
   @override
   String get selectScenarioTooltip => 'シナリオを選択';
@@ -1231,6 +1231,14 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get noChangelogsAvailable => '利用可能な変更履歴がありません';
+
+  @override
+  String errorLoadingChangelogs(String error) {
+    return '変更履歴の読み込みエラー: $error';
+  }
+
+  @override
   String get stellarColorBlue => '青';
 
   @override
@@ -1301,6 +1309,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get copyrightLabel => '著作権';
+
+  @override
+  String get allRightsReserved => 'すべての権利を保有';
 
   @override
   String get bodyTypeStar => '恒星';

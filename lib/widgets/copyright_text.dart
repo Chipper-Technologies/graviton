@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-
-import 'about_dialog.dart';
-import 'auto_pause_dialog_wrapper.dart';
+import 'package:graviton/screens/about_screen.dart';
 
 /// Copyright text widget positioned in bottom center
 class CopyrightText extends StatelessWidget {
@@ -59,9 +57,16 @@ class CopyrightText extends StatelessWidget {
   }
 
   void _showAbout(BuildContext context) {
-    AutoPauseDialogWrapper.show<void>(
-      context: context,
-      child: const AppAboutDialog(),
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const AboutScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        opaque: false,
+      ),
     );
   }
 }

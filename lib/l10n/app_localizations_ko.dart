@@ -183,10 +183,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get selectObjectToFollowTooltip => '추적할 객체 선택';
 
   @override
-  String get settingsTitle => '설정';
+  String get settingsTitle => '애플리케이션 설정';
 
   @override
-  String get settingsTooltip => '설정';
+  String get settingsTooltip => '애플리케이션 설정';
 
   @override
   String get selectScenarioTooltip => '시나리오 선택';
@@ -1235,6 +1235,14 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get noChangelogsAvailable => '사용 가능한 변경 로그가 없습니다';
+
+  @override
+  String errorLoadingChangelogs(String error) {
+    return '변경 로그 로드 오류: $error';
+  }
+
+  @override
   String get stellarColorBlue => '파랑';
 
   @override
@@ -1305,6 +1313,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get copyrightLabel => '저작권';
+
+  @override
+  String get allRightsReserved => '모든 권리 보유';
 
   @override
   String get bodyTypeStar => '항성';

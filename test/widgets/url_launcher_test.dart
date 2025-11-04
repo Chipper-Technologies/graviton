@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/widgets/about_dialog.dart';
+import 'package:graviton/screens/about_screen.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -26,14 +26,12 @@ void main() {
       );
     }
 
-    testWidgets('Should display clickable GitHub link in about dialog', (
+    testWidgets('Should display clickable GitHub link in about screen', (
       WidgetTester tester,
     ) async {
       await tester.binding.setSurfaceSize(const Size(800, 600));
 
-      await tester.pumpWidget(
-        createTestWidget(Builder(builder: (context) => const AppAboutDialog())),
-      );
+      await tester.pumpWidget(createTestWidget(const AboutScreen()));
 
       await tester.pumpAndSettle();
 
@@ -59,9 +57,7 @@ void main() {
     ) async {
       await tester.binding.setSurfaceSize(const Size(800, 600));
 
-      await tester.pumpWidget(
-        createTestWidget(Builder(builder: (context) => const AppAboutDialog())),
-      );
+      await tester.pumpWidget(createTestWidget(const AboutScreen()));
 
       await tester.pumpAndSettle();
 

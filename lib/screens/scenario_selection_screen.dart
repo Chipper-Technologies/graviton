@@ -3,16 +3,15 @@ import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/theme/app_colors.dart';
-import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/localization_utils.dart';
 
-/// A dialog that allows users to select a preset astronomical scenario
-class ScenarioSelectionDialog extends StatelessWidget {
+/// Full-screen scenario selection page with transparent background
+class ScenarioSelectionScreen extends StatelessWidget {
   final ScenarioType currentScenario;
   final ValueChanged<ScenarioType> onScenarioSelected;
 
-  const ScenarioSelectionDialog({
+  const ScenarioSelectionScreen({
     super.key,
     required this.currentScenario,
     required this.onScenarioSelected,
@@ -28,113 +27,50 @@ class ScenarioSelectionDialog extends StatelessWidget {
       return ScenarioConfig.defaults.containsKey(scenario);
     }).toList();
 
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
-      ),
+    return Scaffold(
       backgroundColor: Colors.transparent,
-      child: Container(
-        constraints: AppConstraints.dialogMedium,
-        decoration: BoxDecoration(
-          color: AppColors.uiBlack.withValues(
-            alpha: AppTypography.opacityMediumHigh,
-          ),
-          borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
-          border: Border.all(
-            color: AppColors.uiWhite.withValues(
-              alpha: AppTypography.opacityDisabled,
-            ),
-            width: AppTypography.borderThin,
-          ),
+      appBar: AppBar(
+        title: Text(l10n.selectScenarioTooltip),
+        backgroundColor: AppColors.uiBlack.withValues(
+          alpha: AppTypography.opacityNearlyOpaque,
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Header with gradient background
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.primaryColor.withValues(
-                      alpha: AppTypography.opacityMidFade,
-                    ),
-                    AppColors.primaryColor.withValues(
-                      alpha: AppTypography.opacityBarely,
-                    ),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(AppTypography.radiusXXLarge),
-                  topRight: Radius.circular(AppTypography.radiusXXLarge),
-                ),
-              ),
-              padding: EdgeInsets.all(AppTypography.spacingLarge),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.explore,
-                    color: AppColors.primaryColor,
-                    size: AppTypography.iconSizeXXXLarge,
-                  ),
-                  SizedBox(width: AppTypography.spacingMedium),
-                  Expanded(
-                    child: Text(
-                      l10n.selectScenarioTooltip,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: AppColors.uiWhite,
-                            fontWeight: FontWeight.w600,
-                          ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close, color: AppColors.uiWhite),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ),
+        foregroundColor: AppColors.uiWhite,
+        elevation: 0,
+      ),
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityNearlyOpaque,
             ),
-            // Scenario list
-            Flexible(
-              child: Padding(
-                padding: AppConstraints.dialogPadding,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  itemCount: availableScenarios.length,
-                  itemBuilder: (context, index) {
-                    final scenario = availableScenarios[index];
-                    final config = ScenarioConfig.defaults[scenario]!;
-                    final isSelected = scenario == currentScenario;
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(AppTypography.spacingLarge),
+            child: ListView.builder(
+              padding: EdgeInsets.only(
+                top: AppTypography.spacingMedium,
+                bottom: AppTypography.spacingXXLarge,
+              ),
+              itemCount: availableScenarios.length,
+              itemBuilder: (context, index) {
+                final scenario = availableScenarios[index];
+                final config = ScenarioConfig.defaults[scenario]!;
+                final isSelected = scenario == currentScenario;
 
-                    return _ScenarioTile(
-                      scenario: scenario,
-                      config: config,
-                      isSelected: isSelected,
-                      onTap: () => _selectScenario(context, scenario),
-                    );
-                  },
-                ),
-              ),
-            ),
-
-            // Footer
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(l10n.cancel),
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: AppTypography.spacingSmall,
                   ),
-                ],
-              ),
+                  child: _ScenarioTile(
+                    scenario: scenario,
+                    config: config,
+                    isSelected: isSelected,
+                    onTap: () => _selectScenario(context, scenario),
+                  ),
+                );
+              },
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -171,7 +107,7 @@ class _ScenarioTile extends StatelessWidget {
     );
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+      margin: EdgeInsets.zero,
       elevation: isSelected ? 8 : 2,
       color: isSelected
           ? config.primaryColor.withValues(alpha: AppTypography.opacityDisabled)
@@ -180,7 +116,7 @@ class _ScenarioTile extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
         child: Padding(
-          padding: EdgeInsets.all(AppTypography.spacingLarge),
+          padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
               // Icon
@@ -191,18 +127,12 @@ class _ScenarioTile extends StatelessWidget {
                   color: config.primaryColor.withValues(
                     alpha: AppTypography.opacityVeryFaint,
                   ),
-                  borderRadius: BorderRadius.circular(
-                    AppTypography.spacingXXLarge,
-                  ),
+                  borderRadius: BorderRadius.circular(24.0),
                 ),
-                child: Icon(
-                  config.icon,
-                  color: config.primaryColor,
-                  size: AppTypography.iconSizeXXLarge,
-                ),
+                child: Icon(config.icon, color: config.primaryColor, size: 28),
               ),
 
-              SizedBox(width: AppTypography.spacingLarge),
+              const SizedBox(width: 16),
 
               // Content
               Expanded(
@@ -226,12 +156,12 @@ class _ScenarioTile extends StatelessWidget {
                           Icon(
                             Icons.check_circle,
                             color: config.primaryColor,
-                            size: AppTypography.iconSizeXLarge,
+                            size: 24,
                           ),
                       ],
                     ),
 
-                    SizedBox(height: AppTypography.spacingXSmall),
+                    const SizedBox(height: 4),
 
                     Text(
                       description,
@@ -244,30 +174,24 @@ class _ScenarioTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
 
-                    SizedBox(height: AppTypography.spacingSmall),
+                    const SizedBox(height: 8),
 
                     // Learning objectives
-                    Container(
-                      padding: EdgeInsets.only(
-                        left: AppTypography.spacingSmall,
-                        right: AppTypography.spacingSmall,
-                      ),
-                      child: _buildScenarioObjectives(l10n, scenario),
-                    ),
+                    _buildScenarioObjectives(l10n, scenario),
 
-                    SizedBox(height: AppTypography.spacingMedium),
+                    const SizedBox(height: 12),
 
                     // Metadata
                     Row(
                       children: [
                         Icon(
                           Icons.group,
-                          size: AppTypography.iconSizeSmall,
+                          size: 16,
                           color: AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityMediumHigh,
                           ),
                         ),
-                        SizedBox(width: AppTypography.spacingXSmall),
+                        const SizedBox(width: 4),
                         Text(
                           '${config.expectedBodyCount} ${l10n.bodies}',
                           style: AppTypography.smallText.copyWith(
@@ -276,15 +200,15 @@ class _ScenarioTile extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(width: AppTypography.spacingLarge),
+                        const SizedBox(width: 16),
                         Icon(
                           Icons.school,
-                          size: AppTypography.iconSizeSmall,
+                          size: 16,
                           color: AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityMediumHigh,
                           ),
                         ),
-                        SizedBox(width: AppTypography.spacingXSmall),
+                        const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             LocalizationUtils.getLocalizedEducationalFocus(
@@ -367,7 +291,7 @@ class _ScenarioTile extends StatelessWidget {
                 fontSize: 11,
               ),
             ),
-            SizedBox(width: AppTypography.spacingXSmall),
+            const SizedBox(width: 4),
             Expanded(
               child: Text(
                 learnText,
@@ -382,7 +306,7 @@ class _ScenarioTile extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: AppTypography.spacingXSmall),
+        const SizedBox(height: 4),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -393,7 +317,7 @@ class _ScenarioTile extends StatelessWidget {
                 fontSize: 11,
               ),
             ),
-            SizedBox(width: AppTypography.spacingXSmall),
+            const SizedBox(width: 4),
             Expanded(
               child: Text(
                 bestText,

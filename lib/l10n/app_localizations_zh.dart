@@ -183,10 +183,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get selectObjectToFollowTooltip => '选择要跟踪的对象';
 
   @override
-  String get settingsTitle => '设置';
+  String get settingsTitle => '应用程序设置';
 
   @override
-  String get settingsTooltip => '设置';
+  String get settingsTooltip => '应用程序设置';
 
   @override
   String get selectScenarioTooltip => '选择场景';
@@ -1224,6 +1224,14 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get noChangelogsAvailable => '没有可用的更新日志';
+
+  @override
+  String errorLoadingChangelogs(String error) {
+    return '加载更新日志时出错: $error';
+  }
+
+  @override
   String get stellarColorBlue => '蓝色';
 
   @override
@@ -1294,6 +1302,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get copyrightLabel => '版权';
+
+  @override
+  String get allRightsReserved => '保留所有权利';
 
   @override
   String get bodyTypeStar => '恒星';

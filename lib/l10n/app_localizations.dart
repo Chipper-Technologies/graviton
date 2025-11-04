@@ -456,16 +456,16 @@ abstract class AppLocalizations {
   /// **'Select Object to Follow'**
   String get selectObjectToFollowTooltip;
 
-  /// Title for the settings dialog
+  /// Title for the application settings screen
   ///
   /// In en, this message translates to:
-  /// **'Settings'**
+  /// **'Application Settings'**
   String get settingsTitle;
 
   /// Tooltip for the settings button in the app bar
   ///
   /// In en, this message translates to:
-  /// **'Settings'**
+  /// **'Application Settings'**
   String get settingsTooltip;
 
   /// Tooltip for the scenario selection button in the app bar
@@ -2436,6 +2436,18 @@ abstract class AppLocalizations {
   /// **'Failed to load changelog: {error}'**
   String changelogLoadError(String error);
 
+  /// Message when no changelogs are available
+  ///
+  /// In en, this message translates to:
+  /// **'No changelogs available'**
+  String get noChangelogsAvailable;
+
+  /// Error message when failing to load changelogs
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading changelogs: {error}'**
+  String errorLoadingChangelogs(String error);
+
   /// Color description for very hot stars (O-type)
   ///
   /// In en, this message translates to:
@@ -2579,6 +2591,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copyright'**
   String get copyrightLabel;
+
+  /// Copyright notice text
+  ///
+  /// In en, this message translates to:
+  /// **'All rights reserved'**
+  String get allRightsReserved;
 
   /// Display name for star body type
   ///
