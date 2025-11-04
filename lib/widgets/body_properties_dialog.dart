@@ -6,6 +6,9 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/common/haptic_icon_button.dart';
+import 'package:graviton/widgets/common/haptic_switch_list_tile.dart';
 import 'package:graviton/widgets/common/slider_option.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -157,7 +160,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                 icon: Icons.tune,
                 iconColor: AppColors.uiOrangeAccent,
                 iconSize: AppTypography.iconSizeXXXLarge,
-                trailing: IconButton(
+                trailing: HapticIconButton(
                   icon: const Icon(Icons.close),
                   onPressed: () {
                     _updateBody(); // Ensure all changes are saved before closing
@@ -245,7 +248,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                       _buildSectionTitle(l10n.gravityWellsLabel),
                       Column(
                         children: [
-                          SwitchListTile(
+                          HapticSwitchListTile(
                             title: Text(
                               l10n.gravityWellsDescription,
                               style: TextStyle(
@@ -366,7 +369,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
             AppColors.randomPlanetBrown,
           ].map((color) {
             final isSelected = _color == color;
-            return GestureDetector(
+            return HapticGestureDetector(
               onTap: () {
                 setState(() {
                   _color = color;

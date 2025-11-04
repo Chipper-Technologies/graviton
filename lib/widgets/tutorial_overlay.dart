@@ -6,6 +6,9 @@ import 'package:graviton/models/tutorial_step.dart';
 import 'package:graviton/painters/highlight_painter.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_elevated_button.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/common/haptic_text_button.dart';
 
 /// Tutorial overlay that guides new users through the app
 class TutorialOverlay extends StatefulWidget {
@@ -177,7 +180,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
 
                   // Tutorial content
                   Center(
-                    child: GestureDetector(
+                    child: HapticGestureDetector(
                       onPanEnd: (details) {
                         // Detect swipe direction
                         if (details.velocity.pixelsPerSecond.dx > 300) {
@@ -308,7 +311,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   // Skip button
-                                  TextButton(
+                                  HapticTextButton(
                                     onPressed: _skipTutorial,
                                     child: Text(l10n.skipTutorial),
                                   ),
@@ -317,7 +320,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                   Row(
                                     children: [
                                       if (_currentStep > 0)
-                                        TextButton(
+                                        HapticTextButton(
                                           onPressed: _previousStep,
                                           style: TextButton.styleFrom(
                                             foregroundColor: _getIconColor(
@@ -329,7 +332,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                       const SizedBox(
                                         width: AppTypography.spacingSmall,
                                       ),
-                                      ElevatedButton(
+                                      HapticElevatedButton(
                                         onPressed: _nextStep,
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: _getIconColor(

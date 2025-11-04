@@ -5,6 +5,7 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
+import 'package:graviton/widgets/common/haptic_text_button.dart';
 
 /// Dialog for showing maintenance messages, news banners, and emergency notifications
 class MaintenanceDialog extends StatelessWidget {
@@ -109,7 +110,7 @@ class MaintenanceDialog extends StatelessWidget {
           ),
         ),
         actions: [
-          TextButton(
+          HapticTextButton(
             onPressed: _testOnClose ?? () => Navigator.of(context).pop(),
             child: Text(
               l10n?.ok ?? 'OK',
@@ -160,7 +161,7 @@ class MaintenanceDialog extends StatelessWidget {
           ),
         ),
         actions: [
-          TextButton(
+          HapticTextButton(
             onPressed: _testOnClose ?? () => Navigator.of(context).pop(),
             child: Text(
               l10n?.ok ?? 'OK',

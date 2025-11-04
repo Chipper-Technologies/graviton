@@ -5,6 +5,7 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/camera_controls.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/visuals_controls.dart';
 import 'package:graviton/widgets/physics_controls.dart';
 import 'package:provider/provider.dart';
@@ -162,7 +163,7 @@ class _PersistentBottomSheetState extends State<PersistentBottomSheet>
         mainAxisSize: MainAxisSize.min,
         children: [
           // Drag handle with manual drag detection
-          GestureDetector(
+          HapticGestureDetector(
             onPanStart: (details) {
               // Trigger interaction callback when drag starts
               widget.onInteraction?.call();
@@ -204,7 +205,7 @@ class _PersistentBottomSheetState extends State<PersistentBottomSheet>
           ),
 
           // Tab bar with manual drag detection for areas between tabs
-          GestureDetector(
+          HapticGestureDetector(
             onPanStart: (details) {
               // Trigger interaction callback when drag starts
               widget.onInteraction?.call();

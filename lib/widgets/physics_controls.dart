@@ -4,6 +4,7 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/platform_utils.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
@@ -354,7 +355,7 @@ class PhysicsControls extends StatelessWidget {
       margin: EdgeInsets.only(bottom: AppTypography.spacingXSmall),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
+        child: HapticInkWell(
           onTap: () {
             final colorScheme = GravityFieldColorScheme.values.firstWhere(
               (e) => e.name == scheme,
@@ -434,7 +435,7 @@ class PhysicsControls extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: AppTypography.spacingXSmall),
         child: Material(
           color: Colors.transparent,
-          child: InkWell(
+          child: HapticInkWell(
             onTap: () => appState.simulation.setTimeScale(speed),
             borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
             child: Container(

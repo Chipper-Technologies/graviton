@@ -5,6 +5,7 @@ import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/localization_utils.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
 
 /// Full-screen scenario selection page with transparent background
 class ScenarioSelectionScreen extends StatelessWidget {
@@ -112,7 +113,7 @@ class _ScenarioTile extends StatelessWidget {
       color: isSelected
           ? config.primaryColor.withValues(alpha: AppTypography.opacityDisabled)
           : null,
-      child: InkWell(
+      child: HapticInkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
         child: Padding(

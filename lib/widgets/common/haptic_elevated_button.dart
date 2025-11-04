@@ -26,6 +26,37 @@ class HapticElevatedButton extends StatelessWidget {
     this.focusNode,
   });
 
+  /// Factory constructor for icon button
+  factory HapticElevatedButton.icon({
+    Key? key,
+    required VoidCallback? onPressed,
+    required Widget icon,
+    required Widget label,
+    ButtonStyle? style,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    bool autofocus = false,
+    Clip clipBehavior = Clip.none,
+    FocusNode? focusNode,
+  }) {
+    return HapticElevatedButton(
+      key: key,
+      onPressed: onPressed,
+      style: style,
+      onLongPress: onLongPress,
+      onHover: onHover,
+      onFocusChange: onFocusChange,
+      autofocus: autofocus,
+      clipBehavior: clipBehavior,
+      focusNode: focusNode,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [icon, const SizedBox(width: 8), label],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(

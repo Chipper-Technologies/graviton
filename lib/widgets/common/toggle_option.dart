@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/common/haptic_switch.dart';
 
 /// A reusable toggle option widget with consistent styling
 /// Used across bottom sheets and dialogs for toggle switches
@@ -26,7 +28,7 @@ class ToggleOption extends StatelessWidget {
       margin: EdgeInsets.only(bottom: AppTypography.spacingMedium),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
+        child: HapticInkWell(
           onTap: () => onChanged(!isEnabled),
           borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
           child: Container(
@@ -91,10 +93,10 @@ class ToggleOption extends StatelessWidget {
                     ],
                   ),
                 ),
-                Switch(
+                HapticSwitch(
                   value: isEnabled,
                   onChanged: onChanged,
-                  activeThumbColor: AppColors.primaryColor,
+                  activeColor: AppColors.primaryColor,
                   inactiveThumbColor: AppColors.uiWhite.withValues(
                     alpha: AppTypography.opacityMediumHigh,
                   ),

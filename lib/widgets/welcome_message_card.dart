@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_elevated_button.dart';
+import 'package:graviton/widgets/common/haptic_text_button.dart';
+import 'package:graviton/widgets/common/haptic_icon_button.dart';
 
 /// A welcome message widget that provides quick objectives and guidance
 class WelcomeMessageCard extends StatelessWidget {
@@ -57,7 +60,7 @@ class WelcomeMessageCard extends StatelessWidget {
                 ),
               ),
               if (onDismiss != null)
-                IconButton(
+                HapticIconButton(
                   icon: const Icon(
                     Icons.close,
                     size: AppTypography.iconSizeXLarge,
@@ -78,7 +81,7 @@ class WelcomeMessageCard extends StatelessWidget {
             children: [
               if (onTutorial != null)
                 Expanded(
-                  child: ElevatedButton.icon(
+                  child: HapticElevatedButton.icon(
                     onPressed: onTutorial,
                     icon: const Icon(
                       Icons.school,
@@ -97,7 +100,7 @@ class WelcomeMessageCard extends StatelessWidget {
                 const SizedBox(width: AppTypography.spacingSmall),
               if (onDismiss != null)
                 Expanded(
-                  child: TextButton(
+                  child: HapticTextButton(
                     onPressed: onDismiss,
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(

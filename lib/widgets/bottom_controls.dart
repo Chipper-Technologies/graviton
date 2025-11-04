@@ -6,6 +6,7 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/camera_controls.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
 import 'package:graviton/widgets/physics_controls.dart';
 import 'package:graviton/widgets/visuals_controls.dart';
 import 'package:provider/provider.dart';
@@ -251,7 +252,7 @@ class BottomControls extends StatelessWidget {
       preferBelow: false,
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
+        child: HapticInkWell(
           onTap: onPressed,
           splashColor: AppColors.primaryColor.withValues(
             alpha: AppTypography.opacityDisabled,

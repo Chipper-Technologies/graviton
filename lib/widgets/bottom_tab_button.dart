@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/painters/gradient_grid_painter.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
 
 /// A tab button for the bottom navigation bar with proper theming
 class BottomTabButton extends StatelessWidget {
@@ -29,7 +30,7 @@ class BottomTabButton extends StatelessWidget {
       preferBelow: false,
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
+        child: HapticInkWell(
           onTap: onPressed,
           borderRadius: AppTypography.createRadius(AppTypography.radiusLarge),
           splashColor: AppColors.primaryColor.withValues(

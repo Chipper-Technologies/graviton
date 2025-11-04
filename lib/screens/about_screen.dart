@@ -7,6 +7,7 @@ import 'package:graviton/services/version_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/clipboard_utils.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -165,7 +166,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       context,
                       icon: Icons.language,
                       title: l10n.websiteLabel,
-                      child: InkWell(
+                      child: HapticInkWell(
                         onTap: () => _launchUrl(AppConfig.githubUrl),
                         child: Text(
                           AppConfig.githubUrl,
@@ -187,7 +188,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       context,
                       icon: Icons.privacy_tip,
                       title: l10n.privacyPolicyLabel,
-                      child: InkWell(
+                      child: HapticInkWell(
                         onTap: () => _launchUrl(AppConfig.privacyPolicyUrl),
                         child: Text(
                           AppConfig.privacyPolicyUrl,

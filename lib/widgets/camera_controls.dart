@@ -7,6 +7,8 @@ import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/widgets/camera_mode_option.dart';
 import 'package:graviton/widgets/camera_action_button.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/common/haptic_switch.dart';
 import 'package:graviton/widgets/section_title.dart';
 
 /// Camera controls content for the persistent bottom sheet
@@ -191,7 +193,7 @@ class CameraControls extends StatelessWidget {
       margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
+        child: HapticInkWell(
           onTap: onToggle,
           borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
           child: Container(
@@ -256,10 +258,10 @@ class CameraControls extends StatelessWidget {
                     ],
                   ),
                 ),
-                Switch(
+                HapticSwitch(
                   value: isEnabled,
                   onChanged: (_) => onToggle(),
-                  activeThumbColor: AppColors.primaryColor,
+                  activeColor: AppColors.primaryColor,
                   activeTrackColor: AppColors.primaryColor.withValues(
                     alpha: AppTypography.opacityFaint,
                   ),

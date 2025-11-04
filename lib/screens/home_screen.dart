@@ -29,6 +29,10 @@ import 'package:graviton/widgets/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
 import 'package:graviton/widgets/persistent_bottom_sheet.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/common/haptic_icon_button.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/common/haptic_text_button.dart';
 import 'package:graviton/screens/developer_tools_screen.dart';
 import 'package:graviton/screens/help_screen.dart';
 import 'package:graviton/screens/application_settings_screen.dart';
@@ -733,7 +737,7 @@ class _HomeScreenState extends State<HomeScreen>
                 'No changelog available for version $currentVersion',
               ),
               actions: [
-                TextButton(
+                HapticTextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text('Close'),
                 ),
@@ -842,7 +846,7 @@ class _HomeScreenState extends State<HomeScreen>
 
                     // Options drawer toggle
                     Builder(
-                      builder: (context) => IconButton(
+                      builder: (context) => HapticIconButton(
                         icon: const Icon(Icons.menu),
                         tooltip: l10n.moreOptionsTooltip,
                         onPressed: () => Scaffold.of(context).openEndDrawer(),
@@ -855,7 +859,7 @@ class _HomeScreenState extends State<HomeScreen>
               final size = Size(constraints.maxWidth, constraints.maxHeight);
               final view = _buildView();
 
-              return GestureDetector(
+              return HapticGestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTapUp: (details) {
                   // Show floating controls on tap
@@ -1128,7 +1132,7 @@ class _HomeScreenState extends State<HomeScreen>
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // Previous button
-                IconButton(
+                HapticIconButton(
                   onPressed: () async {
                     screenshotService.previousPreset();
                     await screenshotService.applyCurrentPreset(
@@ -1157,7 +1161,7 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
 
                 // Next button
-                IconButton(
+                HapticIconButton(
                   onPressed: () async {
                     screenshotService.nextPreset();
                     await screenshotService.applyCurrentPreset(
@@ -1303,7 +1307,7 @@ class _HomeScreenState extends State<HomeScreen>
       preferBelow: false,
       child: Material(
         color: AppColors.transparentColor,
-        child: InkWell(
+        child: HapticInkWell(
           onTap: onPressed,
           borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
           splashColor: AppColors.primaryColor.withValues(

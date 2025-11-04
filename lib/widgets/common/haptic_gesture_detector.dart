@@ -10,6 +10,12 @@ class HapticGestureDetector extends StatelessWidget {
   final GestureTapUpCallback? onTapUp;
   final GestureTapCancelCallback? onTapCancel;
   final GestureTapCallback? onDoubleTap;
+  final GestureScaleStartCallback? onScaleStart;
+  final GestureScaleUpdateCallback? onScaleUpdate;
+  final GestureScaleEndCallback? onScaleEnd;
+  final GestureDragStartCallback? onPanStart;
+  final GestureDragUpdateCallback? onPanUpdate;
+  final GestureDragEndCallback? onPanEnd;
   final HitTestBehavior? behavior;
   final bool excludeFromSemantics;
 
@@ -22,6 +28,12 @@ class HapticGestureDetector extends StatelessWidget {
     this.onTapUp,
     this.onTapCancel,
     this.onDoubleTap,
+    this.onScaleStart,
+    this.onScaleUpdate,
+    this.onScaleEnd,
+    this.onPanStart,
+    this.onPanUpdate,
+    this.onPanEnd,
     this.behavior,
     this.excludeFromSemantics = false,
   });
@@ -50,6 +62,12 @@ class HapticGestureDetector extends StatelessWidget {
       onTapDown: onTapDown,
       onTapUp: onTapUp,
       onTapCancel: onTapCancel,
+      onScaleStart: onScaleStart,
+      onScaleUpdate: onScaleUpdate,
+      onScaleEnd: onScaleEnd,
+      onPanStart: onPanStart,
+      onPanUpdate: onPanUpdate,
+      onPanEnd: onPanEnd,
       behavior: behavior,
       excludeFromSemantics: excludeFromSemantics,
       child: child,
