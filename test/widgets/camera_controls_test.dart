@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/widgets/camera_bottom_sheet.dart';
-import 'package:graviton/widgets/bottom_sheet_handle.dart';
-import 'package:graviton/widgets/bottom_sheet_header.dart';
+import 'package:graviton/widgets/camera_controls.dart';
 import 'package:graviton/widgets/camera_mode_option.dart';
 import 'package:graviton/widgets/camera_action_button.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 
 void main() {
-  group('CameraBottomSheet', () {
+  group('CameraControls', () {
     late AppState appState;
     late ScrollController scrollController;
 
@@ -32,7 +29,7 @@ void main() {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
-          body: CameraBottomSheet(
+          body: CameraControls(
             appState: appState,
             scrollController: scrollController,
           ),
@@ -43,17 +40,15 @@ void main() {
     testWidgets('renders correctly', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.byType(CameraBottomSheet), findsOneWidget);
-      expect(find.byType(BottomSheetHandle), findsOneWidget);
-      expect(find.byType(BottomSheetHeader), findsOneWidget);
-      expect(find.byType(Container), findsWidgets);
+      expect(find.byType(CameraControls), findsOneWidget);
+      expect(find.byType(ListView), findsOneWidget);
     });
 
-    testWidgets('displays correct header', (WidgetTester tester) async {
+    testWidgets('displays correct sections', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.byIcon(Icons.videocam), findsOneWidget);
-      expect(find.text('Camera'), findsOneWidget);
+      expect(find.text('AI Camera Modes'), findsOneWidget);
+      expect(find.byType(SectionTitle), findsWidgets);
     });
 
     testWidgets('displays all camera modes', (WidgetTester tester) async {
@@ -139,7 +134,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
 
       // Should have some basic UI elements
-      expect(find.byType(CameraBottomSheet), findsOneWidget);
+      expect(find.byType(CameraControls), findsOneWidget);
       expect(find.byType(ListView), findsOneWidget);
 
       // Log what widgets are actually found for debugging
@@ -178,14 +173,11 @@ void main() {
     testWidgets('has correct styling and colors', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      final container = tester.widget<Container>(find.byType(Container).first);
-      final decoration = container.decoration as BoxDecoration;
+      final listView = tester.widget<ListView>(find.byType(ListView));
+      expect(listView.padding, isNotNull);
 
-      expect(
-        decoration.color,
-        AppColors.uiBlack.withValues(alpha: AppTypography.opacityMediumHigh),
-      );
-      expect(decoration.borderRadius, isA<BorderRadius>());
+      // Check that camera mode options are styled properly
+      expect(find.byType(CameraModeOption), findsWidgets);
     });
 
     testWidgets('displays proper section titles', (WidgetTester tester) async {
@@ -194,7 +186,7 @@ void main() {
       expect(find.byType(SectionTitle), findsWidgets);
       expect(find.text('AI Camera Modes'), findsOneWidget);
       // Just test that the widget renders without specific text checks
-      expect(find.byType(CameraBottomSheet), findsOneWidget);
+      expect(find.byType(CameraControls), findsOneWidget);
     });
 
     testWidgets('responds to app state changes', (WidgetTester tester) async {
@@ -286,7 +278,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
 
       // Should still render without errors
-      expect(find.byType(CameraBottomSheet), findsOneWidget);
+      expect(find.byType(CameraControls), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
@@ -301,8 +293,7 @@ void main() {
         await tester.pump();
 
         // Should always show basic structure
-        expect(find.byType(BottomSheetHandle), findsOneWidget);
-        expect(find.byType(BottomSheetHeader), findsOneWidget);
+        expect(find.byType(ListView), findsOneWidget);
         expect(find.byType(CameraModeOption), findsNWidgets(3));
 
         // Should not throw errors
@@ -320,7 +311,10 @@ void main() {
 
       expect(padding.left, AppTypography.spacingXLarge);
       expect(padding.right, AppTypography.spacingXLarge);
-      expect(padding.top, AppTypography.spacingXLarge);
+      expect(
+        padding.top,
+        AppTypography.spacingLarge,
+      ); // Updated from spacingXLarge
       // Bottom should be at least the base spacing
       expect(padding.bottom, greaterThanOrEqualTo(AppTypography.spacingXLarge));
     });

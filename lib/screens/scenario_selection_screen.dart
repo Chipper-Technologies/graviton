@@ -78,7 +78,7 @@ class ScenarioSelectionScreen extends StatelessWidget {
 
   void _selectScenario(BuildContext context, ScenarioType scenario) {
     onScenarioSelected(scenario);
-    Navigator.of(context).pop();
+    // Don't pop here - let the callback handler manage navigation
   }
 }
 

@@ -105,8 +105,6 @@ class RenderingConstants {
   // Bottom sheet UI constants
   static const double bottomSheetSystemBarPadding =
       80.0; // Extra padding for Android system bar clearance
-  static const double floatingControlsBottomOffset =
-      130.0; // Distance from bottom for floating simulation controls
 
   // Cinematic Camera - Dramatic Scoring Constants
   // These constants control how the camera scoring algorithm weighs different dramatic factors

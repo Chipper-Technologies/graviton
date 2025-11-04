@@ -26,10 +26,9 @@ import 'package:graviton/widgets/auto_pause_dialog_wrapper.dart';
 import 'package:graviton/widgets/body_labels_overlay.dart';
 import 'package:graviton/widgets/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
-import 'package:graviton/widgets/bottom_controls.dart';
+import 'package:graviton/widgets/persistent_bottom_sheet.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/screens/developer_tools_screen.dart';
-import 'package:graviton/widgets/floating_simulation_controls.dart';
 import 'package:graviton/screens/help_screen.dart';
 import 'package:graviton/screens/application_settings_screen.dart';
 import 'package:graviton/widgets/options_drawer.dart';
@@ -79,6 +78,10 @@ class _HomeScreenState extends State<HomeScreen>
   // Function to show simulation controls
   VoidCallback? _showSimulationControls;
 
+  // Floating controls visibility state
+  bool _showFloatingControls = false;
+  Timer? _floatingControlsTimer;
+
   @override
   void initState() {
     super.initState();
@@ -108,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void dispose() {
     _ticker.dispose();
+    _floatingControlsTimer?.cancel();
     _screenshotModeService.removeListener(_onScreenshotModeChanged);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -275,6 +279,25 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  /// Show floating controls and reset auto-hide timer
+  void _showFloatingControlsTemporarily() {
+    setState(() {
+      _showFloatingControls = true;
+    });
+
+    // Cancel existing timer
+    _floatingControlsTimer?.cancel();
+
+    // Set timer to hide controls after 3 seconds of inactivity
+    _floatingControlsTimer = Timer(const Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          _showFloatingControls = false;
+        });
+      }
+    });
+  }
+
   /// Project a 3D world position to 2D screen coordinates
   Offset? _projectToScreen(
     vm.Vector3 worldPos,
@@ -374,15 +397,36 @@ class _HomeScreenState extends State<HomeScreen>
                   element: UIElement.scenarioDialog,
                   value: scenario.name,
                 );
-                appState.simulation.resetWithScenario(scenario, l10n: l10n);
-                // Reset cinematic camera controller for new scenario
-                _cinematicCameraController.reset();
-                // Auto-zoom camera to fit the new scenario
-                appState.camera.resetViewForScenario(
-                  scenario,
-                  appState.simulation.bodies,
-                );
-                Navigator.of(context).pop(); // Close the screen
+
+                // Close the screen first to avoid navigator conflicts
+                Navigator.of(context).pop();
+
+                // Then perform the scenario switch with proper error handling
+                try {
+                  appState.simulation.resetWithScenario(scenario, l10n: l10n);
+                  // Reset cinematic camera controller for new scenario
+                  _cinematicCameraController.reset();
+
+                  // Use a timer instead of post-frame callback for more reliable execution
+                  Future.delayed(const Duration(milliseconds: 100), () {
+                    try {
+                      // Auto-zoom camera to fit the new scenario
+                      if (appState.simulation.bodies.isNotEmpty) {
+                        appState.camera.resetViewForScenario(
+                          scenario,
+                          appState.simulation.bodies,
+                        );
+                      }
+                    } catch (e) {
+                      // Silently handle any camera reset errors
+                      debugPrint('Camera reset error: $e');
+                    }
+                  });
+                } catch (e) {
+                  // Handle any simulation reset errors
+                  debugPrint('Scenario switch error: $e');
+                  appState.setError('Failed to switch scenario: $e');
+                }
               },
             ),
         opaque: false,
@@ -813,6 +857,8 @@ class _HomeScreenState extends State<HomeScreen>
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTapUp: (details) {
+                  // Show floating controls on tap
+                  _showFloatingControlsTemporarily();
                   _handleTapWithDelay(
                     context,
                     appState,
@@ -822,6 +868,9 @@ class _HomeScreenState extends State<HomeScreen>
                   );
                 },
                 onDoubleTap: () {
+                  // Show floating controls on double-tap
+                  _showFloatingControlsTemporarily();
+
                   // Double-tap to reset camera view
                   appState.camera.resetView(
                     appState.simulation.currentScenario,
@@ -842,6 +891,9 @@ class _HomeScreenState extends State<HomeScreen>
 
                   // Show simulation controls when starting camera interaction
                   _showSimulationControls?.call();
+
+                  // Show floating controls on interaction
+                  _showFloatingControlsTemporarily();
 
                   if (d.pointerCount >= 2) {
                     FirebaseService.instance.logUIEventWithEnums(
@@ -972,20 +1024,48 @@ class _HomeScreenState extends State<HomeScreen>
                     ScreenshotCountdown(
                       screenshotService: _screenshotModeService,
                     ),
-                    // Floating video-style simulation controls
+
+                    // Persistent bottom sheet positioned at bottom of screen
                     if (!shouldHideUI)
-                      FloatingSimulationControls(
-                        onRegisterShowControls: (showControlsCallback) {
-                          _showSimulationControls = showControlsCallback;
-                        },
-                      ),
-                    // Bottom controls positioned at bottom of screen
-                    if (!shouldHideUI)
-                      const Positioned(
-                        bottom: 0,
+                      Positioned(
                         left: 0,
                         right: 0,
-                        child: BottomControls(),
+                        bottom: 0,
+                        height: MediaQuery.of(context).size.height,
+                        child: PersistentBottomSheet(
+                          onInteraction: _showFloatingControlsTemporarily,
+                        ),
+                      ),
+
+                    // Floating simulation controls positioned above the bottom sheet
+                    if (!shouldHideUI && _showFloatingControls)
+                      ValueListenableBuilder<double>(
+                        valueListenable: PersistentBottomSheet.sheetPosition,
+                        builder: (context, sheetPosition, child) {
+                          final screenHeight = MediaQuery.of(
+                            context,
+                          ).size.height;
+                          final sheetTopPosition =
+                              screenHeight * (1 - sheetPosition);
+
+                          return Positioned(
+                            bottom:
+                                screenHeight -
+                                sheetTopPosition +
+                                20, // Position above the sheet using bottom positioning
+                            right: 32,
+                            child: Consumer<AppState>(
+                              builder: (context, appState, child) {
+                                final l10n = AppLocalizations.of(context)!;
+                                return _buildFloatingSimulationControls(
+                                  context,
+                                  appState,
+                                  l10n,
+                                );
+                              },
+                            ),
+                          );
+                        },
                       ),
                   ],
                 ),
@@ -1134,6 +1214,132 @@ class _HomeScreenState extends State<HomeScreen>
               simulationState: appState.simulation,
             );
           },
+        ),
+      ),
+    );
+  }
+
+  /// Build floating simulation controls that appear above the bottom sheet
+  Widget _buildFloatingSimulationControls(
+    BuildContext context,
+    AppState appState,
+    AppLocalizations l10n,
+  ) {
+    return Material(
+      color: Colors.transparent,
+      elevation:
+          8, // Add elevation to ensure proper rendering above other content
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Play/Pause Button
+          _buildCircularControlButton(
+            icon: appState.simulation.isPaused ? Icons.play_arrow : Icons.pause,
+            onPressed: () {
+              // Reset floating controls timer when button is pressed
+              _showFloatingControlsTemporarily();
+
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.buttonPressed,
+                element: UIElement.simulationControl,
+                value: appState.simulation.isPaused ? 'play' : 'pause',
+              );
+              appState.simulation.pause();
+            },
+            tooltip: appState.simulation.isPaused
+                ? l10n.playButton
+                : l10n.pauseButton,
+            isPrimary: true,
+          ),
+
+          const SizedBox(width: AppTypography.spacingSmall),
+
+          // Reset Button
+          _buildCircularControlButton(
+            icon: Icons.refresh,
+            onPressed: () {
+              // Reset floating controls timer when button is pressed
+              _showFloatingControlsTemporarily();
+
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.buttonPressed,
+                element: UIElement.simulationControl,
+                value: 'reset',
+              );
+
+              // Check if screenshot mode is active and deactivate it first
+              final screenshotService = ScreenshotModeService();
+              if (screenshotService.isActive) {
+                screenshotService.deactivate(uiState: appState.ui);
+              }
+
+              appState.resetAll();
+            },
+            tooltip: l10n.resetButton,
+            isDark: true, // Make reset button darker
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build a circular control button for the simulation controls
+  Widget _buildCircularControlButton({
+    required IconData icon,
+    required VoidCallback onPressed,
+    required String tooltip,
+    bool isPrimary = false,
+    bool isDark = false,
+  }) {
+    return Tooltip(
+      message: tooltip,
+      preferBelow: false,
+      child: Material(
+        color: AppColors.transparentColor,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
+          splashColor: AppColors.primaryColor.withValues(
+            alpha: AppTypography.opacityMedium,
+          ),
+          highlightColor: AppColors.primaryColor.withValues(
+            alpha: AppTypography.opacityFaint,
+          ),
+          child: Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: isPrimary
+                  ? AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityNearlyOpaque,
+                    )
+                  : isDark
+                  ? AppColors.uiBlack.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ) // Dark background for reset button
+                  : AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityVeryFaint,
+                    ),
+              borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
+              border: isPrimary
+                  ? null
+                  : Border.all(
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityFaint,
+                      ),
+                      width: 1,
+                    ),
+            ),
+            child: Icon(
+              icon,
+              color: isPrimary
+                  ? AppColors.uiWhite
+                  : AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityNearlyOpaque,
+                    ),
+              size: AppTypography.iconSizeMedium,
+            ),
+          ),
         ),
       ),
     );

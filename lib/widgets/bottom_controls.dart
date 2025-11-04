@@ -5,9 +5,9 @@ import 'package:graviton/painters/gradient_grid_painter.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/camera_bottom_sheet.dart';
-import 'package:graviton/widgets/physics_bottom_sheet.dart';
-import 'package:graviton/widgets/visuals_bottom_sheet.dart';
+import 'package:graviton/widgets/camera_controls.dart';
+import 'package:graviton/widgets/physics_controls.dart';
+import 'package:graviton/widgets/visuals_controls.dart';
 import 'package:provider/provider.dart';
 
 /// Bottom control bar with camera and UI toggle buttons
@@ -168,7 +168,7 @@ class BottomControls extends StatelessWidget {
         initialChildSize: (maxChildSize * 0.75).clamp(0.3, 0.6), // 75% of max
         minChildSize: 0.25, // Reasonable min size for dismissal
         maxChildSize: maxChildSize,
-        builder: (context, scrollController) => CameraBottomSheet(
+        builder: (context, scrollController) => CameraControls(
           appState: appState,
           scrollController: scrollController,
         ),
@@ -197,7 +197,7 @@ class BottomControls extends StatelessWidget {
         initialChildSize: (maxChildSize * 0.75).clamp(0.3, 0.6), // 75% of max
         minChildSize: 0.25, // Reasonable min size for dismissal
         maxChildSize: maxChildSize,
-        builder: (context, scrollController) => VisualsBottomSheet(
+        builder: (context, scrollController) => VisualsControls(
           appState: appState,
           scrollController: scrollController,
         ),
@@ -226,7 +226,7 @@ class BottomControls extends StatelessWidget {
         initialChildSize: (maxChildSize * 0.75).clamp(0.3, 0.6), // 75% of max
         minChildSize: 0.25, // Reasonable min size for dismissal
         maxChildSize: maxChildSize,
-        builder: (context, scrollController) => PhysicsBottomSheet(
+        builder: (context, scrollController) => PhysicsControls(
           appState: appState,
           scrollController: scrollController,
         ),
