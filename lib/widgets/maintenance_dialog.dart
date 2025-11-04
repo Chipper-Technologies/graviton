@@ -4,6 +4,7 @@ import 'package:graviton/services/remote_config_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/dialog_title.dart';
 
 /// Dialog for showing maintenance messages, news banners, and emergency notifications
 class MaintenanceDialog extends StatelessWidget {
@@ -90,25 +91,15 @@ class MaintenanceDialog extends StatelessWidget {
       constraints: AppConstraints.dialogCompact,
       child: AlertDialog(
         backgroundColor: AppColors.uiBlack,
-        title: Row(
-          children: [
-            Icon(
-              Icons.build,
-              color: AppColors.uiOrange,
-              size: AppTypography.iconSizeXXLarge,
-            ),
-            const SizedBox(width: AppTypography.spacingSmall),
-            Expanded(
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: AppColors.uiWhite,
-                  fontSize: AppTypography.fontSizeXLarge,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
+        title: DialogTitle(
+          title: title,
+          icon: Icons.build,
+          iconColor: AppColors.uiOrange,
+          titleStyle: TextStyle(
+            color: AppColors.uiWhite,
+            fontSize: AppTypography.fontSizeXLarge,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         content: Text(
           message,
@@ -149,27 +140,17 @@ class MaintenanceDialog extends StatelessWidget {
       constraints: AppConstraints.dialogCompact,
       child: AlertDialog(
         backgroundColor: AppColors.uiBlack,
-        title: Row(
-          children: [
-            Icon(
-              isEmergency ? Icons.warning : Icons.info,
-              color: isEmergency
-                  ? AppColors.uiRed
-                  : AppColors.uiLightBlueAccent,
-              size: AppTypography.iconSizeXXLarge,
-            ),
-            const SizedBox(width: AppTypography.spacingSmall),
-            Expanded(
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: AppColors.uiWhite,
-                  fontSize: AppTypography.fontSizeXLarge,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
+        title: DialogTitle(
+          title: title,
+          icon: isEmergency ? Icons.warning : Icons.info,
+          iconColor: isEmergency
+              ? AppColors.uiRed
+              : AppColors.uiLightBlueAccent,
+          titleStyle: TextStyle(
+            color: AppColors.uiWhite,
+            fontSize: AppTypography.fontSizeXLarge,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         content: Text(
           message,

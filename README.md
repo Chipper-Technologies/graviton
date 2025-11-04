@@ -1409,6 +1409,35 @@ flutter clean && flutter pub get
 - **Comprehensive test coverage**: 473+ tests with 41% line coverage across models, services, state, and UI
 - **Modular architecture**: Clean separation between rendering, physics, and state management
 - **Enhanced debugging**: Preserved debug information in comments for future development
+- **Centralized configuration**: `AppConfig` class provides unified access to asset paths, URLs, and environment-specific settings
+
+#### 📋 Configuration Management
+
+The app uses a centralized configuration system (`AppConfig`) that improves maintainability and reduces hardcoded values:
+
+**Asset Path Management:**
+```dart
+// ✅ Centralized approach (recommended)
+image: AssetImage(AppConfig.appLogoPath),
+
+// ❌ Hardcoded approach (avoid)
+image: AssetImage('assets/images/app-logo.png'),
+```
+
+**Benefits:**
+- **Single source of truth**: All asset paths defined in `lib/config/flavor_config.dart`
+- **Environment flexibility**: Asset paths can be overridden via `--dart-define` for different environments
+- **Maintainability**: Changes to asset locations only require updating one file
+- **Type safety**: Compile-time validation of configuration constants
+
+**Available Constants:**
+- `AppConfig.appLogoPath` - Main application logo
+- `AppConfig.chipperLogoPath` - Company logo  
+- `AppConfig.gravitonLogoPath` - Graviton-specific branding
+- `AppConfig.githubUrl` - GitHub repository URL
+- `AppConfig.privacyPolicyUrl` - Privacy policy link
+
+⚠️ **Important**: When moving or renaming assets, update the default values in `AppConfig` to maintain consistency across all usage locations.
 
 ---
 

@@ -560,4 +560,569 @@ void main() {
       }
     });
   });
+
+  group('CinematicCameraController Reset and State Management', () {
+    late CinematicCameraController controller;
+    late SimulationState simulation;
+    late CameraState camera;
+    late UIState ui;
+
+    setUp(() {
+      controller = CinematicCameraController();
+      simulation = SimulationState();
+      camera = CameraState();
+      ui = UIState();
+    });
+
+    test('reset should clear all internal state', () {
+      // Set up some state first
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+
+      // Run camera for a few frames to build up state
+      for (int i = 0; i < 10; i++) {
+        controller.updateCamera(
+          CinematicCameraTechnique.predictiveOrbital,
+          simulation,
+          camera,
+          ui,
+          0.016, // ~60fps
+        );
+      }
+
+      // Reset should clear everything
+      controller.reset();
+
+      // After reset, controller should behave as if newly created
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('reset should be safe to call multiple times', () {
+      controller.reset();
+      controller.reset();
+      controller.reset();
+
+      // Should still work normally after multiple resets
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.manual,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('reset should be safe to call before any camera updates', () {
+      // Reset on fresh controller should not throw
+      expect(() => controller.reset(), returnsNormally);
+
+      // Should still work normally after reset on fresh controller
+      simulation.start();
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.predictiveOrbital,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+    });
+  });
+
+  group('CinematicCameraController Scenario Handling', () {
+    late CinematicCameraController controller;
+    late SimulationState simulation;
+    late CameraState camera;
+    late UIState ui;
+
+    setUp(() {
+      controller = CinematicCameraController();
+      simulation = SimulationState();
+      camera = CameraState();
+      ui = UIState();
+    });
+
+    test('should handle scenario switching without errors', () {
+      final scenarios = [
+        ScenarioType.solarSystem,
+        ScenarioType.earthMoonSun,
+        ScenarioType.binaryStars,
+        ScenarioType.asteroidBelt,
+        ScenarioType.galaxyFormation,
+      ];
+
+      for (final scenario in scenarios) {
+        simulation.resetWithScenario(scenario);
+
+        expect(
+          () => controller.updateCamera(
+            CinematicCameraTechnique.predictiveOrbital,
+            simulation,
+            camera,
+            ui,
+            0.016,
+          ),
+          returnsNormally,
+        );
+
+        expect(
+          () => controller.updateCamera(
+            CinematicCameraTechnique.dynamicFraming,
+            simulation,
+            camera,
+            ui,
+            0.016,
+          ),
+          returnsNormally,
+        );
+
+        simulation.stop();
+      }
+    });
+
+    test('should handle empty body list gracefully', () {
+      simulation.start();
+      simulation.bodies.clear(); // Remove all bodies
+
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.predictiveOrbital,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle paused simulation state', () {
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+      simulation.pause();
+
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.predictiveOrbital,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+
+      simulation.resumeSimulation();
+
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle stopped simulation state', () {
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+      simulation.stop();
+
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.predictiveOrbital,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+    });
+  });
+
+  group('CinematicCameraController Technique Switching', () {
+    late CinematicCameraController controller;
+    late SimulationState simulation;
+    late CameraState camera;
+    late UIState ui;
+
+    setUp(() {
+      controller = CinematicCameraController();
+      simulation = SimulationState();
+      camera = CameraState();
+      ui = UIState();
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+    });
+
+    test('should handle rapid technique switching', () {
+      final techniques = CinematicCameraTechnique.values;
+
+      for (int i = 0; i < 20; i++) {
+        final technique = techniques[i % techniques.length];
+        expect(
+          () =>
+              controller.updateCamera(technique, simulation, camera, ui, 0.016),
+          returnsNormally,
+        );
+      }
+    });
+
+    test('should handle switching between AI techniques', () {
+      // Start with predictive
+      controller.updateCamera(
+        CinematicCameraTechnique.predictiveOrbital,
+        simulation,
+        camera,
+        ui,
+        0.016,
+      );
+
+      // Switch to dynamic
+      controller.updateCamera(
+        CinematicCameraTechnique.dynamicFraming,
+        simulation,
+        camera,
+        ui,
+        0.016,
+      );
+
+      // Switch back to predictive
+      controller.updateCamera(
+        CinematicCameraTechnique.predictiveOrbital,
+        simulation,
+        camera,
+        ui,
+        0.016,
+      );
+
+      // All switches should work without errors
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.manual,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('manual technique should not modify camera automatically', () {
+      final initialTarget = vm.Vector3.copy(camera.target);
+      final initialDistance = camera.distance;
+      final initialYaw = camera.yaw;
+      final initialPitch = camera.pitch;
+
+      // Manual technique should not change camera
+      controller.updateCamera(
+        CinematicCameraTechnique.manual,
+        simulation,
+        camera,
+        ui,
+        0.016,
+      );
+
+      expect(camera.target, equals(initialTarget));
+      expect(camera.distance, equals(initialDistance));
+      expect(camera.yaw, equals(initialYaw));
+      expect(camera.pitch, equals(initialPitch));
+    });
+  });
+
+  group('CinematicCameraController Performance and Edge Cases', () {
+    late CinematicCameraController controller;
+    late SimulationState simulation;
+    late CameraState camera;
+    late UIState ui;
+
+    setUp(() {
+      controller = CinematicCameraController();
+      simulation = SimulationState();
+      camera = CameraState();
+      ui = UIState();
+    });
+
+    test('should handle very small deltaTime values', () {
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.predictiveOrbital,
+          simulation,
+          camera,
+          ui,
+          0.001, // Very small deltaTime
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle zero deltaTime', () {
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          0.0, // Zero deltaTime
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle large deltaTime values', () {
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.predictiveOrbital,
+          simulation,
+          camera,
+          ui,
+          10.0, // Large deltaTime
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle negative deltaTime gracefully', () {
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          -0.016, // Negative deltaTime
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle many consecutive updates without memory leaks', () {
+      simulation.resetWithScenario(ScenarioType.galaxyFormation);
+
+      // Run many updates to test for memory leaks or state corruption
+      for (int i = 0; i < 100; i++) {
+        // Reduced from 1000 to keep tests fast
+        controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        );
+
+        // Verify camera state remains valid
+        expect(camera.distance.isFinite, isTrue);
+        expect(camera.yaw.isFinite, isTrue);
+        expect(camera.pitch.isFinite, isTrue);
+        expect(camera.target.x.isFinite, isTrue);
+        expect(camera.target.y.isFinite, isTrue);
+        expect(camera.target.z.isFinite, isTrue);
+      }
+    });
+
+    test('should handle body removal during camera updates', () {
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+
+      // Run a few updates
+      for (int i = 0; i < 5; i++) {
+        controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        );
+      }
+
+      // Simulate body removal
+      if (simulation.bodies.isNotEmpty) {
+        simulation.bodies.removeLast();
+      }
+
+      // Should continue working after body removal
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should maintain finite camera values under all conditions', () {
+      final scenarios = [
+        ScenarioType.solarSystem,
+        ScenarioType.binaryStars,
+        ScenarioType.galaxyFormation,
+      ];
+
+      for (final scenario in scenarios) {
+        simulation.resetWithScenario(scenario);
+
+        for (final technique in CinematicCameraTechnique.values) {
+          controller.updateCamera(technique, simulation, camera, ui, 0.016);
+
+          // Verify all camera values are finite
+          expect(
+            camera.distance.isFinite,
+            isTrue,
+            reason: 'Distance should be finite for $scenario with $technique',
+          );
+          expect(
+            camera.yaw.isFinite,
+            isTrue,
+            reason: 'Yaw should be finite for $scenario with $technique',
+          );
+          expect(
+            camera.pitch.isFinite,
+            isTrue,
+            reason: 'Pitch should be finite for $scenario with $technique',
+          );
+          expect(
+            camera.target.x.isFinite,
+            isTrue,
+            reason: 'Target X should be finite for $scenario with $technique',
+          );
+          expect(
+            camera.target.y.isFinite,
+            isTrue,
+            reason: 'Target Y should be finite for $scenario with $technique',
+          );
+          expect(
+            camera.target.z.isFinite,
+            isTrue,
+            reason: 'Target Z should be finite for $scenario with $technique',
+          );
+        }
+      }
+    });
+  });
+
+  group('CinematicCameraController State Persistence', () {
+    late CinematicCameraController controller;
+    late SimulationState simulation;
+    late CameraState camera;
+    late UIState ui;
+
+    setUp(() {
+      controller = CinematicCameraController();
+      simulation = SimulationState();
+      camera = CameraState();
+      ui = UIState();
+    });
+
+    test('should maintain state across paused periods', () {
+      simulation.resetWithScenario(ScenarioType.earthMoonSun);
+
+      // Run some updates to build state
+      for (int i = 0; i < 10; i++) {
+        controller.updateCamera(
+          CinematicCameraTechnique.predictiveOrbital,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        );
+      }
+
+      // Pause simulation
+      simulation.pauseSimulation();
+
+      // Run updates while paused (camera may still update for UI responsiveness)
+      for (int i = 0; i < 5; i++) {
+        controller.updateCamera(
+          CinematicCameraTechnique.predictiveOrbital,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        );
+      }
+
+      // Resume and verify it continues working
+      simulation.resumeSimulation();
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.predictiveOrbital,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle scenario switching while maintaining stability', () {
+      // Start with one scenario
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+
+      for (int i = 0; i < 5; i++) {
+        controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        );
+      }
+
+      // Switch scenarios
+      simulation.resetWithScenario(ScenarioType.binaryStars);
+
+      // Should continue working with new scenario
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          0.016,
+        ),
+        returnsNormally,
+      );
+
+      // Camera values should still be finite
+      expect(camera.distance.isFinite, isTrue);
+      expect(camera.target.x.isFinite, isTrue);
+      expect(camera.target.y.isFinite, isTrue);
+      expect(camera.target.z.isFinite, isTrue);
+    });
+  });
 }

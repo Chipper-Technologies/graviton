@@ -5,6 +5,7 @@ import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/dialog_title.dart';
 import 'package:graviton/widgets/common/slider_option.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -151,27 +152,18 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                 ),
               ),
               padding: EdgeInsets.all(AppTypography.spacingLarge),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.tune,
-                    color: AppColors.uiOrangeAccent,
-                    size: AppTypography.iconSizeXXXLarge,
-                  ),
-                  SizedBox(width: AppTypography.spacingMedium),
-                  Text(
-                    l10n.bodyPropertiesTitle,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      _updateBody(); // Ensure all changes are saved before closing
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
+              child: DialogTitle(
+                title: l10n.bodyPropertiesTitle,
+                icon: Icons.tune,
+                iconColor: AppColors.uiOrangeAccent,
+                iconSize: AppTypography.iconSizeXXXLarge,
+                trailing: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    _updateBody(); // Ensure all changes are saved before closing
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
             ),
             // Scrollable content

@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/screens/scenario_selection_screen.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 
 void main() {
   group('ScenarioSelectionScreen', () {
@@ -44,9 +46,6 @@ void main() {
       // Should have an AppBar
       expect(find.byType(AppBar), findsOneWidget);
 
-      // Should have a close button
-      expect(find.byIcon(Icons.close), findsOneWidget);
-
       // Should have scenario tiles
       expect(find.byType(Card), findsWidgets);
       expect(find.byType(InkWell), findsWidgets);
@@ -58,8 +57,11 @@ void main() {
 
       final appBar = tester.widget<AppBar>(find.byType(AppBar));
 
-      // Should have transparent background
-      expect(appBar.backgroundColor, Colors.transparent);
+      // Should have nearly opaque black background (not transparent anymore)
+      expect(
+        appBar.backgroundColor,
+        AppColors.uiBlack.withValues(alpha: AppTypography.opacityNearlyOpaque),
+      );
       expect(appBar.elevation, 0);
 
       // Should have title
@@ -98,8 +100,12 @@ void main() {
       // Verify we're on the scenario selection screen
       expect(find.text('Select Scenario'), findsOneWidget);
 
-      // Tap close button
-      await tester.tap(find.byIcon(Icons.close));
+      // Tap back button (could be BackButton or IconButton with back arrow)
+      var backButton = find.byType(BackButton);
+      if (backButton.evaluate().isEmpty) {
+        backButton = find.byIcon(Icons.arrow_back);
+      }
+      await tester.tap(backButton);
       await tester.pumpAndSettle();
 
       // Should be back to the original screen
