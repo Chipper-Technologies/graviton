@@ -181,7 +181,7 @@ void main() {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => PopScope(
-                        onPopInvoked: (didPop) {
+                        onPopInvokedWithResult: (didPop, result) {
                           popped = true;
                         },
                         child: Scaffold(
