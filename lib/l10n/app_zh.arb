@@ -465,7 +465,6 @@
   "@gravitationalSimulationLabel": {
     "description": "物理模拟的主要可访问性标签"
   },
-
   "simulationStateDescription": "具有{bodyCount}个天体的引力模拟。状态：{status}。速度：{speed}。已完成步骤：{stepCount}。点击与模拟交互或使用键盘快捷键。",
   "@simulationStateDescription": {
     "description": "用于可访问性的模拟状态综合描述",
@@ -488,7 +487,6 @@
       }
     }
   },
-
   "expandedState": "已展开",
   "collapsedState": "已折叠",
   "currentScenario": "当前场景",
@@ -508,5 +506,31 @@
   "physicsStatsDescription": "物理：{time}时间单位，{earthYears}地球年，{steps}模拟步骤已完成",
   "toggleAutoRotateAction": "切换自动旋转",
   "zoomInAction": "放大",
-  "zoomOutAction": "缩小"
+  "zoomOutAction": "缩小",
+  "accessibilitySimulationStarted": "模拟已开始",
+  "accessibilitySimulationStartedContext": "天体现在正在运动",
+  "accessibilitySimulationPaused": "模拟已暂停",
+  "accessibilitySimulationPausedContext": "所有天体已停止移动",
+  "accessibilitySimulationResumed": "模拟已恢复",
+  "accessibilitySimulationResumedContext": "天体再次开始运动",
+  "accessibilitySimulationStopped": "模拟已停止",
+  "accessibilitySimulationStoppedContext": "所有天体已重置",
+  "accessibilitySimulationReset": "模拟已重置",
+  "accessibilitySimulationResetContext": "新场景已加载新天体",
+  "accessibilityMergeEvent": "检测到碰撞：{body1}与{body2}合并",
+  "accessibilityMergeEventContext": "合并的质量创造了新的天体",
+  "accessibilityScenarioChange": "场景已更改为{scenarioName}",
+  "accessibilityScenarioChangeContext": "新天体和物理参数已加载",
+  "accessibilitySpeedChange": "模拟速度已更改为{newValue}",
+  "accessibilityGravityChange": "重力强度已更改为{newValue}",
+  "accessibilityCollisionRadiusChange": "碰撞敏感度已更改为{newValue}",
+  "accessibilityCameraReset": "相机视图已重置为默认位置",
+  "accessibilityCameraFocus": "相机已聚焦于最近的天体",
+  "accessibilityCameraFollow": "相机现在跟随选定的天体",
+  "accessibilityCameraUnfollow": "相机停止跟随天体",
+  "accessibilityTutorialProgress": "教程步骤{currentStep}/{totalSteps}：{stepName}",
+  "accessibilityError": "错误：{errorMessage}",
+  "accessibilitySettingEnabled": "{settingName}已启用",
+  "accessibilitySettingDisabled": "{settingName}已禁用",
+  "simulationSpeedHint": "调整模拟速度从0.1倍到16倍正常速度。使用箭头键进行小幅调整。"
 }

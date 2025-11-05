@@ -142,6 +142,8 @@ class _HapticSliderOptionState extends State<HapticSliderOption> {
   }
 
   Widget _buildSimpleSlider(BuildContext context, double clampedValue) {
+    final increment = (widget.max - widget.min) / widget.divisions;
+
     return Column(
       children: [
         Row(
@@ -160,14 +162,48 @@ class _HapticSliderOptionState extends State<HapticSliderOption> {
                   .withValues(alpha: AppTypography.opacityVeryFaint),
               activeTrackColor: Theme.of(context).colorScheme.primary,
             ),
-            child: Slider(
-              value: clampedValue,
-              min: widget.min,
-              max: widget.max,
-              divisions: widget.divisions,
+            child: Semantics(
               label: widget.label,
-              onChanged: _onSliderChanged,
-              onChangeEnd: _onSliderEnd,
+              value:
+                  widget.formatter?.call(clampedValue) ??
+                  clampedValue.toStringAsFixed(1),
+              increasedValue:
+                  widget.formatter?.call(
+                    (clampedValue + increment).clamp(widget.min, widget.max),
+                  ) ??
+                  (clampedValue + increment)
+                      .clamp(widget.min, widget.max)
+                      .toStringAsFixed(1),
+              decreasedValue:
+                  widget.formatter?.call(
+                    (clampedValue - increment).clamp(widget.min, widget.max),
+                  ) ??
+                  (clampedValue - increment)
+                      .clamp(widget.min, widget.max)
+                      .toStringAsFixed(1),
+              onIncrease: () {
+                final newValue = (clampedValue + increment).clamp(
+                  widget.min,
+                  widget.max,
+                );
+                widget.onChanged(newValue);
+              },
+              onDecrease: () {
+                final newValue = (clampedValue - increment).clamp(
+                  widget.min,
+                  widget.max,
+                );
+                widget.onChanged(newValue);
+              },
+              child: Slider(
+                value: clampedValue,
+                min: widget.min,
+                max: widget.max,
+                divisions: widget.divisions,
+                label: widget.label,
+                onChanged: _onSliderChanged,
+                onChangeEnd: _onSliderEnd,
+              ),
             ),
           ),
         ),
@@ -176,6 +212,8 @@ class _HapticSliderOptionState extends State<HapticSliderOption> {
   }
 
   Widget _buildDetailedSlider(BuildContext context, double clampedValue) {
+    final increment = (widget.max - widget.min) / widget.divisions;
+
     return Container(
       margin: EdgeInsets.only(bottom: AppTypography.spacingLarge),
       padding: EdgeInsets.all(AppTypography.spacingLarge),
@@ -267,13 +305,47 @@ class _HapticSliderOptionState extends State<HapticSliderOption> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            child: Slider(
-              value: clampedValue,
-              min: widget.min,
-              max: widget.max,
-              divisions: widget.divisions,
-              onChanged: _onSliderChanged,
-              onChangeEnd: _onSliderEnd,
+            child: Semantics(
+              label: widget.label,
+              value:
+                  widget.formatter?.call(clampedValue) ??
+                  clampedValue.toStringAsFixed(1),
+              increasedValue:
+                  widget.formatter?.call(
+                    (clampedValue + increment).clamp(widget.min, widget.max),
+                  ) ??
+                  (clampedValue + increment)
+                      .clamp(widget.min, widget.max)
+                      .toStringAsFixed(1),
+              decreasedValue:
+                  widget.formatter?.call(
+                    (clampedValue - increment).clamp(widget.min, widget.max),
+                  ) ??
+                  (clampedValue - increment)
+                      .clamp(widget.min, widget.max)
+                      .toStringAsFixed(1),
+              onIncrease: () {
+                final newValue = (clampedValue + increment).clamp(
+                  widget.min,
+                  widget.max,
+                );
+                widget.onChanged(newValue);
+              },
+              onDecrease: () {
+                final newValue = (clampedValue - increment).clamp(
+                  widget.min,
+                  widget.max,
+                );
+                widget.onChanged(newValue);
+              },
+              child: Slider(
+                value: clampedValue,
+                min: widget.min,
+                max: widget.max,
+                divisions: widget.divisions,
+                onChanged: _onSliderChanged,
+                onChangeEnd: _onSliderEnd,
+              ),
             ),
           ),
         ],

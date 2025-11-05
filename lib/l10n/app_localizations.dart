@@ -516,6 +516,12 @@ abstract class AppLocalizations {
   /// **'Simulation Speed'**
   String get simulationSpeed;
 
+  /// Accessibility hint for simulation speed slider
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust simulation speed from 0.1x to 16x normal speed. Use arrow keys to change in small increments.'**
+  String get simulationSpeedHint;
+
   /// Collisions section header in simulation settings
   ///
   /// In en, this message translates to:
@@ -2971,6 +2977,160 @@ abstract class AppLocalizations {
     String speed,
     int stepCount,
   );
+
+  /// Accessibility announcement when simulation starts
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation started'**
+  String get accessibilitySimulationStarted;
+
+  /// Additional context for simulation start announcement
+  ///
+  /// In en, this message translates to:
+  /// **'Celestial bodies are now in motion'**
+  String get accessibilitySimulationStartedContext;
+
+  /// Accessibility announcement when simulation is paused
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation paused'**
+  String get accessibilitySimulationPaused;
+
+  /// Additional context for simulation pause announcement
+  ///
+  /// In en, this message translates to:
+  /// **'All celestial bodies have stopped moving'**
+  String get accessibilitySimulationPausedContext;
+
+  /// Accessibility announcement when simulation is resumed
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation resumed'**
+  String get accessibilitySimulationResumed;
+
+  /// Additional context for simulation resume announcement
+  ///
+  /// In en, this message translates to:
+  /// **'Celestial bodies are moving again'**
+  String get accessibilitySimulationResumedContext;
+
+  /// Accessibility announcement when simulation is stopped
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation stopped'**
+  String get accessibilitySimulationStopped;
+
+  /// Additional context for simulation stop announcement
+  ///
+  /// In en, this message translates to:
+  /// **'All celestial bodies have been reset'**
+  String get accessibilitySimulationStoppedContext;
+
+  /// Accessibility announcement when simulation is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation reset'**
+  String get accessibilitySimulationReset;
+
+  /// Additional context for simulation reset announcement
+  ///
+  /// In en, this message translates to:
+  /// **'New scenario loaded with fresh celestial bodies'**
+  String get accessibilitySimulationResetContext;
+
+  /// Accessibility announcement for celestial body collisions
+  ///
+  /// In en, this message translates to:
+  /// **'Collision detected: {body1} merged with {body2}'**
+  String accessibilityMergeEvent(String body1, String body2);
+
+  /// Additional context for merge event announcements
+  ///
+  /// In en, this message translates to:
+  /// **'The combined mass creates a new celestial body'**
+  String get accessibilityMergeEventContext;
+
+  /// Accessibility announcement for scenario changes
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario changed to {scenarioName}'**
+  String accessibilityScenarioChange(String scenarioName);
+
+  /// Additional context for scenario change announcements
+  ///
+  /// In en, this message translates to:
+  /// **'New celestial bodies and physics parameters loaded'**
+  String get accessibilityScenarioChangeContext;
+
+  /// Accessibility announcement for speed changes
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation speed changed to {newValue}'**
+  String accessibilitySpeedChange(String newValue);
+
+  /// Accessibility announcement for gravity changes
+  ///
+  /// In en, this message translates to:
+  /// **'Gravity strength changed to {newValue}'**
+  String accessibilityGravityChange(String newValue);
+
+  /// Accessibility announcement for collision radius changes
+  ///
+  /// In en, this message translates to:
+  /// **'Collision sensitivity changed to {newValue}'**
+  String accessibilityCollisionRadiusChange(String newValue);
+
+  /// Accessibility announcement for camera reset
+  ///
+  /// In en, this message translates to:
+  /// **'Camera view reset to default position'**
+  String get accessibilityCameraReset;
+
+  /// Accessibility announcement for camera focus
+  ///
+  /// In en, this message translates to:
+  /// **'Camera focused on nearest celestial body'**
+  String get accessibilityCameraFocus;
+
+  /// Accessibility announcement for camera follow mode
+  ///
+  /// In en, this message translates to:
+  /// **'Camera now following selected celestial body'**
+  String get accessibilityCameraFollow;
+
+  /// Accessibility announcement when camera stops following
+  ///
+  /// In en, this message translates to:
+  /// **'Camera stopped following celestial body'**
+  String get accessibilityCameraUnfollow;
+
+  /// Accessibility announcement for tutorial progress
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial step {currentStep} of {totalSteps}: {stepName}'**
+  String accessibilityTutorialProgress(
+    int currentStep,
+    int totalSteps,
+    String stepName,
+  );
+
+  /// Accessibility announcement for error messages
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {errorMessage}'**
+  String accessibilityError(String errorMessage);
+
+  /// Accessibility announcement when a setting is enabled
+  ///
+  /// In en, this message translates to:
+  /// **'{settingName} enabled'**
+  String accessibilitySettingEnabled(String settingName);
+
+  /// Accessibility announcement when a setting is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'{settingName} disabled'**
+  String accessibilitySettingDisabled(String settingName);
 }
 
 class _AppLocalizationsDelegate

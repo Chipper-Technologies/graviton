@@ -8,6 +8,7 @@ import 'package:graviton/models/body.dart';
 import 'package:graviton/models/merge_flash.dart';
 import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/models/trail_point.dart';
+import 'package:graviton/services/accessibility_service.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/services/simulation.dart' as physics;
@@ -134,6 +135,9 @@ class SimulationState extends ChangeNotifier {
       // Provide haptic feedback for simulation start
       HapticFeedbackService.instance.lightImpact();
 
+      // Announce state change to screen readers
+      AccessibilityService.instance.announceSimulationStateChange('started');
+
       FirebaseService.instance.logEventWithEnum(
         FirebaseEvent.simulationStarted,
       );
@@ -148,12 +152,18 @@ class SimulationState extends ChangeNotifier {
       // Provide haptic feedback for simulation pause
       HapticFeedbackService.instance.selectionClick();
 
+      // Announce state change to screen readers
+      AccessibilityService.instance.announceSimulationStateChange('paused');
+
       FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationPaused);
     } else if (_status.canResume) {
       _status = SimulationStatus.running;
 
       // Provide haptic feedback for simulation resume
       HapticFeedbackService.instance.lightImpact();
+
+      // Announce state change to screen readers
+      AccessibilityService.instance.announceSimulationStateChange('resumed');
 
       FirebaseService.instance.logEventWithEnum(
         FirebaseEvent.simulationResumed,
@@ -228,6 +238,9 @@ class SimulationState extends ChangeNotifier {
 
     // Provide haptic feedback for scenario switching
     HapticFeedbackService.instance.mediumImpact();
+
+    // Announce scenario change to screen readers
+    AccessibilityService.instance.announceScenarioChange(scenario.name);
 
     // Reset physics simulation to the specified scenario
     _simulation.resetWithScenario(

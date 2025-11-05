@@ -213,6 +213,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get simulationSpeed => '模拟速度';
 
   @override
+  String get simulationSpeedHint => '调整模拟速度从0.1倍到16倍正常速度。使用箭头键进行小幅调整。';
+
+  @override
   String get collisionsSection => '碰撞';
 
   @override
@@ -1512,5 +1515,102 @@ class AppLocalizationsZh extends AppLocalizations {
     int stepCount,
   ) {
     return '具有$bodyCount个天体的引力模拟。状态：$status。速度：$speed。已完成步骤：$stepCount。点击与模拟交互或使用键盘快捷键。';
+  }
+
+  @override
+  String get accessibilitySimulationStarted => '模拟已开始';
+
+  @override
+  String get accessibilitySimulationStartedContext => '天体现在正在运动';
+
+  @override
+  String get accessibilitySimulationPaused => '模拟已暂停';
+
+  @override
+  String get accessibilitySimulationPausedContext => '所有天体已停止移动';
+
+  @override
+  String get accessibilitySimulationResumed => '模拟已恢复';
+
+  @override
+  String get accessibilitySimulationResumedContext => '天体再次开始运动';
+
+  @override
+  String get accessibilitySimulationStopped => '模拟已停止';
+
+  @override
+  String get accessibilitySimulationStoppedContext => '所有天体已重置';
+
+  @override
+  String get accessibilitySimulationReset => '模拟已重置';
+
+  @override
+  String get accessibilitySimulationResetContext => '新场景已加载新天体';
+
+  @override
+  String accessibilityMergeEvent(String body1, String body2) {
+    return '检测到碰撞：$body1与$body2合并';
+  }
+
+  @override
+  String get accessibilityMergeEventContext => '合并的质量创造了新的天体';
+
+  @override
+  String accessibilityScenarioChange(String scenarioName) {
+    return '场景已更改为$scenarioName';
+  }
+
+  @override
+  String get accessibilityScenarioChangeContext => '新天体和物理参数已加载';
+
+  @override
+  String accessibilitySpeedChange(String newValue) {
+    return '模拟速度已更改为$newValue';
+  }
+
+  @override
+  String accessibilityGravityChange(String newValue) {
+    return '重力强度已更改为$newValue';
+  }
+
+  @override
+  String accessibilityCollisionRadiusChange(String newValue) {
+    return '碰撞敏感度已更改为$newValue';
+  }
+
+  @override
+  String get accessibilityCameraReset => '相机视图已重置为默认位置';
+
+  @override
+  String get accessibilityCameraFocus => '相机已聚焦于最近的天体';
+
+  @override
+  String get accessibilityCameraFollow => '相机现在跟随选定的天体';
+
+  @override
+  String get accessibilityCameraUnfollow => '相机停止跟随天体';
+
+  @override
+  String accessibilityTutorialProgress(
+    int currentStep,
+    int totalSteps,
+    String stepName,
+  ) {
+    return '教程步骤$currentStep/$totalSteps：$stepName';
+  }
+
+  @override
+  String accessibilityError(String errorMessage) {
+    return '错误：$errorMessage';
+  }
+
+  @override
+  String accessibilitySettingEnabled(String settingName) {
+    return '$settingName已启用';
+  }
+
+  @override
+  String accessibilitySettingDisabled(String settingName) {
+    return '$settingName已禁用';
   }
 }

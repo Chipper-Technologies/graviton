@@ -218,6 +218,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get simulationSpeed => 'Simulation Speed';
 
   @override
+  String get simulationSpeedHint =>
+      'Adjust simulation speed from 0.1x to 16x normal speed. Use arrow keys to change in small increments.';
+
+  @override
   String get collisionsSection => 'Collisions';
 
   @override
@@ -1581,5 +1585,113 @@ class AppLocalizationsEn extends AppLocalizations {
     int stepCount,
   ) {
     return 'Gravitational simulation with $bodyCount celestial bodies. Status: $status. Speed: $speed. Steps completed: $stepCount. Tap to interact with simulation or use keyboard shortcuts.';
+  }
+
+  @override
+  String get accessibilitySimulationStarted => 'Simulation started';
+
+  @override
+  String get accessibilitySimulationStartedContext =>
+      'Celestial bodies are now in motion';
+
+  @override
+  String get accessibilitySimulationPaused => 'Simulation paused';
+
+  @override
+  String get accessibilitySimulationPausedContext =>
+      'All celestial bodies have stopped moving';
+
+  @override
+  String get accessibilitySimulationResumed => 'Simulation resumed';
+
+  @override
+  String get accessibilitySimulationResumedContext =>
+      'Celestial bodies are moving again';
+
+  @override
+  String get accessibilitySimulationStopped => 'Simulation stopped';
+
+  @override
+  String get accessibilitySimulationStoppedContext =>
+      'All celestial bodies have been reset';
+
+  @override
+  String get accessibilitySimulationReset => 'Simulation reset';
+
+  @override
+  String get accessibilitySimulationResetContext =>
+      'New scenario loaded with fresh celestial bodies';
+
+  @override
+  String accessibilityMergeEvent(String body1, String body2) {
+    return 'Collision detected: $body1 merged with $body2';
+  }
+
+  @override
+  String get accessibilityMergeEventContext =>
+      'The combined mass creates a new celestial body';
+
+  @override
+  String accessibilityScenarioChange(String scenarioName) {
+    return 'Scenario changed to $scenarioName';
+  }
+
+  @override
+  String get accessibilityScenarioChangeContext =>
+      'New celestial bodies and physics parameters loaded';
+
+  @override
+  String accessibilitySpeedChange(String newValue) {
+    return 'Simulation speed changed to $newValue';
+  }
+
+  @override
+  String accessibilityGravityChange(String newValue) {
+    return 'Gravity strength changed to $newValue';
+  }
+
+  @override
+  String accessibilityCollisionRadiusChange(String newValue) {
+    return 'Collision sensitivity changed to $newValue';
+  }
+
+  @override
+  String get accessibilityCameraReset =>
+      'Camera view reset to default position';
+
+  @override
+  String get accessibilityCameraFocus =>
+      'Camera focused on nearest celestial body';
+
+  @override
+  String get accessibilityCameraFollow =>
+      'Camera now following selected celestial body';
+
+  @override
+  String get accessibilityCameraUnfollow =>
+      'Camera stopped following celestial body';
+
+  @override
+  String accessibilityTutorialProgress(
+    int currentStep,
+    int totalSteps,
+    String stepName,
+  ) {
+    return 'Tutorial step $currentStep of $totalSteps: $stepName';
+  }
+
+  @override
+  String accessibilityError(String errorMessage) {
+    return 'Error: $errorMessage';
+  }
+
+  @override
+  String accessibilitySettingEnabled(String settingName) {
+    return '$settingName enabled';
+  }
+
+  @override
+  String accessibilitySettingDisabled(String settingName) {
+    return '$settingName disabled';
   }
 }

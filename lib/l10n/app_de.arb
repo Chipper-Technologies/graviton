@@ -638,5 +638,31 @@
   "bottomSheetLabel": "Unteres Blatt",
   "@bottomSheetLabel": {
     "description": "Label für das untere Blatt"
-  }
+  },
+  "accessibilitySimulationStarted": "Simulation gestartet",
+  "accessibilitySimulationStartedContext": "Himmelskörper sind nun in Bewegung",
+  "accessibilitySimulationPaused": "Simulation pausiert",
+  "accessibilitySimulationPausedContext": "Alle Himmelskörper haben aufgehört sich zu bewegen",
+  "accessibilitySimulationResumed": "Simulation fortgesetzt",
+  "accessibilitySimulationResumedContext": "Himmelskörper bewegen sich wieder",
+  "accessibilitySimulationStopped": "Simulation gestoppt",
+  "accessibilitySimulationStoppedContext": "Alle Himmelskörper wurden zurückgesetzt",
+  "accessibilitySimulationReset": "Simulation zurückgesetzt",
+  "accessibilitySimulationResetContext": "Neues Szenario mit frischen Himmelskörpern geladen",
+  "accessibilityMergeEvent": "Kollision erkannt: {body1} fusioniert mit {body2}",
+  "accessibilityMergeEventContext": "Die kombinierte Masse erzeugt einen neuen Himmelskörper",
+  "accessibilityScenarioChange": "Szenario geändert zu {scenarioName}",
+  "accessibilityScenarioChangeContext": "Neue Himmelskörper und Physikparameter geladen",
+  "accessibilitySpeedChange": "Simulationsgeschwindigkeit geändert zu {newValue}",
+  "accessibilityGravityChange": "Gravitationsstärke geändert zu {newValue}",
+  "accessibilityCollisionRadiusChange": "Kollisionsempfindlichkeit geändert zu {newValue}",
+  "accessibilityCameraReset": "Kameraansicht auf Standardposition zurückgesetzt",
+  "accessibilityCameraFocus": "Kamera auf nächsten Himmelskörper fokussiert",
+  "accessibilityCameraFollow": "Kamera folgt nun dem ausgewählten Himmelskörper",
+  "accessibilityCameraUnfollow": "Kamera hört auf, dem Himmelskörper zu folgen",
+  "accessibilityTutorialProgress": "Tutorial-Schritt {currentStep} von {totalSteps}: {stepName}",
+  "accessibilityError": "Fehler: {errorMessage}",
+  "accessibilitySettingEnabled": "{settingName} aktiviert",
+  "accessibilitySettingDisabled": "{settingName} deaktiviert",
+  "simulationSpeedHint": "Simulationsgeschwindigkeit von 0,1x bis 16x normaler Geschwindigkeit anpassen. Verwenden Sie Pfeiltasten für kleine Schritte."
 }
