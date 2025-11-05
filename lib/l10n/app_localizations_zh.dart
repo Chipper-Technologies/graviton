@@ -1419,4 +1419,98 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get exitFullscreenHint => '点击任意位置退出全屏模式';
+
+  @override
+  String get simulationCanvasLabel => '引力物理模拟';
+
+  @override
+  String get simulationCanvasHint => '使用键盘快捷键控制模拟。空格键暂停，R键重新开始，C键居中相机';
+
+  @override
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  ) {
+    return '具有$bodyCount个天体的引力模拟。状态：$status。速度：$speed。步骤：$steps';
+  }
+
+  @override
+  String get noBodiesInSimulation => '当前模拟中没有天体';
+
+  @override
+  String bodiesInSimulation(String descriptions) {
+    return '模拟中的天体：$descriptions';
+  }
+
+  @override
+  String cameraFreeDescription(String distance, String rotation) {
+    return '距离$distance的自由模式相机。自动旋转：$rotation';
+  }
+
+  @override
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  ) {
+    return '距离$distance跟随$bodyName的相机。自动旋转：$rotation';
+  }
+
+  @override
+  String get autoRotateActive => '激活';
+
+  @override
+  String get autoRotateInactive => '未激活';
+
+  @override
+  String liveUpdateAnnouncement(String updateType, String value) {
+    return '$updateType已更改为$value';
+  }
+
+  @override
+  String get keyboardShortcutsHint => '使用空格键暂停/恢复，R键重新开始，C键居中相机，A键切换自动旋转';
+
+  @override
+  String physicsStatsDescription(String time, String earthYears, int steps) {
+    return '物理：$time时间单位，$earthYears地球年，$steps模拟步骤已完成';
+  }
+
+  @override
+  String get toggleAutoRotateAction => '切换自动旋转';
+
+  @override
+  String get zoomInAction => '放大';
+
+  @override
+  String get zoomOutAction => '缩小';
+
+  @override
+  String get expandedState => '已展开';
+
+  @override
+  String get collapsedState => '已折叠';
+
+  @override
+  String get currentScenario => '当前场景';
+
+  @override
+  String get scenariosAvailable => '可用场景';
+
+  @override
+  String get bottomSheetLabel => '底部面板';
+
+  @override
+  String get gravitationalSimulationLabel => '引力物理模拟';
+
+  @override
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  ) {
+    return '具有$bodyCount个天体的引力模拟。状态：$status。速度：$speed。已完成步骤：$stepCount。点击与模拟交互或使用键盘快捷键。';
+  }
 }

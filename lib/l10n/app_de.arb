@@ -473,5 +473,170 @@
   "fullscreenMode": "Vollbildmodus",
   "fullscreenModeDescription": "Alle UI-Elemente für eine immersive Betrachtung ausblenden",
   "tapToToggleFullscreen": "Tippen, um Vollbild ein-/auszuschalten",
-  "exitFullscreenHint": "Tippen Sie irgendwo, um den Vollbildmodus zu verlassen"
+  "exitFullscreenHint": "Tippen Sie irgendwo, um den Vollbildmodus zu verlassen",
+  "gravitationalSimulationLabel": "Gravitationsphysik-Simulation",
+  "@gravitationalSimulationLabel": {
+    "description": "Haupt-Barrierefreiheitslabel für die Physiksimulation"
+  },
+
+  "simulationStateDescription": "Gravitationssimulation mit {bodyCount} Himmelskörpern. Status: {status}. Geschwindigkeit: {speed}. Schritte abgeschlossen: {stepCount}. Tippen Sie, um mit der Simulation zu interagieren oder verwenden Sie Tastenkürzel.",
+  "@simulationStateDescription": {
+    "description": "Umfassende Beschreibung des Simulationszustands für Barrierefreiheit",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "Anzahl der Himmelskörper"
+      },
+      "status": {
+        "type": "String",
+        "description": "Aktueller Simulationsstatus"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "Aktuelle Simulationsgeschwindigkeit"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "Anzahl der abgeschlossenen Simulationsschritte"
+      }
+    }
+  },
+
+  "simulationCanvasLabel": "Gravitationsphysik-Simulation",
+  "@simulationCanvasLabel": {
+    "description": "Hauptlabel für das Physik-Simulations-Canvas"
+  },
+  "simulationCanvasHint": "Verwenden Sie Tastenkürzel zur Simulationssteuerung. Leertaste zum Pausieren, R zum Zurücksetzen, C zum Zentrieren der Kamera",
+  "@simulationCanvasHint": {
+    "description": "Hilfetext für Tastenkürzel der Simulation"
+  },
+  "simulationDescription": "Gravitationssimulation mit {bodyCount} Himmelskörpern. Status: {status}. Geschwindigkeit: {speed}. Schritte: {steps}",
+  "@simulationDescription": {
+    "description": "Detaillierte Simulationsbeschreibung",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int"
+      },
+      "status": {
+        "type": "String"
+      },
+      "speed": {
+        "type": "String"
+      },
+      "steps": {
+        "type": "int"
+      }
+    }
+  },
+  "noBodiesInSimulation": "Keine Himmelskörper derzeit in der Simulation",
+  "@noBodiesInSimulation": {
+    "description": "Nachricht wenn keine Körper in der Simulation sind"
+  },
+  "bodiesInSimulation": "Körper in der Simulation: {descriptions}",
+  "@bodiesInSimulation": {
+    "description": "Liste der Körper in der Simulation",
+    "placeholders": {
+      "descriptions": {
+        "type": "String"
+      }
+    }
+  },
+  "cameraFreeDescription": "Kamera im freien Modus in Entfernung {distance}. Auto-Rotation: {rotation}",
+  "@cameraFreeDescription": {
+    "description": "Beschreibung des freien Kameramodus",
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      },
+      "rotation": {
+        "type": "String"
+      }
+    }
+  },
+  "cameraFollowingDescription": "Kamera folgt {bodyName} in Entfernung {distance}. Auto-Rotation: {rotation}",
+  "@cameraFollowingDescription": {
+    "description": "Beschreibung des Verfolgungskameramodus",
+    "placeholders": {
+      "bodyName": {
+        "type": "String"
+      },
+      "distance": {
+        "type": "String"
+      },
+      "rotation": {
+        "type": "String"
+      }
+    }
+  },
+  "autoRotateActive": "aktiv",
+  "@autoRotateActive": {
+    "description": "Status wenn Auto-Rotation aktiviert ist"
+  },
+  "autoRotateInactive": "inaktiv",
+  "@autoRotateInactive": {
+    "description": "Status wenn Auto-Rotation deaktiviert ist"
+  },
+  "liveUpdateAnnouncement": "{updateType} geändert zu {value}",
+  "@liveUpdateAnnouncement": {
+    "description": "Live-Ankündigung für Änderungen",
+    "placeholders": {
+      "updateType": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "keyboardShortcutsHint": "Verwenden Sie Leertaste zum Pausieren/Fortsetzen, R zum Zurücksetzen, C zum Zentrieren der Kamera, A zum Umschalten der Auto-Rotation",
+  "@keyboardShortcutsHint": {
+    "description": "Hinweis für Tastaturkürzel"
+  },
+  "physicsStatsDescription": "Physik: {time} Zeiteinheiten, {earthYears} Erdenjahre, {steps} Simulationsschritte abgeschlossen",
+  "@physicsStatsDescription": {
+    "description": "Physikstatistiken für Barrierefreiheit",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "earthYears": {
+        "type": "String"
+      },
+      "steps": {
+        "type": "int"
+      }
+    }
+  },
+  "toggleAutoRotateAction": "Auto-Rotation umschalten",
+  "@toggleAutoRotateAction": {
+    "description": "Aktion zum Umschalten der Auto-Rotation"
+  },
+  "zoomInAction": "Hineinzoomen",
+  "@zoomInAction": {
+    "description": "Aktion zum Hineinzoomen"
+  },
+  "zoomOutAction": "Herauszoomen",
+  "@zoomOutAction": {
+    "description": "Aktion zum Herauszoomen"
+  },
+  "expandedState": "erweitert",
+  "@expandedState": {
+    "description": "Zustand wenn ein Element erweitert ist"
+  },
+  "collapsedState": "eingeklappt",
+  "@collapsedState": {
+    "description": "Zustand wenn ein Element eingeklappt ist"
+  },
+  "currentScenario": "Aktuelles Szenario",
+  "@currentScenario": {
+    "description": "Label für das aktuelle Szenario"
+  },
+  "scenariosAvailable": "Szenarien verfügbar",
+  "@scenariosAvailable": {
+    "description": "Text für verfügbare Szenarien"
+  },
+  "bottomSheetLabel": "Unteres Blatt",
+  "@bottomSheetLabel": {
+    "description": "Label für das untere Blatt"
+  }
 }

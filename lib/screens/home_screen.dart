@@ -3,7 +3,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
@@ -16,6 +15,7 @@ import 'package:graviton/painters/graviton_painter.dart';
 import 'package:graviton/services/cinematic_camera_controller.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
+import 'package:graviton/services/keyboard_navigation_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/services/changelog_service.dart';
 import 'package:graviton/services/version_service.dart';
@@ -28,6 +28,8 @@ import 'package:graviton/widgets/body_labels_overlay.dart';
 import 'package:graviton/widgets/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
 import 'package:graviton/widgets/persistent_bottom_sheet.dart';
+import 'package:graviton/widgets/semantics/semantic_simulation_canvas.dart';
+import 'package:graviton/widgets/semantics/semantic_live_region.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/common/haptic_icon_button.dart';
@@ -100,6 +102,9 @@ class _HomeScreenState extends State<HomeScreen>
 
     // Add app lifecycle observer to handle system UI restoration
     WidgetsBinding.instance.addObserver(this);
+
+    // Register keyboard navigation callbacks
+    _registerKeyboardCallbacks();
 
     // Check for app updates and maintenance after the widget tree is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -379,21 +384,60 @@ class _HomeScreenState extends State<HomeScreen>
     return vm.makePerspectiveMatrix(vm.radians(60.0), aspect, 0.1, 4000.0);
   }
 
+  /// Register keyboard navigation callbacks for accessibility
+  void _registerKeyboardCallbacks() {
+    KeyboardNavigationService.instance.registerCallbacks(
+      onPlayPause: () {
+        final appState = context.read<AppState>();
+        if (appState.simulation.isPaused) {
+          appState.simulation.resumeSimulation();
+        } else {
+          appState.simulation.pause();
+        }
+      },
+      onReset: () {
+        final appState = context.read<AppState>();
+        appState.resetAll();
+      },
+      onCenterCamera: () {
+        final appState = context.read<AppState>();
+        appState.camera.resetView(appState.simulation.currentScenario);
+      },
+      onToggleAutoRotate: () {
+        final appState = context.read<AppState>();
+        appState.camera.toggleAutoRotate();
+      },
+      onToggleTrails: () {
+        final appState = context.read<AppState>();
+        appState.ui.toggleTrails();
+      },
+      onToggleStats: () {
+        final appState = context.read<AppState>();
+        appState.ui.toggleStats();
+      },
+      onToggleLabels: () {
+        final appState = context.read<AppState>();
+        appState.ui.toggleLabels();
+      },
+      onOpenSettings: () {
+        // Open the end drawer if not already open
+        if (Scaffold.of(context).isEndDrawerOpen) {
+          Navigator.of(context).pop();
+        } else {
+          Scaffold.of(context).openEndDrawer();
+        }
+      },
+    );
+  }
+
   /// Handle screenshot mode changes to control system UI visibility
   void _onScreenshotModeChanged() {
-    if (_screenshotModeService.isActive) {
-      // Hide system navigation buttons for clean screenshots
-      SystemChrome.setEnabledSystemUIMode(
-        SystemUiMode.immersive,
-        overlays: [SystemUiOverlay.top], // Keep status bar but hide navigation
-      );
-    } else {
-      // Restore normal system UI
-      SystemChrome.setEnabledSystemUIMode(
-        SystemUiMode.edgeToEdge,
-        overlays: SystemUiOverlay.values, // Show all system UI
-      );
-    }
+    // The FullscreenService now handles system UI changes for screenshot mode
+    // when fullscreen is enabled. This method is kept for potential future
+    // screenshot-specific UI handling that doesn't involve fullscreen.
+
+    // Currently no additional UI changes needed here since fullscreen
+    // is handled by the ScreenshotModeService via FullscreenService
   }
 
   /// Handle fullscreen mode toggle
@@ -1008,117 +1052,147 @@ class _HomeScreenState extends State<HomeScreen>
                     appState.camera.selectBody(null);
                   }
                 },
-                child: Stack(
-                  children: [
-                    CustomPaint(
-                      painter: GravitonPainter(
-                        sim: appState.simulation.simulation,
-                        view: view,
-                        proj: _buildProjection(size.aspectRatio),
-                        stars: _stars,
-                        showTrails: appState.ui.showTrails,
-                        useWarmTrails: appState.ui.useWarmTrails,
-                        useRealisticColors: appState.ui.useRealisticColors,
-                        showOrbitalPaths: appState.ui.showOrbitalPaths,
-                        dualOrbitalPaths: appState.ui.dualOrbitalPaths,
-                        showHabitableZones: appState.ui.showHabitableZones,
-                        showHabitabilityIndicators:
-                            appState.ui.showHabitabilityIndicators,
-                        selectedBodyIndex: appState.camera.selectedBody,
-                        followMode: appState.camera.followMode,
-                        cameraDistance: appState.camera.distance,
-                        globalGravityFields: appState.ui.globalGravityFields,
-                        gravityFieldColorScheme:
-                            appState.ui.gravityFieldColorScheme,
-                        showEquipotentialSurfaces:
-                            appState.ui.showEquipotentialSurfaces,
-                        showGravityFieldIndicators:
-                            appState.ui.showGravityFieldIndicators,
-                      ),
-                      child: const SizedBox.expand(),
+                child: KeyboardNavigationService.instance.createKeyboardListener(
+                  child: SemanticSimulationCanvas(
+                    bodies: appState.simulation.bodies,
+                    status: appState.simulation.status,
+                    timeScale: appState.simulation.timeScale,
+                    stepCount: appState.simulation.stepCount,
+                    cameraDistance: appState.camera.distance,
+                    autoRotate: appState.camera.autoRotate,
+                    followMode: appState.camera.followMode,
+                    followingBodyName: appState.camera.selectedBody != null
+                        ? 'Body ${appState.camera.selectedBody}'
+                        : null,
+                    onTap: () {
+                      // Show floating controls on tap
+                      _showFloatingControlsTemporarily();
+                    },
+                    onCenter: () => appState.camera.resetView(
+                      appState.simulation.currentScenario,
                     ),
-                    if (appState.ui.showLabels)
-                      BodyLabelsOverlay(
-                        bodies: appState.simulation.bodies,
-                        viewMatrix: view,
-                        projMatrix: _buildProjection(size.aspectRatio),
-                        screenSize: size,
-                        l10n: AppLocalizations.of(context),
-                      ),
-                    if (appState.ui.showOffScreenIndicators)
-                      OffScreenIndicatorsOverlay(
-                        bodies: appState.simulation.bodies,
-                        viewMatrix: view,
-                        projMatrix: _buildProjection(size.aspectRatio),
-                        screenSize: size,
-                        selectedBodyIndex: appState.camera.selectedBody,
-                        onIndicatorTapped: (bodyIndex) {
-                          _selectBody(
-                            appState,
-                            bodyIndex,
-                            appState.simulation.bodies,
-                          );
-                        },
-                      ),
-                    // Body property editor overlay for selected bodies
-                    if (!shouldHideUI && appState.camera.selectedBody != null)
-                      BodyPropertyEditorOverlay(
-                        bodies: appState.simulation.bodies,
-                        viewMatrix: view,
-                        projMatrix: _buildProjection(size.aspectRatio),
-                        screenSize: size,
-                        selectedBodyIndex: appState.camera.selectedBody,
-                        onPropertyIconTapped: () =>
-                            _showBodyPropertiesDialog(context, appState),
-                      ),
-                    if (appState.ui.showStats) StatsOverlay(appState: appState),
-                    ScreenshotCountdown(
-                      screenshotService: _screenshotModeService,
-                    ),
-
-                    // Persistent bottom sheet positioned at bottom of screen
-                    if (!shouldHideUI)
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        height: MediaQuery.of(context).size.height,
-                        child: PersistentBottomSheet(
-                          onInteraction: _showFloatingControlsTemporarily,
+                    onToggleRotate: () => appState.camera.toggleAutoRotate(),
+                    child: Stack(
+                      children: [
+                        CustomPaint(
+                          painter: GravitonPainter(
+                            sim: appState.simulation.simulation,
+                            view: view,
+                            proj: _buildProjection(size.aspectRatio),
+                            stars: _stars,
+                            showTrails: appState.ui.showTrails,
+                            useWarmTrails: appState.ui.useWarmTrails,
+                            useRealisticColors: appState.ui.useRealisticColors,
+                            showOrbitalPaths: appState.ui.showOrbitalPaths,
+                            dualOrbitalPaths: appState.ui.dualOrbitalPaths,
+                            showHabitableZones: appState.ui.showHabitableZones,
+                            showHabitabilityIndicators:
+                                appState.ui.showHabitabilityIndicators,
+                            selectedBodyIndex: appState.camera.selectedBody,
+                            followMode: appState.camera.followMode,
+                            cameraDistance: appState.camera.distance,
+                            globalGravityFields:
+                                appState.ui.globalGravityFields,
+                            gravityFieldColorScheme:
+                                appState.ui.gravityFieldColorScheme,
+                            showEquipotentialSurfaces:
+                                appState.ui.showEquipotentialSurfaces,
+                            showGravityFieldIndicators:
+                                appState.ui.showGravityFieldIndicators,
+                          ),
+                          child: const SizedBox.expand(),
                         ),
-                      ),
+                        if (appState.ui.showLabels)
+                          BodyLabelsOverlay(
+                            bodies: appState.simulation.bodies,
+                            viewMatrix: view,
+                            projMatrix: _buildProjection(size.aspectRatio),
+                            screenSize: size,
+                            l10n: AppLocalizations.of(context),
+                          ),
+                        if (appState.ui.showOffScreenIndicators)
+                          OffScreenIndicatorsOverlay(
+                            bodies: appState.simulation.bodies,
+                            viewMatrix: view,
+                            projMatrix: _buildProjection(size.aspectRatio),
+                            screenSize: size,
+                            selectedBodyIndex: appState.camera.selectedBody,
+                            onIndicatorTapped: (bodyIndex) {
+                              _selectBody(
+                                appState,
+                                bodyIndex,
+                                appState.simulation.bodies,
+                              );
+                            },
+                          ),
+                        // Body property editor overlay for selected bodies
+                        if (!shouldHideUI &&
+                            appState.camera.selectedBody != null)
+                          BodyPropertyEditorOverlay(
+                            bodies: appState.simulation.bodies,
+                            viewMatrix: view,
+                            projMatrix: _buildProjection(size.aspectRatio),
+                            screenSize: size,
+                            selectedBodyIndex: appState.camera.selectedBody,
+                            onPropertyIconTapped: () =>
+                                _showBodyPropertiesDialog(context, appState),
+                          ),
+                        if (appState.ui.showStats)
+                          SemanticLiveRegion(
+                            currentValue: '${appState.simulation.stepCount}',
+                            dataType: 'Simulation Steps',
+                            child: StatsOverlay(appState: appState),
+                          ),
+                        ScreenshotCountdown(
+                          screenshotService: _screenshotModeService,
+                        ),
 
-                    // Floating simulation controls positioned above the bottom sheet
-                    if (!shouldHideUI && _showFloatingControls)
-                      ValueListenableBuilder<double>(
-                        valueListenable: PersistentBottomSheet.sheetPosition,
-                        builder: (context, sheetPosition, child) {
-                          final screenHeight = MediaQuery.of(
-                            context,
-                          ).size.height;
-                          final sheetTopPosition =
-                              screenHeight * (1 - sheetPosition);
-
-                          return Positioned(
-                            bottom:
-                                screenHeight -
-                                sheetTopPosition +
-                                20, // Position above the sheet using bottom positioning
-                            right: 32,
-                            child: Consumer<AppState>(
-                              builder: (context, appState, child) {
-                                final l10n = AppLocalizations.of(context)!;
-                                return _buildFloatingSimulationControls(
-                                  context,
-                                  appState,
-                                  l10n,
-                                );
-                              },
+                        // Persistent bottom sheet positioned at bottom of screen
+                        if (!shouldHideUI)
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            height: MediaQuery.of(context).size.height,
+                            child: PersistentBottomSheet(
+                              onInteraction: _showFloatingControlsTemporarily,
                             ),
-                          );
-                        },
-                      ),
-                  ],
+                          ),
+
+                        // Floating simulation controls positioned above the bottom sheet
+                        if (!shouldHideUI && _showFloatingControls)
+                          ValueListenableBuilder<double>(
+                            valueListenable:
+                                PersistentBottomSheet.sheetPosition,
+                            builder: (context, sheetPosition, child) {
+                              final screenHeight = MediaQuery.of(
+                                context,
+                              ).size.height;
+                              final sheetTopPosition =
+                                  screenHeight * (1 - sheetPosition);
+
+                              return Positioned(
+                                bottom:
+                                    screenHeight -
+                                    sheetTopPosition +
+                                    20, // Position above the sheet using bottom positioning
+                                right: 32,
+                                child: Consumer<AppState>(
+                                  builder: (context, appState, child) {
+                                    final l10n = AppLocalizations.of(context)!;
+                                    return _buildFloatingSimulationControls(
+                                      context,
+                                      appState,
+                                      l10n,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
               );
             },

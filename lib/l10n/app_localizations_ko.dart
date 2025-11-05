@@ -1433,4 +1433,100 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get exitFullscreenHint => '전체화면 모드를 종료하려면 아무 곳이나 탭하세요';
+
+  @override
+  String get simulationCanvasLabel => '중력 물리 시뮬레이션';
+
+  @override
+  String get simulationCanvasHint =>
+      '키보드 단축키로 시뮬레이션을 제어하세요. 스페이스로 일시정지, R로 재시작, C로 카메라 중앙 맞춤';
+
+  @override
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  ) {
+    return '$bodyCount개의 천체가 있는 중력 시뮬레이션. 상태: $status. 속도: $speed. 단계: $steps';
+  }
+
+  @override
+  String get noBodiesInSimulation => '현재 시뮬레이션에 천체가 없습니다';
+
+  @override
+  String bodiesInSimulation(String descriptions) {
+    return '시뮬레이션의 천체: $descriptions';
+  }
+
+  @override
+  String cameraFreeDescription(String distance, String rotation) {
+    return '거리 $distance에서 자유 모드 카메라. 자동 회전: $rotation';
+  }
+
+  @override
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  ) {
+    return '거리 $distance에서 $bodyName을(를) 따라가는 카메라. 자동 회전: $rotation';
+  }
+
+  @override
+  String get autoRotateActive => '활성';
+
+  @override
+  String get autoRotateInactive => '비활성';
+
+  @override
+  String liveUpdateAnnouncement(String updateType, String value) {
+    return '$updateType이(가) $value(으)로 변경됨';
+  }
+
+  @override
+  String get keyboardShortcutsHint =>
+      '스페이스로 일시정지/재개, R로 재시작, C로 카메라 중앙 맞춤, A로 자동 회전 전환';
+
+  @override
+  String physicsStatsDescription(String time, String earthYears, int steps) {
+    return '물리: $time 시간 단위, $earthYears년, $steps 시뮬레이션 단계 완료';
+  }
+
+  @override
+  String get toggleAutoRotateAction => '자동 회전 전환';
+
+  @override
+  String get zoomInAction => '확대';
+
+  @override
+  String get zoomOutAction => '축소';
+
+  @override
+  String get expandedState => '확장됨';
+
+  @override
+  String get collapsedState => '축소됨';
+
+  @override
+  String get currentScenario => '현재 시나리오';
+
+  @override
+  String get scenariosAvailable => '사용 가능한 시나리오';
+
+  @override
+  String get bottomSheetLabel => '하단 시트';
+
+  @override
+  String get gravitationalSimulationLabel => '중력 물리 시뮬레이션';
+
+  @override
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  ) {
+    return '$bodyCount개의 천체가 있는 중력 시뮬레이션. 상태: $status. 속도: $speed. 완료된 단계: $stepCount. 시뮬레이션과 상호작용하려면 탭하거나 키보드 단축키를 사용하세요.';
+  }
 }

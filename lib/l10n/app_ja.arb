@@ -459,5 +459,53 @@
   "fullscreenMode": "フルスクリーンモード",
   "fullscreenModeDescription": "没入感のある表示のためにすべてのUI要素を非表示にする",
   "tapToToggleFullscreen": "タップしてフルスクリーンを切り替え",
-  "exitFullscreenHint": "フルスクリーンモードを終了するには任意の場所をタップ"
+  "exitFullscreenHint": "フルスクリーンモードを終了するには任意の場所をタップ",
+  "gravitationalSimulationLabel": "重力物理シミュレーション",
+  "@gravitationalSimulationLabel": {
+    "description": "物理シミュレーションのメインアクセシビリティラベル"
+  },
+
+  "simulationStateDescription": "{bodyCount}個の天体がある重力シミュレーション。状態：{status}。速度：{speed}。完了したステップ：{stepCount}。シミュレーションと相互作用するにはタップするか、キーボードショートカットを使用してください。",
+  "@simulationStateDescription": {
+    "description": "アクセシビリティのためのシミュレーション状態の包括的な説明",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "天体の数"
+      },
+      "status": {
+        "type": "String",
+        "description": "現在のシミュレーション状態"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "現在のシミュレーション速度"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "完了したシミュレーションステップ数"
+      }
+    }
+  },
+
+  "expandedState": "展開済み",
+  "collapsedState": "折りたたみ済み",
+  "currentScenario": "現在のシナリオ",
+  "scenariosAvailable": "利用可能なシナリオ",
+  "bottomSheetLabel": "ボトムシート",
+  "simulationCanvasLabel": "重力物理シミュレーション",
+  "simulationCanvasHint": "キーボードショートカットでシミュレーションを制御してください。スペースで一時停止、Rで再開、Cでカメラ中央揃え",
+  "simulationDescription": "{bodyCount}個の天体がある重力シミュレーション。状態：{status}。速度：{speed}。ステップ：{steps}",
+  "noBodiesInSimulation": "現在シミュレーションに天体がありません",
+  "bodiesInSimulation": "シミュレーションの天体：{descriptions}",
+  "cameraFreeDescription": "距離{distance}での自由モードカメラ。自動回転：{rotation}",
+  "cameraFollowingDescription": "距離{distance}で{bodyName}を追跡するカメラ。自動回転：{rotation}",
+  "autoRotateActive": "アクティブ",
+  "autoRotateInactive": "非アクティブ",
+  "liveUpdateAnnouncement": "{updateType}が{value}に変更されました",
+  "keyboardShortcutsHint": "スペースで一時停止/再開、Rで再開、Cでカメラ中央揃え、Aで自動回転切り替え",
+  "physicsStatsDescription": "物理：{time}時間単位、{earthYears}地球年、{steps}シミュレーションステップ完了",
+  "toggleAutoRotateAction": "自動回転切り替え",
+  "zoomInAction": "ズームイン",
+  "zoomOutAction": "ズームアウト"
 }

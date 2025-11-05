@@ -1506,4 +1506,102 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get exitFullscreenHint =>
       'Toca en cualquier lugar para salir del modo pantalla completa';
+
+  @override
+  String get simulationCanvasLabel => 'Simulación de Física Gravitacional';
+
+  @override
+  String get simulationCanvasHint =>
+      'Usa atajos de teclado para controlar la simulación. Espacio para pausar, R para reiniciar, C para centrar cámara';
+
+  @override
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  ) {
+    return 'Simulación gravitacional con $bodyCount cuerpos celestes. Estado: $status. Velocidad: $speed. Pasos: $steps';
+  }
+
+  @override
+  String get noBodiesInSimulation =>
+      'No hay cuerpos celestes en la simulación actualmente';
+
+  @override
+  String bodiesInSimulation(String descriptions) {
+    return 'Cuerpos en simulación: $descriptions';
+  }
+
+  @override
+  String cameraFreeDescription(String distance, String rotation) {
+    return 'Cámara en modo libre a distancia $distance. Auto-rotación: $rotation';
+  }
+
+  @override
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  ) {
+    return 'Cámara siguiendo $bodyName a distancia $distance. Auto-rotación: $rotation';
+  }
+
+  @override
+  String get autoRotateActive => 'activa';
+
+  @override
+  String get autoRotateInactive => 'inactiva';
+
+  @override
+  String liveUpdateAnnouncement(String updateType, String value) {
+    return '$updateType cambió a $value';
+  }
+
+  @override
+  String get keyboardShortcutsHint =>
+      'Usa Espacio para pausar/reanudar, R para reiniciar, C para centrar cámara, A para alternar auto-rotación';
+
+  @override
+  String physicsStatsDescription(String time, String earthYears, int steps) {
+    return 'Física: $time unidades de tiempo, $earthYears años terrestres, $steps pasos de simulación completados';
+  }
+
+  @override
+  String get toggleAutoRotateAction => 'Alternar auto-rotación';
+
+  @override
+  String get zoomInAction => 'Acercar';
+
+  @override
+  String get zoomOutAction => 'Alejar';
+
+  @override
+  String get expandedState => 'expandido';
+
+  @override
+  String get collapsedState => 'colapsado';
+
+  @override
+  String get currentScenario => 'Escenario actual';
+
+  @override
+  String get scenariosAvailable => 'escenarios disponibles';
+
+  @override
+  String get bottomSheetLabel => 'Hoja inferior';
+
+  @override
+  String get gravitationalSimulationLabel =>
+      'Simulación de Física Gravitacional';
+
+  @override
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  ) {
+    return 'Simulación gravitacional con $bodyCount cuerpos celestes. Estado: $status. Velocidad: $speed. Pasos completados: $stepCount. Toca para interactuar con la simulación o usa atajos de teclado.';
+  }
 }

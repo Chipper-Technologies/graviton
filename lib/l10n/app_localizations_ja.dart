@@ -1429,4 +1429,99 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get exitFullscreenHint => 'フルスクリーンモードを終了するには任意の場所をタップ';
+
+  @override
+  String get simulationCanvasLabel => '重力物理シミュレーション';
+
+  @override
+  String get simulationCanvasHint =>
+      'キーボードショートカットでシミュレーションを制御してください。スペースで一時停止、Rで再開、Cでカメラ中央揃え';
+
+  @override
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  ) {
+    return '$bodyCount個の天体がある重力シミュレーション。状態：$status。速度：$speed。ステップ：$steps';
+  }
+
+  @override
+  String get noBodiesInSimulation => '現在シミュレーションに天体がありません';
+
+  @override
+  String bodiesInSimulation(String descriptions) {
+    return 'シミュレーションの天体：$descriptions';
+  }
+
+  @override
+  String cameraFreeDescription(String distance, String rotation) {
+    return '距離$distanceでの自由モードカメラ。自動回転：$rotation';
+  }
+
+  @override
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  ) {
+    return '距離$distanceで$bodyNameを追跡するカメラ。自動回転：$rotation';
+  }
+
+  @override
+  String get autoRotateActive => 'アクティブ';
+
+  @override
+  String get autoRotateInactive => '非アクティブ';
+
+  @override
+  String liveUpdateAnnouncement(String updateType, String value) {
+    return '$updateTypeが$valueに変更されました';
+  }
+
+  @override
+  String get keyboardShortcutsHint => 'スペースで一時停止/再開、Rで再開、Cでカメラ中央揃え、Aで自動回転切り替え';
+
+  @override
+  String physicsStatsDescription(String time, String earthYears, int steps) {
+    return '物理：$time時間単位、$earthYears地球年、$stepsシミュレーションステップ完了';
+  }
+
+  @override
+  String get toggleAutoRotateAction => '自動回転切り替え';
+
+  @override
+  String get zoomInAction => 'ズームイン';
+
+  @override
+  String get zoomOutAction => 'ズームアウト';
+
+  @override
+  String get expandedState => '展開済み';
+
+  @override
+  String get collapsedState => '折りたたみ済み';
+
+  @override
+  String get currentScenario => '現在のシナリオ';
+
+  @override
+  String get scenariosAvailable => '利用可能なシナリオ';
+
+  @override
+  String get bottomSheetLabel => 'ボトムシート';
+
+  @override
+  String get gravitationalSimulationLabel => '重力物理シミュレーション';
+
+  @override
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  ) {
+    return '$bodyCount個の天体がある重力シミュレーション。状態：$status。速度：$speed。完了したステップ：$stepCount。シミュレーションと相互作用するにはタップするか、キーボードショートカットを使用してください。';
+  }
 }

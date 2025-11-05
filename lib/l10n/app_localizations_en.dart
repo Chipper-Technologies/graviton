@@ -1485,4 +1485,101 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exitFullscreenHint => 'Tap anywhere to exit fullscreen';
+
+  @override
+  String get simulationCanvasLabel => 'Gravitational Physics Simulation';
+
+  @override
+  String get simulationCanvasHint =>
+      'Use keyboard shortcuts to control simulation. Space to pause, R to reset, C to center camera';
+
+  @override
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  ) {
+    return 'Gravitational simulation with $bodyCount celestial bodies. Status: $status. Speed: $speed. Steps: $steps';
+  }
+
+  @override
+  String get noBodiesInSimulation =>
+      'No celestial bodies currently in the simulation';
+
+  @override
+  String bodiesInSimulation(String descriptions) {
+    return 'Bodies in simulation: $descriptions';
+  }
+
+  @override
+  String cameraFreeDescription(String distance, String rotation) {
+    return 'Camera in free mode at distance $distance. Auto-rotation: $rotation';
+  }
+
+  @override
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  ) {
+    return 'Camera following $bodyName at distance $distance. Auto-rotation: $rotation';
+  }
+
+  @override
+  String get autoRotateActive => 'active';
+
+  @override
+  String get autoRotateInactive => 'inactive';
+
+  @override
+  String liveUpdateAnnouncement(String updateType, String value) {
+    return '$updateType changed to $value';
+  }
+
+  @override
+  String get keyboardShortcutsHint =>
+      'Use Space to pause/resume, R to reset, C to center camera, A to toggle auto-rotation';
+
+  @override
+  String physicsStatsDescription(String time, String earthYears, int steps) {
+    return 'Physics: $time time units, $earthYears Earth years, $steps simulation steps completed';
+  }
+
+  @override
+  String get toggleAutoRotateAction => 'Toggle auto-rotation';
+
+  @override
+  String get zoomInAction => 'Zoom in';
+
+  @override
+  String get zoomOutAction => 'Zoom out';
+
+  @override
+  String get expandedState => 'expanded';
+
+  @override
+  String get collapsedState => 'collapsed';
+
+  @override
+  String get currentScenario => 'Current scenario';
+
+  @override
+  String get scenariosAvailable => 'scenarios available';
+
+  @override
+  String get bottomSheetLabel => 'Bottom sheet';
+
+  @override
+  String get gravitationalSimulationLabel => 'Gravitational Physics Simulation';
+
+  @override
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  ) {
+    return 'Gravitational simulation with $bodyCount celestial bodies. Status: $status. Speed: $speed. Steps completed: $stepCount. Tap to interact with simulation or use keyboard shortcuts.';
+  }
 }

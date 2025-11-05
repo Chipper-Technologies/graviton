@@ -2218,5 +2218,205 @@
   "exitFullscreenHint": "Tap anywhere to exit fullscreen",
   "@exitFullscreenHint": {
     "description": "Hint shown when in fullscreen mode"
+  },
+
+  "simulationCanvasLabel": "Gravitational Physics Simulation",
+  "@simulationCanvasLabel": {
+    "description": "Accessibility label for the main simulation canvas"
+  },
+
+  "simulationCanvasHint": "Use keyboard shortcuts to control simulation. Space to pause, R to reset, C to center camera",
+  "@simulationCanvasHint": {
+    "description": "Accessibility hint for simulation canvas interactions"
+  },
+
+  "simulationDescription": "Gravitational simulation with {bodyCount} celestial bodies. Status: {status}. Speed: {speed}. Steps: {steps}",
+  "@simulationDescription": {
+    "description": "Comprehensive description of simulation state for screen readers",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "Number of celestial bodies"
+      },
+      "status": {
+        "type": "String", 
+        "description": "Current simulation status"
+      },
+      "speed": {
+        "type": "String",
+        "description": "Current time scale"
+      },
+      "steps": {
+        "type": "int",
+        "description": "Number of simulation steps"
+      }
+    }
+  },
+
+  "noBodiesInSimulation": "No celestial bodies currently in the simulation",
+  "@noBodiesInSimulation": {
+    "description": "Accessibility description when simulation is empty"
+  },
+
+  "bodiesInSimulation": "Bodies in simulation: {descriptions}",
+  "@bodiesInSimulation": {
+    "description": "Description of bodies currently in simulation",
+    "placeholders": {
+      "descriptions": {
+        "type": "String",
+        "description": "Comma-separated list of body types and counts"
+      }
+    }
+  },
+
+  "cameraFreeDescription": "Camera in free mode at distance {distance}. Auto-rotation: {rotation}",
+  "@cameraFreeDescription": {
+    "description": "Description of camera in free movement mode",
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "description": "Camera distance from center"
+      },
+      "rotation": {
+        "type": "String", 
+        "description": "Auto-rotation status"
+      }
+    }
+  },
+
+  "cameraFollowingDescription": "Camera following {bodyName} at distance {distance}. Auto-rotation: {rotation}",
+  "@cameraFollowingDescription": {
+    "description": "Description of camera in follow mode",
+    "placeholders": {
+      "bodyName": {
+        "type": "String",
+        "description": "Name of body being followed"
+      },
+      "distance": {
+        "type": "String", 
+        "description": "Camera distance"
+      },
+      "rotation": {
+        "type": "String",
+        "description": "Auto-rotation status"
+      }
+    }
+  },
+
+  "autoRotateActive": "active",
+  "@autoRotateActive": {
+    "description": "Status text when auto-rotation is enabled"
+  },
+
+  "autoRotateInactive": "inactive", 
+  "@autoRotateInactive": {
+    "description": "Status text when auto-rotation is disabled"
+  },
+
+  "liveUpdateAnnouncement": "{updateType} changed to {value}",
+  "@liveUpdateAnnouncement": {
+    "description": "Live region announcement for value changes",
+    "placeholders": {
+      "updateType": {
+        "type": "String",
+        "description": "Type of data that changed"
+      },
+      "value": {
+        "type": "String",
+        "description": "New value"
+      }
+    }
+  },
+
+  "keyboardShortcutsHint": "Use Space to pause/resume, R to reset, C to center camera, A to toggle auto-rotation",
+  "@keyboardShortcutsHint": {
+    "description": "Hint about available keyboard shortcuts"
+  },
+
+  "physicsStatsDescription": "Physics: {time} time units, {earthYears} Earth years, {steps} simulation steps completed",
+  "@physicsStatsDescription": {
+    "description": "Accessibility description of physics statistics",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "description": "Total simulation time"
+      },
+      "earthYears": {
+        "type": "String",
+        "description": "Time in Earth years"
+      },
+      "steps": {
+        "type": "int",
+        "description": "Number of steps"
+      }
+    }
+  },
+
+  "toggleAutoRotateAction": "Toggle auto-rotation",
+  "@toggleAutoRotateAction": {
+    "description": "Semantic action label for toggling camera auto-rotation"
+  },
+
+  "zoomInAction": "Zoom in",
+  "@zoomInAction": {
+    "description": "Semantic action label for zooming in"
+  },
+
+  "zoomOutAction": "Zoom out", 
+  "@zoomOutAction": {
+    "description": "Semantic action label for zooming out"
+  },
+
+  "expandedState": "expanded",
+  "@expandedState": {
+    "description": "State description for expanded UI elements"
+  },
+
+  "collapsedState": "collapsed",
+  "@collapsedState": {
+    "description": "State description for collapsed UI elements"
+  },
+
+  "currentScenario": "Current scenario",
+  "@currentScenario": {
+    "description": "Label for the currently selected scenario"
+  },
+
+  "scenariosAvailable": "scenarios available",
+  "@scenariosAvailable": {
+    "description": "Text indicating number of scenarios available"
+  },
+
+  "bottomSheetLabel": "Bottom sheet",
+  "@bottomSheetLabel": {
+    "description": "Accessibility label for bottom sheet component"
+  },
+
+  "gravitationalSimulationLabel": "Gravitational Physics Simulation",
+  "@gravitationalSimulationLabel": {
+    "description": "Main accessibility label for the physics simulation"
+  },
+
+  "simulationStateDescription": "Gravitational simulation with {bodyCount} celestial bodies. Status: {status}. Speed: {speed}. Steps completed: {stepCount}. Tap to interact with simulation or use keyboard shortcuts.",
+  "@simulationStateDescription": {
+    "description": "Comprehensive description of simulation state for accessibility",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "Number of celestial bodies"
+      },
+      "status": {
+        "type": "String",
+        "description": "Current simulation status"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "Current simulation speed"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "Number of simulation steps completed"
+      }
+    }
   }
 }

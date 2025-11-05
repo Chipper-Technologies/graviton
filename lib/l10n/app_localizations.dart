@@ -2825,6 +2825,152 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap anywhere to exit fullscreen'**
   String get exitFullscreenHint;
+
+  /// Accessibility label for the main simulation canvas
+  ///
+  /// In en, this message translates to:
+  /// **'Gravitational Physics Simulation'**
+  String get simulationCanvasLabel;
+
+  /// Accessibility hint for simulation canvas interactions
+  ///
+  /// In en, this message translates to:
+  /// **'Use keyboard shortcuts to control simulation. Space to pause, R to reset, C to center camera'**
+  String get simulationCanvasHint;
+
+  /// Comprehensive description of simulation state for screen readers
+  ///
+  /// In en, this message translates to:
+  /// **'Gravitational simulation with {bodyCount} celestial bodies. Status: {status}. Speed: {speed}. Steps: {steps}'**
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  );
+
+  /// Accessibility description when simulation is empty
+  ///
+  /// In en, this message translates to:
+  /// **'No celestial bodies currently in the simulation'**
+  String get noBodiesInSimulation;
+
+  /// Description of bodies currently in simulation
+  ///
+  /// In en, this message translates to:
+  /// **'Bodies in simulation: {descriptions}'**
+  String bodiesInSimulation(String descriptions);
+
+  /// Description of camera in free movement mode
+  ///
+  /// In en, this message translates to:
+  /// **'Camera in free mode at distance {distance}. Auto-rotation: {rotation}'**
+  String cameraFreeDescription(String distance, String rotation);
+
+  /// Description of camera in follow mode
+  ///
+  /// In en, this message translates to:
+  /// **'Camera following {bodyName} at distance {distance}. Auto-rotation: {rotation}'**
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  );
+
+  /// Status text when auto-rotation is enabled
+  ///
+  /// In en, this message translates to:
+  /// **'active'**
+  String get autoRotateActive;
+
+  /// Status text when auto-rotation is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'inactive'**
+  String get autoRotateInactive;
+
+  /// Live region announcement for value changes
+  ///
+  /// In en, this message translates to:
+  /// **'{updateType} changed to {value}'**
+  String liveUpdateAnnouncement(String updateType, String value);
+
+  /// Hint about available keyboard shortcuts
+  ///
+  /// In en, this message translates to:
+  /// **'Use Space to pause/resume, R to reset, C to center camera, A to toggle auto-rotation'**
+  String get keyboardShortcutsHint;
+
+  /// Accessibility description of physics statistics
+  ///
+  /// In en, this message translates to:
+  /// **'Physics: {time} time units, {earthYears} Earth years, {steps} simulation steps completed'**
+  String physicsStatsDescription(String time, String earthYears, int steps);
+
+  /// Semantic action label for toggling camera auto-rotation
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle auto-rotation'**
+  String get toggleAutoRotateAction;
+
+  /// Semantic action label for zooming in
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom in'**
+  String get zoomInAction;
+
+  /// Semantic action label for zooming out
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom out'**
+  String get zoomOutAction;
+
+  /// State description for expanded UI elements
+  ///
+  /// In en, this message translates to:
+  /// **'expanded'**
+  String get expandedState;
+
+  /// State description for collapsed UI elements
+  ///
+  /// In en, this message translates to:
+  /// **'collapsed'**
+  String get collapsedState;
+
+  /// Label for the currently selected scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Current scenario'**
+  String get currentScenario;
+
+  /// Text indicating number of scenarios available
+  ///
+  /// In en, this message translates to:
+  /// **'scenarios available'**
+  String get scenariosAvailable;
+
+  /// Accessibility label for bottom sheet component
+  ///
+  /// In en, this message translates to:
+  /// **'Bottom sheet'**
+  String get bottomSheetLabel;
+
+  /// Main accessibility label for the physics simulation
+  ///
+  /// In en, this message translates to:
+  /// **'Gravitational Physics Simulation'**
+  String get gravitationalSimulationLabel;
+
+  /// Comprehensive description of simulation state for accessibility
+  ///
+  /// In en, this message translates to:
+  /// **'Gravitational simulation with {bodyCount} celestial bodies. Status: {status}. Speed: {speed}. Steps completed: {stepCount}. Tap to interact with simulation or use keyboard shortcuts.'**
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  );
 }
 
 class _AppLocalizationsDelegate

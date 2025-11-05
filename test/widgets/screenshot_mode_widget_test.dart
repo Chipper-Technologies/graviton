@@ -193,5 +193,46 @@ void main() {
       // Should now be true
       expect(appState.ui.hideUIInScreenshotMode, isTrue);
     });
+
+    testWidgets(
+      'Should include fullscreen mode functionality when screenshot mode is enabled',
+      (tester) async {
+        await tester.pumpWidget(createWidgetWithLocale(const Locale('en')));
+        await tester.pumpAndSettle();
+
+        // Enable screenshot mode via service
+        final screenshotService = ScreenshotModeService();
+        screenshotService.enableScreenshotMode();
+
+        // Rebuild widget
+        await tester.pumpAndSettle();
+
+        // Should have the fullscreen mode toggle available
+        expect(find.text('Fullscreen Mode'), findsOneWidget);
+        expect(
+          find.text('Hide all UI elements for immersive viewing'),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets('Should toggle fullscreen mode setting correctly via service', (
+      tester,
+    ) async {
+      await tester.pumpWidget(createWidgetWithLocale(const Locale('en')));
+      await tester.pumpAndSettle();
+
+      final screenshotService = ScreenshotModeService();
+
+      // Initial state should be false
+      expect(screenshotService.fullscreenModeEnabled, isFalse);
+
+      // Toggle the setting directly
+      screenshotService.toggleFullscreenMode();
+      await tester.pumpAndSettle();
+
+      // Should now be true
+      expect(screenshotService.fullscreenModeEnabled, isTrue);
+    });
   });
 }

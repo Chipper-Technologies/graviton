@@ -459,5 +459,53 @@
   "fullscreenMode": "Modo Pantalla Completa",
   "fullscreenModeDescription": "Ocultar todos los elementos de la UI para una visualización inmersiva",
   "tapToToggleFullscreen": "Toca para alternar pantalla completa",
-  "exitFullscreenHint": "Toca en cualquier lugar para salir del modo pantalla completa"
+  "exitFullscreenHint": "Toca en cualquier lugar para salir del modo pantalla completa",
+  "simulationCanvasLabel": "Simulación de Física Gravitacional",
+  "simulationCanvasHint": "Usa atajos de teclado para controlar la simulación. Espacio para pausar, R para reiniciar, C para centrar cámara",
+  "simulationDescription": "Simulación gravitacional con {bodyCount} cuerpos celestes. Estado: {status}. Velocidad: {speed}. Pasos: {steps}",
+  "noBodiesInSimulation": "No hay cuerpos celestes en la simulación actualmente",
+  "bodiesInSimulation": "Cuerpos en simulación: {descriptions}",
+  "cameraFreeDescription": "Cámara en modo libre a distancia {distance}. Auto-rotación: {rotation}",
+  "cameraFollowingDescription": "Cámara siguiendo {bodyName} a distancia {distance}. Auto-rotación: {rotation}",
+  "autoRotateActive": "activa",
+  "autoRotateInactive": "inactiva",
+  "liveUpdateAnnouncement": "{updateType} cambió a {value}",
+  "keyboardShortcutsHint": "Usa Espacio para pausar/reanudar, R para reiniciar, C para centrar cámara, A para alternar auto-rotación",
+  "physicsStatsDescription": "Física: {time} unidades de tiempo, {earthYears} años terrestres, {steps} pasos de simulación completados",
+  "toggleAutoRotateAction": "Alternar auto-rotación",
+  "zoomInAction": "Acercar",
+  "zoomOutAction": "Alejar",
+  "gravitationalSimulationLabel": "Simulación de Física Gravitacional",
+  "@gravitationalSimulationLabel": {
+    "description": "Etiqueta de accesibilidad principal para la simulación de física"
+  },
+
+  "simulationStateDescription": "Simulación gravitacional con {bodyCount} cuerpos celestes. Estado: {status}. Velocidad: {speed}. Pasos completados: {stepCount}. Toca para interactuar con la simulación o usa atajos de teclado.",
+  "@simulationStateDescription": {
+    "description": "Descripción integral del estado de la simulación para accesibilidad",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "Número de cuerpos celestes"
+      },
+      "status": {
+        "type": "String",
+        "description": "Estado actual de la simulación"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "Velocidad actual de la simulación"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "Número de pasos de simulación completados"
+      }
+    }
+  },
+
+  "expandedState": "expandido",
+  "collapsedState": "colapsado",
+  "currentScenario": "Escenario actual",
+  "scenariosAvailable": "escenarios disponibles",
+  "bottomSheetLabel": "Hoja inferior"
 }

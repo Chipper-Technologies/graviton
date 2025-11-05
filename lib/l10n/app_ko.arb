@@ -459,5 +459,54 @@
   "fullscreenMode": "전체화면 모드",
   "fullscreenModeDescription": "몰입감 있는 보기를 위해 모든 UI 요소 숨기기",
   "tapToToggleFullscreen": "탭하여 전체화면 전환",
-  "exitFullscreenHint": "전체화면 모드를 종료하려면 아무 곳이나 탭하세요"
+  "exitFullscreenHint": "전체화면 모드를 종료하려면 아무 곳이나 탭하세요",
+
+  "gravitationalSimulationLabel": "중력 물리 시뮬레이션",
+  "@gravitationalSimulationLabel": {
+    "description": "물리 시뮬레이션의 주요 접근성 라벨"
+  },
+
+  "simulationStateDescription": "{bodyCount}개의 천체가 있는 중력 시뮬레이션. 상태: {status}. 속도: {speed}. 완료된 단계: {stepCount}. 시뮬레이션과 상호작용하려면 탭하거나 키보드 단축키를 사용하세요.",
+  "@simulationStateDescription": {
+    "description": "접근성을 위한 시뮬레이션 상태의 포괄적인 설명",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "천체의 수"
+      },
+      "status": {
+        "type": "String",
+        "description": "현재 시뮬레이션 상태"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "현재 시뮬레이션 속도"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "완료된 시뮬레이션 단계 수"
+      }
+    }
+  },
+
+  "expandedState": "확장됨",
+  "collapsedState": "축소됨",
+  "currentScenario": "현재 시나리오",
+  "scenariosAvailable": "사용 가능한 시나리오",
+  "bottomSheetLabel": "하단 시트",
+  "simulationCanvasLabel": "중력 물리 시뮬레이션",
+  "simulationCanvasHint": "키보드 단축키로 시뮬레이션을 제어하세요. 스페이스로 일시정지, R로 재시작, C로 카메라 중앙 맞춤",
+  "simulationDescription": "{bodyCount}개의 천체가 있는 중력 시뮬레이션. 상태: {status}. 속도: {speed}. 단계: {steps}",
+  "noBodiesInSimulation": "현재 시뮬레이션에 천체가 없습니다",
+  "bodiesInSimulation": "시뮬레이션의 천체: {descriptions}",
+  "cameraFreeDescription": "거리 {distance}에서 자유 모드 카메라. 자동 회전: {rotation}",
+  "cameraFollowingDescription": "거리 {distance}에서 {bodyName}을(를) 따라가는 카메라. 자동 회전: {rotation}",
+  "autoRotateActive": "활성",
+  "autoRotateInactive": "비활성",
+  "liveUpdateAnnouncement": "{updateType}이(가) {value}(으)로 변경됨",
+  "keyboardShortcutsHint": "스페이스로 일시정지/재개, R로 재시작, C로 카메라 중앙 맞춤, A로 자동 회전 전환",
+  "physicsStatsDescription": "물리: {time} 시간 단위, {earthYears}년, {steps} 시뮬레이션 단계 완료",
+  "toggleAutoRotateAction": "자동 회전 전환",
+  "zoomInAction": "확대",
+  "zoomOutAction": "축소"
 }
