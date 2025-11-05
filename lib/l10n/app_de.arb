@@ -469,5 +469,9 @@
   "cameraDynamicFraming": "Dynamische Bildkomposition",
   "cameraManualDescription": "Traditionelle manuelle Kamerasteuerung mit Folgemodus",
   "cameraPredictiveOrbitalDescription": "KI sagt Orbitalpfade für dramatische Kamerabewegungen voraus",
-  "cameraDynamicFramingDescription": "Passt die Bildkomposition automatisch basierend auf Szeneninhalten an"
+  "cameraDynamicFramingDescription": "Passt die Bildkomposition automatisch basierend auf Szeneninhalten an",
+  "fullscreenMode": "Vollbildmodus",
+  "fullscreenModeDescription": "Alle UI-Elemente für eine immersive Betrachtung ausblenden",
+  "tapToToggleFullscreen": "Tippen, um Vollbild ein-/auszuschalten",
+  "exitFullscreenHint": "Tippen Sie irgendwo, um den Vollbildmodus zu verlassen"
 }

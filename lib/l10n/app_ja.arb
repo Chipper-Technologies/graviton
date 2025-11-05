@@ -455,5 +455,9 @@
   "cameraDynamicFraming": "動的フレーミング",
   "cameraManualDescription": "フォローモード付きの従来の手動カメラ制御",
   "cameraPredictiveOrbitalDescription": "AIが軌道経路を予測してドラマチックなカメラ動作を実現",
-  "cameraDynamicFramingDescription": "シーンコンテンツに基づいてフレーミングを自動調整"
+  "cameraDynamicFramingDescription": "シーンコンテンツに基づいてフレーミングを自動調整",
+  "fullscreenMode": "フルスクリーンモード",
+  "fullscreenModeDescription": "没入感のある表示のためにすべてのUI要素を非表示にする",
+  "tapToToggleFullscreen": "タップしてフルスクリーンを切り替え",
+  "exitFullscreenHint": "フルスクリーンモードを終了するには任意の場所をタップ"
 }

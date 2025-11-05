@@ -456,5 +456,9 @@
   "cameraDynamicFraming": "动态构图",
   "cameraManualDescription": "带跟随模式的传统手动相机控制",
   "cameraPredictiveOrbitalDescription": "AI预测轨道路径以实现戏剧性的相机动作",
-  "cameraDynamicFramingDescription": "根据场景内容自动调整构图"
+  "cameraDynamicFramingDescription": "根据场景内容自动调整构图",
+  "fullscreenMode": "全屏模式",
+  "fullscreenModeDescription": "隐藏所有UI元素以获得沉浸式观看体验",
+  "tapToToggleFullscreen": "点击切换全屏",
+  "exitFullscreenHint": "点击任意位置退出全屏模式"
 }

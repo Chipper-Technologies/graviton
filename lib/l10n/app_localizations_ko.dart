@@ -1423,15 +1423,14 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cameraDynamicFramingDescription => '장면 콘텐츠를 기반으로 프레이밍을 자동 조정';
 
   @override
-  String get fullscreenMode => 'Fullscreen Mode';
+  String get fullscreenMode => '전체화면 모드';
 
   @override
-  String get fullscreenModeDescription =>
-      'Hide all UI elements for immersive viewing';
+  String get fullscreenModeDescription => '몰입감 있는 보기를 위해 모든 UI 요소 숨기기';
 
   @override
-  String get tapToToggleFullscreen => 'Tap to toggle fullscreen';
+  String get tapToToggleFullscreen => '탭하여 전체화면 전환';
 
   @override
-  String get exitFullscreenHint => 'Tap anywhere to exit fullscreen';
+  String get exitFullscreenHint => '전체화면 모드를 종료하려면 아무 곳이나 탭하세요';
 }

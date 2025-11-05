@@ -1494,15 +1494,16 @@ class AppLocalizationsEs extends AppLocalizations {
       'Ajusta automáticamente el encuadre basado en el contenido de la escena';
 
   @override
-  String get fullscreenMode => 'Fullscreen Mode';
+  String get fullscreenMode => 'Modo Pantalla Completa';
 
   @override
   String get fullscreenModeDescription =>
-      'Hide all UI elements for immersive viewing';
+      'Ocultar todos los elementos de la UI para una visualización inmersiva';
 
   @override
-  String get tapToToggleFullscreen => 'Tap to toggle fullscreen';
+  String get tapToToggleFullscreen => 'Toca para alternar pantalla completa';
 
   @override
-  String get exitFullscreenHint => 'Tap anywhere to exit fullscreen';
+  String get exitFullscreenHint =>
+      'Toca en cualquier lugar para salir del modo pantalla completa';
 }

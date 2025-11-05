@@ -1409,15 +1409,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cameraDynamicFramingDescription => '根据场景内容自动调整构图';
 
   @override
-  String get fullscreenMode => 'Fullscreen Mode';
+  String get fullscreenMode => '全屏模式';
 
   @override
-  String get fullscreenModeDescription =>
-      'Hide all UI elements for immersive viewing';
+  String get fullscreenModeDescription => '隐藏所有UI元素以获得沉浸式观看体验';
 
   @override
-  String get tapToToggleFullscreen => 'Tap to toggle fullscreen';
+  String get tapToToggleFullscreen => '点击切换全屏';
 
   @override
-  String get exitFullscreenHint => 'Tap anywhere to exit fullscreen';
+  String get exitFullscreenHint => '点击任意位置退出全屏模式';
 }

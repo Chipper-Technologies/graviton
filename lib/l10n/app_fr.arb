@@ -455,5 +455,9 @@
   "cameraDynamicFraming": "Cadrage Dynamique",
   "cameraManualDescription": "Contrôles manuels traditionnels de caméra avec mode suivi",
   "cameraPredictiveOrbitalDescription": "L'IA prédit les trajectoires orbitales pour des mouvements dramatiques de caméra",
-  "cameraDynamicFramingDescription": "Ajuste automatiquement le cadrage basé sur le contenu de la scène"
+  "cameraDynamicFramingDescription": "Ajuste automatiquement le cadrage basé sur le contenu de la scène",
+  "fullscreenMode": "Mode Plein Écran",
+  "fullscreenModeDescription": "Masquer tous les éléments de l'interface pour une visualisation immersive",
+  "tapToToggleFullscreen": "Appuyez pour basculer en plein écran",
+  "exitFullscreenHint": "Appuyez n'importe où pour quitter le mode plein écran"
 }

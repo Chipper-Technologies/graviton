@@ -455,5 +455,9 @@
   "cameraDynamicFraming": "동적 프레이밍",
   "cameraManualDescription": "팔로우 모드가 있는 전통적인 수동 카메라 제어",
   "cameraPredictiveOrbitalDescription": "AI가 궤도 경로를 예측하여 극적인 카메라 움직임 제공",
-  "cameraDynamicFramingDescription": "장면 콘텐츠를 기반으로 프레이밍을 자동 조정"
+  "cameraDynamicFramingDescription": "장면 콘텐츠를 기반으로 프레이밍을 자동 조정",
+  "fullscreenMode": "전체화면 모드",
+  "fullscreenModeDescription": "몰입감 있는 보기를 위해 모든 UI 요소 숨기기",
+  "tapToToggleFullscreen": "탭하여 전체화면 전환",
+  "exitFullscreenHint": "전체화면 모드를 종료하려면 아무 곳이나 탭하세요"
 }

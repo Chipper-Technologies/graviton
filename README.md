@@ -676,11 +676,12 @@ lib/
 │   ├── version_service.dart    # Dual-threshold version management system
 │   ├── firebase_service.dart   # Firebase analytics, crashlytics, remote config
 │   ├── remote_config_service.dart # Firebase remote config integration
+│   ├── fullscreen_service.dart # Fullscreen system UI management (NEW)
 │   └── screenshot_mode_service.dart # Screenshot mode management (dev only)
 ├── state/                       # State management
 │   ├── app_state.dart          # Main app state coordinator
 │   ├── simulation_state.dart   # Physics simulation state
-│   ├── ui_state.dart           # UI controls state
+│   ├── ui_state.dart           # UI controls state (includes fullscreen management)
 │   └── camera_state.dart       # Enhanced 3D camera state with roll support
 ├── utils/                       # Utilities
 │   ├── star_generator.dart     # Background star field generation
@@ -688,6 +689,7 @@ lib/
 │   ├── physics_utils.dart      # Physics calculation helpers
 │   ├── vector_utils.dart       # Vector mathematics utilities
 │   ├── collision_utils.dart    # Collision detection helpers
+│   ├── fullscreen_utils.dart   # Fullscreen mode coordination utilities (NEW)
 │   └── random_utils.dart       # Random number generation utilities
 ├── painters/                    # Specialized rendering engines
 │   ├── graviton_painter.dart   # Main 3D rendering orchestrator

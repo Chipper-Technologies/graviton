@@ -1419,15 +1419,14 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cameraDynamicFramingDescription => 'シーンコンテンツに基づいてフレーミングを自動調整';
 
   @override
-  String get fullscreenMode => 'Fullscreen Mode';
+  String get fullscreenMode => 'フルスクリーンモード';
 
   @override
-  String get fullscreenModeDescription =>
-      'Hide all UI elements for immersive viewing';
+  String get fullscreenModeDescription => '没入感のある表示のためにすべてのUI要素を非表示にする';
 
   @override
-  String get tapToToggleFullscreen => 'Tap to toggle fullscreen';
+  String get tapToToggleFullscreen => 'タップしてフルスクリーンを切り替え';
 
   @override
-  String get exitFullscreenHint => 'Tap anywhere to exit fullscreen';
+  String get exitFullscreenHint => 'フルスクリーンモードを終了するには任意の場所をタップ';
 }

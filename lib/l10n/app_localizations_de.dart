@@ -1484,15 +1484,16 @@ class AppLocalizationsDe extends AppLocalizations {
       'Passt die Bildkomposition automatisch basierend auf Szeneninhalten an';
 
   @override
-  String get fullscreenMode => 'Fullscreen Mode';
+  String get fullscreenMode => 'Vollbildmodus';
 
   @override
   String get fullscreenModeDescription =>
-      'Hide all UI elements for immersive viewing';
+      'Alle UI-Elemente für eine immersive Betrachtung ausblenden';
 
   @override
-  String get tapToToggleFullscreen => 'Tap to toggle fullscreen';
+  String get tapToToggleFullscreen => 'Tippen, um Vollbild ein-/auszuschalten';
 
   @override
-  String get exitFullscreenHint => 'Tap anywhere to exit fullscreen';
+  String get exitFullscreenHint =>
+      'Tippen Sie irgendwo, um den Vollbildmodus zu verlassen';
 }

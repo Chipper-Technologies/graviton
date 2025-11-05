@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.0] - 2025-11-04
 
 ### Added
+- **Immersive Fullscreen Mode**: Complete system UI control for distraction-free simulation viewing
+  - **Tap-to-Toggle Interface**: Simple tap gesture on simulation area to enter/exit fullscreen mode with immediate response
+  - **System UI Management**: Native SystemChrome integration hiding status bars, navigation bars, and home indicators for true immersive experience
+  - **Smart State Persistence**: Fullscreen preference automatically saved and restored across app sessions using SharedPreferences
+  - **Multi-Language Support**: Fullscreen hints and descriptions translated across all 7 supported languages with culturally appropriate messaging
+- **Enhanced Haptic Feedback System**: Sophisticated tactile feedback integration enhancing user interaction responsiveness
+  - **SafeHapticFeedback Utility**: Robust haptic system with graceful fallback handling for devices without haptic capabilities
+  - **UI Interaction Feedback**: Light haptic feedback for UI controls including toggles, sliders, and button interactions
+  - **Collision Event Feedback**: Medium haptic feedback for celestial body collisions providing immersive simulation feedback
+  - **Preference Management**: User-controllable haptic settings with separate toggles for UI feedback and collision feedback
+  - **Cross-Platform Support**: Unified haptic API working consistently across iOS and Android platforms
+  - **Performance Optimization**: Efficient haptic event handling with minimal impact on simulation performance
 - **Unified Bottom Sheet Control System**: Complete redesign of simulation controls with enhanced user experience
   - **Intelligent Floating Controls**: Context-aware circular buttons that appear above the bottom sheet for quick access to essential simulation functions
   - **Interaction-Based Visibility**: Smart auto-hide system that shows floating controls only when users interact with the screen, automatically hiding after 3 seconds of inactivity
@@ -16,6 +28,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Touch-Responsive Design**: Enhanced gesture detection system that triggers control visibility through both bottom sheet interactions and general screen touches
 
 ### Improved
+- **User Experience Enhancement**: Revolutionary tactile feedback system providing immediate response to user interactions
+  - **Responsive Interface**: Haptic feedback integrated throughout the UI for toggle switches, sliders, and interactive controls
+  - **Immersive Simulation**: Tactile collision feedback creates deeper connection between user and physics simulation
+  - **Accessibility Improvement**: Additional sensory feedback channel benefiting users with visual impairments
+  - **Device Compatibility**: Graceful degradation on devices without haptic capabilities maintaining consistent experience
+- **Fullscreen Experience**: Complete system UI management for distraction-free simulation viewing
+  - **Seamless Transitions**: Smooth enter/exit animations with immediate visual feedback and proper state management
+  - **State Persistence**: Intelligent preference management ensuring consistent fullscreen behavior across app sessions
+  - **Touch Interaction**: Intuitive tap-anywhere gesture system for quick fullscreen toggling without interrupting simulation flow
 - **Bottom Sheet User Experience**: Revolutionary interaction model that combines the best of persistent controls with clean UI design
   - **Drag Detection Enhancement**: Added sophisticated gesture detection to the bottom sheet for improved interaction tracking
   - **Visual Hierarchy**: Floating controls positioned with proper Material Design elevation and ordering above the menu system
@@ -27,6 +48,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Memory Management**: Proper timer cleanup and resource disposal for interaction-based visibility system
 
 ### Technical Improvements
+- **Haptic Feedback Architecture**: Robust tactile feedback system with comprehensive device compatibility
+  - **SafeHapticFeedback Utility**: Platform-agnostic haptic API with graceful fallback handling for devices without vibration support
+  - **Event-Driven System**: Efficient haptic event management integrated with UI interactions and physics simulation events
+  - **Performance Optimization**: Minimal overhead haptic processing maintaining 60fps simulation performance
+  - **State Management Integration**: Haptic preferences integrated with UIState for persistent user control
+- **Fullscreen System Integration**: Native platform UI control with comprehensive state management
 - **UI Architecture Cleanup**: Eliminated redundant floating controls components and consolidated functionality
   - **Code Simplification**: Removed code duplication by integrating floating controls directly into the persistent bottom sheet
   - **Component Consolidation**: Streamlined interface structure for better performance and maintainability
@@ -42,10 +69,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Quality Assurance
 - **Comprehensive Test Coverage Improvements**: Systematic enhancement of code quality through targeted test coverage expansion
+  - **Fullscreen Testing Suite**: Complete test coverage for fullscreen functionality including service tests, utils tests, state management, and integration scenarios
+  - **Haptic Feedback Testing**: Comprehensive test coverage for SafeHapticFeedback utility with device compatibility and fallback handling
   - **UI Constants Testing**: Complete test coverage for app constraints with comprehensive test cases covering all dialog constraints, padding, and decoration methods
   - **Enum Testing Enhancement**: Complete test coverage for speed presets including localization testing with proper setup for all speed multipliers and display methods
   - **Data-Driven Testing**: Implemented systematic approach using coverage analysis tools to identify and target high-impact testing opportunities
 - **Code Quality Standards**: Elevated testing practices with comprehensive edge case coverage and meaningful validation
+  - **Service Layer Testing**: Added dedicated tests for FullscreenService including state transitions, system UI management, and error handling
+  - **Utils Testing**: Complete coverage of FullscreenUtils coordination functions with proper service-state synchronization validation
+  - **State Management Testing**: Enhanced UIState tests with fullscreen preference persistence and cross-session state validation
+  - **Integration Testing**: Fixed dispose method Provider access issues and binding initialization problems in test environment
+  - **Platform Testing**: Updated control widget padding tests to handle test environment differences with proper expectations
   - **Temperature Physics Testing**: Added tests for Celsius/Fahrenheit conversions, habitability temperature ranges, and temperature categorization logic
   - **Body Property Testing**: Complete coverage of gravity well settings, stellar luminosity, body type properties, and derived calculation methods
   - **Localization Testing**: Proper testing setup for internationalization methods with comprehensive locale verification
