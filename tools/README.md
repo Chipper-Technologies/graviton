@@ -13,6 +13,9 @@ This directory contains development and build tools for the Graviton app.
 - `generate_keystore.sh` - Interactive Android release keystore generator
 - `README.md` - This documentation file
 
+### Code Quality Tools
+- `analyze_coverage.py` - Enhanced Flutter test coverage analysis with exclusions
+
 ## Screenshot Generation
 
 ### Features
@@ -151,6 +154,45 @@ assets/screenshots/
 
 ### Overview
 The `generate_keystore.sh` script creates a release keystore for Android app signing, required for Google Play Store distribution.
+
+## Coverage Analysis
+
+### Overview
+The `analyze_coverage.py` script provides enhanced Flutter test coverage analysis with intelligent exclusions for auto-generated files. It filters out localization files and other generated code to give you a cleaner view of actual code coverage.
+
+### Quick Start
+```bash
+# Generate coverage and analyze (complete workflow)
+flutter test --coverage && python3 tools/analyze_coverage.py
+
+# Or analyze existing coverage data
+python3 tools/analyze_coverage.py
+```
+
+### Key Features
+- 🎯 **Smart exclusions**: Auto-filters generated localization and build files
+- 📊 **Visual indicators**: Color-coded coverage levels (🔴🟡🟢✅)
+- 🚀 **Improvement recommendations**: ROI-based suggestions for which files to target
+- 📈 **Real coverage**: Shows actual testable code coverage (excluding generated files)
+
+### Example Output
+```
+Flutter Coverage Analysis (Excluding Generated Files)
+============================================================
+Overall Coverage: 75.7% (8859/11699 lines)
+Files Analyzed: 119
+Files Excluded: 7
+
+🎯 Improvement Recommendations:
+• Focus on files with moderate size (50-200 lines) for best ROI
+• Consider these priorities:
+  1. changelog_service.dart - 31.2% coverage, 77 lines
+  2. gravity_field_color_scheme.dart - 31.2% coverage, 64 lines
+```
+
+📚 **[Complete Coverage Analysis Documentation](../docs/COVERAGE.md)**
+
+## Android Keystore Generation
 
 ### Features
 - **Interactive Setup**: Guided prompts for keystore configuration
@@ -390,6 +432,26 @@ Is CN=Scott Developer, OU=Development, O=Chipper Technologies, L=San Francisco, 
 
 ## Troubleshooting
 
+### Coverage Analysis
+
+#### Common Issues
+1. **Coverage file not found**: 
+   - Run `flutter test --coverage` first to generate coverage data
+   - Check that `coverage/lcov.info` exists in project root
+2. **Permission denied**: Run `chmod +x tools/analyze_coverage.py`
+3. **Python not found**: Ensure Python 3.6+ is installed (`python3 --version`)
+4. **No files analyzed**: Verify project has Dart files outside test/build directories
+5. **Empty coverage data**: Ensure tests run successfully before coverage generation
+
+#### Integration Issues
+```bash
+# Complete workflow for troubleshooting
+flutter clean                              # Clean build cache
+flutter test                              # Verify tests pass
+flutter test --coverage                   # Generate fresh coverage
+python3 tools/analyze_coverage.py         # Analyze coverage
+```
+
 ### Screenshot Tools
 
 #### Common Issues
@@ -428,10 +490,21 @@ python3 tools/generate_screenshots.py --all-sizes --max-width 250
 
 ### Integration with CI/CD
 
-Both tools can be integrated into automated build processes:
+All tools can be integrated into automated build processes:
 
 ```yaml
 # GitHub Actions example
+- name: Run Tests with Coverage Analysis
+  run: |
+    flutter test --coverage
+    python3 tools/analyze_coverage.py
+    # Optional: Fail build if coverage below threshold
+    COVERAGE=$(python3 tools/analyze_coverage.py | grep "Overall Coverage" | grep -o '[0-9.]*%' | head -1 | sed 's/%//')
+    if (( $(echo "$COVERAGE < 70.0" | bc -l) )); then
+      echo "Coverage $COVERAGE% is below 70% threshold"
+      exit 1
+    fi
+
 - name: Generate Screenshots
   run: |
     pip install Pillow

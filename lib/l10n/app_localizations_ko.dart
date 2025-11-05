@@ -21,6 +21,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get resetButton => '재설정';
 
   @override
+  String get resetSettingsDescription => '모든 설정을 기본값으로 재설정';
+
+  @override
   String get speedLabel => '속도';
 
   @override
@@ -30,7 +33,106 @@ class AppLocalizationsKo extends AppLocalizations {
   String get statsLabel => '통계';
 
   @override
-  String get selectLabel => '선택';
+  String get bottomNavCameraLabel => '카메라';
+
+  @override
+  String get bottomNavVisualsLabel => '시각적';
+
+  @override
+  String get bottomNavPhysicsLabel => '물리';
+
+  @override
+  String get cameraTooltip => '카메라 설정 및 AI 모드';
+
+  @override
+  String get visualsTooltip => '시각적 디스플레이 옵션';
+
+  @override
+  String get physicsTooltip => '물리 시각화 및 설정';
+
+  @override
+  String get aiCameraModesTitle => 'AI 카메라 모드';
+
+  @override
+  String get manualControlTitle => '수동 제어';
+
+  @override
+  String get manualControlDescription => '완전한 수동 카메라 제어';
+
+  @override
+  String get predictiveOrbitalTitle => '예측 궤도';
+
+  @override
+  String get predictiveOrbitalDescription => 'AI가 최적의 궤도 뷰를 예측';
+
+  @override
+  String get dynamicFramingTitle => '동적 프레이밍';
+
+  @override
+  String get dynamicFramingDescription => 'AI가 모든 객체를 동적으로 프레이밍';
+
+  @override
+  String get manualControlsTitle => '수동 제어';
+
+  @override
+  String get selectNearestTitle => '가장 가까운 선택';
+
+  @override
+  String get stopFollowTitle => '추적 중지';
+
+  @override
+  String get followTitle => '추적';
+
+  @override
+  String get centerViewTitle => '중앙 뷰';
+
+  @override
+  String get stopRotateTitle => '회전 중지';
+
+  @override
+  String get autoRotateTitle => '자동 회전';
+
+  @override
+  String get displayOptionsTitle => '디스플레이 옵션';
+
+  @override
+  String get showTrailsTitle => '궤적 표시';
+
+  @override
+  String get showLabelsTitle => '라벨 표시';
+
+  @override
+  String get realisticColorsTitle => '사실적인 색상';
+
+  @override
+  String get physicsVisualizationTitle => '물리 시각화';
+
+  @override
+  String get gravityFieldsTitle => '중력장';
+
+  @override
+  String get gravityFieldsDescription => '중력장 시각화 표시';
+
+  @override
+  String get debugStatisticsTitle => '디버그 및 통계';
+
+  @override
+  String get showStatisticsTitle => '통계 표시';
+
+  @override
+  String get showStatisticsDescription => '성능 및 물리 통계 표시';
+
+  @override
+  String get currentStatisticsTitle => '현재 통계';
+
+  @override
+  String get bodiesStatLabel => '천체';
+
+  @override
+  String get timeScaleStatLabel => '시간 배율';
+
+  @override
+  String get selectedStatLabel => '선택됨';
 
   @override
   String get followLabel => '추적';
@@ -81,10 +183,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get selectObjectToFollowTooltip => '추적할 객체 선택';
 
   @override
-  String get settingsTitle => '설정';
+  String get settingsTitle => '애플리케이션 설정';
 
   @override
-  String get settingsTooltip => '설정';
+  String get settingsTooltip => '애플리케이션 설정';
 
   @override
   String get selectScenarioTooltip => '시나리오 선택';
@@ -111,6 +213,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get simulationSpeed => '시뮬레이션 속도';
 
   @override
+  String get simulationSpeedHint =>
+      '시뮬레이션 속도를 0.1배에서 16배 정상 속도까지 조정합니다. 화살표 키를 사용하여 세밀하게 조정할 수 있습니다.';
+
+  @override
   String get collisionsSection => '충돌';
 
   @override
@@ -129,10 +235,27 @@ class AppLocalizationsKo extends AppLocalizations {
   String get hapticsSection => '햅틱';
 
   @override
+  String get uiHapticFeedback => 'UI 햅틱 피드백';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      '버튼 탭, 토글, 내비게이션과 같은 UI 상호작용에 대한 햅틱 피드백 활성화';
+
+  @override
+  String get collisionHapticFeedback => '충돌 햅틱 피드백';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      '시뮬레이션 중 천체가 충돌할 때 햅틱 피드백 활성화';
+
+  @override
   String get vibrationEnabled => '진동 활성화';
 
   @override
   String get hapticFeedbackCollisions => '충돌 시 햅틱 피드백';
+
+  @override
+  String get hapticFeedbackDescription => 'UI 상호작용 및 충돌에 대한 햅틱 피드백 활성화';
 
   @override
   String get vibrationThrottle => '진동 제한';
@@ -145,6 +268,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get helpMenuDescription => '튜토리얼 및 목표';
+
+  @override
+  String get aboutMenuDescription => '앱 정보 및 크레딧';
 
   @override
   String get showTrails => '궤적 표시';
@@ -207,6 +333,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get statusPaused => '일시정지됨';
 
   @override
+  String get statusStopped => '정지됨';
+
+  @override
+  String get statusError => '오류';
+
+  @override
   String get cameraLabel => '카메라';
 
   @override
@@ -220,6 +352,18 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get autoRotateOff => '꺼짐';
+
+  @override
+  String get yawLabel => '요';
+
+  @override
+  String get pitchLabel => '피치';
+
+  @override
+  String get rollLabel => '롤';
+
+  @override
+  String get zoomLabel => '줌';
 
   @override
   String get cameraControlsLabel => '카메라 조작';
@@ -284,6 +428,27 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get speedQuarter => '1/4 속도';
+
+  @override
+  String get speedHalf => '절반 속도';
+
+  @override
+  String get speedNormal => '보통';
+
+  @override
+  String get speedDouble => '2배 속도';
+
+  @override
+  String get speedFast => '빠름';
+
+  @override
+  String get speedVeryFast => '매우 빠름';
+
+  @override
+  String get speedMaximum => '최대';
+
+  @override
   String bodiesCount(int count) {
     return '$count';
   }
@@ -345,6 +510,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get scenarioSolarSystemDescription => '내행성과 외행성을 포함한 우리 태양계의 간소화된 버전';
+
+  @override
+  String get scenarioSpecial => '특별 시나리오';
+
+  @override
+  String get scenarioSpecialDescription => '스크린샷 모드용 특별 시나리오';
 
   @override
   String get habitabilityLabel => '거주 가능성';
@@ -424,6 +595,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get aboutButtonTooltip => '정보';
 
   @override
+  String get backButtonTooltip => '뒤로';
+
+  @override
   String get appNameGraviton => 'Graviton';
 
   @override
@@ -433,13 +607,66 @@ class AppLocalizationsKo extends AppLocalizations {
   String get loadingVersion => '버전 로딩 중...';
 
   @override
-  String get companyName => 'Chipper Technologies, LLC';
+  String get companyName => 'Chipper Technologies LLC';
 
   @override
   String get gravityWellsLabel => '중력장';
 
   @override
   String get gravityWellsDescription => '객체 주변의 중력장 강도 표시';
+
+  @override
+  String get globalGravityFieldsLabel => '전역 중력장';
+
+  @override
+  String get globalGravityFieldsDescription => '모든 거대한 객체에 대한 중력장 시각화 활성화';
+
+  @override
+  String get gravityFieldColorSchemeLabel => '중력장 색상';
+
+  @override
+  String get gravityFieldColorSchemeDescription => '중력장 시각화를 위한 색상 스키마 선택';
+
+  @override
+  String get gravityColorSchemeClassic => '클래식';
+
+  @override
+  String get gravityColorSchemeSpectral => '스펙트럼';
+
+  @override
+  String get gravityColorSchemeMonochrome => '단색';
+
+  @override
+  String get gravityColorSchemeNeon => '네온';
+
+  @override
+  String get gravityColorSchemeEmerald => '에메랄드';
+
+  @override
+  String get gravityFieldStrengthLabel => '장 강도';
+
+  @override
+  String get gravityFieldStrengthUnit => 'm/s²';
+
+  @override
+  String gravityFieldStrengthFormatted(String strength, String unit) {
+    return '$strength $unit';
+  }
+
+  @override
+  String get equipotentialSurfacesLabel => '등전위면';
+
+  @override
+  String get equipotentialSurfacesDescription => '동일한 중력 위치 에너지의 표면 표시';
+
+  @override
+  String get gravityFieldIndicatorsLabel => '장 강도 지시기';
+
+  @override
+  String get gravityFieldIndicatorsDescription => '중력장 강도의 시각적 지시기 표시';
+
+  @override
+  String get toggleGravityFieldsTooltip => '중력장 전환';
 
   @override
   String get languageLabel => '언어';
@@ -667,6 +894,11 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get hideUIInScreenshotModeSubtitle =>
       '스크린샷 모드가 활성화될 때 앱 바, 하단 내비게이션, 저작권을 숨김';
+
+  @override
+  String screenshotCountdown(int seconds) {
+    return '스크린샷 $seconds초 후';
+  }
 
   @override
   String get scenePreset => '장면 프리셋';
@@ -1024,5 +1256,379 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String changelogLoadError(String error) {
     return '변경 로그 로드 실패: $error';
+  }
+
+  @override
+  String get noChangelogsAvailable => '사용 가능한 변경 로그가 없습니다';
+
+  @override
+  String errorLoadingChangelogs(String error) {
+    return '변경 로그 로드 오류: $error';
+  }
+
+  @override
+  String get stellarColorBlue => '파랑';
+
+  @override
+  String get stellarColorBlueWhite => '청백색';
+
+  @override
+  String get stellarColorWhite => '흰색';
+
+  @override
+  String get stellarColorYellowWhite => '황백색';
+
+  @override
+  String get stellarColorYellow => '노랑';
+
+  @override
+  String get stellarColorOrange => '주황';
+
+  @override
+  String get stellarColorRed => '빨강';
+
+  @override
+  String get pathVisualizationTitle => '궤도 시각화';
+
+  @override
+  String get navigationAidsTitle => '탐색 도구';
+
+  @override
+  String get gravityFieldClassicLabel => '클래식';
+
+  @override
+  String get gravityFieldSpectralLabel => '스펙트럼';
+
+  @override
+  String get gravityFieldMonochromeLabel => '모노크롬';
+
+  @override
+  String get gravityFieldNeonLabel => '네온';
+
+  @override
+  String get gravityFieldEmeraldLabel => '에메랄드';
+
+  @override
+  String get appInformationCredits => '앱 정보 및 크레딧';
+
+  @override
+  String get developerToolsTitle => '개발자 도구';
+
+  @override
+  String get developerToolsMenuDescription => '개발용 디버그 도구';
+
+  @override
+  String get tutorialDescription => '앱의 인터랙티브 가이드 투어';
+
+  @override
+  String get resetTutorialDescription => '튜토리얼 진행 상황 재설정';
+
+  @override
+  String get changelogDescription => '앱 업데이트 및 변경 사항 보기';
+
+  @override
+  String get resetChangelogDescription => '변경 로그 읽음 상태 재설정';
+
+  @override
+  String get tutorialResetSuccess => '튜토리얼 진행 상황이 재설정되었습니다';
+
+  @override
+  String get changelogResetSuccess => '변경 로그 상태가 재설정되었습니다';
+
+  @override
+  String get copyrightLabel => '저작권';
+
+  @override
+  String get allRightsReserved => '모든 권리 보유';
+
+  @override
+  String get bodyTypeStar => '항성';
+
+  @override
+  String get bodyTypePlanet => '행성';
+
+  @override
+  String get bodyTypeMoon => '달';
+
+  @override
+  String get bodyTypeAsteroid => '소행성';
+
+  @override
+  String get appFlavorDevelopment => '개발';
+
+  @override
+  String get appFlavorProduction => '프로덕션';
+
+  @override
+  String get notificationTypeError => '오류';
+
+  @override
+  String get notificationTypeWarning => '경고';
+
+  @override
+  String get notificationTypeInfo => '정보';
+
+  @override
+  String get notificationTypeSuccess => '성공';
+
+  @override
+  String get notificationTypeDebug => '디버그';
+
+  @override
+  String get trackingModeFull => '전체 추적';
+
+  @override
+  String get trackingModeEssential => '필수만';
+
+  @override
+  String get trackingModeNone => '추적 없음';
+
+  @override
+  String get trackingModeLimited => '제한된 추적';
+
+  @override
+  String get trackingModeFullDescription => '모든 분석, 충돌 및 상호작용';
+
+  @override
+  String get trackingModeEssentialDescription => '중요한 충돌 및 오류만';
+
+  @override
+  String get trackingModeNoneDescription => '데이터 수집 없음';
+
+  @override
+  String get trackingModeLimitedDescription => '사용자 상호작용만';
+
+  @override
+  String get changelogCategoryAdded => '추가됨';
+
+  @override
+  String get changelogCategoryImproved => '개선됨';
+
+  @override
+  String get changelogCategoryFixed => '수정됨';
+
+  @override
+  String get cameraManual => '수동 제어';
+
+  @override
+  String get cameraPredictiveOrbital => '예측 궤도';
+
+  @override
+  String get cameraDynamicFraming => '동적 프레이밍';
+
+  @override
+  String get cameraManualDescription => '팔로우 모드가 있는 전통적인 수동 카메라 제어';
+
+  @override
+  String get cameraPredictiveOrbitalDescription =>
+      'AI가 궤도 경로를 예측하여 극적인 카메라 움직임 제공';
+
+  @override
+  String get cameraDynamicFramingDescription => '장면 콘텐츠를 기반으로 프레이밍을 자동 조정';
+
+  @override
+  String get fullscreenMode => '전체화면 모드';
+
+  @override
+  String get fullscreenModeDescription => '몰입감 있는 보기를 위해 모든 UI 요소 숨기기';
+
+  @override
+  String get tapToToggleFullscreen => '탭하여 전체화면 전환';
+
+  @override
+  String get exitFullscreenHint => '전체화면 모드를 종료하려면 아무 곳이나 탭하세요';
+
+  @override
+  String get simulationCanvasLabel => '중력 물리 시뮬레이션';
+
+  @override
+  String get simulationCanvasHint =>
+      '키보드 단축키로 시뮬레이션을 제어하세요. 스페이스로 일시정지, R로 재시작, C로 카메라 중앙 맞춤';
+
+  @override
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  ) {
+    return '$bodyCount개의 천체가 있는 중력 시뮬레이션. 상태: $status. 속도: $speed. 단계: $steps';
+  }
+
+  @override
+  String get noBodiesInSimulation => '현재 시뮬레이션에 천체가 없습니다';
+
+  @override
+  String bodiesInSimulation(String descriptions) {
+    return '시뮬레이션의 천체: $descriptions';
+  }
+
+  @override
+  String cameraFreeDescription(String distance, String rotation) {
+    return '거리 $distance에서 자유 모드 카메라. 자동 회전: $rotation';
+  }
+
+  @override
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  ) {
+    return '거리 $distance에서 $bodyName을(를) 따라가는 카메라. 자동 회전: $rotation';
+  }
+
+  @override
+  String get autoRotateActive => '활성';
+
+  @override
+  String get autoRotateInactive => '비활성';
+
+  @override
+  String liveUpdateAnnouncement(String updateType, String value) {
+    return '$updateType이(가) $value(으)로 변경됨';
+  }
+
+  @override
+  String get keyboardShortcutsHint =>
+      '스페이스로 일시정지/재개, R로 재시작, C로 카메라 중앙 맞춤, A로 자동 회전 전환';
+
+  @override
+  String physicsStatsDescription(String time, String earthYears, int steps) {
+    return '물리: $time 시간 단위, $earthYears년, $steps 시뮬레이션 단계 완료';
+  }
+
+  @override
+  String get toggleAutoRotateAction => '자동 회전 전환';
+
+  @override
+  String get zoomInAction => '확대';
+
+  @override
+  String get zoomOutAction => '축소';
+
+  @override
+  String get expandedState => '확장됨';
+
+  @override
+  String get collapsedState => '축소됨';
+
+  @override
+  String get currentScenario => '현재 시나리오';
+
+  @override
+  String get scenariosAvailable => '사용 가능한 시나리오';
+
+  @override
+  String get bottomSheetLabel => '하단 시트';
+
+  @override
+  String get gravitationalSimulationLabel => '중력 물리 시뮬레이션';
+
+  @override
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  ) {
+    return '$bodyCount개의 천체가 있는 중력 시뮬레이션. 상태: $status. 속도: $speed. 완료된 단계: $stepCount. 시뮬레이션과 상호작용하려면 탭하거나 키보드 단축키를 사용하세요.';
+  }
+
+  @override
+  String get accessibilitySimulationStarted => '시뮬레이션 시작됨';
+
+  @override
+  String get accessibilitySimulationStartedContext => '천체들이 이제 움직이고 있습니다';
+
+  @override
+  String get accessibilitySimulationPaused => '시뮬레이션 일시정지됨';
+
+  @override
+  String get accessibilitySimulationPausedContext => '모든 천체가 움직임을 멈췄습니다';
+
+  @override
+  String get accessibilitySimulationResumed => '시뮬레이션 재개됨';
+
+  @override
+  String get accessibilitySimulationResumedContext => '천체들이 다시 움직이기 시작했습니다';
+
+  @override
+  String get accessibilitySimulationStopped => '시뮬레이션 중지됨';
+
+  @override
+  String get accessibilitySimulationStoppedContext => '모든 천체가 재설정되었습니다';
+
+  @override
+  String get accessibilitySimulationReset => '시뮬레이션 재설정됨';
+
+  @override
+  String get accessibilitySimulationResetContext =>
+      '새로운 시나리오가 새로운 천체들과 함께 로드되었습니다';
+
+  @override
+  String accessibilityMergeEvent(String body1, String body2) {
+    return '충돌 감지됨: $body1이(가) $body2와(과) 합쳐졌습니다';
+  }
+
+  @override
+  String get accessibilityMergeEventContext => '결합된 질량이 새로운 천체를 만들었습니다';
+
+  @override
+  String accessibilityScenarioChange(String scenarioName) {
+    return '시나리오가 $scenarioName(으)로 변경되었습니다';
+  }
+
+  @override
+  String get accessibilityScenarioChangeContext => '새로운 천체들과 물리 매개변수가 로드되었습니다';
+
+  @override
+  String accessibilitySpeedChange(String newValue) {
+    return '시뮬레이션 속도가 $newValue(으)로 변경되었습니다';
+  }
+
+  @override
+  String accessibilityGravityChange(String newValue) {
+    return '중력 강도가 $newValue(으)로 변경되었습니다';
+  }
+
+  @override
+  String accessibilityCollisionRadiusChange(String newValue) {
+    return '충돌 민감도가 $newValue(으)로 변경되었습니다';
+  }
+
+  @override
+  String get accessibilityCameraReset => '카메라 뷰가 기본 위치로 재설정되었습니다';
+
+  @override
+  String get accessibilityCameraFocus => '카메라가 가장 가까운 천체에 초점을 맞췄습니다';
+
+  @override
+  String get accessibilityCameraFollow => '카메라가 이제 선택된 천체를 따라갑니다';
+
+  @override
+  String get accessibilityCameraUnfollow => '카메라가 천체 따라가기를 중지했습니다';
+
+  @override
+  String accessibilityTutorialProgress(
+    int currentStep,
+    int totalSteps,
+    String stepName,
+  ) {
+    return '튜토리얼 단계 $currentStep/$totalSteps: $stepName';
+  }
+
+  @override
+  String accessibilityError(String errorMessage) {
+    return '오류: $errorMessage';
+  }
+
+  @override
+  String accessibilitySettingEnabled(String settingName) {
+    return '$settingName이(가) 활성화되었습니다';
+  }
+
+  @override
+  String accessibilitySettingDisabled(String settingName) {
+    return '$settingName이(가) 비활성화되었습니다';
   }
 }

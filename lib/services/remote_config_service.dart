@@ -1,5 +1,7 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
+import 'package:graviton/enums/ab_test_group.dart';
+import 'package:graviton/enums/user_behavior_tracking_mode.dart';
 
 /// Service for managing all Firebase Remote Config features
 class RemoteConfigService {
@@ -16,8 +18,9 @@ class RemoteConfigService {
   double _analyticsSamplingRate = 0.1;
   bool _crashReportingEnabled = true;
   bool _performanceMonitoringEnabled = true;
-  String _userBehaviorTracking = 'standard';
-  String _abTestGroup = 'control';
+  UserBehaviorTrackingMode _userBehaviorTracking =
+      UserBehaviorTrackingMode.essential;
+  ABTestGroup _abTestGroup = ABTestGroup.control;
 
   // Maintenance & Communication
   bool _maintenanceMode = false;
@@ -49,8 +52,8 @@ class RemoteConfigService {
       'analytics_sampling_rate': 0.1,
       'crash_reporting_enabled': true,
       'performance_monitoring_enabled': true,
-      'user_behavior_tracking': 'standard',
-      'ab_test_group': 'control',
+      'user_behavior_tracking': UserBehaviorTrackingMode.essential.configValue,
+      'ab_test_group': ABTestGroup.control.configValue,
 
       // Maintenance & Communication
       'maintenance_mode': false,
@@ -79,8 +82,12 @@ class RemoteConfigService {
     _performanceMonitoringEnabled = _remoteConfig.getBool(
       'performance_monitoring_enabled',
     );
-    _userBehaviorTracking = _remoteConfig.getString('user_behavior_tracking');
-    _abTestGroup = _remoteConfig.getString('ab_test_group');
+    _userBehaviorTracking = UserBehaviorTrackingModeExtension.fromString(
+      _remoteConfig.getString('user_behavior_tracking'),
+    );
+    _abTestGroup = ABTestGroupExtension.fromString(
+      _remoteConfig.getString('ab_test_group'),
+    );
 
     // Maintenance & Communication
     _maintenanceMode = _remoteConfig.getBool('maintenance_mode');
@@ -94,7 +101,7 @@ class RemoteConfigService {
       'analytics_rate=$_analyticsSamplingRate, '
       'maintenance=$_maintenanceMode, '
       'news_banner=$_newsBannerEnabled, '
-      'ab_test=$_abTestGroup',
+      'ab_test=${_abTestGroup.configValue}',
     );
   }
 
@@ -114,8 +121,8 @@ class RemoteConfigService {
   double get analyticsSamplingRate => _analyticsSamplingRate;
   bool get crashReportingEnabled => _crashReportingEnabled;
   bool get performanceMonitoringEnabled => _performanceMonitoringEnabled;
-  String get userBehaviorTracking => _userBehaviorTracking;
-  String get abTestGroup => _abTestGroup;
+  UserBehaviorTrackingMode get userBehaviorTracking => _userBehaviorTracking;
+  ABTestGroup get abTestGroup => _abTestGroup;
 
   // Maintenance & Communication Getters
   bool get maintenanceMode => _maintenanceMode;
@@ -132,10 +139,12 @@ class RemoteConfigService {
   }
 
   /// Check if user behavior tracking is enabled
-  bool get isUserBehaviorTrackingEnabled => _userBehaviorTracking != 'disabled';
+  bool get isUserBehaviorTrackingEnabled =>
+      _userBehaviorTracking.allowsAnalytics;
 
   /// Check if enhanced tracking is enabled
-  bool get isEnhancedTrackingEnabled => _userBehaviorTracking == 'enhanced';
+  bool get isEnhancedTrackingEnabled =>
+      _userBehaviorTracking == UserBehaviorTrackingMode.full;
 
   /// Check if there's an active notification to show
   bool get hasActiveNotification =>

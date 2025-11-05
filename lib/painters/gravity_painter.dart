@@ -1,4 +1,4 @@
-// Copyright 2025 Chipper Technologies, LLC. All rights reserved.
+// Copyright 2025 Chipper Technologies LLC. All rights reserved.
 //
 // Dynamic Gravity Well Visualization System
 // ========================================
@@ -51,10 +51,11 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/simulation.dart' as physics;
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/utils/gravity_field_utils.dart';
 import 'package:graviton/utils/painter_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -130,15 +131,24 @@ class GravityPainter {
     vm.Matrix4 vp,
     physics.Simulation sim,
     double cameraDistance,
-    vm.Matrix4 view,
-  ) {
+    vm.Matrix4 view, {
+    bool globalGravityFields = false,
+    GravityFieldColorScheme gravityFieldColorScheme =
+        GravityFieldColorScheme.classic,
+    bool showEquipotentialSurfaces = false,
+    bool showGravityFieldIndicators = false,
+  }) {
     final currentTime = DateTime.now().millisecondsSinceEpoch.toDouble();
 
     for (int i = 0; i < sim.bodies.length; i++) {
       final body = sim.bodies[i];
 
-      // Only draw gravity well if enabled for this specific body
-      if (!body.showGravityWell) continue;
+      // Check if gravity well should be drawn:
+      // With the new approach, body.showGravityWell represents the final decision
+      // When global gravity fields is enabled, all bodies are set to showGravityWell = true by default
+      // Users can then toggle individual bodies to false to override
+      final shouldDrawGravityWell = body.showGravityWell;
+      if (!shouldDrawGravityWell) continue;
 
       // Calculate the same projection and radius as used for body rendering
       final bodyScreenPosition = PainterUtils.project(vp, body.position, size);
@@ -167,12 +177,15 @@ class GravityPainter {
         orbitalPlane,
         bodyScreenPosition,
         bodyScreenRadius,
+        gravityFieldColorScheme: gravityFieldColorScheme,
+        showEquipotentialSurfaces: showEquipotentialSurfaces,
+        showGravityFieldIndicators: showGravityFieldIndicators,
       );
 
       // Draw curved grid for massive objects to show space-time curvature
-      if (body.mass > SimulationConstants.spacetimeCurvatureMassThreshold) {
-        _draw3DSpaceTimeGrid(canvas, size, vp, body, sim);
-      }
+      // if (body.mass > SimulationConstants.spacetimeCurvatureMassThreshold) {
+      //   _draw3DSpaceTimeGrid(canvas, size, vp, body, sim);
+      // }
     }
   }
 
@@ -482,8 +495,12 @@ class GravityPainter {
     ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2})
     orbitalPlane,
     Offset bodyScreenPosition,
-    double bodyScreenRadius,
-  ) {
+    double bodyScreenRadius, {
+    GravityFieldColorScheme gravityFieldColorScheme =
+        GravityFieldColorScheme.classic,
+    bool showEquipotentialSurfaces = false,
+    bool showGravityFieldIndicators = false,
+  }) {
     // Calculate well properties based on physics: gravitational influence radius
     // Using Hill sphere approximation but scaled down to represent the inner gravitational zone
     // where objects would spiral inward rather than maintain stable orbits
@@ -561,12 +578,19 @@ class GravityPainter {
           ) // Black holes always get high segment count
         : detailLevel.segments;
 
-    // Use the body's actual color for the gravity well with enhanced vibrancy
-    // Black holes get special visual treatment for dramatic effect
+    // Use color scheme for gravity field visualization or body's actual color as fallback
+    // Enhanced to support different gravity field color schemes
     final baseColor = isBlackHole
         ? AppColors
               .accretionMediumPurple // Bright purple for black holes - much more visible!
-        : body.color;
+        : gravityFieldColorScheme.getEquipotentialColor(
+            0.5,
+          ); // Use middle intensity from scheme
+
+    // Calculate maximum field strength for normalization if using field indicators
+    final maxFieldStrength = showGravityFieldIndicators
+        ? GravityFieldUtils.calculateMaxFieldStrength(sim.bodies)
+        : 0.0;
 
     // Calculate orientation change rate for dynamic coloring (Enhancement 4)
     final changeRate = _calculateOrientationChangeRate(body.name);
@@ -585,7 +609,30 @@ class GravityPainter {
           ? 0.0
           : _calculateDepthForRadius(body, ringRadius, maxRadius, maxDepth);
 
-      // Calculate field strength for opacity with higher baseline
+      // Calculate field strength for color mapping and opacity with higher baseline
+      final ringFieldStrength = GravityFieldUtils.calculateFieldStrength(
+        body,
+        body.position + vm.Vector3(ringRadius, 0, 0),
+      );
+
+      // Use field strength for color mapping in the selected scheme
+      final strengthRatio = showGravityFieldIndicators && maxFieldStrength > 0
+          ? GravityFieldUtils.normalizeFieldStrength(
+              ringFieldStrength,
+              maxFieldStrength,
+            )
+          : normalizedRing; // Fallback to radius-based for visual consistency
+
+      // Get color from scheme based on field strength or position
+      final schemeColor = gravityFieldColorScheme.getEquipotentialColor(
+        strengthRatio,
+      );
+
+      // Use scheme color for normal bodies, preserve special black hole color
+      final effectiveBaseColor = isBlackHole
+          ? AppColors.accretionMediumPurple
+          : schemeColor;
+
       final fieldStrength = body.mass / (ringRadius * ringRadius + 1.0);
       final normalizedStrength = (fieldStrength / (body.mass + 1.0)).clamp(
         0.0,
@@ -625,10 +672,11 @@ class GravityPainter {
       );
 
       // Enhancement 4: Dynamic color coding based on orientation change rate
-      // Blend base color with a highlighting color when wells are changing orientation
+      // Blend effective base color with a highlighting color when wells are changing orientation
       final highlightColor = AppColors.uiRed; // Bright red for changes
       final dynamicColor =
-          Color.lerp(baseColor, highlightColor, changeRate * 0.7) ?? baseColor;
+          Color.lerp(effectiveBaseColor, highlightColor, changeRate * 0.7) ??
+          effectiveBaseColor;
 
       final ringColor = dynamicColor.withValues(alpha: alpha);
       final ringPaint = Paint()
@@ -745,6 +793,35 @@ class GravityPainter {
       bodyScreenPosition,
       bodyScreenRadius,
     );
+
+    // Draw equipotential surfaces if enabled
+    if (showEquipotentialSurfaces) {
+      _drawEquipotentialSurfaces(
+        canvas,
+        size,
+        vp,
+        body,
+        sim,
+        orbitalPlane,
+        maxRadius,
+        gravityFieldColorScheme,
+      );
+    }
+
+    // Draw gravity field strength indicators if enabled
+    if (showGravityFieldIndicators) {
+      _drawGravityFieldIndicators(
+        canvas,
+        size,
+        vp,
+        body,
+        sim,
+        orbitalPlane,
+        maxRadius,
+        maxFieldStrength,
+        gravityFieldColorScheme,
+      );
+    }
   }
 
   /// Draw a small central circle at the bottom of the gravity well
@@ -978,147 +1055,141 @@ class GravityPainter {
   }
 
   /// Draw 3D curved grid lines to visualize space-time curvature
-  static void _draw3DSpaceTimeGrid(
-    Canvas canvas,
-    Size size,
-    vm.Matrix4 vp,
-    Body body,
-    physics.Simulation sim,
-  ) {
-    // Calculate grid properties based on gravitational influence - more subtle than main well
-    final gravitationalRadius =
-        body.radius +
-        math.pow(body.mass / 3.0, 1.0 / 3.0) * 6.0; // Smaller than main well
-    final maxRadius = gravitationalRadius.clamp(
-      body.radius * 1.5,
-      body.radius * 8.0,
-    ); // Smaller bounds
-    const int gridLines = 4; // Fewer lines to reduce clutter
-    const int gridSegments = 12; // Fewer segments for better performance
+  // static void _draw3DSpaceTimeGrid(
+  //   Canvas canvas,
+  //   Size size,
+  //   vm.Matrix4 vp,
+  //   Body body,
+  //   physics.Simulation sim,
+  // ) {
+  //   // Calculate grid properties based on gravitational influence - more subtle than main well
+  //   final gravitationalRadius =
+  //       body.radius +
+  //       math.pow(body.mass / 3.0, 1.0 / 3.0) * 6.0; // Smaller than main well
+  //   final maxRadius = gravitationalRadius.clamp(
+  //     body.radius * 1.5,
+  //     body.radius * 8.0,
+  //   ); // Smaller bounds
+  //   const int gridLines = 4; // Fewer lines to reduce clutter
+  //   const int gridSegments = 12; // Fewer segments for better performance
 
-    final gridSpacing = maxRadius / gridLines;
+  //   final gridSpacing = maxRadius / gridLines;
 
-    final gridPaint = Paint()
-      ..color = body.color
-          .withValues(alpha: 0.08) // Use body's color with subtle alpha
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.4; // Thinner lines
+  //   final gridPaint = Paint()
+  //     ..color = body.color
+  //         .withValues(alpha: 0.08) // Use body's color with subtle alpha
+  //     ..style = PaintingStyle.stroke
+  //     ..strokeWidth = 0.4; // Thinner lines
 
-    // Draw fewer curved grid lines to support the funnel visualization
-    for (int lineIndex = -gridLines; lineIndex <= gridLines; lineIndex += 2) {
-      if (lineIndex == 0) continue; // Skip center lines
+  //   // Draw fewer curved grid lines to support the funnel visualization
+  //   for (int lineIndex = -gridLines; lineIndex <= gridLines; lineIndex += 2) {
+  //     if (lineIndex == 0) continue; // Skip center lines
 
-      final lineOffset = lineIndex * gridSpacing;
+  //     final lineOffset = lineIndex * gridSpacing;
 
-      // Draw lines parallel to X-axis (varying Z, constant X)
-      _drawCurvedGridLine(
-        canvas,
-        size,
-        vp,
-        body,
-        gridPaint,
-        lineOffset,
-        0.0,
-        maxRadius,
-        gridSegments,
-        sim,
-        isXDirection: false, // This line varies in Z direction
-      );
+  //     // Draw lines parallel to X-axis (varying Z, constant X)
+  //     _drawCurvedGridLine(
+  //       canvas,
+  //       size,
+  //       vp,
+  //       body,
+  //       gridPaint,
+  //       lineOffset,
+  //       0.0,
+  //       maxRadius,
+  //       gridSegments,
+  //       sim,
+  //       isXDirection: false, // This line varies in Z direction
+  //     );
 
-      // Draw lines parallel to Z-axis (varying X, constant Z)
-      _drawCurvedGridLine(
-        canvas,
-        size,
-        vp,
-        body,
-        gridPaint,
-        0.0,
-        lineOffset,
-        maxRadius,
-        gridSegments,
-        sim,
-        isXDirection: true, // This line varies in X direction
-      );
-    }
-  }
+  //     // Draw lines parallel to Z-axis (varying X, constant Z)
+  //     _drawCurvedGridLine(
+  //       canvas,
+  //       size,
+  //       vp,
+  //       body,
+  //       gridPaint,
+  //       0.0,
+  //       lineOffset,
+  //       maxRadius,
+  //       gridSegments,
+  //       sim,
+  //       isXDirection: true, // This line varies in X direction
+  //     );
+  //   }
+  // }
 
   /// Draw a single curved grid line that bends toward the massive object
-  static void _drawCurvedGridLine(
-    Canvas canvas,
-    Size size,
-    vm.Matrix4 vp,
-    Body body,
-    Paint paint,
-    double fixedX,
-    double fixedZ,
-    double maxRadius,
-    int segments,
-    physics.Simulation sim, {
-    required bool isXDirection,
-  }) {
-    final gridPoints = <Offset>[];
+  // static void _drawCurvedGridLine(
+  //   Canvas canvas,
+  //   Size size,
+  //   vm.Matrix4 vp,
+  //   Body body,
+  //   Paint paint,
+  //   double fixedX,
+  //   double fixedZ,
+  //   double maxRadius,
+  //   int segments,
+  //   physics.Simulation sim, {
+  //   required bool isXDirection,
+  // }) {
+  //   final gridPoints = <Offset>[];
 
-    for (int segment = 0; segment <= segments; segment++) {
-      final t = (segment / segments) * 2.0 - 1.0; // Range from -1 to 1
-      final coordinate = t * maxRadius;
+  //   for (int segment = 0; segment <= segments; segment++) {
+  //     final t = (segment / segments) * 2.0 - 1.0; // Range from -1 to 1
+  //     final coordinate = t * maxRadius;
 
-      double localX, localZ;
-      if (isXDirection) {
-        localX = coordinate;
-        localZ = fixedZ;
-      } else {
-        localX = fixedX;
-        localZ = coordinate;
-      }
+  //     double localX, localZ;
+  //     if (isXDirection) {
+  //       localX = coordinate;
+  //       localZ = fixedZ;
+  //     } else {
+  //       localX = fixedX;
+  //       localZ = coordinate;
+  //     }
 
-      // Calculate distance from center for curvature
-      final distanceFromCenter = math.sqrt(localX * localX + localZ * localZ);
+  //     // Calculate distance from center for curvature
+  //     final distanceFromCenter = math.sqrt(localX * localX + localZ * localZ);
 
-      // Calculate gravitational curvature effect - match the funnel depth
-      // Use similar curve as the funnel rings for consistency
-      final curvatureDepth = body.mass / (distanceFromCenter + 5.0) * 2.5;
+  //     // Calculate gravitational curvature effect - match the funnel depth
+  //     // Use similar curve as the funnel rings for consistency
+  //     final curvatureDepth = body.mass / (distanceFromCenter + 5.0) * 2.5;
 
-      // Calculate final 3D position - coordinate system depends on scenario orientation
-      late double finalX, finalY, finalZ;
+  //     // Calculate final 3D position - coordinate system depends on scenario orientation
+  //     late double finalX, finalY, finalZ;
 
-      if (sim.currentScenario == ScenarioType.asteroidBelt) {
-        // Asteroid belt uses XY plane (appears vertical)
-        finalX = localX;
-        finalY = isXDirection
-            ? localZ
-            : coordinate; // Adjust based on direction
-        finalZ = -curvatureDepth; // Depth along Z axis
-      } else {
-        // Other scenarios use XZ plane (appears horizontal)
-        finalX = localX;
-        finalZ = localZ;
-        finalY = -curvatureDepth; // Depth along Y axis
-      }
+  //     if (sim.currentScenario == ScenarioType.asteroidBelt) {
+  //       // Asteroid belt uses XY plane (appears vertical)
+  //       finalX = localX;
+  //       finalY = isXDirection ? localZ : coordinate; // Adjust based on direction
+  //       finalZ = -curvatureDepth; // Depth along Z axis
+  //     } else {
+  //       // Other scenarios use XZ plane (appears horizontal)
+  //       finalX = localX;
+  //       finalZ = localZ;
+  //       finalY = -curvatureDepth; // Depth along Y axis
+  //     }
 
-      // Transform to world coordinates
-      final worldPos = vm.Vector3(
-        body.position.x + finalX,
-        body.position.y + finalY,
-        body.position.z + finalZ,
-      );
+  //     // Transform to world coordinates
+  //     final worldPos = vm.Vector3(body.position.x + finalX, body.position.y + finalY, body.position.z + finalZ);
 
-      // Project to screen coordinates
-      final screenPos = PainterUtils.project(vp, worldPos, size);
-      if (screenPos != null) {
-        gridPoints.add(screenPos);
-      }
-    }
+  //     // Project to screen coordinates
+  //     final screenPos = PainterUtils.project(vp, worldPos, size);
+  //     if (screenPos != null) {
+  //       gridPoints.add(screenPos);
+  //     }
+  //   }
 
-    // Draw the curved line if we have enough points
-    if (gridPoints.length > 1) {
-      final path = Path();
-      path.moveTo(gridPoints.first.dx, gridPoints.first.dy);
-      for (int i = 1; i < gridPoints.length; i++) {
-        path.lineTo(gridPoints[i].dx, gridPoints[i].dy);
-      }
-      canvas.drawPath(path, paint);
-    }
-  }
+  //   // Draw the curved line if we have enough points
+  //   if (gridPoints.length > 1) {
+  //     final path = Path();
+  //     path.moveTo(gridPoints.first.dx, gridPoints.first.dy);
+  //     for (int i = 1; i < gridPoints.length; i++) {
+  //       path.lineTo(gridPoints[i].dx, gridPoints[i].dy);
+  //     }
+  //     canvas.drawPath(path, paint);
+  //   }
+  // }
 
   /// Enhancement 3: Draw visual trails showing how gravity well orientations have changed
   ///
@@ -1218,5 +1289,174 @@ class GravityPainter {
   /// Testing method to clear orientation history (for test cleanup)
   static void clearOrientationHistoryForTesting() {
     _wellOrientationHistory.clear();
+  }
+
+  // ============================================================================
+  // ENHANCED GRAVITY FIELD VISUALIZATION
+  // ============================================================================
+
+  /// Draw equipotential surfaces around a gravitational body
+  ///
+  /// Renders concentric surfaces of equal gravitational potential using the
+  /// selected color scheme. These surfaces help visualize the 3D structure
+  /// of the gravitational field.
+  static void _drawEquipotentialSurfaces(
+    Canvas canvas,
+    Size size,
+    vm.Matrix4 vp,
+    Body body,
+    physics.Simulation sim,
+    ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2})
+    orbitalPlane,
+    double maxRadius,
+    GravityFieldColorScheme colorScheme,
+  ) {
+    const surfaceCount = 6; // Number of equipotential surfaces
+    const segments = 24; // Segments per surface for smoothness
+
+    for (int surface = 1; surface <= surfaceCount; surface++) {
+      final ratio = surface / surfaceCount;
+      final surfaceRadius = maxRadius * ratio;
+
+      // Calculate gravitational potential at this radius
+      final potential = GravityFieldUtils.calculateGravitationalPotential(
+        body,
+        body.position + vm.Vector3(surfaceRadius, 0, 0),
+      );
+
+      // Get color for this potential level
+      final surfaceColor = colorScheme.getEquipotentialColor(ratio);
+      final alpha = (0.3 * (1.0 - ratio * 0.5)).clamp(0.1, 0.4); // Fade outward
+
+      final paint = GravityFieldUtils.createGravityFieldPaint(
+        surfaceColor,
+        opacity: alpha,
+        strokeWidth: 1.5,
+        useStroke: true,
+      );
+
+      // Generate points for this equipotential surface
+      final surfacePoints = GravityFieldUtils.calculateEquipotentialSurface(
+        body,
+        potential,
+        segments,
+        orbitalPlane.normal,
+        orbitalPlane.tangent1,
+        orbitalPlane.tangent2,
+      );
+
+      // Project to screen coordinates and draw
+      final screenPoints = <Offset>[];
+      for (final point in surfacePoints) {
+        final screenPos = PainterUtils.project(vp, point, size);
+        if (screenPos != null) {
+          screenPoints.add(screenPos);
+        }
+      }
+
+      if (screenPoints.length >= 3) {
+        // Draw the surface as a closed path
+        final path = Path();
+        path.moveTo(screenPoints.first.dx, screenPoints.first.dy);
+        for (int i = 1; i < screenPoints.length; i++) {
+          path.lineTo(screenPoints[i].dx, screenPoints[i].dy);
+        }
+        path.close();
+
+        canvas.drawPath(path, paint);
+      }
+    }
+  }
+
+  /// Draw gravity field strength indicators around a gravitational body
+  ///
+  /// Renders a heat map style visualization where colored regions show the
+  /// strength of the gravitational field. Warmer colors indicate stronger fields
+  /// and cooler colors indicate weaker fields, creating a smooth gradient effect.
+  static void _drawGravityFieldIndicators(
+    Canvas canvas,
+    Size size,
+    vm.Matrix4 vp,
+    Body body,
+    physics.Simulation sim,
+    ({vm.Vector3 normal, vm.Vector3 tangent1, vm.Vector3 tangent2})
+    orbitalPlane,
+    double maxRadius,
+    double maxFieldStrength,
+    GravityFieldColorScheme colorScheme,
+  ) {
+    const radiusSteps = 15; // Number of concentric rings for smooth gradient
+
+    // Create a series of concentric colored circles for heat map effect
+    for (int ring = radiusSteps; ring >= 1; ring--) {
+      final radius = (maxRadius * ring) / radiusSteps;
+
+      // Calculate field strength at this radius
+      final testPos = body.position + vm.Vector3(radius, 0, 0);
+      final fieldStrength = GravityFieldUtils.calculateFieldStrength(
+        body,
+        testPos,
+      );
+
+      // Normalize field strength for color mapping
+      final strengthRatio = GravityFieldUtils.normalizeFieldStrength(
+        fieldStrength,
+        maxFieldStrength,
+      );
+
+      // Get color from scheme with enhanced alpha for heat map effect
+      final baseColor = colorScheme.getEquipotentialColor(strengthRatio);
+      final alpha = (0.15 * strengthRatio + 0.05).clamp(
+        0.05,
+        0.3,
+      ); // Subtle but visible
+      final heatColor = baseColor.withValues(alpha: alpha);
+
+      // Create paint for this heat map ring
+      final paint = Paint()
+        ..color = heatColor
+        ..style = PaintingStyle.fill;
+
+      // Generate points for this heat map ring using orbital plane
+      final ringPoints = <Offset>[];
+      const segments = 32; // High resolution for smooth circles
+
+      for (int segment = 0; segment <= segments; segment++) {
+        final angle = (segment / segments) * 2 * math.pi;
+
+        // Calculate position in orbital plane
+        final localX = radius * math.cos(angle);
+        final localZ = radius * math.sin(angle);
+
+        final worldPos =
+            body.position +
+            vm.Vector3(
+              localX * orbitalPlane.tangent1.x +
+                  localZ * orbitalPlane.tangent2.x,
+              localX * orbitalPlane.tangent1.y +
+                  localZ * orbitalPlane.tangent2.y,
+              localX * orbitalPlane.tangent1.z +
+                  localZ * orbitalPlane.tangent2.z,
+            );
+
+        // Project to screen coordinates
+        final screenPos = PainterUtils.project(vp, worldPos, size);
+        if (screenPos != null) {
+          ringPoints.add(screenPos);
+        }
+      }
+
+      // Draw the heat map ring as a filled circle
+      if (ringPoints.length >= 3) {
+        final path = Path();
+        path.moveTo(ringPoints.first.dx, ringPoints.first.dy);
+        for (int i = 1; i < ringPoints.length; i++) {
+          path.lineTo(ringPoints[i].dx, ringPoints[i].dy);
+        }
+        path.close();
+
+        canvas.drawPath(path, paint);
+      }
+    }
   }
 }

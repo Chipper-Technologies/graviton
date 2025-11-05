@@ -4,6 +4,7 @@
   "playButton": "Wiedergabe",
   "pauseButton": "Pause",
   "resetButton": "Zurücksetzen",
+  "resetSettingsDescription": "Alle Einstellungen auf Standardwerte zurücksetzen",
   "speedLabel": "Geschwindigkeit",
   "trailsLabel": "Spuren",
   "statsLabel": "Statistiken",
@@ -11,6 +12,9 @@
   "followLabel": "Verfolgen",
   "centerLabel": "Zentrieren",
   "rotateLabel": "Rotieren",
+  "bottomNavCameraLabel": "Kamera",
+  "bottomNavVisualsLabel": "Grafik",
+  "bottomNavPhysicsLabel": "Physik",
   "warmTrails": "🔥 Warm",
   "coolTrails": "❄️ Kalt",
   "toggleStatsTooltip": "Statistiken umschalten",
@@ -24,8 +28,8 @@
   "followObjectTooltip": "Ausgewähltes Objekt Verfolgen",
   "stopFollowingTooltip": "Objektverfolgung Stoppen",
   "selectObjectToFollowTooltip": "Objekt zum Verfolgen Auswählen",
-  "settingsTitle": "Einstellungen",
-  "settingsTooltip": "Einstellungen",
+  "settingsTitle": "Anwendungseinstellungen",
+  "settingsTooltip": "Anwendungseinstellungen",
   "selectScenarioTooltip": "Szenario Auswählen",
   "moreOptionsTooltip": "Weitere Optionen",
   "physicsSettingsTitle": "Physik-Einstellungen",
@@ -33,6 +37,7 @@
   "scenariosMenuDescription": "Verschiedene Szenarien erkunden",
   "settingsMenuDescription": "Visuelle & Verhaltensoptionen",
   "helpMenuDescription": "Tutorial & Ziele",
+  "aboutMenuDescription": "App-Informationen & Credits",
   "showTrails": "Spuren anzeigen",
   "showTrailsDescription": "Bewegungsspuren hinter Objekten anzeigen",
   "showOrbitalPaths": "Orbitalbahnen anzeigen",
@@ -53,15 +58,28 @@
   "statusLabel": "Status",
   "statusRunning": "Läuft",
   "statusPaused": "Pausiert",
+  "statusStopped": "Gestoppt",
+  "statusError": "Fehler",
   "cameraLabel": "Kamera",
   "distanceLabel": "Entfernung",
   "autoRotateLabel": "Auto-Rotation",
   "autoRotateOn": "Ein",
   "autoRotateOff": "Aus",
+  "yawLabel": "Gieren",
+  "pitchLabel": "Neigen",
+  "rollLabel": "Rollen", 
+  "zoomLabel": "Zoom",
   "stepsCount": "{count}",
   "timeFormatted": "{time}s",
   "earthYearsFormatted": "{years} Jahre",
   "speedFormatted": "{speed}x",
+  "speedQuarter": "Viertel Geschwindigkeit",
+  "speedHalf": "Halbe Geschwindigkeit",
+  "speedNormal": "Normal",
+  "speedDouble": "Doppelt",
+  "speedFast": "Schnell",
+  "speedVeryFast": "Sehr Schnell",
+  "speedMaximum": "Maximum",
   "bodiesCount": "{count}",
   "distanceFormatted": "{distance}",
   "scenarioSelectionTitle": "Szenario auswählen",
@@ -81,6 +99,8 @@
   "scenarioPlanetaryRingsDescription": "Ringsystemdynamik um einen massiven Planeten wie Saturn",
   "scenarioSolarSystem": "Sonnensystem",
   "scenarioSolarSystemDescription": "Vereinfachte Version unseres Sonnensystems mit inneren und äußeren Planeten",
+  "scenarioSpecial": "Spezielles Szenario",
+  "scenarioSpecialDescription": "Spezielles Szenario für Screenshot-Modus",
   "habitabilityLabel": "Bewohnbarkeit",
   "habitableZonesLabel": "Bewohnbare Zonen",
   "habitabilityIndicatorsLabel": "Planetenstatus",
@@ -141,12 +161,30 @@
   "authorLabel": "Autor",
   "websiteLabel": "Webseite",
   "aboutButtonTooltip": "Über",
+  "backButtonTooltip": "Zurück",
   "appNameGraviton": "Graviton",
   "versionLabel": "Version",
   "loadingVersion": "Version wird geladen...",
-  "companyName": "Chipper Technologies, LLC",
+  "companyName": "Chipper Technologies LLC",
   "gravityWellsLabel": "Gravitationsfelder",
   "gravityWellsDescription": "Gravitationsfeldstärke um Objekte anzeigen",
+  "globalGravityFieldsLabel": "Globale Gravitationsfelder",
+  "globalGravityFieldsDescription": "Gravitationsfeldvisualisierung für alle massereichen Objekte aktivieren",
+  "gravityFieldColorSchemeLabel": "Gravitationsfeld-Farben",
+  "gravityFieldColorSchemeDescription": "Farbschema für die Gravitationsfeldvisualisierung wählen",
+  "gravityColorSchemeClassic": "Klassisch",
+  "gravityColorSchemeSpectral": "Spektral",
+  "gravityColorSchemeMonochrome": "Monochrom",
+  "gravityColorSchemeNeon": "Neon",
+  "gravityColorSchemeEmerald": "Smaragd",
+  "gravityFieldStrengthLabel": "Feldstärke",
+  "gravityFieldStrengthUnit": "m/s²",
+  "gravityFieldStrengthFormatted": "{strength} {unit}",
+  "equipotentialSurfacesLabel": "Äquipotentialflächen",
+  "equipotentialSurfacesDescription": "Flächen gleicher gravitativer Potentialenergie anzeigen",
+  "gravityFieldIndicatorsLabel": "Feldstärke-Indikatoren",
+  "gravityFieldIndicatorsDescription": "Visuelle Indikatoren der Gravitationsfeldstärke anzeigen",
+  "toggleGravityFieldsTooltip": "Gravitationsfelder umschalten",
   "languageLabel": "Sprache",
   "languageDescription": "App-Sprache ändern",
   "languageSystem": "Systemstandard",
@@ -217,6 +255,7 @@
   "screenshotModeSubtitle": "Vorgegebene Szenen für Marketing-Screenshots aktivieren",
   "hideUIInScreenshotMode": "Navigation Ausblenden",
   "hideUIInScreenshotModeSubtitle": "App-Leiste, untere Navigation und Copyright ausblenden, wenn Screenshot-Modus aktiv ist",
+  "screenshotCountdown": "Screenshot in {seconds}s",
   "scenePreset": "Szenen-Voreinstellung",
   "previousPreset": "Vorherige Voreinstellung",
   "nextPreset": "Nächste Voreinstellung",
@@ -323,8 +362,13 @@
   "trailLength": "Spurenlänge",
   "trailFadeRate": "Spuren-Ausblendrate",
   "hapticsSection": "Haptik",
+  "uiHapticFeedback": "UI-Haptisches Feedback",
+  "uiHapticFeedbackDescription": "Haptisches Feedback für UI-Interaktionen wie Tasten, Schalter und Navigation aktivieren",
+  "collisionHapticFeedback": "Kollisions-Haptisches Feedback",
+  "collisionHapticFeedbackDescription": "Haptisches Feedback aktivieren, wenn Himmelskörper während der Simulation kollidieren",
   "vibrationEnabled": "Vibration aktiviert",
   "hapticFeedbackCollisions": "Haptisches Feedback bei Kollisionen",
+  "hapticFeedbackDescription": "Haptisches Feedback für UI-Interaktionen und Kollisionen aktivieren",
   "vibrationThrottle": "Vibrationsdrosselung",
   "changelogTitle": "Was ist neu",
   "closeDialog": "Schließen",
@@ -337,7 +381,288 @@
   "changelogButton": "Changelog anzeigen",
   "resetChangelogButton": "Changelog-Status zurücksetzen",
   "changelogResetMessage": "Changelog-Status wurde zurückgesetzt",
-  "changelogDebugTitle": "Changelog (Debug)",
+  "changelogDebugTitle": "Changelog",
   "changelogNotFoundError": "Kein Changelog gefunden. Fügen Sie zuerst Changelog-Daten zu Firestore hinzu.\nAktuelle Version: {version}",
-  "changelogLoadError": "Fehler beim Laden des Changelogs: {error}"
+  "changelogLoadError": "Fehler beim Laden des Changelogs: {error}",
+  "noChangelogsAvailable": "Keine Changelogs verfügbar",
+  "errorLoadingChangelogs": "Fehler beim Laden der Changelogs: {error}",
+  "stellarColorBlue": "Blau",
+  "stellarColorBlueWhite": "Bläulich-weiß",
+  "stellarColorWhite": "Weiß",
+  "stellarColorYellowWhite": "Gelblich-weiß",
+  "stellarColorYellow": "Gelb",
+  "stellarColorOrange": "Orange",
+  "stellarColorRed": "Rot",
+  "cameraTooltip": "Kameraeinstellungen und KI-Modi",
+  "visualsTooltip": "Visuelle Anzeigeoptionen",
+  "physicsTooltip": "Physikvisualisierung und -einstellungen",
+  "aiCameraModesTitle": "KI-Kamera-Modi",
+  "manualControlTitle": "Manuelle Steuerung",
+  "manualControlDescription": "Vollständige manuelle Kamerasteuerung",
+  "predictiveOrbitalTitle": "Prädiktiv Orbital",
+  "predictiveOrbitalDescription": "KI sagt optimale Orbitalansichten voraus",
+  "dynamicFramingTitle": "Dynamische Bildkomposition",
+  "dynamicFramingDescription": "KI rahmt alle Objekte dynamisch ein",
+  "manualControlsTitle": "Manuelle Steuerung",
+  "selectNearestTitle": "Nächstes Auswählen",
+  "followTitle": "Folgen",
+  "stopFollowTitle": "Folgen Stoppen",
+  "centerViewTitle": "Ansicht Zentrieren",
+  "autoRotateTitle": "Auto-Rotation",
+  "stopRotateTitle": "Rotation Stoppen",
+  "displayOptionsTitle": "Anzeigeoptionen",
+  "showTrailsTitle": "Spuren Anzeigen",
+  "showLabelsTitle": "Beschriftungen Anzeigen",
+  "realisticColorsTitle": "Realistische Farben",
+  "physicsVisualizationTitle": "Physikvisualisierung",
+  "gravityFieldsTitle": "Gravitationsfelder",
+  "gravityFieldsDescription": "Gravitationsfeldvisualisierung anzeigen",
+  "debugStatisticsTitle": "Debug und Statistiken",
+  "showStatisticsTitle": "Statistiken Anzeigen",
+  "showStatisticsDescription": "Leistungs- und Physikstatistiken anzeigen",
+  "currentStatisticsTitle": "Aktuelle Statistiken",
+  "bodiesStatLabel": "Körper",
+  "timeScaleStatLabel": "Zeitskala",
+  "selectedStatLabel": "Ausgewählt",
+  "pathVisualizationTitle": "Bahnvisualisierung",
+  "navigationAidsTitle": "Navigationshilfen",
+  "gravityFieldClassicLabel": "Klassisch",
+  "gravityFieldSpectralLabel": "Spektral",
+  "gravityFieldMonochromeLabel": "Monochrom",
+  "gravityFieldNeonLabel": "Neon",
+  "gravityFieldEmeraldLabel": "Smaragd",
+  "appInformationCredits": "App-Informationen und Credits",
+  "developerToolsTitle": "Entwicklertools",
+  "developerToolsMenuDescription": "Debug-Tools für die Entwicklung",
+  "tutorialDescription": "Interaktive geführte Tour durch die App",
+  "resetTutorialDescription": "Tutorial-Fortschritt zurücksetzen",
+  "changelogDescription": "App-Updates und Änderungen anzeigen",
+  "resetChangelogDescription": "Changelog-Lesestatus zurücksetzen",
+  "tutorialResetSuccess": "Tutorial-Fortschritt wurde zurückgesetzt",
+  "changelogResetSuccess": "Changelog-Status wurde zurückgesetzt",
+  "copyrightLabel": "Urheberrecht",
+  "allRightsReserved": "Alle Rechte vorbehalten",
+  "bodyTypeStar": "Stern",
+  "bodyTypePlanet": "Planet",
+  "bodyTypeMoon": "Mond",
+  "bodyTypeAsteroid": "Asteroid",
+  "appFlavorDevelopment": "Entwicklung",
+  "appFlavorProduction": "Produktion",
+  "notificationTypeError": "Fehler",
+  "notificationTypeWarning": "Warnung",
+  "notificationTypeInfo": "Information",
+  "notificationTypeSuccess": "Erfolg",
+  "notificationTypeDebug": "Debug",
+  "trackingModeFull": "Vollständige Verfolgung",
+  "trackingModeEssential": "Nur Wesentliches",
+  "trackingModeNone": "Keine Verfolgung",
+  "trackingModeLimited": "Begrenzte Verfolgung",
+  "trackingModeFullDescription": "Alle Analysen, Abstürze und Interaktionen",
+  "trackingModeEssentialDescription": "Nur kritische Abstürze und Fehler",
+  "trackingModeNoneDescription": "Keine Datensammlung",
+  "trackingModeLimitedDescription": "Nur Benutzerinteraktionen",
+  "changelogCategoryAdded": "Hinzugefügt",
+  "changelogCategoryImproved": "Verbessert",
+  "changelogCategoryFixed": "Behoben",
+  "cameraManual": "Manuelle Steuerung",
+  "cameraPredictiveOrbital": "Vorhersagende Orbital",
+  "cameraDynamicFraming": "Dynamische Bildkomposition",
+  "cameraManualDescription": "Traditionelle manuelle Kamerasteuerung mit Folgemodus",
+  "cameraPredictiveOrbitalDescription": "KI sagt Orbitalpfade für dramatische Kamerabewegungen voraus",
+  "cameraDynamicFramingDescription": "Passt die Bildkomposition automatisch basierend auf Szeneninhalten an",
+  "fullscreenMode": "Vollbildmodus",
+  "fullscreenModeDescription": "Alle UI-Elemente für eine immersive Betrachtung ausblenden",
+  "tapToToggleFullscreen": "Tippen, um Vollbild ein-/auszuschalten",
+  "exitFullscreenHint": "Tippen Sie irgendwo, um den Vollbildmodus zu verlassen",
+  "gravitationalSimulationLabel": "Gravitationsphysik-Simulation",
+  "@gravitationalSimulationLabel": {
+    "description": "Haupt-Barrierefreiheitslabel für die Physiksimulation"
+  },
+
+  "simulationStateDescription": "Gravitationssimulation mit {bodyCount} Himmelskörpern. Status: {status}. Geschwindigkeit: {speed}. Schritte abgeschlossen: {stepCount}. Tippen Sie, um mit der Simulation zu interagieren oder verwenden Sie Tastenkürzel.",
+  "@simulationStateDescription": {
+    "description": "Umfassende Beschreibung des Simulationszustands für Barrierefreiheit",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "Anzahl der Himmelskörper"
+      },
+      "status": {
+        "type": "String",
+        "description": "Aktueller Simulationsstatus"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "Aktuelle Simulationsgeschwindigkeit"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "Anzahl der abgeschlossenen Simulationsschritte"
+      }
+    }
+  },
+
+  "simulationCanvasLabel": "Gravitationsphysik-Simulation",
+  "@simulationCanvasLabel": {
+    "description": "Hauptlabel für das Physik-Simulations-Canvas"
+  },
+  "simulationCanvasHint": "Verwenden Sie Tastenkürzel zur Simulationssteuerung. Leertaste zum Pausieren, R zum Zurücksetzen, C zum Zentrieren der Kamera",
+  "@simulationCanvasHint": {
+    "description": "Hilfetext für Tastenkürzel der Simulation"
+  },
+  "simulationDescription": "Gravitationssimulation mit {bodyCount} Himmelskörpern. Status: {status}. Geschwindigkeit: {speed}. Schritte: {steps}",
+  "@simulationDescription": {
+    "description": "Detaillierte Simulationsbeschreibung",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int"
+      },
+      "status": {
+        "type": "String"
+      },
+      "speed": {
+        "type": "String"
+      },
+      "steps": {
+        "type": "int"
+      }
+    }
+  },
+  "noBodiesInSimulation": "Keine Himmelskörper derzeit in der Simulation",
+  "@noBodiesInSimulation": {
+    "description": "Nachricht wenn keine Körper in der Simulation sind"
+  },
+  "bodiesInSimulation": "Körper in der Simulation: {descriptions}",
+  "@bodiesInSimulation": {
+    "description": "Liste der Körper in der Simulation",
+    "placeholders": {
+      "descriptions": {
+        "type": "String"
+      }
+    }
+  },
+  "cameraFreeDescription": "Kamera im freien Modus in Entfernung {distance}. Auto-Rotation: {rotation}",
+  "@cameraFreeDescription": {
+    "description": "Beschreibung des freien Kameramodus",
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      },
+      "rotation": {
+        "type": "String"
+      }
+    }
+  },
+  "cameraFollowingDescription": "Kamera folgt {bodyName} in Entfernung {distance}. Auto-Rotation: {rotation}",
+  "@cameraFollowingDescription": {
+    "description": "Beschreibung des Verfolgungskameramodus",
+    "placeholders": {
+      "bodyName": {
+        "type": "String"
+      },
+      "distance": {
+        "type": "String"
+      },
+      "rotation": {
+        "type": "String"
+      }
+    }
+  },
+  "autoRotateActive": "aktiv",
+  "@autoRotateActive": {
+    "description": "Status wenn Auto-Rotation aktiviert ist"
+  },
+  "autoRotateInactive": "inaktiv",
+  "@autoRotateInactive": {
+    "description": "Status wenn Auto-Rotation deaktiviert ist"
+  },
+  "liveUpdateAnnouncement": "{updateType} geändert zu {value}",
+  "@liveUpdateAnnouncement": {
+    "description": "Live-Ankündigung für Änderungen",
+    "placeholders": {
+      "updateType": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "keyboardShortcutsHint": "Verwenden Sie Leertaste zum Pausieren/Fortsetzen, R zum Zurücksetzen, C zum Zentrieren der Kamera, A zum Umschalten der Auto-Rotation",
+  "@keyboardShortcutsHint": {
+    "description": "Hinweis für Tastaturkürzel"
+  },
+  "physicsStatsDescription": "Physik: {time} Zeiteinheiten, {earthYears} Erdenjahre, {steps} Simulationsschritte abgeschlossen",
+  "@physicsStatsDescription": {
+    "description": "Physikstatistiken für Barrierefreiheit",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "earthYears": {
+        "type": "String"
+      },
+      "steps": {
+        "type": "int"
+      }
+    }
+  },
+  "toggleAutoRotateAction": "Auto-Rotation umschalten",
+  "@toggleAutoRotateAction": {
+    "description": "Aktion zum Umschalten der Auto-Rotation"
+  },
+  "zoomInAction": "Hineinzoomen",
+  "@zoomInAction": {
+    "description": "Aktion zum Hineinzoomen"
+  },
+  "zoomOutAction": "Herauszoomen",
+  "@zoomOutAction": {
+    "description": "Aktion zum Herauszoomen"
+  },
+  "expandedState": "erweitert",
+  "@expandedState": {
+    "description": "Zustand wenn ein Element erweitert ist"
+  },
+  "collapsedState": "eingeklappt",
+  "@collapsedState": {
+    "description": "Zustand wenn ein Element eingeklappt ist"
+  },
+  "currentScenario": "Aktuelles Szenario",
+  "@currentScenario": {
+    "description": "Label für das aktuelle Szenario"
+  },
+  "scenariosAvailable": "Szenarien verfügbar",
+  "@scenariosAvailable": {
+    "description": "Text für verfügbare Szenarien"
+  },
+  "bottomSheetLabel": "Unteres Blatt",
+  "@bottomSheetLabel": {
+    "description": "Label für das untere Blatt"
+  },
+  "accessibilitySimulationStarted": "Simulation gestartet",
+  "accessibilitySimulationStartedContext": "Himmelskörper sind nun in Bewegung",
+  "accessibilitySimulationPaused": "Simulation pausiert",
+  "accessibilitySimulationPausedContext": "Alle Himmelskörper haben aufgehört sich zu bewegen",
+  "accessibilitySimulationResumed": "Simulation fortgesetzt",
+  "accessibilitySimulationResumedContext": "Himmelskörper bewegen sich wieder",
+  "accessibilitySimulationStopped": "Simulation gestoppt",
+  "accessibilitySimulationStoppedContext": "Alle Himmelskörper wurden zurückgesetzt",
+  "accessibilitySimulationReset": "Simulation zurückgesetzt",
+  "accessibilitySimulationResetContext": "Neues Szenario mit frischen Himmelskörpern geladen",
+  "accessibilityMergeEvent": "Kollision erkannt: {body1} fusioniert mit {body2}",
+  "accessibilityMergeEventContext": "Die kombinierte Masse erzeugt einen neuen Himmelskörper",
+  "accessibilityScenarioChange": "Szenario geändert zu {scenarioName}",
+  "accessibilityScenarioChangeContext": "Neue Himmelskörper und Physikparameter geladen",
+  "accessibilitySpeedChange": "Simulationsgeschwindigkeit geändert zu {newValue}",
+  "accessibilityGravityChange": "Gravitationsstärke geändert zu {newValue}",
+  "accessibilityCollisionRadiusChange": "Kollisionsempfindlichkeit geändert zu {newValue}",
+  "accessibilityCameraReset": "Kameraansicht auf Standardposition zurückgesetzt",
+  "accessibilityCameraFocus": "Kamera auf nächsten Himmelskörper fokussiert",
+  "accessibilityCameraFollow": "Kamera folgt nun dem ausgewählten Himmelskörper",
+  "accessibilityCameraUnfollow": "Kamera hört auf, dem Himmelskörper zu folgen",
+  "accessibilityTutorialProgress": "Tutorial-Schritt {currentStep} von {totalSteps}: {stepName}",
+  "accessibilityError": "Fehler: {errorMessage}",
+  "accessibilitySettingEnabled": "{settingName} aktiviert",
+  "accessibilitySettingDisabled": "{settingName} deaktiviert",
+  "simulationSpeedHint": "Simulationsgeschwindigkeit von 0,1x bis 16x normaler Geschwindigkeit anpassen. Verwenden Sie Pfeiltasten für kleine Schritte."
 }

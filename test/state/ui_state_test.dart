@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/state/ui_state.dart';
 
 void main() {
@@ -18,6 +19,15 @@ void main() {
       expect(uiState.showTrails, isTrue);
       expect(uiState.useWarmTrails, isTrue);
       expect(uiState.uiOpacity, equals(0.8));
+
+      // Gravity field defaults
+      expect(uiState.globalGravityFields, isFalse);
+      expect(
+        uiState.gravityFieldColorScheme,
+        equals(GravityFieldColorScheme.classic),
+      );
+      expect(uiState.showGravityFieldIndicators, isTrue);
+      expect(uiState.showEquipotentialSurfaces, isFalse); // Default is false
     });
 
     test('ToggleStats should change showStats state', () {
@@ -134,6 +144,121 @@ void main() {
 
       uiState.toggleHideUIInScreenshotMode();
       expect(wasNotified, isTrue);
+    });
+
+    group('Gravity Field Tests', () {
+      test(
+        'toggleGlobalGravityFields should change globalGravityFields state',
+        () {
+          final initialState = uiState.globalGravityFields;
+          expect(initialState, isFalse); // Default should be false
+
+          uiState.toggleGlobalGravityFields();
+          expect(uiState.globalGravityFields, equals(!initialState));
+
+          uiState.toggleGlobalGravityFields();
+          expect(uiState.globalGravityFields, equals(initialState));
+        },
+      );
+
+      test('setGravityFieldColorScheme should update color scheme', () {
+        expect(
+          uiState.gravityFieldColorScheme,
+          equals(GravityFieldColorScheme.classic),
+        );
+
+        uiState.setGravityFieldColorScheme(GravityFieldColorScheme.spectral);
+        expect(
+          uiState.gravityFieldColorScheme,
+          equals(GravityFieldColorScheme.spectral),
+        );
+
+        uiState.setGravityFieldColorScheme(GravityFieldColorScheme.neon);
+        expect(
+          uiState.gravityFieldColorScheme,
+          equals(GravityFieldColorScheme.neon),
+        );
+      });
+
+      test('toggleGravityFieldIndicators should change indicators state', () {
+        final initialState = uiState.showGravityFieldIndicators;
+        expect(initialState, isTrue); // Default should be true
+
+        uiState.toggleGravityFieldIndicators();
+        expect(uiState.showGravityFieldIndicators, equals(!initialState));
+
+        uiState.toggleGravityFieldIndicators();
+        expect(uiState.showGravityFieldIndicators, equals(initialState));
+      });
+
+      test('toggleEquipotentialSurfaces should change surfaces state', () {
+        final initialState = uiState.showEquipotentialSurfaces;
+        expect(initialState, isFalse); // Default should be false
+
+        uiState.toggleEquipotentialSurfaces();
+        expect(uiState.showEquipotentialSurfaces, equals(!initialState));
+
+        uiState.toggleEquipotentialSurfaces();
+        expect(uiState.showEquipotentialSurfaces, equals(initialState));
+      });
+
+      test('gravity field methods should notify listeners', () {
+        int notificationCount = 0;
+        uiState.addListener(() {
+          notificationCount++;
+        });
+
+        uiState.toggleGlobalGravityFields();
+        uiState.setGravityFieldColorScheme(GravityFieldColorScheme.emerald);
+        uiState.toggleGravityFieldIndicators();
+        uiState.toggleEquipotentialSurfaces();
+
+        expect(notificationCount, equals(4));
+      });
+
+      test('gravity field state should persist between method calls', () {
+        uiState.toggleGlobalGravityFields();
+        uiState.setGravityFieldColorScheme(GravityFieldColorScheme.monochrome);
+        uiState.toggleGravityFieldIndicators();
+        uiState.toggleEquipotentialSurfaces();
+
+        expect(uiState.globalGravityFields, isTrue);
+        expect(
+          uiState.gravityFieldColorScheme,
+          equals(GravityFieldColorScheme.monochrome),
+        );
+        expect(uiState.showGravityFieldIndicators, isFalse);
+        expect(
+          uiState.showEquipotentialSurfaces,
+          isTrue,
+        ); // Was toggled from false to true
+      });
+
+      test('should handle all color scheme values', () {
+        for (final scheme in GravityFieldColorScheme.values) {
+          uiState.setGravityFieldColorScheme(scheme);
+          expect(uiState.gravityFieldColorScheme, equals(scheme));
+        }
+      });
+
+      test('should have proper getter/setter consistency', () {
+        // Test each gravity field property
+        uiState.toggleGlobalGravityFields();
+        final globalState = uiState.globalGravityFields;
+        expect(globalState, isA<bool>());
+
+        uiState.setGravityFieldColorScheme(GravityFieldColorScheme.spectral);
+        final colorScheme = uiState.gravityFieldColorScheme;
+        expect(colorScheme, isA<GravityFieldColorScheme>());
+
+        uiState.toggleGravityFieldIndicators();
+        final indicatorsState = uiState.showGravityFieldIndicators;
+        expect(indicatorsState, isA<bool>());
+
+        uiState.toggleEquipotentialSurfaces();
+        final surfacesState = uiState.showEquipotentialSurfaces;
+        expect(surfacesState, isA<bool>());
+      });
     });
   });
 }

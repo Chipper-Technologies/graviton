@@ -32,7 +32,7 @@ void main() {
           simulationState.pause();
         }
 
-        expect(simulationState.isRunning, isTrue);
+        expect(simulationState.isRunning, isFalse);
         expect(simulationState.isPaused, isTrue);
 
         // Simulate dialog closing logic
@@ -52,7 +52,7 @@ void main() {
       // Test scenario 2: Running but already paused (should remain paused after dialog close)
       simulationState.start();
       simulationState.pause(); // Manually pause first
-      expect(simulationState.isRunning, isTrue);
+      expect(simulationState.isRunning, isFalse);
       expect(simulationState.isPaused, isTrue);
 
       final wasRunning2 = simulationState.isRunning;
@@ -63,7 +63,7 @@ void main() {
         simulationState.pause();
       }
 
-      expect(simulationState.isRunning, isTrue);
+      expect(simulationState.isRunning, isFalse);
       expect(simulationState.isPaused, isTrue);
 
       // Simulate dialog closing logic (should not resume since it was already paused)
@@ -71,7 +71,7 @@ void main() {
         simulationState.pause(); // This shouldn't execute
       }
 
-      expect(simulationState.isRunning, isTrue);
+      expect(simulationState.isRunning, isFalse); // Should be false when paused
       expect(simulationState.isPaused, isTrue); // Still paused
     });
 

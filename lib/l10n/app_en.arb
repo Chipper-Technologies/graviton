@@ -20,6 +20,11 @@
     "description": "Button to reset the simulation"
   },
   
+  "resetSettingsDescription": "Reset all settings to default values",
+  "@resetSettingsDescription": {
+    "description": "Description for reset settings action"
+  },
+  
   "speedLabel": "Speed",
   "@speedLabel": {
     "description": "Label for simulation speed control"
@@ -35,11 +40,175 @@
     "description": "Label for statistics display button"
   },
   
-  "selectLabel": "Select",
-  "@selectLabel": {
-    "description": "Label for select nearest object button"
+  "bottomNavCameraLabel": "Camera",
+  "@bottomNavCameraLabel": {
+    "description": "Label for bottom navigation camera button"
   },
   
+  "bottomNavVisualsLabel": "Visuals", 
+  "@bottomNavVisualsLabel": {
+    "description": "Label for bottom navigation visuals button"
+  },
+  
+  "bottomNavPhysicsLabel": "Physics",
+  "@bottomNavPhysicsLabel": {
+    "description": "Label for bottom navigation physics button"
+  },
+  
+  "cameraTooltip": "Camera settings and AI modes",
+  "@cameraTooltip": {
+    "description": "Tooltip for camera tab button"
+  },
+  
+  "visualsTooltip": "Visual display options", 
+  "@visualsTooltip": {
+    "description": "Tooltip for visuals tab button"
+  },
+  
+  "physicsTooltip": "Physics visualization and settings",
+  "@physicsTooltip": {
+    "description": "Tooltip for physics tab button"
+  },
+  
+  "aiCameraModesTitle": "AI Camera Modes",
+  "@aiCameraModesTitle": {
+    "description": "Section title for AI camera modes"
+  },
+  
+  "manualControlTitle": "Manual Control",
+  "@manualControlTitle": {
+    "description": "Title for manual camera control mode"
+  },
+  
+  "manualControlDescription": "Full manual camera control",
+  "@manualControlDescription": {
+    "description": "Description for manual camera control mode"
+  },
+  
+  "predictiveOrbitalTitle": "Predictive Orbital",
+  "@predictiveOrbitalTitle": {
+    "description": "Title for predictive orbital camera mode"
+  },
+  
+  "predictiveOrbitalDescription": "AI predicts optimal orbital views",
+  "@predictiveOrbitalDescription": {
+    "description": "Description for predictive orbital camera mode"
+  },
+  
+  "dynamicFramingTitle": "Dynamic Framing",
+  "@dynamicFramingTitle": {
+    "description": "Title for dynamic framing camera mode"
+  },
+  
+  "dynamicFramingDescription": "AI dynamically frames all objects",
+  "@dynamicFramingDescription": {
+    "description": "Description for dynamic framing camera mode"
+  },
+  
+  "manualControlsTitle": "Manual Controls",
+  "@manualControlsTitle": {
+    "description": "Section title for manual camera controls"
+  },
+  
+  "selectNearestTitle": "Select Nearest",
+  "@selectNearestTitle": {
+    "description": "Button text for selecting nearest celestial body"
+  },
+  
+  "stopFollowTitle": "Stop Follow",
+  "@stopFollowTitle": {
+    "description": "Button text for stopping follow mode"
+  },
+  
+  "followTitle": "Follow",
+  "@followTitle": {
+    "description": "Button text for starting follow mode"
+  },
+  
+  "centerViewTitle": "Center View",
+  "@centerViewTitle": {
+    "description": "Button text for centering the camera view"
+  },
+  
+  "stopRotateTitle": "Stop Rotate",
+  "@stopRotateTitle": {
+    "description": "Button text for stopping auto rotation"
+  },
+  
+  "autoRotateTitle": "Auto Rotate",
+  "@autoRotateTitle": {
+    "description": "Button text for starting auto rotation"
+  },
+  
+  "displayOptionsTitle": "Display Options",
+  "@displayOptionsTitle": {
+    "description": "Section title for visual display options"
+  },
+  
+  "showTrailsTitle": "Show Trails",
+  "@showTrailsTitle": {
+    "description": "Toggle title for showing orbital trails"
+  },
+  
+  "showLabelsTitle": "Show Labels",
+  "@showLabelsTitle": {
+    "description": "Toggle title for showing body labels"
+  },
+  
+  "realisticColorsTitle": "Realistic Colors",
+  "@realisticColorsTitle": {
+    "description": "Toggle title for realistic color scheme"
+  },
+  
+  "physicsVisualizationTitle": "Physics Visualization",
+  "@physicsVisualizationTitle": {
+    "description": "Section title for physics visualization options"
+  },
+  
+  "gravityFieldsTitle": "Gravity Fields",
+  "@gravityFieldsTitle": {
+    "description": "Toggle title for gravity field visualization"
+  },
+  
+  "gravityFieldsDescription": "Show gravitational field visualization",
+  "@gravityFieldsDescription": {
+    "description": "Description for gravity field visualization toggle"
+  },
+  
+  "debugStatisticsTitle": "Debug & Statistics",
+  "@debugStatisticsTitle": {
+    "description": "Section title for debug and statistics options"
+  },
+  
+  "showStatisticsTitle": "Show Statistics",
+  "@showStatisticsTitle": {
+    "description": "Toggle title for showing statistics"
+  },
+  
+  "showStatisticsDescription": "Display performance and physics stats",
+  "@showStatisticsDescription": {
+    "description": "Description for statistics display toggle"
+  },
+  
+  "currentStatisticsTitle": "Current Statistics",
+  "@currentStatisticsTitle": {
+    "description": "Section title for current simulation statistics"
+  },
+  
+  "bodiesStatLabel": "Bodies",
+  "@bodiesStatLabel": {
+    "description": "Statistics label for number of celestial bodies"
+  },
+  
+  "timeScaleStatLabel": "Time Scale",
+  "@timeScaleStatLabel": {
+    "description": "Statistics label for current time scale multiplier"
+  },
+  
+  "selectedStatLabel": "Selected",
+  "@selectedStatLabel": {
+    "description": "Statistics label for currently selected body"
+  },
   "followLabel": "Follow",
   "@followLabel": {
     "description": "Label for follow object button"
@@ -120,12 +289,12 @@
     "description": "Tooltip for the follow object button when no object is selected"
   },
   
-  "settingsTitle": "Settings",
+  "settingsTitle": "Application Settings",
   "@settingsTitle": {
-    "description": "Title for the settings dialog"
+    "description": "Title for the application settings screen"
   },
   
-  "settingsTooltip": "Settings",
+  "settingsTooltip": "Application Settings",
   "@settingsTooltip": {
     "description": "Tooltip for the settings button in the app bar"
   },
@@ -169,6 +338,11 @@
   "@simulationSpeed": {
     "description": "Label for simulation speed slider"
   },
+
+  "simulationSpeedHint": "Adjust simulation speed from 0.1x to 16x normal speed. Use arrow keys to change in small increments.",
+  "@simulationSpeedHint": {
+    "description": "Accessibility hint for simulation speed slider"
+  },
   
   "collisionsSection": "Collisions",
   "@collisionsSection": {
@@ -200,14 +374,39 @@
     "description": "Haptics section header in simulation settings"
   },
   
+  "uiHapticFeedback": "UI Haptic Feedback",
+  "@uiHapticFeedback": {
+    "description": "Label for UI haptic feedback toggle"
+  },
+  
+  "uiHapticFeedbackDescription": "Enable haptic feedback for UI interactions like button taps, toggles, and navigation",
+  "@uiHapticFeedbackDescription": {
+    "description": "Detailed description for UI haptic feedback setting"
+  },
+  
+  "collisionHapticFeedback": "Collision Haptic Feedback",
+  "@collisionHapticFeedback": {
+    "description": "Label for collision haptic feedback toggle"
+  },
+  
+  "collisionHapticFeedbackDescription": "Enable haptic feedback when celestial bodies collide during simulation",
+  "@collisionHapticFeedbackDescription": {
+    "description": "Detailed description for collision haptic feedback setting"
+  },
+  
   "vibrationEnabled": "Vibration Enabled",
   "@vibrationEnabled": {
-    "description": "Label for vibration enabled toggle"
+    "description": "Legacy label for vibration enabled toggle"
   },
   
   "hapticFeedbackCollisions": "Haptic feedback on collisions",
   "@hapticFeedbackCollisions": {
-    "description": "Description for vibration enabled toggle"
+    "description": "Legacy description for vibration enabled toggle"
+  },
+  
+  "hapticFeedbackDescription": "Enable haptic feedback for UI interactions and collisions",
+  "@hapticFeedbackDescription": {
+    "description": "Legacy detailed description for haptic feedback setting"
   },
   
   "vibrationThrottle": "Vibration Throttle",
@@ -228,6 +427,11 @@
   "helpMenuDescription": "Tutorial & objectives",
   "@helpMenuDescription": {
     "description": "Description for the help menu item"
+  },
+
+  "aboutMenuDescription": "App information & credits",
+  "@aboutMenuDescription": {
+    "description": "Description for the about menu item"
   },
   
   "showTrails": "Show Trails",
@@ -330,6 +534,16 @@
     "description": "Status when simulation is paused"
   },
   
+  "statusStopped": "Stopped",
+  "@statusStopped": {
+    "description": "Status when simulation is stopped"
+  },
+  
+  "statusError": "Error",
+  "@statusError": {
+    "description": "Status when simulation has an error"
+  },
+  
   "cameraLabel": "Camera",
   "@cameraLabel": {
     "description": "Header for camera information"
@@ -353,6 +567,26 @@
   "autoRotateOff": "Off",
   "@autoRotateOff": {
     "description": "Auto-rotate is disabled"
+  },
+
+  "yawLabel": "Yaw",
+  "@yawLabel": {
+    "description": "Label for camera yaw rotation"
+  },
+
+  "pitchLabel": "Pitch", 
+  "@pitchLabel": {
+    "description": "Label for camera pitch rotation"
+  },
+
+  "rollLabel": "Roll",
+  "@rollLabel": {
+    "description": "Label for camera roll rotation"
+  },
+
+  "zoomLabel": "Zoom",
+  "@zoomLabel": {
+    "description": "Label for camera zoom level"
   },
   
   "cameraControlsLabel": "Camera Controls",
@@ -454,6 +688,41 @@
         "type": "String"
       }
     }
+  },
+  
+  "speedQuarter": "Quarter Speed",
+  "@speedQuarter": {
+    "description": "Quarter speed preset (0.25x)"
+  },
+  
+  "speedHalf": "Half Speed",
+  "@speedHalf": {
+    "description": "Half speed preset (0.5x)"
+  },
+  
+  "speedNormal": "Normal",
+  "@speedNormal": {
+    "description": "Normal speed preset (1.0x)"
+  },
+  
+  "speedDouble": "Double",
+  "@speedDouble": {
+    "description": "Double speed preset (2.0x)"
+  },
+  
+  "speedFast": "Fast",
+  "@speedFast": {
+    "description": "Fast speed preset (4.0x)"
+  },
+  
+  "speedVeryFast": "Very Fast",
+  "@speedVeryFast": {
+    "description": "Very fast speed preset (8.0x)"
+  },
+  
+  "speedMaximum": "Maximum",
+  "@speedMaximum": {
+    "description": "Maximum speed preset (16.0x)"
   },
   
   "bodiesCount": "{count}",
@@ -559,6 +828,16 @@
   "scenarioSolarSystemDescription": "Simplified version of our solar system with inner and outer planets",
   "@scenarioSolarSystemDescription": {
     "description": "Description of the solar system scenario"
+  },
+
+  "scenarioSpecial": "Special Scenario",
+  "@scenarioSpecial": {
+    "description": "Name for special/internal scenarios not available in main selection"
+  },
+
+  "scenarioSpecialDescription": "Special scenario for screenshot mode",
+  "@scenarioSpecialDescription": {
+    "description": "Description for special/internal scenarios used for screenshots"
   },
   
   "habitabilityLabel": "Habitability",
@@ -686,6 +965,11 @@
     "description": "Tooltip for the about button"
   },
   
+  "backButtonTooltip": "Back",
+  "@backButtonTooltip": {
+    "description": "Tooltip for the back navigation button"
+  },
+  
   "appNameGraviton": "Graviton",
   "@appNameGraviton": {
     "description": "The name of the application"
@@ -701,7 +985,7 @@
     "description": "Text shown while version information is loading"
   },
   
-  "companyName": "Chipper Technologies, LLC",
+  "companyName": "Chipper Technologies LLC",
   "@companyName": {
     "description": "The company name"
   },
@@ -714,6 +998,99 @@
   "gravityWellsDescription": "Show gravitational field strength around objects",
   "@gravityWellsDescription": {
     "description": "Description for gravity wells setting"
+  },
+  
+  "globalGravityFieldsLabel": "Global Gravity Fields",
+  "@globalGravityFieldsLabel": {
+    "description": "Label for global gravity fields toggle"
+  },
+  
+  "globalGravityFieldsDescription": "Enable gravity field visualization for all massive objects",
+  "@globalGravityFieldsDescription": {
+    "description": "Description for global gravity fields setting"
+  },
+  
+  "gravityFieldColorSchemeLabel": "Gravity Field Colors",
+  "@gravityFieldColorSchemeLabel": {
+    "description": "Label for gravity field color scheme selection"
+  },
+  
+  "gravityFieldColorSchemeDescription": "Choose the color scheme for gravitational field visualization",
+  "@gravityFieldColorSchemeDescription": {
+    "description": "Description for gravity field color scheme setting"
+  },
+  
+  "gravityColorSchemeClassic": "Classic",
+  "@gravityColorSchemeClassic": {
+    "description": "Classic blue/yellow gravity field color scheme"
+  },
+  
+  "gravityColorSchemeSpectral": "Spectral",
+  "@gravityColorSchemeSpectral": {
+    "description": "Rainbow spectrum gravity field color scheme"
+  },
+  
+  "gravityColorSchemeMonochrome": "Monochrome",
+  "@gravityColorSchemeMonochrome": {
+    "description": "Grayscale gravity field color scheme"
+  },
+  
+  "gravityColorSchemeNeon": "Neon",
+  "@gravityColorSchemeNeon": {
+    "description": "Bright neon gravity field color scheme"
+  },
+  
+  "gravityColorSchemeEmerald": "Emerald",
+  "@gravityColorSchemeEmerald": {
+    "description": "Green-based gravity field color scheme"
+  },
+  
+  "gravityFieldStrengthLabel": "Field Strength",
+  "@gravityFieldStrengthLabel": {
+    "description": "Label for gravity field strength readout"
+  },
+  
+  "gravityFieldStrengthUnit": "m/s²",
+  "@gravityFieldStrengthUnit": {
+    "description": "Unit for gravity field strength (meters per second squared)"
+  },
+  
+  "gravityFieldStrengthFormatted": "{strength} {unit}",
+  "@gravityFieldStrengthFormatted": {
+    "description": "Formatted gravity field strength with unit",
+    "placeholders": {
+      "strength": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "equipotentialSurfacesLabel": "Equipotential Surfaces",
+  "@equipotentialSurfacesLabel": {
+    "description": "Label for equipotential surfaces toggle"
+  },
+  
+  "equipotentialSurfacesDescription": "Show surfaces of equal gravitational potential energy",
+  "@equipotentialSurfacesDescription": {
+    "description": "Description for equipotential surfaces setting"
+  },
+  
+  "gravityFieldIndicatorsLabel": "Field Strength Indicators",
+  "@gravityFieldIndicatorsLabel": {
+    "description": "Label for gravity field strength indicators toggle"
+  },
+  
+  "gravityFieldIndicatorsDescription": "Show visual indicators of gravitational field strength",
+  "@gravityFieldIndicatorsDescription": {
+    "description": "Description for gravity field strength indicators setting"
+  },
+  
+  "toggleGravityFieldsTooltip": "Toggle Gravity Fields",
+  "@toggleGravityFieldsTooltip": {
+    "description": "Tooltip for the gravity fields toggle button"
   },
   
   "languageLabel": "Language",
@@ -1095,6 +1472,17 @@
   "hideUIInScreenshotModeSubtitle": "Hide app bar, bottom navigation, and copyright when screenshot mode is active",
   "@hideUIInScreenshotModeSubtitle": {
     "description": "Subtitle explaining hide UI in screenshot mode functionality"
+  },
+
+  "screenshotCountdown": "Screenshot in {seconds}s",
+  "@screenshotCountdown": {
+    "description": "Countdown message shown before taking a screenshot",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "description": "Number of seconds remaining in countdown"
+      }
+    }
   },
 
   "scenePreset": "Scene Preset",
@@ -1513,7 +1901,7 @@
   "@changelogResetMessage": {
     "description": "Message shown when changelog state is reset"
   },
-  "changelogDebugTitle": "Changelog (Debug)",
+  "changelogDebugTitle": "Changelog",
   "@changelogDebugTitle": {
     "description": "Debug section title for changelog in settings"
   },
@@ -1534,6 +1922,696 @@
       "error": {
         "type": "String",
         "description": "Error details"
+      }
+    }
+  },
+  "noChangelogsAvailable": "No changelogs available",
+  "@noChangelogsAvailable": {
+    "description": "Message when no changelogs are available"
+  },
+  "errorLoadingChangelogs": "Error loading changelogs: {error}",
+  "@errorLoadingChangelogs": {
+    "description": "Error message when failing to load changelogs",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Error details"
+      }
+    }
+  },
+
+  "stellarColorBlue": "Blue",
+  "@stellarColorBlue": {
+    "description": "Color description for very hot stars (O-type)"
+  },
+
+  "stellarColorBlueWhite": "Blue-white",
+  "@stellarColorBlueWhite": {
+    "description": "Color description for hot stars (B-type)"
+  },
+
+  "stellarColorWhite": "White",
+  "@stellarColorWhite": {
+    "description": "Color description for white stars (A-type)"
+  },
+
+  "stellarColorYellowWhite": "Yellow-white",
+  "@stellarColorYellowWhite": {
+    "description": "Color description for yellow-white stars (F-type)"
+  },
+
+  "stellarColorYellow": "Yellow",
+  "@stellarColorYellow": {
+    "description": "Color description for yellow stars (G-type, like our Sun)"
+  },
+
+  "stellarColorOrange": "Orange",
+  "@stellarColorOrange": {
+    "description": "Color description for orange stars (K-type)"
+  },
+
+  "stellarColorRed": "Red",
+  "@stellarColorRed": {
+    "description": "Color description for cool red stars (M-type)"
+  },
+
+  "pathVisualizationTitle": "Path Visualization",
+  "@pathVisualizationTitle": {
+    "description": "Section title for orbital path visualization controls"
+  },
+
+  "navigationAidsTitle": "Navigation Aids",
+  "@navigationAidsTitle": {
+    "description": "Section title for navigation assistance features"
+  },
+
+  "gravityFieldClassicLabel": "Classic",
+  "@gravityFieldClassicLabel": {
+    "description": "Label for classic gravity field color scheme"
+  },
+
+  "gravityFieldSpectralLabel": "Spectral",
+  "@gravityFieldSpectralLabel": {
+    "description": "Label for spectral gravity field color scheme"
+  },
+
+  "gravityFieldMonochromeLabel": "Monochrome",
+  "@gravityFieldMonochromeLabel": {
+    "description": "Label for monochrome gravity field color scheme"
+  },
+
+  "gravityFieldNeonLabel": "Neon",
+  "@gravityFieldNeonLabel": {
+    "description": "Label for neon gravity field color scheme"
+  },
+
+  "gravityFieldEmeraldLabel": "Emerald",
+  "@gravityFieldEmeraldLabel": {
+    "description": "Label for emerald gravity field color scheme"
+  },
+
+  "appInformationCredits": "App information and credits",
+  "@appInformationCredits": {
+    "description": "Description for app information and credits menu item"
+  },
+
+  "developerToolsTitle": "Developer Tools",
+  "@developerToolsTitle": {
+    "description": "Title for developer tools dialog"
+  },
+
+  "developerToolsMenuDescription": "Debug tools for development",
+  "@developerToolsMenuDescription": {
+    "description": "Description for developer tools menu item"
+  },
+
+  "tutorialDescription": "Interactive guided tour of the app",
+  "@tutorialDescription": {
+    "description": "Description for tutorial button"
+  },
+
+  "resetTutorialDescription": "Reset tutorial progress",
+  "@resetTutorialDescription": {
+    "description": "Description for reset tutorial button"
+  },
+
+  "changelogDescription": "View app updates and changes",
+  "@changelogDescription": {
+    "description": "Description for changelog button"
+  },
+
+  "resetChangelogDescription": "Reset changelog read status",
+  "@resetChangelogDescription": {
+    "description": "Description for reset changelog button"
+  },
+
+  "tutorialResetSuccess": "Tutorial progress has been reset",
+  "@tutorialResetSuccess": {
+    "description": "Success message when tutorial is reset"
+  },
+
+  "changelogResetSuccess": "Changelog status has been reset",
+  "@changelogResetSuccess": {
+    "description": "Success message when changelog is reset"
+  },
+
+  "copyrightLabel": "Copyright",
+  "@copyrightLabel": {
+    "description": "Label for copyright information section"
+  },
+
+  "allRightsReserved": "All rights reserved",
+  "@allRightsReserved": {
+    "description": "Copyright notice text"
+  },
+
+  "bodyTypeStar": "Star",
+  "@bodyTypeStar": {
+    "description": "Display name for star body type"
+  },
+
+  "bodyTypePlanet": "Planet",
+  "@bodyTypePlanet": {
+    "description": "Display name for planet body type"
+  },
+
+  "bodyTypeMoon": "Moon",
+  "@bodyTypeMoon": {
+    "description": "Display name for moon body type"
+  },
+
+  "bodyTypeAsteroid": "Asteroid",
+  "@bodyTypeAsteroid": {
+    "description": "Display name for asteroid body type"
+  },
+
+  "appFlavorDevelopment": "Development",
+  "@appFlavorDevelopment": {
+    "description": "Display name for development app flavor"
+  },
+
+  "appFlavorProduction": "Production",
+  "@appFlavorProduction": {
+    "description": "Display name for production app flavor"
+  },
+
+  "notificationTypeError": "Error",
+  "@notificationTypeError": {
+    "description": "Display name for error notification type"
+  },
+
+  "notificationTypeWarning": "Warning",
+  "@notificationTypeWarning": {
+    "description": "Display name for warning notification type"
+  },
+
+  "notificationTypeInfo": "Info",
+  "@notificationTypeInfo": {
+    "description": "Display name for info notification type"
+  },
+
+  "notificationTypeSuccess": "Success",
+  "@notificationTypeSuccess": {
+    "description": "Display name for success notification type"
+  },
+
+  "notificationTypeDebug": "Debug",
+  "@notificationTypeDebug": {
+    "description": "Display name for debug notification type"
+  },
+
+  "trackingModeFull": "Full Tracking",
+  "@trackingModeFull": {
+    "description": "Display name for full tracking mode"
+  },
+
+  "trackingModeEssential": "Essential Only",
+  "@trackingModeEssential": {
+    "description": "Display name for essential tracking mode"
+  },
+
+  "trackingModeNone": "No Tracking",
+  "@trackingModeNone": {
+    "description": "Display name for no tracking mode"
+  },
+
+  "trackingModeLimited": "Limited Tracking",
+  "@trackingModeLimited": {
+    "description": "Display name for limited tracking mode"
+  },
+
+  "trackingModeFullDescription": "All analytics, crashes, and interactions",
+  "@trackingModeFullDescription": {
+    "description": "Description for full tracking mode"
+  },
+
+  "trackingModeEssentialDescription": "Critical crashes and errors only",
+  "@trackingModeEssentialDescription": {
+    "description": "Description for essential tracking mode"
+  },
+
+  "trackingModeNoneDescription": "No data collection",
+  "@trackingModeNoneDescription": {
+    "description": "Description for no tracking mode"
+  },
+
+  "trackingModeLimitedDescription": "User interactions only",
+  "@trackingModeLimitedDescription": {
+    "description": "Description for limited tracking mode"
+  },
+
+  "changelogCategoryAdded": "Added",
+  "@changelogCategoryAdded": {
+    "description": "Display name for added changelog category"
+  },
+
+  "changelogCategoryImproved": "Improved",
+  "@changelogCategoryImproved": {
+    "description": "Display name for improved changelog category"
+  },
+
+  "changelogCategoryFixed": "Fixed",
+  "@changelogCategoryFixed": {
+    "description": "Display name for fixed changelog category"
+  },
+
+  "cameraManual": "Manual Control",
+  "@cameraManual": {
+    "description": "Display name for manual camera technique"
+  },
+
+  "cameraPredictiveOrbital": "Predictive Orbital",
+  "@cameraPredictiveOrbital": {
+    "description": "Display name for predictive orbital camera technique"
+  },
+
+  "cameraDynamicFraming": "Dynamic Framing",
+  "@cameraDynamicFraming": {
+    "description": "Display name for dynamic framing camera technique"
+  },
+
+  "cameraManualDescription": "Traditional manual camera controls with follow mode",
+  "@cameraManualDescription": {
+    "description": "Description for manual camera technique"
+  },
+
+  "cameraPredictiveOrbitalDescription": "AI predicts orbital paths for dramatic camera movements",
+  "@cameraPredictiveOrbitalDescription": {
+    "description": "Description for predictive orbital camera technique"
+  },
+
+  "cameraDynamicFramingDescription": "Automatically adjusts framing based on scene content",
+  "@cameraDynamicFramingDescription": {
+    "description": "Description for dynamic framing camera technique"
+  },
+
+  "fullscreenMode": "Fullscreen Mode",
+  "@fullscreenMode": {
+    "description": "Title for fullscreen mode"
+  },
+
+  "fullscreenModeDescription": "Hide all UI elements for immersive viewing",
+  "@fullscreenModeDescription": {
+    "description": "Description for fullscreen mode functionality"
+  },
+
+  "tapToToggleFullscreen": "Tap to toggle fullscreen",
+  "@tapToToggleFullscreen": {
+    "description": "Hint text for fullscreen toggle gesture"
+  },
+
+  "exitFullscreenHint": "Tap anywhere to exit fullscreen",
+  "@exitFullscreenHint": {
+    "description": "Hint shown when in fullscreen mode"
+  },
+
+  "simulationCanvasLabel": "Gravitational Physics Simulation",
+  "@simulationCanvasLabel": {
+    "description": "Accessibility label for the main simulation canvas"
+  },
+
+  "simulationCanvasHint": "Use keyboard shortcuts to control simulation. Space to pause, R to reset, C to center camera",
+  "@simulationCanvasHint": {
+    "description": "Accessibility hint for simulation canvas interactions"
+  },
+
+  "simulationDescription": "Gravitational simulation with {bodyCount} celestial bodies. Status: {status}. Speed: {speed}. Steps: {steps}",
+  "@simulationDescription": {
+    "description": "Comprehensive description of simulation state for screen readers",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "Number of celestial bodies"
+      },
+      "status": {
+        "type": "String", 
+        "description": "Current simulation status"
+      },
+      "speed": {
+        "type": "String",
+        "description": "Current time scale"
+      },
+      "steps": {
+        "type": "int",
+        "description": "Number of simulation steps"
+      }
+    }
+  },
+
+  "noBodiesInSimulation": "No celestial bodies currently in the simulation",
+  "@noBodiesInSimulation": {
+    "description": "Accessibility description when simulation is empty"
+  },
+
+  "bodiesInSimulation": "Bodies in simulation: {descriptions}",
+  "@bodiesInSimulation": {
+    "description": "Description of bodies currently in simulation",
+    "placeholders": {
+      "descriptions": {
+        "type": "String",
+        "description": "Comma-separated list of body types and counts"
+      }
+    }
+  },
+
+  "cameraFreeDescription": "Camera in free mode at distance {distance}. Auto-rotation: {rotation}",
+  "@cameraFreeDescription": {
+    "description": "Description of camera in free movement mode",
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "description": "Camera distance from center"
+      },
+      "rotation": {
+        "type": "String", 
+        "description": "Auto-rotation status"
+      }
+    }
+  },
+
+  "cameraFollowingDescription": "Camera following {bodyName} at distance {distance}. Auto-rotation: {rotation}",
+  "@cameraFollowingDescription": {
+    "description": "Description of camera in follow mode",
+    "placeholders": {
+      "bodyName": {
+        "type": "String",
+        "description": "Name of body being followed"
+      },
+      "distance": {
+        "type": "String", 
+        "description": "Camera distance"
+      },
+      "rotation": {
+        "type": "String",
+        "description": "Auto-rotation status"
+      }
+    }
+  },
+
+  "autoRotateActive": "active",
+  "@autoRotateActive": {
+    "description": "Status text when auto-rotation is enabled"
+  },
+
+  "autoRotateInactive": "inactive", 
+  "@autoRotateInactive": {
+    "description": "Status text when auto-rotation is disabled"
+  },
+
+  "liveUpdateAnnouncement": "{updateType} changed to {value}",
+  "@liveUpdateAnnouncement": {
+    "description": "Live region announcement for value changes",
+    "placeholders": {
+      "updateType": {
+        "type": "String",
+        "description": "Type of data that changed"
+      },
+      "value": {
+        "type": "String",
+        "description": "New value"
+      }
+    }
+  },
+
+  "keyboardShortcutsHint": "Use Space to pause/resume, R to reset, C to center camera, A to toggle auto-rotation",
+  "@keyboardShortcutsHint": {
+    "description": "Hint about available keyboard shortcuts"
+  },
+
+  "physicsStatsDescription": "Physics: {time} time units, {earthYears} Earth years, {steps} simulation steps completed",
+  "@physicsStatsDescription": {
+    "description": "Accessibility description of physics statistics",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "description": "Total simulation time"
+      },
+      "earthYears": {
+        "type": "String",
+        "description": "Time in Earth years"
+      },
+      "steps": {
+        "type": "int",
+        "description": "Number of steps"
+      }
+    }
+  },
+
+  "toggleAutoRotateAction": "Toggle auto-rotation",
+  "@toggleAutoRotateAction": {
+    "description": "Semantic action label for toggling camera auto-rotation"
+  },
+
+  "zoomInAction": "Zoom in",
+  "@zoomInAction": {
+    "description": "Semantic action label for zooming in"
+  },
+
+  "zoomOutAction": "Zoom out", 
+  "@zoomOutAction": {
+    "description": "Semantic action label for zooming out"
+  },
+
+  "expandedState": "expanded",
+  "@expandedState": {
+    "description": "State description for expanded UI elements"
+  },
+
+  "collapsedState": "collapsed",
+  "@collapsedState": {
+    "description": "State description for collapsed UI elements"
+  },
+
+  "currentScenario": "Current scenario",
+  "@currentScenario": {
+    "description": "Label for the currently selected scenario"
+  },
+
+  "scenariosAvailable": "scenarios available",
+  "@scenariosAvailable": {
+    "description": "Text indicating number of scenarios available"
+  },
+
+  "bottomSheetLabel": "Bottom sheet",
+  "@bottomSheetLabel": {
+    "description": "Accessibility label for bottom sheet component"
+  },
+
+  "gravitationalSimulationLabel": "Gravitational Physics Simulation",
+  "@gravitationalSimulationLabel": {
+    "description": "Main accessibility label for the physics simulation"
+  },
+
+  "simulationStateDescription": "Gravitational simulation with {bodyCount} celestial bodies. Status: {status}. Speed: {speed}. Steps completed: {stepCount}. Tap to interact with simulation or use keyboard shortcuts.",
+  "@simulationStateDescription": {
+    "description": "Comprehensive description of simulation state for accessibility",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "Number of celestial bodies"
+      },
+      "status": {
+        "type": "String",
+        "description": "Current simulation status"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "Current simulation speed"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "Number of simulation steps completed"
+      }
+    }
+  },
+
+  "accessibilitySimulationStarted": "Simulation started",
+  "@accessibilitySimulationStarted": {
+    "description": "Accessibility announcement when simulation starts"
+  },
+
+  "accessibilitySimulationStartedContext": "Celestial bodies are now in motion",
+  "@accessibilitySimulationStartedContext": {
+    "description": "Additional context for simulation start announcement"
+  },
+
+  "accessibilitySimulationPaused": "Simulation paused",
+  "@accessibilitySimulationPaused": {
+    "description": "Accessibility announcement when simulation is paused"
+  },
+
+  "accessibilitySimulationPausedContext": "All celestial bodies have stopped moving",
+  "@accessibilitySimulationPausedContext": {
+    "description": "Additional context for simulation pause announcement"
+  },
+
+  "accessibilitySimulationResumed": "Simulation resumed",
+  "@accessibilitySimulationResumed": {
+    "description": "Accessibility announcement when simulation is resumed"
+  },
+
+  "accessibilitySimulationResumedContext": "Celestial bodies are moving again",
+  "@accessibilitySimulationResumedContext": {
+    "description": "Additional context for simulation resume announcement"
+  },
+
+  "accessibilitySimulationStopped": "Simulation stopped",
+  "@accessibilitySimulationStopped": {
+    "description": "Accessibility announcement when simulation is stopped"
+  },
+
+  "accessibilitySimulationStoppedContext": "All celestial bodies have been reset",
+  "@accessibilitySimulationStoppedContext": {
+    "description": "Additional context for simulation stop announcement"
+  },
+
+  "accessibilitySimulationReset": "Simulation reset",
+  "@accessibilitySimulationReset": {
+    "description": "Accessibility announcement when simulation is reset"
+  },
+
+  "accessibilitySimulationResetContext": "New scenario loaded with fresh celestial bodies",
+  "@accessibilitySimulationResetContext": {
+    "description": "Additional context for simulation reset announcement"
+  },
+
+  "accessibilityMergeEvent": "Collision detected: {body1} merged with {body2}",
+  "@accessibilityMergeEvent": {
+    "description": "Accessibility announcement for celestial body collisions",
+    "placeholders": {
+      "body1": {
+        "type": "String",
+        "description": "Name of the first celestial body"
+      },
+      "body2": {
+        "type": "String",
+        "description": "Name of the second celestial body"
+      }
+    }
+  },
+
+  "accessibilityMergeEventContext": "The combined mass creates a new celestial body",
+  "@accessibilityMergeEventContext": {
+    "description": "Additional context for merge event announcements"
+  },
+
+  "accessibilityScenarioChange": "Scenario changed to {scenarioName}",
+  "@accessibilityScenarioChange": {
+    "description": "Accessibility announcement for scenario changes",
+    "placeholders": {
+      "scenarioName": {
+        "type": "String",
+        "description": "Name of the new scenario"
+      }
+    }
+  },
+
+  "accessibilityScenarioChangeContext": "New celestial bodies and physics parameters loaded",
+  "@accessibilityScenarioChangeContext": {
+    "description": "Additional context for scenario change announcements"
+  },
+
+  "accessibilitySpeedChange": "Simulation speed changed to {newValue}",
+  "@accessibilitySpeedChange": {
+    "description": "Accessibility announcement for speed changes",
+    "placeholders": {
+      "newValue": {
+        "type": "String",
+        "description": "New simulation speed value"
+      }
+    }
+  },
+
+  "accessibilityGravityChange": "Gravity strength changed to {newValue}",
+  "@accessibilityGravityChange": {
+    "description": "Accessibility announcement for gravity changes",
+    "placeholders": {
+      "newValue": {
+        "type": "String",
+        "description": "New gravity strength value"
+      }
+    }
+  },
+
+  "accessibilityCollisionRadiusChange": "Collision sensitivity changed to {newValue}",
+  "@accessibilityCollisionRadiusChange": {
+    "description": "Accessibility announcement for collision radius changes",
+    "placeholders": {
+      "newValue": {
+        "type": "String",
+        "description": "New collision sensitivity value"
+      }
+    }
+  },
+
+  "accessibilityCameraReset": "Camera view reset to default position",
+  "@accessibilityCameraReset": {
+    "description": "Accessibility announcement for camera reset"
+  },
+
+  "accessibilityCameraFocus": "Camera focused on nearest celestial body",
+  "@accessibilityCameraFocus": {
+    "description": "Accessibility announcement for camera focus"
+  },
+
+  "accessibilityCameraFollow": "Camera now following selected celestial body",
+  "@accessibilityCameraFollow": {
+    "description": "Accessibility announcement for camera follow mode"
+  },
+
+  "accessibilityCameraUnfollow": "Camera stopped following celestial body",
+  "@accessibilityCameraUnfollow": {
+    "description": "Accessibility announcement when camera stops following"
+  },
+
+  "accessibilityTutorialProgress": "Tutorial step {currentStep} of {totalSteps}: {stepName}",
+  "@accessibilityTutorialProgress": {
+    "description": "Accessibility announcement for tutorial progress",
+    "placeholders": {
+      "currentStep": {
+        "type": "int",
+        "description": "Current tutorial step number"
+      },
+      "totalSteps": {
+        "type": "int",
+        "description": "Total number of tutorial steps"
+      },
+      "stepName": {
+        "type": "String",
+        "description": "Name of the current tutorial step"
+      }
+    }
+  },
+
+  "accessibilityError": "Error: {errorMessage}",
+  "@accessibilityError": {
+    "description": "Accessibility announcement for error messages",
+    "placeholders": {
+      "errorMessage": {
+        "type": "String",
+        "description": "The error message to announce"
+      }
+    }
+  },
+
+  "accessibilitySettingEnabled": "{settingName} enabled",
+  "@accessibilitySettingEnabled": {
+    "description": "Accessibility announcement when a setting is enabled",
+    "placeholders": {
+      "settingName": {
+        "type": "String",
+        "description": "Name of the setting that was enabled"
+      }
+    }
+  },
+
+  "accessibilitySettingDisabled": "{settingName} disabled",
+  "@accessibilitySettingDisabled": {
+    "description": "Accessibility announcement when a setting is disabled",
+    "placeholders": {
+      "settingName": {
+        "type": "String",
+        "description": "Name of the setting that was disabled"
       }
     }
   }

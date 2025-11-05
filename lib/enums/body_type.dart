@@ -21,17 +21,17 @@ extension BodyTypeExtension on BodyType {
   /// Whether this body type can be potentially habitable
   bool get canBeHabitable => this == BodyType.planet || this == BodyType.moon;
 
-  /// Display name for the body type
-  String get displayName {
+  /// Localization key for the body type display name
+  String get localizationKey {
     switch (this) {
       case BodyType.star:
-        return 'Star';
+        return 'bodyTypeStar';
       case BodyType.planet:
-        return 'Planet';
+        return 'bodyTypePlanet';
       case BodyType.moon:
-        return 'Moon';
+        return 'bodyTypeMoon';
       case BodyType.asteroid:
-        return 'Asteroid';
+        return 'bodyTypeAsteroid';
     }
   }
 }

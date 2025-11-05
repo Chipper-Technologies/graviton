@@ -1,12 +1,14 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/auto_rotate_status.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/utils/safe_haptic_feedback.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Manages camera and 3D view state
@@ -17,7 +19,7 @@ class CameraState extends ChangeNotifier {
   double _distance = 300.0; // Default distance for most scenarios
   vm.Vector3 _target = vm.Vector3.zero();
   int? _selectedBody;
-  bool _autoRotate = false;
+  AutoRotateStatus _autoRotate = AutoRotateStatus.off;
   double _autoRotateSpeed = 0.2;
 
   // Follow object mode
@@ -35,7 +37,8 @@ class CameraState extends ChangeNotifier {
   double get distance => _distance;
   vm.Vector3 get target => _target;
   int? get selectedBody => _selectedBody;
-  bool get autoRotate => _autoRotate;
+  AutoRotateStatus get autoRotateStatus => _autoRotate;
+  bool get autoRotate => _autoRotate.isEnabled;
   double get autoRotateSpeed => _autoRotateSpeed;
   bool get followMode => _followMode;
   int? get followedBodyIndex => _followedBodyIndex;
@@ -134,6 +137,10 @@ class CameraState extends ChangeNotifier {
     if (bodyIndex >= 0 && bodyIndex < bodies.length) {
       _target = bodies[bodyIndex].position.clone();
       _selectedBody = bodyIndex;
+
+      // Haptic feedback for camera focus
+      SafeHapticFeedback.selectionClick();
+
       FirebaseService.instance.logUIEventWithEnums(
         UIAction.cameraFocus,
         element: UIElement.body,
@@ -167,6 +174,9 @@ class CameraState extends ChangeNotifier {
         _selectedBody! >= 0 &&
         _selectedBody! < bodies.length) {
       _followMode = !_followMode;
+
+      // Haptic feedback for follow mode toggle
+      SafeHapticFeedback.lightImpact();
 
       if (_followMode) {
         _followedBodyIndex = _selectedBody;
@@ -223,6 +233,9 @@ class CameraState extends ChangeNotifier {
   }
 
   void resetView([ScenarioType? scenario]) {
+    // Haptic feedback for camera reset
+    SafeHapticFeedback.mediumImpact();
+
     if (scenario == ScenarioType.galaxyFormation) {
       // Special camera settings for galaxy formation
       _yaw = 0.77; // Perfect yaw for horizontal galaxy view
@@ -245,7 +258,7 @@ class CameraState extends ChangeNotifier {
 
     _target = vm.Vector3.zero(); // Look at center
     _selectedBody = null;
-    _autoRotate = false;
+    _autoRotate = AutoRotateStatus.off;
     _followMode = false;
     _followedBodyIndex = null;
     FirebaseService.instance.logUIEventWithEnums(
@@ -257,6 +270,27 @@ class CameraState extends ChangeNotifier {
 
   /// Reset view with optimal zoom for a specific scenario
   void resetViewForScenario(ScenarioType scenario, List<Body> bodies) {
+    // Safety check: ensure bodies list is valid before proceeding
+    if (bodies.isEmpty) {
+      // Use fallback values for empty bodies as expected by tests
+      _yaw = 0.6;
+      _pitch = 0.3;
+      _roll = 0.0;
+      _target = vm.Vector3.zero();
+      _distance = 50.0; // Fallback distance for empty bodies
+      _selectedBody = null;
+      _autoRotate = AutoRotateStatus.off;
+      _followMode = false;
+      _followedBodyIndex = null;
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.cameraAutoZoom,
+        element: UIElement.scenario,
+        value: scenario.name,
+      );
+      notifyListeners();
+      return;
+    }
+
     // Special camera settings for galaxy formation
     if (scenario == ScenarioType.galaxyFormation) {
       _yaw = 0.77; // Perfect yaw for horizontal galaxy view
@@ -277,7 +311,7 @@ class CameraState extends ChangeNotifier {
     _target = _calculateOptimalTarget(bodies);
     _distance = _calculateOptimalDistance(scenario, bodies);
     _selectedBody = null;
-    _autoRotate = false;
+    _autoRotate = AutoRotateStatus.off;
     _followMode = false;
     _followedBodyIndex = null;
     FirebaseService.instance.logUIEventWithEnums(
@@ -354,12 +388,15 @@ class CameraState extends ChangeNotifier {
   }
 
   void toggleAutoRotate() {
-    _autoRotate = !_autoRotate;
+    _autoRotate = _autoRotate.toggle;
+
+    // Haptic feedback for auto-rotate toggle
+    SafeHapticFeedback.lightImpact();
 
     FirebaseService.instance.logUIEventWithEnums(
       UIAction.autoRotateToggle,
       element: UIElement.cameraControls,
-      value: _autoRotate.toString(),
+      value: _autoRotate.isEnabled.toString(),
     );
 
     notifyListeners();
@@ -367,6 +404,9 @@ class CameraState extends ChangeNotifier {
 
   void toggleInvertPitch() {
     _invertPitch = !_invertPitch;
+
+    // Haptic feedback for invert pitch toggle
+    SafeHapticFeedback.lightImpact();
 
     FirebaseService.instance.logUIEventWithEnums(
       UIAction.invertPitchToggle,
@@ -383,7 +423,7 @@ class CameraState extends ChangeNotifier {
   }
 
   void updateAutoRotation(double deltaTime) {
-    if (_autoRotate) {
+    if (_autoRotate.isEnabled) {
       _yaw += _autoRotateSpeed * deltaTime;
 
       // In follow mode, maintain the follow distance during auto-rotation

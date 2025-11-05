@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
@@ -7,6 +5,7 @@ import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/temperature_utils.dart';
 
 /// Service for calculating realistic colors for all celestial bodies
 /// Uses Harvard spectral classification for stars (O, B, A, F, G, K, M)
@@ -41,9 +40,9 @@ class StellarColorService {
             SimulationConstants
                 .meaningfulStellarTemperatureThreshold // Has a meaningful stellar temperature
         ? body.temperature
-        : _calculateStellarTemperature(body.mass);
+        : TemperatureUtils.calculateStellarTemperature(body.mass);
 
-    return _getColorFromTemperature(effectiveTemperature);
+    return TemperatureUtils.getColorFromTemperature(effectiveTemperature);
   }
 
   /// Get realistic color for specific named celestial bodies
@@ -62,67 +61,14 @@ class StellarColorService {
         bodyEnum == CelestialBodyName.starA ||
         bodyEnum == CelestialBodyName.starB) {
       // Binary star system stars - use realistic stellar classification
-      final effectiveTemperature = _calculateStellarTemperature(body.mass);
-      return _getColorFromTemperature(effectiveTemperature);
+      final effectiveTemperature = TemperatureUtils.calculateStellarTemperature(
+        body.mass,
+      );
+      return TemperatureUtils.getColorFromTemperature(effectiveTemperature);
     }
 
     // Not a specific recognized body type for realistic coloring
     return null;
-  }
-
-  /// Calculate stellar surface temperature from mass
-  /// Based on main sequence mass-temperature relationship
-  static double _calculateStellarTemperature(double mass) {
-    // Sun has mass ~10 units in our simulation, temperature ~5778K
-    final sunMass = SimulationConstants.sunMassReference;
-    final sunTemperature = SimulationConstants.sunTemperatureReference;
-
-    // Mass-temperature relationship for main sequence stars
-    // More massive stars are hotter: T ∝ M^0.5 to M^0.8 depending on mass range
-    final massRatio = mass / sunMass;
-
-    if (massRatio > 1.5) {
-      // High mass stars: stronger dependence
-      return sunTemperature * math.pow(massRatio, 0.8);
-    } else {
-      // Lower mass stars: weaker dependence
-      return sunTemperature * math.pow(massRatio, 0.5);
-    }
-  }
-
-  /// Convert temperature to realistic stellar color using black-body radiation
-  static Color _getColorFromTemperature(double temperature) {
-    // Stellar classification based on surface temperature:
-    // O: > 30,000K (blue)
-    // B: 10,000-30,000K (blue-white)
-    // A: 7,500-10,000K (white)
-    // F: 6,000-7,500K (yellow-white)
-    // G: 5,200-6,000K (yellow) - Sun-like
-    // K: 3,700-5,200K (orange)
-    // M: < 3,700K (red)
-
-    if (temperature > 30000) {
-      // O-type: Hot blue stars
-      return AppColors.stellarOType;
-    } else if (temperature > 10000) {
-      // B-type: Blue-white stars
-      return AppColors.stellarBType;
-    } else if (temperature > 7500) {
-      // A-type: White stars
-      return AppColors.stellarAType;
-    } else if (temperature > 6000) {
-      // F-type: Yellow-white stars
-      return AppColors.stellarFType;
-    } else if (temperature > 5200) {
-      // G-type: Yellow stars (Sun-like)
-      return AppColors.stellarGType;
-    } else if (temperature > 3700) {
-      // K-type: Orange stars
-      return AppColors.stellarKType;
-    } else {
-      // M-type: Red dwarf stars
-      return AppColors.stellarMType;
-    }
   }
 
   /// Get realistic colors for non-stellar, non-planetary bodies (primarily asteroids)

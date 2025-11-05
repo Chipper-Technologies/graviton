@@ -21,6 +21,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get resetButton => '重置';
 
   @override
+  String get resetSettingsDescription => '将所有设置重置为默认值';
+
+  @override
   String get speedLabel => '速度';
 
   @override
@@ -30,7 +33,106 @@ class AppLocalizationsZh extends AppLocalizations {
   String get statsLabel => '统计';
 
   @override
-  String get selectLabel => '选择';
+  String get bottomNavCameraLabel => '相机';
+
+  @override
+  String get bottomNavVisualsLabel => '视觉';
+
+  @override
+  String get bottomNavPhysicsLabel => '物理';
+
+  @override
+  String get cameraTooltip => '相机设置和AI模式';
+
+  @override
+  String get visualsTooltip => '视觉显示选项';
+
+  @override
+  String get physicsTooltip => '物理可视化和设置';
+
+  @override
+  String get aiCameraModesTitle => 'AI相机模式';
+
+  @override
+  String get manualControlTitle => '手动控制';
+
+  @override
+  String get manualControlDescription => '完全手动相机控制';
+
+  @override
+  String get predictiveOrbitalTitle => '预测轨道';
+
+  @override
+  String get predictiveOrbitalDescription => 'AI预测最佳轨道视图';
+
+  @override
+  String get dynamicFramingTitle => '动态构图';
+
+  @override
+  String get dynamicFramingDescription => 'AI动态构图所有对象';
+
+  @override
+  String get manualControlsTitle => '手动控制';
+
+  @override
+  String get selectNearestTitle => '选择最近';
+
+  @override
+  String get stopFollowTitle => '停止跟随';
+
+  @override
+  String get followTitle => '跟随';
+
+  @override
+  String get centerViewTitle => '居中视图';
+
+  @override
+  String get stopRotateTitle => '停止旋转';
+
+  @override
+  String get autoRotateTitle => '自动旋转';
+
+  @override
+  String get displayOptionsTitle => '显示选项';
+
+  @override
+  String get showTrailsTitle => '显示轨迹';
+
+  @override
+  String get showLabelsTitle => '显示标签';
+
+  @override
+  String get realisticColorsTitle => '真实颜色';
+
+  @override
+  String get physicsVisualizationTitle => '物理可视化';
+
+  @override
+  String get gravityFieldsTitle => '重力场';
+
+  @override
+  String get gravityFieldsDescription => '显示重力场可视化';
+
+  @override
+  String get debugStatisticsTitle => '调试和统计';
+
+  @override
+  String get showStatisticsTitle => '显示统计';
+
+  @override
+  String get showStatisticsDescription => '显示性能和物理统计';
+
+  @override
+  String get currentStatisticsTitle => '当前统计';
+
+  @override
+  String get bodiesStatLabel => '天体';
+
+  @override
+  String get timeScaleStatLabel => '时间尺度';
+
+  @override
+  String get selectedStatLabel => '已选择';
 
   @override
   String get followLabel => '跟随';
@@ -81,10 +183,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get selectObjectToFollowTooltip => '选择要跟踪的对象';
 
   @override
-  String get settingsTitle => '设置';
+  String get settingsTitle => '应用程序设置';
 
   @override
-  String get settingsTooltip => '设置';
+  String get settingsTooltip => '应用程序设置';
 
   @override
   String get selectScenarioTooltip => '选择场景';
@@ -111,6 +213,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get simulationSpeed => '模拟速度';
 
   @override
+  String get simulationSpeedHint => '调整模拟速度从0.1倍到16倍正常速度。使用箭头键进行小幅调整。';
+
+  @override
   String get collisionsSection => '碰撞';
 
   @override
@@ -129,10 +234,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get hapticsSection => '触觉反馈';
 
   @override
+  String get uiHapticFeedback => 'UI触觉反馈';
+
+  @override
+  String get uiHapticFeedbackDescription => '为按钮点击、切换开关和导航等UI交互启用触觉反馈';
+
+  @override
+  String get collisionHapticFeedback => '碰撞触觉反馈';
+
+  @override
+  String get collisionHapticFeedbackDescription => '在模拟过程中天体碰撞时启用触觉反馈';
+
+  @override
   String get vibrationEnabled => '启用振动';
 
   @override
   String get hapticFeedbackCollisions => '碰撞时的触觉反馈';
+
+  @override
+  String get hapticFeedbackDescription => '为UI交互和碰撞启用触觉反馈';
 
   @override
   String get vibrationThrottle => '振动节流';
@@ -145,6 +265,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get helpMenuDescription => '教程和目标';
+
+  @override
+  String get aboutMenuDescription => '应用信息和致谢';
 
   @override
   String get showTrails => '显示轨迹';
@@ -207,6 +330,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get statusPaused => '已暂停';
 
   @override
+  String get statusStopped => '已停止';
+
+  @override
+  String get statusError => '错误';
+
+  @override
   String get cameraLabel => '相机';
 
   @override
@@ -220,6 +349,18 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get autoRotateOff => '关闭';
+
+  @override
+  String get yawLabel => '偏航';
+
+  @override
+  String get pitchLabel => '俯仰';
+
+  @override
+  String get rollLabel => '翻滚';
+
+  @override
+  String get zoomLabel => '缩放';
 
   @override
   String get cameraControlsLabel => '相机控制';
@@ -282,6 +423,27 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get speedQuarter => '四分之一速度';
+
+  @override
+  String get speedHalf => '半速';
+
+  @override
+  String get speedNormal => '正常';
+
+  @override
+  String get speedDouble => '二倍速';
+
+  @override
+  String get speedFast => '快速';
+
+  @override
+  String get speedVeryFast => '非常快';
+
+  @override
+  String get speedMaximum => '最大';
+
+  @override
   String bodiesCount(int count) {
     return '$count';
   }
@@ -341,6 +503,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get scenarioSolarSystemDescription => '我们太阳系的简化版本，包含内行星和外行星';
+
+  @override
+  String get scenarioSpecial => '特殊场景';
+
+  @override
+  String get scenarioSpecialDescription => '用于截图模式的特殊场景';
 
   @override
   String get habitabilityLabel => '宜居性';
@@ -418,6 +586,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aboutButtonTooltip => '关于';
 
   @override
+  String get backButtonTooltip => '返回';
+
+  @override
   String get appNameGraviton => 'Graviton';
 
   @override
@@ -427,13 +598,66 @@ class AppLocalizationsZh extends AppLocalizations {
   String get loadingVersion => '加载版本中...';
 
   @override
-  String get companyName => 'Chipper Technologies, LLC';
+  String get companyName => 'Chipper Technologies LLC';
 
   @override
   String get gravityWellsLabel => '重力井';
 
   @override
   String get gravityWellsDescription => '显示物体周围的引力场强度';
+
+  @override
+  String get globalGravityFieldsLabel => '全局引力场';
+
+  @override
+  String get globalGravityFieldsDescription => '为所有大质量物体启用引力场可视化';
+
+  @override
+  String get gravityFieldColorSchemeLabel => '引力场颜色';
+
+  @override
+  String get gravityFieldColorSchemeDescription => '选择引力场可视化的颜色方案';
+
+  @override
+  String get gravityColorSchemeClassic => '经典';
+
+  @override
+  String get gravityColorSchemeSpectral => '光谱';
+
+  @override
+  String get gravityColorSchemeMonochrome => '单色';
+
+  @override
+  String get gravityColorSchemeNeon => '霓虹';
+
+  @override
+  String get gravityColorSchemeEmerald => '翡翠';
+
+  @override
+  String get gravityFieldStrengthLabel => '场强度';
+
+  @override
+  String get gravityFieldStrengthUnit => 'm/s²';
+
+  @override
+  String gravityFieldStrengthFormatted(String strength, String unit) {
+    return '$strength $unit';
+  }
+
+  @override
+  String get equipotentialSurfacesLabel => '等势面';
+
+  @override
+  String get equipotentialSurfacesDescription => '显示相等引力势能的表面';
+
+  @override
+  String get gravityFieldIndicatorsLabel => '场强度指示器';
+
+  @override
+  String get gravityFieldIndicatorsDescription => '显示引力场强度的视觉指示器';
+
+  @override
+  String get toggleGravityFieldsTooltip => '切换引力场';
 
   @override
   String get languageLabel => '语言';
@@ -659,6 +883,11 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get hideUIInScreenshotModeSubtitle => '当截图模式激活时隐藏应用栏、底部导航和版权信息';
+
+  @override
+  String screenshotCountdown(int seconds) {
+    return '截图倒计时 $seconds秒';
+  }
 
   @override
   String get scenePreset => '场景预设';
@@ -1013,5 +1242,375 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String changelogLoadError(String error) {
     return '加载更新日志失败: $error';
+  }
+
+  @override
+  String get noChangelogsAvailable => '没有可用的更新日志';
+
+  @override
+  String errorLoadingChangelogs(String error) {
+    return '加载更新日志时出错: $error';
+  }
+
+  @override
+  String get stellarColorBlue => '蓝色';
+
+  @override
+  String get stellarColorBlueWhite => '蓝白色';
+
+  @override
+  String get stellarColorWhite => '白色';
+
+  @override
+  String get stellarColorYellowWhite => '黄白色';
+
+  @override
+  String get stellarColorYellow => '黄色';
+
+  @override
+  String get stellarColorOrange => '橙色';
+
+  @override
+  String get stellarColorRed => '红色';
+
+  @override
+  String get pathVisualizationTitle => '轨道可视化';
+
+  @override
+  String get navigationAidsTitle => '导航辅助';
+
+  @override
+  String get gravityFieldClassicLabel => '经典';
+
+  @override
+  String get gravityFieldSpectralLabel => '光谱';
+
+  @override
+  String get gravityFieldMonochromeLabel => '单色';
+
+  @override
+  String get gravityFieldNeonLabel => '霓虹';
+
+  @override
+  String get gravityFieldEmeraldLabel => '翡翠';
+
+  @override
+  String get appInformationCredits => '应用信息和致谢';
+
+  @override
+  String get developerToolsTitle => '开发者工具';
+
+  @override
+  String get developerToolsMenuDescription => '开发调试工具';
+
+  @override
+  String get tutorialDescription => '应用的交互式导览';
+
+  @override
+  String get resetTutorialDescription => '重置教程进度';
+
+  @override
+  String get changelogDescription => '查看应用更新和变更';
+
+  @override
+  String get resetChangelogDescription => '重置更新日志阅读状态';
+
+  @override
+  String get tutorialResetSuccess => '教程进度已重置';
+
+  @override
+  String get changelogResetSuccess => '更新日志状态已重置';
+
+  @override
+  String get copyrightLabel => '版权';
+
+  @override
+  String get allRightsReserved => '保留所有权利';
+
+  @override
+  String get bodyTypeStar => '恒星';
+
+  @override
+  String get bodyTypePlanet => '行星';
+
+  @override
+  String get bodyTypeMoon => '月球';
+
+  @override
+  String get bodyTypeAsteroid => '小行星';
+
+  @override
+  String get appFlavorDevelopment => '开发';
+
+  @override
+  String get appFlavorProduction => '生产';
+
+  @override
+  String get notificationTypeError => '错误';
+
+  @override
+  String get notificationTypeWarning => '警告';
+
+  @override
+  String get notificationTypeInfo => '信息';
+
+  @override
+  String get notificationTypeSuccess => '成功';
+
+  @override
+  String get notificationTypeDebug => '调试';
+
+  @override
+  String get trackingModeFull => '完整跟踪';
+
+  @override
+  String get trackingModeEssential => '仅必要';
+
+  @override
+  String get trackingModeNone => '无跟踪';
+
+  @override
+  String get trackingModeLimited => '有限跟踪';
+
+  @override
+  String get trackingModeFullDescription => '所有分析、崩溃和交互';
+
+  @override
+  String get trackingModeEssentialDescription => '仅关键崩溃和错误';
+
+  @override
+  String get trackingModeNoneDescription => '无数据收集';
+
+  @override
+  String get trackingModeLimitedDescription => '仅用户交互';
+
+  @override
+  String get changelogCategoryAdded => '新增';
+
+  @override
+  String get changelogCategoryImproved => '改进';
+
+  @override
+  String get changelogCategoryFixed => '修复';
+
+  @override
+  String get cameraManual => '手动控制';
+
+  @override
+  String get cameraPredictiveOrbital => '预测轨道';
+
+  @override
+  String get cameraDynamicFraming => '动态构图';
+
+  @override
+  String get cameraManualDescription => '带跟随模式的传统手动相机控制';
+
+  @override
+  String get cameraPredictiveOrbitalDescription => 'AI预测轨道路径以实现戏剧性的相机动作';
+
+  @override
+  String get cameraDynamicFramingDescription => '根据场景内容自动调整构图';
+
+  @override
+  String get fullscreenMode => '全屏模式';
+
+  @override
+  String get fullscreenModeDescription => '隐藏所有UI元素以获得沉浸式观看体验';
+
+  @override
+  String get tapToToggleFullscreen => '点击切换全屏';
+
+  @override
+  String get exitFullscreenHint => '点击任意位置退出全屏模式';
+
+  @override
+  String get simulationCanvasLabel => '引力物理模拟';
+
+  @override
+  String get simulationCanvasHint => '使用键盘快捷键控制模拟。空格键暂停，R键重新开始，C键居中相机';
+
+  @override
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  ) {
+    return '具有$bodyCount个天体的引力模拟。状态：$status。速度：$speed。步骤：$steps';
+  }
+
+  @override
+  String get noBodiesInSimulation => '当前模拟中没有天体';
+
+  @override
+  String bodiesInSimulation(String descriptions) {
+    return '模拟中的天体：$descriptions';
+  }
+
+  @override
+  String cameraFreeDescription(String distance, String rotation) {
+    return '距离$distance的自由模式相机。自动旋转：$rotation';
+  }
+
+  @override
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  ) {
+    return '距离$distance跟随$bodyName的相机。自动旋转：$rotation';
+  }
+
+  @override
+  String get autoRotateActive => '激活';
+
+  @override
+  String get autoRotateInactive => '未激活';
+
+  @override
+  String liveUpdateAnnouncement(String updateType, String value) {
+    return '$updateType已更改为$value';
+  }
+
+  @override
+  String get keyboardShortcutsHint => '使用空格键暂停/恢复，R键重新开始，C键居中相机，A键切换自动旋转';
+
+  @override
+  String physicsStatsDescription(String time, String earthYears, int steps) {
+    return '物理：$time时间单位，$earthYears地球年，$steps模拟步骤已完成';
+  }
+
+  @override
+  String get toggleAutoRotateAction => '切换自动旋转';
+
+  @override
+  String get zoomInAction => '放大';
+
+  @override
+  String get zoomOutAction => '缩小';
+
+  @override
+  String get expandedState => '已展开';
+
+  @override
+  String get collapsedState => '已折叠';
+
+  @override
+  String get currentScenario => '当前场景';
+
+  @override
+  String get scenariosAvailable => '可用场景';
+
+  @override
+  String get bottomSheetLabel => '底部面板';
+
+  @override
+  String get gravitationalSimulationLabel => '引力物理模拟';
+
+  @override
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  ) {
+    return '具有$bodyCount个天体的引力模拟。状态：$status。速度：$speed。已完成步骤：$stepCount。点击与模拟交互或使用键盘快捷键。';
+  }
+
+  @override
+  String get accessibilitySimulationStarted => '模拟已开始';
+
+  @override
+  String get accessibilitySimulationStartedContext => '天体现在正在运动';
+
+  @override
+  String get accessibilitySimulationPaused => '模拟已暂停';
+
+  @override
+  String get accessibilitySimulationPausedContext => '所有天体已停止移动';
+
+  @override
+  String get accessibilitySimulationResumed => '模拟已恢复';
+
+  @override
+  String get accessibilitySimulationResumedContext => '天体再次开始运动';
+
+  @override
+  String get accessibilitySimulationStopped => '模拟已停止';
+
+  @override
+  String get accessibilitySimulationStoppedContext => '所有天体已重置';
+
+  @override
+  String get accessibilitySimulationReset => '模拟已重置';
+
+  @override
+  String get accessibilitySimulationResetContext => '新场景已加载新天体';
+
+  @override
+  String accessibilityMergeEvent(String body1, String body2) {
+    return '检测到碰撞：$body1与$body2合并';
+  }
+
+  @override
+  String get accessibilityMergeEventContext => '合并的质量创造了新的天体';
+
+  @override
+  String accessibilityScenarioChange(String scenarioName) {
+    return '场景已更改为$scenarioName';
+  }
+
+  @override
+  String get accessibilityScenarioChangeContext => '新天体和物理参数已加载';
+
+  @override
+  String accessibilitySpeedChange(String newValue) {
+    return '模拟速度已更改为$newValue';
+  }
+
+  @override
+  String accessibilityGravityChange(String newValue) {
+    return '重力强度已更改为$newValue';
+  }
+
+  @override
+  String accessibilityCollisionRadiusChange(String newValue) {
+    return '碰撞敏感度已更改为$newValue';
+  }
+
+  @override
+  String get accessibilityCameraReset => '相机视图已重置为默认位置';
+
+  @override
+  String get accessibilityCameraFocus => '相机已聚焦于最近的天体';
+
+  @override
+  String get accessibilityCameraFollow => '相机现在跟随选定的天体';
+
+  @override
+  String get accessibilityCameraUnfollow => '相机停止跟随天体';
+
+  @override
+  String accessibilityTutorialProgress(
+    int currentStep,
+    int totalSteps,
+    String stepName,
+  ) {
+    return '教程步骤$currentStep/$totalSteps：$stepName';
+  }
+
+  @override
+  String accessibilityError(String errorMessage) {
+    return '错误：$errorMessage';
+  }
+
+  @override
+  String accessibilitySettingEnabled(String settingName) {
+    return '$settingName已启用';
+  }
+
+  @override
+  String accessibilitySettingDisabled(String settingName) {
+    return '$settingName已禁用';
   }
 }

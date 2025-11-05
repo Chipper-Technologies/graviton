@@ -21,6 +21,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetButton => 'Reset';
 
   @override
+  String get resetSettingsDescription => 'Reset all settings to default values';
+
+  @override
   String get speedLabel => 'Speed';
 
   @override
@@ -30,7 +33,109 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statsLabel => 'Stats';
 
   @override
-  String get selectLabel => 'Select';
+  String get bottomNavCameraLabel => 'Camera';
+
+  @override
+  String get bottomNavVisualsLabel => 'Visuals';
+
+  @override
+  String get bottomNavPhysicsLabel => 'Physics';
+
+  @override
+  String get cameraTooltip => 'Camera settings and AI modes';
+
+  @override
+  String get visualsTooltip => 'Visual display options';
+
+  @override
+  String get physicsTooltip => 'Physics visualization and settings';
+
+  @override
+  String get aiCameraModesTitle => 'AI Camera Modes';
+
+  @override
+  String get manualControlTitle => 'Manual Control';
+
+  @override
+  String get manualControlDescription => 'Full manual camera control';
+
+  @override
+  String get predictiveOrbitalTitle => 'Predictive Orbital';
+
+  @override
+  String get predictiveOrbitalDescription =>
+      'AI predicts optimal orbital views';
+
+  @override
+  String get dynamicFramingTitle => 'Dynamic Framing';
+
+  @override
+  String get dynamicFramingDescription => 'AI dynamically frames all objects';
+
+  @override
+  String get manualControlsTitle => 'Manual Controls';
+
+  @override
+  String get selectNearestTitle => 'Select Nearest';
+
+  @override
+  String get stopFollowTitle => 'Stop Follow';
+
+  @override
+  String get followTitle => 'Follow';
+
+  @override
+  String get centerViewTitle => 'Center View';
+
+  @override
+  String get stopRotateTitle => 'Stop Rotate';
+
+  @override
+  String get autoRotateTitle => 'Auto Rotate';
+
+  @override
+  String get displayOptionsTitle => 'Display Options';
+
+  @override
+  String get showTrailsTitle => 'Show Trails';
+
+  @override
+  String get showLabelsTitle => 'Show Labels';
+
+  @override
+  String get realisticColorsTitle => 'Realistic Colors';
+
+  @override
+  String get physicsVisualizationTitle => 'Physics Visualization';
+
+  @override
+  String get gravityFieldsTitle => 'Gravity Fields';
+
+  @override
+  String get gravityFieldsDescription =>
+      'Show gravitational field visualization';
+
+  @override
+  String get debugStatisticsTitle => 'Debug & Statistics';
+
+  @override
+  String get showStatisticsTitle => 'Show Statistics';
+
+  @override
+  String get showStatisticsDescription =>
+      'Display performance and physics stats';
+
+  @override
+  String get currentStatisticsTitle => 'Current Statistics';
+
+  @override
+  String get bodiesStatLabel => 'Bodies';
+
+  @override
+  String get timeScaleStatLabel => 'Time Scale';
+
+  @override
+  String get selectedStatLabel => 'Selected';
 
   @override
   String get followLabel => 'Follow';
@@ -83,10 +188,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectObjectToFollowTooltip => 'Select Object to Follow';
 
   @override
-  String get settingsTitle => 'Settings';
+  String get settingsTitle => 'Application Settings';
 
   @override
-  String get settingsTooltip => 'Settings';
+  String get settingsTooltip => 'Application Settings';
 
   @override
   String get selectScenarioTooltip => 'Select Scenario';
@@ -113,6 +218,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get simulationSpeed => 'Simulation Speed';
 
   @override
+  String get simulationSpeedHint =>
+      'Adjust simulation speed from 0.1x to 16x normal speed. Use arrow keys to change in small increments.';
+
+  @override
   String get collisionsSection => 'Collisions';
 
   @override
@@ -131,10 +240,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hapticsSection => 'Haptics';
 
   @override
+  String get uiHapticFeedback => 'UI Haptic Feedback';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      'Enable haptic feedback for UI interactions like button taps, toggles, and navigation';
+
+  @override
+  String get collisionHapticFeedback => 'Collision Haptic Feedback';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      'Enable haptic feedback when celestial bodies collide during simulation';
+
+  @override
   String get vibrationEnabled => 'Vibration Enabled';
 
   @override
   String get hapticFeedbackCollisions => 'Haptic feedback on collisions';
+
+  @override
+  String get hapticFeedbackDescription =>
+      'Enable haptic feedback for UI interactions and collisions';
 
   @override
   String get vibrationThrottle => 'Vibration Throttle';
@@ -147,6 +274,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpMenuDescription => 'Tutorial & objectives';
+
+  @override
+  String get aboutMenuDescription => 'App information & credits';
 
   @override
   String get showTrails => 'Show Trails';
@@ -212,6 +342,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statusPaused => 'Paused';
 
   @override
+  String get statusStopped => 'Stopped';
+
+  @override
+  String get statusError => 'Error';
+
+  @override
   String get cameraLabel => 'Camera';
 
   @override
@@ -225,6 +361,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get autoRotateOff => 'Off';
+
+  @override
+  String get yawLabel => 'Yaw';
+
+  @override
+  String get pitchLabel => 'Pitch';
+
+  @override
+  String get rollLabel => 'Roll';
+
+  @override
+  String get zoomLabel => 'Zoom';
 
   @override
   String get cameraControlsLabel => 'Camera Controls';
@@ -289,6 +437,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String speedFormatted(String speed) {
     return '${speed}x';
   }
+
+  @override
+  String get speedQuarter => 'Quarter Speed';
+
+  @override
+  String get speedHalf => 'Half Speed';
+
+  @override
+  String get speedNormal => 'Normal';
+
+  @override
+  String get speedDouble => 'Double';
+
+  @override
+  String get speedFast => 'Fast';
+
+  @override
+  String get speedVeryFast => 'Very Fast';
+
+  @override
+  String get speedMaximum => 'Maximum';
 
   @override
   String bodiesCount(int count) {
@@ -357,6 +526,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get scenarioSolarSystemDescription =>
       'Simplified version of our solar system with inner and outer planets';
+
+  @override
+  String get scenarioSpecial => 'Special Scenario';
+
+  @override
+  String get scenarioSpecialDescription =>
+      'Special scenario for screenshot mode';
 
   @override
   String get habitabilityLabel => 'Habitability';
@@ -438,6 +614,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutButtonTooltip => 'About';
 
   @override
+  String get backButtonTooltip => 'Back';
+
+  @override
   String get appNameGraviton => 'Graviton';
 
   @override
@@ -447,7 +626,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loadingVersion => 'Loading version...';
 
   @override
-  String get companyName => 'Chipper Technologies, LLC';
+  String get companyName => 'Chipper Technologies LLC';
 
   @override
   String get gravityWellsLabel => 'Gravity Wells';
@@ -455,6 +634,63 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get gravityWellsDescription =>
       'Show gravitational field strength around objects';
+
+  @override
+  String get globalGravityFieldsLabel => 'Global Gravity Fields';
+
+  @override
+  String get globalGravityFieldsDescription =>
+      'Enable gravity field visualization for all massive objects';
+
+  @override
+  String get gravityFieldColorSchemeLabel => 'Gravity Field Colors';
+
+  @override
+  String get gravityFieldColorSchemeDescription =>
+      'Choose the color scheme for gravitational field visualization';
+
+  @override
+  String get gravityColorSchemeClassic => 'Classic';
+
+  @override
+  String get gravityColorSchemeSpectral => 'Spectral';
+
+  @override
+  String get gravityColorSchemeMonochrome => 'Monochrome';
+
+  @override
+  String get gravityColorSchemeNeon => 'Neon';
+
+  @override
+  String get gravityColorSchemeEmerald => 'Emerald';
+
+  @override
+  String get gravityFieldStrengthLabel => 'Field Strength';
+
+  @override
+  String get gravityFieldStrengthUnit => 'm/s²';
+
+  @override
+  String gravityFieldStrengthFormatted(String strength, String unit) {
+    return '$strength $unit';
+  }
+
+  @override
+  String get equipotentialSurfacesLabel => 'Equipotential Surfaces';
+
+  @override
+  String get equipotentialSurfacesDescription =>
+      'Show surfaces of equal gravitational potential energy';
+
+  @override
+  String get gravityFieldIndicatorsLabel => 'Field Strength Indicators';
+
+  @override
+  String get gravityFieldIndicatorsDescription =>
+      'Show visual indicators of gravitational field strength';
+
+  @override
+  String get toggleGravityFieldsTooltip => 'Toggle Gravity Fields';
 
   @override
   String get languageLabel => 'Language';
@@ -683,6 +919,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get hideUIInScreenshotModeSubtitle =>
       'Hide app bar, bottom navigation, and copyright when screenshot mode is active';
+
+  @override
+  String screenshotCountdown(int seconds) {
+    return 'Screenshot in ${seconds}s';
+  }
 
   @override
   String get scenePreset => 'Scene Preset';
@@ -1052,7 +1293,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changelogResetMessage => 'Changelog state has been reset';
 
   @override
-  String get changelogDebugTitle => 'Changelog (Debug)';
+  String get changelogDebugTitle => 'Changelog';
 
   @override
   String changelogNotFoundError(String version) {
@@ -1062,5 +1303,395 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String changelogLoadError(String error) {
     return 'Failed to load changelog: $error';
+  }
+
+  @override
+  String get noChangelogsAvailable => 'No changelogs available';
+
+  @override
+  String errorLoadingChangelogs(String error) {
+    return 'Error loading changelogs: $error';
+  }
+
+  @override
+  String get stellarColorBlue => 'Blue';
+
+  @override
+  String get stellarColorBlueWhite => 'Blue-white';
+
+  @override
+  String get stellarColorWhite => 'White';
+
+  @override
+  String get stellarColorYellowWhite => 'Yellow-white';
+
+  @override
+  String get stellarColorYellow => 'Yellow';
+
+  @override
+  String get stellarColorOrange => 'Orange';
+
+  @override
+  String get stellarColorRed => 'Red';
+
+  @override
+  String get pathVisualizationTitle => 'Path Visualization';
+
+  @override
+  String get navigationAidsTitle => 'Navigation Aids';
+
+  @override
+  String get gravityFieldClassicLabel => 'Classic';
+
+  @override
+  String get gravityFieldSpectralLabel => 'Spectral';
+
+  @override
+  String get gravityFieldMonochromeLabel => 'Monochrome';
+
+  @override
+  String get gravityFieldNeonLabel => 'Neon';
+
+  @override
+  String get gravityFieldEmeraldLabel => 'Emerald';
+
+  @override
+  String get appInformationCredits => 'App information and credits';
+
+  @override
+  String get developerToolsTitle => 'Developer Tools';
+
+  @override
+  String get developerToolsMenuDescription => 'Debug tools for development';
+
+  @override
+  String get tutorialDescription => 'Interactive guided tour of the app';
+
+  @override
+  String get resetTutorialDescription => 'Reset tutorial progress';
+
+  @override
+  String get changelogDescription => 'View app updates and changes';
+
+  @override
+  String get resetChangelogDescription => 'Reset changelog read status';
+
+  @override
+  String get tutorialResetSuccess => 'Tutorial progress has been reset';
+
+  @override
+  String get changelogResetSuccess => 'Changelog status has been reset';
+
+  @override
+  String get copyrightLabel => 'Copyright';
+
+  @override
+  String get allRightsReserved => 'All rights reserved';
+
+  @override
+  String get bodyTypeStar => 'Star';
+
+  @override
+  String get bodyTypePlanet => 'Planet';
+
+  @override
+  String get bodyTypeMoon => 'Moon';
+
+  @override
+  String get bodyTypeAsteroid => 'Asteroid';
+
+  @override
+  String get appFlavorDevelopment => 'Development';
+
+  @override
+  String get appFlavorProduction => 'Production';
+
+  @override
+  String get notificationTypeError => 'Error';
+
+  @override
+  String get notificationTypeWarning => 'Warning';
+
+  @override
+  String get notificationTypeInfo => 'Info';
+
+  @override
+  String get notificationTypeSuccess => 'Success';
+
+  @override
+  String get notificationTypeDebug => 'Debug';
+
+  @override
+  String get trackingModeFull => 'Full Tracking';
+
+  @override
+  String get trackingModeEssential => 'Essential Only';
+
+  @override
+  String get trackingModeNone => 'No Tracking';
+
+  @override
+  String get trackingModeLimited => 'Limited Tracking';
+
+  @override
+  String get trackingModeFullDescription =>
+      'All analytics, crashes, and interactions';
+
+  @override
+  String get trackingModeEssentialDescription =>
+      'Critical crashes and errors only';
+
+  @override
+  String get trackingModeNoneDescription => 'No data collection';
+
+  @override
+  String get trackingModeLimitedDescription => 'User interactions only';
+
+  @override
+  String get changelogCategoryAdded => 'Added';
+
+  @override
+  String get changelogCategoryImproved => 'Improved';
+
+  @override
+  String get changelogCategoryFixed => 'Fixed';
+
+  @override
+  String get cameraManual => 'Manual Control';
+
+  @override
+  String get cameraPredictiveOrbital => 'Predictive Orbital';
+
+  @override
+  String get cameraDynamicFraming => 'Dynamic Framing';
+
+  @override
+  String get cameraManualDescription =>
+      'Traditional manual camera controls with follow mode';
+
+  @override
+  String get cameraPredictiveOrbitalDescription =>
+      'AI predicts orbital paths for dramatic camera movements';
+
+  @override
+  String get cameraDynamicFramingDescription =>
+      'Automatically adjusts framing based on scene content';
+
+  @override
+  String get fullscreenMode => 'Fullscreen Mode';
+
+  @override
+  String get fullscreenModeDescription =>
+      'Hide all UI elements for immersive viewing';
+
+  @override
+  String get tapToToggleFullscreen => 'Tap to toggle fullscreen';
+
+  @override
+  String get exitFullscreenHint => 'Tap anywhere to exit fullscreen';
+
+  @override
+  String get simulationCanvasLabel => 'Gravitational Physics Simulation';
+
+  @override
+  String get simulationCanvasHint =>
+      'Use keyboard shortcuts to control simulation. Space to pause, R to reset, C to center camera';
+
+  @override
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  ) {
+    return 'Gravitational simulation with $bodyCount celestial bodies. Status: $status. Speed: $speed. Steps: $steps';
+  }
+
+  @override
+  String get noBodiesInSimulation =>
+      'No celestial bodies currently in the simulation';
+
+  @override
+  String bodiesInSimulation(String descriptions) {
+    return 'Bodies in simulation: $descriptions';
+  }
+
+  @override
+  String cameraFreeDescription(String distance, String rotation) {
+    return 'Camera in free mode at distance $distance. Auto-rotation: $rotation';
+  }
+
+  @override
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  ) {
+    return 'Camera following $bodyName at distance $distance. Auto-rotation: $rotation';
+  }
+
+  @override
+  String get autoRotateActive => 'active';
+
+  @override
+  String get autoRotateInactive => 'inactive';
+
+  @override
+  String liveUpdateAnnouncement(String updateType, String value) {
+    return '$updateType changed to $value';
+  }
+
+  @override
+  String get keyboardShortcutsHint =>
+      'Use Space to pause/resume, R to reset, C to center camera, A to toggle auto-rotation';
+
+  @override
+  String physicsStatsDescription(String time, String earthYears, int steps) {
+    return 'Physics: $time time units, $earthYears Earth years, $steps simulation steps completed';
+  }
+
+  @override
+  String get toggleAutoRotateAction => 'Toggle auto-rotation';
+
+  @override
+  String get zoomInAction => 'Zoom in';
+
+  @override
+  String get zoomOutAction => 'Zoom out';
+
+  @override
+  String get expandedState => 'expanded';
+
+  @override
+  String get collapsedState => 'collapsed';
+
+  @override
+  String get currentScenario => 'Current scenario';
+
+  @override
+  String get scenariosAvailable => 'scenarios available';
+
+  @override
+  String get bottomSheetLabel => 'Bottom sheet';
+
+  @override
+  String get gravitationalSimulationLabel => 'Gravitational Physics Simulation';
+
+  @override
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  ) {
+    return 'Gravitational simulation with $bodyCount celestial bodies. Status: $status. Speed: $speed. Steps completed: $stepCount. Tap to interact with simulation or use keyboard shortcuts.';
+  }
+
+  @override
+  String get accessibilitySimulationStarted => 'Simulation started';
+
+  @override
+  String get accessibilitySimulationStartedContext =>
+      'Celestial bodies are now in motion';
+
+  @override
+  String get accessibilitySimulationPaused => 'Simulation paused';
+
+  @override
+  String get accessibilitySimulationPausedContext =>
+      'All celestial bodies have stopped moving';
+
+  @override
+  String get accessibilitySimulationResumed => 'Simulation resumed';
+
+  @override
+  String get accessibilitySimulationResumedContext =>
+      'Celestial bodies are moving again';
+
+  @override
+  String get accessibilitySimulationStopped => 'Simulation stopped';
+
+  @override
+  String get accessibilitySimulationStoppedContext =>
+      'All celestial bodies have been reset';
+
+  @override
+  String get accessibilitySimulationReset => 'Simulation reset';
+
+  @override
+  String get accessibilitySimulationResetContext =>
+      'New scenario loaded with fresh celestial bodies';
+
+  @override
+  String accessibilityMergeEvent(String body1, String body2) {
+    return 'Collision detected: $body1 merged with $body2';
+  }
+
+  @override
+  String get accessibilityMergeEventContext =>
+      'The combined mass creates a new celestial body';
+
+  @override
+  String accessibilityScenarioChange(String scenarioName) {
+    return 'Scenario changed to $scenarioName';
+  }
+
+  @override
+  String get accessibilityScenarioChangeContext =>
+      'New celestial bodies and physics parameters loaded';
+
+  @override
+  String accessibilitySpeedChange(String newValue) {
+    return 'Simulation speed changed to $newValue';
+  }
+
+  @override
+  String accessibilityGravityChange(String newValue) {
+    return 'Gravity strength changed to $newValue';
+  }
+
+  @override
+  String accessibilityCollisionRadiusChange(String newValue) {
+    return 'Collision sensitivity changed to $newValue';
+  }
+
+  @override
+  String get accessibilityCameraReset =>
+      'Camera view reset to default position';
+
+  @override
+  String get accessibilityCameraFocus =>
+      'Camera focused on nearest celestial body';
+
+  @override
+  String get accessibilityCameraFollow =>
+      'Camera now following selected celestial body';
+
+  @override
+  String get accessibilityCameraUnfollow =>
+      'Camera stopped following celestial body';
+
+  @override
+  String accessibilityTutorialProgress(
+    int currentStep,
+    int totalSteps,
+    String stepName,
+  ) {
+    return 'Tutorial step $currentStep of $totalSteps: $stepName';
+  }
+
+  @override
+  String accessibilityError(String errorMessage) {
+    return 'Error: $errorMessage';
+  }
+
+  @override
+  String accessibilitySettingEnabled(String settingName) {
+    return '$settingName enabled';
+  }
+
+  @override
+  String accessibilitySettingDisabled(String settingName) {
+    return '$settingName disabled';
   }
 }

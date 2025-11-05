@@ -19,44 +19,34 @@ void main() {
       );
     });
 
-    test('displayName should return correct strings', () {
+    test('localizationKey should return correct keys', () {
       expect(
-        CinematicCameraTechnique.manual.displayName,
-        equals('Manual Control'),
+        CinematicCameraTechnique.manual.localizationKey,
+        equals('cameraManual'),
       );
       expect(
-        CinematicCameraTechnique.predictiveOrbital.displayName,
-        equals('Predictive Orbital'),
+        CinematicCameraTechnique.predictiveOrbital.localizationKey,
+        equals('cameraPredictiveOrbital'),
       );
       expect(
-        CinematicCameraTechnique.dynamicFraming.displayName,
-        equals('Dynamic Framing'),
+        CinematicCameraTechnique.dynamicFraming.localizationKey,
+        equals('cameraDynamicFraming'),
       );
     });
 
-    test('description should return descriptive strings', () {
-      // Test that all descriptions are non-empty and descriptive
-      for (final technique in CinematicCameraTechnique.values) {
-        final description = technique.description;
-        expect(description, isNotNull);
-        expect(description, isNotEmpty);
-        expect(description, isA<String>());
-        // Descriptions should be longer than display names
-        expect(description.length, greaterThan(technique.displayName.length));
-      }
-
-      // Test specific descriptions
+    test('descriptionKey should return correct keys', () {
+      // Test specific description keys
       expect(
-        CinematicCameraTechnique.manual.description,
-        equals('Traditional manual camera controls with follow mode'),
+        CinematicCameraTechnique.manual.descriptionKey,
+        equals('cameraManualDescription'),
       );
       expect(
-        CinematicCameraTechnique.predictiveOrbital.description,
-        equals('AI predicts orbital paths for dramatic camera movements'),
+        CinematicCameraTechnique.predictiveOrbital.descriptionKey,
+        equals('cameraPredictiveOrbitalDescription'),
       );
       expect(
-        CinematicCameraTechnique.dynamicFraming.description,
-        equals('Automatically adjusts framing based on scene content'),
+        CinematicCameraTechnique.dynamicFraming.descriptionKey,
+        equals('cameraDynamicFramingDescription'),
       );
     });
 
@@ -161,23 +151,24 @@ void main() {
       }
     });
 
-    test('displayName and description pairs should be consistent', () {
+    test('localization keys should be consistent', () {
       for (final technique in CinematicCameraTechnique.values) {
-        final displayName = technique.displayName;
-        final description = technique.description;
+        final localizationKey = technique.localizationKey;
+        final descriptionKey = technique.descriptionKey;
 
         // Both should be non-empty
-        expect(displayName, isNotEmpty);
-        expect(description, isNotEmpty);
+        expect(localizationKey, isNotEmpty);
+        expect(descriptionKey, isNotEmpty);
 
-        // Description should be longer and more detailed
-        expect(description.length, greaterThan(displayName.length));
+        // Description key should be longer and contain 'Description'
+        expect(descriptionKey.length, greaterThan(localizationKey.length));
+        expect(descriptionKey, contains('Description'));
 
-        // Display name should use title case
-        expect(displayName, matches(RegExp(r'^[A-Z]')));
+        // Localization key should start with 'camera'
+        expect(localizationKey, matches(RegExp(r'^camera')));
 
-        // Description should start with uppercase and be sentence-like
-        expect(description, matches(RegExp(r'^[A-Z]')));
+        // Description key should match the pattern
+        expect(descriptionKey, equals('${localizationKey}Description'));
       }
     });
   });

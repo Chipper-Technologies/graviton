@@ -3,6 +3,10 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/changelog.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/common/dialog_title.dart';
+import 'package:graviton/widgets/common/haptic_elevated_button.dart';
+import 'package:graviton/widgets/common/haptic_icon_button.dart';
 import 'package:intl/intl.dart';
 
 /// Dialog that displays changelogs with swipe navigation
@@ -96,7 +100,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
             ),
-            child: GestureDetector(
+            child: HapticGestureDetector(
               onPanEnd: (details) {
                 // Detect swipe direction
                 if (details.velocity.pixelsPerSecond.dx > 300) {
@@ -157,8 +161,12 @@ class _ChangelogDialogState extends State<ChangelogDialog>
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryColor.withValues(alpha: 0.15),
-            AppColors.spaceVibrantPurple.withValues(alpha: 0.05),
+            AppColors.primaryColor.withValues(
+              alpha: AppTypography.opacityMidFade,
+            ),
+            AppColors.spaceVibrantPurple.withValues(
+              alpha: AppTypography.opacityBarely,
+            ),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -172,23 +180,16 @@ class _ChangelogDialogState extends State<ChangelogDialog>
       child: Column(
         children: [
           // Title row with close button
-          Row(
-            children: [
-              Icon(Icons.assignment, color: AppColors.primaryColor, size: 28),
-              SizedBox(width: AppTypography.spacingMedium),
-              Text(
-                l10n.changelogTitle,
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Spacer(),
-              IconButton(
-                onPressed: _skip,
-                icon: const Icon(Icons.close),
-                tooltip: l10n.closeDialog,
-              ),
-            ],
+          DialogTitle(
+            title: l10n.changelogTitle,
+            icon: Icons.assignment,
+            iconColor: AppColors.primaryColor,
+            iconSize: AppTypography.iconSizeXXXLarge,
+            trailing: HapticIconButton(
+              onPressed: _skip,
+              icon: const Icon(Icons.close),
+              tooltip: l10n.closeDialog,
+            ),
           ),
 
           SizedBox(height: AppTypography.spacingMedium),
@@ -197,10 +198,14 @@ class _ChangelogDialogState extends State<ChangelogDialog>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: AppColors.primaryColor.withValues(alpha: 0.1),
+              color: AppColors.primaryColor.withValues(
+                alpha: AppTypography.opacitySubtle,
+              ),
               borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
               border: Border.all(
-                color: AppColors.primaryColor.withValues(alpha: 0.3),
+                color: AppColors.primaryColor.withValues(
+                  alpha: AppTypography.opacityFaint,
+                ),
               ),
             ),
             child: Column(
@@ -213,11 +218,13 @@ class _ChangelogDialogState extends State<ChangelogDialog>
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTypography.spacingXSmall),
                 Text(
                   '${l10n.versionLabel} ${changelog.version} • ${dateFormat.format(changelog.releaseDate)}',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.primaryColor.withValues(alpha: 0.8),
+                    color: AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityVeryHigh,
+                    ),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -246,11 +253,11 @@ class _ChangelogDialogState extends State<ChangelogDialog>
               Icons.add_circle,
               AppColors.uiGreen,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTypography.spacingSmall),
             ...changelog.addedFeatures.map(
               (entry) => _buildChangelogEntry(context, entry),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTypography.spacingLarge),
           ],
 
           // Improvements
@@ -261,11 +268,11 @@ class _ChangelogDialogState extends State<ChangelogDialog>
               Icons.trending_up,
               AppColors.spaceVibrantPurple,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTypography.spacingSmall),
             ...changelog.improvements.map(
               (entry) => _buildChangelogEntry(context, entry),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTypography.spacingLarge),
           ],
 
           // Fixes
@@ -276,7 +283,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
               Icons.bug_report,
               AppColors.uiOrange,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTypography.spacingSmall),
             ...changelog.fixes.map(
               (entry) => _buildChangelogEntry(context, entry),
             ),
@@ -298,7 +305,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
       padding: const EdgeInsets.only(top: 8),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: color),
+          Icon(icon, size: AppTypography.iconSizeXLarge, color: color),
           const SizedBox(width: 8),
           Text(
             title,
@@ -325,7 +332,9 @@ class _ChangelogDialogState extends State<ChangelogDialog>
             height: 4,
             margin: const EdgeInsets.only(top: 8, right: 12),
             decoration: BoxDecoration(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              color: theme.colorScheme.onSurface.withValues(
+                alpha: AppTypography.opacityMediumHigh,
+              ),
               shape: BoxShape.circle,
             ),
           ),
@@ -340,11 +349,13 @@ class _ChangelogDialogState extends State<ChangelogDialog>
                   ),
                 ),
                 if (entry.description != null) ...[
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTypography.spacingXSmall),
                   Text(
                     entry.description!,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                      color: theme.colorScheme.onSurface.withValues(
+                        alpha: AppTypography.opacityVeryHigh,
+                      ),
                     ),
                   ),
                 ],
@@ -364,14 +375,14 @@ class _ChangelogDialogState extends State<ChangelogDialog>
         Row(
           children: [
             // Previous button (chevron left)
-            IconButton(
+            HapticIconButton(
               onPressed: _currentIndex < widget.changelogs.length - 1
                   ? _previousChangelog
                   : null,
               style: IconButton.styleFrom(
                 foregroundColor: AppColors.primaryColor,
                 disabledForegroundColor: AppColors.uiTextGrey.withValues(
-                  alpha: 0.3,
+                  alpha: AppTypography.opacityFaint,
                 ),
               ),
               icon: const Icon(Icons.chevron_left),
@@ -380,12 +391,12 @@ class _ChangelogDialogState extends State<ChangelogDialog>
                   : null,
             ),
             // Next button (chevron right)
-            IconButton(
+            HapticIconButton(
               onPressed: _currentIndex > 0 ? _nextChangelog : null,
               style: IconButton.styleFrom(
                 foregroundColor: AppColors.primaryColor,
                 disabledForegroundColor: AppColors.uiTextGrey.withValues(
-                  alpha: 0.3,
+                  alpha: AppTypography.opacityFaint,
                 ),
               ),
               icon: Icon(Icons.chevron_right),
@@ -397,7 +408,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
         ),
 
         // Done button on the right
-        ElevatedButton(
+        HapticElevatedButton(
           onPressed: _complete,
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primaryColor,

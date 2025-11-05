@@ -26,6 +26,7 @@ class AppTypography {
   // =============================================================================
 
   /// UI opacity levels for common interface elements
+  static const double opacityBarely = 0.05; // Very subtle effects
   static const double opacityDisabled = 0.1;
   static const double opacityVeryFaint = 0.2;
   static const double opacityFaint = 0.3;
@@ -38,8 +39,10 @@ class AppTypography {
   static const double opacityFull = 1.0;
 
   /// Additional specialized opacity values for visual effects
+  static const double opacitySubtle = 0.1; // Very subtle background color
   static const double opacityMidFade = 0.15; // Between disabled and very faint
   static const double opacityLowMedium = 0.25; // Between very faint and faint
+  static const double opacityAlmostOpaque = 0.95; // Nearly fully opaque
   static const double opacityTransparent = 0.0; // Fully transparent
 
   // =============================================================================
@@ -52,6 +55,8 @@ class AppTypography {
   static const double iconSizeLarge = 18.0;
   static const double iconSizeXLarge = 20.0;
   static const double iconSizeXXLarge = 24.0;
+  static const double iconSizeXXXLarge = 28.0;
+  static const double iconSizeXXXXLarge = 48.0;
 
   // =============================================================================
   // SPACING & DIMENSIONS

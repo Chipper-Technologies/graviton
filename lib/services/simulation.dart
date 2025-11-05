@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Chipper Technologies, LLC. All rights reserved.
+// Copyright (c) 2025 Chipper Technologies LLC. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/services/accessibility_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
@@ -19,7 +20,7 @@ import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/services/stellar_color_service.dart';
 import 'package:graviton/services/temperature_service.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
-import 'package:vibration/vibration.dart';
+import 'package:graviton/services/haptic_feedback_service.dart';
 
 /// Core physics simulation for Graviton
 class Simulation {
@@ -52,7 +53,6 @@ class Simulation {
   final AsteroidBeltSystem asteroidBelt = AsteroidBeltSystem();
   final AsteroidBeltSystem kuiperBelt = AsteroidBeltSystem();
 
-  double _timeSinceLastVibe = 0; // throttle vibration
   final ScenarioService _scenarioService = ScenarioService();
   final HabitableZoneService _habitableZoneService = HabitableZoneService();
   ScenarioType _currentScenario = ScenarioType.random;
@@ -70,8 +70,20 @@ class Simulation {
   // Track if we're in a legitimate reset operation to avoid aggressive trail clearing
   bool _isResetting = false;
 
+  // Change tracking for painter optimization
+  int _changeCounter = 0;
+
   Simulation() {
     reset();
+  }
+
+  /// Get a change counter that increments whenever simulation state changes
+  /// This helps painters determine if they need to repaint
+  int get changeCounter => _changeCounter;
+
+  /// Increment the change counter to signal state has changed
+  void _markChanged() {
+    _changeCounter++;
   }
 
   /// Get the current scenario type
@@ -200,9 +212,9 @@ class Simulation {
 
     trails = List.generate(bodies.length, (_) => <TrailPoint>[]);
     mergeFlashes.clear();
-    _timeSinceLastVibe = 0;
 
     _isResetting = false; // Reset operation complete
+    _markChanged(); // Signal state has changed
 
     // Initialize belt systems based on scenario
     if (scenario == ScenarioType.asteroidBelt) {
@@ -425,13 +437,13 @@ class Simulation {
 
     mergeFlashes.removeWhere((f) => f.age > SimulationConstants.flashDuration);
 
-    // update vibration throttle
-    _timeSinceLastVibe += dt;
+    _markChanged(); // Signal trail update
   }
 
   // --- Physics (RK4) ---------------------------------------------------------
 
   void stepRK4(double dt) {
+    _markChanged(); // Signal physics state change
     final n = bodies.length;
     final initPos = [for (var b in bodies) b.position.clone()];
     final initVel = [for (var b in bodies) b.velocity.clone()];
@@ -625,8 +637,12 @@ class Simulation {
   }
 
   void _merge(int i, int j) {
+    _markChanged(); // Signal merge event
     final b1 = bodies[i];
     final b2 = bodies[j];
+
+    // Announce collision to screen readers
+    AccessibilityService.instance.announceMergeEvent(b1.name, b2.name);
 
     final m = b1.mass + b2.mass;
     final p =
@@ -740,39 +756,8 @@ class Simulation {
   }
 
   void _vibrateForEnergy(double energy) {
-    // Normalize via log to keep in reasonable range, clamp to [0.1, 1.0]
-    final intensity =
-        (math.log(1 + energy) /
-                SimulationConstants.vibrationIntensityLogDivisor)
-            .clamp(
-              SimulationConstants.vibrationIntensityMin,
-              SimulationConstants.vibrationIntensityMax,
-            );
-
-    final duration =
-        (SimulationConstants.vibrationDurationMin +
-                (SimulationConstants.vibrationDurationMax -
-                        SimulationConstants.vibrationDurationMin) *
-                    intensity)
-            .toInt();
-
-    final amplitude =
-        (SimulationConstants.vibrationAmplitudeMin +
-                (SimulationConstants.vibrationAmplitudeMax -
-                        SimulationConstants.vibrationAmplitudeMin) *
-                    intensity)
-            .clamp(0, 255)
-            .toInt();
-
-    // throttle to at most one vibration per throttle time
-    if (!vibrationEnabled || _timeSinceLastVibe < vibrationThrottleTime) return;
-    _timeSinceLastVibe = 0;
-
-    Vibration.hasVibrator().then((has) {
-      if (has == true) {
-        Vibration.vibrate(duration: duration, amplitude: amplitude);
-      }
-    });
+    // Use the new energy-scaled collision haptic feedback service
+    HapticFeedbackService.instance.collisionWithEnergy(energy);
   }
 
   Color _blendColor(Color a, Color b, double t) {
@@ -941,14 +926,8 @@ class Simulation {
 
   /// Strong vibration for black hole absorption events
   void _vibrateForBlackHoleAbsorption() async {
-    final hasVibrator = await Vibration.hasVibrator();
-    if (hasVibrator == true) {
-      // Strong, dramatic vibration pattern for black hole absorption
-      Vibration.vibrate(
-        pattern: [0, 200, 100, 300], // Strong double pulse
-        intensities: [0, 255, 0, 255], // Maximum intensity
-      );
-    }
+    // Use collision haptic feedback for black hole absorption
+    HapticFeedbackService.instance.collisionVibrate();
   }
 
   /// Update temperatures for all bodies (throttled for performance)

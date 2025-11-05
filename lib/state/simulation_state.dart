@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/firebase_event.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/enums/simulation_status.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/merge_flash.dart';
 import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/models/trail_point.dart';
+import 'package:graviton/services/accessibility_service.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/services/simulation.dart' as physics;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,8 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SimulationState extends ChangeNotifier {
   final physics.Simulation _simulation = physics.Simulation();
 
-  bool _isRunning = false;
-  bool _isPaused = false;
+  SimulationStatus _status = SimulationStatus.stopped;
   double _timeScale = 8.0;
   int _stepCount = 0;
   double _totalTime = 0.0;
@@ -110,8 +112,9 @@ class SimulationState extends ChangeNotifier {
 
   // Getters
   physics.Simulation get simulation => _simulation;
-  bool get isRunning => _isRunning;
-  bool get isPaused => _isPaused;
+  SimulationStatus get status => _status;
+  bool get isRunning => _status.isAdvancing;
+  bool get isPaused => _status == SimulationStatus.paused;
   double get timeScale => _timeScale;
   int get stepCount => _stepCount;
   double get totalTime => _totalTime;
@@ -126,25 +129,57 @@ class SimulationState extends ChangeNotifier {
 
   // Physics control
   void start() {
-    _isRunning = true;
-    FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationStarted);
-    notifyListeners();
+    if (_status.canStart) {
+      _status = SimulationStatus.running;
+
+      // Provide haptic feedback for simulation start
+      HapticFeedbackService.instance.lightImpact();
+
+      // Announce state change to screen readers
+      AccessibilityService.instance.announceSimulationStateChange('started');
+
+      FirebaseService.instance.logEventWithEnum(
+        FirebaseEvent.simulationStarted,
+      );
+      notifyListeners();
+    }
   }
 
   void pause() {
-    _isPaused = !_isPaused;
-    FirebaseService.instance.logEventWithEnum(
-      _isPaused
-          ? FirebaseEvent.simulationPaused
-          : FirebaseEvent.simulationResumed,
-    );
+    if (_status.canPause) {
+      _status = SimulationStatus.paused;
+
+      // Provide haptic feedback for simulation pause
+      HapticFeedbackService.instance.selectionClick();
+
+      // Announce state change to screen readers
+      AccessibilityService.instance.announceSimulationStateChange('paused');
+
+      FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationPaused);
+    } else if (_status.canResume) {
+      _status = SimulationStatus.running;
+
+      // Provide haptic feedback for simulation resume
+      HapticFeedbackService.instance.lightImpact();
+
+      // Announce state change to screen readers
+      AccessibilityService.instance.announceSimulationStateChange('resumed');
+
+      FirebaseService.instance.logEventWithEnum(
+        FirebaseEvent.simulationResumed,
+      );
+    }
     notifyListeners();
   }
 
   /// Pause the simulation if it's currently running
   void pauseSimulation() {
-    if (_isRunning && !_isPaused) {
-      _isPaused = true;
+    if (_status.canPause) {
+      _status = SimulationStatus.paused;
+
+      // Provide haptic feedback for explicit pause
+      HapticFeedbackService.instance.selectionClick();
+
       FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationPaused);
       notifyListeners();
     }
@@ -152,8 +187,12 @@ class SimulationState extends ChangeNotifier {
 
   /// Resume the simulation if it's currently paused
   void resumeSimulation() {
-    if (_isRunning && _isPaused) {
-      _isPaused = false;
+    if (_status.canResume) {
+      _status = SimulationStatus.running;
+
+      // Provide haptic feedback for explicit resume
+      HapticFeedbackService.instance.lightImpact();
+
       FirebaseService.instance.logEventWithEnum(
         FirebaseEvent.simulationResumed,
       );
@@ -162,8 +201,11 @@ class SimulationState extends ChangeNotifier {
   }
 
   void stop() {
-    _isRunning = false;
-    _isPaused = false;
+    _status = SimulationStatus.stopped;
+
+    // Provide haptic feedback for simulation stop
+    HapticFeedbackService.instance.mediumImpact();
+
     FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationStopped);
     notifyListeners();
   }
@@ -175,6 +217,9 @@ class SimulationState extends ChangeNotifier {
     _simulation.reset(); // This will use the current scenario
     _stepCount = 0;
     _totalTime = 0.0;
+
+    // Provide haptic feedback for simulation reset
+    HapticFeedbackService.instance.heavyImpact();
 
     FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationReset);
     notifyListeners();
@@ -190,6 +235,12 @@ class SimulationState extends ChangeNotifier {
     bool preserveCustomSettings = false,
   }) {
     stop();
+
+    // Provide haptic feedback for scenario switching
+    HapticFeedbackService.instance.mediumImpact();
+
+    // Announce scenario change to screen readers
+    AccessibilityService.instance.announceScenarioChange(scenario.name);
 
     // Reset physics simulation to the specified scenario
     _simulation.resetWithScenario(
@@ -228,7 +279,24 @@ class SimulationState extends ChangeNotifier {
   }
 
   void setTimeScale(double scale) {
+    final oldScale = _timeScale;
     _timeScale = scale.clamp(0.1, 16.0);
+
+    // Provide haptic feedback for significant speed changes
+    final scaleChange = (_timeScale - oldScale).abs();
+    if (scaleChange > 1.0) {
+      // Major speed change
+      HapticFeedbackService.instance.mediumImpact();
+    } else if (scaleChange > 0.5) {
+      // Moderate speed change
+      HapticFeedbackService.instance.lightImpact();
+    }
+
+    // Special feedback for reaching extremes
+    if (_timeScale >= 16.0 || _timeScale <= 0.1) {
+      HapticFeedbackService.instance.heavyImpact();
+    }
+
     _saveSetting(_keyTimeScale, _timeScale);
     FirebaseService.instance.logSettingsChange('time_scale', _timeScale);
     notifyListeners();
@@ -237,6 +305,11 @@ class SimulationState extends ChangeNotifier {
   /// Update realistic colors setting in the simulation
   void setUseRealisticColors(bool useRealisticColors) {
     _simulation.setUseRealisticColors(useRealisticColors);
+  }
+
+  /// Update vibration setting in the simulation
+  void setVibrationEnabled(bool enabled) {
+    _simulation.setVibrationEnabled(enabled);
   }
 
   /// Apply physics settings to the simulation
@@ -253,7 +326,7 @@ class SimulationState extends ChangeNotifier {
   }
 
   void step(double deltaTime) {
-    if (_isRunning && !_isPaused) {
+    if (_status.isAdvancing) {
       const baseDt = 1 / 240.0;
       int steps = (_timeScale * 4).clamp(1, 48).toInt();
       for (int i = 0; i < steps; i++) {

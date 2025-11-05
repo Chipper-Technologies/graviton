@@ -206,4 +206,28 @@ class PhysicsUtils {
 
     return totalMomentum;
   }
+
+  /// Calculate total gravitational acceleration for a body from all other bodies
+  /// Used by orbital prediction engines and N-body simulations
+  static vm.Vector3 calculateTotalGravitationalAcceleration(
+    vm.Vector3 bodyPosition,
+    double bodyMass, // Not used in calculation but included for completeness
+    List<vm.Vector3> otherPositions,
+    List<double> otherMasses, {
+    double softening = SimulationConstants.softening,
+  }) {
+    vm.Vector3 totalAcceleration = vm.Vector3.zero();
+
+    for (int i = 0; i < otherPositions.length; i++) {
+      final acceleration = calculateGravitationalAcceleration(
+        bodyPosition,
+        otherPositions[i],
+        otherMasses[i],
+        softening: softening,
+      );
+      totalAcceleration += acceleration;
+    }
+
+    return totalAcceleration;
+  }
 }
