@@ -29,8 +29,8 @@ class SemanticCameraControls extends StatelessWidget {
     if (l10n == null) return child;
 
     final autoRotateText = autoRotate
-        ? l10n.autoRotateTitle
-        : l10n.autoRotateTitle;
+        ? l10n.autoRotateActive
+        : l10n.autoRotateInactive;
     final distanceText = l10n.distanceFormatted(
       cameraDistance.toStringAsFixed(1),
     );

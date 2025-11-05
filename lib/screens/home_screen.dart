@@ -66,6 +66,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late final Ticker _ticker;
   Offset? _lastPan;
   late final List<StarData> _stars = StarGenerator.generateStars(
@@ -421,10 +422,13 @@ class _HomeScreenState extends State<HomeScreen>
       },
       onOpenSettings: () {
         // Open the end drawer if not already open
-        if (Scaffold.of(context).isEndDrawerOpen) {
-          Navigator.of(context).pop();
-        } else {
-          Scaffold.of(context).openEndDrawer();
+        final scaffoldState = _scaffoldKey.currentState;
+        if (scaffoldState != null) {
+          if (scaffoldState.isEndDrawerOpen) {
+            Navigator.of(context).pop();
+          } else {
+            scaffoldState.openEndDrawer();
+          }
         }
       },
     );
@@ -872,6 +876,7 @@ class _HomeScreenState extends State<HomeScreen>
             appState.ui.isFullscreen;
 
         return Scaffold(
+          key: _scaffoldKey,
           endDrawer: OptionsDrawer(
             onShowHelp: () => _showHelpScreen(context),
             onShowSettings: () => _showApplicationSettingsScreen(context),
