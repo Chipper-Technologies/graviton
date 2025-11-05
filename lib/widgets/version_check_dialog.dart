@@ -4,6 +4,8 @@ import 'package:graviton/services/version_service.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
+import 'package:graviton/widgets/common/haptic_elevated_button.dart';
+import 'package:graviton/widgets/common/haptic_text_button.dart';
 
 /// Dialog that prompts users to update when they're running an outdated version
 class VersionCheckDialog extends StatelessWidget {
@@ -79,7 +81,7 @@ class VersionCheckDialog extends StatelessWidget {
         actions: [
           // Show "Later" button only for non-enforced updates
           if (!isEnforced)
-            TextButton(
+            HapticTextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
                 l10n.updateLater,
@@ -90,7 +92,7 @@ class VersionCheckDialog extends StatelessWidget {
                 ),
               ),
             ),
-          ElevatedButton(
+          HapticElevatedButton(
             onPressed: () async {
               if (isEnforced) {
                 // Don't close dialog for enforced updates - just launch store

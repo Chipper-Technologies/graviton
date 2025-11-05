@@ -4,6 +4,7 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/platform_utils.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
@@ -30,7 +31,6 @@ class PhysicsControls extends StatelessWidget {
         right: AppTypography.spacingXLarge,
         top: AppTypography.spacingLarge,
         bottom:
-            AppTypography.spacingXLarge +
             PlatformUtils.getBottomSheetSystemBarPadding(), // Platform-specific padding for system bar
       ),
       children: [
@@ -265,11 +265,12 @@ class PhysicsControls extends StatelessWidget {
           icon: Icons.analytics,
           isEnabled: appState.ui.showStats,
           onChanged: (_) => appState.ui.toggleStats(),
+          isLast: !appState.ui.showStats, // Only last when stats are hidden
         ),
 
-        SizedBox(height: AppTypography.spacingXXLarge),
-
         if (appState.ui.showStats) ...[
+          SizedBox(height: AppTypography.spacingXXLarge),
+
           SectionTitle(title: l10n.currentStatisticsTitle),
           SizedBox(height: AppTypography.spacingMedium),
 
@@ -354,7 +355,7 @@ class PhysicsControls extends StatelessWidget {
       margin: EdgeInsets.only(bottom: AppTypography.spacingXSmall),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
+        child: HapticInkWell(
           onTap: () {
             final colorScheme = GravityFieldColorScheme.values.firstWhere(
               (e) => e.name == scheme,
@@ -434,7 +435,7 @@ class PhysicsControls extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: AppTypography.spacingXSmall),
         child: Material(
           color: Colors.transparent,
-          child: InkWell(
+          child: HapticInkWell(
             onTap: () => appState.simulation.setTimeScale(speed),
             borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
             child: Container(

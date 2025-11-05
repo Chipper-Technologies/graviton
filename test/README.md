@@ -5,43 +5,68 @@ This document describes the organization of tests in the Graviton project. The t
 ## Test Coverage Summary
 
 **Current Coverage: High coverage across all critical components**
-- ✅ **788+ passing tests** with comprehensive coverage across all test categories
+- ✅ **2190+ passing tests** with comprehensive coverage across all test categories
 - ✅ **Integration Tests**: Complete end-to-end app functionality testing with robust timer management
 - ✅ **Models**: Complete coverage for all data models including physics, screenshots, and celestial bodies
-- ✅ **Services**: Comprehensive service layer testing including Firebase, camera control, and physics
-- ✅ **State Management**: Full coverage for app, UI, simulation, camera, and physics state
-- ✅ **Utilities**: Complete coverage for physics calculations, rendering utilities, and test helpers
+- ✅ **Services**: Comprehensive service layer testing including Firebase, camera control, physics, and fullscreen management
+- ✅ **State Management**: Full coverage for app, UI, simulation, camera, physics, and fullscreen state
+- ✅ **Utilities**: Complete coverage for physics calculations, rendering utilities, fullscreen coordination, and test helpers
 - ✅ **Painters**: Tests for all rendering components including gravity, trails, and effects
 - ✅ **Widgets**: UI component tests with internationalization support for all dialogs and overlays
-- ✅ **Features**: Comprehensive testing of advanced features like cinematic cameras and galaxy formation
+- ✅ **Features**: Comprehensive testing of advanced features like cinematic cameras, galaxy formation, and fullscreen mode
 - ✅ **Enums & Constants**: Validation of enumeration types and configuration constants
 
 ## Directory Structure
 
 ```
 test/
-├── 📱 core/                # Core application functionality
+├── ⚙️ config/             # Configuration management tests
+├── � constants/           # Constants and configuration tests
+├── �📱 core/              # Core application functionality
+├── � debug/               # Debug utilities and development tools
+├── � demos/               # Demo scripts and examples
+├── �️ enums/               # Enumeration tests
 ├── 🚀 features/            # Feature-specific tests
-├── 🌌 scenarios/           # Simulation scenario tests
-├── 🎭 demos/               # Demo scripts and examples
 ├── 🔧 integration/         # Integration tests
 ├── 📊 models/              # Data model tests
 ├── 🎨 painters/            # Rendering and painting tests
-├── 🔌 services/            # Service layer tests
-├── 🎯 state/               # State management tests
-├── 🛠 utils/               # Utility function tests
-├── 🎪 widgets/             # UI widget tests
-├── 🏷️ enums/               # Enumeration tests
-└── 📐 constants/           # Constants and configuration tests
+├── 🌌 scenarios/           # Simulation scenario tests
+├── 📱 screens/             # Screen-level component tests
+├── � services/             # Service layer tests
+├── � state/                # State management tests
+├── � theme/                # Theming and visual styling tests
+├── � utils/                # Utility function tests
+└── 🎪 widgets/             # UI widget tests
 ```
 
 ## Test Categories
+
+### ⚙️ Config (`test/config/`)
+Tests for configuration management:
+- `flavor_config_test.dart` - Application flavor configuration testing
+
+### � Constants (`test/constants/`)
+Tests for application constants and configuration values:
+- `rendering_constants_test.dart` - Rendering system constants validation
 
 ### 📱 Core (`test/core/`)
 Tests for fundamental app functionality:
 - `initialization_test.dart` - App startup and initialization
 
-### 🚀 Features (`test/features/`)
+### 🐛 Debug (`test/debug/`)
+Tests for debugging utilities and development tools:
+- Debug helpers and development-only functionality (directory currently empty)
+
+### � Demos (`test/demos/`)
+Demonstration scripts and examples:
+- `demo_auto_zoom.dart` - Auto zoom feature demonstration
+- `demo_enhanced_zoom.dart` - Enhanced zoom feature demonstration
+
+### 🏷️ Enums (`test/enums/`)
+Tests for enumeration types and their behaviors:
+- `cinematic_camera_technique_test.dart` - Cinematic camera technique validation
+
+### � Features (`test/features/`)
 Tests for specific app features and capabilities:
 - `auto_zoom_test.dart` - Automatic zoom functionality
 - `cinematic_camera_integration_test.dart` - Cinematic camera system integration
@@ -61,18 +86,20 @@ Tests for specific simulation scenarios:
 - `earth_moon_sun_test.dart` - Earth-Moon-Sun system simulation
 - `solar_system_test.dart` - Solar system simulation
 
-### �️ Enums (`test/enums/`)
-Tests for enumeration types and their behaviors:
-- `cinematic_camera_technique_test.dart` - Cinematic camera technique validation
+### 📱 Screens (`test/screens/`)
+Tests for screen-level components and navigation:
+- `about_screen_test.dart` - About screen functionality
+- `application_settings_screen_haptic_test.dart` - Application settings with haptic feedback (NEW)
+- `application_settings_screen_test.dart` - Application settings screen
+- `developer_tools_screen_test.dart` - Developer tools interface
+- `help_screen_test.dart` - Help and documentation screen
+- `physics_settings_screen_test.dart` - Physics settings configuration
+- `scenario_selection_screen_test.dart` - Scenario selection interface
 
-### 📐 Constants (`test/constants/`)
-Tests for application constants and configuration values:
-- `rendering_constants_test.dart` - Rendering system constants validation
-
-### �🎭 Demos (`test/demos/`)
-Demonstration scripts and examples:
-- `demo_auto_zoom.dart` - Auto zoom feature demonstration
-- `demo_enhanced_zoom.dart` - Enhanced zoom feature demonstration
+### 🎨 Theme (`test/theme/`)
+Tests for theming and visual styling:
+- `app_colors_test.dart` - Application color scheme testing
+- `app_constraints_test.dart` - Layout constraint testing
 
 ### 🔧 Integration (`test/integration/`)
 End-to-end integration tests with robust timer and state management:
@@ -114,6 +141,7 @@ Tests for rendering and visual components:
 Tests for service layer components:
 - `cinematic_camera_controller_test.dart` - Cinematic camera control system
 - `firebase_service_test.dart` - Firebase analytics and crashlytics integration
+- `fullscreen_service_test.dart` - Fullscreen system UI management (NEW)
 - `orbital_prediction_engine_test.dart` - Orbital prediction and trajectory analysis
 - `remote_config_service_test.dart` - Remote configuration management
 - `scenario_service_test.dart` - Scenario management
@@ -133,10 +161,12 @@ Tests for state management:
 - `physics_state_test.dart` - Physics state management
 - `simulation_state_test.dart` - Simulation state management
 - `ui_state_test.dart` - UI state and preferences
+- `ui_state_fullscreen_test.dart` - Fullscreen UI state management (NEW)
 
 ### 🛠 Utils (`test/utils/`)
 Tests for utility functions and test infrastructure:
 - `collision_utils_test.dart` - Collision detection utilities
+- `fullscreen_utils_test.dart` - Fullscreen mode coordination utilities (NEW)
 - `painter_utils_test.dart` - Painting helper functions
 - `physics_utils_test.dart` - Physics calculations
 - `random_utils_test.dart` - Random number generation

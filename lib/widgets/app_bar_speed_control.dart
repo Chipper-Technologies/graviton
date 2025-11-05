@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/speed_preset.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -35,7 +36,10 @@ class AppBarSpeedControl extends StatelessWidget {
           ),
           child: PopupMenuButton<double>(
             tooltip: l10n.speedLabel,
-            onSelected: (value) => appState.simulation.setTimeScale(value),
+            onSelected: (value) {
+              HapticFeedbackService.instance.selection();
+              appState.simulation.setTimeScale(value);
+            },
             itemBuilder: (context) => SpeedPreset.values
                 .map(
                   (preset) => _buildSpeedMenuItem(

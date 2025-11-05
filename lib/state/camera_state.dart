@@ -8,6 +8,7 @@ import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/utils/safe_haptic_feedback.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Manages camera and 3D view state
@@ -136,6 +137,10 @@ class CameraState extends ChangeNotifier {
     if (bodyIndex >= 0 && bodyIndex < bodies.length) {
       _target = bodies[bodyIndex].position.clone();
       _selectedBody = bodyIndex;
+
+      // Haptic feedback for camera focus
+      SafeHapticFeedback.selectionClick();
+
       FirebaseService.instance.logUIEventWithEnums(
         UIAction.cameraFocus,
         element: UIElement.body,
@@ -169,6 +174,9 @@ class CameraState extends ChangeNotifier {
         _selectedBody! >= 0 &&
         _selectedBody! < bodies.length) {
       _followMode = !_followMode;
+
+      // Haptic feedback for follow mode toggle
+      SafeHapticFeedback.lightImpact();
 
       if (_followMode) {
         _followedBodyIndex = _selectedBody;
@@ -225,6 +233,9 @@ class CameraState extends ChangeNotifier {
   }
 
   void resetView([ScenarioType? scenario]) {
+    // Haptic feedback for camera reset
+    SafeHapticFeedback.mediumImpact();
+
     if (scenario == ScenarioType.galaxyFormation) {
       // Special camera settings for galaxy formation
       _yaw = 0.77; // Perfect yaw for horizontal galaxy view
@@ -379,6 +390,9 @@ class CameraState extends ChangeNotifier {
   void toggleAutoRotate() {
     _autoRotate = _autoRotate.toggle;
 
+    // Haptic feedback for auto-rotate toggle
+    SafeHapticFeedback.lightImpact();
+
     FirebaseService.instance.logUIEventWithEnums(
       UIAction.autoRotateToggle,
       element: UIElement.cameraControls,
@@ -390,6 +404,9 @@ class CameraState extends ChangeNotifier {
 
   void toggleInvertPitch() {
     _invertPitch = !_invertPitch;
+
+    // Haptic feedback for invert pitch toggle
+    SafeHapticFeedback.lightImpact();
 
     FirebaseService.instance.logUIEventWithEnums(
       UIAction.invertPitchToggle,

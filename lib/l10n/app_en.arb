@@ -369,14 +369,39 @@
     "description": "Haptics section header in simulation settings"
   },
   
+  "uiHapticFeedback": "UI Haptic Feedback",
+  "@uiHapticFeedback": {
+    "description": "Label for UI haptic feedback toggle"
+  },
+  
+  "uiHapticFeedbackDescription": "Enable haptic feedback for UI interactions like button taps, toggles, and navigation",
+  "@uiHapticFeedbackDescription": {
+    "description": "Detailed description for UI haptic feedback setting"
+  },
+  
+  "collisionHapticFeedback": "Collision Haptic Feedback",
+  "@collisionHapticFeedback": {
+    "description": "Label for collision haptic feedback toggle"
+  },
+  
+  "collisionHapticFeedbackDescription": "Enable haptic feedback when celestial bodies collide during simulation",
+  "@collisionHapticFeedbackDescription": {
+    "description": "Detailed description for collision haptic feedback setting"
+  },
+  
   "vibrationEnabled": "Vibration Enabled",
   "@vibrationEnabled": {
-    "description": "Label for vibration enabled toggle"
+    "description": "Legacy label for vibration enabled toggle"
   },
   
   "hapticFeedbackCollisions": "Haptic feedback on collisions",
   "@hapticFeedbackCollisions": {
-    "description": "Description for vibration enabled toggle"
+    "description": "Legacy description for vibration enabled toggle"
+  },
+  
+  "hapticFeedbackDescription": "Enable haptic feedback for UI interactions and collisions",
+  "@hapticFeedbackDescription": {
+    "description": "Legacy detailed description for haptic feedback setting"
   },
   
   "vibrationThrottle": "Vibration Throttle",
@@ -933,6 +958,11 @@
   "aboutButtonTooltip": "About",
   "@aboutButtonTooltip": {
     "description": "Tooltip for the about button"
+  },
+  
+  "backButtonTooltip": "Back",
+  "@backButtonTooltip": {
+    "description": "Tooltip for the back navigation button"
   },
   
   "appNameGraviton": "Graviton",
@@ -2168,5 +2198,25 @@
   "cameraDynamicFramingDescription": "Automatically adjusts framing based on scene content",
   "@cameraDynamicFramingDescription": {
     "description": "Description for dynamic framing camera technique"
+  },
+
+  "fullscreenMode": "Fullscreen Mode",
+  "@fullscreenMode": {
+    "description": "Title for fullscreen mode"
+  },
+
+  "fullscreenModeDescription": "Hide all UI elements for immersive viewing",
+  "@fullscreenModeDescription": {
+    "description": "Description for fullscreen mode functionality"
+  },
+
+  "tapToToggleFullscreen": "Tap to toggle fullscreen",
+  "@tapToToggleFullscreen": {
+    "description": "Hint text for fullscreen toggle gesture"
+  },
+
+  "exitFullscreenHint": "Tap anywhere to exit fullscreen",
+  "@exitFullscreenHint": {
+    "description": "Hint shown when in fullscreen mode"
   }
 }

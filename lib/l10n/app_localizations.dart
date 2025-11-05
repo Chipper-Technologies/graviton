@@ -552,17 +552,47 @@ abstract class AppLocalizations {
   /// **'Haptics'**
   String get hapticsSection;
 
-  /// Label for vibration enabled toggle
+  /// Label for UI haptic feedback toggle
+  ///
+  /// In en, this message translates to:
+  /// **'UI Haptic Feedback'**
+  String get uiHapticFeedback;
+
+  /// Detailed description for UI haptic feedback setting
+  ///
+  /// In en, this message translates to:
+  /// **'Enable haptic feedback for UI interactions like button taps, toggles, and navigation'**
+  String get uiHapticFeedbackDescription;
+
+  /// Label for collision haptic feedback toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Collision Haptic Feedback'**
+  String get collisionHapticFeedback;
+
+  /// Detailed description for collision haptic feedback setting
+  ///
+  /// In en, this message translates to:
+  /// **'Enable haptic feedback when celestial bodies collide during simulation'**
+  String get collisionHapticFeedbackDescription;
+
+  /// Legacy label for vibration enabled toggle
   ///
   /// In en, this message translates to:
   /// **'Vibration Enabled'**
   String get vibrationEnabled;
 
-  /// Description for vibration enabled toggle
+  /// Legacy description for vibration enabled toggle
   ///
   /// In en, this message translates to:
   /// **'Haptic feedback on collisions'**
   String get hapticFeedbackCollisions;
+
+  /// Legacy detailed description for haptic feedback setting
+  ///
+  /// In en, this message translates to:
+  /// **'Enable haptic feedback for UI interactions and collisions'**
+  String get hapticFeedbackDescription;
 
   /// Label for vibration throttle slider
   ///
@@ -1193,6 +1223,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'About'**
   String get aboutButtonTooltip;
+
+  /// Tooltip for the back navigation button
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get backButtonTooltip;
 
   /// The name of the application
   ///
@@ -2765,6 +2801,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Automatically adjusts framing based on scene content'**
   String get cameraDynamicFramingDescription;
+
+  /// Title for fullscreen mode
+  ///
+  /// In en, this message translates to:
+  /// **'Fullscreen Mode'**
+  String get fullscreenMode;
+
+  /// Description for fullscreen mode functionality
+  ///
+  /// In en, this message translates to:
+  /// **'Hide all UI elements for immersive viewing'**
+  String get fullscreenModeDescription;
+
+  /// Hint text for fullscreen toggle gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to toggle fullscreen'**
+  String get tapToToggleFullscreen;
+
+  /// Hint shown when in fullscreen mode
+  ///
+  /// In en, this message translates to:
+  /// **'Tap anywhere to exit fullscreen'**
+  String get exitFullscreenHint;
 }
 
 class _AppLocalizationsDelegate

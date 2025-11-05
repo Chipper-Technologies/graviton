@@ -10,6 +10,7 @@ import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/color_utils.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Overlay that shows arrows pointing to off-screen bodies
@@ -41,7 +42,7 @@ class OffScreenIndicatorsOverlay extends StatelessWidget {
           return Positioned(
             left: indicator.position.dx - 20, // 20 = tap area radius
             top: indicator.position.dy - 20,
-            child: GestureDetector(
+            child: HapticGestureDetector(
               onTap: () {
                 FirebaseService.instance.logUIEventWithEnums(
                   UIAction.tap,

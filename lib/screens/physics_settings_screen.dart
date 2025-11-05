@@ -5,7 +5,8 @@ import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/action_option.dart';
-import 'package:graviton/widgets/common/slider_option.dart';
+import 'package:graviton/widgets/common/haptic_app_bar.dart';
+import 'package:graviton/widgets/common/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:graviton/widgets/section_title.dart';
 
@@ -82,14 +83,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        title: Text(l10n.physicsSettingsTitle),
-        backgroundColor: AppColors.uiBlack.withValues(
-          alpha: AppTypography.opacityNearlyOpaque,
-        ),
-        foregroundColor: AppColors.uiWhite,
-        elevation: 0,
-      ),
+      appBar: HapticAppBar(title: l10n.physicsSettingsTitle),
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
@@ -110,7 +104,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                         SectionTitle(title: l10n.physicsSection),
                         SizedBox(height: AppTypography.spacingMedium),
 
-                        SliderOption.detailed(
+                        HapticSliderOption.detailed(
                           label: l10n.gravitationalConstant,
                           value: _gravitationalConstant,
                           min: 0.1,
@@ -124,7 +118,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                           formatter: (value) => value.toStringAsFixed(2),
                         ),
 
-                        SliderOption.detailed(
+                        HapticSliderOption.detailed(
                           label: l10n.softeningParameter,
                           value: _softening,
                           min: 0.01,
@@ -138,7 +132,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                           formatter: (value) => value.toStringAsFixed(3),
                         ),
 
-                        SliderOption.detailed(
+                        HapticSliderOption.detailed(
                           label: l10n.simulationSpeed,
                           value: _timeScale,
                           min: 0.1,
@@ -158,7 +152,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                         SectionTitle(title: l10n.collisionsSection),
                         const SizedBox(height: 16),
 
-                        SliderOption.detailed(
+                        HapticSliderOption.detailed(
                           label: l10n.collisionSensitivity,
                           value: _collisionRadiusMultiplier,
                           min: 0.05,
@@ -179,7 +173,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                         SectionTitle(title: l10n.trailsSection),
                         const SizedBox(height: 16),
 
-                        SliderOption.detailed(
+                        HapticSliderOption.detailed(
                           label: l10n.trailLength,
                           value: _maxTrailPoints,
                           min: 50,
@@ -193,13 +187,13 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                           formatter: (value) => value.toStringAsFixed(0),
                         ),
 
-                        SliderOption.detailed(
+                        HapticSliderOption.detailed(
                           label: l10n.trailFadeRate,
                           value: _trailFadeRate,
                           min: 0.1,
                           max: 2.0,
                           divisions: 19,
-                          icon: Icons.opacity,
+                          icon: Icons.blur_linear,
                           onChanged: (value) {
                             setState(() => _trailFadeRate = value);
                             _updateSettings();
@@ -226,7 +220,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
 
                         if (_vibrationEnabled) ...[
                           const SizedBox(height: 16),
-                          SliderOption.detailed(
+                          HapticSliderOption.detailed(
                             label: l10n.vibrationThrottle,
                             value: _vibrationThrottleTime,
                             min: 0.05,

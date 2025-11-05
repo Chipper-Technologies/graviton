@@ -73,8 +73,8 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Should have section titles
-        expect(find.byType(SectionTitle), findsOneWidget);
+        // Should have section titles (language settings and haptic feedback)
+        expect(find.byType(SectionTitle), findsNWidgets(2));
 
         // Should have language icon
         expect(find.byIcon(Icons.language), findsOneWidget);
@@ -385,7 +385,8 @@ void main() {
         await tester.pumpAndSettle();
 
         // Should have proper semantic structure with headers and content
-        expect(find.byType(SectionTitle), findsOneWidget);
+        // (language settings and haptic feedback sections)
+        expect(find.byType(SectionTitle), findsNWidgets(2));
         expect(find.byType(Text), findsWidgets);
         expect(find.byIcon(Icons.language), findsOneWidget);
       });

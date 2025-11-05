@@ -238,11 +238,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get hapticsSection => 'Hápticos';
 
   @override
+  String get uiHapticFeedback => 'Retroalimentación Háptica de UI';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      'Habilitar retroalimentación háptica para interacciones de UI como toques de botones, interruptores y navegación';
+
+  @override
+  String get collisionHapticFeedback =>
+      'Retroalimentación Háptica de Colisiones';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      'Habilitar retroalimentación háptica cuando los cuerpos celestes colisionan durante la simulación';
+
+  @override
   String get vibrationEnabled => 'Vibración habilitada';
 
   @override
   String get hapticFeedbackCollisions =>
       'Retroalimentación háptica en colisiones';
+
+  @override
+  String get hapticFeedbackDescription =>
+      'Habilitar retroalimentación háptica para interacciones de UI y colisiones';
 
   @override
   String get vibrationThrottle => 'Control de vibración';
@@ -595,6 +614,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get aboutButtonTooltip => 'Acerca de';
+
+  @override
+  String get backButtonTooltip => 'Atrás';
 
   @override
   String get appNameGraviton => 'Graviton';
@@ -1470,4 +1492,18 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get cameraDynamicFramingDescription =>
       'Ajusta automáticamente el encuadre basado en el contenido de la escena';
+
+  @override
+  String get fullscreenMode => 'Modo Pantalla Completa';
+
+  @override
+  String get fullscreenModeDescription =>
+      'Ocultar todos los elementos de la UI para una visualización inmersiva';
+
+  @override
+  String get tapToToggleFullscreen => 'Toca para alternar pantalla completa';
+
+  @override
+  String get exitFullscreenHint =>
+      'Toca en cualquier lugar para salir del modo pantalla completa';
 }

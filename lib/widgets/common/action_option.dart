@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
 
 /// A reusable action option widget with consistent styling
 /// Used across dialogs for actionable items with arrow indicators
@@ -26,7 +27,7 @@ class ActionOption extends StatelessWidget {
       margin: EdgeInsets.only(bottom: AppTypography.spacingMedium),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
+        child: HapticInkWell(
           onTap: onPressed,
           borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
           child: Container(

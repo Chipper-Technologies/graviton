@@ -15,6 +15,7 @@ import 'package:graviton/models/changelog.dart';
 import 'package:graviton/painters/graviton_painter.dart';
 import 'package:graviton/services/cinematic_camera_controller.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/services/changelog_service.dart';
 import 'package:graviton/services/version_service.dart';
@@ -28,6 +29,10 @@ import 'package:graviton/widgets/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
 import 'package:graviton/widgets/persistent_bottom_sheet.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/common/haptic_icon_button.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/common/haptic_text_button.dart';
 import 'package:graviton/screens/developer_tools_screen.dart';
 import 'package:graviton/screens/help_screen.dart';
 import 'package:graviton/screens/application_settings_screen.dart';
@@ -43,6 +48,8 @@ import 'package:graviton/widgets/version_check_dialog.dart';
 import 'package:graviton/widgets/tutorial_overlay.dart';
 import 'package:graviton/widgets/app_bar_speed_control.dart';
 import 'package:graviton/services/onboarding_service.dart';
+import 'package:graviton/services/fullscreen_service.dart';
+import 'package:graviton/utils/fullscreen_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
@@ -114,6 +121,13 @@ class _HomeScreenState extends State<HomeScreen>
     _floatingControlsTimer?.cancel();
     _screenshotModeService.removeListener(_onScreenshotModeChanged);
     WidgetsBinding.instance.removeObserver(this);
+
+    // Ensure fullscreen mode is exited when screen is disposed
+    // Use FullscreenService directly to avoid Provider access on disposed context
+    if (FullscreenService.instance.isFullscreen) {
+      FullscreenService.instance.exitFullscreen();
+    }
+
     super.dispose();
   }
 
@@ -194,6 +208,10 @@ class _HomeScreenState extends State<HomeScreen>
             l10n,
           );
         } else {
+          // Toggle fullscreen mode on tap
+          _handleFullscreenToggle(appState);
+
+          // Also select object at tap location (existing behavior)
           _selectObjectAtTapLocation(appState, size, tapPosition);
         }
       }
@@ -375,6 +393,25 @@ class _HomeScreenState extends State<HomeScreen>
         SystemUiMode.edgeToEdge,
         overlays: SystemUiOverlay.values, // Show all system UI
       );
+    }
+  }
+
+  /// Handle fullscreen mode toggle
+  void _handleFullscreenToggle(AppState appState) async {
+    try {
+      await FullscreenUtils.toggleFullscreen(appState);
+
+      // Log the fullscreen toggle event
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.tap,
+        element: UIElement.simulationViewport,
+        value: appState.ui.isFullscreen
+            ? 'enter_fullscreen'
+            : 'exit_fullscreen',
+      );
+    } catch (e) {
+      debugPrint('Error toggling fullscreen: $e');
+      // Optionally show user feedback here
     }
   }
 
@@ -732,7 +769,7 @@ class _HomeScreenState extends State<HomeScreen>
                 'No changelog available for version $currentVersion',
               ),
               actions: [
-                TextButton(
+                HapticTextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text('Close'),
                 ),
@@ -786,8 +823,9 @@ class _HomeScreenState extends State<HomeScreen>
         });
 
         final shouldHideUI =
-            _screenshotModeService.isActive &&
-            appState.ui.hideUIInScreenshotMode;
+            (_screenshotModeService.isActive &&
+                appState.ui.hideUIInScreenshotMode) ||
+            appState.ui.isFullscreen;
 
         return Scaffold(
           endDrawer: OptionsDrawer(
@@ -806,21 +844,34 @@ class _HomeScreenState extends State<HomeScreen>
                   title: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        width: 28,
-                        height: 28,
-                        margin: const EdgeInsets.only(right: 8),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColors.uiWhite.withValues(
-                              alpha: AppTypography.opacityVeryFaint,
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedbackService.instance.lightImpact();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AboutScreen(),
                             ),
-                            width: 1.5,
-                          ),
-                          image: DecorationImage(
-                            image: AssetImage(AppConfig.appLogoPath),
-                            fit: BoxFit.cover,
+                          );
+                        },
+                        child: Tooltip(
+                          message: l10n.aboutButtonTooltip,
+                          child: Container(
+                            width: 28,
+                            height: 28,
+                            margin: const EdgeInsets.only(right: 8),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacityVeryFaint,
+                                ),
+                                width: 1.5,
+                              ),
+                              image: DecorationImage(
+                                image: AssetImage(AppConfig.appLogoPath),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -841,7 +892,7 @@ class _HomeScreenState extends State<HomeScreen>
 
                     // Options drawer toggle
                     Builder(
-                      builder: (context) => IconButton(
+                      builder: (context) => HapticIconButton(
                         icon: const Icon(Icons.menu),
                         tooltip: l10n.moreOptionsTooltip,
                         onPressed: () => Scaffold.of(context).openEndDrawer(),
@@ -854,7 +905,7 @@ class _HomeScreenState extends State<HomeScreen>
               final size = Size(constraints.maxWidth, constraints.maxHeight);
               final view = _buildView();
 
-              return GestureDetector(
+              return HapticGestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTapUp: (details) {
                   // Show floating controls on tap
@@ -1127,7 +1178,7 @@ class _HomeScreenState extends State<HomeScreen>
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // Previous button
-                IconButton(
+                HapticIconButton(
                   onPressed: () async {
                     screenshotService.previousPreset();
                     await screenshotService.applyCurrentPreset(
@@ -1156,7 +1207,7 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
 
                 // Next button
-                IconButton(
+                HapticIconButton(
                   onPressed: () async {
                     screenshotService.nextPreset();
                     await screenshotService.applyCurrentPreset(
@@ -1236,6 +1287,9 @@ class _HomeScreenState extends State<HomeScreen>
           _buildCircularControlButton(
             icon: appState.simulation.isPaused ? Icons.play_arrow : Icons.pause,
             onPressed: () {
+              // Provide haptic feedback for play/pause button
+              HapticFeedbackService.instance.light();
+
               // Reset floating controls timer when button is pressed
               _showFloatingControlsTemporarily();
 
@@ -1258,6 +1312,9 @@ class _HomeScreenState extends State<HomeScreen>
           _buildCircularControlButton(
             icon: Icons.refresh,
             onPressed: () {
+              // Provide medium haptic feedback for reset button (more significant action)
+              HapticFeedbackService.instance.medium();
+
               // Reset floating controls timer when button is pressed
               _showFloatingControlsTemporarily();
 
@@ -1296,7 +1353,7 @@ class _HomeScreenState extends State<HomeScreen>
       preferBelow: false,
       child: Material(
         color: AppColors.transparentColor,
-        child: InkWell(
+        child: HapticInkWell(
           onTap: onPressed,
           borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
           splashColor: AppColors.primaryColor.withValues(

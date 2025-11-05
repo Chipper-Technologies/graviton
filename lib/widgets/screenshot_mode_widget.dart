@@ -4,6 +4,7 @@ import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_icon_button.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:provider/provider.dart';
 
@@ -141,7 +142,7 @@ class ScreenshotModeWidget extends StatelessWidget {
                         Row(
                           children: [
                             // Previous button
-                            IconButton(
+                            HapticIconButton(
                               onPressed: () =>
                                   screenshotService.previousPreset(),
                               icon: const Icon(Icons.arrow_back_ios),
@@ -206,7 +207,7 @@ class ScreenshotModeWidget extends StatelessWidget {
                             ),
 
                             // Next button
-                            IconButton(
+                            HapticIconButton(
                               onPressed: () => screenshotService.nextPreset(),
                               icon: const Icon(Icons.arrow_forward_ios),
                               tooltip: l10n.nextPreset,

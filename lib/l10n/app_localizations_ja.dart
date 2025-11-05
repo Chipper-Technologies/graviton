@@ -231,10 +231,27 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hapticsSection => 'ハプティクス';
 
   @override
+  String get uiHapticFeedback => 'UIハプティックフィードバック';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      'ボタンタップ、トグル、ナビゲーションなどのUIインタラクションのハプティックフィードバックを有効にする';
+
+  @override
+  String get collisionHapticFeedback => '衝突ハプティックフィードバック';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      'シミュレーション中に天体が衝突したときのハプティックフィードバックを有効にする';
+
+  @override
   String get vibrationEnabled => '振動有効';
 
   @override
   String get hapticFeedbackCollisions => '衝突時のハプティックフィードバック';
+
+  @override
+  String get hapticFeedbackDescription => 'UIインタラクションと衝突のハプティックフィードバックを有効にする';
 
   @override
   String get vibrationThrottle => '振動スロットル';
@@ -569,6 +586,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get aboutButtonTooltip => 'について';
+
+  @override
+  String get backButtonTooltip => '戻る';
 
   @override
   String get appNameGraviton => 'Graviton';
@@ -1397,4 +1417,16 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get cameraDynamicFramingDescription => 'シーンコンテンツに基づいてフレーミングを自動調整';
+
+  @override
+  String get fullscreenMode => 'フルスクリーンモード';
+
+  @override
+  String get fullscreenModeDescription => '没入感のある表示のためにすべてのUI要素を非表示にする';
+
+  @override
+  String get tapToToggleFullscreen => 'タップしてフルスクリーンを切り替え';
+
+  @override
+  String get exitFullscreenHint => 'フルスクリーンモードを終了するには任意の場所をタップ';
 }

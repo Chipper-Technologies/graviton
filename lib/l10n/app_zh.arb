@@ -160,6 +160,7 @@
   "authorLabel": "作者",
   "websiteLabel": "网站",
   "aboutButtonTooltip": "关于",
+  "backButtonTooltip": "返回",
   "appNameGraviton": "Graviton",
   "versionLabel": "版本",
   "loadingVersion": "加载版本中...",
@@ -348,8 +349,13 @@
   "trailLength": "轨迹长度",
   "trailFadeRate": "轨迹淡化率",
   "hapticsSection": "触觉反馈",
+  "uiHapticFeedback": "UI触觉反馈",
+  "uiHapticFeedbackDescription": "为按钮点击、切换开关和导航等UI交互启用触觉反馈",
+  "collisionHapticFeedback": "碰撞触觉反馈",
+  "collisionHapticFeedbackDescription": "在模拟过程中天体碰撞时启用触觉反馈",
   "vibrationEnabled": "启用振动",
   "hapticFeedbackCollisions": "碰撞时的触觉反馈",
+  "hapticFeedbackDescription": "为UI交互和碰撞启用触觉反馈",
   "vibrationThrottle": "振动节流",
   "changelogTitle": "新功能",
   "closeDialog": "关闭",
@@ -450,5 +456,9 @@
   "cameraDynamicFraming": "动态构图",
   "cameraManualDescription": "带跟随模式的传统手动相机控制",
   "cameraPredictiveOrbitalDescription": "AI预测轨道路径以实现戏剧性的相机动作",
-  "cameraDynamicFramingDescription": "根据场景内容自动调整构图"
+  "cameraDynamicFramingDescription": "根据场景内容自动调整构图",
+  "fullscreenMode": "全屏模式",
+  "fullscreenModeDescription": "隐藏所有UI元素以获得沉浸式观看体验",
+  "tapToToggleFullscreen": "点击切换全屏",
+  "exitFullscreenHint": "点击任意位置退出全屏模式"
 }

@@ -236,10 +236,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hapticsSection => 'Haptics';
 
   @override
+  String get uiHapticFeedback => 'UI Haptic Feedback';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      'Enable haptic feedback for UI interactions like button taps, toggles, and navigation';
+
+  @override
+  String get collisionHapticFeedback => 'Collision Haptic Feedback';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      'Enable haptic feedback when celestial bodies collide during simulation';
+
+  @override
   String get vibrationEnabled => 'Vibration Enabled';
 
   @override
   String get hapticFeedbackCollisions => 'Haptic feedback on collisions';
+
+  @override
+  String get hapticFeedbackDescription =>
+      'Enable haptic feedback for UI interactions and collisions';
 
   @override
   String get vibrationThrottle => 'Vibration Throttle';
@@ -590,6 +608,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutButtonTooltip => 'About';
+
+  @override
+  String get backButtonTooltip => 'Back';
 
   @override
   String get appNameGraviton => 'Graviton';
@@ -1451,4 +1472,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cameraDynamicFramingDescription =>
       'Automatically adjusts framing based on scene content';
+
+  @override
+  String get fullscreenMode => 'Fullscreen Mode';
+
+  @override
+  String get fullscreenModeDescription =>
+      'Hide all UI elements for immersive viewing';
+
+  @override
+  String get tapToToggleFullscreen => 'Tap to toggle fullscreen';
+
+  @override
+  String get exitFullscreenHint => 'Tap anywhere to exit fullscreen';
 }

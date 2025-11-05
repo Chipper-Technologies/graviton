@@ -5,7 +5,7 @@ import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/screens/physics_settings_screen.dart';
 import 'package:graviton/widgets/common/action_option.dart';
-import 'package:graviton/widgets/common/slider_option.dart';
+import 'package:graviton/widgets/common/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:graviton/widgets/section_title.dart';
 
@@ -144,7 +144,7 @@ void main() {
 
       // Verify corresponding icons
       expect(find.byIcon(Icons.linear_scale), findsOneWidget);
-      expect(find.byIcon(Icons.opacity), findsOneWidget);
+      expect(find.byIcon(Icons.blur_linear), findsOneWidget);
     });
 
     testWidgets('should display haptics section with vibration toggle', (
@@ -349,7 +349,7 @@ void main() {
         findsNWidgets(4),
       ); // Physics, Collision, Trails, Haptics
       expect(
-        find.byType(SliderOption),
+        find.byType(HapticSliderOption),
         findsAtLeastNWidgets(5),
       ); // Multiple sliders
       expect(find.byType(ToggleOption), findsOneWidget); // Vibration toggle

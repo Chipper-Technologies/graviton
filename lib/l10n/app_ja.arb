@@ -160,6 +160,7 @@
   "authorLabel": "作者",
   "websiteLabel": "ウェブサイト",
   "aboutButtonTooltip": "について",
+  "backButtonTooltip": "戻る",
   "appNameGraviton": "Graviton",
   "versionLabel": "バージョン",
   "loadingVersion": "バージョンを読み込み中...",
@@ -347,8 +348,13 @@
   "trailLength": "軌跡の長さ",
   "trailFadeRate": "軌跡のフェード率",
   "hapticsSection": "ハプティクス",
+  "uiHapticFeedback": "UIハプティックフィードバック",
+  "uiHapticFeedbackDescription": "ボタンタップ、トグル、ナビゲーションなどのUIインタラクションのハプティックフィードバックを有効にする",
+  "collisionHapticFeedback": "衝突ハプティックフィードバック",
+  "collisionHapticFeedbackDescription": "シミュレーション中に天体が衝突したときのハプティックフィードバックを有効にする",
   "vibrationEnabled": "振動有効",
   "hapticFeedbackCollisions": "衝突時のハプティックフィードバック",
+  "hapticFeedbackDescription": "UIインタラクションと衝突のハプティックフィードバックを有効にする",
   "vibrationThrottle": "振動スロットル",
   "changelogTitle": "新機能",
   "closeDialog": "閉じる",
@@ -449,5 +455,9 @@
   "cameraDynamicFraming": "動的フレーミング",
   "cameraManualDescription": "フォローモード付きの従来の手動カメラ制御",
   "cameraPredictiveOrbitalDescription": "AIが軌道経路を予測してドラマチックなカメラ動作を実現",
-  "cameraDynamicFramingDescription": "シーンコンテンツに基づいてフレーミングを自動調整"
+  "cameraDynamicFramingDescription": "シーンコンテンツに基づいてフレーミングを自動調整",
+  "fullscreenMode": "フルスクリーンモード",
+  "fullscreenModeDescription": "没入感のある表示のためにすべてのUI要素を非表示にする",
+  "tapToToggleFullscreen": "タップしてフルスクリーンを切り替え",
+  "exitFullscreenHint": "フルスクリーンモードを終了するには任意の場所をタップ"
 }

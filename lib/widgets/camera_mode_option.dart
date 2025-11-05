@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
 
 /// A camera mode selection option widget
 class CameraModeOption extends StatelessWidget {
@@ -28,7 +29,7 @@ class CameraModeOption extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppTypography.spacingSmall),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
+        child: HapticInkWell(
           onTap: onTap,
           borderRadius: AppTypography.createRadius(AppTypography.radiusLarge),
           child: Container(

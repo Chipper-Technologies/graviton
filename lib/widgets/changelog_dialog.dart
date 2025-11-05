@@ -3,7 +3,10 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/changelog.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
+import 'package:graviton/widgets/common/haptic_elevated_button.dart';
+import 'package:graviton/widgets/common/haptic_icon_button.dart';
 import 'package:intl/intl.dart';
 
 /// Dialog that displays changelogs with swipe navigation
@@ -97,7 +100,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppTypography.radiusXLarge),
             ),
-            child: GestureDetector(
+            child: HapticGestureDetector(
               onPanEnd: (details) {
                 // Detect swipe direction
                 if (details.velocity.pixelsPerSecond.dx > 300) {
@@ -182,7 +185,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
             icon: Icons.assignment,
             iconColor: AppColors.primaryColor,
             iconSize: AppTypography.iconSizeXXXLarge,
-            trailing: IconButton(
+            trailing: HapticIconButton(
               onPressed: _skip,
               icon: const Icon(Icons.close),
               tooltip: l10n.closeDialog,
@@ -372,7 +375,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
         Row(
           children: [
             // Previous button (chevron left)
-            IconButton(
+            HapticIconButton(
               onPressed: _currentIndex < widget.changelogs.length - 1
                   ? _previousChangelog
                   : null,
@@ -388,7 +391,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
                   : null,
             ),
             // Next button (chevron right)
-            IconButton(
+            HapticIconButton(
               onPressed: _currentIndex > 0 ? _nextChangelog : null,
               style: IconButton.styleFrom(
                 foregroundColor: AppColors.primaryColor,
@@ -405,7 +408,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
         ),
 
         // Done button on the right
-        ElevatedButton(
+        HapticElevatedButton(
           onPressed: _complete,
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primaryColor,

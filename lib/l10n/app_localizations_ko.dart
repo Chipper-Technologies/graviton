@@ -231,10 +231,27 @@ class AppLocalizationsKo extends AppLocalizations {
   String get hapticsSection => '햅틱';
 
   @override
+  String get uiHapticFeedback => 'UI 햅틱 피드백';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      '버튼 탭, 토글, 내비게이션과 같은 UI 상호작용에 대한 햅틱 피드백 활성화';
+
+  @override
+  String get collisionHapticFeedback => '충돌 햅틱 피드백';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      '시뮬레이션 중 천체가 충돌할 때 햅틱 피드백 활성화';
+
+  @override
   String get vibrationEnabled => '진동 활성화';
 
   @override
   String get hapticFeedbackCollisions => '충돌 시 햅틱 피드백';
+
+  @override
+  String get hapticFeedbackDescription => 'UI 상호작용 및 충돌에 대한 햅틱 피드백 활성화';
 
   @override
   String get vibrationThrottle => '진동 제한';
@@ -572,6 +589,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get aboutButtonTooltip => '정보';
+
+  @override
+  String get backButtonTooltip => '뒤로';
 
   @override
   String get appNameGraviton => 'Graviton';
@@ -1401,4 +1421,16 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get cameraDynamicFramingDescription => '장면 콘텐츠를 기반으로 프레이밍을 자동 조정';
+
+  @override
+  String get fullscreenMode => '전체화면 모드';
+
+  @override
+  String get fullscreenModeDescription => '몰입감 있는 보기를 위해 모든 UI 요소 숨기기';
+
+  @override
+  String get tapToToggleFullscreen => '탭하여 전체화면 전환';
+
+  @override
+  String get exitFullscreenHint => '전체화면 모드를 종료하려면 아무 곳이나 탭하세요';
 }

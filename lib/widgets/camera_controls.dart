@@ -7,6 +7,8 @@ import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/widgets/camera_mode_option.dart';
 import 'package:graviton/widgets/camera_action_button.dart';
+import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/common/haptic_switch.dart';
 import 'package:graviton/widgets/section_title.dart';
 
 /// Camera controls content for the persistent bottom sheet
@@ -31,7 +33,6 @@ class CameraControls extends StatelessWidget {
         right: AppTypography.spacingXLarge,
         top: AppTypography.spacingLarge,
         bottom:
-            AppTypography.spacingXLarge +
             PlatformUtils.getBottomSheetSystemBarPadding(), // Platform-specific padding for system bar
       ),
       children: [
@@ -175,6 +176,7 @@ class CameraControls extends StatelessWidget {
           Icons.swap_vert,
           appState.camera.invertPitch,
           () => appState.camera.toggleInvertPitch(),
+          isLast: true,
         ),
       ],
     );
@@ -185,13 +187,14 @@ class CameraControls extends StatelessWidget {
     String description,
     IconData icon,
     bool isEnabled,
-    VoidCallback onToggle,
-  ) {
+    VoidCallback onToggle, {
+    bool isLast = false,
+  }) {
     return Container(
-      margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
+      margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingSmall),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
+        child: HapticInkWell(
           onTap: onToggle,
           borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
           child: Container(
@@ -256,10 +259,10 @@ class CameraControls extends StatelessWidget {
                     ],
                   ),
                 ),
-                Switch(
+                HapticSwitch(
                   value: isEnabled,
                   onChanged: (_) => onToggle(),
-                  activeThumbColor: AppColors.primaryColor,
+                  activeColor: AppColors.primaryColor,
                   activeTrackColor: AppColors.primaryColor.withValues(
                     alpha: AppTypography.opacityFaint,
                   ),

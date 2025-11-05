@@ -160,6 +160,7 @@
   "authorLabel": "작성자",
   "websiteLabel": "웹사이트",
   "aboutButtonTooltip": "정보",
+  "backButtonTooltip": "뒤로",
   "appNameGraviton": "Graviton",
   "versionLabel": "버전",
   "loadingVersion": "버전 로딩 중...",
@@ -347,8 +348,13 @@
   "trailLength": "궤적 길이",
   "trailFadeRate": "궤적 페이드 비율",
   "hapticsSection": "햅틱",
+  "uiHapticFeedback": "UI 햅틱 피드백",
+  "uiHapticFeedbackDescription": "버튼 탭, 토글, 내비게이션과 같은 UI 상호작용에 대한 햅틱 피드백 활성화",
+  "collisionHapticFeedback": "충돌 햅틱 피드백",
+  "collisionHapticFeedbackDescription": "시뮬레이션 중 천체가 충돌할 때 햅틱 피드백 활성화",
   "vibrationEnabled": "진동 활성화",
   "hapticFeedbackCollisions": "충돌 시 햅틱 피드백",
+  "hapticFeedbackDescription": "UI 상호작용 및 충돌에 대한 햅틱 피드백 활성화",
   "vibrationThrottle": "진동 제한",
   "changelogTitle": "새로운 기능",
   "closeDialog": "닫기",
@@ -449,5 +455,9 @@
   "cameraDynamicFraming": "동적 프레이밍",
   "cameraManualDescription": "팔로우 모드가 있는 전통적인 수동 카메라 제어",
   "cameraPredictiveOrbitalDescription": "AI가 궤도 경로를 예측하여 극적인 카메라 움직임 제공",
-  "cameraDynamicFramingDescription": "장면 콘텐츠를 기반으로 프레이밍을 자동 조정"
+  "cameraDynamicFramingDescription": "장면 콘텐츠를 기반으로 프레이밍을 자동 조정",
+  "fullscreenMode": "전체화면 모드",
+  "fullscreenModeDescription": "몰입감 있는 보기를 위해 모든 UI 요소 숨기기",
+  "tapToToggleFullscreen": "탭하여 전체화면 전환",
+  "exitFullscreenHint": "전체화면 모드를 종료하려면 아무 곳이나 탭하세요"
 }

@@ -231,10 +231,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get hapticsSection => '触觉反馈';
 
   @override
+  String get uiHapticFeedback => 'UI触觉反馈';
+
+  @override
+  String get uiHapticFeedbackDescription => '为按钮点击、切换开关和导航等UI交互启用触觉反馈';
+
+  @override
+  String get collisionHapticFeedback => '碰撞触觉反馈';
+
+  @override
+  String get collisionHapticFeedbackDescription => '在模拟过程中天体碰撞时启用触觉反馈';
+
+  @override
   String get vibrationEnabled => '启用振动';
 
   @override
   String get hapticFeedbackCollisions => '碰撞时的触觉反馈';
+
+  @override
+  String get hapticFeedbackDescription => '为UI交互和碰撞启用触觉反馈';
 
   @override
   String get vibrationThrottle => '振动节流';
@@ -566,6 +581,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get aboutButtonTooltip => '关于';
+
+  @override
+  String get backButtonTooltip => '返回';
 
   @override
   String get appNameGraviton => 'Graviton';
@@ -1389,4 +1407,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get cameraDynamicFramingDescription => '根据场景内容自动调整构图';
+
+  @override
+  String get fullscreenMode => '全屏模式';
+
+  @override
+  String get fullscreenModeDescription => '隐藏所有UI元素以获得沉浸式观看体验';
+
+  @override
+  String get tapToToggleFullscreen => '点击切换全屏';
+
+  @override
+  String get exitFullscreenHint => '点击任意位置退出全屏模式';
 }

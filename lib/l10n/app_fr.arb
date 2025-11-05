@@ -160,6 +160,7 @@
   "authorLabel": "Auteur",
   "websiteLabel": "Site Web",
   "aboutButtonTooltip": "À Propos",
+  "backButtonTooltip": "Retour",
   "appNameGraviton": "Graviton",
   "versionLabel": "Version",
   "loadingVersion": "Chargement de la version...",
@@ -347,8 +348,13 @@
   "trailLength": "Longueur des traces",
   "trailFadeRate": "Taux de fondu des traces",
   "hapticsSection": "Haptique",
+  "uiHapticFeedback": "Retour Haptique UI",
+  "uiHapticFeedbackDescription": "Activer le retour haptique pour les interactions UI comme les boutons, les commutateurs et la navigation",
+  "collisionHapticFeedback": "Retour Haptique de Collision",
+  "collisionHapticFeedbackDescription": "Activer le retour haptique lorsque les corps célestes entrent en collision pendant la simulation",
   "vibrationEnabled": "Vibration activée",
   "hapticFeedbackCollisions": "Retour haptique sur les collisions",
+  "hapticFeedbackDescription": "Activer le retour haptique pour les interactions UI et les collisions",
   "vibrationThrottle": "Limitation de vibration",
   "changelogTitle": "Nouveautés",
   "closeDialog": "Fermer",
@@ -449,5 +455,9 @@
   "cameraDynamicFraming": "Cadrage Dynamique",
   "cameraManualDescription": "Contrôles manuels traditionnels de caméra avec mode suivi",
   "cameraPredictiveOrbitalDescription": "L'IA prédit les trajectoires orbitales pour des mouvements dramatiques de caméra",
-  "cameraDynamicFramingDescription": "Ajuste automatiquement le cadrage basé sur le contenu de la scène"
+  "cameraDynamicFramingDescription": "Ajuste automatiquement le cadrage basé sur le contenu de la scène",
+  "fullscreenMode": "Mode Plein Écran",
+  "fullscreenModeDescription": "Masquer tous les éléments de l'interface pour une visualisation immersive",
+  "tapToToggleFullscreen": "Appuyez pour basculer en plein écran",
+  "exitFullscreenHint": "Appuyez n'importe où pour quitter le mode plein écran"
 }

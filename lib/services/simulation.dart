@@ -19,7 +19,7 @@ import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/services/stellar_color_service.dart';
 import 'package:graviton/services/temperature_service.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
-import 'package:vibration/vibration.dart';
+import 'package:graviton/services/haptic_feedback_service.dart';
 
 /// Core physics simulation for Graviton
 class Simulation {
@@ -52,7 +52,6 @@ class Simulation {
   final AsteroidBeltSystem asteroidBelt = AsteroidBeltSystem();
   final AsteroidBeltSystem kuiperBelt = AsteroidBeltSystem();
 
-  double _timeSinceLastVibe = 0; // throttle vibration
   final ScenarioService _scenarioService = ScenarioService();
   final HabitableZoneService _habitableZoneService = HabitableZoneService();
   ScenarioType _currentScenario = ScenarioType.random;
@@ -212,7 +211,6 @@ class Simulation {
 
     trails = List.generate(bodies.length, (_) => <TrailPoint>[]);
     mergeFlashes.clear();
-    _timeSinceLastVibe = 0;
 
     _isResetting = false; // Reset operation complete
     _markChanged(); // Signal state has changed
@@ -437,9 +435,6 @@ class Simulation {
     }
 
     mergeFlashes.removeWhere((f) => f.age > SimulationConstants.flashDuration);
-
-    // update vibration throttle
-    _timeSinceLastVibe += dt;
 
     _markChanged(); // Signal trail update
   }
@@ -757,39 +752,8 @@ class Simulation {
   }
 
   void _vibrateForEnergy(double energy) {
-    // Normalize via log to keep in reasonable range, clamp to [0.1, 1.0]
-    final intensity =
-        (math.log(1 + energy) /
-                SimulationConstants.vibrationIntensityLogDivisor)
-            .clamp(
-              SimulationConstants.vibrationIntensityMin,
-              SimulationConstants.vibrationIntensityMax,
-            );
-
-    final duration =
-        (SimulationConstants.vibrationDurationMin +
-                (SimulationConstants.vibrationDurationMax -
-                        SimulationConstants.vibrationDurationMin) *
-                    intensity)
-            .toInt();
-
-    final amplitude =
-        (SimulationConstants.vibrationAmplitudeMin +
-                (SimulationConstants.vibrationAmplitudeMax -
-                        SimulationConstants.vibrationAmplitudeMin) *
-                    intensity)
-            .clamp(0, 255)
-            .toInt();
-
-    // throttle to at most one vibration per throttle time
-    if (!vibrationEnabled || _timeSinceLastVibe < vibrationThrottleTime) return;
-    _timeSinceLastVibe = 0;
-
-    Vibration.hasVibrator().then((has) {
-      if (has == true) {
-        Vibration.vibrate(duration: duration, amplitude: amplitude);
-      }
-    });
+    // Use the new energy-scaled collision haptic feedback service
+    HapticFeedbackService.instance.collisionWithEnergy(energy);
   }
 
   Color _blendColor(Color a, Color b, double t) {
@@ -958,14 +922,8 @@ class Simulation {
 
   /// Strong vibration for black hole absorption events
   void _vibrateForBlackHoleAbsorption() async {
-    final hasVibrator = await Vibration.hasVibrator();
-    if (hasVibrator == true) {
-      // Strong, dramatic vibration pattern for black hole absorption
-      Vibration.vibrate(
-        pattern: [0, 200, 100, 300], // Strong double pulse
-        intensities: [0, 255, 0, 255], // Maximum intensity
-      );
-    }
+    // Use collision haptic feedback for black hole absorption
+    HapticFeedbackService.instance.collisionVibrate();
   }
 
   /// Update temperatures for all bodies (throttled for performance)

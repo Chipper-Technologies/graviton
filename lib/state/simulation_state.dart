@@ -9,6 +9,7 @@ import 'package:graviton/models/merge_flash.dart';
 import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/models/trail_point.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/services/simulation.dart' as physics;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -129,6 +130,10 @@ class SimulationState extends ChangeNotifier {
   void start() {
     if (_status.canStart) {
       _status = SimulationStatus.running;
+
+      // Provide haptic feedback for simulation start
+      HapticFeedbackService.instance.lightImpact();
+
       FirebaseService.instance.logEventWithEnum(
         FirebaseEvent.simulationStarted,
       );
@@ -139,9 +144,17 @@ class SimulationState extends ChangeNotifier {
   void pause() {
     if (_status.canPause) {
       _status = SimulationStatus.paused;
+
+      // Provide haptic feedback for simulation pause
+      HapticFeedbackService.instance.selectionClick();
+
       FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationPaused);
     } else if (_status.canResume) {
       _status = SimulationStatus.running;
+
+      // Provide haptic feedback for simulation resume
+      HapticFeedbackService.instance.lightImpact();
+
       FirebaseService.instance.logEventWithEnum(
         FirebaseEvent.simulationResumed,
       );
@@ -153,6 +166,10 @@ class SimulationState extends ChangeNotifier {
   void pauseSimulation() {
     if (_status.canPause) {
       _status = SimulationStatus.paused;
+
+      // Provide haptic feedback for explicit pause
+      HapticFeedbackService.instance.selectionClick();
+
       FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationPaused);
       notifyListeners();
     }
@@ -162,6 +179,10 @@ class SimulationState extends ChangeNotifier {
   void resumeSimulation() {
     if (_status.canResume) {
       _status = SimulationStatus.running;
+
+      // Provide haptic feedback for explicit resume
+      HapticFeedbackService.instance.lightImpact();
+
       FirebaseService.instance.logEventWithEnum(
         FirebaseEvent.simulationResumed,
       );
@@ -171,6 +192,10 @@ class SimulationState extends ChangeNotifier {
 
   void stop() {
     _status = SimulationStatus.stopped;
+
+    // Provide haptic feedback for simulation stop
+    HapticFeedbackService.instance.mediumImpact();
+
     FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationStopped);
     notifyListeners();
   }
@@ -182,6 +207,9 @@ class SimulationState extends ChangeNotifier {
     _simulation.reset(); // This will use the current scenario
     _stepCount = 0;
     _totalTime = 0.0;
+
+    // Provide haptic feedback for simulation reset
+    HapticFeedbackService.instance.heavyImpact();
 
     FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationReset);
     notifyListeners();
@@ -197,6 +225,9 @@ class SimulationState extends ChangeNotifier {
     bool preserveCustomSettings = false,
   }) {
     stop();
+
+    // Provide haptic feedback for scenario switching
+    HapticFeedbackService.instance.mediumImpact();
 
     // Reset physics simulation to the specified scenario
     _simulation.resetWithScenario(
@@ -235,7 +266,24 @@ class SimulationState extends ChangeNotifier {
   }
 
   void setTimeScale(double scale) {
+    final oldScale = _timeScale;
     _timeScale = scale.clamp(0.1, 16.0);
+
+    // Provide haptic feedback for significant speed changes
+    final scaleChange = (_timeScale - oldScale).abs();
+    if (scaleChange > 1.0) {
+      // Major speed change
+      HapticFeedbackService.instance.mediumImpact();
+    } else if (scaleChange > 0.5) {
+      // Moderate speed change
+      HapticFeedbackService.instance.lightImpact();
+    }
+
+    // Special feedback for reaching extremes
+    if (_timeScale >= 16.0 || _timeScale <= 0.1) {
+      HapticFeedbackService.instance.heavyImpact();
+    }
+
     _saveSetting(_keyTimeScale, _timeScale);
     FirebaseService.instance.logSettingsChange('time_scale', _timeScale);
     notifyListeners();
@@ -244,6 +292,11 @@ class SimulationState extends ChangeNotifier {
   /// Update realistic colors setting in the simulation
   void setUseRealisticColors(bool useRealisticColors) {
     _simulation.setUseRealisticColors(useRealisticColors);
+  }
+
+  /// Update vibration setting in the simulation
+  void setVibrationEnabled(bool enabled) {
+    _simulation.setVibrationEnabled(enabled);
   }
 
   /// Apply physics settings to the simulation

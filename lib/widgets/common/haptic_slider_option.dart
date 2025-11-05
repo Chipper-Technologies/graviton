@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 
-/// A reusable slider widget component used across various dialogs and bottom sheets.
+/// A haptic-enabled slider widget component used across various dialogs and bottom sheets.
 ///
+/// Provides tactile feedback for value changes, threshold crossings, and significant modifications.
 /// Supports two variants:
 /// - Simple: Icon + label with minimal styling (used in body properties)
 /// - Detailed: Icon + label + value display with enhanced container styling (used in simulation settings)
-class SliderOption extends StatelessWidget {
+class HapticSliderOption extends StatefulWidget {
   final String label;
   final double value;
   final double min;
@@ -18,7 +20,7 @@ class SliderOption extends StatelessWidget {
   final String Function(double)? formatter;
   final bool isDetailed;
 
-  const SliderOption({
+  const HapticSliderOption({
     super.key,
     required this.label,
     required this.value,
@@ -31,8 +33,8 @@ class SliderOption extends StatelessWidget {
     this.isDetailed = false,
   });
 
-  /// Creates a simple slider variant with minimal styling
-  const SliderOption.simple({
+  /// Creates a simple haptic slider variant with minimal styling
+  const HapticSliderOption.simple({
     super.key,
     required this.label,
     required this.value,
@@ -44,8 +46,8 @@ class SliderOption extends StatelessWidget {
   }) : formatter = null,
        isDetailed = false;
 
-  /// Creates a detailed slider variant with enhanced container styling and value display
-  const SliderOption.detailed({
+  /// Creates a detailed haptic slider variant with enhanced container styling and value display
+  const HapticSliderOption.detailed({
     super.key,
     required this.label,
     required this.value,
@@ -58,12 +60,81 @@ class SliderOption extends StatelessWidget {
   }) : isDetailed = true;
 
   @override
+  State<HapticSliderOption> createState() => _HapticSliderOptionState();
+}
+
+class _HapticSliderOptionState extends State<HapticSliderOption> {
+  double? _previousValue;
+  bool _isDragging = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _previousValue = widget.value;
+  }
+
+  void _onSliderChanged(double newValue) {
+    // Provide haptic feedback for value changes
+    if (!_isDragging) {
+      // Initial drag start - light feedback
+      HapticFeedbackService.instance.lightImpact();
+      _isDragging = true;
+    } else {
+      // Check for significant value changes during drag
+      if (_previousValue != null) {
+        final change = (newValue - _previousValue!).abs();
+        final range = widget.max - widget.min;
+        final changePercent = change / range;
+
+        // Provide feedback for significant changes (>5% of range)
+        if (changePercent > 0.05) {
+          HapticFeedbackService.instance.selectionClick();
+        }
+
+        // Special feedback for crossing major thresholds
+        _checkThresholdCrossing(_previousValue!, newValue);
+      }
+    }
+
+    _previousValue = newValue;
+    widget.onChanged(newValue);
+  }
+
+  void _onSliderEnd(double finalValue) {
+    // End of drag - confirmation feedback
+    if (_isDragging) {
+      HapticFeedbackService.instance.lightImpact();
+      _isDragging = false;
+    }
+  }
+
+  void _checkThresholdCrossing(double oldValue, double newValue) {
+    final range = widget.max - widget.min;
+    final thirdPoint = widget.min + (range / 3);
+    final twoThirdPoint = widget.min + (2 * range / 3);
+
+    // Check if we crossed major threshold points (33% and 66% of range)
+    if ((oldValue < thirdPoint && newValue >= thirdPoint) ||
+        (oldValue >= thirdPoint && newValue < thirdPoint) ||
+        (oldValue < twoThirdPoint && newValue >= twoThirdPoint) ||
+        (oldValue >= twoThirdPoint && newValue < twoThirdPoint)) {
+      HapticFeedbackService.instance.mediumImpact();
+    }
+
+    // Special feedback for reaching extremes
+    if ((oldValue > widget.min && newValue <= widget.min) ||
+        (oldValue < widget.max && newValue >= widget.max)) {
+      HapticFeedbackService.instance.heavyImpact();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Clamp the value to ensure it's within the valid range
     // This prevents slider assertion errors when values are outside bounds
-    final clampedValue = value.clamp(min, max);
+    final clampedValue = widget.value.clamp(widget.min, widget.max);
 
-    if (isDetailed) {
+    if (widget.isDetailed) {
       return _buildDetailedSlider(context, clampedValue);
     } else {
       return _buildSimpleSlider(context, clampedValue);
@@ -75,9 +146,9 @@ class SliderOption extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(icon, size: AppTypography.iconSizeXLarge),
+            Icon(widget.icon, size: AppTypography.iconSizeXLarge),
             const SizedBox(width: 8),
-            Text(label, style: Theme.of(context).textTheme.bodyMedium),
+            Text(widget.label, style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),
         const SizedBox(height: AppTypography.spacingXSmall),
@@ -91,11 +162,12 @@ class SliderOption extends StatelessWidget {
             ),
             child: Slider(
               value: clampedValue,
-              min: min,
-              max: max,
-              divisions: divisions,
-              label: label,
-              onChanged: onChanged,
+              min: widget.min,
+              max: widget.max,
+              divisions: widget.divisions,
+              label: widget.label,
+              onChanged: _onSliderChanged,
+              onChangeEnd: _onSliderEnd,
             ),
           ),
         ),
@@ -133,7 +205,7 @@ class SliderOption extends StatelessWidget {
                   ),
                 ),
                 child: Icon(
-                  icon,
+                  widget.icon,
                   color: AppColors.primaryColor,
                   size: AppTypography.iconSizeLarge,
                 ),
@@ -141,7 +213,7 @@ class SliderOption extends StatelessWidget {
               SizedBox(width: AppTypography.spacingLarge),
               Expanded(
                 child: Text(
-                  label,
+                  widget.label,
                   style: TextStyle(
                     color: AppColors.uiWhite,
                     fontSize: AppTypography.fontSizeLarge,
@@ -149,7 +221,7 @@ class SliderOption extends StatelessWidget {
                   ),
                 ),
               ),
-              if (formatter != null)
+              if (widget.formatter != null)
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: AppTypography.spacingMedium,
@@ -164,7 +236,7 @@ class SliderOption extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    formatter!(clampedValue),
+                    widget.formatter!(clampedValue),
                     style: TextStyle(
                       color: AppColors.primaryColor,
                       fontSize: AppTypography.fontSizeMedium,
@@ -197,10 +269,11 @@ class SliderOption extends StatelessWidget {
             ),
             child: Slider(
               value: clampedValue,
-              min: min,
-              max: max,
-              divisions: divisions,
-              onChanged: onChanged,
+              min: widget.min,
+              max: widget.max,
+              divisions: widget.divisions,
+              onChanged: _onSliderChanged,
+              onChangeEnd: _onSliderEnd,
             ),
           ),
         ],

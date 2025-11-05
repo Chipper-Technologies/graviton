@@ -3,6 +3,7 @@ import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/utils/safe_haptic_feedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Manages UI settings and preferences
@@ -17,7 +18,8 @@ class UIState extends ChangeNotifier {
   bool _showGrid = false;
   bool _showLabels = true;
   bool _showOffScreenIndicators = true;
-  bool _enableVibration = true;
+  bool _enableUIHapticFeedback = true;
+  bool _enableCollisionHapticFeedback = true;
   double _uiOpacity = RenderingConstants.defaultUIOpacity;
 
   // Gravity field settings
@@ -41,6 +43,9 @@ class UIState extends ChangeNotifier {
   // Screenshot mode settings
   bool _hideUIInScreenshotMode = false;
 
+  // Fullscreen mode settings
+  bool _isFullscreen = false;
+
   // Changelog settings
   String? _lastSeenChangelogVersion;
 
@@ -55,7 +60,11 @@ class UIState extends ChangeNotifier {
   static const String _keyShowGrid = 'showGrid';
   static const String _keyShowLabels = 'showLabels';
   static const String _keyShowOffScreenIndicators = 'showOffScreenIndicators';
-  static const String _keyEnableVibration = 'enableVibration';
+  static const String _keyEnableUIHapticFeedback = 'enableUIHapticFeedback';
+  static const String _keyEnableCollisionHapticFeedback =
+      'enableCollisionHapticFeedback';
+  static const String _keyEnableVibration =
+      'enableVibration'; // Legacy key for migration
   static const String _keyUIOpacity = 'uiOpacity';
   static const String _keyGlobalGravityFields = 'globalGravityFields';
   static const String _keyGravityFieldColorScheme = 'gravityFieldColorScheme';
@@ -69,6 +78,7 @@ class UIState extends ChangeNotifier {
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
+  static const String _keyIsFullscreen = 'isFullscreen';
   static const String _keyLastSeenChangelogVersion = 'lastSeenChangelogVersion';
 
   /// Initialize and load saved settings
@@ -91,7 +101,33 @@ class UIState extends ChangeNotifier {
       _showLabels = prefs.getBool(_keyShowLabels) ?? true;
       _showOffScreenIndicators =
           prefs.getBool(_keyShowOffScreenIndicators) ?? true;
-      _enableVibration = prefs.getBool(_keyEnableVibration) ?? true;
+
+      // Handle migration from legacy vibration setting to separate haptic settings
+      if (prefs.containsKey(_keyEnableUIHapticFeedback) ||
+          prefs.containsKey(_keyEnableCollisionHapticFeedback)) {
+        // New settings exist, use them
+        _enableUIHapticFeedback =
+            prefs.getBool(_keyEnableUIHapticFeedback) ?? true;
+        _enableCollisionHapticFeedback =
+            prefs.getBool(_keyEnableCollisionHapticFeedback) ?? true;
+      } else {
+        // Migrate from legacy setting
+        final legacyVibration = prefs.getBool(_keyEnableVibration) ?? true;
+        _enableUIHapticFeedback = legacyVibration;
+        _enableCollisionHapticFeedback = legacyVibration;
+        // Save the new settings
+        await prefs.setBool(
+          _keyEnableUIHapticFeedback,
+          _enableUIHapticFeedback,
+        );
+        await prefs.setBool(
+          _keyEnableCollisionHapticFeedback,
+          _enableCollisionHapticFeedback,
+        );
+        // Remove the old setting
+        await prefs.remove(_keyEnableVibration);
+      }
+
       _uiOpacity =
           prefs.getDouble(_keyUIOpacity) ?? RenderingConstants.defaultUIOpacity;
 
@@ -125,6 +161,8 @@ class UIState extends ChangeNotifier {
 
       _hideUIInScreenshotMode =
           prefs.getBool(_keyHideUIInScreenshotMode) ?? false;
+
+      _isFullscreen = prefs.getBool(_keyIsFullscreen) ?? false;
 
       // Load changelog tracking
       _lastSeenChangelogVersion = prefs.getString(_keyLastSeenChangelogVersion);
@@ -167,7 +205,10 @@ class UIState extends ChangeNotifier {
   bool get showGrid => _showGrid;
   bool get showLabels => _showLabels;
   bool get showOffScreenIndicators => _showOffScreenIndicators;
-  bool get enableVibration => _enableVibration;
+  bool get enableUIHapticFeedback => _enableUIHapticFeedback;
+  bool get enableCollisionHapticFeedback => _enableCollisionHapticFeedback;
+  bool get enableVibration =>
+      _enableUIHapticFeedback; // Legacy getter for backward compatibility
   double get uiOpacity => _uiOpacity;
 
   // Changelog getters
@@ -193,6 +234,9 @@ class UIState extends ChangeNotifier {
 
   // Screenshot mode getters
   bool get hideUIInScreenshotMode => _hideUIInScreenshotMode;
+
+  // Fullscreen mode getters
+  bool get isFullscreen => _isFullscreen;
 
   // Setters
   void toggleTrails() {
@@ -277,14 +321,32 @@ class UIState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleVibration() {
-    _enableVibration = !_enableVibration;
-    _saveSetting(_keyEnableVibration, _enableVibration);
+  void toggleUIHapticFeedback() {
+    _enableUIHapticFeedback = !_enableUIHapticFeedback;
+    _saveSetting(_keyEnableUIHapticFeedback, _enableUIHapticFeedback);
     FirebaseService.instance.logSettingsChange(
-      'enable_vibration',
-      _enableVibration,
+      'enable_ui_haptic_feedback',
+      _enableUIHapticFeedback,
     );
     notifyListeners();
+  }
+
+  void toggleCollisionHapticFeedback() {
+    _enableCollisionHapticFeedback = !_enableCollisionHapticFeedback;
+    _saveSetting(
+      _keyEnableCollisionHapticFeedback,
+      _enableCollisionHapticFeedback,
+    );
+    FirebaseService.instance.logSettingsChange(
+      'enable_collision_haptic_feedback',
+      _enableCollisionHapticFeedback,
+    );
+    notifyListeners();
+  }
+
+  // Legacy method for backward compatibility
+  void toggleVibration() {
+    toggleUIHapticFeedback();
   }
 
   void setUIOpacity(double opacity) {
@@ -379,6 +441,10 @@ class UIState extends ChangeNotifier {
   void setCinematicCameraTechnique(CinematicCameraTechnique technique) {
     _cinematicCameraTechnique = technique;
     _saveSetting(_keyCinematicCameraTechnique, technique.value);
+
+    // Haptic feedback for camera technique switching
+    SafeHapticFeedback.mediumImpact();
+
     FirebaseService.instance.logSettingsChange(
       'cinematic_camera_technique',
       technique.value,
@@ -395,6 +461,18 @@ class UIState extends ChangeNotifier {
       _hideUIInScreenshotMode,
     );
     notifyListeners();
+  }
+
+  // Fullscreen mode setters
+  void setFullscreen(bool isFullscreen) {
+    _isFullscreen = isFullscreen;
+    _saveSetting(_keyIsFullscreen, isFullscreen);
+    FirebaseService.instance.logSettingsChange('fullscreen_mode', isFullscreen);
+    notifyListeners();
+  }
+
+  void toggleFullscreen() {
+    setFullscreen(!_isFullscreen);
   }
 
   // Changelog setters

@@ -238,10 +238,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hapticsSection => 'Haptik';
 
   @override
+  String get uiHapticFeedback => 'UI-Haptisches Feedback';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      'Haptisches Feedback für UI-Interaktionen wie Tasten, Schalter und Navigation aktivieren';
+
+  @override
+  String get collisionHapticFeedback => 'Kollisions-Haptisches Feedback';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      'Haptisches Feedback aktivieren, wenn Himmelskörper während der Simulation kollidieren';
+
+  @override
   String get vibrationEnabled => 'Vibration aktiviert';
 
   @override
   String get hapticFeedbackCollisions => 'Haptisches Feedback bei Kollisionen';
+
+  @override
+  String get hapticFeedbackDescription =>
+      'Haptisches Feedback für UI-Interaktionen und Kollisionen aktivieren';
 
   @override
   String get vibrationThrottle => 'Vibrationsdrosselung';
@@ -593,6 +611,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get aboutButtonTooltip => 'Über';
+
+  @override
+  String get backButtonTooltip => 'Zurück';
 
   @override
   String get appNameGraviton => 'Graviton';
@@ -1461,4 +1482,18 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get cameraDynamicFramingDescription =>
       'Passt die Bildkomposition automatisch basierend auf Szeneninhalten an';
+
+  @override
+  String get fullscreenMode => 'Vollbildmodus';
+
+  @override
+  String get fullscreenModeDescription =>
+      'Alle UI-Elemente für eine immersive Betrachtung ausblenden';
+
+  @override
+  String get tapToToggleFullscreen => 'Tippen, um Vollbild ein-/auszuschalten';
+
+  @override
+  String get exitFullscreenHint =>
+      'Tippen Sie irgendwo, um den Vollbildmodus zu verlassen';
 }
