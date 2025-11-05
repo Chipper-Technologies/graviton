@@ -220,6 +220,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get simulationSpeed => 'Velocidad de simulación';
 
   @override
+  String get simulationSpeedHint =>
+      'Ajusta la velocidad de simulación de 0,1x a 16x velocidad normal. Usa las teclas de flecha para cambios pequeños.';
+
+  @override
   String get collisionsSection => 'Colisiones';
 
   @override
@@ -1506,4 +1510,210 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get exitFullscreenHint =>
       'Toca en cualquier lugar para salir del modo pantalla completa';
+
+  @override
+  String get simulationCanvasLabel => 'Simulación de Física Gravitacional';
+
+  @override
+  String get simulationCanvasHint =>
+      'Usa atajos de teclado para controlar la simulación. Espacio para pausar, R para reiniciar, C para centrar cámara';
+
+  @override
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  ) {
+    return 'Simulación gravitacional con $bodyCount cuerpos celestes. Estado: $status. Velocidad: $speed. Pasos: $steps';
+  }
+
+  @override
+  String get noBodiesInSimulation =>
+      'No hay cuerpos celestes en la simulación actualmente';
+
+  @override
+  String bodiesInSimulation(String descriptions) {
+    return 'Cuerpos en simulación: $descriptions';
+  }
+
+  @override
+  String cameraFreeDescription(String distance, String rotation) {
+    return 'Cámara en modo libre a distancia $distance. Auto-rotación: $rotation';
+  }
+
+  @override
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  ) {
+    return 'Cámara siguiendo $bodyName a distancia $distance. Auto-rotación: $rotation';
+  }
+
+  @override
+  String get autoRotateActive => 'activa';
+
+  @override
+  String get autoRotateInactive => 'inactiva';
+
+  @override
+  String liveUpdateAnnouncement(String updateType, String value) {
+    return '$updateType cambió a $value';
+  }
+
+  @override
+  String get keyboardShortcutsHint =>
+      'Usa Espacio para pausar/reanudar, R para reiniciar, C para centrar cámara, A para alternar auto-rotación';
+
+  @override
+  String physicsStatsDescription(String time, String earthYears, int steps) {
+    return 'Física: $time unidades de tiempo, $earthYears años terrestres, $steps pasos de simulación completados';
+  }
+
+  @override
+  String get toggleAutoRotateAction => 'Alternar auto-rotación';
+
+  @override
+  String get zoomInAction => 'Acercar';
+
+  @override
+  String get zoomOutAction => 'Alejar';
+
+  @override
+  String get expandedState => 'expandido';
+
+  @override
+  String get collapsedState => 'colapsado';
+
+  @override
+  String get currentScenario => 'Escenario actual';
+
+  @override
+  String get scenariosAvailable => 'escenarios disponibles';
+
+  @override
+  String get bottomSheetLabel => 'Hoja inferior';
+
+  @override
+  String get gravitationalSimulationLabel =>
+      'Simulación de Física Gravitacional';
+
+  @override
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  ) {
+    return 'Simulación gravitacional con $bodyCount cuerpos celestes. Estado: $status. Velocidad: $speed. Pasos completados: $stepCount. Toca para interactuar con la simulación o usa atajos de teclado.';
+  }
+
+  @override
+  String get accessibilitySimulationStarted => 'Simulación iniciada';
+
+  @override
+  String get accessibilitySimulationStartedContext =>
+      'Los cuerpos celestes están ahora en movimiento';
+
+  @override
+  String get accessibilitySimulationPaused => 'Simulación pausada';
+
+  @override
+  String get accessibilitySimulationPausedContext =>
+      'Todos los cuerpos celestes han dejado de moverse';
+
+  @override
+  String get accessibilitySimulationResumed => 'Simulación reanudada';
+
+  @override
+  String get accessibilitySimulationResumedContext =>
+      'Los cuerpos celestes se mueven de nuevo';
+
+  @override
+  String get accessibilitySimulationStopped => 'Simulación detenida';
+
+  @override
+  String get accessibilitySimulationStoppedContext =>
+      'Todos los cuerpos celestes han sido reiniciados';
+
+  @override
+  String get accessibilitySimulationReset => 'Simulación reiniciada';
+
+  @override
+  String get accessibilitySimulationResetContext =>
+      'Nuevo escenario cargado con cuerpos celestes frescos';
+
+  @override
+  String accessibilityMergeEvent(String body1, String body2) {
+    return 'Colisión detectada: $body1 se fusionó con $body2';
+  }
+
+  @override
+  String get accessibilityMergeEventContext =>
+      'La masa combinada crea un nuevo cuerpo celeste';
+
+  @override
+  String accessibilityScenarioChange(String scenarioName) {
+    return 'Escenario cambiado a $scenarioName';
+  }
+
+  @override
+  String get accessibilityScenarioChangeContext =>
+      'Nuevos cuerpos celestes y parámetros físicos cargados';
+
+  @override
+  String accessibilitySpeedChange(String newValue) {
+    return 'Velocidad de simulación cambiada a $newValue';
+  }
+
+  @override
+  String accessibilityGravityChange(String newValue) {
+    return 'Fuerza de gravedad cambiada a $newValue';
+  }
+
+  @override
+  String accessibilityCollisionRadiusChange(String newValue) {
+    return 'Sensibilidad de colisión cambiada a $newValue';
+  }
+
+  @override
+  String get accessibilityCameraReset =>
+      'Vista de cámara reiniciada a posición predeterminada';
+
+  @override
+  String get accessibilityCameraFocus =>
+      'Cámara enfocada en el cuerpo celeste más cercano';
+
+  @override
+  String get accessibilityCameraFollow =>
+      'La cámara ahora sigue al cuerpo celeste seleccionado';
+
+  @override
+  String get accessibilityCameraUnfollow =>
+      'La cámara dejó de seguir al cuerpo celeste';
+
+  @override
+  String accessibilityTutorialProgress(
+    int currentStep,
+    int totalSteps,
+    String stepName,
+  ) {
+    return 'Paso del tutorial $currentStep de $totalSteps: $stepName';
+  }
+
+  @override
+  String accessibilityError(String errorMessage) {
+    return 'Error: $errorMessage';
+  }
+
+  @override
+  String accessibilitySettingEnabled(String settingName) {
+    return '$settingName activado';
+  }
+
+  @override
+  String accessibilitySettingDisabled(String settingName) {
+    return '$settingName desactivado';
+  }
 }

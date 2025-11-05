@@ -19,7 +19,18 @@ class PainterUtils {
   /// Gets the clip-space z coordinate for depth sorting
   static double clipZ(vm.Matrix4 vp, vm.Vector3 p) {
     final clip = vp * vm.Vector4(p.x, p.y, p.z, 1);
-    return clip.w > 0 ? clip.z / clip.w : double.infinity;
+
+    // Handle degenerate cases
+    if (clip.w <= 0) {
+      // Object is behind the camera or at the camera plane
+      return double.infinity;
+    }
+
+    // Perform perspective division to get normalized device coordinates
+    final normalizedZ = clip.z / clip.w;
+
+    // Clamp to prevent floating-point precision issues
+    return normalizedZ.clamp(-1e6, 1e6);
   }
 
   /// Calculates perspective scaling based on tilt angles

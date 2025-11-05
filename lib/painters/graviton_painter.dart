@@ -178,7 +178,15 @@ class GravitonPainter extends CustomPainter {
     indices.sort((a, b) {
       final za = PainterUtils.clipZ(vp, sim.bodies[a].position);
       final zb = PainterUtils.clipZ(vp, sim.bodies[b].position);
-      return za.compareTo(zb);
+
+      // Handle infinity cases (objects behind camera)
+      if (za == double.infinity && zb == double.infinity) return 0;
+      if (za == double.infinity) return 1; // a is behind camera, render first
+      if (zb == double.infinity) return -1; // b is behind camera, render first
+
+      // For normal depth values, sort back-to-front (larger z first)
+      // In clip space, larger z means farther from camera
+      return zb.compareTo(za);
     });
 
     for (final i in indices) {

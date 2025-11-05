@@ -459,5 +459,79 @@
   "fullscreenMode": "전체화면 모드",
   "fullscreenModeDescription": "몰입감 있는 보기를 위해 모든 UI 요소 숨기기",
   "tapToToggleFullscreen": "탭하여 전체화면 전환",
-  "exitFullscreenHint": "전체화면 모드를 종료하려면 아무 곳이나 탭하세요"
+  "exitFullscreenHint": "전체화면 모드를 종료하려면 아무 곳이나 탭하세요",
+
+  "gravitationalSimulationLabel": "중력 물리 시뮬레이션",
+  "@gravitationalSimulationLabel": {
+    "description": "물리 시뮬레이션의 주요 접근성 라벨"
+  },
+
+  "simulationStateDescription": "{bodyCount}개의 천체가 있는 중력 시뮬레이션. 상태: {status}. 속도: {speed}. 완료된 단계: {stepCount}. 시뮬레이션과 상호작용하려면 탭하거나 키보드 단축키를 사용하세요.",
+  "@simulationStateDescription": {
+    "description": "접근성을 위한 시뮬레이션 상태의 포괄적인 설명",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "천체의 수"
+      },
+      "status": {
+        "type": "String",
+        "description": "현재 시뮬레이션 상태"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "현재 시뮬레이션 속도"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "완료된 시뮬레이션 단계 수"
+      }
+    }
+  },
+  "expandedState": "확장됨",
+  "collapsedState": "축소됨",
+  "currentScenario": "현재 시나리오",
+  "scenariosAvailable": "사용 가능한 시나리오",
+  "bottomSheetLabel": "하단 시트",
+  "simulationCanvasLabel": "중력 물리 시뮬레이션",
+  "simulationCanvasHint": "키보드 단축키로 시뮬레이션을 제어하세요. 스페이스로 일시정지, R로 재시작, C로 카메라 중앙 맞춤",
+  "simulationDescription": "{bodyCount}개의 천체가 있는 중력 시뮬레이션. 상태: {status}. 속도: {speed}. 단계: {steps}",
+  "noBodiesInSimulation": "현재 시뮬레이션에 천체가 없습니다",
+  "bodiesInSimulation": "시뮬레이션의 천체: {descriptions}",
+  "cameraFreeDescription": "거리 {distance}에서 자유 모드 카메라. 자동 회전: {rotation}",
+  "cameraFollowingDescription": "거리 {distance}에서 {bodyName}을(를) 따라가는 카메라. 자동 회전: {rotation}",
+  "autoRotateActive": "활성",
+  "autoRotateInactive": "비활성",
+  "liveUpdateAnnouncement": "{updateType}이(가) {value}(으)로 변경됨",
+  "keyboardShortcutsHint": "스페이스로 일시정지/재개, R로 재시작, C로 카메라 중앙 맞춤, A로 자동 회전 전환",
+  "physicsStatsDescription": "물리: {time} 시간 단위, {earthYears}년, {steps} 시뮬레이션 단계 완료",
+  "toggleAutoRotateAction": "자동 회전 전환",
+  "zoomInAction": "확대",
+  "zoomOutAction": "축소",
+  "accessibilitySimulationStarted": "시뮬레이션 시작됨",
+  "accessibilitySimulationStartedContext": "천체들이 이제 움직이고 있습니다",
+  "accessibilitySimulationPaused": "시뮬레이션 일시정지됨",
+  "accessibilitySimulationPausedContext": "모든 천체가 움직임을 멈췄습니다",
+  "accessibilitySimulationResumed": "시뮬레이션 재개됨",
+  "accessibilitySimulationResumedContext": "천체들이 다시 움직이기 시작했습니다",
+  "accessibilitySimulationStopped": "시뮬레이션 중지됨",
+  "accessibilitySimulationStoppedContext": "모든 천체가 재설정되었습니다",
+  "accessibilitySimulationReset": "시뮬레이션 재설정됨",
+  "accessibilitySimulationResetContext": "새로운 시나리오가 새로운 천체들과 함께 로드되었습니다",
+  "accessibilityMergeEvent": "충돌 감지됨: {body1}이(가) {body2}와(과) 합쳐졌습니다",
+  "accessibilityMergeEventContext": "결합된 질량이 새로운 천체를 만들었습니다",
+  "accessibilityScenarioChange": "시나리오가 {scenarioName}(으)로 변경되었습니다",
+  "accessibilityScenarioChangeContext": "새로운 천체들과 물리 매개변수가 로드되었습니다",
+  "accessibilitySpeedChange": "시뮬레이션 속도가 {newValue}(으)로 변경되었습니다",
+  "accessibilityGravityChange": "중력 강도가 {newValue}(으)로 변경되었습니다",
+  "accessibilityCollisionRadiusChange": "충돌 민감도가 {newValue}(으)로 변경되었습니다",
+  "accessibilityCameraReset": "카메라 뷰가 기본 위치로 재설정되었습니다",
+  "accessibilityCameraFocus": "카메라가 가장 가까운 천체에 초점을 맞췄습니다",
+  "accessibilityCameraFollow": "카메라가 이제 선택된 천체를 따라갑니다",
+  "accessibilityCameraUnfollow": "카메라가 천체 따라가기를 중지했습니다",
+  "accessibilityTutorialProgress": "튜토리얼 단계 {currentStep}/{totalSteps}: {stepName}",
+  "accessibilityError": "오류: {errorMessage}",
+  "accessibilitySettingEnabled": "{settingName}이(가) 활성화되었습니다",
+  "accessibilitySettingDisabled": "{settingName}이(가) 비활성화되었습니다",
+  "simulationSpeedHint": "시뮬레이션 속도를 0.1배에서 16배 정상 속도까지 조정합니다. 화살표 키를 사용하여 세밀하게 조정할 수 있습니다."
 }

@@ -118,6 +118,50 @@ class GravitonApp extends StatelessWidget {
               colorScheme: const ColorScheme.dark(
                 primary: AppColors.primaryColor,
               ),
+              // Enhanced focus indicators for accessibility
+              focusColor: AppColors.primaryColor.withValues(
+                alpha: AppTypography.opacitySemiTransparent,
+              ),
+              // Enhanced button focus styling
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ButtonStyle(
+                  overlayColor: WidgetStateProperty.resolveWith<Color?>((
+                    states,
+                  ) {
+                    if (states.contains(WidgetState.focused)) {
+                      return AppColors.primaryColor.withValues(
+                        alpha: AppTypography.opacityMedium,
+                      );
+                    }
+                    if (states.contains(WidgetState.hovered)) {
+                      return AppColors.primaryColor.withValues(
+                        alpha: AppTypography.opacityVeryFaint,
+                      );
+                    }
+                    return Colors.transparent;
+                  }),
+                ),
+              ),
+              // Enhanced icon button focus styling
+              iconButtonTheme: IconButtonThemeData(
+                style: ButtonStyle(
+                  overlayColor: WidgetStateProperty.resolveWith<Color?>((
+                    states,
+                  ) {
+                    if (states.contains(WidgetState.focused)) {
+                      return AppColors.primaryColor.withValues(
+                        alpha: AppTypography.opacityMedium,
+                      );
+                    }
+                    if (states.contains(WidgetState.hovered)) {
+                      return AppColors.primaryColor.withValues(
+                        alpha: AppTypography.opacityVeryFaint,
+                      );
+                    }
+                    return Colors.transparent;
+                  }),
+                ),
+              ),
               sliderTheme: const SliderThemeData(
                 showValueIndicator: ShowValueIndicator.onDrag,
               ),

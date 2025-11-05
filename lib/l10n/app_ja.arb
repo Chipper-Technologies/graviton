@@ -459,5 +459,77 @@
   "fullscreenMode": "フルスクリーンモード",
   "fullscreenModeDescription": "没入感のある表示のためにすべてのUI要素を非表示にする",
   "tapToToggleFullscreen": "タップしてフルスクリーンを切り替え",
-  "exitFullscreenHint": "フルスクリーンモードを終了するには任意の場所をタップ"
+  "exitFullscreenHint": "フルスクリーンモードを終了するには任意の場所をタップ",
+  "gravitationalSimulationLabel": "重力物理シミュレーション",
+  "@gravitationalSimulationLabel": {
+    "description": "物理シミュレーションのメインアクセシビリティラベル"
+  },
+  "simulationStateDescription": "{bodyCount}個の天体がある重力シミュレーション。状態：{status}。速度：{speed}。完了したステップ：{stepCount}。シミュレーションと相互作用するにはタップするか、キーボードショートカットを使用してください。",
+  "@simulationStateDescription": {
+    "description": "アクセシビリティのためのシミュレーション状態の包括的な説明",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "天体の数"
+      },
+      "status": {
+        "type": "String",
+        "description": "現在のシミュレーション状態"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "現在のシミュレーション速度"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "完了したシミュレーションステップ数"
+      }
+    }
+  },
+  "expandedState": "展開済み",
+  "collapsedState": "折りたたみ済み",
+  "currentScenario": "現在のシナリオ",
+  "scenariosAvailable": "利用可能なシナリオ",
+  "bottomSheetLabel": "ボトムシート",
+  "simulationCanvasLabel": "重力物理シミュレーション",
+  "simulationCanvasHint": "キーボードショートカットでシミュレーションを制御してください。スペースで一時停止、Rで再開、Cでカメラ中央揃え",
+  "simulationDescription": "{bodyCount}個の天体がある重力シミュレーション。状態：{status}。速度：{speed}。ステップ：{steps}",
+  "noBodiesInSimulation": "現在シミュレーションに天体がありません",
+  "bodiesInSimulation": "シミュレーションの天体：{descriptions}",
+  "cameraFreeDescription": "距離{distance}での自由モードカメラ。自動回転：{rotation}",
+  "cameraFollowingDescription": "距離{distance}で{bodyName}を追跡するカメラ。自動回転：{rotation}",
+  "autoRotateActive": "アクティブ",
+  "autoRotateInactive": "非アクティブ",
+  "liveUpdateAnnouncement": "{updateType}が{value}に変更されました",
+  "keyboardShortcutsHint": "スペースで一時停止/再開、Rで再開、Cでカメラ中央揃え、Aで自動回転切り替え",
+  "physicsStatsDescription": "物理：{time}時間単位、{earthYears}地球年、{steps}シミュレーションステップ完了",
+  "toggleAutoRotateAction": "自動回転切り替え",
+  "zoomInAction": "ズームイン",
+  "zoomOutAction": "ズームアウト",
+  "accessibilitySimulationStarted": "シミュレーション開始",
+  "accessibilitySimulationStartedContext": "天体が動き始めました",
+  "accessibilitySimulationPaused": "シミュレーション一時停止",
+  "accessibilitySimulationPausedContext": "すべての天体が停止しました",
+  "accessibilitySimulationResumed": "シミュレーション再開",
+  "accessibilitySimulationResumedContext": "天体が再び動き始めました",
+  "accessibilitySimulationStopped": "シミュレーション停止",
+  "accessibilitySimulationStoppedContext": "すべての天体がリセットされました",
+  "accessibilitySimulationReset": "シミュレーションリセット",
+  "accessibilitySimulationResetContext": "新しいシナリオが新しい天体とともに読み込まれました",
+  "accessibilityMergeEvent": "衝突検出：{body1}が{body2}と合体しました",
+  "accessibilityMergeEventContext": "合体した質量が新しい天体を作りました",
+  "accessibilityScenarioChange": "シナリオが{scenarioName}に変更されました",
+  "accessibilityScenarioChangeContext": "新しい天体と物理パラメータが読み込まれました",
+  "accessibilitySpeedChange": "シミュレーション速度が{newValue}に変更されました",
+  "accessibilityGravityChange": "重力の強さが{newValue}に変更されました",
+  "accessibilityCollisionRadiusChange": "衝突感度が{newValue}に変更されました",
+  "accessibilityCameraReset": "カメラビューがデフォルト位置にリセットされました",
+  "accessibilityCameraFocus": "カメラが最も近い天体にフォーカスしました",
+  "accessibilityCameraFollow": "カメラが選択された天体を追跡し始めました",
+  "accessibilityCameraUnfollow": "カメラが天体の追跡を停止しました",
+  "accessibilityTutorialProgress": "チュートリアルステップ{currentStep}/{totalSteps}：{stepName}",
+  "accessibilityError": "エラー：{errorMessage}",
+  "accessibilitySettingEnabled": "{settingName}が有効になりました",
+  "accessibilitySettingDisabled": "{settingName}が無効になりました",
+  "simulationSpeedHint": "シミュレーション速度を0.1倍から16倍の通常速度まで調整します。矢印キーで細かく調整できます。"
 }

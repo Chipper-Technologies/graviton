@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/services/accessibility_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
@@ -639,6 +640,9 @@ class Simulation {
     _markChanged(); // Signal merge event
     final b1 = bodies[i];
     final b2 = bodies[j];
+
+    // Announce collision to screen readers
+    AccessibilityService.instance.announceMergeEvent(b1.name, b2.name);
 
     final m = b1.mass + b2.mass;
     final p =

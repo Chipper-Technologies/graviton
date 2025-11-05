@@ -338,6 +338,11 @@
   "@simulationSpeed": {
     "description": "Label for simulation speed slider"
   },
+
+  "simulationSpeedHint": "Adjust simulation speed from 0.1x to 16x normal speed. Use arrow keys to change in small increments.",
+  "@simulationSpeedHint": {
+    "description": "Accessibility hint for simulation speed slider"
+  },
   
   "collisionsSection": "Collisions",
   "@collisionsSection": {
@@ -2218,5 +2223,396 @@
   "exitFullscreenHint": "Tap anywhere to exit fullscreen",
   "@exitFullscreenHint": {
     "description": "Hint shown when in fullscreen mode"
+  },
+
+  "simulationCanvasLabel": "Gravitational Physics Simulation",
+  "@simulationCanvasLabel": {
+    "description": "Accessibility label for the main simulation canvas"
+  },
+
+  "simulationCanvasHint": "Use keyboard shortcuts to control simulation. Space to pause, R to reset, C to center camera",
+  "@simulationCanvasHint": {
+    "description": "Accessibility hint for simulation canvas interactions"
+  },
+
+  "simulationDescription": "Gravitational simulation with {bodyCount} celestial bodies. Status: {status}. Speed: {speed}. Steps: {steps}",
+  "@simulationDescription": {
+    "description": "Comprehensive description of simulation state for screen readers",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "Number of celestial bodies"
+      },
+      "status": {
+        "type": "String", 
+        "description": "Current simulation status"
+      },
+      "speed": {
+        "type": "String",
+        "description": "Current time scale"
+      },
+      "steps": {
+        "type": "int",
+        "description": "Number of simulation steps"
+      }
+    }
+  },
+
+  "noBodiesInSimulation": "No celestial bodies currently in the simulation",
+  "@noBodiesInSimulation": {
+    "description": "Accessibility description when simulation is empty"
+  },
+
+  "bodiesInSimulation": "Bodies in simulation: {descriptions}",
+  "@bodiesInSimulation": {
+    "description": "Description of bodies currently in simulation",
+    "placeholders": {
+      "descriptions": {
+        "type": "String",
+        "description": "Comma-separated list of body types and counts"
+      }
+    }
+  },
+
+  "cameraFreeDescription": "Camera in free mode at distance {distance}. Auto-rotation: {rotation}",
+  "@cameraFreeDescription": {
+    "description": "Description of camera in free movement mode",
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "description": "Camera distance from center"
+      },
+      "rotation": {
+        "type": "String", 
+        "description": "Auto-rotation status"
+      }
+    }
+  },
+
+  "cameraFollowingDescription": "Camera following {bodyName} at distance {distance}. Auto-rotation: {rotation}",
+  "@cameraFollowingDescription": {
+    "description": "Description of camera in follow mode",
+    "placeholders": {
+      "bodyName": {
+        "type": "String",
+        "description": "Name of body being followed"
+      },
+      "distance": {
+        "type": "String", 
+        "description": "Camera distance"
+      },
+      "rotation": {
+        "type": "String",
+        "description": "Auto-rotation status"
+      }
+    }
+  },
+
+  "autoRotateActive": "active",
+  "@autoRotateActive": {
+    "description": "Status text when auto-rotation is enabled"
+  },
+
+  "autoRotateInactive": "inactive", 
+  "@autoRotateInactive": {
+    "description": "Status text when auto-rotation is disabled"
+  },
+
+  "liveUpdateAnnouncement": "{updateType} changed to {value}",
+  "@liveUpdateAnnouncement": {
+    "description": "Live region announcement for value changes",
+    "placeholders": {
+      "updateType": {
+        "type": "String",
+        "description": "Type of data that changed"
+      },
+      "value": {
+        "type": "String",
+        "description": "New value"
+      }
+    }
+  },
+
+  "keyboardShortcutsHint": "Use Space to pause/resume, R to reset, C to center camera, A to toggle auto-rotation",
+  "@keyboardShortcutsHint": {
+    "description": "Hint about available keyboard shortcuts"
+  },
+
+  "physicsStatsDescription": "Physics: {time} time units, {earthYears} Earth years, {steps} simulation steps completed",
+  "@physicsStatsDescription": {
+    "description": "Accessibility description of physics statistics",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "description": "Total simulation time"
+      },
+      "earthYears": {
+        "type": "String",
+        "description": "Time in Earth years"
+      },
+      "steps": {
+        "type": "int",
+        "description": "Number of steps"
+      }
+    }
+  },
+
+  "toggleAutoRotateAction": "Toggle auto-rotation",
+  "@toggleAutoRotateAction": {
+    "description": "Semantic action label for toggling camera auto-rotation"
+  },
+
+  "zoomInAction": "Zoom in",
+  "@zoomInAction": {
+    "description": "Semantic action label for zooming in"
+  },
+
+  "zoomOutAction": "Zoom out", 
+  "@zoomOutAction": {
+    "description": "Semantic action label for zooming out"
+  },
+
+  "expandedState": "expanded",
+  "@expandedState": {
+    "description": "State description for expanded UI elements"
+  },
+
+  "collapsedState": "collapsed",
+  "@collapsedState": {
+    "description": "State description for collapsed UI elements"
+  },
+
+  "currentScenario": "Current scenario",
+  "@currentScenario": {
+    "description": "Label for the currently selected scenario"
+  },
+
+  "scenariosAvailable": "scenarios available",
+  "@scenariosAvailable": {
+    "description": "Text indicating number of scenarios available"
+  },
+
+  "bottomSheetLabel": "Bottom sheet",
+  "@bottomSheetLabel": {
+    "description": "Accessibility label for bottom sheet component"
+  },
+
+  "gravitationalSimulationLabel": "Gravitational Physics Simulation",
+  "@gravitationalSimulationLabel": {
+    "description": "Main accessibility label for the physics simulation"
+  },
+
+  "simulationStateDescription": "Gravitational simulation with {bodyCount} celestial bodies. Status: {status}. Speed: {speed}. Steps completed: {stepCount}. Tap to interact with simulation or use keyboard shortcuts.",
+  "@simulationStateDescription": {
+    "description": "Comprehensive description of simulation state for accessibility",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "Number of celestial bodies"
+      },
+      "status": {
+        "type": "String",
+        "description": "Current simulation status"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "Current simulation speed"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "Number of simulation steps completed"
+      }
+    }
+  },
+
+  "accessibilitySimulationStarted": "Simulation started",
+  "@accessibilitySimulationStarted": {
+    "description": "Accessibility announcement when simulation starts"
+  },
+
+  "accessibilitySimulationStartedContext": "Celestial bodies are now in motion",
+  "@accessibilitySimulationStartedContext": {
+    "description": "Additional context for simulation start announcement"
+  },
+
+  "accessibilitySimulationPaused": "Simulation paused",
+  "@accessibilitySimulationPaused": {
+    "description": "Accessibility announcement when simulation is paused"
+  },
+
+  "accessibilitySimulationPausedContext": "All celestial bodies have stopped moving",
+  "@accessibilitySimulationPausedContext": {
+    "description": "Additional context for simulation pause announcement"
+  },
+
+  "accessibilitySimulationResumed": "Simulation resumed",
+  "@accessibilitySimulationResumed": {
+    "description": "Accessibility announcement when simulation is resumed"
+  },
+
+  "accessibilitySimulationResumedContext": "Celestial bodies are moving again",
+  "@accessibilitySimulationResumedContext": {
+    "description": "Additional context for simulation resume announcement"
+  },
+
+  "accessibilitySimulationStopped": "Simulation stopped",
+  "@accessibilitySimulationStopped": {
+    "description": "Accessibility announcement when simulation is stopped"
+  },
+
+  "accessibilitySimulationStoppedContext": "All celestial bodies have been reset",
+  "@accessibilitySimulationStoppedContext": {
+    "description": "Additional context for simulation stop announcement"
+  },
+
+  "accessibilitySimulationReset": "Simulation reset",
+  "@accessibilitySimulationReset": {
+    "description": "Accessibility announcement when simulation is reset"
+  },
+
+  "accessibilitySimulationResetContext": "New scenario loaded with fresh celestial bodies",
+  "@accessibilitySimulationResetContext": {
+    "description": "Additional context for simulation reset announcement"
+  },
+
+  "accessibilityMergeEvent": "Collision detected: {body1} merged with {body2}",
+  "@accessibilityMergeEvent": {
+    "description": "Accessibility announcement for celestial body collisions",
+    "placeholders": {
+      "body1": {
+        "type": "String",
+        "description": "Name of the first celestial body"
+      },
+      "body2": {
+        "type": "String",
+        "description": "Name of the second celestial body"
+      }
+    }
+  },
+
+  "accessibilityMergeEventContext": "The combined mass creates a new celestial body",
+  "@accessibilityMergeEventContext": {
+    "description": "Additional context for merge event announcements"
+  },
+
+  "accessibilityScenarioChange": "Scenario changed to {scenarioName}",
+  "@accessibilityScenarioChange": {
+    "description": "Accessibility announcement for scenario changes",
+    "placeholders": {
+      "scenarioName": {
+        "type": "String",
+        "description": "Name of the new scenario"
+      }
+    }
+  },
+
+  "accessibilityScenarioChangeContext": "New celestial bodies and physics parameters loaded",
+  "@accessibilityScenarioChangeContext": {
+    "description": "Additional context for scenario change announcements"
+  },
+
+  "accessibilitySpeedChange": "Simulation speed changed to {newValue}",
+  "@accessibilitySpeedChange": {
+    "description": "Accessibility announcement for speed changes",
+    "placeholders": {
+      "newValue": {
+        "type": "String",
+        "description": "New simulation speed value"
+      }
+    }
+  },
+
+  "accessibilityGravityChange": "Gravity strength changed to {newValue}",
+  "@accessibilityGravityChange": {
+    "description": "Accessibility announcement for gravity changes",
+    "placeholders": {
+      "newValue": {
+        "type": "String",
+        "description": "New gravity strength value"
+      }
+    }
+  },
+
+  "accessibilityCollisionRadiusChange": "Collision sensitivity changed to {newValue}",
+  "@accessibilityCollisionRadiusChange": {
+    "description": "Accessibility announcement for collision radius changes",
+    "placeholders": {
+      "newValue": {
+        "type": "String",
+        "description": "New collision sensitivity value"
+      }
+    }
+  },
+
+  "accessibilityCameraReset": "Camera view reset to default position",
+  "@accessibilityCameraReset": {
+    "description": "Accessibility announcement for camera reset"
+  },
+
+  "accessibilityCameraFocus": "Camera focused on nearest celestial body",
+  "@accessibilityCameraFocus": {
+    "description": "Accessibility announcement for camera focus"
+  },
+
+  "accessibilityCameraFollow": "Camera now following selected celestial body",
+  "@accessibilityCameraFollow": {
+    "description": "Accessibility announcement for camera follow mode"
+  },
+
+  "accessibilityCameraUnfollow": "Camera stopped following celestial body",
+  "@accessibilityCameraUnfollow": {
+    "description": "Accessibility announcement when camera stops following"
+  },
+
+  "accessibilityTutorialProgress": "Tutorial step {currentStep} of {totalSteps}: {stepName}",
+  "@accessibilityTutorialProgress": {
+    "description": "Accessibility announcement for tutorial progress",
+    "placeholders": {
+      "currentStep": {
+        "type": "int",
+        "description": "Current tutorial step number"
+      },
+      "totalSteps": {
+        "type": "int",
+        "description": "Total number of tutorial steps"
+      },
+      "stepName": {
+        "type": "String",
+        "description": "Name of the current tutorial step"
+      }
+    }
+  },
+
+  "accessibilityError": "Error: {errorMessage}",
+  "@accessibilityError": {
+    "description": "Accessibility announcement for error messages",
+    "placeholders": {
+      "errorMessage": {
+        "type": "String",
+        "description": "The error message to announce"
+      }
+    }
+  },
+
+  "accessibilitySettingEnabled": "{settingName} enabled",
+  "@accessibilitySettingEnabled": {
+    "description": "Accessibility announcement when a setting is enabled",
+    "placeholders": {
+      "settingName": {
+        "type": "String",
+        "description": "Name of the setting that was enabled"
+      }
+    }
+  },
+
+  "accessibilitySettingDisabled": "{settingName} disabled",
+  "@accessibilitySettingDisabled": {
+    "description": "Accessibility announcement when a setting is disabled",
+    "placeholders": {
+      "settingName": {
+        "type": "String",
+        "description": "Name of the setting that was disabled"
+      }
+    }
   }
 }

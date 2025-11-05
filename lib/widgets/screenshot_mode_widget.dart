@@ -58,6 +58,15 @@ class ScreenshotModeWidget extends StatelessWidget {
                     onChanged: (v) =>
                         appState.ui.toggleHideUIInScreenshotMode(),
                   ),
+
+                  // Fullscreen Toggle (only show when screenshot mode is enabled)
+                  ToggleOption(
+                    title: l10n.fullscreenMode,
+                    description: l10n.fullscreenModeDescription,
+                    icon: Icons.fullscreen,
+                    isEnabled: screenshotService.fullscreenModeEnabled,
+                    onChanged: (v) => screenshotService.toggleFullscreenMode(),
+                  ),
                 ],
 
                 // Preset Selection (only show when enabled)

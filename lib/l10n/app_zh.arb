@@ -460,5 +460,77 @@
   "fullscreenMode": "全屏模式",
   "fullscreenModeDescription": "隐藏所有UI元素以获得沉浸式观看体验",
   "tapToToggleFullscreen": "点击切换全屏",
-  "exitFullscreenHint": "点击任意位置退出全屏模式"
+  "exitFullscreenHint": "点击任意位置退出全屏模式",
+  "gravitationalSimulationLabel": "引力物理模拟",
+  "@gravitationalSimulationLabel": {
+    "description": "物理模拟的主要可访问性标签"
+  },
+  "simulationStateDescription": "具有{bodyCount}个天体的引力模拟。状态：{status}。速度：{speed}。已完成步骤：{stepCount}。点击与模拟交互或使用键盘快捷键。",
+  "@simulationStateDescription": {
+    "description": "用于可访问性的模拟状态综合描述",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "天体数量"
+      },
+      "status": {
+        "type": "String",
+        "description": "当前模拟状态"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "当前模拟速度"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "已完成的模拟步骤数"
+      }
+    }
+  },
+  "expandedState": "已展开",
+  "collapsedState": "已折叠",
+  "currentScenario": "当前场景",
+  "scenariosAvailable": "可用场景",
+  "bottomSheetLabel": "底部面板",
+  "simulationCanvasLabel": "引力物理模拟",
+  "simulationCanvasHint": "使用键盘快捷键控制模拟。空格键暂停，R键重新开始，C键居中相机",
+  "simulationDescription": "具有{bodyCount}个天体的引力模拟。状态：{status}。速度：{speed}。步骤：{steps}",
+  "noBodiesInSimulation": "当前模拟中没有天体",
+  "bodiesInSimulation": "模拟中的天体：{descriptions}",
+  "cameraFreeDescription": "距离{distance}的自由模式相机。自动旋转：{rotation}",
+  "cameraFollowingDescription": "距离{distance}跟随{bodyName}的相机。自动旋转：{rotation}",
+  "autoRotateActive": "激活",
+  "autoRotateInactive": "未激活",
+  "liveUpdateAnnouncement": "{updateType}已更改为{value}",
+  "keyboardShortcutsHint": "使用空格键暂停/恢复，R键重新开始，C键居中相机，A键切换自动旋转",
+  "physicsStatsDescription": "物理：{time}时间单位，{earthYears}地球年，{steps}模拟步骤已完成",
+  "toggleAutoRotateAction": "切换自动旋转",
+  "zoomInAction": "放大",
+  "zoomOutAction": "缩小",
+  "accessibilitySimulationStarted": "模拟已开始",
+  "accessibilitySimulationStartedContext": "天体现在正在运动",
+  "accessibilitySimulationPaused": "模拟已暂停",
+  "accessibilitySimulationPausedContext": "所有天体已停止移动",
+  "accessibilitySimulationResumed": "模拟已恢复",
+  "accessibilitySimulationResumedContext": "天体再次开始运动",
+  "accessibilitySimulationStopped": "模拟已停止",
+  "accessibilitySimulationStoppedContext": "所有天体已重置",
+  "accessibilitySimulationReset": "模拟已重置",
+  "accessibilitySimulationResetContext": "新场景已加载新天体",
+  "accessibilityMergeEvent": "检测到碰撞：{body1}与{body2}合并",
+  "accessibilityMergeEventContext": "合并的质量创造了新的天体",
+  "accessibilityScenarioChange": "场景已更改为{scenarioName}",
+  "accessibilityScenarioChangeContext": "新天体和物理参数已加载",
+  "accessibilitySpeedChange": "模拟速度已更改为{newValue}",
+  "accessibilityGravityChange": "重力强度已更改为{newValue}",
+  "accessibilityCollisionRadiusChange": "碰撞敏感度已更改为{newValue}",
+  "accessibilityCameraReset": "相机视图已重置为默认位置",
+  "accessibilityCameraFocus": "相机已聚焦于最近的天体",
+  "accessibilityCameraFollow": "相机现在跟随选定的天体",
+  "accessibilityCameraUnfollow": "相机停止跟随天体",
+  "accessibilityTutorialProgress": "教程步骤{currentStep}/{totalSteps}：{stepName}",
+  "accessibilityError": "错误：{errorMessage}",
+  "accessibilitySettingEnabled": "{settingName}已启用",
+  "accessibilitySettingDisabled": "{settingName}已禁用",
+  "simulationSpeedHint": "调整模拟速度从0.1倍到16倍正常速度。使用箭头键进行小幅调整。"
 }

@@ -202,13 +202,35 @@ class PhysicsControls extends StatelessWidget {
                     fontSize: AppTypography.fontSizeSmall,
                   ),
                 ),
-                child: Slider(
-                  min: 0.1,
-                  max: 16.0,
-                  divisions: 159,
-                  value: appState.simulation.timeScale.clamp(0.1, 16.0),
-                  label: '${appState.simulation.timeScale.toStringAsFixed(1)}x',
-                  onChanged: (value) => appState.simulation.setTimeScale(value),
+                child: Semantics(
+                  label: l10n.speedLabel,
+                  hint: l10n.simulationSpeedHint,
+                  value:
+                      '${appState.simulation.timeScale.toStringAsFixed(1)}x ${l10n.speedNormal}',
+                  increasedValue:
+                      '${(appState.simulation.timeScale + 0.1).clamp(0.1, 16.0).toStringAsFixed(1)}x',
+                  decreasedValue:
+                      '${(appState.simulation.timeScale - 0.1).clamp(0.1, 16.0).toStringAsFixed(1)}x',
+                  onIncrease: () {
+                    final newValue = (appState.simulation.timeScale + 0.1)
+                        .clamp(0.1, 16.0);
+                    appState.simulation.setTimeScale(newValue);
+                  },
+                  onDecrease: () {
+                    final newValue = (appState.simulation.timeScale - 0.1)
+                        .clamp(0.1, 16.0);
+                    appState.simulation.setTimeScale(newValue);
+                  },
+                  child: Slider(
+                    min: 0.1,
+                    max: 16.0,
+                    divisions: 159,
+                    value: appState.simulation.timeScale.clamp(0.1, 16.0),
+                    label:
+                        '${appState.simulation.timeScale.toStringAsFixed(1)}x',
+                    onChanged: (value) =>
+                        appState.simulation.setTimeScale(value),
+                  ),
                 ),
               ),
 

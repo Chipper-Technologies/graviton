@@ -330,5 +330,68 @@ void main() {
         completes,
       );
     });
+
+    group('Fullscreen Mode Integration', () {
+      test('Should initialize with fullscreen mode disabled', () {
+        expect(service.fullscreenModeEnabled, isFalse);
+      });
+
+      test('Should toggle fullscreen mode', () {
+        expect(service.fullscreenModeEnabled, isFalse);
+
+        service.toggleFullscreenMode();
+        expect(service.fullscreenModeEnabled, isTrue);
+
+        service.toggleFullscreenMode();
+        expect(service.fullscreenModeEnabled, isFalse);
+      });
+
+      test('Should notify listeners when fullscreen mode changes', () {
+        int notificationCount = 0;
+        service.addListener(() => notificationCount++);
+
+        service.toggleFullscreenMode();
+        expect(notificationCount, equals(1));
+
+        service.toggleFullscreenMode();
+        expect(notificationCount, equals(2));
+      });
+
+      test('Should handle fullscreen mode with preset application', () async {
+        service.enableScreenshotMode();
+        service.toggleFullscreenMode(); // Enable fullscreen
+
+        expect(service.fullscreenModeEnabled, isTrue);
+
+        // Apply preset - should not throw errors even if fullscreen operations fail in tests
+        await expectLater(
+          service.applyCurrentPreset(
+            simulationState: simulationState,
+            cameraState: cameraState,
+            uiState: uiState,
+          ),
+          completes,
+        );
+
+        expect(service.isActive, isTrue);
+      });
+
+      test('Should handle fullscreen mode during deactivation', () {
+        service.enableScreenshotMode();
+        service.toggleFullscreenMode(); // Enable fullscreen
+
+        // Simulate being active
+        service.applyCurrentPreset(
+          simulationState: simulationState,
+          cameraState: cameraState,
+          uiState: uiState,
+        );
+
+        // Deactivate should not throw errors even if fullscreen operations fail in tests
+        expect(() => service.deactivate(uiState: uiState), returnsNormally);
+
+        expect(service.isActive, isFalse);
+      });
+    });
   });
 }

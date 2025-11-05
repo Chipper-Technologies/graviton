@@ -30,83 +30,91 @@ class ToggleOption extends StatelessWidget {
       margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingMedium),
       child: Material(
         color: Colors.transparent,
-        child: HapticInkWell(
+        child: Semantics(
+          label: title,
+          hint: description,
+          value: isEnabled ? 'enabled' : 'disabled',
+          toggled: isEnabled,
+          button: true,
           onTap: () => onChanged(!isEnabled),
-          borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-          child: Container(
-            padding: EdgeInsets.all(AppTypography.spacingLarge),
-            decoration: BoxDecoration(
-              color: isEnabled
-                  ? AppColors.primaryColor.withValues(
-                      alpha: AppTypography.opacityMidFade,
-                    )
-                  : AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityBarely,
-                    ),
-              borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-              border: isEnabled
-                  ? Border.all(
-                      color: AppColors.primaryColor,
-                      width: AppTypography.borderThin,
-                    )
-                  : Border.all(
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacityDisabled,
+          child: HapticInkWell(
+            onTap: () => onChanged(!isEnabled),
+            borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+            child: Container(
+              padding: EdgeInsets.all(AppTypography.spacingLarge),
+              decoration: BoxDecoration(
+                color: isEnabled
+                    ? AppColors.primaryColor.withValues(
+                        alpha: AppTypography.opacityMidFade,
+                      )
+                    : AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityBarely,
                       ),
-                      width: AppTypography.borderThin,
-                    ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  icon,
-                  color: isEnabled
-                      ? AppColors.primaryColor
-                      : AppColors.uiWhite.withValues(
-                          alpha: AppTypography.opacityHigh,
+                borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+                border: isEnabled
+                    ? Border.all(
+                        color: AppColors.primaryColor,
+                        width: AppTypography.borderThin,
+                      )
+                    : Border.all(
+                        color: AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityDisabled,
                         ),
-                  size: AppTypography.iconSizeXXLarge,
-                ),
-                SizedBox(width: AppTypography.spacingLarge),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          color: isEnabled
-                              ? AppColors.primaryColor
-                              : AppColors.uiWhite,
-                          fontSize: AppTypography.fontSizeLarge,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        width: AppTypography.borderThin,
                       ),
-                      SizedBox(height: AppTypography.spacingXSmall),
-                      Text(
-                        description,
-                        style: TextStyle(
-                          color: AppColors.uiWhite.withValues(
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    icon,
+                    color: isEnabled
+                        ? AppColors.primaryColor
+                        : AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityHigh,
                           ),
-                          fontSize: AppTypography.fontSizeMedium,
+                    size: AppTypography.iconSizeXXLarge,
+                  ),
+                  SizedBox(width: AppTypography.spacingLarge),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: TextStyle(
+                            color: isEnabled
+                                ? AppColors.primaryColor
+                                : AppColors.uiWhite,
+                            fontSize: AppTypography.fontSizeLarge,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: AppTypography.spacingXSmall),
+                        Text(
+                          description,
+                          style: TextStyle(
+                            color: AppColors.uiWhite.withValues(
+                              alpha: AppTypography.opacityHigh,
+                            ),
+                            fontSize: AppTypography.fontSizeMedium,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                HapticSwitch(
-                  value: isEnabled,
-                  onChanged: onChanged,
-                  activeColor: AppColors.primaryColor,
-                  inactiveThumbColor: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityMediumHigh,
+                  HapticSwitch(
+                    value: isEnabled,
+                    onChanged: onChanged,
+                    activeColor: AppColors.primaryColor,
+                    inactiveThumbColor: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityMediumHigh,
+                    ),
+                    inactiveTrackColor: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityFaint,
+                    ),
                   ),
-                  inactiveTrackColor: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityFaint,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

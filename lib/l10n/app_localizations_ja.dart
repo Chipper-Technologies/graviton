@@ -213,6 +213,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get simulationSpeed => 'シミュレーション速度';
 
   @override
+  String get simulationSpeedHint =>
+      'シミュレーション速度を0.1倍から16倍の通常速度まで調整します。矢印キーで細かく調整できます。';
+
+  @override
   String get collisionsSection => '衝突';
 
   @override
@@ -1429,4 +1433,196 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get exitFullscreenHint => 'フルスクリーンモードを終了するには任意の場所をタップ';
+
+  @override
+  String get simulationCanvasLabel => '重力物理シミュレーション';
+
+  @override
+  String get simulationCanvasHint =>
+      'キーボードショートカットでシミュレーションを制御してください。スペースで一時停止、Rで再開、Cでカメラ中央揃え';
+
+  @override
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  ) {
+    return '$bodyCount個の天体がある重力シミュレーション。状態：$status。速度：$speed。ステップ：$steps';
+  }
+
+  @override
+  String get noBodiesInSimulation => '現在シミュレーションに天体がありません';
+
+  @override
+  String bodiesInSimulation(String descriptions) {
+    return 'シミュレーションの天体：$descriptions';
+  }
+
+  @override
+  String cameraFreeDescription(String distance, String rotation) {
+    return '距離$distanceでの自由モードカメラ。自動回転：$rotation';
+  }
+
+  @override
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  ) {
+    return '距離$distanceで$bodyNameを追跡するカメラ。自動回転：$rotation';
+  }
+
+  @override
+  String get autoRotateActive => 'アクティブ';
+
+  @override
+  String get autoRotateInactive => '非アクティブ';
+
+  @override
+  String liveUpdateAnnouncement(String updateType, String value) {
+    return '$updateTypeが$valueに変更されました';
+  }
+
+  @override
+  String get keyboardShortcutsHint => 'スペースで一時停止/再開、Rで再開、Cでカメラ中央揃え、Aで自動回転切り替え';
+
+  @override
+  String physicsStatsDescription(String time, String earthYears, int steps) {
+    return '物理：$time時間単位、$earthYears地球年、$stepsシミュレーションステップ完了';
+  }
+
+  @override
+  String get toggleAutoRotateAction => '自動回転切り替え';
+
+  @override
+  String get zoomInAction => 'ズームイン';
+
+  @override
+  String get zoomOutAction => 'ズームアウト';
+
+  @override
+  String get expandedState => '展開済み';
+
+  @override
+  String get collapsedState => '折りたたみ済み';
+
+  @override
+  String get currentScenario => '現在のシナリオ';
+
+  @override
+  String get scenariosAvailable => '利用可能なシナリオ';
+
+  @override
+  String get bottomSheetLabel => 'ボトムシート';
+
+  @override
+  String get gravitationalSimulationLabel => '重力物理シミュレーション';
+
+  @override
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  ) {
+    return '$bodyCount個の天体がある重力シミュレーション。状態：$status。速度：$speed。完了したステップ：$stepCount。シミュレーションと相互作用するにはタップするか、キーボードショートカットを使用してください。';
+  }
+
+  @override
+  String get accessibilitySimulationStarted => 'シミュレーション開始';
+
+  @override
+  String get accessibilitySimulationStartedContext => '天体が動き始めました';
+
+  @override
+  String get accessibilitySimulationPaused => 'シミュレーション一時停止';
+
+  @override
+  String get accessibilitySimulationPausedContext => 'すべての天体が停止しました';
+
+  @override
+  String get accessibilitySimulationResumed => 'シミュレーション再開';
+
+  @override
+  String get accessibilitySimulationResumedContext => '天体が再び動き始めました';
+
+  @override
+  String get accessibilitySimulationStopped => 'シミュレーション停止';
+
+  @override
+  String get accessibilitySimulationStoppedContext => 'すべての天体がリセットされました';
+
+  @override
+  String get accessibilitySimulationReset => 'シミュレーションリセット';
+
+  @override
+  String get accessibilitySimulationResetContext => '新しいシナリオが新しい天体とともに読み込まれました';
+
+  @override
+  String accessibilityMergeEvent(String body1, String body2) {
+    return '衝突検出：$body1が$body2と合体しました';
+  }
+
+  @override
+  String get accessibilityMergeEventContext => '合体した質量が新しい天体を作りました';
+
+  @override
+  String accessibilityScenarioChange(String scenarioName) {
+    return 'シナリオが$scenarioNameに変更されました';
+  }
+
+  @override
+  String get accessibilityScenarioChangeContext => '新しい天体と物理パラメータが読み込まれました';
+
+  @override
+  String accessibilitySpeedChange(String newValue) {
+    return 'シミュレーション速度が$newValueに変更されました';
+  }
+
+  @override
+  String accessibilityGravityChange(String newValue) {
+    return '重力の強さが$newValueに変更されました';
+  }
+
+  @override
+  String accessibilityCollisionRadiusChange(String newValue) {
+    return '衝突感度が$newValueに変更されました';
+  }
+
+  @override
+  String get accessibilityCameraReset => 'カメラビューがデフォルト位置にリセットされました';
+
+  @override
+  String get accessibilityCameraFocus => 'カメラが最も近い天体にフォーカスしました';
+
+  @override
+  String get accessibilityCameraFollow => 'カメラが選択された天体を追跡し始めました';
+
+  @override
+  String get accessibilityCameraUnfollow => 'カメラが天体の追跡を停止しました';
+
+  @override
+  String accessibilityTutorialProgress(
+    int currentStep,
+    int totalSteps,
+    String stepName,
+  ) {
+    return 'チュートリアルステップ$currentStep/$totalSteps：$stepName';
+  }
+
+  @override
+  String accessibilityError(String errorMessage) {
+    return 'エラー：$errorMessage';
+  }
+
+  @override
+  String accessibilitySettingEnabled(String settingName) {
+    return '$settingNameが有効になりました';
+  }
+
+  @override
+  String accessibilitySettingDisabled(String settingName) {
+    return '$settingNameが無効になりました';
+  }
 }

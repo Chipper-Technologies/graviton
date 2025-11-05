@@ -459,5 +459,78 @@
   "fullscreenMode": "Mode Plein Écran",
   "fullscreenModeDescription": "Masquer tous les éléments de l'interface pour une visualisation immersive",
   "tapToToggleFullscreen": "Appuyez pour basculer en plein écran",
-  "exitFullscreenHint": "Appuyez n'importe où pour quitter le mode plein écran"
+  "exitFullscreenHint": "Appuyez n'importe où pour quitter le mode plein écran",
+  "gravitationalSimulationLabel": "Simulation de Physique Gravitationnelle",
+  "@gravitationalSimulationLabel": {
+    "description": "Étiquette d'accessibilité principale pour la simulation de physique"
+  },
+  "simulationStateDescription": "Simulation gravitationnelle avec {bodyCount} corps célestes. État : {status}. Vitesse : {speed}. Étapes terminées : {stepCount}. Appuyez pour interagir avec la simulation ou utilisez les raccourcis clavier.",
+  "@simulationStateDescription": {
+    "description": "Description complète de l'état de la simulation pour l'accessibilité",
+    "placeholders": {
+      "bodyCount": {
+        "type": "int",
+        "description": "Nombre de corps célestes"
+      },
+      "status": {
+        "type": "String",
+        "description": "État actuel de la simulation"
+      },
+      "speed": {
+        "type": "String", 
+        "description": "Vitesse actuelle de la simulation"
+      },
+      "stepCount": {
+        "type": "int",
+        "description": "Nombre d'étapes de simulation terminées"
+      }
+    }
+  },
+
+  "expandedState": "élargi",
+  "collapsedState": "réduit",
+  "currentScenario": "Scénario actuel",
+  "scenariosAvailable": "scénarios disponibles",
+  "bottomSheetLabel": "Feuille inférieure",
+  "simulationCanvasLabel": "Simulation de Physique Gravitationnelle",
+  "simulationCanvasHint": "Utilisez les raccourcis clavier pour contrôler la simulation. Espace pour pause, R pour redémarrer, C pour centrer la caméra",
+  "simulationDescription": "Simulation gravitationnelle avec {bodyCount} corps célestes. État : {status}. Vitesse : {speed}. Étapes : {steps}",
+  "noBodiesInSimulation": "Aucun corps céleste dans la simulation actuellement",
+  "bodiesInSimulation": "Corps dans la simulation : {descriptions}",
+  "cameraFreeDescription": "Caméra en mode libre à distance {distance}. Rotation automatique : {rotation}",
+  "cameraFollowingDescription": "Caméra suivant {bodyName} à distance {distance}. Rotation automatique : {rotation}",
+  "autoRotateActive": "active",
+  "autoRotateInactive": "inactive",
+  "liveUpdateAnnouncement": "{updateType} changé à {value}",
+  "keyboardShortcutsHint": "Utilisez Espace pour pause/reprendre, R pour redémarrer, C pour centrer la caméra, A pour basculer la rotation automatique",
+  "physicsStatsDescription": "Physique : {time} unités de temps, {earthYears} années terrestres, {steps} étapes de simulation terminées",
+  "toggleAutoRotateAction": "Basculer rotation automatique",
+  "zoomInAction": "Zoomer",
+  "zoomOutAction": "Dézoomer",
+  "accessibilitySimulationStarted": "Simulation démarrée",
+  "accessibilitySimulationStartedContext": "Les corps célestes sont maintenant en mouvement",
+  "accessibilitySimulationPaused": "Simulation en pause",
+  "accessibilitySimulationPausedContext": "Tous les corps célestes ont cessé de bouger",
+  "accessibilitySimulationResumed": "Simulation reprise",
+  "accessibilitySimulationResumedContext": "Les corps célestes bougent à nouveau",
+  "accessibilitySimulationStopped": "Simulation arrêtée",
+  "accessibilitySimulationStoppedContext": "Tous les corps célestes ont été réinitialisés",
+  "accessibilitySimulationReset": "Simulation réinitialisée",
+  "accessibilitySimulationResetContext": "Nouveau scénario chargé avec de nouveaux corps célestes",
+  "accessibilityMergeEvent": "Collision détectée : {body1} a fusionné avec {body2}",
+  "accessibilityMergeEventContext": "La masse combinée crée un nouveau corps céleste",
+  "accessibilityScenarioChange": "Scénario changé pour {scenarioName}",
+  "accessibilityScenarioChangeContext": "Nouveaux corps célestes et paramètres physiques chargés",
+  "accessibilitySpeedChange": "Vitesse de simulation changée à {newValue}",
+  "accessibilityGravityChange": "Force de gravité changée à {newValue}",
+  "accessibilityCollisionRadiusChange": "Sensibilité de collision changée à {newValue}",
+  "accessibilityCameraReset": "Vue caméra réinitialisée à la position par défaut",
+  "accessibilityCameraFocus": "Caméra focalisée sur le corps céleste le plus proche",
+  "accessibilityCameraFollow": "La caméra suit maintenant le corps céleste sélectionné",
+  "accessibilityCameraUnfollow": "La caméra a cessé de suivre le corps céleste",
+  "accessibilityTutorialProgress": "Étape du tutoriel {currentStep} sur {totalSteps} : {stepName}",
+  "accessibilityError": "Erreur : {errorMessage}",
+  "accessibilitySettingEnabled": "{settingName} activé",
+  "accessibilitySettingDisabled": "{settingName} désactivé",
+  "simulationSpeedHint": "Ajustez la vitesse de simulation de 0,1x à 16x vitesse normale. Utilisez les touches fléchées pour de petits incréments."
 }
