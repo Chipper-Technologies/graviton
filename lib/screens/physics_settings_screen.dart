@@ -192,13 +192,13 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                           value: _trailFadeRate,
                           min: 0.1,
                           max: 2.0,
-                          divisions: 190,
+                          divisions: 19,
                           icon: Icons.blur_linear,
                           onChanged: (value) {
                             setState(() => _trailFadeRate = value);
                             _updateSettings();
                           },
-                          formatter: (value) => value.toStringAsFixed(2),
+                          formatter: (value) => value.toStringAsFixed(1),
                         ),
 
                         const SizedBox(height: 32),
