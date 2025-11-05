@@ -2801,6 +2801,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Automatically adjusts framing based on scene content'**
   String get cameraDynamicFramingDescription;
+
+  /// Title for fullscreen mode
+  ///
+  /// In en, this message translates to:
+  /// **'Fullscreen Mode'**
+  String get fullscreenMode;
+
+  /// Description for fullscreen mode functionality
+  ///
+  /// In en, this message translates to:
+  /// **'Hide all UI elements for immersive viewing'**
+  String get fullscreenModeDescription;
+
+  /// Hint text for fullscreen toggle gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to toggle fullscreen'**
+  String get tapToToggleFullscreen;
+
+  /// Hint shown when in fullscreen mode
+  ///
+  /// In en, this message translates to:
+  /// **'Tap anywhere to exit fullscreen'**
+  String get exitFullscreenHint;
 }
 
 class _AppLocalizationsDelegate

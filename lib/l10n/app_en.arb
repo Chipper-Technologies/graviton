@@ -2198,5 +2198,25 @@
   "cameraDynamicFramingDescription": "Automatically adjusts framing based on scene content",
   "@cameraDynamicFramingDescription": {
     "description": "Description for dynamic framing camera technique"
+  },
+
+  "fullscreenMode": "Fullscreen Mode",
+  "@fullscreenMode": {
+    "description": "Title for fullscreen mode"
+  },
+
+  "fullscreenModeDescription": "Hide all UI elements for immersive viewing",
+  "@fullscreenModeDescription": {
+    "description": "Description for fullscreen mode functionality"
+  },
+
+  "tapToToggleFullscreen": "Tap to toggle fullscreen",
+  "@tapToToggleFullscreen": {
+    "description": "Hint text for fullscreen toggle gesture"
+  },
+
+  "exitFullscreenHint": "Tap anywhere to exit fullscreen",
+  "@exitFullscreenHint": {
+    "description": "Hint shown when in fullscreen mode"
   }
 }

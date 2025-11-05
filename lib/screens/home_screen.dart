@@ -48,6 +48,8 @@ import 'package:graviton/widgets/version_check_dialog.dart';
 import 'package:graviton/widgets/tutorial_overlay.dart';
 import 'package:graviton/widgets/app_bar_speed_control.dart';
 import 'package:graviton/services/onboarding_service.dart';
+import 'package:graviton/services/fullscreen_service.dart';
+import 'package:graviton/utils/fullscreen_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
@@ -119,6 +121,13 @@ class _HomeScreenState extends State<HomeScreen>
     _floatingControlsTimer?.cancel();
     _screenshotModeService.removeListener(_onScreenshotModeChanged);
     WidgetsBinding.instance.removeObserver(this);
+
+    // Ensure fullscreen mode is exited when screen is disposed
+    // Use FullscreenService directly to avoid Provider access on disposed context
+    if (FullscreenService.instance.isFullscreen) {
+      FullscreenService.instance.exitFullscreen();
+    }
+
     super.dispose();
   }
 
@@ -199,6 +208,10 @@ class _HomeScreenState extends State<HomeScreen>
             l10n,
           );
         } else {
+          // Toggle fullscreen mode on tap
+          _handleFullscreenToggle(appState);
+
+          // Also select object at tap location (existing behavior)
           _selectObjectAtTapLocation(appState, size, tapPosition);
         }
       }
@@ -380,6 +393,25 @@ class _HomeScreenState extends State<HomeScreen>
         SystemUiMode.edgeToEdge,
         overlays: SystemUiOverlay.values, // Show all system UI
       );
+    }
+  }
+
+  /// Handle fullscreen mode toggle
+  void _handleFullscreenToggle(AppState appState) async {
+    try {
+      await FullscreenUtils.toggleFullscreen(appState);
+
+      // Log the fullscreen toggle event
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.tap,
+        element: UIElement.simulationViewport,
+        value: appState.ui.isFullscreen
+            ? 'enter_fullscreen'
+            : 'exit_fullscreen',
+      );
+    } catch (e) {
+      debugPrint('Error toggling fullscreen: $e');
+      // Optionally show user feedback here
     }
   }
 
@@ -791,8 +823,9 @@ class _HomeScreenState extends State<HomeScreen>
         });
 
         final shouldHideUI =
-            _screenshotModeService.isActive &&
-            appState.ui.hideUIInScreenshotMode;
+            (_screenshotModeService.isActive &&
+                appState.ui.hideUIInScreenshotMode) ||
+            appState.ui.isFullscreen;
 
         return Scaffold(
           endDrawer: OptionsDrawer(

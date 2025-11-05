@@ -1482,4 +1482,17 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get cameraDynamicFramingDescription =>
       'Passt die Bildkomposition automatisch basierend auf Szeneninhalten an';
+
+  @override
+  String get fullscreenMode => 'Fullscreen Mode';
+
+  @override
+  String get fullscreenModeDescription =>
+      'Hide all UI elements for immersive viewing';
+
+  @override
+  String get tapToToggleFullscreen => 'Tap to toggle fullscreen';
+
+  @override
+  String get exitFullscreenHint => 'Tap anywhere to exit fullscreen';
 }

@@ -43,6 +43,9 @@ class UIState extends ChangeNotifier {
   // Screenshot mode settings
   bool _hideUIInScreenshotMode = false;
 
+  // Fullscreen mode settings
+  bool _isFullscreen = false;
+
   // Changelog settings
   String? _lastSeenChangelogVersion;
 
@@ -75,6 +78,7 @@ class UIState extends ChangeNotifier {
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
+  static const String _keyIsFullscreen = 'isFullscreen';
   static const String _keyLastSeenChangelogVersion = 'lastSeenChangelogVersion';
 
   /// Initialize and load saved settings
@@ -158,6 +162,8 @@ class UIState extends ChangeNotifier {
       _hideUIInScreenshotMode =
           prefs.getBool(_keyHideUIInScreenshotMode) ?? false;
 
+      _isFullscreen = prefs.getBool(_keyIsFullscreen) ?? false;
+
       // Load changelog tracking
       _lastSeenChangelogVersion = prefs.getString(_keyLastSeenChangelogVersion);
 
@@ -228,6 +234,9 @@ class UIState extends ChangeNotifier {
 
   // Screenshot mode getters
   bool get hideUIInScreenshotMode => _hideUIInScreenshotMode;
+
+  // Fullscreen mode getters
+  bool get isFullscreen => _isFullscreen;
 
   // Setters
   void toggleTrails() {
@@ -452,6 +461,18 @@ class UIState extends ChangeNotifier {
       _hideUIInScreenshotMode,
     );
     notifyListeners();
+  }
+
+  // Fullscreen mode setters
+  void setFullscreen(bool isFullscreen) {
+    _isFullscreen = isFullscreen;
+    _saveSetting(_keyIsFullscreen, isFullscreen);
+    FirebaseService.instance.logSettingsChange('fullscreen_mode', isFullscreen);
+    notifyListeners();
+  }
+
+  void toggleFullscreen() {
+    setFullscreen(!_isFullscreen);
   }
 
   // Changelog setters
