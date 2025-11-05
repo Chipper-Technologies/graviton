@@ -160,6 +160,7 @@
   "authorLabel": "作者",
   "websiteLabel": "ウェブサイト",
   "aboutButtonTooltip": "について",
+  "backButtonTooltip": "戻る",
   "appNameGraviton": "Graviton",
   "versionLabel": "バージョン",
   "loadingVersion": "バージョンを読み込み中...",

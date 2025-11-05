@@ -811,21 +811,34 @@ class _HomeScreenState extends State<HomeScreen>
                   title: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        width: 28,
-                        height: 28,
-                        margin: const EdgeInsets.only(right: 8),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColors.uiWhite.withValues(
-                              alpha: AppTypography.opacityVeryFaint,
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedbackService.instance.lightImpact();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AboutScreen(),
                             ),
-                            width: 1.5,
-                          ),
-                          image: DecorationImage(
-                            image: AssetImage(AppConfig.appLogoPath),
-                            fit: BoxFit.cover,
+                          );
+                        },
+                        child: Tooltip(
+                          message: l10n.aboutButtonTooltip,
+                          child: Container(
+                            width: 28,
+                            height: 28,
+                            margin: const EdgeInsets.only(right: 8),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacityVeryFaint,
+                                ),
+                                width: 1.5,
+                              ),
+                              image: DecorationImage(
+                                image: AssetImage(AppConfig.appLogoPath),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ),
                       ),

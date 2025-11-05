@@ -30,7 +30,6 @@ class VisualsControls extends StatelessWidget {
         right: AppTypography.spacingXLarge,
         top: AppTypography.spacingLarge,
         bottom:
-            AppTypography.spacingXLarge +
             PlatformUtils.getBottomSheetSystemBarPadding(), // Platform-specific padding for system bar
       ),
       children: [
@@ -110,6 +109,7 @@ class VisualsControls extends StatelessWidget {
           Icons.navigation,
           appState.ui.showOffScreenIndicators,
           () => appState.ui.toggleOffScreenIndicators(),
+          isLast: true,
         ),
       ],
     );
@@ -120,10 +120,11 @@ class VisualsControls extends StatelessWidget {
     String description,
     IconData icon,
     bool isEnabled,
-    VoidCallback onToggle,
-  ) {
+    VoidCallback onToggle, {
+    bool isLast = false,
+  }) {
     return Container(
-      margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
+      margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingSmall),
       child: Material(
         color: Colors.transparent,
         child: HapticInkWell(

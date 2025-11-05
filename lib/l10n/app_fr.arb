@@ -160,6 +160,7 @@
   "authorLabel": "Auteur",
   "websiteLabel": "Site Web",
   "aboutButtonTooltip": "À Propos",
+  "backButtonTooltip": "Retour",
   "appNameGraviton": "Graviton",
   "versionLabel": "Version",
   "loadingVersion": "Chargement de la version...",

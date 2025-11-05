@@ -31,7 +31,6 @@ class PhysicsControls extends StatelessWidget {
         right: AppTypography.spacingXLarge,
         top: AppTypography.spacingLarge,
         bottom:
-            AppTypography.spacingXLarge +
             PlatformUtils.getBottomSheetSystemBarPadding(), // Platform-specific padding for system bar
       ),
       children: [
@@ -266,11 +265,12 @@ class PhysicsControls extends StatelessWidget {
           icon: Icons.analytics,
           isEnabled: appState.ui.showStats,
           onChanged: (_) => appState.ui.toggleStats(),
+          isLast: !appState.ui.showStats, // Only last when stats are hidden
         ),
 
-        SizedBox(height: AppTypography.spacingXXLarge),
-
         if (appState.ui.showStats) ...[
+          SizedBox(height: AppTypography.spacingXXLarge),
+
           SectionTitle(title: l10n.currentStatisticsTitle),
           SizedBox(height: AppTypography.spacingMedium),
 

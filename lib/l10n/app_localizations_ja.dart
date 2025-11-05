@@ -588,6 +588,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get aboutButtonTooltip => 'について';
 
   @override
+  String get backButtonTooltip => '戻る';
+
+  @override
   String get appNameGraviton => 'Graviton';
 
   @override

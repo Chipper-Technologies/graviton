@@ -591,6 +591,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get aboutButtonTooltip => '정보';
 
   @override
+  String get backButtonTooltip => '뒤로';
+
+  @override
   String get appNameGraviton => 'Graviton';
 
   @override

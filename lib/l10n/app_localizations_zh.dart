@@ -583,6 +583,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aboutButtonTooltip => '关于';
 
   @override
+  String get backButtonTooltip => '返回';
+
+  @override
   String get appNameGraviton => 'Graviton';
 
   @override

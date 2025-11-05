@@ -4,6 +4,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/haptic_utils.dart';
 import 'package:graviton/widgets/camera_controls.dart';
 import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/visuals_controls.dart';
@@ -65,6 +66,8 @@ class _PersistentBottomSheetState extends State<PersistentBottomSheet>
 
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
+        // Add haptic feedback for tab navigation
+        HapticUtils.navigate();
         setState(() {
           // Force rebuild when tab changes to update active states
         });

@@ -610,6 +610,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutButtonTooltip => 'About';
 
   @override
+  String get backButtonTooltip => 'Back';
+
+  @override
   String get appNameGraviton => 'Graviton';
 
   @override

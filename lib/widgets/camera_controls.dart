@@ -33,7 +33,6 @@ class CameraControls extends StatelessWidget {
         right: AppTypography.spacingXLarge,
         top: AppTypography.spacingLarge,
         bottom:
-            AppTypography.spacingXLarge +
             PlatformUtils.getBottomSheetSystemBarPadding(), // Platform-specific padding for system bar
       ),
       children: [
@@ -177,6 +176,7 @@ class CameraControls extends StatelessWidget {
           Icons.swap_vert,
           appState.camera.invertPitch,
           () => appState.camera.toggleInvertPitch(),
+          isLast: true,
         ),
       ],
     );
@@ -187,10 +187,11 @@ class CameraControls extends StatelessWidget {
     String description,
     IconData icon,
     bool isEnabled,
-    VoidCallback onToggle,
-  ) {
+    VoidCallback onToggle, {
+    bool isLast = false,
+  }) {
     return Container(
-      margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
+      margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingSmall),
       child: Material(
         color: Colors.transparent,
         child: HapticInkWell(

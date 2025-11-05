@@ -160,6 +160,7 @@
   "authorLabel": "作者",
   "websiteLabel": "网站",
   "aboutButtonTooltip": "关于",
+  "backButtonTooltip": "返回",
   "appNameGraviton": "Graviton",
   "versionLabel": "版本",
   "loadingVersion": "加载版本中...",

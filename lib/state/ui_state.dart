@@ -3,6 +3,7 @@ import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/utils/safe_haptic_feedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Manages UI settings and preferences
@@ -431,6 +432,10 @@ class UIState extends ChangeNotifier {
   void setCinematicCameraTechnique(CinematicCameraTechnique technique) {
     _cinematicCameraTechnique = technique;
     _saveSetting(_keyCinematicCameraTechnique, technique.value);
+
+    // Haptic feedback for camera technique switching
+    SafeHapticFeedback.mediumImpact();
+
     FirebaseService.instance.logSettingsChange(
       'cinematic_camera_technique',
       technique.value,

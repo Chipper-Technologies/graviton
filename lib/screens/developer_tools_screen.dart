@@ -10,6 +10,7 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/common/action_option.dart';
+import 'package:graviton/widgets/common/haptic_app_bar.dart';
 import 'package:graviton/widgets/screenshot_mode_widget.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:graviton/widgets/tutorial_overlay.dart';
@@ -24,15 +25,7 @@ class DeveloperToolsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        title: Text(l10n.developerToolsTitle),
-        backgroundColor: AppColors.uiBlack.withValues(
-          alpha: AppTypography
-              .opacityNearlyOpaque, // Make AppBar nearly opaque to avoid blending
-        ),
-        foregroundColor: AppColors.uiWhite,
-        elevation: 0,
-      ),
+      appBar: HapticAppBar(title: l10n.developerToolsTitle),
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(

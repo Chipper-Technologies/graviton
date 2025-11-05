@@ -7,6 +7,7 @@ import 'package:graviton/services/version_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/clipboard_utils.dart';
+import 'package:graviton/widgets/common/haptic_app_bar.dart';
 import 'package:graviton/widgets/common/haptic_ink_well.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -61,14 +62,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        title: Text(l10n.aboutDialogTitle),
-        backgroundColor: AppColors.uiBlack.withValues(
-          alpha: AppTypography.opacityNearlyOpaque,
-        ),
-        foregroundColor: AppColors.uiWhite,
-        elevation: 0,
-      ),
+      appBar: HapticAppBar(title: l10n.aboutDialogTitle),
       body: SafeArea(
         child: Container(
           width: double.infinity,

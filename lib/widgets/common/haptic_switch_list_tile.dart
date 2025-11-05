@@ -92,7 +92,7 @@ class HapticSwitchListTile extends StatelessWidget {
       dense: dense,
       contentPadding: contentPadding,
       selected: selected,
-      activeColor: activeColor,
+      activeThumbColor: activeColor,
       activeTrackColor: activeTrackColor,
       inactiveThumbColor: inactiveThumbColor,
       inactiveTrackColor: inactiveTrackColor,

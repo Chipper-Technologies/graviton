@@ -130,7 +130,7 @@ void main() {
       expect(switchListTile.isThreeLine, isTrue);
       expect(switchListTile.dense, isTrue);
       expect(switchListTile.selected, isTrue);
-      expect(switchListTile.activeColor, equals(Colors.green));
+      expect(switchListTile.activeThumbColor, equals(Colors.green));
       expect(switchListTile.inactiveThumbColor, equals(Colors.red));
       expect(switchListTile.contentPadding, equals(const EdgeInsets.all(16)));
     });
@@ -243,6 +243,9 @@ void main() {
       expect(switchListTile.focusNode, equals(focusNode));
       expect(switchListTile.autofocus, isTrue);
       expect(switchListTile.onFocusChange, isNotNull);
+
+      // Verify focus change callback was called due to autofocus
+      expect(focusChanged, isTrue);
 
       focusNode.dispose();
     });

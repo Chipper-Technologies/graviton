@@ -3,6 +3,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/ui_utils.dart';
+import 'package:graviton/widgets/common/haptic_app_bar.dart';
 import 'package:graviton/widgets/section_title.dart';
 
 /// Full-screen Help & Objectives page
@@ -15,14 +16,7 @@ class HelpScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        title: Text(l10n.showHelpTooltip),
-        backgroundColor: AppColors.uiBlack.withValues(
-          alpha: AppTypography.opacityNearlyOpaque,
-        ),
-        foregroundColor: AppColors.uiWhite,
-        elevation: 0,
-      ),
+      appBar: HapticAppBar(title: l10n.showHelpTooltip),
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(

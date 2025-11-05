@@ -160,6 +160,7 @@
   "authorLabel": "작성자",
   "websiteLabel": "웹사이트",
   "aboutButtonTooltip": "정보",
+  "backButtonTooltip": "뒤로",
   "appNameGraviton": "Graviton",
   "versionLabel": "버전",
   "loadingVersion": "버전 로딩 중...",

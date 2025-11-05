@@ -8,8 +8,8 @@ import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
 import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/common/haptic_icon_button.dart';
+import 'package:graviton/widgets/common/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/haptic_switch_list_tile.dart';
-import 'package:graviton/widgets/common/slider_option.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 class BodyPropertiesDialog extends StatefulWidget {
@@ -275,7 +275,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
 
                       // Mass
                       _buildSectionTitle(l10n.bodyPropertiesMass),
-                      SliderOption.simple(
+                      HapticSliderOption.simple(
                         value: _mass,
                         min: _massMin,
                         max: _massMax,
@@ -294,13 +294,13 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
 
                       // Radius
                       _buildSectionTitle(l10n.bodyPropertiesRadius),
-                      SliderOption.simple(
+                      HapticSliderOption.simple(
                         value: _radius,
                         min: _radiusMin,
                         max: _radiusMax,
                         divisions: 100,
                         label: _radius.toStringAsFixed(2),
-                        icon: Icons.radio_button_unchecked,
+                        icon: Icons.circle_outlined,
                         onChanged: (value) {
                           setState(() {
                             _radius = value;
@@ -314,7 +314,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                       // Stellar Luminosity (only for stars)
                       if (_bodyType == BodyType.star) ...[
                         _buildSectionTitle(l10n.bodyPropertiesLuminosity),
-                        SliderOption.simple(
+                        HapticSliderOption.simple(
                           value: _stellarLuminosity,
                           min: _luminosityMin,
                           max: _luminosityMax,
@@ -423,7 +423,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
               ),
             ),
             Expanded(
-              child: SliderOption.simple(
+              child: HapticSliderOption.simple(
                 value: _velocity.x,
                 min: _velocityMin,
                 max: _velocityMax,
@@ -451,7 +451,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
               ),
             ),
             Expanded(
-              child: SliderOption.simple(
+              child: HapticSliderOption.simple(
                 value: _velocity.y,
                 min: _velocityMin,
                 max: _velocityMax,
@@ -479,7 +479,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
               ),
             ),
             Expanded(
-              child: SliderOption.simple(
+              child: HapticSliderOption.simple(
                 value: _velocity.z,
                 min: _velocityMin,
                 max: _velocityMax,

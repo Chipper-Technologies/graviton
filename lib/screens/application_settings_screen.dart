@@ -3,6 +3,8 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/haptic_utils.dart';
+import 'package:graviton/widgets/common/haptic_app_bar.dart';
 import 'package:graviton/widgets/common/haptic_switch.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:provider/provider.dart';
@@ -19,14 +21,7 @@ class ApplicationSettingsScreen extends StatelessWidget {
       builder: (context, appState, child) {
         return Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            title: Text(l10n.settingsTitle),
-            backgroundColor: AppColors.uiBlack.withValues(
-              alpha: AppTypography.opacityNearlyOpaque,
-            ),
-            foregroundColor: AppColors.uiWhite,
-            elevation: 0,
-          ),
+          appBar: HapticAppBar(title: l10n.settingsTitle),
           body: SafeArea(
             child: Container(
               decoration: BoxDecoration(
@@ -165,6 +160,8 @@ class ApplicationSettingsScreen extends StatelessWidget {
                 fontSize: AppTypography.fontSizeMedium,
               ),
               onChanged: (String? newValue) {
+                // Add haptic feedback for language selection
+                HapticUtils.navigate();
                 appState.ui.setLanguage(newValue);
               },
               items: [
@@ -240,14 +237,23 @@ class ApplicationSettingsScreen extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppTypography.spacingLarge),
       decoration: BoxDecoration(
-        color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
+        color: appState.ui.enableUIHapticFeedback
+            ? AppColors.primaryColor.withValues(
+                alpha: AppTypography.opacityMidFade,
+              )
+            : AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
         borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-        border: Border.all(
-          color: AppColors.uiWhite.withValues(
-            alpha: AppTypography.opacityDisabled,
-          ),
-          width: AppTypography.borderThin,
-        ),
+        border: appState.ui.enableUIHapticFeedback
+            ? Border.all(
+                color: AppColors.primaryColor,
+                width: AppTypography.borderThin,
+              )
+            : Border.all(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityDisabled,
+                ),
+                width: AppTypography.borderThin,
+              ),
       ),
       child: Row(
         children: [
@@ -268,7 +274,9 @@ class ApplicationSettingsScreen extends StatelessWidget {
                 Text(
                   l10n.uiHapticFeedback,
                   style: TextStyle(
-                    color: AppColors.uiWhite,
+                    color: appState.ui.enableUIHapticFeedback
+                        ? AppColors.primaryColor
+                        : AppColors.uiWhite,
                     fontSize: AppTypography.fontSizeLarge,
                     fontWeight: FontWeight.w600,
                   ),
@@ -313,14 +321,23 @@ class ApplicationSettingsScreen extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppTypography.spacingLarge),
       decoration: BoxDecoration(
-        color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
+        color: appState.ui.enableCollisionHapticFeedback
+            ? AppColors.primaryColor.withValues(
+                alpha: AppTypography.opacityMidFade,
+              )
+            : AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
         borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-        border: Border.all(
-          color: AppColors.uiWhite.withValues(
-            alpha: AppTypography.opacityDisabled,
-          ),
-          width: AppTypography.borderThin,
-        ),
+        border: appState.ui.enableCollisionHapticFeedback
+            ? Border.all(
+                color: AppColors.primaryColor,
+                width: AppTypography.borderThin,
+              )
+            : Border.all(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityDisabled,
+                ),
+                width: AppTypography.borderThin,
+              ),
       ),
       child: Row(
         children: [
@@ -341,7 +358,9 @@ class ApplicationSettingsScreen extends StatelessWidget {
                 Text(
                   l10n.collisionHapticFeedback,
                   style: TextStyle(
-                    color: AppColors.uiWhite,
+                    color: appState.ui.enableCollisionHapticFeedback
+                        ? AppColors.primaryColor
+                        : AppColors.uiWhite,
                     fontSize: AppTypography.fontSizeLarge,
                     fontWeight: FontWeight.w600,
                   ),

@@ -1224,6 +1224,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get aboutButtonTooltip;
 
+  /// Tooltip for the back navigation button
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get backButtonTooltip;
+
   /// The name of the application
   ///
   /// In en, this message translates to:

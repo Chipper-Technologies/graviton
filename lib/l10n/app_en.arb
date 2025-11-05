@@ -960,6 +960,11 @@
     "description": "Tooltip for the about button"
   },
   
+  "backButtonTooltip": "Back",
+  "@backButtonTooltip": {
+    "description": "Tooltip for the back navigation button"
+  },
+  
   "appNameGraviton": "Graviton",
   "@appNameGraviton": {
     "description": "The name of the application"

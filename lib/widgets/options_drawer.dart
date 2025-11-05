@@ -5,6 +5,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/common/haptic_list_tile.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /// Right-side drawer for app options and settings
@@ -253,7 +254,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
     required String subtitle,
     required VoidCallback onTap,
   }) {
-    return ListTile(
+    return HapticListTile(
       leading: Icon(
         icon,
         size: AppTypography.iconSizeXLarge,

@@ -12,6 +12,7 @@ class ToggleOption extends StatelessWidget {
   final IconData icon;
   final bool isEnabled;
   final ValueChanged<bool> onChanged;
+  final bool isLast;
 
   const ToggleOption({
     super.key,
@@ -20,12 +21,13 @@ class ToggleOption extends StatelessWidget {
     required this.icon,
     required this.isEnabled,
     required this.onChanged,
+    this.isLast = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: AppTypography.spacingMedium),
+      margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingMedium),
       child: Material(
         color: Colors.transparent,
         child: HapticInkWell(
