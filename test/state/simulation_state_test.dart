@@ -34,9 +34,16 @@ void main() {
     });
 
     test('Pause should toggle isPaused state', () {
+      // First start the simulation so it can be paused
+      simulationState.start();
+      expect(simulationState.isRunning, isTrue);
+      expect(simulationState.isPaused, isFalse);
+
+      // Now pause it
       simulationState.pause();
       expect(simulationState.isPaused, isTrue);
 
+      // Pause again to resume
       simulationState.pause();
       expect(simulationState.isPaused, isFalse);
     });
@@ -178,12 +185,12 @@ void main() {
           expect(simulationState.isPaused, isFalse);
 
           simulationState.pauseSimulation();
-          expect(simulationState.isRunning, isTrue);
+          expect(simulationState.isRunning, isFalse);
           expect(simulationState.isPaused, isTrue);
 
           // Calling pauseSimulation again should not change state
           simulationState.pauseSimulation();
-          expect(simulationState.isRunning, isTrue);
+          expect(simulationState.isRunning, isFalse);
           expect(simulationState.isPaused, isTrue);
         },
       );
@@ -196,7 +203,7 @@ void main() {
         // Start and pause simulation
         simulationState.start();
         simulationState.pauseSimulation();
-        expect(simulationState.isRunning, isTrue);
+        expect(simulationState.isRunning, isFalse);
         expect(simulationState.isPaused, isTrue);
 
         simulationState.resumeSimulation();
@@ -215,7 +222,7 @@ void main() {
 
         // Pause using pauseSimulation
         simulationState.pauseSimulation();
-        expect(simulationState.isRunning, isTrue);
+        expect(simulationState.isRunning, isFalse);
         expect(simulationState.isPaused, isTrue);
 
         // Resume using resumeSimulation

@@ -66,7 +66,8 @@ config/
 keys/
 *.env
 .env.*
-!lib/config/flavor_config.dart
+!lib/config/
+!test/config/
 
 # iOS related
 **/ios/**/*.mode1v3

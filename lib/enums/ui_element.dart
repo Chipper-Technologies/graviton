@@ -43,7 +43,13 @@ enum UIElement {
   physicsSettings('physics_settings'),
 
   /// Changelog dialog
-  changelog('changelog');
+  changelog('changelog'),
+
+  /// About screen/dialog
+  about('about'),
+
+  /// Developer tools screen/dialog
+  developerTools('developer_tools');
 
   const UIElement(this.value);
 

@@ -312,7 +312,9 @@ class CelestialBodyPainter {
     final surfaceGlow = RadialGradient(
       colors: [
         stellarColor, // Center color based on stellar type
-        stellarColor.withValues(alpha: 0.8), // Slightly transparent middle
+        stellarColor.withValues(
+          alpha: AppTypography.opacityVeryHigh,
+        ), // Slightly transparent middle
         useRealisticColors
             ? _getSurfaceEdgeColor(
                 stellarTemperature,
@@ -1718,22 +1720,30 @@ class CelestialBodyPainter {
     if (temperature > 6000) {
       // Hot stars (F, A, B, O types) - bluish corona
       return isOuter
-          ? AppColors.stellarFType.withValues(alpha: 0.8)
+          ? AppColors.stellarFType.withValues(
+              alpha: AppTypography.opacityVeryHigh,
+            )
           : AppColors.stellarAType;
     } else if (temperature > 5000) {
       // Sun-like stars (G type) - yellowish corona
       return isOuter
-          ? AppColors.stellarGType.withValues(alpha: 0.8)
+          ? AppColors.stellarGType.withValues(
+              alpha: AppTypography.opacityVeryHigh,
+            )
           : AppColors.coronaGold;
     } else if (temperature > 3500) {
       // Cool stars (K type) - orange corona
       return isOuter
-          ? AppColors.stellarKType.withValues(alpha: 0.8)
+          ? AppColors.stellarKType.withValues(
+              alpha: AppTypography.opacityVeryHigh,
+            )
           : AppColors.accretionDiskOrange;
     } else {
       // Very cool stars (M type) - reddish corona
       return isOuter
-          ? AppColors.stellarMType.withValues(alpha: 0.8)
+          ? AppColors.stellarMType.withValues(
+              alpha: AppTypography.opacityVeryHigh,
+            )
           : AppColors.accretionDiskRed;
     }
   }
@@ -1762,10 +1772,14 @@ class CelestialBodyPainter {
       return hsv.withValue(newValue).withSaturation(newSaturation).toColor();
     } else if (temperature > 5000) {
       // Sun-like stars (G type) - golden penumbra
-      return AppColors.coronaGold.withValues(alpha: 0.8);
+      return AppColors.coronaGold.withValues(
+        alpha: AppTypography.opacityVeryHigh,
+      );
     } else if (temperature > 3500) {
       // Cool stars (K type) - orange penumbra
-      return AppColors.coronaOrange.withValues(alpha: 0.8);
+      return AppColors.coronaOrange.withValues(
+        alpha: AppTypography.opacityVeryHigh,
+      );
     } else {
       // Very cool stars (M type) - reddish penumbra
       final newValue = (hsv.value * 0.5).clamp(0.0, 1.0);
@@ -1786,7 +1800,9 @@ class CelestialBodyPainter {
       return hsv.withValue(newValue).withSaturation(newSaturation).toColor();
     } else if (temperature > 5000) {
       // Sun-like stars - black with slight golden tint
-      return AppColors.uiBlack.withValues(alpha: 0.95);
+      return AppColors.uiBlack.withValues(
+        alpha: AppTypography.opacityAlmostOpaque,
+      );
     } else if (temperature > 3500) {
       // Cool stars - dark reddish-brown umbra
       final newValue = (hsv.value * 0.2).clamp(0.0, 1.0);

@@ -27,10 +27,13 @@ void main() {
       expect(ChangelogCategory.fixed.value, 'fixed');
     });
 
-    test('should have correct display names', () {
-      expect(ChangelogCategory.added.displayName, 'Added');
-      expect(ChangelogCategory.improved.displayName, 'Improved');
-      expect(ChangelogCategory.fixed.displayName, 'Fixed');
+    test('should have correct localization keys', () {
+      expect(ChangelogCategory.added.localizationKey, 'changelogCategoryAdded');
+      expect(
+        ChangelogCategory.improved.localizationKey,
+        'changelogCategoryImproved',
+      );
+      expect(ChangelogCategory.fixed.localizationKey, 'changelogCategoryFixed');
     });
 
     test('should work with ChangelogEntry model', () {

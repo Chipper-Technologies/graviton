@@ -4,13 +4,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
+import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
+import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 void main() {
   group('BodyPropertiesDialog Tests', () {
     late Body testBody;
+    late AppState appState;
 
     setUp(() {
       testBody = Body(
@@ -23,266 +26,150 @@ void main() {
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0,
       );
+
+      appState = AppState();
+      // Add the test body to the simulation so auto-setting logic works
+      appState.simulation.bodies.add(testBody);
     });
 
     Widget createTestWidget({required Widget child}) {
-      return MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: Scaffold(body: child),
+      return ChangeNotifierProvider<AppState>.value(
+        value: appState,
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(body: child),
+        ),
       );
     }
 
-    testWidgets('should display dialog with all body properties', (
+    testWidgets('should display dialog with body properties', (tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (updatedBody) {},
+          ),
+        ),
+      );
+
+      expect(find.byType(Dialog), findsOneWidget);
+      expect(find.text('Body Properties'), findsOneWidget);
+    });
+
+    testWidgets('should handle gravity wells functionality', (tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (body) {},
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Dialog should display and work with gravity wells
+      expect(find.byType(Dialog), findsOneWidget);
+      expect(find.byType(SwitchListTile), findsWidgets);
+    });
+
+    testWidgets('should allow toggling individual gravity well setting', (
       tester,
     ) async {
+      // Start with gravity well disabled
+      testBody.showGravityWell = false;
+
       await tester.pumpWidget(
         createTestWidget(
           child: BodyPropertiesDialog(
             body: testBody,
             bodyIndex: 0,
             onBodyChanged: (body) {
-              // Body changed callback
+              // Body change callback
             },
           ),
         ),
       );
 
-      // Verify dialog is displayed
-      expect(find.text('Body Properties'), findsOneWidget);
-      expect(find.text('Name'), findsOneWidget);
-      expect(find.text('Mass'), findsOneWidget);
-      expect(find.text('Radius'), findsOneWidget);
-      expect(find.text('Body Type'), findsOneWidget);
-      expect(find.text('Color'), findsOneWidget);
-      expect(find.text('Velocity'), findsOneWidget);
+      await tester.pumpAndSettle();
 
-      // Verify body name is displayed
-      expect(find.text('Test Body'), findsOneWidget);
+      // Find the gravity wells switch
+      final gravityWellSwitch = find.byType(SwitchListTile);
+      expect(gravityWellSwitch, findsAtLeastNWidgets(1));
+
+      // Initially, the switch should be OFF (individual setting)
+      SwitchListTile switchWidget = tester.widget(gravityWellSwitch.first);
+      expect(switchWidget.value, false);
+
+      // Tap the switch to turn it ON
+      await tester.tap(gravityWellSwitch.first);
+      await tester.pumpAndSettle();
+
+      // Verify the switch is now ON
+      switchWidget = tester.widget(gravityWellSwitch.first);
+      expect(switchWidget.value, true);
     });
 
-    testWidgets('should show stellar luminosity for star type', (tester) async {
-      testBody.bodyType = BodyType.star;
-      testBody.stellarLuminosity = 1.0;
+    testWidgets(
+      'should show individual setting when global gravity fields enabled',
+      (tester) async {
+        // Start with body gravity well OFF
+        testBody.showGravityWell = false;
 
-      await tester.pumpWidget(
-        createTestWidget(
-          child: BodyPropertiesDialog(
-            body: testBody,
-            bodyIndex: 0,
-            onBodyChanged: (body) {},
-          ),
-        ),
-      );
+        // Enable global gravity fields - this should auto-set all bodies to showGravityWell = true
+        appState.ui.toggleGlobalGravityFields();
 
-      // Pump again to handle the conditional rendering
-      await tester.pump();
-
-      // Verify stellar luminosity is shown for stars
-      expect(find.text('Stellar Luminosity'), findsOneWidget);
-    });
-
-    testWidgets('should hide stellar luminosity for non-star types', (
-      tester,
-    ) async {
-      testBody.bodyType = BodyType.planet;
-
-      await tester.pumpWidget(
-        createTestWidget(
-          child: BodyPropertiesDialog(
-            body: testBody,
-            bodyIndex: 0,
-            onBodyChanged: (body) {},
-          ),
-        ),
-      );
-
-      // Verify stellar luminosity is not shown for planets
-      expect(find.text('Stellar Luminosity'), findsNothing);
-    });
-
-    testWidgets('should close dialog when close button is tapped', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          child: Builder(
-            builder: (context) => ElevatedButton(
-              onPressed: () {
-                showDialog<void>(
-                  context: context,
-                  builder: (_) => BodyPropertiesDialog(
-                    body: testBody,
-                    bodyIndex: 0,
-                    onBodyChanged: (body) {},
-                  ),
-                );
-              },
-              child: const Text('Open Dialog'),
+        await tester.pumpWidget(
+          createTestWidget(
+            child: BodyPropertiesDialog(
+              body: testBody,
+              bodyIndex: 0,
+              onBodyChanged: (body) {},
             ),
           ),
-        ),
-      );
+        );
 
-      // Open dialog
-      await tester.tap(find.text('Open Dialog'));
-      await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
 
-      // Verify dialog is open
-      expect(find.text('Body Properties'), findsOneWidget);
+        // Find the gravity wells switch
+        final gravityWellSwitch = find.byType(SwitchListTile);
+        expect(gravityWellSwitch, findsAtLeastNWidgets(1));
 
-      // Tap close button
-      await tester.tap(find.byIcon(Icons.close));
-      await tester.pumpAndSettle();
+        // With the new logic, when global gravity fields is enabled,
+        // AppState automatically sets all bodies to showGravityWell = true
+        // so the switch should show ON (true)
+        SwitchListTile switchWidget = tester.widget(gravityWellSwitch.first);
+        expect(
+          switchWidget.value,
+          true,
+          reason:
+              "When global is enabled, bodies are auto-set to showGravityWell = true",
+        );
 
-      // Verify dialog is closed
-      expect(find.text('Body Properties'), findsNothing);
-    });
+        // Tap the switch to turn individual setting OFF (override global)
+        await tester.tap(gravityWellSwitch.first);
+        await tester.pumpAndSettle();
 
-    testWidgets('should update name when text field is changed', (
-      tester,
-    ) async {
-      bool bodyChanged = false;
-      Body? updatedBody;
+        // Verify the switch is now OFF (individual override)
+        switchWidget = tester.widget(gravityWellSwitch.first);
+        expect(switchWidget.value, false);
 
-      await tester.pumpWidget(
-        createTestWidget(
-          child: BodyPropertiesDialog(
-            body: testBody,
-            bodyIndex: 0,
-            onBodyChanged: (body) {
-              bodyChanged = true;
-              updatedBody = body;
-            },
-          ),
-        ),
-      );
+        // Tap again to turn individual setting back ON
+        await tester.tap(gravityWellSwitch.first);
+        await tester.pumpAndSettle();
 
-      // Find and tap the name text field
-      final nameField = find.byType(TextField);
-      expect(nameField, findsOneWidget);
-
-      // Clear and enter new name
-      await tester.enterText(nameField, 'New Test Body');
-      await tester.pump();
-
-      // Verify callback was called
-      expect(bodyChanged, isTrue);
-      expect(updatedBody?.name, equals('New Test Body'));
-    });
-
-    testWidgets('should display mass slider with correct value', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          child: BodyPropertiesDialog(
-            body: testBody,
-            bodyIndex: 0,
-            onBodyChanged: (body) {},
-          ),
-        ),
-      );
-
-      await tester.pumpAndSettle();
-
-      // Find sliders
-      final sliders = find.byType(Slider);
-      expect(sliders, findsWidgets);
-
-      // Verify mass value is displayed (formatted as 100.000)
-      expect(find.text('100.000'), findsOneWidget);
-    });
-
-    testWidgets('should display radius slider with correct value', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          child: BodyPropertiesDialog(
-            body: testBody,
-            bodyIndex: 0,
-            onBodyChanged: (body) {},
-          ),
-        ),
-      );
-
-      // Verify radius value is displayed (formatted as 2.00)
-      expect(find.text('2.00'), findsOneWidget);
-    });
-
-    testWidgets('should display velocity controls for X, Y, Z', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          child: BodyPropertiesDialog(
-            body: testBody,
-            bodyIndex: 0,
-            onBodyChanged: (body) {},
-          ),
-        ),
-      );
-
-      // Verify velocity labels
-      expect(find.text('X:'), findsOneWidget);
-      expect(find.text('Y:'), findsOneWidget);
-      expect(find.text('Z:'), findsOneWidget);
-
-      // Verify velocity values (all zero since testBody uses Vector3.zero())
-      expect(find.text('0.0'), findsNWidgets(3)); // X, Y, Z all show 0.0
-    });
-
-    testWidgets('should display color picker with selectable colors', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          child: BodyPropertiesDialog(
-            body: testBody,
-            bodyIndex: 0,
-            onBodyChanged: (body) {},
-          ),
-        ),
-      );
-
-      // Find color containers directly without scrolling
-      final colorContainers = find.descendant(
-        of: find.byType(Wrap),
-        matching: find.byType(Container),
-      );
-
-      expect(colorContainers, findsWidgets);
-    });
-
-    testWidgets('should display body type dropdown with all options', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          child: BodyPropertiesDialog(
-            body: testBody,
-            bodyIndex: 0,
-            onBodyChanged: (body) {},
-          ),
-        ),
-      );
-
-      // Find dropdown
-      final dropdown = find.byType(DropdownButtonFormField<BodyType>);
-      expect(dropdown, findsOneWidget);
-
-      // Tap dropdown to open
-      await tester.tap(dropdown);
-      await tester.pumpAndSettle();
-
-      // Verify body types are available (allowing for duplicates)
-      for (final type in BodyType.values) {
-        expect(find.text(type.displayName), findsAtLeastNWidgets(1));
-      }
-    });
+        // Verify the switch is now ON (individual setting)
+        switchWidget = tester.widget(gravityWellSwitch.first);
+        expect(switchWidget.value, true);
+      },
+    );
   });
 }

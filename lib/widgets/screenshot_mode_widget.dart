@@ -4,6 +4,8 @@ import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_icon_button.dart';
+import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:provider/provider.dart';
 
 /// Widget for controlling screenshot mode
@@ -28,17 +30,11 @@ class ScreenshotModeWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Screenshot Mode Toggle
-                SwitchListTile(
-                  title: Text(l10n.screenshotMode),
-                  subtitle: Text(
-                    l10n.screenshotModeSubtitle,
-                    style: TextStyle(
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacitySemiTransparent,
-                      ),
-                    ),
-                  ),
-                  value: screenshotService.isEnabled,
+                ToggleOption(
+                  title: l10n.screenshotMode,
+                  description: l10n.screenshotModeSubtitle,
+                  icon: Icons.camera_alt,
+                  isEnabled: screenshotService.isEnabled,
                   onChanged: (v) {
                     if (v) {
                       screenshotService.enableScreenshotMode();
@@ -50,29 +46,26 @@ class ScreenshotModeWidget extends StatelessWidget {
                       }
                     }
                   },
-                  secondary: const Icon(Icons.camera_alt),
                 ),
 
                 // Hide UI Toggle (only show when screenshot mode is enabled)
                 if (screenshotService.isEnabled) ...[
-                  const SizedBox(height: AppTypography.spacingSmall),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: SwitchListTile(
-                      title: Text(l10n.hideUIInScreenshotMode),
-                      subtitle: Text(
-                        l10n.hideUIInScreenshotModeSubtitle,
-                        style: TextStyle(
-                          color: AppColors.uiWhite.withValues(
-                            alpha: AppTypography.opacitySemiTransparent,
-                          ),
-                        ),
-                      ),
-                      value: appState.ui.hideUIInScreenshotMode,
-                      onChanged: (v) =>
-                          appState.ui.toggleHideUIInScreenshotMode(),
-                      secondary: const Icon(Icons.visibility_off),
-                    ),
+                  ToggleOption(
+                    title: l10n.hideUIInScreenshotMode,
+                    description: l10n.hideUIInScreenshotModeSubtitle,
+                    icon: Icons.visibility_off,
+                    isEnabled: appState.ui.hideUIInScreenshotMode,
+                    onChanged: (v) =>
+                        appState.ui.toggleHideUIInScreenshotMode(),
+                  ),
+
+                  // Fullscreen Toggle (only show when screenshot mode is enabled)
+                  ToggleOption(
+                    title: l10n.fullscreenMode,
+                    description: l10n.fullscreenModeDescription,
+                    icon: Icons.fullscreen,
+                    isEnabled: screenshotService.fullscreenModeEnabled,
+                    onChanged: (v) => screenshotService.toggleFullscreenMode(),
                   ),
                 ],
 
@@ -158,7 +151,7 @@ class ScreenshotModeWidget extends StatelessWidget {
                         Row(
                           children: [
                             // Previous button
-                            IconButton(
+                            HapticIconButton(
                               onPressed: () =>
                                   screenshotService.previousPreset(),
                               icon: const Icon(Icons.arrow_back_ios),
@@ -223,7 +216,7 @@ class ScreenshotModeWidget extends StatelessWidget {
                             ),
 
                             // Next button
-                            IconButton(
+                            HapticIconButton(
                               onPressed: () => screenshotService.nextPreset(),
                               icon: const Icon(Icons.arrow_forward_ios),
                               tooltip: l10n.nextPreset,
@@ -248,7 +241,7 @@ class ScreenshotModeWidget extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.camera_alt,
-                                  size: 16,
+                                  size: AppTypography.iconSizeMedium,
                                   color: Theme.of(
                                     context,
                                   ).colorScheme.onPrimaryContainer,

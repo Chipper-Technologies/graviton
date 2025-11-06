@@ -32,7 +32,6 @@ class ChangelogService {
       );
 
       _isInitialized = true;
-      debugPrint('ChangelogService initialized successfully');
     } catch (e) {
       debugPrint('Error initializing ChangelogService: $e');
       // Don't throw - app should work without changelog functionality
@@ -56,7 +55,6 @@ class ChangelogService {
     try {
       final collection = _firestore?.collection('changelogs');
       if (collection == null) {
-        debugPrint('Firestore not available, returning cached data');
         return _cachedChangelogs;
       }
 
@@ -75,14 +73,10 @@ class ChangelogService {
       // Update cache
       _cachedChangelogs = changelogs;
 
-      debugPrint('Fetched ${changelogs.length} changelogs from Firestore');
       return changelogs;
     } catch (e) {
-      debugPrint('Error fetching changelogs: $e');
-
       // Try to return cached data on error
       if (_cachedChangelogs.isNotEmpty) {
-        debugPrint('Returning cached changelogs due to error');
         return _cachedChangelogs;
       }
 
@@ -132,7 +126,6 @@ class ChangelogService {
 
       return changelog;
     } catch (e) {
-      debugPrint('Error fetching changelog version $version: $e');
       return null;
     }
   }
@@ -144,7 +137,7 @@ class ChangelogService {
     // Filter changelogs newer than the specified version
     // This assumes semantic versioning (e.g., "1.2.0")
     return allChangelogs.where((changelog) {
-      return _compareVersions(changelog.version, version) > 0;
+      return VersionUtils.compareVersions(changelog.version, version) > 0;
     }).toList();
   }
 
@@ -175,7 +168,8 @@ class ChangelogService {
 
       // If no changelogs found, try fallback versions
       final List<String> versionsToTry =
-          fallbackVersions ?? _generateFallbackVersions(currentVersion);
+          fallbackVersions ??
+          VersionUtils.generateFallbackVersions(currentVersion);
 
       List<ChangelogVersion> foundChangelogs = [];
 
@@ -193,87 +187,19 @@ class ChangelogService {
 
       return foundChangelogs;
     } catch (e) {
-      debugPrint('Error in fetchChangelogsWithFallback: $e');
       return [];
-    }
-  }
-
-  /// Generate fallback versions based on current version
-  List<String> _generateFallbackVersions(String? currentVersion) {
-    if (currentVersion == null || currentVersion.isEmpty) {
-      // Default fallback versions if no current version provided
-      return ['1.2.0', '1.1.0', '1.0.0'];
-    }
-
-    try {
-      // Parse current version to get next minor version
-      final versionParts = currentVersion.split('.');
-      if (versionParts.length < 3) {
-        return ['1.2.0', '1.1.0', '1.0.0'];
-      }
-
-      final major = int.tryParse(versionParts[0]);
-      final minor = int.tryParse(versionParts[1]);
-
-      if (major == null || minor == null) {
-        return ['1.2.0', '1.1.0', '1.0.0'];
-      }
-
-      // Generate fallback versions similar to home_screen.dart logic
-      final versionsToTry = [
-        '$major.${minor + 1}.0', // Next minor version (highest priority)
-        currentVersion, // Current version
-        '$major.$minor.0', // Current minor version base
-        '$major.${minor - 1}.0', // Previous minor version
-        '1.0.0', // Always try 1.0.0 as final fallback
-      ];
-
-      // Remove duplicates while preserving order
-      return versionsToTry.toSet().toList();
-    } catch (e) {
-      debugPrint('Error generating fallback versions: $e');
-      return ['1.2.0', '1.1.0', '1.0.0'];
     }
   }
 
   /// Clear cached changelogs (useful for testing or refresh)
   void clearCache() {
     _cachedChangelogs.clear();
-    debugPrint('Changelog cache cleared');
   }
 
   /// Refresh changelogs from server (bypassing cache)
   Future<List<ChangelogVersion>> refreshChangelogs() async {
     clearCache();
     return fetchChangelogs(useCache: false, source: Source.server);
-  }
-
-  /// Compare two version strings (basic semantic versioning comparison)
-  /// Returns: -1 if version1 < version2, 0 if equal, 1 if version1 > version2
-  int _compareVersions(String version1, String version2) {
-    final v1Parts = version1
-        .split('.')
-        .map((e) => int.tryParse(e) ?? 0)
-        .toList();
-    final v2Parts = version2
-        .split('.')
-        .map((e) => int.tryParse(e) ?? 0)
-        .toList();
-
-    // Pad with zeros to ensure same length
-    while (v1Parts.length < 3) {
-      v1Parts.add(0);
-    }
-    while (v2Parts.length < 3) {
-      v2Parts.add(0);
-    }
-
-    for (int i = 0; i < 3; i++) {
-      if (v1Parts[i] < v2Parts[i]) return -1;
-      if (v1Parts[i] > v2Parts[i]) return 1;
-    }
-
-    return 0; // Versions are equal
   }
 
   /// Mock method for testing (adds sample changelog data)
@@ -283,14 +209,12 @@ class ChangelogService {
       _cachedChangelogs.sort(
         (a, b) => VersionUtils.compareVersions(b.version, a.version),
       );
-      debugPrint('Mock changelog added: ${changelog.version}');
     }
   }
 
   /// Upload a changelog to Firestore (admin function - for testing only)
   Future<void> uploadChangelog(ChangelogVersion changelog) async {
     if (!kDebugMode) {
-      debugPrint('Upload only available in debug mode');
       return;
     }
 
@@ -301,12 +225,10 @@ class ChangelogService {
     try {
       final collection = _firestore?.collection('changelogs');
       if (collection == null) {
-        debugPrint('Firestore not available');
         return;
       }
 
       await collection.doc(changelog.version).set(changelog.toMap());
-      debugPrint('Uploaded changelog for version ${changelog.version}');
 
       // Refresh cache
       await refreshChangelogs();

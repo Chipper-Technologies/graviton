@@ -29,39 +29,26 @@ void main() {
       expect(nonAiTechniques.first, equals(CinematicCameraTechnique.manual));
     });
 
-    test(
-      'all AI techniques should have descriptive names and descriptions',
-      () {
-        final aiTechniques = CinematicCameraTechnique.values
-            .where((technique) => technique.requiresAI)
-            .toList();
+    test('all AI techniques should have proper localization keys', () {
+      final aiTechniques = CinematicCameraTechnique.values
+          .where((technique) => technique.requiresAI)
+          .toList();
 
-        for (final technique in aiTechniques) {
-          final displayName = technique.displayName;
-          final description = technique.description;
+      for (final technique in aiTechniques) {
+        final localizationKey = technique.localizationKey;
+        final descriptionKey = technique.descriptionKey;
 
-          // Should have meaningful content
-          expect(displayName, isNotEmpty);
-          expect(description, isNotEmpty);
-          expect(description.length, greaterThan(displayName.length));
+        // Should have meaningful localization keys
+        expect(localizationKey, isNotEmpty);
+        expect(descriptionKey, isNotEmpty);
+        expect(localizationKey, startsWith('camera'));
+        expect(descriptionKey, startsWith('camera'));
+        expect(descriptionKey, endsWith('Description'));
 
-          // Should contain AI-related keywords
-          final content = '$displayName $description'.toLowerCase();
-          expect(
-            content,
-            anyOf([
-              contains('ai'),
-              contains('automatic'),
-              contains('intelligent'),
-              contains('predict'),
-              contains('adjust'),
-              contains('select'),
-              contains('analyze'),
-            ]),
-          );
-        }
-      },
-    );
+        // Localization keys should be unique
+        expect(localizationKey, isNot(equals(descriptionKey)));
+      }
+    });
 
     test(
       'orbital prediction engine should work with all configuration scenarios',

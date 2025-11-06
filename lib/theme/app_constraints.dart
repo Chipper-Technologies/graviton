@@ -1,6 +1,21 @@
 import 'package:flutter/material.dart';
 
 /// Centralized UI constraints for consistent sizing across the app
+///
+/// This class provides reusable constants for dialog styling, sizing, and spacing
+/// to ensure consistency across all dialogs in the application.
+///
+/// Usage example:
+/// ```dart
+/// Dialog(
+///   shape: RoundedRectangleBorder(borderRadius: AppConstraints.dialogRoundedBorder),
+///   child: Container(
+///     constraints: AppConstraints.dialogMedium,
+///     decoration: BoxDecoration(borderRadius: AppConstraints.dialogRoundedBorder),
+///     ...
+///   ),
+/// )
+/// ```
 class AppConstraints {
   AppConstraints._();
 
@@ -56,6 +71,21 @@ class AppConstraints {
 
   /// Compact padding for dialog content with less space
   static const EdgeInsets dialogPaddingCompact = EdgeInsets.all(16);
+
+  // Dialog Decoration
+  /// Standard border radius for dialog containers
+  static const double dialogBorderRadius = 24.0; // AppTypography.radiusXXLarge
+
+  /// Standard border radius for dialog top corners only
+  static const Radius dialogTopRadius = Radius.circular(dialogBorderRadius);
+
+  /// Full rounded border radius for dialogs
+  static BorderRadius get dialogRoundedBorder =>
+      BorderRadius.circular(dialogBorderRadius);
+
+  /// Top-only rounded border radius for dialog headers
+  static BorderRadius get dialogTopBorder =>
+      BorderRadius.only(topLeft: dialogTopRadius, topRight: dialogTopRadius);
 
   // Future UI constraints can be added here:
   // - Button sizes

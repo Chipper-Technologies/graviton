@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Overlay that shows property editor icons for selected bodies
@@ -49,7 +50,7 @@ class BodyPropertyEditorOverlay extends StatelessWidget {
         Positioned(
           left: iconPosition.dx - 18, // Icon radius
           top: iconPosition.dy - 18, // Icon radius
-          child: GestureDetector(
+          child: HapticGestureDetector(
             onTap: onPropertyIconTapped,
             child: Container(
               width: 36,

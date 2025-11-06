@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/speed_preset.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -21,35 +23,42 @@ class AppBarSpeedControl extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 4),
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-            color: AppColors.uiBlack.withValues(alpha: 0.3),
+            color: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityFaint,
+            ),
             borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
             border: Border.all(
-              color: AppColors.uiWhite.withValues(alpha: 0.2),
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityVeryFaint,
+              ),
               width: 1,
             ),
           ),
           child: PopupMenuButton<double>(
             tooltip: l10n.speedLabel,
-            onSelected: (value) => appState.simulation.setTimeScale(value),
-            itemBuilder: (context) => [
-              _buildSpeedMenuItem(
-                0.1,
-                '0.1x',
-                'Slow Motion',
-                Icons.slow_motion_video,
-              ),
-              _buildSpeedMenuItem(0.5, '0.5x', 'Half Speed', Icons.play_arrow),
-              _buildSpeedMenuItem(1.0, '1.0x', 'Normal', Icons.play_arrow),
-              _buildSpeedMenuItem(2.0, '2.0x', 'Double', Icons.fast_forward),
-              _buildSpeedMenuItem(4.0, '4.0x', 'Fast', Icons.fast_forward),
-              _buildSpeedMenuItem(8.0, '8.0x', 'Very Fast', Icons.fast_forward),
-              _buildSpeedMenuItem(16.0, '16.0x', 'Maximum', Icons.fast_forward),
-            ],
-            color: AppColors.uiBlack.withValues(alpha: 0.9),
+            onSelected: (value) {
+              HapticFeedbackService.instance.selection();
+              appState.simulation.setTimeScale(value);
+            },
+            itemBuilder: (context) => SpeedPreset.values
+                .map(
+                  (preset) => _buildSpeedMenuItem(
+                    preset.multiplier.toDouble(),
+                    preset.formattedSpeed,
+                    preset.getLocalizedDisplayName(l10n),
+                    preset.icon,
+                  ),
+                )
+                .toList(),
+            color: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityNearlyOpaque,
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
               side: BorderSide(
-                color: AppColors.uiWhite.withValues(alpha: 0.2),
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityVeryFaint,
+                ),
                 width: 1,
               ),
             ),
@@ -58,12 +67,14 @@ class AppBarSpeedControl extends StatelessWidget {
               children: [
                 Icon(
                   Icons.speed,
-                  size: 14,
-                  color: AppColors.uiWhite.withValues(alpha: 0.8),
+                  size: AppTypography.iconSizeSmall,
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityVeryHigh,
+                  ),
                 ),
                 const SizedBox(width: 3),
                 Text(
-                  '${timeScale.toStringAsFixed(1)}x',
+                  SpeedPresetExtension.fromMultiplier(timeScale).formattedSpeed,
                   style: const TextStyle(
                     color: AppColors.uiWhite,
                     fontSize: AppTypography.fontSizeSmall - 1,
@@ -73,8 +84,10 @@ class AppBarSpeedControl extends StatelessWidget {
                 const SizedBox(width: 1),
                 Icon(
                   Icons.arrow_drop_down,
-                  size: 14,
-                  color: AppColors.uiWhite.withValues(alpha: 0.6),
+                  size: AppTypography.iconSizeSmall,
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityMediumHigh,
+                  ),
                 ),
               ],
             ),
@@ -94,7 +107,13 @@ class AppBarSpeedControl extends StatelessWidget {
       value: value,
       child: Row(
         children: [
-          Icon(icon, size: 16, color: AppColors.uiWhite.withValues(alpha: 0.7)),
+          Icon(
+            icon,
+            size: AppTypography.iconSizeMedium,
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityHigh,
+            ),
+          ),
           const SizedBox(width: AppTypography.spacingSmall),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,7 +130,9 @@ class AppBarSpeedControl extends StatelessWidget {
               Text(
                 description,
                 style: TextStyle(
-                  color: AppColors.uiWhite.withValues(alpha: 0.6),
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityMediumHigh,
+                  ),
                   fontSize: AppTypography.fontSizeXSmall,
                 ),
               ),

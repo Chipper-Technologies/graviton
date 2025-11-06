@@ -82,6 +82,14 @@ void main() {
         CelestialBodyName.fromString('Central Star'),
         equals(CelestialBodyName.centralStar),
       );
+      expect(
+        CelestialBodyName.fromString('Rocky Planet'),
+        equals(CelestialBodyName.rockyPlanet),
+      );
+      expect(
+        CelestialBodyName.fromString('Ringed Planet'),
+        equals(CelestialBodyName.ringedPlanet),
+      );
 
       // Should return null for unknown names
       expect(CelestialBodyName.fromString('Unknown Body'), isNull);
@@ -111,6 +119,8 @@ void main() {
       expect(CelestialBodyName.asteroid.matches('Asteroid 1'), isTrue);
       expect(CelestialBodyName.asteroid.matches('Asteroid 42'), isTrue);
       expect(CelestialBodyName.star.matches('Star 5'), isTrue);
+      expect(CelestialBodyName.rockyPlanet.matches('Rocky Planet'), isTrue);
+      expect(CelestialBodyName.ringedPlanet.matches('Ringed Planet'), isTrue);
 
       // Should not match incorrect names
       expect(CelestialBodyName.sun.matches('Moon'), isFalse);

@@ -408,6 +408,29 @@ class AppColors {
   static const Color testPink = Color(0xFFF72585); // pink
   static const Color testLightBlue = Color(0xFF4CC9F0); // light blue
 
+  /// Test utility colors for color operations testing
+  static const Color testLightGray = Color(
+    0xFFF0F0F0,
+  ); // Light gray for contrast testing
+  static const Color testDarkGray = Color(
+    0xFF333333,
+  ); // Dark gray for contrast testing
+  static const Color testMediumGray = Color(
+    0xFF808080,
+  ); // Medium gray for color operations
+  static const Color testPureRed = Color(
+    0xFFFF0000,
+  ); // Pure red for blending tests
+  static const Color testPureBlue = Color(
+    0xFF0000FF,
+  ); // Pure blue for blending tests
+  static const Color testGreen = Color(
+    0xFF4CAF50,
+  ); // Material green for body tests
+  static const Color testYellow = Color(
+    0xFFFFEB3B,
+  ); // Material yellow for body tests
+
   /// Gravity well colors
   static const Color gravityWellYellow = Color(
     0xFFFFEB3B,
@@ -418,6 +441,69 @@ class AppColors {
   static const Color gravityWellCyan = Color(
     0xFF00FFFF,
   ); // Colors.cyan equivalent
+
+  // =============================================================================
+  // GRAVITY FIELD COLOR SCHEMES
+  // =============================================================================
+
+  /// Classic gravity field colors
+  static const Color gravityFieldClassicStarPrimary = Color(0xFFFFD700); // Gold
+  static const Color gravityFieldClassicBodyPrimary = Color(0xFF4A90E2); // Blue
+  static const Color gravityFieldClassicSecondary = Color(0xFF6B46C1); // Purple
+  static const Color gravityFieldClassicAccent = Color(0xFFFF6B35); // Orange
+
+  /// Spectral gravity field colors
+  static const Color gravityFieldSpectralRed = Color(0xFFFF4444); // Hot red
+  static const Color gravityFieldSpectralBlue = Color(0xFF4444FF); // Cool blue
+  static const Color gravityFieldSpectralGreen = Color(0xFF00FF44); // Mid green
+  static const Color gravityFieldSpectralMagenta = Color(0xFFFF44FF); // Accent
+
+  /// Monochrome gravity field colors
+  static const Color gravityFieldMonochromeWhite = Color(0xFFFFFFFF); // White
+  static const Color gravityFieldMonochromeLightGray = Color(
+    0xFFCCCCCC,
+  ); // Light gray
+  static const Color gravityFieldMonochromeDarkGray = Color(
+    0xFF666666,
+  ); // Dark gray
+  static const Color gravityFieldMonochromeMediumGray = Color(
+    0xFF999999,
+  ); // Medium gray
+  static const Color gravityFieldMonochromeBlack = Color(0xFF000000); // Black
+
+  /// Neon gravity field colors
+  static const Color gravityFieldNeonPink = Color(0xFFFF0080); // Neon pink
+  static const Color gravityFieldNeonCyan = Color(0xFF00FFFF); // Cyan
+  static const Color gravityFieldNeonYellow = Color(0xFFFFFF00); // Yellow
+  static const Color gravityFieldNeonLime = Color(0xFF80FF00); // Lime green
+  static const Color gravityFieldNeonDark = Color(
+    0xFF1A1A1A,
+  ); // Dark background
+
+  /// Emerald gravity field colors
+  static const Color gravityFieldEmeraldBright = Color(
+    0xFF00FF80,
+  ); // Bright green
+  static const Color gravityFieldEmeraldForest = Color(
+    0xFF00CC66,
+  ); // Forest green
+  static const Color gravityFieldEmeraldDark = Color(0xFF004D33); // Dark green
+  static const Color gravityFieldEmeraldLight = Color(
+    0xFF66FFB3,
+  ); // Light emerald
+  static const Color gravityFieldEmeraldDeep = Color(
+    0xFF064E3B,
+  ); // Deep emerald
+  static const Color gravityFieldEmeraldVibrant = Color(
+    0xFF34D399,
+  ); // Vibrant emerald
+
+  /// Field strength indicator colors (intensity gradients)
+  static const Color fieldStrengthWeak = Color(0xFF1E3A8A); // Dark blue
+  static const Color fieldStrengthModerate = Color(0xFF3B82F6); // Blue
+  static const Color fieldStrengthStrong = Color(0xFF10B981); // Green
+  static const Color fieldStrengthVeryStrong = Color(0xFFFBBF24); // Yellow
+  static const Color fieldStrengthExtreme = Color(0xFFEF4444); // Red
 
   /// Background gradient colors
   static const Color backgroundDeepBlue = Color(
@@ -471,6 +557,22 @@ class AppColors {
   static const Color nebulaCosmicPurple = Color(
     0xFF7744CC,
   ); // Cosmic deep purple
+
+  // =============================================================================
+  // ACCESSIBILITY ENHANCED COLORS
+  // =============================================================================
+
+  /// Enhanced contrast colors for WCAG AA compliance
+  /// These colors provide better contrast ratios on dark backgrounds
+  static const Color uiTextGreyAccessible = Color(
+    0xFFCFCFCF,
+  ); // ~7.1:1 contrast
+  static const Color uiBorderGreyAccessible = Color(
+    0xFF8E8E8E,
+  ); // ~4.6:1 contrast
+  static const Color uiDividerGreyAccessible = Color(
+    0xFF757575,
+  ); // ~3.1:1 contrast
 
   // =============================================================================
   // ALPHA & TRANSPARENCY CONSTANTS

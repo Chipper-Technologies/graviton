@@ -20,27 +20,27 @@ enum CinematicCameraTechnique {
   /// The string value used for storage and analytics
   final String value;
 
-  /// Get display name for UI
-  String get displayName {
+  /// Localization key for display name in UI
+  String get localizationKey {
     switch (this) {
       case CinematicCameraTechnique.manual:
-        return 'Manual Control';
+        return 'cameraManual';
       case CinematicCameraTechnique.predictiveOrbital:
-        return 'Predictive Orbital';
+        return 'cameraPredictiveOrbital';
       case CinematicCameraTechnique.dynamicFraming:
-        return 'Dynamic Framing';
+        return 'cameraDynamicFraming';
     }
   }
 
-  /// Get description for UI
-  String get description {
+  /// Localization key for description in UI
+  String get descriptionKey {
     switch (this) {
       case CinematicCameraTechnique.manual:
-        return 'Traditional manual camera controls with follow mode';
+        return 'cameraManualDescription';
       case CinematicCameraTechnique.predictiveOrbital:
-        return 'AI predicts orbital paths for dramatic camera movements';
+        return 'cameraPredictiveOrbitalDescription';
       case CinematicCameraTechnique.dynamicFraming:
-        return 'Automatically adjusts framing based on scene content';
+        return 'cameraDynamicFramingDescription';
     }
   }
 

@@ -9,6 +9,8 @@ import 'package:graviton/models/body.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/color_utils.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Overlay that shows arrows pointing to off-screen bodies
@@ -40,7 +42,7 @@ class OffScreenIndicatorsOverlay extends StatelessWidget {
           return Positioned(
             left: indicator.position.dx - 20, // 20 = tap area radius
             top: indicator.position.dy - 20,
-            child: GestureDetector(
+            child: HapticGestureDetector(
               onTap: () {
                 FirebaseService.instance.logUIEventWithEnums(
                   UIAction.tap,
@@ -54,7 +56,7 @@ class OffScreenIndicatorsOverlay extends StatelessWidget {
                 height: 40,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.transparent,
+                  color: AppColors.transparentColor,
                 ),
                 child: CustomPaint(
                   painter: _IndicatorPainter(
@@ -320,7 +322,7 @@ class _IndicatorPainter extends CustomPainter {
   ) {
     final baseColor = isSelected
         ? AppColors.uiSelectionYellow
-        : _getBodyColor(body);
+        : ColorUtils.getBodyColor(body);
 
     // Special handling for black hole - use dark gray with white border for visibility
     final bodyEnum = CelestialBodyName.fromString(body.name);
@@ -457,42 +459,6 @@ class _IndicatorPainter extends CustomPainter {
     );
 
     textPainter.paint(canvas, textOffset);
-  }
-
-  Color _getBodyColor(Body body) {
-    // Match the exact colors used in CelestialBodyPainter
-    final bodyEnum = CelestialBodyName.fromString(body.name);
-    if (bodyEnum != null) {
-      switch (bodyEnum) {
-        case CelestialBodyName.blackHole:
-        case CelestialBodyName.supermassiveBlackHole:
-          return AppColors.uiBlack;
-        case CelestialBodyName.sun:
-          return AppColors.offScreenSun; // Gold
-        case CelestialBodyName.mercury:
-          return AppColors.offScreenMercury; // Brownish gray
-        case CelestialBodyName.venus:
-          return AppColors.offScreenVenus; // Yellowish
-        case CelestialBodyName.earth:
-          return AppColors.offScreenEarth; // Blue
-        case CelestialBodyName.mars:
-          return AppColors.offScreenMars; // Red
-        case CelestialBodyName.jupiter:
-          return AppColors.offScreenJupiter; // Tan/beige
-        case CelestialBodyName.saturn:
-          return AppColors.offScreenSaturn; // Light gold
-        case CelestialBodyName.uranus:
-          return AppColors.offScreenUranus; // Light blue
-        case CelestialBodyName.neptune:
-          return AppColors.offScreenNeptune; // Deep blue
-        default:
-          // Use the body's default color property for other objects
-          return body.color;
-      }
-    }
-
-    // Use the body's default color property for unrecognized objects
-    return body.color;
   }
 
   @override

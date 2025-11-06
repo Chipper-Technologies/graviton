@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
+import 'package:graviton/enums/ab_test_group.dart';
 import 'package:graviton/enums/firebase_event.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
@@ -141,7 +142,7 @@ class FirebaseService {
       // Add A/B test group to parameters if available
       final enhancedParameters = <String, Object>{
         if (parameters != null) ...parameters,
-        'ab_test_group': remoteConfigService.abTestGroup,
+        'ab_test_group': remoteConfigService.abTestGroup.configValue,
       };
 
       await _analytics!.logEvent(name: name, parameters: enhancedParameters);

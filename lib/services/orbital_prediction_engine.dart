@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/orbital_event.dart';
-import 'package:graviton/constants/simulation_constants.dart';
+import 'package:graviton/utils/physics_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Physics-based prediction engine for orbital mechanics
@@ -195,30 +195,24 @@ class OrbitalPredictionEngine {
     }
   }
 
-  /// Calculate gravitational acceleration for a body
+  /// Calculate gravitational acceleration for a body using PhysicsUtils
   vm.Vector3 _calculateAcceleration(Body body, List<Body> allBodies) {
-    vm.Vector3 acceleration = vm.Vector3.zero();
+    final otherPositions = <vm.Vector3>[];
+    final otherMasses = <double>[];
 
     for (final other in allBodies) {
-      if (other == body) continue;
-
-      final r = other.position - body.position;
-      final distance = r.length;
-
-      if (distance > SimulationConstants.softening) {
-        final force =
-            SimulationConstants.gravitationalConstant *
-            other.mass /
-            math.pow(
-              distance * distance +
-                  SimulationConstants.softening * SimulationConstants.softening,
-              1.5,
-            );
-        acceleration += r * force;
+      if (other != body) {
+        otherPositions.add(other.position);
+        otherMasses.add(other.mass);
       }
     }
 
-    return acceleration;
+    return PhysicsUtils.calculateTotalGravitationalAcceleration(
+      body.position,
+      body.mass,
+      otherPositions,
+      otherMasses,
+    );
   }
 
   /// Detect close approach events between two bodies

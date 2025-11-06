@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/enums/auto_rotate_status.dart';
 import 'package:graviton/enums/habitability_status.dart';
+import 'package:graviton/enums/simulation_status.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/localization_utils.dart';
 
 /// Stats overlay widget to display simulation information
 class StatsOverlay extends StatelessWidget {
@@ -74,11 +77,9 @@ class StatsOverlay extends StatelessWidget {
                 ),
               ),
               Text(
-                '${l10n.statusLabel}: ${appState.simulation.isPaused ? l10n.statusPaused : l10n.statusRunning}',
+                '${l10n.statusLabel}: ${_getStatusText(appState.simulation.status, l10n)}',
                 style: TextStyle(
-                  color: appState.simulation.isPaused
-                      ? AppColors.uiStatusOrange
-                      : AppColors.uiStatusGreen,
+                  color: _getStatusColor(appState.simulation.status),
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
@@ -98,35 +99,35 @@ class StatsOverlay extends StatelessWidget {
                 ),
               ),
               Text(
-                '${l10n.autoRotateLabel}: ${appState.camera.autoRotate ? l10n.autoRotateOn : l10n.autoRotateOff}',
+                '${l10n.autoRotateLabel}: ${appState.camera.autoRotateStatus.isEnabled ? l10n.autoRotateOn : l10n.autoRotateOff}',
                 style: const TextStyle(
                   color: AppColors.uiWhite70,
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
               Text(
-                'Yaw: ${appState.camera.yaw.toStringAsFixed(2)}',
+                '${l10n.yawLabel}: ${appState.camera.yaw.toStringAsFixed(2)}',
                 style: const TextStyle(
                   color: AppColors.uiWhite70,
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
               Text(
-                'Pitch: ${appState.camera.pitch.toStringAsFixed(2)}',
+                '${l10n.pitchLabel}: ${appState.camera.pitch.toStringAsFixed(2)}',
                 style: const TextStyle(
                   color: AppColors.uiWhite70,
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
               Text(
-                'Roll: ${appState.camera.roll.toStringAsFixed(2)}',
+                '${l10n.rollLabel}: ${appState.camera.roll.toStringAsFixed(2)}',
                 style: const TextStyle(
                   color: AppColors.uiWhite70,
                   fontSize: AppTypography.fontSizeSmall,
                 ),
               ),
               Text(
-                'Zoom: ${appState.camera.distance.toStringAsFixed(1)}',
+                '${l10n.zoomLabel}: ${appState.camera.distance.toStringAsFixed(1)}',
                 style: const TextStyle(
                   color: AppColors.uiWhite70,
                   fontSize: AppTypography.fontSizeSmall,
@@ -148,7 +149,7 @@ class StatsOverlay extends StatelessWidget {
                     .where((body) => body.canBeHabitable)
                     .map(
                       (body) => Text(
-                        '${body.name}: ${_getLocalizedHabitabilityStatus(l10n, body.habitabilityStatus)}',
+                        '${body.name}: ${LocalizationUtils.getLocalizedHabitabilityStatus(l10n, body.habitabilityStatus)}',
                         style: TextStyle(
                           color: Color(
                             body.habitabilityStatus.statusColor,
@@ -165,20 +166,29 @@ class StatsOverlay extends StatelessWidget {
     );
   }
 
-  /// Get localized habitability status string
-  String _getLocalizedHabitabilityStatus(
-    AppLocalizations l10n,
-    HabitabilityStatus status,
-  ) {
+  String _getStatusText(SimulationStatus status, AppLocalizations l10n) {
     switch (status) {
-      case HabitabilityStatus.habitable:
-        return l10n.habitabilityHabitable;
-      case HabitabilityStatus.tooHot:
-        return l10n.habitabilityTooHot;
-      case HabitabilityStatus.tooCold:
-        return l10n.habitabilityTooCold;
-      case HabitabilityStatus.unknown:
-        return l10n.habitabilityUnknown;
+      case SimulationStatus.stopped:
+        return l10n.statusStopped;
+      case SimulationStatus.running:
+        return l10n.statusRunning;
+      case SimulationStatus.paused:
+        return l10n.statusPaused;
+      case SimulationStatus.error:
+        return l10n.statusError;
+    }
+  }
+
+  Color _getStatusColor(SimulationStatus status) {
+    switch (status) {
+      case SimulationStatus.stopped:
+        return AppColors.uiWhite.withValues(alpha: 0.7);
+      case SimulationStatus.running:
+        return AppColors.uiStatusGreen;
+      case SimulationStatus.paused:
+        return AppColors.uiStatusOrange;
+      case SimulationStatus.error:
+        return AppColors.uiRed;
     }
   }
 }

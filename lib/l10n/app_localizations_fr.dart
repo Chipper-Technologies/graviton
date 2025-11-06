@@ -21,6 +21,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get resetButton => 'Réinitialiser';
 
   @override
+  String get resetSettingsDescription =>
+      'Réinitialiser tous les paramètres aux valeurs par défaut';
+
+  @override
   String get speedLabel => 'Vitesse';
 
   @override
@@ -30,7 +34,110 @@ class AppLocalizationsFr extends AppLocalizations {
   String get statsLabel => 'Statistiques';
 
   @override
-  String get selectLabel => 'Sélectionner';
+  String get bottomNavCameraLabel => 'Caméra';
+
+  @override
+  String get bottomNavVisualsLabel => 'Visuels';
+
+  @override
+  String get bottomNavPhysicsLabel => 'Physique';
+
+  @override
+  String get cameraTooltip => 'Paramètres de caméra et modes IA';
+
+  @override
+  String get visualsTooltip => 'Options d\'affichage visuel';
+
+  @override
+  String get physicsTooltip => 'Visualisation et paramètres de physique';
+
+  @override
+  String get aiCameraModesTitle => 'Modes Caméra IA';
+
+  @override
+  String get manualControlTitle => 'Contrôle Manuel';
+
+  @override
+  String get manualControlDescription => 'Contrôle manuel complet de la caméra';
+
+  @override
+  String get predictiveOrbitalTitle => 'Orbital Prédictif';
+
+  @override
+  String get predictiveOrbitalDescription =>
+      'L\'IA prédit les vues orbitales optimales';
+
+  @override
+  String get dynamicFramingTitle => 'Cadrage Dynamique';
+
+  @override
+  String get dynamicFramingDescription =>
+      'L\'IA cadre dynamiquement tous les objets';
+
+  @override
+  String get manualControlsTitle => 'Contrôles Manuels';
+
+  @override
+  String get selectNearestTitle => 'Sélectionner le Plus Proche';
+
+  @override
+  String get stopFollowTitle => 'Arrêter de Suivre';
+
+  @override
+  String get followTitle => 'Suivre';
+
+  @override
+  String get centerViewTitle => 'Centrer la Vue';
+
+  @override
+  String get stopRotateTitle => 'Arrêter la Rotation';
+
+  @override
+  String get autoRotateTitle => 'Rotation Automatique';
+
+  @override
+  String get displayOptionsTitle => 'Options d\'Affichage';
+
+  @override
+  String get showTrailsTitle => 'Afficher les Traînées';
+
+  @override
+  String get showLabelsTitle => 'Afficher les Étiquettes';
+
+  @override
+  String get realisticColorsTitle => 'Couleurs Réalistes';
+
+  @override
+  String get physicsVisualizationTitle => 'Visualisation de la Physique';
+
+  @override
+  String get gravityFieldsTitle => 'Champs Gravitationnels';
+
+  @override
+  String get gravityFieldsDescription =>
+      'Afficher la visualisation du champ gravitationnel';
+
+  @override
+  String get debugStatisticsTitle => 'Débogage et Statistiques';
+
+  @override
+  String get showStatisticsTitle => 'Afficher les Statistiques';
+
+  @override
+  String get showStatisticsDescription =>
+      'Afficher les statistiques de performance et de physique';
+
+  @override
+  String get currentStatisticsTitle => 'Statistiques Actuelles';
+
+  @override
+  String get bodiesStatLabel => 'Corps';
+
+  @override
+  String get timeScaleStatLabel => 'Échelle de Temps';
+
+  @override
+  String get selectedStatLabel => 'Sélectionné';
 
   @override
   String get followLabel => 'Suivre';
@@ -84,10 +191,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get selectObjectToFollowTooltip => 'Sélectionner un Objet à Suivre';
 
   @override
-  String get settingsTitle => 'Paramètres';
+  String get settingsTitle => 'Paramètres de l\'Application';
 
   @override
-  String get settingsTooltip => 'Paramètres';
+  String get settingsTooltip => 'Paramètres de l\'Application';
 
   @override
   String get selectScenarioTooltip => 'Sélectionner un Scénario';
@@ -114,6 +221,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get simulationSpeed => 'Vitesse de simulation';
 
   @override
+  String get simulationSpeedHint =>
+      'Ajustez la vitesse de simulation de 0,1x à 16x vitesse normale. Utilisez les touches fléchées pour de petits incréments.';
+
+  @override
   String get collisionsSection => 'Collisions';
 
   @override
@@ -132,10 +243,28 @@ class AppLocalizationsFr extends AppLocalizations {
   String get hapticsSection => 'Haptique';
 
   @override
+  String get uiHapticFeedback => 'Retour Haptique UI';
+
+  @override
+  String get uiHapticFeedbackDescription =>
+      'Activer le retour haptique pour les interactions UI comme les boutons, les commutateurs et la navigation';
+
+  @override
+  String get collisionHapticFeedback => 'Retour Haptique de Collision';
+
+  @override
+  String get collisionHapticFeedbackDescription =>
+      'Activer le retour haptique lorsque les corps célestes entrent en collision pendant la simulation';
+
+  @override
   String get vibrationEnabled => 'Vibration activée';
 
   @override
   String get hapticFeedbackCollisions => 'Retour haptique sur les collisions';
+
+  @override
+  String get hapticFeedbackDescription =>
+      'Activer le retour haptique pour les interactions UI et les collisions';
 
   @override
   String get vibrationThrottle => 'Limitation de vibration';
@@ -148,6 +277,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helpMenuDescription => 'Tutoriel et objectifs';
+
+  @override
+  String get aboutMenuDescription => 'Informations de l\'app et crédits';
 
   @override
   String get showTrails => 'Afficher les Traînées';
@@ -214,6 +346,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get statusPaused => 'En pause';
 
   @override
+  String get statusStopped => 'Arrêté';
+
+  @override
+  String get statusError => 'Erreur';
+
+  @override
   String get cameraLabel => 'Caméra';
 
   @override
@@ -227,6 +365,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get autoRotateOff => 'Désactivé';
+
+  @override
+  String get yawLabel => 'Lacet';
+
+  @override
+  String get pitchLabel => 'Tangage';
+
+  @override
+  String get rollLabel => 'Roulis';
+
+  @override
+  String get zoomLabel => 'Zoom';
 
   @override
   String get cameraControlsLabel => 'Contrôles de Caméra';
@@ -292,6 +442,27 @@ class AppLocalizationsFr extends AppLocalizations {
   String speedFormatted(String speed) {
     return '${speed}x';
   }
+
+  @override
+  String get speedQuarter => 'Vitesse Quart';
+
+  @override
+  String get speedHalf => 'Demi-Vitesse';
+
+  @override
+  String get speedNormal => 'Normal';
+
+  @override
+  String get speedDouble => 'Double';
+
+  @override
+  String get speedFast => 'Rapide';
+
+  @override
+  String get speedVeryFast => 'Très Rapide';
+
+  @override
+  String get speedMaximum => 'Maximum';
 
   @override
   String bodiesCount(int count) {
@@ -360,6 +531,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get scenarioSolarSystemDescription =>
       'Version simplifiée de notre système solaire avec des planètes intérieures et extérieures';
+
+  @override
+  String get scenarioSpecial => 'Scénario Spécial';
+
+  @override
+  String get scenarioSpecialDescription =>
+      'Scénario spécial pour le mode capture d\'écran';
 
   @override
   String get habitabilityLabel => 'Habitabilité';
@@ -441,6 +619,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get aboutButtonTooltip => 'À Propos';
 
   @override
+  String get backButtonTooltip => 'Retour';
+
+  @override
   String get appNameGraviton => 'Graviton';
 
   @override
@@ -450,7 +631,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get loadingVersion => 'Chargement de la version...';
 
   @override
-  String get companyName => 'Chipper Technologies, LLC';
+  String get companyName => 'Chipper Technologies LLC';
 
   @override
   String get gravityWellsLabel => 'Puits Gravitationnels';
@@ -458,6 +639,65 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get gravityWellsDescription =>
       'Afficher l\'intensité du champ gravitationnel autour des objets';
+
+  @override
+  String get globalGravityFieldsLabel => 'Champs Gravitationnels Globaux';
+
+  @override
+  String get globalGravityFieldsDescription =>
+      'Activer la visualisation des champs gravitationnels pour tous les objets massifs';
+
+  @override
+  String get gravityFieldColorSchemeLabel =>
+      'Couleurs des Champs Gravitationnels';
+
+  @override
+  String get gravityFieldColorSchemeDescription =>
+      'Choisir le schéma de couleurs pour la visualisation des champs gravitationnels';
+
+  @override
+  String get gravityColorSchemeClassic => 'Classique';
+
+  @override
+  String get gravityColorSchemeSpectral => 'Spectral';
+
+  @override
+  String get gravityColorSchemeMonochrome => 'Monochrome';
+
+  @override
+  String get gravityColorSchemeNeon => 'Néon';
+
+  @override
+  String get gravityColorSchemeEmerald => 'Émeraude';
+
+  @override
+  String get gravityFieldStrengthLabel => 'Intensité du Champ';
+
+  @override
+  String get gravityFieldStrengthUnit => 'm/s²';
+
+  @override
+  String gravityFieldStrengthFormatted(String strength, String unit) {
+    return '$strength $unit';
+  }
+
+  @override
+  String get equipotentialSurfacesLabel => 'Surfaces Équipotentielles';
+
+  @override
+  String get equipotentialSurfacesDescription =>
+      'Afficher les surfaces d\'égale énergie potentielle gravitationnelle';
+
+  @override
+  String get gravityFieldIndicatorsLabel => 'Indicateurs d\'Intensité du Champ';
+
+  @override
+  String get gravityFieldIndicatorsDescription =>
+      'Afficher des indicateurs visuels de l\'intensité du champ gravitationnel';
+
+  @override
+  String get toggleGravityFieldsTooltip =>
+      'Basculer les Champs Gravitationnels';
 
   @override
   String get languageLabel => 'Langue';
@@ -687,6 +927,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get hideUIInScreenshotModeSubtitle =>
       'Masquer la barre d\'app, la navigation du bas et le copyright quand le mode capture est actif';
+
+  @override
+  String screenshotCountdown(int seconds) {
+    return 'Capture dans ${seconds}s';
+  }
 
   @override
   String get scenePreset => 'Scène Prédéfinie';
@@ -1068,7 +1313,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'L\'état du journal des modifications a été réinitialisé';
 
   @override
-  String get changelogDebugTitle => 'Journal des modifications (Debug)';
+  String get changelogDebugTitle => 'Journal des modifications';
 
   @override
   String changelogNotFoundError(String version) {
@@ -1078,5 +1323,404 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String changelogLoadError(String error) {
     return 'Échec du chargement du journal des modifications : $error';
+  }
+
+  @override
+  String get noChangelogsAvailable =>
+      'Aucun journal de modifications disponible';
+
+  @override
+  String errorLoadingChangelogs(String error) {
+    return 'Erreur lors du chargement des journaux de modifications : $error';
+  }
+
+  @override
+  String get stellarColorBlue => 'Bleu';
+
+  @override
+  String get stellarColorBlueWhite => 'Bleu-blanc';
+
+  @override
+  String get stellarColorWhite => 'Blanc';
+
+  @override
+  String get stellarColorYellowWhite => 'Blanc-jaune';
+
+  @override
+  String get stellarColorYellow => 'Jaune';
+
+  @override
+  String get stellarColorOrange => 'Orange';
+
+  @override
+  String get stellarColorRed => 'Rouge';
+
+  @override
+  String get pathVisualizationTitle => 'Visualisation des Trajectoires';
+
+  @override
+  String get navigationAidsTitle => 'Aides à la Navigation';
+
+  @override
+  String get gravityFieldClassicLabel => 'Classique';
+
+  @override
+  String get gravityFieldSpectralLabel => 'Spectral';
+
+  @override
+  String get gravityFieldMonochromeLabel => 'Monochrome';
+
+  @override
+  String get gravityFieldNeonLabel => 'Néon';
+
+  @override
+  String get gravityFieldEmeraldLabel => 'Émeraude';
+
+  @override
+  String get appInformationCredits => 'Informations sur l\'app et crédits';
+
+  @override
+  String get developerToolsTitle => 'Outils de Développement';
+
+  @override
+  String get developerToolsMenuDescription =>
+      'Outils de débogage pour le développement';
+
+  @override
+  String get tutorialDescription => 'Visite guidée interactive de l\'app';
+
+  @override
+  String get resetTutorialDescription => 'Réinitialiser le progrès du tutoriel';
+
+  @override
+  String get changelogDescription =>
+      'Voir les mises à jour et changements de l\'app';
+
+  @override
+  String get resetChangelogDescription =>
+      'Réinitialiser le statut de lecture du changelog';
+
+  @override
+  String get tutorialResetSuccess =>
+      'Le progrès du tutoriel a été réinitialisé';
+
+  @override
+  String get changelogResetSuccess =>
+      'Le statut du changelog a été réinitialisé';
+
+  @override
+  String get copyrightLabel => 'Droits d\'Auteur';
+
+  @override
+  String get allRightsReserved => 'Tous droits réservés';
+
+  @override
+  String get bodyTypeStar => 'Étoile';
+
+  @override
+  String get bodyTypePlanet => 'Planète';
+
+  @override
+  String get bodyTypeMoon => 'Lune';
+
+  @override
+  String get bodyTypeAsteroid => 'Astéroïde';
+
+  @override
+  String get appFlavorDevelopment => 'Développement';
+
+  @override
+  String get appFlavorProduction => 'Production';
+
+  @override
+  String get notificationTypeError => 'Erreur';
+
+  @override
+  String get notificationTypeWarning => 'Avertissement';
+
+  @override
+  String get notificationTypeInfo => 'Information';
+
+  @override
+  String get notificationTypeSuccess => 'Succès';
+
+  @override
+  String get notificationTypeDebug => 'Débogage';
+
+  @override
+  String get trackingModeFull => 'Suivi Complet';
+
+  @override
+  String get trackingModeEssential => 'Essentiel Seulement';
+
+  @override
+  String get trackingModeNone => 'Aucun Suivi';
+
+  @override
+  String get trackingModeLimited => 'Suivi Limité';
+
+  @override
+  String get trackingModeFullDescription =>
+      'Toutes les analyses, crashs et interactions';
+
+  @override
+  String get trackingModeEssentialDescription =>
+      'Crashs critiques et erreurs seulement';
+
+  @override
+  String get trackingModeNoneDescription => 'Aucune collecte de données';
+
+  @override
+  String get trackingModeLimitedDescription =>
+      'Interactions utilisateur seulement';
+
+  @override
+  String get changelogCategoryAdded => 'Ajouté';
+
+  @override
+  String get changelogCategoryImproved => 'Amélioré';
+
+  @override
+  String get changelogCategoryFixed => 'Corrigé';
+
+  @override
+  String get cameraManual => 'Contrôle Manuel';
+
+  @override
+  String get cameraPredictiveOrbital => 'Orbital Prédictif';
+
+  @override
+  String get cameraDynamicFraming => 'Cadrage Dynamique';
+
+  @override
+  String get cameraManualDescription =>
+      'Contrôles manuels traditionnels de caméra avec mode suivi';
+
+  @override
+  String get cameraPredictiveOrbitalDescription =>
+      'L\'IA prédit les trajectoires orbitales pour des mouvements dramatiques de caméra';
+
+  @override
+  String get cameraDynamicFramingDescription =>
+      'Ajuste automatiquement le cadrage basé sur le contenu de la scène';
+
+  @override
+  String get fullscreenMode => 'Mode Plein Écran';
+
+  @override
+  String get fullscreenModeDescription =>
+      'Masquer tous les éléments de l\'interface pour une visualisation immersive';
+
+  @override
+  String get tapToToggleFullscreen => 'Appuyez pour basculer en plein écran';
+
+  @override
+  String get exitFullscreenHint =>
+      'Appuyez n\'importe où pour quitter le mode plein écran';
+
+  @override
+  String get simulationCanvasLabel => 'Simulation de Physique Gravitationnelle';
+
+  @override
+  String get simulationCanvasHint =>
+      'Utilisez les raccourcis clavier pour contrôler la simulation. Espace pour pause, R pour redémarrer, C pour centrer la caméra';
+
+  @override
+  String simulationDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int steps,
+  ) {
+    return 'Simulation gravitationnelle avec $bodyCount corps célestes. État : $status. Vitesse : $speed. Étapes : $steps';
+  }
+
+  @override
+  String get noBodiesInSimulation =>
+      'Aucun corps céleste dans la simulation actuellement';
+
+  @override
+  String bodiesInSimulation(String descriptions) {
+    return 'Corps dans la simulation : $descriptions';
+  }
+
+  @override
+  String cameraFreeDescription(String distance, String rotation) {
+    return 'Caméra en mode libre à distance $distance. Rotation automatique : $rotation';
+  }
+
+  @override
+  String cameraFollowingDescription(
+    String bodyName,
+    String distance,
+    String rotation,
+  ) {
+    return 'Caméra suivant $bodyName à distance $distance. Rotation automatique : $rotation';
+  }
+
+  @override
+  String get autoRotateActive => 'active';
+
+  @override
+  String get autoRotateInactive => 'inactive';
+
+  @override
+  String liveUpdateAnnouncement(String updateType, String value) {
+    return '$updateType changé à $value';
+  }
+
+  @override
+  String get keyboardShortcutsHint =>
+      'Utilisez Espace pour pause/reprendre, R pour redémarrer, C pour centrer la caméra, A pour basculer la rotation automatique';
+
+  @override
+  String physicsStatsDescription(String time, String earthYears, int steps) {
+    return 'Physique : $time unités de temps, $earthYears années terrestres, $steps étapes de simulation terminées';
+  }
+
+  @override
+  String get toggleAutoRotateAction => 'Basculer rotation automatique';
+
+  @override
+  String get zoomInAction => 'Zoomer';
+
+  @override
+  String get zoomOutAction => 'Dézoomer';
+
+  @override
+  String get expandedState => 'élargi';
+
+  @override
+  String get collapsedState => 'réduit';
+
+  @override
+  String get currentScenario => 'Scénario actuel';
+
+  @override
+  String get scenariosAvailable => 'scénarios disponibles';
+
+  @override
+  String get bottomSheetLabel => 'Feuille inférieure';
+
+  @override
+  String get gravitationalSimulationLabel =>
+      'Simulation de Physique Gravitationnelle';
+
+  @override
+  String simulationStateDescription(
+    int bodyCount,
+    String status,
+    String speed,
+    int stepCount,
+  ) {
+    return 'Simulation gravitationnelle avec $bodyCount corps célestes. État : $status. Vitesse : $speed. Étapes terminées : $stepCount. Appuyez pour interagir avec la simulation ou utilisez les raccourcis clavier.';
+  }
+
+  @override
+  String get accessibilitySimulationStarted => 'Simulation démarrée';
+
+  @override
+  String get accessibilitySimulationStartedContext =>
+      'Les corps célestes sont maintenant en mouvement';
+
+  @override
+  String get accessibilitySimulationPaused => 'Simulation en pause';
+
+  @override
+  String get accessibilitySimulationPausedContext =>
+      'Tous les corps célestes ont cessé de bouger';
+
+  @override
+  String get accessibilitySimulationResumed => 'Simulation reprise';
+
+  @override
+  String get accessibilitySimulationResumedContext =>
+      'Les corps célestes bougent à nouveau';
+
+  @override
+  String get accessibilitySimulationStopped => 'Simulation arrêtée';
+
+  @override
+  String get accessibilitySimulationStoppedContext =>
+      'Tous les corps célestes ont été réinitialisés';
+
+  @override
+  String get accessibilitySimulationReset => 'Simulation réinitialisée';
+
+  @override
+  String get accessibilitySimulationResetContext =>
+      'Nouveau scénario chargé avec de nouveaux corps célestes';
+
+  @override
+  String accessibilityMergeEvent(String body1, String body2) {
+    return 'Collision détectée : $body1 a fusionné avec $body2';
+  }
+
+  @override
+  String get accessibilityMergeEventContext =>
+      'La masse combinée crée un nouveau corps céleste';
+
+  @override
+  String accessibilityScenarioChange(String scenarioName) {
+    return 'Scénario changé pour $scenarioName';
+  }
+
+  @override
+  String get accessibilityScenarioChangeContext =>
+      'Nouveaux corps célestes et paramètres physiques chargés';
+
+  @override
+  String accessibilitySpeedChange(String newValue) {
+    return 'Vitesse de simulation changée à $newValue';
+  }
+
+  @override
+  String accessibilityGravityChange(String newValue) {
+    return 'Force de gravité changée à $newValue';
+  }
+
+  @override
+  String accessibilityCollisionRadiusChange(String newValue) {
+    return 'Sensibilité de collision changée à $newValue';
+  }
+
+  @override
+  String get accessibilityCameraReset =>
+      'Vue caméra réinitialisée à la position par défaut';
+
+  @override
+  String get accessibilityCameraFocus =>
+      'Caméra focalisée sur le corps céleste le plus proche';
+
+  @override
+  String get accessibilityCameraFollow =>
+      'La caméra suit maintenant le corps céleste sélectionné';
+
+  @override
+  String get accessibilityCameraUnfollow =>
+      'La caméra a cessé de suivre le corps céleste';
+
+  @override
+  String accessibilityTutorialProgress(
+    int currentStep,
+    int totalSteps,
+    String stepName,
+  ) {
+    return 'Étape du tutoriel $currentStep sur $totalSteps : $stepName';
+  }
+
+  @override
+  String accessibilityError(String errorMessage) {
+    return 'Erreur : $errorMessage';
+  }
+
+  @override
+  String accessibilitySettingEnabled(String settingName) {
+    return '$settingName activé';
+  }
+
+  @override
+  String accessibilitySettingDisabled(String settingName) {
+    return '$settingName désactivé';
   }
 }

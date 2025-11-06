@@ -4,13 +4,43 @@ import 'package:graviton/services/remote_config_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/dialog_title.dart';
+import 'package:graviton/widgets/common/haptic_text_button.dart';
 
 /// Dialog for showing maintenance messages, news banners, and emergency notifications
 class MaintenanceDialog extends StatelessWidget {
   final bool _isMaintenanceMode;
+  final String? _testTitle;
+  final String? _testMessage;
+  final VoidCallback? _testOnClose;
 
   const MaintenanceDialog._({required bool isMaintenanceMode})
-    : _isMaintenanceMode = isMaintenanceMode;
+    : _isMaintenanceMode = isMaintenanceMode,
+      _testTitle = null,
+      _testMessage = null,
+      _testOnClose = null;
+
+  /// Public constructor for testing - creates a maintenance mode dialog
+  const MaintenanceDialog.maintenance({
+    super.key,
+    String? title,
+    String? message,
+    VoidCallback? onClose,
+  }) : _isMaintenanceMode = true,
+       _testTitle = title,
+       _testMessage = message,
+       _testOnClose = onClose;
+
+  /// Public constructor for testing - creates a notification mode dialog
+  const MaintenanceDialog.notification({
+    super.key,
+    String? title,
+    String? message,
+    VoidCallback? onClose,
+  }) : _isMaintenanceMode = false,
+       _testTitle = title,
+       _testMessage = message,
+       _testOnClose = onClose;
 
   static Future<void> showIfNeeded(BuildContext context) async {
     final remoteConfig = RemoteConfigService.instance;
@@ -54,34 +84,34 @@ class MaintenanceDialog extends StatelessWidget {
     AppLocalizations? l10n,
     RemoteConfigService remoteConfig,
   ) {
+    // Use test values if provided, otherwise use remote config values
+    final title = _testTitle ?? l10n?.maintenanceTitle ?? 'Maintenance';
+    final message = _testMessage ?? remoteConfig.maintenanceMessage;
+
     return ConstrainedBox(
       constraints: AppConstraints.dialogCompact,
       child: AlertDialog(
         backgroundColor: AppColors.uiBlack,
-        title: Row(
-          children: [
-            Icon(Icons.build, color: AppColors.uiOrange, size: 24),
-            const SizedBox(width: AppTypography.spacingSmall),
-            Text(
-              l10n?.maintenanceTitle ?? 'Maintenance',
-              style: TextStyle(
-                color: AppColors.uiWhite,
-                fontSize: AppTypography.fontSizeXLarge,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        title: DialogTitle(
+          title: title,
+          icon: Icons.build,
+          iconColor: AppColors.uiOrange,
+          titleStyle: TextStyle(
+            color: AppColors.uiWhite,
+            fontSize: AppTypography.fontSizeXLarge,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         content: Text(
-          remoteConfig.maintenanceMessage,
+          message,
           style: TextStyle(
             color: AppColors.uiTextGrey,
             fontSize: AppTypography.fontSizeMedium,
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+          HapticTextButton(
+            onPressed: _testOnClose ?? () => Navigator.of(context).pop(),
             child: Text(
               l10n?.ok ?? 'OK',
               style: TextStyle(color: AppColors.uiLightBlueAccent),
@@ -99,42 +129,40 @@ class MaintenanceDialog extends StatelessWidget {
   ) {
     final isEmergency = remoteConfig.isEmergencyNotification;
 
+    // Use test values if provided, otherwise use remote config values
+    final title =
+        _testTitle ??
+        (isEmergency
+            ? (l10n?.emergencyNotificationTitle ?? 'Important Notice')
+            : (l10n?.newsTitle ?? 'News'));
+    final message = _testMessage ?? remoteConfig.activeNotificationText;
+
     return ConstrainedBox(
       constraints: AppConstraints.dialogCompact,
       child: AlertDialog(
         backgroundColor: AppColors.uiBlack,
-        title: Row(
-          children: [
-            Icon(
-              isEmergency ? Icons.warning : Icons.info,
-              color: isEmergency
-                  ? AppColors.uiRed
-                  : AppColors.uiLightBlueAccent,
-              size: 24,
-            ),
-            const SizedBox(width: AppTypography.spacingSmall),
-            Text(
-              isEmergency
-                  ? (l10n?.emergencyNotificationTitle ?? 'Important Notice')
-                  : (l10n?.newsTitle ?? 'News'),
-              style: TextStyle(
-                color: AppColors.uiWhite,
-                fontSize: AppTypography.fontSizeXLarge,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        title: DialogTitle(
+          title: title,
+          icon: isEmergency ? Icons.warning : Icons.info,
+          iconColor: isEmergency
+              ? AppColors.uiRed
+              : AppColors.uiLightBlueAccent,
+          titleStyle: TextStyle(
+            color: AppColors.uiWhite,
+            fontSize: AppTypography.fontSizeXLarge,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         content: Text(
-          remoteConfig.activeNotificationText,
+          message,
           style: TextStyle(
             color: AppColors.uiTextGrey,
             fontSize: AppTypography.fontSizeMedium,
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+          HapticTextButton(
+            onPressed: _testOnClose ?? () => Navigator.of(context).pop(),
             child: Text(
               l10n?.ok ?? 'OK',
               style: TextStyle(

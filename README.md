@@ -88,9 +88,9 @@
 - **Advanced Camera Controls**: 
   - **Single finger drag**: Pan and rotate view (yaw/pitch)
   - **Two finger pinch/spread**: Zoom in/out 
-  - **Two finger rotation**: Roll camera around viewing axis ✨ *NEW*
+  - **Two finger rotation**: Roll camera around viewing axis
   - **Auto-rotation mode**: Smooth automatic camera rotation
-  - **Enhanced center button**: Resets position, zoom, AND roll ✨ *NEW*
+  - **Enhanced center button**: Resets position, zoom, AND roll
 - **Trail Visualization**: 
   - Toggle orbital trails on/off
   - Choose between warm (🔥) and cool (❄️) color schemes
@@ -291,6 +291,8 @@ dev_dependencies:
   flutter_lints: ^6.0.0     # Dart/Flutter linting rules
   flutter_launcher_icons: ^0.14.4 # App icon generation
   flutter_native_splash: ^2.4.7   # Native splash screen generation
+  mockito: ^5.5.1           # Mock generation for testing
+  build_runner: ^2.10.1     # Code generation (mocks, serialization)
 ```
 
 ### 🎯 Quick Start Guide
@@ -527,6 +529,46 @@ Process raw device screenshots into optimized images for documentation and app s
 - Automated markdown generation for clickable galleries
 - Support for Android (16:9, 9:16) and iOS (standard) dimensions
 
+### 🏗️ Code Generation with build_runner
+Generate mock classes and other boilerplate code for testing and development:
+
+```bash
+# Generate all code (mocks, serialization, etc.)
+dart run build_runner build
+
+# Generate with cleanup of old files
+dart run build_runner build --delete-conflicting-outputs
+
+# Watch mode - regenerate on file changes
+dart run build_runner watch
+
+# Clean generated files
+dart run build_runner clean
+```
+
+**Features:**
+- **Mock Generation**: Automatically generates mock classes for testing using `mockito`
+- **Test Development**: Essential for creating comprehensive widget and unit tests
+- **Code Watching**: Monitor file changes and regenerate code automatically
+- **Conflict Resolution**: Clean up and regenerate conflicting files
+- **Development Efficiency**: Streamlines testing infrastructure setup
+
+**Generated Files:**
+- `*.mocks.dart` - Mock classes for testing external dependencies
+- Located in test directories alongside their corresponding test files
+- Automatically excluded from version control via `.gitignore`
+
+**Usage in Testing:**
+```dart
+// Example: Generate mocks for services
+@GenerateMocks([RemoteConfigService, FirebaseService])
+import 'your_test_file.mocks.dart';
+
+// Use generated mocks in tests
+final mockService = MockRemoteConfigService();
+when(mockService.someMethod()).thenReturn(expectedValue);
+```
+
 ### 🔐 Android Keystore Generation
 Create release keystores for Google Play Store distribution:
 
@@ -570,7 +612,7 @@ cd ios && bundle exec fastlane build_and_upload_dsyms      # Build and upload dS
 **Features:**
 - Multi-flavor support (dev/prod environments)
 - Automatic version management and Firebase integration
-- **Firebase Crashlytics dSYM upload** for crash symbolication ✨ *NEW*
+- **Firebase Crashlytics dSYM upload** for crash symbolication
 - Screenshot generation and metadata management
 - Code signing and certificate management
 - One-command deployment to app stores
@@ -584,99 +626,6 @@ cd ios && bundle exec fastlane build_and_upload_dsyms      # Build and upload dS
 Graviton follows a **clean architecture** approach with clear separation of concerns, ensuring maintainability, testability, and scalability. The app uses the Provider pattern for state management and custom painters for high-performance 3D rendering.
 
 **[📖 View Complete Architecture Documentation →](docs/ARCHITECTURE.md)**
-
-### 🏗️ Clean Architecture
-The project follows clean architecture principles with clear separation of concerns and namespace imports:
-
-```
-lib/
-├── main.dart                     # Single app entry point with flavor detection
-├── config/                       # Configuration management
-│   └── flavor_config.dart       # Dev/prod flavor configuration
-├── constants/                    # Application constants
-│   ├── rendering_constants.dart  # 3D rendering parameters
-│   ├── simulation_constants.dart # Physics simulation settings
-│   ├── test_constants.dart      # Test configuration
-│   └── educational_focus_keys.dart # Educational content keys
-├── enums/                        # Enumeration definitions
-│   ├── app_flavor.dart          # Application flavor enum
-│   ├── body_type.dart           # Celestial body type enum
-│   ├── habitability_status.dart # Habitable zone status enum
-│   ├── version_status.dart      # App version status enum
-│   └── scenario_type.dart       # Simulation scenario enum
-├── l10n/                        # Internationalization files
-│   ├── app_en.arb              # English translations (template)
-│   ├── app_es.arb              # Spanish translations
-│   ├── app_fr.arb              # French translations  
-│   ├── app_zh.arb              # Chinese translations
-│   ├── app_de.arb              # German translations
-│   ├── app_ja.arb              # Japanese translations
-│   ├── app_ko.arb              # Korean translations
-│   └── app_localizations.dart  # Generated localization classes
-├── models/                      # Data models
-│   ├── body.dart               # Celestial body model
-│   ├── trail_point.dart        # Trail rendering data
-│   ├── merge_flash.dart        # Collision effect data
-│   ├── preset_scenario.dart    # Preset scenario definitions
-│   ├── asteroid_particle.dart  # Asteroid belt particle model
-│   ├── ring_particle.dart      # Planetary ring particle model
-│   ├── orbital_parameters.dart # Orbital mechanics parameters
-│   ├── scenario_config.dart    # Scenario configuration model
-│   ├── camera_position.dart    # 3D camera positioning data
-│   ├── screenshot_preset.dart  # Screenshot preset configuration
-│   ├── screenshot_presets.dart # Collection of marketing presets
-│   └── screenshot_models.dart  # Screenshot mode data models
-├── services/                    # Business logic and Firebase integration
-│   ├── simulation.dart         # Core physics engine
-│   ├── scenario_service.dart   # Scenario generation and management
-│   ├── habitable_zone_service.dart # Habitable zone calculations
-│   ├── asteroid_belt_system.dart   # Asteroid belt physics system
-│   ├── version_service.dart    # Dual-threshold version management system
-│   ├── firebase_service.dart   # Firebase analytics, crashlytics, remote config
-│   ├── remote_config_service.dart # Firebase remote config integration
-│   └── screenshot_mode_service.dart # Screenshot mode management (dev only)
-├── state/                       # State management
-│   ├── app_state.dart          # Main app state coordinator
-│   ├── simulation_state.dart   # Physics simulation state
-│   ├── ui_state.dart           # UI controls state
-│   └── camera_state.dart       # Enhanced 3D camera state with roll support
-├── utils/                       # Utilities
-│   ├── star_generator.dart     # Background star field generation
-│   ├── painter_utils.dart      # 3D projection and rendering utilities
-│   ├── physics_utils.dart      # Physics calculation helpers
-│   ├── vector_utils.dart       # Vector mathematics utilities
-│   ├── collision_utils.dart    # Collision detection helpers
-│   └── random_utils.dart       # Random number generation utilities
-├── painters/                    # Specialized rendering engines
-│   ├── graviton_painter.dart   # Main 3D rendering orchestrator
-│   ├── celestial_body_painter.dart # Planet and ring system rendering
-│   ├── orbital_path_painter.dart   # Orbital trajectory visualization
-│   ├── trail_painter.dart      # Enhanced trail rendering
-│   ├── background_painter.dart # Star field and space background
-│   ├── effects_painter.dart    # Visual effects and glows
-│   ├── gravity_painter.dart    # Gravitational field visualization
-│   ├── habitability_painter.dart # Habitable zone indicators
-│   └── asteroid_belt_painter.dart # Asteroid belt rendering system
-├── widgets/                    # Custom widgets
-│   ├── stats_overlay.dart      # Statistics display
-│   ├── bottom_controls.dart    # Enhanced control panel
-│   ├── body_labels_overlay.dart # Celestial body labels
-│   ├── offscreen_indicators_overlay.dart # Off-screen object indicators
-│   ├── scenario_selection_dialog.dart    # Scenario picker
-│   ├── settings_dialog.dart    # Application settings
-│   ├── about_dialog.dart       # Application about dialog with version status badges
-│   ├── version_check_dialog.dart # Smart update dialog with dual-threshold enforcement
-│   ├── maintenance_dialog.dart # Firebase maintenance mode dialog
-│   ├── dev_ribbon.dart         # Development mode indicator (enhanced with shadow)
-│   ├── copyright_text.dart     # Copyright information
-│   ├── screenshot_mode_widget.dart # Screenshot mode controls (dev only)
-│   └── screenshot_countdown.dart    # Screenshot countdown timer widget
-├── theme/                      # Theme and styling
-│   └── app_colors.dart         # Application color scheme
-│   └── app_typography.dart     # Application typography scheme
-└── screens/                    # UI screens
-    └── home_screen.dart        # Main simulation screen with enhanced gestures
-```
 
 ### 🔧 Enhanced State Management
 - **Provider Pattern**: Clean, reactive state management using `provider` package
@@ -724,6 +673,7 @@ For detailed technical information and development guides, please refer to our c
 
 ### 🧪 Testing Documentation
 - **[Testing Guide](test/README.md)** - Comprehensive testing strategy and test organization
+- **Code Generation**: Use `dart run build_runner build` to generate mock classes for testing
 
 ### 📋 Development Guides
 - **[Contributing Guidelines](CONTRIBUTING.md)** - How to contribute to the project
@@ -1366,6 +1316,35 @@ flutter clean && flutter pub get
 - **Comprehensive test coverage**: 473+ tests with 41% line coverage across models, services, state, and UI
 - **Modular architecture**: Clean separation between rendering, physics, and state management
 - **Enhanced debugging**: Preserved debug information in comments for future development
+- **Centralized configuration**: `AppConfig` class provides unified access to asset paths, URLs, and environment-specific settings
+
+#### 📋 Configuration Management
+
+The app uses a centralized configuration system (`AppConfig`) that improves maintainability and reduces hardcoded values:
+
+**Asset Path Management:**
+```dart
+// ✅ Centralized approach (recommended)
+image: AssetImage(AppConfig.appLogoPath),
+
+// ❌ Hardcoded approach (avoid)
+image: AssetImage('assets/images/app-logo.png'),
+```
+
+**Benefits:**
+- **Single source of truth**: All asset paths defined in `lib/config/flavor_config.dart`
+- **Environment flexibility**: Asset paths can be overridden via `--dart-define` for different environments
+- **Maintainability**: Changes to asset locations only require updating one file
+- **Type safety**: Compile-time validation of configuration constants
+
+**Available Constants:**
+- `AppConfig.appLogoPath` - Main application logo
+- `AppConfig.chipperLogoPath` - Company logo  
+- `AppConfig.gravitonLogoPath` - Graviton-specific branding
+- `AppConfig.githubUrl` - GitHub repository URL
+- `AppConfig.privacyPolicyUrl` - Privacy policy link
+
+⚠️ **Important**: When moving or renaming assets, update the default values in `AppConfig` to maintain consistency across all usage locations.
 
 ---
 

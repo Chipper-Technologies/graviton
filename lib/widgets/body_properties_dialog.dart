@@ -5,6 +5,11 @@ import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/dialog_title.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/common/haptic_icon_button.dart';
+import 'package:graviton/widgets/common/haptic_slider_option.dart';
+import 'package:graviton/widgets/common/haptic_switch_list_tile.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 class BodyPropertiesDialog extends StatefulWidget {
@@ -134,8 +139,12 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.uiOrangeAccent.withValues(alpha: 0.15),
-                    AppColors.uiOrangeAccent.withValues(alpha: 0.05),
+                    AppColors.uiOrangeAccent.withValues(
+                      alpha: AppTypography.opacityMidFade,
+                    ),
+                    AppColors.uiOrangeAccent.withValues(
+                      alpha: AppTypography.opacityBarely,
+                    ),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -146,23 +155,18 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                 ),
               ),
               padding: EdgeInsets.all(AppTypography.spacingLarge),
-              child: Row(
-                children: [
-                  Icon(Icons.tune, color: AppColors.uiOrangeAccent, size: 28),
-                  SizedBox(width: AppTypography.spacingMedium),
-                  Text(
-                    l10n.bodyPropertiesTitle,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      _updateBody(); // Ensure all changes are saved before closing
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
+              child: DialogTitle(
+                title: l10n.bodyPropertiesTitle,
+                icon: Icons.tune,
+                iconColor: AppColors.uiOrangeAccent,
+                iconSize: AppTypography.iconSizeXXXLarge,
+                trailing: HapticIconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    _updateBody(); // Ensure all changes are saved before closing
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
             ),
             // Scrollable content
@@ -188,7 +192,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                         ),
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTypography.spacingLarge),
 
                       // Body Type
                       _buildSectionTitle(l10n.bodyPropertiesType),
@@ -224,50 +228,54 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                           return DropdownMenuItem<BodyType>(
                             value: type,
                             child: Text(
-                              type.displayName,
+                              _getLocalizedBodyTypeName(l10n, type),
                               style: TextStyle(color: AppColors.uiWhite),
                             ),
                           );
                         }).toList(),
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTypography.spacingLarge),
 
                       // Color
                       _buildSectionTitle(l10n.bodyPropertiesColor),
                       const SizedBox(height: AppTypography.spacingSmall),
                       _buildColorPicker(),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTypography.spacingLarge),
 
                       // Gravity Well Visualization
                       _buildSectionTitle(l10n.gravityWellsLabel),
-                      SwitchListTile(
-                        title: Text(
-                          l10n.gravityWellsDescription,
-                          style: TextStyle(
-                            color: AppColors.uiWhite.withValues(
-                              alpha: AppTypography.opacitySemiTransparent,
+                      Column(
+                        children: [
+                          HapticSwitchListTile(
+                            title: Text(
+                              l10n.gravityWellsDescription,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacitySemiTransparent,
+                                ),
+                              ),
                             ),
+                            // Show the individual body's setting (which is now the final decision)
+                            value: _showGravityWell,
+                            onChanged: (value) {
+                              setState(() {
+                                _showGravityWell = value;
+                              });
+                              _updateBody();
+                            },
+                            secondary: const Icon(Icons.grain),
+                            contentPadding: EdgeInsets.zero,
                           ),
-                        ),
-                        value: _showGravityWell,
-                        onChanged: (value) {
-                          setState(() {
-                            _showGravityWell = value;
-                          });
-                          // Immediately update the body property
-                          widget.body.showGravityWell = value;
-                        },
-                        secondary: const Icon(Icons.grain),
-                        contentPadding: EdgeInsets.zero,
+                        ],
                       ),
 
                       const SizedBox(height: 16),
 
                       // Mass
                       _buildSectionTitle(l10n.bodyPropertiesMass),
-                      _buildSlider(
+                      HapticSliderOption.simple(
                         value: _mass,
                         min: _massMin,
                         max: _massMax,
@@ -286,13 +294,13 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
 
                       // Radius
                       _buildSectionTitle(l10n.bodyPropertiesRadius),
-                      _buildSlider(
+                      HapticSliderOption.simple(
                         value: _radius,
                         min: _radiusMin,
                         max: _radiusMax,
                         divisions: 100,
                         label: _radius.toStringAsFixed(2),
-                        icon: Icons.radio_button_unchecked,
+                        icon: Icons.circle_outlined,
                         onChanged: (value) {
                           setState(() {
                             _radius = value;
@@ -306,7 +314,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                       // Stellar Luminosity (only for stars)
                       if (_bodyType == BodyType.star) ...[
                         _buildSectionTitle(l10n.bodyPropertiesLuminosity),
-                        _buildSlider(
+                        HapticSliderOption.simple(
                           value: _stellarLuminosity,
                           min: _luminosityMin,
                           max: _luminosityMax,
@@ -349,51 +357,6 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
     );
   }
 
-  Widget _buildSlider({
-    required double value,
-    required double min,
-    required double max,
-    required int divisions,
-    required String label,
-    required ValueChanged<double> onChanged,
-    IconData? icon,
-  }) {
-    // Clamp the value to ensure it's within the valid range
-    // This prevents slider assertion errors when body values are outside bounds
-    final clampedValue = value.clamp(min, max);
-
-    return Column(
-      children: [
-        Row(
-          children: [
-            Icon(icon ?? Icons.tune, size: 20),
-            const SizedBox(width: 8),
-            Text(label, style: Theme.of(context).textTheme.bodyMedium),
-          ],
-        ),
-        const SizedBox(height: 4),
-        SizedBox(
-          width: double.infinity,
-          child: SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-              inactiveTrackColor: Theme.of(context).colorScheme.onSurface
-                  .withValues(alpha: AppTypography.opacityVeryFaint),
-              activeTrackColor: Theme.of(context).colorScheme.primary,
-            ),
-            child: Slider(
-              value: clampedValue,
-              min: min,
-              max: max,
-              divisions: divisions,
-              label: label,
-              onChanged: onChanged,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildColorPicker() {
     return Wrap(
       spacing: AppTypography.spacingSmall,
@@ -406,7 +369,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
             AppColors.randomPlanetBrown,
           ].map((color) {
             final isSelected = _color == color;
-            return GestureDetector(
+            return HapticGestureDetector(
               onTap: () {
                 setState(() {
                   _color = color;
@@ -460,7 +423,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
               ),
             ),
             Expanded(
-              child: _buildSlider(
+              child: HapticSliderOption.simple(
                 value: _velocity.x,
                 min: _velocityMin,
                 max: _velocityMax,
@@ -488,7 +451,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
               ),
             ),
             Expanded(
-              child: _buildSlider(
+              child: HapticSliderOption.simple(
                 value: _velocity.y,
                 min: _velocityMin,
                 max: _velocityMax,
@@ -516,7 +479,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
               ),
             ),
             Expanded(
-              child: _buildSlider(
+              child: HapticSliderOption.simple(
                 value: _velocity.z,
                 min: _velocityMin,
                 max: _velocityMax,
@@ -535,5 +498,18 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
         ),
       ],
     );
+  }
+
+  String _getLocalizedBodyTypeName(AppLocalizations l10n, BodyType type) {
+    switch (type) {
+      case BodyType.star:
+        return l10n.bodyTypeStar;
+      case BodyType.planet:
+        return l10n.bodyTypePlanet;
+      case BodyType.moon:
+        return l10n.bodyTypeMoon;
+      case BodyType.asteroid:
+        return l10n.bodyTypeAsteroid;
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/celestial_body_name.dart';
+import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/painters/asteroid_belt_painter.dart';
 import 'package:graviton/services/simulation.dart' as physics;
@@ -38,6 +39,10 @@ class GravitonPainter extends CustomPainter {
   final int? selectedBodyIndex;
   final bool followMode;
   final double cameraDistance;
+  final bool globalGravityFields;
+  final GravityFieldColorScheme gravityFieldColorScheme;
+  final bool showEquipotentialSurfaces;
+  final bool showGravityFieldIndicators;
 
   GravitonPainter({
     required this.sim,
@@ -54,6 +59,10 @@ class GravitonPainter extends CustomPainter {
     this.selectedBodyIndex,
     this.followMode = false,
     required this.cameraDistance,
+    this.globalGravityFields = false,
+    this.gravityFieldColorScheme = GravityFieldColorScheme.classic,
+    this.showEquipotentialSurfaces = false,
+    this.showGravityFieldIndicators = false,
   });
 
   @override
@@ -104,7 +113,7 @@ class GravitonPainter extends CustomPainter {
     );
 
     // Draw gravity wells (before bodies as background elements)
-    // Now controlled per-body via Body.showGravityWell property
+    // Now controlled per-body via Body.showGravityWell property or globally via UI settings
     GravityPainter.drawGravityWells(
       canvas,
       size,
@@ -112,6 +121,10 @@ class GravitonPainter extends CustomPainter {
       sim,
       cameraDistance,
       view,
+      globalGravityFields: globalGravityFields,
+      gravityFieldColorScheme: gravityFieldColorScheme,
+      showEquipotentialSurfaces: showEquipotentialSurfaces,
+      showGravityFieldIndicators: showGravityFieldIndicators,
     );
 
     // Draw asteroid belt particles (before bodies but after background elements)
@@ -165,7 +178,15 @@ class GravitonPainter extends CustomPainter {
     indices.sort((a, b) {
       final za = PainterUtils.clipZ(vp, sim.bodies[a].position);
       final zb = PainterUtils.clipZ(vp, sim.bodies[b].position);
-      return za.compareTo(zb);
+
+      // Handle infinity cases (objects behind camera)
+      if (za == double.infinity && zb == double.infinity) return 0;
+      if (za == double.infinity) return 1; // a is behind camera, render first
+      if (zb == double.infinity) return -1; // b is behind camera, render first
+
+      // For normal depth values, sort back-to-front (larger z first)
+      // In clip space, larger z means farther from camera
+      return zb.compareTo(za);
     });
 
     for (final i in indices) {
@@ -1009,8 +1030,13 @@ class GravitonPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant GravitonPainter oldDelegate) {
+    // Check simulation state changes using change counter for better performance
+    if (sim.changeCounter != oldDelegate.sim.changeCounter) {
+      return true;
+    }
+
+    // Check other rendering parameters for changes
     return cameraDistance != oldDelegate.cameraDistance ||
-        sim != oldDelegate.sim ||
         view != oldDelegate.view ||
         proj != oldDelegate.proj ||
         stars != oldDelegate.stars ||
@@ -1022,6 +1048,10 @@ class GravitonPainter extends CustomPainter {
         showHabitableZones != oldDelegate.showHabitableZones ||
         showHabitabilityIndicators != oldDelegate.showHabitabilityIndicators ||
         selectedBodyIndex != oldDelegate.selectedBodyIndex ||
-        followMode != oldDelegate.followMode;
+        followMode != oldDelegate.followMode ||
+        globalGravityFields != oldDelegate.globalGravityFields ||
+        gravityFieldColorScheme != oldDelegate.gravityFieldColorScheme ||
+        showEquipotentialSurfaces != oldDelegate.showEquipotentialSurfaces ||
+        showGravityFieldIndicators != oldDelegate.showGravityFieldIndicators;
   }
 }

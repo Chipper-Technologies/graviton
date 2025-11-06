@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/config/flavor_config.dart';
+import 'package:graviton/enums/tutorial_action.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/models/tutorial_step.dart';
+import 'package:graviton/painters/highlight_painter.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/haptic_elevated_button.dart';
+import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/common/haptic_text_button.dart';
 
 /// Tutorial overlay that guides new users through the app
 class TutorialOverlay extends StatefulWidget {
@@ -157,7 +164,9 @@ class _TutorialOverlayState extends State<TutorialOverlay>
         return Opacity(
           opacity: _fadeAnimation.value,
           child: Container(
-            color: AppColors.uiBlack.withValues(alpha: 0.8),
+            color: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityVeryHigh,
+            ),
             child: SafeArea(
               child: Stack(
                 children: [
@@ -171,7 +180,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
 
                   // Tutorial content
                   Center(
-                    child: GestureDetector(
+                    child: HapticGestureDetector(
                       onPanEnd: (details) {
                         // Detect swipe direction
                         if (details.velocity.pixelsPerSecond.dx > 300) {
@@ -214,7 +223,10 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                       color: index == _currentStep
                                           ? _getIconColor(_currentStep)
                                           : theme.colorScheme.onSurface
-                                                .withValues(alpha: 0.3),
+                                                .withValues(
+                                                  alpha: AppTypography
+                                                      .opacityFaint,
+                                                ),
                                     ),
                                   );
                                 }),
@@ -228,7 +240,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                 l10n.tutorialNavigationHint,
                                 style: AppTypography.smallText.copyWith(
                                   color: theme.colorScheme.onSurface.withValues(
-                                    alpha: 0.6,
+                                    alpha: AppTypography.opacityMediumHigh,
                                   ),
                                   fontSize: 11,
                                 ),
@@ -244,18 +256,18 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: theme.colorScheme.primary.withValues(
-                                    alpha: 0.1,
+                                    alpha: AppTypography.opacitySubtle,
                                   ),
                                 ),
                                 child: step.isLogoStep
                                     ? Container(
                                         width: 48,
                                         height: 48,
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                             image: AssetImage(
-                                              'assets/images/app-logo.png',
+                                              AppConfig.appLogoPath,
                                             ),
                                             fit: BoxFit.cover,
                                           ),
@@ -263,7 +275,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                       )
                                     : Icon(
                                         step.icon,
-                                        size: 48,
+                                        size: AppTypography.iconSizeXXXXLarge,
                                         color: _getIconColor(_currentStep),
                                       ),
                               ),
@@ -299,7 +311,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   // Skip button
-                                  TextButton(
+                                  HapticTextButton(
                                     onPressed: _skipTutorial,
                                     child: Text(l10n.skipTutorial),
                                   ),
@@ -308,7 +320,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                   Row(
                                     children: [
                                       if (_currentStep > 0)
-                                        TextButton(
+                                        HapticTextButton(
                                           onPressed: _previousStep,
                                           style: TextButton.styleFrom(
                                             foregroundColor: _getIconColor(
@@ -320,7 +332,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                       const SizedBox(
                                         width: AppTypography.spacingSmall,
                                       ),
-                                      ElevatedButton(
+                                      HapticElevatedButton(
                                         onPressed: _nextStep,
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: _getIconColor(
@@ -393,16 +405,22 @@ class _TutorialOverlayState extends State<TutorialOverlay>
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(4),
+                  color: theme.colorScheme.primary.withValues(
+                    alpha: AppTypography.opacityDisabled,
+                  ),
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusSmall,
+                  ),
                   border: Border.all(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                    width: 1,
+                    color: theme.colorScheme.primary.withValues(
+                      alpha: AppTypography.opacityFaint,
+                    ),
+                    width: AppTypography.borderThin,
                   ),
                 ),
                 child: Icon(
                   Icons.more_vert,
-                  size: 16,
+                  size: AppTypography.iconSizeMedium,
                   color: theme.colorScheme.primary,
                 ),
               ),
@@ -534,54 +552,4 @@ class _TutorialOverlayState extends State<TutorialOverlay>
       ),
     ];
   }
-}
-
-class TutorialStep {
-  final String title;
-  final String description;
-  final IconData icon;
-  final Rect? highlightArea;
-  final TutorialAction? action;
-  final bool isLogoStep;
-
-  const TutorialStep({
-    required this.title,
-    required this.description,
-    required this.icon,
-    this.highlightArea,
-    this.action,
-    this.isLogoStep = false,
-  });
-}
-
-enum TutorialAction {
-  highlightAppBar,
-  highlightBottomControls,
-  highlightScenarioButton,
-  highlightFloatingControls,
-}
-
-class HighlightPainter extends CustomPainter {
-  final Rect highlightArea;
-
-  HighlightPainter(this.highlightArea);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = AppColors.uiWhite.withValues(alpha: 0.1)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        highlightArea,
-        const Radius.circular(AppTypography.radiusMedium),
-      ),
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

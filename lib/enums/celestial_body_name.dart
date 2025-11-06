@@ -36,6 +36,10 @@ enum CelestialBodyName {
   // Asteroid belt system bodies
   centralStar('Central Star'),
 
+  // Generic planet types
+  rockyPlanet('Rocky Planet'),
+  ringedPlanet('Ringed Planet'),
+
   // Generic numbered bodies (for dynamic names)
   asteroid('Asteroid'),
   star('Star'),
@@ -98,6 +102,10 @@ enum CelestialBodyName {
         return l10n.bodyBlackHole ?? value; // Use same localization key
       case CelestialBodyName.centralStar:
         return l10n.bodyCentralStar ?? value;
+      case CelestialBodyName.rockyPlanet:
+        return l10n.bodyRockyPlanet ?? value;
+      case CelestialBodyName.ringedPlanet:
+        return l10n.bodyRingedPlanet ?? value;
       case CelestialBodyName.asteroid:
       case CelestialBodyName.star:
       case CelestialBodyName.ring:

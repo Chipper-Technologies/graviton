@@ -4,8 +4,11 @@ import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/screenshot_models.dart';
+import 'package:graviton/services/fullscreen_service.dart';
+import 'package:graviton/state/app_state.dart';
 import 'package:graviton/state/camera_state.dart';
 import 'package:graviton/state/simulation_state.dart';
+import 'package:graviton/utils/fullscreen_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Service for managing screenshot mode functionality
@@ -20,6 +23,7 @@ class ScreenshotModeService extends ChangeNotifier {
   bool _isActive = false;
   int _countdownSeconds = 0;
   bool _showCountdown = false;
+  bool _fullscreenModeEnabled = false;
   Timer? _countdownTimer;
   Completer<void>? _pendingApplyOperation;
 
@@ -40,6 +44,9 @@ class ScreenshotModeService extends ChangeNotifier {
 
   /// Current countdown seconds remaining
   int get countdownSeconds => _countdownSeconds;
+
+  /// Whether fullscreen mode is enabled for screenshot mode
+  bool get fullscreenModeEnabled => _fullscreenModeEnabled;
 
   /// Current preset index
   int get currentPresetIndex => _currentPresetIndex;
@@ -111,6 +118,12 @@ class ScreenshotModeService extends ChangeNotifier {
     _isScreenshotModeEnabled = false;
     _isActive = false;
     _cancelPendingOperations();
+    notifyListeners();
+  }
+
+  /// Toggle fullscreen mode for screenshot mode
+  void toggleFullscreenMode() {
+    _fullscreenModeEnabled = !_fullscreenModeEnabled;
     notifyListeners();
   }
 
@@ -207,6 +220,9 @@ class ScreenshotModeService extends ChangeNotifier {
 
         // Apply body focus settings
         _applyBodyFocus(preset, simulationState, cameraState);
+
+        // Handle fullscreen mode if enabled
+        await _applyFullscreenMode(uiState);
 
         // Start scene normally and pause after delay
         if (preset.showTrails) {
@@ -389,6 +405,40 @@ class ScreenshotModeService extends ChangeNotifier {
     }
   }
 
+  /// Apply fullscreen mode if enabled for screenshot mode
+  Future<void> _applyFullscreenMode(dynamic uiState) async {
+    if (_fullscreenModeEnabled) {
+      try {
+        // Cast to AppState to access the proper type
+        if (uiState is AppState) {
+          await FullscreenUtils.enterFullscreen(uiState);
+        } else {
+          // Fallback for dynamic type handling in tests
+          await FullscreenService.instance.enterFullscreen();
+        }
+      } catch (e) {
+        debugPrint('Error entering fullscreen for screenshot mode: $e');
+      }
+    }
+  }
+
+  /// Exit fullscreen mode when deactivating screenshot mode
+  void _exitFullscreenMode(dynamic uiState) {
+    if (_fullscreenModeEnabled && FullscreenService.instance.isFullscreen) {
+      try {
+        // Cast to AppState to access the proper type
+        if (uiState is AppState) {
+          FullscreenUtils.exitFullscreen(uiState);
+        } else {
+          // Fallback for dynamic type handling in tests
+          FullscreenService.instance.exitFullscreen();
+        }
+      } catch (e) {
+        debugPrint('Error exiting fullscreen for screenshot mode: $e');
+      }
+    }
+  }
+
   /// Apply body focus settings based on preset configuration
   void _applyBodyFocus(
     ScreenshotPreset preset,
@@ -508,6 +558,9 @@ class ScreenshotModeService extends ChangeNotifier {
   void deactivate({dynamic uiState, dynamic simulationState}) {
     // Cancel any pending operations first
     _cancelPendingOperations();
+
+    // Exit fullscreen mode if it was enabled for screenshot mode
+    _exitFullscreenMode(uiState);
 
     // Restore original UI state if we have a uiState reference
     if (uiState != null) {
