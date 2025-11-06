@@ -40,6 +40,100 @@ class _PersistentBottomSheetState extends State<PersistentBottomSheet>
   static const double _initialChildSize = 0.25; // Start with more visible area
   static const double _maxChildSize = 0.80; // Can expand to 80% of screen
 
+  /// Handles velocity-based animations with momentum for smooth sheet movement
+  void _handlePanEnd(DragEndDetails details) {
+    if (!_dragController.isAttached) return;
+
+    final velocity = details.velocity.pixelsPerSecond.dy;
+    final currentSize = _dragController.size;
+    final velocityMagnitude = velocity.abs();
+
+    // Determine target based on velocity and current position
+    double targetSize;
+    Duration animationDuration;
+    Curve animationCurve;
+
+    if (velocityMagnitude > 400) {
+      // Reasonable threshold for fling detection
+      // High velocity - fling to extremes
+      animationDuration = const Duration(milliseconds: 600);
+      animationCurve = Curves.easeOutCubic;
+
+      if (velocity < 0) {
+        // Fling up
+        targetSize = _maxChildSize;
+      } else {
+        // Fling down
+        targetSize = _minChildSize;
+      }
+    } else {
+      // Normal gesture - snap to 3 positions based on current location
+      animationDuration = const Duration(milliseconds: 400);
+      animationCurve = Curves.easeInOutCubic;
+
+      // Simple 3-position snapping
+      if (currentSize < 0.3) {
+        targetSize = _minChildSize;
+      } else if (currentSize < 0.6) {
+        targetSize = 0.35; // Medium size
+      } else {
+        targetSize = _maxChildSize;
+      }
+    }
+
+    // Very noticeable momentum effect
+    if (velocityMagnitude > 200) {
+      // Even lower threshold
+      // Calculate dramatic overshoot that won't be clamped
+      final baseOvershoot = (velocityMagnitude / 800).clamp(
+        0.08,
+        0.20,
+      ); // Much bigger overshoot
+      double momentumTarget;
+
+      if (velocity < 0) {
+        // Moving up
+        // Overshoot upward, but ensure it's within bounds
+        momentumTarget = (targetSize + baseOvershoot).clamp(
+          targetSize + 0.05,
+          1.0,
+        );
+      } else {
+        // Moving down
+        // Overshoot downward, but ensure it's within bounds
+        momentumTarget = (targetSize - baseOvershoot).clamp(
+          0.0,
+          targetSize - 0.05,
+        );
+      }
+
+      // Very long momentum phase so you can really see it
+      _dragController
+          .animateTo(
+            momentumTarget,
+            duration: const Duration(
+              milliseconds: 800,
+            ), // Much longer so it's visible
+            curve: Curves.easeOutCirc, // Smooth deceleration
+          )
+          .then((_) {
+            // Then spring back to final position
+            _dragController.animateTo(
+              targetSize,
+              duration: const Duration(milliseconds: 600), // Long settle
+              curve: Curves.elasticOut, // Bouncy spring-back
+            );
+          });
+    } else {
+      // Normal animation - no momentum
+      _dragController.animateTo(
+        targetSize,
+        duration: animationDuration,
+        curve: animationCurve,
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -101,21 +195,23 @@ class _PersistentBottomSheetState extends State<PersistentBottomSheet>
               clipBehavior:
                   Clip.none, // Allow floating controls to extend outside
               children: [
-                // Main bottom sheet container with gesture absorption
+                // Main bottom sheet container with tap absorption only
                 GestureDetector(
-                  // Absorb all taps to prevent pass-through to simulation
+                  // Only absorb taps to prevent pass-through to simulation
+                  // Allow pan gestures to pass through for dragging functionality
                   onTap: () {},
-                  onPanDown: (_) {},
-                  onPanStart: (_) {},
-                  onPanUpdate: (_) {},
-                  onPanEnd: (_) {},
                   child: Container(
                     decoration: BoxDecoration(
                       color: AppColors.uiBlack.withValues(
                         alpha: AppTypography.opacityVeryHigh,
                       ),
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(AppTypography.radiusXLarge),
+                      border: Border(
+                        top: BorderSide(
+                          color: AppColors.primaryColor.withValues(
+                            alpha: AppTypography.opacityMedium,
+                          ),
+                          width: 2,
+                        ),
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -164,6 +260,8 @@ class _PersistentBottomSheetState extends State<PersistentBottomSheet>
         children: [
           // Drag handle - prominent and easy to grab
           GestureDetector(
+            // Consume all gestures to prevent pass-through to simulation
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               widget.onInteraction?.call();
               // Expand to medium size on tap for better discoverability
@@ -175,10 +273,20 @@ class _PersistentBottomSheetState extends State<PersistentBottomSheet>
                 );
               }
             },
-            onPanDown: (details) {
-              // Trigger interaction callback when drag starts
-              widget.onInteraction?.call();
+            onPanDown: (_) => widget.onInteraction?.call(),
+            onPanUpdate: (details) {
+              // Forward pan gestures to DraggableScrollableSheet
+              if (_dragController.isAttached) {
+                final delta = details.delta.dy;
+                final currentSize = _dragController.size;
+                final screenHeight = MediaQuery.of(context).size.height;
+                final newSize = currentSize - (delta / screenHeight);
+                _dragController.jumpTo(
+                  newSize.clamp(_minChildSize, _maxChildSize),
+                );
+              }
             },
+            onPanEnd: _handlePanEnd,
             child: Container(
               width: double.infinity, // Full width for easier targeting
               padding: const EdgeInsets.symmetric(
@@ -210,55 +318,31 @@ class _PersistentBottomSheetState extends State<PersistentBottomSheet>
                         ],
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    // Secondary indicator for better visibility
-                    Container(
-                      width: 40,
-                      height: 2,
-                      decoration: BoxDecoration(
-                        color: AppColors.uiWhite.withValues(
-                          alpha: AppTypography.opacityMedium,
-                        ),
-                        borderRadius: AppTypography.createRadius(
-                          AppTypography.radiusSmall,
-                        ),
-                      ),
-                    ),
-                    // Hint text when collapsed to improve discoverability
-                    ValueListenableBuilder<double>(
-                      valueListenable: PersistentBottomSheet.sheetPosition,
-                      builder: (context, position, child) {
-                        // Show hint when sheet is in minimum state
-                        final isMinimized = position <= (_minChildSize + 0.05);
-                        if (!isMinimized) return const SizedBox.shrink();
-
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            'Tap or swipe up for controls',
-                            style: TextStyle(
-                              color: AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacityMedium,
-                              ),
-                              fontSize: AppTypography.fontSizeSmall,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
                   ],
                 ),
               ),
             ),
           ),
 
-          // Tab bar with interaction detection
+          // Tab bar - prevent pass-through while allowing tab selection
           GestureDetector(
-            onPanDown: (details) {
-              // Trigger interaction callback when drag starts
-              widget.onInteraction?.call();
+            // Consume all gestures to prevent pass-through to simulation
+            behavior: HitTestBehavior.opaque,
+            onTap: () {}, // Let TabBar handle tap for tab selection
+            onPanDown: (_) => widget.onInteraction?.call(),
+            onPanUpdate: (details) {
+              // Forward pan gestures to DraggableScrollableSheet
+              if (_dragController.isAttached) {
+                final delta = details.delta.dy;
+                final currentSize = _dragController.size;
+                final screenHeight = MediaQuery.of(context).size.height;
+                final newSize = currentSize - (delta / screenHeight);
+                _dragController.jumpTo(
+                  newSize.clamp(_minChildSize, _maxChildSize),
+                );
+              }
             },
+            onPanEnd: _handlePanEnd,
             child: Container(
               height: 50,
               margin: const EdgeInsets.symmetric(horizontal: 12),
