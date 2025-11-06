@@ -239,6 +239,10 @@ class PhysicsControls extends StatelessWidget {
                   label: l10n.speedLabel,
                   hint: l10n.simulationSpeedHint,
                   value: '${appState.simulation.timeScale.toStringAsFixed(1)}x',
+                  increasedValue:
+                      '${((appState.simulation.timeScale + 0.1).clamp(0.1, 16.0)).toStringAsFixed(1)}x',
+                  decreasedValue:
+                      '${((appState.simulation.timeScale - 0.1).clamp(0.1, 16.0)).toStringAsFixed(1)}x',
                   onIncrease: () {
                     final newValue = (appState.simulation.timeScale + 0.1)
                         .clamp(0.1, 16.0);

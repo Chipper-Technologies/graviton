@@ -20,10 +20,39 @@ class SlidingPanelBottomSheet extends StatefulWidget {
   final VoidCallback? onInteraction;
 
   // Static ValueNotifier to track sheet position for floating controls
-  static final ValueNotifier<double> _sheetPosition = ValueNotifier(0.25);
+  // Using a singleton pattern with proper lifecycle management
+  static ValueNotifier<double>? _sheetPosition;
+  static int _instanceCount = 0;
 
-  // Public getter for sheet position
-  static ValueNotifier<double> get sheetPosition => _sheetPosition;
+  // Public getter for sheet position - creates if needed
+  static ValueNotifier<double> get sheetPosition {
+    _sheetPosition ??= ValueNotifier(0.25);
+    return _sheetPosition!;
+  }
+
+  // Static reference to the current state instance for updating position
+  static _SlidingPanelBottomSheetState? _currentInstance;
+
+  /// Refresh the sheet position to trigger floating controls repositioning
+  /// This should be called when screen dimensions change (e.g., fullscreen transitions)
+  static void refreshPosition() {
+    // Update the position based on actual panel state if available
+    _currentInstance?._updateSheetPosition();
+
+    // Also force notify listeners by setting the value to itself as fallback
+    if (_sheetPosition != null) {
+      final currentValue = _sheetPosition!.value;
+      _sheetPosition!.value = currentValue;
+    }
+  }
+
+  /// Dispose the static ValueNotifier when no instances are using it
+  static void _disposeSheetPosition() {
+    if (_instanceCount <= 0) {
+      _sheetPosition?.dispose();
+      _sheetPosition = null;
+    }
+  }
 
   @override
   State<SlidingPanelBottomSheet> createState() =>
@@ -34,6 +63,11 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
     with TickerProviderStateMixin {
   late final PanelController _panelController;
   late final TabController _tabController;
+
+  // ScrollControllers for each tab to prevent memory leaks
+  late final ScrollController _cameraScrollController;
+  late final ScrollController _visualsScrollController;
+  late final ScrollController _physicsScrollController;
 
   // Snap positions
   static const double _minHeight = 0.15; // Small peek at bottom
@@ -46,6 +80,17 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
 
     _panelController = PanelController();
     _tabController = TabController(length: 3, vsync: this);
+
+    // Initialize ScrollControllers to prevent memory leaks
+    _cameraScrollController = ScrollController();
+    _visualsScrollController = ScrollController();
+    _physicsScrollController = ScrollController();
+
+    // Increment instance count for singleton management
+    SlidingPanelBottomSheet._instanceCount++;
+
+    // Register this instance for position updates
+    SlidingPanelBottomSheet._currentInstance = this;
 
     // Initialize sheet position
     SlidingPanelBottomSheet.sheetPosition.value = _mediumHeight;
@@ -63,8 +108,36 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
 
   @override
   void dispose() {
+    // Clear the static reference
+    if (SlidingPanelBottomSheet._currentInstance == this) {
+      SlidingPanelBottomSheet._currentInstance = null;
+    }
+
+    // Decrement instance count and dispose static ValueNotifier if no instances remain
+    SlidingPanelBottomSheet._instanceCount--;
+    SlidingPanelBottomSheet._disposeSheetPosition();
+
+    // Dispose ScrollControllers to prevent memory leaks
+    _cameraScrollController.dispose();
+    _visualsScrollController.dispose();
+    _physicsScrollController.dispose();
+
     _tabController.dispose();
     super.dispose();
+  }
+
+  /// Update sheet position based on actual panel state
+  /// This ensures the ValueNotifier matches the real panel position
+  void _updateSheetPosition() {
+    if (_panelController.isAttached &&
+        SlidingPanelBottomSheet._sheetPosition != null) {
+      // Get the current panel position (0.0 to 1.0)
+      final panelPosition = _panelController.panelPosition;
+      // Convert to our scale: min to max
+      final currentSize =
+          _minHeight + (panelPosition * (_maxHeight - _minHeight));
+      SlidingPanelBottomSheet._sheetPosition!.value = currentSize;
+    }
   }
 
   @override
@@ -406,28 +479,28 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
         children: [
           // Camera Controls Tab
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(vertical: 16),
             child: CameraControls(
               appState: appState,
-              scrollController: ScrollController(),
+              scrollController: _cameraScrollController,
             ),
           ),
 
           // Visuals Controls Tab
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(vertical: 16),
             child: VisualsControls(
               appState: appState,
-              scrollController: ScrollController(),
+              scrollController: _visualsScrollController,
             ),
           ),
 
           // Physics Controls Tab
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(vertical: 16),
             child: PhysicsControls(
               appState: appState,
-              scrollController: ScrollController(),
+              scrollController: _physicsScrollController,
             ),
           ),
         ],

@@ -141,6 +141,22 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    // Handle screen metrics changes (e.g., when exiting fullscreen)
+    // This ensures floating controls are repositioned correctly
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        // Refresh the sheet position to trigger floating controls repositioning
+        SlidingPanelBottomSheet.refreshPosition();
+        setState(() {
+          // Trigger rebuild with updated MediaQuery values
+        });
+      }
+    });
+  }
+
   void _onTick(Duration elapsed) {
     if (elapsed - _lastElapsed < Duration(milliseconds: 16)) {
       return; // 60 FPS cap
@@ -451,7 +467,29 @@ class _HomeScreenState extends State<HomeScreen>
   /// Handle fullscreen mode toggle
   void _handleFullscreenToggle(AppState appState) async {
     try {
+      // Hide floating controls temporarily during fullscreen transition
+      setState(() {
+        _showFloatingControls = false;
+      });
+
       await FullscreenUtils.toggleFullscreen(appState);
+
+      // Force a rebuild after fullscreen toggle and show controls again
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          // Refresh the sheet position to trigger floating controls repositioning
+          SlidingPanelBottomSheet.refreshPosition();
+
+          // Small delay to ensure layout has settled before showing controls
+          Future.delayed(const Duration(milliseconds: 100), () {
+            if (mounted) {
+              setState(() {
+                _showFloatingControls = true;
+              });
+            }
+          });
+        }
+      });
 
       // Log the fullscreen toggle event
       FirebaseService.instance.logUIEventWithEnums(
@@ -463,7 +501,12 @@ class _HomeScreenState extends State<HomeScreen>
       );
     } catch (e) {
       debugPrint('Error toggling fullscreen: $e');
-      // Optionally show user feedback here
+      // Restore floating controls on error
+      if (mounted) {
+        setState(() {
+          _showFloatingControls = true;
+        });
+      }
     }
   }
 
@@ -1171,32 +1214,39 @@ class _HomeScreenState extends State<HomeScreen>
 
                         // Floating simulation controls positioned above the bottom sheet
                         if (!shouldHideUI && _showFloatingControls)
-                          ValueListenableBuilder<double>(
-                            valueListenable:
-                                SlidingPanelBottomSheet.sheetPosition,
-                            builder: (context, sheetPosition, child) {
-                              final screenHeight = MediaQuery.of(
-                                context,
-                              ).size.height;
-                              final sheetTopPosition =
-                                  screenHeight * (1 - sheetPosition);
+                          Consumer<AppState>(
+                            builder: (context, appState, child) {
+                              return ValueListenableBuilder<double>(
+                                valueListenable:
+                                    SlidingPanelBottomSheet.sheetPosition,
+                                builder: (context, sheetPosition, child) {
+                                  final screenHeight = MediaQuery.of(
+                                    context,
+                                  ).size.height;
 
-                              return Positioned(
-                                bottom:
-                                    screenHeight -
-                                    sheetTopPosition +
-                                    20, // Position above the sheet using bottom positioning
-                                right: 32,
-                                child: Consumer<AppState>(
-                                  builder: (context, appState, child) {
-                                    final l10n = AppLocalizations.of(context)!;
-                                    return _buildFloatingSimulationControls(
-                                      context,
-                                      appState,
-                                      l10n,
-                                    );
-                                  },
-                                ),
+                                  // sheetPosition represents the fraction of screen height the sheet occupies
+                                  // So the floating controls should be positioned above the sheet
+                                  // at screenHeight * sheetPosition + 20 from the bottom
+                                  final bottomPosition =
+                                      screenHeight * sheetPosition + 20;
+
+                                  return Positioned(
+                                    bottom: bottomPosition,
+                                    right: 32,
+                                    child: Builder(
+                                      builder: (context) {
+                                        final l10n = AppLocalizations.of(
+                                          context,
+                                        )!;
+                                        return _buildFloatingSimulationControls(
+                                          context,
+                                          appState,
+                                          l10n,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                               );
                             },
                           ),
