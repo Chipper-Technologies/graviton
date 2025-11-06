@@ -159,6 +159,13 @@ class SimulationConstants {
   static const double sunTemperatureReference =
       5778.0; // Sun surface temperature in Kelvin
 
+  // Mass-temperature relationship exponents for main sequence stars
+  // Based on stellar physics: T ∝ M^exponent
+  static const double highMassTemperatureExponent =
+      0.8; // For stars > 1.5 solar masses
+  static const double lowMassTemperatureExponent =
+      0.5; // For stars ≤ 1.5 solar masses
+
   // Minimum temperature threshold to be considered a meaningful stellar temperature
   // Bodies below this threshold use calculated temperature from mass instead
   static const double meaningfulStellarTemperatureThreshold = 1000.0; // Kelvin

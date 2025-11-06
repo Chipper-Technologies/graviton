@@ -195,8 +195,10 @@ void main() {
       () async {
         TestWidgetsFlutterBinding.ensureInitialized();
 
-        // Enable global gravity fields first (simulates saved setting)
-        appState.ui.toggleGlobalGravityFields();
+        // Ensure global gravity fields is enabled (should be default now)
+        if (!appState.ui.globalGravityFields) {
+          appState.ui.toggleGlobalGravityFields();
+        }
 
         // Initialize async which loads simulation with bodies
         await appState.initializeAsync();

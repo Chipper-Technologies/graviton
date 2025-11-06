@@ -21,12 +21,12 @@ void main() {
       expect(uiState.uiOpacity, equals(0.8));
 
       // Gravity field defaults
-      expect(uiState.globalGravityFields, isFalse);
+      expect(uiState.globalGravityFields, isTrue);
       expect(
         uiState.gravityFieldColorScheme,
         equals(GravityFieldColorScheme.classic),
       );
-      expect(uiState.showGravityFieldIndicators, isTrue);
+      expect(uiState.showGravityFieldIndicators, isFalse);
       expect(uiState.showEquipotentialSurfaces, isFalse); // Default is false
     });
 
@@ -151,7 +151,7 @@ void main() {
         'toggleGlobalGravityFields should change globalGravityFields state',
         () {
           final initialState = uiState.globalGravityFields;
-          expect(initialState, isFalse); // Default should be false
+          expect(initialState, isTrue); // Default should be true
 
           uiState.toggleGlobalGravityFields();
           expect(uiState.globalGravityFields, equals(!initialState));
@@ -182,7 +182,7 @@ void main() {
 
       test('toggleGravityFieldIndicators should change indicators state', () {
         final initialState = uiState.showGravityFieldIndicators;
-        expect(initialState, isTrue); // Default should be true
+        expect(initialState, isFalse); // Default should be false
 
         uiState.toggleGravityFieldIndicators();
         expect(uiState.showGravityFieldIndicators, equals(!initialState));
@@ -222,12 +222,18 @@ void main() {
         uiState.toggleGravityFieldIndicators();
         uiState.toggleEquipotentialSurfaces();
 
-        expect(uiState.globalGravityFields, isTrue);
+        expect(
+          uiState.globalGravityFields,
+          isFalse,
+        ); // Was toggled from true to false
         expect(
           uiState.gravityFieldColorScheme,
           equals(GravityFieldColorScheme.monochrome),
         );
-        expect(uiState.showGravityFieldIndicators, isFalse);
+        expect(
+          uiState.showGravityFieldIndicators,
+          isTrue,
+        ); // Was toggled from false to true
         expect(
           uiState.showEquipotentialSurfaces,
           isTrue,

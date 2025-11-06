@@ -44,7 +44,7 @@ class SemanticUtils {
     final descriptions = bodyTypes.entries
         .map(
           (entry) =>
-              '${entry.value} ${entry.key}${entry.value != 1 ? 's' : ''}',
+              _getBodyTypePluralDescription(entry.key, entry.value, l10n),
         )
         .join(', ');
 
@@ -136,6 +136,27 @@ class SemanticUtils {
       return l10n.bodyTypeMoon;
     } else {
       return l10n.bodyTypeAsteroid;
+    }
+  }
+
+  /// Helper method to get plural description for body types using ICU message format
+  static String _getBodyTypePluralDescription(
+    String bodyTypeName,
+    int count,
+    AppLocalizations l10n,
+  ) {
+    // Map singular body type names to their plural localization methods
+    if (bodyTypeName == l10n.bodyTypeStar) {
+      return l10n.bodyTypeStarPlural(count);
+    } else if (bodyTypeName == l10n.bodyTypePlanet) {
+      return l10n.bodyTypePlanetPlural(count);
+    } else if (bodyTypeName == l10n.bodyTypeMoon) {
+      return l10n.bodyTypeMoonPlural(count);
+    } else if (bodyTypeName == l10n.bodyTypeAsteroid) {
+      return l10n.bodyTypeAsteroidPlural(count);
+    } else {
+      // Fallback for unknown body types
+      return '$count $bodyTypeName';
     }
   }
 }

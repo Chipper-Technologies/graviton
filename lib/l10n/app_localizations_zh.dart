@@ -1340,6 +1340,46 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bodyTypeAsteroid => '小行星';
 
   @override
+  String bodyTypeStarPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count颗恒星',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypePlanetPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count颗行星',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeMoonPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count颗月球',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeAsteroidPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count颗小行星',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appFlavorDevelopment => '开发';
 
   @override

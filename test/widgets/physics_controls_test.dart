@@ -51,8 +51,10 @@ void main() {
     });
 
     testWidgets('displays physics toggle options', (WidgetTester tester) async {
-      // Enable gravity fields first to show all options
-      appState.ui.toggleGlobalGravityFields();
+      // Ensure gravity fields are enabled to show all options
+      if (!appState.ui.globalGravityFields) {
+        appState.ui.toggleGlobalGravityFields();
+      }
 
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
@@ -84,8 +86,10 @@ void main() {
     testWidgets('can toggle equipotential surfaces', (
       WidgetTester tester,
     ) async {
-      // Enable gravity fields first to show equipotential surfaces option
-      appState.ui.toggleGlobalGravityFields();
+      // Ensure gravity fields are enabled to show equipotential surfaces option
+      if (!appState.ui.globalGravityFields) {
+        appState.ui.toggleGlobalGravityFields();
+      }
 
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
@@ -105,8 +109,10 @@ void main() {
     testWidgets('can toggle gravity field indicators', (
       WidgetTester tester,
     ) async {
-      // Enable gravity fields first to show field indicators option
-      appState.ui.toggleGlobalGravityFields();
+      // Ensure gravity fields are enabled to show field indicators option
+      if (!appState.ui.globalGravityFields) {
+        appState.ui.toggleGlobalGravityFields();
+      }
 
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
@@ -127,12 +133,20 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
+      // Scroll down much further to see the debug & statistics section
+      await tester.drag(find.byType(ListView), const Offset(0, -800));
+      await tester.pumpAndSettle();
+
       expect(find.text('Debug & Statistics'), findsOneWidget);
       expect(find.text('Show Statistics'), findsOneWidget);
     });
 
     testWidgets('can toggle statistics display', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
+
+      // Scroll down much further to see the debug & statistics section
+      await tester.drag(find.byType(ListView), const Offset(0, -800));
       await tester.pumpAndSettle();
 
       final initialState = appState.ui.showStats;
@@ -153,12 +167,20 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
+      // Scroll down to see the simulation speed section
+      await tester.drag(find.byType(ListView), const Offset(0, -300));
+      await tester.pumpAndSettle();
+
       expect(find.text('Simulation Speed'), findsOneWidget);
       expect(find.text('Speed'), findsOneWidget);
     });
 
     testWidgets('displays speed slider', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
+
+      // Scroll down to see the simulation speed section
+      await tester.drag(find.byType(ListView), const Offset(0, -300));
       await tester.pumpAndSettle();
 
       expect(find.byType(Slider), findsOneWidget);
@@ -208,7 +230,17 @@ void main() {
 
       expect(find.byType(SectionTitle), findsWidgets);
       expect(find.text('Physics Visualization'), findsOneWidget);
+
+      // Scroll down to see the other section titles
+      await tester.drag(find.byType(ListView), const Offset(0, -400));
+      await tester.pumpAndSettle();
+
       expect(find.text('Simulation Speed'), findsOneWidget);
+
+      // Scroll further to see debug & statistics
+      await tester.drag(find.byType(ListView), const Offset(0, -400));
+      await tester.pumpAndSettle();
+
       expect(find.text('Debug & Statistics'), findsOneWidget);
     });
 
@@ -240,6 +272,10 @@ void main() {
       await tester.pump();
       expect(appState.ui.globalGravityFields, !initialGravity);
 
+      // Scroll down to find statistics toggle
+      await tester.drag(find.byType(ListView), const Offset(0, -800));
+      await tester.pumpAndSettle();
+
       // Toggle statistics
       await tester.tap(find.text('Show Statistics'));
       await tester.pump();
@@ -249,8 +285,10 @@ void main() {
     testWidgets('displays gravity field color scheme selector', (
       WidgetTester tester,
     ) async {
-      // Enable gravity fields first to show color scheme options
-      appState.ui.toggleGlobalGravityFields();
+      // Ensure gravity fields are enabled to show color scheme options
+      if (!appState.ui.globalGravityFields) {
+        appState.ui.toggleGlobalGravityFields();
+      }
 
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
@@ -262,10 +300,20 @@ void main() {
     testWidgets('displays statistics table when enabled', (
       WidgetTester tester,
     ) async {
-      // Enable statistics first
-      appState.ui.toggleStats();
+      // Ensure statistics are enabled
+      if (!appState.ui.showStats) {
+        appState.ui.toggleStats();
+      }
 
       await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
+
+      // Scroll down to see the statistics section
+      await tester.drag(find.byType(ListView), const Offset(0, -800));
+      await tester.pumpAndSettle();
+
+      // Then scroll further to see the actual statistics table when stats are enabled
+      await tester.drag(find.byType(ListView), const Offset(0, -400));
       await tester.pumpAndSettle();
 
       // If stats are enabled, should show various statistics
@@ -308,6 +356,10 @@ void main() {
 
     testWidgets('displays speed preset buttons', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
+
+      // Scroll down to see the speed preset buttons
+      await tester.drag(find.byType(ListView), const Offset(0, -300));
       await tester.pumpAndSettle();
 
       // Should have speed preset buttons

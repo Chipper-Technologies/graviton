@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 /// Utility functions for semantic version handling and comparison
 class VersionUtils {
   /// Compare two semantic version strings
@@ -111,7 +113,7 @@ class VersionUtils {
   /// Compare two version lists (used by services with custom parsing)
   /// Returns: -1 if v1 < v2, 0 if equal, 1 if v1 > v2
   static int compareVersionLists(List<int> v1, List<int> v2) {
-    final maxLength = [v1.length, v2.length].reduce((a, b) => a > b ? a : b);
+    final maxLength = math.max(v1.length, v2.length);
 
     for (int i = 0; i < maxLength; i++) {
       final part1 = i < v1.length ? v1[i] : 0;

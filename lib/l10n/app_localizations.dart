@@ -2664,6 +2664,30 @@ abstract class AppLocalizations {
   /// **'Asteroid'**
   String get bodyTypeAsteroid;
 
+  /// Plural form for star body type with count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 Star} other{{count} Stars}}'**
+  String bodyTypeStarPlural(int count);
+
+  /// Plural form for planet body type with count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 Planet} other{{count} Planets}}'**
+  String bodyTypePlanetPlural(int count);
+
+  /// Plural form for moon body type with count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 Moon} other{{count} Moons}}'**
+  String bodyTypeMoonPlural(int count);
+
+  /// Plural form for asteroid body type with count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 Asteroid} other{{count} Asteroids}}'**
+  String bodyTypeAsteroidPlural(int count);
+
   /// Display name for development app flavor
   ///
   /// In en, this message translates to:

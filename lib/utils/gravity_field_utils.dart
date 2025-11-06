@@ -67,7 +67,7 @@ class GravityFieldUtils {
     return -(SimulationConstants.gravitationalConstant * body.mass) / distance;
   }
 
-  /// Calculate the Hill sphere radius for a body
+  /// Calculate Hill sphere radius for a body
   ///
   /// The Hill sphere is the region around a body where its gravity dominates
   /// over tidal effects from a more massive primary body.
@@ -77,7 +77,7 @@ class GravityFieldUtils {
   /// Parameters:
   /// - [body]: The body for which to calculate Hill sphere
   /// - [primaryBody]: The more massive body (e.g., star for a planet)
-  /// - [orbitalDistance]: Distance between the two bodies
+  /// - [orbitalDistance]: Distance between the two bodies (must be positive)
   ///
   /// Returns Hill sphere radius
   static double calculateHillSphereRadius(
@@ -85,6 +85,13 @@ class GravityFieldUtils {
     Body primaryBody,
     double orbitalDistance,
   ) {
+    assert(
+      orbitalDistance > 0,
+      'Orbital distance must be positive, got: $orbitalDistance',
+    );
+    assert(primaryBody.mass > 0, 'Primary body mass must be positive');
+    assert(body.mass > 0, 'Body mass must be positive');
+
     final massRatio = body.mass / (3.0 * primaryBody.mass);
     return orbitalDistance * math.pow(massRatio, 1.0 / 3.0);
   }
@@ -95,14 +102,23 @@ class GravityFieldUtils {
   /// Uses logarithmic scaling to handle the wide range of field strengths.
   ///
   /// Parameters:
-  /// - [fieldStrength]: Field strength in m/s²
-  /// - [maxFieldStrength]: Maximum expected field strength for normalization
+  /// - [fieldStrength]: Field strength in m/s² (must be non-negative)
+  /// - [maxFieldStrength]: Maximum expected field strength for normalization (must be positive)
   ///
   /// Returns normalized ratio from 0.0 to 1.0
   static double normalizeFieldStrength(
     double fieldStrength,
     double maxFieldStrength,
   ) {
+    assert(
+      fieldStrength >= 0,
+      'Field strength must be non-negative, got: $fieldStrength',
+    );
+    assert(
+      maxFieldStrength > 0,
+      'Max field strength must be positive, got: $maxFieldStrength',
+    );
+
     if (fieldStrength <= 0 || maxFieldStrength <= 0) return 0.0;
 
     // Use logarithmic scaling to handle wide range of field strengths
@@ -119,8 +135,8 @@ class GravityFieldUtils {
   ///
   /// Parameters:
   /// - [body]: The body generating the gravitational field
-  /// - [potential]: The potential value for the equipotential surface
-  /// - [segments]: Number of segments for the circular approximation
+  /// - [potential]: The potential value for the equipotential surface (must be negative)
+  /// - [segments]: Number of segments for the circular approximation (must be positive)
   /// - [normal]: Normal vector for the plane of the surface
   /// - [tangent1]: First tangent vector in the surface plane
   /// - [tangent2]: Second tangent vector in the surface plane
@@ -134,6 +150,12 @@ class GravityFieldUtils {
     vm.Vector3 tangent1,
     vm.Vector3 tangent2,
   ) {
+    assert(
+      potential < 0,
+      'Gravitational potential must be negative, got: $potential',
+    );
+    assert(segments > 0, 'Segments must be positive, got: $segments');
+
     final points = <vm.Vector3>[];
 
     // Calculate radius for this potential level
@@ -267,7 +289,7 @@ class GravityFieldUtils {
   ///
   /// Parameters:
   /// - [color]: Base color for the paint
-  /// - [opacity]: Opacity level (0.0 to 1.0)
+  /// - [opacity]: Opacity level (0.0 to 1.0, values outside range will be clamped and trigger assertion in debug mode)
   /// - [strokeWidth]: Width for stroke painting
   /// - [useStroke]: Whether to use stroke or fill style
   ///
@@ -278,8 +300,15 @@ class GravityFieldUtils {
     double strokeWidth = 1.0,
     bool useStroke = true,
   }) {
+    // Validate and clamp opacity parameter for fail-fast behavior
+    assert(
+      opacity >= 0.0 && opacity <= 1.0,
+      'Opacity must be between 0.0 and 1.0, got: $opacity',
+    );
+    final clampedOpacity = opacity.clamp(0.0, 1.0);
+
     return Paint()
-      ..color = color.withValues(alpha: opacity.clamp(0.0, 1.0))
+      ..color = color.withValues(alpha: clampedOpacity)
       ..style = useStroke ? PaintingStyle.stroke : PaintingStyle.fill
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round

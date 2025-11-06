@@ -23,11 +23,11 @@ class UIState extends ChangeNotifier {
   double _uiOpacity = RenderingConstants.defaultUIOpacity;
 
   // Gravity field settings
-  bool _globalGravityFields = false;
+  bool _globalGravityFields = true;
   GravityFieldColorScheme _gravityFieldColorScheme =
       GravityFieldColorScheme.classic;
   bool _showEquipotentialSurfaces = false;
-  bool _showGravityFieldIndicators = true;
+  bool _showGravityFieldIndicators = false;
 
   // Habitability settings
   bool _showHabitableZones = false;
@@ -124,7 +124,10 @@ class UIState extends ChangeNotifier {
           _keyEnableCollisionHapticFeedback,
           _enableCollisionHapticFeedback,
         );
-        // Remove the old setting
+      }
+
+      // Always remove legacy key if it exists to prevent confusion
+      if (prefs.containsKey(_keyEnableVibration)) {
         await prefs.remove(_keyEnableVibration);
       }
 
@@ -132,11 +135,11 @@ class UIState extends ChangeNotifier {
           prefs.getDouble(_keyUIOpacity) ?? RenderingConstants.defaultUIOpacity;
 
       // Load gravity field settings
-      _globalGravityFields = prefs.getBool(_keyGlobalGravityFields) ?? false;
+      _globalGravityFields = prefs.getBool(_keyGlobalGravityFields) ?? true;
       _showEquipotentialSurfaces =
           prefs.getBool(_keyShowEquipotentialSurfaces) ?? false;
       _showGravityFieldIndicators =
-          prefs.getBool(_keyShowGravityFieldIndicators) ?? true;
+          prefs.getBool(_keyShowGravityFieldIndicators) ?? false;
 
       // Load gravity field color scheme
       final gravityColorSchemeValue = prefs.getString(

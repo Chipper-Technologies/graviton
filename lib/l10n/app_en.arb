@@ -2085,6 +2085,50 @@
     "description": "Display name for asteroid body type"
   },
 
+  "bodyTypeStarPlural": "{count, plural, =1{1 Star} other{{count} Stars}}",
+  "@bodyTypeStarPlural": {
+    "description": "Plural form for star body type with count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of stars"
+      }
+    }
+  },
+
+  "bodyTypePlanetPlural": "{count, plural, =1{1 Planet} other{{count} Planets}}",
+  "@bodyTypePlanetPlural": {
+    "description": "Plural form for planet body type with count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of planets"
+      }
+    }
+  },
+
+  "bodyTypeMoonPlural": "{count, plural, =1{1 Moon} other{{count} Moons}}",
+  "@bodyTypeMoonPlural": {
+    "description": "Plural form for moon body type with count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of moons"
+      }
+    }
+  },
+
+  "bodyTypeAsteroidPlural": "{count, plural, =1{1 Asteroid} other{{count} Asteroids}}",
+  "@bodyTypeAsteroidPlural": {
+    "description": "Plural form for asteroid body type with count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of asteroids"
+      }
+    }
+  },
+
   "appFlavorDevelopment": "Development",
   "@appFlavorDevelopment": {
     "description": "Display name for development app flavor"

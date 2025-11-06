@@ -1411,6 +1411,50 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bodyTypeAsteroid => 'Asteroid';
 
   @override
+  String bodyTypeStarPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Sterne',
+      one: '1 Stern',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypePlanetPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Planeten',
+      one: '1 Planet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeMoonPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Monde',
+      one: '1 Mond',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeAsteroidPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Asteroiden',
+      one: '1 Asteroid',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appFlavorDevelopment => 'Entwicklung';
 
   @override
