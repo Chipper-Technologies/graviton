@@ -6,7 +6,6 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/haptic_utils.dart';
 import 'package:graviton/widgets/camera_controls.dart';
-import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/visuals_controls.dart';
 import 'package:graviton/widgets/physics_controls.dart';
 import 'package:provider/provider.dart';
@@ -102,49 +101,47 @@ class _PersistentBottomSheetState extends State<PersistentBottomSheet>
               clipBehavior:
                   Clip.none, // Allow floating controls to extend outside
               children: [
-                // Main bottom sheet container
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ), // Add left/right margins
-                  decoration: BoxDecoration(
-                    color: AppColors.uiBlack.withValues(
-                      alpha: AppTypography.opacityVeryHigh,
-                    ),
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(AppTypography.radiusXLarge),
-                    ),
-                    border: Border.all(
-                      color: AppColors.primaryColor.withValues(
-                        alpha: AppTypography
-                            .opacityMedium, // Make border more visible for debugging
+                // Main bottom sheet container with gesture absorption
+                GestureDetector(
+                  // Absorb all taps to prevent pass-through to simulation
+                  onTap: () {},
+                  onPanDown: (_) {},
+                  onPanStart: (_) {},
+                  onPanUpdate: (_) {},
+                  onPanEnd: (_) {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.uiBlack.withValues(
+                        alpha: AppTypography.opacityVeryHigh,
                       ),
-                      width: 2, // Thicker border for debugging
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.uiBlack.withValues(
-                          alpha: AppTypography.opacityMedium,
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(AppTypography.radiusXLarge),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.uiBlack.withValues(
+                            alpha: AppTypography.opacityMedium,
+                          ),
+                          blurRadius: 16,
+                          offset: const Offset(0, -4),
                         ),
-                        blurRadius: 16,
-                        offset: const Offset(0, -4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      // Handle and tab bar section (always visible)
-                      _buildHeaderSection(context, appState, l10n),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        // Handle and tab bar section (always visible)
+                        _buildHeaderSection(context, appState, l10n),
 
-                      // Content section (scrollable)
-                      Expanded(
-                        child: _buildContentSection(
-                          context,
-                          appState,
-                          scrollController,
+                        // Content section (scrollable)
+                        Expanded(
+                          child: _buildContentSection(
+                            context,
+                            appState,
+                            scrollController,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -165,69 +162,102 @@ class _PersistentBottomSheetState extends State<PersistentBottomSheet>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Drag handle with manual drag detection
-          HapticGestureDetector(
-            onPanStart: (details) {
+          // Drag handle - prominent and easy to grab
+          GestureDetector(
+            onTap: () {
+              widget.onInteraction?.call();
+              // Expand to medium size on tap for better discoverability
+              if (_dragController.isAttached) {
+                _dragController.animateTo(
+                  0.35,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOutCubic,
+                );
+              }
+            },
+            onPanDown: (details) {
               // Trigger interaction callback when drag starts
               widget.onInteraction?.call();
-            },
-            onPanUpdate: (details) {
-              // Manually control the DraggableScrollableSheet
-              if (_dragController.isAttached) {
-                final screenHeight = MediaQuery.of(context).size.height;
-                final deltaSize = -details.delta.dy / screenHeight;
-                final currentSize = _dragController.size;
-                final newSize = (currentSize + deltaSize).clamp(
-                  _minChildSize,
-                  _maxChildSize,
-                );
-                _dragController.jumpTo(newSize);
-              }
             },
             child: Container(
               width: double.infinity, // Full width for easier targeting
               padding: const EdgeInsets.symmetric(
-                vertical: 16,
-              ), // Larger touch area
-              // Important: No gesture detectors here - let DraggableScrollableSheet handle it
+                vertical: 20, // Larger touch area
+                horizontal: 16,
+              ),
               child: Center(
-                child: Container(
-                  width: 60, // Visual handle size
-                  height: 6,
-                  decoration: BoxDecoration(
-                    color: AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityMedium,
+                child: Column(
+                  children: [
+                    // More prominent drag handle
+                    Container(
+                      width: 80, // Wider visual handle
+                      height: 5, // Slightly thicker
+                      decoration: BoxDecoration(
+                        color: AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityHigh, // More visible
+                        ),
+                        borderRadius: AppTypography.createRadius(
+                          AppTypography.radiusMedium, // More rounded
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.uiBlack.withValues(
+                              alpha: AppTypography.opacityMedium,
+                            ),
+                            blurRadius: 2,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
+                      ),
                     ),
-                    borderRadius: AppTypography.createRadius(
-                      AppTypography.radiusSmall,
+                    const SizedBox(height: 4),
+                    // Secondary indicator for better visibility
+                    Container(
+                      width: 40,
+                      height: 2,
+                      decoration: BoxDecoration(
+                        color: AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityMedium,
+                        ),
+                        borderRadius: AppTypography.createRadius(
+                          AppTypography.radiusSmall,
+                        ),
+                      ),
                     ),
-                  ),
+                    // Hint text when collapsed to improve discoverability
+                    ValueListenableBuilder<double>(
+                      valueListenable: PersistentBottomSheet.sheetPosition,
+                      builder: (context, position, child) {
+                        // Show hint when sheet is in minimum state
+                        final isMinimized = position <= (_minChildSize + 0.05);
+                        if (!isMinimized) return const SizedBox.shrink();
+
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            'Tap or swipe up for controls',
+                            style: TextStyle(
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityMedium,
+                              ),
+                              fontSize: AppTypography.fontSizeSmall,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
 
-          // Tab bar with manual drag detection for areas between tabs
-          HapticGestureDetector(
-            onPanStart: (details) {
+          // Tab bar with interaction detection
+          GestureDetector(
+            onPanDown: (details) {
               // Trigger interaction callback when drag starts
               widget.onInteraction?.call();
-            },
-            onPanUpdate: (details) {
-              // Only handle vertical drags, let horizontal drags go to tabs
-              if (details.delta.dy.abs() > details.delta.dx.abs()) {
-                // Manually control the DraggableScrollableSheet
-                if (_dragController.isAttached) {
-                  final screenHeight = MediaQuery.of(context).size.height;
-                  final deltaSize = -details.delta.dy / screenHeight;
-                  final currentSize = _dragController.size;
-                  final newSize = (currentSize + deltaSize).clamp(
-                    _minChildSize,
-                    _maxChildSize,
-                  );
-                  _dragController.jumpTo(newSize);
-                }
-              }
             },
             child: Container(
               height: 50,

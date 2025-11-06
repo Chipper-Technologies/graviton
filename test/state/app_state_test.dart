@@ -105,7 +105,7 @@ void main() {
 
     test('Simulation state should be accessible and functional', () {
       expect(appState.simulation.isRunning, isFalse);
-      expect(appState.simulation.timeScale, equals(8.0));
+      expect(appState.simulation.timeScale, equals(4.0));
 
       appState.simulation.start();
       expect(appState.simulation.isRunning, isTrue);

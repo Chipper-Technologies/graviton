@@ -266,7 +266,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
     setState(() {
       _gravitationalConstant = scenarioDefaults.gravitationalConstant;
       _softening = scenarioDefaults.softening;
-      _timeScale = 8.0; // Default from simulation state
+      _timeScale = 4.0; // Default from simulation state
       _collisionRadiusMultiplier = scenarioDefaults.collisionRadiusMultiplier;
       _maxTrailPoints = scenarioDefaults.maxTrailPoints.toDouble();
       _trailFadeRate = scenarioDefaults.trailFadeRate;
