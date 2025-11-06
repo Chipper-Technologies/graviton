@@ -391,6 +391,8 @@
   "dynamicFramingTitle": "动态构图",
   "dynamicFramingDescription": "AI动态构图所有对象",
   "manualControlsTitle": "手动控制",
+  "cameraSpeedLabel": "相机速度",
+  "cameraSpeedHint": "调整AI相机移动速度从慢到快。使用方向键进行小幅调整。",
   "selectNearestTitle": "选择最近",
   "followTitle": "跟随",
   "stopFollowTitle": "停止跟随",

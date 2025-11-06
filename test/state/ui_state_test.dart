@@ -266,5 +266,79 @@ void main() {
         expect(surfacesState, isA<bool>());
       });
     });
+
+    group('Camera Speed Tests', () {
+      test('Camera speed should initialize with default value', () {
+        expect(uiState.cameraSpeed, equals(0.5));
+      });
+
+      test('SetCameraSpeed should update camera speed within bounds', () {
+        uiState.setCameraSpeed(1.5);
+        expect(uiState.cameraSpeed, equals(1.5));
+
+        uiState.setCameraSpeed(2.0);
+        expect(uiState.cameraSpeed, equals(2.0));
+
+        uiState.setCameraSpeed(0.2);
+        expect(uiState.cameraSpeed, equals(0.2));
+      });
+
+      test('SetCameraSpeed should clamp values outside valid range', () {
+        // Test lower bound
+        uiState.setCameraSpeed(-0.5);
+        expect(uiState.cameraSpeed, equals(0.1));
+
+        uiState.setCameraSpeed(0.05);
+        expect(uiState.cameraSpeed, equals(0.1));
+
+        // Test upper bound
+        uiState.setCameraSpeed(5.0);
+        expect(uiState.cameraSpeed, equals(3.0));
+
+        uiState.setCameraSpeed(10.0);
+        expect(uiState.cameraSpeed, equals(3.0));
+      });
+
+      test('Camera speed changes should notify listeners', () {
+        bool wasNotified = false;
+        uiState.addListener(() {
+          wasNotified = true;
+        });
+
+        uiState.setCameraSpeed(1.0);
+        expect(wasNotified, isTrue);
+
+        wasNotified = false;
+        uiState.setCameraSpeed(2.5);
+        expect(wasNotified, isTrue);
+      });
+
+      test('Camera speed should persist valid values', () {
+        const testSpeed = 1.8;
+        uiState.setCameraSpeed(testSpeed);
+        expect(uiState.cameraSpeed, equals(testSpeed));
+
+        // Verify value is still accessible after multiple operations
+        uiState.toggleStats();
+        uiState.toggleTrails();
+        expect(uiState.cameraSpeed, equals(testSpeed));
+      });
+
+      test('Camera speed should handle edge case values', () {
+        // Test exact boundary values
+        uiState.setCameraSpeed(0.1);
+        expect(uiState.cameraSpeed, equals(0.1));
+
+        uiState.setCameraSpeed(3.0);
+        expect(uiState.cameraSpeed, equals(3.0));
+
+        // Test very close to boundaries
+        uiState.setCameraSpeed(0.10001);
+        expect(uiState.cameraSpeed, equals(0.10001));
+
+        uiState.setCameraSpeed(2.99999);
+        expect(uiState.cameraSpeed, equals(2.99999));
+      });
+    });
   });
 }

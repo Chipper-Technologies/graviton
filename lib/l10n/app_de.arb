@@ -404,6 +404,8 @@
   "dynamicFramingTitle": "Dynamische Bildkomposition",
   "dynamicFramingDescription": "KI rahmt alle Objekte dynamisch ein",
   "manualControlsTitle": "Manuelle Steuerung",
+  "cameraSpeedLabel": "Kamera-Geschwindigkeit",
+  "cameraSpeedHint": "KI-Kamerabewegungsgeschwindigkeit von langsam bis schnell anpassen. Pfeiltasten für kleine Schritte verwenden.",
   "selectNearestTitle": "Nächstes Auswählen",
   "followTitle": "Folgen",
   "stopFollowTitle": "Folgen Stoppen",

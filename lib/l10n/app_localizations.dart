@@ -240,6 +240,18 @@ abstract class AppLocalizations {
   /// **'Manual Controls'**
   String get manualControlsTitle;
 
+  /// Label for AI camera movement speed slider
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Speed'**
+  String get cameraSpeedLabel;
+
+  /// Accessibility hint for camera speed slider
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust AI camera movement speed from slow to fast. Use arrow keys to change in small increments.'**
+  String get cameraSpeedHint;
+
   /// Button text for selecting nearest celestial body
   ///
   /// In en, this message translates to:

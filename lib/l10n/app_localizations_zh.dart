@@ -75,6 +75,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get manualControlsTitle => '手动控制';
 
   @override
+  String get cameraSpeedLabel => '相机速度';
+
+  @override
+  String get cameraSpeedHint => '调整AI相机移动速度从慢到快。使用方向键进行小幅调整。';
+
+  @override
   String get selectNearestTitle => '选择最近';
 
   @override

@@ -75,6 +75,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get manualControlsTitle => '수동 제어';
 
   @override
+  String get cameraSpeedLabel => '카메라 속도';
+
+  @override
+  String get cameraSpeedHint =>
+      'AI 카메라 이동 속도를 느림에서 빠름까지 조정하세요. 화살표 키를 사용하여 작은 단위로 변경할 수 있습니다.';
+
+  @override
   String get selectNearestTitle => '가장 가까운 선택';
 
   @override

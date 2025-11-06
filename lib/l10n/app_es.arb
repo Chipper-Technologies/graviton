@@ -390,6 +390,8 @@
   "dynamicFramingTitle": "Encuadre Dinámico",
   "dynamicFramingDescription": "IA encuadra dinámicamente todos los objetos",
   "manualControlsTitle": "Controles Manuales",
+  "cameraSpeedLabel": "Velocidad de Cámara",
+  "cameraSpeedHint": "Ajustar la velocidad de movimiento de la cámara IA de lenta a rápida. Usar las teclas de flecha para cambios en incrementos pequeños.",
   "selectNearestTitle": "Seleccionar Más Cercano",
   "followTitle": "Seguir",
   "stopFollowTitle": "Dejar de Seguir",

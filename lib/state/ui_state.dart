@@ -39,6 +39,7 @@ class UIState extends ChangeNotifier {
   // Cinematic camera settings
   CinematicCameraTechnique _cinematicCameraTechnique =
       CinematicCameraTechnique.manual;
+  double _cameraSpeed = 0.5;
 
   // Screenshot mode settings
   bool _hideUIInScreenshotMode = false;
@@ -77,6 +78,7 @@ class UIState extends ChangeNotifier {
       'showHabitabilityIndicators';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
+  static const String _keyCameraSpeed = 'cameraSpeed';
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
   static const String _keyIsFullscreen = 'isFullscreen';
   static const String _keyLastSeenChangelogVersion = 'lastSeenChangelogVersion';
@@ -162,6 +164,9 @@ class UIState extends ChangeNotifier {
           ? CinematicCameraTechnique.fromValue(cinematicTechniqueValue)
           : CinematicCameraTechnique.manual;
 
+      // Load camera speed setting
+      _cameraSpeed = prefs.getDouble(_keyCameraSpeed) ?? 0.5;
+
       _hideUIInScreenshotMode =
           prefs.getBool(_keyHideUIInScreenshotMode) ?? false;
 
@@ -234,6 +239,7 @@ class UIState extends ChangeNotifier {
   // Cinematic camera getters
   CinematicCameraTechnique get cinematicCameraTechnique =>
       _cinematicCameraTechnique;
+  double get cameraSpeed => _cameraSpeed;
 
   // Screenshot mode getters
   bool get hideUIInScreenshotMode => _hideUIInScreenshotMode;
@@ -452,6 +458,17 @@ class UIState extends ChangeNotifier {
       'cinematic_camera_technique',
       technique.value,
     );
+    notifyListeners();
+  }
+
+  void setCameraSpeed(double speed) {
+    _cameraSpeed = speed.clamp(0.1, 3.0);
+    _saveSetting(_keyCameraSpeed, _cameraSpeed);
+
+    // Haptic feedback for camera speed adjustment
+    SafeHapticFeedback.lightImpact();
+
+    FirebaseService.instance.logSettingsChange('camera_speed', _cameraSpeed);
     notifyListeners();
   }
 

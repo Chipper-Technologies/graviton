@@ -127,7 +127,8 @@ void main() {
       expect(find.text('Select Nearest'), findsOneWidget);
       expect(find.text('Follow'), findsOneWidget);
       expect(find.text('Center View'), findsOneWidget);
-      expect(find.text('Auto Rotate'), findsOneWidget);
+      // Check for auto rotate button (there will be two "Auto Rotate" texts)
+      expect(find.text('Auto Rotate'), findsWidgets);
     });
 
     testWidgets('displays invert pitch control', (WidgetTester tester) async {
@@ -258,8 +259,8 @@ void main() {
 
       await tester.pumpWidget(createTestWidget());
 
-      // Initially should show "Auto Rotate" when not rotating
-      expect(find.text('Auto Rotate'), findsOneWidget);
+      // Initially should show "Auto Rotate" when not rotating (there will be multiple)
+      expect(find.text('Auto Rotate'), findsWidgets);
 
       // Toggle auto rotate to test state change
       appState.camera.toggleAutoRotate();
@@ -317,6 +318,113 @@ void main() {
       ); // Updated from spacingXLarge
       // Bottom should be non-negative (may be 0 in test environment)
       expect(padding.bottom, greaterThanOrEqualTo(0.0));
+    });
+
+    group('Camera Speed Slider Tests', () {
+      testWidgets('camera speed slider appears for AI techniques', (
+        WidgetTester tester,
+      ) async {
+        // Test with predictive orbital
+        appState.ui.setCinematicCameraTechnique(
+          CinematicCameraTechnique.predictiveOrbital,
+        );
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        expect(find.text('Camera Speed'), findsOneWidget);
+        expect(find.byType(Slider), findsOneWidget);
+
+        // Test with dynamic framing
+        appState.ui.setCinematicCameraTechnique(
+          CinematicCameraTechnique.dynamicFraming,
+        );
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        expect(find.text('Camera Speed'), findsOneWidget);
+        expect(find.byType(Slider), findsOneWidget);
+      });
+
+      testWidgets('camera speed slider hidden for manual mode', (
+        WidgetTester tester,
+      ) async {
+        appState.ui.setCinematicCameraTechnique(
+          CinematicCameraTechnique.manual,
+        );
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        expect(find.text('Camera Speed'), findsNothing);
+        expect(find.byType(Slider), findsNothing);
+      });
+
+      testWidgets('camera speed slider reflects current value', (
+        WidgetTester tester,
+      ) async {
+        appState.ui.setCinematicCameraTechnique(
+          CinematicCameraTechnique.predictiveOrbital,
+        );
+        appState.ui.setCameraSpeed(1.5);
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final slider = tester.widget<Slider>(find.byType(Slider));
+        expect(slider.value, equals(1.5));
+        expect(find.text('1.5x'), findsOneWidget);
+      });
+
+      testWidgets('camera speed slider can be adjusted', (
+        WidgetTester tester,
+      ) async {
+        appState.ui.setCinematicCameraTechnique(
+          CinematicCameraTechnique.predictiveOrbital,
+        );
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final sliderFinder = find.byType(Slider);
+        expect(sliderFinder, findsOneWidget);
+
+        // Test slider adjustment
+        await tester.drag(sliderFinder, const Offset(50, 0));
+        await tester.pumpAndSettle();
+
+        // Value should have changed from default 0.5
+        expect(appState.ui.cameraSpeed, isNot(equals(0.5)));
+        expect(appState.ui.cameraSpeed, greaterThanOrEqualTo(0.1));
+        expect(appState.ui.cameraSpeed, lessThanOrEqualTo(3.0));
+      });
+
+      testWidgets('camera speed slider has correct range', (
+        WidgetTester tester,
+      ) async {
+        appState.ui.setCinematicCameraTechnique(
+          CinematicCameraTechnique.dynamicFraming,
+        );
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final slider = tester.widget<Slider>(find.byType(Slider));
+        expect(slider.min, equals(0.1));
+        expect(slider.max, equals(3.0));
+        expect(slider.divisions, equals(29));
+      });
+
+      testWidgets('camera speed slider shows correct labels', (
+        WidgetTester tester,
+      ) async {
+        appState.ui.setCinematicCameraTechnique(
+          CinematicCameraTechnique.predictiveOrbital,
+        );
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Check for the speed label and formatted value
+        expect(find.text('Speed'), findsOneWidget);
+        expect(find.text('0.5x'), findsOneWidget); // Default value
+        expect(find.byIcon(Icons.speed), findsOneWidget);
+      });
     });
   });
 }

@@ -390,6 +390,8 @@
   "dynamicFramingTitle": "Cadrage Dynamique",
   "dynamicFramingDescription": "L'IA cadre dynamiquement tous les objets",
   "manualControlsTitle": "Contrôles Manuels",
+  "cameraSpeedLabel": "Vitesse de la Caméra",
+  "cameraSpeedHint": "Ajuster la vitesse de mouvement de la caméra IA de lente à rapide. Utiliser les touches fléchées pour des changements par petits incréments.",
   "selectNearestTitle": "Sélectionner le Plus Proche",
   "followTitle": "Suivre",
   "stopFollowTitle": "Arrêter de Suivre",

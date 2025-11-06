@@ -76,6 +76,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manualControlsTitle => 'Manual Controls';
 
   @override
+  String get cameraSpeedLabel => 'Camera Speed';
+
+  @override
+  String get cameraSpeedHint =>
+      'Adjust AI camera movement speed from slow to fast. Use arrow keys to change in small increments.';
+
+  @override
   String get selectNearestTitle => 'Select Nearest';
 
   @override

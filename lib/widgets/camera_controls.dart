@@ -9,6 +9,7 @@ import 'package:graviton/widgets/camera_mode_option.dart';
 import 'package:graviton/widgets/camera_action_button.dart';
 import 'package:graviton/widgets/common/haptic_ink_well.dart';
 import 'package:graviton/widgets/common/haptic_switch.dart';
+import 'package:graviton/widgets/common/haptic_slider_option.dart';
 import 'package:graviton/widgets/section_title.dart';
 
 /// Camera controls content for the persistent bottom sheet
@@ -148,11 +149,31 @@ class CameraControls extends StatelessWidget {
           ),
         ],
 
+        // Camera Speed Control (only for AI techniques)
+        if (appState.ui.cinematicCameraTechnique !=
+            CinematicCameraTechnique.manual) ...[
+          const SizedBox(height: AppTypography.spacingLarge),
+
+          SectionTitle(title: l10n.cameraSpeedLabel),
+          const SizedBox(height: AppTypography.spacingMedium),
+
+          HapticSliderOption.detailed(
+            label: l10n.speedLabel,
+            value: appState.ui.cameraSpeed,
+            min: 0.1,
+            max: 3.0,
+            divisions: 29,
+            icon: Icons.speed,
+            onChanged: (value) {
+              appState.ui.setCameraSpeed(value);
+            },
+            formatter: (value) => '${value.toStringAsFixed(1)}x',
+          ),
+        ],
+
         // Camera Movement Controls (only show if manual mode)
         if (appState.ui.cinematicCameraTechnique ==
             CinematicCameraTechnique.manual) ...[
-          const SizedBox(height: AppTypography.spacingXXLarge),
-
           SectionTitle(title: l10n.manualControlsTitle),
           const SizedBox(height: AppTypography.spacingMedium),
 

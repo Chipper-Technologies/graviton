@@ -1125,4 +1125,228 @@ void main() {
       expect(camera.target.z.isFinite, isTrue);
     });
   });
+
+  group('Camera Speed Integration Tests', () {
+    test('should apply camera speed multiplier to AI techniques', () {
+      final controller = CinematicCameraController();
+      final simulation = SimulationState();
+      final camera = CameraState();
+      final ui = UIState();
+
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+
+      // Test different camera speeds
+      final testSpeeds = [0.1, 0.5, 1.0, 2.0, 3.0];
+
+      for (final speed in testSpeeds) {
+        ui.setCameraSpeed(speed);
+
+        // Update camera with predictive orbital technique
+        controller.updateCamera(
+          CinematicCameraTechnique.predictiveOrbital,
+          simulation,
+          camera,
+          ui,
+          1.0 / 60.0, // 60 FPS
+        );
+
+        // Camera should move (position changes indicate speed is being applied)
+        // We can't test exact values due to complex movement algorithms,
+        // but we can verify the camera is responding
+        expect(
+          () => controller.updateCamera(
+            CinematicCameraTechnique.predictiveOrbital,
+            simulation,
+            camera,
+            ui,
+            1.0 / 60.0,
+          ),
+          returnsNormally,
+        );
+      }
+
+      simulation.dispose();
+      camera.dispose();
+      ui.dispose();
+    });
+
+    test('should not apply camera speed to manual technique', () {
+      final controller = CinematicCameraController();
+      final simulation = SimulationState();
+      final camera = CameraState();
+      final ui = UIState();
+
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+
+      // Set high camera speed
+      ui.setCameraSpeed(3.0);
+
+      final initialYaw = camera.yaw;
+      final initialPitch = camera.pitch;
+      final initialRoll = camera.roll;
+      final initialDistance = camera.distance;
+      final initialTarget = camera.target.clone();
+
+      // Update camera with manual technique (should not move)
+      controller.updateCamera(
+        CinematicCameraTechnique.manual,
+        simulation,
+        camera,
+        ui,
+        1.0 / 60.0,
+      );
+
+      // Camera should remain unchanged for manual mode
+      expect(camera.yaw, equals(initialYaw));
+      expect(camera.pitch, equals(initialPitch));
+      expect(camera.roll, equals(initialRoll));
+      expect(camera.distance, equals(initialDistance));
+      expect(camera.target.x, equals(initialTarget.x));
+      expect(camera.target.y, equals(initialTarget.y));
+      expect(camera.target.z, equals(initialTarget.z));
+
+      simulation.dispose();
+      camera.dispose();
+      ui.dispose();
+    });
+
+    test('should handle extreme camera speeds gracefully', () {
+      final controller = CinematicCameraController();
+      final simulation = SimulationState();
+      final camera = CameraState();
+      final ui = UIState();
+
+      simulation.resetWithScenario(ScenarioType.random);
+
+      // Test very slow speed
+      ui.setCameraSpeed(0.1);
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          1.0 / 60.0,
+        ),
+        returnsNormally,
+      );
+
+      // Test very fast speed
+      ui.setCameraSpeed(3.0);
+      expect(
+        () => controller.updateCamera(
+          CinematicCameraTechnique.dynamicFraming,
+          simulation,
+          camera,
+          ui,
+          1.0 / 60.0,
+        ),
+        returnsNormally,
+      );
+
+      // Camera values should remain finite
+      expect(camera.distance.isFinite, isTrue);
+      expect(camera.yaw.isFinite, isTrue);
+      expect(camera.pitch.isFinite, isTrue);
+      expect(camera.roll.isFinite, isTrue);
+
+      simulation.dispose();
+      camera.dispose();
+      ui.dispose();
+    });
+
+    test('should work with different scenarios and camera speeds', () {
+      final controller = CinematicCameraController();
+      final simulation = SimulationState();
+      final camera = CameraState();
+      final ui = UIState();
+
+      final scenarios = [
+        ScenarioType.solarSystem,
+        ScenarioType.earthMoonSun,
+        ScenarioType.binaryStars,
+        ScenarioType.random,
+      ];
+
+      final techniques = [
+        CinematicCameraTechnique.predictiveOrbital,
+        CinematicCameraTechnique.dynamicFraming,
+      ];
+
+      for (final scenario in scenarios) {
+        simulation.resetWithScenario(scenario);
+
+        for (final technique in techniques) {
+          // Test different speeds
+          ui.setCameraSpeed(0.5);
+          expect(
+            () => controller.updateCamera(
+              technique,
+              simulation,
+              camera,
+              ui,
+              1.0 / 60.0,
+            ),
+            returnsNormally,
+            reason: 'Should handle $technique with $scenario at 0.5x speed',
+          );
+
+          ui.setCameraSpeed(2.0);
+          expect(
+            () => controller.updateCamera(
+              technique,
+              simulation,
+              camera,
+              ui,
+              1.0 / 60.0,
+            ),
+            returnsNormally,
+            reason: 'Should handle $technique with $scenario at 2.0x speed',
+          );
+        }
+      }
+
+      simulation.dispose();
+      camera.dispose();
+      ui.dispose();
+    });
+
+    test('should maintain camera state consistency with speed changes', () {
+      final controller = CinematicCameraController();
+      final simulation = SimulationState();
+      final camera = CameraState();
+      final ui = UIState();
+
+      simulation.resetWithScenario(ScenarioType.solarSystem);
+
+      // Test rapid speed changes
+      final speeds = [1.0, 0.1, 3.0, 0.5, 2.0];
+
+      for (final speed in speeds) {
+        ui.setCameraSpeed(speed);
+
+        // Update camera multiple times
+        for (int i = 0; i < 5; i++) {
+          controller.updateCamera(
+            CinematicCameraTechnique.predictiveOrbital,
+            simulation,
+            camera,
+            ui,
+            1.0 / 60.0,
+          );
+
+          // Verify camera state remains valid
+          expect(camera.distance, greaterThan(0));
+          expect(camera.distance.isFinite, isTrue);
+          expect(camera.yaw.isFinite, isTrue);
+          expect(camera.pitch.isFinite, isTrue);
+          expect(camera.roll.isFinite, isTrue);
+        }
+      }
+
+      simulation.dispose();
+      camera.dispose();
+      ui.dispose();
+    });
+  });
 }

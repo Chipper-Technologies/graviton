@@ -110,6 +110,16 @@
     "description": "Section title for manual camera controls"
   },
   
+  "cameraSpeedLabel": "Camera Speed",
+  "@cameraSpeedLabel": {
+    "description": "Label for AI camera movement speed slider"
+  },
+  
+  "cameraSpeedHint": "Adjust AI camera movement speed from slow to fast. Use arrow keys to change in small increments.",
+  "@cameraSpeedHint": {
+    "description": "Accessibility hint for camera speed slider"
+  },
+  
   "selectNearestTitle": "Select Nearest",
   "@selectNearestTitle": {
     "description": "Button text for selecting nearest celestial body"

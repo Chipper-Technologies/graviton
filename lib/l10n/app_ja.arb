@@ -390,6 +390,8 @@
   "dynamicFramingTitle": "動的フレーミング",
   "dynamicFramingDescription": "AIがすべてのオブジェクトを動的にフレーミング",
   "manualControlsTitle": "手動制御",
+  "cameraSpeedLabel": "カメラ速度",
+  "cameraSpeedHint": "AIカメラの移動速度を遅いから速いまで調整します。矢印キーで小刻みに変更できます。",
   "selectNearestTitle": "最近を選択",
   "followTitle": "追跡",
   "stopFollowTitle": "追跡停止",

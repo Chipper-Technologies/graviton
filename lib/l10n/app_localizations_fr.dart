@@ -78,6 +78,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get manualControlsTitle => 'Contrôles Manuels';
 
   @override
+  String get cameraSpeedLabel => 'Vitesse de la Caméra';
+
+  @override
+  String get cameraSpeedHint =>
+      'Ajuster la vitesse de mouvement de la caméra IA de lente à rapide. Utiliser les touches fléchées pour des changements par petits incréments.';
+
+  @override
   String get selectNearestTitle => 'Sélectionner le Plus Proche';
 
   @override

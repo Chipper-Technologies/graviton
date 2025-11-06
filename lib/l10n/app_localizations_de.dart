@@ -78,6 +78,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get manualControlsTitle => 'Manuelle Steuerung';
 
   @override
+  String get cameraSpeedLabel => 'Kamera-Geschwindigkeit';
+
+  @override
+  String get cameraSpeedHint =>
+      'KI-Kamerabewegungsgeschwindigkeit von langsam bis schnell anpassen. Pfeiltasten für kleine Schritte verwenden.';
+
+  @override
   String get selectNearestTitle => 'Nächstes Auswählen';
 
   @override
