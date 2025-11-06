@@ -147,6 +147,27 @@ class CameraControls extends StatelessWidget {
               ),
             ],
           ),
+
+          const SizedBox(height: AppTypography.spacingXXLarge),
+
+          _buildToggleOption(
+            l10n.autoRotateTitle,
+            l10n.invertPitchControlsDescription, // Reusing existing description as placeholder
+            Icons.rotate_right,
+            appState.camera.autoRotate,
+            () => appState.camera.toggleAutoRotate(),
+          ),
+
+          const SizedBox(height: AppTypography.spacingMedium),
+
+          _buildToggleOption(
+            l10n.invertPitchControlsLabel,
+            l10n.invertPitchControlsDescription,
+            Icons.swap_vert,
+            appState.camera.invertPitch,
+            () => appState.camera.toggleInvertPitch(),
+            isLast: true,
+          ),
         ],
 
         // Camera Speed Control (only for AI techniques)
@@ -171,34 +192,7 @@ class CameraControls extends StatelessWidget {
           ),
         ],
 
-        // Camera Movement Controls (only show if manual mode)
-        if (appState.ui.cinematicCameraTechnique ==
-            CinematicCameraTechnique.manual) ...[
-          SectionTitle(title: l10n.manualControlsTitle),
-          const SizedBox(height: AppTypography.spacingMedium),
-
-          _buildToggleOption(
-            l10n.autoRotateTitle,
-            l10n.invertPitchControlsDescription, // Reusing existing description as placeholder
-            Icons.rotate_right,
-            appState.camera.autoRotate,
-            () => appState.camera.toggleAutoRotate(),
-          ),
-        ],
-
         SizedBox(height: AppTypography.spacingXXLarge),
-
-        SectionTitle(title: l10n.cameraControlsLabel),
-        SizedBox(height: AppTypography.spacingMedium),
-
-        _buildToggleOption(
-          l10n.invertPitchControlsLabel,
-          l10n.invertPitchControlsDescription,
-          Icons.swap_vert,
-          appState.camera.invertPitch,
-          () => appState.camera.toggleInvertPitch(),
-          isLast: true,
-        ),
       ],
     );
   }

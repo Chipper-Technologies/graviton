@@ -1459,6 +1459,26 @@
     "description": "Title for emergency notification dialog"
   },
 
+  "warningTitle": "Warning",
+  "@warningTitle": {
+    "description": "Title for warning notification dialog"
+  },
+
+  "successTitle": "Success",
+  "@successTitle": {
+    "description": "Title for success notification dialog"
+  },
+
+  "announcementTitle": "Announcement",
+  "@announcementTitle": {
+    "description": "Title for announcement notification dialog"
+  },
+
+  "promotionTitle": "Promotion",
+  "@promotionTitle": {
+    "description": "Title for promotion notification dialog"
+  },
+
   "ok": "OK",
   "@ok": {
     "description": "OK button text"

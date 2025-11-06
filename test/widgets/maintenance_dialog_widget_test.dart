@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:graviton/enums/custom_message_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/widgets/maintenance_dialog.dart';
 
@@ -317,6 +318,86 @@ void main() {
           find.textContaining('This is a very long message'),
           findsAtLeastNWidgets(2),
         );
+      });
+    });
+
+    group('CustomMessageType Enum Support', () {
+      test(
+        'should have proper localization keys for all notification types',
+        () {
+          // Test that each CustomMessageType has proper localization keys
+          for (final type in CustomMessageType.values) {
+            expect(
+              type.localizationKey,
+              isNotEmpty,
+              reason: 'Missing localization key for $type',
+            );
+            expect(
+              type.configValue,
+              isNotEmpty,
+              reason: 'Missing config value for $type',
+            );
+          }
+        },
+      );
+
+      test('should have consistent localization key patterns', () {
+        // Test that localization keys follow expected patterns
+        expect(CustomMessageType.info.localizationKey, equals('newsTitle'));
+        expect(
+          CustomMessageType.warning.localizationKey,
+          equals('warningTitle'),
+        );
+        expect(
+          CustomMessageType.success.localizationKey,
+          equals('successTitle'),
+        );
+        expect(
+          CustomMessageType.announcement.localizationKey,
+          equals('announcementTitle'),
+        );
+        expect(
+          CustomMessageType.promotion.localizationKey,
+          equals('promotionTitle'),
+        );
+        expect(
+          CustomMessageType.update.localizationKey,
+          equals('updateRequiredTitle'),
+        );
+      });
+
+      test('should parse notification types correctly from config values', () {
+        // Test round-trip conversion from enum to config value and back
+        for (final type in CustomMessageType.values) {
+          final configValue = type.configValue;
+          final parsed = CustomMessageTypeExtension.fromString(configValue);
+          expect(
+            parsed,
+            equals(type),
+            reason: 'Round trip failed for $type: $configValue -> $parsed',
+          );
+        }
+      });
+
+      testWidgets('should display notification dialog with proper structure', (
+        tester,
+      ) async {
+        // Test basic notification dialog rendering
+        await tester.pumpWidget(
+          createTestApp(
+            child: const MaintenanceDialog.notification(
+              title: 'Test Notification',
+              message: 'Test notification message',
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Verify the dialog appears with correct content
+        expect(find.byType(AlertDialog), findsOneWidget);
+        expect(find.text('Test Notification'), findsOneWidget);
+        expect(find.text('Test notification message'), findsOneWidget);
+        expect(find.text('OK'), findsOneWidget);
       });
     });
   });

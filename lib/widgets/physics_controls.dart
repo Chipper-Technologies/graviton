@@ -154,63 +154,91 @@ class PhysicsControls extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Header row with icon and label
               Row(
                 children: [
-                  Icon(
-                    Icons.speed,
-                    color: AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityHigh,
+                  Container(
+                    padding: EdgeInsets.all(AppTypography.spacingMedium),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor.withValues(
+                        alpha: AppTypography.opacityFaint,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        AppTypography.radiusMedium,
+                      ),
                     ),
-                    size: AppTypography.iconSizeXXLarge,
+                    child: Icon(
+                      Icons.speed,
+                      color: AppColors.primaryColor,
+                      size: AppTypography.iconSizeLarge,
+                    ),
                   ),
                   SizedBox(width: AppTypography.spacingLarge),
-                  Text(
-                    l10n.speedLabel,
-                    style: TextStyle(
-                      color: AppColors.uiWhite,
-                      fontSize: AppTypography.fontSizeLarge,
-                      fontWeight: FontWeight.w600,
+                  Expanded(
+                    child: Text(
+                      l10n.speedLabel,
+                      style: TextStyle(
+                        color: AppColors.uiWhite,
+                        fontSize: AppTypography.fontSizeLarge,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
-                  Spacer(),
-                  Text(
-                    '${appState.simulation.timeScale.toStringAsFixed(1)}x',
-                    style: TextStyle(
-                      color: AppColors.primaryColor,
-                      fontSize: AppTypography.fontSizeLarge,
-                      fontWeight: FontWeight.w600,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppTypography.spacingMedium,
+                      vertical: AppTypography.spacingSmall,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.uiBlack.withValues(
+                        alpha: AppTypography.opacityMedium,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        AppTypography.radiusSmall,
+                      ),
+                    ),
+                    child: Text(
+                      '${appState.simulation.timeScale.toStringAsFixed(1)}x',
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontSize: AppTypography.fontSizeMedium,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
               ),
               SizedBox(height: AppTypography.spacingLarge),
 
-              // Speed Slider
+              // Slider
               SliderTheme(
                 data: SliderTheme.of(context).copyWith(
-                  inactiveTrackColor: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityVeryFaint,
-                  ),
                   activeTrackColor: AppColors.primaryColor,
+                  inactiveTrackColor: AppColors.primaryColor.withValues(
+                    alpha: AppTypography.opacityFaint,
+                  ),
                   thumbColor: AppColors.primaryColor,
                   overlayColor: AppColors.primaryColor.withValues(
                     alpha: AppTypography.opacityFaint,
+                  ),
+                  trackHeight: 6.0,
+                  thumbShape: const RoundSliderThumbShape(
+                    enabledThumbRadius: 12.0,
+                  ),
+                  overlayShape: const RoundSliderOverlayShape(
+                    overlayRadius: 20.0,
                   ),
                   valueIndicatorColor: AppColors.primaryColor,
                   valueIndicatorTextStyle: TextStyle(
                     color: AppColors.uiWhite,
                     fontSize: AppTypography.fontSizeSmall,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 child: Semantics(
                   label: l10n.speedLabel,
                   hint: l10n.simulationSpeedHint,
-                  value:
-                      '${appState.simulation.timeScale.toStringAsFixed(1)}x ${l10n.speedNormal}',
-                  increasedValue:
-                      '${(appState.simulation.timeScale + 0.1).clamp(0.1, 16.0).toStringAsFixed(1)}x',
-                  decreasedValue:
-                      '${(appState.simulation.timeScale - 0.1).clamp(0.1, 16.0).toStringAsFixed(1)}x',
+                  value: '${appState.simulation.timeScale.toStringAsFixed(1)}x',
                   onIncrease: () {
                     final newValue = (appState.simulation.timeScale + 0.1)
                         .clamp(0.1, 16.0);
@@ -222,10 +250,10 @@ class PhysicsControls extends StatelessWidget {
                     appState.simulation.setTimeScale(newValue);
                   },
                   child: Slider(
+                    value: appState.simulation.timeScale.clamp(0.1, 16.0),
                     min: 0.1,
                     max: 16.0,
                     divisions: 159,
-                    value: appState.simulation.timeScale.clamp(0.1, 16.0),
                     label:
                         '${appState.simulation.timeScale.toStringAsFixed(1)}x',
                     onChanged: (value) =>

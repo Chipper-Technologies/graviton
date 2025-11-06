@@ -919,6 +919,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get emergencyNotificationTitle => 'Avis Important';
 
   @override
+  String get warningTitle => 'Avertissement';
+
+  @override
+  String get successTitle => 'Succès';
+
+  @override
+  String get announcementTitle => 'Annonce';
+
+  @override
+  String get promotionTitle => 'Promotion';
+
+  @override
   String get ok => 'OK';
 
   @override

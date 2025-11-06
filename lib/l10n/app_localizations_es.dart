@@ -919,6 +919,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get emergencyNotificationTitle => 'Aviso Importante';
 
   @override
+  String get warningTitle => 'Advertencia';
+
+  @override
+  String get successTitle => 'Éxito';
+
+  @override
+  String get announcementTitle => 'Anuncio';
+
+  @override
+  String get promotionTitle => 'Promoción';
+
+  @override
   String get ok => 'OK';
 
   @override

@@ -5,6 +5,31 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2025-11-06
+
+### Added
+- **Camera Speed Control**: New user-configurable camera movement speed setting with accessibility support
+  - **Speed Slider**: Adjustable AI camera movement speed from slow to fast for personalized viewing experience
+  - **Accessibility Integration**: Full support for screen readers with descriptive hints and keyboard navigation
+  - **Multilingual Support**: Camera speed labels and hints translated across all 7 supported languages
+
+### Improved
+- **Bottom Sheet Experience**: Enhanced user interface with better interaction patterns
+  - **Optimized Height Management**: Improved bottom sheet sizing and responsiveness for better content accessibility
+  - **Smoother Animations**: Enhanced animation easing for more polished user interactions
+  - **Better Drag Behavior**: Refined gesture handling for more intuitive bottom sheet manipulation
+- **Menu System Enhancements**: Improved navigation and interaction smoothness
+  - **Enhanced Animation Easing**: More natural and polished menu transitions throughout the application
+  - **Improved Responsiveness**: Faster and more fluid menu interactions for better user experience
+- **Physics Parameter Adjustments**: Refined default simulation settings for better out-of-box experience
+  - **Optimized Time Scale**: Adjusted default time scale parameters for more intuitive simulation behavior
+  - **Better Default Values**: Improved initial physics settings for enhanced educational demonstration value
+
+### Technical
+- **Architecture Documentation**: Updated documentation reflecting latest system improvements and design patterns
+- **Test Coverage Enhancement**: Expanded test coverage for new camera controls and bottom sheet functionality
+- **Code Quality**: Improved maintainability and performance optimizations across UI components
+
 ## [1.3.0] - 2025-11-04
 
 ### Added

@@ -48,7 +48,6 @@ import 'package:graviton/widgets/screenshot_countdown.dart';
 import 'package:graviton/widgets/stats_overlay.dart';
 import 'package:graviton/widgets/version_check_dialog.dart';
 import 'package:graviton/widgets/tutorial_overlay.dart';
-import 'package:graviton/widgets/app_bar_speed_control.dart';
 import 'package:graviton/services/onboarding_service.dart';
 import 'package:graviton/services/fullscreen_service.dart';
 import 'package:graviton/utils/fullscreen_utils.dart';
@@ -945,9 +944,6 @@ class _HomeScreenState extends State<HomeScreen>
                     alpha: AppTypography.opacityMedium,
                   ),
                   actions: [
-                    // Speed control - now prominent in app bar
-                    const AppBarSpeedControl(),
-
                     // Options drawer toggle
                     Builder(
                       builder: (context) => HapticIconButton(

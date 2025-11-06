@@ -883,6 +883,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get emergencyNotificationTitle => '重要なお知らせ';
 
   @override
+  String get warningTitle => '警告';
+
+  @override
+  String get successTitle => '成功';
+
+  @override
+  String get announcementTitle => 'お知らせ';
+
+  @override
+  String get promotionTitle => 'プロモーション';
+
+  @override
   String get ok => 'OK';
 
   @override

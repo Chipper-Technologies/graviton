@@ -876,6 +876,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emergencyNotificationTitle => '重要通知';
 
   @override
+  String get warningTitle => '警告';
+
+  @override
+  String get successTitle => '成功';
+
+  @override
+  String get announcementTitle => '公告';
+
+  @override
+  String get promotionTitle => '促销';
+
+  @override
   String get ok => '确定';
 
   @override

@@ -887,7 +887,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get emergencyNotificationTitle => '중요한 공지';
 
   @override
-  String get ok => '확인';
+  String get warningTitle => '경고';
+
+  @override
+  String get successTitle => '성공';
+
+  @override
+  String get announcementTitle => '공지';
+
+  @override
+  String get promotionTitle => '프로모션';
+
+  @override
+  String get ok => 'OK';
 
   @override
   String get screenshotMode => '스크린샷 모드';

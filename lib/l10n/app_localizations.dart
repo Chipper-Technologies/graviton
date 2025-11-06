@@ -1794,6 +1794,30 @@ abstract class AppLocalizations {
   /// **'Important Notice'**
   String get emergencyNotificationTitle;
 
+  /// Title for warning notification dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get warningTitle;
+
+  /// Title for success notification dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get successTitle;
+
+  /// Title for announcement notification dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Announcement'**
+  String get announcementTitle;
+
+  /// Title for promotion notification dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Promotion'**
+  String get promotionTitle;
+
   /// OK button text
   ///
   /// In en, this message translates to:
