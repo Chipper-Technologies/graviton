@@ -132,7 +132,9 @@ class VersionCheckDialog extends StatelessWidget {
   }
 
   /// Show the version check dialog if update is required
-  static Future<void> showIfRequired(BuildContext context) async {
+  /// Returns true if a dialog was shown, false otherwise
+  /// This helps prevent dialog conflicts in the calling code
+  static Future<bool> showIfRequired(BuildContext context) async {
     final versionService = VersionService.instance;
 
     // Check for enforced minimum version first
@@ -143,6 +145,7 @@ class VersionCheckDialog extends StatelessWidget {
           barrierDismissible: false,
           builder: (context) => const VersionCheckDialog(isEnforced: true),
         );
+        return true;
       }
     }
     // Check for preferred minimum version (optional update)
@@ -153,7 +156,10 @@ class VersionCheckDialog extends StatelessWidget {
           barrierDismissible: true,
           builder: (context) => const VersionCheckDialog(isEnforced: false),
         );
+        return true;
       }
     }
+
+    return false; // No dialog was shown
   }
 }

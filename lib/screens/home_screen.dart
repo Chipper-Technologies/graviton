@@ -27,7 +27,7 @@ import 'package:graviton/widgets/auto_pause_dialog_wrapper.dart';
 import 'package:graviton/widgets/body_labels_overlay.dart';
 import 'package:graviton/widgets/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
-import 'package:graviton/widgets/persistent_bottom_sheet.dart';
+import 'package:graviton/widgets/sliding_panel_bottom_sheet.dart';
 import 'package:graviton/widgets/semantics/semantic_simulation_canvas.dart';
 import 'package:graviton/widgets/semantics/semantic_live_region.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
@@ -108,16 +108,21 @@ class _HomeScreenState extends State<HomeScreen>
     _registerKeyboardCallbacks();
 
     // Check for app updates and maintenance after the widget tree is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      VersionCheckDialog.showIfRequired(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Wait for version dialog to complete before proceeding
+      final versionDialogWasShown = await VersionCheckDialog.showIfRequired(
+        context,
+      );
+
       // Show maintenance/notification dialogs after version check
       Future.delayed(const Duration(milliseconds: 500), () {
         if (mounted) {
           MaintenanceDialog.showIfNeeded(context);
         }
       });
-      // Check if first-time user needs tutorial
-      _checkFirstTimeUser();
+
+      // Check if first-time user needs tutorial, with awareness of version dialog
+      _checkFirstTimeUser(versionDialogWasShown: versionDialogWasShown);
     });
   }
 
@@ -707,7 +712,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  void _checkFirstTimeUser() async {
+  void _checkFirstTimeUser({bool versionDialogWasShown = false}) async {
     final hasSeenTutorial = await OnboardingService.hasSeenTutorial();
     if (!hasSeenTutorial && mounted) {
       // Show tutorial after a short delay to let the app initialize
@@ -717,12 +722,16 @@ class _HomeScreenState extends State<HomeScreen>
         }
       });
     } else {
-      // For existing users, check for new changelogs with a longer delay to ensure Firebase is ready
-      Future.delayed(const Duration(milliseconds: 2000), () {
-        if (mounted) {
-          _checkForNewChangelogs(context);
-        }
-      });
+      // For existing users, check for new changelogs only if no version dialog was shown
+      // This prevents dialog conflicts - if user needs to update, focus on that first
+      if (!versionDialogWasShown) {
+        Future.delayed(const Duration(milliseconds: 2000), () {
+          if (mounted) {
+            _checkForNewChangelogs(context);
+          }
+        });
+      }
+      // If version dialog was shown, skip changelog entirely to avoid overwhelming the user
     }
   }
 
@@ -1159,7 +1168,7 @@ class _HomeScreenState extends State<HomeScreen>
                             right: 0,
                             bottom: 0,
                             height: MediaQuery.of(context).size.height,
-                            child: PersistentBottomSheet(
+                            child: SlidingPanelBottomSheet(
                               onInteraction: _showFloatingControlsTemporarily,
                             ),
                           ),
@@ -1168,7 +1177,7 @@ class _HomeScreenState extends State<HomeScreen>
                         if (!shouldHideUI && _showFloatingControls)
                           ValueListenableBuilder<double>(
                             valueListenable:
-                                PersistentBottomSheet.sheetPosition,
+                                SlidingPanelBottomSheet.sheetPosition,
                             builder: (context, sheetPosition, child) {
                               final screenHeight = MediaQuery.of(
                                 context,
