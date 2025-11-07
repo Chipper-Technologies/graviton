@@ -170,16 +170,32 @@ class CameraControls extends StatelessWidget {
           ),
         ],
 
+        // Camera Settings - Combined FOV, Speed, and Visual Aids
+        const SizedBox(height: AppTypography.spacingLarge),
+
+        SectionTitle(title: l10n.cameraSettingsTitle),
+        const SizedBox(height: AppTypography.spacingMedium),
+
+        HapticSliderOption.detailed(
+          label: l10n.fieldOfViewLabel,
+          value: appState.camera.fieldOfView,
+          min: 30.0,
+          max: 120.0,
+          divisions: 90,
+          icon: Icons.camera_alt,
+          onChanged: (value) {
+            appState.camera.setFieldOfView(value);
+          },
+          formatter: (value) => '${value.round()}°',
+        ),
+
         // Camera Speed Control (only for AI techniques)
         if (appState.ui.cinematicCameraTechnique !=
             CinematicCameraTechnique.manual) ...[
           const SizedBox(height: AppTypography.spacingLarge),
 
-          SectionTitle(title: l10n.cameraSpeedLabel),
-          const SizedBox(height: AppTypography.spacingMedium),
-
           HapticSliderOption.detailed(
-            label: l10n.speedLabel,
+            label: l10n.cameraSpeedLabel,
             value: appState.ui.cameraSpeed,
             min: 0.1,
             max: 3.0,
@@ -191,6 +207,17 @@ class CameraControls extends StatelessWidget {
             formatter: (value) => '${value.toStringAsFixed(1)}x',
           ),
         ],
+
+        const SizedBox(height: AppTypography.spacingLarge),
+
+        _buildToggleOption(
+          l10n.crosshairsTitle,
+          l10n.crosshairsDescription,
+          Icons.center_focus_strong,
+          appState.camera.showCrosshairs,
+          () => appState.camera.toggleCrosshairs(),
+          isLast: true,
+        ),
 
         SizedBox(height: AppTypography.spacingXXLarge),
       ],

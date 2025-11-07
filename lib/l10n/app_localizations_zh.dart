@@ -81,6 +81,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cameraSpeedHint => '调整AI相机移动速度从慢到快。使用方向键进行小幅调整。';
 
   @override
+  String get cameraSettingsTitle => '相机设置';
+
+  @override
+  String get fieldOfViewLabel => '视野';
+
+  @override
+  String get crosshairsTitle => '十字准线';
+
+  @override
+  String get crosshairsDescription => '显示屏幕中心指示器';
+
+  @override
   String get selectNearestTitle => '选择最近';
 
   @override

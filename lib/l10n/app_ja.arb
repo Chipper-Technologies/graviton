@@ -541,5 +541,9 @@
   "accessibilityError": "エラー：{errorMessage}",
   "accessibilitySettingEnabled": "{settingName}が有効になりました",
   "accessibilitySettingDisabled": "{settingName}が無効になりました",
-  "simulationSpeedHint": "シミュレーション速度を0.1倍から16倍の通常速度まで調整します。矢印キーで細かく調整できます。"
+  "simulationSpeedHint": "シミュレーション速度を0.1倍から16倍の通常速度まで調整します。矢印キーで細かく調整できます。",
+  "cameraSettingsTitle": "カメラ設定",
+  "fieldOfViewLabel": "視野角",
+  "crosshairsTitle": "クロスヘア",
+  "crosshairsDescription": "画面中央のインジケーターを表示"
 }

@@ -24,8 +24,8 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/star_generator.dart';
 import 'package:graviton/widgets/auto_pause_dialog_wrapper.dart';
-import 'package:graviton/widgets/body_labels_overlay.dart';
-import 'package:graviton/widgets/body_property_editor_overlay.dart';
+import 'package:graviton/widgets/overlays/body_labels_overlay.dart';
+import 'package:graviton/widgets/overlays/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
 import 'package:graviton/widgets/sliding_panel_bottom_sheet.dart';
 import 'package:graviton/widgets/semantics/semantic_simulation_canvas.dart';
@@ -40,14 +40,15 @@ import 'package:graviton/screens/help_screen.dart';
 import 'package:graviton/screens/application_settings_screen.dart';
 import 'package:graviton/widgets/options_drawer.dart';
 import 'package:graviton/widgets/maintenance_dialog.dart';
-import 'package:graviton/widgets/offscreen_indicators_overlay.dart';
+import 'package:graviton/widgets/overlays/offscreen_indicators_overlay.dart';
+import 'package:graviton/widgets/overlays/camera_visual_aids_overlay.dart';
 import 'package:graviton/screens/scenario_selection_screen.dart';
 import 'package:graviton/screens/about_screen.dart';
 import 'package:graviton/screens/physics_settings_screen.dart';
 import 'package:graviton/widgets/screenshot_countdown.dart';
-import 'package:graviton/widgets/stats_overlay.dart';
+import 'package:graviton/widgets/overlays/stats_overlay.dart';
 import 'package:graviton/widgets/version_check_dialog.dart';
-import 'package:graviton/widgets/tutorial_overlay.dart';
+import 'package:graviton/widgets/overlays/tutorial_overlay.dart';
 import 'package:graviton/services/onboarding_service.dart';
 import 'package:graviton/services/fullscreen_service.dart';
 import 'package:graviton/utils/fullscreen_utils.dart';
@@ -402,7 +403,13 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   vm.Matrix4 _buildProjection(double aspect) {
-    return vm.makePerspectiveMatrix(vm.radians(60.0), aspect, 0.1, 4000.0);
+    final appState = context.read<AppState>();
+    return vm.makePerspectiveMatrix(
+      vm.radians(appState.camera.fieldOfView),
+      aspect,
+      0.1,
+      4000.0,
+    );
   }
 
   /// Register keyboard navigation callbacks for accessibility
@@ -1189,6 +1196,17 @@ class _HomeScreenState extends State<HomeScreen>
                             selectedBodyIndex: appState.camera.selectedBody,
                             onPropertyIconTapped: () =>
                                 _showBodyPropertiesDialog(context, appState),
+                          ),
+                        // Camera visual aids overlay
+                        if (!shouldHideUI)
+                          CameraVisualAidsOverlay(
+                            bodies: appState.simulation.bodies,
+                            viewMatrix: view,
+                            projMatrix: _buildProjection(size.aspectRatio),
+                            screenSize: size,
+                            selectedBodyIndex: appState.camera.selectedBody,
+                            cameraDistance: appState.camera.distance,
+                            showCrosshairs: appState.camera.showCrosshairs,
                           ),
                         if (appState.ui.showStats)
                           SemanticLiveRegion(

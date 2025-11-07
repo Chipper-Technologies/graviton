@@ -542,5 +542,9 @@
   "accessibilityError": "Erreur : {errorMessage}",
   "accessibilitySettingEnabled": "{settingName} activé",
   "accessibilitySettingDisabled": "{settingName} désactivé",
-  "simulationSpeedHint": "Ajustez la vitesse de simulation de 0,1x à 16x vitesse normale. Utilisez les touches fléchées pour de petits incréments."
+  "simulationSpeedHint": "Ajustez la vitesse de simulation de 0,1x à 16x vitesse normale. Utilisez les touches fléchées pour de petits incréments.",
+  "cameraSettingsTitle": "Paramètres de la Caméra",
+  "fieldOfViewLabel": "Champ de Vision",
+  "crosshairsTitle": "Réticule",
+  "crosshairsDescription": "Afficher l'indicateur de centre d'écran"
 }

@@ -120,6 +120,26 @@
     "description": "Accessibility hint for camera speed slider"
   },
   
+  "cameraSettingsTitle": "Camera Settings",
+  "@cameraSettingsTitle": {
+    "description": "Section title for camera settings including FOV and visual aids"
+  },
+  
+  "fieldOfViewLabel": "Field of View",
+  "@fieldOfViewLabel": {
+    "description": "Label for field of view slider"
+  },
+  
+  "crosshairsTitle": "Crosshairs",
+  "@crosshairsTitle": {
+    "description": "Title for crosshairs visual aid toggle"
+  },
+  
+  "crosshairsDescription": "Show center screen indicator",
+  "@crosshairsDescription": {
+    "description": "Description for crosshairs visual aid"
+  },
+  
   "selectNearestTitle": "Select Nearest",
   "@selectNearestTitle": {
     "description": "Button text for selecting nearest celestial body"

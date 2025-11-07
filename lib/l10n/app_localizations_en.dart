@@ -83,6 +83,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Adjust AI camera movement speed from slow to fast. Use arrow keys to change in small increments.';
 
   @override
+  String get cameraSettingsTitle => 'Camera Settings';
+
+  @override
+  String get fieldOfViewLabel => 'Field of View';
+
+  @override
+  String get crosshairsTitle => 'Crosshairs';
+
+  @override
+  String get crosshairsDescription => 'Show center screen indicator';
+
+  @override
   String get selectNearestTitle => 'Select Nearest';
 
   @override

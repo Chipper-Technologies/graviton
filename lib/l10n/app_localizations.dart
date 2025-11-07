@@ -252,6 +252,30 @@ abstract class AppLocalizations {
   /// **'Adjust AI camera movement speed from slow to fast. Use arrow keys to change in small increments.'**
   String get cameraSpeedHint;
 
+  /// Section title for camera settings including FOV and visual aids
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Settings'**
+  String get cameraSettingsTitle;
+
+  /// Label for field of view slider
+  ///
+  /// In en, this message translates to:
+  /// **'Field of View'**
+  String get fieldOfViewLabel;
+
+  /// Title for crosshairs visual aid toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Crosshairs'**
+  String get crosshairsTitle;
+
+  /// Description for crosshairs visual aid
+  ///
+  /// In en, this message translates to:
+  /// **'Show center screen indicator'**
+  String get crosshairsDescription;
+
   /// Button text for selecting nearest celestial body
   ///
   /// In en, this message translates to:

@@ -85,6 +85,18 @@ class AppLocalizationsDe extends AppLocalizations {
       'KI-Kamerabewegungsgeschwindigkeit von langsam bis schnell anpassen. Pfeiltasten für kleine Schritte verwenden.';
 
   @override
+  String get cameraSettingsTitle => 'Kameraeinstellungen';
+
+  @override
+  String get fieldOfViewLabel => 'Sichtfeld';
+
+  @override
+  String get crosshairsTitle => 'Fadenkreuz';
+
+  @override
+  String get crosshairsDescription => 'Bildschirmmitte-Anzeige einblenden';
+
+  @override
   String get selectNearestTitle => 'Nächstes Auswählen';
 
   @override

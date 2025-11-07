@@ -543,5 +543,9 @@
   "accessibilityError": "오류: {errorMessage}",
   "accessibilitySettingEnabled": "{settingName}이(가) 활성화되었습니다",
   "accessibilitySettingDisabled": "{settingName}이(가) 비활성화되었습니다",
-  "simulationSpeedHint": "시뮬레이션 속도를 0.1배에서 16배 정상 속도까지 조정합니다. 화살표 키를 사용하여 세밀하게 조정할 수 있습니다."
+  "simulationSpeedHint": "시뮬레이션 속도를 0.1배에서 16배 정상 속도까지 조정합니다. 화살표 키를 사용하여 세밀하게 조정할 수 있습니다.",
+  "cameraSettingsTitle": "카메라 설정",
+  "fieldOfViewLabel": "시야각",
+  "crosshairsTitle": "십자선",
+  "crosshairsDescription": "화면 중앙 표시기 표시"
 }

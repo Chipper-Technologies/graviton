@@ -81,6 +81,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cameraSpeedHint => 'AIカメラの移動速度を遅いから速いまで調整します。矢印キーで小刻みに変更できます。';
 
   @override
+  String get cameraSettingsTitle => 'カメラ設定';
+
+  @override
+  String get fieldOfViewLabel => '視野角';
+
+  @override
+  String get crosshairsTitle => 'クロスヘア';
+
+  @override
+  String get crosshairsDescription => '画面中央のインジケーターを表示';
+
+  @override
   String get selectNearestTitle => '最近を選択';
 
   @override

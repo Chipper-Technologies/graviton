@@ -542,5 +542,9 @@
   "accessibilityError": "错误：{errorMessage}",
   "accessibilitySettingEnabled": "{settingName}已启用",
   "accessibilitySettingDisabled": "{settingName}已禁用",
-  "simulationSpeedHint": "调整模拟速度从0.1倍到16倍正常速度。使用箭头键进行小幅调整。"
+  "simulationSpeedHint": "调整模拟速度从0.1倍到16倍正常速度。使用箭头键进行小幅调整。",
+  "cameraSettingsTitle": "相机设置",
+  "fieldOfViewLabel": "视野",
+  "crosshairsTitle": "十字准线",
+  "crosshairsDescription": "显示屏幕中心指示器"
 }

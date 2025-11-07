@@ -85,6 +85,19 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ajuster la vitesse de mouvement de la caméra IA de lente à rapide. Utiliser les touches fléchées pour des changements par petits incréments.';
 
   @override
+  String get cameraSettingsTitle => 'Paramètres de la Caméra';
+
+  @override
+  String get fieldOfViewLabel => 'Champ de Vision';
+
+  @override
+  String get crosshairsTitle => 'Réticule';
+
+  @override
+  String get crosshairsDescription =>
+      'Afficher l\'indicateur de centre d\'écran';
+
+  @override
   String get selectNearestTitle => 'Sélectionner le Plus Proche';
 
   @override

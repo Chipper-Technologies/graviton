@@ -674,5 +674,9 @@
   "accessibilityError": "Fehler: {errorMessage}",
   "accessibilitySettingEnabled": "{settingName} aktiviert",
   "accessibilitySettingDisabled": "{settingName} deaktiviert",
-  "simulationSpeedHint": "Simulationsgeschwindigkeit von 0,1x bis 16x normaler Geschwindigkeit anpassen. Verwenden Sie Pfeiltasten für kleine Schritte."
+  "simulationSpeedHint": "Simulationsgeschwindigkeit von 0,1x bis 16x normaler Geschwindigkeit anpassen. Verwenden Sie Pfeiltasten für kleine Schritte.",
+  "cameraSettingsTitle": "Kameraeinstellungen",
+  "fieldOfViewLabel": "Sichtfeld",
+  "crosshairsTitle": "Fadenkreuz",
+  "crosshairsDescription": "Bildschirmmitte-Anzeige einblenden"
 }

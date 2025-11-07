@@ -30,6 +30,12 @@ class CameraState extends ChangeNotifier {
   // Camera controls
   bool _invertPitch = false; // Toggle to invert pitch controls
 
+  // Field of View
+  double _fieldOfView = 60.0; // Default FOV in degrees (30° - 120°)
+
+  // Visual aids
+  bool _showCrosshairs = false;
+
   // Getters
   double get yaw => _yaw;
   double get pitch => _pitch;
@@ -44,6 +50,8 @@ class CameraState extends ChangeNotifier {
   int? get followedBodyIndex => _followedBodyIndex;
   double get followDistance => _followDistance;
   bool get invertPitch => _invertPitch;
+  double get fieldOfView => _fieldOfView;
+  bool get showCrosshairs => _showCrosshairs;
 
   vm.Vector3 get eyePosition {
     final cp = math.cos(_pitch);
@@ -337,9 +345,10 @@ class CameraState extends ChangeNotifier {
     final multiplier = config?.cameraDistanceMultiplier ?? 1.2;
 
     // Calculate distance needed to fit bounding sphere in view
-    // Assumes ~60° field of view, so distance = radius / tan(30°)
+    // Uses current field of view for calculation
+    final halfFovRadians = vm.radians(fieldOfView) / 2;
     final optimalDistance =
-        (boundingRadius * multiplier) / math.tan(math.pi / 6);
+        (boundingRadius * multiplier) / math.tan(halfFovRadians);
 
     // Clamp to reasonable bounds
     return optimalDistance.clamp(20.0, 2000.0);
@@ -412,6 +421,36 @@ class CameraState extends ChangeNotifier {
       UIAction.invertPitchToggle,
       element: UIElement.cameraControls,
       value: _invertPitch.toString(),
+    );
+
+    notifyListeners();
+  }
+
+  void setFieldOfView(double fov) {
+    _fieldOfView = fov.clamp(30.0, 120.0);
+
+    // Haptic feedback for FOV change
+    SafeHapticFeedback.selectionClick();
+
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.buttonPressed,
+      element: UIElement.cameraControls,
+      value: 'fov_${_fieldOfView.round()}',
+    );
+
+    notifyListeners();
+  }
+
+  void toggleCrosshairs() {
+    _showCrosshairs = !_showCrosshairs;
+
+    // Haptic feedback for visual aid toggle
+    SafeHapticFeedback.lightImpact();
+
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.buttonPressed,
+      element: UIElement.cameraControls,
+      value: 'crosshairs_$_showCrosshairs',
     );
 
     notifyListeners();

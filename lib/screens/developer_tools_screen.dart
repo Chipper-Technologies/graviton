@@ -13,7 +13,7 @@ import 'package:graviton/widgets/common/action_option.dart';
 import 'package:graviton/widgets/common/haptic_app_bar.dart';
 import 'package:graviton/widgets/screenshot_mode_widget.dart';
 import 'package:graviton/widgets/section_title.dart';
-import 'package:graviton/widgets/tutorial_overlay.dart';
+import 'package:graviton/widgets/overlays/tutorial_overlay.dart';
 
 /// Developer Tools full-screen page
 class DeveloperToolsScreen extends StatelessWidget {

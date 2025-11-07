@@ -133,7 +133,7 @@ void main() {
         final decoration = container.decoration as BoxDecoration;
 
         expect(container.padding, equals(const EdgeInsets.all(12)));
-        expect(decoration.color, equals(AppColors.basicBlack54));
+        expect(decoration.color, equals(AppColors.uiBlackOverlay));
         expect(decoration.borderRadius, equals(expectedBorderRadius));
       });
 
