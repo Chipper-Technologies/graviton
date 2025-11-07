@@ -240,6 +240,42 @@ abstract class AppLocalizations {
   /// **'Manual Controls'**
   String get manualControlsTitle;
 
+  /// Label for AI camera movement speed slider
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Speed'**
+  String get cameraSpeedLabel;
+
+  /// Accessibility hint for camera speed slider
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust AI camera movement speed from slow to fast. Use arrow keys to change in small increments.'**
+  String get cameraSpeedHint;
+
+  /// Section title for camera settings including FOV and visual aids
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Settings'**
+  String get cameraSettingsTitle;
+
+  /// Label for field of view slider
+  ///
+  /// In en, this message translates to:
+  /// **'Field of View'**
+  String get fieldOfViewLabel;
+
+  /// Title for crosshairs visual aid toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Crosshairs'**
+  String get crosshairsTitle;
+
+  /// Description for crosshairs visual aid
+  ///
+  /// In en, this message translates to:
+  /// **'Show center screen indicator'**
+  String get crosshairsDescription;
+
   /// Button text for selecting nearest celestial body
   ///
   /// In en, this message translates to:
@@ -1782,6 +1818,30 @@ abstract class AppLocalizations {
   /// **'Important Notice'**
   String get emergencyNotificationTitle;
 
+  /// Title for warning notification dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get warningTitle;
+
+  /// Title for success notification dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get successTitle;
+
+  /// Title for announcement notification dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Announcement'**
+  String get announcementTitle;
+
+  /// Title for promotion notification dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Promotion'**
+  String get promotionTitle;
+
   /// OK button text
   ///
   /// In en, this message translates to:
@@ -2663,6 +2723,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Asteroid'**
   String get bodyTypeAsteroid;
+
+  /// Plural form for star body type with count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 Star} other{{count} Stars}}'**
+  String bodyTypeStarPlural(int count);
+
+  /// Plural form for planet body type with count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 Planet} other{{count} Planets}}'**
+  String bodyTypePlanetPlural(int count);
+
+  /// Plural form for moon body type with count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 Moon} other{{count} Moons}}'**
+  String bodyTypeMoonPlural(int count);
+
+  /// Plural form for asteroid body type with count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 Asteroid} other{{count} Asteroids}}'**
+  String bodyTypeAsteroidPlural(int count);
 
   /// Display name for development app flavor
   ///

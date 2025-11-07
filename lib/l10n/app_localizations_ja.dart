@@ -75,6 +75,24 @@ class AppLocalizationsJa extends AppLocalizations {
   String get manualControlsTitle => '手動制御';
 
   @override
+  String get cameraSpeedLabel => 'カメラ速度';
+
+  @override
+  String get cameraSpeedHint => 'AIカメラの移動速度を遅いから速いまで調整します。矢印キーで小刻みに変更できます。';
+
+  @override
+  String get cameraSettingsTitle => 'カメラ設定';
+
+  @override
+  String get fieldOfViewLabel => '視野角';
+
+  @override
+  String get crosshairsTitle => 'クロスヘア';
+
+  @override
+  String get crosshairsDescription => '画面中央のインジケーターを表示';
+
+  @override
   String get selectNearestTitle => '最近を選択';
 
   @override
@@ -877,6 +895,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get emergencyNotificationTitle => '重要なお知らせ';
 
   @override
+  String get warningTitle => '警告';
+
+  @override
+  String get successTitle => '成功';
+
+  @override
+  String get announcementTitle => 'お知らせ';
+
+  @override
+  String get promotionTitle => 'プロモーション';
+
+  @override
   String get ok => 'OK';
 
   @override
@@ -1348,6 +1378,46 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get bodyTypeAsteroid => '小惑星';
+
+  @override
+  String bodyTypeStarPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count個の恒星',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypePlanetPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count個の惑星',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeMoonPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count個の月',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeAsteroidPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count個の小惑星',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get appFlavorDevelopment => '開発';

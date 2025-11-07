@@ -105,7 +105,7 @@ void main() {
 
     test('Simulation state should be accessible and functional', () {
       expect(appState.simulation.isRunning, isFalse);
-      expect(appState.simulation.timeScale, equals(8.0));
+      expect(appState.simulation.timeScale, equals(4.0));
 
       appState.simulation.start();
       expect(appState.simulation.isRunning, isTrue);
@@ -195,8 +195,10 @@ void main() {
       () async {
         TestWidgetsFlutterBinding.ensureInitialized();
 
-        // Enable global gravity fields first (simulates saved setting)
-        appState.ui.toggleGlobalGravityFields();
+        // Ensure global gravity fields is enabled (should be default now)
+        if (!appState.ui.globalGravityFields) {
+          appState.ui.toggleGlobalGravityFields();
+        }
 
         // Initialize async which loads simulation with bodies
         await appState.initializeAsync();

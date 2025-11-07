@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
@@ -9,6 +10,7 @@ import 'package:graviton/widgets/camera_mode_option.dart';
 import 'package:graviton/widgets/camera_action_button.dart';
 import 'package:graviton/widgets/common/haptic_ink_well.dart';
 import 'package:graviton/widgets/common/haptic_switch.dart';
+import 'package:graviton/widgets/common/haptic_slider_option.dart';
 import 'package:graviton/widgets/section_title.dart';
 
 /// Camera controls content for the persistent bottom sheet
@@ -146,15 +148,8 @@ class CameraControls extends StatelessWidget {
               ),
             ],
           ),
-        ],
 
-        // Camera Movement Controls (only show if manual mode)
-        if (appState.ui.cinematicCameraTechnique ==
-            CinematicCameraTechnique.manual) ...[
           const SizedBox(height: AppTypography.spacingXXLarge),
-
-          SectionTitle(title: l10n.manualControlsTitle),
-          const SizedBox(height: AppTypography.spacingMedium),
 
           _buildToggleOption(
             l10n.autoRotateTitle,
@@ -163,21 +158,69 @@ class CameraControls extends StatelessWidget {
             appState.camera.autoRotate,
             () => appState.camera.toggleAutoRotate(),
           ),
+
+          const SizedBox(height: AppTypography.spacingMedium),
+
+          _buildToggleOption(
+            l10n.invertPitchControlsLabel,
+            l10n.invertPitchControlsDescription,
+            Icons.swap_vert,
+            appState.camera.invertPitch,
+            () => appState.camera.toggleInvertPitch(),
+            isLast: true,
+          ),
         ],
 
-        SizedBox(height: AppTypography.spacingXXLarge),
+        // Camera Settings - Combined FOV, Speed, and Visual Aids
+        const SizedBox(height: AppTypography.spacingLarge),
 
-        SectionTitle(title: l10n.cameraControlsLabel),
-        SizedBox(height: AppTypography.spacingMedium),
+        SectionTitle(title: l10n.cameraSettingsTitle),
+        const SizedBox(height: AppTypography.spacingMedium),
+
+        HapticSliderOption.detailed(
+          label: l10n.fieldOfViewLabel,
+          value: appState.camera.fieldOfView,
+          min: SimulationConstants.cameraFovMin,
+          max: SimulationConstants.cameraFovMax,
+          divisions: SimulationConstants.cameraFovDivisions,
+          icon: Icons.camera_alt,
+          onChanged: (value) {
+            appState.camera.setFieldOfView(value);
+          },
+          formatter: (value) => '${value.round()}°',
+        ),
+
+        // Camera Speed Control (only for AI techniques)
+        if (appState.ui.cinematicCameraTechnique !=
+            CinematicCameraTechnique.manual) ...[
+          const SizedBox(height: AppTypography.spacingLarge),
+
+          HapticSliderOption.detailed(
+            label: l10n.cameraSpeedLabel,
+            value: appState.ui.cameraSpeed,
+            min: SimulationConstants.cameraSpeedMin,
+            max: SimulationConstants.cameraSpeedMax,
+            divisions: SimulationConstants.cameraSpeedDivisions,
+            icon: Icons.speed,
+            onChanged: (value) {
+              appState.ui.setCameraSpeed(value);
+            },
+            formatter: (value) => '${value.toStringAsFixed(1)}x',
+          ),
+        ],
+
+        const SizedBox(height: AppTypography.spacingLarge),
 
         _buildToggleOption(
-          l10n.invertPitchControlsLabel,
-          l10n.invertPitchControlsDescription,
-          Icons.swap_vert,
-          appState.camera.invertPitch,
-          () => appState.camera.toggleInvertPitch(),
+          l10n.crosshairsTitle,
+          l10n.crosshairsDescription,
+          Icons.center_focus_strong,
+          appState.camera.showCrosshairs,
+          () => appState.camera.toggleCrosshairs(),
           isLast: true,
         ),
+
+        SizedBox(height: AppTypography.spacingXXLarge),
       ],
     );
   }

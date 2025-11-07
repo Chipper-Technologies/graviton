@@ -585,6 +585,7 @@ class GravityPainter {
               .accretionMediumPurple // Bright purple for black holes - much more visible!
         : gravityFieldColorScheme.getEquipotentialColor(
             0.5,
+            body.name.hashCode,
           ); // Use middle intensity from scheme
 
     // Calculate maximum field strength for normalization if using field indicators
@@ -626,6 +627,7 @@ class GravityPainter {
       // Get color from scheme based on field strength or position
       final schemeColor = gravityFieldColorScheme.getEquipotentialColor(
         strengthRatio,
+        body.name.hashCode,
       );
 
       // Use scheme color for normal bodies, preserve special black hole color
@@ -1325,7 +1327,10 @@ class GravityPainter {
       );
 
       // Get color for this potential level
-      final surfaceColor = colorScheme.getEquipotentialColor(ratio);
+      final surfaceColor = colorScheme.getEquipotentialColor(
+        ratio,
+        body.name.hashCode,
+      );
       final alpha = (0.3 * (1.0 - ratio * 0.5)).clamp(0.1, 0.4); // Fade outward
 
       final paint = GravityFieldUtils.createGravityFieldPaint(
@@ -1405,7 +1410,10 @@ class GravityPainter {
       );
 
       // Get color from scheme with enhanced alpha for heat map effect
-      final baseColor = colorScheme.getEquipotentialColor(strengthRatio);
+      final baseColor = colorScheme.getEquipotentialColor(
+        strengthRatio,
+        body.name.hashCode,
+      );
       final alpha = (0.15 * strengthRatio + 0.05).clamp(
         0.05,
         0.3,

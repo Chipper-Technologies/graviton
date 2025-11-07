@@ -78,6 +78,26 @@ class AppLocalizationsFr extends AppLocalizations {
   String get manualControlsTitle => 'Contrôles Manuels';
 
   @override
+  String get cameraSpeedLabel => 'Vitesse de la Caméra';
+
+  @override
+  String get cameraSpeedHint =>
+      'Ajuster la vitesse de mouvement de la caméra IA de lente à rapide. Utiliser les touches fléchées pour des changements par petits incréments.';
+
+  @override
+  String get cameraSettingsTitle => 'Paramètres de la Caméra';
+
+  @override
+  String get fieldOfViewLabel => 'Champ de Vision';
+
+  @override
+  String get crosshairsTitle => 'Réticule';
+
+  @override
+  String get crosshairsDescription =>
+      'Afficher l\'indicateur de centre d\'écran';
+
+  @override
   String get selectNearestTitle => 'Sélectionner le Plus Proche';
 
   @override
@@ -912,6 +932,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get emergencyNotificationTitle => 'Avis Important';
 
   @override
+  String get warningTitle => 'Avertissement';
+
+  @override
+  String get successTitle => 'Succès';
+
+  @override
+  String get announcementTitle => 'Annonce';
+
+  @override
+  String get promotionTitle => 'Promotion';
+
+  @override
   String get ok => 'OK';
 
   @override
@@ -1425,6 +1457,50 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get bodyTypeAsteroid => 'Astéroïde';
+
+  @override
+  String bodyTypeStarPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Étoiles',
+      one: '1 Étoile',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypePlanetPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Planètes',
+      one: '1 Planète',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeMoonPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Lunes',
+      one: '1 Lune',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeAsteroidPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Astéroïdes',
+      one: '1 Astéroïde',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get appFlavorDevelopment => 'Développement';

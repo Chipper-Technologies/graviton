@@ -5,6 +5,7 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/common/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
@@ -137,143 +138,31 @@ class PhysicsControls extends StatelessWidget {
         SectionTitle(title: l10n.simulationSpeed),
         SizedBox(height: AppTypography.spacingMedium),
 
-        Container(
-          padding: EdgeInsets.all(AppTypography.spacingLarge),
-          decoration: BoxDecoration(
-            color: AppColors.uiWhite.withValues(
-              alpha: AppTypography.opacityBarely,
-            ),
-            borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-            border: Border.all(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityDisabled,
-              ),
-              width: AppTypography.borderThin,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.speed,
-                    color: AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityHigh,
-                    ),
-                    size: AppTypography.iconSizeXXLarge,
-                  ),
-                  SizedBox(width: AppTypography.spacingLarge),
-                  Text(
-                    l10n.speedLabel,
-                    style: TextStyle(
-                      color: AppColors.uiWhite,
-                      fontSize: AppTypography.fontSizeLarge,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    '${appState.simulation.timeScale.toStringAsFixed(1)}x',
-                    style: TextStyle(
-                      color: AppColors.primaryColor,
-                      fontSize: AppTypography.fontSizeLarge,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: AppTypography.spacingLarge),
+        HapticSliderOption.detailed(
+          label: l10n.speedLabel,
+          value: appState.simulation.timeScale.clamp(0.1, 16.0),
+          min: 0.1,
+          max: 16.0,
+          divisions: 29,
+          icon: Icons.speed,
+          onChanged: (value) {
+            appState.simulation.setTimeScale(value);
+          },
+          formatter: (value) => '${value.toStringAsFixed(1)}x',
+        ),
 
-              // Speed Slider
-              SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  inactiveTrackColor: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityVeryFaint,
-                  ),
-                  activeTrackColor: AppColors.primaryColor,
-                  thumbColor: AppColors.primaryColor,
-                  overlayColor: AppColors.primaryColor.withValues(
-                    alpha: AppTypography.opacityFaint,
-                  ),
-                  valueIndicatorColor: AppColors.primaryColor,
-                  valueIndicatorTextStyle: TextStyle(
-                    color: AppColors.uiWhite,
-                    fontSize: AppTypography.fontSizeSmall,
-                  ),
-                ),
-                child: Semantics(
-                  label: l10n.speedLabel,
-                  hint: l10n.simulationSpeedHint,
-                  value:
-                      '${appState.simulation.timeScale.toStringAsFixed(1)}x ${l10n.speedNormal}',
-                  increasedValue:
-                      '${(appState.simulation.timeScale + 0.1).clamp(0.1, 16.0).toStringAsFixed(1)}x',
-                  decreasedValue:
-                      '${(appState.simulation.timeScale - 0.1).clamp(0.1, 16.0).toStringAsFixed(1)}x',
-                  onIncrease: () {
-                    final newValue = (appState.simulation.timeScale + 0.1)
-                        .clamp(0.1, 16.0);
-                    appState.simulation.setTimeScale(newValue);
-                  },
-                  onDecrease: () {
-                    final newValue = (appState.simulation.timeScale - 0.1)
-                        .clamp(0.1, 16.0);
-                    appState.simulation.setTimeScale(newValue);
-                  },
-                  child: Slider(
-                    min: 0.1,
-                    max: 16.0,
-                    divisions: 159,
-                    value: appState.simulation.timeScale.clamp(0.1, 16.0),
-                    label:
-                        '${appState.simulation.timeScale.toStringAsFixed(1)}x',
-                    onChanged: (value) =>
-                        appState.simulation.setTimeScale(value),
-                  ),
-                ),
-              ),
+        SizedBox(height: AppTypography.spacingMedium),
 
-              SizedBox(height: AppTypography.spacingMedium),
-
-              // Quick Speed Presets
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildSpeedPresetButton(
-                    context,
-                    appState,
-                    0.5,
-                    l10n.speedHalf,
-                  ),
-                  _buildSpeedPresetButton(
-                    context,
-                    appState,
-                    1.0,
-                    l10n.speedNormal,
-                  ),
-                  _buildSpeedPresetButton(
-                    context,
-                    appState,
-                    2.0,
-                    l10n.speedDouble,
-                  ),
-                  _buildSpeedPresetButton(
-                    context,
-                    appState,
-                    8.0,
-                    l10n.speedVeryFast,
-                  ),
-                  _buildSpeedPresetButton(
-                    context,
-                    appState,
-                    16.0,
-                    l10n.speedMaximum,
-                  ),
-                ],
-              ),
-            ],
-          ),
+        // Quick Speed Presets
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildSpeedPresetButton(context, appState, 0.5, l10n.speedHalf),
+            _buildSpeedPresetButton(context, appState, 1.0, l10n.speedNormal),
+            _buildSpeedPresetButton(context, appState, 2.0, l10n.speedDouble),
+            _buildSpeedPresetButton(context, appState, 8.0, l10n.speedVeryFast),
+            _buildSpeedPresetButton(context, appState, 16.0, l10n.speedMaximum),
+          ],
         ),
 
         SizedBox(height: AppTypography.spacingXXLarge),

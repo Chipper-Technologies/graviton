@@ -117,6 +117,12 @@ class CinematicCameraController {
       return;
     }
 
+    // Apply camera speed multiplier to deltaTime for AI techniques
+    final speedMultiplier = technique == CinematicCameraTechnique.manual
+        ? 1.0
+        : ui.cameraSpeed;
+    final adjustedDeltaTime = deltaTime * speedMultiplier;
+
     // Clean up any stale body references that may have been removed during mergers
     _cleanupStaleBodyReferences(simulation.bodies);
 
@@ -134,7 +140,7 @@ class CinematicCameraController {
         // - Predetermined cinematic tours for specific scenarios
         // - Orbital mechanics predictions for event anticipation
         // - Smooth, educational camera movements
-        _handlePredictiveOrbital(simulation, camera, deltaTime);
+        _handlePredictiveOrbital(simulation, camera, adjustedDeltaTime);
         break;
 
       case CinematicCameraTechnique.dynamicFraming:
@@ -143,7 +149,7 @@ class CinematicCameraController {
         // - Ultra-aggressive close-ups for chaotic interactions
         // - Emergency transition interruption for dramatic moments
         // - Real-time framing validation and ejection detection
-        _handleDynamicFraming(simulation, camera, deltaTime);
+        _handleDynamicFraming(simulation, camera, adjustedDeltaTime);
         break;
     }
   }
@@ -237,8 +243,9 @@ class CinematicCameraController {
   void _handleOrbitalPredictions(
     SimulationState simulation,
     CameraState camera,
-    double deltaTime,
-  ) {
+    double deltaTime, {
+    double cameraSpeed = 1.0,
+  }) {
     // Get orbital predictions
     const timeFrame = SimulationConstants.predictiveTimeFrame;
     const timeStep = SimulationConstants.predictiveTimeStep;
@@ -248,8 +255,16 @@ class CinematicCameraController {
       timeStep: timeStep,
     );
 
-    // Detect events using predictions
-    final config = PredictiveOrbitalConfig.forScenario('three_body');
+    // Detect events using predictions with camera speed applied
+    final baseConfig = PredictiveOrbitalConfig.forScenario('three_body');
+    final config = PredictiveOrbitalConfig(
+      predictionTimeframe: baseConfig.predictionTimeframe,
+      minDramaticScore: baseConfig.minDramaticScore,
+      maxTrackedEvents: baseConfig.maxTrackedEvents,
+      movementSpeed: baseConfig.movementSpeed * cameraSpeed,
+      useBanking: baseConfig.useBanking,
+      dramaLevel: baseConfig.dramaLevel,
+    );
     final events = _predictionEngine.detectEvents(
       simulation.bodies,
       predictions,

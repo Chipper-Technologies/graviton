@@ -282,16 +282,17 @@ void main() {
       });
 
       test('should handle edge cases', () {
-        // Zero max strength
-        final normalized1 = GravityFieldUtils.normalizeFieldStrength(10.0, 0.0);
-        expect(normalized1, equals(0.0));
-
-        // Negative values
-        final normalized2 = GravityFieldUtils.normalizeFieldStrength(
-          -5.0,
-          10.0,
+        // Zero max strength should trigger assertion in debug mode
+        expect(
+          () => GravityFieldUtils.normalizeFieldStrength(10.0, 0.0),
+          throwsA(isA<AssertionError>()),
         );
-        expect(normalized2, equals(0.0));
+
+        // Negative field strength should trigger assertion in debug mode
+        expect(
+          () => GravityFieldUtils.normalizeFieldStrength(-5.0, 10.0),
+          throwsA(isA<AssertionError>()),
+        );
 
         // Strength greater than max
         final normalized3 = GravityFieldUtils.normalizeFieldStrength(

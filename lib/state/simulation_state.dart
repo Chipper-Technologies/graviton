@@ -19,7 +19,7 @@ class SimulationState extends ChangeNotifier {
   final physics.Simulation _simulation = physics.Simulation();
 
   SimulationStatus _status = SimulationStatus.stopped;
-  double _timeScale = 8.0;
+  double _timeScale = 4.0;
   int _stepCount = 0;
   double _totalTime = 0.0;
 
@@ -45,7 +45,7 @@ class SimulationState extends ChangeNotifier {
   Future<void> _loadSettings() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      _timeScale = prefs.getDouble(_keyTimeScale) ?? 8.0;
+      _timeScale = prefs.getDouble(_keyTimeScale) ?? 4.0;
 
       // Load saved scenario preference
       final savedScenarioName = prefs.getString(_keyScenario);
@@ -213,8 +213,11 @@ class SimulationState extends ChangeNotifier {
   void reset() {
     stop();
 
-    // Reset physics simulation to current scenario
-    _simulation.reset(); // This will use the current scenario
+    // Reset physics simulation to current scenario, preserving custom gravity well settings
+    _simulation.resetWithScenario(
+      _simulation.currentScenario,
+      preserveCustomSettings: true,
+    );
     _stepCount = 0;
     _totalTime = 0.0;
 

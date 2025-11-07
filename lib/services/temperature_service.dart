@@ -82,8 +82,11 @@ class TemperatureService {
       case BodyType.star:
         // Stellar core temperature based on mass (rough approximation)
         // More massive stars are hotter
-        return 5778.0 *
-            math.pow(mass / 10.0, 0.5); // Sun surface temp * mass factor
+        return SimulationConstants.sunSurfaceTemperature *
+            math.pow(
+              mass / SimulationConstants.starMassReferenceValue,
+              SimulationConstants.temperatureMassExponent,
+            ); // Sun surface temp * mass factor
 
       case BodyType.planet:
       case BodyType.moon:
@@ -91,12 +94,17 @@ class TemperatureService {
         if (distance != null && distance > 0) {
           // Rough estimate: T ∝ 1/sqrt(distance)
           // At distance 50 (Earth-like), temperature ≈ 288K (15°C)
-          return 288.0 * math.pow(50.0 / distance, 0.5);
+          return SimulationConstants.earthLikeTemperature *
+              math.pow(
+                SimulationConstants.earthLikeDistance / distance,
+                SimulationConstants.temperatureMassExponent,
+              );
         }
-        return 220.0; // Cold by default (about -53°C)
+        return SimulationConstants
+            .defaultColdTemperature; // Cold by default (about -53°C)
 
       case BodyType.asteroid:
-        return 200.0; // Very cold (-73°C)
+        return SimulationConstants.asteroidTemperature; // Very cold (-73°C)
     }
   }
 
