@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/ab_test_group.dart';
+import 'package:graviton/enums/custom_message_type.dart';
 import 'package:graviton/enums/user_behavior_tracking_mode.dart';
 import 'package:graviton/services/remote_config_service.dart';
 
@@ -60,6 +61,42 @@ void main() {
         service.activeNotificationText,
         isEmpty,
       ); // No active notifications
+    });
+
+    test('Should provide enum-based active notification type', () {
+      // Test the new activeNotificationTypeEnum method
+      expect(service.activeNotificationTypeEnum, isA<CustomMessageType>());
+
+      // Default should be info type when no specific notification type is set
+      expect(
+        service.activeNotificationTypeEnum,
+        equals(CustomMessageType.info),
+      );
+    });
+
+    test('Should handle different notification type values', () {
+      // Test that all CustomMessageType values are supported by the fromString extension
+      for (final type in CustomMessageType.values) {
+        final configValue = type.configValue;
+        final parsed = CustomMessageTypeExtension.fromString(configValue);
+        expect(
+          parsed,
+          equals(type),
+          reason: 'Failed to parse notification type: $configValue',
+        );
+      }
+    });
+
+    test('Should provide localization keys for notification types', () {
+      // Test that all types have proper localization keys
+      for (final type in CustomMessageType.values) {
+        final localizationKey = type.localizationKey;
+        expect(
+          localizationKey,
+          isNotEmpty,
+          reason: 'Missing localization key for $type',
+        );
+      }
     });
 
     test('Should initialize without throwing', () async {

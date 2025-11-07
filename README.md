@@ -671,6 +671,9 @@ For detailed technical information and development guides, please refer to our c
 ### 🎥 Camera System Documentation  
 - **[Camera Techniques](docs/CAMERA_TECHNIQUES.md)** - Advanced 3D camera system and cinematic controls
 
+### 📨 Remote Configuration Documentation
+- **[Custom Messages](docs/CUSTOM_MESSAGES.md)** - Remote notification and maintenance dialog system
+
 ### 🧪 Testing Documentation
 - **[Testing Guide](test/README.md)** - Comprehensive testing strategy and test organization
 - **Code Generation**: Use `dart run build_runner build` to generate mock classes for testing

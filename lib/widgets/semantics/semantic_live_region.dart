@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/utils/semantics/semantic_utils.dart';
+import 'package:graviton/utils/semantic_utils.dart';
 
 /// A widget that provides live region announcements for accessibility
 /// when values change, with configurable announcement intervals

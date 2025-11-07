@@ -166,7 +166,7 @@ class Simulation {
 
   /// Reset simulation with current scenario
   void reset() {
-    resetWithScenario(_currentScenario);
+    resetWithScenario(_currentScenario, preserveCustomSettings: true);
   }
 
   /// Reset simulation with a specific scenario

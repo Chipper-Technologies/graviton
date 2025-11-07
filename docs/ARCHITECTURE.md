@@ -563,7 +563,7 @@ lib/
 │   ├── maintenance_dialog.dart # Maintenance mode dialog
 │   ├── offscreen_indicators_overlay.dart # Off-screen object indicators
 │   ├── options_drawer.dart     # Settings drawer
-│   ├── persistent_bottom_sheet.dart # Persistent bottom controls
+│   ├── sliding_panel_bottom_sheet.dart # Sliding panel bottom controls
 │   ├── physics_controls.dart   # Physics parameter controls
 │   ├── screenshot_countdown.dart # Screenshot countdown timer
 │   ├── screenshot_mode_widget.dart # Screenshot mode interface

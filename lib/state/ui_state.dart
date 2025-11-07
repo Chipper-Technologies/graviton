@@ -23,11 +23,11 @@ class UIState extends ChangeNotifier {
   double _uiOpacity = RenderingConstants.defaultUIOpacity;
 
   // Gravity field settings
-  bool _globalGravityFields = false;
+  bool _globalGravityFields = true;
   GravityFieldColorScheme _gravityFieldColorScheme =
       GravityFieldColorScheme.classic;
   bool _showEquipotentialSurfaces = false;
-  bool _showGravityFieldIndicators = true;
+  bool _showGravityFieldIndicators = false;
 
   // Habitability settings
   bool _showHabitableZones = false;
@@ -39,6 +39,7 @@ class UIState extends ChangeNotifier {
   // Cinematic camera settings
   CinematicCameraTechnique _cinematicCameraTechnique =
       CinematicCameraTechnique.manual;
+  double _cameraSpeed = 0.5;
 
   // Screenshot mode settings
   bool _hideUIInScreenshotMode = false;
@@ -77,6 +78,7 @@ class UIState extends ChangeNotifier {
       'showHabitabilityIndicators';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
+  static const String _keyCameraSpeed = 'cameraSpeed';
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
   static const String _keyIsFullscreen = 'isFullscreen';
   static const String _keyLastSeenChangelogVersion = 'lastSeenChangelogVersion';
@@ -124,7 +126,10 @@ class UIState extends ChangeNotifier {
           _keyEnableCollisionHapticFeedback,
           _enableCollisionHapticFeedback,
         );
-        // Remove the old setting
+      }
+
+      // Always remove legacy key if it exists to prevent confusion
+      if (prefs.containsKey(_keyEnableVibration)) {
         await prefs.remove(_keyEnableVibration);
       }
 
@@ -132,11 +137,11 @@ class UIState extends ChangeNotifier {
           prefs.getDouble(_keyUIOpacity) ?? RenderingConstants.defaultUIOpacity;
 
       // Load gravity field settings
-      _globalGravityFields = prefs.getBool(_keyGlobalGravityFields) ?? false;
+      _globalGravityFields = prefs.getBool(_keyGlobalGravityFields) ?? true;
       _showEquipotentialSurfaces =
           prefs.getBool(_keyShowEquipotentialSurfaces) ?? false;
       _showGravityFieldIndicators =
-          prefs.getBool(_keyShowGravityFieldIndicators) ?? true;
+          prefs.getBool(_keyShowGravityFieldIndicators) ?? false;
 
       // Load gravity field color scheme
       final gravityColorSchemeValue = prefs.getString(
@@ -158,6 +163,9 @@ class UIState extends ChangeNotifier {
       _cinematicCameraTechnique = cinematicTechniqueValue != null
           ? CinematicCameraTechnique.fromValue(cinematicTechniqueValue)
           : CinematicCameraTechnique.manual;
+
+      // Load camera speed setting
+      _cameraSpeed = prefs.getDouble(_keyCameraSpeed) ?? 0.5;
 
       _hideUIInScreenshotMode =
           prefs.getBool(_keyHideUIInScreenshotMode) ?? false;
@@ -231,6 +239,7 @@ class UIState extends ChangeNotifier {
   // Cinematic camera getters
   CinematicCameraTechnique get cinematicCameraTechnique =>
       _cinematicCameraTechnique;
+  double get cameraSpeed => _cameraSpeed;
 
   // Screenshot mode getters
   bool get hideUIInScreenshotMode => _hideUIInScreenshotMode;
@@ -449,6 +458,17 @@ class UIState extends ChangeNotifier {
       'cinematic_camera_technique',
       technique.value,
     );
+    notifyListeners();
+  }
+
+  void setCameraSpeed(double speed) {
+    _cameraSpeed = speed.clamp(0.1, 3.0);
+    _saveSetting(_keyCameraSpeed, _cameraSpeed);
+
+    // Haptic feedback for camera speed adjustment
+    SafeHapticFeedback.lightImpact();
+
+    FirebaseService.instance.logSettingsChange('camera_speed', _cameraSpeed);
     notifyListeners();
   }
 

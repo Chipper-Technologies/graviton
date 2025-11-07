@@ -39,7 +39,7 @@ void main() {
     Widget buildPhysicsSettingsScreen({
       double gravitationalConstant = 6.67,
       double softening = 0.1,
-      double timeScale = 8.0,
+      double timeScale = 4.0,
       double collisionRadiusMultiplier = 0.5,
       int maxTrailPoints = 500,
       double trailFadeRate = 1.0,

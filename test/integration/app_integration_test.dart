@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/main.dart';
 import 'package:graviton/state/app_state.dart';
-import 'package:graviton/widgets/stats_overlay.dart';
+import 'package:graviton/widgets/overlays/stats_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

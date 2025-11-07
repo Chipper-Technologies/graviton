@@ -75,6 +75,25 @@ class AppLocalizationsKo extends AppLocalizations {
   String get manualControlsTitle => '수동 제어';
 
   @override
+  String get cameraSpeedLabel => '카메라 속도';
+
+  @override
+  String get cameraSpeedHint =>
+      'AI 카메라 이동 속도를 느림에서 빠름까지 조정하세요. 화살표 키를 사용하여 작은 단위로 변경할 수 있습니다.';
+
+  @override
+  String get cameraSettingsTitle => '카메라 설정';
+
+  @override
+  String get fieldOfViewLabel => '시야각';
+
+  @override
+  String get crosshairsTitle => '십자선';
+
+  @override
+  String get crosshairsDescription => '화면 중앙 표시기 표시';
+
+  @override
   String get selectNearestTitle => '가장 가까운 선택';
 
   @override
@@ -880,7 +899,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get emergencyNotificationTitle => '중요한 공지';
 
   @override
-  String get ok => '확인';
+  String get warningTitle => '경고';
+
+  @override
+  String get successTitle => '성공';
+
+  @override
+  String get announcementTitle => '공지';
+
+  @override
+  String get promotionTitle => '프로모션';
+
+  @override
+  String get ok => 'OK';
 
   @override
   String get screenshotMode => '스크린샷 모드';
@@ -1352,6 +1383,46 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get bodyTypeAsteroid => '소행성';
+
+  @override
+  String bodyTypeStarPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count개의 항성',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypePlanetPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count개의 행성',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeMoonPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count개의 달',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeAsteroidPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count개의 소행성',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get appFlavorDevelopment => '개발';

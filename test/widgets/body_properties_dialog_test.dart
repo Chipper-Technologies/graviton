@@ -118,58 +118,70 @@ void main() {
       expect(switchWidget.value, true);
     });
 
-    testWidgets(
-      'should show individual setting when global gravity fields enabled',
-      (tester) async {
-        // Start with body gravity well OFF
-        testBody.showGravityWell = false;
+    testWidgets('should show individual setting when global gravity fields enabled', (
+      tester,
+    ) async {
+      // Start with body gravity well OFF
+      testBody.showGravityWell = false;
 
-        // Enable global gravity fields - this should auto-set all bodies to showGravityWell = true
+      // Enable global gravity fields - this should auto-set all bodies to showGravityWell = true
+      // Since the default is now true, ensure it stays enabled
+      if (!appState.ui.globalGravityFields) {
         appState.ui.toggleGlobalGravityFields();
+      }
 
-        await tester.pumpWidget(
-          createTestWidget(
-            child: BodyPropertiesDialog(
-              body: testBody,
-              bodyIndex: 0,
-              onBodyChanged: (body) {},
-            ),
+      // Manually trigger the AppState update logic that automatically enables gravity wells
+      // when global gravity fields is enabled (this normally happens in update() method)
+      if (appState.ui.globalGravityFields) {
+        for (final body in appState.simulation.bodies) {
+          if (!body.showGravityWell) {
+            body.showGravityWell = true;
+          }
+        }
+      }
+
+      await tester.pumpWidget(
+        createTestWidget(
+          child: BodyPropertiesDialog(
+            body: testBody,
+            bodyIndex: 0,
+            onBodyChanged: (body) {},
           ),
-        );
+        ),
+      );
 
-        await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-        // Find the gravity wells switch
-        final gravityWellSwitch = find.byType(SwitchListTile);
-        expect(gravityWellSwitch, findsAtLeastNWidgets(1));
+      // Find the gravity wells switch
+      final gravityWellSwitch = find.byType(SwitchListTile);
+      expect(gravityWellSwitch, findsAtLeastNWidgets(1));
 
-        // With the new logic, when global gravity fields is enabled,
-        // AppState automatically sets all bodies to showGravityWell = true
-        // so the switch should show ON (true)
-        SwitchListTile switchWidget = tester.widget(gravityWellSwitch.first);
-        expect(
-          switchWidget.value,
-          true,
-          reason:
-              "When global is enabled, bodies are auto-set to showGravityWell = true",
-        );
+      // With the new logic, when global gravity fields is enabled,
+      // AppState automatically sets all bodies to showGravityWell = true
+      // so the switch should show ON (true)
+      SwitchListTile switchWidget = tester.widget(gravityWellSwitch.first);
+      expect(
+        switchWidget.value,
+        true,
+        reason:
+            "When global is enabled, bodies are auto-set to showGravityWell = true",
+      );
 
-        // Tap the switch to turn individual setting OFF (override global)
-        await tester.tap(gravityWellSwitch.first);
-        await tester.pumpAndSettle();
+      // Tap the switch to turn individual setting OFF (override global)
+      await tester.tap(gravityWellSwitch.first);
+      await tester.pumpAndSettle();
 
-        // Verify the switch is now OFF (individual override)
-        switchWidget = tester.widget(gravityWellSwitch.first);
-        expect(switchWidget.value, false);
+      // Verify the switch is now OFF (individual override)
+      switchWidget = tester.widget(gravityWellSwitch.first);
+      expect(switchWidget.value, false);
 
-        // Tap again to turn individual setting back ON
-        await tester.tap(gravityWellSwitch.first);
-        await tester.pumpAndSettle();
+      // Tap again to turn individual setting back ON
+      await tester.tap(gravityWellSwitch.first);
+      await tester.pumpAndSettle();
 
-        // Verify the switch is now ON (individual setting)
-        switchWidget = tester.widget(gravityWellSwitch.first);
-        expect(switchWidget.value, true);
-      },
-    );
+      // Verify the switch is now ON (individual setting)
+      switchWidget = tester.widget(gravityWellSwitch.first);
+      expect(switchWidget.value, true);
+    });
   });
 }

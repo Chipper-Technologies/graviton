@@ -46,13 +46,21 @@ class AccessibilityService {
   /// Check if we have a valid binding available for announcements
   bool _hasValidBinding() {
     try {
-      // Try to access the binding without throwing an exception
-      // In newer Flutter versions, defaultBinaryMessenger is never null,
-      // so we just check if we can access the instance without exception
-      ServicesBinding.instance.defaultBinaryMessenger;
+      // Check if ServicesBinding instance is available
+      final binding = ServicesBinding.instance;
+
+      // Try to access the defaultBinaryMessenger and verify it's functional
+      // by checking if we can access its properties without exception
+      final messenger = binding.defaultBinaryMessenger;
+
+      // Additional validation by checking if we can access messenger properties
+      // This ensures the messenger is not just non-null but actually functional
+      messenger
+          .toString(); // Simple operation that should work if messenger is valid
+
       return true;
     } catch (e) {
-      // If any exception occurs, binding is not available
+      // If any exception occurs, binding is not available or not functional
       return false;
     }
   }

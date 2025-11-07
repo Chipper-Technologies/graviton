@@ -75,6 +75,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get manualControlsTitle => '手动控制';
 
   @override
+  String get cameraSpeedLabel => '相机速度';
+
+  @override
+  String get cameraSpeedHint => '调整AI相机移动速度从慢到快。使用方向键进行小幅调整。';
+
+  @override
+  String get cameraSettingsTitle => '相机设置';
+
+  @override
+  String get fieldOfViewLabel => '视野';
+
+  @override
+  String get crosshairsTitle => '十字准线';
+
+  @override
+  String get crosshairsDescription => '显示屏幕中心指示器';
+
+  @override
   String get selectNearestTitle => '选择最近';
 
   @override
@@ -870,6 +888,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get emergencyNotificationTitle => '重要通知';
 
   @override
+  String get warningTitle => '警告';
+
+  @override
+  String get successTitle => '成功';
+
+  @override
+  String get announcementTitle => '公告';
+
+  @override
+  String get promotionTitle => '促销';
+
+  @override
   String get ok => '确定';
 
   @override
@@ -1338,6 +1368,46 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bodyTypeAsteroid => '小行星';
+
+  @override
+  String bodyTypeStarPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count颗恒星',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypePlanetPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count颗行星',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeMoonPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count颗月球',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bodyTypeAsteroidPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count颗小行星',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get appFlavorDevelopment => '开发';

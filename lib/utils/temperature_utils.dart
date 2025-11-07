@@ -27,10 +27,12 @@ class TemperatureUtils {
 
     if (massRatio > 1.5) {
       // High mass stars: stronger dependence
-      return sunTemperature * math.pow(massRatio, 0.8);
+      return sunTemperature *
+          math.pow(massRatio, SimulationConstants.highMassTemperatureExponent);
     } else {
       // Lower mass stars: weaker dependence
-      return sunTemperature * math.pow(massRatio, 0.5);
+      return sunTemperature *
+          math.pow(massRatio, SimulationConstants.lowMassTemperatureExponent);
     }
   }
 

@@ -476,6 +476,12 @@ class AppColors {
   static const Color gravityFieldNeonCyan = Color(0xFF00FFFF); // Cyan
   static const Color gravityFieldNeonYellow = Color(0xFFFFFF00); // Yellow
   static const Color gravityFieldNeonLime = Color(0xFF80FF00); // Lime green
+  static const Color gravityFieldNeonOrange = Color(0xFFFF4500); // Orange red
+  static const Color gravityFieldNeonPurple = Color(0xFF8A2BE2); // Blue violet
+  static const Color gravityFieldNeonGreen = Color(0xFF00FF00); // Pure green
+  static const Color gravityFieldNeonRed = Color(0xFFFF1493); // Deep pink/red
+  static const Color gravityFieldNeonBlue = Color(0xFF0080FF); // Electric blue
+  static const Color gravityFieldNeonMagenta = Color(0xFFFF00FF); // Magenta
   static const Color gravityFieldNeonDark = Color(
     0xFF1A1A1A,
   ); // Dark background
@@ -497,6 +503,20 @@ class AppColors {
   static const Color gravityFieldEmeraldVibrant = Color(
     0xFF34D399,
   ); // Vibrant emerald
+
+  /// Get all available neon colors for randomization
+  static const List<Color> gravityFieldNeonColors = [
+    gravityFieldNeonPink,
+    gravityFieldNeonCyan,
+    gravityFieldNeonYellow,
+    gravityFieldNeonLime,
+    gravityFieldNeonOrange,
+    gravityFieldNeonPurple,
+    gravityFieldNeonGreen,
+    gravityFieldNeonRed,
+    gravityFieldNeonBlue,
+    gravityFieldNeonMagenta,
+  ];
 
   /// Field strength indicator colors (intensity gradients)
   static const Color fieldStrengthWeak = Color(0xFF1E3A8A); // Dark blue

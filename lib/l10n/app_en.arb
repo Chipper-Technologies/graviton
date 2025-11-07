@@ -110,6 +110,36 @@
     "description": "Section title for manual camera controls"
   },
   
+  "cameraSpeedLabel": "Camera Speed",
+  "@cameraSpeedLabel": {
+    "description": "Label for AI camera movement speed slider"
+  },
+  
+  "cameraSpeedHint": "Adjust AI camera movement speed from slow to fast. Use arrow keys to change in small increments.",
+  "@cameraSpeedHint": {
+    "description": "Accessibility hint for camera speed slider"
+  },
+  
+  "cameraSettingsTitle": "Camera Settings",
+  "@cameraSettingsTitle": {
+    "description": "Section title for camera settings including FOV and visual aids"
+  },
+  
+  "fieldOfViewLabel": "Field of View",
+  "@fieldOfViewLabel": {
+    "description": "Label for field of view slider"
+  },
+  
+  "crosshairsTitle": "Crosshairs",
+  "@crosshairsTitle": {
+    "description": "Title for crosshairs visual aid toggle"
+  },
+  
+  "crosshairsDescription": "Show center screen indicator",
+  "@crosshairsDescription": {
+    "description": "Description for crosshairs visual aid"
+  },
+  
   "selectNearestTitle": "Select Nearest",
   "@selectNearestTitle": {
     "description": "Button text for selecting nearest celestial body"
@@ -1449,6 +1479,26 @@
     "description": "Title for emergency notification dialog"
   },
 
+  "warningTitle": "Warning",
+  "@warningTitle": {
+    "description": "Title for warning notification dialog"
+  },
+
+  "successTitle": "Success",
+  "@successTitle": {
+    "description": "Title for success notification dialog"
+  },
+
+  "announcementTitle": "Announcement",
+  "@announcementTitle": {
+    "description": "Title for announcement notification dialog"
+  },
+
+  "promotionTitle": "Promotion",
+  "@promotionTitle": {
+    "description": "Title for promotion notification dialog"
+  },
+
   "ok": "OK",
   "@ok": {
     "description": "OK button text"
@@ -2083,6 +2133,50 @@
   "bodyTypeAsteroid": "Asteroid",
   "@bodyTypeAsteroid": {
     "description": "Display name for asteroid body type"
+  },
+
+  "bodyTypeStarPlural": "{count, plural, =1{1 Star} other{{count} Stars}}",
+  "@bodyTypeStarPlural": {
+    "description": "Plural form for star body type with count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of stars"
+      }
+    }
+  },
+
+  "bodyTypePlanetPlural": "{count, plural, =1{1 Planet} other{{count} Planets}}",
+  "@bodyTypePlanetPlural": {
+    "description": "Plural form for planet body type with count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of planets"
+      }
+    }
+  },
+
+  "bodyTypeMoonPlural": "{count, plural, =1{1 Moon} other{{count} Moons}}",
+  "@bodyTypeMoonPlural": {
+    "description": "Plural form for moon body type with count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of moons"
+      }
+    }
+  },
+
+  "bodyTypeAsteroidPlural": "{count, plural, =1{1 Asteroid} other{{count} Asteroids}}",
+  "@bodyTypeAsteroidPlural": {
+    "description": "Plural form for asteroid body type with count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of asteroids"
+      }
+    }
   },
 
   "appFlavorDevelopment": "Development",

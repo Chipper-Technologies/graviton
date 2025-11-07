@@ -24,10 +24,10 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/star_generator.dart';
 import 'package:graviton/widgets/auto_pause_dialog_wrapper.dart';
-import 'package:graviton/widgets/body_labels_overlay.dart';
-import 'package:graviton/widgets/body_property_editor_overlay.dart';
+import 'package:graviton/widgets/overlays/body_labels_overlay.dart';
+import 'package:graviton/widgets/overlays/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/body_properties_dialog.dart';
-import 'package:graviton/widgets/persistent_bottom_sheet.dart';
+import 'package:graviton/widgets/sliding_panel_bottom_sheet.dart';
 import 'package:graviton/widgets/semantics/semantic_simulation_canvas.dart';
 import 'package:graviton/widgets/semantics/semantic_live_region.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
@@ -40,15 +40,15 @@ import 'package:graviton/screens/help_screen.dart';
 import 'package:graviton/screens/application_settings_screen.dart';
 import 'package:graviton/widgets/options_drawer.dart';
 import 'package:graviton/widgets/maintenance_dialog.dart';
-import 'package:graviton/widgets/offscreen_indicators_overlay.dart';
+import 'package:graviton/widgets/overlays/offscreen_indicators_overlay.dart';
+import 'package:graviton/widgets/overlays/camera_visual_aids_overlay.dart';
 import 'package:graviton/screens/scenario_selection_screen.dart';
 import 'package:graviton/screens/about_screen.dart';
 import 'package:graviton/screens/physics_settings_screen.dart';
 import 'package:graviton/widgets/screenshot_countdown.dart';
-import 'package:graviton/widgets/stats_overlay.dart';
+import 'package:graviton/widgets/overlays/stats_overlay.dart';
 import 'package:graviton/widgets/version_check_dialog.dart';
-import 'package:graviton/widgets/tutorial_overlay.dart';
-import 'package:graviton/widgets/app_bar_speed_control.dart';
+import 'package:graviton/widgets/overlays/tutorial_overlay.dart';
 import 'package:graviton/services/onboarding_service.dart';
 import 'package:graviton/services/fullscreen_service.dart';
 import 'package:graviton/utils/fullscreen_utils.dart';
@@ -108,16 +108,21 @@ class _HomeScreenState extends State<HomeScreen>
     _registerKeyboardCallbacks();
 
     // Check for app updates and maintenance after the widget tree is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      VersionCheckDialog.showIfRequired(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Wait for version dialog to complete before proceeding
+      final versionDialogWasShown = await VersionCheckDialog.showIfRequired(
+        context,
+      );
+
       // Show maintenance/notification dialogs after version check
       Future.delayed(const Duration(milliseconds: 500), () {
         if (mounted) {
           MaintenanceDialog.showIfNeeded(context);
         }
       });
-      // Check if first-time user needs tutorial
-      _checkFirstTimeUser();
+
+      // Check if first-time user needs tutorial, with awareness of version dialog
+      _checkFirstTimeUser(versionDialogWasShown: versionDialogWasShown);
     });
   }
 
@@ -135,6 +140,22 @@ class _HomeScreenState extends State<HomeScreen>
     }
 
     super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    // Handle screen metrics changes (e.g., when exiting fullscreen)
+    // This ensures floating controls are repositioned correctly
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        // Refresh the sheet position to trigger floating controls repositioning
+        SlidingPanelBottomSheet.refreshPosition();
+        setState(() {
+          // Trigger rebuild with updated MediaQuery values
+        });
+      }
+    });
   }
 
   void _onTick(Duration elapsed) {
@@ -214,31 +235,38 @@ class _HomeScreenState extends State<HomeScreen>
             l10n,
           );
         } else {
-          // Toggle fullscreen mode on tap
-          _handleFullscreenToggle(appState);
+          // First check if we tapped on a body
+          final tappedBodyIndex = _findBodyAtTapLocation(
+            appState,
+            size,
+            tapPosition,
+          );
 
-          // Also select object at tap location (existing behavior)
-          _selectObjectAtTapLocation(appState, size, tapPosition);
+          if (tappedBodyIndex != null) {
+            // Tapped on a body - select it without toggling fullscreen
+            _selectBody(appState, tappedBodyIndex, appState.simulation.bodies);
+          } else {
+            // Tapped on empty space - toggle fullscreen mode
+            _handleFullscreenToggle(appState);
+
+            // Deselect any currently selected body and show controls
+            appState.camera.selectBody(null);
+            _showSimulationControls?.call();
+          }
         }
       }
     });
   }
 
-  void _selectObjectAtTapLocation(
+  /// Find the body at the given tap location
+  /// Returns the body index if a body is found, null otherwise
+  int? _findBodyAtTapLocation(
     AppState appState,
     Size size,
     Offset? tapPosition,
   ) {
     final bodies = appState.simulation.bodies;
-    if (bodies.isEmpty) return;
-
-    // If we don't have a tap position, fall back to cycling
-    if (tapPosition == null) {
-      final currentSelection = appState.camera.selectedBody ?? -1;
-      final nextSelection = (currentSelection + 1) % bodies.length;
-      _selectBody(appState, nextSelection, bodies);
-      return;
-    }
+    if (bodies.isEmpty || tapPosition == null) return null;
 
     // Find the body closest to the tap position
     final view = _buildView();
@@ -269,14 +297,7 @@ class _HomeScreenState extends State<HomeScreen>
       }
     }
 
-    // Select the closest body if found, otherwise deselect and show controls
-    if (closestBodyIndex != null) {
-      _selectBody(appState, closestBodyIndex, bodies);
-    } else {
-      // No body was tapped - deselect current selection and show controls
-      appState.camera.selectBody(null);
-      _showSimulationControls?.call();
-    }
+    return closestBodyIndex;
   }
 
   void _selectBody(AppState appState, int bodyIndex, List<Body> bodies) {
@@ -382,7 +403,13 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   vm.Matrix4 _buildProjection(double aspect) {
-    return vm.makePerspectiveMatrix(vm.radians(60.0), aspect, 0.1, 4000.0);
+    final appState = context.read<AppState>();
+    return vm.makePerspectiveMatrix(
+      vm.radians(appState.camera.fieldOfView),
+      aspect,
+      0.1,
+      4000.0,
+    );
   }
 
   /// Register keyboard navigation callbacks for accessibility
@@ -447,7 +474,29 @@ class _HomeScreenState extends State<HomeScreen>
   /// Handle fullscreen mode toggle
   void _handleFullscreenToggle(AppState appState) async {
     try {
+      // Hide floating controls temporarily during fullscreen transition
+      setState(() {
+        _showFloatingControls = false;
+      });
+
       await FullscreenUtils.toggleFullscreen(appState);
+
+      // Force a rebuild after fullscreen toggle and show controls again
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          // Refresh the sheet position to trigger floating controls repositioning
+          SlidingPanelBottomSheet.refreshPosition();
+
+          // Small delay to ensure layout has settled before showing controls
+          Future.delayed(const Duration(milliseconds: 100), () {
+            if (mounted) {
+              setState(() {
+                _showFloatingControls = true;
+              });
+            }
+          });
+        }
+      });
 
       // Log the fullscreen toggle event
       FirebaseService.instance.logUIEventWithEnums(
@@ -459,7 +508,12 @@ class _HomeScreenState extends State<HomeScreen>
       );
     } catch (e) {
       debugPrint('Error toggling fullscreen: $e');
-      // Optionally show user feedback here
+      // Restore floating controls on error
+      if (mounted) {
+        setState(() {
+          _showFloatingControls = true;
+        });
+      }
     }
   }
 
@@ -707,7 +761,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  void _checkFirstTimeUser() async {
+  void _checkFirstTimeUser({bool versionDialogWasShown = false}) async {
     final hasSeenTutorial = await OnboardingService.hasSeenTutorial();
     if (!hasSeenTutorial && mounted) {
       // Show tutorial after a short delay to let the app initialize
@@ -717,12 +771,16 @@ class _HomeScreenState extends State<HomeScreen>
         }
       });
     } else {
-      // For existing users, check for new changelogs with a longer delay to ensure Firebase is ready
-      Future.delayed(const Duration(milliseconds: 2000), () {
-        if (mounted) {
-          _checkForNewChangelogs(context);
-        }
-      });
+      // For existing users, check for new changelogs only if no version dialog was shown
+      // This prevents dialog conflicts - if user needs to update, focus on that first
+      if (!versionDialogWasShown) {
+        Future.delayed(const Duration(milliseconds: 2000), () {
+          if (mounted) {
+            _checkForNewChangelogs(context);
+          }
+        });
+      }
+      // If version dialog was shown, skip changelog entirely to avoid overwhelming the user
     }
   }
 
@@ -936,9 +994,6 @@ class _HomeScreenState extends State<HomeScreen>
                     alpha: AppTypography.opacityMedium,
                   ),
                   actions: [
-                    // Speed control - now prominent in app bar
-                    const AppBarSpeedControl(),
-
                     // Options drawer toggle
                     Builder(
                       builder: (context) => HapticIconButton(
@@ -1142,6 +1197,17 @@ class _HomeScreenState extends State<HomeScreen>
                             onPropertyIconTapped: () =>
                                 _showBodyPropertiesDialog(context, appState),
                           ),
+                        // Camera visual aids overlay
+                        if (!shouldHideUI)
+                          CameraVisualAidsOverlay(
+                            bodies: appState.simulation.bodies,
+                            viewMatrix: view,
+                            projMatrix: _buildProjection(size.aspectRatio),
+                            screenSize: size,
+                            selectedBodyIndex: appState.camera.selectedBody,
+                            cameraDistance: appState.camera.distance,
+                            showCrosshairs: appState.camera.showCrosshairs,
+                          ),
                         if (appState.ui.showStats)
                           SemanticLiveRegion(
                             currentValue: '${appState.simulation.stepCount}',
@@ -1159,39 +1225,46 @@ class _HomeScreenState extends State<HomeScreen>
                             right: 0,
                             bottom: 0,
                             height: MediaQuery.of(context).size.height,
-                            child: PersistentBottomSheet(
+                            child: SlidingPanelBottomSheet(
                               onInteraction: _showFloatingControlsTemporarily,
                             ),
                           ),
 
                         // Floating simulation controls positioned above the bottom sheet
                         if (!shouldHideUI && _showFloatingControls)
-                          ValueListenableBuilder<double>(
-                            valueListenable:
-                                PersistentBottomSheet.sheetPosition,
-                            builder: (context, sheetPosition, child) {
-                              final screenHeight = MediaQuery.of(
-                                context,
-                              ).size.height;
-                              final sheetTopPosition =
-                                  screenHeight * (1 - sheetPosition);
+                          Consumer<AppState>(
+                            builder: (context, appState, child) {
+                              return ValueListenableBuilder<double>(
+                                valueListenable:
+                                    SlidingPanelBottomSheet.sheetPosition,
+                                builder: (context, sheetPosition, child) {
+                                  final screenHeight = MediaQuery.of(
+                                    context,
+                                  ).size.height;
 
-                              return Positioned(
-                                bottom:
-                                    screenHeight -
-                                    sheetTopPosition +
-                                    20, // Position above the sheet using bottom positioning
-                                right: 32,
-                                child: Consumer<AppState>(
-                                  builder: (context, appState, child) {
-                                    final l10n = AppLocalizations.of(context)!;
-                                    return _buildFloatingSimulationControls(
-                                      context,
-                                      appState,
-                                      l10n,
-                                    );
-                                  },
-                                ),
+                                  // sheetPosition represents the fraction of screen height the sheet occupies
+                                  // So the floating controls should be positioned above the sheet
+                                  // at screenHeight * sheetPosition + 20 from the bottom
+                                  final bottomPosition =
+                                      screenHeight * sheetPosition + 20;
+
+                                  return Positioned(
+                                    bottom: bottomPosition,
+                                    right: 32,
+                                    child: Builder(
+                                      builder: (context) {
+                                        final l10n = AppLocalizations.of(
+                                          context,
+                                        )!;
+                                        return _buildFloatingSimulationControls(
+                                          context,
+                                          appState,
+                                          l10n,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                               );
                             },
                           ),
