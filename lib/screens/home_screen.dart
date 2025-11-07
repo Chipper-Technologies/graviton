@@ -234,31 +234,38 @@ class _HomeScreenState extends State<HomeScreen>
             l10n,
           );
         } else {
-          // Toggle fullscreen mode on tap
-          _handleFullscreenToggle(appState);
+          // First check if we tapped on a body
+          final tappedBodyIndex = _findBodyAtTapLocation(
+            appState,
+            size,
+            tapPosition,
+          );
 
-          // Also select object at tap location (existing behavior)
-          _selectObjectAtTapLocation(appState, size, tapPosition);
+          if (tappedBodyIndex != null) {
+            // Tapped on a body - select it without toggling fullscreen
+            _selectBody(appState, tappedBodyIndex, appState.simulation.bodies);
+          } else {
+            // Tapped on empty space - toggle fullscreen mode
+            _handleFullscreenToggle(appState);
+
+            // Deselect any currently selected body and show controls
+            appState.camera.selectBody(null);
+            _showSimulationControls?.call();
+          }
         }
       }
     });
   }
 
-  void _selectObjectAtTapLocation(
+  /// Find the body at the given tap location
+  /// Returns the body index if a body is found, null otherwise
+  int? _findBodyAtTapLocation(
     AppState appState,
     Size size,
     Offset? tapPosition,
   ) {
     final bodies = appState.simulation.bodies;
-    if (bodies.isEmpty) return;
-
-    // If we don't have a tap position, fall back to cycling
-    if (tapPosition == null) {
-      final currentSelection = appState.camera.selectedBody ?? -1;
-      final nextSelection = (currentSelection + 1) % bodies.length;
-      _selectBody(appState, nextSelection, bodies);
-      return;
-    }
+    if (bodies.isEmpty || tapPosition == null) return null;
 
     // Find the body closest to the tap position
     final view = _buildView();
@@ -289,14 +296,7 @@ class _HomeScreenState extends State<HomeScreen>
       }
     }
 
-    // Select the closest body if found, otherwise deselect and show controls
-    if (closestBodyIndex != null) {
-      _selectBody(appState, closestBodyIndex, bodies);
-    } else {
-      // No body was tapped - deselect current selection and show controls
-      appState.camera.selectBody(null);
-      _showSimulationControls?.call();
-    }
+    return closestBodyIndex;
   }
 
   void _selectBody(AppState appState, int bodyIndex, List<Body> bodies) {

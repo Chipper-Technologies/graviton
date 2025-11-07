@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -82,7 +83,10 @@ extension GravityFieldColorSchemeExtension on GravityFieldColorScheme {
       case GravityFieldColorScheme.monochrome:
         return AppColors.gravityFieldMonochromeLightGray;
       case GravityFieldColorScheme.neon:
-        return AppColors.gravityFieldNeonCyan;
+        // Return a random neon color
+        final random = math.Random();
+        final neonColors = AppColors.gravityFieldNeonColors;
+        return neonColors[random.nextInt(neonColors.length)];
       case GravityFieldColorScheme.emerald:
         return AppColors.gravityFieldEmeraldForest;
     }
@@ -98,7 +102,10 @@ extension GravityFieldColorSchemeExtension on GravityFieldColorScheme {
       case GravityFieldColorScheme.monochrome:
         return AppColors.gravityFieldMonochromeDarkGray;
       case GravityFieldColorScheme.neon:
-        return AppColors.gravityFieldNeonYellow;
+        // Return a consistent neon color for secondary
+        final neonColors = AppColors.gravityFieldNeonColors;
+        // Use a fixed index for consistency (second color in the neon palette)
+        return neonColors.length > 1 ? neonColors[1] : neonColors[0];
       case GravityFieldColorScheme.emerald:
         return AppColors.gravityFieldEmeraldDark;
     }
@@ -114,14 +121,18 @@ extension GravityFieldColorSchemeExtension on GravityFieldColorScheme {
       case GravityFieldColorScheme.monochrome:
         return AppColors.gravityFieldMonochromeMediumGray;
       case GravityFieldColorScheme.neon:
-        return AppColors.gravityFieldNeonLime;
+        // Return another random neon color for accent
+        final random = math.Random();
+        final neonColors = AppColors.gravityFieldNeonColors;
+        return neonColors[random.nextInt(neonColors.length)];
       case GravityFieldColorScheme.emerald:
         return AppColors.gravityFieldEmeraldLight;
     }
   }
 
   /// Get color for equipotential surface at given field strength ratio (0.0 to 1.0)
-  Color getEquipotentialColor(double fieldStrengthRatio) {
+  /// For neon scheme, bodyHashCode can be provided to ensure consistent random color per body
+  Color getEquipotentialColor(double fieldStrengthRatio, [int? bodyHashCode]) {
     final ratio = fieldStrengthRatio.clamp(0.0, 1.0);
 
     switch (this) {
@@ -164,10 +175,23 @@ extension GravityFieldColorSchemeExtension on GravityFieldColorScheme {
         )!;
 
       case GravityFieldColorScheme.neon:
-        // Dark to bright neon using AppColors
+        // Use consistent random color per body/well
+        final neonColors = AppColors.gravityFieldNeonColors;
+        Color selectedNeonColor;
+
+        if (bodyHashCode != null) {
+          // Use body hash to get consistent random color for this specific body
+          final random = math.Random(bodyHashCode);
+          selectedNeonColor = neonColors[random.nextInt(neonColors.length)];
+        } else {
+          // Fallback to cyan if no body identifier provided
+          selectedNeonColor = AppColors.gravityFieldNeonCyan;
+        }
+
+        // Gradient from dark to selected neon color
         return Color.lerp(
           AppColors.gravityFieldNeonDark,
-          AppColors.gravityFieldNeonCyan,
+          selectedNeonColor,
           ratio,
         )!;
 

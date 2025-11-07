@@ -213,8 +213,11 @@ class SimulationState extends ChangeNotifier {
   void reset() {
     stop();
 
-    // Reset physics simulation to current scenario
-    _simulation.reset(); // This will use the current scenario
+    // Reset physics simulation to current scenario, preserving custom gravity well settings
+    _simulation.resetWithScenario(
+      _simulation.currentScenario,
+      preserveCustomSettings: true,
+    );
     _stepCount = 0;
     _totalTime = 0.0;
 
