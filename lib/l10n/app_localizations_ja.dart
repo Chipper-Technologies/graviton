@@ -481,6 +481,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cancel => 'キャンセル';
 
   @override
+  String get exitAppTitle => 'アプリを終了';
+
+  @override
+  String get exitAppMessage => '本当にGravitonを終了しますか？';
+
+  @override
+  String get exit => '終了';
+
+  @override
   String get bodies => '天体';
 
   @override

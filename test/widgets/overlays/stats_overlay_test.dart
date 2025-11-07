@@ -39,7 +39,6 @@ void main() {
         );
 
         expect(find.byType(StatsOverlay), findsOneWidget);
-        expect(find.byType(Positioned), findsOneWidget);
         expect(find.byType(Opacity), findsOneWidget);
         expect(find.byType(Container), findsOneWidget);
         expect(find.byType(Column), findsOneWidget);
@@ -109,21 +108,10 @@ void main() {
       });
     });
 
-    group('Positioning', () {
-      testWidgets('Should be positioned in top-left corner', (tester) async {
-        await tester.pumpWidget(
-          createTestWidget(child: StatsOverlay(appState: appState)),
-        );
+    // Note: Positioning tests have been removed as StatsOverlay no longer
+    // handles its own positioning. Positioning is now handled by the parent widget.
 
-        final positioned = tester.widget<Positioned>(find.byType(Positioned));
-        expect(positioned.top, equals(16));
-        expect(positioned.left, equals(16));
-        expect(positioned.right, isNull);
-        expect(positioned.bottom, isNull);
-      });
-    });
-
-    group('Styling', () {
+    group('Content', () {
       testWidgets('Should have proper container styling', (tester) async {
         await tester.pumpWidget(
           createTestWidget(child: StatsOverlay(appState: appState)),

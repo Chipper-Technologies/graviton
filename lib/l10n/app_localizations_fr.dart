@@ -501,6 +501,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cancel => 'Annuler';
 
   @override
+  String get exitAppTitle => 'Quitter l\'App';
+
+  @override
+  String get exitAppMessage => 'Êtes-vous sûr de vouloir quitter Graviton ?';
+
+  @override
+  String get exit => 'Quitter';
+
+  @override
   String get bodies => 'corps';
 
   @override

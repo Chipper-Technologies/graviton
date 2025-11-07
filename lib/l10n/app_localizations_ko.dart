@@ -484,6 +484,15 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cancel => '취소';
 
   @override
+  String get exitAppTitle => '앱 종료';
+
+  @override
+  String get exitAppMessage => '정말로 Graviton을 종료하시겠습니까?';
+
+  @override
+  String get exit => '종료';
+
+  @override
   String get bodies => '천체';
 
   @override

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -897,387 +898,444 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
+  /// Handle the back button behavior
+  /// Returns true to allow pop, false to prevent it
+  bool _handleBackButton() {
+    // If the bottom sheet is expanded, close it instead of exiting
+    if (SlidingPanelBottomSheet.isExpanded) {
+      SlidingPanelBottomSheet.closePanel();
+      return false; // Prevent app exit
+    }
+
+    // If bottom sheet is already closed, show exit confirmation
+    _showExitConfirmationDialog();
+    return false; // Prevent immediate exit
+  }
+
+  /// Show confirmation dialog before exiting the app
+  void _showExitConfirmationDialog() {
+    final l10n = AppLocalizations.of(context)!;
+
+    showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.exitAppTitle),
+        content: Text(l10n.exitAppMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.exit),
+          ),
+        ],
+      ),
+    ).then((shouldExit) {
+      if (shouldExit == true) {
+        // Exit the app using dart:io exit
+        exit(0);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Consumer<AppState>(
-      builder: (context, appState, child) {
-        // Handle language initialization and changes after build completes
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!_languageInitialized) {
-            _languageInitialized = true;
-            appState.initializeLanguageTracking(l10n);
-          } else if (appState.checkForPendingLanguageChange()) {
-            // Skip language change handling for galaxy formation to preserve custom body properties
-            if (appState.simulation.currentScenario !=
-                ScenarioType.galaxyFormation) {
-              appState.handleLanguageChangeWithContext(l10n);
-            }
-          }
-
-          // Check for changelog after tutorial completion
-          if (_tutorialJustCompleted) {
-            _tutorialJustCompleted = false; // Reset flag
-            // Add a small delay to ensure the UI is stable
-            Future.delayed(const Duration(milliseconds: 1000), () {
-              if (mounted && context.mounted) {
-                _checkForNewChangelogs(context);
+    return PopScope(
+      canPop: false, // Always handle manually
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          _handleBackButton();
+        }
+      },
+      child: Consumer<AppState>(
+        builder: (context, appState, child) {
+          // Handle language initialization and changes after build completes
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!_languageInitialized) {
+              _languageInitialized = true;
+              appState.initializeLanguageTracking(l10n);
+            } else if (appState.checkForPendingLanguageChange()) {
+              // Skip language change handling for galaxy formation to preserve custom body properties
+              if (appState.simulation.currentScenario !=
+                  ScenarioType.galaxyFormation) {
+                appState.handleLanguageChangeWithContext(l10n);
               }
-            });
-          }
-        });
+            }
 
-        final shouldHideUI =
-            (_screenshotModeService.isActive &&
-                appState.ui.hideUIInScreenshotMode) ||
-            appState.ui.isFullscreen;
+            // Check for changelog after tutorial completion
+            if (_tutorialJustCompleted) {
+              _tutorialJustCompleted = false; // Reset flag
+              // Add a small delay to ensure the UI is stable
+              Future.delayed(const Duration(milliseconds: 1000), () {
+                if (mounted && context.mounted) {
+                  _checkForNewChangelogs(context);
+                }
+              });
+            }
+          });
 
-        return Scaffold(
-          key: _scaffoldKey,
-          endDrawer: OptionsDrawer(
-            onShowHelp: () => _showHelpScreen(context),
-            onShowSettings: () => _showApplicationSettingsScreen(context),
-            onShowScenarios: () => _showScenarioSelectionScreen(context),
-            onShowPhysicsSettings: () =>
-                _showPhysicsSettingsScreen(context, appState),
-            onShowAbout: () => _showAboutScreen(context),
-            onShowDeveloperTools: () => _showDeveloperToolsScreen(context),
-            onShowChangelog: _showCurrentVersionChangelog,
-          ),
-          appBar: shouldHideUI
-              ? null
-              : AppBar(
-                  title: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          HapticFeedbackService.instance.lightImpact();
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const AboutScreen(),
-                            ),
-                          );
-                        },
-                        child: Tooltip(
-                          message: l10n.aboutButtonTooltip,
-                          child: Container(
-                            width: 28,
-                            height: 28,
-                            margin: const EdgeInsets.only(right: 8),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: AppColors.uiWhite.withValues(
-                                  alpha: AppTypography.opacityVeryFaint,
-                                ),
-                                width: 1.5,
+          final shouldHideUI =
+              (_screenshotModeService.isActive &&
+                  appState.ui.hideUIInScreenshotMode) ||
+              appState.ui.isFullscreen;
+
+          return Scaffold(
+            key: _scaffoldKey,
+            endDrawer: OptionsDrawer(
+              onShowHelp: () => _showHelpScreen(context),
+              onShowSettings: () => _showApplicationSettingsScreen(context),
+              onShowScenarios: () => _showScenarioSelectionScreen(context),
+              onShowPhysicsSettings: () =>
+                  _showPhysicsSettingsScreen(context, appState),
+              onShowAbout: () => _showAboutScreen(context),
+              onShowDeveloperTools: () => _showDeveloperToolsScreen(context),
+              onShowChangelog: _showCurrentVersionChangelog,
+            ),
+            appBar: shouldHideUI
+                ? null
+                : AppBar(
+                    title: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            HapticFeedbackService.instance.lightImpact();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const AboutScreen(),
                               ),
-                              image: DecorationImage(
-                                image: AssetImage(AppConfig.appLogoPath),
-                                fit: BoxFit.cover,
+                            );
+                          },
+                          child: Tooltip(
+                            message: l10n.aboutButtonTooltip,
+                            child: Container(
+                              width: 28,
+                              height: 28,
+                              margin: const EdgeInsets.only(right: 8),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.uiWhite.withValues(
+                                    alpha: AppTypography.opacityVeryFaint,
+                                  ),
+                                  width: 1.5,
+                                ),
+                                image: DecorationImage(
+                                  image: AssetImage(AppConfig.appLogoPath),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          l10n.appTitle,
-                          overflow: TextOverflow.ellipsis,
+                        Flexible(
+                          child: Text(
+                            l10n.appTitle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    backgroundColor: AppColors.uiBlack.withValues(
+                      alpha: AppTypography.opacityMedium,
+                    ),
+                    actions: [
+                      // Options drawer toggle
+                      Builder(
+                        builder: (context) => HapticIconButton(
+                          icon: const Icon(Icons.menu),
+                          tooltip: l10n.moreOptionsTooltip,
+                          onPressed: () => Scaffold.of(context).openEndDrawer(),
                         ),
                       ),
                     ],
                   ),
-                  backgroundColor: AppColors.uiBlack.withValues(
-                    alpha: AppTypography.opacityMedium,
-                  ),
-                  actions: [
-                    // Options drawer toggle
-                    Builder(
-                      builder: (context) => HapticIconButton(
-                        icon: const Icon(Icons.menu),
-                        tooltip: l10n.moreOptionsTooltip,
-                        onPressed: () => Scaffold.of(context).openEndDrawer(),
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                final size = Size(constraints.maxWidth, constraints.maxHeight);
+                final view = _buildView();
+
+                return HapticGestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTapUp: (details) {
+                    // Show floating controls on tap
+                    _showFloatingControlsTemporarily();
+                    _handleTapWithDelay(
+                      context,
+                      appState,
+                      size,
+                      l10n,
+                      details.localPosition,
+                    );
+                  },
+                  onDoubleTap: () {
+                    // Show floating controls on double-tap
+                    _showFloatingControlsTemporarily();
+
+                    // Double-tap to reset camera view
+                    appState.camera.resetView(
+                      appState.simulation.currentScenario,
+                    );
+
+                    FirebaseService.instance.logUIEventWithEnums(
+                      UIAction.doubleTap,
+                      element: UIElement.cameraControls,
+                      value: 'reset_view',
+                    );
+                  },
+                  onScaleStart: (d) {
+                    _lastPan = d.focalPoint;
+                    _isDragging = false; // Reset dragging state
+                    _hasMoved = false; // Reset movement flag
+                    _lastTwoFingerRotation = null; // Reset rotation tracking
+                    // Don't clear selection on drag start - let user drag selected objects
+
+                    // Show simulation controls when starting camera interaction
+                    _showSimulationControls?.call();
+
+                    // Show floating controls on interaction
+                    _showFloatingControlsTemporarily();
+
+                    if (d.pointerCount >= 2) {
+                      FirebaseService.instance.logUIEventWithEnums(
+                        UIAction.gestureStart,
+                        element: UIElement.cameraControls,
+                        value: 'multi_touch',
+                      );
+                    } else {
+                      FirebaseService.instance.logUIEventWithEnums(
+                        UIAction.gestureStart,
+                        element: UIElement.cameraControls,
+                        value: 'single_touch',
+                      );
+                    }
+                  },
+                  onScaleUpdate: (d) {
+                    final pos = d.focalPoint;
+                    final delta = pos - (_lastPan ?? pos);
+
+                    // Mark as dragging if there's significant movement
+                    if (delta.distance > 2.0) {
+                      if (!_hasMoved) {
+                        _hasMoved = true;
+                      }
+                      if (delta.distance > 5.0 && !_isDragging) {
+                        _isDragging = true;
+                      }
+                    }
+
+                    if (d.pointerCount >= 2) {
+                      // Handle two-finger gestures: zoom and roll
+                      final dz = (1 - d.scale) * 0.1;
+                      appState.camera.zoomTowardBody(
+                        dz,
+                        appState.simulation.bodies,
+                      );
+
+                      // Handle roll rotation
+                      if (_lastTwoFingerRotation != null) {
+                        final deltaRotation =
+                            d.rotation - _lastTwoFingerRotation!;
+                        appState.camera.rotateRoll(deltaRotation);
+                      }
+                      _lastTwoFingerRotation = d.rotation;
+                    } else {
+                      // Always rotate camera when dragging
+                      // Object movement is disabled for better UX
+                      final deltaYaw = -delta.dx * 0.01;
+                      final deltaPitch = -delta.dy * 0.01;
+                      appState.camera.rotate(deltaYaw, deltaPitch);
+                    }
+                    _lastPan = pos;
+                  },
+                  onScaleEnd: (_) {
+                    _lastPan = null;
+                    _isDragging = false; // Reset drag state
+                    _hasMoved = false; // Reset movement flag
+                    _lastTwoFingerRotation = null; // Reset rotation tracking
+                    // Don't clear selection if in follow mode
+                    if (!appState.camera.followMode) {
+                      appState.camera.selectBody(null);
+                    }
+                  },
+                  child: KeyboardNavigationService.instance.createKeyboardListener(
+                    child: SemanticSimulationCanvas(
+                      bodies: appState.simulation.bodies,
+                      status: appState.simulation.status,
+                      timeScale: appState.simulation.timeScale,
+                      stepCount: appState.simulation.stepCount,
+                      cameraDistance: appState.camera.distance,
+                      autoRotate: appState.camera.autoRotate,
+                      followMode: appState.camera.followMode,
+                      followingBodyName: appState.camera.selectedBody != null
+                          ? 'Body ${appState.camera.selectedBody}'
+                          : null,
+                      onTap: () {
+                        // Show floating controls on tap
+                        _showFloatingControlsTemporarily();
+                      },
+                      onCenter: () => appState.camera.resetView(
+                        appState.simulation.currentScenario,
+                      ),
+                      onToggleRotate: () => appState.camera.toggleAutoRotate(),
+                      child: Stack(
+                        children: [
+                          CustomPaint(
+                            painter: GravitonPainter(
+                              sim: appState.simulation.simulation,
+                              view: view,
+                              proj: _buildProjection(size.aspectRatio),
+                              stars: _stars,
+                              showTrails: appState.ui.showTrails,
+                              useWarmTrails: appState.ui.useWarmTrails,
+                              useRealisticColors:
+                                  appState.ui.useRealisticColors,
+                              showOrbitalPaths: appState.ui.showOrbitalPaths,
+                              dualOrbitalPaths: appState.ui.dualOrbitalPaths,
+                              showHabitableZones:
+                                  appState.ui.showHabitableZones,
+                              showHabitabilityIndicators:
+                                  appState.ui.showHabitabilityIndicators,
+                              selectedBodyIndex: appState.camera.selectedBody,
+                              followMode: appState.camera.followMode,
+                              cameraDistance: appState.camera.distance,
+                              globalGravityFields:
+                                  appState.ui.globalGravityFields,
+                              gravityFieldColorScheme:
+                                  appState.ui.gravityFieldColorScheme,
+                              showEquipotentialSurfaces:
+                                  appState.ui.showEquipotentialSurfaces,
+                              showGravityFieldIndicators:
+                                  appState.ui.showGravityFieldIndicators,
+                            ),
+                            child: const SizedBox.expand(),
+                          ),
+                          if (appState.ui.showLabels)
+                            BodyLabelsOverlay(
+                              bodies: appState.simulation.bodies,
+                              viewMatrix: view,
+                              projMatrix: _buildProjection(size.aspectRatio),
+                              screenSize: size,
+                              l10n: AppLocalizations.of(context),
+                            ),
+                          if (appState.ui.showOffScreenIndicators)
+                            OffScreenIndicatorsOverlay(
+                              bodies: appState.simulation.bodies,
+                              viewMatrix: view,
+                              projMatrix: _buildProjection(size.aspectRatio),
+                              screenSize: size,
+                              selectedBodyIndex: appState.camera.selectedBody,
+                              onIndicatorTapped: (bodyIndex) {
+                                _selectBody(
+                                  appState,
+                                  bodyIndex,
+                                  appState.simulation.bodies,
+                                );
+                              },
+                            ),
+                          // Body property editor overlay for selected bodies
+                          if (!shouldHideUI &&
+                              appState.camera.selectedBody != null)
+                            BodyPropertyEditorOverlay(
+                              bodies: appState.simulation.bodies,
+                              viewMatrix: view,
+                              projMatrix: _buildProjection(size.aspectRatio),
+                              screenSize: size,
+                              selectedBodyIndex: appState.camera.selectedBody,
+                              onPropertyIconTapped: () =>
+                                  _showBodyPropertiesDialog(context, appState),
+                            ),
+                          // Camera visual aids overlay
+                          if (!shouldHideUI)
+                            CameraVisualAidsOverlay(
+                              bodies: appState.simulation.bodies,
+                              viewMatrix: view,
+                              projMatrix: _buildProjection(size.aspectRatio),
+                              screenSize: size,
+                              selectedBodyIndex: appState.camera.selectedBody,
+                              cameraDistance: appState.camera.distance,
+                              showCrosshairs: appState.camera.showCrosshairs,
+                            ),
+                          if (appState.ui.showStats)
+                            Positioned(
+                              top: 16,
+                              left: 16,
+                              child: SemanticLiveRegion(
+                                currentValue:
+                                    '${appState.simulation.stepCount}',
+                                dataType: 'Simulation Steps',
+                                child: StatsOverlay(appState: appState),
+                              ),
+                            ),
+                          ScreenshotCountdown(
+                            screenshotService: _screenshotModeService,
+                          ),
+
+                          // Persistent bottom sheet positioned at bottom of screen
+                          if (!shouldHideUI)
+                            Positioned(
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              height: MediaQuery.of(context).size.height,
+                              child: SlidingPanelBottomSheet(
+                                onInteraction: _showFloatingControlsTemporarily,
+                              ),
+                            ),
+
+                          // Floating simulation controls positioned above the bottom sheet
+                          if (!shouldHideUI && _showFloatingControls)
+                            Consumer<AppState>(
+                              builder: (context, appState, child) {
+                                return ValueListenableBuilder<double>(
+                                  valueListenable:
+                                      SlidingPanelBottomSheet.sheetPosition,
+                                  builder: (context, sheetPosition, child) {
+                                    final screenHeight = MediaQuery.of(
+                                      context,
+                                    ).size.height;
+
+                                    // sheetPosition represents the fraction of screen height the sheet occupies
+                                    // So the floating controls should be positioned above the sheet
+                                    // at screenHeight * sheetPosition + 20 from the bottom
+                                    final bottomPosition =
+                                        screenHeight * sheetPosition + 20;
+
+                                    return Positioned(
+                                      bottom: bottomPosition,
+                                      right: 32,
+                                      child: Builder(
+                                        builder: (context) {
+                                          final l10n = AppLocalizations.of(
+                                            context,
+                                          )!;
+                                          return _buildFloatingSimulationControls(
+                                            context,
+                                            appState,
+                                            l10n,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-          body: LayoutBuilder(
-            builder: (context, constraints) {
-              final size = Size(constraints.maxWidth, constraints.maxHeight);
-              final view = _buildView();
-
-              return HapticGestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTapUp: (details) {
-                  // Show floating controls on tap
-                  _showFloatingControlsTemporarily();
-                  _handleTapWithDelay(
-                    context,
-                    appState,
-                    size,
-                    l10n,
-                    details.localPosition,
-                  );
-                },
-                onDoubleTap: () {
-                  // Show floating controls on double-tap
-                  _showFloatingControlsTemporarily();
-
-                  // Double-tap to reset camera view
-                  appState.camera.resetView(
-                    appState.simulation.currentScenario,
-                  );
-
-                  FirebaseService.instance.logUIEventWithEnums(
-                    UIAction.doubleTap,
-                    element: UIElement.cameraControls,
-                    value: 'reset_view',
-                  );
-                },
-                onScaleStart: (d) {
-                  _lastPan = d.focalPoint;
-                  _isDragging = false; // Reset dragging state
-                  _hasMoved = false; // Reset movement flag
-                  _lastTwoFingerRotation = null; // Reset rotation tracking
-                  // Don't clear selection on drag start - let user drag selected objects
-
-                  // Show simulation controls when starting camera interaction
-                  _showSimulationControls?.call();
-
-                  // Show floating controls on interaction
-                  _showFloatingControlsTemporarily();
-
-                  if (d.pointerCount >= 2) {
-                    FirebaseService.instance.logUIEventWithEnums(
-                      UIAction.gestureStart,
-                      element: UIElement.cameraControls,
-                      value: 'multi_touch',
-                    );
-                  } else {
-                    FirebaseService.instance.logUIEventWithEnums(
-                      UIAction.gestureStart,
-                      element: UIElement.cameraControls,
-                      value: 'single_touch',
-                    );
-                  }
-                },
-                onScaleUpdate: (d) {
-                  final pos = d.focalPoint;
-                  final delta = pos - (_lastPan ?? pos);
-
-                  // Mark as dragging if there's significant movement
-                  if (delta.distance > 2.0) {
-                    if (!_hasMoved) {
-                      _hasMoved = true;
-                    }
-                    if (delta.distance > 5.0 && !_isDragging) {
-                      _isDragging = true;
-                    }
-                  }
-
-                  if (d.pointerCount >= 2) {
-                    // Handle two-finger gestures: zoom and roll
-                    final dz = (1 - d.scale) * 0.1;
-                    appState.camera.zoomTowardBody(
-                      dz,
-                      appState.simulation.bodies,
-                    );
-
-                    // Handle roll rotation
-                    if (_lastTwoFingerRotation != null) {
-                      final deltaRotation =
-                          d.rotation - _lastTwoFingerRotation!;
-                      appState.camera.rotateRoll(deltaRotation);
-                    }
-                    _lastTwoFingerRotation = d.rotation;
-                  } else {
-                    // Always rotate camera when dragging
-                    // Object movement is disabled for better UX
-                    final deltaYaw = -delta.dx * 0.01;
-                    final deltaPitch = -delta.dy * 0.01;
-                    appState.camera.rotate(deltaYaw, deltaPitch);
-                  }
-                  _lastPan = pos;
-                },
-                onScaleEnd: (_) {
-                  _lastPan = null;
-                  _isDragging = false; // Reset drag state
-                  _hasMoved = false; // Reset movement flag
-                  _lastTwoFingerRotation = null; // Reset rotation tracking
-                  // Don't clear selection if in follow mode
-                  if (!appState.camera.followMode) {
-                    appState.camera.selectBody(null);
-                  }
-                },
-                child: KeyboardNavigationService.instance.createKeyboardListener(
-                  child: SemanticSimulationCanvas(
-                    bodies: appState.simulation.bodies,
-                    status: appState.simulation.status,
-                    timeScale: appState.simulation.timeScale,
-                    stepCount: appState.simulation.stepCount,
-                    cameraDistance: appState.camera.distance,
-                    autoRotate: appState.camera.autoRotate,
-                    followMode: appState.camera.followMode,
-                    followingBodyName: appState.camera.selectedBody != null
-                        ? 'Body ${appState.camera.selectedBody}'
-                        : null,
-                    onTap: () {
-                      // Show floating controls on tap
-                      _showFloatingControlsTemporarily();
-                    },
-                    onCenter: () => appState.camera.resetView(
-                      appState.simulation.currentScenario,
-                    ),
-                    onToggleRotate: () => appState.camera.toggleAutoRotate(),
-                    child: Stack(
-                      children: [
-                        CustomPaint(
-                          painter: GravitonPainter(
-                            sim: appState.simulation.simulation,
-                            view: view,
-                            proj: _buildProjection(size.aspectRatio),
-                            stars: _stars,
-                            showTrails: appState.ui.showTrails,
-                            useWarmTrails: appState.ui.useWarmTrails,
-                            useRealisticColors: appState.ui.useRealisticColors,
-                            showOrbitalPaths: appState.ui.showOrbitalPaths,
-                            dualOrbitalPaths: appState.ui.dualOrbitalPaths,
-                            showHabitableZones: appState.ui.showHabitableZones,
-                            showHabitabilityIndicators:
-                                appState.ui.showHabitabilityIndicators,
-                            selectedBodyIndex: appState.camera.selectedBody,
-                            followMode: appState.camera.followMode,
-                            cameraDistance: appState.camera.distance,
-                            globalGravityFields:
-                                appState.ui.globalGravityFields,
-                            gravityFieldColorScheme:
-                                appState.ui.gravityFieldColorScheme,
-                            showEquipotentialSurfaces:
-                                appState.ui.showEquipotentialSurfaces,
-                            showGravityFieldIndicators:
-                                appState.ui.showGravityFieldIndicators,
-                          ),
-                          child: const SizedBox.expand(),
-                        ),
-                        if (appState.ui.showLabels)
-                          BodyLabelsOverlay(
-                            bodies: appState.simulation.bodies,
-                            viewMatrix: view,
-                            projMatrix: _buildProjection(size.aspectRatio),
-                            screenSize: size,
-                            l10n: AppLocalizations.of(context),
-                          ),
-                        if (appState.ui.showOffScreenIndicators)
-                          OffScreenIndicatorsOverlay(
-                            bodies: appState.simulation.bodies,
-                            viewMatrix: view,
-                            projMatrix: _buildProjection(size.aspectRatio),
-                            screenSize: size,
-                            selectedBodyIndex: appState.camera.selectedBody,
-                            onIndicatorTapped: (bodyIndex) {
-                              _selectBody(
-                                appState,
-                                bodyIndex,
-                                appState.simulation.bodies,
-                              );
-                            },
-                          ),
-                        // Body property editor overlay for selected bodies
-                        if (!shouldHideUI &&
-                            appState.camera.selectedBody != null)
-                          BodyPropertyEditorOverlay(
-                            bodies: appState.simulation.bodies,
-                            viewMatrix: view,
-                            projMatrix: _buildProjection(size.aspectRatio),
-                            screenSize: size,
-                            selectedBodyIndex: appState.camera.selectedBody,
-                            onPropertyIconTapped: () =>
-                                _showBodyPropertiesDialog(context, appState),
-                          ),
-                        // Camera visual aids overlay
-                        if (!shouldHideUI)
-                          CameraVisualAidsOverlay(
-                            bodies: appState.simulation.bodies,
-                            viewMatrix: view,
-                            projMatrix: _buildProjection(size.aspectRatio),
-                            screenSize: size,
-                            selectedBodyIndex: appState.camera.selectedBody,
-                            cameraDistance: appState.camera.distance,
-                            showCrosshairs: appState.camera.showCrosshairs,
-                          ),
-                        if (appState.ui.showStats)
-                          SemanticLiveRegion(
-                            currentValue: '${appState.simulation.stepCount}',
-                            dataType: 'Simulation Steps',
-                            child: StatsOverlay(appState: appState),
-                          ),
-                        ScreenshotCountdown(
-                          screenshotService: _screenshotModeService,
-                        ),
-
-                        // Persistent bottom sheet positioned at bottom of screen
-                        if (!shouldHideUI)
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            height: MediaQuery.of(context).size.height,
-                            child: SlidingPanelBottomSheet(
-                              onInteraction: _showFloatingControlsTemporarily,
-                            ),
-                          ),
-
-                        // Floating simulation controls positioned above the bottom sheet
-                        if (!shouldHideUI && _showFloatingControls)
-                          Consumer<AppState>(
-                            builder: (context, appState, child) {
-                              return ValueListenableBuilder<double>(
-                                valueListenable:
-                                    SlidingPanelBottomSheet.sheetPosition,
-                                builder: (context, sheetPosition, child) {
-                                  final screenHeight = MediaQuery.of(
-                                    context,
-                                  ).size.height;
-
-                                  // sheetPosition represents the fraction of screen height the sheet occupies
-                                  // So the floating controls should be positioned above the sheet
-                                  // at screenHeight * sheetPosition + 20 from the bottom
-                                  final bottomPosition =
-                                      screenHeight * sheetPosition + 20;
-
-                                  return Positioned(
-                                    bottom: bottomPosition,
-                                    right: 32,
-                                    child: Builder(
-                                      builder: (context) {
-                                        final l10n = AppLocalizations.of(
-                                          context,
-                                        )!;
-                                        return _buildFloatingSimulationControls(
-                                          context,
-                                          appState,
-                                          l10n,
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                      ],
-                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
+                );
+              },
+            ),
+          );
+        },
+      ), // Close Consumer
+    ); // Close PopScope
   }
 
   void _showScreenshotNavigationControls(

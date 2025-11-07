@@ -46,6 +46,25 @@ class SlidingPanelBottomSheet extends StatefulWidget {
     }
   }
 
+  /// Check if the bottom sheet is currently in an expanded state (beyond minimum)
+  static bool get isExpanded {
+    if (_sheetPosition == null || _currentInstance == null) {
+      return false;
+    }
+    // Consider the sheet "expanded" if it's above the minimum height
+    return _sheetPosition!.value >
+        _SlidingPanelBottomSheetState._minHeight + 0.05;
+  }
+
+  /// Close the bottom sheet to minimum position
+  static bool closePanel() {
+    if (_currentInstance?._panelController.isAttached == true) {
+      _currentInstance!._panelController.close();
+      return true;
+    }
+    return false;
+  }
+
   /// Dispose the static ValueNotifier when no instances are using it
   static void _disposeSheetPosition() {
     if (_instanceCount <= 0) {
