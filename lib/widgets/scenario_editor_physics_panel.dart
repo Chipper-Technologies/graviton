@@ -28,24 +28,20 @@ class ScenarioEditorPhysicsPanel extends StatelessWidget {
         children: [
           SectionTitle(title: 'Physics Settings'),
           SizedBox(height: AppTypography.spacingMedium),
-          
+
           Text(
             'Physics configuration will be implemented here',
-            style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.7),
-            ),
+            style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
           ),
-          
+
           SizedBox(height: AppTypography.spacingLarge),
-          
+
           SectionTitle(title: 'Particle Systems'),
           SizedBox(height: AppTypography.spacingMedium),
-          
+
           Text(
             'Asteroid belt and other particle systems will be configured here',
-            style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.7),
-            ),
+            style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
           ),
         ],
       ),

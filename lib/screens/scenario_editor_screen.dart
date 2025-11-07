@@ -21,18 +21,13 @@ class ScenarioEditorScreen extends StatefulWidget {
   final CustomScenario? initialScenario;
   final bool isEditing;
 
-  const ScenarioEditorScreen({
-    super.key,
-    this.initialScenario,
-    this.isEditing = false,
-  });
+  const ScenarioEditorScreen({super.key, this.initialScenario, this.isEditing = false});
 
   @override
   State<ScenarioEditorScreen> createState() => _ScenarioEditorScreenState();
 }
 
-class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
-    with TickerProviderStateMixin {
+class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   late List<Body> _bodies;
   late ScenarioMetadata _metadata;
@@ -140,14 +135,8 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: Text(
-            widget.isEditing 
-                ? 'Edit Scenario'
-                : 'Create Scenario',
-          ),
-          backgroundColor: AppColors.uiBlack.withValues(
-            alpha: AppTypography.opacityNearlyOpaque,
-          ),
+          title: Text(widget.isEditing ? 'Edit Scenario' : 'Create Scenario'),
+          backgroundColor: AppColors.uiBlack.withValues(alpha: AppTypography.opacityNearlyOpaque),
           foregroundColor: AppColors.uiWhite,
           elevation: 0,
           automaticallyImplyLeading: true,
@@ -158,9 +147,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
               child: Text(
                 'Save',
                 style: AppTypography.mediumText.copyWith(
-                  color: _hasUnsavedChanges 
-                      ? AppColors.primaryColor 
-                      : AppColors.uiWhite.withValues(alpha: 0.5),
+                  color: _hasUnsavedChanges ? AppColors.primaryColor : AppColors.uiWhite.withValues(alpha: 0.5),
                 ),
               ),
             ),
@@ -181,22 +168,14 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
         ),
         body: SafeArea(
           child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.uiBlack.withValues(
-                alpha: AppTypography.opacityNearlyOpaque,
-              ),
-            ),
+            decoration: BoxDecoration(color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityNearlyOpaque)),
             child: Form(
               key: _formKey,
               child: TabBarView(
                 controller: _tabController,
                 children: [
                   // Bodies Tab
-                  ScenarioEditorBodyList(
-                    bodies: _bodies,
-                    onBodiesChanged: _onBodiesChanged,
-                    onAddBody: _addNewBody,
-                  ),
+                  ScenarioEditorBodyList(bodies: _bodies, onBodiesChanged: _onBodiesChanged, onAddBody: _addNewBody),
                   // Physics Tab
                   ScenarioEditorPhysicsPanel(
                     physics: _physics,
@@ -239,11 +218,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
           SizedBox(height: AppTypography.spacingMedium),
 
           // Scenario overview
-          _buildPreviewCard(
-            title: _metadata.name,
-            subtitle: _metadata.description,
-            icon: Icons.public,
-          ),
+          _buildPreviewCard(title: _metadata.name, subtitle: _metadata.description, icon: Icons.public),
 
           SizedBox(height: AppTypography.spacingLarge),
 
@@ -274,9 +249,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
               Expanded(
                 child: HapticElevatedButton(
                   onPressed: () => _exportScenario(context, l10n),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.uiBlack.withValues(alpha: 0.3),
-                  ),
+                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.uiBlack.withValues(alpha: 0.3)),
                   child: Text('Export Scenario'),
                 ),
               ),
@@ -287,43 +260,27 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     );
   }
 
-  Widget _buildPreviewCard({
-    required String title,
-    required String subtitle,
-    required IconData icon,
-  }) {
+  Widget _buildPreviewCard({required String title, required String subtitle, required IconData icon}) {
     return Container(
       padding: EdgeInsets.all(AppTypography.spacingLarge),
       decoration: BoxDecoration(
         color: AppColors.uiBlack.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-        border: Border.all(
-          color: AppColors.primaryColor.withValues(alpha: 0.2),
-          width: 1,
-        ),
+        border: Border.all(color: AppColors.primaryColor.withValues(alpha: 0.2), width: 1),
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: AppTypography.iconSizeLarge,
-            color: AppColors.primaryColor,
-          ),
+          Icon(icon, size: AppTypography.iconSizeLarge, color: AppColors.primaryColor),
           SizedBox(width: AppTypography.spacingMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: AppTypography.titleText,
-                ),
+                Text(title, style: AppTypography.titleText),
                 SizedBox(height: AppTypography.spacingSmall),
                 Text(
                   subtitle,
-                  style: AppTypography.mediumText.copyWith(
-                    color: AppColors.uiWhite.withValues(alpha: 0.8),
-                  ),
+                  style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.8)),
                 ),
               ],
             ),
@@ -346,23 +303,13 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
           Container(
             width: 12,
             height: 12,
-            decoration: BoxDecoration(
-              color: body.color,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: body.color, shape: BoxShape.circle),
           ),
           SizedBox(width: AppTypography.spacingMedium),
-          Expanded(
-            child: Text(
-              body.name,
-              style: AppTypography.mediumText,
-            ),
-          ),
+          Expanded(child: Text(body.name, style: AppTypography.mediumText)),
           Text(
             '${body.mass.toStringAsFixed(1)} M',
-            style: AppTypography.smallText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.7),
-            ),
+            style: AppTypography.smallText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
           ),
         ],
       ),
@@ -392,16 +339,8 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: AppTypography.mediumText,
-          ),
-          Text(
-            value,
-            style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.7),
-            ),
-          ),
+          Text(label, style: AppTypography.mediumText),
+          Text(value, style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7))),
         ],
       ),
     );
@@ -485,7 +424,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
 
     try {
       final scenario = _createCustomScenario();
-      
+
       // Save to local storage
       await CustomScenarioStorage.saveScenario(scenario);
 
@@ -494,21 +433,15 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Scenario saved successfully'),
-            backgroundColor: AppColors.primaryColor,
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Scenario saved successfully'), backgroundColor: AppColors.primaryColor));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to save scenario: $e'),
-            backgroundColor: AppColors.celestialRed,
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to save scenario: $e'), backgroundColor: AppColors.celestialRed));
       }
     }
   }
@@ -537,7 +470,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     try {
       final scenario = _createCustomScenario();
       final jsonString = ScenarioSerializationService.toJsonString(scenario);
-      
+
       // TODO: Implement file export functionality
       print('Exported JSON:\n$jsonString'); // For development
 
@@ -550,47 +483,28 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to export scenario: $e'),
-            backgroundColor: AppColors.celestialRed,
-          ),
+          SnackBar(content: Text('Failed to export scenario: $e'), backgroundColor: AppColors.celestialRed),
         );
       }
     }
   }
 
-  Future<bool> _showUnsavedChangesDialog(
-    BuildContext context, 
-    AppLocalizations l10n,
-  ) async {
+  Future<bool> _showUnsavedChangesDialog(BuildContext context, AppLocalizations l10n) async {
     return await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.uiBlack.withValues(alpha: 0.9),
-        title: Text(
-          'Unsaved Changes',
-          style: AppTypography.titleText,
-        ),
-        content: Text(
-          'You have unsaved changes. Are you sure you want to leave?',
-          style: AppTypography.mediumText,
-        ),
-        actions: [
-          HapticTextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(l10n.cancel),
-          ),
-          HapticTextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(
-              'Discard',
-              style: AppTypography.mediumText.copyWith(
-                color: AppColors.celestialRed,
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: AppColors.uiBlack.withValues(alpha: 0.9),
+            title: Text('Unsaved Changes', style: AppTypography.titleText),
+            content: Text('You have unsaved changes. Are you sure you want to leave?', style: AppTypography.mediumText),
+            actions: [
+              HapticTextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancel)),
+              HapticTextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text('Discard', style: AppTypography.mediumText.copyWith(color: AppColors.celestialRed)),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    ) ?? false;
+        ) ??
+        false;
   }
 }

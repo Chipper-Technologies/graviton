@@ -52,10 +52,7 @@ class ScenarioSerializationService {
       final Map<String, dynamic> json = jsonDecode(jsonString);
       return _validateScenarioJson(json);
     } catch (e) {
-      return ScenarioValidationResult(
-        isValid: false,
-        errors: ['Invalid JSON format: ${e.toString()}'],
-      );
+      return ScenarioValidationResult(isValid: false, errors: ['Invalid JSON format: ${e.toString()}']);
     }
   }
 
@@ -81,16 +78,8 @@ class ScenarioSerializationService {
   static Body _bodyDataToBody(BodyData bodyData) {
     return Body(
       name: bodyData.name,
-      position: vm.Vector3(
-        bodyData.position[0],
-        bodyData.position[1],
-        bodyData.position[2],
-      ),
-      velocity: vm.Vector3(
-        bodyData.velocity[0],
-        bodyData.velocity[1],
-        bodyData.velocity[2],
-      ),
+      position: vm.Vector3(bodyData.position[0], bodyData.position[1], bodyData.position[2]),
+      velocity: vm.Vector3(bodyData.velocity[0], bodyData.velocity[1], bodyData.velocity[2]),
       mass: bodyData.mass,
       radius: bodyData.radius,
       color: _hexToColor(bodyData.color),
@@ -206,10 +195,7 @@ class ScenarioSerializationService {
     final physicsErrors = _validatePhysicsSettings(physics);
     errors.addAll(physicsErrors);
 
-    return ScenarioValidationResult(
-      isValid: errors.isEmpty,
-      errors: errors,
-    );
+    return ScenarioValidationResult(isValid: errors.isEmpty, errors: errors);
   }
 
   /// Validate individual body data
@@ -322,8 +308,5 @@ class ScenarioValidationResult {
   final bool isValid;
   final List<String> errors;
 
-  const ScenarioValidationResult({
-    required this.isValid,
-    required this.errors,
-  });
+  const ScenarioValidationResult({required this.isValid, required this.errors});
 }

@@ -4,7 +4,7 @@ import 'package:graviton/models/custom_scenario.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Service for local storage of custom scenarios
-/// 
+///
 /// Handles saving, loading, and managing custom simulation scenarios
 /// created by users using SharedPreferences for cross-platform compatibility.
 class CustomScenarioStorage {
@@ -68,15 +68,15 @@ class CustomScenarioStorage {
   static Future<String> getUniqueScenarioName(String baseName) async {
     final scenarios = await _getAllFromPreferences();
     final existingNames = scenarios.map((s) => s.metadata.name).toSet();
-    
+
     String uniqueName = baseName;
     int counter = 1;
-    
+
     while (existingNames.contains(uniqueName)) {
       uniqueName = '$baseName ($counter)';
       counter++;
     }
-    
+
     return uniqueName;
   }
 
@@ -87,18 +87,18 @@ class CustomScenarioStorage {
   static Future<void> _saveToPreferences(CustomScenario scenario) async {
     final prefs = await SharedPreferences.getInstance();
     final existingScenarios = await _getAllFromPreferences();
-    
+
     // Remove existing scenario with same name if it exists
     existingScenarios.removeWhere((s) => s.metadata.name == scenario.metadata.name);
-    
+
     // Add the new scenario
     existingScenarios.add(scenario);
-    
+
     // Save back to preferences
     final jsonList = existingScenarios.map((s) => s.toJson()).toList();
     final jsonString = jsonEncode(jsonList);
     await prefs.setString(_scenariosKey, jsonString);
-    
+
     debugPrint('Saved scenario: ${scenario.metadata.name}');
   }
 
@@ -114,14 +114,12 @@ class CustomScenarioStorage {
   static Future<List<CustomScenario>> _getAllFromPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString(_scenariosKey);
-    
+
     if (jsonString == null) return [];
-    
+
     try {
       final jsonList = jsonDecode(jsonString) as List;
-      return jsonList
-          .map((json) => CustomScenario.fromJson(json as Map<String, dynamic>))
-          .toList();
+      return jsonList.map((json) => CustomScenario.fromJson(json as Map<String, dynamic>)).toList();
     } catch (e) {
       debugPrint('Failed to parse scenarios from preferences: $e');
       return [];
@@ -131,15 +129,15 @@ class CustomScenarioStorage {
   static Future<void> _deleteFromPreferences(String scenarioName) async {
     final prefs = await SharedPreferences.getInstance();
     final existingScenarios = await _getAllFromPreferences();
-    
+
     final originalLength = existingScenarios.length;
     existingScenarios.removeWhere((s) => s.metadata.name == scenarioName);
-    
+
     if (existingScenarios.length < originalLength) {
       final jsonList = existingScenarios.map((s) => s.toJson()).toList();
       final jsonString = jsonEncode(jsonList);
       await prefs.setString(_scenariosKey, jsonString);
-      
+
       debugPrint('Deleted scenario: $scenarioName');
     }
   }

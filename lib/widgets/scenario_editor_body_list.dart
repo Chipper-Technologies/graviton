@@ -38,17 +38,11 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
     return Row(
       children: [
         // Body list panel
-        Expanded(
-          flex: 1,
-          child: _buildBodyListPanel(l10n),
-        ),
-        
+        Expanded(flex: 1, child: _buildBodyListPanel(l10n)),
+
         // Body details panel (if body selected)
         if (_selectedBodyIndex != null && _selectedBodyIndex! < widget.bodies.length)
-          Expanded(
-            flex: 2,
-            child: _buildBodyDetailsPanel(l10n),
-          ),
+          Expanded(flex: 2, child: _buildBodyDetailsPanel(l10n)),
       ],
     );
   }
@@ -58,24 +52,16 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.public_off,
-            size: 64,
-            color: AppColors.uiWhite.withValues(alpha: 0.3),
-          ),
+          Icon(Icons.public_off, size: 64, color: AppColors.uiWhite.withValues(alpha: 0.3)),
           SizedBox(height: AppTypography.spacingLarge),
           Text(
             'No bodies yet',
-            style: AppTypography.titleText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.7),
-            ),
+            style: AppTypography.titleText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
           ),
           SizedBox(height: AppTypography.spacingMedium),
           Text(
             'Add celestial bodies to create your custom scenario',
-            style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.5),
-            ),
+            style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.5)),
             textAlign: TextAlign.center,
           ),
         ],
@@ -91,7 +77,7 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
         children: [
           SectionTitle(title: 'Bodies'),
           SizedBox(height: AppTypography.spacingMedium),
-          
+
           // Body count indicator
           Container(
             padding: EdgeInsets.symmetric(
@@ -104,14 +90,12 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
             ),
             child: Text(
               '${widget.bodies.length} bodies',
-              style: AppTypography.smallText.copyWith(
-                color: AppColors.primaryColor,
-              ),
+              style: AppTypography.smallText.copyWith(color: AppColors.primaryColor),
             ),
           ),
-          
+
           SizedBox(height: AppTypography.spacingMedium),
-          
+
           // Body list
           Expanded(
             child: ListView.builder(
@@ -140,9 +124,7 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                 : AppColors.uiBlack.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
             border: Border.all(
-              color: isSelected
-                  ? AppColors.primaryColor
-                  : AppColors.uiWhite.withValues(alpha: 0.1),
+              color: isSelected ? AppColors.primaryColor : AppColors.uiWhite.withValues(alpha: 0.1),
               width: isSelected ? 2 : 1,
             ),
           ),
@@ -155,15 +137,12 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                 decoration: BoxDecoration(
                   color: body.color,
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppColors.uiWhite.withValues(alpha: 0.3),
-                    width: 1,
-                  ),
+                  border: Border.all(color: AppColors.uiWhite.withValues(alpha: 0.3), width: 1),
                 ),
               ),
-              
+
               SizedBox(width: AppTypography.spacingMedium),
-              
+
               // Body info
               Expanded(
                 child: Column(
@@ -178,14 +157,12 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                     SizedBox(height: AppTypography.spacingSmall),
                     Text(
                       '${body.bodyType.name} • ${body.mass.toStringAsFixed(1)} M',
-                      style: AppTypography.smallText.copyWith(
-                        color: AppColors.uiWhite.withValues(alpha: 0.7),
-                      ),
+                      style: AppTypography.smallText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
                     ),
                   ],
                 ),
               ),
-              
+
               // Action buttons
               Row(
                 mainAxisSize: MainAxisSize.min,
@@ -202,7 +179,7 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                       ),
                     ),
                   ),
-                  
+
                   // Delete button (only if more than one body)
                   if (widget.bodies.length > 1)
                     HapticGestureDetector(
@@ -227,35 +204,22 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
 
   Widget _buildBodyDetailsPanel(AppLocalizations l10n) {
     final body = widget.bodies[_selectedBodyIndex!];
-    
+
     return Container(
       padding: EdgeInsets.all(AppTypography.spacingMedium),
       decoration: BoxDecoration(
-        border: Border(
-          left: BorderSide(
-            color: AppColors.primaryColor.withValues(alpha: 0.3),
-            width: 1,
-          ),
-        ),
+        border: Border(left: BorderSide(color: AppColors.primaryColor.withValues(alpha: 0.3), width: 1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Body Details',
-            style: AppTypography.titleText,
-          ),
+          Text('Body Details', style: AppTypography.titleText),
           SizedBox(height: AppTypography.spacingMedium),
-          Text(
-            'Selected: ${body.name}',
-            style: AppTypography.mediumText,
-          ),
+          Text('Selected: ${body.name}', style: AppTypography.mediumText),
           // TODO: Implement full body details editor
           Text(
             'Body editing will be implemented here',
-            style: AppTypography.smallText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.7),
-            ),
+            style: AppTypography.smallText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
           ),
         ],
       ),
@@ -291,14 +255,14 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
 
   void _deleteBody(int index) {
     final updatedBodies = List<Body>.from(widget.bodies)..removeAt(index);
-    
+
     // Adjust selected index if needed
     if (_selectedBodyIndex == index) {
       _selectedBodyIndex = null;
     } else if (_selectedBodyIndex != null && _selectedBodyIndex! > index) {
       _selectedBodyIndex = _selectedBodyIndex! - 1;
     }
-    
+
     setState(() {});
     widget.onBodiesChanged(updatedBodies);
   }
