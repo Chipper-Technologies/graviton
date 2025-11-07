@@ -83,10 +83,8 @@ extension GravityFieldColorSchemeExtension on GravityFieldColorScheme {
       case GravityFieldColorScheme.monochrome:
         return AppColors.gravityFieldMonochromeLightGray;
       case GravityFieldColorScheme.neon:
-        // Return a random neon color
-        final random = math.Random();
-        final neonColors = AppColors.gravityFieldNeonColors;
-        return neonColors[random.nextInt(neonColors.length)];
+        // Return cyan as it's distinctly different from the pink star color
+        return AppColors.gravityFieldNeonCyan;
       case GravityFieldColorScheme.emerald:
         return AppColors.gravityFieldEmeraldForest;
     }
