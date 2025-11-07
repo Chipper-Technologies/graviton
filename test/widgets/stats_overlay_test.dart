@@ -39,7 +39,7 @@ void main() {
         );
 
         expect(find.byType(StatsOverlay), findsOneWidget);
-        expect(find.byType(Positioned), findsOneWidget);
+        // Note: Positioned widget was removed to fix ParentDataWidget error
         expect(find.byType(Opacity), findsOneWidget);
         expect(find.byType(Container), findsOneWidget);
         expect(find.byType(Column), findsOneWidget);
@@ -110,17 +110,21 @@ void main() {
     });
 
     group('Positioning', () {
-      testWidgets('Should be positioned in top-left corner', (tester) async {
-        await tester.pumpWidget(
-          createTestWidget(child: StatsOverlay(appState: appState)),
-        );
+      testWidgets(
+        'Should render without Positioned widget (fix for ParentDataWidget error)',
+        (tester) async {
+          await tester.pumpWidget(
+            createTestWidget(child: StatsOverlay(appState: appState)),
+          );
 
-        final positioned = tester.widget<Positioned>(find.byType(Positioned));
-        expect(positioned.top, equals(16));
-        expect(positioned.left, equals(16));
-        expect(positioned.right, isNull);
-        expect(positioned.bottom, isNull);
-      });
+          // Verify Positioned was removed to fix ParentDataWidget error
+          expect(find.byType(Positioned), findsNothing);
+
+          // Should still have the main structure
+          expect(find.byType(Opacity), findsOneWidget);
+          expect(find.byType(Container), findsOneWidget);
+        },
+      );
     });
 
     group('Styling', () {

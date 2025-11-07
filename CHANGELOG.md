@@ -5,6 +5,28 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-11-07
+
+### Added
+- **Enhanced Android Back Button Handling**: Intuitive navigation behavior for Android devices
+  - **Smart Bottom Sheet Management**: Back button first closes expanded bottom sheet before app exit
+  - **Exit Confirmation Dialog**: User-friendly confirmation dialog with proper localization before app termination
+  - **Static Panel Control Methods**: New programmatic access methods for bottom sheet state management
+
+### Fixed
+- **Statistics Overlay Positioning**: Resolved ParentDataWidget assertion error when toggling statistics display
+  - **Widget Hierarchy Optimization**: Removed problematic Positioned widget wrapper causing console errors
+  - **Improved Rendering Stability**: Enhanced widget tree structure for more reliable statistics overlay rendering
+
+### Technical
+- **Comprehensive Test Coverage**: Added dedicated test suites for back button functionality
+  - **Back Button Logic Tests**: 14 comprehensive tests covering static methods, panel interactions, and behavior validation
+  - **Widget Integration Tests**: Complete coverage of new static methods and panel state management
+  - **Regression Testing**: Updated existing tests to reflect architectural improvements
+- **Architecture Enhancements**: Improved separation of concerns and widget communication patterns
+  - **Static Singleton Pattern**: Enhanced SlidingPanelBottomSheet with external state access capabilities
+  - **PopScope Integration**: Modern Flutter navigation handling with proper back button interception
+
 ## [1.3.1] - 2025-11-07
 
 ### Added

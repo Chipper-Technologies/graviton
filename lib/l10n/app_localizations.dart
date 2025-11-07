@@ -1014,6 +1014,24 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get cancel;
 
+  /// Title for exit confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Exit App'**
+  String get exitAppTitle;
+
+  /// Message for exit confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to exit Graviton?'**
+  String get exitAppMessage;
+
+  /// Exit button text
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get exit;
+
   /// Word for celestial bodies (lowercase for use in sentences)
   ///
   /// In en, this message translates to:

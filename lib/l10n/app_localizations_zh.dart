@@ -478,6 +478,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cancel => '取消';
 
   @override
+  String get exitAppTitle => '退出应用';
+
+  @override
+  String get exitAppMessage => '您确定要退出引力子吗？';
+
+  @override
+  String get exit => '退出';
+
+  @override
   String get bodies => '天体';
 
   @override

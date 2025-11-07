@@ -785,6 +785,21 @@
     "description": "Cancel button text"
   },
   
+  "exitAppTitle": "Exit App",
+  "@exitAppTitle": {
+    "description": "Title for exit confirmation dialog"
+  },
+  
+  "exitAppMessage": "Are you sure you want to exit Graviton?",
+  "@exitAppMessage": {
+    "description": "Message for exit confirmation dialog"
+  },
+  
+  "exit": "Exit",
+  "@exit": {
+    "description": "Exit button text"
+  },
+  
   "bodies": "bodies",
   "@bodies": {
     "description": "Word for celestial bodies (lowercase for use in sentences)"
