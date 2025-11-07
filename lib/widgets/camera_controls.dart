@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
@@ -179,9 +180,9 @@ class CameraControls extends StatelessWidget {
         HapticSliderOption.detailed(
           label: l10n.fieldOfViewLabel,
           value: appState.camera.fieldOfView,
-          min: 30.0,
-          max: 120.0,
-          divisions: 90,
+          min: SimulationConstants.cameraFovMin,
+          max: SimulationConstants.cameraFovMax,
+          divisions: SimulationConstants.cameraFovDivisions,
           icon: Icons.camera_alt,
           onChanged: (value) {
             appState.camera.setFieldOfView(value);
@@ -197,9 +198,9 @@ class CameraControls extends StatelessWidget {
           HapticSliderOption.detailed(
             label: l10n.cameraSpeedLabel,
             value: appState.ui.cameraSpeed,
-            min: 0.1,
-            max: 3.0,
-            divisions: 29,
+            min: SimulationConstants.cameraSpeedMin,
+            max: SimulationConstants.cameraSpeedMax,
+            divisions: SimulationConstants.cameraSpeedDivisions,
             icon: Icons.speed,
             onChanged: (value) {
               appState.ui.setCameraSpeed(value);

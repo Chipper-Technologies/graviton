@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/state/camera_state.dart';
 
 void main() {
@@ -10,18 +11,27 @@ void main() {
     });
 
     group('Field of View', () {
-      test('default FOV should be 60 degrees', () {
-        expect(cameraState.fieldOfView, equals(60.0));
+      test('default FOV should be the expected default value', () {
+        expect(
+          cameraState.fieldOfView,
+          equals(SimulationConstants.cameraFovDefault),
+        );
       });
 
-      test('setFieldOfView should clamp values between 30 and 120 degrees', () {
+      test('setFieldOfView should clamp values between min and max FOV', () {
         // Test minimum boundary
         cameraState.setFieldOfView(10.0);
-        expect(cameraState.fieldOfView, equals(30.0));
+        expect(
+          cameraState.fieldOfView,
+          equals(SimulationConstants.cameraFovMin),
+        );
 
         // Test maximum boundary
         cameraState.setFieldOfView(150.0);
-        expect(cameraState.fieldOfView, equals(120.0));
+        expect(
+          cameraState.fieldOfView,
+          equals(SimulationConstants.cameraFovMax),
+        );
 
         // Test valid value
         cameraState.setFieldOfView(75.0);

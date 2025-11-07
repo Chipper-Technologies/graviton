@@ -325,4 +325,35 @@ class SimulationConstants {
   static const double cameraTargetYaw = 0.0; // Default yaw angle
   static const double cameraTargetPitch = 0.25; // Default pitch angle
   static const double cameraTargetRoll = 0.0; // Default roll angle
+
+  // Camera control UI constants
+  static const double cameraFovMin = 30.0; // Minimum field of view in degrees
+  static const double cameraFovMax = 120.0; // Maximum field of view in degrees
+  static const double cameraFovDefault =
+      60.0; // Default field of view in degrees
+  static const int cameraFovDivisions =
+      90; // Number of slider divisions for FOV
+
+  static const double cameraSpeedMin = 0.1; // Minimum camera speed multiplier
+  static const double cameraSpeedMax = 3.0; // Maximum camera speed multiplier
+  static const int cameraSpeedDivisions =
+      29; // Number of slider divisions for speed
+  static const int cameraSpeedDecimalPlaces =
+      1; // Decimal places for speed display
+
+  // Temperature calculation constants
+  static const double sunSurfaceTemperature =
+      5778.0; // Sun surface temp in Kelvin
+  static const double starMassReferenceValue =
+      10.0; // Reference mass for temperature scaling
+  static const double temperatureMassExponent =
+      0.5; // Exponent for mass-temperature relationship
+  static const double earthLikeTemperature =
+      288.0; // Earth-like temperature in Kelvin
+  static const double earthLikeDistance =
+      50.0; // Reference distance for Earth-like conditions
+  static const double defaultColdTemperature =
+      220.0; // Default cold temperature (-53°C)
+  static const double asteroidTemperature =
+      200.0; // Asteroid temperature (-73°C)
 }

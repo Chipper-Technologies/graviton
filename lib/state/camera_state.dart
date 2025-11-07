@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/auto_rotate_status.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
@@ -31,7 +32,8 @@ class CameraState extends ChangeNotifier {
   bool _invertPitch = false; // Toggle to invert pitch controls
 
   // Field of View
-  double _fieldOfView = 60.0; // Default FOV in degrees (30° - 120°)
+  double _fieldOfView =
+      SimulationConstants.cameraFovDefault; // Default FOV in degrees
 
   // Visual aids
   bool _showCrosshairs = false;
@@ -427,7 +429,10 @@ class CameraState extends ChangeNotifier {
   }
 
   void setFieldOfView(double fov) {
-    _fieldOfView = fov.clamp(30.0, 120.0);
+    _fieldOfView = fov.clamp(
+      SimulationConstants.cameraFovMin,
+      SimulationConstants.cameraFovMax,
+    );
 
     // Haptic feedback for FOV change
     SafeHapticFeedback.selectionClick();
