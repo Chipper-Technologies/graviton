@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/theme/app_colors.dart';
-import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/services/custom_scenario_storage.dart';
-import 'package:graviton/services/custom_scenario_manager.dart';
-import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/screens/scenario_editor_screen.dart';
+import 'package:graviton/services/custom_scenario_manager.dart';
+import 'package:graviton/services/custom_scenario_storage.dart';
+import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
 import 'package:graviton/widgets/scenario_selection/create_scenario_tile.dart';
 import 'package:graviton/widgets/scenario_selection/custom_scenario_tile.dart';
 
@@ -156,68 +157,11 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
     String scenarioName,
   ) async {
     final l10n = AppLocalizations.of(context)!;
-    final confirmed = await showDialog<bool>(
+    final confirmed = await DeleteConfirmationDialog.show(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.uiBlack.withValues(
-          alpha: AppTypography.opacityAlmostOpaque,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-          side: BorderSide(
-            color: AppColors.celestialRed.withValues(
-              alpha: AppTypography.opacityFaint,
-            ),
-            width: 1,
-          ),
-        ),
-        title: Row(
-          children: [
-            Icon(
-              Icons.warning_amber_rounded,
-              color: AppColors.celestialRed,
-              size: 24,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              l10n.deleteScenarioTitle,
-              style: AppTypography.largeText.copyWith(
-                color: AppColors.uiWhite,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        content: Text(
-          l10n.deleteScenarioConfirmMessage(scenarioName),
-          style: AppTypography.mediumText.copyWith(
-            color: AppColors.uiWhite.withValues(
-              alpha: AppTypography.opacityVeryHigh,
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            style: TextButton.styleFrom(
-              foregroundColor: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityMediumHigh,
-              ),
-            ),
-            child: Text(AppLocalizations.of(context)!.cancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(
-              foregroundColor: AppColors.celestialRed,
-              backgroundColor: AppColors.celestialRed.withValues(
-                alpha: AppTypography.opacityDisabled,
-              ),
-            ),
-            child: Text(AppLocalizations.of(context)!.deleteButton),
-          ),
-        ],
-      ),
+      title: l10n.deleteScenarioTitle,
+      message: l10n.deleteScenarioConfirmMessage(scenarioName),
+      titleIcon: Icons.warning_amber_rounded,
     );
 
     if (confirmed == true) {

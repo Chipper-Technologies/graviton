@@ -174,7 +174,11 @@ void main() {
       expect(deleteButtons, findsAtLeastNWidgets(1));
 
       await tester.tap(deleteButtons.first);
-      await tester.pump();
+      await tester.pumpAndSettle();
+
+      // Confirm deletion in dialog
+      await tester.tap(find.text('Delete'));
+      await tester.pumpAndSettle();
 
       // Should have called onBodiesChanged with body removed
       expect(updatedBodies.length, equals(1));

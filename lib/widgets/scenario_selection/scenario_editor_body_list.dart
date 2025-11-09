@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vector_math/vector_math_64.dart' as vm;
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
+import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/number_utils.dart';
+import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
-import 'package:graviton/services/firebase_service.dart';
-import 'package:graviton/enums/ui_action.dart';
-import 'package:graviton/enums/ui_element.dart';
+import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Widget for managing the list of celestial bodies in the scenario editor
 class ScenarioEditorBodyList extends StatefulWidget {
@@ -313,9 +314,9 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                           child: Material(
                             color: AppColors.transparentColor,
                             child: InkWell(
-                              onTap: () {
+                              onTap: () async {
                                 HapticFeedback.lightImpact();
-                                _deleteBody(index);
+                                await _deleteBody(index);
                               },
                               borderRadius: BorderRadius.circular(
                                 AppTypography.radiusXXLarge,
@@ -418,21 +419,30 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
     widget.onBodiesChanged(updatedBodies);
   }
 
-  void _deleteBody(int index) {
+  Future<void> _deleteBody(int index) async {
     final bodyToDelete = widget.bodies[index];
+    final l10n = AppLocalizations.of(context)!;
 
-    // Log analytics for body removal
-    FirebaseService.instance.logUIEventWithEnums(
-      UIAction.bodyRemoved,
-      element: UIElement.scenarioEditorBodies,
-      additionalParams: {
-        'body_name': bodyToDelete.name,
-        'body_type': bodyToDelete.bodyType.name,
-        'remaining_body_count': widget.bodies.length - 1,
-      },
+    final confirmed = await DeleteConfirmationDialog.show(
+      context: context,
+      title: l10n.deleteBodyConfirmTitle(bodyToDelete.name),
+      message: l10n.deleteBodyConfirmMessage,
     );
 
-    final updatedBodies = List<Body>.from(widget.bodies)..removeAt(index);
-    widget.onBodiesChanged(updatedBodies);
+    if (confirmed == true) {
+      // Log analytics for body removal
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.bodyRemoved,
+        element: UIElement.scenarioEditorBodies,
+        additionalParams: {
+          'body_name': bodyToDelete.name,
+          'body_type': bodyToDelete.bodyType.name,
+          'remaining_body_count': widget.bodies.length - 1,
+        },
+      );
+
+      final updatedBodies = List<Body>.from(widget.bodies)..removeAt(index);
+      widget.onBodiesChanged(updatedBodies);
+    }
   }
 }
