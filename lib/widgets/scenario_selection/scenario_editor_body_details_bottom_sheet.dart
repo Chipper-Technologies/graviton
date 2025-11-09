@@ -541,7 +541,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                   child: _buildDetailCard(
                     icon: Icons.radio_button_unchecked,
                     label: l10n.bodyPropertiesRadius,
-                    value: _formatDistance(widget.body.radius),
+                    value: _formatRadius(widget.body.radius),
                     color: AppColors.uiGreen,
                   ),
                 ),
@@ -594,7 +594,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                     ),
                   ),
                   SizedBox(width: AppTypography.spacingSmall),
-                  if (widget.body.stellarLuminosity > 0)
+                  if (widget.body.bodyType == BodyType.star)
                     Expanded(
                       child: _buildDetailCard(
                         icon: Icons.light_mode_outlined,
@@ -806,36 +806,38 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
           _buildDivider(),
 
-          // Stellar Luminosity Section
-          HapticSliderOption.detailed(
-            label: AppLocalizations.of(context)!.bodyPropertiesLuminosity,
-            value: _luminositySlider,
-            min: BodyTypeRanges.getLuminosityRange(_selectedBodyType)['min']!,
-            max: BodyTypeRanges.getLuminosityRange(_selectedBodyType)['max']!,
-            divisions: 100,
-            icon: Icons.light_mode_outlined,
-            onChanged: (value) {
-              setState(() {
-                _luminositySlider = value;
-                // Update the text controller for consistency
-                _luminosityController.text = value.toString();
-              });
-              _updateBodyProperty();
-            },
-            formatter: (value) => NumberUtils.formatLuminosity(value),
-          ),
-          SizedBox(height: AppTypography.spacingSmall),
-          Text(
-            l10n.lightEnergyOutputDescription,
-            style: AppTypography.smallText.copyWith(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
-              fontStyle: FontStyle.italic,
+          // Stellar Luminosity Section (only for stars)
+          if (_selectedBodyType == BodyType.star) ...[
+            HapticSliderOption.detailed(
+              label: AppLocalizations.of(context)!.bodyPropertiesLuminosity,
+              value: _luminositySlider,
+              min: BodyTypeRanges.getLuminosityRange(_selectedBodyType)['min']!,
+              max: BodyTypeRanges.getLuminosityRange(_selectedBodyType)['max']!,
+              divisions: 100,
+              icon: Icons.light_mode_outlined,
+              onChanged: (value) {
+                setState(() {
+                  _luminositySlider = value;
+                  // Update the text controller for consistency
+                  _luminosityController.text = value.toString();
+                });
+                _updateBodyProperty();
+              },
+              formatter: (value) => NumberUtils.formatLuminosity(value),
             ),
-          ),
+            SizedBox(height: AppTypography.spacingSmall),
+            Text(
+              l10n.lightEnergyOutputDescription,
+              style: AppTypography.smallText.copyWith(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityHigh,
+                ),
+                fontStyle: FontStyle.italic,
+              ),
+            ),
 
-          _buildDivider(),
+            _buildDivider(),
+          ],
 
           // Position Section
           _buildEditSection(
@@ -1443,11 +1445,11 @@ class _ScenarioEditorBodyDetailsBottomSheetState
   }
 
   String _formatMass(double mass) {
-    return NumberUtils.formatMass(mass);
+    return NumberUtils.formatMassInSolarMasses(mass);
   }
 
-  String _formatDistance(double distance) {
-    return NumberUtils.formatDistance(distance);
+  String _formatRadius(double radius) {
+    return NumberUtils.formatRadiusInSolarRadii(radius);
   }
 
   String _formatTemperature(double temperature) {

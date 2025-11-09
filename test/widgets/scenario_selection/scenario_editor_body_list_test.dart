@@ -238,8 +238,8 @@ void main() {
       );
 
       // Check body type and mass are displayed
-      expect(find.textContaining('planet • 1 kg'), findsOneWidget);
-      expect(find.textContaining('star • 333,000 kg'), findsOneWidget);
+      expect(find.textContaining('planet • 0.100 M☉'), findsOneWidget);
+      expect(find.textContaining('star • 33,300 M☉'), findsOneWidget);
     });
   });
 }

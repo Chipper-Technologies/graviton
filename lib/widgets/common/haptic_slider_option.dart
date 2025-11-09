@@ -210,6 +210,35 @@ class _HapticSliderOptionState extends State<HapticSliderOption> {
             ),
           ),
         ),
+        // Min/Max value labels
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                widget.formatter?.call(widget.min) ??
+                    NumberUtils.formatDecimal(widget.min, 1),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface.withValues(
+                    alpha: AppTypography.opacityMedium,
+                  ),
+                  fontSize: 11,
+                ),
+              ),
+              Text(
+                widget.formatter?.call(widget.max) ??
+                    NumberUtils.formatDecimal(widget.max, 1),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface.withValues(
+                    alpha: AppTypography.opacityMedium,
+                  ),
+                  fontSize: 11,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -351,6 +380,37 @@ class _HapticSliderOptionState extends State<HapticSliderOption> {
                 onChanged: _onSliderChanged,
                 onChangeEnd: _onSliderEnd,
               ),
+            ),
+          ),
+          // Min/Max value labels
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.formatter?.call(widget.min) ??
+                      NumberUtils.formatDecimal(widget.min, 1),
+                  style: TextStyle(
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityMedium,
+                    ),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Text(
+                  widget.formatter?.call(widget.max) ??
+                      NumberUtils.formatDecimal(widget.max, 1),
+                  style: TextStyle(
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityMedium,
+                    ),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

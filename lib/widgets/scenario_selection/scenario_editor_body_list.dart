@@ -163,9 +163,9 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
               context,
             )?.tapToViewAndEditDetailsBodyBodyTypeNameWithNumberUtilsFormatMassBodyMassEditorhint(
               body.bodyType.name,
-              NumberUtils.formatMass(body.mass),
+              NumberUtils.formatMassInSolarMasses(body.mass),
             ) ??
-            'Tap to view and edit details. ${body.bodyType.name} with ${NumberUtils.formatMass(body.mass)}.',
+            'Tap to view and edit details. ${body.bodyType.name} with ${NumberUtils.formatMassInSolarMasses(body.mass)}.',
         button: true,
         child: Material(
           color: AppColors.transparentColor,
@@ -229,7 +229,7 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                         ),
                         SizedBox(height: AppTypography.spacingXSmall),
                         Text(
-                          '${body.bodyType.name} • ${NumberUtils.formatMass(body.mass)}',
+                          '${body.bodyType.name} • ${NumberUtils.formatMassInSolarMasses(body.mass)}',
                           style: TextStyle(
                             color: AppColors.uiWhite.withValues(
                               alpha: AppTypography.opacityHigh,
