@@ -559,6 +559,8 @@
   "deleteButton": "削除ボタン",
   "deleteScenarioConfirmMessage": "シナリオ削除確認メッセージ",
   "deleteScenarioTitle": "シナリオ削除タイトル",
+  "deleteScenarioSuccessMessage": "シナリオが正常に削除されました: {scenarioName}",
+  "deleteScenarioFailedMessage": "シナリオの削除に失敗しました: {error}",
   "editEditorLabel": "編集エディターラベル",
   "editScenarioTitle": "シナリオ編集タイトル",
   "gravitationalForcesEditor": "重力エディター",

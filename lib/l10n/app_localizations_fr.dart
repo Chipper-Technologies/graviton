@@ -556,6 +556,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get deleteScenarioTitle => 'Titre Supprimer le scénario';
 
   @override
+  String deleteScenarioSuccessMessage(String scenarioName) {
+    return 'Scénario supprimé avec succès : $scenarioName';
+  }
+
+  @override
+  String deleteScenarioFailedMessage(String error) {
+    return 'Échec de la suppression du scénario : $error';
+  }
+
+  @override
   String get editEditorLabel => 'Étiquette de l\'éditeur Modifier';
 
   @override

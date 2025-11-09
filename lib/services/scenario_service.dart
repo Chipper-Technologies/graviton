@@ -45,8 +45,8 @@ class ScenarioService {
   /// Generate random three-body system (original behavior)
   List<Body> _generateRandomBodies(AppLocalizations? l10n) {
     // Enhanced 3D Body Generation System:
-    // - Stars now span ±20 units in Z-axis (was ±10) for true 3D distribution
-    // - Planets span ±15 units in Z-axis (was ±6) with enhanced Z-velocity
+    // - Stars now span ±20 units in Z-axis for true 3D distribution
+    // - Planets span ±15 units in Z-axis with enhanced Z-velocity
     // - Planet mass ranges from Earth-size (0.8-2.0) to Super-Earth (4.0-7.0)
     // - This makes planets much more resilient and creates more interesting dynamics
 
@@ -695,9 +695,7 @@ class ScenarioService {
           // Regular galactic disk stars
           final armPosition = i / (starsPerArm - 1); // 0 to 1 along arm
           radius =
-              50.0 +
-              armPosition *
-                  100.0; // Increased minimum: 50 to 150 units (was 40-120)
+              50.0 + armPosition * 100.0; // Increased minimum: 50 to 150 units
           spiralTightness = 0.3; // How tightly wound the spiral is
           // Reverse spiral winding for counterclockwise rotation with trailing arms
           final angle =

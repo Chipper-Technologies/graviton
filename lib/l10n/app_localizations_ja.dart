@@ -524,6 +524,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get deleteScenarioTitle => 'シナリオ削除タイトル';
 
   @override
+  String deleteScenarioSuccessMessage(String scenarioName) {
+    return 'シナリオが正常に削除されました: $scenarioName';
+  }
+
+  @override
+  String deleteScenarioFailedMessage(String error) {
+    return 'シナリオの削除に失敗しました: $error';
+  }
+
+  @override
   String get editEditorLabel => '編集エディターラベル';
 
   @override

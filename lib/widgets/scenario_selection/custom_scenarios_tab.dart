@@ -159,11 +159,15 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.uiBlack.withValues(alpha: 0.95),
+        backgroundColor: AppColors.uiBlack.withValues(
+          alpha: AppTypography.opacityAlmostOpaque,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
           side: BorderSide(
-            color: AppColors.celestialRed.withValues(alpha: 0.3),
+            color: AppColors.celestialRed.withValues(
+              alpha: AppTypography.opacityFaint,
+            ),
             width: 1,
           ),
         ),
@@ -206,7 +210,9 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(
               foregroundColor: AppColors.celestialRed,
-              backgroundColor: AppColors.celestialRed.withValues(alpha: 0.1),
+              backgroundColor: AppColors.celestialRed.withValues(
+                alpha: AppTypography.opacityDisabled,
+              ),
             ),
             child: Text(AppLocalizations.of(context)!.deleteButton),
           ),
@@ -229,7 +235,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Successfully deleted scenario: $scenarioName'),
+              content: Text(l10n.deleteScenarioSuccessMessage(scenarioName)),
               backgroundColor: AppColors.primaryColor,
             ),
           );
@@ -245,7 +251,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to delete scenario: ${e.toString()}'),
+              content: Text(l10n.deleteScenarioFailedMessage(e.toString())),
               backgroundColor: AppColors.celestialRed,
             ),
           );

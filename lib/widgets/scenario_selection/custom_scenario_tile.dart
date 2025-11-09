@@ -54,17 +54,23 @@ class CustomScenarioTile extends StatelessWidget {
             children: [
               // Custom icon
               Container(
-                width: 48,
-                height: 48,
+                width: AppTypography.iconSizeXXXXLarge,
+                height: AppTypography.iconSizeXXXXLarge,
                 decoration: BoxDecoration(
                   color: customColor.withValues(
                     alpha: AppTypography.opacityVeryFaint,
                   ),
-                  borderRadius: BorderRadius.circular(24.0),
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusXXLarge + AppTypography.radiusSmall,
+                  ), // 24.0
                 ),
-                child: Icon(Icons.palette, color: customColor, size: 28),
+                child: Icon(
+                  Icons.palette,
+                  color: customColor,
+                  size: AppTypography.iconSizeXXXLarge,
+                ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: AppTypography.spacingLarge),
               // Content
               Expanded(
                 child: Column(
@@ -87,11 +93,11 @@ class CustomScenarioTile extends StatelessWidget {
                           Icon(
                             Icons.check_circle,
                             color: customColor,
-                            size: 24,
+                            size: AppTypography.iconSizeXXLarge,
                           ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: AppTypography.spacingXSmall),
                     Text(
                       l10n.customScenarioDescription,
                       style: AppTypography.smallText.copyWith(
@@ -100,18 +106,18 @@ class CustomScenarioTile extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: AppTypography.spacingSmall),
                     // Action buttons
                     Row(
                       children: [
                         Icon(
                           Icons.star,
-                          size: 16,
+                          size: AppTypography.iconSizeLarge,
                           color: customColor.withValues(
                             alpha: AppTypography.opacityMediumHigh,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: AppTypography.spacingXSmall),
                         Text(
                           l10n.customLabel,
                           style: AppTypography.smallText.copyWith(
@@ -131,25 +137,25 @@ class CustomScenarioTile extends StatelessWidget {
                             ),
                             child: Icon(
                               Icons.edit,
-                              size: 18,
+                              size: AppTypography.iconSizeLarge,
                               color: AppColors.uiWhite.withValues(
                                 alpha: AppTypography.opacityMediumHigh,
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: AppTypography.spacingSmall),
                         // Delete button
                         GestureDetector(
                           onTap: onDelete,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppTypography.spacingSmall,
+                              vertical: AppTypography.spacingXSmall,
                             ),
                             child: Icon(
                               Icons.delete_outline,
-                              size: 18,
+                              size: AppTypography.iconSizeLarge,
                               color: AppColors.celestialRed.withValues(
                                 alpha: AppTypography.opacityMediumHigh,
                               ),

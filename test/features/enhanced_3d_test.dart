@@ -102,7 +102,7 @@ void main() {
         final averageStarMass =
             stars.map((s) => s.mass).reduce((a, b) => a + b) / stars.length;
 
-        // Planet should be at least 8% of average star mass (was ~5% before)
+        // Planet should be at least 8% of average star mass
         final massRatio = planet.mass / averageStarMass;
         expect(
           massRatio,

@@ -1322,7 +1322,7 @@ class CinematicCameraController {
 
     // If separation ratio is very high, all bodies are likely ejected
     if (separationRatio > 2.5 && bodies.length > 2) {
-      // Much more aggressive threshold (was 5.0) - detect ejections earlier
+      // Much more aggressive threshold - detect ejections earlier
       // Find the closest pair among all bodies for focused tracking
       double closestPairDistance = double.infinity;
       List<Body> closestPair = [];
@@ -1344,7 +1344,7 @@ class CinematicCameraController {
     }
 
     // More aggressive normal filtering for active interactions
-    // Filter out bodies that are farther than 1.2x median distance (was 1.5x)
+    // Filter out bodies that are farther than 1.2x median distance
     final ejectionThreshold =
         medianDistance * 1.2; // More aggressive ejection filtering
     final filteredBodies = <Body>[];
@@ -1581,8 +1581,7 @@ class CinematicCameraController {
               _currentFramedBodies[0],
               _currentFramedBodies[1],
             )) {
-          score *=
-              2.5; // Much stronger stickiness for dramatic moments (was 1.4)
+          score *= 2.5; // Much stronger stickiness for dramatic moments
 
           // Extra stickiness for very close interactions
           final currentDistance = (body1.position - body2.position).length;
@@ -2425,8 +2424,8 @@ class CinematicCameraController {
         // Random: Extremely aggressive close-up shots for maximum drama
         return ScenarioCameraParameters(
           safetyMargin: 0.8, // Get as close as possible without clipping
-          minDistance: 1.5, // Ultra-close dramatic shots (was 3.0)
-          maxDistance: 35.0, // Very tight maximum framing (was 60.0)
+          minDistance: 1.5, // Ultra-close dramatic shots
+          maxDistance: 35.0, // Very tight maximum framing
           pitchSensitivity: 0.6, // High sensitivity for dynamic angles
           targetLockFrames:
               360, // 6 seconds - faster switching for intense action

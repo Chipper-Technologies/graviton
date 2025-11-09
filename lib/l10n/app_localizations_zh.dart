@@ -517,6 +517,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get deleteScenarioTitle => '删除场景标题';
 
   @override
+  String deleteScenarioSuccessMessage(String scenarioName) {
+    return '场景删除成功: $scenarioName';
+  }
+
+  @override
+  String deleteScenarioFailedMessage(String error) {
+    return '场景删除失败: $error';
+  }
+
+  @override
   String get editEditorLabel => '编辑编辑器标签';
 
   @override

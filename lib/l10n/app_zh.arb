@@ -559,6 +559,8 @@
   "deleteButton": "删除按钮",
   "deleteScenarioConfirmMessage": "场景删除确认消息",
   "deleteScenarioTitle": "删除场景标题",
+  "deleteScenarioSuccessMessage": "场景删除成功: {scenarioName}",
+  "deleteScenarioFailedMessage": "场景删除失败: {error}",
   "editEditorLabel": "编辑编辑器标签",
   "editScenarioTitle": "编辑场景标题",
   "gravitationalForcesEditor": "引力编辑器",

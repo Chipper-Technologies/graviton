@@ -559,6 +559,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get deleteScenarioTitle => 'Título Eliminar escenario';
 
   @override
+  String deleteScenarioSuccessMessage(String scenarioName) {
+    return 'Escenario eliminado exitosamente: $scenarioName';
+  }
+
+  @override
+  String deleteScenarioFailedMessage(String error) {
+    return 'Error al eliminar el escenario: $error';
+  }
+
+  @override
   String get editEditorLabel => 'Etiqueta del editor Editar';
 
   @override

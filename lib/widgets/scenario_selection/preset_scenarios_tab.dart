@@ -100,18 +100,22 @@ class PresetScenarioTile extends StatelessWidget {
             children: [
               // Icon
               Container(
-                width: 48,
-                height: 48,
+                width: AppTypography.iconSizeXXXXLarge,
+                height: AppTypography.iconSizeXXXXLarge,
                 decoration: BoxDecoration(
                   color: config.primaryColor.withValues(
                     alpha: AppTypography.opacityVeryFaint,
                   ),
                   borderRadius: BorderRadius.circular(24.0),
                 ),
-                child: Icon(config.icon, color: config.primaryColor, size: 28),
+                child: Icon(
+                  config.icon,
+                  color: config.primaryColor,
+                  size: AppTypography.iconSizeXXXLarge,
+                ),
               ),
 
-              const SizedBox(width: 16),
+              SizedBox(width: AppTypography.spacingLarge),
 
               // Content
               Expanded(
@@ -135,12 +139,12 @@ class PresetScenarioTile extends StatelessWidget {
                           Icon(
                             Icons.check_circle,
                             color: config.primaryColor,
-                            size: 24,
+                            size: AppTypography.iconSizeXXLarge,
                           ),
                       ],
                     ),
 
-                    const SizedBox(height: 4),
+                    SizedBox(height: AppTypography.spacingXSmall),
 
                     Text(
                       description,
@@ -153,24 +157,24 @@ class PresetScenarioTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
 
-                    const SizedBox(height: 8),
+                    SizedBox(height: AppTypography.spacingSmall),
 
                     // Learning objectives
                     _buildScenarioObjectives(l10n, scenario),
 
-                    const SizedBox(height: 12),
+                    SizedBox(height: AppTypography.spacingMedium),
 
                     // Metadata
                     Row(
                       children: [
                         Icon(
                           Icons.group,
-                          size: 16,
+                          size: AppTypography.iconSizeMedium,
                           color: AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityMediumHigh,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: AppTypography.spacingXSmall),
                         Text(
                           '${config.expectedBodyCount} ${l10n.bodies}',
                           style: AppTypography.smallText.copyWith(
@@ -179,15 +183,15 @@ class PresetScenarioTile extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        SizedBox(width: AppTypography.spacingLarge),
                         Icon(
                           Icons.school,
-                          size: 16,
+                          size: AppTypography.iconSizeMedium,
                           color: AppColors.uiWhite.withValues(
                             alpha: AppTypography.opacityMediumHigh,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: AppTypography.spacingXSmall),
                         Expanded(
                           child: Text(
                             LocalizationUtils.getLocalizedEducationalFocus(
@@ -267,16 +271,16 @@ class PresetScenarioTile extends StatelessWidget {
               learnEmoji,
               style: AppTypography.smallText.copyWith(
                 color: config.primaryColor,
-                fontSize: 11,
+                fontSize: AppTypography.fontSizeXXSmall,
               ),
             ),
-            const SizedBox(width: 4),
+            SizedBox(width: AppTypography.spacingXSmall),
             Expanded(
               child: Text(
                 learnText,
                 style: AppTypography.smallText.copyWith(
                   color: config.primaryColor,
-                  fontSize: 11,
+                  fontSize: AppTypography.fontSizeXXSmall,
                   height: 1.4,
                 ),
                 maxLines: 2,
@@ -285,7 +289,7 @@ class PresetScenarioTile extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: AppTypography.spacingXSmall),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -293,16 +297,16 @@ class PresetScenarioTile extends StatelessWidget {
               bestEmoji,
               style: AppTypography.smallText.copyWith(
                 color: config.primaryColor,
-                fontSize: 11,
+                fontSize: AppTypography.fontSizeXXSmall,
               ),
             ),
-            const SizedBox(width: 4),
+            SizedBox(width: AppTypography.spacingXSmall),
             Expanded(
               child: Text(
                 bestText,
                 style: AppTypography.smallText.copyWith(
                   color: config.primaryColor,
-                  fontSize: 11,
+                  fontSize: AppTypography.fontSizeXXSmall,
                   height: 1.4,
                 ),
                 maxLines: 2,

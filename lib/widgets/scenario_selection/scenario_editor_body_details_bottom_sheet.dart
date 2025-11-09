@@ -757,10 +757,12 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     if (updatedBody.radius != widget.body.radius) return 'radius';
     if (updatedBody.position != widget.body.position) return 'position';
     if (updatedBody.velocity != widget.body.velocity) return 'velocity';
-    if (updatedBody.temperature != widget.body.temperature)
+    if (updatedBody.temperature != widget.body.temperature) {
       return 'temperature';
-    if (updatedBody.stellarLuminosity != widget.body.stellarLuminosity)
+    }
+    if (updatedBody.stellarLuminosity != widget.body.stellarLuminosity) {
       return 'luminosity';
+    }
     return 'unknown';
   }
 

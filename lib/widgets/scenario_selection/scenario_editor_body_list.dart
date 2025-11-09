@@ -47,21 +47,27 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
         children: [
           Icon(
             Icons.public_off,
-            size: 64,
-            color: AppColors.uiWhite.withValues(alpha: 0.3),
-          ),
+            size: AppTypography.iconSizeXXXXLarge * 1.33,
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityFaint,
+            ),
+          ), // ~64
           SizedBox(height: AppTypography.spacingLarge),
           Text(
             l10n.noBodiesYetEditor,
             style: AppTypography.titleText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.7),
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityHigh,
+              ),
             ),
           ),
           SizedBox(height: AppTypography.spacingMedium),
           Text(
             l10n.addCelestialBodiesToCreateYourCustomScenarioEditor,
             style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.5),
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityMedium,
+              ),
             ),
             textAlign: TextAlign.center,
           ),
@@ -186,19 +192,21 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                 children: [
                   // Body color indicator icon
                   Container(
-                    width: AppTypography.iconSizeLarge, // 18.0 (was 24.0)
-                    height: AppTypography.iconSizeLarge, // 18.0 (was 24.0)
+                    width: AppTypography.iconSizeLarge,
+                    height: AppTypography.iconSizeLarge,
                     decoration: BoxDecoration(
                       color: body.color,
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.uiWhite.withValues(alpha: 0.3),
+                        color: AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityFaint,
+                        ),
                         width: 1,
                       ),
                     ),
                     child: Icon(
                       Icons.public,
-                      size: AppTypography.iconSizeSmall, // 14.0 (was 16.0)
+                      size: AppTypography.iconSizeSmall,
                       color: AppColors.uiWhite,
                     ),
                   ),
@@ -258,16 +266,16 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                             },
                             borderRadius: BorderRadius.circular(20),
                             child: Container(
-                              width:
-                                  AppTypography.spacingXLarge, // 20.0 (was 40)
-                              height:
-                                  AppTypography.spacingXLarge, // 20.0 (was 40)
+                              width: AppTypography.spacingXLarge,
+                              height: AppTypography.spacingXLarge,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: AppColors.uiWhite.withValues(alpha: 0.1),
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacityDisabled,
+                                ),
                                 border: Border.all(
                                   color: AppColors.uiWhite.withValues(
-                                    alpha: 0.3,
+                                    alpha: AppTypography.opacityFaint,
                                   ),
                                   width: 1,
                                 ),
@@ -275,7 +283,9 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                               child: Icon(
                                 Icons.content_copy,
                                 size: AppTypography.iconSizeMedium,
-                                color: AppColors.uiWhite.withValues(alpha: 0.8),
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacityVeryHigh,
+                                ),
                               ),
                             ),
                           ),
@@ -307,16 +317,16 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                               },
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
-                                width: AppTypography
-                                    .spacingXLarge, // 20.0 (was 40)
-                                height: AppTypography
-                                    .spacingXLarge, // 20.0 (was 40)
+                                width: AppTypography.spacingXLarge,
+                                height: AppTypography.spacingXLarge,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: AppColors.uiRed.withValues(alpha: 0.1),
+                                  color: AppColors.uiRed.withValues(
+                                    alpha: AppTypography.opacityDisabled,
+                                  ),
                                   border: Border.all(
                                     color: AppColors.uiRed.withValues(
-                                      alpha: 0.3,
+                                      alpha: AppTypography.opacityFaint,
                                     ),
                                     width: 1,
                                   ),
@@ -324,7 +334,9 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                                 child: Icon(
                                   Icons.delete_outline,
                                   size: AppTypography.iconSizeMedium,
-                                  color: AppColors.uiRed.withValues(alpha: 0.9),
+                                  color: AppColors.uiRed.withValues(
+                                    alpha: AppTypography.opacityNearlyOpaque,
+                                  ),
                                 ),
                               ),
                             ),

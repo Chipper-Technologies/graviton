@@ -559,6 +559,8 @@
   "deleteButton": "Botón Eliminar",
   "deleteScenarioConfirmMessage": "Mensaje de confirmación de eliminación del escenario",
   "deleteScenarioTitle": "Título Eliminar escenario",
+  "deleteScenarioSuccessMessage": "Escenario eliminado exitosamente: {scenarioName}",
+  "deleteScenarioFailedMessage": "Error al eliminar el escenario: {error}",
   "editEditorLabel": "Etiqueta del editor Editar",
   "editScenarioTitle": "Título Editar escenario",
   "gravitationalForcesEditor": "Editor de fuerzas gravitacionales",

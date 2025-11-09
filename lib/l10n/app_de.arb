@@ -559,6 +559,8 @@
   "deleteButton": "Löschen",
   "deleteScenarioConfirmMessage": "Szenario wirklich löschen?",
   "deleteScenarioTitle": "Szenario löschen",
+  "deleteScenarioSuccessMessage": "Szenario erfolgreich gelöscht: {scenarioName}",
+  "deleteScenarioFailedMessage": "Fehler beim Löschen des Szenarios: {error}",
   "editEditorLabel": "Bearbeiten-Editor",
   "editScenarioTitle": "Szenario bearbeiten",
   "gravitationalForcesEditor": "Gravitationskräfte-Editor",

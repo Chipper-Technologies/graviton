@@ -114,10 +114,14 @@ class _ScenarioEditorMetadataPanelState
           Container(
             padding: EdgeInsets.all(AppTypography.spacingMedium),
             decoration: BoxDecoration(
-              color: AppColors.uiWhite.withValues(alpha: 0.05),
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityBarely,
+              ),
               borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
               border: Border.all(
-                color: AppColors.uiWhite.withValues(alpha: 0.1),
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityDisabled,
+                ),
               ),
             ),
             child: Column(
@@ -129,7 +133,9 @@ class _ScenarioEditorMetadataPanelState
                       )?.educationalObjectivesFutureMessage ??
                       'Educational objectives and challenges can be configured here in future versions.',
                   style: AppTypography.mediumText.copyWith(
-                    color: AppColors.uiWhite.withValues(alpha: 0.7),
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
                   ),
                 ),
                 SizedBox(height: AppTypography.spacingSmall),
@@ -139,7 +145,9 @@ class _ScenarioEditorMetadataPanelState
                       )?.educationalObjectivesListMessage ??
                       'This will include:\n• Learning goals\n• Success criteria\n• Guided challenges\n• Assessment rubrics',
                   style: AppTypography.smallText.copyWith(
-                    color: AppColors.uiWhite.withValues(alpha: 0.6),
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityMediumHigh,
+                    ),
                   ),
                 ),
               ],
@@ -176,20 +184,28 @@ class _ScenarioEditorMetadataPanelState
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.5),
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityMedium,
+              ),
             ),
             filled: true,
-            fillColor: AppColors.uiWhite.withValues(alpha: 0.05),
+            fillColor: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityBarely,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
               borderSide: BorderSide(
-                color: AppColors.uiWhite.withValues(alpha: 0.2),
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityVeryFaint,
+                ),
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
               borderSide: BorderSide(
-                color: AppColors.uiWhite.withValues(alpha: 0.2),
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityVeryFaint,
+                ),
               ),
             ),
             focusedBorder: OutlineInputBorder(
@@ -226,9 +242,15 @@ class _ScenarioEditorMetadataPanelState
             horizontal: AppTypography.spacingMedium,
           ),
           decoration: BoxDecoration(
-            color: AppColors.uiWhite.withValues(alpha: 0.05),
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityBarely,
+            ),
             borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
-            border: Border.all(color: AppColors.uiWhite.withValues(alpha: 0.2)),
+            border: Border.all(
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityVeryFaint,
+              ),
+            ),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
@@ -247,7 +269,9 @@ class _ScenarioEditorMetadataPanelState
               ),
               icon: Icon(
                 Icons.arrow_drop_down,
-                color: AppColors.uiWhite.withValues(alpha: 0.7),
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityHigh,
+                ),
               ),
               items: difficulties.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(

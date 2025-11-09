@@ -559,6 +559,8 @@
   "deleteButton": "Bouton Supprimer",
   "deleteScenarioConfirmMessage": "Message de confirmation de suppression du scénario",
   "deleteScenarioTitle": "Titre Supprimer le scénario",
+  "deleteScenarioSuccessMessage": "Scénario supprimé avec succès : {scenarioName}",
+  "deleteScenarioFailedMessage": "Échec de la suppression du scénario : {error}",
   "editEditorLabel": "Étiquette de l'éditeur Modifier",
   "editScenarioTitle": "Titre Modifier le scénario",
   "gravitationalForcesEditor": "Éditeur des forces gravitationnelles",

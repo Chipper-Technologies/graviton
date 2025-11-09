@@ -36,7 +36,9 @@ class ScenarioEditorPhysicsPanel extends StatelessWidget {
           Text(
             l10n.physicsConfigurationWillBeImplementedHereEditor,
             style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.7),
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityHigh,
+              ),
             ),
           ),
 
@@ -48,7 +50,9 @@ class ScenarioEditorPhysicsPanel extends StatelessWidget {
           Text(
             l10n.asteroidBeltAndOtherParticleSystemsWillBeConfiguredHereEditor,
             style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.7),
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityHigh,
+              ),
             ),
           ),
         ],

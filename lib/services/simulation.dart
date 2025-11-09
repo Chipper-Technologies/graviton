@@ -275,9 +275,8 @@ class Simulation {
       // Generate galactic disk using asteroid belt system for background stars/dust
       asteroidBelt.generateBelt(
         innerRadius: 10.0, // Start closer to center
-        outerRadius: 300.0, // Much wider disk to encompass all stars (was 150)
-        particleCount:
-            15000, // Optimal density for good performance (was 100000)
+        outerRadius: 300.0, // Much wider disk to encompass all stars
+        particleCount: 15000, // Optimal density for good performance
         centralMass: 200.0, // Match the supermassive black hole mass
         gravitationalConstant: 1.2,
         baseColor:
@@ -292,7 +291,7 @@ class Simulation {
       kuiperBelt.generateBelt(
         innerRadius: 300.0, // Beyond main disk
         outerRadius: 500.0, // Much wider extended halo
-        particleCount: 8000, // Reasonable outer structure (was 50000)
+        particleCount: 8000, // Reasonable outer structure
         centralMass: 200.0, // Match the supermassive black hole mass
         gravitationalConstant: 1.2,
         baseColor: AppColors

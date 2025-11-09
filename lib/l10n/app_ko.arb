@@ -559,6 +559,8 @@
   "deleteButton": "삭제 버튼",
   "deleteScenarioConfirmMessage": "시나리오 삭제 확인 메시지",
   "deleteScenarioTitle": "시나리오 삭제 제목",
+  "deleteScenarioSuccessMessage": "시나리오가 성공적으로 삭제되었습니다: {scenarioName}",
+  "deleteScenarioFailedMessage": "시나리오 삭제에 실패했습니다: {error}",
   "editEditorLabel": "편집 편집기 라벨",
   "editScenarioTitle": "시나리오 편집 제목",
   "gravitationalForcesEditor": "중력 편집기",

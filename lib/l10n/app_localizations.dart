@@ -1052,6 +1052,18 @@ abstract class AppLocalizations {
   /// **'Delete Scenario'**
   String get deleteScenarioTitle;
 
+  /// Success message when scenario is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully deleted scenario: {scenarioName}'**
+  String deleteScenarioSuccessMessage(String scenarioName);
+
+  /// Error message when scenario deletion fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete scenario: {error}'**
+  String deleteScenarioFailedMessage(String error);
+
   /// Label for edit tab in body editor
   ///
   /// In en, this message translates to:

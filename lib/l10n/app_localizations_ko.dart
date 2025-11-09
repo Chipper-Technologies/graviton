@@ -525,6 +525,16 @@ class AppLocalizationsKo extends AppLocalizations {
   String get deleteScenarioTitle => '시나리오 삭제 제목';
 
   @override
+  String deleteScenarioSuccessMessage(String scenarioName) {
+    return '시나리오가 성공적으로 삭제되었습니다: $scenarioName';
+  }
+
+  @override
+  String deleteScenarioFailedMessage(String error) {
+    return '시나리오 삭제에 실패했습니다: $error';
+  }
+
+  @override
   String get editEditorLabel => '편집 편집기 라벨';
 
   @override

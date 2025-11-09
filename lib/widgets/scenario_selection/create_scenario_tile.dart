@@ -32,28 +32,30 @@ class CreateScenarioTile extends StatelessWidget {
               color: AppColors.primaryColor.withValues(
                 alpha: AppTypography.opacityMedium,
               ),
-              width: 2,
+              width: AppTypography.borderThick,
               style: BorderStyle.solid,
             ),
           ),
           child: Row(
             children: [
               Container(
-                width: 48,
-                height: 48,
+                width: AppTypography.iconSizeXXXXLarge,
+                height: AppTypography.iconSizeXXXXLarge,
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor.withValues(
                     alpha: AppTypography.opacityVeryFaint,
                   ),
-                  borderRadius: BorderRadius.circular(24.0),
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusXXLarge + AppTypography.radiusSmall,
+                  ),
                 ),
                 child: Icon(
                   Icons.add_circle_outline,
                   color: AppColors.primaryColor,
-                  size: 28,
+                  size: AppTypography.iconSizeXXXLarge,
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: AppTypography.spacingLarge),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +67,7 @@ class CreateScenarioTile extends StatelessWidget {
                         color: AppColors.primaryColor,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: AppTypography.spacingXSmall),
                     Text(
                       l10n.createCustomScenarioDescription,
                       style: AppTypography.smallText.copyWith(
@@ -82,7 +84,7 @@ class CreateScenarioTile extends StatelessWidget {
               Icon(
                 Icons.arrow_forward_ios,
                 color: AppColors.primaryColor,
-                size: 16,
+                size: AppTypography.iconSizeMedium,
               ),
             ],
           ),

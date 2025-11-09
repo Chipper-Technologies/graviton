@@ -678,6 +678,26 @@
   "@deleteScenarioTitle": {
     "description": "Title for delete scenario dialog"
   },
+  "deleteScenarioSuccessMessage": "Successfully deleted scenario: {scenarioName}",
+  "@deleteScenarioSuccessMessage": {
+    "description": "Success message when scenario is deleted",
+    "placeholders": {
+      "scenarioName": {
+        "type": "String",
+        "description": "Name of the scenario that was deleted"
+      }
+    }
+  },
+  "deleteScenarioFailedMessage": "Failed to delete scenario: {error}",
+  "@deleteScenarioFailedMessage": {
+    "description": "Error message when scenario deletion fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Error message describing what went wrong"
+      }
+    }
+  },
   "editEditorLabel": "Edit",
   "@editEditorLabel": {
     "description": "Label for edit tab in body editor"
