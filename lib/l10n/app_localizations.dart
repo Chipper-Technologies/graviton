@@ -1184,6 +1184,54 @@ abstract class AppLocalizations {
   /// **'Save Body'**
   String get saveBodyTooltip;
 
+  /// Accessibility label for save button when creating new body
+  ///
+  /// In en, this message translates to:
+  /// **'Save new body'**
+  String get saveNewBodyAccessibility;
+
+  /// Accessibility hint for save button when creating new body
+  ///
+  /// In en, this message translates to:
+  /// **'Creates the body with current settings'**
+  String get saveNewBodyHint;
+
+  /// Accessibility label for save button when editing existing body
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes to body'**
+  String get saveChangesToBodyAccessibility;
+
+  /// Accessibility hint for save button when editing existing body
+  ///
+  /// In en, this message translates to:
+  /// **'Saves all changes made to this body'**
+  String get saveChangesToBodyHint;
+
+  /// Accessibility label for more actions menu button
+  ///
+  /// In en, this message translates to:
+  /// **'More actions'**
+  String get moreActionsAccessibility;
+
+  /// Accessibility hint for more actions menu button
+  ///
+  /// In en, this message translates to:
+  /// **'Open menu with duplicate and delete options'**
+  String get moreActionsHint;
+
+  /// Accessibility hint for duplicate body menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Creates a copy of this body'**
+  String get duplicateBodyAccessibility;
+
+  /// Accessibility hint for delete body menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently removes this body'**
+  String get deleteBodyAccessibility;
+
   /// Accessibility description when settings button has focus
   ///
   /// In en, this message translates to:

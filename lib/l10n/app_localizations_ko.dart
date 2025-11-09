@@ -598,6 +598,30 @@ class AppLocalizationsKo extends AppLocalizations {
   String get saveBodyTooltip => '천체 저장';
 
   @override
+  String get saveNewBodyAccessibility => '새 천체 저장';
+
+  @override
+  String get saveNewBodyHint => '현재 설정으로 천체를 생성합니다';
+
+  @override
+  String get saveChangesToBodyAccessibility => '천체 변경사항 저장';
+
+  @override
+  String get saveChangesToBodyHint => '이 천체에 대한 모든 변경사항을 저장합니다';
+
+  @override
+  String get moreActionsAccessibility => '추가 작업';
+
+  @override
+  String get moreActionsHint => '복제 및 삭제 옵션 메뉴 열기';
+
+  @override
+  String get duplicateBodyAccessibility => '이 천체의 사본을 생성';
+
+  @override
+  String get deleteBodyAccessibility => '이 천체를 영구적으로 제거';
+
+  @override
   String get settingsButtonFocused => '설정 버튼에 포커스';
 
   @override

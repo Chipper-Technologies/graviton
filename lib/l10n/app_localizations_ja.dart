@@ -597,6 +597,30 @@ class AppLocalizationsJa extends AppLocalizations {
   String get saveBodyTooltip => '天体を保存';
 
   @override
+  String get saveNewBodyAccessibility => '新しい天体を保存';
+
+  @override
+  String get saveNewBodyHint => '現在の設定で天体を作成します';
+
+  @override
+  String get saveChangesToBodyAccessibility => '天体の変更を保存';
+
+  @override
+  String get saveChangesToBodyHint => 'この天体に加えた全ての変更を保存します';
+
+  @override
+  String get moreActionsAccessibility => 'その他のアクション';
+
+  @override
+  String get moreActionsHint => '複製と削除オプションのメニューを開く';
+
+  @override
+  String get duplicateBodyAccessibility => 'この天体のコピーを作成';
+
+  @override
+  String get deleteBodyAccessibility => 'この天体を完全に削除';
+
+  @override
   String get settingsButtonFocused => '設定ボタンにフォーカス';
 
   @override

@@ -632,6 +632,33 @@ class AppLocalizationsFr extends AppLocalizations {
   String get saveBodyTooltip => 'Sauvegarder le Corps';
 
   @override
+  String get saveNewBodyAccessibility => 'Sauvegarder nouveau corps';
+
+  @override
+  String get saveNewBodyHint => 'Crée le corps avec les paramètres actuels';
+
+  @override
+  String get saveChangesToBodyAccessibility =>
+      'Sauvegarder les modifications du corps';
+
+  @override
+  String get saveChangesToBodyHint =>
+      'Sauvegarde toutes les modifications apportées à ce corps';
+
+  @override
+  String get moreActionsAccessibility => 'Plus d\'actions';
+
+  @override
+  String get moreActionsHint =>
+      'Ouvrir le menu avec les options dupliquer et supprimer';
+
+  @override
+  String get duplicateBodyAccessibility => 'Crée une copie de ce corps';
+
+  @override
+  String get deleteBodyAccessibility => 'Supprime définitivement ce corps';
+
+  @override
   String get settingsButtonFocused => 'Bouton Paramètres focalisé';
 
   @override

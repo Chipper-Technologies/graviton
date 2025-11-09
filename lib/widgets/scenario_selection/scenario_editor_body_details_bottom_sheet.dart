@@ -280,9 +280,16 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                     ),
                   ),
                   // Action buttons
-                  if (widget.isAddMode)
-                    // Save button for add mode
-                    TextButton(
+                  // Save button (always shown)
+                  Semantics(
+                    button: true,
+                    label: widget.isAddMode
+                        ? l10n.saveNewBodyAccessibility
+                        : l10n.saveChangesToBodyAccessibility,
+                    hint: widget.isAddMode
+                        ? l10n.saveNewBodyHint
+                        : l10n.saveChangesToBodyHint,
+                    child: TextButton(
                       onPressed: () {
                         HapticFeedback.lightImpact();
                         _showSaveConfirmation();
@@ -294,40 +301,153 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                    )
-                  else ...[
-                    // Duplicate and delete buttons for edit mode
-                    IconButton(
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-
-                        // Log analytics for body duplication
-                        FirebaseService.instance.logUIEventWithEnums(
-                          UIAction.bodyAdded,
-                          element: UIElement.bodyEditor,
-                          value: 'duplicate',
-                          additionalParams: {
-                            'original_body_name': widget.body.name,
-                            'body_type': widget.body.bodyType.name,
-                          },
-                        );
-
-                        widget.onDuplicate?.call();
-                      },
-                      icon: const Icon(Icons.content_copy_outlined),
-                      color: AppColors.primaryColor,
-                      tooltip: l10n.duplicateBodyTooltip,
                     ),
-                    IconButton(
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        _showDeleteConfirmation();
-                      },
-                      icon: const Icon(Icons.delete_outline),
-                      color: AppColors.accretionRed,
-                      tooltip: l10n.deleteBodyTooltip,
+                  ),
+                  // 3-dot menu for edit mode actions
+                  if (!widget.isAddMode)
+                    Semantics(
+                      button: true,
+                      label: l10n.moreActionsAccessibility,
+                      hint: l10n.moreActionsHint,
+                      child: PopupMenuButton<String>(
+                        onSelected: (String result) {
+                          HapticFeedback.lightImpact();
+                          // Log analytics for menu selection
+                          FirebaseService.instance.logUIEventWithEnums(
+                            UIAction.buttonPressed,
+                            element: UIElement.bodyEditor,
+                            value: 'menu_$result',
+                            additionalParams: {
+                              'body_name': widget.body.name,
+                              'body_type': widget.body.bodyType.name,
+                            },
+                          );
+                          switch (result) {
+                            case 'duplicate':
+                              // Log analytics for body duplication
+                              FirebaseService.instance.logUIEventWithEnums(
+                                UIAction.bodyAdded,
+                                element: UIElement.bodyEditor,
+                                value: 'duplicate',
+                                additionalParams: {
+                                  'original_body_name': widget.body.name,
+                                  'body_type': widget.body.bodyType.name,
+                                },
+                              );
+                              widget.onDuplicate?.call();
+                              break;
+                            case 'delete':
+                              _showDeleteConfirmation();
+                              break;
+                          }
+                        },
+                        tooltip: 'More actions',
+                        icon: Icon(Icons.more_vert, color: AppColors.uiWhite),
+                        color: AppColors.uiBlack.withValues(
+                          alpha: AppTypography.opacityHigh,
+                        ),
+                        itemBuilder: (BuildContext context) => [
+                          PopupMenuItem<String>(
+                            value: 'duplicate',
+                            height:
+                                56, // Increased height for larger touch target
+                            child: Semantics(
+                              label: l10n.duplicateBodyTooltip,
+                              hint: l10n.duplicateBodyAccessibility,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: AppColors.primaryColor
+                                              .withValues(
+                                                alpha: AppColors
+                                                    .alphaMediumVisible,
+                                              ),
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      child: Icon(
+                                        Icons.content_copy_outlined,
+                                        color: AppColors.primaryColor,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: AppTypography.spacingMedium,
+                                    ),
+                                    Text(
+                                      l10n.duplicateBodyTooltip,
+                                      style: AppTypography.mediumText.copyWith(
+                                        // Changed from smallText
+                                        color: AppColors.uiWhite,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem<String>(
+                            value: 'delete',
+                            height:
+                                56, // Increased height for larger touch target
+                            child: Semantics(
+                              label: l10n.deleteBodyTooltip,
+                              hint: l10n.deleteBodyAccessibility,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: AppColors.accretionRed
+                                              .withValues(
+                                                alpha: AppColors
+                                                    .alphaMediumVisible,
+                                              ),
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      child: Icon(
+                                        Icons.delete_outline,
+                                        color: AppColors.accretionRed,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: AppTypography.spacingMedium,
+                                    ),
+                                    Text(
+                                      l10n.deleteBodyTooltip,
+                                      style: AppTypography.mediumText.copyWith(
+                                        // Changed from smallText
+                                        color: AppColors.uiWhite,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
                 ],
               ),
             ),
@@ -450,16 +570,29 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     // Get the current body state with all updates
     final currentBody = _getCurrentBodyState();
 
-    // Log analytics for body creation
-    FirebaseService.instance.logUIEventWithEnums(
-      UIAction.bodyAdded,
-      element: UIElement.bodyEditor,
-      additionalParams: {
-        'body_name': currentBody.name,
-        'body_type': currentBody.bodyType.name,
-        'body_mass': currentBody.mass,
-      },
-    );
+    // Log analytics based on mode (add vs edit)
+    if (widget.isAddMode) {
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.bodyAdded,
+        element: UIElement.bodyEditor,
+        additionalParams: {
+          'body_name': currentBody.name,
+          'body_type': currentBody.bodyType.name,
+          'body_mass': currentBody.mass,
+        },
+      );
+    } else {
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.bodyEdited,
+        element: UIElement.bodyEditor,
+        additionalParams: {
+          'body_name': currentBody.name,
+          'body_type': currentBody.bodyType.name,
+          'body_mass': currentBody.mass,
+          'original_name': _originalBody.name,
+        },
+      );
+    }
 
     // Clear unsaved changes flag since we're saving
     _hasUnsavedChanges = false;

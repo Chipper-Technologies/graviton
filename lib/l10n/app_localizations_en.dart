@@ -625,6 +625,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveBodyTooltip => 'Save Body';
 
   @override
+  String get saveNewBodyAccessibility => 'Save new body';
+
+  @override
+  String get saveNewBodyHint => 'Creates the body with current settings';
+
+  @override
+  String get saveChangesToBodyAccessibility => 'Save changes to body';
+
+  @override
+  String get saveChangesToBodyHint => 'Saves all changes made to this body';
+
+  @override
+  String get moreActionsAccessibility => 'More actions';
+
+  @override
+  String get moreActionsHint => 'Open menu with duplicate and delete options';
+
+  @override
+  String get duplicateBodyAccessibility => 'Creates a copy of this body';
+
+  @override
+  String get deleteBodyAccessibility => 'Permanently removes this body';
+
+  @override
   String get settingsButtonFocused =>
       'Settings button focused - open application settings';
 

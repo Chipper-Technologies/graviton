@@ -590,6 +590,30 @@ class AppLocalizationsZh extends AppLocalizations {
   String get saveBodyTooltip => '保存天体';
 
   @override
+  String get saveNewBodyAccessibility => '保存新天体';
+
+  @override
+  String get saveNewBodyHint => '使用当前设置创建天体';
+
+  @override
+  String get saveChangesToBodyAccessibility => '保存天体更改';
+
+  @override
+  String get saveChangesToBodyHint => '保存对此天体所做的所有更改';
+
+  @override
+  String get moreActionsAccessibility => '更多操作';
+
+  @override
+  String get moreActionsHint => '打开包含复制和删除选项的菜单';
+
+  @override
+  String get duplicateBodyAccessibility => '创建此天体的副本';
+
+  @override
+  String get deleteBodyAccessibility => '永久删除此天体';
+
+  @override
   String get settingsButtonFocused => '设置按钮已聚焦';
 
   @override

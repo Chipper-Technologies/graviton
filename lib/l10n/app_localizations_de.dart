@@ -626,6 +626,32 @@ class AppLocalizationsDe extends AppLocalizations {
   String get saveBodyTooltip => 'Körper Speichern';
 
   @override
+  String get saveNewBodyAccessibility => 'Neuen Körper speichern';
+
+  @override
+  String get saveNewBodyHint =>
+      'Erstellt den Körper mit den aktuellen Einstellungen';
+
+  @override
+  String get saveChangesToBodyAccessibility => 'Änderungen am Körper speichern';
+
+  @override
+  String get saveChangesToBodyHint =>
+      'Speichert alle Änderungen an diesem Körper';
+
+  @override
+  String get moreActionsAccessibility => 'Weitere Aktionen';
+
+  @override
+  String get moreActionsHint => 'Menü mit Duplikat- und Löschoptionen öffnen';
+
+  @override
+  String get duplicateBodyAccessibility => 'Erstellt eine Kopie dieses Körpers';
+
+  @override
+  String get deleteBodyAccessibility => 'Entfernt diesen Körper dauerhaft';
+
+  @override
   String get settingsButtonFocused => 'Einstellungen-Schaltfläche fokussiert';
 
   @override

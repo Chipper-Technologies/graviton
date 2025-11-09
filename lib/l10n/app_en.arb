@@ -784,6 +784,38 @@
   "@saveBodyTooltip": {
     "description": "Tooltip for save body button"
   },
+  "saveNewBodyAccessibility": "Save new body",
+  "@saveNewBodyAccessibility": {
+    "description": "Accessibility label for save button when creating new body"
+  },
+  "saveNewBodyHint": "Creates the body with current settings",
+  "@saveNewBodyHint": {
+    "description": "Accessibility hint for save button when creating new body"
+  },
+  "saveChangesToBodyAccessibility": "Save changes to body",
+  "@saveChangesToBodyAccessibility": {
+    "description": "Accessibility label for save button when editing existing body"
+  },
+  "saveChangesToBodyHint": "Saves all changes made to this body",
+  "@saveChangesToBodyHint": {
+    "description": "Accessibility hint for save button when editing existing body"
+  },
+  "moreActionsAccessibility": "More actions",
+  "@moreActionsAccessibility": {
+    "description": "Accessibility label for more actions menu button"
+  },
+  "moreActionsHint": "Open menu with duplicate and delete options",
+  "@moreActionsHint": {
+    "description": "Accessibility hint for more actions menu button"
+  },
+  "duplicateBodyAccessibility": "Creates a copy of this body",
+  "@duplicateBodyAccessibility": {
+    "description": "Accessibility hint for duplicate body menu item"
+  },
+  "deleteBodyAccessibility": "Permanently removes this body",
+  "@deleteBodyAccessibility": {
+    "description": "Accessibility hint for delete body menu item"
+  },
   "settingsButtonFocused": "Settings button focused - open application settings",
   "@settingsButtonFocused": {
     "description": "Accessibility description when settings button has focus"
