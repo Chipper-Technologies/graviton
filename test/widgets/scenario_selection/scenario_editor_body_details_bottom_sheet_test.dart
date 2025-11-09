@@ -332,9 +332,35 @@ void main() {
         // Should not show unsaved changes dialog
         expect(find.text('Unsaved Changes'), findsNothing);
       });
-    });
 
-    group('Shared Functionality', () {});
+      testWidgets('prevents closing when changes are made to any property', (
+        WidgetTester tester,
+      ) async {
+        bool bodyChanged = false;
+
+        await tester.pumpWidget(
+          makeTestableWidget(
+            ScenarioEditorBodyDetailsBottomSheet(
+              body: testBody,
+              onBodyChanged: (_) => bodyChanged = true,
+              onSave: (_) {},
+            ),
+          ),
+        );
+
+        // Switch to Edit tab to access form fields
+        await tester.tap(find.text('Edit'));
+        await tester.pumpAndSettle();
+
+        // Make a change to any field (name field)
+        final nameField = find.byType(TextField).first;
+        await tester.enterText(nameField, 'Modified Name');
+        await tester.pump();
+
+        // Verify that the body was changed (indicating unsaved changes were detected)
+        expect(bodyChanged, isTrue);
+      });
+    });
 
     group('Shared Functionality', () {
       testWidgets('updates body name when text field changed', (

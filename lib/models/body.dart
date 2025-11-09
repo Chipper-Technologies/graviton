@@ -86,4 +86,40 @@ class Body {
   void updateTemperature(double newTemperature) {
     temperature = newTemperature;
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Body &&
+        other.position == position &&
+        other.velocity == velocity &&
+        other.mass == mass &&
+        other.radius == radius &&
+        other.color == color &&
+        other.name == name &&
+        other.isPlanet == isPlanet &&
+        other.bodyType == bodyType &&
+        other.stellarLuminosity == stellarLuminosity &&
+        other.habitabilityStatus == habitabilityStatus &&
+        other.temperature == temperature &&
+        other.showGravityWell == showGravityWell;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      position,
+      velocity,
+      mass,
+      radius,
+      color,
+      name,
+      isPlanet,
+      bodyType,
+      stellarLuminosity,
+      habitabilityStatus,
+      temperature,
+      showGravityWell,
+    );
+  }
 }

@@ -358,8 +358,8 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      // Scroll down to see the speed preset buttons
-      await tester.drag(find.byType(ListView), const Offset(0, -300));
+      // Scroll down to see the speed preset buttons - need more scroll to reach them
+      await tester.drag(find.byType(ListView), const Offset(0, -400));
       await tester.pumpAndSettle();
 
       // Should have speed preset buttons
