@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/custom_scenario.dart';
+import 'package:graviton/models/scenario_metadata.dart';
+import 'package:graviton/models/objectives_config.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/section_title.dart';

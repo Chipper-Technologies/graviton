@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/orbital_event.dart';
+import 'package:graviton/models/predictive_orbital_config.dart';
+import 'package:graviton/enums/orbital_event_type.dart';
 import 'package:graviton/utils/physics_utils.dart';
 import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/l10n/app_localizations.dart';

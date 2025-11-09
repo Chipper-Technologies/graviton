@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/custom_scenario.dart';
+import 'package:graviton/models/scenario_metadata.dart';
+import 'package:graviton/models/scenario_configuration.dart';
+import 'package:graviton/models/scenario_physics_settings.dart';
+import 'package:graviton/models/body_data.dart';
+import 'package:graviton/models/particle_systems_config.dart';
+import 'package:graviton/models/objectives_config.dart';
 
 /// Service for converting between internal simulation objects and JSON format
 class ScenarioSerializationService {
@@ -15,7 +20,7 @@ class ScenarioSerializationService {
     required List<Body> bodies,
     required ScenarioMetadata metadata,
     ScenarioConfiguration? configuration,
-    PhysicsSettings? physics,
+    ScenarioPhysicsSettings? physics,
     ParticleSystemsConfig? particleSystems,
     ObjectivesConfig? objectives,
   }) {
@@ -74,12 +79,12 @@ class ScenarioSerializationService {
       mass: body.mass,
       radius: body.radius,
       color: _colorToHex(body.color),
-      bodyType: body.bodyType.name,
+      bodyType: body.bodyType,
       stellarLuminosity: body.stellarLuminosity,
       temperature: body.temperature,
       showGravityWell: body.showGravityWell,
       isPlanet: body.isPlanet,
-      habitabilityStatus: body.habitabilityStatus.name,
+      habitabilityStatus: body.habitabilityStatus,
     );
   }
 
@@ -100,14 +105,12 @@ class ScenarioSerializationService {
       mass: bodyData.mass,
       radius: bodyData.radius,
       color: _hexToColor(bodyData.color),
-      bodyType: _stringToBodyType(bodyData.bodyType),
+      bodyType: bodyData.bodyType,
       stellarLuminosity: bodyData.stellarLuminosity,
       temperature: bodyData.temperature,
       showGravityWell: bodyData.showGravityWell,
       isPlanet: bodyData.isPlanet,
-      habitabilityStatus: _stringToHabitabilityStatus(
-        bodyData.habitabilityStatus,
-      ),
+      habitabilityStatus: bodyData.habitabilityStatus,
     );
   }
 
@@ -131,38 +134,17 @@ class ScenarioSerializationService {
     throw ArgumentError('Invalid hex color format: $hex');
   }
 
-  /// Convert string to BodyType enum
-  static BodyType _stringToBodyType(String typeString) {
-    for (final type in BodyType.values) {
-      if (type.name == typeString) {
-        return type;
-      }
-    }
-    throw ArgumentError('Invalid body type: $typeString');
-  }
-
-  /// Convert string to HabitabilityStatus enum
-  static HabitabilityStatus _stringToHabitabilityStatus(String statusString) {
-    for (final status in HabitabilityStatus.values) {
-      if (status.name == statusString) {
-        return status;
-      }
-    }
-    throw ArgumentError('Invalid habitability status: $statusString');
-  }
-
   /// Create default configuration
   static ScenarioConfiguration _defaultConfiguration(int bodyCount) {
     return ScenarioConfiguration(
-      optimalCameraDistance: null, // Auto-calculate
       cameraDistanceMultiplier: 1.2,
       expectedBodyCount: bodyCount,
     );
   }
 
   /// Create default physics settings
-  static PhysicsSettings _defaultPhysics() {
-    return const PhysicsSettings(
+  static ScenarioPhysicsSettings _defaultPhysics() {
+    return const ScenarioPhysicsSettings(
       gravitationalConstant: 1.2,
       softening: 0.1,
       timeScale: 1.0,

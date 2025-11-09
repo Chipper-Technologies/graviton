@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/custom_scenario.dart';
+import 'package:graviton/models/scenario_physics_settings.dart';
+import 'package:graviton/models/particle_systems_config.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/section_title.dart';
 
 /// Physics configuration panel for scenario editor
 class ScenarioEditorPhysicsPanel extends StatelessWidget {
-  final PhysicsSettings physics;
+  final ScenarioPhysicsSettings physics;
   final ParticleSystemsConfig particleSystems;
-  final ValueChanged<PhysicsSettings> onPhysicsChanged;
+  final ValueChanged<ScenarioPhysicsSettings> onPhysicsChanged;
   final ValueChanged<ParticleSystemsConfig> onParticleSystemsChanged;
 
   const ScenarioEditorPhysicsPanel({

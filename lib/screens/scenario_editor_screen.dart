@@ -9,6 +9,10 @@ import 'package:graviton/widgets/common/haptic_floating_action_button.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:graviton/models/custom_scenario.dart';
+import 'package:graviton/models/scenario_metadata.dart';
+import 'package:graviton/models/scenario_physics_settings.dart';
+import 'package:graviton/models/particle_systems_config.dart';
+import 'package:graviton/models/objectives_config.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/scenario_serialization_service.dart';
 import 'package:graviton/services/custom_scenario_storage.dart';
@@ -39,7 +43,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   late TabController _tabController;
   late List<Body> _bodies;
   late ScenarioMetadata _metadata;
-  late PhysicsSettings _physics;
+  late ScenarioPhysicsSettings _physics;
   late ParticleSystemsConfig _particleSystems;
   ObjectivesConfig? _objectives;
 
@@ -126,8 +130,8 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     );
   }
 
-  PhysicsSettings _createDefaultPhysics() {
-    return const PhysicsSettings(
+  ScenarioPhysicsSettings _createDefaultPhysics() {
+    return const ScenarioPhysicsSettings(
       gravitationalConstant: 1.2,
       softening: 0.1,
       timeScale: 1.0,
@@ -479,7 +483,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     }
   }
 
-  void _onPhysicsChanged(PhysicsSettings newPhysics) {
+  void _onPhysicsChanged(ScenarioPhysicsSettings newPhysics) {
     setState(() {
       _physics = newPhysics;
       _hasUnsavedChanges = true;

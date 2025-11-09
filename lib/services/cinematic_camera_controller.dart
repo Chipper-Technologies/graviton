@@ -6,7 +6,7 @@ import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
-import 'package:graviton/models/orbital_event.dart';
+import 'package:graviton/models/predictive_orbital_config.dart';
 import 'package:graviton/services/orbital_prediction_engine.dart';
 import 'package:graviton/state/camera_state.dart';
 import 'package:graviton/state/simulation_state.dart';

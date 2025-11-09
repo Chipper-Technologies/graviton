@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/celestial_body_name.dart';
-import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
-import 'package:graviton/services/temperature_service.dart';
 import 'package:graviton/services/custom_scenario_manager.dart';
+import 'package:graviton/services/temperature_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -1028,12 +1027,10 @@ class ScenarioService {
               mass: bodyData.mass,
               radius: bodyData.radius,
               color: Color(int.parse(bodyData.color.replaceFirst('#', '0xff'))),
-              bodyType: _parseBodyType(bodyData.bodyType),
+              bodyType: bodyData.bodyType,
               temperature: bodyData.temperature,
               stellarLuminosity: bodyData.stellarLuminosity,
-              habitabilityStatus: _parseHabitabilityStatus(
-                bodyData.habitabilityStatus,
-              ),
+              habitabilityStatus: bodyData.habitabilityStatus,
               showGravityWell: bodyData.showGravityWell,
               isPlanet: bodyData.isPlanet,
             ),
@@ -1043,42 +1040,6 @@ class ScenarioService {
       debugPrint('Failed to generate custom scenario: $e');
       // Fall back to random generation on error
       return _generateRandomBodies(l10n);
-    }
-  }
-
-  /// Parse BodyType from string value
-  BodyType _parseBodyType(String value) {
-    switch (value.toLowerCase()) {
-      case 'star':
-        return BodyType.star;
-      case 'planet':
-        return BodyType.planet;
-      case 'moon':
-        return BodyType.moon;
-      case 'asteroid':
-        return BodyType.asteroid;
-      default:
-        debugPrint('Unknown BodyType: $value, defaulting to asteroid');
-        return BodyType.asteroid;
-    }
-  }
-
-  /// Parse HabitabilityStatus from string value
-  HabitabilityStatus _parseHabitabilityStatus(String value) {
-    switch (value.toLowerCase()) {
-      case 'habitable':
-        return HabitabilityStatus.habitable;
-      case 'toohot':
-      case 'too_hot':
-        return HabitabilityStatus.tooHot;
-      case 'toocold':
-      case 'too_cold':
-        return HabitabilityStatus.tooCold;
-      case 'unknown':
-        return HabitabilityStatus.unknown;
-      default:
-        debugPrint('Unknown HabitabilityStatus: $value, defaulting to unknown');
-        return HabitabilityStatus.unknown;
     }
   }
 }

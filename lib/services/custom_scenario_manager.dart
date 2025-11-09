@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/custom_scenario.dart';
+import 'package:graviton/models/scenario_metadata.dart';
 import 'package:graviton/services/custom_scenario_storage.dart';
 import 'package:graviton/services/scenario_serialization_service.dart';
 import 'package:graviton/theme/app_colors.dart';
