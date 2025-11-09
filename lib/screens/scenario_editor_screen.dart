@@ -19,9 +19,9 @@ import 'package:graviton/services/custom_scenario_storage.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/theme/app_colors.dart' as app_colors;
 import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/widgets/scenario_editor_body_list.dart';
-import 'package:graviton/widgets/scenario_editor_physics_panel.dart';
-import 'package:graviton/widgets/scenario_editor_metadata_panel.dart';
+import 'package:graviton/widgets/scenario_selection/scenario_editor_body_list.dart';
+import 'package:graviton/widgets/scenario_selection/scenario_editor_physics_panel.dart';
+import 'package:graviton/widgets/scenario_selection/scenario_editor_metadata_panel.dart';
 
 /// Screen for creating and editing custom gravitational simulation scenarios
 class ScenarioEditorScreen extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/models/body.dart';
-import 'package:graviton/widgets/scenario_editor_body_list.dart';
+import 'package:graviton/widgets/scenario_selection/scenario_editor_body_list.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/l10n/app_localizations.dart';

@@ -25,10 +25,10 @@ void main() {
         ),
       );
 
-      // Should display a grid of color options
-      expect(find.byType(GridView), findsOneWidget);
+      // Should display colors in a Wrap layout
+      expect(find.byType(Wrap), findsOneWidget);
 
-      // Should have 12 default colors by default (4x3 grid)
+      // Should have 12 default colors
       expect(find.byType(GestureDetector), findsNWidgets(12));
     });
 
@@ -159,15 +159,20 @@ void main() {
         ),
       );
 
-      // Find the color container and check its size
-      final container = find.byType(Container).last;
+      // Find the color container and check its constraints
+      final container = find
+          .descendant(
+            of: find.byType(GestureDetector),
+            matching: find.byType(Container),
+          )
+          .first;
       final containerWidget = tester.widget<Container>(container);
 
-      expect(containerWidget.constraints?.minWidth, equals(60.0));
-      expect(containerWidget.constraints?.minHeight, equals(60.0));
+      expect(containerWidget.constraints?.maxWidth, equals(60.0));
+      expect(containerWidget.constraints?.maxHeight, equals(60.0));
     });
 
-    testWidgets('arranges colors in correct grid layout', (
+    testWidgets('arranges colors using wrap layout', (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
@@ -175,7 +180,6 @@ void main() {
           ColorPicker(
             selectedColor: Colors.blue,
             onColorChanged: (_) {},
-            itemsPerRow: 3,
             colors: const [
               Colors.red,
               Colors.green,
@@ -188,12 +192,11 @@ void main() {
         ),
       );
 
-      // Should have a GridView with 3 items per row
-      final gridView = tester.widget<GridView>(find.byType(GridView));
-      final delegate =
-          gridView.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount;
+      // Should use Wrap layout for flexible arrangement
+      expect(find.byType(Wrap), findsOneWidget);
 
-      expect(delegate.crossAxisCount, equals(3));
+      // Should have all 6 colors
+      expect(find.byType(GestureDetector), findsNWidgets(6));
     });
 
     testWidgets('has proper semantics for accessibility', (

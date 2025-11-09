@@ -6,7 +6,7 @@ import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/number_utils.dart';
-import 'package:graviton/widgets/scenario_editor_body_details_bottom_sheet.dart';
+import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
 
 /// Widget for managing the list of celestial bodies in the scenario editor
 class ScenarioEditorBodyList extends StatefulWidget {
