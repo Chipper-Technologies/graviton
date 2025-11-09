@@ -60,6 +60,8 @@ class LocalizationUtils {
       case ScenarioType.deepSpace:
         // These scenarios are used by screenshot presets but not available in the main scenario selection
         return l10n.scenarioSpecial;
+      case ScenarioType.custom:
+        return l10n.scenarioCustom;
     }
   }
 
@@ -86,6 +88,8 @@ class LocalizationUtils {
       case ScenarioType.deepSpace:
         // These scenarios are used by screenshot presets but not available in the main scenario selection
         return l10n.scenarioSpecialDescription;
+      case ScenarioType.custom:
+        return l10n.scenarioCustomDescription;
     }
   }
 

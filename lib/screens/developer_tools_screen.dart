@@ -24,7 +24,7 @@ class DeveloperToolsScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparentColor,
       appBar: HapticAppBar(title: l10n.developerToolsTitle),
       body: SafeArea(
         child: Container(
@@ -52,7 +52,7 @@ class DeveloperToolsScreen extends StatelessWidget {
                         ],
 
                         // Actions Section
-                        SectionTitle(title: l10n.helpAndObjectivesTitle),
+                        SectionTitle(title: l10n.showHelpTooltip),
                         SizedBox(height: AppTypography.spacingMedium),
 
                         // Tutorial Button
@@ -66,7 +66,7 @@ class DeveloperToolsScreen extends StatelessWidget {
                         SizedBox(height: AppTypography.spacingLarge),
 
                         // Changelog Section
-                        SectionTitle(title: l10n.changelogDebugTitle),
+                        SectionTitle(title: l10n.changelogHometitle),
                         SizedBox(height: AppTypography.spacingMedium),
 
                         // Changelog Button

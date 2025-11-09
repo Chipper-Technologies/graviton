@@ -5,11 +5,14 @@ import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
 import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/common/haptic_icon_button.dart';
 import 'package:graviton/widgets/common/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/haptic_switch_list_tile.dart';
+import 'package:graviton/widgets/common/styled_text_field.dart';
+import 'package:graviton/widgets/common/styled_dropdown.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 class BodyPropertiesDialog extends StatefulWidget {
@@ -180,24 +183,35 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                     children: [
                       // Name
                       _buildSectionTitle(l10n.bodyPropertiesName),
-                      TextField(
+                      StyledTextField(
                         controller: _nameController,
+                        icon: Icons.label,
+                        hintText: l10n.bodyPropertiesNameHint,
                         onChanged: (value) {
                           setState(() {});
                           _updateBody();
                         },
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          hintText: l10n.bodyPropertiesNameHint,
-                        ),
                       ),
 
                       const SizedBox(height: AppTypography.spacingLarge),
 
                       // Body Type
-                      _buildSectionTitle(l10n.bodyPropertiesType),
-                      DropdownButtonFormField<BodyType>(
-                        initialValue: _bodyType,
+                      _buildSectionTitle(l10n.bodyTypeEditor),
+                      StyledDropdown<BodyType>(
+                        value: _bodyType,
+                        icon: Icons.category,
+                        items: BodyType.values.map((BodyType type) {
+                          return DropdownMenuItem<BodyType>(
+                            value: type,
+                            child: Text(
+                              _getLocalizedBodyTypeName(l10n, type),
+                              style: TextStyle(
+                                color: AppColors.uiWhite,
+                                fontSize: AppTypography.fontSizeMedium,
+                              ),
+                            ),
+                          );
+                        }).toList(),
                         onChanged: (BodyType? newValue) {
                           if (newValue != null) {
                             setState(() {
@@ -206,39 +220,12 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                             _updateBody();
                           }
                         },
-                        dropdownColor: AppColors.uiBlack,
-                        style: TextStyle(color: AppColors.uiWhite),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: AppColors.uiBlack.withValues(
-                            alpha: AppTypography.opacityFaint,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                              AppTypography.radiusMedium,
-                            ),
-                            borderSide: BorderSide(
-                              color: AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacityFaint,
-                              ),
-                            ),
-                          ),
-                        ),
-                        items: BodyType.values.map((BodyType type) {
-                          return DropdownMenuItem<BodyType>(
-                            value: type,
-                            child: Text(
-                              _getLocalizedBodyTypeName(l10n, type),
-                              style: TextStyle(color: AppColors.uiWhite),
-                            ),
-                          );
-                        }).toList(),
                       ),
 
                       const SizedBox(height: AppTypography.spacingLarge),
 
                       // Color
-                      _buildSectionTitle(l10n.bodyPropertiesColor),
+                      _buildSectionTitle(l10n.colorEditor),
                       const SizedBox(height: AppTypography.spacingSmall),
                       _buildColorPicker(),
 
@@ -280,7 +267,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                         min: _massMin,
                         max: _massMax,
                         divisions: 100,
-                        label: _mass.toStringAsFixed(3),
+                        label: NumberUtils.formatMass(_mass),
                         icon: Icons.scale,
                         onChanged: (value) {
                           setState(() {
@@ -299,7 +286,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                         min: _radiusMin,
                         max: _radiusMax,
                         divisions: 100,
-                        label: _radius.toStringAsFixed(2),
+                        label: NumberUtils.formatDistance(_radius),
                         icon: Icons.circle_outlined,
                         onChanged: (value) {
                           setState(() {
@@ -319,7 +306,9 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                           min: _luminosityMin,
                           max: _luminosityMax,
                           divisions: 100,
-                          label: _stellarLuminosity.toStringAsFixed(2),
+                          label: NumberUtils.formatLuminosity(
+                            _stellarLuminosity,
+                          ),
                           icon: Icons.brightness_7,
                           onChanged: (value) {
                             setState(() {
@@ -428,7 +417,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                 min: _velocityMin,
                 max: _velocityMax,
                 divisions: 100,
-                label: _velocity.x.toStringAsFixed(1),
+                label: NumberUtils.formatVelocity(_velocity.x),
                 icon: Icons.east,
                 onChanged: (value) {
                   setState(() {
@@ -456,7 +445,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                 min: _velocityMin,
                 max: _velocityMax,
                 divisions: 100,
-                label: _velocity.y.toStringAsFixed(1),
+                label: NumberUtils.formatVelocity(_velocity.y),
                 icon: Icons.north,
                 onChanged: (value) {
                   setState(() {
@@ -484,7 +473,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                 min: _velocityMin,
                 max: _velocityMax,
                 divisions: 100,
-                label: _velocity.z.toStringAsFixed(1),
+                label: NumberUtils.formatVelocity(_velocity.z),
                 icon: Icons.flight_takeoff,
                 onChanged: (value) {
                   setState(() {
@@ -507,7 +496,7 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
       case BodyType.planet:
         return l10n.bodyTypePlanet;
       case BodyType.moon:
-        return l10n.bodyTypeMoon;
+        return l10n.bodyMoon;
       case BodyType.asteroid:
         return l10n.bodyTypeAsteroid;
     }

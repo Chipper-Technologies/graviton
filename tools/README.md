@@ -15,6 +15,9 @@ This directory contains development and build tools for the Graviton app.
 
 ### Code Quality Tools
 - `analyze_coverage.py` - Enhanced Flutter test coverage analysis with exclusions
+- `i18n_manager.py` - Internationalization management for detecting hardcoded strings
+- `arb_auditor.py` - ARB file analysis and reorganization tool
+- `arb_duplicate_cleaner.py` - Intelligent duplicate value removal for ARB files
 
 ## Screenshot Generation
 
@@ -191,6 +194,524 @@ Files Excluded: 7
 ```
 
 📚 **[Complete Coverage Analysis Documentation](../docs/COVERAGE.md)**
+
+## Internationalization (i18n) Management
+
+### Overview
+The `i18n_manager.py` script helps maintain proper internationalization throughout the Graviton app by detecting hardcoded English strings and suggesting proper localized replacements. It ensures all user-facing text uses the ARB (Application Resource Bundle) localization system.
+
+### Quick Start
+```bash
+# Scan entire project for hardcoded strings
+python3 tools/i18n_manager.py --scan
+
+# Scan specific file
+python3 tools/i18n_manager.py --file lib/screens/home_screen.dart
+
+# Generate replacement suggestions
+python3 tools/i18n_manager.py --scan --generate-keys
+```
+
+### Key Features
+- 🔍 **Smart Detection**: Identifies hardcoded strings in Text widgets, tooltips, labels, and more
+- 🎯 **Context-Aware**: Generates appropriate key names based on file location and usage context
+- 🔑 **Duplicate Prevention**: Checks existing ARB keys to prevent duplicates
+- 🚫 **Intelligent Filtering**: Skips technical terms, debug messages, and non-user-facing text
+- 📝 **Code Suggestions**: Provides exact Dart code replacements using `l10n.keyName`
+
+### Example Output
+```
+🔍 Scanning for hardcoded strings...
+📊 Found 12 hardcoded strings in 3 files:
+
+📁 lib/screens/scenario_editor_screen.dart:
+  Line 45: 'Physics Settings' → physicsSettingsEditor (new)
+    Replace with: l10n.physicsSettingsEditor
+  Line 78: 'Add Body' → addBodyEditor (exists: addBodyEditor)
+    Replace with: l10n.addBodyEditor
+
+📁 lib/widgets/custom_button.dart:
+  Line 23: 'Save Changes' → saveChanges (new)
+    Replace with: l10n.saveChanges
+```
+
+### Detection Patterns
+
+#### Text Widgets
+- `Text('Hardcoded String')` - Single and multi-line patterns
+- `const Text('Label Text')` - Const text widgets
+- Nested text in other widgets (AlertDialog, AppBar, etc.)
+
+#### Widget Properties
+- `tooltip: 'Help text'`
+- `hintText: 'Enter value'`
+- `labelText: 'Field name'`
+- `title: 'Dialog title'`
+- Custom widget parameters like `SectionTitle(title: 'Section')`
+
+#### Object Properties
+- Constructor parameters: `name: 'Custom Scenario'`
+- Default values: `difficulty: 'beginner'`
+- List items: `['Advanced', 'Intermediate']`
+
+### Intelligent Filtering
+
+The tool automatically skips non-translatable content:
+
+#### Technical Terms
+- Constants: `'DEV'`, `'PROD'`
+- URLs: `'https://example.com'`
+- Property access: `'widget.property'`
+- Universal terms: `'Jupiter'`, `'Earth'`, celestial body names
+
+#### System Messages
+- Debug output: `debugPrint('System message')`
+- Error handling: `Exception('Internal error')`
+- Development identifiers: `'test preset'`, `'body index'`
+
+#### Code Patterns
+- Boolean values: `'true'`, `'false'`
+- Numbers: `'123'`, `'45.67'`
+- Short strings: Single characters or very brief text
+
+### Key Generation Rules
+
+#### Naming Convention
+- **camelCase**: First word lowercase, subsequent words capitalized
+- **Context Suffixes**: Added based on file location and usage
+  - `Editor` for scenario editor files
+  - `Home` for home screen components
+  - `Tooltip`, `Label`, `Button` for specific UI elements
+
+#### Examples
+- `'Physics Settings'` → `physicsSettingsEditor` (in scenario editor)
+- `'Save Changes'` → `saveChangesButton` (button context)
+- `'Enter name'` → `enterNameHint` (hint text context)
+- `'Advanced'` → `advanced` (simple terms)
+
+### Context Detection
+
+The tool determines appropriate context based on:
+
+#### File Location
+- `scenario_editor_screen.dart` → `Editor` suffix
+- `home_screen.dart` → `Home` suffix  
+- `custom_scenarios.dart` → `CustomScenario` suffix
+
+#### Usage Pattern
+- `tooltip:` → `Tooltip` suffix
+- `hintText:` → `Hint` suffix
+- `labelText:` → `Label` suffix
+- Button-related → `Button` suffix
+
+### Command Options
+
+#### Basic Usage
+```bash
+# Scan all files in lib/ directory
+python3 tools/i18n_manager.py
+
+# Same as above (explicit)
+python3 tools/i18n_manager.py --scan
+```
+
+#### Specific File Analysis
+```bash
+# Scan individual file
+python3 tools/i18n_manager.py --file lib/screens/home_screen.dart
+
+# Scan file with relative path from project root
+python3 tools/i18n_manager.py --file lib/widgets/scenario_card.dart
+```
+
+#### Code Generation
+```bash
+# Show replacement code suggestions
+python3 tools/i18n_manager.py --scan --generate-keys
+
+# Generate suggestions for specific file
+python3 tools/i18n_manager.py --file lib/screens/settings.dart --generate-keys
+```
+
+### Integration Workflow
+
+#### 1. Development Phase
+```bash
+# Before committing new features
+python3 tools/i18n_manager.py --scan --generate-keys
+```
+
+#### 2. Code Review
+- Run i18n scan on changed files
+- Ensure new hardcoded strings are identified
+- Verify suggested keys follow naming conventions
+
+#### 3. Localization Update
+- Add new keys to `lib/l10n/app_en.arb`
+- Update corresponding translation files
+- Replace hardcoded strings with `l10n.keyName` calls
+
+### ARB Integration
+
+#### Existing Key Detection
+The tool loads existing keys from `lib/l10n/app_en.arb` to:
+- Prevent duplicate key generation
+- Suggest existing keys when appropriate
+- Maintain consistency with current localization
+
+#### Key Format
+Generated keys follow ARB best practices:
+```json
+{
+  "physicsSettingsEditor": "Physics Settings",
+  "@physicsSettingsEditor": {
+    "description": "Text for physicsSettingsEditor"
+  }
+}
+```
+
+### Best Practices
+
+#### When to Run
+- **Before each commit**: Ensure no new hardcoded strings
+- **During code review**: Verify i18n compliance
+- **Before releases**: Complete project scan
+- **After UI changes**: Check affected screens and widgets
+
+#### Key Naming Guidelines
+- Use descriptive, context-specific names
+- Follow camelCase convention consistently
+- Include context suffixes for clarity
+- Keep keys concise but meaningful
+
+#### Common Patterns to Fix
+```dart
+// ❌ Hardcoded
+Text('Save Changes')
+
+// ✅ Localized
+Text(l10n.saveChangesButton)
+
+// ❌ Hardcoded tooltip
+IconButton(
+  tooltip: 'Add new body',
+  onPressed: onAdd,
+)
+
+// ✅ Localized tooltip
+IconButton(
+  tooltip: l10n.addNewBodyTooltip,
+  onPressed: onAdd,
+)
+```
+
+### Troubleshooting
+
+#### Common Issues
+1. **False Positives**: Tool flags technical terms as translatable
+   - Update skip patterns in `_should_skip_text()` method
+   - Add specific terms to `technical_terms` list
+
+2. **Missing Context**: Generated keys lack appropriate context
+   - Verify file naming matches context patterns
+   - Check `_determine_context()` method mappings
+
+3. **Key Conflicts**: Suggested keys already exist
+   - Tool will show existing key and suggest reuse
+   - Verify the existing key has appropriate text
+
+#### Advanced Usage
+```bash
+# Debug specific patterns (modify source as needed)
+python3 -c "
+from tools.i18n_manager import I18nManager
+from pathlib import Path
+manager = I18nManager(Path('.'))
+results = manager.find_hardcoded_strings(Path('lib/screens/test.dart'))
+for result in results: print(result)
+"
+```
+
+### Example Integration
+
+#### CI/CD Pipeline
+```yaml
+# GitHub Actions example
+- name: Check i18n Compliance
+  run: |
+    pip install -r tools/requirements.txt 2>/dev/null || true
+    python3 tools/i18n_manager.py --scan > i18n_report.txt
+    if grep -q "hardcoded strings" i18n_report.txt; then
+      echo "Hardcoded strings found - please localize:"
+      cat i18n_report.txt
+      exit 1
+    fi
+```
+
+#### Pre-commit Hook
+```bash
+#!/bin/bash
+# .git/hooks/pre-commit
+python3 tools/i18n_manager.py --scan --generate-keys | grep -E "(new|exists)" && {
+  echo "Please address hardcoded strings before committing"
+  exit 1
+}
+```
+
+## ARB File Management
+
+### Overview
+The ARB (Application Resource Bundle) management tools help maintain clean, organized, and efficient localization files. These tools work together to audit, reorganize, and optimize the `app_en.arb` file by removing duplicates and organizing content logically.
+
+### Tools
+- `arb_auditor.py` - Comprehensive ARB file analysis and reorganization
+- `arb_duplicate_cleaner.py` - Intelligent duplicate value removal and cleanup
+
+### Quick Start
+```bash
+# Audit ARB file for duplicates and organization issues
+python3 tools/arb_auditor.py
+
+# Clean up duplicate values automatically
+python3 tools/arb_duplicate_cleaner.py
+
+# Audit and reorganize in one step
+echo "y" | python3 tools/arb_auditor.py
+```
+
+### ARB Auditor (`arb_auditor.py`)
+
+#### Features
+- 📊 **Comprehensive Analysis**: Reports total keys, metadata, and categorization breakdown
+- 🔍 **Duplicate Detection**: Identifies duplicate values across different keys
+- 📁 **Smart Categorization**: Organizes keys into logical sections (Core App, Navigation, etc.)
+- 🔄 **File Reorganization**: Restructures ARB file with clean category-based organization
+- 💾 **Safe Operations**: Automatic backups before making changes
+
+#### Example Output
+```
+ARB File Audit Report
+==================================================
+
+Total translation keys: 651
+Total entries (including metadata): 1267
+
+✅ No duplicate keys found
+✅ No duplicate values found
+
+📊 CATEGORIZATION BREAKDOWN:
+  Core App: 5 keys
+  Navigation: 9 keys
+  Simulation Controls: 56 keys
+  Camera Controls: 23 keys
+  Visual Settings: 4 keys
+  Physics Settings: 40 keys
+  Scenario Editor: 30 keys
+  Custom Scenarios: 7 keys
+  [... more categories ...]
+  Uncategorized: 377 keys
+```
+
+#### Usage
+```bash
+# Basic audit (shows report only)
+python3 tools/arb_auditor.py
+
+# Audit with automatic reorganization
+echo "y" | python3 tools/arb_auditor.py
+
+# Interactive mode (asks for confirmation)
+python3 tools/arb_auditor.py --scan
+```
+
+#### Categories
+The auditor organizes keys into logical sections:
+
+**Core Categories:**
+- **Core App**: App title, description, version info
+- **Navigation**: Bottom nav, drawers, screen navigation
+- **Simulation Controls**: Play, pause, reset, speed controls
+- **Camera Controls**: Camera modes, zoom, rotation
+- **Visual Settings**: Themes, colors, display options
+- **Physics Settings**: Gravity, mass, collision parameters
+
+**Feature Categories:**
+- **Preset Scenarios**: Solar system, binary stars, three-body problems
+- **Scenario Editor**: Create, edit, modify custom scenarios
+- **Custom Scenarios**: Save, load, import, export functionality
+- **Settings Screen**: App preferences and configuration
+- **Tutorial**: Guided learning and help content
+
+**Technical Categories:**
+- **Statistics**: Performance metrics and data analysis
+- **Accessibility**: Screen reader and voice announcements
+- **Time & Date**: Temporal formatting and display
+- **Units**: Measurement units and conversions
+- **Errors & Messages**: User notifications and alerts
+- **Debug**: Development and testing strings
+
+### ARB Duplicate Cleaner (`arb_duplicate_cleaner.py`)
+
+#### Features
+- 🧹 **Intelligent Cleanup**: Automatically identifies and removes duplicate values
+- 🎯 **Smart Key Selection**: Uses quality scoring to keep the best key for each value
+- 📋 **Change Planning**: Provides detailed plan before making modifications
+- 🔄 **Code Migration**: Lists all key replacements needed in Dart files
+- 💾 **Safe Operations**: Multiple backup layers before cleanup
+
+#### Key Quality Scoring
+The tool uses intelligent scoring to select the best key to keep:
+
+**Higher Quality (Keep):**
+- Shorter, cleaner key names
+- Generic, reusable patterns (`playButton`, `closeButton`)
+- Consistent naming conventions
+- Accessibility-specific keys for screen reader content
+
+**Lower Quality (Remove):**
+- Overly long or complex names
+- Keys with bad suffixes (`customscenario`, `hometitle`)
+- Multiple camelCase transitions
+- Context-specific duplicates of generic terms
+
+#### Example Cleanup
+```
+ARB Cleanup Plan
+========================================
+
+📊 Found 61 sets of duplicates to clean
+🗑️  Will remove 134 keys
+
+'Physics':
+  ✅ Keep: physicsSection
+  ❌ Remove: bottomNavPhysicsLabel
+  ❌ Remove: physicsEditortitle
+
+'Close':
+  ✅ Keep: closeButton
+  ❌ Remove: closeDialog
+  ❌ Remove: closeHome
+
+'Create Custom Scenario':
+  ✅ Keep: createCustomScenarioButton
+  ❌ Remove: createCustomScenarioCustomscenario
+```
+
+#### Usage
+```bash
+# Analyze duplicates (dry run)
+python3 tools/arb_duplicate_cleaner.py
+
+# Apply cleanup automatically
+echo "y" | python3 tools/arb_duplicate_cleaner.py
+
+# Interactive mode with confirmation
+python3 tools/arb_duplicate_cleaner.py
+```
+
+#### Code Migration
+After cleanup, update Dart files with the provided key mappings:
+
+```dart
+// Before cleanup
+Text(l10n.physicsEditortitle)           // ❌ Remove
+Text(l10n.bottomNavPhysicsLabel)        // ❌ Remove
+
+// After cleanup  
+Text(l10n.physicsSection)               // ✅ Use this
+Text(l10n.physicsSection)               // ✅ Use this
+```
+
+### Workflow Integration
+
+#### Development Workflow
+```bash
+# 1. Audit current state
+python3 tools/arb_auditor.py
+
+# 2. Clean up duplicates if found
+python3 tools/arb_duplicate_cleaner.py
+
+# 3. Update Dart files with key changes
+# (Use the provided mapping list)
+
+# 4. Test app functionality
+flutter test
+
+# 5. Final reorganization
+python3 tools/arb_auditor.py
+```
+
+#### Maintenance Schedule
+- **Weekly**: Run auditor to check for new duplicates
+- **Before releases**: Complete audit + cleanup cycle
+- **After major UI changes**: Verify key organization
+- **Code reviews**: Include ARB file changes in review process
+
+#### CI/CD Integration
+```yaml
+# GitHub Actions example
+- name: ARB File Quality Check
+  run: |
+    python3 tools/arb_auditor.py > arb_report.txt
+    if grep -q "DUPLICATE VALUES FOUND" arb_report.txt; then
+      echo "Duplicate values found in ARB file:"
+      cat arb_report.txt
+      exit 1
+    fi
+```
+
+### Best Practices
+
+#### Key Naming Conventions
+- **Use consistent suffixes**: `Button`, `Label`, `Title`, `Tooltip`
+- **Avoid redundant context**: Don't repeat screen names in every key
+- **Group related keys**: Use common prefixes for feature areas
+- **Keep keys concise**: Prefer `saveButton` over `saveChangesButton`
+
+#### File Organization
+- **Regular auditing**: Run tools monthly or after major changes
+- **Category completeness**: Ensure all keys are properly categorized
+- **Backup strategy**: Keep backups before automated changes
+- **Documentation**: Update key usage documentation
+
+#### Common Issues to Avoid
+```dart
+// ❌ Don't create multiple keys for same text
+"closeButton": "Close",
+"closeDialog": "Close",
+"closeHome": "Close",
+
+// ✅ Use one key consistently
+"closeButton": "Close",
+// Use l10n.closeButton everywhere
+```
+
+### Troubleshooting
+
+#### Common Issues
+1. **JSON Validation Errors**: Run `flutter packages get` to validate ARB syntax
+2. **Missing Keys**: Use auditor to find uncategorized keys
+3. **Build Failures**: Update all Dart files before testing
+4. **Category Mismatches**: Check pattern matching in auditor categories
+
+#### Recovery Options
+```bash
+# Restore from backup if needed
+cp lib/l10n/app_en.arb.backup lib/l10n/app_en.arb
+
+# Validate JSON syntax
+python3 -m json.tool lib/l10n/app_en.arb > /dev/null && echo "Valid JSON"
+
+# Check Flutter localization
+flutter pub get && flutter analyze
+```
+
+#### Performance Impact
+- **Audit time**: ~2-3 seconds for large ARB files (700+ keys)
+- **Cleanup time**: ~1 second for duplicate removal
+- **File size reduction**: Typical 10-15% reduction after cleanup
+- **Build impact**: No performance impact on app build times
 
 ## Android Keystore Generation
 

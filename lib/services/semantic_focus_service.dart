@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 
 /// Service for managing semantic focus traversal and accessibility navigation
 class SemanticFocusService {
@@ -175,7 +176,28 @@ class SemanticFocusService {
   }
 
   /// Get accessibility description for current focus state
-  String getFocusDescription() {
+  String getFocusDescription([AppLocalizations? l10n]) {
+    if (l10n != null) {
+      // Use localized descriptions when available
+      switch (_currentFocusIndex) {
+        case 0:
+          return l10n.simulationCanvasFocused;
+        case 1:
+          return l10n.cameraControlsFocused;
+        case 2:
+          return l10n.simulationControlsFocused;
+        case 3:
+          return l10n.bottomSheetFocused;
+        case 4:
+          return l10n.scenarioSelectorFocused;
+        case 5:
+          return l10n.settingsButtonFocused;
+        default:
+          return l10n.simulationCanvasFocused;
+      }
+    }
+
+    // Fallback for when localization is not available
     const focusDescriptions = [
       'Simulation canvas focused - main physics simulation area',
       'Camera controls focused - adjust view and perspective',
@@ -189,39 +211,70 @@ class SemanticFocusService {
   }
 
   /// Get available focus actions for current element
-  List<String> getAvailableActions() {
+  List<String> getAvailableActions([AppLocalizations? l10n]) {
     switch (_currentFocusIndex) {
       case 0: // Simulation canvas
-        return [
-          'Tap to interact with simulation',
-          'Use keyboard shortcuts for controls',
-          'Drag to rotate camera view',
-          'Pinch to zoom in/out',
-        ];
+        return l10n != null
+            ? [
+                l10n.tapToInteractWithSimulation,
+                l10n.useKeyboardShortcutsForControls,
+                l10n.dragToRotateCameraView,
+                l10n.pinchToZoomInOut,
+              ]
+            : [
+                'Tap to interact with simulation',
+                'Use keyboard shortcuts for controls',
+                'Drag to rotate camera view',
+                'Pinch to zoom in/out',
+              ];
       case 1: // Camera controls
-        return [
-          'Tap to center camera',
-          'Tap to toggle auto-rotation',
-          'Use zoom controls',
-        ];
+        return l10n != null
+            ? [
+                l10n.tapToCenterCamera,
+                l10n.tapToToggleAutoRotation,
+                l10n.useZoomControls,
+              ]
+            : [
+                'Tap to center camera',
+                'Tap to toggle auto-rotation',
+                'Use zoom controls',
+              ];
       case 2: // Simulation controls
-        return [
-          'Tap play/pause button',
-          'Tap reset button',
-          'Adjust simulation speed',
-        ];
+        return l10n != null
+            ? [
+                l10n.tapPlayPauseButton,
+                l10n.tapResetButton,
+                l10n.adjustSimulationSpeed,
+              ]
+            : [
+                'Tap play/pause button',
+                'Tap reset button',
+                'Adjust simulation speed',
+              ];
       case 3: // Bottom sheet
-        return [
-          'Swipe up to expand',
-          'Access scenario options',
-          'View physics settings',
-        ];
+        return l10n != null
+            ? [
+                l10n.swipeUpToExpand,
+                l10n.accessScenarioOptions,
+                l10n.viewPhysicsSettings,
+              ]
+            : [
+                'Swipe up to expand',
+                'Access scenario options',
+                'View physics settings',
+              ];
       case 4: // Scenario selector
-        return ['Tap to change scenario', 'Browse available simulations'];
+        return l10n != null
+            ? [l10n.tapToChangeScenario, l10n.browseAvailableSimulations]
+            : ['Tap to change scenario', 'Browse available simulations'];
       case 5: // Settings button
-        return ['Tap to open settings', 'Access app preferences'];
+        return l10n != null
+            ? [l10n.tapToOpenSettings, l10n.accessAppPreferences]
+            : ['Tap to open settings', 'Access app preferences'];
       default:
-        return ['No actions available'];
+        return l10n != null
+            ? [l10n.noActionsAvailable]
+            : ['No actions available'];
     }
   }
 

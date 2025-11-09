@@ -89,7 +89,9 @@ class CustomScenarioStorage {
     final existingScenarios = await _getAllFromPreferences();
 
     // Remove existing scenario with same name if it exists
-    existingScenarios.removeWhere((s) => s.metadata.name == scenario.metadata.name);
+    existingScenarios.removeWhere(
+      (s) => s.metadata.name == scenario.metadata.name,
+    );
 
     // Add the new scenario
     existingScenarios.add(scenario);
@@ -102,7 +104,9 @@ class CustomScenarioStorage {
     debugPrint('Saved scenario: ${scenario.metadata.name}');
   }
 
-  static Future<CustomScenario?> _loadFromPreferences(String scenarioName) async {
+  static Future<CustomScenario?> _loadFromPreferences(
+    String scenarioName,
+  ) async {
     final scenarios = await _getAllFromPreferences();
     try {
       return scenarios.firstWhere((s) => s.metadata.name == scenarioName);
@@ -119,7 +123,9 @@ class CustomScenarioStorage {
 
     try {
       final jsonList = jsonDecode(jsonString) as List;
-      return jsonList.map((json) => CustomScenario.fromJson(json as Map<String, dynamic>)).toList();
+      return jsonList
+          .map((json) => CustomScenario.fromJson(json as Map<String, dynamic>))
+          .toList();
     } catch (e) {
       debugPrint('Failed to parse scenarios from preferences: $e');
       return [];

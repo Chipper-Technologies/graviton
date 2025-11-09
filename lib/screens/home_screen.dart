@@ -565,7 +565,9 @@ class _HomeScreenState extends State<HomeScreen>
                 } catch (e) {
                   // Handle any simulation reset errors
                   debugPrint('Scenario switch error: $e');
-                  appState.setError('Failed to switch scenario: $e');
+                  appState.setError(
+                    l10n.failedToSwitchScenarioError(e.toString()),
+                  );
                 }
               },
             ),
@@ -871,14 +873,16 @@ class _HomeScreenState extends State<HomeScreen>
           showDialog<void>(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Changelog'),
+              title: Text(AppLocalizations.of(context)!.changelogHometitle),
               content: Text(
-                'No changelog available for version $currentVersion',
+                AppLocalizations.of(
+                  context,
+                )!.noChangelogAvailableForVersionHome(currentVersion),
               ),
               actions: [
                 HapticTextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Close'),
+                  child: Text(AppLocalizations.of(context)!.closeButton),
                 ),
               ],
             ),
@@ -890,8 +894,12 @@ class _HomeScreenState extends State<HomeScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error loading changelog: $e'),
-            backgroundColor: Colors.red,
+            content: Text(
+              AppLocalizations.of(
+                context,
+              )!.errorLoadingChangelogEHome(e.toString()),
+            ),
+            backgroundColor: AppColors.uiRed,
           ),
         );
       }
@@ -1172,7 +1180,11 @@ class _HomeScreenState extends State<HomeScreen>
                       autoRotate: appState.camera.autoRotate,
                       followMode: appState.camera.followMode,
                       followingBodyName: appState.camera.selectedBody != null
-                          ? 'Body ${appState.camera.selectedBody}'
+                          ? (AppLocalizations.of(context)?.bodySelectedTemplate(
+                                  '${appState.camera.selectedBody}',
+                                  appState.camera.selectedBody.toString(),
+                                ) ??
+                                'Body ${appState.camera.selectedBody}')
                           : null,
                       onTap: () {
                         // Show floating controls on tap
@@ -1267,7 +1279,7 @@ class _HomeScreenState extends State<HomeScreen>
                               child: SemanticLiveRegion(
                                 currentValue:
                                     '${appState.simulation.stepCount}',
-                                dataType: 'Simulation Steps',
+                                dataType: l10n.simulationStepsLabel,
                                 child: StatsOverlay(appState: appState),
                               ),
                             ),
@@ -1401,7 +1413,7 @@ class _HomeScreenState extends State<HomeScreen>
                     resetAutoHideTimer(); // Reset timer to keep controls visible
                   },
                   icon: const Icon(Icons.skip_previous),
-                  tooltip: 'Previous Scene',
+                  tooltip: AppLocalizations.of(context)!.previousSceneTooltip,
                 ),
 
                 // Current preset info
@@ -1430,7 +1442,7 @@ class _HomeScreenState extends State<HomeScreen>
                     resetAutoHideTimer(); // Reset timer to keep controls visible
                   },
                   icon: const Icon(Icons.skip_next),
-                  tooltip: 'Next Scene',
+                  tooltip: AppLocalizations.of(context)!.nextSceneTooltip,
                 ),
               ],
             ),
@@ -1487,7 +1499,7 @@ class _HomeScreenState extends State<HomeScreen>
     AppLocalizations l10n,
   ) {
     return Material(
-      color: Colors.transparent,
+      color: AppColors.transparentColor,
       elevation:
           8, // Add elevation to ensure proper rendering above other content
       child: Row(

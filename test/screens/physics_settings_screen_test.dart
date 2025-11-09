@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/screens/physics_settings_screen.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/widgets/common/action_option.dart';
 import 'package:graviton/widgets/common/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
@@ -75,7 +76,7 @@ void main() {
 
       // Find the Scaffold
       final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-      expect(scaffold.backgroundColor, equals(Colors.transparent));
+      expect(scaffold.backgroundColor, equals(AppColors.transparentColor));
     });
 
     testWidgets('should display AppBar with title and close button', (

@@ -188,7 +188,7 @@ class _ChangelogDialogState extends State<ChangelogDialog>
             trailing: HapticIconButton(
               onPressed: _skip,
               icon: const Icon(Icons.close),
-              tooltip: l10n.closeDialog,
+              tooltip: l10n.closeButton,
             ),
           ),
 

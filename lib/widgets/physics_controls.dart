@@ -3,6 +3,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/widgets/common/haptic_ink_well.dart';
 import 'package:graviton/widgets/common/haptic_slider_option.dart';
@@ -103,27 +104,27 @@ class PhysicsControls extends StatelessWidget {
                 ),
                 SizedBox(height: AppTypography.spacingMedium),
                 _buildColorSchemeOption(
-                  l10n.gravityFieldClassicLabel,
+                  l10n.gravityColorSchemeClassic,
                   'classic',
                   appState,
                 ),
                 _buildColorSchemeOption(
-                  l10n.gravityFieldSpectralLabel,
+                  l10n.gravityColorSchemeSpectral,
                   'spectral',
                   appState,
                 ),
                 _buildColorSchemeOption(
-                  l10n.gravityFieldMonochromeLabel,
+                  l10n.gravityColorSchemeMonochrome,
                   'monochrome',
                   appState,
                 ),
                 _buildColorSchemeOption(
-                  l10n.gravityFieldNeonLabel,
+                  l10n.gravityColorSchemeNeon,
                   'neon',
                   appState,
                 ),
                 _buildColorSchemeOption(
-                  l10n.gravityFieldEmeraldLabel,
+                  l10n.gravityColorSchemeEmerald,
                   'emerald',
                   appState,
                 ),
@@ -148,7 +149,7 @@ class PhysicsControls extends StatelessWidget {
           onChanged: (value) {
             appState.simulation.setTimeScale(value);
           },
-          formatter: (value) => '${value.toStringAsFixed(1)}x',
+          formatter: (value) => '${NumberUtils.formatDecimal(value, 1)}x',
         ),
 
         SizedBox(height: AppTypography.spacingMedium),
@@ -202,13 +203,13 @@ class PhysicsControls extends StatelessWidget {
             child: Column(
               children: [
                 _buildStatRow(
-                  l10n.bodiesStatLabel,
+                  l10n.bodiesLabel,
                   '${appState.simulation.bodies.length}',
                 ),
                 SizedBox(height: AppTypography.spacingSmall),
                 _buildStatRow(
                   l10n.timeScaleStatLabel,
-                  '${appState.simulation.timeScale.toStringAsFixed(1)}x',
+                  '${NumberUtils.formatDecimal(appState.simulation.timeScale, 1)}x',
                 ),
                 if (appState.camera.selectedBody != null &&
                     appState.camera.selectedBody! <
@@ -265,7 +266,7 @@ class PhysicsControls extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: AppTypography.spacingXSmall),
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparentColor,
         child: HapticInkWell(
           onTap: () {
             final colorScheme = GravityFieldColorScheme.values.firstWhere(
@@ -285,7 +286,7 @@ class PhysicsControls extends StatelessWidget {
                   ? AppColors.primaryColor.withValues(
                       alpha: AppTypography.opacityMidFade,
                     )
-                  : Colors.transparent,
+                  : AppColors.transparentColor,
               borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
               border: isSelected
                   ? Border.all(
@@ -345,7 +346,7 @@ class PhysicsControls extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: AppTypography.spacingXSmall),
         child: Material(
-          color: Colors.transparent,
+          color: AppColors.transparentColor,
           child: HapticInkWell(
             onTap: () => appState.simulation.setTimeScale(speed),
             borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
@@ -359,7 +360,7 @@ class PhysicsControls extends StatelessWidget {
                     ? AppColors.primaryColor.withValues(
                         alpha: AppTypography.opacityFaint,
                       )
-                    : Colors.transparent,
+                    : AppColors.transparentColor,
                 borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
                 border: Border.all(
                   color: isActive

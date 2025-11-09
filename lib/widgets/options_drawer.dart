@@ -143,7 +143,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                                   }
                                 },
                                 child: Text(
-                                  l10n.changelogDebugTitle,
+                                  l10n.changelogHometitle,
                                   style: AppTypography.smallText.copyWith(
                                     color: AppColors.primaryColor,
                                     decoration: TextDecoration.underline,
@@ -193,7 +193,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.tune,
-                    title: l10n.settingsTitle,
+                    title: l10n.settingsTooltip,
                     subtitle: l10n.settingsMenuDescription,
                     onTap: () {
                       Navigator.of(context).pop();

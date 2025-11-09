@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/custom_scenario.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -21,27 +22,33 @@ class ScenarioEditorPhysicsPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return SingleChildScrollView(
       padding: EdgeInsets.all(AppTypography.spacingLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SectionTitle(title: 'Physics Settings'),
+          SectionTitle(title: l10n.physicsSettingsTitle),
           SizedBox(height: AppTypography.spacingMedium),
 
           Text(
-            'Physics configuration will be implemented here',
-            style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
+            l10n.physicsConfigurationWillBeImplementedHereEditor,
+            style: AppTypography.mediumText.copyWith(
+              color: AppColors.uiWhite.withValues(alpha: 0.7),
+            ),
           ),
 
           SizedBox(height: AppTypography.spacingLarge),
 
-          SectionTitle(title: 'Particle Systems'),
+          SectionTitle(title: l10n.particleSystemsEditortitle),
           SizedBox(height: AppTypography.spacingMedium),
 
           Text(
-            'Asteroid belt and other particle systems will be configured here',
-            style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
+            l10n.asteroidBeltAndOtherParticleSystemsWillBeConfiguredHereEditor,
+            style: AppTypography.mediumText.copyWith(
+              color: AppColors.uiWhite.withValues(alpha: 0.7),
+            ),
           ),
         ],
       ),

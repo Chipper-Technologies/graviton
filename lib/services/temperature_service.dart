@@ -6,6 +6,7 @@ import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/utils/number_utils.dart';
 
 /// Service for calculating planetary surface temperatures based on stellar radiation
 class TemperatureService {
@@ -114,18 +115,12 @@ class TemperatureService {
     bool showUnit = true,
     AppLocalizations? l10n,
   }) {
-    final celsius =
-        temperatureKelvin - SimulationConstants.kelvinToCelsiusOffset;
-    final unitSymbol = l10n?.temperatureUnitCelsius ?? '°C';
-
     if (showUnit) {
-      if (celsius.abs() < 1000) {
-        return '${celsius.toStringAsFixed(0)}$unitSymbol';
-      } else {
-        return '${(celsius / 1000).toStringAsFixed(1)}k$unitSymbol';
-      }
+      return NumberUtils.formatTemperature(temperatureKelvin);
     }
-    return celsius.toStringAsFixed(0);
+    // For no unit display, still use NumberUtils but strip the unit
+    final formatted = NumberUtils.formatTemperature(temperatureKelvin);
+    return formatted.replaceAll(' K', '').trim();
   }
 
   /// Get localized temperature category string

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/custom_scenario.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -20,10 +21,12 @@ class ScenarioEditorMetadataPanel extends StatefulWidget {
   });
 
   @override
-  State<ScenarioEditorMetadataPanel> createState() => _ScenarioEditorMetadataPanelState();
+  State<ScenarioEditorMetadataPanel> createState() =>
+      _ScenarioEditorMetadataPanelState();
 }
 
-class _ScenarioEditorMetadataPanelState extends State<ScenarioEditorMetadataPanel> {
+class _ScenarioEditorMetadataPanelState
+    extends State<ScenarioEditorMetadataPanel> {
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
   late String _selectedDifficulty;
@@ -32,7 +35,9 @@ class _ScenarioEditorMetadataPanelState extends State<ScenarioEditorMetadataPane
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.metadata.name);
-    _descriptionController = TextEditingController(text: widget.metadata.description);
+    _descriptionController = TextEditingController(
+      text: widget.metadata.description,
+    );
     _selectedDifficulty = widget.metadata.difficulty;
   }
 
@@ -58,19 +63,23 @@ class _ScenarioEditorMetadataPanelState extends State<ScenarioEditorMetadataPane
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return SingleChildScrollView(
       padding: EdgeInsets.all(AppTypography.spacingLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SectionTitle(title: 'Scenario Information'),
+          SectionTitle(title: l10n.scenarioInformationEditortitle),
           SizedBox(height: AppTypography.spacingMedium),
 
           // Name field
           _buildTextField(
             controller: _nameController,
-            label: 'Name',
-            hint: 'Enter scenario name',
+            label: AppLocalizations.of(context)?.bodyPropertiesName ?? 'Name',
+            hint:
+                AppLocalizations.of(context)?.enterScenarioNameEditorHint ??
+                'Enter scenario name',
             onChanged: (_) => _updateMetadata(),
           ),
 
@@ -79,8 +88,14 @@ class _ScenarioEditorMetadataPanelState extends State<ScenarioEditorMetadataPane
           // Description field
           _buildTextField(
             controller: _descriptionController,
-            label: 'Description',
-            hint: 'Describe what this scenario demonstrates',
+            label:
+                AppLocalizations.of(context)?.descriptionEditorLabel ??
+                'Description',
+            hint:
+                AppLocalizations.of(
+                  context,
+                )?.describeWhatThisScenarioDemonstratesEditorHint ??
+                'Describe what this scenario demonstrates',
             maxLines: 3,
             onChanged: (_) => _updateMetadata(),
           ),
@@ -92,7 +107,7 @@ class _ScenarioEditorMetadataPanelState extends State<ScenarioEditorMetadataPane
 
           SizedBox(height: AppTypography.spacingLarge),
 
-          SectionTitle(title: 'Educational Objectives'),
+          SectionTitle(title: l10n.educationalObjectivesEditortitle),
           SizedBox(height: AppTypography.spacingMedium),
 
           Container(
@@ -100,19 +115,31 @@ class _ScenarioEditorMetadataPanelState extends State<ScenarioEditorMetadataPane
             decoration: BoxDecoration(
               color: AppColors.uiWhite.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-              border: Border.all(color: AppColors.uiWhite.withValues(alpha: 0.1)),
+              border: Border.all(
+                color: AppColors.uiWhite.withValues(alpha: 0.1),
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Educational objectives and challenges can be configured here in future versions.',
-                  style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
+                  AppLocalizations.of(
+                        context,
+                      )?.educationalObjectivesFutureMessage ??
+                      'Educational objectives and challenges can be configured here in future versions.',
+                  style: AppTypography.mediumText.copyWith(
+                    color: AppColors.uiWhite.withValues(alpha: 0.7),
+                  ),
                 ),
                 SizedBox(height: AppTypography.spacingSmall),
                 Text(
-                  'This will include:\n• Learning goals\n• Success criteria\n• Guided challenges\n• Assessment rubrics',
-                  style: AppTypography.smallText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.6)),
+                  AppLocalizations.of(
+                        context,
+                      )?.educationalObjectivesListMessage ??
+                      'This will include:\n• Learning goals\n• Success criteria\n• Guided challenges\n• Assessment rubrics',
+                  style: AppTypography.smallText.copyWith(
+                    color: AppColors.uiWhite.withValues(alpha: 0.6),
+                  ),
                 ),
               ],
             ),
@@ -134,7 +161,10 @@ class _ScenarioEditorMetadataPanelState extends State<ScenarioEditorMetadataPane
       children: [
         Text(
           label,
-          style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite, fontWeight: FontWeight.bold),
+          style: AppTypography.mediumText.copyWith(
+            color: AppColors.uiWhite,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         SizedBox(height: AppTypography.spacingSmall),
         TextField(
@@ -144,16 +174,22 @@ class _ScenarioEditorMetadataPanelState extends State<ScenarioEditorMetadataPane
           style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.5)),
+            hintStyle: AppTypography.mediumText.copyWith(
+              color: AppColors.uiWhite.withValues(alpha: 0.5),
+            ),
             filled: true,
             fillColor: AppColors.uiWhite.withValues(alpha: 0.05),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
-              borderSide: BorderSide(color: AppColors.uiWhite.withValues(alpha: 0.2)),
+              borderSide: BorderSide(
+                color: AppColors.uiWhite.withValues(alpha: 0.2),
+              ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
-              borderSide: BorderSide(color: AppColors.uiWhite.withValues(alpha: 0.2)),
+              borderSide: BorderSide(
+                color: AppColors.uiWhite.withValues(alpha: 0.2),
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
@@ -176,13 +212,18 @@ class _ScenarioEditorMetadataPanelState extends State<ScenarioEditorMetadataPane
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Difficulty',
-          style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite, fontWeight: FontWeight.bold),
+          AppLocalizations.of(context)?.difficultyEditorLabel ?? 'Difficulty',
+          style: AppTypography.mediumText.copyWith(
+            color: AppColors.uiWhite,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         SizedBox(height: AppTypography.spacingSmall),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: AppTypography.spacingMedium),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppTypography.spacingMedium,
+          ),
           decoration: BoxDecoration(
             color: AppColors.uiWhite.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
@@ -200,14 +241,21 @@ class _ScenarioEditorMetadataPanelState extends State<ScenarioEditorMetadataPane
                 }
               },
               dropdownColor: AppColors.uiBlack,
-              style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite),
-              icon: Icon(Icons.arrow_drop_down, color: AppColors.uiWhite.withValues(alpha: 0.7)),
+              style: AppTypography.mediumText.copyWith(
+                color: AppColors.uiWhite,
+              ),
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: AppColors.uiWhite.withValues(alpha: 0.7),
+              ),
               items: difficulties.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(
                     value.substring(0, 1).toUpperCase() + value.substring(1),
-                    style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite),
+                    style: AppTypography.mediumText.copyWith(
+                      color: AppColors.uiWhite,
+                    ),
                   ),
                 );
               }).toList(),

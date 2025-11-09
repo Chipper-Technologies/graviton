@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/enums/habitability_status.dart';
-
 /// Represents a complete custom scenario configuration
 class CustomScenario {
   final String version;
@@ -29,9 +25,13 @@ class CustomScenario {
       metadata: ScenarioMetadata.fromJson(json['metadata']),
       configuration: ScenarioConfiguration.fromJson(json['configuration']),
       physics: PhysicsSettings.fromJson(json['physics']),
-      bodies: (json['bodies'] as List).map((body) => BodyData.fromJson(body)).toList(),
+      bodies: (json['bodies'] as List)
+          .map((body) => BodyData.fromJson(body))
+          .toList(),
       particleSystems: ParticleSystemsConfig.fromJson(json['particleSystems']),
-      objectives: json['objectives'] != null ? ObjectivesConfig.fromJson(json['objectives']) : null,
+      objectives: json['objectives'] != null
+          ? ObjectivesConfig.fromJson(json['objectives'])
+          : null,
     );
   }
 
@@ -74,7 +74,9 @@ class ScenarioMetadata {
       name: json['name'] as String,
       description: json['description'] as String,
       author: json['author'] as String?,
-      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
+          : null,
       educationalFocus: json['educationalFocus'] as String,
       tags: List<String>.from(json['tags'] ?? []),
       difficulty: json['difficulty'] as String,
@@ -109,14 +111,16 @@ class ScenarioConfiguration {
   factory ScenarioConfiguration.fromJson(Map<String, dynamic> json) {
     return ScenarioConfiguration(
       optimalCameraDistance: json['optimalCameraDistance'] as double?,
-      cameraDistanceMultiplier: json['cameraDistanceMultiplier'] as double? ?? 1.2,
+      cameraDistanceMultiplier:
+          json['cameraDistanceMultiplier'] as double? ?? 1.2,
       expectedBodyCount: json['expectedBodyCount'] as int,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      if (optimalCameraDistance != null) 'optimalCameraDistance': optimalCameraDistance,
+      if (optimalCameraDistance != null)
+        'optimalCameraDistance': optimalCameraDistance,
       'cameraDistanceMultiplier': cameraDistanceMultiplier,
       'expectedBodyCount': expectedBodyCount,
     };
@@ -238,8 +242,12 @@ class ParticleSystemsConfig {
 
   factory ParticleSystemsConfig.fromJson(Map<String, dynamic> json) {
     return ParticleSystemsConfig(
-      asteroidBelt: json['asteroidBelt'] != null ? ParticleSystemData.fromJson(json['asteroidBelt']) : null,
-      kuiperBelt: json['kuiperBelt'] != null ? ParticleSystemData.fromJson(json['kuiperBelt']) : null,
+      asteroidBelt: json['asteroidBelt'] != null
+          ? ParticleSystemData.fromJson(json['asteroidBelt'])
+          : null,
+      kuiperBelt: json['kuiperBelt'] != null
+          ? ParticleSystemData.fromJson(json['kuiperBelt'])
+          : null,
     );
   }
 
@@ -336,8 +344,12 @@ class ObjectivesConfig {
       primary: json['primary'] as String,
       secondary: json['secondary'] as String?,
       timeLimit: json['timeLimit'] as int?,
-      successCriteria: json['successCriteria'] != null ? SuccessCriteria.fromJson(json['successCriteria']) : null,
-      chaosEvents: json['chaosEvents'] != null ? ChaosEvents.fromJson(json['chaosEvents']) : null,
+      successCriteria: json['successCriteria'] != null
+          ? SuccessCriteria.fromJson(json['successCriteria'])
+          : null,
+      chaosEvents: json['chaosEvents'] != null
+          ? ChaosEvents.fromJson(json['chaosEvents'])
+          : null,
     );
   }
 
@@ -359,7 +371,11 @@ class SuccessCriteria {
   final int minimumTime;
   final int allowedCollisions;
 
-  const SuccessCriteria({required this.stabilityThreshold, required this.minimumTime, required this.allowedCollisions});
+  const SuccessCriteria({
+    required this.stabilityThreshold,
+    required this.minimumTime,
+    required this.allowedCollisions,
+  });
 
   factory SuccessCriteria.fromJson(Map<String, dynamic> json) {
     return SuccessCriteria(
@@ -384,7 +400,11 @@ class ChaosEvents {
   final int frequency;
   final List<String> types;
 
-  const ChaosEvents({required this.enabled, required this.frequency, required this.types});
+  const ChaosEvents({
+    required this.enabled,
+    required this.frequency,
+    required this.types,
+  });
 
   factory ChaosEvents.fromJson(Map<String, dynamic> json) {
     return ChaosEvents(

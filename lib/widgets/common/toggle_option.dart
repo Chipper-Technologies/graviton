@@ -29,7 +29,7 @@ class ToggleOption extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingMedium),
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparentColor,
         child: Semantics(
           label: title,
           hint: description,

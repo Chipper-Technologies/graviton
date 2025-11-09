@@ -149,7 +149,7 @@ void main() {
       await tester.pumpWidget(createTestWidget(child: const AboutScreen()));
 
       final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-      expect(scaffold.backgroundColor, equals(Colors.transparent));
+      expect(scaffold.backgroundColor, equals(AppColors.transparentColor));
     });
 
     testWidgets('should have proper app bar styling', (tester) async {

@@ -1,10 +1,10 @@
 /// JSON schema definition for custom simulation scenarios
-/// 
+///
 /// This defines the structure that custom scenarios will follow when
 /// serialized to JSON for storage and sharing.
-
-// Example JSON structure for a custom scenario:
-/*
+class CustomScenarioJsonSchema {
+  /// Example JSON structure for a custom scenario
+  static const String example = '''
 {
   "version": "1.0.0",
   "metadata": {
@@ -103,30 +103,37 @@
       "types": ["asteroid", "gravity_wave", "solar_flare"]
     }
   }
+}''';
 }
-*/
 
-/// Validation rules for JSON schema:
-/// 
-/// - version: Must be valid semver string
-/// - metadata.name: Required, 1-100 characters
-/// - metadata.author: Optional, max 50 characters
-/// - metadata.educationalFocus: Must be valid EducationalFocusKeys value
-/// - metadata.difficulty: "beginner", "intermediate", "advanced", "expert"
-/// 
-/// - configuration.optimalCameraDistance: Positive number, 10.0-5000.0
-/// - configuration.expectedBodyCount: Positive integer, 1-50
-/// 
-/// - physics: All values must be positive numbers within simulation limits
-/// 
-/// - bodies: Array of 1-50 bodies
-/// - bodies[].position: 3D array of finite numbers
-/// - bodies[].velocity: 3D array of finite numbers
-/// - bodies[].mass: Positive number, 0.001-1000.0
-/// - bodies[].radius: Positive number, 0.1-50.0
-/// - bodies[].color: Valid hex color string (#RRGGBB or #AARRGGBB)
-/// - bodies[].bodyType: Valid BodyType enum value
-/// - bodies[].temperature: Positive number, 0-50000 Kelvin
-/// 
-/// - particleSystems: Optional particle system configurations
-/// - objectives: Optional challenge/objective system
+/// Validation rules for JSON schema
+class ScenarioValidationRules {
+  /// Version must be valid semver string
+  ///
+  /// Metadata rules:
+  /// - name: Required, 1-100 characters
+  /// - author: Optional, max 50 characters
+  /// - educationalFocus: Must be valid EducationalFocusKeys value
+  /// - difficulty: "beginner", "intermediate", "advanced", "expert"
+  ///
+  /// Configuration rules:
+  /// - optimalCameraDistance: Positive number, 10.0-5000.0
+  /// - expectedBodyCount: Positive integer, 1-50
+  ///
+  /// Physics rules: All values must be positive numbers within simulation limits
+  ///
+  /// Bodies rules:
+  /// - Array of 1-50 bodies
+  /// - position: 3D array of finite numbers
+  /// - velocity: 3D array of finite numbers
+  /// - mass: Positive number, 0.001-1000.0
+  /// - radius: Positive number, 0.1-50.0
+  /// - color: Valid hex color string (#RRGGBB or #AARRGGBB)
+  /// - bodyType: Valid BodyType enum value
+  /// - temperature: Positive number, 0-50000 Kelvin
+  ///
+  /// Optional configurations:
+  /// - particleSystems: Optional particle system configurations
+  /// - objectives: Optional challenge/objective system
+  static const String version = '1.0.0';
+}

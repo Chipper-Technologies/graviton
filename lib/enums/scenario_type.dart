@@ -25,7 +25,10 @@ enum ScenarioType {
   collisionDemo,
 
   /// Deep space exploration with distant objects
-  deepSpace;
+  deepSpace,
+
+  /// Custom user-created scenario
+  custom;
 
   /// Create a ScenarioType from a string value
   /// Used for backward compatibility with existing string-based code
@@ -49,6 +52,8 @@ enum ScenarioType {
         return ScenarioType.collisionDemo;
       case 'deep_space':
         return ScenarioType.deepSpace;
+      case 'custom':
+        return ScenarioType.custom;
       default:
         throw ArgumentError('Unknown scenario type: $value');
     }
@@ -78,6 +83,8 @@ extension ScenarioTypeExtension on ScenarioType {
         return 'scenarioCollisionDemo';
       case ScenarioType.deepSpace:
         return 'scenarioDeepSpace';
+      case ScenarioType.custom:
+        return 'scenarioCustom';
     }
   }
 
@@ -102,6 +109,8 @@ extension ScenarioTypeExtension on ScenarioType {
         return 'scenarioCollisionDemoDescription';
       case ScenarioType.deepSpace:
         return 'scenarioDeepSpaceDescription';
+      case ScenarioType.custom:
+        return 'scenarioCustomDescription';
     }
   }
 
@@ -127,6 +136,8 @@ extension ScenarioTypeExtension on ScenarioType {
         return 'collision_demo';
       case ScenarioType.deepSpace:
         return 'deep_space';
+      case ScenarioType.custom:
+        return 'custom';
     }
   }
 }

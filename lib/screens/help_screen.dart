@@ -15,7 +15,7 @@ class HelpScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparentColor,
       appBar: HapticAppBar(title: l10n.showHelpTooltip),
       body: SafeArea(
         child: Container(

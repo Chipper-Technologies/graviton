@@ -2436,6 +2436,7 @@ class CinematicCameraController {
       case ScenarioType.threeBodyClassic:
       case ScenarioType.collisionDemo:
       case ScenarioType.deepSpace:
+      case ScenarioType.custom:
         // Default: Balanced for other scenarios
         return ScenarioCameraParameters(
           safetyMargin: 1.4, // Versatile distance

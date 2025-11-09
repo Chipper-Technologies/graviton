@@ -39,9 +39,9 @@ void main() {
       await tester.pumpWidget(buildTestWidget());
       await tester.pumpAndSettle();
 
-      // Should have a transparent Scaffold
+      // Should have a black background
       final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-      expect(scaffold.backgroundColor, Colors.transparent);
+      expect(scaffold.backgroundColor, const Color(0xFF000000));
 
       // Should have an AppBar
       expect(find.byType(AppBar), findsOneWidget);

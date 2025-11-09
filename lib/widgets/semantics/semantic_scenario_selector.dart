@@ -24,15 +24,14 @@ class SemanticScenarioSelector extends StatelessWidget {
 
     final scenarioText = currentScenario != null
         ? '${l10n.currentScenario}: $currentScenario'
-        : l10n.scenarioSelectionTitle;
+        : l10n.selectScenarioTooltip;
     final countText = scenarioCount != null
         ? '$scenarioCount ${l10n.scenariosAvailable}'
         : '';
 
     return SemanticFocusService.instance.createSemanticFocusWrapper(
       focusNode: SemanticFocusService.instance.scenarioSelectorFocusNode,
-      semanticLabel:
-          '${l10n.scenarioSelectionTitle}. $scenarioText. $countText',
+      semanticLabel: '${l10n.selectScenarioTooltip}. $scenarioText. $countText',
       semanticHint: l10n.selectScenarioTooltip,
       onTap: onTap,
       child: child,

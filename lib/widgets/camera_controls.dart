@@ -5,6 +5,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/widgets/camera_mode_option.dart';
 import 'package:graviton/widgets/camera_action_button.dart';
@@ -43,7 +44,7 @@ class CameraControls extends StatelessWidget {
         const SizedBox(height: AppTypography.spacingMedium),
 
         CameraModeOption(
-          title: l10n.manualControlTitle,
+          title: l10n.cameraManual,
           description: l10n.manualControlDescription,
           mode: CinematicCameraTechnique.manual,
           icon: Icons.pan_tool,
@@ -56,7 +57,7 @@ class CameraControls extends StatelessWidget {
         ),
 
         CameraModeOption(
-          title: l10n.predictiveOrbitalTitle,
+          title: l10n.cameraPredictiveOrbital,
           description: l10n.predictiveOrbitalDescription,
           mode: CinematicCameraTechnique.predictiveOrbital,
           icon: Icons.auto_awesome,
@@ -69,7 +70,7 @@ class CameraControls extends StatelessWidget {
         ),
 
         CameraModeOption(
-          title: l10n.dynamicFramingTitle,
+          title: l10n.cameraDynamicFraming,
           description: l10n.dynamicFramingDescription,
           mode: CinematicCameraTechnique.dynamicFraming,
           icon: Icons.crop_free,
@@ -107,7 +108,7 @@ class CameraControls extends StatelessWidget {
                 child: CameraActionButton(
                   label: appState.camera.followMode
                       ? l10n.stopFollowTitle
-                      : l10n.followTitle,
+                      : l10n.followLabel,
                   icon: appState.camera.followMode
                       ? Icons.track_changes
                       : Icons.track_changes_outlined,
@@ -127,7 +128,7 @@ class CameraControls extends StatelessWidget {
             children: [
               Expanded(
                 child: CameraActionButton(
-                  label: l10n.centerViewTitle,
+                  label: l10n.centerViewTooltip,
                   icon: Icons.center_focus_strong,
                   onPressed: () => appState.camera.resetView(
                     appState.simulation.currentScenario,
@@ -139,7 +140,7 @@ class CameraControls extends StatelessWidget {
                 child: CameraActionButton(
                   label: appState.camera.autoRotate
                       ? l10n.stopRotateTitle
-                      : l10n.autoRotateTitle,
+                      : l10n.autoRotateTooltip,
                   icon: appState.camera.autoRotate
                       ? Icons.rotate_right
                       : Icons.rotate_right_outlined,
@@ -152,7 +153,7 @@ class CameraControls extends StatelessWidget {
           const SizedBox(height: AppTypography.spacingXXLarge),
 
           _buildToggleOption(
-            l10n.autoRotateTitle,
+            l10n.autoRotateTooltip,
             l10n.invertPitchControlsDescription, // Reusing existing description as placeholder
             Icons.rotate_right,
             appState.camera.autoRotate,
@@ -205,7 +206,7 @@ class CameraControls extends StatelessWidget {
             onChanged: (value) {
               appState.ui.setCameraSpeed(value);
             },
-            formatter: (value) => '${value.toStringAsFixed(1)}x',
+            formatter: (value) => '${NumberUtils.formatDecimal(value, 1)}x',
           ),
         ],
 
@@ -236,7 +237,7 @@ class CameraControls extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingSmall),
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparentColor,
         child: HapticInkWell(
           onTap: onToggle,
           borderRadius: BorderRadius.circular(AppTypography.radiusLarge),

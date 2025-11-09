@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/celestial_body_name.dart';
+import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/temperature_service.dart';
+import 'package:graviton/services/custom_scenario_manager.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -36,6 +38,8 @@ class ScenarioService {
         return _generateRandomBodies(l10n); // Use random for now
       case ScenarioType.deepSpace:
         return _generateRandomBodies(l10n); // Use random for now
+      case ScenarioType.custom:
+        return _generateCustomScenario(l10n);
     }
   }
 
@@ -983,9 +987,98 @@ class ScenarioService {
     return bodies;
   }
 
-  /// Generate hyperbolic flyby scenario demonstrating gravitational slingshot physics
+  /// Generate custom scenario using the currently loaded custom scenario
   ///
-  /// This scenario creates a massive central star and a small body approaching on a
-  /// hyperbolic trajectory, designed to showcase the dramatic "plunge and escape"
-  /// gravitational slingshot effect.
+  /// This method interfaces with the CustomScenarioManager to load bodies
+  /// from user-created custom scenarios.
+  List<Body> _generateCustomScenario(AppLocalizations? l10n) {
+    final customManager = CustomScenarioManager.instance;
+
+    // If no custom scenario is loaded, fall back to random generation
+    if (!customManager.hasCustomScenario) {
+      debugPrint(
+        'No custom scenario loaded, falling back to random generation',
+      );
+      return _generateRandomBodies(l10n);
+    }
+
+    try {
+      // The custom scenario manager should have already loaded the scenario
+      // when the user selected it, so we can just get the current one
+      final currentScenario = customManager.currentCustomScenario;
+      if (currentScenario == null) {
+        throw Exception('Custom scenario manager has no current scenario');
+      }
+
+      // Use the serialization service to convert the custom scenario to bodies
+      return currentScenario.bodies
+          .map(
+            (bodyData) => Body(
+              name: bodyData.name,
+              position: vm.Vector3(
+                bodyData.position[0],
+                bodyData.position[1],
+                bodyData.position[2],
+              ),
+              velocity: vm.Vector3(
+                bodyData.velocity[0],
+                bodyData.velocity[1],
+                bodyData.velocity[2],
+              ),
+              mass: bodyData.mass,
+              radius: bodyData.radius,
+              color: Color(int.parse(bodyData.color.replaceFirst('#', '0xff'))),
+              bodyType: _parseBodyType(bodyData.bodyType),
+              temperature: bodyData.temperature,
+              stellarLuminosity: bodyData.stellarLuminosity,
+              habitabilityStatus: _parseHabitabilityStatus(
+                bodyData.habitabilityStatus,
+              ),
+              showGravityWell: bodyData.showGravityWell,
+              isPlanet: bodyData.isPlanet,
+            ),
+          )
+          .toList();
+    } catch (e) {
+      debugPrint('Failed to generate custom scenario: $e');
+      // Fall back to random generation on error
+      return _generateRandomBodies(l10n);
+    }
+  }
+
+  /// Parse BodyType from string value
+  BodyType _parseBodyType(String value) {
+    switch (value.toLowerCase()) {
+      case 'star':
+        return BodyType.star;
+      case 'planet':
+        return BodyType.planet;
+      case 'moon':
+        return BodyType.moon;
+      case 'asteroid':
+        return BodyType.asteroid;
+      default:
+        debugPrint('Unknown BodyType: $value, defaulting to asteroid');
+        return BodyType.asteroid;
+    }
+  }
+
+  /// Parse HabitabilityStatus from string value
+  HabitabilityStatus _parseHabitabilityStatus(String value) {
+    switch (value.toLowerCase()) {
+      case 'habitable':
+        return HabitabilityStatus.habitable;
+      case 'toohot':
+      case 'too_hot':
+        return HabitabilityStatus.tooHot;
+      case 'toocold':
+      case 'too_cold':
+        return HabitabilityStatus.tooCold;
+      case 'unknown':
+        return HabitabilityStatus.unknown;
+      default:
+        debugPrint('Unknown HabitabilityStatus: $value, defaulting to unknown');
+        return HabitabilityStatus.unknown;
+    }
+  }
 }

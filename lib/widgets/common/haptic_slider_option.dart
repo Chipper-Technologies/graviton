@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/number_utils.dart';
 
 /// A haptic-enabled slider widget component used across various dialogs and bottom sheets.
 ///
@@ -166,21 +167,23 @@ class _HapticSliderOptionState extends State<HapticSliderOption> {
               label: widget.label,
               value:
                   widget.formatter?.call(clampedValue) ??
-                  clampedValue.toStringAsFixed(1),
+                  NumberUtils.formatDecimal(clampedValue, 1),
               increasedValue:
                   widget.formatter?.call(
                     (clampedValue + increment).clamp(widget.min, widget.max),
                   ) ??
-                  (clampedValue + increment)
-                      .clamp(widget.min, widget.max)
-                      .toStringAsFixed(1),
+                  NumberUtils.formatDecimal(
+                    (clampedValue + increment).clamp(widget.min, widget.max),
+                    1,
+                  ),
               decreasedValue:
                   widget.formatter?.call(
                     (clampedValue - increment).clamp(widget.min, widget.max),
                   ) ??
-                  (clampedValue - increment)
-                      .clamp(widget.min, widget.max)
-                      .toStringAsFixed(1),
+                  NumberUtils.formatDecimal(
+                    (clampedValue - increment).clamp(widget.min, widget.max),
+                    1,
+                  ),
               onIncrease: () {
                 final newValue = (clampedValue + increment).clamp(
                   widget.min,
@@ -309,21 +312,23 @@ class _HapticSliderOptionState extends State<HapticSliderOption> {
               label: widget.label,
               value:
                   widget.formatter?.call(clampedValue) ??
-                  clampedValue.toStringAsFixed(1),
+                  NumberUtils.formatDecimal(clampedValue, 1),
               increasedValue:
                   widget.formatter?.call(
                     (clampedValue + increment).clamp(widget.min, widget.max),
                   ) ??
-                  (clampedValue + increment)
-                      .clamp(widget.min, widget.max)
-                      .toStringAsFixed(1),
+                  NumberUtils.formatDecimal(
+                    (clampedValue + increment).clamp(widget.min, widget.max),
+                    1,
+                  ),
               decreasedValue:
                   widget.formatter?.call(
                     (clampedValue - increment).clamp(widget.min, widget.max),
                   ) ??
-                  (clampedValue - increment)
-                      .clamp(widget.min, widget.max)
-                      .toStringAsFixed(1),
+                  NumberUtils.formatDecimal(
+                    (clampedValue - increment).clamp(widget.min, widget.max),
+                    1,
+                  ),
               onIncrease: () {
                 final newValue = (clampedValue + increment).clamp(
                   widget.min,

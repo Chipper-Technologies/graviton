@@ -88,7 +88,7 @@ class MaintenanceDialog extends StatelessWidget {
   ) {
     // Use test values if provided, otherwise use remote config values
     final title = _testTitle ?? l10n?.maintenanceTitle ?? 'Maintenance';
-    final message = _testMessage ?? remoteConfig.maintenanceMessage;
+    final message = _testMessage ?? remoteConfig.getMaintenanceMessage(l10n);
 
     return ConstrainedBox(
       constraints: AppConstraints.dialogCompact,

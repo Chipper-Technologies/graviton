@@ -21,7 +21,7 @@ class CameraActionButton extends StatelessWidget {
     final isEnabled = onPressed != null;
 
     return Material(
-      color: Colors.transparent,
+      color: AppColors.transparentColor,
       child: HapticInkWell(
         onTap: onPressed,
         borderRadius: AppTypography.createRadius(AppTypography.radiusLarge),

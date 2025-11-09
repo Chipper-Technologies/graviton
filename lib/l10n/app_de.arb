@@ -1,5 +1,4 @@
 {
-  "@@locale": "de",
   "appTitle": "Graviton",
   "playButton": "Wiedergabe",
   "pauseButton": "Pause",
@@ -67,7 +66,7 @@
   "autoRotateOff": "Aus",
   "yawLabel": "Gieren",
   "pitchLabel": "Neigen",
-  "rollLabel": "Rollen", 
+  "rollLabel": "Rollen",
   "zoomLabel": "Zoom",
   "stepsCount": "{count}",
   "timeFormatted": "{time}s",
@@ -111,7 +110,7 @@
   "habitabilityTooHot": "Zu Heiß",
   "habitabilityTooCold": "Zu Kalt",
   "bodyAlpha": "Alpha",
-  "bodyBeta": "Beta", 
+  "bodyBeta": "Beta",
   "bodyGamma": "Gamma",
   "bodyRockyPlanet": "Felsplanet",
   "bodyGasGiant": "Gasriese",
@@ -200,26 +199,12 @@
   "languageKorean": "한국어",
   "bodyEarthLike": "Erdähnlich",
   "bodySuperEarth": "Supererde",
-  "bodyPlanetP": "Planet P", 
+  "bodyPlanetP": "Planet P",
   "bodyMoonM": "Mond M",
   "bodyCentralStar": "Zentralstern",
   "bodyRingedPlanet": "Ringplanet",
   "bodyAsteroid": "Asteroid {number}",
-  "@bodyAsteroid": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "bodyRing": "Ring {number}",
-  "@bodyRing": {
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
   "bodyInnerPlanet": "Innerer Planet",
   "bodyOuterPlanet": "Äußerer Planet",
   "bodyCenterOfMass": "Massenzentrum",
@@ -488,170 +473,27 @@
   "tapToToggleFullscreen": "Tippen, um Vollbild ein-/auszuschalten",
   "exitFullscreenHint": "Tippen Sie irgendwo, um den Vollbildmodus zu verlassen",
   "gravitationalSimulationLabel": "Gravitationsphysik-Simulation",
-  "@gravitationalSimulationLabel": {
-    "description": "Haupt-Barrierefreiheitslabel für die Physiksimulation"
-  },
-
   "simulationStateDescription": "Gravitationssimulation mit {bodyCount} Himmelskörpern. Status: {status}. Geschwindigkeit: {speed}. Schritte abgeschlossen: {stepCount}. Tippen Sie, um mit der Simulation zu interagieren oder verwenden Sie Tastenkürzel.",
-  "@simulationStateDescription": {
-    "description": "Umfassende Beschreibung des Simulationszustands für Barrierefreiheit",
-    "placeholders": {
-      "bodyCount": {
-        "type": "int",
-        "description": "Anzahl der Himmelskörper"
-      },
-      "status": {
-        "type": "String",
-        "description": "Aktueller Simulationsstatus"
-      },
-      "speed": {
-        "type": "String", 
-        "description": "Aktuelle Simulationsgeschwindigkeit"
-      },
-      "stepCount": {
-        "type": "int",
-        "description": "Anzahl der abgeschlossenen Simulationsschritte"
-      }
-    }
-  },
-
   "simulationCanvasLabel": "Gravitationsphysik-Simulation",
-  "@simulationCanvasLabel": {
-    "description": "Hauptlabel für das Physik-Simulations-Canvas"
-  },
   "simulationCanvasHint": "Verwenden Sie Tastenkürzel zur Simulationssteuerung. Leertaste zum Pausieren, R zum Zurücksetzen, C zum Zentrieren der Kamera",
-  "@simulationCanvasHint": {
-    "description": "Hilfetext für Tastenkürzel der Simulation"
-  },
   "simulationDescription": "Gravitationssimulation mit {bodyCount} Himmelskörpern. Status: {status}. Geschwindigkeit: {speed}. Schritte: {steps}",
-  "@simulationDescription": {
-    "description": "Detaillierte Simulationsbeschreibung",
-    "placeholders": {
-      "bodyCount": {
-        "type": "int"
-      },
-      "status": {
-        "type": "String"
-      },
-      "speed": {
-        "type": "String"
-      },
-      "steps": {
-        "type": "int"
-      }
-    }
-  },
   "noBodiesInSimulation": "Keine Himmelskörper derzeit in der Simulation",
-  "@noBodiesInSimulation": {
-    "description": "Nachricht wenn keine Körper in der Simulation sind"
-  },
   "bodiesInSimulation": "Körper in der Simulation: {descriptions}",
-  "@bodiesInSimulation": {
-    "description": "Liste der Körper in der Simulation",
-    "placeholders": {
-      "descriptions": {
-        "type": "String"
-      }
-    }
-  },
   "cameraFreeDescription": "Kamera im freien Modus in Entfernung {distance}. Auto-Rotation: {rotation}",
-  "@cameraFreeDescription": {
-    "description": "Beschreibung des freien Kameramodus",
-    "placeholders": {
-      "distance": {
-        "type": "String"
-      },
-      "rotation": {
-        "type": "String"
-      }
-    }
-  },
   "cameraFollowingDescription": "Kamera folgt {bodyName} in Entfernung {distance}. Auto-Rotation: {rotation}",
-  "@cameraFollowingDescription": {
-    "description": "Beschreibung des Verfolgungskameramodus",
-    "placeholders": {
-      "bodyName": {
-        "type": "String"
-      },
-      "distance": {
-        "type": "String"
-      },
-      "rotation": {
-        "type": "String"
-      }
-    }
-  },
   "autoRotateActive": "aktiv",
-  "@autoRotateActive": {
-    "description": "Status wenn Auto-Rotation aktiviert ist"
-  },
   "autoRotateInactive": "inaktiv",
-  "@autoRotateInactive": {
-    "description": "Status wenn Auto-Rotation deaktiviert ist"
-  },
   "liveUpdateAnnouncement": "{updateType} geändert zu {value}",
-  "@liveUpdateAnnouncement": {
-    "description": "Live-Ankündigung für Änderungen",
-    "placeholders": {
-      "updateType": {
-        "type": "String"
-      },
-      "value": {
-        "type": "String"
-      }
-    }
-  },
   "keyboardShortcutsHint": "Verwenden Sie Leertaste zum Pausieren/Fortsetzen, R zum Zurücksetzen, C zum Zentrieren der Kamera, A zum Umschalten der Auto-Rotation",
-  "@keyboardShortcutsHint": {
-    "description": "Hinweis für Tastaturkürzel"
-  },
   "physicsStatsDescription": "Physik: {time} Zeiteinheiten, {earthYears} Erdenjahre, {steps} Simulationsschritte abgeschlossen",
-  "@physicsStatsDescription": {
-    "description": "Physikstatistiken für Barrierefreiheit",
-    "placeholders": {
-      "time": {
-        "type": "String"
-      },
-      "earthYears": {
-        "type": "String"
-      },
-      "steps": {
-        "type": "int"
-      }
-    }
-  },
   "toggleAutoRotateAction": "Auto-Rotation umschalten",
-  "@toggleAutoRotateAction": {
-    "description": "Aktion zum Umschalten der Auto-Rotation"
-  },
   "zoomInAction": "Hineinzoomen",
-  "@zoomInAction": {
-    "description": "Aktion zum Hineinzoomen"
-  },
   "zoomOutAction": "Herauszoomen",
-  "@zoomOutAction": {
-    "description": "Aktion zum Herauszoomen"
-  },
   "expandedState": "erweitert",
-  "@expandedState": {
-    "description": "Zustand wenn ein Element erweitert ist"
-  },
   "collapsedState": "eingeklappt",
-  "@collapsedState": {
-    "description": "Zustand wenn ein Element eingeklappt ist"
-  },
   "currentScenario": "Aktuelles Szenario",
-  "@currentScenario": {
-    "description": "Label für das aktuelle Szenario"
-  },
   "scenariosAvailable": "Szenarien verfügbar",
-  "@scenariosAvailable": {
-    "description": "Text für verfügbare Szenarien"
-  },
   "bottomSheetLabel": "Unteres Blatt",
-  "@bottomSheetLabel": {
-    "description": "Label für das untere Blatt"
-  },
   "accessibilitySimulationStarted": "Simulation gestartet",
   "accessibilitySimulationStartedContext": "Himmelskörper sind nun in Bewegung",
   "accessibilitySimulationPaused": "Simulation pausiert",
@@ -681,5 +523,188 @@
   "cameraSettingsTitle": "Kameraeinstellungen",
   "fieldOfViewLabel": "Sichtfeld",
   "crosshairsTitle": "Fadenkreuz",
-  "crosshairsDescription": "Bildschirmmitte-Anzeige einblenden"
+  "crosshairsDescription": "Bildschirmmitte-Anzeige einblenden",
+  "simulationCanvasFocused": "Simulationsleinwand fokussiert - Hauptbereich der Physiksimulation",
+  "simulationControlsFocused": "Simulationssteuerung fokussiert",
+  "simulationStepsLabel": "Simulationsschritte",
+  "testPresetForUnitTesting": "Test-Voreinstellung für Unit-Tests",
+  "cameraControlsFocused": "Kamerasteuerung fokussiert",
+  "previewEditortitle": "Vorschau-Editor",
+  "viewPhysicsSettings": "Physik-Einstellungen anzeigen",
+  "colorEditor": "Farb-Editor",
+  "colorOptionTemplate": "Farboption {color}",
+  "colorSelector": "Farbauswahl",
+  "gravityEditor": "Schwerkraft-Editor",
+  "massKgEditorhint": "Masse in Kilogramm eingeben",
+  "physicsConfigurationWillBeImplementedHereEditor": "Physik-Konfiguration wird hier implementiert-Editor",
+  "physicsFieldRangeError": "Physik-Feld außerhalb des gültigen Bereichs",
+  "temperatureEditorlabel": "Temperatur-Editor",
+  "temperatureKEditorhint": "Temperatur in Kelvin eingeben",
+  "velocityMsEditor": "Geschwindigkeit m/s Editor",
+  "addBodyButton": "Körper hinzufügen",
+  "addCelestialBodiesToCreateYourCustomScenarioEditor": "Himmelskörper hinzufügen, um Ihr benutzerdefiniertes Szenario zu erstellen-Editor",
+  "asteroidBeltAndOtherParticleSystemsWillBeConfiguredHereEditor": "Asteroidengürtel und andere Partikelsysteme werden hier konfiguriert-Editor",
+  "beginnerEditor": "Anfänger-Editor",
+  "bodyTypeEditor": "Körpertyp-Editor",
+  "createACopyOfThisCelestialBodyEditorHint": "Eine Kopie dieses Himmelskörpers erstellen-Editor-Hinweis",
+  "createCustomScenarioButton": "Benutzerdefiniertes Szenario erstellen",
+  "createCustomScenarioDescription": "Benutzerdefinierte Szenario-Beschreibung",
+  "createScenarioButton": "Szenario erstellen",
+  "createScenarioTitle": "Szenario erstellen",
+  "customGravitationalSimulationEditor": "Benutzerdefinierte Gravitationssimulation-Editor",
+  "deleteBodyConfirmMessage": "Körper wirklich löschen?",
+  "deleteBodyConfirmTitle": "Körper löschen bestätigen",
+  "deleteBodyNameTemplate": "{bodyName} löschen",
+  "deleteBodyTooltip": "Körper löschen",
+  "deleteButton": "Löschen",
+  "deleteScenarioConfirmMessage": "Szenario wirklich löschen?",
+  "deleteScenarioTitle": "Szenario löschen",
+  "editEditorLabel": "Bearbeiten-Editor",
+  "editScenarioTitle": "Szenario bearbeiten",
+  "gravitationalForcesEditor": "Gravitationskräfte-Editor",
+  "newScenarioEditor": "Neues Szenario-Editor",
+  "noBodiesYetEditor": "Noch keine Körper-Editor",
+  "positionMEditor": "Position m Editor",
+  "positionMotionEditor": "Positions-/Bewegungseditor",
+  "propertiesEditor": "Eigenschaften-Editor",
+  "removeThisCelestialBodyFromTheScenarioEditorHint": "Diesen Himmelskörper aus dem Szenario entfernen-Editor-Hinweis",
+  "softeningEditor": "Glättungs-Editor",
+  "stellarPropertiesEditor": "Sterne-Eigenschaften-Editor",
+  "trailPointsEditor": "Spur-Punkte-Editor",
+  "customColor": "Benutzerdefinierte Farbe",
+  "customLabel": "Benutzerdefiniert",
+  "customScenarioDescription": "Benutzerdefinierte Szenario-Beschreibung",
+  "accessAppPreferences": "App-Einstellungen öffnen",
+  "accessScenarioOptions": "Szenario-Optionen öffnen",
+  "adjustSimulationSpeed": "Simulationsgeschwindigkeit anpassen",
+  "atLeastOneBodyIsRequired": "Mindestens ein Körper ist erforderlich",
+  "blackColor": "Schwarz",
+  "bodiesHeaderDescription": "Himmelskörper-Header-Beschreibung",
+  "bodiesHeaderPlural": "Himmelskörper",
+  "bodyColorInvalid": "Körperfarbe ungültig",
+  "bodyIndex": "Körper-Index",
+  "bodyMassInvalid": "Körpermasse ungültig",
+  "bodyNameCopyTemplate": "Kopie von {bodyName}",
+  "bodyNameRequired": "Körpername erforderlich",
+  "bodyNumberTemplate": "Körper {number}",
+  "bodyPositionComponentInvalid": "Körperpositions-Komponente ungültig",
+  "bodyPositionInvalid": "Körperposition ungültig",
+  "bodyRadiusInvalid": "Körperradius ungültig",
+  "bodySelectedTemplate": "{bodyName} ausgewählt",
+  "bodyTypeInvalid": "Körpertyp ungültig",
+  "bodyTypeSelector": "Körpertyp-Auswahl",
+  "bodyTypeTemplate": "Körpertyp: {type}",
+  "bodyVelocityComponentInvalid": "Körpergeschwindigkeits-Komponente ungültig",
+  "bodyVelocityInvalid": "Körpergeschwindigkeit ungültig",
+  "bottomSheetFocused": "Unteres Blatt fokussiert",
+  "browseAvailableSimulations": "Verfügbare Simulationen durchsuchen",
+  "celestialBodyNameTemplate": "Himmelskörper {name}",
+  "currentlySelected": "Aktuell ausgewählt",
+  "cyanColor": "Cyan",
+  "describeWhatThisScenarioDemonstratesEditorHint": "Beschreiben Sie, was dieses Szenario demonstriert-Editor-Hinweis",
+  "detailsEditorLabel": "Details-Editor",
+  "difficultyEditorLabel": "Schwierigkeits-Editor",
+  "discardButton": "Verwerfen",
+  "dragToRotateCameraView": "Ziehen, um Kameraansicht zu drehen",
+  "duplicateBodyNameTemplate": "{bodyName} duplizieren",
+  "duplicateBodyTooltip": "Körper duplizieren",
+  "earthBlueColor": "Erdblau",
+  "exportScenarioButton": "Szenario exportieren",
+  "exportScenarioFailedMessage": "Szenario-Export fehlgeschlagen",
+  "exportScenarioNotImplementedMessage": "Szenario-Export noch nicht implementiert",
+  "saveButton": "Speichern",
+  "settingsButtonFocused": "Einstellungen-Schaltfläche fokussiert",
+  "descriptionEditorLabel": "Beschreibungs-Editor",
+  "accessibilityAnnouncementSkippedNoBindingMessage": "Barrierefreiheit-Ankündigung übersprungen - keine Bindung",
+  "changelogHometitle": "Änderungsprotokoll-Startseite",
+  "errorLoadingChangelogEHome": "Fehler beim Laden des Änderungsprotokolls",
+  "noChangelogAvailableForVersionHome": "Kein Änderungsprotokoll für diese Version verfügbar",
+  "testPreset": "Test-Voreinstellung",
+  "testScenarioButton": "Test-Szenario-Schaltfläche",
+  "testScenarioNotImplementedMessage": "Test-Szenario noch nicht implementiert",
+  "educationalObjectivesFutureMessage": "Bildungsziele können hier in zukünftigen Versionen konfiguriert werden",
+  "educationalObjectivesListMessage": "Dies umfasst:\n• Lernziele\n• Erfolgskriterien\n• Geführte Herausforderungen\n• Bewertungsraster",
+  "greenColor": "Grün",
+  "marsRedColor": "Mars-Rot",
+  "mercuryGrayColor": "Merkur-Grau",
+  "neptuneBlueColor": "Neptun-Blau",
+  "orangeColor": "Orange",
+  "redColor": "Rot",
+  "scenarioNameRequired": "Szenario-Name erforderlich",
+  "whiteColor": "Weiß",
+  "yellowColor": "Gelb",
+  "educationalObjectivesEditortitle": "Bildungsziele-Editor-Titel",
+  "enterScenarioNameEditorHint": "Szenario-Name eingeben-Editor-Hinweis",
+  "failedToSwitchScenarioError": "Fehler beim Wechseln des Szenarios",
+  "initialMotionVectorsDescription": "Beschreibung der anfänglichen Bewegungsvektoren",
+  "invalidJsonFormat": "Ungültiges JSON-Format",
+  "jupiterTanColor": "Jupiter-Beige",
+  "lightEnergyOutputDescription": "Beschreibung der Licht-Energieabgabe",
+  "luminosityEditorLabel": "Leuchtkraft-Editor-Label",
+  "luminosityWEditorhint": "Leuchtkraft in Watt eingeben-Editor-Hinweis",
+  "maxTrailPointsInvalid": "Maximale Spurpunkte ungültig",
+  "maximum50BodiesAllowed": "Maximal 50 Körper erlaubt",
+  "missingRequiredFieldBodies": "Erforderliches Feld 'Körper' fehlt",
+  "missingRequiredFieldConfiguration": "Erforderliches Feld 'Konfiguration' fehlt",
+  "missingRequiredFieldMetadata": "Erforderliches Feld 'Metadaten' fehlt",
+  "missingRequiredFieldParticleSystems": "Erforderliches Feld 'Partikelsysteme' fehlt",
+  "missingRequiredFieldPhysics": "Erforderliches Feld 'Physik' fehlt",
+  "missingRequiredFieldVersion": "Erforderliches Feld 'Version' fehlt",
+  "nextSceneTooltip": "Nächste Szene-Tooltip",
+  "noActionsAvailable": "Keine Aktionen verfügbar",
+  "particleSystemsEditortitle": "Partikelsysteme-Editor-Titel",
+  "physicalPropertiesDescription": "Beschreibung der physikalischen Eigenschaften",
+  "pinchToZoomInOut": "Kneifen zum Hinein-/Herauszoomen",
+  "positionEditorLabel": "Positions-Editor-Label",
+  "previousSceneTooltip": "Vorherige Szene-Tooltip",
+  "radiusMEditorhint": "Radius in Metern eingeben-Editor-Hinweis",
+  "saturnCreamColor": "Saturn-Creme",
+  "scenarioCustom": "Szenario Benutzerdefiniert",
+  "scenarioCustomDescription": "Benutzerdefinierte Szenario-Beschreibung",
+  "scenarioInformationEditortitle": "Szenario-Informationen-Editor-Titel",
+  "scenarioNameTooLong": "Szenario-Name zu lang",
+  "scenarioSaveFailedMessage": "Szenario-Speichern fehlgeschlagen",
+  "scenarioSavedSuccessMessage": "Szenario erfolgreich gespeichert",
+  "scenarioSelectorFocused": "Szenario-Auswahl fokussiert",
+  "scheduledMaintenanceInProgress": "Planmäßige Wartung läuft",
+  "selectAColorForTheCelestialBody": "Farbe für den Himmelskörper auswählen",
+  "selectTheTypeOfCelestialBody": "Typ des Himmelskörpers auswählen",
+  "spatialCoordinatesDescription": "Beschreibung der räumlichen Koordinaten",
+  "stellarTemperatureDescription": "Beschreibung der Sterntemperatur",
+  "swipeUpToExpand": "Nach oben wischen zum Erweitern",
+  "tapPlayPauseButton": "Wiedergabe-/Pause-Schaltfläche antippen",
+  "tapResetButton": "Zurücksetzen-Schaltfläche antippen",
+  "tapToCenterCamera": "Antippen, um Kamera zu zentrieren",
+  "tapToChangeScenario": "Antippen, um Szenario zu ändern",
+  "tapToInteractWithSimulation": "Antippen, um mit Simulation zu interagieren",
+  "tapToOpenSettings": "Antippen, um Einstellungen zu öffnen",
+  "tapToSelect": "Antippen zum Auswählen",
+  "tapToToggleAutoRotation": "Antippen, um automatische Rotation umzuschalten",
+  "tapToViewAndEditDetailsBodyBodyTypeNameWithNumberUtilsFormatMassBodyMassEditorhint": "Antippen, um Details anzuzeigen und zu bearbeiten-Körper-Körpertyp-Name-mit-Nummer-Utils-Format-Masse-Körpermasse-Editor-Hinweis",
+  "typeEditorLabel": "Typ-Editor-Label",
+  "unsavedChangesMessage": "Ungespeicherte Änderungen-Nachricht",
+  "unsavedChangesTitle": "Ungespeicherte Änderungen",
+  "uranusCyanColor": "Uranus-Cyan",
+  "useKeyboardShortcutsForControls": "Tastenkürzel für Steuerung verwenden",
+  "useZoomControls": "Zoom-Steuerung verwenden",
+  "venusYellowColor": "Venus-Gelb",
+  "xCoordinateEditorhint": "X-Koordinate eingeben-Editor-Hinweis",
+  "xCoordinateLabel": "X-Koordinaten-Label",
+  "xVelocityEditorhint": "X-Geschwindigkeit eingeben-Editor-Hinweis",
+  "yCoordinateEditorhint": "Y-Koordinate eingeben-Editor-Hinweis",
+  "yCoordinateLabel": "Y-Koordinaten-Label",
+  "yVelocityEditorhint": "Y-Geschwindigkeit eingeben-Editor-Hinweis",
+  "zCoordinateEditorhint": "Z-Koordinate eingeben-Editor-Hinweis",
+  "zCoordinateLabel": "Z-Koordinaten-Label",
+  "zVelocityEditorhint": "Z-Geschwindigkeit eingeben-Editor-Hinweis",
+  "orbitalEventCloseApproach": "Naher Vorbeiflug: {distance} Einheiten",
+  "accessibilityBodiesCombined": "Die kombinierte Masse erzeugt einen neuen Himmelskörper",
+  "accessibilityBodiesInMotion": "Himmelskörper bewegen sich jetzt",
+  "accessibilityBodiesStopped": "Alle Himmelskörper haben aufgehört sich zu bewegen",
+  "accessibilityBodiesResumed": "Himmelskörper bewegen sich wieder",
+  "accessibilityBodiesReset": "Alle Himmelskörper wurden zurückgesetzt",
+  "accessibilityNewScenarioLoaded": "Neues Szenario mit frischen Himmelskörpern geladen",
+  "accessibilityNewParametersLoaded": "Neue Himmelskörper und Physikparameter geladen",
+  "scenarioTabPresets": "Vorlagen",
+  "scenarioTabCustom": "Benutzerdefiniert"
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/utils/number_utils.dart';
+import 'package:graviton/widgets/scenario_editor_body_details_bottom_sheet.dart';
 
 /// Widget for managing the list of celestial bodies in the scenario editor
 class ScenarioEditorBodyList extends StatefulWidget {
@@ -25,8 +26,6 @@ class ScenarioEditorBodyList extends StatefulWidget {
 }
 
 class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
-  int? _selectedBodyIndex;
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -35,16 +34,7 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
       return _buildEmptyState(l10n);
     }
 
-    return Row(
-      children: [
-        // Body list panel
-        Expanded(flex: 1, child: _buildBodyListPanel(l10n)),
-
-        // Body details panel (if body selected)
-        if (_selectedBodyIndex != null && _selectedBodyIndex! < widget.bodies.length)
-          Expanded(flex: 2, child: _buildBodyDetailsPanel(l10n)),
-      ],
-    );
+    return _buildBodyListPanel(l10n);
   }
 
   Widget _buildEmptyState(AppLocalizations l10n) {
@@ -52,16 +42,24 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.public_off, size: 64, color: AppColors.uiWhite.withValues(alpha: 0.3)),
+          Icon(
+            Icons.public_off,
+            size: 64,
+            color: AppColors.uiWhite.withValues(alpha: 0.3),
+          ),
           SizedBox(height: AppTypography.spacingLarge),
           Text(
-            'No bodies yet',
-            style: AppTypography.titleText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
+            l10n.noBodiesYetEditor,
+            style: AppTypography.titleText.copyWith(
+              color: AppColors.uiWhite.withValues(alpha: 0.7),
+            ),
           ),
           SizedBox(height: AppTypography.spacingMedium),
           Text(
-            'Add celestial bodies to create your custom scenario',
-            style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.5)),
+            l10n.addCelestialBodiesToCreateYourCustomScenarioEditor,
+            style: AppTypography.mediumText.copyWith(
+              color: AppColors.uiWhite.withValues(alpha: 0.5),
+            ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -75,22 +73,53 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SectionTitle(title: 'Bodies'),
-          SizedBox(height: AppTypography.spacingMedium),
-
-          // Body count indicator
+          // Combined header with body count
           Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppTypography.spacingMedium,
-              vertical: AppTypography.spacingSmall,
-            ),
+            padding: EdgeInsets.all(AppTypography.spacingLarge),
             decoration: BoxDecoration(
-              color: AppColors.primaryColor.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
+              color: AppColors.primaryColor.withValues(
+                alpha: AppTypography.opacityMidFade,
+              ),
+              borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+              border: Border.all(
+                color: AppColors.primaryColor,
+                width: AppTypography.borderThin,
+              ),
             ),
-            child: Text(
-              '${widget.bodies.length} bodies',
-              style: AppTypography.smallText.copyWith(color: AppColors.primaryColor),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.public,
+                  color: AppColors.primaryColor,
+                  size: AppTypography.iconSizeXXLarge,
+                ),
+                SizedBox(width: AppTypography.spacingLarge),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.bodiesHeaderPlural(widget.bodies.length),
+                        style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: AppTypography.fontSizeLarge,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: AppTypography.spacingXSmall),
+                      Text(
+                        l10n.bodiesHeaderDescription,
+                        style: TextStyle(
+                          color: AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacityHigh,
+                          ),
+                          fontSize: AppTypography.fontSizeMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
 
@@ -100,7 +129,7 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
           Expanded(
             child: ListView.builder(
               itemCount: widget.bodies.length,
-              itemBuilder: (context, index) => _buildBodyListTile(index),
+              itemBuilder: (context, index) => _buildBodyTile(index),
             ),
           ),
         ],
@@ -108,135 +137,248 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
     );
   }
 
-  Widget _buildBodyListTile(int index) {
+  Widget _buildBodyTile(int index) {
     final body = widget.bodies[index];
-    final isSelected = _selectedBodyIndex == index;
 
     return Container(
       margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
-      child: HapticGestureDetector(
-        onTap: () => _selectBody(index),
-        child: Container(
-          padding: EdgeInsets.all(AppTypography.spacingMedium),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? AppColors.primaryColor.withValues(alpha: 0.2)
-                : AppColors.uiBlack.withValues(alpha: 0.2),
-            borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-            border: Border.all(
-              color: isSelected ? AppColors.primaryColor : AppColors.uiWhite.withValues(alpha: 0.1),
-              width: isSelected ? 2 : 1,
-            ),
-          ),
-          child: Row(
-            children: [
-              // Body color indicator
-              Container(
-                width: 16,
-                height: 16,
-                decoration: BoxDecoration(
-                  color: body.color,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.uiWhite.withValues(alpha: 0.3), width: 1),
+      child: Semantics(
+        label:
+            AppLocalizations.of(
+              context,
+            )?.celestialBodyNameTemplate(body.name, body.name) ??
+            '${body.name} celestial body',
+        hint:
+            AppLocalizations.of(
+              context,
+            )?.tapToViewAndEditDetailsBodyBodyTypeNameWithNumberUtilsFormatMassBodyMassEditorhint(
+              body.bodyType.name,
+              NumberUtils.formatMass(body.mass),
+            ) ??
+            'Tap to view and edit details. ${body.bodyType.name} with ${NumberUtils.formatMass(body.mass)}.',
+        button: true,
+        child: Material(
+          color: AppColors.transparentColor,
+          child: InkWell(
+            onTap: () {
+              HapticFeedback.lightImpact();
+              _openBodyDetails(index);
+            },
+            borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+            child: Container(
+              padding: EdgeInsets.all(AppTypography.spacingLarge),
+              decoration: BoxDecoration(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityBarely,
+                ),
+                borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+                border: Border.all(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityDisabled,
+                  ),
+                  width: AppTypography.borderThin,
                 ),
               ),
-
-              SizedBox(width: AppTypography.spacingMedium),
-
-              // Body info
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      body.name,
-                      style: AppTypography.mediumText.copyWith(
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                      ),
-                    ),
-                    SizedBox(height: AppTypography.spacingSmall),
-                    Text(
-                      '${body.bodyType.name} • ${body.mass.toStringAsFixed(1)} M',
-                      style: AppTypography.smallText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Action buttons
-              Row(
-                mainAxisSize: MainAxisSize.min,
+              child: Row(
                 children: [
-                  // Duplicate button
-                  HapticGestureDetector(
-                    onTap: () => _duplicateBody(index),
-                    child: Container(
-                      padding: EdgeInsets.all(AppTypography.spacingSmall),
-                      child: Icon(
-                        Icons.content_copy,
-                        size: AppTypography.iconSizeSmall,
-                        color: AppColors.uiWhite.withValues(alpha: 0.7),
+                  // Body color indicator icon
+                  Container(
+                    width: AppTypography.iconSizeXXLarge,
+                    height: AppTypography.iconSizeXXLarge,
+                    decoration: BoxDecoration(
+                      color: body.color,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.uiWhite.withValues(alpha: 0.3),
+                        width: 1,
                       ),
+                    ),
+                    child: Icon(
+                      Icons.public,
+                      size: AppTypography.iconSizeMedium,
+                      color: AppColors.uiWhite,
                     ),
                   ),
 
-                  // Delete button (only if more than one body)
-                  if (widget.bodies.length > 1)
-                    HapticGestureDetector(
-                      onTap: () => _deleteBody(index),
-                      child: Container(
-                        padding: EdgeInsets.all(AppTypography.spacingSmall),
-                        child: Icon(
-                          Icons.delete_outline,
-                          size: AppTypography.iconSizeSmall,
-                          color: AppColors.uiRed.withValues(alpha: 0.8),
+                  SizedBox(width: AppTypography.spacingLarge),
+
+                  // Body info
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          body.name,
+                          style: TextStyle(
+                            color: AppColors.uiWhite,
+                            fontSize: AppTypography.fontSizeLarge,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(height: AppTypography.spacingXSmall),
+                        Text(
+                          '${body.bodyType.name} • ${NumberUtils.formatMass(body.mass)}',
+                          style: TextStyle(
+                            color: AppColors.uiWhite.withValues(
+                              alpha: AppTypography.opacityHigh,
+                            ),
+                            fontSize: AppTypography.fontSizeMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Action buttons
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Duplicate button
+                      Semantics(
+                        label:
+                            AppLocalizations.of(
+                              context,
+                            )?.duplicateBodyNameTemplate(body.name) ??
+                            'Duplicate ${body.name}',
+                        hint:
+                            AppLocalizations.of(
+                              context,
+                            )?.createACopyOfThisCelestialBodyEditorHint ??
+                            'Create a copy of this celestial body',
+                        button: true,
+                        child: Material(
+                          color: AppColors.transparentColor,
+                          child: InkWell(
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              _duplicateBody(index);
+                            },
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.uiWhite.withValues(alpha: 0.1),
+                                border: Border.all(
+                                  color: AppColors.uiWhite.withValues(
+                                    alpha: 0.3,
+                                  ),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.content_copy,
+                                size: AppTypography.iconSizeMedium,
+                                color: AppColors.uiWhite.withValues(alpha: 0.8),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+
+                      SizedBox(width: AppTypography.spacingSmall),
+
+                      // Delete button (only if more than one body)
+                      if (widget.bodies.length > 1)
+                        Semantics(
+                          label:
+                              AppLocalizations.of(
+                                context,
+                              )?.deleteBodyNameTemplate(body.name) ??
+                              'Delete ${body.name}',
+                          hint:
+                              AppLocalizations.of(
+                                context,
+                              )?.removeThisCelestialBodyFromTheScenarioEditorHint ??
+                              'Remove this celestial body from the scenario',
+                          button: true,
+                          child: Material(
+                            color: AppColors.transparentColor,
+                            child: InkWell(
+                              onTap: () {
+                                HapticFeedback.lightImpact();
+                                _deleteBody(index);
+                              },
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.uiRed.withValues(alpha: 0.1),
+                                  border: Border.all(
+                                    color: AppColors.uiRed.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.delete_outline,
+                                  size: AppTypography.iconSizeMedium,
+                                  color: AppColors.uiRed.withValues(alpha: 0.9),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildBodyDetailsPanel(AppLocalizations l10n) {
-    final body = widget.bodies[_selectedBodyIndex!];
+  void _openBodyDetails(int index) {
+    // Provide haptic feedback when opening details
+    HapticFeedback.lightImpact();
 
-    return Container(
-      padding: EdgeInsets.all(AppTypography.spacingMedium),
-      decoration: BoxDecoration(
-        border: Border(left: BorderSide(color: AppColors.primaryColor.withValues(alpha: 0.3), width: 1)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Body Details', style: AppTypography.titleText),
-          SizedBox(height: AppTypography.spacingMedium),
-          Text('Selected: ${body.name}', style: AppTypography.mediumText),
-          // TODO: Implement full body details editor
-          Text(
-            'Body editing will be implemented here',
-            style: AppTypography.smallText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.transparentColor,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setSheetState) => SizedBox(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: ScenarioEditorBodyDetailsBottomSheet(
+            body: widget
+                .bodies[index], // Always use the current body from the list
+            onBodyChanged: (updatedBody) {
+              _updateBody(index, updatedBody);
+              setSheetState(() {}); // Force the bottom sheet to rebuild
+            },
+            onDuplicate: () {
+              Navigator.pop(context);
+              _duplicateBody(index);
+            },
+            onDelete: () {
+              Navigator.pop(context);
+              _deleteBody(index);
+            },
           ),
-        ],
+        ),
       ),
     );
   }
 
-  void _selectBody(int index) {
-    setState(() {
-      _selectedBodyIndex = index;
-    });
+  void _updateBody(int index, Body updatedBody) {
+    final updatedBodies = List<Body>.from(widget.bodies);
+    updatedBodies[index] = updatedBody;
+    widget.onBodiesChanged(updatedBodies);
   }
 
   void _duplicateBody(int index) {
+    final l10n = AppLocalizations.of(context)!;
     final originalBody = widget.bodies[index];
     final duplicatedBody = Body(
-      name: '${originalBody.name} Copy',
-      position: originalBody.position + vm.Vector3(10.0, 0, 0), // Offset position
+      name: l10n.bodyNameCopyTemplate(originalBody.name),
+      position:
+          originalBody.position + vm.Vector3(10.0, 0, 0), // Offset position
       velocity: originalBody.velocity.clone(),
       mass: originalBody.mass,
       radius: originalBody.radius,
@@ -255,15 +397,6 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
 
   void _deleteBody(int index) {
     final updatedBodies = List<Body>.from(widget.bodies)..removeAt(index);
-
-    // Adjust selected index if needed
-    if (_selectedBodyIndex == index) {
-      _selectedBodyIndex = null;
-    } else if (_selectedBodyIndex != null && _selectedBodyIndex! > index) {
-      _selectedBodyIndex = _selectedBodyIndex! - 1;
-    }
-
-    setState(() {});
     widget.onBodiesChanged(updatedBodies);
   }
 }

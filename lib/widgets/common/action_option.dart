@@ -26,7 +26,7 @@ class ActionOption extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: AppTypography.spacingMedium),
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparentColor,
         child: HapticInkWell(
           onTap: onPressed,
           borderRadius: BorderRadius.circular(AppTypography.radiusLarge),

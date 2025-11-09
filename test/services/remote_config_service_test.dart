@@ -29,7 +29,7 @@ void main() {
       // Maintenance & Communication defaults
       expect(service.maintenanceMode, isFalse);
       expect(
-        service.maintenanceMessage,
+        service.getMaintenanceMessage(null),
         equals('Scheduled maintenance in progress'),
       );
       expect(service.newsBannerEnabled, isFalse);

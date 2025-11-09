@@ -16,7 +16,7 @@ class SemanticSettingsButton extends StatelessWidget {
 
     return SemanticFocusService.instance.createSemanticFocusWrapper(
       focusNode: SemanticFocusService.instance.settingsButtonFocusNode,
-      semanticLabel: l10n.settingsTitle,
+      semanticLabel: l10n.settingsTooltip,
       semanticHint: l10n.settingsTooltip,
       onTap: onTap,
       child: child,

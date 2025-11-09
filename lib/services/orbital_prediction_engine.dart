@@ -2,6 +2,8 @@ import 'dart:math' as math;
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/orbital_event.dart';
 import 'package:graviton/utils/physics_utils.dart';
+import 'package:graviton/utils/number_utils.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Physics-based prediction engine for orbital mechanics
@@ -65,8 +67,9 @@ class OrbitalPredictionEngine {
     List<Body> currentBodies,
     List<List<vm.Vector3>> predictions,
     double timeStep,
-    PredictiveOrbitalConfig config,
-  ) {
+    PredictiveOrbitalConfig config, {
+    AppLocalizations? l10n,
+  }) {
     final events = <OrbitalEvent>[];
 
     // Detect close approaches
@@ -78,6 +81,7 @@ class OrbitalPredictionEngine {
           [i, j],
           timeStep,
           config,
+          l10n,
         );
         events.addAll(closeEvents);
       }
@@ -222,6 +226,7 @@ class OrbitalPredictionEngine {
     List<int> bodyIndices,
     double timeStep,
     PredictiveOrbitalConfig config,
+    AppLocalizations? l10n,
   ) {
     final events = <OrbitalEvent>[];
     double minDistance = double.infinity;
@@ -260,7 +265,10 @@ class OrbitalPredictionEngine {
             ),
             dramaticScore: dramaticScore,
             description:
-                'Close approach: ${minDistance.toStringAsFixed(1)} units',
+                l10n?.orbitalEventCloseApproach(
+                  NumberUtils.formatDistance(minDistance),
+                ) ??
+                'Close approach: ${NumberUtils.formatDistance(minDistance)} units',
           ),
         );
       }
@@ -314,7 +322,7 @@ class OrbitalPredictionEngine {
               ),
               dramaticScore: dramaticScore,
               description:
-                  '${isMinimum ? 'Periapsis' : 'Apoapsis'}: ${currDist.toStringAsFixed(1)} units',
+                  '${isMinimum ? 'Periapsis' : 'Apoapsis'}: ${NumberUtils.formatDistance(currDist)} units',
             ),
           );
         }

@@ -3,6 +3,7 @@
 import 'package:graviton/state/camera_state.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/scenario_service.dart';
+import 'package:graviton/utils/number_utils.dart';
 
 void main() {
   print('🚀 Auto-Zoom Feature Demonstration 🚀\n');
@@ -19,10 +20,10 @@ void main() {
 
       print('📊 ${scenario.name}:');
       print('   Bodies: ${bodies.length}');
-      print('   Camera Distance: ${cameraState.distance.toStringAsFixed(1)}');
       print(
-        '   Target: (${cameraState.target.x.toStringAsFixed(1)}, ${cameraState.target.y.toStringAsFixed(1)}, ${cameraState.target.z.toStringAsFixed(1)})',
+        '   Camera Distance: ${NumberUtils.formatDistance(cameraState.distance)}',
       );
+      print('   Target: ${NumberUtils.formatVector3(cameraState.target)}');
 
       // Calculate bounding sphere for context
       if (bodies.isNotEmpty) {
@@ -31,7 +32,9 @@ void main() {
           final distance = body.position.length + body.radius;
           if (distance > maxDistance) maxDistance = distance;
         }
-        print('   Max Body Distance: ${maxDistance.toStringAsFixed(1)}');
+        print(
+          '   Max Body Distance: ${NumberUtils.formatDistance(maxDistance)}',
+        );
       }
       print('');
     } catch (e) {

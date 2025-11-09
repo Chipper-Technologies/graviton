@@ -37,7 +37,7 @@ class VisualsControls extends StatelessWidget {
         SizedBox(height: AppTypography.spacingMedium),
 
         _buildToggleOption(
-          l10n.showTrailsTitle,
+          l10n.showTrails,
           l10n.showTrailsDescription,
           Icons.timeline,
           appState.ui.showTrails,
@@ -53,7 +53,7 @@ class VisualsControls extends StatelessWidget {
         ),
 
         _buildToggleOption(
-          l10n.realisticColorsTitle,
+          l10n.realisticColors,
           l10n.realisticColorsDescription,
           Icons.color_lens,
           appState.ui.useRealisticColors,
@@ -126,7 +126,7 @@ class VisualsControls extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingSmall),
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparentColor,
         child: HapticInkWell(
           onTap: onToggle,
           borderRadius: BorderRadius.circular(AppTypography.radiusLarge),

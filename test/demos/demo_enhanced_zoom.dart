@@ -3,6 +3,7 @@
 import 'package:graviton/state/camera_state.dart';
 import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/utils/number_utils.dart';
 
 void main() {
   print('🎯 Enhanced Zoom Feature Demonstration 🎯\n');
@@ -22,13 +23,11 @@ void main() {
   cameraState.resetViewForScenario(ScenarioType.solarSystem, solarBodies);
 
   print(
-    '   Initial camera distance: ${cameraState.distance.toStringAsFixed(1)}',
+    '   Initial camera distance: ${NumberUtils.formatDistance(cameraState.distance)}',
   );
+  print('   Initial target: ${NumberUtils.formatVector3(cameraState.target)}');
   print(
-    '   Initial target: (${cameraState.target.x.toStringAsFixed(1)}, ${cameraState.target.y.toStringAsFixed(1)}, ${cameraState.target.z.toStringAsFixed(1)})',
-  );
-  print(
-    '   Bodies spread across: ${_calculateSystemSpread(solarBodies).toStringAsFixed(1)} units\n',
+    '   Bodies spread across: ${NumberUtils.formatDistance(_calculateSystemSpread(solarBodies))} units\n',
   );
 
   // Demonstrate body selection and enhanced zoom
@@ -39,20 +38,22 @@ void main() {
 
   print('   Selected body index: $neptuneIndex');
   print(
-    '   New target position: (${cameraState.target.x.toStringAsFixed(1)}, ${cameraState.target.y.toStringAsFixed(1)}, ${cameraState.target.z.toStringAsFixed(1)})',
+    '   New target position: ${NumberUtils.formatVector3(cameraState.target)}',
   );
 
   // Simulate enhanced zoom behavior
   print('\n🔍 Enhanced Zoom Demonstration:');
-  print('   Original distance: ${cameraState.distance.toStringAsFixed(1)}');
+  print(
+    '   Original distance: ${NumberUtils.formatDistance(cameraState.distance)}',
+  );
 
   // Zoom in using enhanced method
   cameraState.zoomTowardBody(-0.2, solarBodies); // 20% zoom in
   print(
-    '   After enhanced zoom in: ${cameraState.distance.toStringAsFixed(1)}',
+    '   After enhanced zoom in: ${NumberUtils.formatDistance(cameraState.distance)}',
   );
   print(
-    '   Target adjusted to: (${cameraState.target.x.toStringAsFixed(1)}, ${cameraState.target.y.toStringAsFixed(1)}, ${cameraState.target.z.toStringAsFixed(1)})',
+    '   Target adjusted to: ${NumberUtils.formatVector3(cameraState.target)}',
   );
 
   print('\n💡 How this solves the "far apart bodies" problem:');

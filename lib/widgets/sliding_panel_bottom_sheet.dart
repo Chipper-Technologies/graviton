@@ -243,6 +243,9 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
   ) {
     return Container(
       decoration: BoxDecoration(
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(AppTypography.radiusXLarge),
+        ),
         border: Border(
           top: BorderSide(
             color: AppColors.primaryColor.withValues(
@@ -360,7 +363,7 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
           ),
         ),
         indicatorSize: TabBarIndicatorSize.tab,
-        dividerColor: Colors.transparent,
+        dividerColor: AppColors.transparentColor,
         labelColor: AppColors.uiWhite,
         unselectedLabelColor: AppColors.uiWhite.withValues(
           alpha: AppTypography.opacityMediumHigh,
@@ -404,7 +407,7 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
                   ],
                 ),
                 const SizedBox(width: 6),
-                Text(l10n.bottomNavCameraLabel),
+                Text(l10n.cameraLabel),
               ],
             ),
           ),
@@ -472,7 +475,7 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
                   ],
                 ),
                 const SizedBox(width: 6),
-                Text(l10n.bottomNavPhysicsLabel),
+                Text(l10n.physicsSection),
               ],
             ),
           ),

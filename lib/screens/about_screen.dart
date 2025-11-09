@@ -61,8 +61,8 @@ class _AboutScreenState extends State<AboutScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: HapticAppBar(title: l10n.aboutDialogTitle),
+      backgroundColor: AppColors.transparentColor,
+      appBar: HapticAppBar(title: l10n.aboutButtonTooltip),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -99,7 +99,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
                     // Centered app name
                     Text(
-                      l10n.appNameGraviton,
+                      l10n.appTitle,
                       style: theme.textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: AppColors.uiWhite,
@@ -319,7 +319,7 @@ class _AboutScreenState extends State<AboutScreen> {
         break;
       case VersionStatus.beta:
         badgeColor = AppColors.basicBlue;
-        badgeText = l10n.versionStatusBeta;
+        badgeText = l10n.bodyBeta;
         break;
       case VersionStatus.outdated:
         badgeColor = AppColors.uiRed;

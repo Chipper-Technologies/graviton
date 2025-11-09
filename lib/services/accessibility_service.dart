@@ -87,7 +87,7 @@ class AccessibilityService {
         additionalContext: l10n.accessibilityMergeEventContext,
       );
     } else {
-      // Fallback to English
+      // Fallback to English - these should be rare cases when l10n is not available
       announceSimulationEvent(
         'Collision detected: $body1Name merged with $body2Name',
         additionalContext: 'The combined mass creates a new celestial body',

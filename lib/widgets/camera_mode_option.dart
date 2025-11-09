@@ -28,7 +28,7 @@ class CameraModeOption extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: AppTypography.spacingSmall),
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparentColor,
         child: HapticInkWell(
           onTap: onTap,
           borderRadius: AppTypography.createRadius(AppTypography.radiusLarge),

@@ -63,15 +63,16 @@ class ScreenshotModeService extends ChangeNotifier {
       ScreenshotPresets.getPresets(l10n);
 
   /// Simple test preset for unit testing when l10n is not available
-  ScreenshotPreset? _getTestPreset() {
+  ScreenshotPreset? _getTestPreset([AppLocalizations? l10n]) {
     if (_currentPresetIndex < 0 || _currentPresetIndex >= presetCount) {
       return null;
     }
 
     // Import the required classes for the test preset
     return ScreenshotPreset(
-      name: 'Test Preset',
-      description: 'Test preset for unit testing',
+      name: l10n?.testPreset ?? 'Test Preset',
+      description:
+          l10n?.testPresetForUnitTesting ?? 'Test preset for unit testing',
       scenarioType: ScenarioType.galaxyFormation,
       configuration: {
         'bodyCount': 100,
@@ -154,7 +155,7 @@ class ScreenshotModeService extends ChangeNotifier {
   }) async {
     final preset = l10n != null
         ? getCurrentPreset(l10n)
-        : _getTestPreset(); // Use test preset when l10n is null
+        : _getTestPreset(l10n); // Use test preset when l10n is null
     if (preset == null || !isEnabled) return;
 
     try {
@@ -594,7 +595,7 @@ class ScreenshotModeService extends ChangeNotifier {
   /// Get preset name for dropdown display
   String getPresetDisplayName(int index, AppLocalizations l10n) {
     final preset = ScreenshotPresets.getPreset(index, l10n);
-    return preset?.name ?? 'Unknown';
+    return preset?.name ?? l10n.habitabilityUnknown;
   }
 
   /// Get preset description for UI

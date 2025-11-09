@@ -1,3 +1,4 @@
+import 'package:graviton/utils/number_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Represents a predicted orbital event that the camera can focus on
@@ -22,7 +23,7 @@ class OrbitalEvent {
 
   @override
   String toString() =>
-      'OrbitalEvent($type, score: ${dramaticScore.toStringAsFixed(2)}, bodies: $involvedBodies)';
+      'OrbitalEvent($type, score: ${NumberUtils.formatDecimal(dramaticScore, 2)}, bodies: $involvedBodies)';
 }
 
 /// Types of orbital events that can be predicted and cinematically captured

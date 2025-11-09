@@ -89,7 +89,7 @@ Tests for specific simulation scenarios:
 ### 📱 Screens (`test/screens/`)
 Tests for screen-level components and navigation:
 - `about_screen_test.dart` - About screen functionality
-- `application_settings_screen_haptic_test.dart` - Application settings with haptic feedback (NEW)
+- `application_settings_screen_haptic_test.dart` - Application settings with haptic feedback
 - `application_settings_screen_test.dart` - Application settings screen
 - `developer_tools_screen_test.dart` - Developer tools interface
 - `help_screen_test.dart` - Help and documentation screen
@@ -141,7 +141,7 @@ Tests for rendering and visual components:
 Tests for service layer components:
 - `cinematic_camera_controller_test.dart` - Cinematic camera control system
 - `firebase_service_test.dart` - Firebase analytics and crashlytics integration
-- `fullscreen_service_test.dart` - Fullscreen system UI management (NEW)
+- `fullscreen_service_test.dart` - Fullscreen system UI management
 - `orbital_prediction_engine_test.dart` - Orbital prediction and trajectory analysis
 - `remote_config_service_test.dart` - Remote configuration management
 - `scenario_service_test.dart` - Scenario management
@@ -161,12 +161,12 @@ Tests for state management:
 - `physics_state_test.dart` - Physics state management
 - `simulation_state_test.dart` - Simulation state management
 - `ui_state_test.dart` - UI state and preferences
-- `ui_state_fullscreen_test.dart` - Fullscreen UI state management (NEW)
+- `ui_state_fullscreen_test.dart` - Fullscreen UI state management
 
 ### 🛠 Utils (`test/utils/`)
 Tests for utility functions and test infrastructure:
 - `collision_utils_test.dart` - Collision detection utilities
-- `fullscreen_utils_test.dart` - Fullscreen mode coordination utilities (NEW)
+- `fullscreen_utils_test.dart` - Fullscreen mode coordination utilities
 - `painter_utils_test.dart` - Painting helper functions
 - `physics_utils_test.dart` - Physics calculations
 - `random_utils_test.dart` - Random number generation

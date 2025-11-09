@@ -4,6 +4,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/action_option.dart';
 import 'package:graviton/widgets/common/haptic_app_bar.dart';
 import 'package:graviton/widgets/common/haptic_slider_option.dart';
@@ -82,7 +83,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparentColor,
       appBar: HapticAppBar(title: l10n.physicsSettingsTitle),
       body: SafeArea(
         child: Container(
@@ -115,7 +116,8 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             setState(() => _gravitationalConstant = value);
                             _updateSettings();
                           },
-                          formatter: (value) => value.toStringAsFixed(2),
+                          formatter: (value) =>
+                              NumberUtils.formatDecimal(value, 2),
                         ),
 
                         HapticSliderOption.detailed(
@@ -129,7 +131,8 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             setState(() => _softening = value);
                             _updateSettings();
                           },
-                          formatter: (value) => value.toStringAsFixed(3),
+                          formatter: (value) =>
+                              NumberUtils.formatDecimal(value, 3),
                         ),
 
                         HapticSliderOption.detailed(
@@ -143,7 +146,8 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             setState(() => _timeScale = value);
                             _updateSettings();
                           },
-                          formatter: (value) => '${value.toStringAsFixed(1)}x',
+                          formatter: (value) =>
+                              '${NumberUtils.formatDecimal(value, 1)}x',
                         ),
 
                         const SizedBox(height: 32),
@@ -164,13 +168,13 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             _updateSettings();
                           },
                           formatter: (value) =>
-                              '${(value * 100).toStringAsFixed(0)}%',
+                              '${NumberUtils.formatDecimal(value * 100, 0)}%',
                         ),
 
                         const SizedBox(height: 32),
 
                         // Trails section
-                        SectionTitle(title: l10n.trailsSection),
+                        SectionTitle(title: l10n.trailsLabel),
                         const SizedBox(height: 16),
 
                         HapticSliderOption.detailed(
@@ -184,7 +188,8 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             setState(() => _maxTrailPoints = value);
                             _updateSettings();
                           },
-                          formatter: (value) => value.toStringAsFixed(0),
+                          formatter: (value) =>
+                              NumberUtils.formatDecimal(value, 0),
                         ),
 
                         HapticSliderOption.detailed(
@@ -198,7 +203,8 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             setState(() => _trailFadeRate = value);
                             _updateSettings();
                           },
-                          formatter: (value) => value.toStringAsFixed(1),
+                          formatter: (value) =>
+                              NumberUtils.formatDecimal(value, 1),
                         ),
 
                         const SizedBox(height: 32),
@@ -232,7 +238,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                               _updateSettings();
                             },
                             formatter: (value) =>
-                                '${(value * 1000).toStringAsFixed(0)}ms',
+                                '${NumberUtils.formatDecimal(value * 1000, 0)}ms',
                           ),
                         ],
 

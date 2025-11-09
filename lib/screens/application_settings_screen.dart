@@ -20,8 +20,8 @@ class ApplicationSettingsScreen extends StatelessWidget {
     return Consumer<AppState>(
       builder: (context, appState, child) {
         return Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: HapticAppBar(title: l10n.settingsTitle),
+          backgroundColor: AppColors.transparentColor,
+          appBar: HapticAppBar(title: l10n.settingsTooltip),
           body: SafeArea(
             child: Container(
               decoration: BoxDecoration(

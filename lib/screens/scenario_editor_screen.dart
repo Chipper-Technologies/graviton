@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/haptic_elevated_button.dart';
 import 'package:graviton/widgets/common/haptic_text_button.dart';
+import 'package:graviton/widgets/common/haptic_floating_action_button.dart';
+import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:graviton/models/custom_scenario.dart';
 import 'package:graviton/models/body.dart';
@@ -21,13 +24,18 @@ class ScenarioEditorScreen extends StatefulWidget {
   final CustomScenario? initialScenario;
   final bool isEditing;
 
-  const ScenarioEditorScreen({super.key, this.initialScenario, this.isEditing = false});
+  const ScenarioEditorScreen({
+    super.key,
+    this.initialScenario,
+    this.isEditing = false,
+  });
 
   @override
   State<ScenarioEditorScreen> createState() => _ScenarioEditorScreenState();
 }
 
-class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with TickerProviderStateMixin {
+class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
+    with TickerProviderStateMixin {
   late TabController _tabController;
   late List<Body> _bodies;
   late ScenarioMetadata _metadata;
@@ -36,22 +44,39 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
   ObjectivesConfig? _objectives;
 
   bool _hasUnsavedChanges = false;
+  bool _showFAB = true; // Show FAB by default on Bodies tab (index 0)
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _initializeScenario();
 
-    // Mark as changed when tab switches to track user activity
+    // Track tab changes for UI updates (FAB visibility, etc.)
     _tabController.addListener(() {
       if (_tabController.indexIsChanging && !_hasUnsavedChanges) {
         setState(() {
           _hasUnsavedChanges = true;
         });
       }
+      // Update FAB visibility based on current tab - show only on Bodies tab (index 0)
+      final shouldShowFAB = _tabController.index == 0;
+      if (_showFAB != shouldShowFAB) {
+        setState(() {
+          _showFAB = shouldShowFAB;
+        });
+      }
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Update metadata with localized strings if we created a default scenario
+    if (widget.initialScenario == null) {
+      _metadata = _createDefaultMetadata();
+    }
   }
 
   void _initializeScenario() {
@@ -64,38 +89,38 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
       _particleSystems = scenario.particleSystems;
       _objectives = scenario.objectives;
     } else {
-      // Create new scenario with defaults
-      _bodies = [_createDefaultSun()];
-      _metadata = _createDefaultMetadata();
+      // Create new scenario with empty bodies list
+      _bodies = <Body>[];
+      _metadata = _createDefaultMetadataWithoutContext();
       _physics = _createDefaultPhysics();
       _particleSystems = const ParticleSystemsConfig();
       _objectives = null;
     }
   }
 
-  Body _createDefaultSun() {
-    return Body(
-      name: 'Sun',
-      position: vm.Vector3.zero(),
-      velocity: vm.Vector3.zero(),
-      mass: 50.0,
-      radius: 4.8,
-      color: app_colors.AppColors.celestialGold,
-      bodyType: BodyType.star,
-      stellarLuminosity: 1.0,
-      temperature: 5778.0,
-      showGravityWell: true,
-      isPlanet: false,
-    );
-  }
-
-  ScenarioMetadata _createDefaultMetadata() {
+  ScenarioMetadata _createDefaultMetadataWithoutContext() {
     return ScenarioMetadata(
       name: 'New Scenario',
       description: 'A custom gravitational simulation',
       author: null,
       createdAt: DateTime.now(),
       educationalFocus: 'gravitational forces',
+      tags: ['custom'],
+      difficulty: 'beginner',
+    );
+  }
+
+  ScenarioMetadata _createDefaultMetadata() {
+    return ScenarioMetadata(
+      name: AppLocalizations.of(context)?.newScenarioEditor ?? 'New Scenario',
+      description:
+          AppLocalizations.of(context)?.customGravitationalSimulationEditor ??
+          'A custom gravitational simulation',
+      author: null,
+      createdAt: DateTime.now(),
+      educationalFocus:
+          AppLocalizations.of(context)?.gravitationalForcesEditor ??
+          'gravitational forces',
       tags: ['custom'],
       difficulty: 'beginner',
     );
@@ -127,81 +152,109 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
       onPopInvokedWithResult: (didPop, result) async {
         if (!didPop && _hasUnsavedChanges) {
           final shouldPop = await _showUnsavedChangesDialog(context, l10n);
-          if (shouldPop && mounted) {
+          if (shouldPop && context.mounted) {
             Navigator.of(context).pop();
           }
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.transparentColor,
         appBar: AppBar(
-          title: Text(widget.isEditing ? 'Edit Scenario' : 'Create Scenario'),
-          backgroundColor: AppColors.uiBlack.withValues(alpha: AppTypography.opacityNearlyOpaque),
+          title: Text(
+            widget.isEditing
+                ? (l10n.editScenarioTitle)
+                : (l10n.createScenarioTitle),
+          ),
+          backgroundColor: AppColors.uiBlack.withValues(
+            alpha: AppTypography.opacityNearlyOpaque,
+          ),
           foregroundColor: AppColors.uiWhite,
           elevation: 0,
           automaticallyImplyLeading: true,
           actions: [
             // Save button
             HapticTextButton(
-              onPressed: _hasUnsavedChanges ? () => _saveScenario(context, l10n) : null,
+              onPressed: _hasUnsavedChanges
+                  ? () => _saveScenario(context, l10n)
+                  : null,
               child: Text(
-                'Save',
+                l10n.saveButton,
                 style: AppTypography.mediumText.copyWith(
-                  color: _hasUnsavedChanges ? AppColors.primaryColor : AppColors.uiWhite.withValues(alpha: 0.5),
+                  color: _hasUnsavedChanges
+                      ? AppColors.primaryColor
+                      : AppColors.uiWhite.withValues(alpha: 0.5),
                 ),
               ),
             ),
             const SizedBox(width: AppTypography.spacingMedium),
           ],
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: const [
-              Tab(text: 'Bodies'),
-              Tab(text: 'Physics'),
-              Tab(text: 'Metadata'),
-              Tab(text: 'Preview'),
-            ],
-            indicatorColor: AppColors.primaryColor,
-            labelColor: AppColors.uiWhite,
-            unselectedLabelColor: AppColors.uiWhite.withValues(alpha: 0.7),
-          ),
         ),
         body: SafeArea(
           child: Container(
-            decoration: BoxDecoration(color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityNearlyOpaque)),
+            decoration: BoxDecoration(
+              color: AppColors.uiBlack.withValues(
+                alpha: AppTypography.opacityNearlyOpaque,
+              ),
+            ),
             child: Form(
               key: _formKey,
-              child: TabBarView(
-                controller: _tabController,
+              child: Column(
                 children: [
-                  // Bodies Tab
-                  ScenarioEditorBodyList(bodies: _bodies, onBodiesChanged: _onBodiesChanged, onAddBody: _addNewBody),
-                  // Physics Tab
-                  ScenarioEditorPhysicsPanel(
-                    physics: _physics,
-                    particleSystems: _particleSystems,
-                    onPhysicsChanged: _onPhysicsChanged,
-                    onParticleSystemsChanged: _onParticleSystemsChanged,
+                  // Tab bar using Graviton design system
+                  GravitonTabBar(
+                    controller: _tabController,
+                    disabledTabs: [
+                      false,
+                      _bodies.isEmpty,
+                      _bodies.isEmpty,
+                    ], // Disable Settings and Preview if no bodies
+                    tabs: [
+                      GravitonTab(icon: Icons.public, label: l10n.bodiesLabel),
+                      GravitonTab(
+                        icon: Icons.settings,
+                        label: l10n.physicsSection,
+                        isEnabled: _bodies.isNotEmpty,
+                      ),
+                      GravitonTab(
+                        icon: Icons.visibility,
+                        label: l10n.previewEditortitle,
+                        isEnabled: _bodies.isNotEmpty,
+                      ),
+                    ],
                   ),
-                  // Metadata Tab
-                  ScenarioEditorMetadataPanel(
-                    metadata: _metadata,
-                    objectives: _objectives,
-                    onMetadataChanged: _onMetadataChanged,
-                    onObjectivesChanged: _onObjectivesChanged,
+                  // Content
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        // Bodies Tab
+                        ScenarioEditorBodyList(
+                          bodies: _bodies,
+                          onBodiesChanged: _onBodiesChanged,
+                          onAddBody: _addNewBody,
+                        ),
+                        // Settings Tab (Combined Physics + Metadata)
+                        _buildSettingsTab(context, l10n),
+                        // Preview Tab
+                        _buildPreviewTab(context, l10n),
+                      ],
+                    ),
                   ),
-                  // Preview Tab
-                  _buildPreviewTab(context, l10n),
                 ],
               ),
             ),
           ),
         ),
-        floatingActionButton: _tabController.index == 0
-            ? FloatingActionButton(
+        floatingActionButton: _showFAB
+            ? HapticFloatingActionButton.extended(
                 onPressed: _addNewBody,
                 backgroundColor: AppColors.primaryColor,
-                child: const Icon(Icons.add, color: AppColors.uiWhite),
+                foregroundColor: AppColors.uiWhite,
+                icon: const Icon(Icons.add),
+                label: Text(
+                  l10n.addBodyButton,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
               )
             : null,
       ),
@@ -214,23 +267,27 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SectionTitle(title: 'Preview'),
+          SectionTitle(title: l10n.previewEditortitle),
           SizedBox(height: AppTypography.spacingMedium),
 
           // Scenario overview
-          _buildPreviewCard(title: _metadata.name, subtitle: _metadata.description, icon: Icons.public),
+          _buildPreviewCard(
+            title: _metadata.name,
+            subtitle: _metadata.description,
+            icon: Icons.public,
+          ),
 
           SizedBox(height: AppTypography.spacingLarge),
 
           // Bodies summary
-          SectionTitle(title: 'Bodies'),
+          SectionTitle(title: l10n.bodiesLabel),
           SizedBox(height: AppTypography.spacingMedium),
           ..._bodies.map((body) => _buildBodyPreviewTile(body)),
 
           SizedBox(height: AppTypography.spacingLarge),
 
           // Physics summary
-          SectionTitle(title: 'Physics'),
+          SectionTitle(title: l10n.physicsSection),
           SizedBox(height: AppTypography.spacingMedium),
           _buildPhysicsPreview(),
 
@@ -242,15 +299,17 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
               Expanded(
                 child: HapticElevatedButton(
                   onPressed: () => _testScenario(context, l10n),
-                  child: Text('Test Scenario'),
+                  child: Text(l10n.testScenarioButton),
                 ),
               ),
               SizedBox(width: AppTypography.spacingMedium),
               Expanded(
                 child: HapticElevatedButton(
                   onPressed: () => _exportScenario(context, l10n),
-                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.uiBlack.withValues(alpha: 0.3)),
-                  child: Text('Export Scenario'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.uiBlack.withValues(alpha: 0.3),
+                  ),
+                  child: Text(l10n.exportScenarioButton),
                 ),
               ),
             ],
@@ -260,17 +319,28 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
     );
   }
 
-  Widget _buildPreviewCard({required String title, required String subtitle, required IconData icon}) {
+  Widget _buildPreviewCard({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+  }) {
     return Container(
       padding: EdgeInsets.all(AppTypography.spacingLarge),
       decoration: BoxDecoration(
         color: AppColors.uiBlack.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-        border: Border.all(color: AppColors.primaryColor.withValues(alpha: 0.2), width: 1),
+        border: Border.all(
+          color: AppColors.primaryColor.withValues(alpha: 0.2),
+          width: 1,
+        ),
       ),
       child: Row(
         children: [
-          Icon(icon, size: AppTypography.iconSizeLarge, color: AppColors.primaryColor),
+          Icon(
+            icon,
+            size: AppTypography.iconSizeLarge,
+            color: AppColors.primaryColor,
+          ),
           SizedBox(width: AppTypography.spacingMedium),
           Expanded(
             child: Column(
@@ -280,7 +350,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
                 SizedBox(height: AppTypography.spacingSmall),
                 Text(
                   subtitle,
-                  style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.8)),
+                  style: AppTypography.mediumText.copyWith(
+                    color: AppColors.uiWhite.withValues(alpha: 0.8),
+                  ),
                 ),
               ],
             ),
@@ -303,13 +375,18 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
           Container(
             width: 12,
             height: 12,
-            decoration: BoxDecoration(color: body.color, shape: BoxShape.circle),
+            decoration: BoxDecoration(
+              color: body.color,
+              shape: BoxShape.circle,
+            ),
           ),
           SizedBox(width: AppTypography.spacingMedium),
           Expanded(child: Text(body.name, style: AppTypography.mediumText)),
           Text(
-            '${body.mass.toStringAsFixed(1)} M',
-            style: AppTypography.smallText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
+            NumberUtils.formatMass(body.mass),
+            style: AppTypography.smallText.copyWith(
+              color: AppColors.uiWhite.withValues(alpha: 0.7),
+            ),
           ),
         ],
       ),
@@ -325,9 +402,18 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
       ),
       child: Column(
         children: [
-          _buildPhysicsRow('Gravity', _physics.gravitationalConstant.toStringAsFixed(2)),
-          _buildPhysicsRow('Softening', _physics.softening.toStringAsFixed(3)),
-          _buildPhysicsRow('Trail Points', _physics.maxTrailPoints.toString()),
+          _buildPhysicsRow(
+            AppLocalizations.of(context)?.gravityEditor ?? 'Gravity',
+            NumberUtils.formatDecimal(_physics.gravitationalConstant, 2),
+          ),
+          _buildPhysicsRow(
+            AppLocalizations.of(context)?.softeningEditor ?? 'Softening',
+            NumberUtils.formatDecimal(_physics.softening, 3),
+          ),
+          _buildPhysicsRow(
+            AppLocalizations.of(context)?.trailPointsEditor ?? 'Trail Points',
+            _physics.maxTrailPoints.toString(),
+          ),
         ],
       ),
     );
@@ -340,7 +426,39 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: AppTypography.mediumText),
-          Text(value, style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7))),
+          Text(
+            value,
+            style: AppTypography.mediumText.copyWith(
+              color: AppColors.uiWhite.withValues(alpha: 0.7),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build the combined Settings tab (Physics + Metadata)
+  Widget _buildSettingsTab(BuildContext context, AppLocalizations l10n) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(AppTypography.spacingMedium),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Physics Section
+          ScenarioEditorPhysicsPanel(
+            physics: _physics,
+            particleSystems: _particleSystems,
+            onPhysicsChanged: _onPhysicsChanged,
+            onParticleSystemsChanged: _onParticleSystemsChanged,
+          ),
+          SizedBox(height: AppTypography.spacingLarge),
+          // Metadata Section
+          ScenarioEditorMetadataPanel(
+            metadata: _metadata,
+            objectives: _objectives,
+            onMetadataChanged: _onMetadataChanged,
+            onObjectivesChanged: _onObjectivesChanged,
+          ),
         ],
       ),
     );
@@ -351,6 +469,14 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
       _bodies = newBodies;
       _hasUnsavedChanges = true;
     });
+
+    // If all bodies are removed and user is on Settings or Preview tab, switch to Bodies tab
+    if (_bodies.isEmpty &&
+        (_tabController.index == 1 || _tabController.index == 2)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _tabController.animateTo(0);
+      });
+    }
   }
 
   void _onPhysicsChanged(PhysicsSettings newPhysics) {
@@ -383,7 +509,11 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
 
   void _addNewBody() {
     final newBody = Body(
-      name: 'Body ${_bodies.length + 1}',
+      name:
+          AppLocalizations.of(
+            context,
+          )?.bodyNumberTemplate('${_bodies.length + 1}') ??
+          'Body ${_bodies.length + 1}',
       position: vm.Vector3(20.0 * _bodies.length, 0, 0), // Spread them out
       velocity: vm.Vector3(0, 5.0, 0), // Give some orbital velocity
       mass: 1.0,
@@ -417,7 +547,10 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
     return colors[_bodies.length % colors.length];
   }
 
-  Future<void> _saveScenario(BuildContext context, AppLocalizations l10n) async {
+  Future<void> _saveScenario(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -432,16 +565,22 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
         _hasUnsavedChanges = false;
       });
 
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Scenario saved successfully'), backgroundColor: AppColors.primaryColor));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.scenarioSavedSuccessMessage),
+            backgroundColor: AppColors.primaryColor,
+          ),
+        );
       }
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Failed to save scenario: $e'), backgroundColor: AppColors.celestialRed));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.scenarioSaveFailedMessage(e.toString())),
+            backgroundColor: AppColors.celestialRed,
+          ),
+        );
       }
     }
   }
@@ -456,51 +595,77 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> with Ticker
     );
   }
 
-  Future<void> _testScenario(BuildContext context, AppLocalizations l10n) async {
+  Future<void> _testScenario(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
     // TODO: Implement test functionality - load scenario into simulation
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Test scenario functionality not implemented yet'),
+        content: Text(l10n.testScenarioNotImplementedMessage),
         backgroundColor: AppColors.celestialOrange,
       ),
     );
   }
 
-  Future<void> _exportScenario(BuildContext context, AppLocalizations l10n) async {
+  Future<void> _exportScenario(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
     try {
       final scenario = _createCustomScenario();
       final jsonString = ScenarioSerializationService.toJsonString(scenario);
 
       // TODO: Implement file export functionality
-      print('Exported JSON:\n$jsonString'); // For development
+      debugPrint('Exported JSON:\n$jsonString'); // For development
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Export scenario functionality not implemented yet'),
+          content: Text(l10n.exportScenarioNotImplementedMessage),
           backgroundColor: AppColors.celestialOrange,
         ),
       );
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to export scenario: $e'), backgroundColor: AppColors.celestialRed),
+          SnackBar(
+            content: Text(l10n.exportScenarioFailedMessage(e.toString())),
+            backgroundColor: AppColors.celestialRed,
+          ),
         );
       }
     }
   }
 
-  Future<bool> _showUnsavedChangesDialog(BuildContext context, AppLocalizations l10n) async {
+  Future<bool> _showUnsavedChangesDialog(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
     return await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
             backgroundColor: AppColors.uiBlack.withValues(alpha: 0.9),
-            title: Text('Unsaved Changes', style: AppTypography.titleText),
-            content: Text('You have unsaved changes. Are you sure you want to leave?', style: AppTypography.mediumText),
+            title: Text(
+              l10n.unsavedChangesTitle,
+              style: AppTypography.titleText,
+            ),
+            content: Text(
+              l10n.unsavedChangesMessage,
+              style: AppTypography.mediumText,
+            ),
             actions: [
-              HapticTextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancel)),
+              HapticTextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(l10n.cancel),
+              ),
               HapticTextButton(
                 onPressed: () => Navigator.of(context).pop(true),
-                child: Text('Discard', style: AppTypography.mediumText.copyWith(color: AppColors.celestialRed)),
+                child: Text(
+                  l10n.discardButton,
+                  style: AppTypography.mediumText.copyWith(
+                    color: AppColors.celestialRed,
+                  ),
+                ),
               ),
             ],
           ),
