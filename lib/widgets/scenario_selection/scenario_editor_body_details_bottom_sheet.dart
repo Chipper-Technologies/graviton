@@ -10,6 +10,9 @@ import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/common/body_type_picker.dart';
 import 'package:graviton/widgets/common/color_picker.dart';
+import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 
 /// Bottom sheet widget for displaying and editing body details
 class ScenarioEditorBodyDetailsBottomSheet extends StatefulWidget {
@@ -190,6 +193,18 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                 IconButton(
                   onPressed: () {
                     HapticFeedback.lightImpact();
+
+                    // Log analytics for body duplication
+                    FirebaseService.instance.logUIEventWithEnums(
+                      UIAction.bodyAdded,
+                      element: UIElement.bodyEditor,
+                      value: 'duplicate',
+                      additionalParams: {
+                        'original_body_name': widget.body.name,
+                        'body_type': widget.body.bodyType.name,
+                      },
+                    );
+
                     widget.onDuplicate();
                   },
                   icon: const Icon(Icons.content_copy_outlined),
@@ -274,6 +289,18 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             TextButton(
               onPressed: () {
                 HapticFeedback.mediumImpact();
+
+                // Log analytics for body deletion
+                FirebaseService.instance.logUIEventWithEnums(
+                  UIAction.bodyRemoved,
+                  element: UIElement.bodyEditor,
+                  additionalParams: {
+                    'body_name': widget.body.name,
+                    'body_type': widget.body.bodyType.name,
+                    'body_mass': widget.body.mass,
+                  },
+                );
+
                 Navigator.of(context).pop();
                 widget.onDelete();
               },
@@ -704,11 +731,37 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         isPlanet: widget.body.isPlanet,
         habitabilityStatus: widget.body.habitabilityStatus,
       );
+
+      // Log analytics for body editing (but only if there's an actual change)
+      if (updatedBody != widget.body) {
+        FirebaseService.instance.logUIEventWithEnums(
+          UIAction.bodyEdited,
+          element: UIElement.bodyEditor,
+          additionalParams: {
+            'body_name': widget.body.name,
+            'property_changed': _getChangedProperty(updatedBody),
+          },
+        );
+      }
+
       widget.onBodyChanged(updatedBody);
     } catch (e) {
       // Invalid input, ignore the update
       debugPrint('Invalid body property input: $e');
     }
+  }
+
+  String _getChangedProperty(Body updatedBody) {
+    if (updatedBody.name != widget.body.name) return 'name';
+    if (updatedBody.mass != widget.body.mass) return 'mass';
+    if (updatedBody.radius != widget.body.radius) return 'radius';
+    if (updatedBody.position != widget.body.position) return 'position';
+    if (updatedBody.velocity != widget.body.velocity) return 'velocity';
+    if (updatedBody.temperature != widget.body.temperature)
+      return 'temperature';
+    if (updatedBody.stellarLuminosity != widget.body.stellarLuminosity)
+      return 'luminosity';
+    return 'unknown';
   }
 
   Widget _buildDivider() {

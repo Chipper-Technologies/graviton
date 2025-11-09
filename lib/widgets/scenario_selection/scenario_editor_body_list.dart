@@ -7,6 +7,9 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
+import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 
 /// Widget for managing the list of celestial bodies in the scenario editor
 class ScenarioEditorBodyList extends StatefulWidget {
@@ -400,6 +403,19 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
   }
 
   void _deleteBody(int index) {
+    final bodyToDelete = widget.bodies[index];
+
+    // Log analytics for body removal
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.bodyRemoved,
+      element: UIElement.scenarioEditorBodies,
+      additionalParams: {
+        'body_name': bodyToDelete.name,
+        'body_type': bodyToDelete.bodyType.name,
+        'remaining_body_count': widget.bodies.length - 1,
+      },
+    );
+
     final updatedBodies = List<Body>.from(widget.bodies)..removeAt(index);
     widget.onBodiesChanged(updatedBodies);
   }

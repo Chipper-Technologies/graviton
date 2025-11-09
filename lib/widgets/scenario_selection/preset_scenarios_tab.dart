@@ -6,6 +6,9 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/localization_utils.dart';
 import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 
 /// Tab widget displaying preset scenarios
 class PresetScenariosTab extends StatelessWidget {
@@ -40,7 +43,15 @@ class PresetScenariosTab extends StatelessWidget {
             scenario: scenario,
             config: config,
             isSelected: isSelected,
-            onTap: () => onScenarioSelected(scenario),
+            onTap: () {
+              // Log analytics for preset scenario selection
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.scenarioSelected,
+                element: UIElement.presetScenariosTab,
+                value: scenario.name,
+              );
+              onScenarioSelected(scenario);
+            },
           ),
         );
       },

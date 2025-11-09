@@ -16,6 +16,9 @@ import 'package:graviton/models/objectives_config.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/scenario_serialization_service.dart';
 import 'package:graviton/services/custom_scenario_storage.dart';
+import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/theme/app_colors.dart' as app_colors;
 import 'package:graviton/enums/body_type.dart';
@@ -57,6 +60,22 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     _tabController = TabController(length: 3, vsync: this);
     _initializeScenario();
 
+    // Log analytics for scenario editor opened
+    FirebaseService.instance.logUIEventWithEnums(
+      widget.isEditing
+          ? UIAction.scenarioEditingStarted
+          : UIAction.scenarioCreationStarted,
+      element: UIElement.scenarioEditor,
+      additionalParams: {
+        'has_initial_scenario': widget.initialScenario != null,
+        'initial_body_count': widget.initialScenario?.metadata.name != null
+            ? ScenarioSerializationService.toBodies(
+                widget.initialScenario!,
+              ).length
+            : 0,
+      },
+    );
+
     // Track tab changes for UI updates (FAB visibility, etc.)
     _tabController.addListener(() {
       if (_tabController.indexIsChanging && !_hasUnsavedChanges) {
@@ -64,6 +83,17 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
           _hasUnsavedChanges = true;
         });
       }
+
+      // Log tab change analytics
+      if (_tabController.indexIsChanging) {
+        final tabNames = ['bodies', 'settings', 'preview'];
+        FirebaseService.instance.logUIEventWithEnums(
+          UIAction.tabChanged,
+          element: UIElement.scenarioEditor,
+          value: tabNames[_tabController.index],
+        );
+      }
+
       // Update FAB visibility based on current tab - show only on Bodies tab (index 0)
       final shouldShowFAB = _tabController.index == 0;
       if (_showFAB != shouldShowFAB) {
@@ -157,8 +187,31 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
         if (!didPop && _hasUnsavedChanges) {
           final shouldPop = await _showUnsavedChangesDialog(context, l10n);
           if (shouldPop && context.mounted) {
+            // Log analytics for scenario creation/editing cancellation
+            FirebaseService.instance.logUIEventWithEnums(
+              widget.isEditing
+                  ? UIAction.scenarioEditingCanceled
+                  : UIAction.scenarioCreationCanceled,
+              element: UIElement.scenarioEditor,
+              additionalParams: {
+                'had_unsaved_changes': _hasUnsavedChanges,
+                'body_count': _bodies.length,
+              },
+            );
             Navigator.of(context).pop();
           }
+        } else if (didPop) {
+          // Log normal exit (no unsaved changes)
+          FirebaseService.instance.logUIEventWithEnums(
+            widget.isEditing
+                ? UIAction.scenarioEditingCanceled
+                : UIAction.scenarioCreationCanceled,
+            element: UIElement.scenarioEditor,
+            additionalParams: {
+              'had_unsaved_changes': false,
+              'body_count': _bodies.length,
+            },
+          );
         }
       },
       child: Scaffold(
@@ -512,6 +565,16 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   }
 
   void _addNewBody() {
+    // Log analytics for body addition
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.bodyAdded,
+      element: UIElement.scenarioEditorBodies,
+      additionalParams: {
+        'total_bodies': _bodies.length + 1,
+        'scenario_editing': widget.isEditing,
+      },
+    );
+
     final newBody = Body(
       name:
           AppLocalizations.of(
@@ -562,12 +625,36 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     try {
       final scenario = _createCustomScenario();
 
+      // Log analytics for scenario save attempt
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.scenarioSaved,
+        element: UIElement.scenarioEditor,
+        additionalParams: {
+          'scenario_editing': widget.isEditing,
+          'body_count': _bodies.length,
+          'scenario_name': _metadata.name,
+          'has_objectives': _objectives != null,
+        },
+      );
+
       // Save to local storage
       await CustomScenarioStorage.saveScenario(scenario);
 
       setState(() {
         _hasUnsavedChanges = false;
       });
+
+      // Log successful completion
+      FirebaseService.instance.logUIEventWithEnums(
+        widget.isEditing
+            ? UIAction.scenarioEditingCompleted
+            : UIAction.scenarioCreationCompleted,
+        element: UIElement.scenarioEditor,
+        additionalParams: {
+          'body_count': _bodies.length,
+          'scenario_name': _metadata.name,
+        },
+      );
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -578,6 +665,13 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
         );
       }
     } catch (e) {
+      // Log error analytics
+      FirebaseService.instance.logErrorEvent(
+        'scenario_save_failed',
+        errorMessage: e.toString(),
+        context: 'scenario_editor',
+      );
+
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -603,6 +697,16 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     BuildContext context,
     AppLocalizations l10n,
   ) async {
+    // Log analytics for scenario test
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.scenarioTested,
+      element: UIElement.scenarioEditorPreview,
+      additionalParams: {
+        'body_count': _bodies.length,
+        'scenario_name': _metadata.name,
+      },
+    );
+
     // TODO: Implement test functionality - load scenario into simulation
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -620,6 +724,17 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       final scenario = _createCustomScenario();
       final jsonString = ScenarioSerializationService.toJsonString(scenario);
 
+      // Log analytics for scenario export
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.scenarioExported,
+        element: UIElement.scenarioEditorPreview,
+        additionalParams: {
+          'body_count': _bodies.length,
+          'scenario_name': _metadata.name,
+          'export_size_bytes': jsonString.length,
+        },
+      );
+
       // TODO: Implement file export functionality
       debugPrint('Exported JSON:\n$jsonString'); // For development
 
@@ -630,6 +745,13 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
         ),
       );
     } catch (e) {
+      // Log error analytics
+      FirebaseService.instance.logErrorEvent(
+        'scenario_export_failed',
+        errorMessage: e.toString(),
+        context: 'scenario_editor',
+      );
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

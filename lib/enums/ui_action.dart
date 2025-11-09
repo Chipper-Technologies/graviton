@@ -67,7 +67,52 @@ enum UIAction {
   changelogShown('changelog_shown'),
 
   /// Changelog completed
-  changelogCompleted('changelog_completed');
+  changelogCompleted('changelog_completed'),
+
+  /// Scenario creation started
+  scenarioCreationStarted('scenario_creation_started'),
+
+  /// Scenario creation completed
+  scenarioCreationCompleted('scenario_creation_completed'),
+
+  /// Scenario creation canceled
+  scenarioCreationCanceled('scenario_creation_canceled'),
+
+  /// Scenario editing started
+  scenarioEditingStarted('scenario_editing_started'),
+
+  /// Scenario editing completed
+  scenarioEditingCompleted('scenario_editing_completed'),
+
+  /// Scenario editing canceled
+  scenarioEditingCanceled('scenario_editing_canceled'),
+
+  /// Body added to scenario
+  bodyAdded('body_added'),
+
+  /// Body removed from scenario
+  bodyRemoved('body_removed'),
+
+  /// Body edited in scenario
+  bodyEdited('body_edited'),
+
+  /// Tab changed in editor
+  tabChanged('tab_changed'),
+
+  /// Scenario saved
+  scenarioSaved('scenario_saved'),
+
+  /// Scenario exported
+  scenarioExported('scenario_exported'),
+
+  /// Scenario tested
+  scenarioTested('scenario_tested'),
+
+  /// Custom scenario deleted
+  customScenarioDeleted('custom_scenario_deleted'),
+
+  /// Custom scenario loaded
+  customScenarioLoaded('custom_scenario_loaded');
 
   const UIAction(this.value);
 

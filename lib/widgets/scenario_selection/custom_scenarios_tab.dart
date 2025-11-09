@@ -5,6 +5,9 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/services/custom_scenario_storage.dart';
 import 'package:graviton/services/custom_scenario_manager.dart';
+import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/screens/scenario_editor_screen.dart';
 import 'package:graviton/widgets/scenario_selection/create_scenario_tile.dart';
 import 'package:graviton/widgets/scenario_selection/custom_scenario_tile.dart';
@@ -109,6 +112,13 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
   }
 
   void _selectCustomScenario(BuildContext context, String scenarioName) {
+    // Log analytics for custom scenario selection
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.customScenarioLoaded,
+      element: UIElement.customScenariosTab,
+      value: scenarioName,
+    );
+
     // Load the custom scenario into the manager and switch to custom scenario type
     CustomScenarioManager.instance.loadCustomScenario(scenarioName);
     widget.onScenarioSelected(ScenarioType.custom);
@@ -205,8 +215,42 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
     );
 
     if (confirmed == true) {
-      await CustomScenarioStorage.deleteScenario(scenarioName);
-      await _loadCustomScenarios();
+      try {
+        // Log analytics for scenario deletion
+        FirebaseService.instance.logUIEventWithEnums(
+          UIAction.customScenarioDeleted,
+          element: UIElement.customScenariosTab,
+          value: scenarioName,
+        );
+
+        await CustomScenarioStorage.deleteScenario(scenarioName);
+        await _loadCustomScenarios();
+
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Successfully deleted scenario: $scenarioName'),
+              backgroundColor: AppColors.primaryColor,
+            ),
+          );
+        }
+      } catch (e) {
+        // Log error analytics
+        FirebaseService.instance.logErrorEvent(
+          'custom_scenario_deletion_failed',
+          errorMessage: e.toString(),
+          context: 'custom_scenarios_tab',
+        );
+
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to delete scenario: ${e.toString()}'),
+              backgroundColor: AppColors.celestialRed,
+            ),
+          );
+        }
+      }
     }
   }
 }

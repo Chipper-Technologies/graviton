@@ -49,7 +49,34 @@ enum UIElement {
   about('about'),
 
   /// Developer tools screen/dialog
-  developerTools('developer_tools');
+  developerTools('developer_tools'),
+
+  /// Scenario editor screen
+  scenarioEditor('scenario_editor'),
+
+  /// Scenario editor body list tab
+  scenarioEditorBodies('scenario_editor_bodies'),
+
+  /// Scenario editor settings tab
+  scenarioEditorSettings('scenario_editor_settings'),
+
+  /// Scenario editor preview tab
+  scenarioEditorPreview('scenario_editor_preview'),
+
+  /// Custom scenarios tab
+  customScenariosTab('custom_scenarios_tab'),
+
+  /// Preset scenarios tab
+  presetScenariosTab('preset_scenarios_tab'),
+
+  /// Body editor dialog
+  bodyEditor('body_editor'),
+
+  /// Scenario metadata panel
+  scenarioMetadata('scenario_metadata'),
+
+  /// Scenario physics panel
+  scenarioPhysics('scenario_physics');
 
   const UIElement(this.value);
 

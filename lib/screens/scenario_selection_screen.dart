@@ -8,6 +8,9 @@ import 'package:graviton/widgets/common/haptic_floating_action_button.dart';
 import 'package:graviton/widgets/scenario_selection/preset_scenarios_tab.dart';
 import 'package:graviton/widgets/scenario_selection/custom_scenarios_tab.dart';
 import 'package:graviton/screens/scenario_editor_screen.dart';
+import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 
 /// Full-screen scenario selection page with tabbed interface
 class ScenarioSelectionScreen extends StatefulWidget {
@@ -92,6 +95,12 @@ class _ScenarioSelectionScreenState extends State<ScenarioSelectionScreen> {
   }
 
   Future<void> _createNewScenario(BuildContext context) async {
+    // Log analytics for new scenario creation initiated
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.scenarioCreationStarted,
+      element: UIElement.scenarioSelection,
+    );
+
     final result = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
