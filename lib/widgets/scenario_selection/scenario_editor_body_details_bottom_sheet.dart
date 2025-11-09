@@ -10,6 +10,7 @@ import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/common/body_type_picker.dart';
 import 'package:graviton/widgets/common/color_picker.dart';
+import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
@@ -245,77 +246,35 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     );
   }
 
-  void _showDeleteConfirmation() {
-    showDialog(
+  Future<void> _showDeleteConfirmation() async {
+    final l10n = AppLocalizations.of(context)!;
+
+    final confirmed = await DeleteConfirmationDialog.show(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: AppColors.uiBlack.withValues(
-            alpha: AppTypography.opacityVeryHigh,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-            side: BorderSide(
-              color: AppColors.primaryColor.withValues(
-                alpha: AppTypography.opacityMedium,
-              ),
-              width: 1,
-            ),
-          ),
-          title: Text(
-            AppLocalizations.of(
-              context,
-            )!.deleteBodyConfirmTitle(widget.body.name),
-            style: AppTypography.titleText.copyWith(color: AppColors.uiWhite),
-          ),
-          content: Text(
-            AppLocalizations.of(context)!.deleteBodyConfirmMessage,
-            style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.8),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                AppLocalizations.of(context)!.cancel,
-                style: AppTypography.mediumText.copyWith(
-                  color: AppColors.uiWhite.withValues(alpha: 0.7),
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                HapticFeedback.mediumImpact();
-
-                // Log analytics for body deletion
-                FirebaseService.instance.logUIEventWithEnums(
-                  UIAction.bodyRemoved,
-                  element: UIElement.bodyEditor,
-                  additionalParams: {
-                    'body_name': widget.body.name,
-                    'body_type': widget.body.bodyType.name,
-                    'body_mass': widget.body.mass,
-                  },
-                );
-
-                Navigator.of(context).pop();
-                widget.onDelete();
-              },
-              child: Text(
-                AppLocalizations.of(context)!.deleteButton,
-                style: AppTypography.mediumText.copyWith(
-                  color: AppColors.accretionRed,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+      title: l10n.deleteBodyConfirmTitle(widget.body.name),
+      message: l10n.deleteBodyConfirmMessage,
     );
+
+    if (confirmed == true) {
+      HapticFeedback.mediumImpact();
+
+      // Log analytics for body deletion
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.bodyRemoved,
+        element: UIElement.bodyEditor,
+        additionalParams: {
+          'body_name': widget.body.name,
+          'body_type': widget.body.bodyType.name,
+          'body_mass': widget.body.mass,
+        },
+      );
+
+      // Close the bottom sheet and signal deletion to parent
+      if (mounted) {
+        Navigator.pop(context);
+        widget.onDelete();
+      }
+    }
   }
 
   Widget _buildDetailsTab(AppLocalizations l10n) {

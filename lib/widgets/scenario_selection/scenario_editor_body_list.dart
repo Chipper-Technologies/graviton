@@ -381,8 +381,8 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
               _duplicateBody(index);
             },
             onDelete: () {
-              Navigator.pop(context);
-              _deleteBody(index);
+              // Direct deletion - confirmation already shown in bottom sheet
+              _performBodyDeletion(index, widget.bodies[index]);
             },
           ),
         ),
@@ -430,19 +430,23 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
     );
 
     if (confirmed == true) {
-      // Log analytics for body removal
-      FirebaseService.instance.logUIEventWithEnums(
-        UIAction.bodyRemoved,
-        element: UIElement.scenarioEditorBodies,
-        additionalParams: {
-          'body_name': bodyToDelete.name,
-          'body_type': bodyToDelete.bodyType.name,
-          'remaining_body_count': widget.bodies.length - 1,
-        },
-      );
-
-      final updatedBodies = List<Body>.from(widget.bodies)..removeAt(index);
-      widget.onBodiesChanged(updatedBodies);
+      _performBodyDeletion(index, bodyToDelete);
     }
+  }
+
+  void _performBodyDeletion(int index, Body bodyToDelete) {
+    // Log analytics for body removal
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.bodyRemoved,
+      element: UIElement.scenarioEditorBodies,
+      additionalParams: {
+        'body_name': bodyToDelete.name,
+        'body_type': bodyToDelete.bodyType.name,
+        'remaining_body_count': widget.bodies.length - 1,
+      },
+    );
+
+    final updatedBodies = List<Body>.from(widget.bodies)..removeAt(index);
+    widget.onBodiesChanged(updatedBodies);
   }
 }
