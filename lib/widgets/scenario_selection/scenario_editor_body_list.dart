@@ -264,10 +264,12 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                               HapticFeedback.lightImpact();
                               _duplicateBody(index);
                             },
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(
+                              AppTypography.radiusXXLarge,
+                            ),
                             child: Container(
-                              width: AppTypography.spacingXLarge,
-                              height: AppTypography.spacingXLarge,
+                              width: AppTypography.spacingXXXLarge,
+                              height: AppTypography.spacingXXXLarge,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: AppColors.uiWhite.withValues(
@@ -315,10 +317,12 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                                 HapticFeedback.lightImpact();
                                 _deleteBody(index);
                               },
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(
+                                AppTypography.radiusXXLarge,
+                              ),
                               child: Container(
-                                width: AppTypography.spacingXLarge,
-                                height: AppTypography.spacingXLarge,
+                                width: AppTypography.spacingXXXLarge,
+                                height: AppTypography.spacingXXXLarge,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: AppColors.uiRed.withValues(
