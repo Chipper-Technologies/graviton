@@ -8,6 +8,7 @@ import 'package:graviton/models/body.dart';
 import 'package:graviton/models/custom_scenario.dart';
 import 'package:graviton/models/scenario_metadata.dart';
 import 'package:graviton/models/scenario_configuration.dart';
+import 'package:graviton/models/scenario_validation_result.dart';
 import 'package:graviton/models/scenario_physics_settings.dart';
 import 'package:graviton/models/body_data.dart';
 import 'package:graviton/models/particle_systems_config.dart';
@@ -384,12 +385,4 @@ class ScenarioSerializationService {
     final pattern = RegExp(r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$');
     return pattern.hasMatch(hex);
   }
-}
-
-/// Result of scenario validation
-class ScenarioValidationResult {
-  final bool isValid;
-  final List<String> errors;
-
-  const ScenarioValidationResult({required this.isValid, required this.errors});
 }

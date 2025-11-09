@@ -27,12 +27,10 @@ class ScenarioEditorBodyDetailsBottomSheet extends StatefulWidget {
   });
 
   @override
-  State<ScenarioEditorBodyDetailsBottomSheet> createState() =>
-      _ScenarioEditorBodyDetailsBottomSheetState();
+  State<ScenarioEditorBodyDetailsBottomSheet> createState() => _ScenarioEditorBodyDetailsBottomSheetState();
 }
 
-class _ScenarioEditorBodyDetailsBottomSheetState
-    extends State<ScenarioEditorBodyDetailsBottomSheet> {
+class _ScenarioEditorBodyDetailsBottomSheetState extends State<ScenarioEditorBodyDetailsBottomSheet> {
   late TextEditingController _nameController;
   late TextEditingController _massController;
   late TextEditingController _radiusController;
@@ -50,33 +48,15 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     super.initState();
     _nameController = TextEditingController(text: widget.body.name);
     _massController = TextEditingController(text: widget.body.mass.toString());
-    _radiusController = TextEditingController(
-      text: widget.body.radius.toString(),
-    );
-    _positionXController = TextEditingController(
-      text: widget.body.position.x.toString(),
-    );
-    _positionYController = TextEditingController(
-      text: widget.body.position.y.toString(),
-    );
-    _positionZController = TextEditingController(
-      text: widget.body.position.z.toString(),
-    );
-    _velocityXController = TextEditingController(
-      text: widget.body.velocity.x.toString(),
-    );
-    _velocityYController = TextEditingController(
-      text: widget.body.velocity.y.toString(),
-    );
-    _velocityZController = TextEditingController(
-      text: widget.body.velocity.z.toString(),
-    );
-    _temperatureController = TextEditingController(
-      text: widget.body.temperature.round().toString(),
-    );
-    _luminosityController = TextEditingController(
-      text: widget.body.stellarLuminosity.toString(),
-    );
+    _radiusController = TextEditingController(text: widget.body.radius.toString());
+    _positionXController = TextEditingController(text: widget.body.position.x.toString());
+    _positionYController = TextEditingController(text: widget.body.position.y.toString());
+    _positionZController = TextEditingController(text: widget.body.position.z.toString());
+    _velocityXController = TextEditingController(text: widget.body.velocity.x.toString());
+    _velocityYController = TextEditingController(text: widget.body.velocity.y.toString());
+    _velocityZController = TextEditingController(text: widget.body.velocity.z.toString());
+    _temperatureController = TextEditingController(text: widget.body.temperature.round().toString());
+    _luminosityController = TextEditingController(text: widget.body.stellarLuminosity.toString());
   }
 
   @override
@@ -121,25 +101,14 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.uiBlack.withValues(
-          alpha: AppTypography.opacityVeryHigh,
-        ),
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(AppTypography.radiusXLarge),
-        ),
+        color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityVeryHigh),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppTypography.radiusXLarge)),
         border: Border(
-          top: BorderSide(
-            color: AppColors.primaryColor.withValues(
-              alpha: AppTypography.opacityMedium,
-            ),
-            width: 2,
-          ),
+          top: BorderSide(color: AppColors.primaryColor.withValues(alpha: AppTypography.opacityMedium), width: 2),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.uiBlack.withValues(
-              alpha: AppTypography.opacityMedium,
-            ),
+            color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityMedium),
             blurRadius: 16,
             offset: const Offset(0, -4),
           ),
@@ -154,15 +123,11 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             width: 80,
             height: 5,
             decoration: BoxDecoration(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
+              color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityHigh),
               borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.uiBlack.withValues(
-                    alpha: AppTypography.opacityMedium,
-                  ),
+                  color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityMedium),
                   blurRadius: 2,
                   offset: const Offset(0, 1),
                 ),
@@ -172,17 +137,13 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
           // Header with title and actions
           Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppTypography.spacingMedium,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: AppTypography.spacingMedium),
             child: Row(
               children: [
                 Expanded(
                   child: Text(
                     widget.body.name,
-                    style: AppTypography.titleText.copyWith(
-                      color: AppColors.uiWhite,
-                    ),
+                    style: AppTypography.titleText.copyWith(color: AppColors.uiWhite),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -213,14 +174,8 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           Expanded(
             child: GravitonTabbedView(
               tabs: [
-                GravitonTab(
-                  icon: Icons.info_outline,
-                  label: l10n.detailsEditorLabel,
-                ),
-                GravitonTab(
-                  icon: Icons.edit_outlined,
-                  label: l10n.editEditorLabel,
-                ),
+                GravitonTab(icon: Icons.info_outline, label: l10n.detailsEditorLabel),
+                GravitonTab(icon: Icons.edit_outlined, label: l10n.editEditorLabel),
               ],
               children: [_buildDetailsTab(l10n), _buildEditTab(l10n)],
             ),
@@ -235,29 +190,18 @@ class _ScenarioEditorBodyDetailsBottomSheetState
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: AppColors.uiBlack.withValues(
-            alpha: AppTypography.opacityVeryHigh,
-          ),
+          backgroundColor: AppColors.uiBlack.withValues(alpha: AppTypography.opacityVeryHigh),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-            side: BorderSide(
-              color: AppColors.primaryColor.withValues(
-                alpha: AppTypography.opacityMedium,
-              ),
-              width: 1,
-            ),
+            side: BorderSide(color: AppColors.primaryColor.withValues(alpha: AppTypography.opacityMedium), width: 1),
           ),
           title: Text(
-            AppLocalizations.of(
-              context,
-            )!.deleteBodyConfirmTitle(widget.body.name),
+            AppLocalizations.of(context)!.deleteBodyConfirmTitle(widget.body.name),
             style: AppTypography.titleText.copyWith(color: AppColors.uiWhite),
           ),
           content: Text(
             AppLocalizations.of(context)!.deleteBodyConfirmMessage,
-            style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.8),
-            ),
+            style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.8)),
           ),
           actions: [
             TextButton(
@@ -266,9 +210,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
               },
               child: Text(
                 AppLocalizations.of(context)!.cancel,
-                style: AppTypography.mediumText.copyWith(
-                  color: AppColors.uiWhite.withValues(alpha: 0.7),
-                ),
+                style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite.withValues(alpha: 0.7)),
               ),
             ),
             TextButton(
@@ -279,10 +221,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
               },
               child: Text(
                 AppLocalizations.of(context)!.deleteButton,
-                style: AppTypography.mediumText.copyWith(
-                  color: AppColors.accretionRed,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: AppTypography.mediumText.copyWith(color: AppColors.accretionRed, fontWeight: FontWeight.w600),
               ),
             ),
           ],
@@ -304,23 +243,41 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         children: [
           // Basic Properties
           _buildDetailSection(l10n.propertiesEditor, [
-            _buildDetailCard(
-              icon: Icons.category_outlined,
-              label: l10n.typeEditorLabel,
-              value: widget.body.bodyType.name.toUpperCase(),
-              color: _getBodyTypeColor(widget.body.bodyType),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildDetailCard(
+                    icon: Icons.category_outlined,
+                    label: l10n.typeEditorLabel,
+                    value: widget.body.bodyType.name.toUpperCase(),
+                    color: _getBodyTypeColor(widget.body.bodyType),
+                  ),
+                ),
+                SizedBox(width: AppTypography.spacingSmall),
+                Expanded(
+                  child: _buildDetailCard(
+                    icon: Icons.fitness_center,
+                    label: l10n.bodyPropertiesMass,
+                    value: _formatMass(widget.body.mass),
+                    color: AppColors.uiCyan,
+                  ),
+                ),
+              ],
             ),
-            _buildDetailCard(
-              icon: Icons.fitness_center,
-              label: l10n.bodyPropertiesMass,
-              value: _formatMass(widget.body.mass),
-              color: AppColors.uiCyan,
-            ),
-            _buildDetailCard(
-              icon: Icons.radio_button_unchecked,
-              label: l10n.bodyPropertiesRadius,
-              value: _formatDistance(widget.body.radius),
-              color: AppColors.uiGreen,
+            SizedBox(height: AppTypography.spacingSmall),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildDetailCard(
+                    icon: Icons.radio_button_unchecked,
+                    label: l10n.bodyPropertiesRadius,
+                    value: _formatDistance(widget.body.radius),
+                    color: AppColors.uiGreen,
+                  ),
+                ),
+                SizedBox(width: AppTypography.spacingSmall),
+                Expanded(child: SizedBox()), // Empty space for symmetry
+              ],
             ),
           ]),
 
@@ -328,17 +285,26 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
           // Position & Motion
           _buildDetailSection(l10n.positionMotionEditor, [
-            _buildDetailCard(
-              icon: Icons.place_outlined,
-              label: l10n.positionEditorLabel,
-              value: _formatVector(widget.body.position),
-              color: AppColors.primaryColor,
-            ),
-            _buildDetailCard(
-              icon: Icons.speed,
-              label: l10n.bodyPropertiesVelocity,
-              value: _formatVector(widget.body.velocity),
-              color: AppColors.uiOrange,
+            Row(
+              children: [
+                Expanded(
+                  child: _buildDetailCard(
+                    icon: Icons.place_outlined,
+                    label: l10n.positionEditorLabel,
+                    value: _formatVector(widget.body.position),
+                    color: AppColors.primaryColor,
+                  ),
+                ),
+                SizedBox(width: AppTypography.spacingSmall),
+                Expanded(
+                  child: _buildDetailCard(
+                    icon: Icons.speed,
+                    label: l10n.bodyPropertiesVelocity,
+                    value: _formatVector(widget.body.velocity),
+                    color: AppColors.uiOrange,
+                  ),
+                ),
+              ],
             ),
           ]),
 
@@ -347,19 +313,30 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
             // Stellar Properties (if applicable)
             _buildDetailSection(l10n.stellarPropertiesEditor, [
-              _buildDetailCard(
-                icon: Icons.wb_sunny_outlined,
-                label: l10n.temperatureEditorlabel,
-                value: _formatTemperature(widget.body.temperature),
-                color: AppColors.accretionRed,
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildDetailCard(
+                      icon: Icons.wb_sunny_outlined,
+                      label: l10n.temperatureEditorlabel,
+                      value: _formatTemperature(widget.body.temperature),
+                      color: AppColors.accretionRed,
+                    ),
+                  ),
+                  SizedBox(width: AppTypography.spacingSmall),
+                  if (widget.body.stellarLuminosity > 0)
+                    Expanded(
+                      child: _buildDetailCard(
+                        icon: Icons.light_mode_outlined,
+                        label: l10n.luminosityEditorLabel,
+                        value: _formatLuminosity(widget.body.stellarLuminosity),
+                        color: AppColors.uiYellow,
+                      ),
+                    )
+                  else
+                    Expanded(child: SizedBox()), // Empty space if no luminosity
+                ],
               ),
-              if (widget.body.stellarLuminosity > 0)
-                _buildDetailCard(
-                  icon: Icons.light_mode_outlined,
-                  label: l10n.luminosityEditorLabel,
-                  value: _formatLuminosity(widget.body.stellarLuminosity),
-                  color: AppColors.uiYellow,
-                ),
             ]),
           ],
         ],
@@ -475,9 +452,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           Text(
             l10n.physicalPropertiesDescription,
             style: AppTypography.smallText.copyWith(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
+              color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityHigh),
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -497,9 +472,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           Text(
             l10n.lightEnergyOutputDescription,
             style: AppTypography.smallText.copyWith(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
+              color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityHigh),
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -515,9 +488,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                   child: _buildCompactCoordinateField(
                     controller: _positionXController,
                     coordinate: l10n.xCoordinateLabel,
-                    hintText: AppLocalizations.of(
-                      context,
-                    )!.xCoordinateEditorhint,
+                    hintText: AppLocalizations.of(context)!.xCoordinateEditorhint,
                     onChanged: (value) => _updateBodyProperty(),
                     keyboardType: TextInputType.number,
                   ),
@@ -527,9 +498,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                   child: _buildCompactCoordinateField(
                     controller: _positionYController,
                     coordinate: l10n.yCoordinateLabel,
-                    hintText: AppLocalizations.of(
-                      context,
-                    )!.yCoordinateEditorhint,
+                    hintText: AppLocalizations.of(context)!.yCoordinateEditorhint,
                     onChanged: (value) => _updateBodyProperty(),
                     keyboardType: TextInputType.number,
                   ),
@@ -539,9 +508,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                   child: _buildCompactCoordinateField(
                     controller: _positionZController,
                     coordinate: l10n.zCoordinateLabel,
-                    hintText: AppLocalizations.of(
-                      context,
-                    )!.zCoordinateEditorhint,
+                    hintText: AppLocalizations.of(context)!.zCoordinateEditorhint,
                     onChanged: (value) => _updateBodyProperty(),
                     keyboardType: TextInputType.number,
                   ),
@@ -553,9 +520,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           Text(
             l10n.spatialCoordinatesDescription,
             style: AppTypography.smallText.copyWith(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
+              color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityHigh),
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -603,9 +568,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           Text(
             l10n.initialMotionVectorsDescription,
             style: AppTypography.smallText.copyWith(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
+              color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityHigh),
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -626,9 +589,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             Text(
               l10n.stellarTemperatureDescription,
               style: AppTypography.smallText.copyWith(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityHigh,
-                ),
+                color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityHigh),
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -656,12 +617,8 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         radius: double.tryParse(_radiusController.text) ?? widget.body.radius,
         color: widget.body.color,
         bodyType: widget.body.bodyType,
-        stellarLuminosity:
-            double.tryParse(_luminosityController.text) ??
-            widget.body.stellarLuminosity,
-        temperature:
-            double.tryParse(_temperatureController.text) ??
-            widget.body.temperature,
+        stellarLuminosity: double.tryParse(_luminosityController.text) ?? widget.body.stellarLuminosity,
+        temperature: double.tryParse(_temperatureController.text) ?? widget.body.temperature,
         showGravityWell: widget.body.showGravityWell,
         isPlanet: widget.body.isPlanet,
         habitabilityStatus: widget.body.habitabilityStatus,
@@ -704,29 +661,18 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         ],
         Container(
           decoration: BoxDecoration(
-            color: AppColors.uiWhite.withValues(
-              alpha: AppTypography.opacityBarely,
-            ),
+            color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
             borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
             border: Border.all(
-              color: AppColors.primaryColor.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
+              color: AppColors.primaryColor.withValues(alpha: AppTypography.opacityHigh),
               width: AppTypography.borderMedium,
             ),
           ),
           child: Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                  left: AppTypography.spacingMedium,
-                  right: AppTypography.spacingSmall,
-                ),
-                child: Icon(
-                  icon,
-                  color: AppColors.primaryColor,
-                  size: AppTypography.iconSizeLarge,
-                ),
+                padding: EdgeInsets.only(left: AppTypography.spacingMedium, right: AppTypography.spacingSmall),
+                child: Icon(icon, color: AppColors.primaryColor, size: AppTypography.iconSizeLarge),
               ),
               Expanded(
                 child: TextField(
@@ -742,9 +688,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                     border: InputBorder.none,
                     hintText: hintText,
                     hintStyle: TextStyle(
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacityHigh,
-                      ),
+                      color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityHigh),
                       fontSize: AppTypography.fontSizeLarge,
                       fontWeight: FontWeight.normal,
                     ),
@@ -775,19 +719,14 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
         borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
         border: Border.all(
-          color: AppColors.primaryColor.withValues(
-            alpha: AppTypography.opacityHigh,
-          ),
+          color: AppColors.primaryColor.withValues(alpha: AppTypography.opacityHigh),
           width: AppTypography.borderMedium,
         ),
       ),
       child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.only(
-              left: AppTypography.spacingMedium,
-              right: AppTypography.spacingSmall,
-            ),
+            padding: EdgeInsets.only(left: AppTypography.spacingMedium, right: AppTypography.spacingSmall),
             child: Text(
               coordinate,
               style: TextStyle(
@@ -811,9 +750,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                 border: InputBorder.none,
                 hintText: hintText,
                 hintStyle: TextStyle(
-                  color: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityHigh,
-                  ),
+                  color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityHigh),
                   fontSize: AppTypography.fontSizeLarge,
                   fontWeight: FontWeight.normal,
                 ),
@@ -836,11 +773,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
       children: [
         Text(
           title,
-          style: AppTypography.titleText.copyWith(
-            color: AppColors.uiWhite,
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-          ),
+          style: AppTypography.titleText.copyWith(color: AppColors.uiWhite, fontWeight: FontWeight.w600, fontSize: 18),
         ),
         SizedBox(height: AppTypography.spacingMedium),
         ...children,
@@ -855,7 +788,6 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     required Color color,
   }) {
     return Container(
-      margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
       padding: EdgeInsets.all(AppTypography.spacingMedium),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -891,10 +823,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                 SizedBox(height: 2),
                 Text(
                   value,
-                  style: AppTypography.mediumText.copyWith(
-                    color: AppColors.uiWhite,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -910,10 +839,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
       children: [
         Text(
           title,
-          style: AppTypography.mediumText.copyWith(
-            color: AppColors.uiWhite,
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite, fontWeight: FontWeight.w600),
         ),
         SizedBox(height: AppTypography.spacingSmall),
         child,

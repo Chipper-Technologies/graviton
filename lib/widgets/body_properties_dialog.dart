@@ -7,7 +7,7 @@ import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
-import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/common/color_picker.dart';
 import 'package:graviton/widgets/common/haptic_icon_button.dart';
 import 'package:graviton/widgets/common/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/haptic_switch_list_tile.dart';
@@ -227,7 +227,15 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
                       // Color
                       _buildSectionTitle(l10n.colorEditor),
                       const SizedBox(height: AppTypography.spacingSmall),
-                      _buildColorPicker(),
+                      ColorPicker(
+                        selectedColor: _color,
+                        onColorChanged: (color) {
+                          setState(() {
+                            _color = color;
+                          });
+                          _updateBody();
+                        },
+                      ),
 
                       const SizedBox(height: AppTypography.spacingLarge),
 
@@ -343,57 +351,6 @@ class _BodyPropertiesDialogState extends State<BodyPropertiesDialog> {
           context,
         ).textTheme.titleMedium?.copyWith(color: AppColors.sectionTitlePurple),
       ),
-    );
-  }
-
-  Widget _buildColorPicker() {
-    return Wrap(
-      spacing: AppTypography.spacingSmall,
-      runSpacing: AppTypography.spacingSmall,
-      children:
-          [
-            ...AppColors.basicPrimaries,
-            AppColors.uiWhite,
-            AppColors.basicGrey,
-            AppColors.randomPlanetBrown,
-          ].map((color) {
-            final isSelected = _color == color;
-            return HapticGestureDetector(
-              onTap: () {
-                setState(() {
-                  _color = color;
-                });
-                _updateBody();
-              },
-              child: Container(
-                width:
-                    AppTypography.spacingXXLarge +
-                    AppTypography.spacingSmall, // 32
-                height:
-                    AppTypography.spacingXXLarge +
-                    AppTypography.spacingSmall, // 32
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isSelected
-                        ? AppColors.uiWhite
-                        : AppColors.transparentColor,
-                    width: AppTypography.borderThick,
-                  ),
-                ),
-                child: isSelected
-                    ? Icon(
-                        Icons.check,
-                        color: color.computeLuminance() > 0.5
-                            ? AppColors.uiBlack
-                            : AppColors.uiWhite,
-                        size: AppTypography.iconSizeMedium,
-                      )
-                    : null,
-              ),
-            );
-          }).toList(),
     );
   }
 

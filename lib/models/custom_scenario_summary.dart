@@ -29,7 +29,8 @@ class CustomScenarioSummary {
   }
 
   /// Create a formatted difficulty display with capitalization
-  String get difficultyDisplay => difficulty.substring(0, 1).toUpperCase() + difficulty.substring(1);
+  String get difficultyDisplay =>
+      difficulty.substring(0, 1).toUpperCase() + difficulty.substring(1);
 
   /// Get a color for the difficulty level
   Color get difficultyColor {
@@ -61,7 +62,10 @@ class CustomScenarioSummary {
     } else if (difference.inDays == 1) {
       return l10n.customScenarioCreatedYesterday;
     } else if (difference.inDays < 7) {
-      return l10n.customScenarioCreatedDaysAgo(difference.inDays, difference.inDays);
+      return l10n.customScenarioCreatedDaysAgo(
+        difference.inDays,
+        difference.inDays,
+      );
     } else if (difference.inDays < 30) {
       final weeks = (difference.inDays / 7).floor();
       return l10n.customScenarioCreatedWeeksAgo(weeks, weeks);

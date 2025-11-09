@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:graviton/enums/accessibility_simulation_state.dart';
 import 'package:graviton/enums/accessibility_physics_parameter.dart';
 import 'package:graviton/enums/accessibility_camera_action.dart';
+import 'package:graviton/enums/live_region_importance.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 
 /// Service for managing accessibility features and live region announcements
@@ -366,13 +367,4 @@ class AccessibilityService {
 
     announceToScreenReader(announcement);
   }
-}
-
-/// Extension to provide semantic importance levels
-enum LiveRegionImportance {
-  /// Polite announcements that don't interrupt current speech
-  polite,
-
-  /// Assertive announcements that interrupt current speech
-  assertive,
 }

@@ -183,8 +183,8 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                 children: [
                   // Body color indicator icon
                   Container(
-                    width: AppTypography.iconSizeXXLarge,
-                    height: AppTypography.iconSizeXXLarge,
+                    width: AppTypography.iconSizeLarge, // 18.0 (was 24.0)
+                    height: AppTypography.iconSizeLarge, // 18.0 (was 24.0)
                     decoration: BoxDecoration(
                       color: body.color,
                       shape: BoxShape.circle,
@@ -195,7 +195,7 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                     ),
                     child: Icon(
                       Icons.public,
-                      size: AppTypography.iconSizeMedium,
+                      size: AppTypography.iconSizeSmall, // 14.0 (was 16.0)
                       color: AppColors.uiWhite,
                     ),
                   ),
@@ -255,8 +255,10 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                             },
                             borderRadius: BorderRadius.circular(20),
                             child: Container(
-                              width: 40,
-                              height: 40,
+                              width:
+                                  AppTypography.spacingXLarge, // 20.0 (was 40)
+                              height:
+                                  AppTypography.spacingXLarge, // 20.0 (was 40)
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: AppColors.uiWhite.withValues(alpha: 0.1),
@@ -302,8 +304,10 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                               },
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
-                                width: 40,
-                                height: 40,
+                                width: AppTypography
+                                    .spacingXLarge, // 20.0 (was 40)
+                                height: AppTypography
+                                    .spacingXLarge, // 20.0 (was 40)
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: AppColors.uiRed.withValues(alpha: 0.1),

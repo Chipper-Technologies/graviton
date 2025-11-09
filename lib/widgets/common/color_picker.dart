@@ -11,7 +11,6 @@ class ColorPicker extends StatelessWidget {
   final List<Color> colors;
   final bool enabled;
   final double? itemSize;
-  final int itemsPerRow;
 
   const ColorPicker({
     super.key,
@@ -20,7 +19,6 @@ class ColorPicker extends StatelessWidget {
     this.colors = _defaultColors,
     this.enabled = true,
     this.itemSize,
-    this.itemsPerRow = 4,
   });
 
   /// Default color palette for celestial bodies using AppColors
@@ -41,7 +39,8 @@ class ColorPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = itemSize ?? 40.0;
+    final size =
+        itemSize ?? 32.0; // Increased to 32px for better visibility and touch
 
     return Semantics(
       label: AppLocalizations.of(context)?.colorSelector ?? 'Color selector',
@@ -50,7 +49,8 @@ class ColorPicker extends StatelessWidget {
           'Select a color for the celestial body',
       enabled: enabled,
       child: Container(
-        padding: EdgeInsets.all(AppTypography.spacingSmall),
+        width: double.infinity, // Force container to fill available width
+        padding: EdgeInsets.all(AppTypography.spacingMedium),
         decoration: BoxDecoration(
           color: AppColors.uiWhite.withValues(
             alpha: AppTypography.opacityBarely,
@@ -63,18 +63,13 @@ class ColorPicker extends StatelessWidget {
             width: AppTypography.borderMedium,
           ),
         ),
-        child: GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: itemsPerRow,
-            crossAxisSpacing: AppTypography.spacingSmall,
-            mainAxisSpacing: AppTypography.spacingSmall,
-            childAspectRatio: 1.0,
-          ),
-          itemCount: colors.length,
-          itemBuilder: (context, index) {
-            final color = colors[index];
+        child: Wrap(
+          spacing: AppTypography
+              .spacingMedium, // Increased spacing for larger circles
+          runSpacing: AppTypography.spacingMedium,
+          alignment: WrapAlignment
+              .start, // Ensure circles align to start and fill width
+          children: colors.map((color) {
             final isSelected = _colorsAreEqual(selectedColor, color);
 
             return Semantics(
@@ -136,7 +131,7 @@ class ColorPicker extends StatelessWidget {
                 ),
               ),
             );
-          },
+          }).toList(),
         ),
       ),
     );
