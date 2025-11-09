@@ -587,6 +587,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get saveButton => '保存';
 
   @override
+  String get saveBodyTooltip => '保存天体';
+
+  @override
   String get settingsButtonFocused => '设置按钮已聚焦';
 
   @override
@@ -1133,6 +1136,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bodyPropertiesRadius => '半径';
+
+  @override
+  String get bodyPropertiesMassHint => '调整引力影响和轨道动力学';
+
+  @override
+  String get bodyPropertiesRadiusHint => '控制大小和碰撞边界';
 
   @override
   String get bodyPropertiesTitle => '天体属性';

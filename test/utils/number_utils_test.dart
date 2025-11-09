@@ -381,5 +381,101 @@ void main() {
         expect(NumberUtils.formatDistance(4.0e16), equals('4.23 ly'));
       });
     });
+
+    group('formatMassInSolarMasses', () {
+      test('formats zero mass', () {
+        expect(NumberUtils.formatMassInSolarMasses(0), equals('0 M☉'));
+      });
+
+      test('formats typical stellar masses', () {
+        // 10 sim units = 1 solar mass
+        expect(NumberUtils.formatMassInSolarMasses(10.0), equals('1.00 M☉'));
+        expect(NumberUtils.formatMassInSolarMasses(5.0), equals('0.500 M☉'));
+        expect(NumberUtils.formatMassInSolarMasses(20.0), equals('2.00 M☉'));
+      });
+
+      test('formats large stellar masses', () {
+        expect(NumberUtils.formatMassInSolarMasses(150.0), equals('15.0 M☉'));
+        expect(NumberUtils.formatMassInSolarMasses(300.0), equals('30.0 M☉'));
+        expect(NumberUtils.formatMassInSolarMasses(1000.0), equals('100 M☉'));
+        expect(NumberUtils.formatMassInSolarMasses(1500.0), equals('150 M☉'));
+      });
+
+      test('formats small stellar masses', () {
+        expect(NumberUtils.formatMassInSolarMasses(1.0), equals('0.100 M☉'));
+        expect(NumberUtils.formatMassInSolarMasses(0.5), equals('0.050 M☉'));
+        expect(NumberUtils.formatMassInSolarMasses(8.0), equals('0.800 M☉'));
+      });
+
+      test('formats planetary masses', () {
+        // Jupiter: ~0.001 solar masses, ~10 sim units for 1 solar mass
+        expect(NumberUtils.formatMassInSolarMasses(0.01), equals('0.001 M☉'));
+        expect(NumberUtils.formatMassInSolarMasses(0.05), equals('0.005 M☉'));
+      });
+
+      test('handles negative masses', () {
+        expect(NumberUtils.formatMassInSolarMasses(-10.0), equals('-1.00 M☉'));
+        expect(NumberUtils.formatMassInSolarMasses(-150.0), equals('-15.0 M☉'));
+      });
+
+      test('uses appropriate precision for different magnitudes', () {
+        // Very small: 3 decimals
+        expect(NumberUtils.formatMassInSolarMasses(0.1), equals('0.010 M☉'));
+        // Medium: 2 decimals
+        expect(NumberUtils.formatMassInSolarMasses(15.0), equals('1.50 M☉'));
+        // Large: 1 decimal
+        expect(NumberUtils.formatMassInSolarMasses(150.0), equals('15.0 M☉'));
+        // Very large: 0 decimals
+        expect(NumberUtils.formatMassInSolarMasses(1500.0), equals('150 M☉'));
+      });
+    });
+
+    group('formatRadiusInSolarRadii', () {
+      test('formats zero radius', () {
+        expect(NumberUtils.formatRadiusInSolarRadii(0), equals('0 R☉'));
+      });
+
+      test('formats typical stellar radii', () {
+        // 1 sim unit ≈ 1 solar radius
+        expect(NumberUtils.formatRadiusInSolarRadii(1.0), equals('1.00 R☉'));
+        expect(NumberUtils.formatRadiusInSolarRadii(0.5), equals('0.500 R☉'));
+        expect(NumberUtils.formatRadiusInSolarRadii(2.0), equals('2.00 R☉'));
+      });
+
+      test('formats large stellar radii', () {
+        expect(NumberUtils.formatRadiusInSolarRadii(10.0), equals('10.0 R☉'));
+        expect(NumberUtils.formatRadiusInSolarRadii(15.5), equals('15.5 R☉'));
+        expect(NumberUtils.formatRadiusInSolarRadii(100.0), equals('100.0 R☉'));
+      });
+
+      test('formats small stellar and planetary radii', () {
+        expect(NumberUtils.formatRadiusInSolarRadii(0.1), equals('0.100 R☉'));
+        expect(NumberUtils.formatRadiusInSolarRadii(0.01), equals('0.010 R☉'));
+        expect(NumberUtils.formatRadiusInSolarRadii(0.7), equals('0.700 R☉'));
+      });
+
+      test('handles negative radii', () {
+        expect(NumberUtils.formatRadiusInSolarRadii(-1.0), equals('-1.00 R☉'));
+        expect(NumberUtils.formatRadiusInSolarRadii(-0.5), equals('-0.500 R☉'));
+      });
+
+      test('uses appropriate precision for different magnitudes', () {
+        // Small: 3 decimals
+        expect(NumberUtils.formatRadiusInSolarRadii(0.123), equals('0.123 R☉'));
+        // Medium: 2 decimals
+        expect(NumberUtils.formatRadiusInSolarRadii(1.567), equals('1.57 R☉'));
+        // Large: 1 decimal
+        expect(NumberUtils.formatRadiusInSolarRadii(12.345), equals('12.3 R☉'));
+      });
+
+      test('formats realistic astronomical values', () {
+        // Red dwarf: ~0.1-0.5 R☉
+        expect(NumberUtils.formatRadiusInSolarRadii(0.2), equals('0.200 R☉'));
+        // Main sequence: ~0.8-1.2 R☉
+        expect(NumberUtils.formatRadiusInSolarRadii(0.9), equals('0.900 R☉'));
+        // Giant star: ~10-100 R☉
+        expect(NumberUtils.formatRadiusInSolarRadii(50.0), equals('50.0 R☉'));
+      });
+    });
   });
 }

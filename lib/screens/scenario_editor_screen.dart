@@ -22,7 +22,9 @@ import 'package:graviton/enums/ui_element.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/theme/app_colors.dart' as app_colors;
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/utils/body_type_ranges.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_list.dart';
+import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_physics_panel.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_metadata_panel.dart';
 
@@ -565,14 +567,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   }
 
   void _addNewBody() {
-    // Log analytics for body addition
-    FirebaseService.instance.logUIEventWithEnums(
-      UIAction.bodyAdded,
-      element: UIElement.scenarioEditorBodies,
-      additionalParams: {
-        'total_bodies': _bodies.length + 1,
-        'scenario_editing': widget.isEditing,
-      },
+    // Use defaults that work well for the starting body type (planet)
+    final defaultProperties = BodyTypeRanges.getDefaultProperties(
+      BodyType.planet,
     );
 
     final newBody = Body(
@@ -583,23 +580,55 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
           'Body ${_bodies.length + 1}',
       position: vm.Vector3(20.0 * _bodies.length, 0, 0), // Spread them out
       velocity: vm.Vector3(0, 5.0, 0), // Give some orbital velocity
-      mass: 1.0,
-      radius: 1.0,
+      mass: defaultProperties['mass']!, // Use realistic default for planets
+      radius: defaultProperties['radius']!, // Use realistic default for planets
       color: _getNextBodyColor(),
-      bodyType: BodyType.planet,
-      stellarLuminosity: 0.0,
+      bodyType: BodyType.planet, // Start with planet as default
+      stellarLuminosity: defaultProperties['luminosity']!, // 0.0 for planets
       temperature: 288.0,
     );
 
-    setState(() {
-      _bodies.add(newBody);
-      _hasUnsavedChanges = true;
-    });
+    // Show bottom sheet for editing the new body
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.transparentColor,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setSheetState) => SizedBox(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: ScenarioEditorBodyDetailsBottomSheet(
+            body: newBody,
+            isAddMode: true,
+            onBodyChanged: (updatedBody) {
+              // Update the local body reference
+              setSheetState(() {});
+            },
+            onSave: (finalBody) {
+              // Log analytics for body addition
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.bodyAdded,
+                element: UIElement.scenarioEditorBodies,
+                additionalParams: {
+                  'total_bodies': _bodies.length + 1,
+                  'scenario_editing': widget.isEditing,
+                },
+              );
 
-    // Switch to bodies tab if not already there
-    if (_tabController.index != 0) {
-      _tabController.animateTo(0);
-    }
+              // Actually add the body to the list
+              setState(() {
+                _bodies.add(finalBody);
+                _hasUnsavedChanges = true;
+              });
+
+              // Switch to bodies tab if not already there
+              if (_tabController.index != 0) {
+                _tabController.animateTo(0);
+              }
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   Color _getNextBodyColor() {

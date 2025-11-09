@@ -595,6 +595,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get saveButton => '저장';
 
   @override
+  String get saveBodyTooltip => '천체 저장';
+
+  @override
   String get settingsButtonFocused => '설정 버튼에 포커스';
 
   @override
@@ -1145,6 +1148,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get bodyPropertiesRadius => '반지름';
+
+  @override
+  String get bodyPropertiesMassHint => '중력 영향과 궤도 역학 조정';
+
+  @override
+  String get bodyPropertiesRadiusHint => '크기와 충돌 경계 제어';
 
   @override
   String get bodyPropertiesTitle => '천체 속성';

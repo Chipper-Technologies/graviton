@@ -372,6 +372,7 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
           child: ScenarioEditorBodyDetailsBottomSheet(
             body: widget
                 .bodies[index], // Always use the current body from the list
+            isAddMode: false, // This is edit mode
             onBodyChanged: (updatedBody) {
               _updateBody(index, updatedBody);
               setSheetState(() {}); // Force the bottom sheet to rebuild

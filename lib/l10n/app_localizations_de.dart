@@ -623,6 +623,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get saveButton => 'Speichern';
 
   @override
+  String get saveBodyTooltip => 'Körper Speichern';
+
+  @override
   String get settingsButtonFocused => 'Einstellungen-Schaltfläche fokussiert';
 
   @override
@@ -1189,6 +1192,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get bodyPropertiesRadius => 'Radius';
+
+  @override
+  String get bodyPropertiesMassHint =>
+      'Gravitationseinfluss und Bahnmechanik anpassen';
+
+  @override
+  String get bodyPropertiesRadiusHint => 'Größe und Kollisionsgrenze steuern';
 
   @override
   String get bodyPropertiesTitle => 'Körpereigenschaften';

@@ -629,6 +629,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get saveButton => 'Sauvegarder';
 
   @override
+  String get saveBodyTooltip => 'Sauvegarder le Corps';
+
+  @override
   String get settingsButtonFocused => 'Bouton Paramètres focalisé';
 
   @override
@@ -1201,6 +1204,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get bodyPropertiesRadius => 'Rayon';
+
+  @override
+  String get bodyPropertiesMassHint =>
+      'Ajuster l\'influence gravitationnelle et la dynamique orbitale';
+
+  @override
+  String get bodyPropertiesRadiusHint =>
+      'Contrôler la taille et les limites de collision';
 
   @override
   String get bodyPropertiesTitle => 'Propriétés du Corps';

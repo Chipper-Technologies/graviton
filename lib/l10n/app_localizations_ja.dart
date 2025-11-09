@@ -594,6 +594,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get saveButton => '保存';
 
   @override
+  String get saveBodyTooltip => '天体を保存';
+
+  @override
   String get settingsButtonFocused => '設定ボタンにフォーカス';
 
   @override
@@ -1143,6 +1146,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get bodyPropertiesRadius => '半径';
+
+  @override
+  String get bodyPropertiesMassHint => '重力の影響と軌道力学を調整';
+
+  @override
+  String get bodyPropertiesRadiusHint => 'サイズと衝突境界を制御';
 
   @override
   String get bodyPropertiesTitle => '天体のプロパティ';

@@ -780,6 +780,10 @@
   "@saveButton": {
     "description": "Button text for save actions"
   },
+  "saveBodyTooltip": "Save Body",
+  "@saveBodyTooltip": {
+    "description": "Tooltip for save body button"
+  },
   "settingsButtonFocused": "Settings button focused - open application settings",
   "@settingsButtonFocused": {
     "description": "Accessibility description when settings button has focus"
@@ -1613,6 +1617,14 @@
   "bodyPropertiesRadius": "Radius",
   "@bodyPropertiesRadius": {
     "description": "Label for body radius field"
+  },
+  "bodyPropertiesMassHint": "Adjust the gravitational influence and orbital dynamics",
+  "@bodyPropertiesMassHint": {
+    "description": "Hint text for mass slider in body properties"
+  },
+  "bodyPropertiesRadiusHint": "Control the size and collision boundary",
+  "@bodyPropertiesRadiusHint": {
+    "description": "Hint text for radius slider in body properties"
   },
   "bodyPropertiesTitle": "Body Properties",
   "@bodyPropertiesTitle": {

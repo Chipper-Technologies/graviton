@@ -1178,6 +1178,12 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get saveButton;
 
+  /// Tooltip for save body button
+  ///
+  /// In en, this message translates to:
+  /// **'Save Body'**
+  String get saveBodyTooltip;
+
   /// Accessibility description when settings button has focus
   ///
   /// In en, this message translates to:
@@ -2129,6 +2135,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Radius'**
   String get bodyPropertiesRadius;
+
+  /// Hint text for mass slider in body properties
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust the gravitational influence and orbital dynamics'**
+  String get bodyPropertiesMassHint;
+
+  /// Hint text for radius slider in body properties
+  ///
+  /// In en, this message translates to:
+  /// **'Control the size and collision boundary'**
+  String get bodyPropertiesRadiusHint;
 
   /// Title for the body properties dialog
   ///

@@ -1,33 +1,43 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vector_math/vector_math_64.dart' as vm;
+import 'package:graviton/constants/simulation_constants.dart';
+import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
-import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/body_type_ranges.dart';
 import 'package:graviton/utils/number_utils.dart';
-import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/common/body_type_picker.dart';
 import 'package:graviton/widgets/common/color_picker.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
-import 'package:graviton/services/firebase_service.dart';
-import 'package:graviton/enums/ui_action.dart';
-import 'package:graviton/enums/ui_element.dart';
+import 'package:graviton/widgets/common/graviton_tabs.dart';
+import 'package:graviton/widgets/common/haptic_slider_option.dart';
+import 'package:graviton/widgets/section_title.dart';
+import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Bottom sheet widget for displaying and editing body details
 class ScenarioEditorBodyDetailsBottomSheet extends StatefulWidget {
   final Body body;
   final ValueChanged<Body> onBodyChanged;
-  final VoidCallback onDuplicate;
-  final VoidCallback onDelete;
+  final VoidCallback? onDuplicate;
+  final VoidCallback? onDelete;
+  final ValueChanged<Body>? onSave;
+  final bool isAddMode;
 
   const ScenarioEditorBodyDetailsBottomSheet({
     super.key,
     required this.body,
     required this.onBodyChanged,
-    required this.onDuplicate,
-    required this.onDelete,
+    this.onDuplicate,
+    this.onDelete,
+    this.onSave,
+    this.isAddMode = false,
   });
 
   @override
@@ -49,9 +59,34 @@ class _ScenarioEditorBodyDetailsBottomSheetState
   late TextEditingController _temperatureController;
   late TextEditingController _luminosityController;
 
+  // Slider state variables
+  late double _massSlider;
+  late double _radiusSlider;
+  late double _luminositySlider;
+
+  // Color state variable
+  late Color _selectedColor;
+
+  // Body type state variable
+  late BodyType _selectedBodyType;
+
+  // Track unsaved changes to prevent accidental closing
+  bool _hasUnsavedChanges = false;
+
+  // Store the original body to compare against
+  late Body _originalBody;
+
   @override
   void initState() {
     super.initState();
+
+    // Store original body for comparison
+    _originalBody = widget.body;
+
+    // Initialize body type and color first (needed for range calculations)
+    _selectedBodyType = widget.body.bodyType;
+    _selectedColor = widget.body.color;
+
     _nameController = TextEditingController(text: widget.body.name);
     _massController = TextEditingController(text: widget.body.mass.toString());
     _radiusController = TextEditingController(
@@ -81,6 +116,23 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     _luminosityController = TextEditingController(
       text: widget.body.stellarLuminosity.toString(),
     );
+
+    // Initialize slider values (clamped to dynamic ranges based on body type)
+    final massRange = BodyTypeRanges.getMassRange(_selectedBodyType);
+    final radiusRange = BodyTypeRanges.getRadiusRange(_selectedBodyType);
+    final luminosityRange = BodyTypeRanges.getLuminosityRange(
+      _selectedBodyType,
+    );
+
+    _massSlider = widget.body.mass.clamp(massRange['min']!, massRange['max']!);
+    _radiusSlider = widget.body.radius.clamp(
+      radiusRange['min']!,
+      radiusRange['max']!,
+    );
+    _luminositySlider = widget.body.stellarLuminosity.clamp(
+      luminosityRange['min']!,
+      luminosityRange['max']!,
+    );
   }
 
   @override
@@ -100,6 +152,32 @@ class _ScenarioEditorBodyDetailsBottomSheetState
       _velocityZController.text = widget.body.velocity.z.toString();
       _temperatureController.text = widget.body.temperature.round().toString();
       _luminosityController.text = widget.body.stellarLuminosity.toString();
+
+      // Update slider values with dynamic ranges
+      final massRange = BodyTypeRanges.getMassRange(_selectedBodyType);
+      final radiusRange = BodyTypeRanges.getRadiusRange(_selectedBodyType);
+      final luminosityRange = BodyTypeRanges.getLuminosityRange(
+        _selectedBodyType,
+      );
+
+      _massSlider = widget.body.mass.clamp(
+        massRange['min']!,
+        massRange['max']!,
+      );
+      _radiusSlider = widget.body.radius.clamp(
+        radiusRange['min']!,
+        radiusRange['max']!,
+      );
+      _luminositySlider = widget.body.stellarLuminosity.clamp(
+        luminosityRange['min']!,
+        luminosityRange['max']!,
+      );
+
+      // Update color
+      _selectedColor = widget.body.color;
+
+      // Update body type
+      _selectedBodyType = widget.body.bodyType;
     }
   }
 
@@ -123,127 +201,216 @@ class _ScenarioEditorBodyDetailsBottomSheetState
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.uiBlack.withValues(
+    return PopScope(
+      canPop: !_hasUnsavedChanges,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+
+        // If we get here, there are unsaved changes and the pop was prevented
+        final shouldPop = await _showUnsavedChangesDialog(context);
+        if (shouldPop && context.mounted) {
+          Navigator.of(context).pop();
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.uiBlack.withValues(
+            alpha: AppTypography.opacityVeryHigh,
+          ),
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(AppTypography.radiusXLarge),
+          ),
+          border: Border(
+            top: BorderSide(
+              color: AppColors.primaryColor.withValues(
+                alpha: AppTypography.opacityMedium,
+              ),
+              width: 2,
+            ),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.uiBlack.withValues(
+                alpha: AppTypography.opacityMedium,
+              ),
+              blurRadius: 16,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Handle indicator
+            Container(
+              margin: const EdgeInsets.only(top: 20, bottom: 8),
+              width: 80,
+              height: 5,
+              decoration: BoxDecoration(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityHigh,
+                ),
+                borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.uiBlack.withValues(
+                      alpha: AppTypography.opacityMedium,
+                    ),
+                    blurRadius: 2,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
+              ),
+            ),
+
+            // Header with title and actions
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppTypography.spacingMedium,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.body.name,
+                      style: AppTypography.titleText.copyWith(
+                        color: AppColors.uiWhite,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  // Action buttons
+                  if (widget.isAddMode)
+                    // Save button for add mode
+                    TextButton(
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        _showSaveConfirmation();
+                      },
+                      child: Text(
+                        l10n.saveButton,
+                        style: AppTypography.mediumText.copyWith(
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
+                  else ...[
+                    // Duplicate and delete buttons for edit mode
+                    IconButton(
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+
+                        // Log analytics for body duplication
+                        FirebaseService.instance.logUIEventWithEnums(
+                          UIAction.bodyAdded,
+                          element: UIElement.bodyEditor,
+                          value: 'duplicate',
+                          additionalParams: {
+                            'original_body_name': widget.body.name,
+                            'body_type': widget.body.bodyType.name,
+                          },
+                        );
+
+                        widget.onDuplicate?.call();
+                      },
+                      icon: const Icon(Icons.content_copy_outlined),
+                      color: AppColors.primaryColor,
+                      tooltip: l10n.duplicateBodyTooltip,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        _showDeleteConfirmation();
+                      },
+                      icon: const Icon(Icons.delete_outline),
+                      color: AppColors.accretionRed,
+                      tooltip: l10n.deleteBodyTooltip,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+
+            // Tab Content using GravitonTabbedView
+            Expanded(
+              child: GravitonTabbedView(
+                initialIndex: widget.isAddMode
+                    ? 1
+                    : 0, // Default to Edit tab when adding
+                tabs: [
+                  GravitonTab(
+                    icon: Icons.info_outline,
+                    label: l10n.detailsEditorLabel,
+                  ),
+                  GravitonTab(
+                    icon: Icons.edit_outlined,
+                    label: l10n.editEditorLabel,
+                  ),
+                ],
+                children: [_buildDetailsTab(l10n), _buildEditTab(l10n)],
+              ),
+            ),
+          ],
+        ), // End Column
+      ), // End Container (PopScope child)
+    ); // End PopScope
+  }
+
+  /// Shows confirmation dialog for unsaved changes
+  Future<bool> _showUnsavedChangesDialog(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.uiBlack.withValues(
           alpha: AppTypography.opacityVeryHigh,
         ),
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(AppTypography.radiusXLarge),
-        ),
-        border: Border(
-          top: BorderSide(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
+          side: BorderSide(
             color: AppColors.primaryColor.withValues(
               alpha: AppTypography.opacityMedium,
             ),
-            width: 2,
+            width: 1,
           ),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.uiBlack.withValues(
-              alpha: AppTypography.opacityMedium,
-            ),
-            blurRadius: 16,
-            offset: const Offset(0, -4),
+        title: Text(
+          l10n.unsavedChangesTitle,
+          style: AppTypography.titleText.copyWith(color: AppColors.uiWhite),
+        ),
+        content: Text(
+          l10n.unsavedChangesMessage,
+          style: AppTypography.mediumText.copyWith(
+            color: AppColors.uiWhite.withValues(alpha: 0.8),
           ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Handle indicator
-          Container(
-            margin: const EdgeInsets.only(top: 20, bottom: 8),
-            width: 80,
-            height: 5,
-            decoration: BoxDecoration(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(
+              l10n.cancel,
+              style: AppTypography.mediumText.copyWith(
+                color: AppColors.uiWhite.withValues(alpha: 0.7),
               ),
-              borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.uiBlack.withValues(
-                    alpha: AppTypography.opacityMedium,
-                  ),
-                  blurRadius: 2,
-                  offset: const Offset(0, 1),
-                ),
-              ],
             ),
           ),
-
-          // Header with title and actions
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppTypography.spacingMedium,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    widget.body.name,
-                    style: AppTypography.titleText.copyWith(
-                      color: AppColors.uiWhite,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                // Action buttons
-                IconButton(
-                  onPressed: () {
-                    HapticFeedback.lightImpact();
-
-                    // Log analytics for body duplication
-                    FirebaseService.instance.logUIEventWithEnums(
-                      UIAction.bodyAdded,
-                      element: UIElement.bodyEditor,
-                      value: 'duplicate',
-                      additionalParams: {
-                        'original_body_name': widget.body.name,
-                        'body_type': widget.body.bodyType.name,
-                      },
-                    );
-
-                    widget.onDuplicate();
-                  },
-                  icon: const Icon(Icons.content_copy_outlined),
-                  color: AppColors.primaryColor,
-                  tooltip: l10n.duplicateBodyTooltip,
-                ),
-                IconButton(
-                  onPressed: () {
-                    HapticFeedback.lightImpact();
-                    _showDeleteConfirmation();
-                  },
-                  icon: const Icon(Icons.delete_outline),
-                  color: AppColors.accretionRed,
-                  tooltip: l10n.deleteBodyTooltip,
-                ),
-              ],
-            ),
-          ),
-
-          // Tab Content using GravitonTabbedView
-          Expanded(
-            child: GravitonTabbedView(
-              tabs: [
-                GravitonTab(
-                  icon: Icons.info_outline,
-                  label: l10n.detailsEditorLabel,
-                ),
-                GravitonTab(
-                  icon: Icons.edit_outlined,
-                  label: l10n.editEditorLabel,
-                ),
-              ],
-              children: [_buildDetailsTab(l10n), _buildEditTab(l10n)],
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(
+              l10n.discardButton,
+              style: AppTypography.mediumText.copyWith(
+                color: AppColors.accretionRed,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
       ),
     );
+
+    return result ?? false;
   }
 
   Future<void> _showDeleteConfirmation() async {
@@ -272,9 +439,65 @@ class _ScenarioEditorBodyDetailsBottomSheetState
       // Close the bottom sheet and signal deletion to parent
       if (mounted) {
         Navigator.pop(context);
-        widget.onDelete();
+        widget.onDelete?.call();
       }
     }
+  }
+
+  void _showSaveConfirmation() {
+    HapticFeedback.mediumImpact();
+
+    // Get the current body state with all updates
+    final currentBody = _getCurrentBodyState();
+
+    // Log analytics for body creation
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.bodyAdded,
+      element: UIElement.bodyEditor,
+      additionalParams: {
+        'body_name': currentBody.name,
+        'body_type': currentBody.bodyType.name,
+        'body_mass': currentBody.mass,
+      },
+    );
+
+    // Clear unsaved changes flag since we're saving
+    _hasUnsavedChanges = false;
+
+    // Close the bottom sheet and signal save to parent
+    if (mounted) {
+      Navigator.pop(context);
+      widget.onSave?.call(currentBody);
+    }
+  }
+
+  /// Get the current body state with all field updates applied
+  Body _getCurrentBodyState() {
+    return Body(
+      name: _nameController.text,
+      position: vm.Vector3(
+        double.tryParse(_positionXController.text) ?? widget.body.position.x,
+        double.tryParse(_positionYController.text) ?? widget.body.position.y,
+        double.tryParse(_positionZController.text) ?? widget.body.position.z,
+      ),
+      velocity: vm.Vector3(
+        double.tryParse(_velocityXController.text) ?? widget.body.velocity.x,
+        double.tryParse(_velocityYController.text) ?? widget.body.velocity.y,
+        double.tryParse(_velocityZController.text) ?? widget.body.velocity.z,
+      ),
+      mass: _massSlider, // Use slider value instead of text controller
+      radius: _radiusSlider, // Use slider value instead of text controller
+      color: _selectedColor, // Use local color state
+      bodyType: _selectedBodyType, // Use local body type state
+      stellarLuminosity:
+          _luminositySlider, // Use slider value instead of text controller
+      temperature:
+          double.tryParse(_temperatureController.text) ??
+          widget.body.temperature,
+      showGravityWell: widget.body.showGravityWell,
+      isPlanet: widget.body.isPlanet,
+      habitabilityStatus: widget.body.habitabilityStatus,
+    );
   }
 
   Widget _buildDetailsTab(AppLocalizations l10n) {
@@ -419,20 +642,61 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           _buildEditSection(
             l10n.bodyTypeEditor,
             BodyTypePicker(
-              selectedType: widget.body.bodyType,
+              selectedType: _selectedBodyType,
               onTypeChanged: (bodyType) {
+                // Generate realistic properties for the new body type
+                final properties = _generateRealisticProperties(bodyType);
+
+                setState(() {
+                  _selectedBodyType = bodyType;
+
+                  // Update local state with realistic values
+                  _massSlider = properties['mass']!;
+                  _massController.text = properties['mass']!.toString();
+
+                  _radiusSlider = properties['radius']!;
+                  _radiusController.text = properties['radius']!.toString();
+
+                  _luminositySlider = properties['luminosity']!;
+                  _luminosityController.text = properties['luminosity']!
+                      .toString();
+
+                  _positionXController.text = properties['positionX']!
+                      .toString();
+                  _positionYController.text = properties['positionY']!
+                      .toString();
+                  _positionZController.text = properties['positionZ']!
+                      .toString();
+
+                  _velocityXController.text = properties['velocityX']!
+                      .toString();
+                  _velocityYController.text = properties['velocityY']!
+                      .toString();
+                  _velocityZController.text = properties['velocityZ']!
+                      .toString();
+                });
+
                 final updatedBody = Body(
                   name: widget.body.name,
-                  position: widget.body.position,
-                  velocity: widget.body.velocity,
-                  mass: widget.body.mass,
-                  radius: widget.body.radius,
+                  position: vm.Vector3(
+                    properties['positionX']!,
+                    properties['positionY']!,
+                    properties['positionZ']!,
+                  ),
+                  velocity: vm.Vector3(
+                    properties['velocityX']!,
+                    properties['velocityY']!,
+                    properties['velocityZ']!,
+                  ),
+                  mass: properties['mass']!,
+                  radius: properties['radius']!,
                   color: widget.body.color,
                   bodyType: bodyType,
-                  stellarLuminosity: widget.body.stellarLuminosity,
+                  stellarLuminosity: properties['luminosity']!,
                   temperature: widget.body.temperature,
                   showGravityWell: widget.body.showGravityWell,
-                  isPlanet: widget.body.isPlanet,
+                  isPlanet:
+                      bodyType == BodyType.planet || bodyType == BodyType.moon,
                   habitabilityStatus: widget.body.habitabilityStatus,
                 );
                 widget.onBodyChanged(updatedBody);
@@ -446,8 +710,11 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           _buildEditSection(
             l10n.colorEditor,
             ColorPicker(
-              selectedColor: widget.body.color,
+              selectedColor: _selectedColor,
               onColorChanged: (color) {
+                setState(() {
+                  _selectedColor = color;
+                });
                 final updatedBody = Body(
                   name: widget.body.name,
                   position: widget.body.position,
@@ -469,53 +736,93 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
           _buildDivider(),
 
-          // Mass and Radius Section
-          Row(
-            children: [
-              Expanded(
-                child: _buildCompactTextField(
-                  controller: _massController,
-                  icon: Icons.fitness_center,
-                  hintText: AppLocalizations.of(context)!.massKgEditorhint,
-                  labelText: AppLocalizations.of(context)!.bodyPropertiesMass,
-                  onChanged: (value) => _updateBodyProperty(),
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-              SizedBox(width: AppTypography.spacingMedium),
-              Expanded(
-                child: _buildCompactTextField(
-                  controller: _radiusController,
-                  icon: Icons.radio_button_unchecked,
-                  hintText: AppLocalizations.of(context)!.radiusMEditorhint,
-                  labelText: AppLocalizations.of(context)!.bodyPropertiesRadius,
-                  onChanged: (value) => _updateBodyProperty(),
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-            ],
+          // Mass Section
+          HapticSliderOption.detailed(
+            label: AppLocalizations.of(context)!.bodyPropertiesMass,
+            value: _massSlider,
+            min: BodyTypeRanges.getMassRange(_selectedBodyType)['min']!,
+            max: BodyTypeRanges.getMassRange(_selectedBodyType)['max']!,
+            divisions: 100,
+            icon: Icons.fitness_center,
+            onChanged: (value) {
+              setState(() {
+                _massSlider = value;
+                _massController.text = value.toString();
+              });
+              _updateBodyProperty();
+            },
+            formatter: (value) => NumberUtils.formatMassInSolarMasses(value),
           ),
           SizedBox(height: AppTypography.spacingSmall),
-          Text(
-            l10n.physicalPropertiesDescription,
-            style: AppTypography.smallText.copyWith(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppTypography.spacingMedium,
+            ),
+            child: Text(
+              AppLocalizations.of(context)!.bodyPropertiesMassHint,
+              style: AppTypography.smallText.copyWith(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityHigh,
+                ),
+                fontStyle: FontStyle.italic,
               ),
-              fontStyle: FontStyle.italic,
+            ),
+          ),
+
+          _buildDivider(),
+
+          // Radius Section
+          HapticSliderOption.detailed(
+            label: AppLocalizations.of(context)!.bodyPropertiesRadius,
+            value: _radiusSlider,
+            min: BodyTypeRanges.getRadiusRange(_selectedBodyType)['min']!,
+            max: BodyTypeRanges.getRadiusRange(_selectedBodyType)['max']!,
+            divisions: 100,
+            icon: Icons.radio_button_unchecked,
+            onChanged: (value) {
+              setState(() {
+                _radiusSlider = value;
+                _radiusController.text = value.toString();
+              });
+              _updateBodyProperty();
+            },
+            formatter: (value) => NumberUtils.formatRadiusInSolarRadii(value),
+          ),
+          SizedBox(height: AppTypography.spacingSmall),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppTypography.spacingMedium,
+            ),
+            child: Text(
+              AppLocalizations.of(context)!.bodyPropertiesRadiusHint,
+              style: AppTypography.smallText.copyWith(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityHigh,
+                ),
+                fontStyle: FontStyle.italic,
+              ),
             ),
           ),
 
           _buildDivider(),
 
           // Stellar Luminosity Section
-          _buildCompactTextField(
-            controller: _luminosityController,
+          HapticSliderOption.detailed(
+            label: AppLocalizations.of(context)!.bodyPropertiesLuminosity,
+            value: _luminositySlider,
+            min: BodyTypeRanges.getLuminosityRange(_selectedBodyType)['min']!,
+            max: BodyTypeRanges.getLuminosityRange(_selectedBodyType)['max']!,
+            divisions: 100,
             icon: Icons.light_mode_outlined,
-            hintText: AppLocalizations.of(context)!.luminosityWEditorhint,
-            labelText: AppLocalizations.of(context)!.bodyPropertiesLuminosity,
-            onChanged: (value) => _updateBodyProperty(),
-            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              setState(() {
+                _luminositySlider = value;
+                // Update the text controller for consistency
+                _luminosityController.text = value.toString();
+              });
+              _updateBodyProperty();
+            },
+            formatter: (value) => NumberUtils.formatLuminosity(value),
           ),
           SizedBox(height: AppTypography.spacingSmall),
           Text(
@@ -676,13 +983,11 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           double.tryParse(_velocityYController.text) ?? widget.body.velocity.y,
           double.tryParse(_velocityZController.text) ?? widget.body.velocity.z,
         ),
-        mass: double.tryParse(_massController.text) ?? widget.body.mass,
-        radius: double.tryParse(_radiusController.text) ?? widget.body.radius,
-        color: widget.body.color,
-        bodyType: widget.body.bodyType,
-        stellarLuminosity:
-            double.tryParse(_luminosityController.text) ??
-            widget.body.stellarLuminosity,
+        mass: _massSlider, // Use slider value
+        radius: _radiusSlider, // Use slider value
+        color: _selectedColor, // Use local color state
+        bodyType: _selectedBodyType, // Use local body type state
+        stellarLuminosity: _luminositySlider, // Use slider value
         temperature:
             double.tryParse(_temperatureController.text) ??
             widget.body.temperature,
@@ -690,6 +995,14 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         isPlanet: widget.body.isPlanet,
         habitabilityStatus: widget.body.habitabilityStatus,
       );
+
+      // Track unsaved changes by comparing with original body
+      final hasChanges = updatedBody != _originalBody;
+      if (hasChanges != _hasUnsavedChanges) {
+        setState(() {
+          _hasUnsavedChanges = hasChanges;
+        });
+      }
 
       // Log analytics for body editing (but only if there's an actual change)
       if (updatedBody != widget.body) {
@@ -955,18 +1268,162 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     );
   }
 
+  /// Generates realistic body properties based on body type
+  Map<String, double> _generateRealisticProperties(BodyType bodyType) {
+    final random = math.Random();
+
+    switch (bodyType) {
+      case BodyType.star:
+        // Use BodyTypeRanges for consistency with sliders, but bias toward typical star masses
+        final massRange = BodyTypeRanges.getMassRange(BodyType.star);
+        final radiusRange = BodyTypeRanges.getRadiusRange(BodyType.star);
+        final luminosityRange = BodyTypeRanges.getLuminosityRange(
+          BodyType.star,
+        );
+
+        // Bias toward medium-sized stars (main sequence stars are most common)
+        // Use a higher exponent to favor smaller values
+        final massRandom = random.nextDouble();
+        final massBias = math
+            .pow(massRandom, 2.5)
+            .toDouble(); // Higher exponent favors smaller values
+
+        final radiusRandom = random.nextDouble();
+        final radiusBias = math
+            .pow(radiusRandom, 0.8)
+            .toDouble(); // Slight bias toward smaller radii
+
+        final luminosityRandom = random.nextDouble();
+        final luminosityBias = math
+            .pow(luminosityRandom, 1.2)
+            .toDouble(); // Slight bias toward lower luminosity
+
+        return {
+          'mass':
+              massRange['min']! +
+              massBias * (massRange['max']! - massRange['min']!),
+          'radius':
+              radiusRange['min']! +
+              radiusBias * (radiusRange['max']! - radiusRange['min']!),
+          'luminosity':
+              luminosityRange['min']! +
+              luminosityBias *
+                  (luminosityRange['max']! - luminosityRange['min']!),
+          'positionX':
+              -10 +
+              random.nextDouble() * 20, // Random position between -10 and 10
+          'positionY': -10 + random.nextDouble() * 20,
+          'positionZ': -5 + random.nextDouble() * 10,
+          'velocityX':
+              -0.5 +
+              random.nextDouble() * 1.0, // Random velocity between -0.5 and 0.5
+          'velocityY': -0.5 + random.nextDouble() * 1.0,
+          'velocityZ': -0.2 + random.nextDouble() * 0.4,
+        };
+
+      case BodyType.planet:
+        // Choose random planet category
+        final planetType = random.nextDouble();
+        if (planetType < SimulationConstants.smallPlanetProbability) {
+          // Small rocky planet
+          return {
+            'mass':
+                SimulationConstants.smallPlanetMassMin +
+                random.nextDouble() *
+                    (SimulationConstants.smallPlanetMassMax -
+                        SimulationConstants.smallPlanetMassMin),
+            'radius':
+                SimulationConstants.smallPlanetRadiusMin +
+                random.nextDouble() *
+                    (SimulationConstants.smallPlanetRadiusMax -
+                        SimulationConstants.smallPlanetRadiusMin),
+            'luminosity': 0.0, // Planets don't emit light
+            'positionX': -15 + random.nextDouble() * 30,
+            'positionY': -15 + random.nextDouble() * 30,
+            'positionZ': -8 + random.nextDouble() * 16,
+            'velocityX': -0.3 + random.nextDouble() * 0.6,
+            'velocityY': -0.3 + random.nextDouble() * 0.6,
+            'velocityZ': -0.15 + random.nextDouble() * 0.3,
+          };
+        } else if (planetType <
+            SimulationConstants.earthLikePlanetProbability) {
+          // Earth-like planet
+          return {
+            'mass':
+                SimulationConstants.earthLikePlanetMassMin +
+                random.nextDouble() *
+                    (SimulationConstants.earthLikePlanetMassMax -
+                        SimulationConstants.earthLikePlanetMassMin),
+            'radius':
+                SimulationConstants.earthLikePlanetRadiusMin +
+                random.nextDouble() *
+                    (SimulationConstants.earthLikePlanetRadiusMax -
+                        SimulationConstants.earthLikePlanetRadiusMin),
+            'luminosity': 0.0,
+            'positionX': -15 + random.nextDouble() * 30,
+            'positionY': -15 + random.nextDouble() * 30,
+            'positionZ': -8 + random.nextDouble() * 16,
+            'velocityX': -0.3 + random.nextDouble() * 0.6,
+            'velocityY': -0.3 + random.nextDouble() * 0.6,
+            'velocityZ': -0.15 + random.nextDouble() * 0.3,
+          };
+        } else {
+          // Super-Earth
+          return {
+            'mass':
+                SimulationConstants.superEarthMassMin +
+                random.nextDouble() *
+                    (SimulationConstants.superEarthMassMax -
+                        SimulationConstants.superEarthMassMin),
+            'radius':
+                SimulationConstants.superEarthRadiusMin +
+                random.nextDouble() *
+                    (SimulationConstants.superEarthRadiusMax -
+                        SimulationConstants.superEarthRadiusMin),
+            'luminosity': 0.0,
+            'positionX': -15 + random.nextDouble() * 30,
+            'positionY': -15 + random.nextDouble() * 30,
+            'positionZ': -8 + random.nextDouble() * 16,
+            'velocityX': -0.3 + random.nextDouble() * 0.6,
+            'velocityY': -0.3 + random.nextDouble() * 0.6,
+            'velocityZ': -0.15 + random.nextDouble() * 0.3,
+          };
+        }
+
+      case BodyType.moon:
+        return {
+          'mass': 0.3 + random.nextDouble() * 0.7, // 0.3 to 1.0
+          'radius': 0.3 + random.nextDouble() * 0.4, // 0.3 to 0.7
+          'luminosity': 0.0,
+          'positionX': -8 + random.nextDouble() * 16,
+          'positionY': -8 + random.nextDouble() * 16,
+          'positionZ': -4 + random.nextDouble() * 8,
+          'velocityX': -0.4 + random.nextDouble() * 0.8,
+          'velocityY': -0.4 + random.nextDouble() * 0.8,
+          'velocityZ': -0.2 + random.nextDouble() * 0.4,
+        };
+
+      case BodyType.asteroid:
+        return {
+          'mass': 0.05 + random.nextDouble() * 0.2, // 0.05 to 0.25
+          'radius': 0.1 + random.nextDouble() * 0.3, // 0.1 to 0.4
+          'luminosity': 0.0,
+          'positionX': -20 + random.nextDouble() * 40,
+          'positionY': -20 + random.nextDouble() * 40,
+          'positionZ': -10 + random.nextDouble() * 20,
+          'velocityX': -1.0 + random.nextDouble() * 2.0,
+          'velocityY': -1.0 + random.nextDouble() * 2.0,
+          'velocityZ': -0.5 + random.nextDouble() * 1.0,
+        };
+    }
+  }
+
   Widget _buildEditSection(String title, Widget child) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: AppTypography.mediumText.copyWith(
-            color: AppColors.uiWhite,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        SizedBox(height: AppTypography.spacingSmall),
+        SectionTitle(title: title),
+        SizedBox(height: AppTypography.spacingMedium),
         child,
       ],
     );

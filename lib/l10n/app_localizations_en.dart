@@ -622,6 +622,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveButton => 'Save';
 
   @override
+  String get saveBodyTooltip => 'Save Body';
+
+  @override
   String get settingsButtonFocused =>
       'Settings button focused - open application settings';
 
@@ -1194,6 +1197,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bodyPropertiesRadius => 'Radius';
+
+  @override
+  String get bodyPropertiesMassHint =>
+      'Adjust the gravitational influence and orbital dynamics';
+
+  @override
+  String get bodyPropertiesRadiusHint =>
+      'Control the size and collision boundary';
 
   @override
   String get bodyPropertiesTitle => 'Body Properties';

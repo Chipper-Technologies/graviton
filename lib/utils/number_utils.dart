@@ -323,7 +323,61 @@ class NumberUtils {
     return number < 0 ? '$superscriptMinus$result' : result;
   }
 
-  /// Safely converts a string to double, returning 0 if parsing fails.
+  /// Formats radius values in solar radii (R☉) for astronomical contexts.
+  ///
+  /// Assumes that 1 sim unit ≈ 1 solar radius for stellar objects.
+  /// This provides a more intuitive display for stellar and planetary radii.
+  ///
+  /// Examples:
+  /// - 1.0 sim units → "1.0 R☉"
+  /// - 0.5 sim units → "0.50 R☉"
+  /// - 2.3 sim units → "2.3 R☉"
+  static String formatRadiusInSolarRadii(double radiusInSimUnits) {
+    if (radiusInSimUnits == 0) return '0 R☉';
+
+    final absValue = radiusInSimUnits.abs();
+    final sign = radiusInSimUnits < 0 ? '-' : '';
+
+    // Use appropriate precision based on magnitude
+    if (absValue >= 10) {
+      return '$sign${formatDecimal(absValue, 1)} R☉';
+    } else if (absValue >= 1) {
+      return '$sign${formatDecimal(absValue, 2)} R☉';
+    } else {
+      return '$sign${formatDecimal(absValue, 3)} R☉';
+    }
+  }
+
+  /// Formats mass values in solar masses (M☉) for astronomical contexts.
+  ///
+  /// Converts from simulation units to solar masses using the reference
+  /// that 10 sim units = 1 solar mass (from SimulationConstants.sunMassReference).
+  ///
+  /// Examples:
+  /// - 10.0 sim units → "1.00 M☉"
+  /// - 5.0 sim units → "0.50 M☉"
+  /// - 150.0 sim units → "15.0 M☉"
+  static String formatMassInSolarMasses(double massInSimUnits) {
+    if (massInSimUnits == 0) return '0 M☉';
+
+    // Convert from sim units to solar masses (10 sim units = 1 solar mass)
+    final solarMasses = massInSimUnits / 10.0;
+    final absValue = solarMasses.abs();
+    final sign = solarMasses < 0 ? '-' : '';
+
+    // Use appropriate precision based on magnitude
+    if (absValue >= 100) {
+      return '$sign${formatDecimal(absValue, 0)} M☉';
+    } else if (absValue >= 10) {
+      return '$sign${formatDecimal(absValue, 1)} M☉';
+    } else if (absValue >= 1) {
+      return '$sign${formatDecimal(absValue, 2)} M☉';
+    } else {
+      return '$sign${formatDecimal(absValue, 3)} M☉';
+    }
+  }
+
+  /// Safely converts a string to double, returning 0.0 if parsing fails.
   ///
   /// Useful for parsing user input in forms.
   static double parseDouble(String? value) {

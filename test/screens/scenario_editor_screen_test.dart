@@ -52,7 +52,12 @@ void main() {
       await tester.pump();
 
       // Try to tap on Preview tab
-      await tester.tap(find.text('Preview'));
+      await tester.tap(
+        find.descendant(
+          of: find.byType(TabBar),
+          matching: find.text('Preview'),
+        ),
+      );
       await tester.pump();
 
       // Should be able to navigate since default Sun body exists
@@ -80,8 +85,22 @@ void main() {
       await tester.tap(find.text('Add Body'));
       await tester.pumpAndSettle();
 
+      // Now we need to save the body in the bottom sheet
+      await tester.tap(
+        find.descendant(
+          of: find.byType(BottomSheet),
+          matching: find.text('Save'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
       // Now navigate to Physics tab (should work since we have a body)
-      await tester.tap(find.text('Physics'));
+      await tester.tap(
+        find.descendant(
+          of: find.byType(TabBar),
+          matching: find.text('Physics'),
+        ),
+      );
       await tester.pumpAndSettle(); // Allow all state changes and animations
 
       // FAB should be hidden
@@ -99,8 +118,22 @@ void main() {
       await tester.tap(find.text('Add Body'));
       await tester.pumpAndSettle();
 
+      // Now we need to save the body in the bottom sheet
+      await tester.tap(
+        find.descendant(
+          of: find.byType(BottomSheet),
+          matching: find.text('Save'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
       // Now navigate to Preview tab (should work since we have a body)
-      await tester.tap(find.text('Preview'));
+      await tester.tap(
+        find.descendant(
+          of: find.byType(TabBar),
+          matching: find.text('Preview'),
+        ),
+      );
       await tester.pumpAndSettle(); // Allow all state changes and animations
 
       // FAB should be hidden
@@ -114,36 +147,55 @@ void main() {
       await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
       await tester.pump();
 
-      // Initially no bodies, so only Bodies tab is available and FAB is visible
-      expect(find.text('Add Body'), findsOneWidget);
-
-      // Add a body so other tabs become enabled
+      // First add a body to enable other tabs
       await tester.tap(find.text('Add Body'));
       await tester.pumpAndSettle();
 
-      // Should still be on Bodies tab with FAB visible
-      expect(find.text('Add Body'), findsOneWidget);
-
-      // Should be able to navigate to Physics tab
-      await tester.tap(find.text('Physics'));
+      // Save the body in the bottom sheet - use a more specific finder
+      await tester.tap(
+        find.descendant(
+          of: find.byType(BottomSheet),
+          matching: find.text('Save'),
+        ),
+      );
       await tester.pumpAndSettle();
 
+      // Bodies tab should be active
+      expect(find.text('Add Body'), findsOneWidget);
+      expect(find.byType(FloatingActionButton), findsOneWidget);
+
+      // Navigate to Physics tab
+      await tester.tap(
+        find.descendant(
+          of: find.byType(TabBar),
+          matching: find.text('Physics'),
+        ),
+      );
+      await tester.pumpAndSettle();
       // FAB should be hidden on Physics tab
       expect(find.text('Add Body'), findsNothing);
+      expect(find.byType(FloatingActionButton), findsNothing);
 
-      // Should be able to navigate to Preview tab
-      await tester.tap(find.text('Preview'));
+      // Navigate to Preview tab
+      await tester.tap(
+        find.descendant(
+          of: find.byType(TabBar),
+          matching: find.text('Preview'),
+        ),
+      );
       await tester.pumpAndSettle();
-
       // FAB should be hidden on Preview tab
       expect(find.text('Add Body'), findsNothing);
+      expect(find.byType(FloatingActionButton), findsNothing);
 
-      // Should be able to navigate back to Bodies tab
-      await tester.tap(find.text('Bodies').first);
+      // Navigate back to Bodies tab
+      await tester.tap(
+        find.descendant(of: find.byType(TabBar), matching: find.text('Bodies')),
+      );
       await tester.pumpAndSettle();
-
-      // FAB should be visible again on Bodies tab
+      // FAB should be visible again
       expect(find.text('Add Body'), findsOneWidget);
+      expect(find.byType(FloatingActionButton), findsOneWidget);
     });
   });
 }
