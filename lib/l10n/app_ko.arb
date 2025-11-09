@@ -706,5 +706,12 @@
   "accessibilityNewScenarioLoaded": "새로운 천체로 새 시나리오가 로드되었습니다",
   "accessibilityNewParametersLoaded": "새로운 천체와 물리 매개변수가 로드되었습니다",
   "scenarioTabPresets": "프리셋",
-  "scenarioTabCustom": "커스텀"
+  "scenarioTabCustom": "커스텀",
+  "customScenarioBodyCount": "천체 {count}개",
+  "customScenarioCreatedToday": "오늘 생성",
+  "customScenarioCreatedYesterday": "어제 생성",
+  "customScenarioCreatedDaysAgo": "{days}일 전 생성",
+  "customScenarioCreatedWeeksAgo": "{weeks}주 전 생성",
+  "customScenarioCreatedMonthsAgo": "{months}개월 전 생성",
+  "customScenarioCreatedUnknown": "생성일 알 수 없음"
 }

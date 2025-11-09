@@ -706,5 +706,12 @@
   "accessibilityNewScenarioLoaded": "已加载带有新天体的新场景",
   "accessibilityNewParametersLoaded": "已加载新的天体和物理参数",
   "scenarioTabPresets": "预设",
-  "scenarioTabCustom": "自定义"
+  "scenarioTabCustom": "自定义",
+  "customScenarioBodyCount": "{count}个天体",
+  "customScenarioCreatedToday": "今日创建",
+  "customScenarioCreatedYesterday": "昨日创建",
+  "customScenarioCreatedDaysAgo": "{days}天前创建",
+  "customScenarioCreatedWeeksAgo": "{weeks}周前创建",
+  "customScenarioCreatedMonthsAgo": "{months}个月前创建",
+  "customScenarioCreatedUnknown": "创建日期未知"
 }

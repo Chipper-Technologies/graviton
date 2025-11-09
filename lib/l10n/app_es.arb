@@ -706,5 +706,12 @@
   "accessibilityNewScenarioLoaded": "Nuevo escenario cargado con cuerpos celestes frescos",
   "accessibilityNewParametersLoaded": "Nuevos cuerpos celestes y parámetros físicos cargados",
   "scenarioTabPresets": "Preconfigurados",
-  "scenarioTabCustom": "Personalizado"
+  "scenarioTabCustom": "Personalizado",
+  "customScenarioBodyCount": "{count, plural, =1{1 cuerpo celeste} other{{count} cuerpos celestes}}",
+  "customScenarioCreatedToday": "Creado hoy",
+  "customScenarioCreatedYesterday": "Creado ayer",
+  "customScenarioCreatedDaysAgo": "Creado hace {days} días",
+  "customScenarioCreatedWeeksAgo": "Creado hace {weeks} semanas",
+  "customScenarioCreatedMonthsAgo": "Creado hace {months} meses",
+  "customScenarioCreatedUnknown": "Fecha de creación desconocida"
 }

@@ -2191,4 +2191,33 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get scenarioTabCustom => '自定义';
+
+  @override
+  String customScenarioBodyCount(int count) {
+    return '$count个天体';
+  }
+
+  @override
+  String get customScenarioCreatedToday => '今日创建';
+
+  @override
+  String get customScenarioCreatedYesterday => '昨日创建';
+
+  @override
+  String customScenarioCreatedDaysAgo(int count, Object days) {
+    return '$days天前创建';
+  }
+
+  @override
+  String customScenarioCreatedWeeksAgo(int count, Object weeks) {
+    return '$weeks周前创建';
+  }
+
+  @override
+  String customScenarioCreatedMonthsAgo(int count, Object months) {
+    return '$months个月前创建';
+  }
+
+  @override
+  String get customScenarioCreatedUnknown => '创建日期未知';
 }

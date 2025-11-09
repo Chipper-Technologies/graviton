@@ -706,5 +706,12 @@
   "accessibilityNewScenarioLoaded": "新しい天体で新しいシナリオがロードされました",
   "accessibilityNewParametersLoaded": "新しい天体と物理パラメータがロードされました",
   "scenarioTabPresets": "プリセット",
-  "scenarioTabCustom": "カスタム"
+  "scenarioTabCustom": "カスタム",
+  "customScenarioBodyCount": "{count}個の天体",
+  "customScenarioCreatedToday": "今日作成",
+  "customScenarioCreatedYesterday": "昨日作成",
+  "customScenarioCreatedDaysAgo": "{days}日前に作成",
+  "customScenarioCreatedWeeksAgo": "{weeks}週間前に作成",
+  "customScenarioCreatedMonthsAgo": "{months}ヶ月前に作成",
+  "customScenarioCreatedUnknown": "作成日不明"
 }

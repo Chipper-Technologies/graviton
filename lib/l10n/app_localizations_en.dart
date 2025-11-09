@@ -2317,4 +2317,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scenarioTabCustom => 'Custom';
+
+  @override
+  String customScenarioBodyCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bodies',
+      one: '1 body',
+      zero: '0 bodies',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get customScenarioCreatedToday => 'Today';
+
+  @override
+  String get customScenarioCreatedYesterday => 'Yesterday';
+
+  @override
+  String customScenarioCreatedDaysAgo(int count, Object days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days ago',
+      one: '1 day ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String customScenarioCreatedWeeksAgo(int count, Object weeks) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count weeks ago',
+      one: '1 week ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String customScenarioCreatedMonthsAgo(int count, Object months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count months ago',
+      one: '1 month ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get customScenarioCreatedUnknown => 'Unknown';
 }

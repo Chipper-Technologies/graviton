@@ -4095,6 +4095,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Custom'**
   String get scenarioTabCustom;
+
+  /// Formatted body count for custom scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{0 bodies} =1{1 body} other{{count} bodies}}'**
+  String customScenarioBodyCount(int count);
+
+  /// Text shown when custom scenario was created today
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get customScenarioCreatedToday;
+
+  /// Text shown when custom scenario was created yesterday
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get customScenarioCreatedYesterday;
+
+  /// Text shown when custom scenario was created days ago
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day ago} other{{count} days ago}}'**
+  String customScenarioCreatedDaysAgo(int count, Object days);
+
+  /// Text shown when custom scenario was created weeks ago
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 week ago} other{{count} weeks ago}}'**
+  String customScenarioCreatedWeeksAgo(int count, Object weeks);
+
+  /// Text shown when custom scenario was created months ago
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 month ago} other{{count} months ago}}'**
+  String customScenarioCreatedMonthsAgo(int count, Object months);
+
+  /// Text shown when custom scenario creation date is unknown
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get customScenarioCreatedUnknown;
 }
 
 class _AppLocalizationsDelegate

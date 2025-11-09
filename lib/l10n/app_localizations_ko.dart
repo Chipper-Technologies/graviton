@@ -2211,4 +2211,33 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get scenarioTabCustom => '커스텀';
+
+  @override
+  String customScenarioBodyCount(int count) {
+    return '천체 $count개';
+  }
+
+  @override
+  String get customScenarioCreatedToday => '오늘 생성';
+
+  @override
+  String get customScenarioCreatedYesterday => '어제 생성';
+
+  @override
+  String customScenarioCreatedDaysAgo(int count, Object days) {
+    return '$days일 전 생성';
+  }
+
+  @override
+  String customScenarioCreatedWeeksAgo(int count, Object weeks) {
+    return '$weeks주 전 생성';
+  }
+
+  @override
+  String customScenarioCreatedMonthsAgo(int count, Object months) {
+    return '$months개월 전 생성';
+  }
+
+  @override
+  String get customScenarioCreatedUnknown => '생성일 알 수 없음';
 }

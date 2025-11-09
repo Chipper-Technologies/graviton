@@ -3025,5 +3025,57 @@
   "scenarioTabCustom": "Custom",
   "@scenarioTabCustom": {
     "description": "Label for custom scenario tab"
+  },
+  "customScenarioBodyCount": "{count, plural, =0{0 bodies} =1{1 body} other{{count} bodies}}",
+  "@customScenarioBodyCount": {
+    "description": "Formatted body count for custom scenarios",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of celestial bodies in the scenario"
+      }
+    }
+  },
+  "customScenarioCreatedToday": "Today",
+  "@customScenarioCreatedToday": {
+    "description": "Text shown when custom scenario was created today"
+  },
+  "customScenarioCreatedYesterday": "Yesterday",
+  "@customScenarioCreatedYesterday": {
+    "description": "Text shown when custom scenario was created yesterday"
+  },
+  "customScenarioCreatedDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@customScenarioCreatedDaysAgo": {
+    "description": "Text shown when custom scenario was created days ago",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of days ago the scenario was created"
+      }
+    }
+  },
+  "customScenarioCreatedWeeksAgo": "{count, plural, =1{1 week ago} other{{count} weeks ago}}",
+  "@customScenarioCreatedWeeksAgo": {
+    "description": "Text shown when custom scenario was created weeks ago",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of weeks ago the scenario was created"
+      }
+    }
+  },
+  "customScenarioCreatedMonthsAgo": "{count, plural, =1{1 month ago} other{{count} months ago}}",
+  "@customScenarioCreatedMonthsAgo": {
+    "description": "Text shown when custom scenario was created months ago",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of months ago the scenario was created"
+      }
+    }
+  },
+  "customScenarioCreatedUnknown": "Unknown",
+  "@customScenarioCreatedUnknown": {
+    "description": "Text shown when custom scenario creation date is unknown"
   }
 }

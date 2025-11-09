@@ -2323,4 +2323,39 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get scenarioTabCustom => 'Benutzerdefiniert';
+
+  @override
+  String customScenarioBodyCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Himmelskörper',
+      one: '1 Himmelskörper',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get customScenarioCreatedToday => 'Heute erstellt';
+
+  @override
+  String get customScenarioCreatedYesterday => 'Gestern erstellt';
+
+  @override
+  String customScenarioCreatedDaysAgo(int count, Object days) {
+    return 'Vor $days Tagen erstellt';
+  }
+
+  @override
+  String customScenarioCreatedWeeksAgo(int count, Object weeks) {
+    return 'Vor $weeks Wochen erstellt';
+  }
+
+  @override
+  String customScenarioCreatedMonthsAgo(int count, Object months) {
+    return 'Vor $months Monaten erstellt';
+  }
+
+  @override
+  String get customScenarioCreatedUnknown => 'Erstellungsdatum unbekannt';
 }

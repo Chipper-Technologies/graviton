@@ -2204,4 +2204,33 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get scenarioTabCustom => 'カスタム';
+
+  @override
+  String customScenarioBodyCount(int count) {
+    return '$count個の天体';
+  }
+
+  @override
+  String get customScenarioCreatedToday => '今日作成';
+
+  @override
+  String get customScenarioCreatedYesterday => '昨日作成';
+
+  @override
+  String customScenarioCreatedDaysAgo(int count, Object days) {
+    return '$days日前に作成';
+  }
+
+  @override
+  String customScenarioCreatedWeeksAgo(int count, Object weeks) {
+    return '$weeks週間前に作成';
+  }
+
+  @override
+  String customScenarioCreatedMonthsAgo(int count, Object months) {
+    return '$monthsヶ月前に作成';
+  }
+
+  @override
+  String get customScenarioCreatedUnknown => '作成日不明';
 }

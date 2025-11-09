@@ -706,5 +706,12 @@
   "accessibilityNewScenarioLoaded": "Neues Szenario mit frischen Himmelskörpern geladen",
   "accessibilityNewParametersLoaded": "Neue Himmelskörper und Physikparameter geladen",
   "scenarioTabPresets": "Vorlagen",
-  "scenarioTabCustom": "Benutzerdefiniert"
+  "scenarioTabCustom": "Benutzerdefiniert",
+  "customScenarioBodyCount": "{count, plural, =1{1 Himmelskörper} other{{count} Himmelskörper}}",
+  "customScenarioCreatedToday": "Heute erstellt",
+  "customScenarioCreatedYesterday": "Gestern erstellt",
+  "customScenarioCreatedDaysAgo": "Vor {days} Tagen erstellt",
+  "customScenarioCreatedWeeksAgo": "Vor {weeks} Wochen erstellt", 
+  "customScenarioCreatedMonthsAgo": "Vor {months} Monaten erstellt",
+  "customScenarioCreatedUnknown": "Erstellungsdatum unbekannt"
 }

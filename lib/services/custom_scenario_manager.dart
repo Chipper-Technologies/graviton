@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/custom_scenario.dart';
+import 'package:graviton/models/custom_scenario_summary.dart';
 import 'package:graviton/models/scenario_metadata.dart';
 import 'package:graviton/services/custom_scenario_storage.dart';
 import 'package:graviton/services/scenario_serialization_service.dart';
-import 'package:graviton/theme/app_colors.dart';
 
 /// Service for managing custom scenarios and integrating them with the simulation system
 ///
@@ -210,71 +210,6 @@ class CustomScenarioManager {
     } catch (e) {
       debugPrint('Failed to duplicate custom scenario: $e');
       rethrow;
-    }
-  }
-}
-
-/// Summary information about a custom scenario (for UI display)
-class CustomScenarioSummary {
-  final String name;
-  final String description;
-  final int bodyCount;
-  final String difficulty;
-  final String educationalFocus;
-  final List<String> tags;
-  final DateTime? createdAt;
-
-  const CustomScenarioSummary({
-    required this.name,
-    required this.description,
-    required this.bodyCount,
-    required this.difficulty,
-    required this.educationalFocus,
-    required this.tags,
-    this.createdAt,
-  });
-
-  /// Create a formatted body count string for UI display
-  String get bodyCountDisplay =>
-      '$bodyCount ${bodyCount == 1 ? 'body' : 'bodies'}';
-
-  /// Create a formatted difficulty display with capitalization
-  String get difficultyDisplay =>
-      difficulty.substring(0, 1).toUpperCase() + difficulty.substring(1);
-
-  /// Get a color for the difficulty level
-  Color get difficultyColor {
-    switch (difficulty.toLowerCase()) {
-      case 'beginner':
-        return AppColors.uiGreen;
-      case 'intermediate':
-        return AppColors.uiOrange;
-      case 'advanced':
-        return AppColors.uiRed;
-      default:
-        return AppColors.primaryColor;
-    }
-  }
-
-  /// Create a formatted date string for UI display
-  String get createdAtDisplay {
-    if (createdAt == null) return 'Unknown';
-
-    final now = DateTime.now();
-    final difference = now.difference(createdAt!);
-
-    if (difference.inDays == 0) {
-      return 'Today';
-    } else if (difference.inDays == 1) {
-      return 'Yesterday';
-    } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
-    } else if (difference.inDays < 30) {
-      final weeks = (difference.inDays / 7).floor();
-      return '$weeks ${weeks == 1 ? 'week' : 'weeks'} ago';
-    } else {
-      final months = (difference.inDays / 30).floor();
-      return '$months ${months == 1 ? 'month' : 'months'} ago';
     }
   }
 }

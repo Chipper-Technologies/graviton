@@ -2345,4 +2345,39 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get scenarioTabCustom => 'Personalizado';
+
+  @override
+  String customScenarioBodyCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cuerpos celestes',
+      one: '1 cuerpo celeste',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get customScenarioCreatedToday => 'Creado hoy';
+
+  @override
+  String get customScenarioCreatedYesterday => 'Creado ayer';
+
+  @override
+  String customScenarioCreatedDaysAgo(int count, Object days) {
+    return 'Creado hace $days días';
+  }
+
+  @override
+  String customScenarioCreatedWeeksAgo(int count, Object weeks) {
+    return 'Creado hace $weeks semanas';
+  }
+
+  @override
+  String customScenarioCreatedMonthsAgo(int count, Object months) {
+    return 'Creado hace $months meses';
+  }
+
+  @override
+  String get customScenarioCreatedUnknown => 'Fecha de creación desconocida';
 }
