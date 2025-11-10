@@ -5,7 +5,7 @@ import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/localization_utils.dart';
-import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';

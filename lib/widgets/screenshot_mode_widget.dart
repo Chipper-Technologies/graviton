@@ -4,7 +4,7 @@ import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_icon_button.dart';
+import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:provider/provider.dart';
 

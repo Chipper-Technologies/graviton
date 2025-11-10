@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/widgets/common/haptic_text_button.dart';
+import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
 
 void main() {
-  group('HapticTextButton Tests', () {
+  group('HapticElevatedButton Tests', () {
     setUp(() {
       // Initialize the haptic feedback service for testing
       HapticFeedbackService.instance.setEnabled(true);
     });
 
-    Widget createTestWidget({required HapticTextButton child}) {
+    Widget createTestWidget({required HapticElevatedButton child}) {
       return MaterialApp(home: Scaffold(body: child));
     }
 
     testWidgets('should render correctly', (tester) async {
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticTextButton(
+          child: HapticElevatedButton(
             onPressed: () {},
             child: const Text('Test Button'),
           ),
         ),
       );
 
-      expect(find.byType(TextButton), findsOneWidget);
-      expect(find.byType(HapticTextButton), findsOneWidget);
+      expect(find.byType(ElevatedButton), findsOneWidget);
+      expect(find.byType(HapticElevatedButton), findsOneWidget);
       expect(find.text('Test Button'), findsOneWidget);
     });
 
@@ -33,14 +33,14 @@ void main() {
       bool pressed = false;
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticTextButton(
+          child: HapticElevatedButton(
             onPressed: () => pressed = true,
             child: const Text('Test Button'),
           ),
         ),
       );
 
-      await tester.tap(find.byType(TextButton));
+      await tester.tap(find.byType(ElevatedButton));
       await tester.pump();
 
       expect(pressed, isTrue);
@@ -50,7 +50,7 @@ void main() {
       bool longPressed = false;
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticTextButton(
+          child: HapticElevatedButton(
             onPressed: () {},
             onLongPress: () => longPressed = true,
             child: const Text('Test Button'),
@@ -58,7 +58,7 @@ void main() {
         ),
       );
 
-      await tester.longPress(find.byType(TextButton));
+      await tester.longPress(find.byType(ElevatedButton));
       await tester.pump();
 
       expect(longPressed, isTrue);
@@ -68,14 +68,14 @@ void main() {
       bool pressed = false;
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticTextButton(
+          child: HapticElevatedButton(
             onPressed: null, // Disabled
             child: const Text('Test Button'),
           ),
         ),
       );
 
-      await tester.tap(find.byType(TextButton));
+      await tester.tap(find.byType(ElevatedButton));
       await tester.pump();
 
       expect(pressed, isFalse);
@@ -83,12 +83,12 @@ void main() {
 
     testWidgets('should pass through all button properties', (tester) async {
       const style = ButtonStyle(
-        foregroundColor: WidgetStatePropertyAll(Colors.red),
+        backgroundColor: WidgetStatePropertyAll(Colors.red),
       );
 
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticTextButton(
+          child: HapticElevatedButton(
             onPressed: () {},
             style: style,
             autofocus: true,
@@ -97,7 +97,7 @@ void main() {
         ),
       );
 
-      final TextButton button = tester.widget(find.byType(TextButton));
+      final ElevatedButton button = tester.widget(find.byType(ElevatedButton));
       expect(button.style, style);
       expect(button.autofocus, isTrue);
     });
@@ -108,14 +108,14 @@ void main() {
 
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticTextButton(
+          child: HapticElevatedButton(
             onPressed: () => pressed = true,
             child: const Text('Test Button'),
           ),
         ),
       );
 
-      await tester.tap(find.byType(TextButton));
+      await tester.tap(find.byType(ElevatedButton));
       await tester.pump();
 
       expect(pressed, isTrue);
@@ -127,7 +127,7 @@ void main() {
 
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticTextButton(
+          child: HapticElevatedButton(
             onPressed: () => pressed = true,
             onLongPress: () => longPressed = true,
             child: const Text('Test Button'),
@@ -136,39 +136,17 @@ void main() {
       );
 
       // Test normal press
-      await tester.tap(find.byType(TextButton));
+      await tester.tap(find.byType(ElevatedButton));
       await tester.pump();
       expect(pressed, isTrue);
       expect(longPressed, isFalse);
 
       // Reset and test long press
       pressed = false;
-      await tester.longPress(find.byType(TextButton));
+      await tester.longPress(find.byType(ElevatedButton));
       await tester.pump();
       expect(pressed, isFalse);
       expect(longPressed, isTrue);
-    });
-
-    testWidgets('should handle child with icon and text', (tester) async {
-      bool pressed = false;
-      await tester.pumpWidget(
-        createTestWidget(
-          child: HapticTextButton(
-            onPressed: () => pressed = true,
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [Icon(Icons.star), SizedBox(width: 8), Text('Star')],
-            ),
-          ),
-        ),
-      );
-
-      await tester.tap(find.byType(TextButton));
-      await tester.pump();
-
-      expect(pressed, isTrue);
-      expect(find.byIcon(Icons.star), findsOneWidget);
-      expect(find.text('Star'), findsOneWidget);
     });
   });
 }

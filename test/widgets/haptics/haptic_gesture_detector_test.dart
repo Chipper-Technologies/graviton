@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
 
 void main() {
-  group('HapticInkWell Tests', () {
+  group('HapticGestureDetector Tests', () {
     setUp(() {
       // Initialize the haptic feedback service for testing
       HapticFeedbackService.instance.setEnabled(true);
     });
 
-    Widget createTestWidget({required HapticInkWell child}) {
-      return MaterialApp(
-        home: Scaffold(body: Material(child: child)),
-      );
+    Widget createTestWidget({required HapticGestureDetector child}) {
+      return MaterialApp(home: Scaffold(body: child));
     }
 
     testWidgets('should render correctly', (tester) async {
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticInkWell(onTap: () {}, child: const Text('Test Widget')),
+          child: HapticGestureDetector(
+            onTap: () {},
+            child: const Text('Test Widget'),
+          ),
         ),
       );
 
-      expect(find.byType(InkWell), findsOneWidget);
-      expect(find.byType(HapticInkWell), findsOneWidget);
+      expect(find.byType(GestureDetector), findsOneWidget);
+      expect(find.byType(HapticGestureDetector), findsOneWidget);
       expect(find.text('Test Widget'), findsOneWidget);
     });
 
@@ -32,7 +33,7 @@ void main() {
       bool tapped = false;
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticInkWell(
+          child: HapticGestureDetector(
             onTap: () => tapped = true,
             child: const Text('Test Widget'),
           ),
@@ -49,7 +50,7 @@ void main() {
       bool longPressed = false;
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticInkWell(
+          child: HapticGestureDetector(
             onLongPress: () => longPressed = true,
             child: const Text('Test Widget'),
           ),
@@ -66,7 +67,7 @@ void main() {
       bool doubleTapped = false;
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticInkWell(
+          child: HapticGestureDetector(
             onDoubleTap: () => doubleTapped = true,
             child: const Text('Test Widget'),
           ),
@@ -84,7 +85,10 @@ void main() {
     testWidgets('should handle null callbacks gracefully', (tester) async {
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticInkWell(onTap: null, child: const Text('Test Widget')),
+          child: HapticGestureDetector(
+            onTap: null,
+            child: const Text('Test Widget'),
+          ),
         ),
       );
 
@@ -95,29 +99,35 @@ void main() {
       // No assertion needed - just checking it doesn't crash
     });
 
-    testWidgets('should pass through all InkWell properties', (tester) async {
-      const splashColor = Colors.red;
-      const highlightColor = Colors.blue;
-      const borderRadius = BorderRadius.all(Radius.circular(8));
+    testWidgets('should pass through all gesture properties', (tester) async {
+      const behavior = HitTestBehavior.opaque;
+      bool tapDown = false;
+      bool tapUp = false;
 
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticInkWell(
+          child: HapticGestureDetector(
             onTap: () {},
-            splashColor: splashColor,
-            highlightColor: highlightColor,
-            borderRadius: borderRadius,
-            autofocus: true,
+            onTapDown: (details) => tapDown = true,
+            onTapUp: (details) => tapUp = true,
+            behavior: behavior,
+            excludeFromSemantics: true,
             child: const Text('Test Widget'),
           ),
         ),
       );
 
-      final InkWell inkWell = tester.widget(find.byType(InkWell));
-      expect(inkWell.splashColor, splashColor);
-      expect(inkWell.highlightColor, highlightColor);
-      expect(inkWell.borderRadius, borderRadius);
-      expect(inkWell.autofocus, isTrue);
+      final GestureDetector detector = tester.widget(
+        find.byType(GestureDetector),
+      );
+      expect(detector.behavior, behavior);
+      expect(detector.excludeFromSemantics, isTrue);
+
+      // Test tap down and up
+      await tester.tapAt(tester.getCenter(find.text('Test Widget')));
+      await tester.pump();
+      expect(tapDown, isTrue);
+      expect(tapUp, isTrue);
     });
 
     testWidgets('should work when haptic feedback is disabled', (tester) async {
@@ -126,7 +136,7 @@ void main() {
 
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticInkWell(
+          child: HapticGestureDetector(
             onTap: () => tapped = true,
             child: const Text('Test Widget'),
           ),
@@ -139,13 +149,15 @@ void main() {
       expect(tapped, isTrue);
     });
 
-    testWidgets('should handle multiple gesture types', (tester) async {
+    testWidgets('should handle multiple gesture types simultaneously', (
+      tester,
+    ) async {
       bool tapped = false;
       bool longPressed = false;
 
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticInkWell(
+          child: HapticGestureDetector(
             onTap: () => tapped = true,
             onLongPress: () => longPressed = true,
             child: const Text('Test Widget'),
@@ -163,15 +175,17 @@ void main() {
       await tester.longPress(find.text('Test Widget'));
       await tester.pump();
       expect(longPressed, isTrue);
+      expect(tapped, isFalse); // Should not trigger tap
     });
 
-    testWidgets('should handle ink effects correctly', (tester) async {
+    testWidgets('should handle tap cancel correctly', (tester) async {
+      bool tapCancelled = false;
+
       await tester.pumpWidget(
         createTestWidget(
-          child: HapticInkWell(
+          child: HapticGestureDetector(
             onTap: () {},
-            enableFeedback: false,
-            excludeFromSemantics: true,
+            onTapCancel: () => tapCancelled = true,
             child: const SizedBox(
               width: 100,
               height: 100,
@@ -181,60 +195,19 @@ void main() {
         ),
       );
 
-      final InkWell inkWell = tester.widget(find.byType(InkWell));
-      expect(inkWell.enableFeedback, isFalse);
-      expect(inkWell.excludeFromSemantics, isTrue);
-
-      // Tap to trigger ink effect
-      await tester.tap(find.text('Test Widget'));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
-    });
-
-    testWidgets('should handle mouse events', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          child: HapticInkWell(
-            onTap: () {},
-            onHover: (hovering) {
-              // Handler exists but we don't need to test actual hover behavior
-              // in the test environment as it's platform-dependent
-            },
-            child: const Text('Test Widget'),
-          ),
-        ),
+      // Start a tap but don't complete it
+      final TestGesture gesture = await tester.startGesture(
+        tester.getCenter(find.text('Test Widget')),
       );
-
-      // Just verify the widget renders with hover callback without crashing
-      expect(find.byType(InkWell), findsOneWidget);
-
-      // Test that it still responds to tap
-      await tester.tap(find.text('Test Widget'));
       await tester.pump();
-    });
 
-    testWidgets('should handle focus correctly', (tester) async {
-      bool focusChanged = false;
-      await tester.pumpWidget(
-        createTestWidget(
-          child: HapticInkWell(
-            onTap: () {},
-            onFocusChange: (focused) => focusChanged = focused,
-            canRequestFocus: true,
-            autofocus: true, // Auto focus to trigger the callback
-            child: const Text('Test Widget'),
-          ),
-        ),
-      );
+      // Move the finger away to cancel the tap
+      await gesture.moveTo(const Offset(200, 200));
+      await tester.pump();
+      await gesture.up();
+      await tester.pump();
 
-      final InkWell inkWell = tester.widget(find.byType(InkWell));
-      expect(inkWell.canRequestFocus, isTrue);
-
-      // Wait for autofocus to take effect
-      await tester.pumpAndSettle();
-
-      // The autofocus should have triggered the focus callback
-      expect(focusChanged, isTrue);
+      expect(tapCancelled, isTrue);
     });
   });
 }

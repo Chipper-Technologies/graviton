@@ -4,8 +4,8 @@ import 'package:graviton/services/version_service.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
-import 'package:graviton/widgets/common/haptic_elevated_button.dart';
-import 'package:graviton/widgets/common/haptic_text_button.dart';
+import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
+import 'package:graviton/widgets/haptics/haptic_text_button.dart';
 
 /// Dialog that prompts users to update when they're running an outdated version
 class VersionCheckDialog extends StatelessWidget {

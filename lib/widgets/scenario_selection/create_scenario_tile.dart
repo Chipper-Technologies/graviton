@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 
 /// Widget for creating new custom scenarios
 ///

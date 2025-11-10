@@ -4,7 +4,7 @@ import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/widgets/scenario_selection/preset_scenarios_tab.dart';
-import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 
 /// Test widget wrapper with localization support
 Widget makeTestableWidget(Widget child) {

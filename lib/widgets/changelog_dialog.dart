@@ -3,10 +3,10 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/changelog.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
-import 'package:graviton/widgets/common/haptic_elevated_button.dart';
-import 'package:graviton/widgets/common/haptic_icon_button.dart';
+import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
+import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
 import 'package:intl/intl.dart';
 
 /// Dialog that displays changelogs with swipe navigation

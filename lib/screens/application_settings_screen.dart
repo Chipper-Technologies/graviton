@@ -4,8 +4,8 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/haptic_utils.dart';
-import 'package:graviton/widgets/common/haptic_app_bar.dart';
-import 'package:graviton/widgets/common/haptic_switch.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
+import 'package:graviton/widgets/haptics/haptic_switch.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:provider/provider.dart';
 

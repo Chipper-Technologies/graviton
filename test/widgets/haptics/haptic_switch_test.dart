@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/widgets/common/haptic_switch.dart';
+import 'package:graviton/widgets/haptics/haptic_switch.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 

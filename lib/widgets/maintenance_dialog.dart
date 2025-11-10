@@ -6,7 +6,7 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
-import 'package:graviton/widgets/common/haptic_text_button.dart';
+import 'package:graviton/widgets/haptics/haptic_text_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Dialog for showing maintenance messages, news banners, and emergency notifications

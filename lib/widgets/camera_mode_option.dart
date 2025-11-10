@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 
 /// A camera mode selection option widget
 class CameraModeOption extends StatelessWidget {

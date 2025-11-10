@@ -6,7 +6,7 @@ import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/scenario_selection/preset_scenarios_tab.dart';
-import 'package:graviton/widgets/common/haptic_floating_action_button.dart';
+import 'package:graviton/widgets/haptics/haptic_floating_action_button.dart';
 
 void main() {
   group('ScenarioSelectionScreen', () {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_ink_well.dart';
-import 'package:graviton/widgets/common/haptic_switch.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_switch.dart';
 
 /// A reusable toggle option widget with consistent styling
 /// Used across bottom sheets and dialogs for toggle switches

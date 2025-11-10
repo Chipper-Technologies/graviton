@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 
 /// An action button for camera controls
 class CameraActionButton extends StatelessWidget {

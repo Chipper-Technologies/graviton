@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_icon_button.dart';
+import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
 
 /// A common AppBar widget with consistent styling and haptic back button
 ///

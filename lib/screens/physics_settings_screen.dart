@@ -6,8 +6,8 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/action_option.dart';
-import 'package:graviton/widgets/common/haptic_app_bar.dart';
-import 'package:graviton/widgets/common/haptic_slider_option.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
+import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:graviton/widgets/section_title.dart';
 

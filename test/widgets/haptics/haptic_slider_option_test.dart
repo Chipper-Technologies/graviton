@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
-import 'package:graviton/widgets/common/haptic_slider_option.dart';
+import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 
 void main() {
   group('HapticSliderOption', () {

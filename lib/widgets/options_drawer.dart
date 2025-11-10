@@ -4,8 +4,8 @@ import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
-import 'package:graviton/widgets/common/haptic_list_tile.dart';
+import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/haptics/haptic_list_tile.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 

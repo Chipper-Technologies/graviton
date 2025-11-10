@@ -17,7 +17,7 @@ import 'package:graviton/widgets/common/body_type_picker.dart';
 import 'package:graviton/widgets/common/color_picker.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
-import 'package:graviton/widgets/common/haptic_slider_option.dart';
+import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;

@@ -10,7 +10,7 @@ import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/color_utils.dart';
-import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Overlay that shows arrows pointing to off-screen bodies

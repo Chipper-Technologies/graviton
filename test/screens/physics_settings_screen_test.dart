@@ -6,7 +6,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/screens/physics_settings_screen.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/widgets/common/action_option.dart';
-import 'package:graviton/widgets/common/haptic_slider_option.dart';
+import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:graviton/widgets/section_title.dart';
 

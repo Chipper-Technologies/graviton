@@ -9,9 +9,9 @@ import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/widgets/camera_mode_option.dart';
 import 'package:graviton/widgets/camera_action_button.dart';
-import 'package:graviton/widgets/common/haptic_ink_well.dart';
-import 'package:graviton/widgets/common/haptic_switch.dart';
-import 'package:graviton/widgets/common/haptic_slider_option.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_switch.dart';
+import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 import 'package:graviton/widgets/section_title.dart';
 
 /// Camera controls content for the persistent bottom sheet
