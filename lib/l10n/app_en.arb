@@ -350,6 +350,10 @@
   "@previewEditortitle": {
     "description": "Title for preview tab in scenario editor"
   },
+  "setupEditorTitle": "Setup",
+  "@setupEditorTitle": {
+    "description": "Title for setup tab in scenario editor"
+  },
   "rotateLabel": "Rotate",
   "@rotateLabel": {
     "description": "Label for auto-rotate button"

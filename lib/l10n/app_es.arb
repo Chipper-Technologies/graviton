@@ -532,6 +532,7 @@
   "testPresetForUnitTesting": "Preajuste de prueba para pruebas unitarias",
   "cameraControlsFocused": "Controles de cámara enfocados",
   "previewEditortitle": "Título del editor de vista previa",
+  "setupEditorTitle": "Configuración",
   "viewPhysicsSettings": "Ver configuración de física",
   "colorEditor": "Editor de color",
   "colorOptionTemplate": "Opción de color {color}",

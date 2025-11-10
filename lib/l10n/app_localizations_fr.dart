@@ -328,6 +328,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get previewEditortitle => 'Titre de l\'éditeur d\'aperçu';
 
   @override
+  String get setupEditorTitle => 'Configuration';
+
+  @override
   String get rotateLabel => 'Rotation';
 
   @override

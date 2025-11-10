@@ -18,6 +18,7 @@ import 'package:graviton/widgets/common/color_picker.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/common/haptic_slider_option.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/section_title.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -606,8 +607,12 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
   /// Get the current body state with all field updates applied
   Body _getCurrentBodyState() {
+    // Use a default name if the field is empty
+    final name = _nameController.text.trim();
+    final defaultName = 'Celestial Body';
+
     return Body(
-      name: _nameController.text,
+      name: name.isEmpty ? defaultName : name,
       position: vm.Vector3(
         double.tryParse(_positionXController.text) ?? widget.body.position.x,
         double.tryParse(_positionYController.text) ?? widget.body.position.y,
@@ -1174,9 +1179,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
   }
 
   Widget _buildDivider() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: AppTypography.spacingLarge),
-      child: Divider(color: AppColors.uiDividerGrey, thickness: 1, height: 1),
+    return const SectionDivider.plain(
+      topSpacing: AppTypography.spacingLarge,
+      bottomSpacing: AppTypography.spacingLarge,
     );
   }
 

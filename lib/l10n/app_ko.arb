@@ -532,6 +532,7 @@
   "testPresetForUnitTesting": "단위 테스트용 테스트 프리셋",
   "cameraControlsFocused": "카메라 컨트롤에 포커스",
   "previewEditortitle": "미리보기 편집기 제목",
+  "setupEditorTitle": "설정",
   "viewPhysicsSettings": "물리 설정 보기",
   "colorEditor": "색상 편집기",
   "colorOptionTemplate": "색상 옵션 {color}",

@@ -306,6 +306,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get previewEditortitle => 'プレビューエディターのタイトル';
 
   @override
+  String get setupEditorTitle => 'セットアップ';
+
+  @override
   String get rotateLabel => '回転';
 
   @override

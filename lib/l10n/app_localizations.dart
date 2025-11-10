@@ -650,6 +650,12 @@ abstract class AppLocalizations {
   /// **'Preview'**
   String get previewEditortitle;
 
+  /// Title for setup tab in scenario editor
+  ///
+  /// In en, this message translates to:
+  /// **'Setup'**
+  String get setupEditorTitle;
+
   /// Label for auto-rotate button
   ///
   /// In en, this message translates to:

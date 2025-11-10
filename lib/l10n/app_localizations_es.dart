@@ -329,6 +329,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get previewEditortitle => 'Título del editor de vista previa';
 
   @override
+  String get setupEditorTitle => 'Configuración';
+
+  @override
   String get rotateLabel => 'Rotar';
 
   @override

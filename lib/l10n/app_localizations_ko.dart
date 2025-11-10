@@ -307,6 +307,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get previewEditortitle => '미리보기 편집기 제목';
 
   @override
+  String get setupEditorTitle => '설정';
+
+  @override
   String get rotateLabel => '회전';
 
   @override

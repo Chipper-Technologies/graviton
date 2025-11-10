@@ -83,58 +83,6 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Combined header with body count
-          Container(
-            padding: EdgeInsets.all(AppTypography.spacingLarge),
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor.withValues(
-                alpha: AppTypography.opacityMidFade,
-              ),
-              borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-              border: Border.all(
-                color: AppColors.primaryColor,
-                width: AppTypography.borderThin,
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.public,
-                  color: AppColors.primaryColor,
-                  size: AppTypography.iconSizeXXLarge,
-                ),
-                SizedBox(width: AppTypography.spacingLarge),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.bodiesHeaderPlural(widget.bodies.length),
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontSize: AppTypography.fontSizeLarge,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(height: AppTypography.spacingXSmall),
-                      Text(
-                        l10n.bodiesHeaderDescription,
-                        style: TextStyle(
-                          color: AppColors.uiWhite.withValues(
-                            alpha: AppTypography.opacityHigh,
-                          ),
-                          fontSize: AppTypography.fontSizeMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(height: AppTypography.spacingMedium),
-
           // Body list
           Expanded(
             child: ListView.builder(

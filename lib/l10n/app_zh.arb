@@ -532,6 +532,7 @@
   "testPresetForUnitTesting": "单元测试的测试预设",
   "cameraControlsFocused": "相机控制已聚焦",
   "previewEditortitle": "预览编辑器标题",
+  "setupEditorTitle": "设置",
   "viewPhysicsSettings": "查看物理设置",
   "colorEditor": "颜色编辑器",
   "colorOptionTemplate": "颜色选项 {color}",

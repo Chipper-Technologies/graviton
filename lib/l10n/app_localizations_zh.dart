@@ -299,6 +299,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get previewEditortitle => '预览编辑器标题';
 
   @override
+  String get setupEditorTitle => '设置';
+
+  @override
   String get rotateLabel => '旋转';
 
   @override

@@ -23,10 +23,11 @@ import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/theme/app_colors.dart' as app_colors;
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/utils/body_type_ranges.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
+import 'package:graviton/widgets/common/styled_text_field.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_list.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_physics_panel.dart';
-import 'package:graviton/widgets/scenario_selection/scenario_editor_metadata_panel.dart';
 
 /// Screen for creating and editing custom gravitational simulation scenarios
 class ScenarioEditorScreen extends StatefulWidget {
@@ -53,13 +54,22 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   ObjectivesConfig? _objectives;
 
   bool _hasUnsavedChanges = false;
-  bool _showFAB = true; // Show FAB by default on Bodies tab (index 0)
+  bool _showFAB = true; // Show FAB by default on Setup tab (index 0)
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // Text controllers for metadata fields
+  late TextEditingController _nameController;
+  late TextEditingController _descriptionController;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+
+    // Initialize text controllers before scenario initialization
+    _nameController = TextEditingController();
+    _descriptionController = TextEditingController();
+
     _initializeScenario();
 
     // Log analytics for scenario editor opened
@@ -88,7 +98,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
 
       // Log tab change analytics
       if (_tabController.indexIsChanging) {
-        final tabNames = ['bodies', 'settings', 'preview'];
+        final tabNames = ['setup', 'physics', 'preview'];
         FirebaseService.instance.logUIEventWithEnums(
           UIAction.tabChanged,
           element: UIElement.scenarioEditor,
@@ -96,7 +106,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
         );
       }
 
-      // Update FAB visibility based on current tab - show only on Bodies tab (index 0)
+      // Update FAB visibility based on current tab - show only on Setup tab (index 0)
       final shouldShowFAB = _tabController.index == 0;
       if (_showFAB != shouldShowFAB) {
         setState(() {
@@ -109,10 +119,8 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Update metadata with localized strings if we created a default scenario
-    if (widget.initialScenario == null) {
-      _metadata = _createDefaultMetadata();
-    }
+    // For new scenarios, keep metadata with empty strings for text fields
+    // The hint text will show the localized placeholder text
   }
 
   void _initializeScenario() {
@@ -132,31 +140,22 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       _particleSystems = const ParticleSystemsConfig();
       _objectives = null;
     }
+
+    // Set controller values - only if we have an existing scenario
+    if (widget.initialScenario != null) {
+      _nameController.text = _metadata.name;
+      _descriptionController.text = _metadata.description;
+    }
+    // For new scenarios, leave controllers empty (they're already initialized as empty)
   }
 
   ScenarioMetadata _createDefaultMetadataWithoutContext() {
     return ScenarioMetadata(
-      name: 'New Scenario',
-      description: 'A custom gravitational simulation',
+      name: '', // Empty string so text field shows placeholder
+      description: '', // Empty string so text field shows placeholder
       author: null,
       createdAt: DateTime.now(),
       educationalFocus: 'gravitational forces',
-      tags: ['custom'],
-      difficulty: 'beginner',
-    );
-  }
-
-  ScenarioMetadata _createDefaultMetadata() {
-    return ScenarioMetadata(
-      name: AppLocalizations.of(context)?.newScenarioEditor ?? 'New Scenario',
-      description:
-          AppLocalizations.of(context)?.customGravitationalSimulationEditor ??
-          'A custom gravitational simulation',
-      author: null,
-      createdAt: DateTime.now(),
-      educationalFocus:
-          AppLocalizations.of(context)?.gravitationalForcesEditor ??
-          'gravitational forces',
       tags: ['custom'],
       difficulty: 'beginner',
     );
@@ -176,6 +175,8 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   @override
   void dispose() {
     _tabController.dispose();
+    _nameController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -266,11 +267,14 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
                       false,
                       _bodies.isEmpty,
                       _bodies.isEmpty,
-                    ], // Disable Settings and Preview if no bodies
+                    ], // Disable Physics and Preview if no bodies
                     tabs: [
-                      GravitonTab(icon: Icons.public, label: l10n.bodiesLabel),
                       GravitonTab(
                         icon: Icons.settings,
+                        label: l10n.setupEditorTitle,
+                      ),
+                      GravitonTab(
+                        icon: Icons.science,
                         label: l10n.physicsSection,
                         isEnabled: _bodies.isNotEmpty,
                       ),
@@ -286,14 +290,10 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
                     child: TabBarView(
                       controller: _tabController,
                       children: [
-                        // Bodies Tab
-                        ScenarioEditorBodyList(
-                          bodies: _bodies,
-                          onBodiesChanged: _onBodiesChanged,
-                          onAddBody: _addNewBody,
-                        ),
-                        // Settings Tab (Combined Physics + Metadata)
-                        _buildSettingsTab(context, l10n),
+                        // Setup Tab (Metadata + Bodies)
+                        _buildSetupTab(context, l10n),
+                        // Physics Tab (Physics Settings only)
+                        _buildPhysicsTab(context, l10n),
                         // Preview Tab
                         _buildPreviewTab(context, l10n),
                       ],
@@ -496,30 +496,88 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     );
   }
 
-  /// Build the combined Settings tab (Physics + Metadata)
-  Widget _buildSettingsTab(BuildContext context, AppLocalizations l10n) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(AppTypography.spacingMedium),
+  /// Build the Setup tab (Metadata + Bodies)
+  Widget _buildSetupTab(BuildContext context, AppLocalizations l10n) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Physics Section
-          ScenarioEditorPhysicsPanel(
-            physics: _physics,
-            particleSystems: _particleSystems,
-            onPhysicsChanged: _onPhysicsChanged,
-            onParticleSystemsChanged: _onParticleSystemsChanged,
+          // Metadata Section (Name & Description only) - Fixed height
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Name field
+              StyledTextField(
+                controller: _nameController,
+                icon: Icons.title,
+                labelText: l10n.bodyPropertiesName,
+                hintText: l10n.enterScenarioNameEditorHint,
+                onChanged: (name) => setState(() {
+                  _metadata = ScenarioMetadata(
+                    name: name,
+                    description: _metadata.description,
+                    author: _metadata.author,
+                    createdAt: _metadata.createdAt,
+                    educationalFocus: _metadata.educationalFocus,
+                    tags: _metadata.tags,
+                    difficulty: _metadata.difficulty,
+                  );
+                  _hasUnsavedChanges = true;
+                }),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Description field
+              StyledTextField(
+                controller: _descriptionController,
+                icon: Icons.description,
+                labelText: l10n.descriptionEditorLabel,
+                hintText: l10n.describeWhatThisScenarioDemonstratesEditorHint,
+                maxLines: 3,
+                onChanged: (description) => setState(() {
+                  _metadata = ScenarioMetadata(
+                    name: _metadata.name,
+                    description: description,
+                    author: _metadata.author,
+                    createdAt: _metadata.createdAt,
+                    educationalFocus: _metadata.educationalFocus,
+                    tags: _metadata.tags,
+                    difficulty: _metadata.difficulty,
+                  );
+                  _hasUnsavedChanges = true;
+                }),
+              ),
+            ],
           ),
-          SizedBox(height: AppTypography.spacingLarge),
-          // Metadata Section
-          ScenarioEditorMetadataPanel(
-            metadata: _metadata,
-            objectives: _objectives,
-            onMetadataChanged: _onMetadataChanged,
-            onObjectivesChanged: _onObjectivesChanged,
+
+          const SizedBox(height: 32),
+
+          // Bodies Section Divider
+          SectionDivider.labeled(l10n.bodiesLabel),
+
+          const SizedBox(height: 24),
+
+          // Bodies List - Give it remaining space
+          Expanded(
+            child: ScenarioEditorBodyList(
+              bodies: _bodies,
+              onBodiesChanged: _onBodiesChanged,
+              onAddBody: _addNewBody,
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  /// Build the Physics tab (Physics Settings only)
+  Widget _buildPhysicsTab(BuildContext context, AppLocalizations l10n) {
+    return ScenarioEditorPhysicsPanel(
+      physics: _physics,
+      particleSystems: _particleSystems,
+      onPhysicsChanged: _onPhysicsChanged,
+      onParticleSystemsChanged: _onParticleSystemsChanged,
     );
   }
 
@@ -529,7 +587,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       _hasUnsavedChanges = true;
     });
 
-    // If all bodies are removed and user is on Settings or Preview tab, switch to Bodies tab
+    // If all bodies are removed and user is on Physics or Preview tab, switch to Setup tab
     if (_bodies.isEmpty &&
         (_tabController.index == 1 || _tabController.index == 2)) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -552,20 +610,6 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     });
   }
 
-  void _onMetadataChanged(ScenarioMetadata newMetadata) {
-    setState(() {
-      _metadata = newMetadata;
-      _hasUnsavedChanges = true;
-    });
-  }
-
-  void _onObjectivesChanged(ObjectivesConfig? newObjectives) {
-    setState(() {
-      _objectives = newObjectives;
-      _hasUnsavedChanges = true;
-    });
-  }
-
   void _addNewBody() {
     // Use defaults that work well for the starting body type (planet)
     final defaultProperties = BodyTypeRanges.getDefaultProperties(
@@ -573,11 +617,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     );
 
     final newBody = Body(
-      name:
-          AppLocalizations.of(
-            context,
-          )?.bodyNumberTemplate('${_bodies.length + 1}') ??
-          'Body ${_bodies.length + 1}',
+      name: '', // Start with empty name so user sees placeholder text
       position: vm.Vector3(20.0 * _bodies.length, 0, 0), // Spread them out
       velocity: vm.Vector3(0, 5.0, 0), // Give some orbital velocity
       mass: defaultProperties['mass']!, // Use realistic default for planets
@@ -615,10 +655,8 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
               );
 
               // Actually add the body to the list
-              setState(() {
-                _bodies.add(finalBody);
-                _hasUnsavedChanges = true;
-              });
+              final updatedBodies = List<Body>.from(_bodies)..add(finalBody);
+              _onBodiesChanged(updatedBodies);
 
               // Switch to bodies tab if not already there
               if (_tabController.index != 0) {
@@ -713,9 +751,33 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   }
 
   CustomScenario _createCustomScenario() {
+    // Get current values from controllers
+    final name = _nameController.text.trim();
+    final description = _descriptionController.text.trim();
+
+    // Use defaults if fields are empty
+    final finalName = name.isEmpty
+        ? (AppLocalizations.of(context)?.newScenarioEditor ?? 'New Scenario')
+        : name;
+    final finalDescription = description.isEmpty
+        ? (AppLocalizations.of(context)?.customGravitationalSimulationEditor ??
+              'A custom gravitational simulation')
+        : description;
+
+    // Create updated metadata with current values
+    final updatedMetadata = ScenarioMetadata(
+      name: finalName,
+      description: finalDescription,
+      author: _metadata.author,
+      createdAt: _metadata.createdAt,
+      educationalFocus: _metadata.educationalFocus,
+      tags: _metadata.tags,
+      difficulty: _metadata.difficulty,
+    );
+
     return ScenarioSerializationService.fromBodies(
       bodies: _bodies,
-      metadata: _metadata,
+      metadata: updatedMetadata,
       physics: _physics,
       particleSystems: _particleSystems,
       objectives: _objectives,

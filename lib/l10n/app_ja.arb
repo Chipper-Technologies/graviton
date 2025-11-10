@@ -532,6 +532,7 @@
   "testPresetForUnitTesting": "ユニットテスト用テストプリセット",
   "cameraControlsFocused": "カメラコントロールにフォーカス",
   "previewEditortitle": "プレビューエディターのタイトル",
+  "setupEditorTitle": "セットアップ",
   "viewPhysicsSettings": "物理設定を表示",
   "colorEditor": "色エディター",
   "colorOptionTemplate": "色のオプション {color}",

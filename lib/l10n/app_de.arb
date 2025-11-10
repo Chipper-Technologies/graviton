@@ -532,6 +532,7 @@
   "testPresetForUnitTesting": "Test-Voreinstellung für Unit-Tests",
   "cameraControlsFocused": "Kamerasteuerung fokussiert",
   "previewEditortitle": "Vorschau-Editor",
+  "setupEditorTitle": "Einrichtung",
   "viewPhysicsSettings": "Physik-Einstellungen anzeigen",
   "colorEditor": "Farb-Editor",
   "colorOptionTemplate": "Farboption {color}",

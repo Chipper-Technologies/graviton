@@ -6,6 +6,7 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/common/haptic_list_tile.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /// Right-side drawer for app options and settings
@@ -178,7 +179,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                       widget.onShowScenarios();
                     },
                   ),
-                  _buildDivider(),
+                  const SectionDivider.plain(),
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.science,
@@ -189,7 +190,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                       widget.onShowPhysicsSettings();
                     },
                   ),
-                  _buildDivider(),
+                  const SectionDivider.plain(),
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.tune,
@@ -200,7 +201,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                       widget.onShowSettings();
                     },
                   ),
-                  _buildDivider(),
+                  const SectionDivider.plain(),
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.lightbulb_outline,
@@ -211,7 +212,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                       widget.onShowHelp();
                     },
                   ),
-                  _buildDivider(),
+                  const SectionDivider.plain(),
 
                   // Developer Tools (Debug only)
                   if (kDebugMode) ...[
@@ -225,7 +226,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                         widget.onShowDeveloperTools();
                       },
                     ),
-                    _buildDivider(),
+                    const SectionDivider.plain(),
                   ],
 
                   _buildDrawerItem(
@@ -283,16 +284,6 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
         vertical: AppTypography.spacingSmall,
       ),
       dense: false,
-    );
-  }
-
-  Widget _buildDivider() {
-    return Divider(
-      color: AppColors.uiDividerGrey,
-      thickness: 1,
-      height: 1,
-      indent: AppTypography.spacingLarge,
-      endIndent: AppTypography.spacingLarge,
     );
   }
 }
