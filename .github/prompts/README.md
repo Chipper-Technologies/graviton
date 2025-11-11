@@ -5,23 +5,23 @@ This directory contains specialized prompts for GitHub Copilot to help with Grav
 ## Available Prompts
 
 ### Code Quality & Standards
-- **[code-quality-standards.md](./code-quality-standards.md)** - **START HERE** - Non-negotiable coding standards including AppTypography usage, file organization, and no magic numbers policy
+- **[code-quality-standards.prompt.md](./code-quality-standards.prompt.md)** - **START HERE** - Non-negotiable coding standards including AppTypography usage, file organization, and no magic numbers policy
 
 ### Core Development
-- **[physics-calculations.md](./physics-calculations.md)** - Guidelines for implementing accurate gravitational physics, N-body calculations, and numerical stability
-- **[flutter-state-management.md](./flutter-state-management.md)** - Provider pattern usage, state architecture, and best practices for simulation state
-- **[custom-painter-rendering.md](./custom-painter-rendering.md)** - Performance-optimized rendering with CustomPainter, 3D transformations, and trail visualization
+- **[physics-calculations.prompt.md](./physics-calculations.prompt.md)** - Guidelines for implementing accurate gravitational physics, N-body calculations, and numerical stability
+- **[flutter-state-management.prompt.md](./flutter-state-management.prompt.md)** - Provider pattern usage, state architecture, and best practices for simulation state
+- **[custom-painter-rendering.prompt.md](./custom-painter-rendering.prompt.md)** - Performance-optimized rendering with CustomPainter, 3D transformations, and trail visualization
 
 ### User Experience
-- **[internationalization.md](./internationalization.md)** - i18n patterns for 7 supported languages, ARB file management, and scientific terminology
-- **[accessibility.md](./accessibility.md)** - Screen reader support, haptic feedback for physics events, and keyboard navigation
-- **[theme-visual-design.md](./theme-visual-design.md)** - Space-themed design system, stellar colors, and responsive layouts
+- **[internationalization.prompt.md](./internationalization.prompt.md)** - i18n patterns for 7 supported languages, ARB file management, and scientific terminology
+- **[accessibility.prompt.md](./accessibility.prompt.md)** - Screen reader support, haptic feedback for physics events, and keyboard navigation
+- **[theme-visual-design.prompt.md](./theme-visual-design.prompt.md)** - Space-themed design system, stellar colors, and responsive layouts
 
 ### Features & Integration
-- **[scenario-management.md](./scenario-management.md)** - Custom scenario creation, validation, and educational physics configurations
-- **[firebase-integration.md](./firebase-integration.md)** - Analytics, crash reporting, remote config, and feature flags
-- **[performance-optimization.md](./performance-optimization.md)** - 60fps targets, memory management, and spatial optimization algorithms
-- **[testing.md](./testing.md)** - Unit tests, physics validation, widget testing, and performance benchmarks
+- **[scenario-management.prompt.md](./scenario-management.prompt.md)** - Custom scenario creation, validation, and educational physics configurations
+- **[firebase-integration.prompt.md](./firebase-integration.prompt.md)** - Analytics, crash reporting, remote config, and feature flags
+- **[performance-optimization.prompt.md](./performance-optimization.prompt.md)** - 60fps targets, memory management, and spatial optimization algorithms
+- **[testing.prompt.md](./testing.prompt.md)** - Unit tests, physics validation, widget testing, and performance benchmarks
 
 ## How to Use These Prompts
 
