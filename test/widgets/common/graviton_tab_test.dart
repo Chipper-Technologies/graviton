@@ -183,17 +183,19 @@ void main() {
           ),
         );
 
-        // Find the spacer SizedBox that has width: 6 (between icon and text)
+        // Find the spacer SizedBox that has width: AppTypography.spacingSmall (between icon and text)
         final spacerFinder = find.descendant(
           of: find.byType(GravitonTab),
           matching: find.byWidgetPredicate(
-            (widget) => widget is SizedBox && widget.width == 6,
+            (widget) =>
+                widget is SizedBox &&
+                widget.width == AppTypography.spacingSmall,
           ),
         );
 
         expect(spacerFinder, findsOneWidget);
         final SizedBox spacer = tester.widget<SizedBox>(spacerFinder);
-        expect(spacer.width, 6);
+        expect(spacer.width, AppTypography.spacingSmall);
       });
 
       testWidgets('should use Row with mainAxisSize.min', (tester) async {

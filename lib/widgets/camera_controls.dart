@@ -112,6 +112,7 @@ class CameraControls extends StatelessWidget {
                   icon: appState.camera.followMode
                       ? Icons.track_changes
                       : Icons.track_changes_outlined,
+                  isActive: appState.camera.followMode,
                   onPressed: appState.camera.selectedBody != null
                       ? () => appState.camera.toggleFollowMode(
                           appState.simulation.bodies,
@@ -144,6 +145,7 @@ class CameraControls extends StatelessWidget {
                   icon: appState.camera.autoRotate
                       ? Icons.rotate_right
                       : Icons.rotate_right_outlined,
+                  isActive: appState.camera.autoRotate,
                   onPressed: () => appState.camera.toggleAutoRotate(),
                 ),
               ),

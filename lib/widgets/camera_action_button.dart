@@ -8,12 +8,14 @@ class CameraActionButton extends StatelessWidget {
   final String label;
   final IconData icon;
   final VoidCallback? onPressed;
+  final bool isActive;
 
   const CameraActionButton({
     super.key,
     required this.label,
     required this.icon,
     required this.onPressed,
+    this.isActive = false,
   });
 
   @override
@@ -31,20 +33,31 @@ class CameraActionButton extends StatelessWidget {
             horizontal: AppTypography.spacingMedium,
           ),
           decoration: BoxDecoration(
-            color: AppColors.uiWhite.withValues(
-              alpha: AppTypography.opacityBarely,
-            ),
+            color: isActive
+                ? AppColors.primaryColor.withValues(
+                    alpha: AppTypography.opacityMidFade,
+                  )
+                : AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityBarely,
+                  ),
             borderRadius: AppTypography.createRadius(AppTypography.radiusLarge),
-            border: AppTypography.createBorder(
-              opacity: AppTypography.opacityDisabled,
-              width: AppTypography.borderThin,
-            ),
+            border: isActive
+                ? Border.all(
+                    color: AppColors.primaryColor,
+                    width: AppTypography.borderThin,
+                  )
+                : AppTypography.createBorder(
+                    opacity: AppTypography.opacityDisabled,
+                    width: AppTypography.borderThin,
+                  ),
           ),
           child: Column(
             children: [
               Icon(
                 icon,
-                color: isEnabled
+                color: isActive
+                    ? AppColors.primaryColor
+                    : isEnabled
                     ? AppColors.uiWhite.withValues(
                         alpha: AppTypography.opacityVeryHigh,
                       )
@@ -57,7 +70,9 @@ class CameraActionButton extends StatelessWidget {
               Text(
                 label,
                 style: AppTypography.smallText.copyWith(
-                  color: isEnabled
+                  color: isActive
+                      ? AppColors.primaryColor
+                      : isEnabled
                       ? AppColors.uiWhite.withValues(
                           alpha: AppTypography.opacityVeryHigh,
                         )
