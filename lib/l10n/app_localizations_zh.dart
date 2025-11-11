@@ -2307,6 +2307,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get scenarioTabCustom => '自定义';
 
   @override
+  String get savedScenariosTitle => '保存的场景';
+
+  @override
+  String get experimentsTitle => '实验';
+
+  @override
+  String get experimentsSubtitle => '探索有趣的物理概念';
+
+  @override
   String customScenarioBodyCount(int count) {
     return '$count个天体';
   }
@@ -2438,6 +2447,74 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String orbitStabilizedMessage(String changeDescription, String finalRadius) {
     return '轨道已稳定！半径$changeDescription到$finalRadius单位。相位和倾斜度重置以保持稳定。';
+  }
+
+  @override
+  String get experimentBinaryPulsarName => '双星脉冲星';
+
+  @override
+  String get experimentBinaryPulsarDescription => '两颗中子星因引力波向内螺旋运动';
+
+  @override
+  String get experimentBinaryPulsarDuration => '100年';
+
+  @override
+  String get experimentTrojanAsteroidsName => '特洛伊小行星';
+
+  @override
+  String get experimentTrojanAsteroidsDescription => '小行星聚集的木星轨道稳定点';
+
+  @override
+  String get experimentTrojanAsteroidsDuration => '50年';
+
+  @override
+  String get experimentGalacticDanceName => '星系之舞';
+
+  @override
+  String get experimentGalacticDanceDescription => '两个星系在宇宙时间尺度上碰撞合并';
+
+  @override
+  String get experimentGalacticDanceDuration => '10亿年';
+
+  @override
+  String get experimentRingFormationName => '环形形成';
+
+  @override
+  String get experimentRingFormationDescription => '行星环如何从破碎的卫星形成';
+
+  @override
+  String get experimentRingFormationDuration => '1000年';
+
+  @override
+  String get experimentCometTrajectoryName => '彗星轨迹';
+
+  @override
+  String get experimentCometTrajectoryDescription => '显示守恒定律的高椭圆轨道';
+
+  @override
+  String get experimentCometTrajectoryDuration => '200年';
+
+  @override
+  String get experimentStellarNurseryName => '恒星诞生地';
+
+  @override
+  String get experimentStellarNurseryDescription => '从坍塌气体云中形成恒星';
+
+  @override
+  String get experimentStellarNurseryDuration => '1000万年';
+
+  @override
+  String get experimentDifficultyAdvanced => '高级';
+
+  @override
+  String get experimentDifficultyIntermediate => '中级';
+
+  @override
+  String get experimentDifficultyBeginner => '初级';
+
+  @override
+  String experimentComingSoon(String scenarioName) {
+    return '实验场景\"$scenarioName\" - 即将推出！';
   }
 
   @override

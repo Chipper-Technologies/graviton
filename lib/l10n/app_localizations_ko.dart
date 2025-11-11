@@ -2327,6 +2327,15 @@ class AppLocalizationsKo extends AppLocalizations {
   String get scenarioTabCustom => '커스텀';
 
   @override
+  String get savedScenariosTitle => '저장된 시나리오';
+
+  @override
+  String get experimentsTitle => '실험';
+
+  @override
+  String get experimentsSubtitle => '흥미로운 물리학 개념 탐구';
+
+  @override
   String customScenarioBodyCount(int count) {
     return '천체 $count개';
   }
@@ -2463,6 +2472,75 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String orbitStabilizedMessage(String changeDescription, String finalRadius) {
     return '궤도가 안정화되었습니다! 반지름이 $changeDescription하여 $finalRadius 단위가 되었습니다. 안정성을 위해 위상과 기울기가 재설정되었습니다.';
+  }
+
+  @override
+  String get experimentBinaryPulsarName => '쌍성 펄사';
+
+  @override
+  String get experimentBinaryPulsarDescription =>
+      '중력파로 인해 내부로 나선운동하는 두 개의 중성자별';
+
+  @override
+  String get experimentBinaryPulsarDuration => '100년';
+
+  @override
+  String get experimentTrojanAsteroidsName => '트로이군 소행성';
+
+  @override
+  String get experimentTrojanAsteroidsDescription => '소행성이 축적되는 목성 궤도의 안정점';
+
+  @override
+  String get experimentTrojanAsteroidsDuration => '50년';
+
+  @override
+  String get experimentGalacticDanceName => '은하의 춤';
+
+  @override
+  String get experimentGalacticDanceDescription => '우주 시간에 걸쳐 충돌하고 합쳐지는 두 은하';
+
+  @override
+  String get experimentGalacticDanceDuration => '10억 년';
+
+  @override
+  String get experimentRingFormationName => '고리 형성';
+
+  @override
+  String get experimentRingFormationDescription => '파괴된 위성으로부터 행성 고리가 형성되는 과정';
+
+  @override
+  String get experimentRingFormationDuration => '1000년';
+
+  @override
+  String get experimentCometTrajectoryName => '혜성 궤도';
+
+  @override
+  String get experimentCometTrajectoryDescription => '보존 법칙을 보여주는 고도 타원 궤도';
+
+  @override
+  String get experimentCometTrajectoryDuration => '200년';
+
+  @override
+  String get experimentStellarNurseryName => '별 탄생 지역';
+
+  @override
+  String get experimentStellarNurseryDescription => '붕괴하는 가스 구름으로부터의 별 형성';
+
+  @override
+  String get experimentStellarNurseryDuration => '1000만 년';
+
+  @override
+  String get experimentDifficultyAdvanced => '고급';
+
+  @override
+  String get experimentDifficultyIntermediate => '중급';
+
+  @override
+  String get experimentDifficultyBeginner => '초급';
+
+  @override
+  String experimentComingSoon(String scenarioName) {
+    return '실험적 시나리오 \"$scenarioName\" - 곧 출시 예정!';
   }
 
   @override

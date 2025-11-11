@@ -12,6 +12,20 @@ This is a Flutter-based gravitational physics simulation app called "Graviton" t
 
 ### **CRITICAL CODE QUALITY STANDARDS** (Non-Negotiable)
 
+#### AppColors Constants Usage
+- **ALWAYS use AppColors constants** for any color values - NEVER hardcode Colors.xxx
+- **Flag ALL hardcoded colors** like `Colors.white`, `Colors.red`, `Color(0xFF...)` etc.
+- **Use semantic color names**: `AppColors.uiWhite`, `AppColors.backgroundBlack`, `AppColors.stellarOType`
+- **Example violations**: `Colors.white` (should be `AppColors.uiWhite`), `Color(0xFF9370DB)` (should be `AppColors.stellarOType`)
+- **Cosmic theme consistency**: Use stellar classification colors, space-themed palettes
+
+#### Widget Reuse - Check Existing Components First
+- **ALWAYS search for existing widgets** before creating new ones - use `file_search`, `grep_search`, `semantic_search`
+- **Common existing components**: `SectionDivider`, `StyledTextField`, `HapticInkWell`, `GravitonPopupMenu`
+- **Flag duplicate widget creation** - reuse and extend existing components instead
+- **Check `/lib/widgets/` hierarchy** for reusable UI components before coding new ones
+- **Example**: Use existing `SectionDivider` instead of creating `ScenarioSectionDivider`
+
 #### AppTypography Constants Usage
 - **ALWAYS use AppTypography constants** for font sizes, opacity, spacing, icon sizes, dimensions
 - **Flag ALL magic numbers** in UI code - use `AppTypography.fontSizeMedium`, `AppTypography.opacityHigh`, etc.
@@ -59,15 +73,17 @@ This is a Flutter-based gravitational physics simulation app called "Graviton" t
 - **Accessibility**: Ensure proper semantics for screen readers and navigation
 
 ### Code Quality Priorities
-1. **AppTypography Constants**: ALL UI dimensions use AppTypography - zero tolerance for magic numbers
-2. **File Organization**: One class per file with dedicated unit tests - no exceptions
-3. **Utility Extraction**: Common functions in utils/ files, not private methods in classes
-4. **Physics Accuracy**: Gravitational calculations, collision detection, temperature modeling
-5. **Performance**: Smooth 60fps rendering with multiple bodies and trails
-6. **Documentation**: Comprehensive docs for all public APIs with examples
-7. **Maintainability**: Clear separation of concerns, well-documented physics constants
-8. **Internationalization**: Consistent localization patterns across all UI elements
-9. **User Experience**: Intuitive controls, helpful tutorials, responsive interactions
+1. **AppColors Constants**: ALL colors use AppColors - zero tolerance for hardcoded Colors.xxx
+2. **Widget Reuse**: Search existing `/lib/widgets/` before creating new components
+3. **AppTypography Constants**: ALL UI dimensions use AppTypography - zero tolerance for magic numbers
+4. **File Organization**: One class per file with dedicated unit tests - no exceptions
+5. **Utility Extraction**: Common functions in utils/ files, not private methods in classes
+6. **Physics Accuracy**: Gravitational calculations, collision detection, temperature modeling
+7. **Performance**: Smooth 60fps rendering with multiple bodies and trails
+8. **Documentation**: Comprehensive docs for all public APIs with examples
+9. **Maintainability**: Clear separation of concerns, well-documented physics constants
+10. **Internationalization**: Consistent localization patterns across all UI elements
+11. **User Experience**: Intuitive controls, helpful tutorials, responsive interactions
 
 ### Specific Review Focus Areas
 
@@ -108,6 +124,8 @@ This is a Flutter-based gravitational physics simulation app called "Graviton" t
 - Ensure cultural appropriateness of translations
 
 ### Common Anti-Patterns to Flag
+- **Hardcoded Colors.xxx** - ALL colors must use AppColors constants (zero tolerance)
+- **Duplicate widget creation** - search existing `/lib/widgets/` before creating new components
 - **Magic numbers anywhere** - especially UI dimensions (should use `AppTypography` constants)
 - **Multiple classes in single files** - each class/model/enum needs its own file
 - **Private utility methods in classes** - extract to utils/ files for reusability
@@ -124,7 +142,8 @@ This is a Flutter-based gravitational physics simulation app called "Graviton" t
 
 ### Educational Context
 This app is designed for educational purposes, so prioritize:
-- **Consistent code quality standards** - AppTypography usage, proper file organization
+- **Consistent code quality standards** - AppColors usage, AppTypography usage, proper file organization
+- **Widget reuse patterns** - demonstrate proper component discovery and reuse
 - **Well-documented utilities** - extract common functions to utils/ for learning
 - Code clarity and documentation
 - Proper separation of physics concepts
@@ -134,7 +153,8 @@ This app is designed for educational purposes, so prioritize:
 
 ### Review Tone
 - Be constructive and educational
-- **Emphasize code quality standards first** - AppTypography, file organization, utilities
+- **Emphasize code quality standards first** - AppColors, AppTypography, file organization, utilities
+- **Always check for existing widgets** before suggesting new ones
 - Explain the "why" behind suggestions
 - Provide specific examples and alternatives
 - Focus on both correctness and learning opportunities
@@ -148,4 +168,4 @@ This instructions file works alongside:
 - **Prompts**: `.github/prompts/` for comprehensive reference documentation
 - **Review Configs**: `.github/copilot-advanced-config.md` and `.github/copilot-review-config.md`
 
-All configurations enforce the same critical code quality standards with zero tolerance for AppTypography violations and strict file organization requirements.
+All configurations enforce the same critical code quality standards with zero tolerance for AppColors violations, AppTypography violations and strict file organization requirements.

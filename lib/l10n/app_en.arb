@@ -3188,6 +3188,18 @@
   "@scenarioTabCustom": {
     "description": "Label for custom scenario tab"
   },
+  "savedScenariosTitle": "Saved Scenarios",
+  "@savedScenariosTitle": {
+    "description": "Section title for user's saved custom scenarios"
+  },
+  "experimentsTitle": "Experiments",
+  "@experimentsTitle": {
+    "description": "Section title for experimental physics scenarios"
+  },
+  "experimentsSubtitle": "Explore interesting physics concepts",
+  "@experimentsSubtitle": {
+    "description": "Subtitle explaining the purpose of experimental scenarios"
+  },
   "customScenarioBodyCount": "{count, plural, =0{0 bodies} =1{1 body} other{{count} bodies}}",
   "@customScenarioBodyCount": {
     "description": "Formatted body count for custom scenarios",
@@ -3395,6 +3407,100 @@
       "finalRadius": {
         "type": "String",
         "description": "The final orbital radius value"
+      }
+    }
+  },
+  "experimentBinaryPulsarName": "Binary Pulsar",
+  "@experimentBinaryPulsarName": {
+    "description": "Name for binary pulsar experimental scenario"
+  },
+  "experimentBinaryPulsarDescription": "Two neutron stars spiraling inward due to gravitational waves",
+  "@experimentBinaryPulsarDescription": {
+    "description": "Description for binary pulsar experimental scenario"
+  },
+  "experimentBinaryPulsarDuration": "100 years",
+  "@experimentBinaryPulsarDuration": {
+    "description": "Expected duration for binary pulsar experiment"
+  },
+  "experimentTrojanAsteroidsName": "Trojan Asteroids",
+  "@experimentTrojanAsteroidsName": {
+    "description": "Name for trojan asteroids experimental scenario"
+  },
+  "experimentTrojanAsteroidsDescription": "Stable points in Jupiter's orbit where asteroids accumulate",
+  "@experimentTrojanAsteroidsDescription": {
+    "description": "Description for trojan asteroids experimental scenario"
+  },
+  "experimentTrojanAsteroidsDuration": "50 years",
+  "@experimentTrojanAsteroidsDuration": {
+    "description": "Expected duration for trojan asteroids experiment"
+  },
+  "experimentGalacticDanceName": "Galactic Dance",
+  "@experimentGalacticDanceName": {
+    "description": "Name for galactic dance experimental scenario"
+  },
+  "experimentGalacticDanceDescription": "Two galaxies colliding and merging over cosmic time",
+  "@experimentGalacticDanceDescription": {
+    "description": "Description for galactic dance experimental scenario"
+  },
+  "experimentGalacticDanceDuration": "1 billion years",
+  "@experimentGalacticDanceDuration": {
+    "description": "Expected duration for galactic dance experiment"
+  },
+  "experimentRingFormationName": "Ring Formation",
+  "@experimentRingFormationName": {
+    "description": "Name for ring formation experimental scenario"
+  },
+  "experimentRingFormationDescription": "How planetary rings form from disrupted moons",
+  "@experimentRingFormationDescription": {
+    "description": "Description for ring formation experimental scenario"
+  },
+  "experimentRingFormationDuration": "1000 years",
+  "@experimentRingFormationDuration": {
+    "description": "Expected duration for ring formation experiment"
+  },
+  "experimentCometTrajectoryName": "Comet Trajectory",
+  "@experimentCometTrajectoryName": {
+    "description": "Name for comet trajectory experimental scenario"
+  },
+  "experimentCometTrajectoryDescription": "Highly elliptical orbit showing conservation laws",
+  "@experimentCometTrajectoryDescription": {
+    "description": "Description for comet trajectory experimental scenario"
+  },
+  "experimentCometTrajectoryDuration": "200 years",
+  "@experimentCometTrajectoryDuration": {
+    "description": "Expected duration for comet trajectory experiment"
+  },
+  "experimentStellarNurseryName": "Stellar Nursery",
+  "@experimentStellarNurseryName": {
+    "description": "Name for stellar nursery experimental scenario"
+  },
+  "experimentStellarNurseryDescription": "Star formation from collapsing gas clouds",
+  "@experimentStellarNurseryDescription": {
+    "description": "Description for stellar nursery experimental scenario"
+  },
+  "experimentStellarNurseryDuration": "10 million years",
+  "@experimentStellarNurseryDuration": {
+    "description": "Expected duration for stellar nursery experiment"
+  },
+  "experimentDifficultyAdvanced": "advanced",
+  "@experimentDifficultyAdvanced": {
+    "description": "Advanced difficulty level for experimental scenarios"
+  },
+  "experimentDifficultyIntermediate": "intermediate",
+  "@experimentDifficultyIntermediate": {
+    "description": "Intermediate difficulty level for experimental scenarios"
+  },
+  "experimentDifficultyBeginner": "beginner",
+  "@experimentDifficultyBeginner": {
+    "description": "Beginner difficulty level for experimental scenarios"
+  },
+  "experimentComingSoon": "Experimental scenario \"{scenarioName}\" - Coming soon!",
+  "@experimentComingSoon": {
+    "description": "Message shown when selecting an experimental scenario that's not yet implemented",
+    "placeholders": {
+      "scenarioName": {
+        "type": "String",
+        "description": "Name of the experimental scenario"
       }
     }
   },

@@ -32,6 +32,19 @@ class ScenarioSelectionScreen extends StatefulWidget {
 
 class _ScenarioSelectionScreenState extends State<ScenarioSelectionScreen> {
   int _currentTabIndex = 0;
+  late ScrollController _customTabScrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _customTabScrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _customTabScrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +86,7 @@ class _ScenarioSelectionScreenState extends State<ScenarioSelectionScreen> {
             CustomScenariosTab(
               onScenarioSelected: widget.onScenarioSelected,
               onCustomScenarioSelected: widget.onCustomScenarioSelected,
+              scrollController: _customTabScrollController,
             ),
           ],
         ),
@@ -91,6 +105,8 @@ class _ScenarioSelectionScreenState extends State<ScenarioSelectionScreen> {
         AppLocalizations.of(context)!.createScenarioButton,
         style: const TextStyle(fontWeight: FontWeight.w600),
       ),
+      scrollController: _customTabScrollController,
+      hideOnScroll: true,
     );
   }
 

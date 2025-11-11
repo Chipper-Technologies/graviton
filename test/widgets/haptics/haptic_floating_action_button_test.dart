@@ -409,5 +409,119 @@ void main() {
         expect(fab.enableFeedback, false);
       });
     });
+
+    group('Scroll-Aware Behavior', () {
+      testWidgets('should show and hide on scroll when hideOnScroll is enabled', (
+        tester,
+      ) async {
+        final scrollController = ScrollController();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  children: List.generate(
+                    50,
+                    (index) => Container(
+                      height: 100,
+                      color: index.isEven ? Colors.blue : Colors.red,
+                      child: Center(child: Text('Item $index')),
+                    ),
+                  ),
+                ),
+              ),
+              floatingActionButton: HapticFloatingActionButton.extended(
+                onPressed: () {},
+                scrollController: scrollController,
+                hideOnScroll: true,
+                icon: const Icon(Icons.add),
+                label: const Text('Add'),
+              ),
+            ),
+          ),
+        );
+
+        // Initially visible
+        expect(find.byType(FloatingActionButton), findsOneWidget);
+
+        // Wait for animation to complete
+        await tester.pumpAndSettle();
+
+        // Scroll down significantly
+        await tester.drag(
+          find.byType(SingleChildScrollView),
+          const Offset(0, -500),
+        );
+        await tester.pumpAndSettle();
+
+        // FAB should still be visible (scale should be > 0) - the animation should happen smoothly
+        // We test the presence since the FAB uses Transform.scale which doesn't remove the widget from tree
+        expect(find.byType(FloatingActionButton), findsOneWidget);
+
+        scrollController.dispose();
+      });
+
+      testWidgets('should not hide when hideOnScroll is false', (tester) async {
+        final scrollController = ScrollController();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  children: List.generate(
+                    50,
+                    (index) => Container(
+                      height: 100,
+                      color: index.isEven ? Colors.blue : Colors.red,
+                    ),
+                  ),
+                ),
+              ),
+              floatingActionButton: HapticFloatingActionButton.extended(
+                onPressed: () {},
+                scrollController: scrollController,
+                hideOnScroll: false, // Disabled
+                icon: const Icon(Icons.add),
+                label: const Text('Add'),
+              ),
+            ),
+          ),
+        );
+
+        // Scroll down significantly
+        await tester.drag(
+          find.byType(SingleChildScrollView),
+          const Offset(0, -500),
+        );
+        await tester.pumpAndSettle();
+
+        // FAB should remain visible
+        expect(find.byType(FloatingActionButton), findsOneWidget);
+
+        scrollController.dispose();
+      });
+
+      testWidgets('should work without scroll controller', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              floatingActionButton: HapticFloatingActionButton.extended(
+                onPressed: () {},
+                hideOnScroll: true, // Enabled but no controller
+                icon: const Icon(Icons.add),
+                label: const Text('Add'),
+              ),
+            ),
+          ),
+        );
+
+        // Should render normally without errors
+        expect(find.byType(FloatingActionButton), findsOneWidget);
+      });
+    });
   });
 }

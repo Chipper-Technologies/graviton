@@ -3,25 +3,29 @@ import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/models/experimental_scenario_config.dart';
 import 'package:graviton/screens/scenario_editor_screen.dart';
-import 'package:graviton/services/custom_scenario_manager.dart';
 import 'package:graviton/services/custom_scenario_storage.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/scenario_selection/create_scenario_tile.dart';
 import 'package:graviton/widgets/scenario_selection/custom_scenario_tile.dart';
+import 'package:graviton/widgets/scenario_selection/experimental_scenario_tile.dart';
 
 /// Tab widget displaying custom scenarios with create/manage options
 class CustomScenariosTab extends StatefulWidget {
   final ValueChanged<ScenarioType> onScenarioSelected;
   final Function(String)? onCustomScenarioSelected;
+  final ScrollController? scrollController;
 
   const CustomScenariosTab({
     super.key,
     required this.onScenarioSelected,
     this.onCustomScenarioSelected,
+    this.scrollController,
   });
 
   @override
@@ -31,6 +35,7 @@ class CustomScenariosTab extends StatefulWidget {
 class _CustomScenariosTabState extends State<CustomScenariosTab> {
   List<String> _customScenarios = [];
   bool _isLoading = true;
+  String? _selectedExperiment;
 
   @override
   void initState() {
@@ -63,37 +68,130 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return ListView.builder(
+    final l10n = AppLocalizations.of(context)!;
+
+    return SingleChildScrollView(
+      controller: widget.scrollController,
       padding: EdgeInsets.all(AppTypography.spacingMedium),
-      itemCount: _customScenarios.length + 1, // +1 for create button
-      itemBuilder: (context, index) {
-        // Create new scenario button (always first)
-        if (index == 0) {
-          return Padding(
-            padding: EdgeInsets.symmetric(vertical: AppTypography.spacingSmall),
-            child: CreateScenarioTile(onTap: () => _createNewScenario(context)),
-          );
-        }
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Create New Scenario button
+          CreateScenarioTile(onTap: () => _createNewScenario(context)),
 
-        // Custom scenario tiles
-        final customIndex = index - 1;
-        if (customIndex < _customScenarios.length) {
-          final customScenarioName = _customScenarios[customIndex];
+          // Saved Scenarios section
+          SectionDivider.labeled(
+            l10n.savedScenariosTitle,
+            topSpacing: AppTypography.spacingLarge,
+            bottomSpacing: AppTypography.spacingMedium,
+          ),
 
-          return Padding(
-            padding: EdgeInsets.symmetric(vertical: AppTypography.spacingSmall),
-            child: CustomScenarioTile(
-              scenarioName: customScenarioName,
-              isSelected: false, // TODO: Track selected custom scenario
-              onTap: () => _selectCustomScenario(context, customScenarioName),
-              onEdit: () => _editCustomScenario(context, customScenarioName),
-              onDelete: () =>
-                  _deleteCustomScenario(context, customScenarioName),
+          // Saved scenarios list
+          if (_customScenarios.isEmpty)
+            _buildEmptyState(l10n)
+          else
+            ..._customScenarios.map((scenarioName) {
+              return Padding(
+                padding: EdgeInsets.only(bottom: AppTypography.spacingSmall),
+                child: CustomScenarioTile(
+                  scenarioName: scenarioName,
+                  isSelected: false,
+                  onTap: () => _selectCustomScenario(context, scenarioName),
+                  onEdit: () => _editCustomScenario(context, scenarioName),
+                  onDelete: () => _deleteCustomScenario(context, scenarioName),
+                ),
+              );
+            }),
+
+          // Experiments section
+          SectionDivider.labeled(
+            l10n.experimentsTitle,
+            topSpacing: AppTypography.spacingLarge,
+            bottomSpacing: AppTypography.spacingMedium,
+          ),
+
+          // Experiments subtitle
+          Padding(
+            padding: EdgeInsets.only(bottom: AppTypography.spacingMedium),
+            child: Text(
+              l10n.experimentsSubtitle,
+              style: TextStyle(
+                fontSize: AppTypography.fontSizeSmall,
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityMedium,
+                ),
+              ),
             ),
-          );
-        }
+          ),
 
-        return const SizedBox.shrink();
+          // Experiments grid
+          _buildExperimentsGrid(context),
+        ],
+      ),
+    );
+  }
+
+  /// Build empty state when no saved scenarios exist
+  Widget _buildEmptyState(AppLocalizations l10n) {
+    return Container(
+      padding: EdgeInsets.all(AppTypography.spacingLarge),
+      child: Column(
+        children: [
+          Icon(
+            Icons.bookmark_border,
+            size: AppTypography.iconSizeHuge,
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityFaint,
+            ),
+          ),
+          SizedBox(height: AppTypography.spacingMedium),
+          Text(
+            l10n.noBodiesAdded, // Using existing localized string
+            style: TextStyle(
+              fontSize: AppTypography.fontSizeLarge,
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityMedium,
+              ),
+            ),
+          ),
+          SizedBox(height: AppTypography.spacingSmall),
+          Text(
+            l10n.addBodiesInSetupTab, // Using existing localized string
+            style: TextStyle(
+              fontSize: AppTypography.fontSizeSmall,
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityMedium,
+              ),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build the experiments grid with 2 columns
+  Widget _buildExperimentsGrid(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.75,
+        crossAxisSpacing: AppTypography.spacingMedium,
+        mainAxisSpacing: AppTypography.spacingMedium,
+      ),
+      itemCount: ExperimentalScenarioConfig.experiments.length,
+      itemBuilder: (context, index) {
+        final experiment = ExperimentalScenarioConfig.experiments[index];
+        final experimentName = experiment.name(l10n);
+        return ExperimentalScenarioTile(
+          experiment: experiment,
+          isSelected: _selectedExperiment == experimentName,
+          onTap: () => _selectExperiment(context, experiment),
+        );
       },
     );
   }
@@ -120,9 +218,36 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       value: scenarioName,
     );
 
-    // Load the custom scenario into the manager and switch to custom scenario type
-    CustomScenarioManager.instance.loadCustomScenario(scenarioName);
-    widget.onScenarioSelected(ScenarioType.custom);
+    // Open the scenario editor for this custom scenario
+    _editCustomScenario(context, scenarioName);
+  }
+
+  void _selectExperiment(
+    BuildContext context,
+    ExperimentalScenarioConfig experiment,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+    final experimentName = experiment.name(l10n);
+
+    // Log analytics for experimental scenario selection
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.customScenarioLoaded,
+      element: UIElement.customScenariosTab,
+      value: 'experiment:$experimentName',
+    );
+
+    setState(() {
+      _selectedExperiment = experimentName;
+    });
+
+    // TODO: Implement experimental scenario loading or navigation to editor
+    // For now, show a snackbar indicating the feature is coming
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.experimentComingSoon(experimentName)),
+        backgroundColor: experiment.color,
+      ),
+    );
   }
 
   Future<void> _editCustomScenario(

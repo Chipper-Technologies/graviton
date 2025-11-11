@@ -4312,6 +4312,24 @@ abstract class AppLocalizations {
   /// **'Custom'**
   String get scenarioTabCustom;
 
+  /// Section title for user's saved custom scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Saved Scenarios'**
+  String get savedScenariosTitle;
+
+  /// Section title for experimental physics scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Experiments'**
+  String get experimentsTitle;
+
+  /// Subtitle explaining the purpose of experimental scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Explore interesting physics concepts'**
+  String get experimentsSubtitle;
+
   /// Formatted body count for custom scenarios
   ///
   /// In en, this message translates to:
@@ -4539,6 +4557,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Orbit stabilized! Radius {changeDescription} to {finalRadius} units. Phase and inclination reset for stability.'**
   String orbitStabilizedMessage(String changeDescription, String finalRadius);
+
+  /// Name for binary pulsar experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Binary Pulsar'**
+  String get experimentBinaryPulsarName;
+
+  /// Description for binary pulsar experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Two neutron stars spiraling inward due to gravitational waves'**
+  String get experimentBinaryPulsarDescription;
+
+  /// Expected duration for binary pulsar experiment
+  ///
+  /// In en, this message translates to:
+  /// **'100 years'**
+  String get experimentBinaryPulsarDuration;
+
+  /// Name for trojan asteroids experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Trojan Asteroids'**
+  String get experimentTrojanAsteroidsName;
+
+  /// Description for trojan asteroids experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Stable points in Jupiter\'s orbit where asteroids accumulate'**
+  String get experimentTrojanAsteroidsDescription;
+
+  /// Expected duration for trojan asteroids experiment
+  ///
+  /// In en, this message translates to:
+  /// **'50 years'**
+  String get experimentTrojanAsteroidsDuration;
+
+  /// Name for galactic dance experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Galactic Dance'**
+  String get experimentGalacticDanceName;
+
+  /// Description for galactic dance experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Two galaxies colliding and merging over cosmic time'**
+  String get experimentGalacticDanceDescription;
+
+  /// Expected duration for galactic dance experiment
+  ///
+  /// In en, this message translates to:
+  /// **'1 billion years'**
+  String get experimentGalacticDanceDuration;
+
+  /// Name for ring formation experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Ring Formation'**
+  String get experimentRingFormationName;
+
+  /// Description for ring formation experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'How planetary rings form from disrupted moons'**
+  String get experimentRingFormationDescription;
+
+  /// Expected duration for ring formation experiment
+  ///
+  /// In en, this message translates to:
+  /// **'1000 years'**
+  String get experimentRingFormationDuration;
+
+  /// Name for comet trajectory experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Comet Trajectory'**
+  String get experimentCometTrajectoryName;
+
+  /// Description for comet trajectory experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Highly elliptical orbit showing conservation laws'**
+  String get experimentCometTrajectoryDescription;
+
+  /// Expected duration for comet trajectory experiment
+  ///
+  /// In en, this message translates to:
+  /// **'200 years'**
+  String get experimentCometTrajectoryDuration;
+
+  /// Name for stellar nursery experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Stellar Nursery'**
+  String get experimentStellarNurseryName;
+
+  /// Description for stellar nursery experimental scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Star formation from collapsing gas clouds'**
+  String get experimentStellarNurseryDescription;
+
+  /// Expected duration for stellar nursery experiment
+  ///
+  /// In en, this message translates to:
+  /// **'10 million years'**
+  String get experimentStellarNurseryDuration;
+
+  /// Advanced difficulty level for experimental scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'advanced'**
+  String get experimentDifficultyAdvanced;
+
+  /// Intermediate difficulty level for experimental scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'intermediate'**
+  String get experimentDifficultyIntermediate;
+
+  /// Beginner difficulty level for experimental scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'beginner'**
+  String get experimentDifficultyBeginner;
+
+  /// Message shown when selecting an experimental scenario that's not yet implemented
+  ///
+  /// In en, this message translates to:
+  /// **'Experimental scenario \"{scenarioName}\" - Coming soon!'**
+  String experimentComingSoon(String scenarioName);
 
   /// Text shown for unknown or invalid values
   ///

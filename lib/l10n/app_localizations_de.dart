@@ -2446,6 +2446,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get scenarioTabCustom => 'Benutzerdefiniert';
 
   @override
+  String get savedScenariosTitle => 'Gespeicherte Szenarien';
+
+  @override
+  String get experimentsTitle => 'Experimente';
+
+  @override
+  String get experimentsSubtitle => 'Interessante Physikkonzepte erkunden';
+
+  @override
   String customScenarioBodyCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -2591,6 +2600,80 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String orbitStabilizedMessage(String changeDescription, String finalRadius) {
     return 'Umlaufbahn stabilisiert! Radius $changeDescription auf $finalRadius Einheiten. Phase und Neigung für Stabilität zurückgesetzt.';
+  }
+
+  @override
+  String get experimentBinaryPulsarName => 'Doppelpulsar';
+
+  @override
+  String get experimentBinaryPulsarDescription =>
+      'Zwei Neutronensterne spiralen durch Gravitationswellen nach innen';
+
+  @override
+  String get experimentBinaryPulsarDuration => '100 Jahre';
+
+  @override
+  String get experimentTrojanAsteroidsName => 'Trojanische Asteroiden';
+
+  @override
+  String get experimentTrojanAsteroidsDescription =>
+      'Stabile Punkte in Jupiters Umlaufbahn, wo sich Asteroiden ansammeln';
+
+  @override
+  String get experimentTrojanAsteroidsDuration => '50 Jahre';
+
+  @override
+  String get experimentGalacticDanceName => 'Galaktischer Tanz';
+
+  @override
+  String get experimentGalacticDanceDescription =>
+      'Zwei Galaxien kollidieren und verschmelzen über kosmische Zeit';
+
+  @override
+  String get experimentGalacticDanceDuration => '1 Milliarde Jahre';
+
+  @override
+  String get experimentRingFormationName => 'Ringbildung';
+
+  @override
+  String get experimentRingFormationDescription =>
+      'Wie sich Planetenringe aus zerstörten Monden bilden';
+
+  @override
+  String get experimentRingFormationDuration => '1000 Jahre';
+
+  @override
+  String get experimentCometTrajectoryName => 'Kometenbahn';
+
+  @override
+  String get experimentCometTrajectoryDescription =>
+      'Hochelliptische Umlaufbahn zeigt Erhaltungsgesetze';
+
+  @override
+  String get experimentCometTrajectoryDuration => '200 Jahre';
+
+  @override
+  String get experimentStellarNurseryName => 'Sternkinderstube';
+
+  @override
+  String get experimentStellarNurseryDescription =>
+      'Sternbildung aus kollabierenden Gaswolken';
+
+  @override
+  String get experimentStellarNurseryDuration => '10 Millionen Jahre';
+
+  @override
+  String get experimentDifficultyAdvanced => 'fortgeschritten';
+
+  @override
+  String get experimentDifficultyIntermediate => 'mittelstufe';
+
+  @override
+  String get experimentDifficultyBeginner => 'Anfänger';
+
+  @override
+  String experimentComingSoon(String scenarioName) {
+    return 'Experimentelles Szenario \"$scenarioName\" - Bald verfügbar!';
   }
 
   @override
