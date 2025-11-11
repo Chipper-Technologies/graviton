@@ -583,6 +583,17 @@ Create release keystores for Google Play Store distribution:
 - Security validation and backup reminders
 - Google Play compatible keystore generation
 
+### 🤖 GitHub Copilot Integration
+Graviton includes comprehensive GitHub Copilot configuration for AI-assisted development:
+
+**[📖 View Complete GitHub Copilot Guide →](docs/COPILOT.md)**
+
+- **Automatic Instructions**: Project standards automatically applied to all Copilot suggestions
+- **Specialized Chat Modes**: 8 expert modes (`@quality`, `@physics`, `@ui`, etc.) for focused assistance
+- **Reference Documentation**: 11 comprehensive prompt files for detailed guidance
+- **Code Quality Enforcement**: Zero tolerance for magic numbers, strict AppTypography usage
+- **Physics Accuracy**: AI assistance trained on gravitational mechanics and orbital calculations
+
 ### 📚 Complete Documentation
 For detailed tool documentation, including troubleshooting, advanced options, and integration examples:
 
