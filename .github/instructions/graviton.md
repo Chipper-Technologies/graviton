@@ -1,4 +1,4 @@
-# GitHub Copilot Custom Instructions for Graviton
+# GitHub Copilot Instructions for Graviton
 
 ## Project Context
 This is a Flutter-based gravitational physics simulation app called "Graviton" that provides:
@@ -140,3 +140,12 @@ This app is designed for educational purposes, so prioritize:
 - Focus on both correctness and learning opportunities
 - Consider the educational nature of the codebase
 - **Reference the detailed prompts in .github/prompts/ for specific guidance**
+
+## Integration with Other Configurations
+
+This instructions file works alongside:
+- **Chat Modes**: `.github/chatmodes/` for specialized interactive guidance
+- **Prompts**: `.github/prompts/` for comprehensive reference documentation
+- **Review Configs**: `.github/copilot-advanced-config.md` and `.github/copilot-review-config.md`
+
+All configurations enforce the same critical code quality standards with zero tolerance for AppTypography violations and strict file organization requirements.
