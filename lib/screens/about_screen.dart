@@ -106,7 +106,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTypography.spacingMedium),
 
                     // Centered version with status color
                     if (_packageInfo != null)
@@ -121,7 +121,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTypography.spacingMedium),
 
                     // Description
                     Text(
@@ -129,7 +129,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       style: theme.textTheme.bodyMedium,
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTypography.spacingXXLarge),
 
                     // Author Section with Chipper Logo
                     _buildInfoSection(
@@ -143,7 +143,7 @@ class _AboutScreenState extends State<AboutScreen> {
                             width: 20,
                             height: 20,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTypography.spacingSmall),
                           Flexible(
                             child: Text(
                               l10n.companyName,
@@ -153,7 +153,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTypography.spacingLarge),
 
                     // Website Section
                     _buildInfoSection(
@@ -175,7 +175,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTypography.spacingMedium),
 
                     // Privacy Policy Section
                     _buildInfoSection(
@@ -197,7 +197,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTypography.spacingXXLarge),
 
                     // Copyright Section
                     _buildInfoSection(
@@ -236,7 +236,7 @@ class _AboutScreenState extends State<AboutScreen> {
           size: AppTypography.iconSizeXLarge,
           color: theme.colorScheme.primary,
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTypography.spacingMedium),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +248,7 @@ class _AboutScreenState extends State<AboutScreen> {
                   color: AppColors.uiTextGrey,
                 ),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: AppTypography.spacingXXSmall),
               child,
             ],
           ),
@@ -337,7 +337,7 @@ class _AboutScreenState extends State<AboutScreen> {
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: AppTypography.spacingSmall),
         Container(
           padding: const EdgeInsets.symmetric(
             horizontal: AppTypography.spacingSmall,
@@ -360,7 +360,7 @@ class _AboutScreenState extends State<AboutScreen> {
         // Show upgrade link for outdated versions
         if (versionStatus == VersionStatus.outdated &&
             VersionService.instance.getStoreUrl() != null) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTypography.spacingLarge),
           ElevatedButton.icon(
             onPressed: () => VersionService.instance.launchStore(),
             icon: Icon(

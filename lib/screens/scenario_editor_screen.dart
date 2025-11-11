@@ -834,7 +834,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
                 }),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTypography.spacingLarge),
 
               // Description field
               StyledTextField(

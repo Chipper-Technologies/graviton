@@ -150,7 +150,7 @@ class _HapticSliderOptionState extends State<HapticSliderOption> {
         Row(
           children: [
             Icon(widget.icon, size: AppTypography.iconSizeXLarge),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTypography.spacingSmall),
             Text(widget.label, style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),

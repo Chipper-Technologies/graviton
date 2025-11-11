@@ -150,11 +150,11 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                               '${NumberUtils.formatDecimal(value, 1)}x',
                         ),
 
-                        const SizedBox(height: 32),
+                        const SizedBox(height: AppTypography.spacingXXXLarge),
 
                         // Collision section
                         SectionTitle(title: l10n.collisionsSection),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTypography.spacingLarge),
 
                         HapticSliderOption.detailed(
                           label: l10n.collisionSensitivity,
@@ -171,11 +171,11 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                               '${NumberUtils.formatDecimal(value * 100, 0)}%',
                         ),
 
-                        const SizedBox(height: 32),
+                        const SizedBox(height: AppTypography.spacingXXXLarge),
 
                         // Trails section
                         SectionTitle(title: l10n.trailsLabel),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTypography.spacingLarge),
 
                         HapticSliderOption.detailed(
                           label: l10n.trailLength,
@@ -207,11 +207,11 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                               NumberUtils.formatDecimal(value, 1),
                         ),
 
-                        const SizedBox(height: 32),
+                        const SizedBox(height: AppTypography.spacingXXXLarge),
 
                         // Haptics section
                         SectionTitle(title: l10n.hapticsSection),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTypography.spacingLarge),
 
                         ToggleOption(
                           title: l10n.vibrationEnabled,
@@ -225,7 +225,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                         ),
 
                         if (_vibrationEnabled) ...[
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTypography.spacingLarge),
                           HapticSliderOption.detailed(
                             label: l10n.vibrationThrottle,
                             value: _vibrationThrottleTime,
@@ -242,7 +242,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                           ),
                         ],
 
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppTypography.spacingXXLarge),
 
                         // Reset button
                         ActionOption(

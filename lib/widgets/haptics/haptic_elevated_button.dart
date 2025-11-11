@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/haptic_utils.dart';
 
 /// Enhanced ElevatedButton with haptic feedback
@@ -52,7 +53,11 @@ class HapticElevatedButton extends StatelessWidget {
       focusNode: focusNode,
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [icon, const SizedBox(width: 8), label],
+        children: [
+          icon,
+          const SizedBox(width: AppTypography.spacingSmall),
+          label,
+        ],
       ),
     );
   }

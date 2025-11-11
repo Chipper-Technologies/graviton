@@ -279,7 +279,9 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                         color: _getIconColor(_currentStep),
                                       ),
                               ),
-                              const SizedBox(height: 24),
+                              const SizedBox(
+                                height: AppTypography.spacingXXLarge,
+                              ),
 
                               // Title
                               Text(

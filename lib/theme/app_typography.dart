@@ -65,6 +65,7 @@ class AppTypography {
   // =============================================================================
 
   /// Standard spacing values
+  static const double spacingXXSmall = 2.0;
   static const double spacingXSmall = 4.0;
   static const double spacingSmall = 8.0;
   static const double spacingMedium = 12.0;

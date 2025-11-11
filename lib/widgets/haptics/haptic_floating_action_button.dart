@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/haptic_utils.dart';
 
 /// Enhanced FloatingActionButton with haptic feedback
@@ -102,7 +103,11 @@ class HapticFloatingActionButton extends StatelessWidget {
       child: icon != null
           ? Row(
               mainAxisSize: MainAxisSize.min,
-              children: [icon, const SizedBox(width: 8), label],
+              children: [
+                icon,
+                const SizedBox(width: AppTypography.spacingSmall),
+                label,
+              ],
             )
           : label,
     );

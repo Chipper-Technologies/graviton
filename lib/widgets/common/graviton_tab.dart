@@ -55,7 +55,7 @@ class GravitonTab extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(width: 6),
+          const SizedBox(width: AppTypography.spacingSmall),
           Text(label, style: TextStyle(color: effectiveColor)),
         ],
       ),
