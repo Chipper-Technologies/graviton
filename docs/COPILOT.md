@@ -11,32 +11,32 @@ Graviton includes extensive GitHub Copilot configuration to ensure high-quality,
 ```
 .github/
 ├── instructions/
-│   └── graviton.md                   # Main project instructions (auto-loaded)
+│   └── graviton.instructions.md            # Main project instructions (auto-loaded)
 ├── chatmodes/
-│   ├── README.md                     # Chat modes overview
-│   ├── quality.chatmode.md           # Code quality reviewer
-│   ├── physics.chatmode.md           # Physics simulation expert  
-│   ├── ui.chatmode.md                # UI designer & theme expert
-│   ├── performance.chatmode.md       # Performance optimization
-│   ├── i18n.chatmode.md              # Internationalization expert
-│   ├── testing.chatmode.md           # Testing specialist
-│   ├── scenarios.chatmode.md         # Educational content manager
-│   └── accessibility.chatmode.md     # Accessibility expert
+│   ├── README.md                           # Chat modes overview
+│   ├── quality.chatmode.md                 # Code quality reviewer
+│   ├── physics.chatmode.md                 # Physics simulation expert  
+│   ├── ui.chatmode.md                      # UI designer & theme expert
+│   ├── performance.chatmode.md             # Performance optimization
+│   ├── i18n.chatmode.md                    # Internationalization expert
+│   ├── testing.chatmode.md                 # Testing specialist
+│   ├── scenarios.chatmode.md               # Educational content manager
+│   └── accessibility.chatmode.md           # Accessibility expert
 ├── prompts/
-│   ├── README.md                     # Prompts overview
-│   ├── code-quality-standards.md     # Core coding standards (start here!)
-│   ├── physics-calculations.md       # Physics implementation guidelines
-│   ├── flutter-state-management.md   # Provider patterns
-│   ├── custom-painter-rendering.md   # Performance rendering
-│   ├── internationalization.md       # i18n patterns
-│   ├── accessibility.md              # WCAG compliance
-│   ├── theme-visual-design.md        # Space-themed UI
-│   ├── scenario-management.md        # Educational scenarios
-│   ├── firebase-integration.md       # Backend services
-│   ├── performance-optimization.md   # 60fps optimization
-│   └── testing.md                    # Comprehensive testing
-├── copilot-advanced-config.md        # Advanced review patterns
-└── copilot-review-config.md          # Review automation
+│   ├── README.md                            # Prompts overview
+│   ├── code-quality-standards.prompt.md     # Core coding standards (start here!)
+│   ├── physics-calculations.prompt.md       # Physics implementation guidelines
+│   ├── flutter-state-management.prompt.md   # Provider patterns
+│   ├── custom-painter-rendering.prompt.md   # Performance rendering
+│   ├── internationalization.prompt.md       # i18n patterns
+│   ├── accessibility.prompt.md              # WCAG compliance
+│   ├── theme-visual-design.prompt.md        # Space-themed UI
+│   ├── scenario-management.prompt.md        # Educational scenarios
+│   ├── firebase-integration.prompt.md       # Backend services
+│   ├── performance-optimization.prompt.md   # 60fps optimization
+│   └── testing.prompt.md                    # Comprehensive testing
+├── copilot-advanced-config.md               # Advanced review patterns
+└── copilot-review-config.md                 # Review automation
 ```
 
 ## 🚨 Critical Code Quality Standards
@@ -76,7 +76,7 @@ All GitHub Copilot configurations enforce these **NON-NEGOTIABLE** standards:
 
 ### Automatically Applied by VS Code
 
-#### ✅ Instructions (`/.github/instructions/graviton.md`)
+#### ✅ Instructions (`/.github/instructions/graviton.instructions.md`)
 - **Purpose**: Main project guidelines applied to all Copilot interactions
 - **Scope**: All code suggestions, completions, and chat responses
 - **Content**: Critical standards, architecture patterns, anti-patterns
@@ -90,7 +90,7 @@ All GitHub Copilot configurations enforce these **NON-NEGOTIABLE** standards:
 
 ### Manual Reference Required
 
-#### 📚 Prompts (`/.github/prompts/*.md`)
+#### 📚 Prompts (`/.github/prompts/*.prompt.md`)
 - **Purpose**: Comprehensive reference documentation
 - **Scope**: Detailed implementation guidance for complex topics
 - **Content**: In-depth patterns, examples, best practices
@@ -143,39 +143,39 @@ Use the `@mode` syntax in Copilot Chat for specialized help:
 
 ### Starting Points
 
-#### 🚨 [code-quality-standards.md](.github/prompts/code-quality-standards.md)
+#### 🚨 [code-quality-standards.prompt.md](.github/prompts/code-quality-standards.prompt.md)
 **START HERE** - Essential coding standards that all other configurations enforce.
 
-#### ⚗️ [physics-calculations.md](.github/prompts/physics-calculations.md)  
+#### ⚗️ [physics-calculations.prompt.md](.github/prompts/physics-calculations.prompt.md)  
 Gravitational mechanics, N-body algorithms, numerical stability, energy conservation.
 
-#### 🎨 [theme-visual-design.md](.github/prompts/theme-visual-design.md)
+#### 🎨 [theme-visual-design.prompt.md](.github/prompts/theme-visual-design.prompt.md)
 Space-themed design system, cosmic colors, stellar classifications.
 
 ### Specialized Topics
 
-#### 🏗️ [flutter-state-management.md](.github/prompts/flutter-state-management.md)
+#### 🏗️ [flutter-state-management.prompt.md](.github/prompts/flutter-state-management.prompt.md)
 Provider patterns, state architecture, simulation state management.
 
-#### 🎭 [custom-painter-rendering.md](.github/prompts/custom-painter-rendering.md)
+#### 🎭 [custom-painter-rendering.prompt.md](.github/prompts/custom-painter-rendering.prompt.md)
 Performance-optimized rendering, 3D transformations, trail visualization.
 
-#### 🌍 [internationalization.md](.github/prompts/internationalization.md)
+#### 🌍 [internationalization.prompt.md](.github/prompts/internationalization.prompt.md)
 Multi-language support, ARB files, scientific terminology, cultural considerations.
 
-#### ♿ [accessibility.md](.github/prompts/accessibility.md)
+#### ♿ [accessibility.prompt.md](.github/prompts/accessibility.prompt.md)
 WCAG compliance, screen readers, haptic feedback, keyboard navigation.
 
-#### ⚡ [performance-optimization.md](.github/prompts/performance-optimization.md)
+#### ⚡ [performance-optimization.prompt.md](.github/prompts/performance-optimization.prompt.md)
 60fps targets, memory management, spatial optimization, level-of-detail rendering.
 
-#### 🧪 [testing.md](.github/prompts/testing.md)
+#### 🧪 [testing.prompt.md](.github/prompts/testing.prompt.md)
 Unit tests, physics validation, widget testing, performance benchmarks.
 
-#### 🎓 [scenario-management.md](.github/prompts/scenario-management.md)
+#### 🎓 [scenario-management.prompt.md](.github/prompts/scenario-management.prompt.md)
 Educational scenarios, astronomy accuracy, custom scenario validation.
 
-#### 🔥 [firebase-integration.md](.github/prompts/firebase-integration.md)
+#### 🔥 [firebase-integration.prompt.md](.github/prompts/firebase-integration.prompt.md)
 Analytics, crash reporting, remote config, feature flags.
 
 ## 💡 Best Practices for Using GitHub Copilot with Graviton
@@ -183,7 +183,7 @@ Analytics, crash reporting, remote config, feature flags.
 ### 1. Start with Quality Standards
 Always reference the code quality standards first:
 ```
-"Following the code-quality-standards.md guidelines, help me create a..."
+"Following the code-quality-standards.prompt.md guidelines, help me create a..."
 ```
 
 ### 2. Use Domain-Specific Chat Modes
@@ -196,13 +196,13 @@ Choose the appropriate chat mode for your task:
 ### 3. Reference Relevant Prompts
 When working on complex features, copy relevant sections from prompt files:
 ```
-"Using the physics-calculations.md patterns for orbital mechanics, implement..."
+"Using the physics-calculations.prompt.md patterns for orbital mechanics, implement..."
 ```
 
 ### 4. Combine Configurations
 Use multiple sources for comprehensive guidance:
 ```
-"Following @ui mode guidelines and the theme-visual-design.md cosmic color palette, create..."
+"Following @ui mode guidelines and the theme-visual-design.prompt.md cosmic color palette, create..."
 ```
 
 ### 5. Validate Against Standards
@@ -217,7 +217,7 @@ Always check generated code against the critical standards:
 
 ### Custom Instructions Scope
 
-The main instructions file (`graviton.md`) covers:
+The main instructions file (`graviton.instructions.md`) covers:
 - **Architecture Patterns**: Provider state management, service layer separation
 - **Code Quality**: AppTypography enforcement, file organization, documentation
 - **Physics Standards**: Numerical stability, conservation laws, realistic constants
@@ -247,7 +247,7 @@ Prompt files provide:
 Ensure you have the GitHub Copilot extension installed in VS Code.
 
 ### 2. Familiarize with Standards
-Read `.github/prompts/code-quality-standards.md` to understand the critical requirements.
+Read `.github/prompts/code-quality-standards.prompt.md` to understand the critical requirements.
 
 ### 3. Try Chat Modes
 Open Copilot Chat and experiment with different modes:
