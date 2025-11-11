@@ -20,6 +20,7 @@ import 'package:graviton/widgets/common/body_type_picker.dart';
 import 'package:graviton/widgets/common/color_picker.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
+import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
 import 'package:graviton/widgets/common/graviton_popup_menu.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
@@ -431,53 +432,29 @@ class _ScenarioEditorBodyDetailsBottomSheetState
   Future<bool> _showUnsavedChangesDialog(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
 
-    final result = await showDialog<bool>(
+    final result = await BaseConfirmationDialog.show<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.uiBlack.withValues(
-          alpha: AppTypography.opacityVeryHigh,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-          side: BorderSide(
-            color: AppColors.primaryColor.withValues(
-              alpha: AppTypography.opacityMedium,
-            ),
-            width: 1,
-          ),
-        ),
-        title: Text(
-          l10n.unsavedChangesTitle,
-          style: AppTypography.titleText.copyWith(color: AppColors.uiWhite),
-        ),
-        content: Text(
-          l10n.unsavedChangesMessage,
-          style: AppTypography.mediumText.copyWith(
-            color: AppColors.uiWhite.withValues(alpha: 0.8),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(
-              l10n.cancel,
-              style: AppTypography.mediumText.copyWith(
-                color: AppColors.uiWhite.withValues(alpha: 0.7),
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(
-              l10n.discardButton,
-              style: AppTypography.mediumText.copyWith(
-                color: AppColors.accretionRed,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
+      title: l10n.unsavedChangesTitle,
+      message: l10n.unsavedChangesMessage,
+      borderColor: AppColors.primaryColor.withValues(
+        alpha: AppTypography.opacityFaint,
       ),
+      actions: [
+        DialogAction(
+          text: l10n.cancel,
+          onPressed: () => Navigator.of(context).pop(false),
+          textColor: AppColors.uiWhite.withValues(
+            alpha: AppTypography.opacityHigh,
+          ),
+        ),
+        DialogAction(
+          text: l10n.discardButton,
+          onPressed: () => Navigator.of(context).pop(true),
+          textColor: AppColors.accretionRed,
+          fontWeight: FontWeight.w600,
+          isDestructive: true,
+        ),
+      ],
     );
 
     return result ?? false;

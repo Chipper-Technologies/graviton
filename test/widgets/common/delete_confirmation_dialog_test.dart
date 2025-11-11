@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
 
 import '../../test_utils.dart';
@@ -200,7 +201,10 @@ void main() {
       expect(iconFinder, findsOneWidget);
 
       final Icon iconWidget = tester.widget(iconFinder);
-      expect(iconWidget.color, customColor);
+      expect(
+        iconWidget.color,
+        customColor.withValues(alpha: AppTypography.opacityVeryFaint),
+      );
     });
 
     testWidgets('should use default warning color when not provided', (
@@ -233,7 +237,12 @@ void main() {
       expect(iconFinder, findsOneWidget);
 
       final Icon iconWidget = tester.widget(iconFinder);
-      expect(iconWidget.color, AppColors.celestialRed);
+      expect(
+        iconWidget.color,
+        AppColors.celestialRed.withValues(
+          alpha: AppTypography.opacityVeryFaint,
+        ),
+      );
     });
 
     testWidgets('should be accessible to screen readers', (

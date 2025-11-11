@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
 
 /// A reusable delete confirmation dialog widget
 ///
@@ -36,14 +37,36 @@ class DeleteConfirmationDialog extends StatelessWidget {
     IconData? titleIcon,
     Color? warningColor,
   }) {
-    return showDialog<bool>(
+    final l10n = AppLocalizations.of(context)!;
+    final effectiveWarningColor = warningColor ?? AppColors.celestialRed;
+
+    return BaseConfirmationDialog.show<bool>(
       context: context,
-      builder: (context) => DeleteConfirmationDialog(
-        title: title,
-        message: message,
-        titleIcon: titleIcon,
-        warningColor: warningColor,
+      title: title,
+      message: message,
+      titleIcon: titleIcon,
+      iconColor: effectiveWarningColor.withValues(
+        alpha: AppTypography.opacityVeryFaint,
       ),
+      actions: [
+        DialogAction(
+          text: l10n.cancel,
+          onPressed: () => Navigator.of(context).pop(false),
+          textColor: AppColors.uiWhite.withValues(
+            alpha: AppTypography.opacityHigh,
+          ),
+        ),
+        DialogAction(
+          text: l10n.deleteButton,
+          onPressed: () => Navigator.of(context).pop(true),
+          textColor: effectiveWarningColor,
+          backgroundColor: effectiveWarningColor.withValues(
+            alpha: AppTypography.opacityDisabled,
+          ),
+          fontWeight: FontWeight.w600,
+          isDestructive: true,
+        ),
+      ],
     );
   }
 
@@ -52,67 +75,31 @@ class DeleteConfirmationDialog extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final effectiveWarningColor = warningColor ?? AppColors.celestialRed;
 
-    return AlertDialog(
-      backgroundColor: AppColors.uiBlack.withValues(
-        alpha: AppTypography.opacityAlmostOpaque,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-        side: BorderSide(
-          color: effectiveWarningColor.withValues(
-            alpha: AppTypography.opacityFaint,
-          ),
-          width: AppTypography.borderThin,
-        ),
-      ),
-      title: Row(
-        children: [
-          if (titleIcon != null) ...[
-            Icon(
-              titleIcon,
-              color: effectiveWarningColor,
-              size: AppTypography.iconSizeXXLarge,
-            ),
-            SizedBox(width: AppTypography.spacingMedium),
-          ],
-          Expanded(
-            child: Text(
-              title,
-              style: AppTypography.largeText.copyWith(
-                color: AppColors.uiWhite,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-      content: Text(
-        message,
-        style: AppTypography.mediumText.copyWith(
-          color: AppColors.uiWhite.withValues(
-            alpha: AppTypography.opacityVeryHigh,
-          ),
-        ),
+    return BaseConfirmationDialog(
+      title: title,
+      message: message,
+      titleIcon: titleIcon,
+      iconColor: effectiveWarningColor,
+      borderColor: effectiveWarningColor.withValues(
+        alpha: AppTypography.opacityVeryFaint,
       ),
       actions: [
-        TextButton(
+        DialogAction(
+          text: l10n.cancel,
           onPressed: () => Navigator.pop(context, false),
-          style: TextButton.styleFrom(
-            foregroundColor: AppColors.uiWhite.withValues(
-              alpha: AppTypography.opacityMediumHigh,
-            ),
+          textColor: AppColors.uiWhite.withValues(
+            alpha: AppTypography.opacityHigh,
           ),
-          child: Text(l10n.cancel),
         ),
-        TextButton(
+        DialogAction(
+          text: l10n.deleteButton,
           onPressed: () => Navigator.pop(context, true),
-          style: TextButton.styleFrom(
-            foregroundColor: effectiveWarningColor,
-            backgroundColor: effectiveWarningColor.withValues(
-              alpha: AppTypography.opacityDisabled,
-            ),
+          textColor: effectiveWarningColor,
+          backgroundColor: effectiveWarningColor.withValues(
+            alpha: AppTypography.opacityDisabled,
           ),
-          child: Text(l10n.deleteButton),
+          fontWeight: FontWeight.w600,
+          isDestructive: true,
         ),
       ],
     );

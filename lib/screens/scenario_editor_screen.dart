@@ -12,6 +12,7 @@ import 'package:graviton/widgets/haptics/haptic_text_button.dart';
 import 'package:graviton/widgets/haptics/haptic_floating_action_button.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
+import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
 import 'package:graviton/models/custom_scenario.dart';
 import 'package:graviton/models/scenario_metadata.dart';
 import 'package:graviton/models/scenario_physics_settings.dart';
@@ -1288,36 +1289,24 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     BuildContext context,
     AppLocalizations l10n,
   ) async {
-    return await showDialog<bool>(
+    return await BaseConfirmationDialog.show<bool>(
           context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: AppColors.uiBlack.withValues(
-              alpha: AppTypography.opacityNearlyOpaque,
+          title: l10n.unsavedChangesTitle,
+          message: l10n.unsavedChangesMessage,
+          actions: [
+            DialogAction(
+              text: l10n.cancel,
+              onPressed: () => Navigator.of(context).pop(false),
+              textColor: AppColors.uiWhite.withValues(alpha: 0.7),
             ),
-            title: Text(
-              l10n.unsavedChangesTitle,
-              style: AppTypography.titleText,
+            DialogAction(
+              text: l10n.discardButton,
+              onPressed: () => Navigator.of(context).pop(true),
+              textColor: AppColors.celestialRed,
+              fontWeight: FontWeight.w600,
+              isDestructive: true,
             ),
-            content: Text(
-              l10n.unsavedChangesMessage,
-              style: AppTypography.mediumText,
-            ),
-            actions: [
-              HapticTextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(l10n.cancel),
-              ),
-              HapticTextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text(
-                  l10n.discardButton,
-                  style: AppTypography.mediumText.copyWith(
-                    color: AppColors.celestialRed,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          ],
         ) ??
         false;
   }

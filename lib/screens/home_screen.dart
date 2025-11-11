@@ -33,6 +33,7 @@ import 'package:graviton/widgets/sliding_panel_bottom_sheet.dart';
 import 'package:graviton/widgets/semantics/semantic_simulation_canvas.dart';
 import 'package:graviton/widgets/semantics/semantic_live_region.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
+import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
 import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
@@ -1012,22 +1013,24 @@ class _HomeScreenState extends State<HomeScreen>
   void _showExitConfirmationDialog() {
     final l10n = AppLocalizations.of(context)!;
 
-    showDialog<bool>(
+    BaseConfirmationDialog.show<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.exitAppTitle),
-        content: Text(l10n.exitAppMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(l10n.cancel),
+      title: l10n.exitAppTitle,
+      message: l10n.exitAppMessage,
+      actions: [
+        DialogAction(
+          text: l10n.cancel,
+          onPressed: () => Navigator.of(context).pop(false),
+          textColor: AppColors.uiWhite.withValues(
+            alpha: AppTypography.opacityHigh,
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(l10n.exit),
-          ),
-        ],
-      ),
+        ),
+        DialogAction(
+          text: l10n.exit,
+          onPressed: () => Navigator.of(context).pop(true),
+          textColor: AppColors.primaryColor,
+        ),
+      ],
     ).then((shouldExit) {
       if (shouldExit == true) {
         // Exit the app using dart:io exit
