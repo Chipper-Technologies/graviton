@@ -158,6 +158,83 @@ void main() {
       expect(textField.maxLines, equals(3));
     });
 
+    testWidgets('supports minLines and maxLines configuration', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: StyledTextField(
+              controller: controller,
+              icon: Icons.description,
+              hintText: 'Enter description',
+              minLines: 2,
+              maxLines: 4,
+              onChanged: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      final textField = tester.widget<TextField>(find.byType(TextField));
+      expect(textField.minLines, equals(2));
+      expect(textField.maxLines, equals(4));
+    });
+
+    testWidgets('minLines defaults to null when not specified', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: StyledTextField(
+              controller: controller,
+              icon: Icons.description,
+              hintText: 'Enter description',
+              maxLines: 3,
+              onChanged: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      final textField = tester.widget<TextField>(find.byType(TextField));
+      expect(textField.minLines, isNull);
+      expect(textField.maxLines, equals(3));
+    });
+
+    testWidgets('supports expandable text field configuration', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: StyledTextField(
+              controller: controller,
+              icon: Icons.description,
+              hintText: 'Describe what this scenario demonstrates',
+              minLines: 2,
+              maxLines: 4,
+              onChanged: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      // Verify the text field has the correct expandable configuration
+      final textField = tester.widget<TextField>(find.byType(TextField));
+      expect(
+        textField.minLines,
+        equals(2),
+        reason: 'Text field should start with 2 lines',
+      );
+      expect(
+        textField.maxLines,
+        equals(4),
+        reason: 'Text field should expand up to 4 lines',
+      );
+
+      // Verify hint text is correct
+      expect(
+        find.text('Describe what this scenario demonstrates'),
+        findsOneWidget,
+      );
+    });
+
     testWidgets('supports different keyboard types', (tester) async {
       await tester.pumpWidget(
         MaterialApp(

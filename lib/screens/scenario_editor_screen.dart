@@ -843,7 +843,8 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
                 icon: Icons.description,
                 labelText: l10n.descriptionEditorLabel,
                 hintText: l10n.describeWhatThisScenarioDemonstratesEditorHint,
-                maxLines: 3,
+                minLines: 2,
+                maxLines: 4,
                 onChanged: (description) => setState(() {
                   _metadata = ScenarioMetadata(
                     name: _metadata.name,

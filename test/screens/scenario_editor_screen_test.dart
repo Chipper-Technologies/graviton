@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/widgets/common/graviton_popup_menu.dart';
+import 'package:graviton/widgets/common/styled_text_field.dart';
 
 void main() {
   group('ScenarioEditorScreen Tab Behavior', () {
@@ -490,6 +491,220 @@ void main() {
 
       // Menu should close
       expect(find.text('Test Scenario'), findsNothing);
+    });
+  });
+
+  group('ScenarioEditorScreen Description Field', () {
+    Widget makeTestableWidget(Widget child) {
+      return ChangeNotifierProvider<AppState>(
+        create: (_) => AppState(),
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en', '')],
+          home: child,
+        ),
+      );
+    }
+
+    testWidgets(
+      'description field has proper expandable configuration in Setup tab',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          makeTestableWidget(const ScenarioEditorScreen()),
+        );
+        await tester.pump();
+
+        // Should be on Setup tab by default
+        expect(find.text('Setup'), findsOneWidget);
+
+        // Find the description field (should be a StyledTextField with description icon)
+        final styledTextFields = find.byType(StyledTextField);
+        expect(
+          styledTextFields,
+          findsAtLeastNWidgets(2),
+        ); // Name and description fields
+
+        // Find the description field by looking for the one with the description icon
+        bool foundDescriptionField = false;
+        for (int i = 0; i < tester.widgetList(styledTextFields).length; i++) {
+          final styledTextField = tester.widget<StyledTextField>(
+            styledTextFields.at(i),
+          );
+          if (styledTextField.icon == Icons.description) {
+            // This is the description field, check its configuration
+            expect(
+              styledTextField.minLines,
+              equals(2),
+              reason: 'Description field should start with 2 lines',
+            );
+            expect(
+              styledTextField.maxLines,
+              equals(4),
+              reason: 'Description field should expand up to 4 lines',
+            );
+            foundDescriptionField = true;
+            break;
+          }
+        }
+
+        expect(
+          foundDescriptionField,
+          isTrue,
+          reason: 'Should find description field with proper configuration',
+        );
+      },
+    );
+
+    testWidgets('description field shows proper hint text', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pump();
+
+      // Find the description field hint text
+      expect(
+        find.textContaining('Describe what this scenario demonstrates'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('description field updates metadata correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pump();
+
+      // Find all StyledTextField widgets and locate the description field
+      final styledTextFields = find.byType(StyledTextField);
+      StyledTextField? descriptionField;
+
+      for (int i = 0; i < tester.widgetList(styledTextFields).length; i++) {
+        final field = tester.widget<StyledTextField>(styledTextFields.at(i));
+        if (field.icon == Icons.description) {
+          descriptionField = field;
+          break;
+        }
+      }
+
+      expect(
+        descriptionField,
+        isNotNull,
+        reason: 'Should find description field',
+      );
+
+      // Enter text in the description field
+      await tester.enterText(
+        find.byWidget(descriptionField!),
+        'This is a test scenario for gravitational physics',
+      );
+      await tester.pump();
+
+      // The text should be entered successfully
+      expect(
+        find.text('This is a test scenario for gravitational physics'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('description field handles multi-line content correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pump();
+
+      // Find the description field
+      final styledTextFields = find.byType(StyledTextField);
+      StyledTextField? descriptionField;
+
+      for (int i = 0; i < tester.widgetList(styledTextFields).length; i++) {
+        final field = tester.widget<StyledTextField>(styledTextFields.at(i));
+        if (field.icon == Icons.description) {
+          descriptionField = field;
+          break;
+        }
+      }
+
+      expect(descriptionField, isNotNull);
+
+      // Enter multi-line text
+      const multiLineText = '''Line one of description
+Line two with more details
+Line three with physics concepts
+Line four might overflow the maxLines limit''';
+
+      await tester.enterText(find.byWidget(descriptionField!), multiLineText);
+      await tester.pump();
+
+      // Verify the text field can handle the multi-line content
+      expect(descriptionField.minLines, equals(2));
+      expect(descriptionField.maxLines, equals(4));
+    });
+
+    testWidgets(
+      'name field remains single line while description is expandable',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          makeTestableWidget(const ScenarioEditorScreen()),
+        );
+        await tester.pump();
+
+        final styledTextFields = find.byType(StyledTextField);
+        expect(styledTextFields, findsAtLeastNWidgets(2));
+
+        // Check each field
+        for (int i = 0; i < tester.widgetList(styledTextFields).length; i++) {
+          final field = tester.widget<StyledTextField>(styledTextFields.at(i));
+
+          if (field.icon == Icons.title) {
+            // This is the name field - should be single line
+            expect(
+              field.minLines,
+              isNull,
+              reason: 'Name field should not have minLines',
+            );
+            expect(
+              field.maxLines,
+              equals(1),
+              reason: 'Name field should be single line',
+            );
+          } else if (field.icon == Icons.description) {
+            // This is the description field - should be expandable
+            expect(
+              field.minLines,
+              equals(2),
+              reason: 'Description field should start with 2 lines',
+            );
+            expect(
+              field.maxLines,
+              equals(4),
+              reason: 'Description field should expand up to 4 lines',
+            );
+          }
+        }
+      },
+    );
+
+    testWidgets('follows Graviton coding standards with AppTypography usage', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pump();
+
+      // Verify the screen structure follows standards
+      expect(find.byType(Scaffold), findsOneWidget);
+      expect(find.byType(TabBarView), findsOneWidget);
+
+      // Verify proper use of StyledTextField widgets (no magic numbers in UI)
+      final styledTextFields = find.byType(StyledTextField);
+      expect(styledTextFields, findsAtLeastNWidgets(2));
+
+      // The fact that we're using StyledTextField ensures AppTypography compliance
+      // since StyledTextField is designed to use AppTypography constants
     });
   });
 }

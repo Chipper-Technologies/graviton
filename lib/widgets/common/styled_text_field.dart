@@ -19,6 +19,7 @@ class StyledTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool enabled;
   final int? maxLines;
+  final int? minLines;
   final String? errorText;
 
   const StyledTextField({
@@ -31,6 +32,7 @@ class StyledTextField extends StatelessWidget {
     this.keyboardType,
     this.enabled = true,
     this.maxLines = 1,
+    this.minLines,
     this.errorText,
   });
 
@@ -99,6 +101,7 @@ class StyledTextField extends StatelessWidget {
                   enabled: enabled,
                   keyboardType: keyboardType,
                   maxLines: maxLines,
+                  minLines: minLines,
                   style: TextStyle(
                     color: enabled
                         ? AppColors.uiWhite

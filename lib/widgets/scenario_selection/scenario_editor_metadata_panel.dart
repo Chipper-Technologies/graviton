@@ -98,7 +98,8 @@ class _ScenarioEditorMetadataPanelState
                   context,
                 )?.describeWhatThisScenarioDemonstratesEditorHint ??
                 'Describe what this scenario demonstrates',
-            maxLines: 3,
+            minLines: 2,
+            maxLines: 4,
             onChanged: (_) => _updateMetadata(),
           ),
 
@@ -164,6 +165,7 @@ class _ScenarioEditorMetadataPanelState
     required String label,
     required String hint,
     int maxLines = 1,
+    int? minLines,
     ValueChanged<String>? onChanged,
   }) {
     return Column(
@@ -181,6 +183,7 @@ class _ScenarioEditorMetadataPanelState
           controller: controller,
           onChanged: onChanged,
           maxLines: maxLines,
+          minLines: minLines,
           style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite),
           decoration: InputDecoration(
             hintText: hint,

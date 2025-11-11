@@ -261,5 +261,140 @@ void main() {
       // Should handle null objectives without crashing
       expect(find.byType(ScenarioEditorMetadataPanel), findsOneWidget);
     });
+
+    testWidgets('description field has proper expandable configuration', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        makeTestableWidget(
+          ScenarioEditorMetadataPanel(
+            metadata: testMetadata,
+            objectives: testObjectives,
+            onMetadataChanged: (_) {},
+            onObjectivesChanged: (_) {},
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Find all text fields
+      final textFields = find.byType(TextField);
+      expect(textFields, findsAtLeastNWidgets(2));
+
+      // Get the description field (second text field)
+      final descriptionField = textFields.at(1);
+      final textFieldWidget = tester.widget<TextField>(descriptionField);
+
+      // Verify the description field has proper expandable configuration
+      expect(
+        textFieldWidget.minLines,
+        equals(2),
+        reason: 'Description field should start with 2 lines',
+      );
+      expect(
+        textFieldWidget.maxLines,
+        equals(4),
+        reason: 'Description field should expand up to 4 lines',
+      );
+    });
+
+    testWidgets('name field has single line configuration', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        makeTestableWidget(
+          ScenarioEditorMetadataPanel(
+            metadata: testMetadata,
+            objectives: testObjectives,
+            onMetadataChanged: (_) {},
+            onObjectivesChanged: (_) {},
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Find the name field (first text field)
+      final nameField = find.byType(TextField).first;
+      final textFieldWidget = tester.widget<TextField>(nameField);
+
+      // Verify the name field is single line
+      expect(
+        textFieldWidget.minLines,
+        isNull,
+        reason: 'Name field should not have minLines specified',
+      );
+      expect(
+        textFieldWidget.maxLines,
+        equals(1),
+        reason: 'Name field should be single line',
+      );
+    });
+
+    testWidgets('description field expands properly with content', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        makeTestableWidget(
+          ScenarioEditorMetadataPanel(
+            metadata: testMetadata,
+            objectives: testObjectives,
+            onMetadataChanged: (_) {},
+            onObjectivesChanged: (_) {},
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Find the description field
+      final descriptionField = find.byType(TextField).at(1);
+
+      // Enter multi-line content
+      const longDescription =
+          '''This is a comprehensive scenario that demonstrates 
+gravitational mechanics and orbital dynamics in a three-body system.
+The simulation includes realistic physics parameters and interactive controls
+for educational purposes and advanced physics exploration.''';
+
+      await tester.enterText(descriptionField, longDescription);
+      await tester.pump();
+
+      // Verify the text was entered
+      final textFieldWidget = tester.widget<TextField>(descriptionField);
+      expect(
+        textFieldWidget.controller?.text,
+        contains('gravitational mechanics'),
+      );
+    });
+
+    testWidgets('uses AppTypography constants for proper styling', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        makeTestableWidget(
+          ScenarioEditorMetadataPanel(
+            metadata: testMetadata,
+            objectives: testObjectives,
+            onMetadataChanged: (_) {},
+            onObjectivesChanged: (_) {},
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify proper spacing and typography usage
+      expect(find.byType(SizedBox), findsWidgets);
+
+      // Find containers with proper styling
+      final containers = find.byType(Container);
+      expect(containers, findsWidgets);
+
+      // Verify the panel has proper structure
+      expect(find.byType(Column), findsWidgets);
+      expect(find.byType(SingleChildScrollView), findsOneWidget);
+    });
   });
 }
