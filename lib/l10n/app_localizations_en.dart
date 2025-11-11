@@ -1676,6 +1676,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get habitabilityUnknown => 'Unknown';
 
   @override
+  String get habitabilityGasGiant => 'Gas Giant';
+
+  @override
+  String get habitabilityTooSmall => 'Too Small';
+
+  @override
+  String get habitabilityNoAtmosphere => 'No Atmosphere';
+
+  @override
+  String get habitabilityToxicAtmosphere => 'Toxic Atmosphere';
+
+  @override
+  String get habitabilityHighRadiation => 'High Radiation';
+
+  @override
+  String get habitabilityTidallyLocked => 'Tidally Locked';
+
+  @override
+  String get habitabilityExtremeGravity => 'Extreme Gravity';
+
+  @override
   String get habitableZonesDescription =>
       'Show colored zones around stars indicating habitable regions';
 
@@ -2622,6 +2643,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get experimentBinaryPulsarDuration => '100 years';
 
   @override
+  String get binaryPulsarPulsarA => 'Pulsar A';
+
+  @override
+  String get binaryPulsarNeutronStarB => 'Neutron Star B';
+
+  @override
+  String get binaryPulsarScenarioDescription =>
+      'This scenario demonstrates: extreme gravitational fields, relativistic effects, gravitational wave emission, and orbital decay. The neutron stars will slowly spiral inward over time, eventually merging in a catastrophic collision that produces gravitational waves.';
+
+  @override
+  String get binaryPulsarAuthor => 'Graviton Physics Experiments';
+
+  @override
+  String get binaryPulsarEducationalFocus =>
+      'Relativity and Gravitational Waves';
+
+  @override
   String get experimentTrojanAsteroidsName => 'Trojan Asteroids';
 
   @override
@@ -2630,6 +2668,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get experimentTrojanAsteroidsDuration => '50 years';
+
+  @override
+  String get trojanAsteroidsSun => 'Sun';
+
+  @override
+  String get trojanAsteroidsJupiter => 'Jupiter';
+
+  @override
+  String trojanAsteroidsL4Name(int number) {
+    return 'L4 Trojan $number';
+  }
+
+  @override
+  String trojanAsteroidsL5Name(int number) {
+    return 'L5 Trojan $number';
+  }
+
+  @override
+  String get trojanAsteroidsScenarioDescription =>
+      'This scenario demonstrates: Lagrange points, stable orbital mechanics, three-body dynamics, and gravitational equilibrium. The Trojan asteroids remain in stable positions 60° ahead and behind Jupiter, trapped in gravitational balance.';
+
+  @override
+  String get trojanAsteroidsEducationalFocus =>
+      'Lagrange Points and Orbital Stability';
 
   @override
   String get experimentGalacticDanceName => 'Galactic Dance';

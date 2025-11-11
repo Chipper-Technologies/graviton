@@ -1611,6 +1611,27 @@ class AppLocalizationsJa extends AppLocalizations {
   String get habitabilityUnknown => '不明';
 
   @override
+  String get habitabilityGasGiant => 'ガス惑星';
+
+  @override
+  String get habitabilityTooSmall => '小さすぎ';
+
+  @override
+  String get habitabilityNoAtmosphere => '大気なし';
+
+  @override
+  String get habitabilityToxicAtmosphere => '有毒大気';
+
+  @override
+  String get habitabilityHighRadiation => '高放射線';
+
+  @override
+  String get habitabilityTidallyLocked => '潮汐固定';
+
+  @override
+  String get habitabilityExtremeGravity => '極限重力';
+
+  @override
   String get habitableZonesDescription => '居住可能な領域を示す星の周りの色付きゾーンを表示';
 
   @override
@@ -2475,6 +2496,22 @@ class AppLocalizationsJa extends AppLocalizations {
   String get experimentBinaryPulsarDuration => '100年';
 
   @override
+  String get binaryPulsarPulsarA => 'パルサーA';
+
+  @override
+  String get binaryPulsarNeutronStarB => '中性子星B';
+
+  @override
+  String get binaryPulsarScenarioDescription =>
+      'このシナリオは以下を実演します：極端な重力場、相対論的効果、重力波放出、軌道減衰。中性子星は時間とともにゆっくりと内向きにスパイラルし、最終的に重力波を生成する壊滅的な衝突で合体します。';
+
+  @override
+  String get binaryPulsarAuthor => 'Graviton物理学実験';
+
+  @override
+  String get binaryPulsarEducationalFocus => '相対性理論と重力波';
+
+  @override
   String get experimentTrojanAsteroidsName => 'トロヤ群小惑星';
 
   @override
@@ -2482,6 +2519,29 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get experimentTrojanAsteroidsDuration => '50年';
+
+  @override
+  String get trojanAsteroidsSun => '太陽';
+
+  @override
+  String get trojanAsteroidsJupiter => '木星';
+
+  @override
+  String trojanAsteroidsL4Name(int number) {
+    return 'L4トロヤ群$number';
+  }
+
+  @override
+  String trojanAsteroidsL5Name(int number) {
+    return 'L5トロヤ群$number';
+  }
+
+  @override
+  String get trojanAsteroidsScenarioDescription =>
+      'このシナリオは以下を実演します：ラグランジュ点、安定な軌道力学、三体力学、重力平衡。トロヤ群小惑星は木星の60度前後の安定した位置に留まり、重力平衡に捕らわれています。';
+
+  @override
+  String get trojanAsteroidsEducationalFocus => 'ラグランジュ点と軌道安定性';
 
   @override
   String get experimentGalacticDanceName => '銀河の踊り';

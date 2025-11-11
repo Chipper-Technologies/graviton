@@ -32,7 +32,7 @@ class ExperimentalScenarioTile extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
     return Card(
       margin: EdgeInsets.zero,
-      elevation: isSelected ? 8.0 : 2.0,
+      elevation: 8.0, // Always use the higher elevation (activated appearance)
       child: HapticInkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
@@ -40,23 +40,19 @@ class ExperimentalScenarioTile extends StatelessWidget {
           padding: EdgeInsets.all(AppTypography.spacingMedium),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-            border: isSelected
-                ? Border.all(color: experiment.color, width: 2.0)
-                : null,
-            gradient: isSelected
-                ? LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      experiment.color.withValues(
-                        alpha: AppTypography.opacityFaint,
-                      ),
-                      experiment.color.withValues(
-                        alpha: AppTypography.opacityDisabled,
-                      ),
-                    ],
-                  )
-                : null,
+            // Always show the border (activated appearance)
+            border: Border.all(color: experiment.color, width: 2.0),
+            // Always show the gradient (activated appearance)
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                experiment.color.withValues(alpha: AppTypography.opacityFaint),
+                experiment.color.withValues(
+                  alpha: AppTypography.opacityDisabled,
+                ),
+              ],
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

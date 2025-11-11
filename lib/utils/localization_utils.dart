@@ -129,6 +129,20 @@ class LocalizationUtils {
         return l10n.habitabilityTooHot;
       case HabitabilityStatus.tooCold:
         return l10n.habitabilityTooCold;
+      case HabitabilityStatus.gasGiant:
+        return l10n.habitabilityGasGiant;
+      case HabitabilityStatus.tooSmall:
+        return l10n.habitabilityTooSmall;
+      case HabitabilityStatus.noAtmosphere:
+        return l10n.habitabilityNoAtmosphere;
+      case HabitabilityStatus.toxicAtmosphere:
+        return l10n.habitabilityToxicAtmosphere;
+      case HabitabilityStatus.highRadiation:
+        return l10n.habitabilityHighRadiation;
+      case HabitabilityStatus.tidallyLocked:
+        return l10n.habitabilityTidallyLocked;
+      case HabitabilityStatus.extremeGravity:
+        return l10n.habitabilityExtremeGravity;
       case HabitabilityStatus.unknown:
         return l10n.habitabilityUnknown;
     }

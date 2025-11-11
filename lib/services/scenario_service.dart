@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/celestial_body_name.dart';
+import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
@@ -977,6 +978,8 @@ class ScenarioService {
           name: name,
           bodyType: BodyType.planet,
           stellarLuminosity: 0.0,
+          // Pre-assign appropriate habitability status for known characteristics
+          habitabilityStatus: _getInitialHabitabilityStatus(i, name),
         ),
       );
     }
@@ -1038,6 +1041,35 @@ class ScenarioService {
       debugPrint('Failed to generate custom scenario: $e');
       // Fall back to random generation on error
       return _generateRandomBodies(l10n);
+    }
+  }
+
+  /// Get initial habitability status for solar system planets based on known characteristics
+  HabitabilityStatus _getInitialHabitabilityStatus(
+    int planetIndex,
+    String name,
+  ) {
+    // Pre-assign known characteristics for solar system planets
+    // This provides more realistic educational classifications
+    switch (planetIndex) {
+      case 0: // Mercury
+        return HabitabilityStatus.tooSmall; // Too small to retain atmosphere
+      case 1: // Venus
+        return HabitabilityStatus.toxicAtmosphere; // Dense CO₂ atmosphere
+      case 2: // Earth
+        return HabitabilityStatus.habitable; // Our reference habitable world
+      case 3: // Mars
+        return HabitabilityStatus.tooSmall; // Lost most of its atmosphere
+      case 4: // Jupiter
+        return HabitabilityStatus.gasGiant; // Large gas giant
+      case 5: // Saturn
+        return HabitabilityStatus.gasGiant; // Gas giant with rings
+      case 6: // Uranus
+        return HabitabilityStatus.gasGiant; // Ice giant (still gaseous)
+      case 7: // Neptune
+        return HabitabilityStatus.gasGiant; // Ice giant (still gaseous)
+      default:
+        return HabitabilityStatus.unknown; // Fallback for any additional bodies
     }
   }
 }

@@ -359,7 +359,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
           // Scenario info container (body tile style)
           _buildScenarioInfoTile(l10n),
 
-          SizedBox(height: AppTypography.spacingLarge),
+          SizedBox(height: AppTypography.spacingSmall),
 
           // Bodies section divider
           SectionDivider.labeled(l10n.bodiesLabel),

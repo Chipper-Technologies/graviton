@@ -99,22 +99,24 @@ void main() {
     });
 
     group('Selection State Styling', () {
-      testWidgets('should show different elevation when selected', (
+      testWidgets('should always show high elevation (activated appearance)', (
         tester,
       ) async {
-        // Test unselected state
+        // Test unselected state - now has activated appearance
         await tester.pumpWidget(createTestWidget(isSelected: false));
         Card unselectedCard = tester.widget<Card>(find.byType(Card));
-        expect(unselectedCard.elevation, equals(2.0));
+        expect(unselectedCard.elevation, equals(8.0));
 
-        // Test selected state
+        // Test selected state - same elevated appearance
         await tester.pumpWidget(createTestWidget(isSelected: true));
         Card selectedCard = tester.widget<Card>(find.byType(Card));
         expect(selectedCard.elevation, equals(8.0));
       });
 
-      testWidgets('should show border when selected', (tester) async {
-        await tester.pumpWidget(createTestWidget(isSelected: true));
+      testWidgets('should always show border (activated appearance)', (
+        tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget(isSelected: false));
 
         // Find the Container with decoration
         final containers = tester.widgetList<Container>(find.byType(Container));
@@ -133,8 +135,10 @@ void main() {
         expect(border.top.width, equals(2.0));
       });
 
-      testWidgets('should show gradient when selected', (tester) async {
-        await tester.pumpWidget(createTestWidget(isSelected: true));
+      testWidgets('should always show gradient (activated appearance)', (
+        tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget(isSelected: false));
 
         // Find the Container with gradient decoration
         final containers = tester.widgetList<Container>(find.byType(Container));

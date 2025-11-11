@@ -1600,6 +1600,27 @@ class AppLocalizationsZh extends AppLocalizations {
   String get habitabilityUnknown => '未知';
 
   @override
+  String get habitabilityGasGiant => '气体巨星';
+
+  @override
+  String get habitabilityTooSmall => '太小';
+
+  @override
+  String get habitabilityNoAtmosphere => '无大气';
+
+  @override
+  String get habitabilityToxicAtmosphere => '有毒大气';
+
+  @override
+  String get habitabilityHighRadiation => '高辐射';
+
+  @override
+  String get habitabilityTidallyLocked => '潮汐锁定';
+
+  @override
+  String get habitabilityExtremeGravity => '极端重力';
+
+  @override
   String get habitableZonesDescription => '显示恒星周围表示宜居区域的彩色区域';
 
   @override
@@ -2459,6 +2480,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get experimentBinaryPulsarDuration => '100年';
 
   @override
+  String get binaryPulsarPulsarA => '脉冲星A';
+
+  @override
+  String get binaryPulsarNeutronStarB => '中子星B';
+
+  @override
+  String get binaryPulsarScenarioDescription =>
+      '此场景演示：极端重力场、相对论效应、引力波发射和轨道衰减。中子星将随时间缓慢螺旋向内，最终在产生引力波的灾难性碰撞中合并。';
+
+  @override
+  String get binaryPulsarAuthor => 'Graviton物理实验';
+
+  @override
+  String get binaryPulsarEducationalFocus => '相对论与引力波';
+
+  @override
   String get experimentTrojanAsteroidsName => '特洛伊小行星';
 
   @override
@@ -2466,6 +2503,29 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get experimentTrojanAsteroidsDuration => '50年';
+
+  @override
+  String get trojanAsteroidsSun => '太阳';
+
+  @override
+  String get trojanAsteroidsJupiter => '木星';
+
+  @override
+  String trojanAsteroidsL4Name(int number) {
+    return 'L4特洛伊$number';
+  }
+
+  @override
+  String trojanAsteroidsL5Name(int number) {
+    return 'L5特洛伊$number';
+  }
+
+  @override
+  String get trojanAsteroidsScenarioDescription =>
+      '此场景演示：拉格朗日点、稳定轨道力学、三体动力学和引力平衡。特洛伊小行星保持在木星前后60°的稳定位置，被困在引力平衡中。';
+
+  @override
+  String get trojanAsteroidsEducationalFocus => '拉格朗日点与轨道稳定性';
 
   @override
   String get experimentGalacticDanceName => '星系之舞';

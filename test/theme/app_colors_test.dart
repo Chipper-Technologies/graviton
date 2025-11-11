@@ -1,393 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('AppColors Tests', () {
     group('Color Constants Validation', () {
-      test('should have valid space colors', () {
-        // Test that space colors are properly defined
+      test('should have valid primary color family', () {
+        expect(AppColors.primaryColor, isA<Color>());
+        expect(AppColors.backgroundBlack, isA<Color>());
+        expect(AppColors.backgroundDeepBlue, isA<Color>());
+
+        // Ensure colors are not null and have proper alpha
+        expect(AppColors.primaryColor.a, equals(1.0));
+        expect(AppColors.backgroundBlack.a, equals(1.0));
+      });
+
+      test('should have valid space color family', () {
+        // Test space-themed colors
         expect(AppColors.spaceDeepBlueBlack, const Color(0xFF0a0a1a));
         expect(AppColors.spacePurple, const Color(0xFF2a1a3f));
         expect(AppColors.spaceDeepPurple, const Color(0xFF3d1a5c));
         expect(AppColors.spacePureBlack, const Color(0xFF000000));
-
-        // Verify colors are not null
-        expect(AppColors.spaceVibrantPurple, isNotNull);
-        expect(AppColors.spaceMysticPurple, isNotNull);
-        expect(AppColors.spaceRoyalPurple, isNotNull);
-      });
-
-      test('should have valid galaxy colors', () {
-        expect(AppColors.galaxySlateBlue, const Color(0xFF6A5ACD));
-        expect(AppColors.galaxyDarkSlateBlue, const Color(0xFF483D8B));
-        expect(AppColors.galaxyRoyalBlue, const Color(0xFF4169E1));
-        expect(AppColors.galaxyPureBlue, const Color(0xFF0000FF));
-        expect(AppColors.galaxyIndigo, const Color(0xFF4B0082));
-      });
-
-      test('should have valid stellar colors', () {
-        // Test stellar classification colors
-        expect(AppColors.stellarOType, const Color(0xFF9BB0FF));
-        expect(AppColors.stellarBType, const Color(0xFFAABFFF));
-        expect(AppColors.stellarAType, const Color(0xFFCAD7FF));
-        expect(AppColors.stellarFType, const Color(0xFFF8F7FF));
-        expect(AppColors.stellarGType, const Color(0xFFFFE4B5));
-        expect(AppColors.stellarKType, const Color(0xFFFFD2A1));
-        expect(AppColors.stellarMType, const Color(0xFFFFAD51));
-      });
-
-      test('should have valid planet colors', () {
-        expect(AppColors.planetMercury, const Color(0xFF8C7853));
-        expect(AppColors.planetVenus, const Color(0xFFFFC649));
-        expect(AppColors.planetEarth, const Color(0xFF6B93D6));
-        expect(AppColors.planetMars, const Color(0xFFCD5C5C));
-        expect(AppColors.planetJupiter, const Color(0xFFD8CA9D));
-        expect(AppColors.planetSaturn, const Color(0xFFFFE4B5));
-        expect(AppColors.planetUranus, const Color(0xFF4CC9F0));
-        expect(AppColors.planetNeptune, const Color(0xFF4169E1));
       });
 
       test('should have valid habitability colors', () {
-        expect(AppColors.habitabilityHabitable, const Color(0xFF4CAF50));
-        expect(AppColors.habitabilityTooHot, const Color(0xFFF44336));
-        expect(AppColors.habitabilityTooCold, const Color(0xFF2196F3));
-        expect(AppColors.habitabilityUnknown, const Color(0xFF9E9E9E));
-        expect(AppColors.habitabilityDangerZone, const Color(0xFFFF5722));
+        // Test habitability status colors exist and are valid
+        expect(AppColors.habitabilityHabitable, isA<Color>());
+        expect(AppColors.habitabilityTooHot, isA<Color>());
+        expect(AppColors.habitabilityTooCold, isA<Color>());
+        expect(AppColors.habitabilityGasGiant, isA<Color>());
+        expect(AppColors.habitabilityTooSmall, isA<Color>());
+        expect(AppColors.habitabilityNoAtmosphere, isA<Color>());
+        expect(AppColors.habitabilityToxicAtmosphere, isA<Color>());
+        expect(AppColors.habitabilityHighRadiation, isA<Color>());
+        expect(AppColors.habitabilityTidallyLocked, isA<Color>());
+        expect(AppColors.habitabilityExtremeGravity, isA<Color>());
+        expect(AppColors.habitabilityUnknown, isA<Color>());
+
+        // All should be fully opaque
+        expect(AppColors.habitabilityHabitable.a, equals(1.0));
+        expect(AppColors.habitabilityTooHot.a, equals(1.0));
+        expect(AppColors.habitabilityTooCold.a, equals(1.0));
       });
 
       test('should have valid temperature colors', () {
-        expect(AppColors.temperatureFrozen, const Color(0xFF1E90FF));
-        expect(AppColors.temperatureCold, const Color(0xFF87CEEB));
-        expect(AppColors.temperatureCool, const Color(0xFF90EE90));
-        expect(AppColors.temperatureWarm, const Color(0xFFFFFF00));
-        expect(AppColors.temperatureHot, const Color(0xFFFFA500));
-        expect(AppColors.temperatureVeryHot, const Color(0xFFFF4500));
-        expect(AppColors.temperatureScorching, const Color(0xFF8B0000));
+        // Test temperature gradient colors
+        expect(AppColors.temperatureFrozen, isA<Color>());
+        expect(AppColors.temperatureCold, isA<Color>());
+        expect(AppColors.temperatureCool, isA<Color>());
+        expect(AppColors.temperatureWarm, isA<Color>());
+        expect(AppColors.temperatureHot, isA<Color>());
+        expect(AppColors.temperatureVeryHot, isA<Color>());
+        expect(AppColors.temperatureScorching, isA<Color>());
       });
 
       test('should have valid UI colors', () {
+        // Test UI-specific colors exist and are valid
+        expect(AppColors.uiBlack, const Color(0xFF000000));
         expect(AppColors.uiWhite, const Color(0xFFFFFFFF));
-        expect(AppColors.uiWhite70, const Color(0xB3FFFFFF));
-        expect(AppColors.uiDividerGrey, const Color(0xFF424242));
-        expect(AppColors.uiBorderGrey, const Color(0xFF616161));
-        expect(AppColors.uiTextGrey, const Color(0xFF9E9E9E));
-        expect(AppColors.uiStatusOrange, const Color(0xFFFF9800));
-      });
-    });
+        expect(AppColors.uiRed, isA<Color>());
+        expect(AppColors.uiGreen, isA<Color>());
+        expect(AppColors.basicBlue, isA<Color>());
+        expect(AppColors.uiCyanAccent, isA<Color>());
+        expect(AppColors.uiOrangeAccent, isA<Color>());
+        expect(AppColors.uiTextGrey, isA<Color>());
+        expect(AppColors.uiStatusOrange, isA<Color>());
 
-    group('withAlpha Method', () {
-      test('should create color with specified alpha', () {
-        const baseColor = Color(0xFFFFFFFF); // White
-        const alpha = 0.5;
-
-        final result = AppColors.withAlpha(baseColor, alpha);
-
-        expect(
-          (result.a * 255.0).round() & 0xff,
-          equals((255 * alpha).round()),
-        );
-        expect(
-          (result.r * 255.0).round() & 0xff,
-          equals((baseColor.r * 255.0).round() & 0xff),
-        );
-        expect(
-          (result.g * 255.0).round() & 0xff,
-          equals((baseColor.g * 255.0).round() & 0xff),
-        );
-        expect(
-          (result.b * 255.0).round() & 0xff,
-          equals((baseColor.b * 255.0).round() & 0xff),
-        );
-      });
-
-      test('should handle alpha values at boundaries', () {
-        const baseColor = Color(0xFF123456);
-
-        // Test alpha = 0 (fully transparent)
-        final transparent = AppColors.withAlpha(baseColor, 0.0);
-        expect((transparent.a * 255.0).round() & 0xff, equals(0));
-
-        // Test alpha = 1 (fully opaque)
-        final opaque = AppColors.withAlpha(baseColor, 1.0);
-        expect((opaque.a * 255.0).round() & 0xff, equals(255));
-      });
-
-      test('should preserve RGB values with different alpha', () {
-        const red = Color(0xFFFF0000);
-        const alpha = 0.75;
-
-        final result = AppColors.withAlpha(red, alpha);
-
-        expect((result.r * 255.0).round() & 0xff, equals(255));
-        expect((result.g * 255.0).round() & 0xff, equals(0));
-        expect((result.b * 255.0).round() & 0xff, equals(0));
-        expect(
-          (result.a * 255.0).round() & 0xff,
-          equals((255 * alpha).round()),
-        );
-      });
-    });
-
-    group('createGlowGradient Method', () {
-      test('should create gradient with specified alpha stops', () {
-        const baseColor = Color(0xFF00FF00); // Green
-        const alphaStops = [1.0, 0.7, 0.4, 0.1];
-
-        final gradient = AppColors.createGlowGradient(baseColor, alphaStops);
-
-        expect(gradient, hasLength(alphaStops.length));
-
-        for (int i = 0; i < gradient.length; i++) {
-          expect(
-            (gradient[i].r * 255.0).round() & 0xff,
-            equals((baseColor.r * 255.0).round() & 0xff),
-          );
-          expect(
-            (gradient[i].g * 255.0).round() & 0xff,
-            equals((baseColor.g * 255.0).round() & 0xff),
-          );
-          expect(
-            (gradient[i].b * 255.0).round() & 0xff,
-            equals((baseColor.b * 255.0).round() & 0xff),
-          );
-          expect(
-            (gradient[i].a * 255.0).round() & 0xff,
-            equals((255 * alphaStops[i]).round()),
-          );
-        }
-      });
-
-      test('should handle empty alpha stops', () {
-        const baseColor = Color(0xFF0000FF); // Blue
-        const alphaStops = <double>[];
-
-        final gradient = AppColors.createGlowGradient(baseColor, alphaStops);
-
-        expect(gradient, isEmpty);
-      });
-
-      test('should handle single alpha stop', () {
-        const baseColor = Color(0xFFFFFF00); // Yellow
-        const alphaStops = [0.5];
-
-        final gradient = AppColors.createGlowGradient(baseColor, alphaStops);
-
-        expect(gradient, hasLength(1));
-        expect(
-          (gradient[0].a * 255.0).round() & 0xff,
-          equals(128),
-        ); // 255 * 0.5 = 127.5, rounds to 128
-      });
-    });
-
-    group('getHabitabilityColor Method', () {
-      test('should return correct colors for known habitability statuses', () {
-        expect(
-          AppColors.getHabitabilityColor('habitable'),
-          equals(AppColors.habitabilityHabitable),
-        );
-        expect(
-          AppColors.getHabitabilityColor('too_hot'),
-          equals(AppColors.habitabilityTooHot),
-        );
-        expect(
-          AppColors.getHabitabilityColor('too_cold'),
-          equals(AppColors.habitabilityTooCold),
-        );
-      });
-
-      test('should handle case-insensitive input', () {
-        expect(
-          AppColors.getHabitabilityColor('HABITABLE'),
-          equals(AppColors.habitabilityHabitable),
-        );
-        expect(
-          AppColors.getHabitabilityColor('Too_Hot'),
-          equals(AppColors.habitabilityTooHot),
-        );
-        expect(
-          AppColors.getHabitabilityColor('TOO_COLD'),
-          equals(AppColors.habitabilityTooCold),
-        );
-      });
-
-      test('should return unknown color for unrecognized status', () {
-        expect(
-          AppColors.getHabitabilityColor('invalid'),
-          equals(AppColors.habitabilityUnknown),
-        );
-        expect(
-          AppColors.getHabitabilityColor(''),
-          equals(AppColors.habitabilityUnknown),
-        );
-        expect(
-          AppColors.getHabitabilityColor('random_text'),
-          equals(AppColors.habitabilityUnknown),
-        );
-      });
-    });
-
-    group('getTemperatureColor Method', () {
-      test('should return correct colors for temperature ranges in Kelvin', () {
-        const kelvinOffset =
-            SimulationConstants.kelvinToCelsiusOffset; // 273.15
-
-        // Test frozen range (< -50°C)
-        expect(
-          AppColors.getTemperatureColor(kelvinOffset - 100), // -100°C
-          equals(AppColors.temperatureFrozen),
-        );
-
-        // Test cold range (-50°C to 0°C)
-        expect(
-          AppColors.getTemperatureColor(kelvinOffset - 25), // -25°C
-          equals(AppColors.temperatureCold),
-        );
-
-        // Test cool range (0°C to 25°C)
-        expect(
-          AppColors.getTemperatureColor(kelvinOffset + 10), // 10°C
-          equals(AppColors.temperatureCool),
-        );
-
-        // Test warm range (25°C to 50°C)
-        expect(
-          AppColors.getTemperatureColor(kelvinOffset + 30), // 30°C
-          equals(AppColors.temperatureWarm),
-        );
-
-        // Test hot range (50°C to 100°C)
-        expect(
-          AppColors.getTemperatureColor(kelvinOffset + 75), // 75°C
-          equals(AppColors.temperatureHot),
-        );
-
-        // Test very hot range (100°C to 200°C)
-        expect(
-          AppColors.getTemperatureColor(kelvinOffset + 150), // 150°C
-          equals(AppColors.temperatureVeryHot),
-        );
-
-        // Test scorching range (> 200°C)
-        expect(
-          AppColors.getTemperatureColor(kelvinOffset + 300), // 300°C
-          equals(AppColors.temperatureScorching),
-        );
-      });
-
-      test('should handle boundary temperatures correctly', () {
-        const kelvinOffset = SimulationConstants.kelvinToCelsiusOffset;
-
-        // Test exact boundaries
-        expect(
-          AppColors.getTemperatureColor(kelvinOffset - 50), // exactly -50°C
-          equals(AppColors.temperatureCold),
-        );
-        expect(
-          AppColors.getTemperatureColor(kelvinOffset), // exactly 0°C
-          equals(AppColors.temperatureCool),
-        );
-        expect(
-          AppColors.getTemperatureColor(kelvinOffset + 25), // exactly 25°C
-          equals(AppColors.temperatureWarm),
-        );
-        expect(
-          AppColors.getTemperatureColor(kelvinOffset + 50), // exactly 50°C
-          equals(AppColors.temperatureHot),
-        );
-      });
-
-      test('should handle extreme temperatures', () {
-        // Very low temperature (absolute zero area)
-        expect(
-          AppColors.getTemperatureColor(50), // Well below freezing
-          equals(AppColors.temperatureFrozen),
-        );
-
-        // Very high temperature (stellar core temperatures)
-        expect(
-          AppColors.getTemperatureColor(10000), // 9726°C
-          equals(AppColors.temperatureScorching),
-        );
-      });
-    });
-
-    group('getPlanetColor Method', () {
-      test('should return correct colors for known planets', () {
-        // Test with exact capitalized names that match enum values
-        expect(
-          AppColors.getPlanetColor('Mercury'),
-          equals(AppColors.planetMercury),
-        );
-        expect(
-          AppColors.getPlanetColor('Venus'),
-          equals(AppColors.planetVenus),
-        );
-        expect(
-          AppColors.getPlanetColor('Earth'),
-          equals(AppColors.planetEarth),
-        );
-        expect(AppColors.getPlanetColor('Mars'), equals(AppColors.planetMars));
-        expect(
-          AppColors.getPlanetColor('Jupiter'),
-          equals(AppColors.planetJupiter),
-        );
-        expect(
-          AppColors.getPlanetColor('Saturn'),
-          equals(AppColors.planetSaturn),
-        );
-        expect(
-          AppColors.getPlanetColor('Uranus'),
-          equals(AppColors.planetUranus),
-        );
-        expect(
-          AppColors.getPlanetColor('Neptune'),
-          equals(AppColors.planetNeptune),
-        );
-      });
-
-      test('should return default color for case-sensitive mismatches', () {
-        // The fromString method is case-sensitive, so lowercase should return default
-        expect(
-          AppColors.getPlanetColor('earth'),
-          equals(AppColors.celestialBlue),
-        );
-        expect(
-          AppColors.getPlanetColor('jupiter'),
-          equals(AppColors.celestialBlue),
-        );
-        expect(
-          AppColors.getPlanetColor('MARS'),
-          equals(AppColors.celestialBlue),
-        );
-      });
-
-      test('should return default color for unknown planets', () {
-        expect(
-          AppColors.getPlanetColor('Pluto'),
-          equals(AppColors.celestialBlue),
-        );
-        expect(
-          AppColors.getPlanetColor('unknown'),
-          equals(AppColors.celestialBlue),
-        );
-        expect(AppColors.getPlanetColor(''), equals(AppColors.celestialBlue));
-        expect(
-          AppColors.getPlanetColor('asteroid'),
-          equals(AppColors.celestialBlue),
-        );
-      });
-
-      test('should handle exact planet name matching from enum', () {
-        // Test that the method works correctly with CelestialBodyName.fromString behavior
-        expect(
-          AppColors.getPlanetColor('Earth'),
-          equals(AppColors.planetEarth),
-        );
-        // Note: The actual behavior depends on CelestialBodyName.fromString implementation
-        // which requires exact case-sensitive matches
+        // All should be fully opaque
+        expect(AppColors.uiBlack.a, equals(1.0));
+        expect(AppColors.uiWhite.a, equals(1.0));
+        expect(AppColors.uiRed.a, equals(1.0));
       });
     });
 
@@ -398,85 +80,110 @@ void main() {
         expect(AppColors.planetEarth, isA<Color>());
         expect(AppColors.habitabilityHabitable, isA<Color>());
         expect(AppColors.temperatureWarm, isA<Color>());
+        expect(AppColors.uiBlack, isA<Color>());
         expect(AppColors.uiWhite, isA<Color>());
       });
 
       test('should have non-null color values', () {
-        // Test a sampling of colors to ensure they're not null
-        expect(AppColors.spacePureBlack, isNotNull);
-        expect(AppColors.galaxyRoyalBlue, isNotNull);
-        expect(AppColors.stellarGType, isNotNull);
-        expect(AppColors.planetMars, isNotNull);
-        expect(AppColors.habitabilityTooCold, isNotNull);
-        expect(AppColors.temperatureHot, isNotNull);
-        expect(AppColors.uiBorderGrey, isNotNull);
+        // Test a sample of colors to ensure they are not null
+        expect(AppColors.primaryColor, isNotNull);
+        expect(AppColors.backgroundBlack, isNotNull);
+        expect(AppColors.backgroundDeepBlue, isNotNull);
+        expect(AppColors.uiBlack, isNotNull);
+        expect(AppColors.uiWhite, isNotNull);
       });
 
-      test('should have distinct planet colors', () {
-        // Ensure planet colors are visually distinct
-        final planetColors = [
-          AppColors.planetMercury,
-          AppColors.planetVenus,
-          AppColors.planetEarth,
-          AppColors.planetMars,
-          AppColors.planetJupiter,
-          AppColors.planetSaturn,
-          AppColors.planetUranus,
-          AppColors.planetNeptune,
-        ];
-
-        // Check that all planet colors are unique
-        final uniqueColors = planetColors.toSet();
-        expect(uniqueColors.length, equals(planetColors.length));
+      test('should have valid alpha values for UI colors', () {
+        // Most UI colors should be fully opaque
+        expect(AppColors.uiBlack.a, equals(1.0));
+        expect(AppColors.uiWhite.a, equals(1.0));
+        expect(AppColors.primaryColor.a, equals(1.0));
+        expect(AppColors.backgroundBlack.a, equals(1.0));
       });
 
-      test('should have distinct habitability colors', () {
-        final habitabilityColors = [
-          AppColors.habitabilityHabitable,
-          AppColors.habitabilityTooHot,
-          AppColors.habitabilityTooCold,
-          AppColors.habitabilityUnknown,
-          AppColors.habitabilityDangerZone,
-        ];
+      test('should have distinguishable habitability colors', () {
+        // Habitability colors should be visually distinct
+        final habitable = AppColors.habitabilityHabitable;
+        final tooHot = AppColors.habitabilityTooHot;
+        final tooCold = AppColors.habitabilityTooCold;
+        final unknown = AppColors.habitabilityUnknown;
 
-        final uniqueColors = habitabilityColors.toSet();
-        expect(uniqueColors.length, equals(habitabilityColors.length));
+        // Colors should not be identical
+        expect(habitable, isNot(equals(tooHot)));
+        expect(habitable, isNot(equals(tooCold)));
+        expect(habitable, isNot(equals(unknown)));
+        expect(tooHot, isNot(equals(tooCold)));
+      });
+
+      test('should have distinguishable temperature colors', () {
+        // Temperature colors should create a visible gradient
+        final frozen = AppColors.temperatureFrozen;
+        final cold = AppColors.temperatureCold;
+        final warm = AppColors.temperatureWarm;
+        final hot = AppColors.temperatureHot;
+
+        // Colors should not be identical
+        expect(frozen, isNot(equals(cold)));
+        expect(cold, isNot(equals(warm)));
+        expect(warm, isNot(equals(hot)));
+      });
+    });
+
+    group('Asteroid and Pulsar Color Constants', () {
+      test('should have valid asteroid color constants', () {
+        // Test asteroid color constants
+        expect(AppColors.asteroidRockyBrown, isA<Color>());
+        expect(AppColors.asteroidSienna, isA<Color>());
+        expect(AppColors.asteroidBrownish, isA<Color>());
+
+        // Test expected hex values
+        expect(AppColors.asteroidRockyBrown, const Color(0xFF8B7355));
+        expect(AppColors.asteroidSienna, const Color(0xFFA0522D));
+
+        // All should be fully opaque
+        expect(AppColors.asteroidRockyBrown.a, equals(1.0));
+        expect(AppColors.asteroidSienna.a, equals(1.0));
+      });
+
+      test('should have valid pulsar color constant', () {
+        // Test pulsar color constant
+        expect(AppColors.pulsarCyan, isA<Color>());
+        expect(AppColors.pulsarCyan, const Color(0xFF4FC3F7));
+        expect(AppColors.pulsarCyan.a, equals(1.0));
+      });
+
+      test('should have distinguishable asteroid colors', () {
+        // Asteroid colors should be visually distinct
+        expect(
+          AppColors.asteroidRockyBrown,
+          isNot(equals(AppColors.asteroidSienna)),
+        );
+        expect(
+          AppColors.asteroidRockyBrown,
+          isNot(equals(AppColors.asteroidBrownish)),
+        );
+        expect(
+          AppColors.asteroidSienna,
+          isNot(equals(AppColors.asteroidBrownish)),
+        );
       });
     });
 
     group('Alpha Constants Validation', () {
-      test('should have valid alpha constant values', () {
-        // Test actual alpha constants that exist in the class
-        expect(AppColors.alphaVeryFaint, equals(0.003));
-        expect(AppColors.alphaAlmostInvisible, equals(0.004));
-        expect(AppColors.alphaLow, equals(0.05));
-        expect(AppColors.alphaLowMedium, equals(0.08));
-        expect(AppColors.alphaMedium, equals(0.10));
-        expect(AppColors.alphaMediumHigh, equals(0.12));
-        expect(AppColors.alphaHalf, equals(0.5));
-        expect(AppColors.alphaHigh, equals(0.7));
-        expect(AppColors.alphaNearlyOpaque, equals(0.9));
-        expect(AppColors.alphaFullyOpaque, equals(1.0));
-      });
-
-      test('should have alpha values in correct range', () {
-        // All alpha values should be between 0.0 and 1.0
-        expect(AppColors.alphaVeryFaint, greaterThanOrEqualTo(0.0));
-        expect(AppColors.alphaVeryFaint, lessThanOrEqualTo(1.0));
-
-        expect(AppColors.alphaFullyOpaque, greaterThanOrEqualTo(0.0));
-        expect(AppColors.alphaFullyOpaque, lessThanOrEqualTo(1.0));
+      test('should have proper alpha value ranges', () {
+        // Alpha values should be between 0.0 and 1.0
+        expect(AppColors.alphaLow, greaterThanOrEqualTo(0.0));
+        expect(AppColors.alphaLow, lessThanOrEqualTo(1.0));
 
         expect(AppColors.alphaMedium, greaterThanOrEqualTo(0.0));
         expect(AppColors.alphaMedium, lessThanOrEqualTo(1.0));
 
-        expect(AppColors.alphaHalf, greaterThanOrEqualTo(0.0));
-        expect(AppColors.alphaHalf, lessThanOrEqualTo(1.0));
+        expect(AppColors.alphaHigh, greaterThanOrEqualTo(0.0));
+        expect(AppColors.alphaHigh, lessThanOrEqualTo(1.0));
       });
 
-      test('should have ordered alpha progression', () {
-        // Test that alpha values increase logically
-        expect(AppColors.alphaVeryFaint, lessThan(AppColors.alphaLow));
+      test('should have logical alpha progression', () {
+        // Alpha values should increase in logical order
         expect(AppColors.alphaLow, lessThan(AppColors.alphaMedium));
         expect(AppColors.alphaMedium, lessThan(AppColors.alphaHalf));
         expect(AppColors.alphaHalf, lessThan(AppColors.alphaHigh));

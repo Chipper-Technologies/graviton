@@ -1691,6 +1691,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get habitabilityUnknown => 'Desconocido';
 
   @override
+  String get habitabilityGasGiant => 'Gigante Gaseoso';
+
+  @override
+  String get habitabilityTooSmall => 'Demasiado Pequeño';
+
+  @override
+  String get habitabilityNoAtmosphere => 'Sin Atmósfera';
+
+  @override
+  String get habitabilityToxicAtmosphere => 'Atmósfera Tóxica';
+
+  @override
+  String get habitabilityHighRadiation => 'Alta Radiación';
+
+  @override
+  String get habitabilityTidallyLocked => 'Rotación Síncrona';
+
+  @override
+  String get habitabilityExtremeGravity => 'Gravedad Extrema';
+
+  @override
   String get habitableZonesDescription =>
       'Mostrar zonas coloreadas alrededor de estrellas indicando regiones habitables';
 
@@ -2637,6 +2658,23 @@ class AppLocalizationsEs extends AppLocalizations {
   String get experimentBinaryPulsarDuration => '100 años';
 
   @override
+  String get binaryPulsarPulsarA => 'Púlsar A';
+
+  @override
+  String get binaryPulsarNeutronStarB => 'Estrella de Neutrones B';
+
+  @override
+  String get binaryPulsarScenarioDescription =>
+      'Este escenario demuestra: campos gravitacionales extremos, efectos relativistas, emisión de ondas gravitacionales y decaimiento orbital. Las estrellas de neutrones se espiralarán lentamente hacia adentro con el tiempo, fusionándose eventualmente en una colisión catastrófica que produce ondas gravitacionales.';
+
+  @override
+  String get binaryPulsarAuthor => 'Experimentos de Física Graviton';
+
+  @override
+  String get binaryPulsarEducationalFocus =>
+      'Relatividad y Ondas Gravitacionales';
+
+  @override
   String get experimentTrojanAsteroidsName => 'Asteroides Troyanos';
 
   @override
@@ -2645,6 +2683,30 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get experimentTrojanAsteroidsDuration => '50 años';
+
+  @override
+  String get trojanAsteroidsSun => 'Sol';
+
+  @override
+  String get trojanAsteroidsJupiter => 'Júpiter';
+
+  @override
+  String trojanAsteroidsL4Name(int number) {
+    return 'Troyano L4 $number';
+  }
+
+  @override
+  String trojanAsteroidsL5Name(int number) {
+    return 'Troyano L5 $number';
+  }
+
+  @override
+  String get trojanAsteroidsScenarioDescription =>
+      'Este escenario demuestra: puntos de Lagrange, mecánica orbital estable, dinámica de tres cuerpos y equilibrio gravitacional. Los asteroides troyanos permanecen en posiciones estables 60° adelante y detrás de Júpiter, atrapados en equilibrio gravitacional.';
+
+  @override
+  String get trojanAsteroidsEducationalFocus =>
+      'Puntos de Lagrange y Estabilidad Orbital';
 
   @override
   String get experimentGalacticDanceName => 'Danza Galáctica';

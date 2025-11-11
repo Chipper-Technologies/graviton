@@ -5,7 +5,7 @@ import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
-import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/utils/color_utils.dart';
 import 'package:graviton/utils/number_utils.dart';
 
 /// Service for calculating planetary surface temperatures based on stellar radiation
@@ -148,6 +148,6 @@ class TemperatureService {
 
   /// Get color for temperature visualization
   static Color getTemperatureColor(double temperatureKelvin) {
-    return AppColors.getTemperatureColor(temperatureKelvin);
+    return ColorUtils.getTemperatureColor(temperatureKelvin);
   }
 }

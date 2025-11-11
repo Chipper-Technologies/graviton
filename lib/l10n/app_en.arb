@@ -2272,6 +2272,34 @@
   "@habitabilityUnknown": {
     "description": "Status for bodies with unknown habitability"
   },
+  "habitabilityGasGiant": "Gas Giant",
+  "@habitabilityGasGiant": {
+    "description": "Status for gas giant planets"
+  },
+  "habitabilityTooSmall": "Too Small",
+  "@habitabilityTooSmall": {
+    "description": "Status for bodies too small to retain atmosphere"
+  },
+  "habitabilityNoAtmosphere": "No Atmosphere",
+  "@habitabilityNoAtmosphere": {
+    "description": "Status for bodies lacking atmospheric protection"
+  },
+  "habitabilityToxicAtmosphere": "Toxic Atmosphere",
+  "@habitabilityToxicAtmosphere": {
+    "description": "Status for bodies with poisonous atmospheric composition"
+  },
+  "habitabilityHighRadiation": "High Radiation",
+  "@habitabilityHighRadiation": {
+    "description": "Status for bodies exposed to dangerous radiation levels"
+  },
+  "habitabilityTidallyLocked": "Tidally Locked",
+  "@habitabilityTidallyLocked": {
+    "description": "Status for bodies with extreme temperature gradients"
+  },
+  "habitabilityExtremeGravity": "Extreme Gravity",
+  "@habitabilityExtremeGravity": {
+    "description": "Status for bodies with crushing gravitational forces"
+  },
   "habitableZonesDescription": "Show colored zones around stars indicating habitable regions",
   "@habitableZonesDescription": {
     "description": "Description for habitable zones setting"
@@ -3422,6 +3450,26 @@
   "@experimentBinaryPulsarDuration": {
     "description": "Expected duration for binary pulsar experiment"
   },
+  "binaryPulsarPulsarA": "Pulsar A",
+  "@binaryPulsarPulsarA": {
+    "description": "Name for primary pulsar in binary pulsar scenario"
+  },
+  "binaryPulsarNeutronStarB": "Neutron Star B",
+  "@binaryPulsarNeutronStarB": {
+    "description": "Name for companion neutron star in binary pulsar scenario"
+  },
+  "binaryPulsarScenarioDescription": "This scenario demonstrates: extreme gravitational fields, relativistic effects, gravitational wave emission, and orbital decay. The neutron stars will slowly spiral inward over time, eventually merging in a catastrophic collision that produces gravitational waves.",
+  "@binaryPulsarScenarioDescription": {
+    "description": "Detailed description for binary pulsar scenario physics"
+  },
+  "binaryPulsarAuthor": "Graviton Physics Experiments",
+  "@binaryPulsarAuthor": {
+    "description": "Author attribution for physics experiments"
+  },
+  "binaryPulsarEducationalFocus": "Relativity and Gravitational Waves",
+  "@binaryPulsarEducationalFocus": {
+    "description": "Educational focus for binary pulsar experiment"
+  },
   "experimentTrojanAsteroidsName": "Trojan Asteroids",
   "@experimentTrojanAsteroidsName": {
     "description": "Name for trojan asteroids experimental scenario"
@@ -3433,6 +3481,42 @@
   "experimentTrojanAsteroidsDuration": "50 years",
   "@experimentTrojanAsteroidsDuration": {
     "description": "Expected duration for trojan asteroids experiment"
+  },
+  "trojanAsteroidsSun": "Sun",
+  "@trojanAsteroidsSun": {
+    "description": "Name for Sun in trojan asteroids scenario"
+  },
+  "trojanAsteroidsJupiter": "Jupiter",
+  "@trojanAsteroidsJupiter": {
+    "description": "Name for Jupiter in trojan asteroids scenario"
+  },
+  "trojanAsteroidsL4Name": "L4 Trojan {number}",
+  "@trojanAsteroidsL4Name": {
+    "description": "Name pattern for L4 trojan asteroids",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "trojanAsteroidsL5Name": "L5 Trojan {number}",
+  "@trojanAsteroidsL5Name": {
+    "description": "Name pattern for L5 trojan asteroids",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "trojanAsteroidsScenarioDescription": "This scenario demonstrates: Lagrange points, stable orbital mechanics, three-body dynamics, and gravitational equilibrium. The Trojan asteroids remain in stable positions 60° ahead and behind Jupiter, trapped in gravitational balance.",
+  "@trojanAsteroidsScenarioDescription": {
+    "description": "Detailed description for trojan asteroids scenario physics"
+  },
+  "trojanAsteroidsEducationalFocus": "Lagrange Points and Orbital Stability",
+  "@trojanAsteroidsEducationalFocus": {
+    "description": "Educational focus for trojan asteroids experiment"
   },
   "experimentGalacticDanceName": "Galactic Dance",
   "@experimentGalacticDanceName": {

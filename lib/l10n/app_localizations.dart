@@ -2940,6 +2940,48 @@ abstract class AppLocalizations {
   /// **'Unknown'**
   String get habitabilityUnknown;
 
+  /// Status for gas giant planets
+  ///
+  /// In en, this message translates to:
+  /// **'Gas Giant'**
+  String get habitabilityGasGiant;
+
+  /// Status for bodies too small to retain atmosphere
+  ///
+  /// In en, this message translates to:
+  /// **'Too Small'**
+  String get habitabilityTooSmall;
+
+  /// Status for bodies lacking atmospheric protection
+  ///
+  /// In en, this message translates to:
+  /// **'No Atmosphere'**
+  String get habitabilityNoAtmosphere;
+
+  /// Status for bodies with poisonous atmospheric composition
+  ///
+  /// In en, this message translates to:
+  /// **'Toxic Atmosphere'**
+  String get habitabilityToxicAtmosphere;
+
+  /// Status for bodies exposed to dangerous radiation levels
+  ///
+  /// In en, this message translates to:
+  /// **'High Radiation'**
+  String get habitabilityHighRadiation;
+
+  /// Status for bodies with extreme temperature gradients
+  ///
+  /// In en, this message translates to:
+  /// **'Tidally Locked'**
+  String get habitabilityTidallyLocked;
+
+  /// Status for bodies with crushing gravitational forces
+  ///
+  /// In en, this message translates to:
+  /// **'Extreme Gravity'**
+  String get habitabilityExtremeGravity;
+
   /// Description for habitable zones setting
   ///
   /// In en, this message translates to:
@@ -4576,6 +4618,36 @@ abstract class AppLocalizations {
   /// **'100 years'**
   String get experimentBinaryPulsarDuration;
 
+  /// Name for primary pulsar in binary pulsar scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Pulsar A'**
+  String get binaryPulsarPulsarA;
+
+  /// Name for companion neutron star in binary pulsar scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Neutron Star B'**
+  String get binaryPulsarNeutronStarB;
+
+  /// Detailed description for binary pulsar scenario physics
+  ///
+  /// In en, this message translates to:
+  /// **'This scenario demonstrates: extreme gravitational fields, relativistic effects, gravitational wave emission, and orbital decay. The neutron stars will slowly spiral inward over time, eventually merging in a catastrophic collision that produces gravitational waves.'**
+  String get binaryPulsarScenarioDescription;
+
+  /// Author attribution for physics experiments
+  ///
+  /// In en, this message translates to:
+  /// **'Graviton Physics Experiments'**
+  String get binaryPulsarAuthor;
+
+  /// Educational focus for binary pulsar experiment
+  ///
+  /// In en, this message translates to:
+  /// **'Relativity and Gravitational Waves'**
+  String get binaryPulsarEducationalFocus;
+
   /// Name for trojan asteroids experimental scenario
   ///
   /// In en, this message translates to:
@@ -4593,6 +4665,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'50 years'**
   String get experimentTrojanAsteroidsDuration;
+
+  /// Name for Sun in trojan asteroids scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get trojanAsteroidsSun;
+
+  /// Name for Jupiter in trojan asteroids scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Jupiter'**
+  String get trojanAsteroidsJupiter;
+
+  /// Name pattern for L4 trojan asteroids
+  ///
+  /// In en, this message translates to:
+  /// **'L4 Trojan {number}'**
+  String trojanAsteroidsL4Name(int number);
+
+  /// Name pattern for L5 trojan asteroids
+  ///
+  /// In en, this message translates to:
+  /// **'L5 Trojan {number}'**
+  String trojanAsteroidsL5Name(int number);
+
+  /// Detailed description for trojan asteroids scenario physics
+  ///
+  /// In en, this message translates to:
+  /// **'This scenario demonstrates: Lagrange points, stable orbital mechanics, three-body dynamics, and gravitational equilibrium. The Trojan asteroids remain in stable positions 60° ahead and behind Jupiter, trapped in gravitational balance.'**
+  String get trojanAsteroidsScenarioDescription;
+
+  /// Educational focus for trojan asteroids experiment
+  ///
+  /// In en, this message translates to:
+  /// **'Lagrange Points and Orbital Stability'**
+  String get trojanAsteroidsEducationalFocus;
 
   /// Name for galactic dance experimental scenario
   ///

@@ -1616,6 +1616,27 @@ class AppLocalizationsKo extends AppLocalizations {
   String get habitabilityUnknown => '알 수 없음';
 
   @override
+  String get habitabilityGasGiant => '가스 행성';
+
+  @override
+  String get habitabilityTooSmall => '너무 작음';
+
+  @override
+  String get habitabilityNoAtmosphere => '대기 없음';
+
+  @override
+  String get habitabilityToxicAtmosphere => '독성 대기';
+
+  @override
+  String get habitabilityHighRadiation => '높은 방사선';
+
+  @override
+  String get habitabilityTidallyLocked => '조석 고정';
+
+  @override
+  String get habitabilityExtremeGravity => '극한 중력';
+
+  @override
   String get habitableZonesDescription => '거주 가능한 지역을 나타내는 별 주위의 색상 영역 표시';
 
   @override
@@ -2485,6 +2506,22 @@ class AppLocalizationsKo extends AppLocalizations {
   String get experimentBinaryPulsarDuration => '100년';
 
   @override
+  String get binaryPulsarPulsarA => '펄서 A';
+
+  @override
+  String get binaryPulsarNeutronStarB => '중성자별 B';
+
+  @override
+  String get binaryPulsarScenarioDescription =>
+      '이 시나리오는 다음을 보여줍니다: 극한 중력장, 상대론적 효과, 중력파 방출, 궤도 감쇠. 중성자별들은 시간이 지남에 따라 천천히 내부로 나선형으로 이동하여 결국 중력파를 생성하는 파국적인 충돌로 합쳐집니다.';
+
+  @override
+  String get binaryPulsarAuthor => 'Graviton 물리학 실험';
+
+  @override
+  String get binaryPulsarEducationalFocus => '상대성이론과 중력파';
+
+  @override
   String get experimentTrojanAsteroidsName => '트로이군 소행성';
 
   @override
@@ -2492,6 +2529,29 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get experimentTrojanAsteroidsDuration => '50년';
+
+  @override
+  String get trojanAsteroidsSun => '태양';
+
+  @override
+  String get trojanAsteroidsJupiter => '목성';
+
+  @override
+  String trojanAsteroidsL4Name(int number) {
+    return 'L4 트로이 $number';
+  }
+
+  @override
+  String trojanAsteroidsL5Name(int number) {
+    return 'L5 트로이 $number';
+  }
+
+  @override
+  String get trojanAsteroidsScenarioDescription =>
+      '이 시나리오는 다음을 보여줍니다: 라그랑주 점, 안정된 궤도 역학, 삼체 역학, 중력 평형. 트로이 소행성들은 목성의 앞과 뒤 60도 안정된 위치에 남아있으며, 중력 평형에 갇혀 있습니다.';
+
+  @override
+  String get trojanAsteroidsEducationalFocus => '라그랑주 점과 궤도 안정성';
 
   @override
   String get experimentGalacticDanceName => '은하의 춤';

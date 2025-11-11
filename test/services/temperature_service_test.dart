@@ -368,8 +368,12 @@ void main() {
       });
 
       test('Should handle extreme temperatures', () {
-        final coldColor = TemperatureService.getTemperatureColor(100.0);
-        final hotColor = TemperatureService.getTemperatureColor(1000.0);
+        final coldColor = TemperatureService.getTemperatureColor(
+          1000.0,
+        ); // Red dwarf range (< 3500K)
+        final hotColor = TemperatureService.getTemperatureColor(
+          15000.0,
+        ); // Hot blue star (> 10000K)
 
         expect(coldColor, isA<Color>());
         expect(hotColor, isA<Color>());
