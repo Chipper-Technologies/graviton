@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vector_math/vector_math.dart';
 import 'package:graviton/utils/number_utils.dart';
+import 'package:graviton/enums/temperature_unit.dart';
 
 void main() {
   group('NumberUtils', () {
@@ -475,6 +476,388 @@ void main() {
         expect(NumberUtils.formatRadiusInSolarRadii(0.9), equals('0.900 R☉'));
         // Giant star: ~10-100 R☉
         expect(NumberUtils.formatRadiusInSolarRadii(50.0), equals('50.0 R☉'));
+      });
+    });
+
+    group('Temperature Conversion Functions', () {
+      group('kelvinToCelsius', () {
+        test('converts freezing point of water correctly', () {
+          expect(NumberUtils.kelvinToCelsius(273.15), closeTo(0.0, 0.0001));
+        });
+
+        test('converts boiling point of water correctly', () {
+          expect(NumberUtils.kelvinToCelsius(373.15), closeTo(100.0, 0.0001));
+        });
+
+        test('converts absolute zero correctly', () {
+          expect(NumberUtils.kelvinToCelsius(0), equals(-273.15));
+        });
+
+        test('converts room temperature correctly', () {
+          expect(NumberUtils.kelvinToCelsius(294.15), closeTo(21.0, 0.0001));
+        });
+
+        test('converts sun surface temperature correctly', () {
+          expect(NumberUtils.kelvinToCelsius(5778), closeTo(5504.85, 0.01));
+        });
+
+        test('handles negative results correctly', () {
+          expect(NumberUtils.kelvinToCelsius(200), closeTo(-73.15, 0.01));
+          expect(NumberUtils.kelvinToCelsius(100), closeTo(-173.15, 0.01));
+        });
+      });
+
+      group('kelvinToFahrenheit', () {
+        test('converts freezing point of water correctly', () {
+          expect(NumberUtils.kelvinToFahrenheit(273.15), closeTo(32.0, 0.0001));
+        });
+
+        test('converts boiling point of water correctly', () {
+          expect(
+            NumberUtils.kelvinToFahrenheit(373.15),
+            closeTo(212.0, 0.0001),
+          );
+        });
+
+        test('converts absolute zero correctly', () {
+          expect(NumberUtils.kelvinToFahrenheit(0), closeTo(-459.67, 0.01));
+        });
+
+        test('converts room temperature correctly', () {
+          expect(NumberUtils.kelvinToFahrenheit(294.15), closeTo(69.8, 0.1));
+        });
+
+        test('converts sun surface temperature correctly', () {
+          expect(NumberUtils.kelvinToFahrenheit(5778), closeTo(9940.73, 0.01));
+        });
+
+        test('handles negative results correctly', () {
+          expect(NumberUtils.kelvinToFahrenheit(200), closeTo(-99.67, 0.01));
+          expect(NumberUtils.kelvinToFahrenheit(100), closeTo(-279.67, 0.01));
+        });
+      });
+
+      group('celsiusToKelvin', () {
+        test('converts freezing point of water correctly', () {
+          expect(NumberUtils.celsiusToKelvin(0.0), equals(273.15));
+        });
+
+        test('converts boiling point of water correctly', () {
+          expect(NumberUtils.celsiusToKelvin(100.0), equals(373.15));
+        });
+
+        test('converts absolute zero correctly', () {
+          expect(NumberUtils.celsiusToKelvin(-273.15), closeTo(0.0, 0.0001));
+        });
+
+        test('converts room temperature correctly', () {
+          expect(NumberUtils.celsiusToKelvin(21.0), equals(294.15));
+        });
+
+        test('handles negative values correctly', () {
+          expect(NumberUtils.celsiusToKelvin(-50.0), closeTo(223.15, 0.01));
+          expect(NumberUtils.celsiusToKelvin(-100.0), closeTo(173.15, 0.01));
+        });
+      });
+
+      group('fahrenheitToKelvin', () {
+        test('converts freezing point of water correctly', () {
+          expect(NumberUtils.fahrenheitToKelvin(32.0), closeTo(273.15, 0.0001));
+        });
+
+        test('converts boiling point of water correctly', () {
+          expect(
+            NumberUtils.fahrenheitToKelvin(212.0),
+            closeTo(373.15, 0.0001),
+          );
+        });
+
+        test('converts absolute zero correctly', () {
+          expect(NumberUtils.fahrenheitToKelvin(-459.67), closeTo(0.0, 0.01));
+        });
+
+        test('converts room temperature correctly', () {
+          expect(NumberUtils.fahrenheitToKelvin(69.8), closeTo(294.15, 0.01));
+        });
+
+        test('handles negative values correctly', () {
+          expect(NumberUtils.fahrenheitToKelvin(-40.0), closeTo(233.15, 0.01));
+          expect(NumberUtils.fahrenheitToKelvin(0.0), closeTo(255.37, 0.01));
+        });
+      });
+
+      group('round-trip conversion consistency', () {
+        test('Kelvin -> Celsius -> Kelvin maintains accuracy', () {
+          const testValues = [0.0, 273.15, 373.15, 5778.0, 294.15];
+          for (final kelvin in testValues) {
+            final celsius = NumberUtils.kelvinToCelsius(kelvin);
+            final backToKelvin = NumberUtils.celsiusToKelvin(celsius);
+            expect(
+              backToKelvin,
+              closeTo(kelvin, 0.0001),
+              reason: 'Round-trip conversion failed for $kelvin K',
+            );
+          }
+        });
+
+        test('Kelvin -> Fahrenheit -> Kelvin maintains accuracy', () {
+          const testValues = [0.0, 273.15, 373.15, 5778.0, 294.15];
+          for (final kelvin in testValues) {
+            final fahrenheit = NumberUtils.kelvinToFahrenheit(kelvin);
+            final backToKelvin = NumberUtils.fahrenheitToKelvin(fahrenheit);
+            expect(
+              backToKelvin,
+              closeTo(kelvin, 0.001),
+              reason: 'Round-trip conversion failed for $kelvin K',
+            );
+          }
+        });
+      });
+    });
+
+    group('formatTemperatureWithUnit', () {
+      // Define temperature units for testing
+      final kelvin = TemperatureUnit.kelvin;
+      final celsius = TemperatureUnit.celsius;
+      final fahrenheit = TemperatureUnit.fahrenheit;
+
+      group('with Kelvin unit', () {
+        test('formats small temperatures with decimals', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(2.7, kelvin),
+            equals('2.7 K'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(77.35, kelvin),
+            equals('77.35 K'),
+          );
+        });
+
+        test('formats large temperatures as integers with separators', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(273.15, kelvin),
+            equals('273 K'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(5778.0, kelvin),
+            equals('5,778 K'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(15000000.0, kelvin),
+            equals('15,000,000 K'),
+          );
+        });
+
+        test('handles zero temperature', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(0.0, kelvin),
+            equals('0 K'),
+          );
+        });
+      });
+
+      group('with Celsius unit', () {
+        test('converts and formats freezing point', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(273.15, celsius),
+            equals('0 °C'),
+          );
+        });
+
+        test('converts and formats boiling point', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(373.15, celsius),
+            equals('100 °C'),
+          );
+        });
+
+        test('converts and formats room temperature', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(294.15, celsius),
+            equals('21 °C'),
+          );
+        });
+
+        test('converts and formats sun temperature', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(5778.0, celsius),
+            equals('5,505 °C'),
+          );
+        });
+
+        test('handles negative temperatures', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(200.0, celsius),
+            equals('-73.15 °C'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(0.0, celsius),
+            equals('-273 °C'),
+          );
+        });
+      });
+
+      group('with Fahrenheit unit', () {
+        test('converts and formats freezing point', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(273.15, fahrenheit),
+            equals('32 °F'),
+          );
+        });
+
+        test('converts and formats boiling point', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(373.15, fahrenheit),
+            equals('212 °F'),
+          );
+        });
+
+        test('converts and formats room temperature', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(294.15, fahrenheit),
+            equals('69.8 °F'),
+          );
+        });
+
+        test('converts and formats sun temperature', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(5778.0, fahrenheit),
+            equals('9,941 °F'),
+          );
+        });
+
+        test('handles negative temperatures', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(200.0, fahrenheit),
+            equals('-99.67 °F'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(0.0, fahrenheit),
+            equals('-460 °F'),
+          );
+        });
+      });
+
+      group('with legacy string-based unit detection', () {
+        test('detects TemperatureUnit.celsius string pattern', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(
+              273.15,
+              'TemperatureUnit.celsius',
+            ),
+            equals('0 °C'),
+          );
+        });
+
+        test('detects TemperatureUnit.fahrenheit string pattern', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(
+              273.15,
+              'TemperatureUnit.fahrenheit',
+            ),
+            equals('32 °F'),
+          );
+        });
+
+        test('defaults to Kelvin for unrecognized strings', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(273.15, 'invalid'),
+            equals('273 K'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(273.15, ''),
+            equals('273 K'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(273.15, 'xyz'),
+            equals('273 K'),
+          );
+        });
+
+        test('handles null/undefined values gracefully', () {
+          expect(
+            NumberUtils.formatTemperatureWithUnit(273.15, null),
+            equals('273 K'),
+          );
+        });
+      });
+
+      group('precision and formatting consistency', () {
+        test('maintains consistent precision across units', () {
+          const testTemp = 294.15; // Room temperature
+
+          // All should have appropriate precision for their magnitude
+          final kelvinResult = NumberUtils.formatTemperatureWithUnit(
+            testTemp,
+            kelvin,
+          );
+          final celsiusResult = NumberUtils.formatTemperatureWithUnit(
+            testTemp,
+            celsius,
+          );
+          final fahrenheitResult = NumberUtils.formatTemperatureWithUnit(
+            testTemp,
+            fahrenheit,
+          );
+
+          expect(kelvinResult, equals('294 K')); // Integer for large values
+          expect(celsiusResult, equals('21 °C')); // Integer for medium values
+          expect(
+            fahrenheitResult,
+            equals('69.8 °F'),
+          ); // 1 decimal for medium values
+        });
+
+        test('formats extreme temperatures appropriately', () {
+          const extremeTemp = 50000000.0; // Core of massive star
+
+          expect(
+            NumberUtils.formatTemperatureWithUnit(extremeTemp, kelvin),
+            equals('50,000,000 K'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(extremeTemp, celsius),
+            equals('49,999,727 °C'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(extremeTemp, fahrenheit),
+            equals('89,999,540 °F'),
+          );
+        });
+      });
+
+      group('astronomical temperatures', () {
+        test('formats cosmic microwave background', () {
+          const cmbTemp = 2.7;
+          expect(
+            NumberUtils.formatTemperatureWithUnit(cmbTemp, kelvin),
+            equals('2.7 K'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(cmbTemp, celsius),
+            equals('-270 °C'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(cmbTemp, fahrenheit),
+            equals('-455 °F'),
+          );
+        });
+
+        test('formats stellar core temperatures', () {
+          const coreTemp = 15000000.0;
+          expect(
+            NumberUtils.formatTemperatureWithUnit(coreTemp, kelvin),
+            equals('15,000,000 K'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(coreTemp, celsius),
+            equals('14,999,727 °C'),
+          );
+          expect(
+            NumberUtils.formatTemperatureWithUnit(coreTemp, fahrenheit),
+            equals('26,999,540 °F'),
+          );
+        });
       });
     });
   });

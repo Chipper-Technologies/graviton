@@ -4,7 +4,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/scenario_physics_settings.dart';
 import 'package:graviton/models/particle_systems_config.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_physics_panel.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 
 /// Test widget wrapper with localization support
 Widget makeTestableWidget(Widget child) {
@@ -53,8 +53,8 @@ void main() {
       // Should display the widget without crashing
       expect(find.byType(ScenarioEditorPhysicsPanel), findsOneWidget);
 
-      // Should display section titles
-      expect(find.byType(SectionTitle), findsAtLeastNWidgets(2));
+      // Should display haptic slider options
+      expect(find.byType(HapticSliderOption), findsAtLeastNWidgets(6));
 
       // Should be wrapped in SingleChildScrollView
       expect(find.byType(SingleChildScrollView), findsOneWidget);
@@ -74,11 +74,11 @@ void main() {
         ),
       );
 
-      // Should display physics settings section title
-      expect(find.byType(SectionTitle), findsAtLeastNWidgets(1));
+      // Should display physics setting controls
+      expect(find.byType(HapticSliderOption), findsNWidgets(6));
 
-      // Should display placeholder text (widget only shows placeholder content)
-      expect(find.byType(Text), findsAtLeastNWidgets(2));
+      // Should display text labels for all sliders
+      expect(find.byType(Text), findsAtLeastNWidgets(6));
     });
 
     testWidgets('displays particle systems section', (
@@ -95,11 +95,11 @@ void main() {
         ),
       );
 
-      // Should display particle systems section title
-      expect(find.byType(SectionTitle), findsAtLeastNWidgets(2));
+      // Should display all physics controls as haptic sliders
+      expect(find.byType(HapticSliderOption), findsNWidgets(6));
 
-      // Should display placeholder text (widget only shows placeholder content)
-      expect(find.byType(Text), findsAtLeastNWidgets(2));
+      // Should display control labels
+      expect(find.byType(Text), findsAtLeastNWidgets(6));
     });
 
     testWidgets('handles physics changes callback', (
@@ -171,7 +171,10 @@ void main() {
 
       // Should have proper layout structure
       expect(find.byType(SingleChildScrollView), findsOneWidget);
-      expect(find.byType(Column), findsOneWidget);
+      expect(
+        find.byType(Column),
+        findsWidgets,
+      ); // Multiple columns from haptic sliders
       expect(find.byType(SizedBox), findsWidgets);
     });
 
@@ -258,9 +261,12 @@ void main() {
         ),
       );
 
-      // Should display placeholder text indicating future implementation
-      expect(find.textContaining('implemented'), findsWidgets);
-      expect(find.textContaining('configured'), findsWidgets);
+      // Should display physics controls for actual configuration
+      expect(find.byType(HapticSliderOption), findsNWidgets(6));
+      expect(
+        find.byType(Slider),
+        findsNWidgets(6),
+      ); // Each haptic option has a slider
     });
   });
 }

@@ -71,15 +71,43 @@ class BodyTypeRanges {
     }
   }
 
+  /// Gets the realistic temperature range for a given body type.
+  ///
+  /// Returns a Map with 'min' and 'max' keys containing double values in Kelvin.
+  /// The ranges are based on typical values for each celestial body type:
+  /// - Stars: 2000K to 50000K (Red dwarfs to hot blue stars)
+  /// - Planets: 50K to 800K (Frozen gas giants to hot Venus-like)
+  /// - Moons: 50K to 400K (Frozen outer moons to tidally heated)
+  /// - Asteroids: 100K to 400K (Outer belt to inner belt)
+  static Map<String, double> getTemperatureRange(BodyType bodyType) {
+    switch (bodyType) {
+      case BodyType.star:
+        return {'min': 2000.0, 'max': 50000.0}; // Red dwarfs to hot blue stars
+      case BodyType.planet:
+        return {
+          'min': 50.0,
+          'max': 800.0,
+        }; // Frozen gas giants to hot Venus-like
+      case BodyType.moon:
+        return {
+          'min': 50.0,
+          'max': 400.0,
+        }; // Frozen outer moons to tidally heated
+      case BodyType.asteroid:
+        return {'min': 100.0, 'max': 400.0}; // Outer belt to inner belt
+    }
+  }
+
   /// Gets realistic default property values for a given body type.
   ///
-  /// Returns a Map with 'mass', 'radius', and 'luminosity' keys.
+  /// Returns a Map with 'mass', 'radius', 'luminosity', and 'temperature' keys.
   /// These values are positioned in the lower-middle range of each body type
   /// to provide sensible starting points for creation.
   static Map<String, double> getDefaultProperties(BodyType bodyType) {
     final massRange = getMassRange(bodyType);
     final radiusRange = getRadiusRange(bodyType);
     final luminosityRange = getLuminosityRange(bodyType);
+    final temperatureRange = getTemperatureRange(bodyType);
 
     // Use values in the lower-middle portion of each range for defaults
     final massDefault =
@@ -89,11 +117,15 @@ class BodyTypeRanges {
     final luminosityDefault =
         luminosityRange['min']! +
         (luminosityRange['max']! - luminosityRange['min']!) * 0.3;
+    final temperatureDefault =
+        temperatureRange['min']! +
+        (temperatureRange['max']! - temperatureRange['min']!) * 0.3;
 
     return {
       'mass': massDefault,
       'radius': radiusDefault,
       'luminosity': luminosityDefault,
+      'temperature': temperatureDefault,
     };
   }
 

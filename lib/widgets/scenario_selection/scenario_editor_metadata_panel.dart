@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/scenario_metadata.dart';
 import 'package:graviton/models/objectives_config.dart';
@@ -257,6 +258,9 @@ class _ScenarioEditorMetadataPanelState
               value: _selectedDifficulty,
               onChanged: (String? newValue) {
                 if (newValue != null) {
+                  // Add haptic feedback for difficulty selection
+                  HapticFeedback.lightImpact();
+
                   setState(() {
                     _selectedDifficulty = newValue;
                   });

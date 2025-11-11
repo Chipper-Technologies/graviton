@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/custom_scenario_manager.dart';
+import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
 import 'package:graviton/widgets/haptics/haptic_text_button.dart';
 import 'package:graviton/widgets/haptics/haptic_floating_action_button.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
-import 'package:graviton/widgets/section_title.dart';
 import 'package:graviton/models/custom_scenario.dart';
 import 'package:graviton/models/scenario_metadata.dart';
 import 'package:graviton/models/scenario_physics_settings.dart';
@@ -28,6 +32,7 @@ import 'package:graviton/widgets/common/styled_text_field.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_list.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_physics_panel.dart';
+import 'package:graviton/widgets/common/graviton_popup_menu.dart';
 
 /// Screen for creating and editing custom gravitational simulation scenarios
 class ScenarioEditorScreen extends StatefulWidget {
@@ -197,7 +202,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
                   : UIAction.scenarioCreationCanceled,
               element: UIElement.scenarioEditor,
               additionalParams: {
-                'had_unsaved_changes': _hasUnsavedChanges,
+                'had_unsaved_changes': _hasUnsavedChanges.toString(),
                 'body_count': _bodies.length,
               },
             );
@@ -211,7 +216,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
                 : UIAction.scenarioCreationCanceled,
             element: UIElement.scenarioEditor,
             additionalParams: {
-              'had_unsaved_changes': false,
+              'had_unsaved_changes': 'false',
               'body_count': _bodies.length,
             },
           );
@@ -219,18 +224,14 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       },
       child: Scaffold(
         backgroundColor: AppColors.transparentColor,
-        appBar: AppBar(
-          title: Text(
-            widget.isEditing
-                ? (l10n.editScenarioTitle)
-                : (l10n.createScenarioTitle),
-          ),
+        appBar: HapticAppBar(
+          title: widget.isEditing
+              ? l10n.editScenarioTitle
+              : l10n.createScenarioTitle,
           backgroundColor: AppColors.uiBlack.withValues(
             alpha: AppTypography.opacityNearlyOpaque,
           ),
           foregroundColor: AppColors.uiWhite,
-          elevation: 0,
-          automaticallyImplyLeading: true,
           actions: [
             // Save button
             HapticTextButton(
@@ -242,9 +243,37 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
                 style: AppTypography.mediumText.copyWith(
                   color: _hasUnsavedChanges
                       ? AppColors.primaryColor
-                      : AppColors.uiWhite.withValues(alpha: 0.5),
+                      : AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityMedium,
+                        ),
                 ),
               ),
+            ),
+            // Export menu
+            GravitonPopupMenu(
+              accessibilityLabel: l10n.moreActionsAccessibility,
+              accessibilityHint: l10n.scenarioEditorMenuHint,
+              analyticsElement: UIElement.scenarioEditor,
+              menuItems: [
+                GravitonMenuItemConfig(
+                  value: 'test',
+                  labelKey: 'testScenarioButton',
+                  hintKey: 'testScenarioHint',
+                  icon: Icons.play_arrow,
+                  onTap: () => _testScenario(context, l10n),
+                ),
+                GravitonMenuItemConfig(
+                  value: 'export',
+                  labelKey: 'exportScenarioButton',
+                  hintKey: 'exportScenarioHint',
+                  icon: Icons.file_download,
+                  iconColor: AppColors.uiWhite,
+                  borderColor: AppColors.uiWhite.withValues(
+                    alpha: AppColors.alphaMediumVisible,
+                  ),
+                  onTap: () => _exportScenario(context, l10n),
+                ),
+              ],
             ),
             const SizedBox(width: AppTypography.spacingMedium),
           ],
@@ -326,91 +355,392 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SectionTitle(title: l10n.previewEditortitle),
-          SizedBox(height: AppTypography.spacingMedium),
-
-          // Scenario overview
-          _buildPreviewCard(
-            title: _metadata.name,
-            subtitle: _metadata.description,
-            icon: Icons.public,
-          ),
+          // Scenario info container (body tile style)
+          _buildScenarioInfoTile(l10n),
 
           SizedBox(height: AppTypography.spacingLarge),
 
-          // Bodies summary
-          SectionTitle(title: l10n.bodiesLabel),
-          SizedBox(height: AppTypography.spacingMedium),
-          ..._bodies.map((body) => _buildBodyPreviewTile(body)),
+          // Bodies section divider
+          SectionDivider.labeled(l10n.bodiesLabel),
 
           SizedBox(height: AppTypography.spacingLarge),
 
-          // Physics summary
-          SectionTitle(title: l10n.physicsSection),
-          SizedBox(height: AppTypography.spacingMedium),
-          _buildPhysicsPreview(),
+          // Bodies list using common widget
+          if (_bodies.isEmpty)
+            _buildEmptyState(
+              icon: Icons.add_circle_outline,
+              message: l10n.noBodiesAdded,
+              submessage: l10n.addBodiesInSetupTab,
+            )
+          else
+            _buildBodiesGrid(),
+
+          SizedBox(height: AppTypography.spacingLarge),
+
+          // Physics section divider
+          SectionDivider.labeled(l10n.physicsSection),
+
+          SizedBox(height: AppTypography.spacingLarge),
+
+          // Physics summary (simplified)
+          _buildSimplePhysicsPreview(l10n),
 
           SizedBox(height: AppTypography.spacingXLarge),
 
-          // Action buttons
-          Row(
-            children: [
-              Expanded(
-                child: HapticElevatedButton(
-                  onPressed: () => _testScenario(context, l10n),
-                  child: Text(l10n.testScenarioButton),
+          // Actions section divider
+          SectionDivider.plain(),
+
+          SizedBox(height: AppTypography.spacingLarge),
+
+          // Test button only
+          SizedBox(
+            width: double.infinity,
+            child: HapticElevatedButton(
+              onPressed: () => _testScenario(context, l10n),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+                foregroundColor: AppColors.uiWhite,
+                padding: EdgeInsets.symmetric(
+                  vertical: AppTypography.spacingMedium,
                 ),
-              ),
-              SizedBox(width: AppTypography.spacingMedium),
-              Expanded(
-                child: HapticElevatedButton(
-                  onPressed: () => _exportScenario(context, l10n),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.uiBlack.withValues(alpha: 0.3),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusSmall,
                   ),
-                  child: Text(l10n.exportScenarioButton),
                 ),
               ),
-            ],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.play_arrow, size: AppTypography.iconSizeMedium),
+                  SizedBox(width: AppTypography.spacingSmall),
+                  Text(
+                    l10n.testScenarioButton,
+                    style: AppTypography.mediumText.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildPreviewCard({
-    required String title,
-    required String subtitle,
+  Widget _buildScenarioInfoTile(AppLocalizations l10n) {
+    final name = _metadata.name.isNotEmpty
+        ? _metadata.name
+        : l10n.untitledScenario;
+    final description = _metadata.description.isNotEmpty
+        ? _metadata.description
+        : l10n.noDescriptionProvided;
+
+    return Container(
+      margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
+      child: Material(
+        color: AppColors.transparentColor,
+        child: InkWell(
+          onTap: () {
+            // Could open an edit dialog in the future
+          },
+          borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+          child: Container(
+            padding: EdgeInsets.all(AppTypography.spacingLarge),
+            decoration: BoxDecoration(
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityBarely,
+              ),
+              borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+              border: Border.all(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityDisabled,
+                ),
+                width: AppTypography.borderThin,
+              ),
+            ),
+            child: Row(
+              children: [
+                // Scenario icon indicator - matching body tile style
+                Container(
+                  width: AppTypography.spacingXXXLarge,
+                  height: AppTypography.spacingXXXLarge,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityFaint,
+                      ),
+                      width: 1,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.science,
+                    size: AppTypography.iconSizeMedium,
+                    color: AppColors.uiWhite,
+                  ),
+                ),
+                SizedBox(width: AppTypography.spacingLarge),
+                // Scenario name and description - matching body tile style
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                          color: AppColors.uiWhite,
+                          fontSize: AppTypography.fontSizeLarge,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: AppTypography.spacingXSmall),
+                      Text(
+                        description,
+                        style: TextStyle(
+                          color: AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacityHigh,
+                          ),
+                          fontSize: AppTypography.fontSizeMedium,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBodiesGrid() {
+    return Column(
+      children: [
+        // Build grid rows with 2 bodies each
+        for (int i = 0; i < _bodies.length; i += 2) ...[
+          Row(
+            children: [
+              Expanded(child: _buildBodyGridTile(_bodies[i])),
+              if (i + 1 < _bodies.length) ...[
+                SizedBox(width: AppTypography.spacingSmall),
+                Expanded(child: _buildBodyGridTile(_bodies[i + 1])),
+              ] else
+                Expanded(child: SizedBox()), // Empty space for odd numbers
+            ],
+          ),
+          if (i + 2 < _bodies.length) // Don't add spacing after the last row
+            SizedBox(height: AppTypography.spacingSmall),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildBodyGridTile(Body body) {
+    return Container(
+      margin: EdgeInsets
+          .zero, // Remove bottom margin since we handle spacing in grid
+      child: Material(
+        color: AppColors.transparentColor,
+        child: InkWell(
+          onTap: null, // No tap action in preview
+          borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+          child: Container(
+            padding: EdgeInsets.all(AppTypography.spacingLarge),
+            decoration: BoxDecoration(
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityBarely,
+              ),
+              borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+              border: Border.all(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityDisabled,
+                ),
+                width: AppTypography.borderThin,
+              ),
+            ),
+            child: Row(
+              children: [
+                // Body color indicator with icon - matching bodies tab style
+                Container(
+                  width: AppTypography.spacingXXXLarge,
+                  height: AppTypography.spacingXXXLarge,
+                  decoration: BoxDecoration(
+                    color: body.color,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityFaint,
+                      ),
+                      width: 1,
+                    ),
+                  ),
+                  child: Icon(
+                    _getIconForBodyType(body.bodyType),
+                    size: AppTypography.iconSizeMedium,
+                    color: AppColors.uiWhite,
+                  ),
+                ),
+                SizedBox(
+                  width: AppTypography.spacingMedium,
+                ), // Smaller spacing in grid
+                // Body name and info - matching bodies tab style
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        body.name,
+                        style: TextStyle(
+                          color: AppColors.uiWhite,
+                          fontSize: AppTypography.fontSizeLarge,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: AppTypography.spacingXSmall),
+                      Text(
+                        '${body.bodyType.name} • ${NumberUtils.formatMassInSolarMasses(body.mass)}',
+                        style: TextStyle(
+                          color: AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacityHigh,
+                          ),
+                          fontSize: AppTypography.fontSizeMedium,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Get the appropriate icon for each body type
+  IconData _getIconForBodyType(BodyType bodyType) {
+    switch (bodyType) {
+      case BodyType.star:
+        return Icons.wb_sunny; // Sun icon for stars
+      case BodyType.planet:
+        return Icons.public; // Globe icon for planets
+      case BodyType.moon:
+        return Icons.brightness_3; // Crescent moon icon for moons
+      case BodyType.asteroid:
+        return Icons.scatter_plot; // Scatter plot icon for asteroids
+    }
+  }
+
+  Widget _buildSimplePhysicsPreview(AppLocalizations l10n) {
+    return Column(
+      children: [
+        // First row
+        Row(
+          children: [
+            Expanded(
+              child: _buildPhysicsCard(
+                icon: Icons.public,
+                label: l10n.gravityEditor,
+                value: NumberUtils.formatDecimal(
+                  _physics.gravitationalConstant,
+                  2,
+                ),
+                color: AppColors.primaryColor,
+              ),
+            ),
+            SizedBox(width: AppTypography.spacingSmall),
+            Expanded(
+              child: _buildPhysicsCard(
+                icon: Icons.blur_on,
+                label: l10n.softeningEditor,
+                value: NumberUtils.formatDecimal(_physics.softening, 3),
+                color: AppColors.uiCyan,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: AppTypography.spacingSmall),
+        // Second row
+        Row(
+          children: [
+            Expanded(
+              child: _buildPhysicsCard(
+                icon: Icons.speed,
+                label: l10n.timeScaleStatLabel,
+                value: NumberUtils.formatDecimal(_physics.timeScale, 2),
+                color: AppColors.uiGreen,
+              ),
+            ),
+            SizedBox(width: AppTypography.spacingSmall),
+            Expanded(
+              child: _buildPhysicsCard(
+                icon: Icons.timeline,
+                label: l10n.trailPointsEditor,
+                value: _physics.maxTrailPoints.toString(),
+                color: AppColors.uiOrange,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPhysicsCard({
     required IconData icon,
+    required String label,
+    required String value,
+    required Color color,
   }) {
     return Container(
-      padding: EdgeInsets.all(AppTypography.spacingLarge),
+      padding: EdgeInsets.all(AppTypography.spacingMedium),
       decoration: BoxDecoration(
-        color: AppColors.uiBlack.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-        border: Border.all(
-          color: AppColors.primaryColor.withValues(alpha: 0.2),
-          width: 1,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [color.withValues(alpha: 0.1), color.withValues(alpha: 0.05)],
         ),
+        borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: AppTypography.iconSizeLarge,
-            color: AppColors.primaryColor,
+          Container(
+            padding: EdgeInsets.all(AppTypography.spacingSmall),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
+            ),
+            child: Icon(icon, color: color, size: AppTypography.iconSizeMedium),
           ),
           SizedBox(width: AppTypography.spacingMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: AppTypography.titleText),
-                SizedBox(height: AppTypography.spacingSmall),
                 Text(
-                  subtitle,
+                  label,
+                  style: AppTypography.smallText.copyWith(
+                    color: AppColors.uiWhite.withValues(alpha: 0.7),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  value,
                   style: AppTypography.mediumText.copyWith(
-                    color: AppColors.uiWhite.withValues(alpha: 0.8),
+                    color: AppColors.uiWhite,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
@@ -421,74 +751,51 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     );
   }
 
-  Widget _buildBodyPreviewTile(Body body) {
+  Widget _buildEmptyState({
+    required IconData icon,
+    required String message,
+    required String submessage,
+  }) {
     return Container(
-      margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
-      padding: EdgeInsets.all(AppTypography.spacingMedium),
+      padding: EdgeInsets.all(AppTypography.spacingXLarge),
       decoration: BoxDecoration(
-        color: AppColors.uiBlack.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 12,
-            height: 12,
-            decoration: BoxDecoration(
-              color: body.color,
-              shape: BoxShape.circle,
-            ),
+        color: AppColors.uiBlack.withValues(
+          alpha: AppTypography.opacityVeryFaint,
+        ),
+        borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
+        border: Border.all(
+          color: AppColors.uiWhite.withValues(
+            alpha: AppTypography.opacityDisabled,
           ),
-          SizedBox(width: AppTypography.spacingMedium),
-          Expanded(child: Text(body.name, style: AppTypography.mediumText)),
-          Text(
-            NumberUtils.formatMass(body.mass),
-            style: AppTypography.smallText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.7),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPhysicsPreview() {
-    return Container(
-      padding: EdgeInsets.all(AppTypography.spacingMedium),
-      decoration: BoxDecoration(
-        color: AppColors.uiBlack.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
+          width: 1,
+        ),
       ),
       child: Column(
         children: [
-          _buildPhysicsRow(
-            AppLocalizations.of(context)?.gravityEditor ?? 'Gravity',
-            NumberUtils.formatDecimal(_physics.gravitationalConstant, 2),
+          Icon(
+            icon,
+            size: AppTypography.iconSizeXXLarge,
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityFaint,
+            ),
           ),
-          _buildPhysicsRow(
-            AppLocalizations.of(context)?.softeningEditor ?? 'Softening',
-            NumberUtils.formatDecimal(_physics.softening, 3),
-          ),
-          _buildPhysicsRow(
-            AppLocalizations.of(context)?.trailPointsEditor ?? 'Trail Points',
-            _physics.maxTrailPoints.toString(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPhysicsRow(String label, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: AppTypography.spacingSmall),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: AppTypography.mediumText),
+          SizedBox(height: AppTypography.spacingMedium),
           Text(
-            value,
+            message,
             style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(alpha: 0.7),
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityHigh,
+              ),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: AppTypography.spacingSmall),
+          Text(
+            submessage,
+            style: AppTypography.smallText.copyWith(
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityMedium,
+              ),
             ),
           ),
         ],
@@ -498,11 +805,12 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
 
   /// Build the Setup tab (Metadata + Bodies)
   Widget _buildSetupTab(BuildContext context, AppLocalizations l10n) {
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Metadata Section (Name & Description only) - Fixed height
+          // Metadata Section (Name & Description only)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -551,15 +859,22 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
             ],
           ),
 
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTypography.spacingMedium),
 
+          // System Setup Tools Section
           // Bodies Section Divider
           SectionDivider.labeled(l10n.bodiesLabel),
 
-          const SizedBox(height: 24),
-
-          // Bodies List - Give it remaining space
-          Expanded(
+          // Bodies List - Give it a minimum height that can grow with content
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight:
+                  MediaQuery.of(context).size.height *
+                  0.3, // At least 30% of screen height
+              maxHeight:
+                  MediaQuery.of(context).size.height *
+                  0.6, // At most 60% of screen height
+            ),
             child: ScenarioEditorBodyList(
               bodies: _bodies,
               onBodiesChanged: _onBodiesChanged,
@@ -639,6 +954,8 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
           child: ScenarioEditorBodyDetailsBottomSheet(
             body: newBody,
             isAddMode: true,
+            availableCentralBodies:
+                _bodies, // Pass existing bodies as potential central bodies
             onBodyChanged: (updatedBody) {
               // Update the local body reference
               setSheetState(() {});
@@ -798,13 +1115,126 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       },
     );
 
-    // TODO: Implement test functionality - load scenario into simulation
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l10n.testScenarioNotImplementedMessage),
-        backgroundColor: AppColors.celestialOrange,
-      ),
+    // Validate scenario first
+    if (_bodies.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n.addCelestialBodiesToCreateYourCustomScenarioEditor,
+          ),
+          backgroundColor: AppColors.celestialOrange,
+        ),
+      );
+      return;
+    }
+
+    // Create scenario data synchronously
+    final scenario = _createCustomScenario();
+    final testScenarioName =
+        '__test_scenario_${DateTime.now().millisecondsSinceEpoch}';
+    final testMetadata = ScenarioMetadata(
+      name: testScenarioName,
+      description: scenario.metadata.description,
+      author: scenario.metadata.author,
+      createdAt: scenario.metadata.createdAt,
+      educationalFocus: scenario.metadata.educationalFocus,
+      tags: scenario.metadata.tags,
+      difficulty: scenario.metadata.difficulty,
     );
+
+    final testScenario = CustomScenario(
+      version: scenario.version,
+      metadata: testMetadata,
+      configuration: scenario.configuration,
+      physics: scenario.physics,
+      bodies: scenario.bodies,
+      particleSystems: scenario.particleSystems,
+      objectives: scenario.objectives,
+    );
+
+    // Navigate immediately (synchronous)
+    if (mounted) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    }
+
+    // Handle async operations after navigation
+    try {
+      await CustomScenarioStorage.saveScenario(testScenario);
+
+      // Schedule loading after frame to ensure navigation is complete
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _loadTestScenarioAsync(testScenarioName);
+      });
+    } catch (e) {
+      debugPrint('Failed to test scenario: $e');
+      // Use a callback to show error since we already navigated
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showErrorMessage(l10n.failedToSwitchScenarioError(e.toString()));
+      });
+    }
+  }
+
+  void _showErrorMessage(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: AppColors.celestialOrange,
+        ),
+      );
+    }
+  }
+
+  Future<void> _loadTestScenarioAsync(String testScenarioName) async {
+    // Use a post-frame callback to ensure navigation is complete
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Re-check context and get fresh references after navigation
+      if (!mounted) return;
+
+      final currentContext = context;
+      if (!currentContext.mounted) return;
+
+      final localizedL10n = AppLocalizations.of(currentContext)!;
+      final appState = Provider.of<AppState>(currentContext, listen: false);
+
+      try {
+        // Load the test scenario
+        final customManager = CustomScenarioManager.instance;
+        await customManager.loadCustomScenario(testScenarioName);
+
+        // Switch to custom scenario type to load our test scenario
+        appState.simulation.resetWithScenario(
+          ScenarioType.custom,
+          l10n: localizedL10n,
+        );
+
+        // Clean up the temporary test scenario
+        await CustomScenarioStorage.deleteScenario(testScenarioName);
+
+        // Show test message
+        if (currentContext.mounted) {
+          ScaffoldMessenger.of(currentContext).showSnackBar(
+            SnackBar(
+              content: Text(localizedL10n.accessibilityNewScenarioLoaded),
+              backgroundColor: AppColors.uiStatusGreen,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+      } catch (e) {
+        debugPrint('Failed to load test scenario: $e');
+        if (currentContext.mounted) {
+          ScaffoldMessenger.of(currentContext).showSnackBar(
+            SnackBar(
+              content: Text(
+                localizedL10n.failedToSwitchScenarioError(e.toString()),
+              ),
+              backgroundColor: AppColors.celestialOrange,
+            ),
+          );
+        }
+      }
+    });
   }
 
   Future<void> _exportScenario(
@@ -861,7 +1291,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     return await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-            backgroundColor: AppColors.uiBlack.withValues(alpha: 0.9),
+            backgroundColor: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityNearlyOpaque,
+            ),
             title: Text(
               l10n.unsavedChangesTitle,
               style: AppTypography.titleText,

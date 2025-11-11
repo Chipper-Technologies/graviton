@@ -354,6 +354,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get colorSelector => 'Color selector';
 
   @override
+  String colorOptionTooltip(String colorName) {
+    return 'Select $colorName color for celestial body';
+  }
+
+  @override
   String get visualsTooltip => 'Visual display options';
 
   @override
@@ -467,6 +472,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get temperatureKEditorhint => 'Temperature (K)';
 
   @override
+  String get temperatureCelsiusEditorhint => 'Temperature (°C)';
+
+  @override
+  String get temperatureFahrenheitEditorhint => 'Temperature (°F)';
+
+  @override
   String get temperatureModerate => 'Moderate';
 
   @override
@@ -485,6 +496,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get temperatureUnitKelvin => 'K';
 
   @override
+  String get temperatureUnitCelsiusName => 'Celsius';
+
+  @override
+  String get temperatureUnitFahrenheitName => 'Fahrenheit';
+
+  @override
+  String get temperatureUnitKelvinName => 'Kelvin';
+
+  @override
   String get velocityMsEditor => 'Velocity (m/s)';
 
   @override
@@ -500,6 +520,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get beginnerEditor => 'Beginner';
+
+  @override
+  String get noBodiesAdded => 'No bodies added yet';
+
+  @override
+  String get addBodiesInSetupTab => 'Add bodies in the Setup tab';
+
+  @override
+  String get untitledScenario => 'Untitled Scenario';
+
+  @override
+  String get noDescriptionProvided => 'No description provided';
+
+  @override
+  String get collisionSoftening => 'Collision Softening';
+
+  @override
+  String get collisionRadius => 'Collision Radius';
 
   @override
   String get bodyTypeEditor => 'Body Type';
@@ -520,6 +558,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get createScenarioTitle => 'Create Scenario';
+
+  @override
+  String get editScenarioButton => 'Edit scenario';
+
+  @override
+  String get editScenarioHint => 'Edit this scenario';
+
+  @override
+  String get deleteScenarioButton => 'Delete scenario';
+
+  @override
+  String get deleteScenarioHint => 'Delete this scenario';
 
   @override
   String get customGravitationalSimulationEditor =>
@@ -611,6 +661,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportScenarioButton => 'Export Scenario';
+
+  @override
+  String get exportScenarioHint => 'Export scenario to file for sharing';
 
   @override
   String exportScenarioFailedMessage(String error) {
@@ -1017,8 +1070,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get testScenarioButton => 'Test Scenario';
 
   @override
+  String get testScenarioHint => 'Test the current scenario in simulation';
+
+  @override
   String get testScenarioNotImplementedMessage =>
       'Test scenario functionality not implemented yet';
+
+  @override
+  String get scenarioEditorMenuHint => 'Open menu with test and export options';
 
   @override
   String get aboutButtonTooltip => 'About';
@@ -1662,6 +1721,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageDescription => 'Change the app language';
 
   @override
+  String get languageSelectionHint => 'Choose your preferred display language';
+
+  @override
   String get languageEnglish => 'English';
 
   @override
@@ -1677,7 +1739,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageKorean => '한국어';
 
   @override
-  String get languageLabel => 'Language';
+  String get languageLabel => 'General';
+
+  @override
+  String get temperatureUnitsLabel => 'Temperature Units';
+
+  @override
+  String get temperatureUnitsDescription =>
+      'Preferred units for displaying temperatures throughout the app';
 
   @override
   String get languageSpanish => 'Español';
@@ -2419,4 +2488,120 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get customScenarioCreatedUnknown => 'Unknown';
+
+  @override
+  String get orbitalPlacementEditor => 'Orbital Placement';
+
+  @override
+  String get placeInOrbitButton => 'Place in Orbit';
+
+  @override
+  String get centralBodySelector => 'Central Body';
+
+  @override
+  String get orbitRadiusEditor => 'Orbit Radius';
+
+  @override
+  String get orbitPhaseEditor => 'Orbit Phase';
+
+  @override
+  String get orbitInclinationEditor => 'Inclination';
+
+  @override
+  String get circularOrbitOption => 'Circular Orbit';
+
+  @override
+  String get ellipticalOrbitOption => 'Elliptical Orbit';
+
+  @override
+  String orbitalPeriodDisplay(String period) {
+    return 'Period: $period';
+  }
+
+  @override
+  String get noAvailableCentralBodies =>
+      'No other bodies available for orbital placement';
+
+  @override
+  String get orbitalPlacementDescription =>
+      'Configure this body to orbit around another celestial body with realistic physics';
+
+  @override
+  String get orbitalPlacementActiveDescription =>
+      'Orbital placement is active. Position and velocity will be calculated automatically based on the orbit parameters below.';
+
+  @override
+  String get showGravitationalFieldVisualization =>
+      'Show gravitational field visualization for this body';
+
+  @override
+  String get cancelOrbitalPlacement => 'Cancel Orbital Placement';
+
+  @override
+  String get makeStable => 'Make Stable';
+
+  @override
+  String get orbitalWarningMassiveBody =>
+      '⚠️ Warning: Orbiting body is very massive relative to central body. This may cause unstable orbits or the bodies may orbit each other.';
+
+  @override
+  String get orbitalTipSignificantMass =>
+      '💡 Tip: This is a significant mass ratio. Consider increasing orbital distance for stability.';
+
+  @override
+  String get orbitalWarningCloseOrbit =>
+      '⚠️ Warning: Very close orbit. Risk of collision or tidal disruption.';
+
+  @override
+  String get orbitalTipDistantOrbit =>
+      '💡 Tip: Distant orbit. Gravitational influence from other bodies may perturb this orbit.';
+
+  @override
+  String get orbitalGoodConfiguration =>
+      '✅ Good orbital configuration for a stable system.';
+
+  @override
+  String get orbitalError => 'Error';
+
+  @override
+  String get orbitalConfigurationWarning =>
+      'This orbital configuration may lead to collisions or ejections. Consider using the \"Make Stable\" button.';
+
+  @override
+  String get defaultBodyName => 'Celestial Body';
+
+  @override
+  String get orbitalPeriodLabel => 'Orbital Period';
+
+  @override
+  String get orbitIsStable => 'Orbit is Stable';
+
+  @override
+  String get orbitMayBeUnstable => 'Orbit May Be Unstable';
+
+  @override
+  String bodyTypeGeneric(String bodyType) {
+    return '$bodyType body';
+  }
+
+  @override
+  String orbitalRadiusIncreasedFeedback(String amount) {
+    return 'increased by $amount units';
+  }
+
+  @override
+  String orbitalRadiusDecreasedFeedback(String amount) {
+    return 'decreased by $amount units';
+  }
+
+  @override
+  String get orbitalRadiusFineTunedFeedback => 'fine-tuned';
+
+  @override
+  String orbitStabilizedMessage(String changeDescription, String finalRadius) {
+    return 'Orbit stabilized! Radius $changeDescription to $finalRadius units. Phase and inclination reset for stability.';
+  }
+
+  @override
+  String get unknownValue => 'Unknown';
 }

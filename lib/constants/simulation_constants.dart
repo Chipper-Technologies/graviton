@@ -131,6 +131,9 @@ class SimulationConstants {
   // Kelvin to Celsius conversion offset - the freezing point of water
   // 0°C = 273.15K, used for temperature conversions and stellar physics
   static const double kelvinToCelsiusOffset = 273.15;
+  static const double fahrenheitToCelsiusMultiplier = 5.0 / 9.0;
+  static const double celsiusToFahrenheitMultiplier = 9.0 / 5.0;
+  static const double fahrenheitToCelsiusOffset = 32.0;
 
   // Base temperature representing cosmic microwave background radiation
   // This is the minimum temperature any object can have in deep space

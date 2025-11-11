@@ -4,22 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/enums/temperature_unit.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/services/orbital_mechanics_service.dart';
+import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/body_type_ranges.dart';
 import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/body_type_picker.dart';
 import 'package:graviton/widgets/common/color_picker.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
+import 'package:graviton/widgets/common/graviton_popup_menu.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
-import 'package:graviton/widgets/common/section_divider.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_switch.dart';
+import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Bottom sheet widget for displaying and editing body details
@@ -30,6 +36,7 @@ class ScenarioEditorBodyDetailsBottomSheet extends StatefulWidget {
   final VoidCallback? onDelete;
   final ValueChanged<Body>? onSave;
   final bool isAddMode;
+  final List<Body> availableCentralBodies; // For orbital placement
 
   const ScenarioEditorBodyDetailsBottomSheet({
     super.key,
@@ -39,6 +46,7 @@ class ScenarioEditorBodyDetailsBottomSheet extends StatefulWidget {
     this.onDelete,
     this.onSave,
     this.isAddMode = false,
+    this.availableCentralBodies = const [],
   });
 
   @override
@@ -64,6 +72,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
   late double _massSlider;
   late double _radiusSlider;
   late double _luminositySlider;
+  late double _temperatureSlider;
 
   // Color state variable
   late Color _selectedColor;
@@ -71,11 +80,22 @@ class _ScenarioEditorBodyDetailsBottomSheetState
   // Body type state variable
   late BodyType _selectedBodyType;
 
+  // Gravity well state variable
+  late bool _showGravityWell;
+
   // Track unsaved changes to prevent accidental closing
   bool _hasUnsavedChanges = false;
 
   // Store the original body to compare against
   late Body _originalBody;
+
+  // Orbital placement state variables
+  Body? _selectedCentralBody;
+  bool _showOrbitalPlacement = false;
+  double _orbitRadius = 20.0;
+  double _orbitPhase = 0.0; // 0 to 2π
+  double _orbitInclination = 0.0; // 0 to π/2
+  bool _isOrbitalPlacementUIActive = false;
 
   @override
   void initState() {
@@ -87,6 +107,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     // Initialize body type and color first (needed for range calculations)
     _selectedBodyType = widget.body.bodyType;
     _selectedColor = widget.body.color;
+    _showGravityWell = widget.body.showGravityWell;
 
     _nameController = TextEditingController(text: widget.body.name);
     _massController = TextEditingController(text: widget.body.mass.toString());
@@ -124,6 +145,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     final luminosityRange = BodyTypeRanges.getLuminosityRange(
       _selectedBodyType,
     );
+    final temperatureRange = BodyTypeRanges.getTemperatureRange(
+      _selectedBodyType,
+    );
 
     _massSlider = widget.body.mass.clamp(massRange['min']!, massRange['max']!);
     _radiusSlider = widget.body.radius.clamp(
@@ -134,6 +158,19 @@ class _ScenarioEditorBodyDetailsBottomSheetState
       luminosityRange['min']!,
       luminosityRange['max']!,
     );
+    _temperatureSlider = widget.body.temperature.clamp(
+      temperatureRange['min']!,
+      temperatureRange['max']!,
+    );
+
+    // Initialize orbital placement state from body
+    _showOrbitalPlacement = widget.body.isOrbitalPlacementActive;
+    _isOrbitalPlacementUIActive = widget.body.isOrbitalPlacementActive;
+
+    // Initialize orbital parameters from body with proper clamping to slider ranges
+    _orbitRadius = widget.body.orbitRadius.clamp(5.0, 500.0);
+    _orbitPhase = widget.body.orbitPhase.clamp(0.0, 2 * math.pi);
+    _orbitInclination = widget.body.orbitInclination.clamp(0.0, math.pi / 2);
   }
 
   @override
@@ -179,6 +216,15 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
       // Update body type
       _selectedBodyType = widget.body.bodyType;
+
+      // Update orbital placement state
+      _showOrbitalPlacement = widget.body.isOrbitalPlacementActive;
+      _isOrbitalPlacementUIActive = widget.body.isOrbitalPlacementActive;
+
+      // Update orbital parameters with proper clamping to slider ranges
+      _orbitRadius = widget.body.orbitRadius.clamp(5.0, 500.0);
+      _orbitPhase = widget.body.orbitPhase.clamp(0.0, 2 * math.pi);
+      _orbitInclination = widget.body.orbitInclination.clamp(0.0, math.pi / 2);
     }
   }
 
@@ -304,27 +350,26 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                       ),
                     ),
                   ),
-                  // 3-dot menu for edit mode actions
-                  if (!widget.isAddMode)
-                    Semantics(
-                      button: true,
-                      label: l10n.moreActionsAccessibility,
-                      hint: l10n.moreActionsHint,
-                      child: PopupMenuButton<String>(
-                        onSelected: (String result) {
-                          HapticFeedback.lightImpact();
-                          // Log analytics for menu selection
-                          FirebaseService.instance.logUIEventWithEnums(
-                            UIAction.buttonPressed,
-                            element: UIElement.bodyEditor,
-                            value: 'menu_$result',
-                            additionalParams: {
-                              'body_name': widget.body.name,
-                              'body_type': widget.body.bodyType.name,
-                            },
-                          );
-                          switch (result) {
-                            case 'duplicate':
+                  // 3-dot menu for edit mode actions (only show if there are actions available)
+                  if (!widget.isAddMode &&
+                      (widget.onDuplicate != null || widget.onDelete != null))
+                    GravitonPopupMenu(
+                      accessibilityLabel: l10n.moreActionsAccessibility,
+                      accessibilityHint: l10n.moreActionsHint,
+                      analyticsElement: UIElement.bodyEditor,
+                      additionalAnalyticsParams: {
+                        'body_name': widget.body.name,
+                        'body_type': widget.body.bodyType.name,
+                      },
+                      menuItems: [
+                        // Only show duplicate option if callback is provided
+                        if (widget.onDuplicate != null)
+                          GravitonMenuItemConfig(
+                            value: 'duplicate',
+                            labelKey: 'duplicateBodyTooltip',
+                            hintKey: 'duplicateBodyAccessibility',
+                            icon: Icons.content_copy_outlined,
+                            onTap: () {
                               // Log analytics for body duplication
                               FirebaseService.instance.logUIEventWithEnums(
                                 UIAction.bodyAdded,
@@ -336,118 +381,22 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                                 },
                               );
                               widget.onDuplicate?.call();
-                              break;
-                            case 'delete':
-                              _showDeleteConfirmation();
-                              break;
-                          }
-                        },
-                        tooltip: 'More actions',
-                        icon: Icon(Icons.more_vert, color: AppColors.uiWhite),
-                        color: AppColors.uiBlack.withValues(
-                          alpha: AppTypography.opacityHigh,
-                        ),
-                        itemBuilder: (BuildContext context) => [
-                          PopupMenuItem<String>(
-                            value: 'duplicate',
-                            height:
-                                56, // Increased height for larger touch target
-                            child: Semantics(
-                              label: l10n.duplicateBodyTooltip,
-                              hint: l10n.duplicateBodyAccessibility,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 32,
-                                      height: 32,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: AppColors.primaryColor
-                                              .withValues(
-                                                alpha: AppColors
-                                                    .alphaMediumVisible,
-                                              ),
-                                          width: 1.5,
-                                        ),
-                                      ),
-                                      child: Icon(
-                                        Icons.content_copy_outlined,
-                                        color: AppColors.primaryColor,
-                                        size: 18,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: AppTypography.spacingMedium,
-                                    ),
-                                    Text(
-                                      l10n.duplicateBodyTooltip,
-                                      style: AppTypography.mediumText.copyWith(
-                                        // Changed from smallText
-                                        color: AppColors.uiWhite,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            },
                           ),
-                          PopupMenuItem<String>(
+                        // Only show delete option if callback is provided
+                        if (widget.onDelete != null)
+                          GravitonMenuItemConfig(
                             value: 'delete',
-                            height:
-                                56, // Increased height for larger touch target
-                            child: Semantics(
-                              label: l10n.deleteBodyTooltip,
-                              hint: l10n.deleteBodyAccessibility,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 32,
-                                      height: 32,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: AppColors.accretionRed
-                                              .withValues(
-                                                alpha: AppColors
-                                                    .alphaMediumVisible,
-                                              ),
-                                          width: 1.5,
-                                        ),
-                                      ),
-                                      child: Icon(
-                                        Icons.delete_outline,
-                                        color: AppColors.accretionRed,
-                                        size: 18,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: AppTypography.spacingMedium,
-                                    ),
-                                    Text(
-                                      l10n.deleteBodyTooltip,
-                                      style: AppTypography.mediumText.copyWith(
-                                        // Changed from smallText
-                                        color: AppColors.uiWhite,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            labelKey: 'deleteBodyTooltip',
+                            hintKey: 'deleteBodyAccessibility',
+                            icon: Icons.delete_outline,
+                            iconColor: AppColors.accretionRed,
+                            borderColor: AppColors.accretionRed.withValues(
+                              alpha: AppColors.alphaMediumVisible,
                             ),
+                            onTap: () => _showDeleteConfirmation(),
                           ),
-                        ],
-                      ),
+                      ],
                     ),
                 ],
               ),
@@ -569,7 +518,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     HapticFeedback.mediumImpact();
 
     // Get the current body state with all updates
-    final currentBody = _getCurrentBodyState();
+    final currentBody = _getCurrentBodyState(context);
 
     // Log analytics based on mode (add vs edit)
     if (widget.isAddMode) {
@@ -606,10 +555,10 @@ class _ScenarioEditorBodyDetailsBottomSheetState
   }
 
   /// Get the current body state with all field updates applied
-  Body _getCurrentBodyState() {
+  Body _getCurrentBodyState(BuildContext context) {
     // Use a default name if the field is empty
     final name = _nameController.text.trim();
-    final defaultName = 'Celestial Body';
+    final defaultName = AppLocalizations.of(context)!.defaultBodyName;
 
     return Body(
       name: name.isEmpty ? defaultName : name,
@@ -635,6 +584,11 @@ class _ScenarioEditorBodyDetailsBottomSheetState
       showGravityWell: widget.body.showGravityWell,
       isPlanet: widget.body.isPlanet,
       habitabilityStatus: widget.body.habitabilityStatus,
+      isOrbitalPlacementActive:
+          _showOrbitalPlacement, // Save orbital placement state
+      orbitRadius: _orbitRadius, // Save orbital parameters
+      orbitPhase: _orbitPhase,
+      orbitInclination: _orbitInclination,
     );
   }
 
@@ -763,118 +717,134 @@ class _ScenarioEditorBodyDetailsBottomSheetState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Name field
-          _buildEditSection(
-            l10n.bodyPropertiesName,
-            _buildCompactTextField(
-              controller: _nameController,
-              icon: Icons.label_outline,
-              hintText: l10n.bodyPropertiesNameHint,
-              onChanged: (value) => _updateBodyProperty(),
-            ),
+          // Name field (no section - this is basic info)
+          _buildCompactTextField(
+            controller: _nameController,
+            icon: Icons.label_outline,
+            hintText: l10n.bodyPropertiesNameHint,
+            onChanged: (value) => _updateBodyProperty(),
           ),
-
-          _buildDivider(),
 
           // Body Type Section
-          _buildEditSection(
+          SectionDivider.labeled(
             l10n.bodyTypeEditor,
-            BodyTypePicker(
-              selectedType: _selectedBodyType,
-              onTypeChanged: (bodyType) {
-                // Generate realistic properties for the new body type
-                final properties = _generateRealisticProperties(bodyType);
-
-                setState(() {
-                  _selectedBodyType = bodyType;
-
-                  // Update local state with realistic values
-                  _massSlider = properties['mass']!;
-                  _massController.text = properties['mass']!.toString();
-
-                  _radiusSlider = properties['radius']!;
-                  _radiusController.text = properties['radius']!.toString();
-
-                  _luminositySlider = properties['luminosity']!;
-                  _luminosityController.text = properties['luminosity']!
-                      .toString();
-
-                  _positionXController.text = properties['positionX']!
-                      .toString();
-                  _positionYController.text = properties['positionY']!
-                      .toString();
-                  _positionZController.text = properties['positionZ']!
-                      .toString();
-
-                  _velocityXController.text = properties['velocityX']!
-                      .toString();
-                  _velocityYController.text = properties['velocityY']!
-                      .toString();
-                  _velocityZController.text = properties['velocityZ']!
-                      .toString();
-                });
-
-                final updatedBody = Body(
-                  name: widget.body.name,
-                  position: vm.Vector3(
-                    properties['positionX']!,
-                    properties['positionY']!,
-                    properties['positionZ']!,
-                  ),
-                  velocity: vm.Vector3(
-                    properties['velocityX']!,
-                    properties['velocityY']!,
-                    properties['velocityZ']!,
-                  ),
-                  mass: properties['mass']!,
-                  radius: properties['radius']!,
-                  color: widget.body.color,
-                  bodyType: bodyType,
-                  stellarLuminosity: properties['luminosity']!,
-                  temperature: widget.body.temperature,
-                  showGravityWell: widget.body.showGravityWell,
-                  isPlanet:
-                      bodyType == BodyType.planet || bodyType == BodyType.moon,
-                  habitabilityStatus: widget.body.habitabilityStatus,
-                );
-                widget.onBodyChanged(updatedBody);
-              },
-            ),
+            topSpacing: AppTypography.spacingLarge,
+            bottomSpacing: AppTypography.spacingMedium,
           ),
+          BodyTypePicker(
+            selectedType: _selectedBodyType,
+            onTypeChanged: (bodyType) {
+              // Generate realistic properties for the new body type
+              final properties = _generateRealisticProperties(bodyType);
 
-          _buildDivider(),
+              setState(() {
+                _selectedBodyType = bodyType;
+
+                // Update local state with realistic values
+                _massSlider = properties['mass']!;
+                _massController.text = properties['mass']!.toString();
+
+                _radiusSlider = properties['radius']!;
+                _radiusController.text = properties['radius']!.toString();
+
+                _luminositySlider = properties['luminosity']!;
+                _luminosityController.text = properties['luminosity']!
+                    .toString();
+
+                _temperatureSlider = properties['temperature']!;
+                _temperatureController.text = properties['temperature']!
+                    .toString();
+
+                _positionXController.text = properties['positionX']!.toString();
+                _positionYController.text = properties['positionY']!.toString();
+                _positionZController.text = properties['positionZ']!.toString();
+
+                _velocityXController.text = properties['velocityX']!.toString();
+                _velocityYController.text = properties['velocityY']!.toString();
+                _velocityZController.text = properties['velocityZ']!.toString();
+              });
+
+              final updatedBody = Body(
+                name: widget.body.name,
+                position: vm.Vector3(
+                  properties['positionX']!,
+                  properties['positionY']!,
+                  properties['positionZ']!,
+                ),
+                velocity: vm.Vector3(
+                  properties['velocityX']!,
+                  properties['velocityY']!,
+                  properties['velocityZ']!,
+                ),
+                mass: properties['mass']!,
+                radius: properties['radius']!,
+                color: widget.body.color,
+                bodyType: bodyType,
+                stellarLuminosity: properties['luminosity']!,
+                temperature: widget.body.temperature,
+                showGravityWell: widget.body.showGravityWell,
+                isPlanet:
+                    bodyType == BodyType.planet || bodyType == BodyType.moon,
+                habitabilityStatus: widget.body.habitabilityStatus,
+              );
+              widget.onBodyChanged(updatedBody);
+            },
+          ),
 
           // Color Section
-          _buildEditSection(
+          SectionDivider.labeled(
             l10n.colorEditor,
-            ColorPicker(
-              selectedColor: _selectedColor,
-              onColorChanged: (color) {
-                setState(() {
-                  _selectedColor = color;
-                });
-                final updatedBody = Body(
-                  name: widget.body.name,
-                  position: widget.body.position,
-                  velocity: widget.body.velocity,
-                  mass: widget.body.mass,
-                  radius: widget.body.radius,
-                  color: color,
-                  bodyType: widget.body.bodyType,
-                  stellarLuminosity: widget.body.stellarLuminosity,
-                  temperature: widget.body.temperature,
-                  showGravityWell: widget.body.showGravityWell,
-                  isPlanet: widget.body.isPlanet,
-                  habitabilityStatus: widget.body.habitabilityStatus,
-                );
-                widget.onBodyChanged(updatedBody);
-              },
-            ),
+            topSpacing: AppTypography.spacingLarge,
+            bottomSpacing: AppTypography.spacingMedium,
+          ),
+          ColorPicker(
+            selectedColor: _selectedColor,
+            onColorChanged: (color) {
+              setState(() {
+                _selectedColor = color;
+              });
+              final updatedBody = Body(
+                name: widget.body.name,
+                position: widget.body.position,
+                velocity: widget.body.velocity,
+                mass: widget.body.mass,
+                radius: widget.body.radius,
+                color: color,
+                bodyType: widget.body.bodyType,
+                stellarLuminosity: widget.body.stellarLuminosity,
+                temperature: widget.body.temperature,
+                showGravityWell: widget.body.showGravityWell,
+                isPlanet: widget.body.isPlanet,
+                habitabilityStatus: widget.body.habitabilityStatus,
+              );
+              widget.onBodyChanged(updatedBody);
+            },
           ),
 
-          _buildDivider(),
+          SectionDivider.plain(
+            topSpacing: AppTypography.spacingLarge,
+            bottomSpacing: AppTypography.spacingXSmall,
+          ),
 
-          // Mass Section
+          // Gravity Well Section
+          SizedBox(height: AppTypography.spacingMedium),
+          _buildToggleOption(
+            l10n.gravityWellsDescription,
+            AppLocalizations.of(context)!.showGravitationalFieldVisualization,
+            Icons.grain,
+            _showGravityWell,
+            () {
+              setState(() {
+                _showGravityWell = !_showGravityWell;
+              });
+              _updateBodyProperty();
+            },
+          ),
+
+          SectionDivider.plain(topSpacing: AppTypography.spacingSmall),
+
+          // Mass Section - no labeled divider, just spacing
+          SizedBox(height: AppTypography.spacingLarge),
           HapticSliderOption.detailed(
             label: AppLocalizations.of(context)!.bodyPropertiesMass,
             value: _massSlider,
@@ -891,7 +861,6 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             },
             formatter: (value) => NumberUtils.formatMassInSolarMasses(value),
           ),
-          SizedBox(height: AppTypography.spacingSmall),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: AppTypography.spacingMedium,
@@ -907,9 +876,13 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             ),
           ),
 
-          _buildDivider(),
+          SectionDivider.plain(
+            topSpacing: AppTypography.spacingLarge,
+            bottomSpacing: AppTypography.spacingXSmall,
+          ),
 
           // Radius Section
+          SizedBox(height: AppTypography.spacingMedium),
           HapticSliderOption.detailed(
             label: AppLocalizations.of(context)!.bodyPropertiesRadius,
             value: _radiusSlider,
@@ -926,7 +899,6 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             },
             formatter: (value) => NumberUtils.formatRadiusInSolarRadii(value),
           ),
-          SizedBox(height: AppTypography.spacingSmall),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: AppTypography.spacingMedium,
@@ -942,10 +914,14 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             ),
           ),
 
-          _buildDivider(),
+          SectionDivider.plain(
+            topSpacing: AppTypography.spacingLarge,
+            bottomSpacing: AppTypography.spacingXSmall,
+          ),
 
           // Stellar Luminosity Section (only for stars)
           if (_selectedBodyType == BodyType.star) ...[
+            SizedBox(height: AppTypography.spacingMedium),
             HapticSliderOption.detailed(
               label: AppLocalizations.of(context)!.bodyPropertiesLuminosity,
               value: _luminositySlider,
@@ -956,30 +932,133 @@ class _ScenarioEditorBodyDetailsBottomSheetState
               onChanged: (value) {
                 setState(() {
                   _luminositySlider = value;
-                  // Update the text controller for consistency
                   _luminosityController.text = value.toString();
                 });
                 _updateBodyProperty();
               },
               formatter: (value) => NumberUtils.formatLuminosity(value),
             ),
-            SizedBox(height: AppTypography.spacingSmall),
-            Text(
-              l10n.lightEnergyOutputDescription,
-              style: AppTypography.smallText.copyWith(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityHigh,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppTypography.spacingMedium,
+              ),
+              child: Text(
+                l10n.lightEnergyOutputDescription,
+                style: AppTypography.smallText.copyWith(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityHigh,
+                  ),
+                  fontStyle: FontStyle.italic,
                 ),
-                fontStyle: FontStyle.italic,
               ),
             ),
-
-            _buildDivider(),
           ],
 
-          // Position Section
-          _buildEditSection(
-            l10n.positionMEditor,
+          SectionDivider.plain(
+            topSpacing: AppTypography.spacingLarge,
+            bottomSpacing: AppTypography.spacingXSmall,
+          ),
+
+          // Temperature Section
+          SizedBox(height: AppTypography.spacingMedium),
+          Consumer<AppState>(
+            builder: (context, appState, child) {
+              final kelvinRange = BodyTypeRanges.getTemperatureRange(
+                _selectedBodyType,
+              );
+              final convertedRange = NumberUtils.convertTemperatureRange(
+                kelvinRange,
+                appState.ui.temperatureUnit,
+              );
+              final convertedValue = NumberUtils.convertTemperatureFromKelvin(
+                _temperatureSlider,
+                appState.ui.temperatureUnit,
+              );
+
+              return HapticSliderOption.detailed(
+                label: AppLocalizations.of(context)!.temperatureEditorlabel,
+                value: convertedValue,
+                min: convertedRange['min']!,
+                max: convertedRange['max']!,
+                divisions: 200,
+                icon: Icons.thermostat_outlined,
+                onChanged: (value) {
+                  final kelvinValue = NumberUtils.convertTemperatureToKelvin(
+                    value,
+                    appState.ui.temperatureUnit,
+                  );
+                  setState(() {
+                    _temperatureSlider = kelvinValue;
+                    _temperatureController.text = kelvinValue.toString();
+                  });
+                  _updateBodyProperty();
+                },
+                formatter: (value) {
+                  return NumberUtils.formatTemperatureWithUnit(
+                    NumberUtils.convertTemperatureToKelvin(
+                      value,
+                      appState.ui.temperatureUnit,
+                    ),
+                    appState.ui.temperatureUnit,
+                  );
+                },
+              );
+            },
+          ),
+          Consumer<AppState>(
+            builder: (context, appState, child) {
+              String hintText;
+              if (_selectedBodyType == BodyType.star) {
+                hintText = l10n.stellarTemperatureDescription;
+              } else {
+                switch (appState.ui.temperatureUnit) {
+                  case TemperatureUnit.celsius:
+                    hintText = l10n.temperatureCelsiusEditorhint;
+                    break;
+                  case TemperatureUnit.fahrenheit:
+                    hintText = l10n.temperatureFahrenheitEditorhint;
+                    break;
+                  case TemperatureUnit.kelvin:
+                    hintText = l10n.temperatureKEditorhint;
+                    break;
+                }
+              }
+
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppTypography.spacingMedium,
+                ),
+                child: Text(
+                  hintText,
+                  style: AppTypography.smallText.copyWith(
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              );
+            },
+          ),
+
+          // Orbital Placement Section (only show if there are available central bodies)
+          if (widget.availableCentralBodies.isNotEmpty) ...[
+            SectionDivider.labeled(
+              l10n.orbitalPlacementEditor,
+              topSpacing: AppTypography.spacingLarge,
+              bottomSpacing: AppTypography.spacingMedium,
+            ),
+            _buildOrbitalPlacementSection(l10n),
+          ],
+
+          // Position and Velocity Sections (only show when not using orbital placement)
+          if (!_isOrbitalPlacementUIActive) ...[
+            // Position Section
+            SectionDivider.labeled(
+              l10n.positionMEditor,
+              topSpacing: AppTypography.spacingLarge,
+              bottomSpacing: AppTypography.spacingMedium,
+            ),
             Row(
               children: [
                 Expanded(
@@ -1019,23 +1098,28 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                 ),
               ],
             ),
-          ),
-          SizedBox(height: AppTypography.spacingSmall),
-          Text(
-            l10n.spatialCoordinatesDescription,
-            style: AppTypography.smallText.copyWith(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
+            SizedBox(height: AppTypography.spacingMedium),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppTypography.spacingMedium,
               ),
-              fontStyle: FontStyle.italic,
+              child: Text(
+                l10n.spatialCoordinatesDescription,
+                style: AppTypography.smallText.copyWith(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityHigh,
+                  ),
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
             ),
-          ),
 
-          _buildDivider(),
-
-          // Velocity Section
-          _buildEditSection(
-            l10n.velocityMsEditor,
+            // Velocity Section
+            SectionDivider.labeled(
+              l10n.velocityMsEditor,
+              topSpacing: AppTypography.spacingLarge,
+              bottomSpacing: AppTypography.spacingMedium,
+            ),
             Row(
               children: [
                 Expanded(
@@ -1069,41 +1153,25 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                 ),
               ],
             ),
-          ),
-          SizedBox(height: AppTypography.spacingSmall),
-          Text(
-            l10n.initialMotionVectorsDescription,
-            style: AppTypography.smallText.copyWith(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
+            SizedBox(height: AppTypography.spacingMedium),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppTypography.spacingMedium,
               ),
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-
-          if (widget.body.bodyType == BodyType.star) ...[
-            _buildDivider(),
-
-            // Temperature Section (for stars only)
-            _buildCompactTextField(
-              controller: _temperatureController,
-              icon: Icons.wb_sunny_outlined,
-              hintText: AppLocalizations.of(context)!.temperatureKEditorhint,
-              labelText: AppLocalizations.of(context)!.temperatureEditorlabel,
-              onChanged: (value) => _updateBodyProperty(),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: AppTypography.spacingSmall),
-            Text(
-              l10n.stellarTemperatureDescription,
-              style: AppTypography.smallText.copyWith(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityHigh,
+              child: Text(
+                l10n.initialMotionVectorsDescription,
+                style: AppTypography.smallText.copyWith(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityHigh,
+                  ),
+                  fontStyle: FontStyle.italic,
                 ),
-                fontStyle: FontStyle.italic,
               ),
             ),
           ],
+
+          // Final spacing
+          SizedBox(height: AppTypography.spacingLarge),
         ],
       ),
     );
@@ -1128,12 +1196,15 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         color: _selectedColor, // Use local color state
         bodyType: _selectedBodyType, // Use local body type state
         stellarLuminosity: _luminositySlider, // Use slider value
-        temperature:
-            double.tryParse(_temperatureController.text) ??
-            widget.body.temperature,
-        showGravityWell: widget.body.showGravityWell,
+        temperature: _temperatureSlider, // Use slider value
+        showGravityWell: _showGravityWell, // Use local gravity well state
         isPlanet: widget.body.isPlanet,
         habitabilityStatus: widget.body.habitabilityStatus,
+        isOrbitalPlacementActive:
+            _showOrbitalPlacement, // Include orbital placement state
+        orbitRadius: _orbitRadius, // Include orbital parameters
+        orbitPhase: _orbitPhase,
+        orbitInclination: _orbitInclination,
       );
 
       // Track unsaved changes by comparing with original body
@@ -1176,13 +1247,6 @@ class _ScenarioEditorBodyDetailsBottomSheetState
       return 'luminosity';
     }
     return 'unknown';
-  }
-
-  Widget _buildDivider() {
-    return const SectionDivider.plain(
-      topSpacing: AppTypography.spacingLarge,
-      bottomSpacing: AppTypography.spacingLarge,
-    );
   }
 
   Widget _buildCompactTextField({
@@ -1420,6 +1484,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         final luminosityRange = BodyTypeRanges.getLuminosityRange(
           BodyType.star,
         );
+        final temperatureRange = BodyTypeRanges.getTemperatureRange(
+          BodyType.star,
+        );
 
         // Bias toward medium-sized stars (main sequence stars are most common)
         // Use a higher exponent to favor smaller values
@@ -1438,6 +1505,11 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             .pow(luminosityRandom, 1.2)
             .toDouble(); // Slight bias toward lower luminosity
 
+        final temperatureRandom = random.nextDouble();
+        final temperatureBias = math
+            .pow(temperatureRandom, 1.5)
+            .toDouble(); // Bias toward lower temperature stars
+
         return {
           'mass':
               massRange['min']! +
@@ -1449,6 +1521,10 @@ class _ScenarioEditorBodyDetailsBottomSheetState
               luminosityRange['min']! +
               luminosityBias *
                   (luminosityRange['max']! - luminosityRange['min']!),
+          'temperature':
+              temperatureRange['min']! +
+              temperatureBias *
+                  (temperatureRange['max']! - temperatureRange['min']!),
           'positionX':
               -10 +
               random.nextDouble() * 20, // Random position between -10 and 10
@@ -1464,6 +1540,8 @@ class _ScenarioEditorBodyDetailsBottomSheetState
       case BodyType.planet:
         // Choose random planet category
         final planetType = random.nextDouble();
+        final tempRange = BodyTypeRanges.getTemperatureRange(BodyType.planet);
+
         if (planetType < SimulationConstants.smallPlanetProbability) {
           // Small rocky planet
           return {
@@ -1478,6 +1556,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                     (SimulationConstants.smallPlanetRadiusMax -
                         SimulationConstants.smallPlanetRadiusMin),
             'luminosity': 0.0, // Planets don't emit light
+            'temperature':
+                tempRange['min']! +
+                random.nextDouble() * (tempRange['max']! - tempRange['min']!),
             'positionX': -15 + random.nextDouble() * 30,
             'positionY': -15 + random.nextDouble() * 30,
             'positionZ': -8 + random.nextDouble() * 16,
@@ -1500,6 +1581,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                     (SimulationConstants.earthLikePlanetRadiusMax -
                         SimulationConstants.earthLikePlanetRadiusMin),
             'luminosity': 0.0,
+            'temperature':
+                tempRange['min']! +
+                random.nextDouble() * (tempRange['max']! - tempRange['min']!),
             'positionX': -15 + random.nextDouble() * 30,
             'positionY': -15 + random.nextDouble() * 30,
             'positionZ': -8 + random.nextDouble() * 16,
@@ -1521,6 +1605,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                     (SimulationConstants.superEarthRadiusMax -
                         SimulationConstants.superEarthRadiusMin),
             'luminosity': 0.0,
+            'temperature':
+                tempRange['min']! +
+                random.nextDouble() * (tempRange['max']! - tempRange['min']!),
             'positionX': -15 + random.nextDouble() * 30,
             'positionY': -15 + random.nextDouble() * 30,
             'positionZ': -8 + random.nextDouble() * 16,
@@ -1531,10 +1618,15 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         }
 
       case BodyType.moon:
+        final moonTempRange = BodyTypeRanges.getTemperatureRange(BodyType.moon);
         return {
           'mass': 0.3 + random.nextDouble() * 0.7, // 0.3 to 1.0
           'radius': 0.3 + random.nextDouble() * 0.4, // 0.3 to 0.7
           'luminosity': 0.0,
+          'temperature':
+              moonTempRange['min']! +
+              random.nextDouble() *
+                  (moonTempRange['max']! - moonTempRange['min']!),
           'positionX': -8 + random.nextDouble() * 16,
           'positionY': -8 + random.nextDouble() * 16,
           'positionZ': -4 + random.nextDouble() * 8,
@@ -1544,10 +1636,17 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         };
 
       case BodyType.asteroid:
+        final asteroidTempRange = BodyTypeRanges.getTemperatureRange(
+          BodyType.asteroid,
+        );
         return {
           'mass': 0.05 + random.nextDouble() * 0.2, // 0.05 to 0.25
           'radius': 0.1 + random.nextDouble() * 0.3, // 0.1 to 0.4
           'luminosity': 0.0,
+          'temperature':
+              asteroidTempRange['min']! +
+              random.nextDouble() *
+                  (asteroidTempRange['max']! - asteroidTempRange['min']!),
           'positionX': -20 + random.nextDouble() * 40,
           'positionY': -20 + random.nextDouble() * 40,
           'positionZ': -10 + random.nextDouble() * 20,
@@ -1556,17 +1655,6 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           'velocityZ': -0.5 + random.nextDouble() * 1.0,
         };
     }
-  }
-
-  Widget _buildEditSection(String title, Widget child) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SectionTitle(title: title),
-        SizedBox(height: AppTypography.spacingMedium),
-        child,
-      ],
-    );
   }
 
   Color _getBodyTypeColor(BodyType bodyType) {
@@ -1600,5 +1688,694 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
   String _formatVector(vm.Vector3 vector) {
     return NumberUtils.formatVector3(vector);
+  }
+
+  /// Build orbital placement section UI
+  Widget _buildOrbitalPlacementSection(AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Description
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppTypography.spacingMedium,
+          ),
+          child: Text(
+            _isOrbitalPlacementUIActive
+                ? l10n.orbitalPlacementActiveDescription
+                : l10n.orbitalPlacementDescription,
+            style: AppTypography.smallText.copyWith(
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityHigh,
+              ),
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ),
+        SizedBox(height: AppTypography.spacingMedium),
+
+        // Place in Orbit Toggle Button
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: _showOrbitalPlacement
+                ? _cancelOrbitalPlacement
+                : _enableOrbitalPlacement,
+            icon: Icon(
+              _showOrbitalPlacement ? Icons.close : Icons.track_changes,
+              color: AppColors.uiWhite,
+            ),
+            label: Text(
+              _showOrbitalPlacement
+                  ? AppLocalizations.of(context)!.cancelOrbitalPlacement
+                  : l10n.placeInOrbitButton,
+              style: TextStyle(color: AppColors.uiWhite),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _showOrbitalPlacement
+                  ? AppColors.celestialRed
+                  : AppColors.primaryColor,
+              foregroundColor: AppColors.uiWhite,
+              padding: EdgeInsets.all(AppTypography.spacingMedium),
+            ),
+          ),
+        ),
+
+        // Orbital Parameters (only show when placement mode is active)
+        if (_showOrbitalPlacement) ...[
+          SizedBox(height: AppTypography.spacingLarge),
+
+          // Orbital placement container with fixed constraints
+          SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Central Body Selector
+                _buildCentralBodySelector(l10n),
+                SizedBox(height: AppTypography.spacingMedium),
+
+                // Orbit Radius Slider
+                HapticSliderOption.detailed(
+                  label: l10n.orbitRadiusEditor,
+                  value: _orbitRadius,
+                  min: 5.0,
+                  max: 500.0,
+                  divisions: 99, // 100 steps for better granularity
+                  icon: Icons.radio_button_unchecked,
+                  onChanged: (value) {
+                    setState(() {
+                      _orbitRadius = value;
+                    });
+                    _applyOrbitalPlacement();
+                  },
+                  formatter: (value) => NumberUtils.formatDecimal(value, 1),
+                ),
+
+                // Orbit Phase Slider (starting position)
+                HapticSliderOption.detailed(
+                  label: l10n.orbitPhaseEditor,
+                  value: _orbitPhase,
+                  min: 0.0,
+                  max: 2 * math.pi,
+                  divisions: 360,
+                  icon: Icons.restart_alt,
+                  onChanged: (value) {
+                    setState(() {
+                      _orbitPhase = value;
+                    });
+                    _applyOrbitalPlacement();
+                  },
+                  formatter: (value) =>
+                      '${NumberUtils.formatDecimal(value * 180 / math.pi, 0)}°',
+                ),
+
+                // Orbit Inclination Slider
+                HapticSliderOption.detailed(
+                  label: l10n.orbitInclinationEditor,
+                  value: _orbitInclination,
+                  min: 0.0,
+                  max: math.pi / 2,
+                  divisions: 90,
+                  icon: Icons.rotate_90_degrees_ccw,
+                  onChanged: (value) {
+                    setState(() {
+                      _orbitInclination = value;
+                    });
+                    _applyOrbitalPlacement();
+                  },
+                  formatter: (value) =>
+                      '${NumberUtils.formatDecimal(value * 180 / math.pi, 0)}°',
+                ),
+
+                // Orbital Period Display (read-only info)
+                if (_selectedCentralBody != null)
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(AppTypography.spacingLarge),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primaryColor.withValues(alpha: 0.1),
+                          AppColors.primaryColor.withValues(alpha: 0.05),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        AppTypography.radiusLarge,
+                      ),
+                      border: Border.all(
+                        color: AppColors.primaryColor.withValues(alpha: 0.4),
+                        width: AppTypography.borderMedium,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.schedule,
+                          color: AppColors.primaryColor,
+                          size: AppTypography.iconSizeMedium,
+                        ),
+                        SizedBox(width: AppTypography.spacingMedium),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!.orbitalPeriodLabel,
+                                style: AppTypography.mediumText.copyWith(
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(height: AppTypography.spacingSmall),
+                              Text(
+                                _calculateOrbitalPeriodText(context),
+                                style: AppTypography.largeText.copyWith(
+                                  color: AppColors.uiWhite,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                // Stability Indicator and Make Stable Button
+                if (_selectedCentralBody != null) ...[
+                  SizedBox(height: AppTypography.spacingMedium),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(AppTypography.spacingLarge),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: _isCurrentOrbitStable()
+                            ? [
+                                AppColors.primaryColor.withValues(alpha: 0.1),
+                                AppColors.primaryColor.withValues(alpha: 0.05),
+                              ]
+                            : [
+                                AppColors.celestialOrange.withValues(
+                                  alpha: 0.2,
+                                ),
+                                AppColors.celestialOrange.withValues(
+                                  alpha: 0.1,
+                                ),
+                              ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        AppTypography.radiusLarge,
+                      ),
+                      border: Border.all(
+                        color: _isCurrentOrbitStable()
+                            ? AppColors.primaryColor.withValues(alpha: 0.4)
+                            : AppColors.celestialOrange.withValues(alpha: 0.6),
+                        width: AppTypography.borderMedium,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              _isCurrentOrbitStable()
+                                  ? Icons.check_circle
+                                  : Icons.warning,
+                              color: _isCurrentOrbitStable()
+                                  ? AppColors.primaryColor
+                                  : AppColors.celestialOrange,
+                              size: AppTypography.iconSizeMedium,
+                            ),
+                            SizedBox(width: AppTypography.spacingMedium),
+                            Expanded(
+                              child: Text(
+                                _isCurrentOrbitStable()
+                                    ? AppLocalizations.of(
+                                        context,
+                                      )!.orbitIsStable
+                                    : AppLocalizations.of(
+                                        context,
+                                      )!.orbitMayBeUnstable,
+                                style: AppTypography.mediumText.copyWith(
+                                  color: _isCurrentOrbitStable()
+                                      ? AppColors.primaryColor
+                                      : AppColors.celestialOrange,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (!_isCurrentOrbitStable()) ...[
+                          SizedBox(height: AppTypography.spacingSmall),
+                          Text(
+                            AppLocalizations.of(
+                              context,
+                            )!.orbitalConfigurationWarning,
+                            style: AppTypography.smallText.copyWith(
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityHigh,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: AppTypography.spacingMedium),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: _makeOrbitStable,
+                              icon: Icon(
+                                Icons.auto_fix_high,
+                                size: AppTypography.iconSizeSmall,
+                              ),
+                              label: Text(
+                                AppLocalizations.of(context)!.makeStable,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryColor,
+                                foregroundColor: AppColors.uiWhite,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: AppTypography.spacingMedium,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    AppTypography.radiusLarge,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+
+                  // Orbital Guidance Message
+                  SizedBox(height: AppTypography.spacingMedium),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(AppTypography.spacingMedium),
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundBlack.withValues(alpha: 0.7),
+                      borderRadius: BorderRadius.circular(
+                        AppTypography.radiusMedium,
+                      ),
+                      border: Border.all(
+                        color: AppColors.primaryColor.withValues(alpha: 0.3),
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Text(
+                      _getOrbitalGuidanceMessage(context),
+                      style: AppTypography.smallText.copyWith(
+                        color: AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityMediumHigh,
+                        ),
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  /// Build central body selector dropdown
+  Widget _buildCentralBodySelector(AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SectionDivider.labeled(l10n.centralBodySelector),
+        SizedBox(height: AppTypography.spacingMedium),
+        Container(
+          width: double.infinity,
+          height: 56.0,
+          padding: EdgeInsets.symmetric(
+            horizontal: AppTypography.spacingMedium,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityBarely,
+            ),
+            borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+            border: Border.all(
+              color: AppColors.primaryColor.withValues(
+                alpha: AppTypography.opacityHigh,
+              ),
+              width: AppTypography.borderMedium,
+            ),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<Body>(
+              value:
+                  _selectedCentralBody ?? widget.availableCentralBodies.first,
+              isExpanded: true,
+              dropdownColor: AppColors.uiBlack,
+              icon: Icon(Icons.arrow_drop_down, color: AppColors.primaryColor),
+              items: widget.availableCentralBodies.map((body) {
+                return DropdownMenuItem<Body>(
+                  value: body,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.center_focus_strong,
+                        color: AppColors.primaryColor,
+                        size: AppTypography.iconSizeMedium,
+                      ),
+                      SizedBox(width: AppTypography.spacingSmall),
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: body.color,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      SizedBox(width: AppTypography.spacingSmall),
+                      Expanded(
+                        child: Text(
+                          body.name.isEmpty
+                              ? AppLocalizations.of(
+                                  context,
+                                )!.bodyTypeGeneric(body.bodyType.name)
+                              : body.name,
+                          style: AppTypography.mediumText.copyWith(
+                            color: AppColors.uiWhite,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        NumberUtils.formatMassInSolarMasses(body.mass),
+                        style: AppTypography.smallText.copyWith(
+                          color: AppColors.uiWhite.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+              onChanged: (Body? newBody) {
+                // Add haptic feedback for central body selection
+                HapticFeedback.lightImpact();
+
+                setState(() {
+                  _selectedCentralBody = newBody;
+                  if (newBody != null) {
+                    // Auto-calculate safe orbit radius
+                    _orbitRadius =
+                        OrbitalMechanicsService.calculateSafeOrbitRadius(
+                          newBody,
+                          widget.body,
+                        );
+                  }
+                });
+                _applyOrbitalPlacement();
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Enable orbital placement mode
+  void _enableOrbitalPlacement() {
+    setState(() {
+      _showOrbitalPlacement = true;
+      _isOrbitalPlacementUIActive = true;
+      // Auto-select the most massive body as default central body
+      if (widget.availableCentralBodies.isNotEmpty) {
+        _selectedCentralBody = OrbitalMechanicsService.findCentralBody(
+          widget.availableCentralBodies,
+        );
+        if (_selectedCentralBody != null) {
+          _orbitRadius = OrbitalMechanicsService.calculateSafeOrbitRadius(
+            _selectedCentralBody!,
+            widget.body,
+          );
+          // Automatically apply orbital placement to set correct velocity
+          Future.delayed(const Duration(milliseconds: 100), () {
+            _applyOrbitalPlacement();
+          });
+        }
+      }
+    });
+    // Notify parent of state change
+    _updateBodyProperty();
+  }
+
+  /// Cancel orbital placement mode
+  void _cancelOrbitalPlacement() {
+    setState(() {
+      _showOrbitalPlacement = false;
+      _isOrbitalPlacementUIActive = false;
+      _selectedCentralBody = null;
+    });
+    // Notify parent of state change
+    _updateBodyProperty();
+  }
+
+  /// Apply orbital placement calculations to the body
+  void _applyOrbitalPlacement() {
+    if (_selectedCentralBody == null) return;
+
+    try {
+      final placement = OrbitalMechanicsService.calculateCircularOrbit(
+        centralBody: _selectedCentralBody!,
+        orbitRadius: _orbitRadius,
+        orbitPhase: _orbitPhase,
+        inclination: _orbitInclination,
+      );
+
+      // Update position and velocity controllers
+      _positionXController.text = placement.position.x.toString();
+      _positionYController.text = placement.position.y.toString();
+      _positionZController.text = placement.position.z.toString();
+      _velocityXController.text = placement.velocity.x.toString();
+      _velocityYController.text = placement.velocity.y.toString();
+      _velocityZController.text = placement.velocity.z.toString();
+
+      // Update the body immediately
+      _updateBodyProperty();
+    } catch (e) {
+      debugPrint('Error applying orbital placement: $e');
+    }
+  }
+
+  /// Check if current orbital configuration is stable
+  bool _isCurrentOrbitStable() {
+    if (_selectedCentralBody == null) return false;
+
+    return OrbitalMechanicsService.isOrbitStable(
+      _selectedCentralBody!,
+      widget.body,
+      _orbitRadius,
+    );
+  }
+
+  /// Calculate stable orbital parameters and apply them
+  void _makeOrbitStable() {
+    if (_selectedCentralBody == null) return;
+
+    // Store old radius for comparison
+    final oldRadius = _orbitRadius;
+
+    setState(() {
+      // Calculate safe orbital radius
+      final safeRadius = OrbitalMechanicsService.calculateSafeOrbitRadius(
+        _selectedCentralBody!,
+        widget.body,
+      );
+
+      // Update orbital radius to safe value
+      _orbitRadius = safeRadius;
+
+      // Normalize phase to a standard position (0 radians = positive X-axis)
+      _orbitPhase = 0.0;
+
+      // Set inclination to 0 for a stable equatorial orbit
+      _orbitInclination = 0.0;
+
+      // Apply the orbital placement with stable parameters
+      _applyOrbitalPlacement();
+    });
+
+    // Calculate the change in radius for user feedback
+    final radiusChange = _orbitRadius - oldRadius;
+    final changeDescription = radiusChange > 0.1
+        ? AppLocalizations.of(
+            context,
+          )!.orbitalRadiusIncreasedFeedback(radiusChange.toStringAsFixed(1))
+        : radiusChange < -0.1
+        ? AppLocalizations.of(
+            context,
+          )!.orbitalRadiusDecreasedFeedback((-radiusChange).toStringAsFixed(1))
+        : AppLocalizations.of(context)!.orbitalRadiusFineTunedFeedback;
+
+    // Haptic feedback for the action
+    HapticFeedback.mediumImpact();
+
+    // Show detailed feedback to user
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          AppLocalizations.of(context)!.orbitStabilizedMessage(
+            changeDescription,
+            _orbitRadius.toStringAsFixed(1),
+          ),
+        ),
+        backgroundColor: AppColors.uiStatusGreen,
+        duration: const Duration(seconds: 4),
+      ),
+    );
+  }
+
+  /// Get orbital guidance message based on mass hierarchy
+  String _getOrbitalGuidanceMessage(BuildContext context) {
+    if (_selectedCentralBody == null) return '';
+
+    final centralMass = _selectedCentralBody!.mass;
+    final orbitingMass = widget.body.mass;
+
+    if (orbitingMass > centralMass * 0.5) {
+      return AppLocalizations.of(context)!.orbitalWarningMassiveBody;
+    } else if (orbitingMass > centralMass * 0.1) {
+      return AppLocalizations.of(context)!.orbitalTipSignificantMass;
+    } else if (_orbitRadius < 10.0) {
+      return AppLocalizations.of(context)!.orbitalWarningCloseOrbit;
+    } else if (_orbitRadius > 50.0) {
+      return AppLocalizations.of(context)!.orbitalTipDistantOrbit;
+    } else {
+      return AppLocalizations.of(context)!.orbitalGoodConfiguration;
+    }
+  }
+
+  /// Calculate orbital period text for display
+  String _calculateOrbitalPeriodText(BuildContext context) {
+    if (_selectedCentralBody == null) {
+      return AppLocalizations.of(context)!.unknownValue;
+    }
+
+    try {
+      final placement = OrbitalMechanicsService.calculateCircularOrbit(
+        centralBody: _selectedCentralBody!,
+        orbitRadius: _orbitRadius,
+        orbitPhase: 0.0,
+      );
+
+      return NumberUtils.formatDecimal(placement.orbitalPeriod, 1);
+    } catch (e) {
+      return AppLocalizations.of(context)!.orbitalError;
+    }
+  }
+
+  /// Build a toggle option with consistent styling matching camera controls
+  Widget _buildToggleOption(
+    String title,
+    String description,
+    IconData icon,
+    bool isEnabled,
+    VoidCallback onToggle,
+  ) {
+    return Container(
+      margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
+      child: Material(
+        color: AppColors.transparentColor,
+        child: HapticInkWell(
+          onTap: onToggle,
+          borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+          child: Container(
+            padding: EdgeInsets.all(AppTypography.spacingLarge),
+            decoration: BoxDecoration(
+              color: isEnabled
+                  ? AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityMidFade,
+                    )
+                  : AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityBarely,
+                    ),
+              borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+              border: isEnabled
+                  ? Border.all(
+                      color: AppColors.primaryColor,
+                      width: AppTypography.borderThin,
+                    )
+                  : Border.all(
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityDisabled,
+                      ),
+                      width: AppTypography.borderThin,
+                    ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  color: isEnabled
+                      ? AppColors.primaryColor
+                      : AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityHigh,
+                        ),
+                  size: AppTypography.iconSizeXXLarge,
+                ),
+                SizedBox(width: AppTypography.spacingLarge),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          color: isEnabled
+                              ? AppColors.primaryColor
+                              : AppColors.uiWhite,
+                          fontSize: AppTypography.fontSizeLarge,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: AppTypography.spacingXSmall),
+                      Text(
+                        description,
+                        style: TextStyle(
+                          color: AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacityHigh,
+                          ),
+                          fontSize: AppTypography.fontSizeMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                HapticSwitch(
+                  value: isEnabled,
+                  onChanged: (_) => onToggle(),
+                  activeColor: AppColors.primaryColor,
+                  activeTrackColor: AppColors.primaryColor.withValues(
+                    alpha: AppTypography.opacityFaint,
+                  ),
+                  inactiveThumbColor: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityMedium,
+                  ),
+                  inactiveTrackColor: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityDisabled,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

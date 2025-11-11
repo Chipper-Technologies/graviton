@@ -245,5 +245,38 @@ void main() {
         expect(find.byIcon(Icons.arrow_back), findsNothing);
       },
     );
+
+    testWidgets('applies custom titleSpacing when provided', (
+      WidgetTester tester,
+    ) async {
+      const customTitleSpacing = 24.0;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            appBar: const HapticAppBar(
+              title: 'Test',
+              titleSpacing: customTitleSpacing,
+            ),
+          ),
+        ),
+      );
+
+      final appBar = tester.widget<AppBar>(find.byType(AppBar));
+      expect(appBar.titleSpacing, customTitleSpacing);
+    });
+
+    testWidgets('uses default titleSpacing when not provided', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(appBar: const HapticAppBar(title: 'Test')),
+        ),
+      );
+
+      final appBar = tester.widget<AppBar>(find.byType(AppBar));
+      expect(appBar.titleSpacing, isNull); // Should use AppBar default
+    });
   });
 }

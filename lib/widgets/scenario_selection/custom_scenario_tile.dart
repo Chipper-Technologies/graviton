@@ -3,6 +3,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
 
 /// Widget for displaying custom scenarios with edit/delete actions
 ///
@@ -109,6 +110,7 @@ class CustomScenarioTile extends StatelessWidget {
                     SizedBox(height: AppTypography.spacingSmall),
                     // Action buttons
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.star,
@@ -127,46 +129,41 @@ class CustomScenarioTile extends StatelessWidget {
                           ),
                         ),
                         const Spacer(),
-                        // Edit button
-                        GestureDetector(
-                          onTap: onEdit,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            child: Icon(
-                              Icons.edit,
-                              size: AppTypography.iconSizeLarge,
-                              color: AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacityMediumHigh,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: AppTypography.spacingSmall),
-                        // Delete button
-                        GestureDetector(
-                          onTap: onDelete,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: AppTypography.spacingSmall,
-                              vertical: AppTypography.spacingXSmall,
-                            ),
-                            child: Icon(
-                              Icons.delete_outline,
-                              size: AppTypography.iconSizeLarge,
-                              color: AppColors.celestialRed.withValues(
-                                alpha: AppTypography.opacityMediumHigh,
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ],
                 ),
               ),
+              // Edit and Delete buttons (vertically centered)
+              if (!isSelected) ...[
+                SizedBox(width: AppTypography.spacingMedium),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Edit button
+                    HapticCircularButton.edit(
+                      onTap: onEdit,
+                      semanticsLabel: AppLocalizations.of(
+                        context,
+                      )!.editScenarioButton,
+                      semanticsHint: AppLocalizations.of(
+                        context,
+                      )!.editScenarioHint,
+                    ),
+                    SizedBox(width: AppTypography.spacingSmall),
+                    // Delete button
+                    HapticCircularButton.delete(
+                      onTap: onDelete,
+                      semanticsLabel: AppLocalizations.of(
+                        context,
+                      )!.deleteScenarioButton,
+                      semanticsHint: AppLocalizations.of(
+                        context,
+                      )!.deleteScenarioHint,
+                    ),
+                  ],
+                ),
+              ],
             ],
           ),
         ),

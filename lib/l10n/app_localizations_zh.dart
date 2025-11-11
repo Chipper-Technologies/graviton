@@ -328,6 +328,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get colorSelector => '颜色选择器';
 
   @override
+  String colorOptionTooltip(String colorName) {
+    return '为天体选择$colorName颜色';
+  }
+
+  @override
   String get visualsTooltip => '视觉显示选项';
 
   @override
@@ -437,6 +442,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get temperatureKEditorhint => '输入温度（开尔文）';
 
   @override
+  String get temperatureCelsiusEditorhint => '输入温度（摄氏度）';
+
+  @override
+  String get temperatureFahrenheitEditorhint => '输入温度（华氏度）';
+
+  @override
   String get temperatureModerate => '温和';
 
   @override
@@ -453,6 +464,15 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitCelsiusName => '摄氏度';
+
+  @override
+  String get temperatureUnitFahrenheitName => '华氏度';
+
+  @override
+  String get temperatureUnitKelvinName => '开尔文';
 
   @override
   String get velocityMsEditor => '速度 m/s 编辑器';
@@ -472,6 +492,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get beginnerEditor => '初学者编辑器';
 
   @override
+  String get noBodiesAdded => '尚未添加天体';
+
+  @override
+  String get addBodiesInSetupTab => '在设置选项卡中添加天体';
+
+  @override
+  String get untitledScenario => '无标题场景';
+
+  @override
+  String get noDescriptionProvided => '未提供描述';
+
+  @override
+  String get collisionSoftening => '碰撞软化';
+
+  @override
+  String get collisionRadius => '碰撞半径';
+
+  @override
   String get bodyTypeEditor => '天体类型编辑器';
 
   @override
@@ -488,6 +526,18 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get createScenarioTitle => '创建场景标题';
+
+  @override
+  String get editScenarioButton => '编辑场景';
+
+  @override
+  String get editScenarioHint => '编辑此场景';
+
+  @override
+  String get deleteScenarioButton => '删除场景';
+
+  @override
+  String get deleteScenarioHint => '删除此场景';
 
   @override
   String get customGravitationalSimulationEditor => '自定义引力模拟编辑器';
@@ -577,6 +627,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get exportScenarioButton => '导出场景';
+
+  @override
+  String get exportScenarioHint => '将场景导出为文件以供分享';
 
   @override
   String exportScenarioFailedMessage(String error) {
@@ -964,7 +1017,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get testScenarioButton => '测试场景按钮';
 
   @override
+  String get testScenarioHint => '在模拟中测试当前场景';
+
+  @override
   String get testScenarioNotImplementedMessage => '测试场景未实现';
+
+  @override
+  String get scenarioEditorMenuHint => '打开包含测试和导出选项的菜单';
 
   @override
   String get aboutButtonTooltip => '关于';
@@ -1582,6 +1641,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get languageDescription => '更改应用程序语言';
 
   @override
+  String get languageSelectionHint => '选择您的首选显示语言';
+
+  @override
   String get languageEnglish => 'English';
 
   @override
@@ -1597,7 +1659,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get languageKorean => '한국어';
 
   @override
-  String get languageLabel => '语言';
+  String get languageLabel => '常规';
+
+  @override
+  String get temperatureUnitsLabel => '温度单位';
+
+  @override
+  String get temperatureUnitsDescription => '整个应用程序中显示温度的首选单位';
 
   @override
   String get languageSpanish => 'Español';
@@ -2266,4 +2334,112 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get customScenarioCreatedUnknown => '创建日期未知';
+
+  @override
+  String get orbitalPlacementEditor => '轨道放置';
+
+  @override
+  String get placeInOrbitButton => '放置到轨道';
+
+  @override
+  String get centralBodySelector => '中心天体';
+
+  @override
+  String get orbitRadiusEditor => '轨道半径';
+
+  @override
+  String get orbitPhaseEditor => '轨道相位';
+
+  @override
+  String get orbitInclinationEditor => '倾斜角';
+
+  @override
+  String get circularOrbitOption => '圆形轨道';
+
+  @override
+  String get ellipticalOrbitOption => '椭圆轨道';
+
+  @override
+  String orbitalPeriodDisplay(String period) {
+    return '周期: $period';
+  }
+
+  @override
+  String get noAvailableCentralBodies => '没有其他天体可用于轨道放置';
+
+  @override
+  String get orbitalPlacementDescription => '配置此天体以现实物理围绕另一个天体运行';
+
+  @override
+  String get orbitalPlacementActiveDescription =>
+      '轨道放置已激活。位置和速度将根据下面的轨道参数自动计算。';
+
+  @override
+  String get showGravitationalFieldVisualization => '显示此天体的引力场可视化';
+
+  @override
+  String get cancelOrbitalPlacement => '取消轨道放置';
+
+  @override
+  String get makeStable => '使稳定';
+
+  @override
+  String get orbitalWarningMassiveBody =>
+      '⚠️ 警告：环绕天体相对于中心天体质量很大。这可能导致不稳定轨道或天体相互环绕。';
+
+  @override
+  String get orbitalTipSignificantMass => '💡 提示：这是一个显著的质量比。考虑增加轨道距离以获得稳定性。';
+
+  @override
+  String get orbitalWarningCloseOrbit => '⚠️ 警告：非常近的轨道。存在碰撞或潮汐破坏的风险。';
+
+  @override
+  String get orbitalTipDistantOrbit => '💡 提示：遥远轨道。其他天体的引力影响可能扰乱这个轨道。';
+
+  @override
+  String get orbitalGoodConfiguration => '✅ 稳定系统的良好轨道配置。';
+
+  @override
+  String get orbitalError => '错误';
+
+  @override
+  String get orbitalConfigurationWarning => '此轨道配置可能导致碰撞或抛射。考虑使用\"使稳定\"按钮。';
+
+  @override
+  String get defaultBodyName => '天体';
+
+  @override
+  String get orbitalPeriodLabel => '轨道周期';
+
+  @override
+  String get orbitIsStable => '轨道是稳定的';
+
+  @override
+  String get orbitMayBeUnstable => '轨道可能不稳定';
+
+  @override
+  String bodyTypeGeneric(String bodyType) {
+    return '$bodyType天体';
+  }
+
+  @override
+  String orbitalRadiusIncreasedFeedback(String amount) {
+    return '增加了$amount单位';
+  }
+
+  @override
+  String orbitalRadiusDecreasedFeedback(String amount) {
+    return '减少了$amount单位';
+  }
+
+  @override
+  String get orbitalRadiusFineTunedFeedback => '微调';
+
+  @override
+  String orbitStabilizedMessage(String changeDescription, String finalRadius) {
+    return '轨道已稳定！半径$changeDescription到$finalRadius单位。相位和倾斜度重置以保持稳定。';
+  }
+
+  @override
+  String get unknownValue => '未知';
 }

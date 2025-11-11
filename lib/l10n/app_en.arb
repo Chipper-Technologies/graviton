@@ -392,6 +392,16 @@
   "@colorSelector": {
     "description": "Accessibility label for color picker"
   },
+  "colorOptionTooltip": "Select {colorName} color for celestial body",
+  "@colorOptionTooltip": {
+    "description": "Tooltip for individual color options in color picker",
+    "placeholders": {
+      "colorName": {
+        "type": "String",
+        "description": "The name of the color"
+      }
+    }
+  },
   "visualsTooltip": "Visual display options",
   "@visualsTooltip": {
     "description": "Tooltip for visuals tab button"
@@ -564,6 +574,14 @@
   "@temperatureKEditorhint": {
     "description": "Hint text for temperature input field in scenario editor"
   },
+  "temperatureCelsiusEditorhint": "Temperature (°C)",
+  "@temperatureCelsiusEditorhint": {
+    "description": "Hint text for temperature input field in Celsius"
+  },
+  "temperatureFahrenheitEditorhint": "Temperature (°F)",
+  "@temperatureFahrenheitEditorhint": {
+    "description": "Hint text for temperature input field in Fahrenheit"
+  },
   "temperatureModerate": "Moderate",
   "@temperatureModerate": {
     "description": "Temperature category for moderate temperature bodies (0°C to 50°C)"
@@ -588,6 +606,18 @@
   "@temperatureUnitKelvin": {
     "description": "Kelvin temperature unit symbol"
   },
+  "temperatureUnitCelsiusName": "Celsius",
+  "@temperatureUnitCelsiusName": {
+    "description": "Celsius temperature unit full name"
+  },
+  "temperatureUnitFahrenheitName": "Fahrenheit",
+  "@temperatureUnitFahrenheitName": {
+    "description": "Fahrenheit temperature unit full name"
+  },
+  "temperatureUnitKelvinName": "Kelvin",
+  "@temperatureUnitKelvinName": {
+    "description": "Kelvin temperature unit full name"
+  },
   "velocityMsEditor": "Velocity (m/s)",
   "@velocityMsEditor": {
     "description": "Section title for velocity in meters per second"
@@ -607,6 +637,30 @@
   "beginnerEditor": "Beginner",
   "@beginnerEditor": {
     "description": "Beginner difficulty level for scenarios"
+  },
+  "noBodiesAdded": "No bodies added yet",
+  "@noBodiesAdded": {
+    "description": "Message shown when no bodies have been added to scenario"
+  },
+  "addBodiesInSetupTab": "Add bodies in the Setup tab",
+  "@addBodiesInSetupTab": {
+    "description": "Instruction message for adding bodies in the setup tab"
+  },
+  "untitledScenario": "Untitled Scenario",
+  "@untitledScenario": {
+    "description": "Default name for scenarios without a title"
+  },
+  "noDescriptionProvided": "No description provided",
+  "@noDescriptionProvided": {
+    "description": "Message shown when scenario has no description"
+  },
+  "collisionSoftening": "Collision Softening",
+  "@collisionSoftening": {
+    "description": "Label for collision softening parameter in physics editor"
+  },
+  "collisionRadius": "Collision Radius",
+  "@collisionRadius": {
+    "description": "Label for collision radius parameter in physics editor"
   },
   "bodyTypeEditor": "Body Type",
   "@bodyTypeEditor": {
@@ -631,6 +685,22 @@
   "createScenarioTitle": "Create Scenario",
   "@createScenarioTitle": {
     "description": "Title for creating new scenario"
+  },
+  "editScenarioButton": "Edit scenario",
+  "@editScenarioButton": {
+    "description": "Accessibility label for edit scenario button"
+  },
+  "editScenarioHint": "Edit this scenario",
+  "@editScenarioHint": {
+    "description": "Accessibility hint for edit scenario button"
+  },
+  "deleteScenarioButton": "Delete scenario",
+  "@deleteScenarioButton": {
+    "description": "Accessibility label for delete scenario button"
+  },
+  "deleteScenarioHint": "Delete this scenario",
+  "@deleteScenarioHint": {
+    "description": "Accessibility hint for delete scenario button"
   },
   "customGravitationalSimulationEditor": "A custom gravitational simulation",
   "@customGravitationalSimulationEditor": {
@@ -765,6 +835,10 @@
   "exportScenarioButton": "Export Scenario",
   "@exportScenarioButton": {
     "description": "Button text to export a scenario"
+  },
+  "exportScenarioHint": "Export scenario to file for sharing",
+  "@exportScenarioHint": {
+    "description": "Accessibility hint for export scenario action"
   },
   "exportScenarioFailedMessage": "Failed to export scenario: {error}",
   "@exportScenarioFailedMessage": {
@@ -1343,9 +1417,17 @@
   "@testScenarioButton": {
     "description": "Button text to test a scenario"
   },
+  "testScenarioHint": "Test the current scenario in simulation",
+  "@testScenarioHint": {
+    "description": "Accessibility hint for test scenario action"
+  },
   "testScenarioNotImplementedMessage": "Test scenario functionality not implemented yet",
   "@testScenarioNotImplementedMessage": {
     "description": "Message shown when test scenario is not implemented"
+  },
+  "scenarioEditorMenuHint": "Open menu with test and export options",
+  "@scenarioEditorMenuHint": {
+    "description": "Accessibility hint for scenario editor menu button"
   },
   "aboutButtonTooltip": "About",
   "@aboutButtonTooltip": {
@@ -2248,6 +2330,10 @@
   "@languageDescription": {
     "description": "Description for language selection setting"
   },
+  "languageSelectionHint": "Choose your preferred display language",
+  "@languageSelectionHint": {
+    "description": "Hint text for language selection dropdown"
+  },
   "languageEnglish": "English",
   "@languageEnglish": {
     "description": "English language option"
@@ -2268,9 +2354,17 @@
   "@languageKorean": {
     "description": "Korean language option"
   },
-  "languageLabel": "Language",
+  "languageLabel": "General",
   "@languageLabel": {
-    "description": "Label for language selection setting"
+    "description": "Label for general settings section (including language and temperature units)"
+  },
+  "temperatureUnitsLabel": "Temperature Units",
+  "@temperatureUnitsLabel": {
+    "description": "Label for temperature units setting"
+  },
+  "temperatureUnitsDescription": "Preferred units for displaying temperatures throughout the app",
+  "@temperatureUnitsDescription": {
+    "description": "Description for temperature units setting"
   },
   "languageSpanish": "Español",
   "@languageSpanish": {
@@ -3145,5 +3239,167 @@
   "customScenarioCreatedUnknown": "Unknown",
   "@customScenarioCreatedUnknown": {
     "description": "Text shown when custom scenario creation date is unknown"
+  },
+  "orbitalPlacementEditor": "Orbital Placement",
+  "@orbitalPlacementEditor": {
+    "description": "Section title for orbital placement controls"
+  },
+  "placeInOrbitButton": "Place in Orbit",
+  "@placeInOrbitButton": {
+    "description": "Button text to place body in orbit around another body"
+  },
+  "centralBodySelector": "Central Body",
+  "@centralBodySelector": {
+    "description": "Label for central body selection dropdown"
+  },
+  "orbitRadiusEditor": "Orbit Radius",
+  "@orbitRadiusEditor": {
+    "description": "Label for orbit radius slider"
+  },
+  "orbitPhaseEditor": "Orbit Phase",
+  "@orbitPhaseEditor": {
+    "description": "Label for orbit phase (starting position) slider"
+  },
+  "orbitInclinationEditor": "Inclination",
+  "@orbitInclinationEditor": {
+    "description": "Label for orbit inclination angle slider"
+  },
+  "circularOrbitOption": "Circular Orbit",
+  "@circularOrbitOption": {
+    "description": "Option for circular orbit type"
+  },
+  "ellipticalOrbitOption": "Elliptical Orbit",
+  "@ellipticalOrbitOption": {
+    "description": "Option for elliptical orbit type"
+  },
+  "orbitalPeriodDisplay": "Period: {period}",
+  "@orbitalPeriodDisplay": {
+    "description": "Display text for calculated orbital period",
+    "placeholders": {
+      "period": {
+        "type": "String",
+        "description": "The orbital period time"
+      }
+    }
+  },
+  "noAvailableCentralBodies": "No other bodies available for orbital placement",
+  "@noAvailableCentralBodies": {
+    "description": "Message when no central bodies are available for orbit"
+  },
+  "orbitalPlacementDescription": "Configure this body to orbit around another celestial body with realistic physics",
+  "@orbitalPlacementDescription": {
+    "description": "Description text for orbital placement feature"
+  },
+  "orbitalPlacementActiveDescription": "Orbital placement is active. Position and velocity will be calculated automatically based on the orbit parameters below.",
+  "@orbitalPlacementActiveDescription": {
+    "description": "Description text shown when orbital placement is active, explaining that position and velocity are auto-calculated"
+  },
+  "showGravitationalFieldVisualization": "Show gravitational field visualization for this body",
+  "@showGravitationalFieldVisualization": {
+    "description": "Toggle description for showing gravitational field visualization for a specific body"
+  },
+  "cancelOrbitalPlacement": "Cancel Orbital Placement",
+  "@cancelOrbitalPlacement": {
+    "description": "Button text to cancel orbital placement mode"
+  },
+  "makeStable": "Make Stable",
+  "@makeStable": {
+    "description": "Button text to make orbital configuration stable"
+  },
+  "orbitalWarningMassiveBody": "⚠️ Warning: Orbiting body is very massive relative to central body. This may cause unstable orbits or the bodies may orbit each other.",
+  "@orbitalWarningMassiveBody": {
+    "description": "Warning message for massive orbiting body relative to central body"
+  },
+  "orbitalTipSignificantMass": "💡 Tip: This is a significant mass ratio. Consider increasing orbital distance for stability.",
+  "@orbitalTipSignificantMass": {
+    "description": "Tip message for significant mass ratio between bodies"
+  },
+  "orbitalWarningCloseOrbit": "⚠️ Warning: Very close orbit. Risk of collision or tidal disruption.",
+  "@orbitalWarningCloseOrbit": {
+    "description": "Warning message for very close orbital distance"
+  },
+  "orbitalTipDistantOrbit": "💡 Tip: Distant orbit. Gravitational influence from other bodies may perturb this orbit.",
+  "@orbitalTipDistantOrbit": {
+    "description": "Tip message for distant orbital configuration"
+  },
+  "orbitalGoodConfiguration": "✅ Good orbital configuration for a stable system.",
+  "@orbitalGoodConfiguration": {
+    "description": "Message for good orbital configuration"
+  },
+  "orbitalError": "Error",
+  "@orbitalError": {
+    "description": "Generic error message for orbital calculations"
+  },
+  "orbitalConfigurationWarning": "This orbital configuration may lead to collisions or ejections. Consider using the \"Make Stable\" button.",
+  "@orbitalConfigurationWarning": {
+    "description": "Warning text for unstable orbital configurations"
+  },
+  "defaultBodyName": "Celestial Body",
+  "@defaultBodyName": {
+    "description": "Default name for new celestial bodies"
+  },
+  "orbitalPeriodLabel": "Orbital Period",
+  "@orbitalPeriodLabel": {
+    "description": "Label for orbital period display"
+  },
+  "orbitIsStable": "Orbit is Stable",
+  "@orbitIsStable": {
+    "description": "Message indicating the orbit is stable"
+  },
+  "orbitMayBeUnstable": "Orbit May Be Unstable",
+  "@orbitMayBeUnstable": {
+    "description": "Message indicating the orbit may be unstable"
+  },
+  "bodyTypeGeneric": "{bodyType} body",
+  "@bodyTypeGeneric": {
+    "description": "Generic format for body type description",
+    "placeholders": {
+      "bodyType": {
+        "type": "String",
+        "description": "The type of the celestial body"
+      }
+    }
+  },
+  "orbitalRadiusIncreasedFeedback": "increased by {amount} units",
+  "@orbitalRadiusIncreasedFeedback": {
+    "description": "Feedback message when orbital radius is increased",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "description": "The amount by which radius was increased"
+      }
+    }
+  },
+  "orbitalRadiusDecreasedFeedback": "decreased by {amount} units",
+  "@orbitalRadiusDecreasedFeedback": {
+    "description": "Feedback message when orbital radius is decreased",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "description": "The amount by which radius was decreased"
+      }
+    }
+  },
+  "orbitalRadiusFineTunedFeedback": "fine-tuned",
+  "@orbitalRadiusFineTunedFeedback": {
+    "description": "Feedback message when orbital radius is slightly adjusted"
+  },
+  "orbitStabilizedMessage": "Orbit stabilized! Radius {changeDescription} to {finalRadius} units. Phase and inclination reset for stability.",
+  "@orbitStabilizedMessage": {
+    "description": "Success message when orbit is stabilized",
+    "placeholders": {
+      "changeDescription": {
+        "type": "String",
+        "description": "Description of how the radius changed"
+      },
+      "finalRadius": {
+        "type": "String",
+        "description": "The final orbital radius value"
+      }
+    }
+  },
+  "unknownValue": "Unknown",
+  "@unknownValue": {
+    "description": "Text shown for unknown or invalid values"
   }
 }

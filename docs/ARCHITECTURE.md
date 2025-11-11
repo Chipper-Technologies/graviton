@@ -28,6 +28,8 @@ Graviton follows a **clean architecture** approach with clear separation of conc
 - **Single Responsibility**: Each class has one reason to change
 - **Provider Pattern**: Reactive state management throughout the app
 - **Modular Design**: Specialized painters and services for different features
+- **Accessibility First**: Comprehensive haptic feedback and screen reader support
+- **User Content Creation**: Full-featured scenario editor for educational customization
 
 ## 📊 Architecture Diagram
 
@@ -61,6 +63,10 @@ flowchart TD
         ScreenshotSvc["📸 Screenshot<br/>Dev Features"]
         HapticSvc["📳 Haptic Feedback<br/>Touch Response"]
         FullscreenSvc["🖥️ Fullscreen<br/>System UI Control"]
+        AccessibilitySvc["♿ Accessibility<br/>Screen Reader Support"]
+        KeyboardSvc["⌨️ Keyboard Navigation<br/>Accessibility Controls"]
+        SemanticFocusSvc["🎯 Semantic Focus<br/>Focus Management"]
+        CustomScenarioSvc["🎨 Custom Scenarios<br/>User Content Creation"]
     end
 
     %% Rendering
@@ -89,6 +95,8 @@ flowchart TD
         ScenarioSelector["🎯 Scenario Selector<br/>Content Picker"]
         HapticControls["📳 Haptic Controls<br/>Feedback Widgets"]
         FullscreenUI["🖥️ Fullscreen UI<br/>Immersive Mode"]
+        SemanticWidgets["♿ Semantic Widgets<br/>Accessibility Support"]
+        ScenarioEditor["🎨 Scenario Editor<br/>Custom Content Creation"]
     end
 
     %% Models
@@ -159,9 +167,9 @@ flowchart TD
     
     class Main,GravitonApp,HomeScreen primaryNode
     class AppState,SimulationState,UIState,CameraState,PhysicsState stateNode
-    class SimulationSvc,ScenarioSvc,TempSvc,HabSvc,FirebaseSvc,ConfigSvc,VersionSvc,ScreenshotSvc,HapticSvc,FullscreenSvc serviceNode
+    class SimulationSvc,ScenarioSvc,TempSvc,HabSvc,FirebaseSvc,ConfigSvc,VersionSvc,ScreenshotSvc,HapticSvc,FullscreenSvc,AccessibilitySvc,KeyboardSvc,SemanticFocusSvc,CustomScenarioSvc serviceNode
     class MainPainter,BodyPainter,TrailPainter,BgPainter,PathPainter,HabPainter,GravPainter,FxPainter,AsteroidPainter renderNode
-    class FloatingControls,SettingsDialog,StatsOverlay,ScenarioSelector,HapticControls,FullscreenUI uiNode
+    class FloatingControls,SettingsDialog,StatsOverlay,ScenarioSelector,HapticControls,FullscreenUI,SemanticWidgets,ScenarioEditor uiNode
     class Body,TrailPoint,PhysicsSettings,ScreenshotModels modelNode
 ```
 
@@ -298,17 +306,21 @@ GravitonPainter (Main Orchestrator)
 - **Screenshot Mode**: Development-only feature for marketing materials
 - **Haptic Feedback Service**: Coordinated touch response feedback system
 - **Fullscreen Service**: System UI control for immersive viewing experience
+- **Accessibility Services**: Screen reader support and semantic focus management
+- **Custom Scenario Management**: User-created content storage and serialization
 
 ## 📱 UI Components
 
 ### Modular Widget Design
 
-- **Floating Controls**: Video-style play/pause/reset controls with haptic feedback
+- **Floating Controls**: Video-style play/pause/reset controls using HapticCircularButton
 - **Settings Dialog**: Comprehensive configuration interface with haptic controls
 - **Stats Overlay**: Real-time performance and physics data
 - **Scenario Selector**: Educational scenario picker with haptic interactions
 - **Bottom Controls**: Camera and UI toggle controls with feedback
 - **Haptic Widget Library**: Comprehensive set of haptic-enabled UI components
+- **Semantic Accessibility**: Screen reader optimized widgets and focus management
+- **Scenario Editor**: Full-featured custom scenario creation interface
 - **Fullscreen Integration**: Tap-to-toggle fullscreen mode with system UI control
 
 ### Responsive Design
@@ -317,6 +329,42 @@ GravitonPainter (Main Orchestrator)
 - **Gesture Handling**: Intuitive touch controls for 3D navigation with haptic feedback
 - **Accessibility**: Screen reader support, semantic labels, and configurable haptics
 - **Immersive Mode**: Fullscreen support with tap gestures for maximum viewing area
+
+### Haptic Feedback System
+
+Graviton features a comprehensive haptic feedback system that provides tactile responses throughout the user interface:
+
+- **Consistent Patterns**: Standardized haptic responses for different interaction types
+- **Widget Integration**: All interactive UI components include appropriate haptic feedback
+- **Educational Enhancement**: Collision events and important physics interactions provide haptic cues
+- **Accessibility Support**: Haptic feedback assists users with visual impairments
+- **Configurable Experience**: Users can customize haptic feedback intensity and patterns
+
+#### Haptic Widget Library
+
+- **HapticCircularButton**: Circular buttons with factory constructors (.edit(), .delete(), .duplicate(), .play(), .pause(), .reset())
+- **HapticAppBar**: App bar with tactile back button and custom title spacing
+- **HapticGestureDetector**: Enhanced gesture detection with appropriate feedback
+- **HapticSwitch/Slider**: Form controls with tactile response on interaction
+- **HapticInkWell**: Tap areas with coordinated visual and haptic feedback
+
+### Custom Scenario Editor
+
+The scenario editor provides a comprehensive interface for creating and editing custom astronomical scenarios:
+
+#### Editor Features
+- **Visual Body Management**: Add, remove, and configure celestial bodies with real-time preview
+- **Physics Configuration**: Adjust gravitational constants, collision parameters, and simulation settings
+- **Orbital Mechanics**: Set initial positions, velocities, and orbital parameters
+- **Metadata Management**: Name, describe, and organize custom scenarios
+- **Import/Export**: JSON-based scenario serialization for sharing and backup
+- **Validation System**: Real-time validation with helpful error messages and suggestions
+
+#### Editor Components
+- **Body Details Sheet**: Comprehensive body property editor with tabbed interface
+- **Body List Management**: Sortable list with duplicate, edit, and delete actions
+- **Physics Panel**: Simulation parameter configuration with live preview
+- **Metadata Panel**: Scenario information and organizational features
 
 ## 🌐 Internationalization
 
@@ -468,37 +516,60 @@ lib/
 ├── models/                      # Data models
 │   ├── asteroid_particle.dart  # Asteroid system data
 │   ├── body.dart               # Celestial body model
+│   ├── body_data.dart          # Body configuration data
+│   ├── camera_movement.dart    # Camera animation data
 │   ├── camera_position.dart    # 3D camera state
 │   ├── changelog.dart          # Version changelog
 │   ├── changelog_entry.dart    # Individual change entries
 │   ├── changelog_version.dart  # Version metadata
+│   ├── chaos_events.dart       # Chaotic simulation events
+│   ├── custom_scenario.dart    # User-created scenarios
+│   ├── custom_scenario_summary.dart # Scenario summary data
+│   ├── indicator_data.dart     # UI indicator information
 │   ├── merge_flash.dart        # Collision effects
+│   ├── objectives_config.dart  # Educational objectives
 │   ├── orbital_event.dart      # Orbital mechanics events
 │   ├── orbital_parameters.dart # Keplerian elements
+│   ├── particle_system_data.dart # Particle system configuration
+│   ├── particle_systems_config.dart # Multi-particle system setup
 │   ├── physics_settings.dart   # Physics configuration
 │   ├── platform_version_config.dart # Platform-specific config
+│   ├── predictive_orbital_config.dart # Orbital prediction settings
 │   ├── preset_scenario.dart    # Educational scenarios
 │   ├── ring_particle.dart      # Planetary ring systems
 │   ├── scenario_config.dart    # Scenario definitions
+│   ├── scenario_configuration.dart # Complete scenario setup
+│   ├── scenario_json_schema.dart # JSON validation schema
+│   ├── scenario_metadata.dart  # Scenario information
+│   ├── scenario_physics_settings.dart # Per-scenario physics
+│   ├── scenario_validation_result.dart # Validation results
 │   ├── screenshot_models.dart  # Screenshot system data
 │   ├── screenshot_preset.dart  # Screenshot configurations
 │   ├── screenshot_presets.dart # Predefined screenshot sets
+│   ├── success_criteria.dart   # Educational success metrics
 │   ├── sunspot_data.dart       # Solar activity data
 │   ├── trail_point.dart        # Motion trail data
 │   └── tutorial_step.dart      # Tutorial system data
 ├── services/                    # Business logic services
+│   ├── accessibility_service.dart # Accessibility support
 │   ├── asteroid_belt_system.dart # Asteroid belt simulation
 │   ├── changelog_service.dart  # Version change management
 │   ├── cinematic_camera_controller.dart # Automated camera movements
+│   ├── custom_scenario_manager.dart # User scenario management
+│   ├── custom_scenario_storage.dart # User scenario persistence
 │   ├── firebase_service.dart   # Firebase integration
 │   ├── fullscreen_service.dart # System UI control
 │   ├── habitable_zone_service.dart # Life zone calculations
 │   ├── haptic_feedback_service.dart # Touch feedback
+│   ├── keyboard_navigation_service.dart # Keyboard accessibility
 │   ├── onboarding_service.dart # User onboarding
+│   ├── orbital_mechanics_service.dart # Orbital mechanics calculations
 │   ├── orbital_prediction_engine.dart # Orbital mechanics
 │   ├── remote_config_service.dart # Feature flag management
+│   ├── scenario_serialization_service.dart # Scenario data serialization
 │   ├── scenario_service.dart   # Educational content
 │   ├── screenshot_mode_service.dart # Development tools
+│   ├── semantic_focus_service.dart # Accessibility focus management
 │   ├── simulation.dart         # Core physics engine
 │   ├── stellar_color_service.dart # Star color calculations
 │   ├── temperature_service.dart # Thermal modeling
@@ -533,11 +604,26 @@ lib/
 │   ├── orbital_path_painter.dart # Trajectory visualization
 │   └── trail_painter.dart      # Motion trail rendering
 ├── widgets/                     # UI components
-│   ├── common/                 # Reusable haptic-enabled widgets
+│   ├── common/                 # Reusable components
 │   │   ├── action_option.dart  # Action button component
+│   │   ├── body_type_picker.dart # Body type selection widget
+│   │   ├── color_picker.dart   # Color selection widget
+│   │   ├── delete_confirmation_dialog.dart # Deletion confirmation
 │   │   ├── dialog_title.dart   # Standardized dialog titles
+│   │   ├── graviton_popup_menu.dart # Custom popup menu
+│   │   ├── graviton_tab.dart   # Custom tab widget
+│   │   ├── graviton_tab_bar.dart # Custom tab bar
+│   │   ├── graviton_tabbed_view.dart # Tabbed interface
+│   │   ├── graviton_tabs.dart  # Tab management
+│   │   ├── section_divider.dart # Section separator
+│   │   ├── styled_dropdown.dart # Styled dropdown menu
+│   │   ├── styled_text_field.dart # Styled text input
+│   │   └── toggle_option.dart  # Toggle control component
+│   ├── haptics/                # Haptic-enabled widgets
 │   │   ├── haptic_app_bar.dart # Haptic-enabled app bar
+│   │   ├── haptic_circular_button.dart # Haptic circular button
 │   │   ├── haptic_elevated_button.dart # Haptic elevated button
+│   │   ├── haptic_floating_action_button.dart # Haptic FAB
 │   │   ├── haptic_gesture_detector.dart # Haptic gesture handling
 │   │   ├── haptic_icon_button.dart # Haptic icon button
 │   │   ├── haptic_ink_well.dart # Haptic ink well
@@ -545,13 +631,36 @@ lib/
 │   │   ├── haptic_slider_option.dart # Haptic slider control
 │   │   ├── haptic_switch.dart  # Haptic switch widget
 │   │   ├── haptic_switch_list_tile.dart # Haptic switch list tile
-│   │   ├── haptic_text_button.dart # Haptic text button
-│   │   └── toggle_option.dart  # Toggle control component
-│   ├── app_bar_speed_control.dart # App bar speed controls
+│   │   └── haptic_text_button.dart # Haptic text button
+│   ├── overlays/               # Screen overlays
+│   │   ├── body_labels_overlay.dart # Object labeling overlay
+│   │   ├── body_property_editor_overlay.dart # In-place property editing
+│   │   ├── camera_visual_aids_overlay.dart # Camera assistance overlay
+│   │   ├── offscreen_indicators_overlay.dart # Off-screen object indicators
+│   │   ├── stats_overlay.dart  # Performance statistics overlay
+│   │   └── tutorial_overlay.dart # Tutorial system interface
+│   ├── scenario_selection/     # Scenario management widgets
+│   │   ├── create_scenario_tile.dart # New scenario creation tile
+│   │   ├── custom_scenario_tile.dart # Custom scenario display
+│   │   ├── custom_scenarios_tab.dart # User scenarios tab
+│   │   ├── preset_scenario_tile.dart # Preset scenario display
+│   │   ├── preset_scenarios_tab.dart # Educational scenarios tab
+│   │   ├── scenario_body_tile.dart # Body management in editor
+│   │   ├── scenario_editor_body_details_bottom_sheet.dart # Body editing
+│   │   ├── scenario_editor_body_list.dart # Body list management
+│   │   ├── scenario_editor_metadata_panel.dart # Scenario metadata
+│   │   └── scenario_editor_physics_panel.dart # Physics parameters
+│   ├── semantics/              # Accessibility widgets
+│   │   ├── semantic_app_wrapper.dart # App-level accessibility
+│   │   ├── semantic_bottom_sheet.dart # Bottom sheet accessibility
+│   │   ├── semantic_camera_controls.dart # Camera control accessibility
+│   │   ├── semantic_focus_wrappers.dart # Focus management wrappers
+│   │   ├── semantic_live_region.dart # Live region announcements
+│   │   ├── semantic_scenario_selector.dart # Scenario selector accessibility
+│   │   ├── semantic_settings_button.dart # Settings button accessibility
+│   │   ├── semantic_simulation_canvas.dart # Canvas accessibility
+│   │   └── semantic_simulation_controls.dart # Simulation control accessibility
 │   ├── auto_pause_dialog_wrapper.dart # Auto-pause functionality
-│   ├── body_labels_overlay.dart # Object labeling overlay
-│   ├── body_properties_dialog.dart # Object property editor
-│   ├── body_property_editor_overlay.dart # In-place property editing
 │   ├── bottom_sheet_handle.dart # Bottom sheet drag handle
 │   ├── bottom_sheet_header.dart # Bottom sheet header
 │   ├── camera_action_button.dart # Camera control button
@@ -561,15 +670,12 @@ lib/
 │   ├── copyright_text.dart     # Copyright information
 │   ├── dev_ribbon.dart         # Development mode indicator
 │   ├── maintenance_dialog.dart # Maintenance mode dialog
-│   ├── offscreen_indicators_overlay.dart # Off-screen object indicators
 │   ├── options_drawer.dart     # Settings drawer
-│   ├── sliding_panel_bottom_sheet.dart # Sliding panel bottom controls
 │   ├── physics_controls.dart   # Physics parameter controls
 │   ├── screenshot_countdown.dart # Screenshot countdown timer
 │   ├── screenshot_mode_widget.dart # Screenshot mode interface
 │   ├── section_title.dart      # Section header component
-│   ├── stats_overlay.dart      # Performance statistics
-│   ├── tutorial_overlay.dart   # Tutorial system interface
+│   ├── sliding_panel_bottom_sheet.dart # Sliding panel bottom controls
 │   ├── version_check_dialog.dart # Version update dialog
 │   └── visuals_controls.dart   # Visual settings controls
 ├── screens/                     # Application screens
@@ -579,6 +685,7 @@ lib/
 │   ├── help_screen.dart        # User help and tutorials
 │   ├── home_screen.dart        # Main simulation screen
 │   ├── physics_settings_screen.dart # Physics parameter settings
+│   ├── scenario_editor_screen.dart # Custom scenario creation/editing
 │   └── scenario_selection_screen.dart # Educational scenario picker
 └── theme/                       # Design system
     ├── app_colors.dart         # Color palette definitions
@@ -619,16 +726,20 @@ lib/
 4. **Repository Pattern**: Data access abstraction
 5. **Observer Pattern**: State change notifications
 6. **Strategy Pattern**: Different rendering strategies for objects
-7. **Factory Pattern**: Scenario and object creation
+7. **Factory Pattern**: Scenario and object creation, haptic widget constructors
 8. **Singleton Pattern**: Service instances and configuration
+9. **Builder Pattern**: Complex object construction (scenarios, physics settings)
+10. **Command Pattern**: User actions and undo/redo functionality in editor
 
 ### Architecture Benefits
 
-- **Maintainability**: Clear separation of concerns
-- **Testability**: Each layer can be tested independently
-- **Scalability**: Easy to add new features and scenarios
-- **Performance**: Optimized rendering and physics calculations
-- **Educational Value**: Clean code serves as learning resource
+- **Maintainability**: Clear separation of concerns and modular design
+- **Testability**: Each layer can be tested independently with comprehensive coverage
+- **Scalability**: Easy to add new features, scenarios, and accessibility improvements
+- **Performance**: Optimized rendering and physics calculations with haptic feedback
+- **Educational Value**: Clean code serves as learning resource with comprehensive documentation
+- **Accessibility**: Full support for screen readers, haptic feedback, and inclusive design
+- **User Empowerment**: Custom scenario creation enables educational content authoring
 
 ## 🧪 Testing Strategy
 
@@ -662,6 +773,8 @@ test/
 - **Physics Tests**: Gravitational calculations and numerical stability
 - **Performance Tests**: Rendering efficiency and memory usage
 - **Accessibility Tests**: Screen reader and haptic feedback validation
+- **Scenario Tests**: Custom scenario creation and validation
+- **Haptic Tests**: Tactile feedback system validation
 
 ### Testing Tools
 

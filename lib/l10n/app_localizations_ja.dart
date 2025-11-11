@@ -335,6 +335,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get colorSelector => '色選択';
 
   @override
+  String colorOptionTooltip(String colorName) {
+    return '天体に$colorName色を選択';
+  }
+
+  @override
   String get visualsTooltip => '視覚表示オプション';
 
   @override
@@ -444,6 +449,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get temperatureKEditorhint => '温度をケルビンで入力';
 
   @override
+  String get temperatureCelsiusEditorhint => '温度 (°C)';
+
+  @override
+  String get temperatureFahrenheitEditorhint => '温度 (°F)';
+
+  @override
   String get temperatureModerate => '温和';
 
   @override
@@ -460,6 +471,15 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitCelsiusName => '摂氏';
+
+  @override
+  String get temperatureUnitFahrenheitName => '華氏';
+
+  @override
+  String get temperatureUnitKelvinName => 'ケルビン';
 
   @override
   String get velocityMsEditor => '速度m/sエディター';
@@ -479,6 +499,24 @@ class AppLocalizationsJa extends AppLocalizations {
   String get beginnerEditor => '初心者エディター';
 
   @override
+  String get noBodiesAdded => 'まだ天体が追加されていません';
+
+  @override
+  String get addBodiesInSetupTab => '設定タブで天体を追加';
+
+  @override
+  String get untitledScenario => 'タイトル未設定のシナリオ';
+
+  @override
+  String get noDescriptionProvided => '説明が提供されていません';
+
+  @override
+  String get collisionSoftening => '衝突軟化';
+
+  @override
+  String get collisionRadius => '衝突半径';
+
+  @override
   String get bodyTypeEditor => '天体タイプエディター';
 
   @override
@@ -495,6 +533,18 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get createScenarioTitle => 'シナリオ作成タイトル';
+
+  @override
+  String get editScenarioButton => 'シナリオを編集';
+
+  @override
+  String get editScenarioHint => 'このシナリオを編集';
+
+  @override
+  String get deleteScenarioButton => 'シナリオを削除';
+
+  @override
+  String get deleteScenarioHint => 'このシナリオを削除';
 
   @override
   String get customGravitationalSimulationEditor => 'カスタム重力シミュレーションエディター';
@@ -584,6 +634,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get exportScenarioButton => 'シナリオエクスポート';
+
+  @override
+  String get exportScenarioHint => '共有用にシナリオをファイルに出力する';
 
   @override
   String exportScenarioFailedMessage(String error) {
@@ -974,7 +1027,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get testScenarioButton => 'テストシナリオボタン';
 
   @override
+  String get testScenarioHint => '現在のシナリオをシミュレーションでテストする';
+
+  @override
   String get testScenarioNotImplementedMessage => 'テストシナリオ未実装';
+
+  @override
+  String get scenarioEditorMenuHint => 'テストとエクスポートオプションを含むメニューを開く';
 
   @override
   String get aboutButtonTooltip => 'について';
@@ -1594,6 +1653,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get languageDescription => 'アプリの言語を変更';
 
   @override
+  String get languageSelectionHint => '優先する表示言語を選択してください';
+
+  @override
   String get languageEnglish => 'English';
 
   @override
@@ -1609,7 +1671,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get languageKorean => '한국어';
 
   @override
-  String get languageLabel => '言語';
+  String get languageLabel => '一般';
+
+  @override
+  String get temperatureUnitsLabel => '温度単位';
+
+  @override
+  String get temperatureUnitsDescription => 'アプリ全体で温度を表示する際の優先単位';
 
   @override
   String get languageSpanish => 'Español';
@@ -2279,4 +2347,115 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get customScenarioCreatedUnknown => '作成日不明';
+
+  @override
+  String get orbitalPlacementEditor => '軌道配置';
+
+  @override
+  String get placeInOrbitButton => '軌道に配置';
+
+  @override
+  String get centralBodySelector => '中心天体';
+
+  @override
+  String get orbitRadiusEditor => '軌道半径';
+
+  @override
+  String get orbitPhaseEditor => '軌道位相';
+
+  @override
+  String get orbitInclinationEditor => '傾斜角';
+
+  @override
+  String get circularOrbitOption => '円軌道';
+
+  @override
+  String get ellipticalOrbitOption => '楕円軌道';
+
+  @override
+  String orbitalPeriodDisplay(String period) {
+    return '周期: $period';
+  }
+
+  @override
+  String get noAvailableCentralBodies => '軌道配置に使用可能な他の天体がありません';
+
+  @override
+  String get orbitalPlacementDescription => 'この天体を他の天体の周りをリアルな物理で軌道運動するよう設定';
+
+  @override
+  String get orbitalPlacementActiveDescription =>
+      '軌道配置が有効です。位置と速度は以下の軌道パラメータに基づいて自動的に計算されます。';
+
+  @override
+  String get showGravitationalFieldVisualization => 'この天体の重力場可視化を表示';
+
+  @override
+  String get cancelOrbitalPlacement => '軌道配置をキャンセル';
+
+  @override
+  String get makeStable => '安定化';
+
+  @override
+  String get orbitalWarningMassiveBody =>
+      '⚠️ 警告：周回天体は中心天体に対して非常に質量が大きいです。これは不安定な軌道を引き起こしたり、天体同士が周回し合う可能性があります。';
+
+  @override
+  String get orbitalTipSignificantMass =>
+      '💡 ヒント：これは大きな質量比です。安定性のため軌道距離を増加することを考慮してください。';
+
+  @override
+  String get orbitalWarningCloseOrbit => '⚠️ 警告：非常に近い軌道。衝突や潮汐破壊のリスクがあります。';
+
+  @override
+  String get orbitalTipDistantOrbit =>
+      '💡 ヒント：遠い軌道。他の天体からの重力の影響がこの軌道を摂動させる可能性があります。';
+
+  @override
+  String get orbitalGoodConfiguration => '✅ 安定したシステムのための良い軌道構成。';
+
+  @override
+  String get orbitalError => 'エラー';
+
+  @override
+  String get orbitalConfigurationWarning =>
+      'この軌道構成は衝突や放出につながる可能性があります。「安定化」ボタンの使用を検討してください。';
+
+  @override
+  String get defaultBodyName => '天体';
+
+  @override
+  String get orbitalPeriodLabel => '軌道周期';
+
+  @override
+  String get orbitIsStable => '軌道は安定';
+
+  @override
+  String get orbitMayBeUnstable => '軌道が不安定な可能性';
+
+  @override
+  String bodyTypeGeneric(String bodyType) {
+    return '$bodyType天体';
+  }
+
+  @override
+  String orbitalRadiusIncreasedFeedback(String amount) {
+    return '$amount単位増加';
+  }
+
+  @override
+  String orbitalRadiusDecreasedFeedback(String amount) {
+    return '$amount単位減少';
+  }
+
+  @override
+  String get orbitalRadiusFineTunedFeedback => '微調整';
+
+  @override
+  String orbitStabilizedMessage(String changeDescription, String finalRadius) {
+    return '軌道が安定化されました！半径が$changeDescriptionして$finalRadius単位になりました。位相と傾斜角が安定性のためにリセットされました。';
+  }
+
+  @override
+  String get unknownValue => '不明';
 }

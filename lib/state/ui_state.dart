@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
+import 'package:graviton/enums/temperature_unit.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/utils/safe_haptic_feedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,6 +36,9 @@ class UIState extends ChangeNotifier {
 
   // Language settings
   String? _selectedLanguageCode; // null means system default
+
+  // Temperature unit settings
+  TemperatureUnit _temperatureUnit = TemperatureUnit.kelvin;
 
   // Cinematic camera settings
   CinematicCameraTechnique _cinematicCameraTechnique =
@@ -77,6 +81,7 @@ class UIState extends ChangeNotifier {
   static const String _keyShowHabitabilityIndicators =
       'showHabitabilityIndicators';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
+  static const String _keyTemperatureUnit = 'temperatureUnit';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
   static const String _keyCameraSpeed = 'cameraSpeed';
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
@@ -155,6 +160,12 @@ class UIState extends ChangeNotifier {
       _showHabitabilityIndicators =
           prefs.getBool(_keyShowHabitabilityIndicators) ?? false;
       _selectedLanguageCode = prefs.getString(_keySelectedLanguageCode);
+
+      // Load temperature unit setting
+      final temperatureUnitValue = prefs.getString(_keyTemperatureUnit);
+      _temperatureUnit = temperatureUnitValue != null
+          ? TemperatureUnit.fromString(temperatureUnitValue)
+          : TemperatureUnit.kelvin;
 
       // Load cinematic camera technique setting
       final cinematicTechniqueValue = prefs.getString(
@@ -235,6 +246,9 @@ class UIState extends ChangeNotifier {
 
   // Language getters
   String? get selectedLanguageCode => _selectedLanguageCode;
+
+  // Temperature unit getters
+  TemperatureUnit get temperatureUnit => _temperatureUnit;
 
   // Cinematic camera getters
   CinematicCameraTechnique get cinematicCameraTechnique =>
@@ -443,6 +457,14 @@ class UIState extends ChangeNotifier {
       'language',
       languageCode ?? 'system',
     );
+    notifyListeners();
+  }
+
+  // Temperature unit setters
+  void setTemperatureUnit(TemperatureUnit unit) {
+    _temperatureUnit = unit;
+    _saveSetting(_keyTemperatureUnit, unit.name);
+    FirebaseService.instance.logSettingsChange('temperature_unit', unit.name);
     notifyListeners();
   }
 

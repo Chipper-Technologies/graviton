@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/scenario_selection/custom_scenario_tile.dart';
 
 void main() {
@@ -298,8 +299,11 @@ void main() {
       );
 
       final deleteIcon = tester.widget<Icon>(find.byIcon(Icons.delete_outline));
-      expect(deleteIcon.size, 18);
-      expect(deleteIcon.color, AppColors.celestialRed.withValues(alpha: 0.6));
+      expect(deleteIcon.size, AppTypography.iconSizeMedium); // 16.0
+      expect(
+        deleteIcon.color,
+        AppColors.uiRed.withValues(alpha: AppTypography.opacityNearlyOpaque),
+      );
     });
 
     testWidgets('should display edit button with proper styling', (
@@ -318,8 +322,11 @@ void main() {
       );
 
       final editIcon = tester.widget<Icon>(find.byIcon(Icons.edit));
-      expect(editIcon.size, 18);
-      expect(editIcon.color, AppColors.uiWhite.withValues(alpha: 0.6));
+      expect(editIcon.size, AppTypography.iconSizeMedium); // 16.0
+      expect(
+        editIcon.color,
+        AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryHigh),
+      );
     });
 
     testWidgets('should have proper accessibility properties', (tester) async {

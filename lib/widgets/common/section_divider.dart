@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/theme/app_colors.dart';
-import 'package:graviton/theme/app_typography.dart';
 
 /// A reusable section divider widget that supports both plain dividers and labeled dividers
 ///
@@ -61,8 +60,8 @@ class SectionDivider extends StatelessWidget {
     this.color,
     this.topSpacing = 0.0,
     this.bottomSpacing = 0.0,
-    this.indent = AppTypography.spacingLarge,
-    this.endIndent = AppTypography.spacingLarge,
+    this.indent = 0.0,
+    this.endIndent = 0.0,
     this.height = 1.0,
   }) : label = null,
        labelStyle = null,

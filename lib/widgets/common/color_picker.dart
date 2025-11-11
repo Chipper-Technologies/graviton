@@ -5,7 +5,7 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 
 /// A reusable widget for selecting colors with proper styling and accessibility
-class ColorPicker extends StatelessWidget {
+class ColorPicker extends StatefulWidget {
   final Color selectedColor;
   final ValueChanged<Color> onColorChanged;
   final List<Color> colors;
@@ -38,100 +38,212 @@ class ColorPicker extends StatelessWidget {
   ];
 
   @override
+  State<ColorPicker> createState() => _ColorPickerState();
+}
+
+class _ColorPickerState extends State<ColorPicker> {
+  late FocusNode _focusNode;
+  int _focusedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    // Set initial focus to selected color if available
+    _focusedIndex = widget.colors.indexWhere(
+      (color) => _colorsAreEqual(widget.selectedColor, color),
+    );
+    if (_focusedIndex == -1) _focusedIndex = 0;
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _handleKeyEvent(KeyEvent event) {
+    if (event is KeyDownEvent) {
+      switch (event.logicalKey.keyLabel) {
+        case 'Arrow Left':
+          setState(() {
+            _focusedIndex = (_focusedIndex - 1) % widget.colors.length;
+          });
+          break;
+        case 'Arrow Right':
+          setState(() {
+            _focusedIndex = (_focusedIndex + 1) % widget.colors.length;
+          });
+          break;
+        case 'Arrow Up':
+          setState(() {
+            // Move up a row (assuming roughly 4 colors per row)
+            _focusedIndex = (_focusedIndex - 4).clamp(
+              0,
+              widget.colors.length - 1,
+            );
+          });
+          break;
+        case 'Arrow Down':
+          setState(() {
+            // Move down a row (assuming roughly 4 colors per row)
+            _focusedIndex = (_focusedIndex + 4).clamp(
+              0,
+              widget.colors.length - 1,
+            );
+          });
+          break;
+        case 'Enter':
+        case 'Space':
+          if (widget.enabled) {
+            HapticFeedback.lightImpact();
+            widget.onColorChanged(widget.colors[_focusedIndex]);
+          }
+          break;
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size =
-        itemSize ?? 32.0; // Increased to 32px for better visibility and touch
+        widget.itemSize ??
+        32.0; // Increased to 32px for better visibility and touch
 
-    return Semantics(
-      label: AppLocalizations.of(context)?.colorSelector ?? 'Color selector',
-      hint:
-          AppLocalizations.of(context)?.selectAColorForTheCelestialBody ??
-          'Select a color for the celestial body',
-      enabled: enabled,
-      child: Container(
-        width: double.infinity, // Force container to fill available width
-        padding: EdgeInsets.all(AppTypography.spacingMedium),
-        decoration: BoxDecoration(
-          color: AppColors.uiWhite.withValues(
-            alpha: AppTypography.opacityBarely,
-          ),
-          borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-          border: Border.all(
-            color: AppColors.primaryColor.withValues(
-              alpha: AppTypography.opacityHigh,
+    return Focus(
+      focusNode: _focusNode,
+      onKeyEvent: (FocusNode node, KeyEvent event) {
+        _handleKeyEvent(event);
+        return KeyEventResult.handled;
+      },
+      child: Semantics(
+        label: AppLocalizations.of(context)?.colorSelector ?? 'Color selector',
+        hint:
+            AppLocalizations.of(context)?.selectAColorForTheCelestialBody ??
+            'Select a color for the celestial body',
+        enabled: widget.enabled,
+        child: Container(
+          width: double.infinity, // Force container to fill available width
+          padding: EdgeInsets.all(AppTypography.spacingMedium),
+          decoration: BoxDecoration(
+            color: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityBarely,
             ),
-            width: AppTypography.borderMedium,
-          ),
-        ),
-        child: Wrap(
-          spacing: AppTypography
-              .spacingMedium, // Increased spacing for larger circles
-          runSpacing: AppTypography.spacingMedium,
-          alignment: WrapAlignment
-              .start, // Ensure circles align to start and fill width
-          children: colors.map((color) {
-            final isSelected = _colorsAreEqual(selectedColor, color);
-
-            return Semantics(
-              label:
-                  AppLocalizations.of(context)?.colorOptionTemplate(
-                    _getColorName(context, color),
-                    color,
-                  ) ??
-                  'Color option ${_getColorName(context, color)}',
-              hint: isSelected
-                  ? (AppLocalizations.of(context)?.currentlySelected ??
-                        'Currently selected')
-                  : (AppLocalizations.of(context)?.tapToSelect ??
-                        'Tap to select'),
-              selected: isSelected,
-              enabled: enabled,
-              button: true,
-              child: GestureDetector(
-                onTap: enabled
-                    ? () {
-                        HapticFeedback.lightImpact();
-                        onColorChanged(color);
-                      }
-                    : null,
-                child: Container(
-                  width: size,
-                  height: size,
-                  decoration: BoxDecoration(
-                    color: color,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected
-                          ? AppColors.primaryColor
-                          : AppColors.uiWhite.withValues(alpha: 0.3),
-                      width: isSelected ? 3 : 1,
-                    ),
-                    boxShadow: [
-                      if (isSelected)
-                        BoxShadow(
-                          color: AppColors.primaryColor.withValues(alpha: 0.4),
-                          blurRadius: 8,
-                          spreadRadius: 1,
-                        ),
-                      // Add shadow for better visibility against background
-                      BoxShadow(
-                        color: AppColors.uiBlack.withValues(alpha: 0.3),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: isSelected
-                      ? Icon(
-                          Icons.check,
-                          color: _getContrastingColor(color),
-                          size: size * 0.4,
-                        )
-                      : null,
-                ),
+            borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+            border: Border.all(
+              color: AppColors.primaryColor.withValues(
+                alpha: AppTypography.opacityHigh,
               ),
-            );
-          }).toList(),
+              width: AppTypography.borderMedium,
+            ),
+          ),
+          child: Wrap(
+            spacing: AppTypography
+                .spacingMedium, // Increased spacing for larger circles
+            runSpacing: AppTypography.spacingMedium,
+            alignment: WrapAlignment
+                .start, // Ensure circles align to start and fill width
+            children: widget.colors.asMap().entries.map((entry) {
+              final index = entry.key;
+              final color = entry.value;
+              final isSelected = _colorsAreEqual(widget.selectedColor, color);
+              final isFocused = _focusedIndex == index;
+
+              return Semantics(
+                label:
+                    AppLocalizations.of(context)?.colorOptionTemplate(
+                      _getColorName(context, color),
+                      color,
+                    ) ??
+                    'Color option ${_getColorName(context, color)}',
+                hint: isSelected
+                    ? (AppLocalizations.of(context)?.currentlySelected ??
+                          'Currently selected')
+                    : (AppLocalizations.of(context)?.tapToSelect ??
+                          'Tap to select'),
+                selected: isSelected,
+                enabled: widget.enabled,
+                button: true,
+                child: Tooltip(
+                  message:
+                      AppLocalizations.of(
+                        context,
+                      )?.colorOptionTooltip(_getColorName(context, color)) ??
+                      'Select ${_getColorName(context, color)} color for celestial body',
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(size / 2),
+                      onTap: widget.enabled
+                          ? () {
+                              setState(() {
+                                _focusedIndex = index;
+                              });
+                              _focusNode.requestFocus();
+                              HapticFeedback.lightImpact();
+                              widget.onColorChanged(color);
+                            }
+                          : null,
+                      child: Container(
+                        width: size,
+                        height: size,
+                        decoration: BoxDecoration(
+                          color: color,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: isFocused
+                                ? AppColors.uiWhite
+                                : isSelected
+                                ? AppColors.primaryColor
+                                : AppColors.uiWhite.withValues(alpha: 0.3),
+                            width: isFocused
+                                ? 2
+                                : isSelected
+                                ? 3
+                                : 1,
+                          ),
+                          boxShadow: [
+                            if (isSelected)
+                              BoxShadow(
+                                color: AppColors.primaryColor.withValues(
+                                  alpha: 0.4,
+                                ),
+                                blurRadius: 8,
+                                spreadRadius: 1,
+                              ),
+                            if (isFocused)
+                              BoxShadow(
+                                color: AppColors.uiWhite.withValues(alpha: 0.6),
+                                blurRadius: 6,
+                                spreadRadius: 1,
+                              ),
+                            // Add shadow for better visibility against background
+                            BoxShadow(
+                              color: AppColors.uiBlack.withValues(alpha: 0.3),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: isSelected
+                            ? Icon(
+                                Icons.check,
+                                color: _getContrastingColor(color),
+                                size: size * 0.4,
+                                semanticLabel:
+                                    AppLocalizations.of(
+                                      context,
+                                    )?.currentlySelected ??
+                                    'Currently selected',
+                              )
+                            : null,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );

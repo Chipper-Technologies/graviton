@@ -61,9 +61,6 @@ void main() {
       // Should display both bodies
       expect(find.text('Test Earth'), findsOneWidget);
       expect(find.text('Test Sun'), findsOneWidget);
-
-      // Should show proper body count in header
-      expect(find.textContaining('2 Bodies'), findsOneWidget);
     });
 
     testWidgets('displays empty state when no bodies', (
@@ -99,7 +96,9 @@ void main() {
         ),
       );
 
-      expect(find.textContaining('1 Body'), findsOneWidget);
+      // Check header shows singular form
+      expect(find.text('1 Body'), findsOneWidget);
+      expect(find.text('Test Earth'), findsOneWidget);
     });
 
     testWidgets('opens bottom sheet when body tapped', (
@@ -205,26 +204,20 @@ void main() {
       expect(find.byIcon(Icons.content_copy), findsOneWidget);
     });
 
-    // TODO: Fix semantics test - needs to check actual semantic tree structure
-    // testWidgets('has proper semantics for accessibility', (WidgetTester tester) async {
-    //   await tester.pumpWidget(
-    //     makeTestableWidget(
-    //       ScenarioEditorBodyList(
-    //         bodies: testBodies,
-    //         onBodiesChanged: (_) {},
-    //         onAddBody: () {},
-    //       ),
-    //     ),
-    //   );
+    testWidgets('displays body count in header', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        makeTestableWidget(
+          ScenarioEditorBodyList(
+            bodies: testBodies,
+            onBodiesChanged: (_) {},
+            onAddBody: () {},
+          ),
+        ),
+      );
 
-    //   // Check semantic labels exist
-    //   expect(find.bySemanticsLabel('Test Earth celestial body'), findsOneWidget);
-    //   expect(find.bySemanticsLabel('Test Sun celestial body'), findsOneWidget);
-
-    //   // Check button semantics
-    //   expect(find.bySemanticsLabel('Duplicate Test Earth'), findsOneWidget);
-    //   expect(find.bySemanticsLabel('Delete Test Earth'), findsOneWidget);
-    // });
+      // Check that the header displays the correct body count
+      expect(find.text('2 Bodies'), findsOneWidget);
+    });
 
     testWidgets('shows body properties correctly', (WidgetTester tester) async {
       await tester.pumpWidget(

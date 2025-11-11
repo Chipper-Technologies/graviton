@@ -1,3 +1,5 @@
+import 'package:graviton/constants/simulation_constants.dart';
+
 /// Utility class for formatting numbers with proper decimal precision and units.
 ///
 /// This class provides consistent number formatting across the Graviton app,
@@ -146,6 +148,165 @@ class NumberUtils {
     }
 
     return '$sign${_formatDecimal(absValue)} K';
+  }
+
+  /// Converts Kelvin to Celsius
+  static double kelvinToCelsius(double kelvin) {
+    return kelvin - SimulationConstants.kelvinToCelsiusOffset;
+  }
+
+  /// Converts Kelvin to Fahrenheit
+  static double kelvinToFahrenheit(double kelvin) {
+    return (kelvin - SimulationConstants.kelvinToCelsiusOffset) *
+            SimulationConstants.celsiusToFahrenheitMultiplier +
+        SimulationConstants.fahrenheitToCelsiusOffset;
+  }
+
+  /// Converts Celsius to Kelvin
+  static double celsiusToKelvin(double celsius) {
+    return celsius + SimulationConstants.kelvinToCelsiusOffset;
+  }
+
+  /// Converts Fahrenheit to Kelvin
+  static double fahrenheitToKelvin(double fahrenheit) {
+    return (fahrenheit - SimulationConstants.fahrenheitToCelsiusOffset) *
+            SimulationConstants.fahrenheitToCelsiusMultiplier +
+        SimulationConstants.kelvinToCelsiusOffset;
+  }
+
+  /// Normalizes the temperature unit parameter to a consistent string format.
+  ///
+  /// Handles both enum and string inputs, converting them to lowercase strings.
+  /// Returns one of: 'celsius', 'fahrenheit', or 'kelvin' (default).
+  static String _normalizeTemperatureUnit(dynamic unit) {
+    if (unit == null) return 'kelvin';
+
+    String unitType;
+    if (unit.toString().contains('TemperatureUnit.')) {
+      unitType = unit.toString().split('.').last;
+    } else {
+      unitType = unit.toString().toLowerCase();
+    }
+
+    switch (unitType) {
+      case 'celsius':
+      case 'fahrenheit':
+      case 'kelvin':
+        return unitType;
+      default:
+        return 'kelvin';
+    }
+  }
+
+  /// Gets the appropriate symbol for a temperature unit.
+  ///
+  /// Returns '°C', '°F', or 'K' based on the unit type.
+  static String _getTemperatureSymbol(String unitType) {
+    switch (unitType) {
+      case 'celsius':
+        return '°C';
+      case 'fahrenheit':
+        return '°F';
+      case 'kelvin':
+      default:
+        return 'K';
+    }
+  }
+
+  /// Converts temperature range from Kelvin to the specified unit
+  /// Returns a map with 'min' and 'max' keys in the target unit
+  static Map<String, double> convertTemperatureRange(
+    Map<String, double> kelvinRange,
+    dynamic unit,
+  ) {
+    final minKelvin = kelvinRange['min']!;
+    final maxKelvin = kelvinRange['max']!;
+    final unitType = _normalizeTemperatureUnit(unit);
+
+    switch (unitType) {
+      case 'celsius':
+        return {
+          'min': kelvinToCelsius(minKelvin),
+          'max': kelvinToCelsius(maxKelvin),
+        };
+      case 'fahrenheit':
+        return {
+          'min': kelvinToFahrenheit(minKelvin),
+          'max': kelvinToFahrenheit(maxKelvin),
+        };
+      case 'kelvin':
+      default:
+        return kelvinRange;
+    }
+  }
+
+  /// Converts temperature value from the specified unit to Kelvin
+  static double convertTemperatureToKelvin(double value, dynamic unit) {
+    final unitType = _normalizeTemperatureUnit(unit);
+
+    switch (unitType) {
+      case 'celsius':
+        return celsiusToKelvin(value);
+      case 'fahrenheit':
+        return fahrenheitToKelvin(value);
+      case 'kelvin':
+      default:
+        return value;
+    }
+  }
+
+  /// Converts temperature value from Kelvin to the specified unit
+  static double convertTemperatureFromKelvin(double kelvin, dynamic unit) {
+    final unitType = _normalizeTemperatureUnit(unit);
+
+    switch (unitType) {
+      case 'celsius':
+        return kelvinToCelsius(kelvin);
+      case 'fahrenheit':
+        return kelvinToFahrenheit(kelvin);
+      case 'kelvin':
+      default:
+        return kelvin;
+    }
+  }
+
+  /// Formats temperature values with the specified unit
+  ///
+  /// Temperature input is assumed to be in Kelvin and will be converted
+  /// to the requested unit for display.
+  ///
+  /// Examples:
+  /// - formatTemperatureWithUnit(273.15, TemperatureUnit.celsius) → "0.0 °C"
+  /// - formatTemperatureWithUnit(273.15, TemperatureUnit.fahrenheit) → "32.0 °F"
+  /// - formatTemperatureWithUnit(5778, TemperatureUnit.kelvin) → "5,778 K"
+  static String formatTemperatureWithUnit(double kelvin, dynamic unit) {
+    final unitType = _normalizeTemperatureUnit(unit);
+    final symbol = _getTemperatureSymbol(unitType);
+
+    double convertedValue;
+    switch (unitType) {
+      case 'celsius':
+        convertedValue = kelvinToCelsius(kelvin);
+        break;
+      case 'fahrenheit':
+        convertedValue = kelvinToFahrenheit(kelvin);
+        break;
+      case 'kelvin':
+      default:
+        convertedValue = kelvin;
+        break;
+    }
+
+    if (convertedValue == 0) return '0 $symbol';
+
+    final absValue = convertedValue.abs();
+    final sign = convertedValue < 0 ? '-' : '';
+
+    if (absValue >= 100) {
+      return '$sign${_formatLargeNumber(absValue)} $symbol';
+    }
+
+    return '$sign${_formatDecimal(absValue)} $symbol';
   }
 
   /// Formats luminosity values with appropriate units and precision.

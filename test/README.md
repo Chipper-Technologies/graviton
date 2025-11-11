@@ -4,17 +4,19 @@ This document describes the organization of tests in the Graviton project. The t
 
 ## Test Coverage Summary
 
-**Current Coverage: High coverage across all critical components**
-- ✅ **2190+ passing tests** with comprehensive coverage across all test categories
+**Current Coverage: Comprehensive coverage across all architectural layers**
+- ✅ **3200+ passing tests** with extensive coverage across all test categories
 - ✅ **Integration Tests**: Complete end-to-end app functionality testing with robust timer management
-- ✅ **Models**: Complete coverage for all data models including physics, screenshots, and celestial bodies
-- ✅ **Services**: Comprehensive service layer testing including Firebase, camera control, physics, and fullscreen management
-- ✅ **State Management**: Full coverage for app, UI, simulation, camera, physics, and fullscreen state
-- ✅ **Utilities**: Complete coverage for physics calculations, rendering utilities, fullscreen coordination, and test helpers
-- ✅ **Painters**: Tests for all rendering components including gravity, trails, and effects
-- ✅ **Widgets**: UI component tests with internationalization support for all dialogs and overlays
-- ✅ **Features**: Comprehensive testing of advanced features like cinematic cameras, galaxy formation, and fullscreen mode
-- ✅ **Enums & Constants**: Validation of enumeration types and configuration constants
+- ✅ **Models**: Complete coverage for all data models including physics, scenarios, custom content, and celestial bodies
+- ✅ **Services**: Comprehensive service layer testing including haptic feedback, accessibility, scenario management, and fullscreen services
+- ✅ **State Management**: Full coverage for app, UI, simulation, camera, physics, and accessibility state management
+- ✅ **Utilities**: Complete coverage for physics calculations, rendering utilities, accessibility coordination, and test helpers
+- ✅ **Painters**: Tests for all rendering components including gravity, trails, effects, and habitability visualization
+- ✅ **Widgets**: Comprehensive UI component tests with haptic feedback, accessibility support, and internationalization
+- ✅ **Haptic System**: Complete testing of haptic feedback widgets and service integration
+- ✅ **Accessibility**: Full coverage for semantic widgets, focus management, and screen reader support
+- ✅ **Scenario Editor**: Comprehensive testing of custom scenario creation, editing, and validation
+- ✅ **Features**: Comprehensive testing of advanced features like cinematic cameras, galaxy formation, and immersive modes
 
 ## Directory Structure
 
@@ -66,20 +68,46 @@ Demonstration scripts and examples:
 Tests for enumeration types and their behaviors:
 - `cinematic_camera_technique_test.dart` - Cinematic camera technique validation
 
-### � Features (`test/features/`)
-Tests for specific app features and capabilities:
-- `auto_zoom_test.dart` - Automatic zoom functionality
-- `cinematic_camera_integration_test.dart` - Cinematic camera system integration
-- `debug_simulation_test.dart` - Debug and diagnostic features
-- `enhanced_3d_test.dart` - 3D rendering enhancements
-- `enhanced_zoom_test.dart` - Enhanced zoom with body targeting
-- `galaxy_formation_stability_test.dart` - Galaxy formation stability testing
-- `galaxy_long_term_test.dart` - Long-term galaxy evolution testing
-- `habitable_zone_test.dart` - Habitable zone calculations and display
-- `i18n_test.dart` - Internationalization and localization
-- `language_selection_test.dart` - Manual language selection
-- `simulation_reset_test.dart` - Simulation reset functionality
-- `trail_debug_test.dart` - Trail rendering and debugging
+### 🎯 Features (`test/features/`)
+Feature-specific test suites organized by major application capabilities:
+
+#### Accessibility Features (`test/features/accessibility/`)
+- `focus_navigation_test.dart` - Keyboard and assistive technology navigation
+- `screen_reader_support_test.dart` - Screen reader compatibility and announcements
+- `semantic_accessibility_test.dart` - Semantic widget accessibility validation
+
+#### Haptic Features (`test/features/haptics/`)
+- `comprehensive_haptic_test.dart` - Complete haptic feedback system validation
+- `haptic_feedback_patterns_test.dart` - Haptic pattern consistency across platforms
+- `haptic_integration_test.dart` - Haptic system integration with UI components
+
+#### Physics Features (`test/features/physics/`)
+- `gravity_calculations_test.dart` - Gravitational force computation validation
+- `orbital_mechanics_test.dart` - Orbital trajectory and stability testing
+- `physics_integration_test.dart` - Physics engine integration and performance
+
+#### Scenario Management Features (`test/features/scenarios/`)
+- `custom_scenario_creation_test.dart` - Custom scenario editor workflow
+- `scenario_persistence_test.dart` - Scenario saving and loading functionality
+- `scenario_validation_test.dart` - Scenario configuration validation
+
+#### Simulation Features (`test/features/simulation/`)
+- `real_time_simulation_test.dart` - Live simulation performance and accuracy
+- `simulation_controls_test.dart` - Play/pause/reset functionality
+- `time_control_test.dart` - Time manipulation and speed controls
+
+#### User Interface Features (`test/features/ui/`)
+- `camera_interaction_test.dart` - Camera control and movement system
+- `responsive_design_test.dart` - Multi-platform layout adaptation
+- `theme_consistency_test.dart` - Visual theme and styling validation
+
+These feature tests ensure:
+- Complete user workflows function correctly
+- Cross-component integration works seamlessly
+- Performance requirements are met across features
+- Accessibility standards are maintained throughout
+- Feature interactions don't cause conflicts
+- Platform-specific behavior is consistent
 
 ### 🌌 Scenarios (`test/scenarios/`)
 Tests for specific simulation scenarios:
@@ -93,7 +121,10 @@ Tests for screen-level components and navigation:
 - `application_settings_screen_test.dart` - Application settings screen
 - `developer_tools_screen_test.dart` - Developer tools interface
 - `help_screen_test.dart` - Help and documentation screen
+- `home_screen_back_button_test.dart` - Home screen navigation behavior
+- `home_screen_tap_test.dart` - Home screen interaction testing
 - `physics_settings_screen_test.dart` - Physics settings configuration
+- `scenario_editor_screen_test.dart` - Custom scenario editor interface
 - `scenario_selection_screen_test.dart` - Scenario selection interface
 
 ### 🎨 Theme (`test/theme/`)
@@ -101,31 +132,47 @@ Tests for theming and visual styling:
 - `app_colors_test.dart` - Application color scheme testing
 - `app_constraints_test.dart` - Layout constraint testing
 
-### 🔧 Integration (`test/integration/`)
-End-to-end integration tests with robust timer and state management:
-- `app_integration_test.dart` - **Complete app workflow testing** (12 comprehensive tests) ✨ *ENHANCED*
-  - App launch and initialization with timeout handling
-  - UI display and simulation canvas rendering
-  - Simulation controls (play/pause/reset) functionality
-  - Camera controls and gesture interactions
-  - Statistics overlay toggling
-  - Error handling and recovery
-  - Performance validation under load
-  - Multi-language support verification
-  - UI state persistence across operations
-- `settings_persistence_test.dart` - Settings save/load functionality
-- **TestHelpers utility** - Shared integration test patterns
+### 🧪 Integration Tests (`test/integration/`)
+End-to-end testing scenarios that validate complete user workflows:
+
+- `app_integration_test.dart` - Full application lifecycle testing
+- `comprehensive_scenario_test.dart` - Complete scenario testing workflow
+- `onboarding_flow_test.dart` - New user tutorial flow
+- `scenario_selection_integration_test.dart` - Complete scenario selection workflow
+
+These integration tests verify:
+- App startup and initialization across all configurations
+- Complete scenario loading and simulation lifecycle
+- User onboarding experience from start to finish
+- Scenario selection process including custom scenarios
+- Physics parameter adjustments and their effects
+- Camera controls and interaction workflows
+- Settings persistence across app restarts
+- Tutorial system progression and completion
+- Cross-feature interactions and data flow
 
 ### 📊 Models (`test/models/`)
 Tests for data models and structures:
+- `body_creation_test.dart` - Celestial body creation and configuration
+- `body_data_test.dart` - Body data structure validation
 - `body_test.dart` - Celestial body model
+- `camera_movement_test.dart` - Camera animation and movement data
 - `camera_position_test.dart` - Screenshot camera positioning
+- `changelog_version_test.dart` - Version changelog data structures
+- `custom_scenario_summary_test.dart` - Custom scenario summary information
+- `indicator_data_test.dart` - UI indicator data structures
 - `merge_flash_test.dart` - Body merge effects
 - `orbital_event_test.dart` - Orbital event data structures
+- `orbital_parameters_test.dart` - Keplerian orbital elements
 - `physics_settings_test.dart` - Physics configuration models
+- `scenario_configuration_test.dart` - Complete scenario configuration
+- `scenario_metadata_test.dart` - Scenario metadata and information
+- `scenario_physics_settings_test.dart` - Per-scenario physics parameters
+- `scenario_validation_result_test.dart` - Scenario validation results
 - `screenshot_preset_test.dart` - Screenshot preset configurations
 - `screenshot_presets_test.dart` - Predefined screenshot collections
 - `trail_point_test.dart` - Trail point data
+- `tutorial_step_test.dart` - Tutorial and onboarding step data
 
 ### 🎨 Painters (`test/painters/`)
 Tests for rendering and visual components:
@@ -139,15 +186,24 @@ Tests for rendering and visual components:
 
 ### 🔌 Services (`test/services/`)
 Tests for service layer components:
+- `accessibility_service_test.dart` - Accessibility service and screen reader support
+- `changelog_service_test.dart` - Version changelog management
 - `cinematic_camera_controller_test.dart` - Cinematic camera control system
+- `custom_message_test.dart` - Custom message handling system
 - `firebase_service_test.dart` - Firebase analytics and crashlytics integration
 - `fullscreen_service_test.dart` - Fullscreen system UI management
+- `haptic_feedback_service_test.dart` - Haptic feedback coordination and patterns
+- `keyboard_navigation_service_test.dart` - Keyboard accessibility and navigation
+- `onboarding_service_test.dart` - User onboarding and tutorial coordination
+- `orbital_mechanics_service_test.dart` - Orbital mechanics calculations
 - `orbital_prediction_engine_test.dart` - Orbital prediction and trajectory analysis
 - `remote_config_service_test.dart` - Remote configuration management
-- `scenario_service_test.dart` - Scenario management
+- `scenario_service_test.dart` - Scenario management and educational content
 - `screenshot_mode_service_test.dart` - Screenshot mode functionality
+- `semantic_focus_service_test.dart` - Semantic focus management for accessibility
 - `simulation_physics_test.dart` - Physics engine and calculations
 - `simulation_test.dart` - Core simulation engine
+- `temperature_service_constants_test.dart` - Temperature calculation constants
 - `temperature_service_test.dart` - Temperature calculations and stellar radiation modeling
 - `version_service_test.dart` - App version management and updates
 
@@ -175,20 +231,88 @@ Tests for utility functions and test infrastructure:
 - `vector_utils_test.dart` - Vector mathematics
 
 ### 🎪 Widgets (`test/widgets/`)
-Tests for UI widgets and components:
-- `about_dialog_test.dart` - About dialog
+Tests for UI widgets and components organized by functionality:
+
+#### Core Widgets
 - `auto_pause_dialog_test.dart` - Auto-pause functionality dialog
-- `body_properties_dialog_test.dart` - Body property editing dialog
 - `body_property_editor_overlay_test.dart` - Body property overlay editor
+- `bottom_sheet_handle_test.dart` - Bottom sheet drag handle
+- `bottom_sheet_header_test.dart` - Bottom sheet header component
+- `camera_controls_constants_test.dart` - Camera control constants
+- `camera_controls_test.dart` - Camera control panel
+- `camera_mode_option_test.dart` - Camera mode selection
+- `changelog_dialog_test.dart` - Version changelog display
 - `copyright_text_test.dart` - Copyright text widget
-- `floating_simulation_controls_test.dart` - Floating simulation controls
-- `help_dialog_test.dart` - Help and documentation dialog
-- `scenario_selection_dialog_test.dart` - Scenario selection interface
+- `dev_ribbon_test.dart` - Development mode indicator
+- `maintenance_dialog_test.dart` - Maintenance mode dialog
+- `maintenance_dialog_widget_test.dart` - Maintenance dialog widget
+- `offscreen_indicators_overlay_test.dart` - Off-screen object indicators
+- `options_drawer_test.dart` - Settings drawer
+- `physics_controls_test.dart` - Physics parameter controls
+- `screenshot_countdown_test.dart` - Screenshot countdown timer
 - `screenshot_mode_widget_test.dart` - Screenshot mode controls with i18n
-- `settings_dialog_test.dart` - Settings configuration dialog
+- `section_title_test.dart` - Section header component
+- `sliding_panel_bottom_sheet_back_button_test.dart` - Bottom sheet back navigation
+- `sliding_panel_bottom_sheet_test.dart` - Sliding panel bottom controls
 - `stats_overlay_test.dart` - Statistics overlay
 - `tutorial_overlay_test.dart` - Tutorial and onboarding overlay
 - `url_launcher_test.dart` - URL launching functionality
+- `version_check_dialog_test.dart` - Version update dialog
+- `visuals_controls_test.dart` - Visual settings controls
+
+#### Haptic Widgets (`test/widgets/haptics/`)
+- `haptic_app_bar_test.dart` - Haptic-enabled app bar
+- `haptic_circular_button_test.dart` - Haptic circular button with factory constructors
+- `haptic_elevated_button_test.dart` - Haptic elevated button
+- `haptic_floating_action_button_test.dart` - Haptic floating action button
+- `haptic_gesture_detector_test.dart` - Haptic gesture detection
+- `haptic_icon_button_test.dart` - Haptic icon button
+- `haptic_ink_well_test.dart` - Haptic ink well
+- `haptic_list_tile_test.dart` - Haptic list tile
+- `haptic_slider_option_test.dart` - Haptic slider control
+- `haptic_switch_list_tile_test.dart` - Haptic switch list tile
+- `haptic_switch_test.dart` - Haptic switch widget
+- `haptic_text_button_test.dart` - Haptic text button
+
+#### Common Widgets (`test/widgets/common/`)
+- `action_option_test.dart` - Action button component
+- `body_type_picker_test.dart` - Body type selection widget
+- `color_picker_test.dart` - Color selection widget
+- `delete_confirmation_dialog_test.dart` - Deletion confirmation dialog
+- `dialog_title_test.dart` - Standardized dialog titles
+- `graviton_popup_menu_test.dart` - Custom popup menu
+- `graviton_tab_bar_test.dart` - Custom tab bar
+- `graviton_tab_test.dart` - Custom tab widget
+- `graviton_tabbed_view_test.dart` - Tabbed interface
+- `section_divider_test.dart` - Section separator
+- `styled_dropdown_test.dart` - Styled dropdown menu
+- `styled_text_field_test.dart` - Styled text input
+- `toggle_option_test.dart` - Toggle control component
+
+#### Scenario Selection Widgets (`test/widgets/scenario_selection/`)
+- `create_scenario_tile_test.dart` - New scenario creation tile
+- `custom_scenario_tile_test.dart` - Custom scenario display
+- `custom_scenarios_tab_test.dart` - User scenarios tab
+- `preset_scenario_tile_test.dart` - Preset scenario display
+- `preset_scenarios_tab_test.dart` - Educational scenarios tab
+- `scenario_body_tile_test.dart` - Body management in editor
+- `scenario_editor_body_details_bottom_sheet_test.dart` - Body editing interface
+- `scenario_editor_body_list_test.dart` - Body list management
+- `scenario_editor_metadata_panel_test.dart` - Scenario metadata editing
+- `scenario_editor_physics_panel_test.dart` - Physics parameter editing
+
+#### Semantic Accessibility Widgets (`test/widgets/semantics/`)
+- `semantic_app_wrapper_test.dart` - App-level accessibility wrapper
+- `semantic_bottom_sheet_test.dart` - Bottom sheet accessibility
+- `semantic_camera_controls_test.dart` - Camera control accessibility
+- `semantic_live_region_test.dart` - Live region announcements
+- `semantic_scenario_selector_test.dart` - Scenario selector accessibility
+- `semantic_settings_button_test.dart` - Settings button accessibility
+- `semantic_simulation_canvas_test.dart` - Canvas accessibility
+- `semantic_simulation_controls_test.dart` - Simulation control accessibility
+
+#### Overlay Widgets (`test/widgets/overlays/`)
+- Additional overlay components for enhanced user interface functionality
 
 ### 🏷️ Enums (`test/enums/`)
 Tests for enumeration types and constants:
@@ -223,11 +347,29 @@ Tests for application constants and configuration:
 - **Platform handling**: iOS App Store and Google Play Store support
 - **Remote configuration**: Integration with Firebase Remote Config
 
-## Running Tests
+## 🔄 Running Tests
 
-### Run All Tests
+The Graviton project uses multiple testing strategies to ensure comprehensive coverage:
+
+### Quick Test Commands
 ```bash
+# Run all tests
 flutter test
+
+# Run tests with coverage
+flutter test --coverage
+
+# Run specific test categories
+flutter test test/services/
+flutter test test/widgets/haptics/
+flutter test test/features/physics/
+
+# Run integration tests
+flutter test test/integration/
+
+# Run tests for accessibility
+flutter test test/features/accessibility/
+flutter test test/widgets/semantics/
 ```
 
 ### Run Tests by Category
@@ -262,10 +404,23 @@ flutter test test/integration/ --verbose
 flutter test test/features/enhanced_zoom_test.dart
 ```
 
-### Run Tests with Coverage
-```bash
-flutter test --coverage
-```
+### VS Code Tasks
+Use the predefined VS Code tasks for convenient testing:
+- **🧪 Run Tests** - Execute all unit and widget tests
+- **🔍 Analyze Code** - Run static analysis for code quality
+
+### Test Configuration
+- **Coverage Target**: 85%+ across all critical components
+- **Performance Testing**: Physics calculations and rendering performance
+- **Accessibility Testing**: Screen reader and keyboard navigation support
+- **Platform Testing**: iOS and Android-specific functionality
+- **Localization Testing**: All 7 supported languages
+
+### Test Data and Mocks
+- `test_mocks.dart` - Centralized mock objects and test utilities
+- `test_utils.dart` - Shared test helper functions and assertions
+- Mock scenarios and physics configurations for consistent testing
+- Accessibility testing utilities for semantic validation
 
 ## Test Naming Conventions
 

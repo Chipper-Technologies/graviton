@@ -14,6 +14,7 @@ import 'package:graviton/models/body.dart';
 import 'package:graviton/models/changelog.dart';
 import 'package:graviton/painters/graviton_painter.dart';
 import 'package:graviton/services/cinematic_camera_controller.dart';
+import 'package:graviton/services/custom_scenario_manager.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/services/keyboard_navigation_service.dart';
@@ -27,14 +28,15 @@ import 'package:graviton/utils/star_generator.dart';
 import 'package:graviton/widgets/auto_pause_dialog_wrapper.dart';
 import 'package:graviton/widgets/overlays/body_labels_overlay.dart';
 import 'package:graviton/widgets/overlays/body_property_editor_overlay.dart';
-import 'package:graviton/widgets/body_properties_dialog.dart';
+import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
 import 'package:graviton/widgets/sliding_panel_bottom_sheet.dart';
 import 'package:graviton/widgets/semantics/semantic_simulation_canvas.dart';
 import 'package:graviton/widgets/semantics/semantic_live_region.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
+import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
 import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
-import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/widgets/haptics/haptic_text_button.dart';
 import 'package:graviton/screens/developer_tools_screen.dart';
 import 'package:graviton/screens/help_screen.dart';
@@ -570,6 +572,20 @@ class _HomeScreenState extends State<HomeScreen>
                   );
                 }
               },
+              onCustomScenarioSelected: (scenarioName) {
+                final l10n = AppLocalizations.of(context)!;
+                FirebaseService.instance.logUIEventWithEnums(
+                  UIAction.scenarioSelected,
+                  element: UIElement.scenarioDialog,
+                  value: 'custom:$scenarioName',
+                );
+
+                // Close the screen first to avoid navigator conflicts
+                Navigator.of(context).pop();
+
+                // Load custom scenario
+                _loadCustomScenario(context, scenarioName, l10n);
+              },
             ),
         opaque: false,
         transitionDuration: const Duration(milliseconds: 300),
@@ -578,6 +594,56 @@ class _HomeScreenState extends State<HomeScreen>
         },
       ),
     );
+  }
+
+  Future<void> _loadCustomScenario(
+    BuildContext context,
+    String scenarioName,
+    AppLocalizations l10n,
+  ) async {
+    final appState = Provider.of<AppState>(context, listen: false);
+
+    try {
+      // Load the custom scenario using the custom scenario manager
+      final customManager = CustomScenarioManager.instance;
+      await customManager.loadCustomScenario(scenarioName);
+
+      // Switch to custom scenario type to trigger the custom scenario loading
+      appState.simulation.resetWithScenario(ScenarioType.custom, l10n: l10n);
+
+      // Reset cinematic camera controller for new scenario
+      _cinematicCameraController.reset();
+
+      // Use a timer instead of post-frame callback for more reliable execution
+      Future.delayed(const Duration(milliseconds: 100), () {
+        try {
+          // Auto-zoom camera to fit the new scenario
+          if (appState.simulation.bodies.isNotEmpty) {
+            appState.camera.resetViewForScenario(
+              ScenarioType.custom,
+              appState.simulation.bodies,
+            );
+          }
+        } catch (e) {
+          // Silently handle any camera reset errors
+          debugPrint('Camera reset error: $e');
+        }
+      });
+
+      // Show success message
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.accessibilityNewScenarioLoaded),
+            backgroundColor: AppColors.uiStatusGreen,
+          ),
+        );
+      }
+    } catch (e) {
+      // Handle custom scenario loading errors
+      debugPrint('Custom scenario loading error: $e');
+      appState.setError(l10n.failedToSwitchScenarioError(e.toString()));
+    }
   }
 
   void _showApplicationSettingsScreen(BuildContext context) {
@@ -686,7 +752,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  void _showBodyPropertiesDialog(BuildContext context, AppState appState) {
+  void _showBodyPropertiesBottomSheet(BuildContext context, AppState appState) {
     final selectedIndex = appState.camera.selectedBody;
     if (selectedIndex == null ||
         selectedIndex < 0 ||
@@ -701,18 +767,40 @@ class _HomeScreenState extends State<HomeScreen>
       element: UIElement.bodyProperties,
     );
 
-    AutoPauseDialogWrapper.show<void>(
+    // Pause simulation while editing
+    final wasPlaying = !appState.simulation.isPaused;
+    if (wasPlaying) {
+      appState.simulation.pause();
+    }
+
+    showModalBottomSheet<void>(
       context: context,
-      child: BodyPropertiesDialog(
-        body: selectedBody,
-        bodyIndex: selectedIndex,
-        onBodyChanged: (updatedBody) {
-          // The dialog updates the body directly, trigger a rebuild
-          // by notifying that body properties have changed
-          appState.simulation.notifyBodyPropertiesChanged();
-        },
+      isScrollControlled: true,
+      backgroundColor: AppColors.transparentColor,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setSheetState) => SizedBox(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: ScenarioEditorBodyDetailsBottomSheet(
+            body: selectedBody,
+            onBodyChanged: (updatedBody) {
+              // Update the body in the simulation
+              appState.simulation.bodies[selectedIndex] = updatedBody;
+              appState.simulation.notifyBodyPropertiesChanged();
+              // Update sheet state for immediate visual feedback
+              setSheetState(() {});
+            },
+            availableCentralBodies:
+                [], // Not needed for editing existing bodies
+            isAddMode: false,
+          ),
+        ),
       ),
-    );
+    ).then((_) {
+      // Resume simulation if it was playing
+      if (wasPlaying) {
+        appState.simulation.resumeSimulation();
+      }
+    });
   }
 
   void _showPhysicsSettingsScreen(BuildContext context, AppState appState) {
@@ -1005,51 +1093,49 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             appBar: shouldHideUI
                 ? null
-                : AppBar(
-                    title: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            HapticFeedbackService.instance.lightImpact();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const AboutScreen(),
+                : HapticAppBar(
+                    title: l10n.appTitle,
+                    backgroundColor: AppColors.uiBlack.withValues(
+                      alpha: AppTypography.opacityMedium,
+                    ),
+                    titleSpacing: AppTypography
+                        .spacingXLarge, // More space between logo and title
+                    leading: Padding(
+                      padding: const EdgeInsets.only(
+                        left: AppTypography
+                            .spacingLarge, // More space on the left
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          HapticFeedbackService.instance.lightImpact();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AboutScreen(),
+                            ),
+                          );
+                        },
+                        child: Tooltip(
+                          message: l10n.aboutButtonTooltip,
+                          child: Container(
+                            width: 28,
+                            height: 28,
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacityVeryFaint,
+                                ),
+                                width: 1.5,
                               ),
-                            );
-                          },
-                          child: Tooltip(
-                            message: l10n.aboutButtonTooltip,
-                            child: Container(
-                              width: 28,
-                              height: 28,
-                              margin: const EdgeInsets.only(right: 8),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: AppColors.uiWhite.withValues(
-                                    alpha: AppTypography.opacityVeryFaint,
-                                  ),
-                                  width: 1.5,
-                                ),
-                                image: DecorationImage(
-                                  image: AssetImage(AppConfig.appLogoPath),
-                                  fit: BoxFit.cover,
-                                ),
+                              image: DecorationImage(
+                                image: AssetImage(AppConfig.appLogoPath),
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
                         ),
-                        Flexible(
-                          child: Text(
-                            l10n.appTitle,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    backgroundColor: AppColors.uiBlack.withValues(
-                      alpha: AppTypography.opacityMedium,
+                      ),
                     ),
                     actions: [
                       // Options drawer toggle
@@ -1259,7 +1345,10 @@ class _HomeScreenState extends State<HomeScreen>
                               screenSize: size,
                               selectedBodyIndex: appState.camera.selectedBody,
                               onPropertyIconTapped: () =>
-                                  _showBodyPropertiesDialog(context, appState),
+                                  _showBodyPropertiesBottomSheet(
+                                    context,
+                                    appState,
+                                  ),
                             ),
                           // Camera visual aids overlay
                           if (!shouldHideUI)
@@ -1506,37 +1595,43 @@ class _HomeScreenState extends State<HomeScreen>
         mainAxisSize: MainAxisSize.min,
         children: [
           // Play/Pause Button
-          _buildCircularControlButton(
-            icon: appState.simulation.isPaused ? Icons.play_arrow : Icons.pause,
-            onPressed: () {
-              // Provide haptic feedback for play/pause button
-              HapticFeedbackService.instance.light();
+          appState.simulation.isPaused
+              ? HapticCircularButton.play(
+                  onTap: () {
+                    // Reset floating controls timer when button is pressed
+                    _showFloatingControlsTemporarily();
 
-              // Reset floating controls timer when button is pressed
-              _showFloatingControlsTemporarily();
+                    FirebaseService.instance.logUIEventWithEnums(
+                      UIAction.buttonPressed,
+                      element: UIElement.simulationControl,
+                      value: 'play',
+                    );
+                    appState.simulation.pause();
+                  },
+                  tooltip: l10n.playButton,
+                  semanticsLabel: l10n.playButton,
+                )
+              : HapticCircularButton.pause(
+                  onTap: () {
+                    // Reset floating controls timer when button is pressed
+                    _showFloatingControlsTemporarily();
 
-              FirebaseService.instance.logUIEventWithEnums(
-                UIAction.buttonPressed,
-                element: UIElement.simulationControl,
-                value: appState.simulation.isPaused ? 'play' : 'pause',
-              );
-              appState.simulation.pause();
-            },
-            tooltip: appState.simulation.isPaused
-                ? l10n.playButton
-                : l10n.pauseButton,
-            isPrimary: true,
-          ),
+                    FirebaseService.instance.logUIEventWithEnums(
+                      UIAction.buttonPressed,
+                      element: UIElement.simulationControl,
+                      value: 'pause',
+                    );
+                    appState.simulation.pause();
+                  },
+                  tooltip: l10n.pauseButton,
+                  semanticsLabel: l10n.pauseButton,
+                ),
 
           const SizedBox(width: AppTypography.spacingSmall),
 
           // Reset Button
-          _buildCircularControlButton(
-            icon: Icons.refresh,
-            onPressed: () {
-              // Provide medium haptic feedback for reset button (more significant action)
-              HapticFeedbackService.instance.medium();
-
+          HapticCircularButton.reset(
+            onTap: () {
               // Reset floating controls timer when button is pressed
               _showFloatingControlsTemporarily();
 
@@ -1555,71 +1650,9 @@ class _HomeScreenState extends State<HomeScreen>
               appState.resetAll();
             },
             tooltip: l10n.resetButton,
-            isDark: true, // Make reset button darker
+            semanticsLabel: l10n.resetButton,
           ),
         ],
-      ),
-    );
-  }
-
-  /// Build a circular control button for the simulation controls
-  Widget _buildCircularControlButton({
-    required IconData icon,
-    required VoidCallback onPressed,
-    required String tooltip,
-    bool isPrimary = false,
-    bool isDark = false,
-  }) {
-    return Tooltip(
-      message: tooltip,
-      preferBelow: false,
-      child: Material(
-        color: AppColors.transparentColor,
-        child: HapticInkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
-          splashColor: AppColors.primaryColor.withValues(
-            alpha: AppTypography.opacityMedium,
-          ),
-          highlightColor: AppColors.primaryColor.withValues(
-            alpha: AppTypography.opacityFaint,
-          ),
-          child: Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: isPrimary
-                  ? AppColors.primaryColor.withValues(
-                      alpha: AppTypography.opacityNearlyOpaque,
-                    )
-                  : isDark
-                  ? AppColors.uiBlack.withValues(
-                      alpha: AppTypography.opacityHigh,
-                    ) // Dark background for reset button
-                  : AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityVeryFaint,
-                    ),
-              borderRadius: BorderRadius.circular(AppTypography.radiusXXLarge),
-              border: isPrimary
-                  ? null
-                  : Border.all(
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacityFaint,
-                      ),
-                      width: 1,
-                    ),
-            ),
-            child: Icon(
-              icon,
-              color: isPrimary
-                  ? AppColors.uiWhite
-                  : AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityNearlyOpaque,
-                    ),
-              size: AppTypography.iconSizeMedium,
-            ),
-          ),
-        ),
       ),
     );
   }

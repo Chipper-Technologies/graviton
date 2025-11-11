@@ -354,6 +354,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get colorSelector => 'Farbauswahl';
 
   @override
+  String colorOptionTooltip(String colorName) {
+    return '$colorName Farbe für Himmelskörper wählen';
+  }
+
+  @override
   String get visualsTooltip => 'Visuelle Anzeigeoptionen';
 
   @override
@@ -467,6 +472,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get temperatureKEditorhint => 'Temperatur in Kelvin eingeben';
 
   @override
+  String get temperatureCelsiusEditorhint => 'Temperatur (°C)';
+
+  @override
+  String get temperatureFahrenheitEditorhint => 'Temperatur (°F)';
+
+  @override
   String get temperatureModerate => 'Gemäßigt';
 
   @override
@@ -485,6 +496,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get temperatureUnitKelvin => 'K';
 
   @override
+  String get temperatureUnitCelsiusName => 'Celsius';
+
+  @override
+  String get temperatureUnitFahrenheitName => 'Fahrenheit';
+
+  @override
+  String get temperatureUnitKelvinName => 'Kelvin';
+
+  @override
   String get velocityMsEditor => 'Geschwindigkeit m/s Editor';
 
   @override
@@ -500,6 +520,24 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get beginnerEditor => 'Anfänger-Editor';
+
+  @override
+  String get noBodiesAdded => 'Noch keine Körper hinzugefügt';
+
+  @override
+  String get addBodiesInSetupTab => 'Körper im Setup-Tab hinzufügen';
+
+  @override
+  String get untitledScenario => 'Unbenanntes Szenario';
+
+  @override
+  String get noDescriptionProvided => 'Keine Beschreibung angegeben';
+
+  @override
+  String get collisionSoftening => 'Kollisions-Glättung';
+
+  @override
+  String get collisionRadius => 'Kollisionsradius';
 
   @override
   String get bodyTypeEditor => 'Körpertyp-Editor';
@@ -521,6 +559,18 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get createScenarioTitle => 'Szenario erstellen';
+
+  @override
+  String get editScenarioButton => 'Szenario bearbeiten';
+
+  @override
+  String get editScenarioHint => 'Dieses Szenario bearbeiten';
+
+  @override
+  String get deleteScenarioButton => 'Szenario löschen';
+
+  @override
+  String get deleteScenarioHint => 'Dieses Szenario löschen';
 
   @override
   String get customGravitationalSimulationEditor =>
@@ -612,6 +662,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get exportScenarioButton => 'Szenario exportieren';
+
+  @override
+  String get exportScenarioHint => 'Szenario als Datei zum Teilen exportieren';
 
   @override
   String exportScenarioFailedMessage(String error) {
@@ -1020,8 +1073,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get testScenarioButton => 'Test-Szenario-Schaltfläche';
 
   @override
+  String get testScenarioHint =>
+      'Das aktuelle Szenario in der Simulation testen';
+
+  @override
   String get testScenarioNotImplementedMessage =>
       'Test-Szenario noch nicht implementiert';
+
+  @override
+  String get scenarioEditorMenuHint =>
+      'Menü mit Test- und Exportoptionen öffnen';
 
   @override
   String get aboutButtonTooltip => 'Über';
@@ -1660,6 +1721,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get languageDescription => 'App-Sprache ändern';
 
   @override
+  String get languageSelectionHint =>
+      'Wählen Sie Ihre bevorzugte Anzeigesprache';
+
+  @override
   String get languageEnglish => 'English';
 
   @override
@@ -1675,7 +1740,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get languageKorean => '한국어';
 
   @override
-  String get languageLabel => 'Sprache';
+  String get languageLabel => 'Allgemein';
+
+  @override
+  String get temperatureUnitsLabel => 'Temperatureinheiten';
+
+  @override
+  String get temperatureUnitsDescription =>
+      'Bevorzugte Einheiten für die Anzeige von Temperaturen in der App';
 
   @override
   String get languageSpanish => 'Español';
@@ -2407,4 +2479,120 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get customScenarioCreatedUnknown => 'Erstellungsdatum unbekannt';
+
+  @override
+  String get orbitalPlacementEditor => 'Orbitalplatzierung';
+
+  @override
+  String get placeInOrbitButton => 'In Umlaufbahn platzieren';
+
+  @override
+  String get centralBodySelector => 'Zentralkörper';
+
+  @override
+  String get orbitRadiusEditor => 'Bahnradius';
+
+  @override
+  String get orbitPhaseEditor => 'Bahnphase';
+
+  @override
+  String get orbitInclinationEditor => 'Neigung';
+
+  @override
+  String get circularOrbitOption => 'Kreisbahn';
+
+  @override
+  String get ellipticalOrbitOption => 'Elliptische Bahn';
+
+  @override
+  String orbitalPeriodDisplay(String period) {
+    return 'Periode: $period';
+  }
+
+  @override
+  String get noAvailableCentralBodies =>
+      'Keine anderen Körper für Orbitalplatzierung verfügbar';
+
+  @override
+  String get orbitalPlacementDescription =>
+      'Diesen Körper so konfigurieren, dass er mit realistischer Physik um einen anderen Himmelskörper kreist';
+
+  @override
+  String get orbitalPlacementActiveDescription =>
+      'Orbitalplatzierung ist aktiv. Position und Geschwindigkeit werden automatisch basierend auf den Bahnparametern unten berechnet.';
+
+  @override
+  String get showGravitationalFieldVisualization =>
+      'Gravitationsfeld-Visualisierung für diesen Körper anzeigen';
+
+  @override
+  String get cancelOrbitalPlacement => 'Orbitalplatzierung abbrechen';
+
+  @override
+  String get makeStable => 'Stabilisieren';
+
+  @override
+  String get orbitalWarningMassiveBody =>
+      '⚠️ Warnung: Der umkreisende Körper ist sehr massereich im Verhältnis zum Zentralkörper. Dies kann instabile Bahnen verursachen oder die Körper können umeinander kreisen.';
+
+  @override
+  String get orbitalTipSignificantMass =>
+      '💡 Tipp: Das ist ein bedeutendes Massenverhältnis. Erwägen Sie, die Orbitaldistanz für Stabilität zu erhöhen.';
+
+  @override
+  String get orbitalWarningCloseOrbit =>
+      '⚠️ Warnung: Sehr nahe Umlaufbahn. Kollisions- oder Gezeitenstörungsrisiko.';
+
+  @override
+  String get orbitalTipDistantOrbit =>
+      '💡 Tipp: Entfernte Umlaufbahn. Gravitationseinfluss anderer Körper kann diese Bahn stören.';
+
+  @override
+  String get orbitalGoodConfiguration =>
+      '✅ Gute Bahnkonfiguration für ein stabiles System.';
+
+  @override
+  String get orbitalError => 'Fehler';
+
+  @override
+  String get orbitalConfigurationWarning =>
+      'Diese Bahnkonfiguration kann zu Kollisionen oder Auswürfen führen. Erwägen Sie die Verwendung des \"Stabilisieren\" Buttons.';
+
+  @override
+  String get defaultBodyName => 'Himmelskörper';
+
+  @override
+  String get orbitalPeriodLabel => 'Umlaufperiode';
+
+  @override
+  String get orbitIsStable => 'Umlaufbahn ist Stabil';
+
+  @override
+  String get orbitMayBeUnstable => 'Umlaufbahn Könnte Instabil Sein';
+
+  @override
+  String bodyTypeGeneric(String bodyType) {
+    return '$bodyType Körper';
+  }
+
+  @override
+  String orbitalRadiusIncreasedFeedback(String amount) {
+    return 'um $amount Einheiten erhöht';
+  }
+
+  @override
+  String orbitalRadiusDecreasedFeedback(String amount) {
+    return 'um $amount Einheiten verringert';
+  }
+
+  @override
+  String get orbitalRadiusFineTunedFeedback => 'fein abgestimmt';
+
+  @override
+  String orbitStabilizedMessage(String changeDescription, String finalRadius) {
+    return 'Umlaufbahn stabilisiert! Radius $changeDescription auf $finalRadius Einheiten. Phase und Neigung für Stabilität zurückgesetzt.';
+  }
+
+  @override
+  String get unknownValue => 'Unbekannt';
 }

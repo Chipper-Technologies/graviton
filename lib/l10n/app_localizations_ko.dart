@@ -336,6 +336,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get colorSelector => '색상 선택기';
 
   @override
+  String colorOptionTooltip(String colorName) {
+    return '천체에 $colorName 색상 선택';
+  }
+
+  @override
   String get visualsTooltip => '시각적 디스플레이 옵션';
 
   @override
@@ -445,6 +450,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get temperatureKEditorhint => '온도를 켈빈으로 입력';
 
   @override
+  String get temperatureCelsiusEditorhint => '온도 (°C)';
+
+  @override
+  String get temperatureFahrenheitEditorhint => '온도 (°F)';
+
+  @override
   String get temperatureModerate => '온화함';
 
   @override
@@ -461,6 +472,15 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get temperatureUnitKelvin => 'K';
+
+  @override
+  String get temperatureUnitCelsiusName => '섭씨';
+
+  @override
+  String get temperatureUnitFahrenheitName => '화씨';
+
+  @override
+  String get temperatureUnitKelvinName => '켈빈';
 
   @override
   String get velocityMsEditor => '속도 m/s 편집기';
@@ -480,6 +500,24 @@ class AppLocalizationsKo extends AppLocalizations {
   String get beginnerEditor => '초보자 편집기';
 
   @override
+  String get noBodiesAdded => '아직 천체가 추가되지 않음';
+
+  @override
+  String get addBodiesInSetupTab => '설정 탭에서 천체 추가';
+
+  @override
+  String get untitledScenario => '제목 없는 시나리오';
+
+  @override
+  String get noDescriptionProvided => '설명이 제공되지 않음';
+
+  @override
+  String get collisionSoftening => '충돌 완화';
+
+  @override
+  String get collisionRadius => '충돌 반경';
+
+  @override
   String get bodyTypeEditor => '천체 유형 편집기';
 
   @override
@@ -496,6 +534,18 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get createScenarioTitle => '시나리오 생성 제목';
+
+  @override
+  String get editScenarioButton => '시나리오 편집';
+
+  @override
+  String get editScenarioHint => '이 시나리오 편집';
+
+  @override
+  String get deleteScenarioButton => '시나리오 삭제';
+
+  @override
+  String get deleteScenarioHint => '이 시나리오 삭제';
 
   @override
   String get customGravitationalSimulationEditor => '사용자 정의 중력 시뮬레이션 편집기';
@@ -585,6 +635,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get exportScenarioButton => '시나리오 내보내기';
+
+  @override
+  String get exportScenarioHint => '공유를 위해 시나리오를 파일로 내보내기';
 
   @override
   String exportScenarioFailedMessage(String error) {
@@ -976,7 +1029,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get testScenarioButton => '테스트 시나리오 버튼';
 
   @override
+  String get testScenarioHint => '시뮬레이션에서 현재 시나리오 테스트';
+
+  @override
   String get testScenarioNotImplementedMessage => '테스트 시나리오 미구현';
+
+  @override
+  String get scenarioEditorMenuHint => '테스트 및 내보내기 옵션이 있는 메뉴 열기';
 
   @override
   String get aboutButtonTooltip => '정보';
@@ -1600,6 +1659,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get languageDescription => '앱 언어 변경';
 
   @override
+  String get languageSelectionHint => '선호하는 표시 언어를 선택하세요';
+
+  @override
   String get languageEnglish => 'English';
 
   @override
@@ -1615,7 +1677,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get languageKorean => '한국어';
 
   @override
-  String get languageLabel => '언어';
+  String get languageLabel => '일반';
+
+  @override
+  String get temperatureUnitsLabel => '온도 단위';
+
+  @override
+  String get temperatureUnitsDescription => '앱 전체에서 온도를 표시하는 기본 단위';
 
   @override
   String get languageSpanish => 'Español';
@@ -2286,4 +2354,117 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get customScenarioCreatedUnknown => '생성일 알 수 없음';
+
+  @override
+  String get orbitalPlacementEditor => '궤도 배치';
+
+  @override
+  String get placeInOrbitButton => '궤도에 배치';
+
+  @override
+  String get centralBodySelector => '중심 천체';
+
+  @override
+  String get orbitRadiusEditor => '궤도 반지름';
+
+  @override
+  String get orbitPhaseEditor => '궤도 위상';
+
+  @override
+  String get orbitInclinationEditor => '기울기';
+
+  @override
+  String get circularOrbitOption => '원형 궤도';
+
+  @override
+  String get ellipticalOrbitOption => '타원형 궤도';
+
+  @override
+  String orbitalPeriodDisplay(String period) {
+    return '주기: $period';
+  }
+
+  @override
+  String get noAvailableCentralBodies => '궤도 배치에 사용할 수 있는 다른 천체가 없습니다';
+
+  @override
+  String get orbitalPlacementDescription =>
+      '이 천체가 현실적인 물리학으로 다른 천체 주위를 공전하도록 구성';
+
+  @override
+  String get orbitalPlacementActiveDescription =>
+      '궤도 배치가 활성화되었습니다. 위치와 속도는 아래의 궤도 매개변수에 따라 자동으로 계산됩니다.';
+
+  @override
+  String get showGravitationalFieldVisualization => '이 천체의 중력장 시각화 표시';
+
+  @override
+  String get cancelOrbitalPlacement => '궤도 배치 취소';
+
+  @override
+  String get makeStable => '안정화';
+
+  @override
+  String get orbitalWarningMassiveBody =>
+      '⚠️ 경고: 공전하는 천체가 중심 천체에 비해 매우 무겁습니다. 이는 불안정한 궤도를 유발하거나 천체들이 서로 공전할 수 있습니다.';
+
+  @override
+  String get orbitalTipSignificantMass =>
+      '💡 팁: 이는 상당한 질량비입니다. 안정성을 위해 궤도 거리 증가를 고려하세요.';
+
+  @override
+  String get orbitalWarningCloseOrbit =>
+      '⚠️ 경고: 매우 가까운 궤도. 충돌이나 조석 파괴의 위험이 있습니다.';
+
+  @override
+  String get orbitalTipDistantOrbit =>
+      '💡 팁: 먼 궤도. 다른 천체의 중력 영향이 이 궤도를 교란할 수 있습니다.';
+
+  @override
+  String get orbitalGoodConfiguration => '✅ 안정적인 시스템을 위한 좋은 궤도 구성.';
+
+  @override
+  String get orbitalError => '오류';
+
+  @override
+  String get orbitalConfigurationWarning =>
+      '이 궤도 구성은 충돌이나 방출로 이어질 수 있습니다. \"안정화\" 버튼 사용을 고려하세요.';
+
+  @override
+  String get defaultBodyName => '천체';
+
+  @override
+  String get orbitalPeriodLabel => '궤도 주기';
+
+  @override
+  String get orbitIsStable => '궤도가 안정적';
+
+  @override
+  String get orbitMayBeUnstable => '궤도가 불안정할 수 있음';
+
+  @override
+  String bodyTypeGeneric(String bodyType) {
+    return '$bodyType 천체';
+  }
+
+  @override
+  String orbitalRadiusIncreasedFeedback(String amount) {
+    return '$amount 단위 증가';
+  }
+
+  @override
+  String orbitalRadiusDecreasedFeedback(String amount) {
+    return '$amount 단위 감소';
+  }
+
+  @override
+  String get orbitalRadiusFineTunedFeedback => '미세 조정';
+
+  @override
+  String orbitStabilizedMessage(String changeDescription, String finalRadius) {
+    return '궤도가 안정화되었습니다! 반지름이 $changeDescription하여 $finalRadius 단위가 되었습니다. 안정성을 위해 위상과 기울기가 재설정되었습니다.';
+  }
+
+  @override
+  String get unknownValue => '알 수 없음';
 }

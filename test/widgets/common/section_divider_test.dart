@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/theme/app_colors.dart';
-import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
 
 void main() {
@@ -22,8 +21,8 @@ void main() {
       expect(divider.color, equals(AppColors.uiDividerGrey));
       expect(divider.thickness, equals(1.0));
       expect(divider.height, equals(1.0));
-      expect(divider.indent, equals(AppTypography.spacingLarge));
-      expect(divider.endIndent, equals(AppTypography.spacingLarge));
+      expect(divider.indent, equals(0.0));
+      expect(divider.endIndent, equals(0.0));
     });
 
     testWidgets('should render labeled divider with text', (
@@ -385,8 +384,8 @@ void main() {
         expect(divider.labelPadding, equals(0.0));
         expect(divider.topSpacing, equals(0.0));
         expect(divider.bottomSpacing, equals(0.0));
-        expect(divider.indent, equals(AppTypography.spacingLarge));
-        expect(divider.endIndent, equals(AppTypography.spacingLarge));
+        expect(divider.indent, equals(0.0));
+        expect(divider.endIndent, equals(0.0));
         expect(divider.height, equals(1.0));
       });
 

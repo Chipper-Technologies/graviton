@@ -34,6 +34,9 @@ class HapticAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// Optional elevation (defaults to 0)
   final double? elevation;
 
+  /// Optional title spacing (defaults to AppBar default)
+  final double? titleSpacing;
+
   const HapticAppBar({
     super.key,
     required this.title,
@@ -43,6 +46,7 @@ class HapticAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.foregroundColor,
     this.elevation,
+    this.titleSpacing,
   });
 
   @override
@@ -59,6 +63,7 @@ class HapticAppBar extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: foregroundColor ?? AppColors.uiWhite,
       elevation: elevation ?? 0,
       automaticallyImplyLeading: false,
+      titleSpacing: titleSpacing,
       leading:
           leading ??
           (automaticallyImplyLeading && Navigator.of(context).canPop()

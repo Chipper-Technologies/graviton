@@ -450,5 +450,182 @@ void main() {
         );
       });
     });
+
+    group('getTemperatureRange', () {
+      test('returns correct range for star', () {
+        final range = BodyTypeRanges.getTemperatureRange(BodyType.star);
+        expect(range['min'], equals(2000.0));
+        expect(range['max'], equals(50000.0));
+      });
+
+      test('returns correct range for planet', () {
+        final range = BodyTypeRanges.getTemperatureRange(BodyType.planet);
+        expect(range['min'], equals(50.0));
+        expect(range['max'], equals(800.0));
+      });
+
+      test('returns correct range for moon', () {
+        final range = BodyTypeRanges.getTemperatureRange(BodyType.moon);
+        expect(range['min'], equals(50.0));
+        expect(range['max'], equals(400.0));
+      });
+
+      test('returns correct range for asteroid', () {
+        final range = BodyTypeRanges.getTemperatureRange(BodyType.asteroid);
+        expect(range['min'], equals(100.0));
+        expect(range['max'], equals(400.0));
+      });
+
+      test('temperature ranges are within realistic bounds', () {
+        for (final bodyType in BodyType.values) {
+          final range = BodyTypeRanges.getTemperatureRange(bodyType);
+          expect(
+            range['min']!,
+            greaterThan(0.0),
+            reason: 'Minimum temperature should be positive for $bodyType',
+          );
+          expect(
+            range['max']!,
+            greaterThan(range['min']!),
+            reason:
+                'Maximum temperature should be greater than minimum for $bodyType',
+          );
+          expect(
+            range['min']!,
+            lessThan(100000.0),
+            reason: 'Minimum temperature should be realistic for $bodyType',
+          );
+          expect(
+            range['max']!,
+            lessThan(100000.0),
+            reason: 'Maximum temperature should be realistic for $bodyType',
+          );
+        }
+      });
+
+      test('stellar temperatures are hotter than planetary', () {
+        final starRange = BodyTypeRanges.getTemperatureRange(BodyType.star);
+        final planetRange = BodyTypeRanges.getTemperatureRange(BodyType.planet);
+
+        expect(
+          starRange['min']!,
+          greaterThan(planetRange['max']!),
+          reason: 'Stars should be significantly hotter than planets',
+        );
+      });
+
+      test('returns map with correct keys', () {
+        for (final bodyType in BodyType.values) {
+          final range = BodyTypeRanges.getTemperatureRange(bodyType);
+          expect(range.keys, containsAll(['min', 'max']));
+          expect(range.keys.length, equals(2));
+        }
+      });
+    });
+
+    group('getDefaultProperties - temperature values', () {
+      test('returns correct default temperature for star', () {
+        final properties = BodyTypeRanges.getDefaultProperties(BodyType.star);
+        final temp = properties['temperature']!;
+
+        // Should be in the lower-middle of star temperature range (2000-50000)
+        final range = BodyTypeRanges.getTemperatureRange(BodyType.star);
+        final expectedTemp =
+            range['min']! + (range['max']! - range['min']!) * 0.3;
+        expect(temp, equals(expectedTemp));
+        expect(temp, closeTo(16400.0, 1.0)); // 2000 + (48000 * 0.3)
+      });
+
+      test('returns correct default temperature for planet', () {
+        final properties = BodyTypeRanges.getDefaultProperties(BodyType.planet);
+        final temp = properties['temperature']!;
+
+        // Should be in the lower-middle of planet temperature range (50-800)
+        final range = BodyTypeRanges.getTemperatureRange(BodyType.planet);
+        final expectedTemp =
+            range['min']! + (range['max']! - range['min']!) * 0.3;
+        expect(temp, equals(expectedTemp));
+        expect(temp, closeTo(275.0, 1.0)); // 50 + (750 * 0.3)
+      });
+
+      test('returns correct default temperature for moon', () {
+        final properties = BodyTypeRanges.getDefaultProperties(BodyType.moon);
+        final temp = properties['temperature']!;
+
+        // Should be in the lower-middle of moon temperature range (50-400)
+        final range = BodyTypeRanges.getTemperatureRange(BodyType.moon);
+        final expectedTemp =
+            range['min']! + (range['max']! - range['min']!) * 0.3;
+        expect(temp, equals(expectedTemp));
+        expect(temp, closeTo(155.0, 1.0)); // 50 + (350 * 0.3)
+      });
+
+      test('returns correct default temperature for asteroid', () {
+        final properties = BodyTypeRanges.getDefaultProperties(
+          BodyType.asteroid,
+        );
+        final temp = properties['temperature']!;
+
+        // Should be in the lower-middle of asteroid temperature range (100-400)
+        final range = BodyTypeRanges.getTemperatureRange(BodyType.asteroid);
+        final expectedTemp =
+            range['min']! + (range['max']! - range['min']!) * 0.3;
+        expect(temp, equals(expectedTemp));
+        expect(temp, closeTo(190.0, 1.0)); // 100 + (300 * 0.3)
+      });
+
+      test('default temperatures are within ranges', () {
+        for (final bodyType in BodyType.values) {
+          final properties = BodyTypeRanges.getDefaultProperties(bodyType);
+          final defaultTemp = properties['temperature']!;
+          final range = BodyTypeRanges.getTemperatureRange(bodyType);
+
+          expect(
+            defaultTemp,
+            greaterThanOrEqualTo(range['min']!),
+            reason: 'Default temperature should be >= minimum for $bodyType',
+          );
+          expect(
+            defaultTemp,
+            lessThanOrEqualTo(range['max']!),
+            reason: 'Default temperature should be <= maximum for $bodyType',
+          );
+        }
+      });
+
+      test('default temperatures are realistic', () {
+        for (final bodyType in BodyType.values) {
+          final properties = BodyTypeRanges.getDefaultProperties(bodyType);
+          final temp = properties['temperature']!;
+          expect(
+            temp,
+            greaterThan(0.0),
+            reason: 'Default temperature should be positive for $bodyType',
+          );
+          expect(
+            temp,
+            lessThan(100000.0),
+            reason: 'Default temperature should be realistic for $bodyType',
+          );
+        }
+      });
+
+      test('temperature defaults follow 30% positioning rule', () {
+        for (final bodyType in BodyType.values) {
+          final properties = BodyTypeRanges.getDefaultProperties(bodyType);
+          final defaultTemp = properties['temperature']!;
+          final range = BodyTypeRanges.getTemperatureRange(bodyType);
+
+          final expectedTemp =
+              range['min']! + (range['max']! - range['min']!) * 0.3;
+          expect(
+            defaultTemp,
+            closeTo(expectedTemp, 0.0001),
+            reason:
+                'Default temperature should be at 30% of range for $bodyType',
+          );
+        }
+      });
+    });
   });
 }

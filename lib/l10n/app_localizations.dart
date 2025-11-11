@@ -704,6 +704,12 @@ abstract class AppLocalizations {
   /// **'Color selector'**
   String get colorSelector;
 
+  /// Tooltip for individual color options in color picker
+  ///
+  /// In en, this message translates to:
+  /// **'Select {colorName} color for celestial body'**
+  String colorOptionTooltip(String colorName);
+
   /// Tooltip for visuals tab button
   ///
   /// In en, this message translates to:
@@ -908,6 +914,18 @@ abstract class AppLocalizations {
   /// **'Temperature (K)'**
   String get temperatureKEditorhint;
 
+  /// Hint text for temperature input field in Celsius
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature (°C)'**
+  String get temperatureCelsiusEditorhint;
+
+  /// Hint text for temperature input field in Fahrenheit
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature (°F)'**
+  String get temperatureFahrenheitEditorhint;
+
   /// Temperature category for moderate temperature bodies (0°C to 50°C)
   ///
   /// In en, this message translates to:
@@ -944,6 +962,24 @@ abstract class AppLocalizations {
   /// **'K'**
   String get temperatureUnitKelvin;
 
+  /// Celsius temperature unit full name
+  ///
+  /// In en, this message translates to:
+  /// **'Celsius'**
+  String get temperatureUnitCelsiusName;
+
+  /// Fahrenheit temperature unit full name
+  ///
+  /// In en, this message translates to:
+  /// **'Fahrenheit'**
+  String get temperatureUnitFahrenheitName;
+
+  /// Kelvin temperature unit full name
+  ///
+  /// In en, this message translates to:
+  /// **'Kelvin'**
+  String get temperatureUnitKelvinName;
+
   /// Section title for velocity in meters per second
   ///
   /// In en, this message translates to:
@@ -973,6 +1009,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Beginner'**
   String get beginnerEditor;
+
+  /// Message shown when no bodies have been added to scenario
+  ///
+  /// In en, this message translates to:
+  /// **'No bodies added yet'**
+  String get noBodiesAdded;
+
+  /// Instruction message for adding bodies in the setup tab
+  ///
+  /// In en, this message translates to:
+  /// **'Add bodies in the Setup tab'**
+  String get addBodiesInSetupTab;
+
+  /// Default name for scenarios without a title
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled Scenario'**
+  String get untitledScenario;
+
+  /// Message shown when scenario has no description
+  ///
+  /// In en, this message translates to:
+  /// **'No description provided'**
+  String get noDescriptionProvided;
+
+  /// Label for collision softening parameter in physics editor
+  ///
+  /// In en, this message translates to:
+  /// **'Collision Softening'**
+  String get collisionSoftening;
+
+  /// Label for collision radius parameter in physics editor
+  ///
+  /// In en, this message translates to:
+  /// **'Collision Radius'**
+  String get collisionRadius;
 
   /// Section title for body type selection
   ///
@@ -1009,6 +1081,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create Scenario'**
   String get createScenarioTitle;
+
+  /// Accessibility label for edit scenario button
+  ///
+  /// In en, this message translates to:
+  /// **'Edit scenario'**
+  String get editScenarioButton;
+
+  /// Accessibility hint for edit scenario button
+  ///
+  /// In en, this message translates to:
+  /// **'Edit this scenario'**
+  String get editScenarioHint;
+
+  /// Accessibility label for delete scenario button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete scenario'**
+  String get deleteScenarioButton;
+
+  /// Accessibility hint for delete scenario button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this scenario'**
+  String get deleteScenarioHint;
 
   /// Default description for custom scenarios in editor
   ///
@@ -1165,6 +1261,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Export Scenario'**
   String get exportScenarioButton;
+
+  /// Accessibility hint for export scenario action
+  ///
+  /// In en, this message translates to:
+  /// **'Export scenario to file for sharing'**
+  String get exportScenarioHint;
 
   /// Error message when scenario export fails
   ///
@@ -1836,11 +1938,23 @@ abstract class AppLocalizations {
   /// **'Test Scenario'**
   String get testScenarioButton;
 
+  /// Accessibility hint for test scenario action
+  ///
+  /// In en, this message translates to:
+  /// **'Test the current scenario in simulation'**
+  String get testScenarioHint;
+
   /// Message shown when test scenario is not implemented
   ///
   /// In en, this message translates to:
   /// **'Test scenario functionality not implemented yet'**
   String get testScenarioNotImplementedMessage;
+
+  /// Accessibility hint for scenario editor menu button
+  ///
+  /// In en, this message translates to:
+  /// **'Open menu with test and export options'**
+  String get scenarioEditorMenuHint;
 
   /// Tooltip for the about button
   ///
@@ -2904,6 +3018,12 @@ abstract class AppLocalizations {
   /// **'Change the app language'**
   String get languageDescription;
 
+  /// Hint text for language selection dropdown
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your preferred display language'**
+  String get languageSelectionHint;
+
   /// English language option
   ///
   /// In en, this message translates to:
@@ -2934,11 +3054,23 @@ abstract class AppLocalizations {
   /// **'한국어'**
   String get languageKorean;
 
-  /// Label for language selection setting
+  /// Label for general settings section (including language and temperature units)
   ///
   /// In en, this message translates to:
-  /// **'Language'**
+  /// **'General'**
   String get languageLabel;
+
+  /// Label for temperature units setting
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature Units'**
+  String get temperatureUnitsLabel;
+
+  /// Description for temperature units setting
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred units for displaying temperatures throughout the app'**
+  String get temperatureUnitsDescription;
 
   /// Spanish language option
   ///
@@ -4221,6 +4353,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown'**
   String get customScenarioCreatedUnknown;
+
+  /// Section title for orbital placement controls
+  ///
+  /// In en, this message translates to:
+  /// **'Orbital Placement'**
+  String get orbitalPlacementEditor;
+
+  /// Button text to place body in orbit around another body
+  ///
+  /// In en, this message translates to:
+  /// **'Place in Orbit'**
+  String get placeInOrbitButton;
+
+  /// Label for central body selection dropdown
+  ///
+  /// In en, this message translates to:
+  /// **'Central Body'**
+  String get centralBodySelector;
+
+  /// Label for orbit radius slider
+  ///
+  /// In en, this message translates to:
+  /// **'Orbit Radius'**
+  String get orbitRadiusEditor;
+
+  /// Label for orbit phase (starting position) slider
+  ///
+  /// In en, this message translates to:
+  /// **'Orbit Phase'**
+  String get orbitPhaseEditor;
+
+  /// Label for orbit inclination angle slider
+  ///
+  /// In en, this message translates to:
+  /// **'Inclination'**
+  String get orbitInclinationEditor;
+
+  /// Option for circular orbit type
+  ///
+  /// In en, this message translates to:
+  /// **'Circular Orbit'**
+  String get circularOrbitOption;
+
+  /// Option for elliptical orbit type
+  ///
+  /// In en, this message translates to:
+  /// **'Elliptical Orbit'**
+  String get ellipticalOrbitOption;
+
+  /// Display text for calculated orbital period
+  ///
+  /// In en, this message translates to:
+  /// **'Period: {period}'**
+  String orbitalPeriodDisplay(String period);
+
+  /// Message when no central bodies are available for orbit
+  ///
+  /// In en, this message translates to:
+  /// **'No other bodies available for orbital placement'**
+  String get noAvailableCentralBodies;
+
+  /// Description text for orbital placement feature
+  ///
+  /// In en, this message translates to:
+  /// **'Configure this body to orbit around another celestial body with realistic physics'**
+  String get orbitalPlacementDescription;
+
+  /// Description text shown when orbital placement is active, explaining that position and velocity are auto-calculated
+  ///
+  /// In en, this message translates to:
+  /// **'Orbital placement is active. Position and velocity will be calculated automatically based on the orbit parameters below.'**
+  String get orbitalPlacementActiveDescription;
+
+  /// Toggle description for showing gravitational field visualization for a specific body
+  ///
+  /// In en, this message translates to:
+  /// **'Show gravitational field visualization for this body'**
+  String get showGravitationalFieldVisualization;
+
+  /// Button text to cancel orbital placement mode
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Orbital Placement'**
+  String get cancelOrbitalPlacement;
+
+  /// Button text to make orbital configuration stable
+  ///
+  /// In en, this message translates to:
+  /// **'Make Stable'**
+  String get makeStable;
+
+  /// Warning message for massive orbiting body relative to central body
+  ///
+  /// In en, this message translates to:
+  /// **'⚠️ Warning: Orbiting body is very massive relative to central body. This may cause unstable orbits or the bodies may orbit each other.'**
+  String get orbitalWarningMassiveBody;
+
+  /// Tip message for significant mass ratio between bodies
+  ///
+  /// In en, this message translates to:
+  /// **'💡 Tip: This is a significant mass ratio. Consider increasing orbital distance for stability.'**
+  String get orbitalTipSignificantMass;
+
+  /// Warning message for very close orbital distance
+  ///
+  /// In en, this message translates to:
+  /// **'⚠️ Warning: Very close orbit. Risk of collision or tidal disruption.'**
+  String get orbitalWarningCloseOrbit;
+
+  /// Tip message for distant orbital configuration
+  ///
+  /// In en, this message translates to:
+  /// **'💡 Tip: Distant orbit. Gravitational influence from other bodies may perturb this orbit.'**
+  String get orbitalTipDistantOrbit;
+
+  /// Message for good orbital configuration
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Good orbital configuration for a stable system.'**
+  String get orbitalGoodConfiguration;
+
+  /// Generic error message for orbital calculations
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get orbitalError;
+
+  /// Warning text for unstable orbital configurations
+  ///
+  /// In en, this message translates to:
+  /// **'This orbital configuration may lead to collisions or ejections. Consider using the \"Make Stable\" button.'**
+  String get orbitalConfigurationWarning;
+
+  /// Default name for new celestial bodies
+  ///
+  /// In en, this message translates to:
+  /// **'Celestial Body'**
+  String get defaultBodyName;
+
+  /// Label for orbital period display
+  ///
+  /// In en, this message translates to:
+  /// **'Orbital Period'**
+  String get orbitalPeriodLabel;
+
+  /// Message indicating the orbit is stable
+  ///
+  /// In en, this message translates to:
+  /// **'Orbit is Stable'**
+  String get orbitIsStable;
+
+  /// Message indicating the orbit may be unstable
+  ///
+  /// In en, this message translates to:
+  /// **'Orbit May Be Unstable'**
+  String get orbitMayBeUnstable;
+
+  /// Generic format for body type description
+  ///
+  /// In en, this message translates to:
+  /// **'{bodyType} body'**
+  String bodyTypeGeneric(String bodyType);
+
+  /// Feedback message when orbital radius is increased
+  ///
+  /// In en, this message translates to:
+  /// **'increased by {amount} units'**
+  String orbitalRadiusIncreasedFeedback(String amount);
+
+  /// Feedback message when orbital radius is decreased
+  ///
+  /// In en, this message translates to:
+  /// **'decreased by {amount} units'**
+  String orbitalRadiusDecreasedFeedback(String amount);
+
+  /// Feedback message when orbital radius is slightly adjusted
+  ///
+  /// In en, this message translates to:
+  /// **'fine-tuned'**
+  String get orbitalRadiusFineTunedFeedback;
+
+  /// Success message when orbit is stabilized
+  ///
+  /// In en, this message translates to:
+  /// **'Orbit stabilized! Radius {changeDescription} to {finalRadius} units. Phase and inclination reset for stability.'**
+  String orbitStabilizedMessage(String changeDescription, String finalRadius);
+
+  /// Text shown for unknown or invalid values
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknownValue;
 }
 
 class _AppLocalizationsDelegate
