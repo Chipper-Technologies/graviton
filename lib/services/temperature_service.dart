@@ -89,6 +89,14 @@ class TemperatureService {
               SimulationConstants.temperatureMassExponent,
             ); // Sun surface temp * mass factor
 
+      case BodyType.neutronStar:
+        // Neutron stars are extremely hot due to intense gravity
+        return 1000000.0; // 1 million K surface temperature
+
+      case BodyType.blackHole:
+        // Black holes have very low temperature due to Hawking radiation
+        return 2.7; // Close to cosmic microwave background
+
       case BodyType.planet:
       case BodyType.moon:
         // Base temperature for distant bodies

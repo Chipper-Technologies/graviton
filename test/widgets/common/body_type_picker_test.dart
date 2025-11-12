@@ -188,8 +188,8 @@ void main() {
         ),
       );
 
-      // Should find GestureDetectors for each body type
-      expect(find.byType(GestureDetector), findsNWidgets(4));
+      // Should find GestureDetectors for each body type (now 6 types)
+      expect(find.byType(GestureDetector), findsNWidgets(6));
     });
 
     testWidgets('changes selection correctly', (WidgetTester tester) async {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
+import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/temperature_unit.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/utils/safe_haptic_feedback.dart';
@@ -535,5 +536,99 @@ class UIState extends ChangeNotifier {
 
     // If last seen version is different from current, show changelog
     return _lastSeenChangelogVersion != currentAppVersion;
+  }
+
+  /// Apply performance optimizations for scenarios with many bodies or complex scenarios
+  void applyPerformanceOptimizationsForScenario(
+    ScenarioType scenario,
+    int bodyCount,
+  ) {
+    // List of scenarios that are known to be performance-heavy
+    final performanceHeavyScenarios = {
+      ScenarioType.galaxyFormation,
+      ScenarioType.asteroidBelt,
+    };
+
+    // Apply optimizations for scenarios with many bodies (>= 20) or known heavy scenarios
+    if (bodyCount >= 20 || performanceHeavyScenarios.contains(scenario)) {
+      // Disable labels for better performance with many bodies
+      if (_showLabels) {
+        _showLabels = false;
+        _saveSetting(_keyShowLabels, false);
+        FirebaseService.instance.logSettingsChange('show_labels', false);
+      }
+
+      // Disable orbital paths for better performance
+      if (_showOrbitalPaths) {
+        _showOrbitalPaths = false;
+        _saveSetting(_keyShowOrbitalPaths, false);
+        FirebaseService.instance.logSettingsChange('show_orbital_paths', false);
+      }
+
+      // Disable off-screen indicators for better performance
+      if (_showOffScreenIndicators) {
+        _showOffScreenIndicators = false;
+        _saveSetting(_keyShowOffScreenIndicators, false);
+        FirebaseService.instance.logSettingsChange(
+          'show_offscreen_indicators',
+          false,
+        );
+      }
+
+      // Disable gravity wells for better performance with many bodies
+      if (_globalGravityFields) {
+        _globalGravityFields = false;
+        _saveSetting(_keyGlobalGravityFields, false);
+        FirebaseService.instance.logSettingsChange(
+          'global_gravity_fields',
+          false,
+        );
+      }
+
+      notifyListeners();
+    }
+  }
+
+  /// Apply performance optimizations for scenarios with many bodies (legacy method)
+  @Deprecated('Use applyPerformanceOptimizationsForScenario instead')
+  void applyPerformanceOptimizations(int bodyCount) {
+    // For scenarios with many bodies (>= 20), automatically disable heavy features
+    if (bodyCount >= 20) {
+      // Disable labels for better performance with many bodies
+      if (_showLabels) {
+        _showLabels = false;
+        _saveSetting(_keyShowLabels, false);
+        FirebaseService.instance.logSettingsChange('show_labels', false);
+      }
+
+      // Disable orbital paths for better performance
+      if (_showOrbitalPaths) {
+        _showOrbitalPaths = false;
+        _saveSetting(_keyShowOrbitalPaths, false);
+        FirebaseService.instance.logSettingsChange('show_orbital_paths', false);
+      }
+
+      // Disable off-screen indicators for better performance
+      if (_showOffScreenIndicators) {
+        _showOffScreenIndicators = false;
+        _saveSetting(_keyShowOffScreenIndicators, false);
+        FirebaseService.instance.logSettingsChange(
+          'show_offscreen_indicators',
+          false,
+        );
+      }
+
+      // Disable gravity wells for better performance with many bodies
+      if (_globalGravityFields) {
+        _globalGravityFields = false;
+        _saveSetting(_keyGlobalGravityFields, false);
+        FirebaseService.instance.logSettingsChange(
+          'global_gravity_fields',
+          false,
+        );
+      }
+
+      notifyListeners();
+    }
   }
 }

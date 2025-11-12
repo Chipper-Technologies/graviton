@@ -31,6 +31,8 @@ void main() {
               scenarioName: testScenarioName,
               isSelected: false,
               onTap: () {},
+              onView: () {},
+              onExport: () {},
               onEdit: () {},
               onDelete: () {},
             ),
@@ -67,6 +69,8 @@ void main() {
             scenarioName: testScenarioName,
             isSelected: true,
             onTap: () {},
+            onView: () {},
+            onExport: () {},
             onEdit: () {},
             onDelete: () {},
           ),
@@ -93,6 +97,8 @@ void main() {
             scenarioName: testScenarioName,
             isSelected: false,
             onTap: () => tapped = true,
+            onView: () {},
+            onExport: () {},
             onEdit: () => edited = true,
             onDelete: () => deleted = true,
           ),
@@ -128,6 +134,8 @@ void main() {
             scenarioName: testScenarioName,
             isSelected: false,
             onTap: () {},
+            onView: () {},
+            onExport: () {},
             onEdit: () {},
             onDelete: () {},
           ),
@@ -156,6 +164,8 @@ void main() {
             scenarioName: testScenarioName,
             isSelected: true,
             onTap: () {},
+            onView: () {},
+            onExport: () {},
             onEdit: () {},
             onDelete: () {},
           ),
@@ -187,6 +197,8 @@ void main() {
             scenarioName: testScenarioName,
             isSelected: false,
             onTap: () {},
+            onView: () {},
+            onExport: () {},
             onEdit: () {},
             onDelete: () {},
           ),
@@ -206,6 +218,8 @@ void main() {
             scenarioName: testScenarioName,
             isSelected: true,
             onTap: () {},
+            onView: () {},
+            onExport: () {},
             onEdit: () {},
             onDelete: () {},
           ),
@@ -229,6 +243,8 @@ void main() {
             scenarioName: testScenarioName,
             isSelected: false,
             onTap: () {},
+            onView: () {},
+            onExport: () {},
             onEdit: () {},
             onDelete: () {},
           ),
@@ -264,6 +280,8 @@ void main() {
             scenarioName: testScenarioName,
             isSelected: false,
             onTap: () => tapCount++,
+            onView: () {},
+            onExport: () {},
             onEdit: () => editCount++,
             onDelete: () => deleteCount++,
           ),
@@ -310,6 +328,8 @@ void main() {
             scenarioName: testScenarioName,
             isSelected: false,
             onTap: () {},
+            onView: () {},
+            onExport: () {},
             onEdit: () {},
             onDelete: () {},
           ),
@@ -332,6 +352,8 @@ void main() {
             scenarioName: testScenarioName,
             isSelected: false,
             onTap: () {},
+            onView: () {},
+            onExport: () {},
             onEdit: () {},
             onDelete: () {},
           ),
@@ -353,6 +375,8 @@ void main() {
             scenarioName: '',
             isSelected: false,
             onTap: () {},
+            onView: () {},
+            onExport: () {},
             onEdit: () {},
             onDelete: () {},
           ),
@@ -380,6 +404,8 @@ void main() {
               scenarioName: longName,
               isSelected: false,
               onTap: () {},
+              onView: () {},
+              onExport: () {},
               onEdit: () {},
               onDelete: () {},
             ),
@@ -392,6 +418,122 @@ void main() {
       // Verify the tile renders without overflow errors
       expect(find.byType(CustomScenarioTile), findsOneWidget);
       expect(find.textContaining('This is a very long'), findsOneWidget);
+    });
+
+    testWidgets('should display custom description when provided', (
+      tester,
+    ) async {
+      const customDescription =
+          'This is a custom scenario description that should be displayed instead of the generic text';
+
+      await tester.pumpWidget(
+        createTestWidget(
+          child: CustomScenarioTile(
+            scenarioName: testScenarioName,
+            scenarioDescription: customDescription,
+            isSelected: false,
+            onTap: () {},
+            onView: () {},
+            onExport: () {},
+            onEdit: () {},
+            onDelete: () {},
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify custom description is displayed
+      expect(find.text(customDescription), findsOneWidget);
+
+      // Verify generic text is not displayed
+      expect(find.text('Custom gravitational scenario'), findsNothing);
+    });
+
+    testWidgets('should truncate long descriptions with ellipsis', (
+      tester,
+    ) async {
+      const longDescription =
+          'This is an extremely long description that should be truncated with ellipsis when it exceeds the maximum number of lines allowed for the description text in the custom scenario tile widget which is limited to two lines maximum to maintain proper layout and readability';
+
+      await tester.pumpWidget(
+        createTestWidget(
+          child: SizedBox(
+            width: 300, // Constrain width to force truncation
+            child: CustomScenarioTile(
+              scenarioName: testScenarioName,
+              scenarioDescription: longDescription,
+              isSelected: false,
+              onTap: () {},
+              onView: () {},
+              onExport: () {},
+              onEdit: () {},
+              onDelete: () {},
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Find the description text widget
+      final descriptionTextFinder = find.textContaining(
+        'This is an extremely long description',
+      );
+      expect(descriptionTextFinder, findsOneWidget);
+
+      // Verify it has overflow set to ellipsis
+      final textWidget = tester.widget<Text>(descriptionTextFinder);
+      expect(textWidget.overflow, equals(TextOverflow.ellipsis));
+      expect(textWidget.maxLines, equals(2));
+    });
+
+    testWidgets('should fallback to generic text when description is empty', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: CustomScenarioTile(
+            scenarioName: testScenarioName,
+            scenarioDescription: '', // Empty description
+            isSelected: false,
+            onTap: () {},
+            onView: () {},
+            onExport: () {},
+            onEdit: () {},
+            onDelete: () {},
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Should fallback to generic description
+      expect(find.text('Custom gravitational scenario'), findsOneWidget);
+    });
+
+    testWidgets('should fallback to generic text when description is null', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: CustomScenarioTile(
+            scenarioName: testScenarioName,
+            scenarioDescription: null, // Null description
+            isSelected: false,
+            onTap: () {},
+            onView: () {},
+            onExport: () {},
+            onEdit: () {},
+            onDelete: () {},
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Should fallback to generic description
+      expect(find.text('Custom gravitational scenario'), findsOneWidget);
     });
   });
 }

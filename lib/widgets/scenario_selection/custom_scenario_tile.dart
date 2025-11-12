@@ -15,11 +15,20 @@ class CustomScenarioTile extends StatelessWidget {
   /// The name of the custom scenario
   final String scenarioName;
 
+  /// The description of the custom scenario (optional)
+  final String? scenarioDescription;
+
   /// Whether this scenario is currently selected
   final bool isSelected;
 
   /// Callback when the tile is tapped to select the scenario
   final VoidCallback onTap;
+
+  /// Callback when the view button is tapped
+  final VoidCallback onView;
+
+  /// Callback when the export button is tapped
+  final VoidCallback onExport;
 
   /// Callback when the edit button is tapped
   final VoidCallback onEdit;
@@ -30,8 +39,11 @@ class CustomScenarioTile extends StatelessWidget {
   const CustomScenarioTile({
     super.key,
     required this.scenarioName,
+    this.scenarioDescription,
     required this.isSelected,
     required this.onTap,
+    required this.onView,
+    required this.onExport,
     required this.onEdit,
     required this.onDelete,
   });
@@ -101,12 +113,16 @@ class CustomScenarioTile extends StatelessWidget {
                     ),
                     SizedBox(height: AppTypography.spacingXSmall),
                     Text(
-                      l10n.customScenarioDescription,
+                      scenarioDescription?.isNotEmpty == true
+                          ? scenarioDescription!
+                          : l10n.customScenarioDescription,
                       style: AppTypography.smallText.copyWith(
                         color: AppColors.uiWhite.withValues(
                           alpha: AppTypography.opacityVeryHigh,
                         ),
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
@@ -120,6 +136,20 @@ class CustomScenarioTile extends StatelessWidget {
                   analyticsElement: UIElement.customScenariosTab,
                   additionalAnalyticsParams: {'scenario_name': scenarioName},
                   menuItems: [
+                    GravitonMenuItemConfig(
+                      value: 'view',
+                      labelKey: 'viewScenarioButton',
+                      hintKey: 'viewScenarioHint',
+                      icon: Icons.visibility_outlined,
+                      onTap: onView,
+                    ),
+                    GravitonMenuItemConfig(
+                      value: 'export',
+                      labelKey: 'exportScenarioButton',
+                      hintKey: 'exportScenarioHint',
+                      icon: Icons.file_download_outlined,
+                      onTap: onExport,
+                    ),
                     GravitonMenuItemConfig(
                       value: 'edit',
                       labelKey: 'editScenarioButton',

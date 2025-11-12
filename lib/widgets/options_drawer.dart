@@ -63,7 +63,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
 
     return Drawer(
       backgroundColor: AppColors.uiBlack.withValues(
-        alpha: AppTypography.opacityNearlyOpaque,
+        alpha: AppTypography.opacityHigh,
       ),
       width: 320,
       child: SafeArea(

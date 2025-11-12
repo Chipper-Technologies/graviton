@@ -504,46 +504,6 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     }
   }
 
-  void _showSaveConfirmation() {
-    HapticFeedback.mediumImpact();
-
-    // Get the current body state with all updates
-    final currentBody = _getCurrentBodyState(context);
-
-    // Log analytics based on mode (add vs edit)
-    if (widget.isAddMode) {
-      FirebaseService.instance.logUIEventWithEnums(
-        UIAction.bodyAdded,
-        element: UIElement.bodyEditor,
-        additionalParams: {
-          'body_name': currentBody.name,
-          'body_type': currentBody.bodyType.name,
-          'body_mass': currentBody.mass,
-        },
-      );
-    } else {
-      FirebaseService.instance.logUIEventWithEnums(
-        UIAction.bodyEdited,
-        element: UIElement.bodyEditor,
-        additionalParams: {
-          'body_name': currentBody.name,
-          'body_type': currentBody.bodyType.name,
-          'body_mass': currentBody.mass,
-          'original_name': _originalBody.name,
-        },
-      );
-    }
-
-    // Clear unsaved changes flag since we're saving
-    _hasUnsavedChanges = false;
-
-    // Close the bottom sheet and signal save to parent
-    if (mounted) {
-      Navigator.pop(context);
-      widget.onSave?.call(currentBody);
-    }
-  }
-
   /// Get the current body state with all field updates applied
   Body _getCurrentBodyState(BuildContext context) {
     // Use a default name if the field is empty
@@ -1649,6 +1609,75 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           'velocityY': -1.0 + random.nextDouble() * 2.0,
           'velocityZ': -0.5 + random.nextDouble() * 1.0,
         };
+
+      case BodyType.blackHole:
+        final blackHoleRanges = {
+          'mass': BodyTypeRanges.getMassRange(BodyType.blackHole),
+          'radius': BodyTypeRanges.getRadiusRange(BodyType.blackHole),
+          'temperature': BodyTypeRanges.getTemperatureRange(BodyType.blackHole),
+        };
+        return {
+          'mass':
+              blackHoleRanges['mass']!['min']! +
+              random.nextDouble() *
+                  (blackHoleRanges['mass']!['max']! -
+                      blackHoleRanges['mass']!['min']!),
+          'radius':
+              blackHoleRanges['radius']!['min']! +
+              random.nextDouble() *
+                  (blackHoleRanges['radius']!['max']! -
+                      blackHoleRanges['radius']!['min']!),
+          'luminosity': 0.0, // Black holes don't emit light
+          'temperature':
+              blackHoleRanges['temperature']!['min']! +
+              random.nextDouble() *
+                  (blackHoleRanges['temperature']!['max']! -
+                      blackHoleRanges['temperature']!['min']!),
+          'positionX': -15 + random.nextDouble() * 30,
+          'positionY': -15 + random.nextDouble() * 30,
+          'positionZ': -5 + random.nextDouble() * 10,
+          'velocityX': -0.5 + random.nextDouble() * 1.0,
+          'velocityY': -0.5 + random.nextDouble() * 1.0,
+          'velocityZ': -0.2 + random.nextDouble() * 0.4,
+        };
+
+      case BodyType.neutronStar:
+        final neutronStarRanges = {
+          'mass': BodyTypeRanges.getMassRange(BodyType.neutronStar),
+          'radius': BodyTypeRanges.getRadiusRange(BodyType.neutronStar),
+          'luminosity': BodyTypeRanges.getLuminosityRange(BodyType.neutronStar),
+          'temperature': BodyTypeRanges.getTemperatureRange(
+            BodyType.neutronStar,
+          ),
+        };
+        return {
+          'mass':
+              neutronStarRanges['mass']!['min']! +
+              random.nextDouble() *
+                  (neutronStarRanges['mass']!['max']! -
+                      neutronStarRanges['mass']!['min']!),
+          'radius':
+              neutronStarRanges['radius']!['min']! +
+              random.nextDouble() *
+                  (neutronStarRanges['radius']!['max']! -
+                      neutronStarRanges['radius']!['min']!),
+          'luminosity':
+              neutronStarRanges['luminosity']!['min']! +
+              random.nextDouble() *
+                  (neutronStarRanges['luminosity']!['max']! -
+                      neutronStarRanges['luminosity']!['min']!),
+          'temperature':
+              neutronStarRanges['temperature']!['min']! +
+              random.nextDouble() *
+                  (neutronStarRanges['temperature']!['max']! -
+                      neutronStarRanges['temperature']!['min']!),
+          'positionX': -10 + random.nextDouble() * 20,
+          'positionY': -10 + random.nextDouble() * 20,
+          'positionZ': -5 + random.nextDouble() * 10,
+          'velocityX': -1.0 + random.nextDouble() * 2.0,
+          'velocityY': -1.0 + random.nextDouble() * 2.0,
+          'velocityZ': -0.5 + random.nextDouble() * 1.0,
+        };
     }
   }
 
@@ -1662,6 +1691,10 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         return AppColors.testMediumGray;
       case BodyType.asteroid:
         return AppColors.uiOrange;
+      case BodyType.blackHole:
+        return AppColors.spacePureBlack;
+      case BodyType.neutronStar:
+        return AppColors.pulsarCyan;
     }
   }
 

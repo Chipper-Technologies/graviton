@@ -632,6 +632,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get customScenarioDescription => '自定义场景描述';
 
   @override
+  String get viewScenarioButton => '查看场景';
+
+  @override
+  String get viewScenarioHint => '以只读模式查看场景详情';
+
+  @override
   String get exportScenarioButton => '导出场景';
 
   @override
@@ -1194,6 +1200,15 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bodyMoonM => '卫星M';
+
+  @override
+  String get bodySpacecraft => '航天器';
+
+  @override
+  String get bodyIo => '木卫一';
+
+  @override
+  String get bodyEuropa => '木卫二';
 
   @override
   String bodyNameCopyTemplate(String bodyName) {
@@ -2558,40 +2573,32 @@ class AppLocalizationsZh extends AppLocalizations {
   String get trojanAsteroidsEducationalFocus => '拉格朗日点与轨道稳定性';
 
   @override
-  String get experimentGalacticDanceName => '星系之舞';
+  String get experimentDoubleStarEclipseName => '双星食';
 
   @override
-  String get experimentGalacticDanceDescription => '两个星系在宇宙时间尺度上碰撞合并';
+  String get experimentDoubleStarEclipseDescription => '一颗恒星定期遮挡另一颗恒星的双星系统';
 
   @override
-  String get experimentGalacticDanceDuration => '10亿年';
+  String get experimentDoubleStarEclipseDuration => '30天';
 
   @override
-  String get experimentRingFormationName => '环形形成';
+  String get experimentRoguePlanetName => '流浪行星';
 
   @override
-  String get experimentRingFormationDescription => '行星环如何从破碎的卫星形成';
+  String get experimentRoguePlanetDescription => '从系统中被抛出的行星遭遇新的太阳系';
 
   @override
-  String get experimentRingFormationDuration => '1000年';
+  String get experimentRoguePlanetDuration => '500年';
 
   @override
-  String get experimentCometTrajectoryName => '彗星轨迹';
+  String get experimentGravitationalSlingshotName => '重力弹射';
 
   @override
-  String get experimentCometTrajectoryDescription => '显示守恒定律的高椭圆轨道';
+  String get experimentGravitationalSlingshotDescription =>
+      '航天器利用木星的卫星伊奥获得速度并前往欧罗巴';
 
   @override
-  String get experimentCometTrajectoryDuration => '200年';
-
-  @override
-  String get experimentStellarNurseryName => '恒星诞生地';
-
-  @override
-  String get experimentStellarNurseryDescription => '从坍塌气体云中形成恒星';
-
-  @override
-  String get experimentStellarNurseryDuration => '1000万年';
+  String get experimentGravitationalSlingshotDuration => '2年';
 
   @override
   String get experimentDifficultyAdvanced => '高级';
@@ -2609,4 +2616,42 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get unknownValue => '未知';
+
+  @override
+  String get bodyPrimaryStar => '主星';
+
+  @override
+  String get bodySecondaryStar => '伴星';
+
+  @override
+  String get bodyInnerRockyPlanet => '内侧岩质行星';
+
+  @override
+  String get bodyHabitablePlanet => '宜居行星';
+
+  @override
+  String get bodyGasGiant => '气体巨行星';
+
+  @override
+  String get bodyIceGiant => '冰巨行星';
+
+  @override
+  String get bodyRoguePlanet => '流浪行星';
+
+  @override
+  String get authorGravitonPhysicsTeam => 'Graviton物理团队';
+
+  @override
+  String get doubleStarEclipseScenarioDescription =>
+      '观察两颗恒星在近密双星系统中相互环绕的情形。看较小的伴星如何定期从较大的主星前方经过，造成周期性的日食。这展示了恒星测光、双星轨道力学，以及天文学家如何使用类似的凌日方法发现系外行星。';
+
+  @override
+  String get doubleStarEclipseEducationalFocus => '双星、日食、恒星测光';
+
+  @override
+  String get roguePlanetScenarioDescription =>
+      '一个拥有良好间隔行星轨道的稳定太阳系遭遇了一颗从星际空间接近的巨大流浪行星。观察入侵者的引力如何扰乱精细的轨道平衡，可能弹射行星或产生混沌的引力相互作用。此场景演示了行星系动力学、引力弹弓效应，以及流浪行星如何重塑整个太阳系。';
+
+  @override
+  String get roguePlanetEducationalFocus => '流浪行星、引力遭遇、轨道扰动';
 }

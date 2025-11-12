@@ -639,6 +639,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get customScenarioDescription => 'カスタムシナリオの説明';
 
   @override
+  String get viewScenarioButton => 'シナリオ表示';
+
+  @override
+  String get viewScenarioHint => '読み取り専用モードでシナリオの詳細を表示';
+
+  @override
   String get exportScenarioButton => 'シナリオエクスポート';
 
   @override
@@ -1204,6 +1210,15 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get bodyMoonM => '衛星M';
+
+  @override
+  String get bodySpacecraft => '宇宙船';
+
+  @override
+  String get bodyIo => 'イオ';
+
+  @override
+  String get bodyEuropa => 'エウロパ';
 
   @override
   String bodyNameCopyTemplate(String bodyName) {
@@ -2574,40 +2589,32 @@ class AppLocalizationsJa extends AppLocalizations {
   String get trojanAsteroidsEducationalFocus => 'ラグランジュ点と軌道安定性';
 
   @override
-  String get experimentGalacticDanceName => '銀河の踊り';
+  String get experimentDoubleStarEclipseName => '連星食';
 
   @override
-  String get experimentGalacticDanceDescription => '宇宙時間をかけて衝突・合体する2つの銀河';
+  String get experimentDoubleStarEclipseDescription => '一つの星が定期的にもう一つの星を隠す連星系';
 
   @override
-  String get experimentGalacticDanceDuration => '10億年';
+  String get experimentDoubleStarEclipseDuration => '30日';
 
   @override
-  String get experimentRingFormationName => 'リング形成';
+  String get experimentRoguePlanetName => '放浪惑星';
 
   @override
-  String get experimentRingFormationDescription => '破壊された衛星から惑星リングがどのように形成されるか';
+  String get experimentRoguePlanetDescription => '系から追放された惑星が新しい太陽系に遭遇';
 
   @override
-  String get experimentRingFormationDuration => '1000年';
+  String get experimentRoguePlanetDuration => '500年';
 
   @override
-  String get experimentCometTrajectoryName => '彗星軌道';
+  String get experimentGravitationalSlingshotName => '重力アシスト';
 
   @override
-  String get experimentCometTrajectoryDescription => '保存則を示す高楕円軌道';
+  String get experimentGravitationalSlingshotDescription =>
+      '宇宙船は木星の衛星イオを利用して加速し、エウロパに到達する';
 
   @override
-  String get experimentCometTrajectoryDuration => '200年';
-
-  @override
-  String get experimentStellarNurseryName => '星の誕生領域';
-
-  @override
-  String get experimentStellarNurseryDescription => '崩壊するガス雲からの星形成';
-
-  @override
-  String get experimentStellarNurseryDuration => '1000万年';
+  String get experimentGravitationalSlingshotDuration => '2年';
 
   @override
   String get experimentDifficultyAdvanced => '上級';
@@ -2625,4 +2632,42 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get unknownValue => '不明';
+
+  @override
+  String get bodyPrimaryStar => '主星';
+
+  @override
+  String get bodySecondaryStar => '伴星';
+
+  @override
+  String get bodyInnerRockyPlanet => '内側岩石惑星';
+
+  @override
+  String get bodyHabitablePlanet => '居住可能惑星';
+
+  @override
+  String get bodyGasGiant => 'ガス巨星';
+
+  @override
+  String get bodyIceGiant => '氷巨星';
+
+  @override
+  String get bodyRoguePlanet => '浮遊惑星';
+
+  @override
+  String get authorGravitonPhysicsTeam => 'Graviton物理学チーム';
+
+  @override
+  String get doubleStarEclipseScenarioDescription =>
+      '近接連星系で二つの星が互いに軌道を回る様子を観察してください。より小さな伴星が定期的により大きな主星の前を通過し、周期的な食を引き起こす様子をご覧ください。これは恒星測光、連星軌道力学、および天文学者が類似の通過方法を使用して系外惑星を発見する方法を実演します。';
+
+  @override
+  String get doubleStarEclipseEducationalFocus => '連星、食、恒星測光';
+
+  @override
+  String get roguePlanetScenarioDescription =>
+      'よく間隔の空いた惑星軌道を持つ安定した太陽系が、星間空間から接近する巨大な浮遊惑星に遭遇します。侵入者の重力が繊細な軌道バランスを乱し、惑星を放出したり混沌とした重力相互作用を生み出す様子を観察してください。このシナリオは惑星系力学、重力スリングショット効果、および浮遊惑星が太陽系全体をどのように再形成できるかを実演します。';
+
+  @override
+  String get roguePlanetEducationalFocus => '浮遊惑星、重力遭遇、軌道破綻';
 }

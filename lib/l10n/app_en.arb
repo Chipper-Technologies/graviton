@@ -840,6 +840,14 @@
   "@customScenarioDescription": {
     "description": "Default description for custom scenarios"
   },
+  "viewScenarioButton": "View Scenario",
+  "@viewScenarioButton": {
+    "description": "Button text to view a scenario"
+  },
+  "viewScenarioHint": "View scenario details in read-only mode",
+  "@viewScenarioHint": {
+    "description": "Accessibility hint for view scenario action"
+  },
   "exportScenarioButton": "Export Scenario",
   "@exportScenarioButton": {
     "description": "Button text to export a scenario"
@@ -1665,6 +1673,18 @@
   "bodyMoonM": "Moon M",
   "@bodyMoonM": {
     "description": "Name for moon in binary star system"
+  },
+  "bodySpacecraft": "Spacecraft",
+  "@bodySpacecraft": {
+    "description": "Name for spacecraft in gravitational slingshot scenario"
+  },
+  "bodyIo": "Io",
+  "@bodyIo": {
+    "description": "Name for Jupiter's moon Io"
+  },
+  "bodyEuropa": "Europa",
+  "@bodyEuropa": {
+    "description": "Name for Jupiter's moon Europa"
   },
   "bodyNameCopyTemplate": "{bodyName} Copy",
   "@bodyNameCopyTemplate": {
@@ -3546,53 +3566,41 @@
   "@trojanAsteroidsEducationalFocus": {
     "description": "Educational focus for trojan asteroids experiment"
   },
-  "experimentGalacticDanceName": "Galactic Dance",
-  "@experimentGalacticDanceName": {
-    "description": "Name for galactic dance experimental scenario"
+  "experimentDoubleStarEclipseName": "Double Star Eclipse",
+  "@experimentDoubleStarEclipseName": {
+    "description": "Name for double star eclipse experimental scenario"
   },
-  "experimentGalacticDanceDescription": "Two galaxies colliding and merging over cosmic time",
-  "@experimentGalacticDanceDescription": {
-    "description": "Description for galactic dance experimental scenario"
+  "experimentDoubleStarEclipseDescription": "Binary star system where one star regularly eclipses the other",
+  "@experimentDoubleStarEclipseDescription": {
+    "description": "Description for double star eclipse experimental scenario"
   },
-  "experimentGalacticDanceDuration": "1 billion years",
-  "@experimentGalacticDanceDuration": {
-    "description": "Expected duration for galactic dance experiment"
+  "experimentDoubleStarEclipseDuration": "30 days",
+  "@experimentDoubleStarEclipseDuration": {
+    "description": "Expected duration for double star eclipse experiment"
   },
-  "experimentRingFormationName": "Ring Formation",
-  "@experimentRingFormationName": {
-    "description": "Name for ring formation experimental scenario"
+  "experimentRoguePlanetName": "Rogue Planet",
+  "@experimentRoguePlanetName": {
+    "description": "Name for rogue planet experimental scenario"
   },
-  "experimentRingFormationDescription": "How planetary rings form from disrupted moons",
-  "@experimentRingFormationDescription": {
-    "description": "Description for ring formation experimental scenario"
+  "experimentRoguePlanetDescription": "A planet ejected from its system encounters a new solar system",
+  "@experimentRoguePlanetDescription": {
+    "description": "Description for rogue planet experimental scenario"
   },
-  "experimentRingFormationDuration": "1000 years",
-  "@experimentRingFormationDuration": {
-    "description": "Expected duration for ring formation experiment"
+  "experimentRoguePlanetDuration": "500 years",
+  "@experimentRoguePlanetDuration": {
+    "description": "Expected duration for rogue planet experiment"
   },
-  "experimentCometTrajectoryName": "Comet Trajectory",
-  "@experimentCometTrajectoryName": {
-    "description": "Name for comet trajectory experimental scenario"
+  "experimentGravitationalSlingshotName": "Gravitational Slingshot",
+  "@experimentGravitationalSlingshotName": {
+    "description": "Name for gravitational slingshot experimental scenario"
   },
-  "experimentCometTrajectoryDescription": "Highly elliptical orbit showing conservation laws",
-  "@experimentCometTrajectoryDescription": {
-    "description": "Description for comet trajectory experimental scenario"
+  "experimentGravitationalSlingshotDescription": "A spacecraft uses Jupiter's moon Io to gain speed and reach Europa",
+  "@experimentGravitationalSlingshotDescription": {
+    "description": "Description for gravitational slingshot experimental scenario"
   },
-  "experimentCometTrajectoryDuration": "200 years",
-  "@experimentCometTrajectoryDuration": {
-    "description": "Expected duration for comet trajectory experiment"
-  },
-  "experimentStellarNurseryName": "Stellar Nursery",
-  "@experimentStellarNurseryName": {
-    "description": "Name for stellar nursery experimental scenario"
-  },
-  "experimentStellarNurseryDescription": "Star formation from collapsing gas clouds",
-  "@experimentStellarNurseryDescription": {
-    "description": "Description for stellar nursery experimental scenario"
-  },
-  "experimentStellarNurseryDuration": "10 million years",
-  "@experimentStellarNurseryDuration": {
-    "description": "Expected duration for stellar nursery experiment"
+  "experimentGravitationalSlingshotDuration": "2 years",
+  "@experimentGravitationalSlingshotDuration": {
+    "description": "Expected duration for gravitational slingshot experiment"
   },
   "experimentDifficultyAdvanced": "advanced",
   "@experimentDifficultyAdvanced": {
@@ -3619,5 +3627,53 @@
   "unknownValue": "Unknown",
   "@unknownValue": {
     "description": "Text shown for unknown or invalid values"
+  },
+  "bodyPrimaryStar": "Primary Star",
+  "@bodyPrimaryStar": {
+    "description": "Name for primary star in double star eclipse scenario"
+  },
+  "bodySecondaryStar": "Secondary Star",
+  "@bodySecondaryStar": {
+    "description": "Name for secondary star in double star eclipse scenario"
+  },
+  "bodyInnerRockyPlanet": "Inner Rocky Planet",
+  "@bodyInnerRockyPlanet": {
+    "description": "Name for inner rocky planet in rogue planet scenario"
+  },
+  "bodyHabitablePlanet": "Habitable Planet",
+  "@bodyHabitablePlanet": {
+    "description": "Name for habitable planet in rogue planet scenario"
+  },
+  "bodyGasGiant": "Gas Giant",
+  "@bodyGasGiant": {
+    "description": "Name for gas giant planet in rogue planet scenario"
+  },
+  "bodyIceGiant": "Ice Giant",
+  "@bodyIceGiant": {
+    "description": "Name for ice giant planet in rogue planet scenario"
+  },
+  "bodyRoguePlanet": "Rogue Planet",
+  "@bodyRoguePlanet": {
+    "description": "Name for rogue planet in rogue planet scenario"
+  },
+  "authorGravitonPhysicsTeam": "Graviton Physics Team",
+  "@authorGravitonPhysicsTeam": {
+    "description": "Author name for experimental physics scenarios"
+  },
+  "doubleStarEclipseScenarioDescription": "Watch as two stars orbit each other in a close binary system. Observe how the smaller secondary star regularly passes in front of the larger primary star, causing periodic eclipses. This demonstrates stellar photometry, binary orbital mechanics, and how astronomers discover exoplanets using similar transit methods.",
+  "@doubleStarEclipseScenarioDescription": {
+    "description": "Detailed description for double star eclipse scenario"
+  },
+  "doubleStarEclipseEducationalFocus": "Binary stars, eclipses, stellar photometry",
+  "@doubleStarEclipseEducationalFocus": {
+    "description": "Educational focus for double star eclipse scenario"
+  },
+  "roguePlanetScenarioDescription": "A stable solar system with well-spaced planetary orbits encounters a massive rogue planet approaching from interstellar space. Watch as the intruder's gravity disrupts the delicate orbital balance, potentially ejecting planets or creating chaotic gravitational interactions. This scenario demonstrates planetary system dynamics, gravitational slingshot effects, and how rogue planets can reshape entire solar systems.",
+  "@roguePlanetScenarioDescription": {
+    "description": "Detailed description for rogue planet scenario"
+  },
+  "roguePlanetEducationalFocus": "Rogue planets, gravitational encounters, orbital disruption",
+  "@roguePlanetEducationalFocus": {
+    "description": "Educational focus for rogue planet scenario"
   }
 }

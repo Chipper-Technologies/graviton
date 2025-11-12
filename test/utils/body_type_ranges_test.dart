@@ -490,16 +490,45 @@ void main() {
             reason:
                 'Maximum temperature should be greater than minimum for $bodyType',
           );
-          expect(
-            range['min']!,
-            lessThan(100000.0),
-            reason: 'Minimum temperature should be realistic for $bodyType',
-          );
-          expect(
-            range['max']!,
-            lessThan(100000.0),
-            reason: 'Maximum temperature should be realistic for $bodyType',
-          );
+
+          // Different temperature bounds for different body types
+          if (bodyType == BodyType.neutronStar) {
+            // Neutron stars can be extremely hot (millions of Kelvin)
+            expect(
+              range['min']!,
+              lessThan(1000000.0),
+              reason: 'Minimum temperature should be realistic for $bodyType',
+            );
+            expect(
+              range['max']!,
+              lessThan(20000000.0), // 20 million K maximum
+              reason: 'Maximum temperature should be realistic for $bodyType',
+            );
+          } else if (bodyType == BodyType.blackHole) {
+            // Black holes are very cold
+            expect(
+              range['min']!,
+              lessThan(1000.0),
+              reason: 'Minimum temperature should be realistic for $bodyType',
+            );
+            expect(
+              range['max']!,
+              lessThan(1000.0),
+              reason: 'Maximum temperature should be realistic for $bodyType',
+            );
+          } else {
+            // Regular celestial bodies
+            expect(
+              range['min']!,
+              lessThan(100000.0),
+              reason: 'Minimum temperature should be realistic for $bodyType',
+            );
+            expect(
+              range['max']!,
+              lessThan(100000.0),
+              reason: 'Maximum temperature should be realistic for $bodyType',
+            );
+          }
         }
       });
 
@@ -602,11 +631,21 @@ void main() {
             greaterThan(0.0),
             reason: 'Default temperature should be positive for $bodyType',
           );
-          expect(
-            temp,
-            lessThan(100000.0),
-            reason: 'Default temperature should be realistic for $bodyType',
-          );
+
+          // Different temperature expectations for different body types
+          if (bodyType == BodyType.neutronStar) {
+            expect(
+              temp,
+              lessThan(10000000.0), // 10 million K max for neutron stars
+              reason: 'Default temperature should be realistic for $bodyType',
+            );
+          } else {
+            expect(
+              temp,
+              lessThan(100000.0),
+              reason: 'Default temperature should be realistic for $bodyType',
+            );
+          }
         }
       });
 

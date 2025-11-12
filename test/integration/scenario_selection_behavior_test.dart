@@ -21,6 +21,8 @@ void main() {
             onTap: () {
               mainTapped = true;
             },
+            onView: () {},
+            onExport: () {},
             onEdit: () {
               editTapped = true;
             },
@@ -75,6 +77,8 @@ void main() {
                 onTap: () {
                   callback1Called = true;
                 },
+                onView: () {},
+                onExport: () {},
                 onEdit: () {},
                 onDelete: () {},
               ),
@@ -84,6 +88,8 @@ void main() {
                 onTap: () {
                   callback2Called = true;
                 },
+                onView: () {},
+                onExport: () {},
                 onEdit: () {},
                 onDelete: () {},
               ),
@@ -123,6 +129,8 @@ void main() {
             onTap: () {
               tapCount++;
             },
+            onView: () {},
+            onExport: () {},
             onEdit: () {
               editCount++;
             },

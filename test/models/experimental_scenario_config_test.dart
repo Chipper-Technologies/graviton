@@ -156,8 +156,8 @@ void main() {
                 final l10n = AppLocalizations.of(context)!;
                 final experiments = ExperimentalScenarioConfig.experiments;
 
-                // Verify we have 6 experiments
-                expect(experiments.length, equals(6));
+                // Verify we have 4 experiments
+                expect(experiments.length, equals(4));
 
                 // Verify each experiment has required properties
                 for (final experiment in experiments) {
@@ -229,7 +229,36 @@ void main() {
         );
       });
 
-      testWidgets('Galactic Dance experiment should use correct AppColors', (
+      testWidgets(
+        'Double Star Eclipse experiment should use correct AppColors',
+        (tester) async {
+          await tester.pumpWidget(
+            TestUtils.wrapWithMaterialApp(
+              child: Builder(
+                builder: (context) {
+                  final l10n = AppLocalizations.of(context)!;
+                  final doubleStarEclipse =
+                      ExperimentalScenarioConfig.experiments[2];
+
+                  expect(
+                    doubleStarEclipse.color,
+                    equals(AppColors.stellarKType),
+                  );
+                  expect(
+                    doubleStarEclipse.name(l10n),
+                    equals(l10n.experimentDoubleStarEclipseName),
+                  );
+                  expect(doubleStarEclipse.icon, equals(Icons.brightness_2));
+
+                  return const SizedBox.shrink();
+                },
+              ),
+            ),
+          );
+        },
+      );
+
+      testWidgets('Rogue Planet experiment should use correct AppColors', (
         tester,
       ) async {
         await tester.pumpWidget(
@@ -237,94 +266,17 @@ void main() {
             child: Builder(
               builder: (context) {
                 final l10n = AppLocalizations.of(context)!;
-                final galacticDance = ExperimentalScenarioConfig.experiments[2];
+                final roguePlanet = ExperimentalScenarioConfig.experiments[3];
 
                 expect(
-                  galacticDance.color,
+                  roguePlanet.color,
                   equals(AppColors.starMediumSlateBlue),
                 );
                 expect(
-                  galacticDance.name(l10n),
-                  equals(l10n.experimentGalacticDanceName),
+                  roguePlanet.name(l10n),
+                  equals(l10n.experimentRoguePlanetName),
                 );
-                expect(galacticDance.icon, equals(Icons.blur_circular));
-
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
-        );
-      });
-
-      testWidgets('Ring Formation experiment should use correct AppColors', (
-        tester,
-      ) async {
-        await tester.pumpWidget(
-          TestUtils.wrapWithMaterialApp(
-            child: Builder(
-              builder: (context) {
-                final l10n = AppLocalizations.of(context)!;
-                final ringFormation = ExperimentalScenarioConfig.experiments[3];
-
-                expect(ringFormation.color, equals(AppColors.stellarKType));
-                expect(
-                  ringFormation.name(l10n),
-                  equals(l10n.experimentRingFormationName),
-                );
-                expect(ringFormation.icon, equals(Icons.panorama_fish_eye));
-
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
-        );
-      });
-
-      testWidgets('Comet Trajectory experiment should use correct AppColors', (
-        tester,
-      ) async {
-        await tester.pumpWidget(
-          TestUtils.wrapWithMaterialApp(
-            child: Builder(
-              builder: (context) {
-                final l10n = AppLocalizations.of(context)!;
-                final cometTrajectory =
-                    ExperimentalScenarioConfig.experiments[4];
-
-                expect(
-                  cometTrajectory.color,
-                  equals(AppColors.iceGiantUranusLike),
-                );
-                expect(
-                  cometTrajectory.name(l10n),
-                  equals(l10n.experimentCometTrajectoryName),
-                );
-                expect(cometTrajectory.icon, equals(Icons.timeline));
-
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
-        );
-      });
-
-      testWidgets('Stellar Nursery experiment should use correct AppColors', (
-        tester,
-      ) async {
-        await tester.pumpWidget(
-          TestUtils.wrapWithMaterialApp(
-            child: Builder(
-              builder: (context) {
-                final l10n = AppLocalizations.of(context)!;
-                final stellarNursery =
-                    ExperimentalScenarioConfig.experiments[5];
-
-                expect(stellarNursery.color, equals(AppColors.stellarMType));
-                expect(
-                  stellarNursery.name(l10n),
-                  equals(l10n.experimentStellarNurseryName),
-                );
-                expect(stellarNursery.icon, equals(Icons.star_border));
+                expect(roguePlanet.icon, equals(Icons.explore));
 
                 return const SizedBox.shrink();
               },
@@ -340,12 +292,10 @@ void main() {
 
         // Verify all colors come from AppColors constants
         final validColors = [
-          AppColors.stellarOType,
-          AppColors.habitabilityHabitable,
-          AppColors.starMediumSlateBlue,
-          AppColors.stellarKType,
-          AppColors.iceGiantUranusLike,
-          AppColors.stellarMType,
+          AppColors.stellarOType, // Binary Pulsar
+          AppColors.habitabilityHabitable, // Trojan Asteroids
+          AppColors.stellarKType, // Double Star Eclipse
+          AppColors.starMediumSlateBlue, // Rogue Planet
         ];
 
         for (final experiment in experiments) {

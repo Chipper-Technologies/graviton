@@ -666,6 +666,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customScenarioDescription => 'Custom gravitational scenario';
 
   @override
+  String get viewScenarioButton => 'View Scenario';
+
+  @override
+  String get viewScenarioHint => 'View scenario details in read-only mode';
+
+  @override
   String get exportScenarioButton => 'Export Scenario';
 
   @override
@@ -1255,6 +1261,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bodyMoonM => 'Moon M';
+
+  @override
+  String get bodySpacecraft => 'Spacecraft';
+
+  @override
+  String get bodyIo => 'Io';
+
+  @override
+  String get bodyEuropa => 'Europa';
 
   @override
   String bodyNameCopyTemplate(String bodyName) {
@@ -2724,44 +2739,34 @@ class AppLocalizationsEn extends AppLocalizations {
       'Lagrange Points and Orbital Stability';
 
   @override
-  String get experimentGalacticDanceName => 'Galactic Dance';
+  String get experimentDoubleStarEclipseName => 'Double Star Eclipse';
 
   @override
-  String get experimentGalacticDanceDescription =>
-      'Two galaxies colliding and merging over cosmic time';
+  String get experimentDoubleStarEclipseDescription =>
+      'Binary star system where one star regularly eclipses the other';
 
   @override
-  String get experimentGalacticDanceDuration => '1 billion years';
+  String get experimentDoubleStarEclipseDuration => '30 days';
 
   @override
-  String get experimentRingFormationName => 'Ring Formation';
+  String get experimentRoguePlanetName => 'Rogue Planet';
 
   @override
-  String get experimentRingFormationDescription =>
-      'How planetary rings form from disrupted moons';
+  String get experimentRoguePlanetDescription =>
+      'A planet ejected from its system encounters a new solar system';
 
   @override
-  String get experimentRingFormationDuration => '1000 years';
+  String get experimentRoguePlanetDuration => '500 years';
 
   @override
-  String get experimentCometTrajectoryName => 'Comet Trajectory';
+  String get experimentGravitationalSlingshotName => 'Gravitational Slingshot';
 
   @override
-  String get experimentCometTrajectoryDescription =>
-      'Highly elliptical orbit showing conservation laws';
+  String get experimentGravitationalSlingshotDescription =>
+      'A spacecraft uses Jupiter\'s moon Io to gain speed and reach Europa';
 
   @override
-  String get experimentCometTrajectoryDuration => '200 years';
-
-  @override
-  String get experimentStellarNurseryName => 'Stellar Nursery';
-
-  @override
-  String get experimentStellarNurseryDescription =>
-      'Star formation from collapsing gas clouds';
-
-  @override
-  String get experimentStellarNurseryDuration => '10 million years';
+  String get experimentGravitationalSlingshotDuration => '2 years';
 
   @override
   String get experimentDifficultyAdvanced => 'advanced';
@@ -2779,4 +2784,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknownValue => 'Unknown';
+
+  @override
+  String get bodyPrimaryStar => 'Primary Star';
+
+  @override
+  String get bodySecondaryStar => 'Secondary Star';
+
+  @override
+  String get bodyInnerRockyPlanet => 'Inner Rocky Planet';
+
+  @override
+  String get bodyHabitablePlanet => 'Habitable Planet';
+
+  @override
+  String get bodyGasGiant => 'Gas Giant';
+
+  @override
+  String get bodyIceGiant => 'Ice Giant';
+
+  @override
+  String get bodyRoguePlanet => 'Rogue Planet';
+
+  @override
+  String get authorGravitonPhysicsTeam => 'Graviton Physics Team';
+
+  @override
+  String get doubleStarEclipseScenarioDescription =>
+      'Watch as two stars orbit each other in a close binary system. Observe how the smaller secondary star regularly passes in front of the larger primary star, causing periodic eclipses. This demonstrates stellar photometry, binary orbital mechanics, and how astronomers discover exoplanets using similar transit methods.';
+
+  @override
+  String get doubleStarEclipseEducationalFocus =>
+      'Binary stars, eclipses, stellar photometry';
+
+  @override
+  String get roguePlanetScenarioDescription =>
+      'A stable solar system with well-spaced planetary orbits encounters a massive rogue planet approaching from interstellar space. Watch as the intruder\'s gravity disrupts the delicate orbital balance, potentially ejecting planets or creating chaotic gravitational interactions. This scenario demonstrates planetary system dynamics, gravitational slingshot effects, and how rogue planets can reshape entire solar systems.';
+
+  @override
+  String get roguePlanetEducationalFocus =>
+      'Rogue planets, gravitational encounters, orbital disruption';
 }

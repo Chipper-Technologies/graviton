@@ -234,14 +234,11 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       },
       child: Scaffold(
         backgroundColor: AppColors.transparentColor,
+        extendBodyBehindAppBar: true,
         appBar: HapticAppBar(
           title: widget.isEditing
               ? l10n.editScenarioTitle
               : l10n.createScenarioTitle,
-          backgroundColor: AppColors.uiBlack.withValues(
-            alpha: AppTypography.opacityNearlyOpaque,
-          ),
-          foregroundColor: AppColors.uiWhite,
           actions: [
             // Export menu
             GravitonPopupMenu(
@@ -635,6 +632,10 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
         return Icons.brightness_3; // Crescent moon icon for moons
       case BodyType.asteroid:
         return Icons.scatter_plot; // Scatter plot icon for asteroids
+      case BodyType.blackHole:
+        return Icons.donut_large; // Black hole representation
+      case BodyType.neutronStar:
+        return Icons.flash_on; // High-energy neutron star
     }
   }
 
@@ -1070,75 +1071,6 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
         errorMessage: e.toString(),
         context: 'scenario_editor',
       );
-    }
-  }
-
-  Future<void> _saveScenario(
-    BuildContext context,
-    AppLocalizations l10n,
-  ) async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-
-    try {
-      final scenario = _createCustomScenario();
-
-      // Log analytics for scenario save attempt
-      FirebaseService.instance.logUIEventWithEnums(
-        UIAction.scenarioSaved,
-        element: UIElement.scenarioEditor,
-        additionalParams: {
-          'scenario_editing': widget.isEditing,
-          'body_count': _bodies.length,
-          'scenario_name': _metadata.name,
-          'has_objectives': _objectives != null,
-        },
-      );
-
-      // Save to local storage
-      await CustomScenarioStorage.saveScenario(scenario);
-
-      setState(() {
-        _hasUnsavedChanges = false;
-      });
-
-      // Log successful completion
-      FirebaseService.instance.logUIEventWithEnums(
-        widget.isEditing
-            ? UIAction.scenarioEditingCompleted
-            : UIAction.scenarioCreationCompleted,
-        element: UIElement.scenarioEditor,
-        additionalParams: {
-          'body_count': _bodies.length,
-          'scenario_name': _metadata.name,
-        },
-      );
-
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.scenarioSavedSuccessMessage),
-            backgroundColor: AppColors.primaryColor,
-          ),
-        );
-      }
-    } catch (e) {
-      // Log error analytics
-      FirebaseService.instance.logErrorEvent(
-        'scenario_save_failed',
-        errorMessage: e.toString(),
-        context: 'scenario_editor',
-      );
-
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.scenarioSaveFailedMessage(e.toString())),
-            backgroundColor: AppColors.celestialRed,
-          ),
-        );
-      }
     }
   }
 

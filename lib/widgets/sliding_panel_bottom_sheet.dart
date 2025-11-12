@@ -174,9 +174,7 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(AppTypography.radiusXLarge),
           ),
-          color: AppColors.uiBlack.withValues(
-            alpha: AppTypography.opacityVeryHigh,
-          ),
+          color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityHigh),
 
           // Enable dragging and snapping
           isDraggable: true,
@@ -336,9 +334,7 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
       height: 50,
       margin: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: AppColors.uiBlack.withValues(
-          alpha: AppTypography.opacityMediumHigh,
-        ),
+        color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityFaint),
         borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
         border: Border.all(
           color: AppColors.primaryColor.withValues(

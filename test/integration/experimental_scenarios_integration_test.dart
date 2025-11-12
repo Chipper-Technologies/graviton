@@ -51,13 +51,13 @@ void main() {
         },
       );
 
-      test('should have exactly 6 experimental scenarios', () {
+      test('should have exactly 5 experimental scenarios', () {
         final experiments = ExperimentalScenarioConfig.experiments;
 
         expect(
           experiments.length,
-          equals(6),
-          reason: 'Expected 6 experimental scenarios to be configured',
+          equals(5),
+          reason: 'Expected 5 experimental scenarios to be configured',
         );
       });
     });
@@ -179,23 +179,48 @@ void main() {
         );
       });
 
-      testWidgets('Galactic Dance experiment configuration', (tester) async {
+      testWidgets('Double Star Eclipse experiment configuration', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
               builder: (context) {
                 final l10n = AppLocalizations.of(context)!;
-                final galacticDance = ExperimentalScenarioConfig.experiments[2];
+                final doubleStarEclipse =
+                    ExperimentalScenarioConfig.experiments[2];
+
+                expect(doubleStarEclipse.color, equals(AppColors.stellarKType));
+                expect(doubleStarEclipse.icon, equals(Icons.brightness_2));
+                expect(doubleStarEclipse.tags, contains('binary'));
+                expect(doubleStarEclipse.tags, contains('eclipse'));
+                expect(doubleStarEclipse.tags, contains('photometry'));
+                expect(doubleStarEclipse.name(l10n), isNotEmpty);
+
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
+        );
+      });
+
+      testWidgets('Rogue Planet experiment configuration', (tester) async {
+        await tester.pumpWidget(
+          TestUtils.wrapWithMaterialApp(
+            child: Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context)!;
+                final roguePlanet = ExperimentalScenarioConfig.experiments[3];
 
                 expect(
-                  galacticDance.color,
+                  roguePlanet.color,
                   equals(AppColors.starMediumSlateBlue),
                 );
-                expect(galacticDance.icon, equals(Icons.blur_circular));
-                expect(galacticDance.tags, contains('galaxies'));
-                expect(galacticDance.tags, contains('collision'));
-                expect(galacticDance.tags, contains('evolution'));
-                expect(galacticDance.name(l10n), isNotEmpty);
+                expect(roguePlanet.icon, equals(Icons.explore));
+                expect(roguePlanet.tags, contains('rogue'));
+                expect(roguePlanet.tags, contains('encounter'));
+                expect(roguePlanet.tags, contains('dynamics'));
+                expect(roguePlanet.name(l10n), isNotEmpty);
 
                 return const SizedBox.shrink();
               },
@@ -204,69 +229,30 @@ void main() {
         );
       });
 
-      testWidgets('Ring Formation experiment configuration', (tester) async {
+      testWidgets('Gravitational Slingshot experiment configuration', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
               builder: (context) {
                 final l10n = AppLocalizations.of(context)!;
-                final ringFormation = ExperimentalScenarioConfig.experiments[3];
-
-                expect(ringFormation.color, equals(AppColors.stellarKType));
-                expect(ringFormation.icon, equals(Icons.panorama_fish_eye));
-                expect(ringFormation.tags, contains('rings'));
-                expect(ringFormation.tags, contains('tidal forces'));
-                expect(ringFormation.tags, contains('disruption'));
-                expect(ringFormation.name(l10n), isNotEmpty);
-
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
-        );
-      });
-
-      testWidgets('Comet Trajectory experiment configuration', (tester) async {
-        await tester.pumpWidget(
-          TestUtils.wrapWithMaterialApp(
-            child: Builder(
-              builder: (context) {
-                final l10n = AppLocalizations.of(context)!;
-                final cometTrajectory =
+                final gravitationalSlingshot =
                     ExperimentalScenarioConfig.experiments[4];
 
                 expect(
-                  cometTrajectory.color,
-                  equals(AppColors.iceGiantUranusLike),
+                  gravitationalSlingshot.color,
+                  equals(AppColors.stellarFType),
                 );
-                expect(cometTrajectory.icon, equals(Icons.timeline));
-                expect(cometTrajectory.tags, contains('comet'));
-                expect(cometTrajectory.tags, contains('ellipse'));
-                expect(cometTrajectory.tags, contains('conservation'));
-                expect(cometTrajectory.name(l10n), isNotEmpty);
-
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
-        );
-      });
-
-      testWidgets('Stellar Nursery experiment configuration', (tester) async {
-        await tester.pumpWidget(
-          TestUtils.wrapWithMaterialApp(
-            child: Builder(
-              builder: (context) {
-                final l10n = AppLocalizations.of(context)!;
-                final stellarNursery =
-                    ExperimentalScenarioConfig.experiments[5];
-
-                expect(stellarNursery.color, equals(AppColors.stellarMType));
-                expect(stellarNursery.icon, equals(Icons.star_border));
-                expect(stellarNursery.tags, contains('formation'));
-                expect(stellarNursery.tags, contains('gas'));
-                expect(stellarNursery.tags, contains('collapse'));
-                expect(stellarNursery.name(l10n), isNotEmpty);
+                expect(
+                  gravitationalSlingshot.icon,
+                  equals(Icons.rocket_launch),
+                );
+                expect(gravitationalSlingshot.tags, contains('slingshot'));
+                expect(gravitationalSlingshot.tags, contains('trajectory'));
+                expect(gravitationalSlingshot.tags, contains('momentum'));
+                expect(gravitationalSlingshot.tags, contains('spacecraft'));
+                expect(gravitationalSlingshot.name(l10n), isNotEmpty);
 
                 return const SizedBox.shrink();
               },
@@ -284,19 +270,18 @@ void main() {
         final Map<int, String> experimentThemes = {
           0: 'high-energy stellar phenomena (neutron stars)',
           1: 'stable orbital mechanics (green for stability)',
-          2: 'cosmic/galactic phenomena (purple)',
-          3: 'dynamic stellar processes (orange)',
-          4: 'icy body interactions (cyan)',
-          5: 'stellar formation (red-orange)',
+          2: 'eclipsing binary systems (orange)',
+          3: 'cosmic wanderers (purple)',
+          4: 'spacecraft propulsion (white/blue-white)',
         };
 
         final Map<int, Color> expectedColors = {
           0: AppColors.stellarOType, // Blue for neutron stars
           1: AppColors.habitabilityHabitable, // Green for stability
-          2: AppColors.starMediumSlateBlue, // Purple for cosmic
-          3: AppColors.stellarKType, // Orange for dynamics
-          4: AppColors.iceGiantUranusLike, // Cyan for ice
-          5: AppColors.stellarMType, // Red-orange for formation
+          2: AppColors.stellarKType, // Orange for eclipsing binaries
+          3: AppColors.starMediumSlateBlue, // Purple for cosmic wanderers
+          4: AppColors
+              .stellarFType, // White/blue-white for high-energy spacecraft
         };
 
         for (int i = 0; i < experiments.length; i++) {
@@ -345,10 +330,12 @@ void main() {
                 final Set<String> validPhysicsConcepts = {
                   'neutron stars', 'relativity', 'waves', // Binary Pulsar
                   'asteroids', 'lagrange', 'stability', // Trojan Asteroids
-                  'galaxies', 'collision', 'evolution', // Galactic Dance
-                  'rings', 'tidal forces', 'disruption', // Ring Formation
-                  'comet', 'ellipse', 'conservation', // Comet Trajectory
-                  'formation', 'gas', 'collapse', // Stellar Nursery
+                  'binary', 'eclipse', 'photometry', // Double Star Eclipse
+                  'rogue', 'encounter', 'dynamics', // Rogue Planet
+                  'slingshot',
+                  'trajectory',
+                  'momentum',
+                  'spacecraft', // Gravitational Slingshot
                 };
 
                 for (int i = 0; i < experiments.length; i++) {
@@ -389,7 +376,7 @@ void main() {
         // Access experiments multiple times to test caching
         for (int i = 0; i < 100; i++) {
           final experiments = ExperimentalScenarioConfig.experiments;
-          expect(experiments.length, equals(6));
+          expect(experiments.length, equals(5));
         }
 
         stopwatch.stop();

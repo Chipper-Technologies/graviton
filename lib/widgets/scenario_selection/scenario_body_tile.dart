@@ -110,6 +110,10 @@ class ScenarioBodyTile extends StatelessWidget {
         return Icons.brightness_3; // Crescent moon icon for moons
       case BodyType.asteroid:
         return Icons.scatter_plot; // Scatter plot icon for asteroids
+      case BodyType.blackHole:
+        return Icons.donut_large; // Black hole representation
+      case BodyType.neutronStar:
+        return Icons.flash_on; // High-energy neutron star
     }
   }
 }

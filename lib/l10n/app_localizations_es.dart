@@ -676,6 +676,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Descripción del escenario personalizado';
 
   @override
+  String get viewScenarioButton => 'Ver escenario';
+
+  @override
+  String get viewScenarioHint =>
+      'Ver detalles del escenario en modo de solo lectura';
+
+  @override
   String get exportScenarioButton => 'Exportar escenario';
 
   @override
@@ -1265,6 +1272,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get bodyMoonM => 'Luna M';
+
+  @override
+  String get bodySpacecraft => 'Nave espacial';
+
+  @override
+  String get bodyIo => 'Ío';
+
+  @override
+  String get bodyEuropa => 'Europa';
 
   @override
   String bodyNameCopyTemplate(String bodyName) {
@@ -2739,44 +2755,34 @@ class AppLocalizationsEs extends AppLocalizations {
       'Puntos de Lagrange y Estabilidad Orbital';
 
   @override
-  String get experimentGalacticDanceName => 'Danza Galáctica';
+  String get experimentDoubleStarEclipseName => 'Eclipse de Estrella Doble';
 
   @override
-  String get experimentGalacticDanceDescription =>
-      'Dos galaxias chocando y fusionándose a lo largo del tiempo cósmico';
+  String get experimentDoubleStarEclipseDescription =>
+      'Sistema de estrella binaria donde una estrella eclipsa regularmente a la otra';
 
   @override
-  String get experimentGalacticDanceDuration => '1 billón de años';
+  String get experimentDoubleStarEclipseDuration => '30 días';
 
   @override
-  String get experimentRingFormationName => 'Formación de Anillos';
+  String get experimentRoguePlanetName => 'Planeta Vagabundo';
 
   @override
-  String get experimentRingFormationDescription =>
-      'Cómo se forman los anillos planetarios a partir de lunas destruidas';
+  String get experimentRoguePlanetDescription =>
+      'Un planeta expulsado de su sistema se encuentra con un nuevo sistema solar';
 
   @override
-  String get experimentRingFormationDuration => '1000 años';
+  String get experimentRoguePlanetDuration => '500 años';
 
   @override
-  String get experimentCometTrajectoryName => 'Trayectoria del Cometa';
+  String get experimentGravitationalSlingshotName => 'Honda Gravitacional';
 
   @override
-  String get experimentCometTrajectoryDescription =>
-      'Órbita altamente elíptica que muestra las leyes de conservación';
+  String get experimentGravitationalSlingshotDescription =>
+      'Una nave espacial usa la luna de Júpiter Ío para ganar velocidad y alcanzar Europa';
 
   @override
-  String get experimentCometTrajectoryDuration => '200 años';
-
-  @override
-  String get experimentStellarNurseryName => 'Guardería Estelar';
-
-  @override
-  String get experimentStellarNurseryDescription =>
-      'Formación de estrellas a partir del colapso de nubes de gas';
-
-  @override
-  String get experimentStellarNurseryDuration => '10 millones de años';
+  String get experimentGravitationalSlingshotDuration => '2 años';
 
   @override
   String get experimentDifficultyAdvanced => 'avanzado';
@@ -2794,4 +2800,44 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get unknownValue => 'Desconocido';
+
+  @override
+  String get bodyPrimaryStar => 'Estrella Primaria';
+
+  @override
+  String get bodySecondaryStar => 'Estrella Secundaria';
+
+  @override
+  String get bodyInnerRockyPlanet => 'Planeta Rocoso Interior';
+
+  @override
+  String get bodyHabitablePlanet => 'Planeta Habitable';
+
+  @override
+  String get bodyGasGiant => 'Gigante Gaseoso';
+
+  @override
+  String get bodyIceGiant => 'Gigante de Hielo';
+
+  @override
+  String get bodyRoguePlanet => 'Planeta Errante';
+
+  @override
+  String get authorGravitonPhysicsTeam => 'Equipo de Física Graviton';
+
+  @override
+  String get doubleStarEclipseScenarioDescription =>
+      'Observe cómo dos estrellas orbitan entre sí en un sistema binario cercano. Vea cómo la estrella secundaria más pequeña pasa regularmente por delante de la estrella primaria más grande, causando eclipses periódicos. Esto demuestra fotometría estelar, mecánica orbital binaria y cómo los astrónomos descubren exoplanetas usando métodos de tránsito similares.';
+
+  @override
+  String get doubleStarEclipseEducationalFocus =>
+      'Estrellas binarias, eclipses, fotometría estelar';
+
+  @override
+  String get roguePlanetScenarioDescription =>
+      'Un sistema solar estable con órbitas planetarias bien espaciadas encuentra un planeta errante masivo que se acerca desde el espacio interestelar. Observe cómo la gravedad del intruso perturba el delicado equilibrio orbital, potencialmente expulsando planetas o creando interacciones gravitacionales caóticas. Este escenario demuestra la dinámica de sistemas planetarios, efectos de honda gravitacional y cómo los planetas errantes pueden remodelar sistemas solares enteros.';
+
+  @override
+  String get roguePlanetEducationalFocus =>
+      'Planetas errantes, encuentros gravitacionales, disrupción orbital';
 }

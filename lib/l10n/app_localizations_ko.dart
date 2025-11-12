@@ -640,6 +640,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get customScenarioDescription => '사용자 정의 시나리오 설명';
 
   @override
+  String get viewScenarioButton => '시나리오 보기';
+
+  @override
+  String get viewScenarioHint => '읽기 전용 모드에서 시나리오 세부 정보 보기';
+
+  @override
   String get exportScenarioButton => '시나리오 내보내기';
 
   @override
@@ -1206,6 +1212,15 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get bodyMoonM => '위성M';
+
+  @override
+  String get bodySpacecraft => '우주선';
+
+  @override
+  String get bodyIo => '이오';
+
+  @override
+  String get bodyEuropa => '유로파';
 
   @override
   String bodyNameCopyTemplate(String bodyName) {
@@ -2584,40 +2599,33 @@ class AppLocalizationsKo extends AppLocalizations {
   String get trojanAsteroidsEducationalFocus => '라그랑주 점과 궤도 안정성';
 
   @override
-  String get experimentGalacticDanceName => '은하의 춤';
+  String get experimentDoubleStarEclipseName => '이중성 식';
 
   @override
-  String get experimentGalacticDanceDescription => '우주 시간에 걸쳐 충돌하고 합쳐지는 두 은하';
+  String get experimentDoubleStarEclipseDescription =>
+      '한 별이 정기적으로 다른 별을 가리는 이중성계';
 
   @override
-  String get experimentGalacticDanceDuration => '10억 년';
+  String get experimentDoubleStarEclipseDuration => '30일';
 
   @override
-  String get experimentRingFormationName => '고리 형성';
+  String get experimentRoguePlanetName => '떠돌이 행성';
 
   @override
-  String get experimentRingFormationDescription => '파괴된 위성으로부터 행성 고리가 형성되는 과정';
+  String get experimentRoguePlanetDescription => '계에서 방출된 행성이 새로운 태양계를 만나는 상황';
 
   @override
-  String get experimentRingFormationDuration => '1000년';
+  String get experimentRoguePlanetDuration => '500년';
 
   @override
-  String get experimentCometTrajectoryName => '혜성 궤도';
+  String get experimentGravitationalSlingshotName => '중력 도움';
 
   @override
-  String get experimentCometTrajectoryDescription => '보존 법칙을 보여주는 고도 타원 궤도';
+  String get experimentGravitationalSlingshotDescription =>
+      '우주선이 목성의 위성 이오를 이용하여 속도를 얻고 유로파에 도달한다';
 
   @override
-  String get experimentCometTrajectoryDuration => '200년';
-
-  @override
-  String get experimentStellarNurseryName => '별 탄생 지역';
-
-  @override
-  String get experimentStellarNurseryDescription => '붕괴하는 가스 구름으로부터의 별 형성';
-
-  @override
-  String get experimentStellarNurseryDuration => '1000만 년';
+  String get experimentGravitationalSlingshotDuration => '2년';
 
   @override
   String get experimentDifficultyAdvanced => '고급';
@@ -2635,4 +2643,42 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get unknownValue => '알 수 없음';
+
+  @override
+  String get bodyPrimaryStar => '주성';
+
+  @override
+  String get bodySecondaryStar => '동반성';
+
+  @override
+  String get bodyInnerRockyPlanet => '내측 암석 행성';
+
+  @override
+  String get bodyHabitablePlanet => '거주 가능 행성';
+
+  @override
+  String get bodyGasGiant => '가스 거대 행성';
+
+  @override
+  String get bodyIceGiant => '얼음 거대 행성';
+
+  @override
+  String get bodyRoguePlanet => '유랑 행성';
+
+  @override
+  String get authorGravitonPhysicsTeam => 'Graviton 물리학 팀';
+
+  @override
+  String get doubleStarEclipseScenarioDescription =>
+      '근접 쌍성계에서 두 별이 서로 궤도를 도는 모습을 관찰하세요. 더 작은 동반성이 정기적으로 더 큰 주성 앞을 지나며 주기적인 식현상을 일으키는 모습을 보세요. 이것은 항성 측광, 쌍성 궤도 역학, 그리고 천문학자들이 유사한 통과 방법을 사용하여 외계행성을 발견하는 방법을 보여줍니다.';
+
+  @override
+  String get doubleStarEclipseEducationalFocus => '쌍성, 식현상, 항성 측광';
+
+  @override
+  String get roguePlanetScenarioDescription =>
+      '잘 간격이 맞춰진 행성 궤도를 가진 안정된 태양계가 성간 공간에서 접근하는 거대한 유랑 행성과 만납니다. 침입자의 중력이 섬세한 궤도 균형을 교란하여 잠재적으로 행성들을 방출하거나 혼란스러운 중력 상호작용을 만드는 모습을 관찰하세요. 이 시나리오는 행성계 역학, 중력 슬링샷 효과, 그리고 유랑 행성이 전체 태양계를 어떻게 재형성할 수 있는지를 보여줍니다.';
+
+  @override
+  String get roguePlanetEducationalFocus => '유랑 행성, 중력 조우, 궤도 교란';
 }

@@ -152,6 +152,8 @@ class GravitonPopupMenu extends StatelessWidget {
       {
         'testScenarioButton': (l10n) => l10n.testScenarioButton,
         'testScenarioHint': (l10n) => l10n.testScenarioHint,
+        'viewScenarioButton': (l10n) => l10n.viewScenarioButton,
+        'viewScenarioHint': (l10n) => l10n.viewScenarioHint,
         'exportScenarioButton': (l10n) => l10n.exportScenarioButton,
         'exportScenarioHint': (l10n) => l10n.exportScenarioHint,
         'duplicateBodyTooltip': (l10n) => l10n.duplicateBodyTooltip,

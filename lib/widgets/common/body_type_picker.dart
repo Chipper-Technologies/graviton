@@ -158,6 +158,10 @@ class BodyTypePicker extends StatelessWidget {
         return Icons.brightness_2;
       case BodyType.asteroid:
         return Icons.grain;
+      case BodyType.blackHole:
+        return Icons.donut_large; // Black hole representation
+      case BodyType.neutronStar:
+        return Icons.flash_on; // High-energy neutron star
     }
   }
 }

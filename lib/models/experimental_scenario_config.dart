@@ -73,39 +73,22 @@ class ExperimentalScenarioConfig {
       difficultyBuilder: (l) => l.experimentDifficultyIntermediate,
     ),
     ExperimentalScenarioConfig(
-      nameBuilder: (l) => l.experimentGalacticDanceName,
-      descriptionBuilder: (l) => l.experimentGalacticDanceDescription,
-      icon: Icons.blur_circular,
-      color: AppColors.starMediumSlateBlue, // Purple for cosmic phenomena
-      tags: ['galaxies', 'collision', 'evolution'],
-      durationBuilder: (l) => l.experimentGalacticDanceDuration,
-      difficultyBuilder: (l) => l.experimentDifficultyAdvanced,
-    ),
-    ExperimentalScenarioConfig(
-      nameBuilder: (l) => l.experimentRingFormationName,
-      descriptionBuilder: (l) => l.experimentRingFormationDescription,
-      icon: Icons.panorama_fish_eye,
-      color: AppColors.stellarKType, // Orange for dynamic processes
-      tags: ['rings', 'tidal forces', 'disruption'],
-      durationBuilder: (l) => l.experimentRingFormationDuration,
+      nameBuilder: (l) => l.experimentDoubleStarEclipseName,
+      descriptionBuilder: (l) => l.experimentDoubleStarEclipseDescription,
+      icon: Icons.brightness_2,
+      color: AppColors.stellarKType, // Orange for eclipsing stars
+      tags: ['binary', 'eclipse', 'photometry'],
+      durationBuilder: (l) => l.experimentDoubleStarEclipseDuration,
       difficultyBuilder: (l) => l.experimentDifficultyIntermediate,
     ),
     ExperimentalScenarioConfig(
-      nameBuilder: (l) => l.experimentCometTrajectoryName,
-      descriptionBuilder: (l) => l.experimentCometTrajectoryDescription,
-      icon: Icons.timeline,
-      color: AppColors.iceGiantUranusLike, // Cyan for icy bodies
-      tags: ['comet', 'ellipse', 'conservation'],
-      durationBuilder: (l) => l.experimentCometTrajectoryDuration,
-      difficultyBuilder: (l) => l.experimentDifficultyBeginner,
-    ),
-    ExperimentalScenarioConfig(
-      nameBuilder: (l) => l.experimentStellarNurseryName,
-      descriptionBuilder: (l) => l.experimentStellarNurseryDescription,
-      icon: Icons.star_border,
-      color: AppColors.stellarMType, // Red-orange for star formation regions
-      tags: ['formation', 'gas', 'collapse'],
-      durationBuilder: (l) => l.experimentStellarNurseryDuration,
+      nameBuilder: (l) => l.experimentRoguePlanetName,
+      descriptionBuilder: (l) => l.experimentRoguePlanetDescription,
+      icon: Icons.explore,
+      color: AppColors
+          .starMediumSlateBlue, // Purple for mysterious wandering planet
+      tags: ['rogue', 'encounter', 'dynamics'],
+      durationBuilder: (l) => l.experimentRoguePlanetDuration,
       difficultyBuilder: (l) => l.experimentDifficultyAdvanced,
     ),
   ];

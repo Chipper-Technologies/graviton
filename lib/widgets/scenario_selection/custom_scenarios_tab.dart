@@ -46,7 +46,7 @@ class CustomScenariosTab extends StatefulWidget {
 }
 
 class _CustomScenariosTabState extends State<CustomScenariosTab> {
-  List<String> _customScenarios = [];
+  List<CustomScenario> _customScenarios = [];
   bool _isLoading = true;
   String? _selectedExperiment;
 
@@ -61,7 +61,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       final scenarios = await CustomScenarioStorage.getAllScenarios();
       if (mounted) {
         setState(() {
-          _customScenarios = scenarios.map((s) => s.metadata.name).toList();
+          _customScenarios = scenarios;
           _isLoading = false;
         });
       }
@@ -99,35 +99,47 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
             bottomSpacing: AppTypography.spacingMedium,
           ),
 
-          // Scenarios count header
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppTypography.spacingLarge,
-            ),
-            child: Text(
-              l10n.scenariosHeaderPlural(_customScenarios.length),
-              style: AppTypography.titleText.copyWith(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityHigh,
+          // Scenarios count header (only show if there are scenarios)
+          if (_customScenarios.isNotEmpty)
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppTypography.spacingLarge,
+              ),
+              child: Center(
+                child: Text(
+                  l10n.scenariosHeaderPlural(_customScenarios.length),
+                  style: AppTypography.titleText.copyWith(
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(height: AppTypography.spacingMedium),
+          if (_customScenarios.isNotEmpty)
+            SizedBox(height: AppTypography.spacingMedium),
 
           // Saved scenarios list
           if (_customScenarios.isEmpty)
             _buildEmptyState(l10n)
           else
-            ..._customScenarios.map((scenarioName) {
+            ..._customScenarios.map((scenario) {
               return Padding(
                 padding: EdgeInsets.only(bottom: AppTypography.spacingSmall),
                 child: CustomScenarioTile(
-                  scenarioName: scenarioName,
+                  scenarioName: scenario.metadata.name,
+                  scenarioDescription: scenario.metadata.description,
                   isSelected: false,
-                  onTap: () => _selectCustomScenario(context, scenarioName),
-                  onEdit: () => _editCustomScenario(context, scenarioName),
-                  onDelete: () => _deleteCustomScenario(context, scenarioName),
+                  onTap: () =>
+                      _selectCustomScenario(context, scenario.metadata.name),
+                  onView: () =>
+                      _viewCustomScenario(context, scenario.metadata.name),
+                  onExport: () =>
+                      _exportCustomScenario(context, scenario.metadata.name),
+                  onEdit: () =>
+                      _editCustomScenario(context, scenario.metadata.name),
+                  onDelete: () =>
+                      _deleteCustomScenario(context, scenario.metadata.name),
                 ),
               );
             }),
@@ -168,37 +180,41 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
   Widget _buildEmptyState(AppLocalizations l10n) {
     return Container(
       padding: EdgeInsets.all(AppTypography.spacingLarge),
-      child: Column(
-        children: [
-          Icon(
-            Icons.bookmark_border,
-            size: AppTypography.iconSizeHuge,
-            color: AppColors.uiWhite.withValues(
-              alpha: AppTypography.opacityFaint,
-            ),
-          ),
-          SizedBox(height: AppTypography.spacingMedium),
-          Text(
-            l10n.noBodiesAdded, // Using existing localized string
-            style: TextStyle(
-              fontSize: AppTypography.fontSizeLarge,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.bookmark_border,
+              size: AppTypography.iconSizeHuge,
               color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityMedium,
+                alpha: AppTypography.opacityFaint,
               ),
             ),
-          ),
-          SizedBox(height: AppTypography.spacingSmall),
-          Text(
-            l10n.addBodiesInSetupTab, // Using existing localized string
-            style: TextStyle(
-              fontSize: AppTypography.fontSizeSmall,
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityMedium,
+            SizedBox(height: AppTypography.spacingMedium),
+            Text(
+              l10n.noBodiesAdded, // Using existing localized string
+              style: TextStyle(
+                fontSize: AppTypography.fontSizeLarge,
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityMedium,
+                ),
               ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+            SizedBox(height: AppTypography.spacingSmall),
+            Text(
+              l10n.addBodiesInSetupTab, // Using existing localized string
+              style: TextStyle(
+                fontSize: AppTypography.fontSizeSmall,
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityMedium,
+                ),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -251,8 +267,8 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       value: scenarioName,
     );
 
-    // Open the scenario editor for this custom scenario
-    _editCustomScenario(context, scenarioName);
+    // Load the scenario into the simulation
+    widget.onCustomScenarioSelected?.call(scenarioName);
   }
 
   void _selectExperiment(
@@ -278,6 +294,10 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       _openBinaryPulsarEditor(context, experiment);
     } else if (experimentName == l10n.experimentTrojanAsteroidsName) {
       _openTrojanAsteroidsEditor(context, experiment);
+    } else if (experimentName == l10n.experimentDoubleStarEclipseName) {
+      _openDoubleStarEclipseEditor(context, experiment);
+    } else if (experimentName == l10n.experimentRoguePlanetName) {
+      _openRoguePlanetEditor(context, experiment);
     } else {
       // For other experiments, show "coming soon" message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -344,6 +364,61 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
     }
   }
 
+  /// Create and open Double Star Eclipse scenario in editor
+  Future<void> _openDoubleStarEclipseEditor(
+    BuildContext context,
+    ExperimentalScenarioConfig experiment,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+
+    // Create Double Star Eclipse scenario with pre-populated data
+    final doubleStarEclipseScenario = _createDoubleStarEclipseScenario(
+      l10n,
+      experiment,
+    );
+
+    final result = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ScenarioEditorScreen(
+          isEditing: false,
+          initialScenario: doubleStarEclipseScenario,
+        ),
+      ),
+    );
+
+    if (result == true) {
+      // Reload custom scenarios if the Double Star Eclipse was saved
+      await _loadCustomScenarios();
+    }
+  }
+
+  /// Create and open Rogue Planet scenario in editor
+  Future<void> _openRoguePlanetEditor(
+    BuildContext context,
+    ExperimentalScenarioConfig experiment,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+
+    // Create Rogue Planet scenario with pre-populated data
+    final roguePlanetScenario = _createRoguePlanetScenario(l10n, experiment);
+
+    final result = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ScenarioEditorScreen(
+          isEditing: false,
+          initialScenario: roguePlanetScenario,
+        ),
+      ),
+    );
+
+    if (result == true) {
+      // Reload custom scenarios if the Rogue Planet was saved
+      await _loadCustomScenarios();
+    }
+  }
+
   /// Create a pre-configured Binary Pulsar scenario
   CustomScenario _createBinaryPulsarScenario(
     AppLocalizations l10n,
@@ -378,7 +453,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         color: ColorUtils.colorToHexRGB(
           AppColors.pulsarCyan,
         ), // Cyan - high energy pulsar radiation
-        bodyType: BodyType.star,
+        bodyType: BodyType.neutronStar, // Now using proper neutron star type
         stellarLuminosity: 8.0, // High luminosity from magnetic field radiation
         temperature: 1000000.0, // Extremely hot neutron star surface
         showGravityWell: true,
@@ -398,7 +473,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         color: ColorUtils.colorToHexRGB(
           AppColors.habitabilityHighRadiation,
         ), // Pink - companion neutron star
-        bodyType: BodyType.star,
+        bodyType: BodyType.neutronStar, // Now using proper neutron star type
         stellarLuminosity: 6.0, // Lower luminosity companion
         temperature: 800000.0, // Hot but slightly cooler
         showGravityWell: true,
@@ -722,5 +797,451 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         }
       }
     }
+  }
+
+  Future<void> _viewCustomScenario(
+    BuildContext context,
+    String scenarioName,
+  ) async {
+    // Log analytics for scenario viewing
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.customScenarioLoaded,
+      element: UIElement.customScenariosTab,
+      value: scenarioName,
+    );
+
+    // Load the scenario into the simulation
+    widget.onCustomScenarioSelected?.call(scenarioName);
+  }
+
+  Future<void> _exportCustomScenario(
+    BuildContext context,
+    String scenarioName,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+
+    try {
+      final customScenario = await CustomScenarioStorage.loadScenario(
+        scenarioName,
+      );
+      if (customScenario == null) return;
+
+      final jsonString = ScenarioSerializationService.toJsonString(
+        customScenario,
+      );
+
+      // Log analytics for scenario export
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.scenarioExported,
+        element: UIElement.customScenariosTab,
+        additionalParams: {
+          'body_count': customScenario.bodies.length,
+          'scenario_name': scenarioName,
+          'export_size_bytes': jsonString.length,
+        },
+      );
+
+      // TODO: Implement file export functionality
+      debugPrint(
+        'Exported JSON for $scenarioName:\n$jsonString',
+      ); // For development
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.exportScenarioNotImplementedMessage),
+            backgroundColor: AppColors.celestialOrange,
+          ),
+        );
+      }
+    } catch (e) {
+      // Log error analytics
+      FirebaseService.instance.logErrorEvent(
+        'scenario_export_failed',
+        errorMessage: e.toString(),
+        context: 'custom_scenarios_tab',
+      );
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.exportScenarioFailedMessage(e.toString())),
+            backgroundColor: AppColors.celestialRed,
+          ),
+        );
+      }
+    }
+  }
+
+  /// Create a pre-configured Double Star Eclipse scenario
+  CustomScenario _createDoubleStarEclipseScenario(
+    AppLocalizations l10n,
+    ExperimentalScenarioConfig experiment,
+  ) {
+    // Double Star Eclipse: A binary star system where one star regularly eclipses the other
+    // Educational focus on eclipsing binary systems and stellar photometry
+
+    final bodies = <BodyData>[];
+
+    // Binary star system properties
+    const primaryStarMass = 25.0; // Primary star (larger, brighter)
+    const secondaryStarMass = 15.0; // Secondary star (smaller, dimmer)
+    const orbitalSeparation = 18.0; // Distance between stars
+    const primaryStarRadius = 3.2; // Larger primary star
+    const secondaryStarRadius = 2.1; // Smaller secondary star
+
+    // Calculate orbital velocities for circular orbit
+    const gravitationalConstant = 1.2;
+    final totalMass = primaryStarMass + secondaryStarMass;
+    final orbitalSpeed = math.sqrt(
+      gravitationalConstant * totalMass / orbitalSeparation,
+    );
+
+    // Primary star (larger, stationary at center for simplicity)
+    bodies.add(
+      BodyData(
+        name: l10n.bodyPrimaryStar,
+        position: [-orbitalSeparation * 0.4, 0.0, 0.0],
+        velocity: [0.0, -orbitalSpeed * 0.3, 0.0],
+        mass: primaryStarMass,
+        radius: primaryStarRadius,
+        color: ColorUtils.colorToHexRGB(
+          AppColors.stellarOType,
+        ).substring(1), // Blue-white primary star
+        bodyType: BodyType.star,
+        stellarLuminosity: 12.0, // High luminosity
+        temperature: 15000.0, // Hot O-type star
+        showGravityWell: true,
+        isPlanet: false,
+        habitabilityStatus: HabitabilityStatus.tooHot,
+      ),
+    );
+
+    // Secondary star (smaller, orbiting)
+    bodies.add(
+      BodyData(
+        name: l10n.bodySecondaryStar,
+        position: [orbitalSeparation * 0.6, 0.0, 0.0],
+        velocity: [0.0, orbitalSpeed * 0.7, 0.0],
+        mass: secondaryStarMass,
+        radius: secondaryStarRadius,
+        color: ColorUtils.colorToHexRGB(
+          AppColors.stellarKType,
+        ).substring(1), // Orange secondary star
+        bodyType: BodyType.star,
+        stellarLuminosity: 6.0, // Lower luminosity
+        temperature: 4500.0, // K-type star
+        showGravityWell: true,
+        isPlanet: false,
+        habitabilityStatus: HabitabilityStatus.tooHot,
+      ),
+    );
+
+    // Convert BodyData to Body objects
+    final bodyObjects = bodies.map((bodyData) {
+      return Body(
+        name: bodyData.name,
+        position: vm.Vector3(
+          bodyData.position[0],
+          bodyData.position[1],
+          bodyData.position[2],
+        ),
+        velocity: vm.Vector3(
+          bodyData.velocity[0],
+          bodyData.velocity[1],
+          bodyData.velocity[2],
+        ),
+        mass: bodyData.mass,
+        radius: bodyData.radius,
+        color: ColorUtils.parseHexColor(bodyData.color),
+        bodyType: bodyData.bodyType,
+        stellarLuminosity: bodyData.stellarLuminosity,
+      );
+    }).toList();
+
+    // Create scenario metadata
+    final metadata = ScenarioMetadata(
+      name: experiment.name(l10n),
+      description:
+          '${experiment.description(l10n)}\n\n${l10n.doubleStarEclipseScenarioDescription}',
+      author: l10n.authorGravitonPhysicsTeam,
+      createdAt: DateTime.now(),
+      educationalFocus: l10n.doubleStarEclipseEducationalFocus,
+      tags: experiment.tags,
+      difficulty: experiment.difficulty(l10n),
+    );
+
+    // Physics settings optimized for binary star system
+    final physics = ScenarioPhysicsSettings(
+      gravitationalConstant: 1.2,
+      softening: 0.1, // Low softening for precise orbital mechanics
+      timeScale: 1.2, // Slightly faster time for observable eclipses
+      collisionRadiusMultiplier: 1.0, // Standard collision detection
+      maxTrailPoints: 400, // Medium trail length for orbital paths
+      trailFadeRate: 0.96, // Moderate fade rate
+    );
+
+    return ScenarioSerializationService.fromBodies(
+      bodies: bodyObjects,
+      metadata: metadata,
+      physics: physics,
+      particleSystems: const ParticleSystemsConfig(),
+      objectives: null,
+    );
+  }
+
+  /// Create a pre-configured Rogue Planet scenario
+  CustomScenario _createRoguePlanetScenario(
+    AppLocalizations l10n,
+    ExperimentalScenarioConfig experiment,
+  ) {
+    // Rogue Planet: A planet ejected from its original system encounters a new solar system
+    // Demonstrates gravitational slingshot effects and chaotic dynamics
+
+    final bodies = <BodyData>[];
+
+    // Central star of the target solar system (much higher mass for stability)
+    const starMass = 120.0; // Doubled mass for strong gravitational dominance
+    const starRadius = 3.5;
+
+    bodies.add(
+      BodyData(
+        name: l10n.bodyCentralStar,
+        position: [0.0, 0.0, 0.0],
+        velocity: [0.0, 0.0, 0.0],
+        mass: starMass,
+        radius: starRadius,
+        color: ColorUtils.colorToHexRGB(
+          AppColors.stellarGType,
+        ).substring(1), // Sun-like G-type star
+        bodyType: BodyType.star,
+        stellarLuminosity: 10.0,
+        temperature: 5800.0, // Sun-like temperature
+        showGravityWell: true,
+        isPlanet: false,
+        habitabilityStatus: HabitabilityStatus.tooHot,
+      ),
+    );
+
+    // Inner rocky planet (Mercury-like) - start at 90 degrees
+    const innerPlanetOrbitRadius = 40.0; // Much more separation
+    final innerPlanetOrbitalSpeed = math.sqrt(
+      1.2 * starMass / innerPlanetOrbitRadius,
+    );
+    const innerPlanetAngle = math.pi / 2; // 90 degrees
+
+    bodies.add(
+      BodyData(
+        name: l10n.bodyInnerRockyPlanet,
+        position: [
+          innerPlanetOrbitRadius * math.cos(innerPlanetAngle),
+          innerPlanetOrbitRadius * math.sin(innerPlanetAngle),
+          0.0,
+        ],
+        velocity: [
+          -innerPlanetOrbitalSpeed * math.sin(innerPlanetAngle),
+          innerPlanetOrbitalSpeed * math.cos(innerPlanetAngle),
+          0.0,
+        ],
+        mass: 0.8, // Much smaller mass for minimal interference
+        radius: 0.7,
+        color: ColorUtils.colorToHexRGB(
+          AppColors.terrestrialRockyMercury,
+        ).substring(1), // Mercury-like rocky planet
+        bodyType: BodyType.planet,
+        stellarLuminosity: 0.0,
+        temperature: 450.0, // Hot inner planet
+        showGravityWell: false,
+        isPlanet: true,
+        habitabilityStatus: HabitabilityStatus.tooHot,
+      ),
+    );
+
+    // Habitable zone planet (Earth-like) - start at 180 degrees
+    const habitablePlanetOrbitRadius = 80.0; // Much better spacing
+    final habitablePlanetOrbitalSpeed = math.sqrt(
+      1.2 * starMass / habitablePlanetOrbitRadius,
+    );
+    const habitablePlanetAngle = math.pi; // 180 degrees
+
+    bodies.add(
+      BodyData(
+        name: l10n.bodyHabitablePlanet,
+        position: [
+          habitablePlanetOrbitRadius * math.cos(habitablePlanetAngle),
+          habitablePlanetOrbitRadius * math.sin(habitablePlanetAngle),
+          0.0,
+        ],
+        velocity: [
+          -habitablePlanetOrbitalSpeed * math.sin(habitablePlanetAngle),
+          habitablePlanetOrbitalSpeed * math.cos(habitablePlanetAngle),
+          0.0,
+        ],
+        mass: 3.0, // Much smaller mass for stability
+        radius: 1.5,
+        color: ColorUtils.colorToHexRGB(
+          AppColors.terrestrialEarthLike,
+        ).substring(1), // Earth-like terrestrial planet
+        bodyType: BodyType.planet,
+        stellarLuminosity: 0.0,
+        temperature: 288.0, // Earth-like temperature
+        showGravityWell: false,
+        isPlanet: true,
+        habitabilityStatus: HabitabilityStatus.habitable,
+      ),
+    );
+
+    // Outer gas giant (Jupiter-like) - start at 270 degrees
+    const gasGiantOrbitRadius = 160.0; // Much more separation
+    final gasGiantOrbitalSpeed = math.sqrt(
+      1.2 * starMass / gasGiantOrbitRadius,
+    );
+    const gasGiantAngle = 3 * math.pi / 2; // 270 degrees
+
+    bodies.add(
+      BodyData(
+        name: l10n.bodyGasGiant,
+        position: [
+          gasGiantOrbitRadius * math.cos(gasGiantAngle),
+          gasGiantOrbitRadius * math.sin(gasGiantAngle),
+          0.0,
+        ],
+        velocity: [
+          -gasGiantOrbitalSpeed * math.sin(gasGiantAngle),
+          gasGiantOrbitalSpeed * math.cos(gasGiantAngle),
+          0.0,
+        ],
+        mass: 6.0, // Much smaller mass to minimize perturbations
+        radius: 2.2,
+        color: ColorUtils.colorToHexRGB(
+          AppColors.gasGiantJupiterLike,
+        ).substring(1), // Jupiter-like gas giant
+        bodyType: BodyType.planet,
+        stellarLuminosity: 0.0,
+        temperature: 120.0, // Cold outer planet
+        showGravityWell: false, // Remove gravity well for stability
+        isPlanet: true,
+        habitabilityStatus: HabitabilityStatus.gasGiant,
+      ),
+    );
+
+    // Ice giant in outer system - start at 45 degrees
+    const iceGiantOrbitRadius = 240.0; // Much more separation
+    final iceGiantOrbitalSpeed = math.sqrt(
+      1.2 * starMass / iceGiantOrbitRadius,
+    );
+    const iceGiantAngle = math.pi / 4; // 45 degrees
+
+    bodies.add(
+      BodyData(
+        name: l10n.bodyIceGiant,
+        position: [
+          iceGiantOrbitRadius * math.cos(iceGiantAngle),
+          iceGiantOrbitRadius * math.sin(iceGiantAngle),
+          0.0,
+        ],
+        velocity: [
+          -iceGiantOrbitalSpeed * math.sin(iceGiantAngle),
+          iceGiantOrbitalSpeed * math.cos(iceGiantAngle),
+          0.0,
+        ],
+        mass: 4.0, // Much smaller mass for stability
+        radius: 1.8,
+        color: ColorUtils.colorToHexRGB(
+          AppColors.iceGiantNeptuneLike,
+        ).substring(1), // Neptune-like ice giant
+        bodyType: BodyType.planet,
+        stellarLuminosity: 0.0,
+        temperature: 60.0, // Very cold outer planet
+        showGravityWell: false,
+        isPlanet: true,
+        habitabilityStatus: HabitabilityStatus.tooCold,
+      ),
+    );
+
+    // Rogue planet approaching at an angle for gravitational encounters
+    // RE-ENABLED with slower velocity for controlled interaction
+    const roguePlanetMass = 18.0; // Massive rogue planet
+    const rogueApproachDistance = 350.0; // Start much further away
+    const rogueApproachSpeed = 2.2; // Slower approach speed (was 3.2)
+
+    bodies.add(
+      BodyData(
+        name: l10n.bodyRoguePlanet,
+        position: [
+          -rogueApproachDistance,
+          75.0,
+          0.0,
+        ], // Approaching at angle, much further out
+        velocity: [
+          rogueApproachSpeed,
+          -0.6,
+          0.0,
+        ], // Slower angled trajectory for controlled slingshot effect
+        mass: roguePlanetMass,
+        radius: 2.8,
+        color: ColorUtils.colorToHexRGB(
+          AppColors.temperatureCold,
+        ).substring(1), // Dark cold coloring for the wandering planet
+        bodyType: BodyType.planet,
+        stellarLuminosity: 0.0,
+        temperature: 30.0, // Extremely cold from interstellar space
+        showGravityWell: true, // Show gravity well for interesting interactions
+        isPlanet: true,
+        habitabilityStatus: HabitabilityStatus.tooCold,
+      ),
+    );
+
+    // Convert BodyData to Body objects
+    final bodyObjects = bodies.map((bodyData) {
+      return Body(
+        name: bodyData.name,
+        position: vm.Vector3(
+          bodyData.position[0],
+          bodyData.position[1],
+          bodyData.position[2],
+        ),
+        velocity: vm.Vector3(
+          bodyData.velocity[0],
+          bodyData.velocity[1],
+          bodyData.velocity[2],
+        ),
+        mass: bodyData.mass,
+        radius: bodyData.radius,
+        color: ColorUtils.parseHexColor(bodyData.color),
+        bodyType: bodyData.bodyType,
+        stellarLuminosity: bodyData.stellarLuminosity,
+      );
+    }).toList();
+
+    // Create scenario metadata
+    final metadata = ScenarioMetadata(
+      name: experiment.name(l10n),
+      description:
+          '${experiment.description(l10n)}\n\n${l10n.roguePlanetScenarioDescription}',
+      author: l10n.authorGravitonPhysicsTeam,
+      createdAt: DateTime.now(),
+      educationalFocus: l10n.roguePlanetEducationalFocus,
+      tags: experiment.tags,
+      difficulty: experiment.difficulty(l10n),
+    );
+
+    // Physics settings optimized for maximum stability
+    final physics = ScenarioPhysicsSettings(
+      gravitationalConstant: 1.2,
+      softening: 1.0, // Much higher softening for maximum stability
+      timeScale: 0.8, // Slower time scale for stable integration
+      collisionRadiusMultiplier: 0.8, // Reduced collision detection
+      maxTrailPoints: 300, // Fewer trails for better performance
+      trailFadeRate: 0.96, // Standard fade rate
+    );
+
+    return ScenarioSerializationService.fromBodies(
+      bodies: bodyObjects,
+      metadata: metadata,
+      physics: physics,
+      particleSystems: const ParticleSystemsConfig(),
+      objectives: null,
+    );
   }
 }

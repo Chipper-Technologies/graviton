@@ -667,6 +667,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Benutzerdefinierte Szenario-Beschreibung';
 
   @override
+  String get viewScenarioButton => 'Szenario anzeigen';
+
+  @override
+  String get viewScenarioHint =>
+      'Szenario-Details im schreibgeschützten Modus anzeigen';
+
+  @override
   String get exportScenarioButton => 'Szenario exportieren';
 
   @override
@@ -1254,6 +1261,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get bodyMoonM => 'Mond M';
+
+  @override
+  String get bodySpacecraft => 'Raumfahrzeug';
+
+  @override
+  String get bodyIo => 'Io';
+
+  @override
+  String get bodyEuropa => 'Europa';
 
   @override
   String bodyNameCopyTemplate(String bodyName) {
@@ -2715,44 +2731,34 @@ class AppLocalizationsDe extends AppLocalizations {
       'Lagrange-Punkte und orbitale Stabilität';
 
   @override
-  String get experimentGalacticDanceName => 'Galaktischer Tanz';
+  String get experimentDoubleStarEclipseName => 'Doppelstern-Finsternis';
 
   @override
-  String get experimentGalacticDanceDescription =>
-      'Zwei Galaxien kollidieren und verschmelzen über kosmische Zeit';
+  String get experimentDoubleStarEclipseDescription =>
+      'Doppelsternsystem, in dem ein Stern regelmäßig den anderen verdeckt';
 
   @override
-  String get experimentGalacticDanceDuration => '1 Milliarde Jahre';
+  String get experimentDoubleStarEclipseDuration => '30 Tage';
 
   @override
-  String get experimentRingFormationName => 'Ringbildung';
+  String get experimentRoguePlanetName => 'Vagabundierender Planet';
 
   @override
-  String get experimentRingFormationDescription =>
-      'Wie sich Planetenringe aus zerstörten Monden bilden';
+  String get experimentRoguePlanetDescription =>
+      'Ein aus seinem System ausgestoßener Planet trifft auf ein neues Sonnensystem';
 
   @override
-  String get experimentRingFormationDuration => '1000 Jahre';
+  String get experimentRoguePlanetDuration => '500 Jahre';
 
   @override
-  String get experimentCometTrajectoryName => 'Kometenbahn';
+  String get experimentGravitationalSlingshotName => 'Gravitationsschleuder';
 
   @override
-  String get experimentCometTrajectoryDescription =>
-      'Hochelliptische Umlaufbahn zeigt Erhaltungsgesetze';
+  String get experimentGravitationalSlingshotDescription =>
+      'Ein Raumfahrzeug nutzt Jupiters Mond Io, um Geschwindigkeit zu gewinnen und Europa zu erreichen';
 
   @override
-  String get experimentCometTrajectoryDuration => '200 Jahre';
-
-  @override
-  String get experimentStellarNurseryName => 'Sternkinderstube';
-
-  @override
-  String get experimentStellarNurseryDescription =>
-      'Sternbildung aus kollabierenden Gaswolken';
-
-  @override
-  String get experimentStellarNurseryDuration => '10 Millionen Jahre';
+  String get experimentGravitationalSlingshotDuration => '2 Jahre';
 
   @override
   String get experimentDifficultyAdvanced => 'fortgeschritten';
@@ -2770,4 +2776,44 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get unknownValue => 'Unbekannt';
+
+  @override
+  String get bodyPrimaryStar => 'Hauptstern';
+
+  @override
+  String get bodySecondaryStar => 'Nebenstern';
+
+  @override
+  String get bodyInnerRockyPlanet => 'Innerer Gesteinsplanet';
+
+  @override
+  String get bodyHabitablePlanet => 'Bewohnbarer Planet';
+
+  @override
+  String get bodyGasGiant => 'Gasriese';
+
+  @override
+  String get bodyIceGiant => 'Eisriese';
+
+  @override
+  String get bodyRoguePlanet => 'Vagabundierender Planet';
+
+  @override
+  String get authorGravitonPhysicsTeam => 'Graviton-Physikteam';
+
+  @override
+  String get doubleStarEclipseScenarioDescription =>
+      'Beobachten Sie, wie zwei Sterne in einem engen Doppelsternsystem umeinander kreisen. Sehen Sie zu, wie der kleinere Sekundärstern regelmäßig vor dem größeren Hauptstern vorbeizieht und periodische Finsternisse verursacht. Dies demonstriert stellare Photometrie, binäre Orbitalmechanik und wie Astronomen mit ähnlichen Transitmethoden Exoplaneten entdecken.';
+
+  @override
+  String get doubleStarEclipseEducationalFocus =>
+      'Doppelsterne, Finsternisse, stellare Photometrie';
+
+  @override
+  String get roguePlanetScenarioDescription =>
+      'Ein stabiles Sonnensystem mit gut verteilten Planetenbahnen begegnet einem massiven vagabundierenden Planeten, der sich aus dem interstellaren Raum nähert. Beobachten Sie, wie die Schwerkraft des Eindringlings das empfindliche Orbitalgleichgewicht stört und möglicherweise Planeten ausstößt oder chaotische Gravitationswechselwirkungen erzeugt. Dieses Szenario demonstriert die Dynamik von Planetensystemen, Gravitationsschleudereffekte und wie vagabundierende Planeten ganze Sonnensysteme umgestalten können.';
+
+  @override
+  String get roguePlanetEducationalFocus =>
+      'Vagabundierende Planeten, Gravitationsbegegnungen, orbitale Störung';
 }

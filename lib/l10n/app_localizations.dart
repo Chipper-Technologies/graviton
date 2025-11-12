@@ -1268,6 +1268,18 @@ abstract class AppLocalizations {
   /// **'Custom gravitational scenario'**
   String get customScenarioDescription;
 
+  /// Button text to view a scenario
+  ///
+  /// In en, this message translates to:
+  /// **'View Scenario'**
+  String get viewScenarioButton;
+
+  /// Accessibility hint for view scenario action
+  ///
+  /// In en, this message translates to:
+  /// **'View scenario details in read-only mode'**
+  String get viewScenarioHint;
+
   /// Button text to export a scenario
   ///
   /// In en, this message translates to:
@@ -2231,6 +2243,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Moon M'**
   String get bodyMoonM;
+
+  /// Name for spacecraft in gravitational slingshot scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Spacecraft'**
+  String get bodySpacecraft;
+
+  /// Name for Jupiter's moon Io
+  ///
+  /// In en, this message translates to:
+  /// **'Io'**
+  String get bodyIo;
+
+  /// Name for Jupiter's moon Europa
+  ///
+  /// In en, this message translates to:
+  /// **'Europa'**
+  String get bodyEuropa;
 
   /// Template for duplicated body name
   ///
@@ -4726,77 +4756,59 @@ abstract class AppLocalizations {
   /// **'Lagrange Points and Orbital Stability'**
   String get trojanAsteroidsEducationalFocus;
 
-  /// Name for galactic dance experimental scenario
+  /// Name for double star eclipse experimental scenario
   ///
   /// In en, this message translates to:
-  /// **'Galactic Dance'**
-  String get experimentGalacticDanceName;
+  /// **'Double Star Eclipse'**
+  String get experimentDoubleStarEclipseName;
 
-  /// Description for galactic dance experimental scenario
+  /// Description for double star eclipse experimental scenario
   ///
   /// In en, this message translates to:
-  /// **'Two galaxies colliding and merging over cosmic time'**
-  String get experimentGalacticDanceDescription;
+  /// **'Binary star system where one star regularly eclipses the other'**
+  String get experimentDoubleStarEclipseDescription;
 
-  /// Expected duration for galactic dance experiment
+  /// Expected duration for double star eclipse experiment
   ///
   /// In en, this message translates to:
-  /// **'1 billion years'**
-  String get experimentGalacticDanceDuration;
+  /// **'30 days'**
+  String get experimentDoubleStarEclipseDuration;
 
-  /// Name for ring formation experimental scenario
+  /// Name for rogue planet experimental scenario
   ///
   /// In en, this message translates to:
-  /// **'Ring Formation'**
-  String get experimentRingFormationName;
+  /// **'Rogue Planet'**
+  String get experimentRoguePlanetName;
 
-  /// Description for ring formation experimental scenario
+  /// Description for rogue planet experimental scenario
   ///
   /// In en, this message translates to:
-  /// **'How planetary rings form from disrupted moons'**
-  String get experimentRingFormationDescription;
+  /// **'A planet ejected from its system encounters a new solar system'**
+  String get experimentRoguePlanetDescription;
 
-  /// Expected duration for ring formation experiment
+  /// Expected duration for rogue planet experiment
   ///
   /// In en, this message translates to:
-  /// **'1000 years'**
-  String get experimentRingFormationDuration;
+  /// **'500 years'**
+  String get experimentRoguePlanetDuration;
 
-  /// Name for comet trajectory experimental scenario
+  /// Name for gravitational slingshot experimental scenario
   ///
   /// In en, this message translates to:
-  /// **'Comet Trajectory'**
-  String get experimentCometTrajectoryName;
+  /// **'Gravitational Slingshot'**
+  String get experimentGravitationalSlingshotName;
 
-  /// Description for comet trajectory experimental scenario
+  /// Description for gravitational slingshot experimental scenario
   ///
   /// In en, this message translates to:
-  /// **'Highly elliptical orbit showing conservation laws'**
-  String get experimentCometTrajectoryDescription;
+  /// **'A spacecraft uses Jupiter\'s moon Io to gain speed and reach Europa'**
+  String get experimentGravitationalSlingshotDescription;
 
-  /// Expected duration for comet trajectory experiment
+  /// Expected duration for gravitational slingshot experiment
   ///
   /// In en, this message translates to:
-  /// **'200 years'**
-  String get experimentCometTrajectoryDuration;
-
-  /// Name for stellar nursery experimental scenario
-  ///
-  /// In en, this message translates to:
-  /// **'Stellar Nursery'**
-  String get experimentStellarNurseryName;
-
-  /// Description for stellar nursery experimental scenario
-  ///
-  /// In en, this message translates to:
-  /// **'Star formation from collapsing gas clouds'**
-  String get experimentStellarNurseryDescription;
-
-  /// Expected duration for stellar nursery experiment
-  ///
-  /// In en, this message translates to:
-  /// **'10 million years'**
-  String get experimentStellarNurseryDuration;
+  /// **'2 years'**
+  String get experimentGravitationalSlingshotDuration;
 
   /// Advanced difficulty level for experimental scenarios
   ///
@@ -4827,6 +4839,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown'**
   String get unknownValue;
+
+  /// Name for primary star in double star eclipse scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Primary Star'**
+  String get bodyPrimaryStar;
+
+  /// Name for secondary star in double star eclipse scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary Star'**
+  String get bodySecondaryStar;
+
+  /// Name for inner rocky planet in rogue planet scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Inner Rocky Planet'**
+  String get bodyInnerRockyPlanet;
+
+  /// Name for habitable planet in rogue planet scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Habitable Planet'**
+  String get bodyHabitablePlanet;
+
+  /// Name for gas giant planet in rogue planet scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Gas Giant'**
+  String get bodyGasGiant;
+
+  /// Name for ice giant planet in rogue planet scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Ice Giant'**
+  String get bodyIceGiant;
+
+  /// Name for rogue planet in rogue planet scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Rogue Planet'**
+  String get bodyRoguePlanet;
+
+  /// Author name for experimental physics scenarios
+  ///
+  /// In en, this message translates to:
+  /// **'Graviton Physics Team'**
+  String get authorGravitonPhysicsTeam;
+
+  /// Detailed description for double star eclipse scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Watch as two stars orbit each other in a close binary system. Observe how the smaller secondary star regularly passes in front of the larger primary star, causing periodic eclipses. This demonstrates stellar photometry, binary orbital mechanics, and how astronomers discover exoplanets using similar transit methods.'**
+  String get doubleStarEclipseScenarioDescription;
+
+  /// Educational focus for double star eclipse scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Binary stars, eclipses, stellar photometry'**
+  String get doubleStarEclipseEducationalFocus;
+
+  /// Detailed description for rogue planet scenario
+  ///
+  /// In en, this message translates to:
+  /// **'A stable solar system with well-spaced planetary orbits encounters a massive rogue planet approaching from interstellar space. Watch as the intruder\'s gravity disrupts the delicate orbital balance, potentially ejecting planets or creating chaotic gravitational interactions. This scenario demonstrates planetary system dynamics, gravitational slingshot effects, and how rogue planets can reshape entire solar systems.'**
+  String get roguePlanetScenarioDescription;
+
+  /// Educational focus for rogue planet scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Rogue planets, gravitational encounters, orbital disruption'**
+  String get roguePlanetEducationalFocus;
 }
 
 class _AppLocalizationsDelegate

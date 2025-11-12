@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/haptics/haptic_floating_action_button.dart';
@@ -51,7 +52,7 @@ class _ScenarioSelectionScreenState extends State<ScenarioSelectionScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundBlack,
+      backgroundColor: AppColors.transparentColor,
       extendBodyBehindAppBar: true,
       appBar: HapticAppBar(
         title: l10n.selectScenarioTooltip,
@@ -59,36 +60,44 @@ class _ScenarioSelectionScreenState extends State<ScenarioSelectionScreen> {
       ),
       floatingActionButton: _currentTabIndex == 1 ? _buildFAB(context) : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: SafeArea(
-        child: GravitonTabbedView(
-          onTabChanged: (index) {
-            setState(() {
-              _currentTabIndex = index;
-            });
-          },
-          tabs: [
-            GravitonTab(
-              icon: Icons.explore,
-              label:
-                  AppLocalizations.of(context)?.scenarioTabPresets ?? 'Presets',
-            ),
-            GravitonTab(
-              icon: Icons.palette,
-              label:
-                  AppLocalizations.of(context)?.scenarioTabCustom ?? 'Custom',
-            ),
-          ],
-          children: [
-            PresetScenariosTab(
-              currentScenario: widget.currentScenario,
-              onScenarioSelected: widget.onScenarioSelected,
-            ),
-            CustomScenariosTab(
-              onScenarioSelected: widget.onScenarioSelected,
-              onCustomScenarioSelected: widget.onCustomScenarioSelected,
-              scrollController: _customTabScrollController,
-            ),
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          color: AppColors.uiBlack.withValues(
+            alpha: AppTypography.opacityNearlyOpaque,
+          ),
+        ),
+        child: SafeArea(
+          child: GravitonTabbedView(
+            onTabChanged: (index) {
+              setState(() {
+                _currentTabIndex = index;
+              });
+            },
+            tabs: [
+              GravitonTab(
+                icon: Icons.explore,
+                label:
+                    AppLocalizations.of(context)?.scenarioTabPresets ??
+                    'Presets',
+              ),
+              GravitonTab(
+                icon: Icons.palette,
+                label:
+                    AppLocalizations.of(context)?.scenarioTabCustom ?? 'Custom',
+              ),
+            ],
+            children: [
+              PresetScenariosTab(
+                currentScenario: widget.currentScenario,
+                onScenarioSelected: widget.onScenarioSelected,
+              ),
+              CustomScenariosTab(
+                onScenarioSelected: widget.onScenarioSelected,
+                onCustomScenarioSelected: widget.onCustomScenarioSelected,
+                scrollController: _customTabScrollController,
+              ),
+            ],
+          ),
         ),
       ),
     );
