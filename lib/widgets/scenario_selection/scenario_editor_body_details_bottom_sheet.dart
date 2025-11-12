@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -86,6 +87,10 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
   // Track unsaved changes to prevent accidental closing
   bool _hasUnsavedChanges = false;
+
+  // Auto-save mechanism for body changes
+  Timer? _autoSaveTimer;
+  static const Duration _autoSaveDelay = Duration(milliseconds: 500);
 
   // Store the original body to compare against
   late Body _originalBody;
@@ -231,6 +236,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
   @override
   void dispose() {
+    _autoSaveTimer?.cancel();
     _nameController.dispose();
     _massController.dispose();
     _radiusController.dispose();
@@ -325,30 +331,6 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                         color: AppColors.uiWhite,
                       ),
                       overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  // Action buttons
-                  // Save button (always shown)
-                  Semantics(
-                    button: true,
-                    label: widget.isAddMode
-                        ? l10n.saveNewBodyAccessibility
-                        : l10n.saveChangesToBodyAccessibility,
-                    hint: widget.isAddMode
-                        ? l10n.saveNewBodyHint
-                        : l10n.saveChangesToBodyHint,
-                    child: TextButton(
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        _showSaveConfirmation();
-                      },
-                      child: Text(
-                        l10n.saveButton,
-                        style: AppTypography.mediumText.copyWith(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
                     ),
                   ),
                   // 3-dot menu for edit mode actions (only show if there are actions available)
@@ -488,6 +470,37 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         Navigator.pop(context);
         widget.onDelete?.call();
       }
+    }
+  }
+
+  /// Triggers auto-save with a debounce delay
+  void _triggerAutoSave() {
+    _autoSaveTimer?.cancel();
+    _autoSaveTimer = Timer(_autoSaveDelay, () {
+      if (mounted && _hasUnsavedChanges) {
+        _autoSaveBody();
+      }
+    });
+  }
+
+  /// Auto-save the body without user interaction
+  void _autoSaveBody() {
+    try {
+      // Get the current body state with all updates
+      final currentBody = _getCurrentBodyState(context);
+
+      // Clear unsaved changes flag since we're saving
+      if (mounted) {
+        setState(() {
+          _hasUnsavedChanges = false;
+        });
+
+        // Signal save to parent
+        widget.onSave?.call(currentBody);
+      }
+    } catch (e) {
+      // Don't show errors for auto-save, just log them
+      debugPrint('Auto-save failed: $e');
     }
   }
 
@@ -1190,6 +1203,11 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         setState(() {
           _hasUnsavedChanges = hasChanges;
         });
+
+        // Trigger auto-save if there are changes
+        if (hasChanges) {
+          _triggerAutoSave();
+        }
       }
 
       // Log analytics for body editing (but only if there's an actual change)

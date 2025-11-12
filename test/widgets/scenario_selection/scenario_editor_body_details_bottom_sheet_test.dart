@@ -86,8 +86,8 @@ void main() {
           ),
         );
 
-        // Should show Save button in edit mode
-        expect(find.text('Save'), findsOneWidget);
+        // Should NOT show Save button due to auto-save functionality
+        expect(find.text('Save'), findsNothing);
 
         // Should show 3-dot menu button
         expect(find.byIcon(Icons.more_vert), findsOneWidget);
@@ -155,7 +155,7 @@ void main() {
         expect(deleteCalled, isTrue);
       });
 
-      testWidgets('calls onSave when save button tapped in edit mode', (
+      testWidgets('auto-saves when body properties are modified', (
         WidgetTester tester,
       ) async {
         Body? savedBody;
@@ -170,13 +170,20 @@ void main() {
           ),
         );
 
-        // Tap save button
-        await tester.tap(find.text('Save'));
+        // Switch to Edit tab first to access text fields
+        await tester.tap(find.text('Edit'));
+        await tester.pumpAndSettle();
+
+        // Modify a property to trigger auto-save
+        await tester.enterText(find.byType(TextField).first, 'Modified Name');
         await tester.pump();
 
-        // Verify that a body was saved with expected properties
+        // Wait for auto-save delay to trigger
+        await tester.pump(const Duration(seconds: 1));
+
+        // Verify that a body was saved with the modified properties
         expect(savedBody, isNotNull);
-        expect(savedBody?.name, equals(testBody.name));
+        expect(savedBody?.name, equals('Modified Name'));
         expect(savedBody?.bodyType, equals(testBody.bodyType));
       });
     });
@@ -196,8 +203,8 @@ void main() {
           ),
         );
 
-        // Should show Save button in add mode
-        expect(find.text('Save'), findsOneWidget);
+        // Should NOT show Save button due to auto-save functionality
+        expect(find.text('Save'), findsNothing);
 
         // Should NOT show 3-dot menu (only appears in edit mode)
         expect(find.byIcon(Icons.more_vert), findsNothing);
@@ -225,7 +232,7 @@ void main() {
         expect(find.byType(TextField), findsWidgets);
       });
 
-      testWidgets('calls onSave when save button tapped', (
+      testWidgets('auto-saves when properties are modified in add mode', (
         WidgetTester tester,
       ) async {
         Body? savedBody;
@@ -241,13 +248,16 @@ void main() {
           ),
         );
 
-        // Tap save button
-        await tester.tap(find.text('Save'));
+        // Make a change to trigger auto-save
+        await tester.enterText(find.byType(TextField).first, 'New Body Name');
         await tester.pump();
+
+        // Wait for auto-save delay to trigger
+        await tester.pump(const Duration(seconds: 1));
 
         // Verify that a body was saved and has the expected basic properties
         expect(savedBody, isNotNull);
-        expect(savedBody?.name, equals(testBody.name));
+        expect(savedBody?.name, equals('New Body Name'));
         expect(savedBody?.bodyType, equals(testBody.bodyType));
         expect(savedBody?.color, equals(testBody.color));
 
@@ -286,9 +296,8 @@ void main() {
         await tester.enterText(textFields.first, 'New Planet');
         await tester.pump();
 
-        // Tap save button
-        await tester.tap(find.text('Save'));
-        await tester.pump();
+        // Auto-save should trigger after a delay
+        await tester.pump(const Duration(seconds: 1));
 
         expect(savedBody?.name, equals('New Planet'));
       });
@@ -324,7 +333,7 @@ void main() {
         expect(changedBody?.name, equals('Modified Planet'));
       });
 
-      testWidgets('allows closing after saving in add mode', (
+      testWidgets('allows closing after auto-saving in add mode', (
         WidgetTester tester,
       ) async {
         bool onSaveCalled = false;
@@ -345,9 +354,8 @@ void main() {
         await tester.enterText(textFields.first, 'New Planet');
         await tester.pump();
 
-        // Save the changes
-        await tester.tap(find.text('Save'));
-        await tester.pump();
+        // Wait for auto-save delay to trigger
+        await tester.pump(const Duration(seconds: 1));
 
         expect(onSaveCalled, isTrue);
       });
@@ -478,7 +486,7 @@ void main() {
     });
 
     group('Accessibility Tests', () {
-      testWidgets('save button has proper semantic labels in add mode', (
+      testWidgets('text fields have proper semantic labels in add mode', (
         WidgetTester tester,
       ) async {
         await tester.pumpWidget(
@@ -492,19 +500,16 @@ void main() {
           ),
         );
 
-        // Find the specific semantics widget for our save button
-        final saveButton = find.text('Save');
-        expect(saveButton, findsOneWidget);
+        // Verify no Save button exists due to auto-save functionality
+        expect(find.text('Save'), findsNothing);
 
-        // Check that our custom semantics are applied correctly
-        // We can verify the semantics through widget semantics debugging
+        // Check that text input fields have proper accessibility
+        expect(find.byType(TextField), findsWidgets);
+
         await tester.pumpAndSettle();
-
-        // Verify save button is present and accessible
-        expect(saveButton, findsOneWidget);
       });
 
-      testWidgets('save button has proper semantic labels in edit mode', (
+      testWidgets('controls have proper semantic labels in edit mode', (
         WidgetTester tester,
       ) async {
         await tester.pumpWidget(
@@ -517,13 +522,17 @@ void main() {
           ),
         );
 
-        // Find the specific save button
-        final saveButton = find.text('Save');
-        expect(saveButton, findsOneWidget);
-
-        // Verify save button is present and accessible
+        // Switch to Edit tab to access controls
+        await tester.tap(find.text('Edit'));
         await tester.pumpAndSettle();
-        expect(saveButton, findsOneWidget);
+
+        // Verify no Save button exists due to auto-save
+        expect(find.text('Save'), findsNothing);
+
+        // Check that input controls have proper accessibility
+        expect(find.byType(TextField), findsWidgets);
+
+        await tester.pumpAndSettle();
       });
 
       testWidgets('3-dot menu has proper semantic labels', (
@@ -578,28 +587,35 @@ void main() {
     });
 
     group('Haptic Feedback Tests', () {
-      testWidgets('save button triggers haptic feedback', (
+      testWidgets('auto-save functionality works without manual save', (
         WidgetTester tester,
       ) async {
+        Body? savedBody;
+
         await tester.pumpWidget(
           makeTestableWidget(
             ScenarioEditorBodyDetailsBottomSheet(
               body: testBody,
               isAddMode: true,
               onBodyChanged: (_) {},
-              onSave: (_) {},
+              onSave: (body) => savedBody = body,
             ),
           ),
         );
 
-        // Tap save button - haptic feedback is triggered internally
-        await tester.tap(find.text('Save'));
+        // Verify no Save button is present (auto-save functionality)
+        expect(find.text('Save'), findsNothing);
+
+        // Make a change to trigger auto-save
+        await tester.enterText(find.byType(TextField).first, 'Auto-saved Body');
         await tester.pump();
 
-        // Note: We can't easily test HapticFeedback.lightImpact() directly
-        // in unit tests without mocking the platform channel, but we can
-        // verify the button responds to taps
-        expect(find.text('Save'), findsOneWidget);
+        // Wait for auto-save delay to trigger
+        await tester.pump(const Duration(seconds: 1));
+
+        // Verify auto-save worked
+        expect(savedBody, isNotNull);
+        expect(savedBody?.name, equals('Auto-saved Body'));
       });
 
       testWidgets('3-dot menu triggers haptic feedback when items selected', (
@@ -630,7 +646,7 @@ void main() {
     });
 
     group('Analytics Tests', () {
-      testWidgets('save button logs correct analytics for add mode', (
+      testWidgets('auto-save triggers analytics for add mode', (
         WidgetTester tester,
       ) async {
         await tester.pumpWidget(
@@ -644,16 +660,19 @@ void main() {
           ),
         );
 
-        // Tap save button
-        await tester.tap(find.text('Save'));
+        // Make a change to trigger auto-save
+        await tester.enterText(find.byType(TextField).first, 'New Body');
         await tester.pump();
+
+        // Wait for auto-save delay to trigger
+        await tester.pump(const Duration(seconds: 1));
 
         // Note: Analytics events are logged but can't be easily verified
         // in unit tests without mocking FirebaseService
         // The test verifies the UI flow works correctly
       });
 
-      testWidgets('save button logs correct analytics for edit mode', (
+      testWidgets('auto-save triggers analytics for edit mode', (
         WidgetTester tester,
       ) async {
         await tester.pumpWidget(
@@ -666,9 +685,16 @@ void main() {
           ),
         );
 
-        // Tap save button
-        await tester.tap(find.text('Save'));
+        // Switch to Edit tab
+        await tester.tap(find.text('Edit'));
+        await tester.pumpAndSettle();
+
+        // Make a change to trigger auto-save
+        await tester.enterText(find.byType(TextField).first, 'Modified Body');
         await tester.pump();
+
+        // Wait for auto-save delay to trigger
+        await tester.pump(const Duration(seconds: 1));
 
         // Note: In edit mode, should log UIAction.bodyEdited
         // Analytics verification would require mocking
@@ -732,7 +758,7 @@ void main() {
     });
 
     group('Integration Tests', () {
-      testWidgets('complete workflow: save changes in edit mode', (
+      testWidgets('complete workflow: auto-save changes in edit mode', (
         WidgetTester tester,
       ) async {
         Body? savedBody;
@@ -747,13 +773,20 @@ void main() {
           ),
         );
 
-        // Save the body in edit mode
-        await tester.tap(find.text('Save'));
+        // Switch to Edit tab and modify a property
+        await tester.tap(find.text('Edit'));
+        await tester.pumpAndSettle();
+
+        // Make a change to trigger auto-save
+        await tester.enterText(find.byType(TextField).first, 'Modified Earth');
         await tester.pump();
+
+        // Wait for auto-save delay to trigger
+        await tester.pump(const Duration(seconds: 1));
 
         // Verify save was called
         expect(savedBody, isNotNull);
-        expect(savedBody?.name, equals('Test Earth'));
+        expect(savedBody?.name, equals('Modified Earth'));
         expect(savedBody?.bodyType, equals(BodyType.planet));
       });
 
@@ -958,7 +991,7 @@ void main() {
       });
 
       testWidgets(
-        'saves orbital placement correctly when save button pressed',
+        'auto-saves orbital placement correctly when parameters changed',
         (WidgetTester tester) async {
           Body? savedBody;
 
@@ -984,9 +1017,8 @@ void main() {
           // Verify orbital controls are visible
           expect(find.text('Central Body'), findsOneWidget);
 
-          // Tap Save button
-          await tester.tap(find.text('Save'));
-          await tester.pump();
+          // Wait for auto-save delay to trigger after orbital placement activation
+          await tester.pump(const Duration(seconds: 1));
 
           // Verify save callback was called with updated body
           expect(savedBody, isNotNull);
@@ -1131,10 +1163,8 @@ void main() {
         expect(find.text('Central Body'), findsOneWidget);
         expect(find.text('Cancel Orbital Placement'), findsOneWidget);
 
-        // Ensure save button is visible and tap it
-        await tester.ensureVisible(find.text('Save'));
-        await tester.tap(find.text('Save'));
-        await tester.pump();
+        // Wait for auto-save delay to trigger after orbital placement activation
+        await tester.pump(const Duration(seconds: 1));
 
         // Verify save callback was called and orbital placement state is persisted
         expect(savedBody, isNotNull);
@@ -1178,10 +1208,15 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Save the body directly without checking UI
-        await tester.ensureVisible(find.text('Save'));
-        await tester.tap(find.text('Save'));
+        // Make a small change to trigger auto-save and preserve orbital parameters
+        await tester.enterText(
+          find.byType(TextField).first,
+          'Test Planet Updated',
+        );
         await tester.pump();
+
+        // Wait for auto-save to trigger with the orbital parameters
+        await tester.pump(const Duration(seconds: 1));
 
         // Verify that orbital parameters are preserved in the saved body
         expect(savedBody, isNotNull);

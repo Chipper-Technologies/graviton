@@ -50,8 +50,8 @@ void main() {
         // Verify 3-dot menu button is displayed
         expect(find.byIcon(Icons.more_vert), findsOneWidget);
 
-        // Verify star icon is displayed
-        expect(find.byIcon(Icons.star), findsOneWidget);
+        // Verify palette icon is displayed
+        expect(find.byIcon(Icons.palette), findsOneWidget);
 
         // Verify check circle is NOT displayed when not selected
         expect(find.byIcon(Icons.check_circle), findsNothing);

@@ -46,8 +46,11 @@ void main() {
       // Reset
       mainTapped = false;
 
-      // Test edit button tap
-      await tester.tap(find.byIcon(Icons.edit));
+      // Test edit button tap - first tap 3-dot menu, then edit option
+      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.edit_outlined));
       await tester.pump();
 
       expect(mainTapped, isFalse);
@@ -137,8 +140,11 @@ void main() {
       expect(tapCount, equals(2));
       expect(editCount, equals(0));
 
-      // Edit button should work independently
-      await tester.tap(find.byIcon(Icons.edit));
+      // Edit button should work independently - first tap 3-dot menu, then edit option
+      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.edit_outlined));
       await tester.pump();
 
       expect(tapCount, equals(2)); // Unchanged

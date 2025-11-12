@@ -1,39 +1,40 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/services/custom_scenario_manager.dart';
-import 'package:graviton/state/app_state.dart';
-import 'package:graviton/theme/app_colors.dart';
-import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/utils/number_utils.dart';
-import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
-import 'package:graviton/widgets/haptics/haptic_text_button.dart';
-import 'package:graviton/widgets/haptics/haptic_floating_action_button.dart';
-import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
-import 'package:graviton/widgets/common/graviton_tabs.dart';
-import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
-import 'package:graviton/models/custom_scenario.dart';
-import 'package:graviton/models/scenario_metadata.dart';
-import 'package:graviton/models/scenario_physics_settings.dart';
-import 'package:graviton/models/particle_systems_config.dart';
-import 'package:graviton/models/objectives_config.dart';
-import 'package:graviton/models/body.dart';
-import 'package:graviton/services/scenario_serialization_service.dart';
-import 'package:graviton/services/custom_scenario_storage.dart';
-import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
-import 'package:vector_math/vector_math_64.dart' as vm;
+import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/models/body.dart';
+import 'package:graviton/models/custom_scenario.dart';
+import 'package:graviton/models/objectives_config.dart';
+import 'package:graviton/models/particle_systems_config.dart';
+import 'package:graviton/models/scenario_metadata.dart';
+import 'package:graviton/models/scenario_physics_settings.dart';
+import 'package:graviton/services/custom_scenario_manager.dart';
+import 'package:graviton/services/custom_scenario_storage.dart';
+import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/services/scenario_serialization_service.dart';
+import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart' as app_colors;
-import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/body_type_ranges.dart';
+import 'package:graviton/utils/number_utils.dart';
+import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
+import 'package:graviton/widgets/common/graviton_popup_menu.dart';
+import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/common/styled_text_field.dart';
-import 'package:graviton/widgets/scenario_selection/scenario_editor_body_list.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
+import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
+import 'package:graviton/widgets/haptics/haptic_floating_action_button.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
+import 'package:graviton/widgets/scenario_selection/scenario_editor_body_list.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_physics_panel.dart';
-import 'package:graviton/widgets/common/graviton_popup_menu.dart';
+import 'package:provider/provider.dart';
+import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Screen for creating and editing custom gravitational simulation scenarios
 class ScenarioEditorScreen extends StatefulWidget {
@@ -62,6 +63,10 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   bool _hasUnsavedChanges = false;
   bool _showFAB = true; // Show FAB by default on Setup tab (index 0)
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // Auto-save mechanism
+  Timer? _autoSaveTimer;
+  static const Duration _autoSaveDelay = Duration(seconds: 2);
 
   // Text controllers for metadata fields
   late TextEditingController _nameController;
@@ -101,9 +106,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     // Track tab changes for UI updates (FAB visibility, etc.)
     _tabController.addListener(() {
       if (_tabController.indexIsChanging && !_hasUnsavedChanges) {
-        setState(() {
-          _hasUnsavedChanges = true;
-        });
+        _markAsChanged();
       }
 
       // Log tab change analytics
@@ -184,6 +187,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
 
   @override
   void dispose() {
+    _autoSaveTimer?.cancel();
     _tabController.dispose();
     _setupTabScrollController.dispose();
     _nameController.dispose();
@@ -239,22 +243,6 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
           ),
           foregroundColor: AppColors.uiWhite,
           actions: [
-            // Save button
-            HapticTextButton(
-              onPressed: _hasUnsavedChanges
-                  ? () => _saveScenario(context, l10n)
-                  : null,
-              child: Text(
-                l10n.saveButton,
-                style: AppTypography.mediumText.copyWith(
-                  color: _hasUnsavedChanges
-                      ? AppColors.primaryColor
-                      : AppColors.uiWhite.withValues(
-                          alpha: AppTypography.opacityMedium,
-                        ),
-                ),
-              ),
-            ),
             // Export menu
             GravitonPopupMenu(
               accessibilityLabel: l10n.moreActionsAccessibility,
@@ -841,6 +829,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
                     difficulty: _metadata.difficulty,
                   );
                   _hasUnsavedChanges = true;
+                  _triggerAutoSave();
                 }),
               ),
 
@@ -865,6 +854,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
                     difficulty: _metadata.difficulty,
                   );
                   _hasUnsavedChanges = true;
+                  _triggerAutoSave();
                 }),
               ),
             ],
@@ -912,6 +902,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       _bodies = newBodies;
       _hasUnsavedChanges = true;
     });
+    _triggerAutoSave();
 
     // If all bodies are removed and user is on Physics or Preview tab, switch to Setup tab
     if (_bodies.isEmpty &&
@@ -927,6 +918,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       _physics = newPhysics;
       _hasUnsavedChanges = true;
     });
+    _triggerAutoSave();
   }
 
   void _onParticleSystemsChanged(ParticleSystemsConfig newParticleSystems) {
@@ -934,6 +926,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       _particleSystems = newParticleSystems;
       _hasUnsavedChanges = true;
     });
+    _triggerAutoSave();
   }
 
   void _addNewBody() {
@@ -1007,6 +1000,77 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       app_colors.AppColors.celestialLightBlue,
     ];
     return colors[_bodies.length % colors.length];
+  }
+
+  /// Triggers auto-save with a debounce delay
+  void _triggerAutoSave() {
+    _autoSaveTimer?.cancel();
+    _autoSaveTimer = Timer(_autoSaveDelay, () {
+      if (mounted && _hasUnsavedChanges) {
+        _autoSaveScenario();
+      }
+    });
+  }
+
+  /// Mark scenario as having unsaved changes and trigger auto-save
+  void _markAsChanged() {
+    setState(() {
+      _hasUnsavedChanges = true;
+    });
+    _triggerAutoSave();
+  }
+
+  /// Auto-save the scenario without user interaction
+  Future<void> _autoSaveScenario() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    try {
+      final scenario = _createCustomScenario();
+
+      // Log analytics for auto-save
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.scenarioSaved,
+        element: UIElement.scenarioEditor,
+        additionalParams: {
+          'scenario_editing': widget.isEditing,
+          'body_count': _bodies.length,
+          'scenario_name': _metadata.name,
+          'has_objectives': _objectives != null,
+          'save_type': 'auto',
+        },
+      );
+
+      // Save to local storage
+      await CustomScenarioStorage.saveScenario(scenario);
+
+      if (mounted) {
+        setState(() {
+          _hasUnsavedChanges = false;
+        });
+      }
+
+      // Log successful completion
+      FirebaseService.instance.logUIEventWithEnums(
+        widget.isEditing
+            ? UIAction.scenarioEditingCompleted
+            : UIAction.scenarioCreationCompleted,
+        element: UIElement.scenarioEditor,
+        additionalParams: {
+          'body_count': _bodies.length,
+          'scenario_name': _metadata.name,
+          'save_type': 'auto',
+        },
+      );
+    } catch (e) {
+      // Log error analytics but don't show user error for auto-save
+      FirebaseService.instance.logErrorEvent(
+        'scenario_auto_save_failed',
+        errorMessage: e.toString(),
+        context: 'scenario_editor',
+      );
+    }
   }
 
   Future<void> _saveScenario(

@@ -193,10 +193,9 @@ void main() {
         find.text('Details'),
         findsOneWidget,
       ); // Details tab should also be visible
-      expect(
-        find.text('Save'),
-        findsOneWidget,
-      ); // Save button should be present in bottom sheet
+
+      // Verify bottom sheet opened with body editor content
+      expect(find.byType(BottomSheet), findsOneWidget);
     });
 
     testWidgets('deletes body when delete button tapped', (

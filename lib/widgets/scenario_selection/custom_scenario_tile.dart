@@ -108,30 +108,6 @@ class CustomScenarioTile extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: AppTypography.spacingSmall),
-                    // Action buttons
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.star,
-                          size: AppTypography.iconSizeLarge,
-                          color: customColor.withValues(
-                            alpha: AppTypography.opacityMediumHigh,
-                          ),
-                        ),
-                        SizedBox(width: AppTypography.spacingXSmall),
-                        Text(
-                          l10n.customLabel,
-                          style: AppTypography.smallText.copyWith(
-                            color: customColor.withValues(
-                              alpha: AppTypography.opacityMediumHigh,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
                   ],
                 ),
               ),
