@@ -10,7 +10,7 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
-import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
+import 'package:graviton/widgets/common/graviton_popup_menu.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -209,33 +209,46 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
                     ),
                   ),
 
-                  // Action buttons
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Duplicate button
-                      HapticCircularButton.duplicate(
-                        onTap: () => _duplicateBody(index),
-                        semanticsLabel: AppLocalizations.of(
-                          context,
-                        )!.duplicateBodyNameTemplate(body.name),
-                        semanticsHint: AppLocalizations.of(
-                          context,
-                        )!.createACopyOfThisCelestialBodyEditorHint,
+                  // 3-dot menu for actions
+                  GravitonPopupMenu(
+                    accessibilityLabel: AppLocalizations.of(
+                      context,
+                    )!.moreActionsAccessibility,
+                    accessibilityHint: AppLocalizations.of(
+                      context,
+                    )!.moreActionsHint,
+                    analyticsElement: UIElement.scenarioEditor,
+                    additionalAnalyticsParams: {
+                      'body_name': body.name,
+                      'body_index': index.toString(),
+                    },
+                    menuItems: [
+                      GravitonMenuItemConfig(
+                        value: 'edit',
+                        labelKey: 'editBodyButton',
+                        hintKey: 'editBodyHint',
+                        icon: Icons.edit_outlined,
+                        onTap: () => _openBodyDetails(index),
                       ),
-
-                      SizedBox(width: AppTypography.spacingSmall),
-
-                      // Delete button (only if more than one body)
+                      GravitonMenuItemConfig(
+                        value: 'duplicate',
+                        labelKey: 'duplicateBodyTooltip',
+                        hintKey: 'duplicateBodyAccessibility',
+                        icon: Icons.content_copy_outlined,
+                        onTap: () => _duplicateBody(index),
+                      ),
+                      // Only show delete option if more than one body
                       if (widget.bodies.length > 1)
-                        HapticCircularButton.delete(
+                        GravitonMenuItemConfig(
+                          value: 'delete',
+                          labelKey: 'deleteBodyTooltip',
+                          hintKey: 'deleteBodyAccessibility',
+                          icon: Icons.delete_outline,
+                          iconColor: AppColors.accretionRed,
+                          borderColor: AppColors.accretionRed.withValues(
+                            alpha: AppColors.alphaMediumVisible,
+                          ),
                           onTap: () async => await _deleteBody(index),
-                          semanticsLabel: AppLocalizations.of(
-                            context,
-                          )!.deleteBodyNameTemplate(body.name),
-                          semanticsHint: AppLocalizations.of(
-                            context,
-                          )!.removeThisCelestialBodyFromTheScenarioEditorHint,
                         ),
                     ],
                   ),

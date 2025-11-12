@@ -566,6 +566,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editScenarioHint => 'Edit this scenario';
 
   @override
+  String get editBodyButton => 'Edit body';
+
+  @override
+  String get editBodyHint => 'Edit this celestial body';
+
+  @override
   String get deleteScenarioButton => 'Delete scenario';
 
   @override
@@ -1152,6 +1158,30 @@ class AppLocalizationsEn extends AppLocalizations {
       other: '$count Bodies',
       one: '1 Body',
       zero: 'No Bodies',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String scenariosHeaderPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Scenarios',
+      one: '1 Scenario',
+      zero: 'No Scenarios',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String experimentsHeaderPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Experiments',
+      one: '1 Experiment',
+      zero: 'No Experiments',
     );
     return '$_temp0';
   }

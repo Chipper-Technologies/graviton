@@ -139,18 +139,64 @@ void main() {
         ),
       );
 
-      // Find and tap duplicate button for first body
-      final duplicateButtons = find.byIcon(Icons.content_copy);
-      expect(duplicateButtons, findsAtLeastNWidgets(1));
+      // Find and tap the 3-dot menu button to open the menu
+      final menuButton = find.byIcon(Icons.more_vert).first;
+      expect(menuButton, findsOneWidget);
 
-      await tester.tap(duplicateButtons.first);
-      await tester.pump();
+      await tester.tap(menuButton);
+      await tester.pumpAndSettle();
+
+      // Find and tap duplicate menu item
+      final duplicateMenuItem = find.byIcon(Icons.content_copy_outlined);
+      expect(duplicateMenuItem, findsOneWidget);
+
+      await tester.tap(duplicateMenuItem);
+      await tester.pumpAndSettle();
 
       // Should have called onBodiesChanged with duplicated body
       expect(updatedBodies.length, equals(3));
       expect(updatedBodies.last.name, equals('Test Earth Copy'));
       expect(updatedBodies.last.mass, equals(testBodies.first.mass));
       expect(updatedBodies.last.color, equals(testBodies.first.color));
+    });
+
+    testWidgets('opens body editor when edit button tapped', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        makeTestableWidget(
+          ScenarioEditorBodyList(
+            bodies: testBodies,
+            onBodiesChanged: (bodies) {},
+            onAddBody: () {},
+          ),
+        ),
+      );
+
+      // Find and tap the 3-dot menu button to open the menu
+      final menuButton = find.byIcon(Icons.more_vert).first;
+      expect(menuButton, findsOneWidget);
+
+      await tester.tap(menuButton);
+      await tester.pumpAndSettle();
+
+      // Find and tap edit menu item
+      final editMenuItem = find.byIcon(Icons.edit_outlined);
+      expect(editMenuItem, findsOneWidget);
+
+      await tester.tap(editMenuItem);
+      await tester.pumpAndSettle();
+
+      // Should open the body details bottom sheet in edit mode
+      expect(find.text('Edit'), findsOneWidget); // Edit tab should be visible
+      expect(
+        find.text('Details'),
+        findsOneWidget,
+      ); // Details tab should also be visible
+      expect(
+        find.text('Save'),
+        findsOneWidget,
+      ); // Save button should be present in bottom sheet
     });
 
     testWidgets('deletes body when delete button tapped', (
@@ -168,11 +214,18 @@ void main() {
         ),
       );
 
-      // Find and tap delete button for first body
-      final deleteButtons = find.byIcon(Icons.delete_outline);
-      expect(deleteButtons, findsAtLeastNWidgets(1));
+      // Find and tap the 3-dot menu button to open the menu
+      final menuButton = find.byIcon(Icons.more_vert).first;
+      expect(menuButton, findsOneWidget);
 
-      await tester.tap(deleteButtons.first);
+      await tester.tap(menuButton);
+      await tester.pumpAndSettle();
+
+      // Find and tap delete menu item
+      final deleteMenuItem = find.byIcon(Icons.delete_outline);
+      expect(deleteMenuItem, findsOneWidget);
+
+      await tester.tap(deleteMenuItem);
       await tester.pumpAndSettle();
 
       // Confirm deletion in dialog
@@ -197,11 +250,19 @@ void main() {
         ),
       );
 
-      // Should not show delete button
+      // Find the 3-dot menu button
+      final menuButton = find.byIcon(Icons.more_vert);
+      expect(menuButton, findsOneWidget);
+
+      // Open the menu
+      await tester.tap(menuButton);
+      await tester.pumpAndSettle();
+
+      // Should not show delete menu item when only one body exists
       expect(find.byIcon(Icons.delete_outline), findsNothing);
 
-      // But should still show duplicate button
-      expect(find.byIcon(Icons.content_copy), findsOneWidget);
+      // But should still show duplicate menu item
+      expect(find.byIcon(Icons.content_copy_outlined), findsOneWidget);
     });
 
     testWidgets('displays body count in header', (WidgetTester tester) async {

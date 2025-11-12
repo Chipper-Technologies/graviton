@@ -99,6 +99,22 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
             bottomSpacing: AppTypography.spacingMedium,
           ),
 
+          // Scenarios count header
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppTypography.spacingLarge,
+            ),
+            child: Text(
+              l10n.scenariosHeaderPlural(_customScenarios.length),
+              style: AppTypography.titleText.copyWith(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityHigh,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: AppTypography.spacingMedium),
+
           // Saved scenarios list
           if (_customScenarios.isEmpty)
             _buildEmptyState(l10n)
@@ -123,19 +139,23 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
             bottomSpacing: AppTypography.spacingMedium,
           ),
 
-          // Experiments subtitle
+          // Experiments count header
           Padding(
-            padding: EdgeInsets.only(bottom: AppTypography.spacingMedium),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppTypography.spacingLarge,
+            ),
             child: Text(
-              l10n.experimentsSubtitle,
-              style: TextStyle(
-                fontSize: AppTypography.fontSizeSmall,
+              l10n.experimentsHeaderPlural(
+                ExperimentalScenarioConfig.experiments.length,
+              ),
+              style: AppTypography.titleText.copyWith(
                 color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityMedium,
+                  alpha: AppTypography.opacityHigh,
                 ),
               ),
             ),
           ),
+          SizedBox(height: AppTypography.spacingMedium),
 
           // Experiments grid
           _buildExperimentsGrid(context),
@@ -455,7 +475,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         50.0; // Solar masses (consistent with solar system scenario)
     const jupiterMass =
         1.6; // Earth masses (scaled appropriately for stability)
-    const jupiterOrbitRadius = 35.0; // Increased for more stable dynamics
+    const jupiterOrbitRadius = 35.0;
     const sunRadius = 3.0;
     const jupiterRadius = 2.2;
 
@@ -514,7 +534,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
 
     // Add several L4 Trojan asteroids
     for (int i = 0; i < 4; i++) {
-      final offset = (i - 1.5) * 2.5; // Increased spacing to prevent merging
+      final offset = (i - 1.5) * 2.5;
       final perturbX = offset * math.cos(l4Angle + math.pi / 2);
       final perturbY = offset * math.sin(l4Angle + math.pi / 2);
 
@@ -523,8 +543,8 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
           name: l10n.trojanAsteroidsL4Name(i + 1),
           position: [l4X + perturbX, l4Y + perturbY, 0.0],
           velocity: [l4VelX, l4VelY, 0.0],
-          mass: 0.008, // Reduced mass to minimize gravitational interactions
-          radius: 0.25, // Increased radius for better collision detection
+          mass: 0.008,
+          radius: 0.25,
           color: ColorUtils.colorToHexRGB(
             AppColors.asteroidRockyBrown,
           ), // Brown - rocky asteroid color
@@ -547,7 +567,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
 
     // Add several L5 Trojan asteroids
     for (int i = 0; i < 4; i++) {
-      final offset = (i - 1.5) * 2.5; // Increased spacing to prevent merging
+      final offset = (i - 1.5) * 2.5;
       final perturbX = offset * math.cos(l5Angle + math.pi / 2);
       final perturbY = offset * math.sin(l5Angle + math.pi / 2);
 

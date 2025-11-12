@@ -67,10 +67,14 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
 
+  // Scroll controller for setup tab
+  late ScrollController _setupTabScrollController;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _setupTabScrollController = ScrollController();
 
     // Initialize text controllers before scenario initialization
     _nameController = TextEditingController();
@@ -181,6 +185,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   @override
   void dispose() {
     _tabController.dispose();
+    _setupTabScrollController.dispose();
     _nameController.dispose();
     _descriptionController.dispose();
     super.dispose();
@@ -339,11 +344,14 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
                 onPressed: _addNewBody,
                 backgroundColor: AppColors.primaryColor,
                 foregroundColor: AppColors.uiWhite,
+                elevation: 8,
                 icon: const Icon(Icons.add),
                 label: Text(
                   l10n.addBodyButton,
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
+                scrollController: _setupTabScrollController,
+                hideOnScroll: true,
               )
             : null,
       ),
@@ -807,6 +815,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   /// Build the Setup tab (Metadata + Bodies)
   Widget _buildSetupTab(BuildContext context, AppLocalizations l10n) {
     return SingleChildScrollView(
+      controller: _setupTabScrollController,
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

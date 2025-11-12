@@ -694,6 +694,14 @@
   "@editScenarioHint": {
     "description": "Accessibility hint for edit scenario button"
   },
+  "editBodyButton": "Edit body",
+  "@editBodyButton": {
+    "description": "Accessibility label for edit body button"
+  },
+  "editBodyHint": "Edit this celestial body",
+  "@editBodyHint": {
+    "description": "Accessibility hint for edit body button"
+  },
   "deleteScenarioButton": "Delete scenario",
   "@deleteScenarioButton": {
     "description": "Accessibility label for delete scenario button"
@@ -1526,6 +1534,26 @@
       "count": {
         "type": "int",
         "description": "Number of celestial bodies"
+      }
+    }
+  },
+  "scenariosHeaderPlural": "{count, plural, =0{No Scenarios} =1{1 Scenario} other{{count} Scenarios}}",
+  "@scenariosHeaderPlural": {
+    "description": "Header text showing number of scenarios with proper pluralization",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of scenarios"
+      }
+    }
+  },
+  "experimentsHeaderPlural": "{count, plural, =0{No Experiments} =1{1 Experiment} other{{count} Experiments}}",
+  "@experimentsHeaderPlural": {
+    "description": "Header text showing number of experiments with proper pluralization",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of experiments"
       }
     }
   },

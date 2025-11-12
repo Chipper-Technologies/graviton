@@ -541,6 +541,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get editScenarioHint => 'このシナリオを編集';
 
   @override
+  String get editBodyButton => '天体を編集';
+
+  @override
+  String get editBodyHint => 'この天体を編集';
+
+  @override
   String get deleteScenarioButton => 'シナリオを削除';
 
   @override
@@ -1103,6 +1109,30 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String bodiesHeaderPlural(int count) {
     return '天体';
+  }
+
+  @override
+  String scenariosHeaderPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count個のシナリオ',
+      one: '1つのシナリオ',
+      zero: 'シナリオなし',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String experimentsHeaderPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count個の実験',
+      one: '1つの実験',
+      zero: '実験なし',
+    );
+    return '$_temp0';
   }
 
   @override

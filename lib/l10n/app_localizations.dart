@@ -1094,6 +1094,18 @@ abstract class AppLocalizations {
   /// **'Edit this scenario'**
   String get editScenarioHint;
 
+  /// Accessibility label for edit body button
+  ///
+  /// In en, this message translates to:
+  /// **'Edit body'**
+  String get editBodyButton;
+
+  /// Accessibility hint for edit body button
+  ///
+  /// In en, this message translates to:
+  /// **'Edit this celestial body'**
+  String get editBodyHint;
+
   /// Accessibility label for delete scenario button
   ///
   /// In en, this message translates to:
@@ -2087,6 +2099,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =0{No Bodies} =1{1 Body} other{{count} Bodies}}'**
   String bodiesHeaderPlural(int count);
+
+  /// Header text showing number of scenarios with proper pluralization
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No Scenarios} =1{1 Scenario} other{{count} Scenarios}}'**
+  String scenariosHeaderPlural(int count);
+
+  /// Header text showing number of experiments with proper pluralization
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No Experiments} =1{1 Experiment} other{{count} Experiments}}'**
+  String experimentsHeaderPlural(int count);
 
   /// Description of bodies currently in simulation
   ///

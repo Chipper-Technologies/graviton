@@ -534,6 +534,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get editScenarioHint => '编辑此场景';
 
   @override
+  String get editBodyButton => '编辑天体';
+
+  @override
+  String get editBodyHint => '编辑此天体';
+
+  @override
   String get deleteScenarioButton => '删除场景';
 
   @override
@@ -1093,6 +1099,30 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String bodiesHeaderPlural(int count) {
     return '天体';
+  }
+
+  @override
+  String scenariosHeaderPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count个场景',
+      one: '1个场景',
+      zero: '无场景',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String experimentsHeaderPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count个实验',
+      one: '1个实验',
+      zero: '无实验',
+    );
+    return '$_temp0';
   }
 
   @override

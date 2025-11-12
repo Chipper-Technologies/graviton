@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
-import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/scenario_selection/custom_scenario_tile.dart';
 
 void main() {
@@ -48,9 +47,8 @@ void main() {
         // Verify the palette icon is displayed
         expect(find.byIcon(Icons.palette), findsOneWidget);
 
-        // Verify action buttons are displayed
-        expect(find.byIcon(Icons.edit), findsOneWidget);
-        expect(find.byIcon(Icons.delete_outline), findsOneWidget);
+        // Verify 3-dot menu button is displayed
+        expect(find.byIcon(Icons.more_vert), findsOneWidget);
 
         // Verify star icon is displayed
         expect(find.byIcon(Icons.star), findsOneWidget);
@@ -105,12 +103,21 @@ void main() {
       await tester.tap(find.byType(CustomScenarioTile));
       expect(tapped, true);
 
-      // Test edit button tap
-      await tester.tap(find.byIcon(Icons.edit));
+      // Test edit button tap through 3-dot menu
+      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.edit_outlined));
+      await tester.pumpAndSettle();
       expect(edited, true);
+
+      // Open menu again for delete test
+      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.pumpAndSettle();
 
       // Test delete button tap
       await tester.tap(find.byIcon(Icons.delete_outline));
+      await tester.pumpAndSettle();
       expect(deleted, true);
     });
 
@@ -263,15 +270,26 @@ void main() {
         ),
       );
 
-      // Test edit button multiple times
-      await tester.tap(find.byIcon(Icons.edit));
-      await tester.tap(find.byIcon(Icons.edit));
+      // Test edit button multiple times through 3-dot menu
+      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.edit_outlined));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.edit_outlined));
+      await tester.pumpAndSettle();
+
       expect(editCount, 2);
       expect(deleteCount, 0);
       expect(tapCount, 0);
 
-      // Test delete button
+      // Test delete button through menu
+      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(Icons.delete_outline));
+      await tester.pumpAndSettle();
       expect(deleteCount, 1);
       expect(editCount, 2);
       expect(tapCount, 0);
@@ -283,7 +301,7 @@ void main() {
       expect(deleteCount, 1);
     });
 
-    testWidgets('should display delete button with proper color', (
+    testWidgets('should display menu items with proper styling', (
       tester,
     ) async {
       await tester.pumpWidget(
@@ -298,35 +316,13 @@ void main() {
         ),
       );
 
-      final deleteIcon = tester.widget<Icon>(find.byIcon(Icons.delete_outline));
-      expect(deleteIcon.size, AppTypography.iconSizeMedium); // 16.0
-      expect(
-        deleteIcon.color,
-        AppColors.uiRed.withValues(alpha: AppTypography.opacityNearlyOpaque),
-      );
-    });
+      // Open the 3-dot menu
+      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.pumpAndSettle();
 
-    testWidgets('should display edit button with proper styling', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          child: CustomScenarioTile(
-            scenarioName: testScenarioName,
-            isSelected: false,
-            onTap: () {},
-            onEdit: () {},
-            onDelete: () {},
-          ),
-        ),
-      );
-
-      final editIcon = tester.widget<Icon>(find.byIcon(Icons.edit));
-      expect(editIcon.size, AppTypography.iconSizeMedium); // 16.0
-      expect(
-        editIcon.color,
-        AppColors.uiWhite.withValues(alpha: AppTypography.opacityVeryHigh),
-      );
+      // Verify menu items are present
+      expect(find.byIcon(Icons.edit_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.delete_outline), findsOneWidget);
     });
 
     testWidgets('should have proper accessibility properties', (tester) async {
@@ -344,7 +340,7 @@ void main() {
 
       // Verify the tile is tappable
       final inkWellFinder = find.byType(InkWell);
-      expect(inkWellFinder, findsOneWidget);
+      expect(inkWellFinder, findsWidgets);
 
       // Verify the tile has proper semantics
       expect(find.byType(CustomScenarioTile), findsOneWidget);

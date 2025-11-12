@@ -542,6 +542,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get editScenarioHint => '이 시나리오 편집';
 
   @override
+  String get editBodyButton => '천체 편집';
+
+  @override
+  String get editBodyHint => '이 천체 편집';
+
+  @override
   String get deleteScenarioButton => '시나리오 삭제';
 
   @override
@@ -1105,6 +1111,30 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String bodiesHeaderPlural(int count) {
     return '천체';
+  }
+
+  @override
+  String scenariosHeaderPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count개 시나리오',
+      one: '1개 시나리오',
+      zero: '시나리오 없음',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String experimentsHeaderPlural(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count개 실험',
+      one: '1개 실험',
+      zero: '실험 없음',
+    );
+    return '$_temp0';
   }
 
   @override

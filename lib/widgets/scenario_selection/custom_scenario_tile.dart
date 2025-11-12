@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
-import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
+import 'package:graviton/widgets/common/graviton_popup_menu.dart';
 
 /// Widget for displaying custom scenarios with edit/delete actions
 ///
@@ -134,32 +135,32 @@ class CustomScenarioTile extends StatelessWidget {
                   ],
                 ),
               ),
-              // Edit and Delete buttons (vertically centered)
+              // 3-dot menu (only shown when not selected)
               if (!isSelected) ...[
                 SizedBox(width: AppTypography.spacingMedium),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Edit button
-                    HapticCircularButton.edit(
+                GravitonPopupMenu(
+                  accessibilityLabel: l10n.moreActionsAccessibility,
+                  accessibilityHint: l10n.moreActionsHint,
+                  analyticsElement: UIElement.customScenariosTab,
+                  additionalAnalyticsParams: {'scenario_name': scenarioName},
+                  menuItems: [
+                    GravitonMenuItemConfig(
+                      value: 'edit',
+                      labelKey: 'editScenarioButton',
+                      hintKey: 'editScenarioHint',
+                      icon: Icons.edit_outlined,
                       onTap: onEdit,
-                      semanticsLabel: AppLocalizations.of(
-                        context,
-                      )!.editScenarioButton,
-                      semanticsHint: AppLocalizations.of(
-                        context,
-                      )!.editScenarioHint,
                     ),
-                    SizedBox(width: AppTypography.spacingSmall),
-                    // Delete button
-                    HapticCircularButton.delete(
+                    GravitonMenuItemConfig(
+                      value: 'delete',
+                      labelKey: 'deleteScenarioButton',
+                      hintKey: 'deleteScenarioHint',
+                      icon: Icons.delete_outline,
+                      iconColor: AppColors.accretionRed,
+                      borderColor: AppColors.accretionRed.withValues(
+                        alpha: AppColors.alphaMediumVisible,
+                      ),
                       onTap: onDelete,
-                      semanticsLabel: AppLocalizations.of(
-                        context,
-                      )!.deleteScenarioButton,
-                      semanticsHint: AppLocalizations.of(
-                        context,
-                      )!.deleteScenarioHint,
                     ),
                   ],
                 ),
