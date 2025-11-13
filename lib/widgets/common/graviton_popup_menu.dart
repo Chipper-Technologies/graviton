@@ -1,32 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/models/graviton_menu_item_config.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
-
-/// Menu item configuration for GravitonPopupMenu
-class GravitonMenuItemConfig {
-  final String value;
-  final String labelKey;
-  final String hintKey;
-  final IconData icon;
-  final Color? iconColor;
-  final Color? borderColor;
-  final VoidCallback? onTap;
-
-  const GravitonMenuItemConfig({
-    required this.value,
-    required this.labelKey,
-    required this.hintKey,
-    required this.icon,
-    this.iconColor,
-    this.borderColor,
-    this.onTap,
-  });
-}
 
 /// A reusable popup menu widget following Graviton's design system
 ///

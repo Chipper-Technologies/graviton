@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/models/scenario_camera_parameters.dart';
 import 'package:graviton/services/cinematic_camera_controller.dart';
 import 'package:graviton/state/camera_state.dart';
 import 'package:graviton/state/simulation_state.dart';

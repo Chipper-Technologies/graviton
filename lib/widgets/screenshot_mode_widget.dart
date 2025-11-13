@@ -177,12 +177,10 @@ class ScreenshotModeWidget extends StatelessWidget {
                                   GravitonSnackBar.info(
                                     context: context,
                                     message: l10n.appliedPreset(
-                                      screenshotService
-                                          .getPresetDisplayName(
-                                            screenshotService
-                                                .currentPresetIndex,
-                                            l10n,
-                                          ),
+                                      screenshotService.getPresetDisplayName(
+                                        screenshotService.currentPresetIndex,
+                                        l10n,
+                                      ),
                                     ),
                                     duration: const Duration(seconds: 3),
                                     actionLabel: l10n.deactivate,

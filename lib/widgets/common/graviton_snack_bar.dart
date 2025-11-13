@@ -5,10 +5,10 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 
 /// A themed SnackBar widget that follows Graviton's cosmic design system
-/// 
+///
 /// This widget provides consistent styling across the app with severity-based
 /// theming including appropriate colors, icons, and visual feedback.
-/// 
+///
 /// Usage examples:
 /// ```dart
 /// GravitonSnackBar.show(
@@ -16,7 +16,7 @@ import 'package:graviton/theme/app_typography.dart';
 ///   message: 'Body added to scenario successfully',
 ///   severity: SnackBarSeverity.success,
 /// )
-/// 
+///
 /// GravitonSnackBar.show(
 ///   context: context,
 ///   message: 'Failed to save scenario',
@@ -39,7 +39,7 @@ class GravitonSnackBar {
     DismissDirection dismissDirection = DismissDirection.down,
   }) {
     final theme = _getThemeForSeverity(severity);
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: _buildContent(message, theme),

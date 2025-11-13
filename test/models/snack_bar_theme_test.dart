@@ -103,7 +103,10 @@ void main() {
       final stringRepresentation = testTheme.toString();
 
       expect(stringRepresentation, contains('SnackBarTheme('));
-      expect(stringRepresentation, contains('backgroundColor: $backgroundColor'));
+      expect(
+        stringRepresentation,
+        contains('backgroundColor: $backgroundColor'),
+      );
       expect(stringRepresentation, contains('borderColor: $borderColor'));
       expect(stringRepresentation, contains('textColor: $textColor'));
       expect(stringRepresentation, contains('iconColor: $iconColor'));

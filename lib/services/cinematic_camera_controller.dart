@@ -7,30 +7,12 @@ import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/predictive_orbital_config.dart';
+import 'package:graviton/models/scenario_camera_parameters.dart';
 import 'package:graviton/services/orbital_prediction_engine.dart';
 import 'package:graviton/state/camera_state.dart';
 import 'package:graviton/state/simulation_state.dart';
 import 'package:graviton/state/ui_state.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
-
-/// Camera parameters specific to different simulation scenarios
-class ScenarioCameraParameters {
-  final double safetyMargin;
-  final double minDistance;
-  final double maxDistance;
-  final double pitchSensitivity;
-  final int targetLockFrames;
-  final double orbitSpeed;
-
-  const ScenarioCameraParameters({
-    required this.safetyMargin,
-    required this.minDistance,
-    required this.maxDistance,
-    required this.pitchSensitivity,
-    required this.targetLockFrames,
-    required this.orbitSpeed,
-  });
-}
 
 /// Controller for cinematic camera techniques
 ///

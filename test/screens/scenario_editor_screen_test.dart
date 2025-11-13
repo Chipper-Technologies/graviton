@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/screens/scenario_editor_screen.dart';
-import 'package:graviton/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/screens/scenario_editor_screen.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/widgets/common/graviton_popup_menu.dart';
 import 'package:graviton/widgets/common/styled_text_field.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   group('ScenarioEditorScreen Tab Behavior', () {

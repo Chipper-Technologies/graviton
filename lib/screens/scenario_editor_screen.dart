@@ -8,6 +8,8 @@ import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/custom_scenario.dart';
+import 'package:graviton/models/dialog_action.dart';
+import 'package:graviton/models/graviton_menu_item_config.dart';
 import 'package:graviton/models/objectives_config.dart';
 import 'package:graviton/models/particle_systems_config.dart';
 import 'package:graviton/models/scenario_metadata.dart';
@@ -1157,10 +1159,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
 
   void _showErrorMessage(String message) {
     if (mounted) {
-      GravitonSnackBar.error(
-        context: context,
-        message: message,
-      );
+      GravitonSnackBar.error(context: context, message: message);
     }
   }
 

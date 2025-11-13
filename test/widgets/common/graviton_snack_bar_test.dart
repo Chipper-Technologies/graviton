@@ -9,7 +9,9 @@ import '../../test_utils.dart';
 void main() {
   group('GravitonSnackBar', () {
     group('Severity Theming', () {
-      testWidgets('displays info SnackBar with correct styling', (WidgetTester tester) async {
+      testWidgets('displays info SnackBar with correct styling', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -39,7 +41,9 @@ void main() {
         expect(iconWidget.color, AppColors.uiBlue);
       });
 
-      testWidgets('displays success SnackBar with correct styling', (WidgetTester tester) async {
+      testWidgets('displays success SnackBar with correct styling', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -63,11 +67,15 @@ void main() {
         expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
 
         // Verify success icon color (green)
-        final iconWidget = tester.widget<Icon>(find.byIcon(Icons.check_circle_outline));
+        final iconWidget = tester.widget<Icon>(
+          find.byIcon(Icons.check_circle_outline),
+        );
         expect(iconWidget.color, AppColors.uiStatusGreen);
       });
 
-      testWidgets('displays warning SnackBar with correct styling', (WidgetTester tester) async {
+      testWidgets('displays warning SnackBar with correct styling', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -91,11 +99,15 @@ void main() {
         expect(find.byIcon(Icons.warning_outlined), findsOneWidget);
 
         // Verify warning icon color (orange)
-        final iconWidget = tester.widget<Icon>(find.byIcon(Icons.warning_outlined));
+        final iconWidget = tester.widget<Icon>(
+          find.byIcon(Icons.warning_outlined),
+        );
         expect(iconWidget.color, AppColors.uiStatusOrange);
       });
 
-      testWidgets('displays error SnackBar with correct styling', (WidgetTester tester) async {
+      testWidgets('displays error SnackBar with correct styling', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -119,13 +131,17 @@ void main() {
         expect(find.byIcon(Icons.error_outline), findsOneWidget);
 
         // Verify error icon color (red)
-        final iconWidget = tester.widget<Icon>(find.byIcon(Icons.error_outline));
+        final iconWidget = tester.widget<Icon>(
+          find.byIcon(Icons.error_outline),
+        );
         expect(iconWidget.color, AppColors.uiRed);
       });
     });
 
     group('Action Buttons', () {
-      testWidgets('displays action button when provided', (WidgetTester tester) async {
+      testWidgets('displays action button when provided', (
+        WidgetTester tester,
+      ) async {
         bool actionPressed = false;
 
         await tester.pumpWidget(
@@ -162,7 +178,9 @@ void main() {
         expect(actionPressed, true);
       });
 
-      testWidgets('hides action button when not provided', (WidgetTester tester) async {
+      testWidgets('hides action button when not provided', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -189,7 +207,9 @@ void main() {
     });
 
     group('Duration and Dismissal', () {
-      testWidgets('uses custom duration when provided', (WidgetTester tester) async {
+      testWidgets('uses custom duration when provided', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -198,7 +218,9 @@ void main() {
                   GravitonSnackBar.show(
                     context: context,
                     message: 'Custom duration message',
-                    duration: const Duration(seconds: 10), // Long duration for testing
+                    duration: const Duration(
+                      seconds: 10,
+                    ), // Long duration for testing
                   );
                 },
                 child: const Text('Show SnackBar'),
@@ -209,13 +231,17 @@ void main() {
 
         await tester.tap(find.text('Show SnackBar'));
         await tester.pump(); // Initial pump to start animation
-        await tester.pump(const Duration(milliseconds: 100)); // Let animation start
+        await tester.pump(
+          const Duration(milliseconds: 100),
+        ); // Let animation start
 
         // SnackBar should be visible
         expect(find.text('Custom duration message'), findsOneWidget);
 
         // Verify the SnackBar has the custom duration by checking it's still there after default duration
-        await tester.pump(const Duration(seconds: 4)); // More than default 3 seconds
+        await tester.pump(
+          const Duration(seconds: 4),
+        ); // More than default 3 seconds
         expect(find.text('Custom duration message'), findsOneWidget);
       });
 
@@ -244,7 +270,10 @@ void main() {
         expect(find.text('Dismissible message'), findsOneWidget);
 
         // Swipe down to dismiss
-        await tester.drag(find.text('Dismissible message'), const Offset(0, 100));
+        await tester.drag(
+          find.text('Dismissible message'),
+          const Offset(0, 100),
+        );
         await tester.pumpAndSettle();
 
         // SnackBar should be dismissed
@@ -253,7 +282,9 @@ void main() {
     });
 
     group('Convenience Methods', () {
-      testWidgets('info convenience method works correctly', (WidgetTester tester) async {
+      testWidgets('info convenience method works correctly', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -277,7 +308,9 @@ void main() {
         expect(find.byIcon(Icons.info_outline), findsOneWidget);
       });
 
-      testWidgets('success convenience method works correctly', (WidgetTester tester) async {
+      testWidgets('success convenience method works correctly', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -301,7 +334,9 @@ void main() {
         expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
       });
 
-      testWidgets('warning convenience method works correctly', (WidgetTester tester) async {
+      testWidgets('warning convenience method works correctly', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -325,7 +360,9 @@ void main() {
         expect(find.byIcon(Icons.warning_outlined), findsOneWidget);
       });
 
-      testWidgets('error convenience method works correctly', (WidgetTester tester) async {
+      testWidgets('error convenience method works correctly', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -351,7 +388,9 @@ void main() {
     });
 
     group('Styling and Layout', () {
-      testWidgets('applies proper typography styling', (WidgetTester tester) async {
+      testWidgets('applies proper typography styling', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -373,7 +412,7 @@ void main() {
 
         // Find the text widget within the SnackBar
         final textWidget = tester.widget<Text>(find.text('Styled message'));
-        
+
         // Verify text styling
         expect(textWidget.style?.fontSize, AppTypography.fontSizeMedium);
         expect(textWidget.style?.fontWeight, FontWeight.w500);
@@ -386,10 +425,7 @@ void main() {
             child: Builder(
               builder: (context) => ElevatedButton(
                 onPressed: () {
-                  GravitonSnackBar.show(
-                    context: context,
-                    message: 'Icon test',
-                  );
+                  GravitonSnackBar.show(context: context, message: 'Icon test');
                 },
                 child: const Text('Show SnackBar'),
               ),
@@ -405,7 +441,9 @@ void main() {
         expect(iconWidget.size, AppTypography.iconSizeMedium);
       });
 
-      testWidgets('uses floating behavior and proper margins', (WidgetTester tester) async {
+      testWidgets('uses floating behavior and proper margins', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -427,20 +465,22 @@ void main() {
 
         // Find the SnackBar widget
         final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
-        
+
         // Verify floating behavior
         expect(snackBar.behavior, SnackBarBehavior.floating);
-        
+
         // Verify margins
         expect(snackBar.margin, EdgeInsets.all(AppTypography.spacingMedium));
-        
+
         // Verify elevation
         expect(snackBar.elevation, AppTypography.spacingMedium);
       });
     });
 
     group('Callback Handling', () {
-      testWidgets('calls onVisible callback when SnackBar appears', (WidgetTester tester) async {
+      testWidgets('calls onVisible callback when SnackBar appears', (
+        WidgetTester tester,
+      ) async {
         bool visibilityCallbackCalled = false;
 
         await tester.pumpWidget(
@@ -472,17 +512,16 @@ void main() {
     });
 
     group('Multiple SnackBars', () {
-      testWidgets('shows appropriate icons for different severities', (WidgetTester tester) async {
+      testWidgets('shows appropriate icons for different severities', (
+        WidgetTester tester,
+      ) async {
         // Test info SnackBar
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
               builder: (context) => ElevatedButton(
                 onPressed: () {
-                  GravitonSnackBar.info(
-                    context: context,
-                    message: 'Info test',
-                  );
+                  GravitonSnackBar.info(context: context, message: 'Info test');
                 },
                 child: const Text('Show Info'),
               ),
@@ -493,12 +532,14 @@ void main() {
         await tester.tap(find.text('Show Info'));
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 100));
-        
+
         // Verify info icon
         expect(find.byIcon(Icons.info_outline), findsOneWidget);
 
         // Clear the SnackBar and wait for animation to complete
-        ScaffoldMessenger.of(tester.element(find.byType(ElevatedButton))).clearSnackBars();
+        ScaffoldMessenger.of(
+          tester.element(find.byType(ElevatedButton)),
+        ).clearSnackBars();
         await tester.pump();
         await tester.pumpAndSettle();
 
@@ -529,7 +570,9 @@ void main() {
     });
 
     group('Convenience Methods', () {
-      testWidgets('info method should work correctly', (WidgetTester tester) async {
+      testWidgets('info method should work correctly', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -556,7 +599,9 @@ void main() {
         expect(find.text('Got it'), findsOneWidget);
       });
 
-      testWidgets('success method should work correctly', (WidgetTester tester) async {
+      testWidgets('success method should work correctly', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -580,7 +625,9 @@ void main() {
         expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
       });
 
-      testWidgets('warning method should work correctly', (WidgetTester tester) async {
+      testWidgets('warning method should work correctly', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -605,7 +652,9 @@ void main() {
         expect(find.byIcon(Icons.warning_outlined), findsOneWidget);
       });
 
-      testWidgets('error method should work correctly', (WidgetTester tester) async {
+      testWidgets('error method should work correctly', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(

@@ -16,9 +16,18 @@ void main() {
 
     test('should have correct string representations', () {
       expect(SnackBarSeverity.info.toString(), equals('SnackBarSeverity.info'));
-      expect(SnackBarSeverity.success.toString(), equals('SnackBarSeverity.success'));
-      expect(SnackBarSeverity.warning.toString(), equals('SnackBarSeverity.warning'));
-      expect(SnackBarSeverity.error.toString(), equals('SnackBarSeverity.error'));
+      expect(
+        SnackBarSeverity.success.toString(),
+        equals('SnackBarSeverity.success'),
+      );
+      expect(
+        SnackBarSeverity.warning.toString(),
+        equals('SnackBarSeverity.warning'),
+      );
+      expect(
+        SnackBarSeverity.error.toString(),
+        equals('SnackBarSeverity.error'),
+      );
     });
 
     test('should have correct index values', () {

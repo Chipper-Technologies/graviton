@@ -12,9 +12,9 @@ class SuccessCriteria {
 
   factory SuccessCriteria.fromJson(Map<String, dynamic> json) {
     return SuccessCriteria(
-      stabilityThreshold: json['stabilityThreshold'] as double,
-      minimumTime: json['minimumTime'] as int,
-      allowedCollisions: json['allowedCollisions'] as int,
+      stabilityThreshold: (json['stabilityThreshold'] as num).toDouble(),
+      minimumTime: (json['minimumTime'] as num).toInt(),
+      allowedCollisions: (json['allowedCollisions'] as num).toInt(),
     );
   }
 

@@ -1,29 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/models/dialog_action.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
 import 'package:graviton/widgets/haptics/haptic_text_button.dart';
-
-/// Base configuration for dialog actions
-class DialogAction {
-  final String text;
-  final VoidCallback onPressed;
-  final Color? textColor;
-  final Color? backgroundColor;
-  final FontWeight? fontWeight;
-  final bool isDestructive;
-
-  const DialogAction({
-    required this.text,
-    required this.onPressed,
-    this.textColor,
-    this.backgroundColor,
-    this.fontWeight,
-    this.isDestructive = false,
-  });
-}
 
 /// A reusable base confirmation dialog widget that provides consistent styling,
 /// layout, and behavior across all confirmation dialogs in the app.
