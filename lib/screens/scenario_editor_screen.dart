@@ -28,7 +28,7 @@ import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/common/styled_text_field.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
-import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
+import 'package:graviton/widgets/haptics/haptic_button.dart';
 import 'package:graviton/widgets/haptics/haptic_floating_action_button.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_list.dart';
@@ -389,33 +389,10 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
           // Test button only
           SizedBox(
             width: double.infinity,
-            child: HapticElevatedButton(
+            child: HapticButton.primary(
+              text: l10n.testScenarioButton,
               onPressed: () => _testScenario(context, l10n),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                foregroundColor: AppColors.uiWhite,
-                padding: EdgeInsets.symmetric(
-                  vertical: AppTypography.spacingMedium,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    AppTypography.radiusSmall,
-                  ),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.play_arrow, size: AppTypography.iconSizeMedium),
-                  SizedBox(width: AppTypography.spacingSmall),
-                  Text(
-                    l10n.testScenarioButton,
-                    style: AppTypography.mediumText.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
+              icon: Icons.play_arrow,
             ),
           ),
         ],

@@ -27,6 +27,7 @@ import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/widgets/haptics/haptic_switch.dart';
+import 'package:graviton/widgets/haptics/haptic_button.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -1743,31 +1744,19 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         SizedBox(height: AppTypography.spacingMedium),
 
         // Place in Orbit Toggle Button
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: _showOrbitalPlacement
-                ? _cancelOrbitalPlacement
-                : _enableOrbitalPlacement,
-            icon: Icon(
-              _showOrbitalPlacement ? Icons.close : Icons.track_changes,
-              color: AppColors.uiWhite,
-            ),
-            label: Text(
-              _showOrbitalPlacement
-                  ? AppLocalizations.of(context)!.cancelOrbitalPlacement
-                  : l10n.placeInOrbitButton,
-              style: TextStyle(color: AppColors.uiWhite),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: _showOrbitalPlacement
-                  ? AppColors.celestialRed
-                  : AppColors.primaryColor,
-              foregroundColor: AppColors.uiWhite,
-              padding: EdgeInsets.all(AppTypography.spacingMedium),
-            ),
-          ),
-        ),
+        _showOrbitalPlacement
+            ? HapticButton.destructive(
+                onPressed: _cancelOrbitalPlacement,
+                text: AppLocalizations.of(context)!.cancelOrbitalPlacement,
+                icon: Icons.close,
+                isFullWidth: true,
+              )
+            : HapticButton.primary(
+                onPressed: _enableOrbitalPlacement,
+                text: l10n.placeInOrbitButton,
+                icon: Icons.track_changes,
+                isFullWidth: true,
+              ),
 
         // Orbital Parameters (only show when placement mode is active)
         if (_showOrbitalPlacement) ...[
@@ -1975,30 +1964,11 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                             ),
                           ),
                           SizedBox(height: AppTypography.spacingMedium),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton.icon(
-                              onPressed: _makeOrbitStable,
-                              icon: Icon(
-                                Icons.auto_fix_high,
-                                size: AppTypography.iconSizeSmall,
-                              ),
-                              label: Text(
-                                AppLocalizations.of(context)!.makeStable,
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primaryColor,
-                                foregroundColor: AppColors.uiWhite,
-                                padding: EdgeInsets.symmetric(
-                                  vertical: AppTypography.spacingMedium,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    AppTypography.radiusLarge,
-                                  ),
-                                ),
-                              ),
-                            ),
+                          HapticButton.primary(
+                            onPressed: _makeOrbitStable,
+                            text: AppLocalizations.of(context)!.makeStable,
+                            icon: Icons.auto_fix_high,
+                            isFullWidth: true,
                           ),
                         ],
                       ],
