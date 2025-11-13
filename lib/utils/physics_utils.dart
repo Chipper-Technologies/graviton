@@ -207,6 +207,74 @@ class PhysicsUtils {
     return totalMomentum;
   }
 
+  /// Calculate total system angular momentum about center of mass
+  static vm.Vector3 calculateSystemAngularMomentum(
+    List<double> masses,
+    List<vm.Vector3> positions,
+    List<vm.Vector3> velocities,
+  ) {
+    if (masses.length != positions.length ||
+        masses.length != velocities.length ||
+        masses.isEmpty) {
+      return vm.Vector3.zero();
+    }
+
+    // Calculate center of mass
+    final centerOfMass = calculateCenterOfMass(masses, positions);
+
+    vm.Vector3 totalAngularMomentum = vm.Vector3.zero();
+
+    for (int i = 0; i < masses.length; i++) {
+      // Position and velocity relative to center of mass
+      final r = positions[i] - centerOfMass;
+      final v = velocities[i];
+
+      // Angular momentum: L = r × mv
+      final angularMomentum = r.cross(v) * masses[i];
+      totalAngularMomentum += angularMomentum;
+    }
+
+    return totalAngularMomentum;
+  }
+
+  /// Calculate velocity statistics for a system of bodies
+  static Map<String, double> calculateVelocityStatistics(
+    List<vm.Vector3> velocities,
+  ) {
+    if (velocities.isEmpty) {
+      return {'min': 0.0, 'max': 0.0, 'average': 0.0};
+    }
+
+    final speeds = velocities.map((v) => v.length).toList();
+    speeds.sort();
+
+    final sum = speeds.reduce((a, b) => a + b);
+
+    return {
+      'min': speeds.first,
+      'max': speeds.last,
+      'average': sum / speeds.length,
+    };
+  }
+
+  /// Calculate temperature statistics for a system of bodies
+  static Map<String, double> calculateTemperatureStatistics(
+    List<double> temperatures,
+  ) {
+    if (temperatures.isEmpty) {
+      return {'min': 0.0, 'max': 0.0, 'average': 0.0};
+    }
+
+    final sortedTemps = List<double>.from(temperatures)..sort();
+    final sum = sortedTemps.reduce((a, b) => a + b);
+
+    return {
+      'min': sortedTemps.first,
+      'max': sortedTemps.last,
+      'average': sum / sortedTemps.length,
+    };
+  }
+
   /// Calculate total gravitational acceleration for a body from all other bodies
   /// Used by orbital prediction engines and N-body simulations
   static vm.Vector3 calculateTotalGravitationalAcceleration(

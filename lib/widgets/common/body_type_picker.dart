@@ -48,75 +48,88 @@ class BodyTypePicker extends StatelessWidget {
           children: bodyTypes.map((bodyType) {
             final isSelected = selectedType == bodyType;
             return Expanded(
-              child: Semantics(
-                label:
-                    AppLocalizations.of(
-                      context,
-                    )?.bodyTypeTemplate(bodyType.name, bodyType) ??
-                    '${bodyType.name} body type',
-                hint: isSelected
-                    ? (AppLocalizations.of(context)?.currentlySelected ??
-                          'Currently selected')
-                    : (AppLocalizations.of(context)?.tapToSelect ??
-                          'Tap to select'),
-                selected: isSelected,
-                enabled: enabled,
-                button: true,
-                child: GestureDetector(
-                  onTap: enabled
-                      ? () {
-                          HapticFeedback.lightImpact();
-                          onTypeChanged(bodyType);
-                        }
-                      : null,
-                  behavior: HitTestBehavior.opaque,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: AppTypography.spacingXSmall,
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppTypography.spacingSmall,
-                      vertical: AppTypography.spacingMedium,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppColors.primaryColor
-                          : AppColors.transparentColor,
-                      borderRadius: BorderRadius.circular(
-                        AppTypography.radiusMedium,
+              child: Tooltip(
+                message: _getBodyTypeTooltip(bodyType, context),
+                padding: EdgeInsets.all(AppTypography.spacingMedium),
+                margin: EdgeInsets.symmetric(
+                  horizontal: AppTypography.spacingLarge,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.uiBlack.withValues(
+                    alpha: AppTypography.opacityNearlyOpaque,
+                  ),
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusMedium,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.uiBlack.withValues(
+                        alpha: AppTypography.opacityMedium,
                       ),
-                      boxShadow: isSelected
-                          ? [
-                              BoxShadow(
-                                color: AppColors.primaryColor.withValues(
-                                  alpha: 0.3,
-                                ),
-                                blurRadius: 4,
-                                spreadRadius: 1,
-                              ),
-                            ]
-                          : null,
+                      blurRadius: AppTypography.spacingSmall,
+                      offset: Offset(0, AppTypography.spacingXSmall),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          _getBodyTypeIcon(bodyType),
-                          color: isSelected
-                              ? AppColors.uiBlack
-                              : (enabled
-                                    ? AppColors.uiWhite.withValues(
-                                        alpha: AppTypography.opacityHigh,
-                                      )
-                                    : AppColors.uiWhite.withValues(
-                                        alpha: AppTypography.opacityDisabled,
-                                      )),
-                          size: AppTypography.iconSizeLarge,
+                  ],
+                ),
+                textStyle: TextStyle(
+                  color: AppColors.uiWhite,
+                  fontSize: AppTypography.fontSizeSmall,
+                ),
+                preferBelow: false,
+                child: Semantics(
+                  label:
+                      AppLocalizations.of(
+                        context,
+                      )?.bodyTypeTemplate(bodyType.name, bodyType) ??
+                      '${bodyType.name} body type',
+                  hint: isSelected
+                      ? (AppLocalizations.of(context)?.currentlySelected ??
+                            'Currently selected')
+                      : (AppLocalizations.of(context)?.tapToSelect ??
+                            'Tap to select'),
+                  selected: isSelected,
+                  enabled: enabled,
+                  button: true,
+                  child: GestureDetector(
+                    onTap: enabled
+                        ? () {
+                            HapticFeedback.lightImpact();
+                            onTypeChanged(bodyType);
+                          }
+                        : null,
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: AppTypography.spacingXSmall,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppTypography.spacingSmall,
+                        vertical: AppTypography.spacingMedium,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? AppColors.primaryColor
+                            : AppColors.transparentColor,
+                        borderRadius: BorderRadius.circular(
+                          AppTypography.radiusMedium,
                         ),
-                        SizedBox(height: AppTypography.spacingXSmall),
-                        Text(
-                          bodyType.name.toUpperCase(),
-                          style: AppTypography.smallText.copyWith(
+                        boxShadow: isSelected
+                            ? [
+                                BoxShadow(
+                                  color: AppColors.primaryColor.withValues(
+                                    alpha: AppTypography.opacityFaint,
+                                  ),
+                                  blurRadius: AppTypography.spacingXSmall,
+                                  spreadRadius: AppTypography.borderThin,
+                                ),
+                              ]
+                            : null,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            _getBodyTypeIcon(bodyType),
                             color: isSelected
                                 ? AppColors.uiBlack
                                 : (enabled
@@ -126,16 +139,33 @@ class BodyTypePicker extends StatelessWidget {
                                       : AppColors.uiWhite.withValues(
                                           alpha: AppTypography.opacityDisabled,
                                         )),
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.w500,
-                            fontSize: 10,
+                            size: AppTypography.iconSizeLarge,
                           ),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                          SizedBox(height: AppTypography.spacingXSmall),
+                          Text(
+                            _getBodyTypeDisplayName(bodyType, context),
+                            style: AppTypography.smallText.copyWith(
+                              color: isSelected
+                                  ? AppColors.uiBlack
+                                  : (enabled
+                                        ? AppColors.uiWhite.withValues(
+                                            alpha: AppTypography.opacityHigh,
+                                          )
+                                        : AppColors.uiWhite.withValues(
+                                            alpha:
+                                                AppTypography.opacityDisabled,
+                                          )),
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.w500,
+                              fontSize: AppTypography.fontSizeXSmall,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -159,9 +189,53 @@ class BodyTypePicker extends StatelessWidget {
       case BodyType.asteroid:
         return Icons.grain;
       case BodyType.blackHole:
-        return Icons.donut_large; // Black hole representation
+        return Icons.donut_large;
       case BodyType.neutronStar:
-        return Icons.flash_on; // High-energy neutron star
+        return Icons.flash_on;
+    }
+  }
+
+  /// Get the tooltip text for each body type
+  String _getBodyTypeTooltip(BodyType bodyType, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    switch (bodyType) {
+      case BodyType.star:
+        return l10n?.bodyTypeTooltipStar ??
+            'Massive celestial bodies that generate light and heat through nuclear fusion. Stars are the primary energy sources in stellar systems.';
+      case BodyType.planet:
+        return l10n?.bodyTypeTooltipPlanet ??
+            'Large celestial bodies that orbit stars and have cleared their orbital path. Planets can be rocky or gaseous and may host moons.';
+      case BodyType.moon:
+        return l10n?.bodyTypeTooltipMoon ??
+            'Natural satellites that orbit planets. Moons can influence tides and provide stability to planetary systems.';
+      case BodyType.asteroid:
+        return l10n?.bodyTypeTooltipAsteroid ??
+            'Small rocky bodies that orbit the sun. Asteroids are remnants from the early formation of the solar system.';
+      case BodyType.blackHole:
+        return l10n?.bodyTypeTooltipBlackHole ??
+            'Regions of spacetime with gravitational fields so intense that nothing, not even light, can escape from them.';
+      case BodyType.neutronStar:
+        return l10n?.bodyTypeTooltipNeutronStar ??
+            'Extremely dense stellar remnants formed when massive stars collapse. They have incredibly strong gravitational and magnetic fields.';
+    }
+  }
+
+  /// Get the display name for each body type
+  String _getBodyTypeDisplayName(BodyType bodyType, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    switch (bodyType) {
+      case BodyType.star:
+        return (l10n?.bodyTypeStar ?? 'STAR').toUpperCase();
+      case BodyType.planet:
+        return (l10n?.bodyTypePlanet ?? 'PLANET').toUpperCase();
+      case BodyType.moon:
+        return (l10n?.bodyTypeMoon ?? 'MOON').toUpperCase();
+      case BodyType.asteroid:
+        return (l10n?.bodyTypeAsteroid ?? 'ASTEROID').toUpperCase();
+      case BodyType.blackHole:
+        return (l10n?.bodyTypeBlackHole ?? 'BLACK HOLE').toUpperCase();
+      case BodyType.neutronStar:
+        return (l10n?.bodyTypeNeutronStar ?? 'NEUTRON STAR').toUpperCase();
     }
   }
 }

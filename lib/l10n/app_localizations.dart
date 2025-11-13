@@ -2502,11 +2502,65 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 Star} other{{count} Stars}}'**
   String bodyTypeStarPlural(int count);
 
+  /// Display name for neutron star body type
+  ///
+  /// In en, this message translates to:
+  /// **'Neutron Star'**
+  String get bodyTypeNeutronStar;
+
+  /// Display name for black hole body type
+  ///
+  /// In en, this message translates to:
+  /// **'Black Hole'**
+  String get bodyTypeBlackHole;
+
+  /// Display name for moon body type
+  ///
+  /// In en, this message translates to:
+  /// **'Moon'**
+  String get bodyTypeMoon;
+
   /// Template for body type accessibility label
   ///
   /// In en, this message translates to:
   /// **'{bodyType} body type'**
   String bodyTypeTemplate(String bodyType, Object type);
+
+  /// Tooltip description for star body type
+  ///
+  /// In en, this message translates to:
+  /// **'Massive celestial bodies that generate light and heat through nuclear fusion. Stars are the primary energy sources in stellar systems.'**
+  String get bodyTypeTooltipStar;
+
+  /// Tooltip description for planet body type
+  ///
+  /// In en, this message translates to:
+  /// **'Large celestial bodies that orbit stars and have cleared their orbital path. Planets can be rocky or gaseous and may host moons.'**
+  String get bodyTypeTooltipPlanet;
+
+  /// Tooltip description for moon body type
+  ///
+  /// In en, this message translates to:
+  /// **'Natural satellites that orbit planets. Moons can influence tides and provide stability to planetary systems.'**
+  String get bodyTypeTooltipMoon;
+
+  /// Tooltip description for asteroid body type
+  ///
+  /// In en, this message translates to:
+  /// **'Small rocky bodies that orbit the sun. Asteroids are remnants from the early formation of the solar system.'**
+  String get bodyTypeTooltipAsteroid;
+
+  /// Tooltip description for black hole body type
+  ///
+  /// In en, this message translates to:
+  /// **'Regions of spacetime with gravitational fields so intense that nothing, not even light, can escape from them.'**
+  String get bodyTypeTooltipBlackHole;
+
+  /// Tooltip description for neutron star body type
+  ///
+  /// In en, this message translates to:
+  /// **'Extremely dense stellar remnants formed when massive stars collapse. They have incredibly strong gravitational and magnetic fields.'**
+  String get bodyTypeTooltipNeutronStar;
 
   /// Name for Uranus planet
   ///
@@ -4911,6 +4965,324 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rogue planets, gravitational encounters, orbital disruption'**
   String get roguePlanetEducationalFocus;
+
+  /// Title for the simulation information screen
+  ///
+  /// In en, this message translates to:
+  /// **'Simulation Info'**
+  String get simulationInfoTitle;
+
+  /// Title for the scenario information section
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario Information'**
+  String get scenarioInfoTitle;
+
+  /// Label for scenario name field
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario'**
+  String get scenarioNameLabel;
+
+  /// Title for the body statistics section
+  ///
+  /// In en, this message translates to:
+  /// **'Body Statistics'**
+  String get bodyStatisticsTitle;
+
+  /// Label for total number of bodies
+  ///
+  /// In en, this message translates to:
+  /// **'Total Bodies'**
+  String get totalBodiesLabel;
+
+  /// Label for number of stars
+  ///
+  /// In en, this message translates to:
+  /// **'Stars'**
+  String get starsLabel;
+
+  /// Label for number of planets
+  ///
+  /// In en, this message translates to:
+  /// **'Planets'**
+  String get planetsLabel;
+
+  /// Label for number of asteroids and moons
+  ///
+  /// In en, this message translates to:
+  /// **'Asteroids & Moons'**
+  String get asteroidsLabel;
+
+  /// Label for number of black holes
+  ///
+  /// In en, this message translates to:
+  /// **'Black Holes'**
+  String get blackHolesLabel;
+
+  /// Label for total mass of all bodies
+  ///
+  /// In en, this message translates to:
+  /// **'Total Mass'**
+  String get totalMassLabel;
+
+  /// Label for number of potentially habitable worlds
+  ///
+  /// In en, this message translates to:
+  /// **'Habitable Worlds'**
+  String get habitableWorldsLabel;
+
+  /// Title for the physics information section
+  ///
+  /// In en, this message translates to:
+  /// **'Physics Parameters'**
+  String get physicsInfoTitle;
+
+  /// Label for simulation time scale
+  ///
+  /// In en, this message translates to:
+  /// **'Time Scale'**
+  String get timeScaleLabel;
+
+  /// Label for gravitational constant parameter
+  ///
+  /// In en, this message translates to:
+  /// **'Gravitational Constant'**
+  String get gravitationalConstantLabel;
+
+  /// Label for softening parameter
+  ///
+  /// In en, this message translates to:
+  /// **'Softening Parameter'**
+  String get softeningParameterLabel;
+
+  /// Label for collision radius multiplier
+  ///
+  /// In en, this message translates to:
+  /// **'Collision Radius'**
+  String get collisionRadiusLabel;
+
+  /// Name for classic three-body problem scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Three-Body Classic'**
+  String get scenarioThreeBodyClassic;
+
+  /// Description for classic three-body problem scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Classic three-body problem demonstrating chaotic gravitational dynamics'**
+  String get scenarioThreeBodyClassicDescription;
+
+  /// Name for collision demonstration scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Collision Demo'**
+  String get scenarioCollisionDemo;
+
+  /// Description for collision demonstration scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Collision demonstration with orbital mechanics and body interactions'**
+  String get scenarioCollisionDemoDescription;
+
+  /// Name for deep space exploration scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Deep Space'**
+  String get scenarioDeepSpace;
+
+  /// Description for deep space exploration scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Deep space exploration with distant objects and sparse gravitational fields'**
+  String get scenarioDeepSpaceDescription;
+
+  /// Label for total system energy
+  ///
+  /// In en, this message translates to:
+  /// **'Total Energy'**
+  String get systemEnergyLabel;
+
+  /// Label for system kinetic energy
+  ///
+  /// In en, this message translates to:
+  /// **'Kinetic Energy'**
+  String get kineticEnergyLabel;
+
+  /// Label for system gravitational potential energy
+  ///
+  /// In en, this message translates to:
+  /// **'Potential Energy'**
+  String get potentialEnergyLabel;
+
+  /// Label for total system angular momentum
+  ///
+  /// In en, this message translates to:
+  /// **'Angular Momentum'**
+  String get angularMomentumLabel;
+
+  /// Label for system center of mass position
+  ///
+  /// In en, this message translates to:
+  /// **'Center of Mass'**
+  String get centerOfMassLabel;
+
+  /// Label for min/max body velocities
+  ///
+  /// In en, this message translates to:
+  /// **'Velocity Range'**
+  String get velocityRangeLabel;
+
+  /// Label for average body velocity
+  ///
+  /// In en, this message translates to:
+  /// **'Average Velocity'**
+  String get averageVelocityLabel;
+
+  /// Label for min/max body temperatures
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature Range'**
+  String get temperatureRangeLabel;
+
+  /// Label for total system momentum
+  ///
+  /// In en, this message translates to:
+  /// **'System Momentum'**
+  String get systemMomentumLabel;
+
+  /// Title for energy and dynamics section
+  ///
+  /// In en, this message translates to:
+  /// **'Energy & Dynamics'**
+  String get energyDynamicsTitle;
+
+  /// Title for orbital mechanics section
+  ///
+  /// In en, this message translates to:
+  /// **'Orbital Mechanics'**
+  String get orbitalMechanicsTitle;
+
+  /// Title for individual celestial bodies section
+  ///
+  /// In en, this message translates to:
+  /// **'Celestial Bodies'**
+  String get celestialBodiesTitle;
+
+  /// Label for celestial body name
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get bodyNameLabel;
+
+  /// Label for celestial body mass
+  ///
+  /// In en, this message translates to:
+  /// **'Mass'**
+  String get bodyMassLabel;
+
+  /// Label for celestial body radius
+  ///
+  /// In en, this message translates to:
+  /// **'Radius'**
+  String get bodyRadiusLabel;
+
+  /// Label for celestial body velocity
+  ///
+  /// In en, this message translates to:
+  /// **'Velocity'**
+  String get bodyVelocityLabel;
+
+  /// Label for celestial body temperature
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature'**
+  String get bodyTemperatureLabel;
+
+  /// Label for stellar luminosity
+  ///
+  /// In en, this message translates to:
+  /// **'Luminosity'**
+  String get bodyLuminosityLabel;
+
+  /// Label for celestial body position coordinates
+  ///
+  /// In en, this message translates to:
+  /// **'Position'**
+  String get bodyPositionLabel;
+
+  /// Label for celestial body type
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get bodyTypeLabel;
+
+  /// Label for planetary habitability status
+  ///
+  /// In en, this message translates to:
+  /// **'Habitability'**
+  String get bodyHabitabilityLabel;
+
+  /// Label for individual body kinetic energy
+  ///
+  /// In en, this message translates to:
+  /// **'Kinetic Energy'**
+  String get bodyKineticEnergyLabel;
+
+  /// Label for escape velocity from body surface
+  ///
+  /// In en, this message translates to:
+  /// **'Escape Velocity'**
+  String get bodyEscapeVelocityLabel;
+
+  /// Label for body's distance from system center of mass
+  ///
+  /// In en, this message translates to:
+  /// **'Distance from Center'**
+  String get bodyDistanceFromCenterLabel;
+
+  /// Label for estimated orbital period
+  ///
+  /// In en, this message translates to:
+  /// **'Orbital Period'**
+  String get bodyOrbitalPeriodLabel;
+
+  /// Value shown when data is not applicable
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get notApplicableValue;
+
+  /// Status text for habitable worlds
+  ///
+  /// In en, this message translates to:
+  /// **'Habitable'**
+  String get habitableStatus;
+
+  /// Status text for unknown habitability
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknownHabitabilityStatus;
+
+  /// Status text for too hot for life
+  ///
+  /// In en, this message translates to:
+  /// **'Too Hot'**
+  String get tooHotStatus;
+
+  /// Status text for too cold for life
+  ///
+  /// In en, this message translates to:
+  /// **'Too Cold'**
+  String get tooColdStatus;
+
+  /// Status text for no atmosphere
+  ///
+  /// In en, this message translates to:
+  /// **'No Atmosphere'**
+  String get noAtmosphereStatus;
 }
 
 class _AppLocalizationsDelegate

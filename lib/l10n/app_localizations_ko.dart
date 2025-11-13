@@ -1391,9 +1391,41 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get bodyTypeNeutronStar => '중성자별';
+
+  @override
+  String get bodyTypeBlackHole => '블랙홀';
+
+  @override
+  String get bodyTypeMoon => '달';
+
+  @override
   String bodyTypeTemplate(String bodyType, Object type) {
     return '천체 유형: $type';
   }
+
+  @override
+  String get bodyTypeTooltipStar =>
+      '핵융합을 통해 빛과 열을 생성하는 거대한 천체. 항성은 항성계의 주요 에너지원입니다.';
+
+  @override
+  String get bodyTypeTooltipPlanet =>
+      '항성 주위를 공전하며 궤도를 청소한 큰 천체. 행성은 암석질이거나 가스형일 수 있으며 달을 가질 수 있습니다.';
+
+  @override
+  String get bodyTypeTooltipMoon =>
+      '행성 주위를 공전하는 자연 위성. 달은 조석에 영향을 미치고 행성계에 안정성을 제공할 수 있습니다.';
+
+  @override
+  String get bodyTypeTooltipAsteroid =>
+      '태양 주위를 공전하는 작은 암석체. 소행성은 태양계 초기 형성의 잔해입니다.';
+
+  @override
+  String get bodyTypeTooltipBlackHole => '중력장이 너무 강해서 빛조차 탈출할 수 없는 시공간의 영역.';
+
+  @override
+  String get bodyTypeTooltipNeutronStar =>
+      '거대한 항성이 붕괴하여 형성되는 극도로 밀도가 높은 항성 잔해. 믿을 수 없을 정도로 강한 중력장과 자기장을 가지고 있습니다.';
 
   @override
   String get bodyUranus => '천왕성';
@@ -2681,4 +2713,163 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get roguePlanetEducationalFocus => '유랑 행성, 중력 조우, 궤도 교란';
+
+  @override
+  String get simulationInfoTitle => '시뮬레이션 정보';
+
+  @override
+  String get scenarioInfoTitle => '시나리오 정보';
+
+  @override
+  String get scenarioNameLabel => '시나리오 이름';
+
+  @override
+  String get bodyStatisticsTitle => '천체 통계';
+
+  @override
+  String get totalBodiesLabel => '총 천체';
+
+  @override
+  String get starsLabel => '별';
+
+  @override
+  String get planetsLabel => '행성';
+
+  @override
+  String get asteroidsLabel => '소행성';
+
+  @override
+  String get blackHolesLabel => '블랙홀';
+
+  @override
+  String get totalMassLabel => '총 질량';
+
+  @override
+  String get habitableWorldsLabel => '거주 가능한 세계';
+
+  @override
+  String get physicsInfoTitle => '물리 정보';
+
+  @override
+  String get timeScaleLabel => '시간 척도';
+
+  @override
+  String get gravitationalConstantLabel => '중력 상수';
+
+  @override
+  String get softeningParameterLabel => '소프트닝 매개변수';
+
+  @override
+  String get collisionRadiusLabel => '충돌 반경';
+
+  @override
+  String get scenarioThreeBodyClassic => '고전적 삼체 문제';
+
+  @override
+  String get scenarioThreeBodyClassicDescription => '카오스 역학을 가진 고전적 삼체 문제';
+
+  @override
+  String get scenarioCollisionDemo => '충돌 데모';
+
+  @override
+  String get scenarioCollisionDemoDescription => '천체 간 충돌의 시연';
+
+  @override
+  String get scenarioDeepSpace => '심우주';
+
+  @override
+  String get scenarioDeepSpaceDescription => '심우주의 임의 객체';
+
+  @override
+  String get systemEnergyLabel => '시스템 에너지';
+
+  @override
+  String get kineticEnergyLabel => '운동 에너지';
+
+  @override
+  String get potentialEnergyLabel => '위치 에너지';
+
+  @override
+  String get angularMomentumLabel => '각운동량';
+
+  @override
+  String get centerOfMassLabel => '질량 중심';
+
+  @override
+  String get velocityRangeLabel => '속도 범위';
+
+  @override
+  String get averageVelocityLabel => '평균 속도';
+
+  @override
+  String get temperatureRangeLabel => '온도 범위';
+
+  @override
+  String get systemMomentumLabel => '시스템 운동량';
+
+  @override
+  String get energyDynamicsTitle => '에너지와 역학';
+
+  @override
+  String get orbitalMechanicsTitle => '궤도 역학';
+
+  @override
+  String get celestialBodiesTitle => '천체';
+
+  @override
+  String get bodyNameLabel => '천체 이름';
+
+  @override
+  String get bodyMassLabel => '천체 질량';
+
+  @override
+  String get bodyRadiusLabel => '천체 반지름';
+
+  @override
+  String get bodyVelocityLabel => '천체 속도';
+
+  @override
+  String get bodyTemperatureLabel => '천체 온도';
+
+  @override
+  String get bodyLuminosityLabel => '천체 광도';
+
+  @override
+  String get bodyPositionLabel => '천체 위치';
+
+  @override
+  String get bodyTypeLabel => '천체 유형';
+
+  @override
+  String get bodyHabitabilityLabel => '천체 거주가능성';
+
+  @override
+  String get bodyKineticEnergyLabel => '천체 운동 에너지';
+
+  @override
+  String get bodyEscapeVelocityLabel => '탈출 속도';
+
+  @override
+  String get bodyDistanceFromCenterLabel => '중심으로부터 거리';
+
+  @override
+  String get bodyOrbitalPeriodLabel => '궤도 주기';
+
+  @override
+  String get notApplicableValue => '해당없음';
+
+  @override
+  String get habitableStatus => '거주 가능';
+
+  @override
+  String get unknownHabitabilityStatus => '알 수 없음';
+
+  @override
+  String get tooHotStatus => '너무 뜨거움';
+
+  @override
+  String get tooColdStatus => '너무 추움';
+
+  @override
+  String get noAtmosphereStatus => '대기 없음';
 }

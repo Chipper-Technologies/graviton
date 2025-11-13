@@ -236,6 +236,11 @@ class AppColors {
   static const Color uiYellow = Color(0xFFFFEB3B); // Colors.yellow
   static const Color uiOrange = Color(0xFFFF9800); // Colors.orange
   static const Color uiRed = Color(0xFFF44336); // Colors.red
+  static const Color uiBlue = Color(0xFF2196F3); // Colors.blue
+  static const Color uiPurple = Color(0xFF9C27B0); // Colors.purple
+  static const Color uiTeal = Color(0xFF009688); // Colors.teal
+  static const Color uiIndigo = Color(0xFF3F51B5); // Colors.indigo
+  static const Color uiAmber = Color(0xFFFFC107); // Colors.amber
   static const Color uiBlack = Color(0xFF000000); // Colors.black
   static const Color uiSelectionYellow = Color(
     0xFFFFEB3B,

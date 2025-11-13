@@ -105,13 +105,11 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
               padding: EdgeInsets.symmetric(
                 horizontal: AppTypography.spacingLarge,
               ),
-              child: Center(
-                child: Text(
-                  l10n.scenariosHeaderPlural(_customScenarios.length),
-                  style: AppTypography.titleText.copyWith(
-                    color: AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityHigh,
-                    ),
+              child: Text(
+                l10n.scenariosHeaderPlural(_customScenarios.length),
+                style: AppTypography.titleText.copyWith(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityHigh,
                   ),
                 ),
               ),
@@ -131,7 +129,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
                   scenarioDescription: scenario.metadata.description,
                   isSelected: false,
                   onTap: () =>
-                      _selectCustomScenario(context, scenario.metadata.name),
+                      _editCustomScenario(context, scenario.metadata.name),
                   onView: () =>
                       _viewCustomScenario(context, scenario.metadata.name),
                   onExport: () =>
@@ -257,18 +255,6 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       // Reload custom scenarios if a new one was saved
       await _loadCustomScenarios();
     }
-  }
-
-  void _selectCustomScenario(BuildContext context, String scenarioName) {
-    // Log analytics for custom scenario selection
-    FirebaseService.instance.logUIEventWithEnums(
-      UIAction.customScenarioLoaded,
-      element: UIElement.customScenariosTab,
-      value: scenarioName,
-    );
-
-    // Load the scenario into the simulation
-    widget.onCustomScenarioSelected?.call(scenarioName);
   }
 
   void _selectExperiment(
@@ -607,9 +593,10 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
     final l4VelX = -jupiterOrbitalSpeed * math.sin(l4Angle);
     final l4VelY = jupiterOrbitalSpeed * math.cos(l4Angle);
 
-    // Add several L4 Trojan asteroids
-    for (int i = 0; i < 4; i++) {
-      final offset = (i - 1.5) * 2.5;
+    // Add several L4 Trojan asteroids - MUCH closer to exact Lagrange point
+    for (int i = 0; i < 3; i++) {
+      final offset =
+          (i - 1.0) * 0.8; // Much smaller perturbations (±0.8 instead of ±3.75)
       final perturbX = offset * math.cos(l4Angle + math.pi / 2);
       final perturbY = offset * math.sin(l4Angle + math.pi / 2);
 
@@ -618,12 +605,13 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
           name: l10n.trojanAsteroidsL4Name(i + 1),
           position: [l4X + perturbX, l4Y + perturbY, 0.0],
           velocity: [l4VelX, l4VelY, 0.0],
-          mass: 0.008,
-          radius: 0.25,
+          mass:
+              0.00001, // Even smaller mass - 10x reduction for near-zero gravity
+          radius: 0.10, // Smaller radius for asteroids
           color: ColorUtils.colorToHexRGB(
             AppColors.asteroidRockyBrown,
           ), // Brown - rocky asteroid color
-          bodyType: BodyType.planet,
+          bodyType: BodyType.asteroid, // Correct asteroid body type
           stellarLuminosity: 0.0,
           temperature: 150.0,
           showGravityWell: false,
@@ -640,9 +628,10 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
     final l5VelX = -jupiterOrbitalSpeed * math.sin(l5Angle);
     final l5VelY = jupiterOrbitalSpeed * math.cos(l5Angle);
 
-    // Add several L5 Trojan asteroids
-    for (int i = 0; i < 4; i++) {
-      final offset = (i - 1.5) * 2.5;
+    // Add several L5 Trojan asteroids - MUCH closer to exact Lagrange point
+    for (int i = 0; i < 3; i++) {
+      final offset =
+          (i - 1.0) * 0.8; // Much smaller perturbations (±0.8 instead of ±3.75)
       final perturbX = offset * math.cos(l5Angle + math.pi / 2);
       final perturbY = offset * math.sin(l5Angle + math.pi / 2);
 
@@ -651,12 +640,13 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
           name: l10n.trojanAsteroidsL5Name(i + 1),
           position: [l5X + perturbX, l5Y + perturbY, 0.0],
           velocity: [l5VelX, l5VelY, 0.0],
-          mass: 0.008, // Reduced mass to minimize gravitational interactions
-          radius: 0.25, // Increased radius for better collision detection
+          mass:
+              0.00001, // Even smaller mass - 10x reduction for near-zero gravity
+          radius: 0.10, // Smaller radius for asteroids
           color: ColorUtils.colorToHexRGB(
             AppColors.asteroidSienna,
           ), // Sienna - varied asteroid color
-          bodyType: BodyType.planet,
+          bodyType: BodyType.asteroid, // Correct asteroid body type
           stellarLuminosity: 0.0,
           temperature: 150.0,
           showGravityWell: false,
@@ -703,12 +693,14 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
     // Physics settings optimized for stable Lagrange point dynamics
     final physics = ScenarioPhysicsSettings(
       gravitationalConstant: 1.2, // Standard gravitational constant
-      softening: 0.08, // Increased softening to prevent close encounters
-      timeScale: 1.0, // Normal time scale for stable integration
+      softening: 0.15, // Higher softening for asteroid stability (was 0.08)
+      timeScale:
+          0.9, // Slightly slower time scale for stable integration (was 1.0)
       collisionRadiusMultiplier:
-          2.0, // Enhanced collision detection to prevent merging
-      maxTrailPoints: 600, // Medium trail length for orbit visualization
-      trailFadeRate: 0.95, // Standard fade rate
+          2.5, // Higher collision detection to prevent close encounters (was 2.0)
+      maxTrailPoints:
+          400, // Fewer trail points for better performance (was 600)
+      trailFadeRate: 0.94, // Faster fade rate (was 0.95)
     );
 
     return ScenarioSerializationService.fromBodies(

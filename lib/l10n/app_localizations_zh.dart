@@ -1379,9 +1379,36 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get bodyTypeNeutronStar => '中子星';
+
+  @override
+  String get bodyTypeBlackHole => '黑洞';
+
+  @override
+  String get bodyTypeMoon => '月球';
+
+  @override
   String bodyTypeTemplate(String bodyType, Object type) {
     return '天体类型：$type';
   }
+
+  @override
+  String get bodyTypeTooltipStar => '通过核聚变产生光和热的巨大天体。恒星是恒星系统的主要能源。';
+
+  @override
+  String get bodyTypeTooltipPlanet => '环绕恒星运行并清空其轨道的大型天体。行星可能是岩石或气体性质，并可能拥有卫星。';
+
+  @override
+  String get bodyTypeTooltipMoon => '环绕行星运行的自然卫星。月球可以影响潮汐并为行星系统提供稳定性。';
+
+  @override
+  String get bodyTypeTooltipAsteroid => '环绕太阳运行的小型岩石体。小行星是太阳系早期形成的遗留物。';
+
+  @override
+  String get bodyTypeTooltipBlackHole => '引力场强度极大，连光线都无法逃脱的时空区域。';
+
+  @override
+  String get bodyTypeTooltipNeutronStar => '大质量恒星坍缩形成的极高密度恒星遗迹。具有极强的引力场和磁场。';
 
   @override
   String get bodyUranus => '天王星';
@@ -2654,4 +2681,163 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get roguePlanetEducationalFocus => '流浪行星、引力遭遇、轨道扰动';
+
+  @override
+  String get simulationInfoTitle => '仿真信息';
+
+  @override
+  String get scenarioInfoTitle => '场景信息';
+
+  @override
+  String get scenarioNameLabel => '场景名称';
+
+  @override
+  String get bodyStatisticsTitle => '天体统计';
+
+  @override
+  String get totalBodiesLabel => '总天体数';
+
+  @override
+  String get starsLabel => '恒星';
+
+  @override
+  String get planetsLabel => '行星';
+
+  @override
+  String get asteroidsLabel => '小行星';
+
+  @override
+  String get blackHolesLabel => '黑洞';
+
+  @override
+  String get totalMassLabel => '总质量';
+
+  @override
+  String get habitableWorldsLabel => '宜居世界';
+
+  @override
+  String get physicsInfoTitle => '物理信息';
+
+  @override
+  String get timeScaleLabel => '时间尺度';
+
+  @override
+  String get gravitationalConstantLabel => '引力常数';
+
+  @override
+  String get softeningParameterLabel => '软化参数';
+
+  @override
+  String get collisionRadiusLabel => '碰撞半径';
+
+  @override
+  String get scenarioThreeBodyClassic => '经典三体问题';
+
+  @override
+  String get scenarioThreeBodyClassicDescription => '具有混沌动力学的经典三体问题';
+
+  @override
+  String get scenarioCollisionDemo => '碰撞演示';
+
+  @override
+  String get scenarioCollisionDemoDescription => '天体间碰撞的演示';
+
+  @override
+  String get scenarioDeepSpace => '深空';
+
+  @override
+  String get scenarioDeepSpaceDescription => '深空中的随机物体';
+
+  @override
+  String get systemEnergyLabel => '系统能量';
+
+  @override
+  String get kineticEnergyLabel => '动能';
+
+  @override
+  String get potentialEnergyLabel => '势能';
+
+  @override
+  String get angularMomentumLabel => '角动量';
+
+  @override
+  String get centerOfMassLabel => '质心';
+
+  @override
+  String get velocityRangeLabel => '速度范围';
+
+  @override
+  String get averageVelocityLabel => '平均速度';
+
+  @override
+  String get temperatureRangeLabel => '温度范围';
+
+  @override
+  String get systemMomentumLabel => '系统动量';
+
+  @override
+  String get energyDynamicsTitle => '能量与动力学';
+
+  @override
+  String get orbitalMechanicsTitle => '轨道力学';
+
+  @override
+  String get celestialBodiesTitle => '天体';
+
+  @override
+  String get bodyNameLabel => '天体名称';
+
+  @override
+  String get bodyMassLabel => '天体质量';
+
+  @override
+  String get bodyRadiusLabel => '天体半径';
+
+  @override
+  String get bodyVelocityLabel => '天体速度';
+
+  @override
+  String get bodyTemperatureLabel => '天体温度';
+
+  @override
+  String get bodyLuminosityLabel => '天体光度';
+
+  @override
+  String get bodyPositionLabel => '天体位置';
+
+  @override
+  String get bodyTypeLabel => '天体类型';
+
+  @override
+  String get bodyHabitabilityLabel => '天体宜居性';
+
+  @override
+  String get bodyKineticEnergyLabel => '天体动能';
+
+  @override
+  String get bodyEscapeVelocityLabel => '逃逸速度';
+
+  @override
+  String get bodyDistanceFromCenterLabel => '距离中心';
+
+  @override
+  String get bodyOrbitalPeriodLabel => '轨道周期';
+
+  @override
+  String get notApplicableValue => '不适用';
+
+  @override
+  String get habitableStatus => '宜居';
+
+  @override
+  String get unknownHabitabilityStatus => '未知';
+
+  @override
+  String get tooHotStatus => '过热';
+
+  @override
+  String get tooColdStatus => '过冷';
+
+  @override
+  String get noAtmosphereStatus => '无大气';
 }

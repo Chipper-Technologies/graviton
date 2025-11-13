@@ -51,13 +51,13 @@ void main() {
         },
       );
 
-      test('should have exactly 5 experimental scenarios', () {
+      test('should have exactly 4 experimental scenarios', () {
         final experiments = ExperimentalScenarioConfig.experiments;
 
         expect(
           experiments.length,
-          equals(5),
-          reason: 'Expected 5 experimental scenarios to be configured',
+          equals(4),
+          reason: 'Expected 4 experimental scenarios to be configured',
         );
       });
     });
@@ -228,38 +228,6 @@ void main() {
           ),
         );
       });
-
-      testWidgets('Gravitational Slingshot experiment configuration', (
-        tester,
-      ) async {
-        await tester.pumpWidget(
-          TestUtils.wrapWithMaterialApp(
-            child: Builder(
-              builder: (context) {
-                final l10n = AppLocalizations.of(context)!;
-                final gravitationalSlingshot =
-                    ExperimentalScenarioConfig.experiments[4];
-
-                expect(
-                  gravitationalSlingshot.color,
-                  equals(AppColors.stellarFType),
-                );
-                expect(
-                  gravitationalSlingshot.icon,
-                  equals(Icons.rocket_launch),
-                );
-                expect(gravitationalSlingshot.tags, contains('slingshot'));
-                expect(gravitationalSlingshot.tags, contains('trajectory'));
-                expect(gravitationalSlingshot.tags, contains('momentum'));
-                expect(gravitationalSlingshot.tags, contains('spacecraft'));
-                expect(gravitationalSlingshot.name(l10n), isNotEmpty);
-
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
-        );
-      });
     });
 
     group('Cosmic Theme Consistency', () {
@@ -272,16 +240,13 @@ void main() {
           1: 'stable orbital mechanics (green for stability)',
           2: 'eclipsing binary systems (orange)',
           3: 'cosmic wanderers (purple)',
-          4: 'spacecraft propulsion (white/blue-white)',
         };
 
         final Map<int, Color> expectedColors = {
           0: AppColors.stellarOType, // Blue for neutron stars
           1: AppColors.habitabilityHabitable, // Green for stability
-          2: AppColors.stellarKType, // Orange for eclipsing binaries
+          2: AppColors.stellarKType, // Orange for eclipsing stars
           3: AppColors.starMediumSlateBlue, // Purple for cosmic wanderers
-          4: AppColors
-              .stellarFType, // White/blue-white for high-energy spacecraft
         };
 
         for (int i = 0; i < experiments.length; i++) {
@@ -332,10 +297,6 @@ void main() {
                   'asteroids', 'lagrange', 'stability', // Trojan Asteroids
                   'binary', 'eclipse', 'photometry', // Double Star Eclipse
                   'rogue', 'encounter', 'dynamics', // Rogue Planet
-                  'slingshot',
-                  'trajectory',
-                  'momentum',
-                  'spacecraft', // Gravitational Slingshot
                 };
 
                 for (int i = 0; i < experiments.length; i++) {
@@ -376,7 +337,7 @@ void main() {
         // Access experiments multiple times to test caching
         for (int i = 0; i < 100; i++) {
           final experiments = ExperimentalScenarioConfig.experiments;
-          expect(experiments.length, equals(5));
+          expect(experiments.length, equals(4));
         }
 
         stopwatch.stop();

@@ -1,5 +1,11 @@
 /// Represents the type of celestial body
 enum BodyType {
+  /// A black hole - region of spacetime with extreme gravity
+  blackHole,
+
+  /// A neutron star - extremely dense stellar remnant
+  neutronStar,
+
   /// A star - massive, luminous celestial body
   star,
 
@@ -11,12 +17,6 @@ enum BodyType {
 
   /// An asteroid - small rocky body orbiting the sun
   asteroid,
-
-  /// A black hole - region of spacetime with extreme gravity
-  blackHole,
-
-  /// A neutron star - extremely dense stellar remnant
-  neutronStar,
 }
 
 /// Extension methods for BodyType
@@ -30,6 +30,10 @@ extension BodyTypeExtension on BodyType {
   /// Localization key for the body type display name
   String get localizationKey {
     switch (this) {
+      case BodyType.blackHole:
+        return 'bodyTypeBlackHole';
+      case BodyType.neutronStar:
+        return 'bodyTypeNeutronStar';
       case BodyType.star:
         return 'bodyTypeStar';
       case BodyType.planet:
@@ -38,10 +42,6 @@ extension BodyTypeExtension on BodyType {
         return 'bodyTypeMoon';
       case BodyType.asteroid:
         return 'bodyTypeAsteroid';
-      case BodyType.blackHole:
-        return 'bodyTypeBlackHole';
-      case BodyType.neutronStar:
-        return 'bodyTypeNeutronStar';
     }
   }
 }

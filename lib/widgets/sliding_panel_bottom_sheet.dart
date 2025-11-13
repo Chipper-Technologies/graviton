@@ -281,13 +281,22 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
       behavior: HitTestBehavior.opaque,
       onTap: () {
         widget.onInteraction?.call();
-        // Animate to medium position on tap
+
+        // Check current panel position and only animate to medium if currently at minimum
         if (_panelController.isAttached) {
-          _panelController.animatePanelToPosition(
-            (_mediumHeight - _minHeight) / (_maxHeight - _minHeight),
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOutCubic,
-          );
+          final currentPosition = _panelController.panelPosition;
+
+          // If panel is in position 1 (closed/minimum), slide to position 2 (medium)
+          // Position 0.0 = minimum, so anything close to 0.0 is position 1
+          if (currentPosition <= 0.1) {
+            // Small threshold for "closed" state
+            _panelController.animatePanelToPosition(
+              (_mediumHeight - _minHeight) / (_maxHeight - _minHeight),
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOutCubic,
+            );
+          }
+          // If already at medium or above, don't do anything (let normal drag behavior handle it)
         }
       },
       child: Container(

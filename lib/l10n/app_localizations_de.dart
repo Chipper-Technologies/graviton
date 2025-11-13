@@ -1445,9 +1445,42 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get bodyTypeNeutronStar => 'Neutronenstern';
+
+  @override
+  String get bodyTypeBlackHole => 'Schwarzes Loch';
+
+  @override
+  String get bodyTypeMoon => 'Mond';
+
+  @override
   String bodyTypeTemplate(String bodyType, Object type) {
     return 'Körpertyp: $type';
   }
+
+  @override
+  String get bodyTypeTooltipStar =>
+      'Massive Himmelskörper, die durch Kernfusion Licht und Wärme erzeugen. Sterne sind die primären Energiequellen in Sternsystemen.';
+
+  @override
+  String get bodyTypeTooltipPlanet =>
+      'Große Himmelskörper, die Sterne umkreisen und ihre Umlaufbahn freigeräumt haben. Planeten können gesteinsartig oder gasförmig sein und Monde haben.';
+
+  @override
+  String get bodyTypeTooltipMoon =>
+      'Natürliche Satelliten, die Planeten umkreisen. Monde können Gezeiten beeinflussen und Planetensystemen Stabilität verleihen.';
+
+  @override
+  String get bodyTypeTooltipAsteroid =>
+      'Kleine Gesteinsbrocken, die die Sonne umkreisen. Asteroiden sind Überreste aus der frühen Entstehung des Sonnensystems.';
+
+  @override
+  String get bodyTypeTooltipBlackHole =>
+      'Bereiche der Raumzeit mit so intensiven Gravitationsfeldern, dass nichts, nicht einmal Licht, ihnen entkommen kann.';
+
+  @override
+  String get bodyTypeTooltipNeutronStar =>
+      'Extrem dichte Sternenreste, die entstehen, wenn massive Sterne kollabieren. Sie haben unglaublich starke Gravitations- und Magnetfelder.';
 
   @override
   String get bodyUranus => 'Uranus';
@@ -2816,4 +2849,165 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get roguePlanetEducationalFocus =>
       'Vagabundierende Planeten, Gravitationsbegegnungen, orbitale Störung';
+
+  @override
+  String get simulationInfoTitle => 'Simulations-Info';
+
+  @override
+  String get scenarioInfoTitle => 'Szenario-Info';
+
+  @override
+  String get scenarioNameLabel => 'Szenario-Name';
+
+  @override
+  String get bodyStatisticsTitle => 'Körper-Statistiken';
+
+  @override
+  String get totalBodiesLabel => 'Gesamtkörper';
+
+  @override
+  String get starsLabel => 'Sterne';
+
+  @override
+  String get planetsLabel => 'Planeten';
+
+  @override
+  String get asteroidsLabel => 'Asteroiden';
+
+  @override
+  String get blackHolesLabel => 'Schwarze Löcher';
+
+  @override
+  String get totalMassLabel => 'Gesamtmasse';
+
+  @override
+  String get habitableWorldsLabel => 'Bewohnbare Welten';
+
+  @override
+  String get physicsInfoTitle => 'Physik-Info';
+
+  @override
+  String get timeScaleLabel => 'Zeitskala';
+
+  @override
+  String get gravitationalConstantLabel => 'Gravitationskonstante';
+
+  @override
+  String get softeningParameterLabel => 'Glättungsparameter';
+
+  @override
+  String get collisionRadiusLabel => 'Kollisionsradius';
+
+  @override
+  String get scenarioThreeBodyClassic => 'Klassisches Drei-Körper-Problem';
+
+  @override
+  String get scenarioThreeBodyClassicDescription =>
+      'Das klassische Drei-Körper-Problem mit chaotischer Dynamik';
+
+  @override
+  String get scenarioCollisionDemo => 'Kollisions-Demo';
+
+  @override
+  String get scenarioCollisionDemoDescription =>
+      'Demonstration von Kollisionen zwischen Himmelskörpern';
+
+  @override
+  String get scenarioDeepSpace => 'Tiefraum';
+
+  @override
+  String get scenarioDeepSpaceDescription => 'Zufällige Objekte im tiefen Raum';
+
+  @override
+  String get systemEnergyLabel => 'Systemenergie';
+
+  @override
+  String get kineticEnergyLabel => 'Kinetische Energie';
+
+  @override
+  String get potentialEnergyLabel => 'Potentielle Energie';
+
+  @override
+  String get angularMomentumLabel => 'Drehimpuls';
+
+  @override
+  String get centerOfMassLabel => 'Massenschwerpunkt';
+
+  @override
+  String get velocityRangeLabel => 'Geschwindigkeitsbereich';
+
+  @override
+  String get averageVelocityLabel => 'Durchschnittsgeschwindigkeit';
+
+  @override
+  String get temperatureRangeLabel => 'Temperaturbereich';
+
+  @override
+  String get systemMomentumLabel => 'Systemimpuls';
+
+  @override
+  String get energyDynamicsTitle => 'Energie & Dynamik';
+
+  @override
+  String get orbitalMechanicsTitle => 'Orbitalmechanik';
+
+  @override
+  String get celestialBodiesTitle => 'Himmelskörper';
+
+  @override
+  String get bodyNameLabel => 'Körpername';
+
+  @override
+  String get bodyMassLabel => 'Körpermasse';
+
+  @override
+  String get bodyRadiusLabel => 'Körperradius';
+
+  @override
+  String get bodyVelocityLabel => 'Körpergeschwindigkeit';
+
+  @override
+  String get bodyTemperatureLabel => 'Körpertemperatur';
+
+  @override
+  String get bodyLuminosityLabel => 'Körperleuchtkraft';
+
+  @override
+  String get bodyPositionLabel => 'Körperposition';
+
+  @override
+  String get bodyTypeLabel => 'Körpertyp';
+
+  @override
+  String get bodyHabitabilityLabel => 'Körperbewohnbarkeit';
+
+  @override
+  String get bodyKineticEnergyLabel => 'Körper Kinetische Energie';
+
+  @override
+  String get bodyEscapeVelocityLabel => 'Fluchtgeschwindigkeit';
+
+  @override
+  String get bodyDistanceFromCenterLabel => 'Abstand zum Zentrum';
+
+  @override
+  String get bodyOrbitalPeriodLabel => 'Umlaufperiode';
+
+  @override
+  String get notApplicableValue => 'n. z.';
+
+  @override
+  String get habitableStatus => 'Bewohnbar';
+
+  @override
+  String get unknownHabitabilityStatus => 'Unbekannt';
+
+  @override
+  String get tooHotStatus => 'Zu heiß';
+
+  @override
+  String get tooColdStatus => 'Zu kalt';
+
+  @override
+  String get noAtmosphereStatus => 'Keine Atmosphäre';
 }

@@ -93,4 +93,9 @@ extension HabitabilityStatusExtension on HabitabilityStatus {
         return 'habitabilityUnknown';
     }
   }
+
+  /// Whether this status indicates a habitable world
+  bool get isHabitable {
+    return this == HabitabilityStatus.habitable;
+  }
 }

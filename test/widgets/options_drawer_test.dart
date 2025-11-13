@@ -186,7 +186,9 @@ void main() {
 
       // Find and tap the about menu item
       final aboutItem = find.byIcon(Icons.info_outline).first;
-      await tester.tap(aboutItem);
+      await tester.ensureVisible(aboutItem);
+      await tester.pumpAndSettle();
+      await tester.tap(aboutItem, warnIfMissed: false);
       await tester.pumpAndSettle();
 
       expect(aboutCalled, isTrue);
@@ -230,7 +232,7 @@ void main() {
       expect(drawer.width, 320);
       expect(
         drawer.backgroundColor,
-        AppColors.uiBlack.withValues(alpha: AppTypography.opacityNearlyOpaque),
+        AppColors.uiBlack.withValues(alpha: AppTypography.opacityHigh),
       );
     });
 

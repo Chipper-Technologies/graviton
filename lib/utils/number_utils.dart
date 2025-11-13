@@ -1,4 +1,5 @@
 import 'package:graviton/constants/simulation_constants.dart';
+import 'package:intl/intl.dart';
 
 /// Utility class for formatting numbers with proper decimal precision and units.
 ///
@@ -552,5 +553,83 @@ class NumberUtils {
   static int parseInt(String? value) {
     if (value == null || value.isEmpty) return 0;
     return int.tryParse(value) ?? 0;
+  }
+
+  /// Formats an integer with locale-aware thousands separators
+  ///
+  /// Examples:
+  /// - English locale: 1234567 -> "1,234,567"
+  /// - German locale: 1234567 -> "1.234.567"
+  /// - French locale: 1234567 -> "1 234 567"
+  ///
+  /// [value] The integer value to format
+  /// [locale] Optional locale string. If null, uses system default locale
+  ///
+  /// Returns formatted string with appropriate thousands separators
+  static String formatIntegerWithSeparators(int value, [String? locale]) {
+    final formatter = locale != null
+        ? NumberFormat.decimalPattern(locale)
+        : NumberFormat.decimalPattern();
+    return formatter.format(value);
+  }
+
+  /// Formats a double with locale-aware thousands separators and decimal places
+  ///
+  /// Examples:
+  /// - English locale: 1234.56 -> "1,234.56"
+  /// - German locale: 1234.56 -> "1.234,56"
+  /// - French locale: 1234.56 -> "1 234,56"
+  ///
+  /// [value] The double value to format
+  /// [decimalPlaces] Number of decimal places to show. If null, shows all significant digits
+  /// [locale] Optional locale string. If null, uses system default locale
+  ///
+  /// Returns formatted string with appropriate separators and decimal notation
+  static String formatDoubleWithSeparators(
+    double value, {
+    int? decimalPlaces,
+    String? locale,
+  }) {
+    final formatter = locale != null
+        ? NumberFormat.decimalPattern(locale)
+        : NumberFormat.decimalPattern();
+
+    if (decimalPlaces != null) {
+      formatter.minimumFractionDigits = decimalPlaces;
+      formatter.maximumFractionDigits = decimalPlaces;
+    }
+
+    return formatter.format(value);
+  }
+
+  /// Formats a number for compact display with SI suffixes (K, M, B, T)
+  ///
+  /// Examples:
+  /// - 1234 -> "1.2K"
+  /// - 1234567 -> "1.2M"
+  /// - 1234567890 -> "1.2B"
+  ///
+  /// [value] The number to format
+  /// [locale] Optional locale string. If null, uses system default locale
+  ///
+  /// Returns compact formatted string with appropriate suffix
+  static String formatCompact(num value, [String? locale]) {
+    final formatter = locale != null
+        ? NumberFormat.compact(locale: locale)
+        : NumberFormat.compact();
+    return formatter.format(value);
+  }
+
+  /// Formats a simulation step count with appropriate separators
+  ///
+  /// This is a convenience method specifically for simulation step counts,
+  /// which are always integers and should use standard decimal formatting.
+  ///
+  /// [stepCount] The simulation step count to format
+  /// [locale] Optional locale string. If null, uses system default locale
+  ///
+  /// Returns formatted step count string
+  static String formatSimulationSteps(int stepCount, [String? locale]) {
+    return formatIntegerWithSeparators(stepCount, locale);
   }
 }

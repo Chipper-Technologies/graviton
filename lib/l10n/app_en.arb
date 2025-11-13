@@ -1937,6 +1937,18 @@
       }
     }
   },
+  "bodyTypeNeutronStar": "Neutron Star",
+  "@bodyTypeNeutronStar": {
+    "description": "Display name for neutron star body type"
+  },
+  "bodyTypeBlackHole": "Black Hole",
+  "@bodyTypeBlackHole": {
+    "description": "Display name for black hole body type"
+  },
+  "bodyTypeMoon": "Moon",
+  "@bodyTypeMoon": {
+    "description": "Display name for moon body type"
+  },
   "bodyTypeTemplate": "{bodyType} body type",
   "@bodyTypeTemplate": {
     "description": "Template for body type accessibility label",
@@ -1946,6 +1958,30 @@
         "description": "The name of the body type"
       }
     }
+  },
+  "bodyTypeTooltipStar": "Massive celestial bodies that generate light and heat through nuclear fusion. Stars are the primary energy sources in stellar systems.",
+  "@bodyTypeTooltipStar": {
+    "description": "Tooltip description for star body type"
+  },
+  "bodyTypeTooltipPlanet": "Large celestial bodies that orbit stars and have cleared their orbital path. Planets can be rocky or gaseous and may host moons.",
+  "@bodyTypeTooltipPlanet": {
+    "description": "Tooltip description for planet body type"
+  },
+  "bodyTypeTooltipMoon": "Natural satellites that orbit planets. Moons can influence tides and provide stability to planetary systems.",
+  "@bodyTypeTooltipMoon": {
+    "description": "Tooltip description for moon body type"
+  },
+  "bodyTypeTooltipAsteroid": "Small rocky bodies that orbit the sun. Asteroids are remnants from the early formation of the solar system.",
+  "@bodyTypeTooltipAsteroid": {
+    "description": "Tooltip description for asteroid body type"
+  },
+  "bodyTypeTooltipBlackHole": "Regions of spacetime with gravitational fields so intense that nothing, not even light, can escape from them.",
+  "@bodyTypeTooltipBlackHole": {
+    "description": "Tooltip description for black hole body type"
+  },
+  "bodyTypeTooltipNeutronStar": "Extremely dense stellar remnants formed when massive stars collapse. They have incredibly strong gravitational and magnetic fields.",
+  "@bodyTypeTooltipNeutronStar": {
+    "description": "Tooltip description for neutron star body type"
   },
   "bodyUranus": "Uranus",
   "@bodyUranus": {
@@ -3675,5 +3711,217 @@
   "roguePlanetEducationalFocus": "Rogue planets, gravitational encounters, orbital disruption",
   "@roguePlanetEducationalFocus": {
     "description": "Educational focus for rogue planet scenario"
+  },
+  "simulationInfoTitle": "Simulation Info",
+  "@simulationInfoTitle": {
+    "description": "Title for the simulation information screen"
+  },
+  "scenarioInfoTitle": "Scenario Information",
+  "@scenarioInfoTitle": {
+    "description": "Title for the scenario information section"
+  },
+  "scenarioNameLabel": "Scenario",
+  "@scenarioNameLabel": {
+    "description": "Label for scenario name field"
+  },
+  "bodyStatisticsTitle": "Body Statistics",
+  "@bodyStatisticsTitle": {
+    "description": "Title for the body statistics section"
+  },
+  "totalBodiesLabel": "Total Bodies",
+  "@totalBodiesLabel": {
+    "description": "Label for total number of bodies"
+  },
+  "starsLabel": "Stars",
+  "@starsLabel": {
+    "description": "Label for number of stars"
+  },
+  "planetsLabel": "Planets",
+  "@planetsLabel": {
+    "description": "Label for number of planets"
+  },
+  "asteroidsLabel": "Asteroids & Moons",
+  "@asteroidsLabel": {
+    "description": "Label for number of asteroids and moons"
+  },
+  "blackHolesLabel": "Black Holes",
+  "@blackHolesLabel": {
+    "description": "Label for number of black holes"
+  },
+  "totalMassLabel": "Total Mass",
+  "@totalMassLabel": {
+    "description": "Label for total mass of all bodies"
+  },
+  "habitableWorldsLabel": "Habitable Worlds",
+  "@habitableWorldsLabel": {
+    "description": "Label for number of potentially habitable worlds"
+  },
+  "physicsInfoTitle": "Physics Parameters",
+  "@physicsInfoTitle": {
+    "description": "Title for the physics information section"
+  },
+  "timeScaleLabel": "Time Scale",
+  "@timeScaleLabel": {
+    "description": "Label for simulation time scale"
+  },
+  "gravitationalConstantLabel": "Gravitational Constant",
+  "@gravitationalConstantLabel": {
+    "description": "Label for gravitational constant parameter"
+  },
+  "softeningParameterLabel": "Softening Parameter",
+  "@softeningParameterLabel": {
+    "description": "Label for softening parameter"
+  },
+  "collisionRadiusLabel": "Collision Radius",
+  "@collisionRadiusLabel": {
+    "description": "Label for collision radius multiplier"
+  },
+  "scenarioThreeBodyClassic": "Three-Body Classic",
+  "@scenarioThreeBodyClassic": {
+    "description": "Name for classic three-body problem scenario"
+  },
+  "scenarioThreeBodyClassicDescription": "Classic three-body problem demonstrating chaotic gravitational dynamics",
+  "@scenarioThreeBodyClassicDescription": {
+    "description": "Description for classic three-body problem scenario"
+  },
+  "scenarioCollisionDemo": "Collision Demo",
+  "@scenarioCollisionDemo": {
+    "description": "Name for collision demonstration scenario"
+  },
+  "scenarioCollisionDemoDescription": "Collision demonstration with orbital mechanics and body interactions",
+  "@scenarioCollisionDemoDescription": {
+    "description": "Description for collision demonstration scenario"
+  },
+  "scenarioDeepSpace": "Deep Space",
+  "@scenarioDeepSpace": {
+    "description": "Name for deep space exploration scenario"
+  },
+  "scenarioDeepSpaceDescription": "Deep space exploration with distant objects and sparse gravitational fields",
+  "@scenarioDeepSpaceDescription": {
+    "description": "Description for deep space exploration scenario"
+  },
+  "systemEnergyLabel": "Total Energy",
+  "@systemEnergyLabel": {
+    "description": "Label for total system energy"
+  },
+  "kineticEnergyLabel": "Kinetic Energy",
+  "@kineticEnergyLabel": {
+    "description": "Label for system kinetic energy"
+  },
+  "potentialEnergyLabel": "Potential Energy",
+  "@potentialEnergyLabel": {
+    "description": "Label for system gravitational potential energy"
+  },
+  "angularMomentumLabel": "Angular Momentum",
+  "@angularMomentumLabel": {
+    "description": "Label for total system angular momentum"
+  },
+  "centerOfMassLabel": "Center of Mass",
+  "@centerOfMassLabel": {
+    "description": "Label for system center of mass position"
+  },
+  "velocityRangeLabel": "Velocity Range",
+  "@velocityRangeLabel": {
+    "description": "Label for min/max body velocities"
+  },
+  "averageVelocityLabel": "Average Velocity",
+  "@averageVelocityLabel": {
+    "description": "Label for average body velocity"
+  },
+  "temperatureRangeLabel": "Temperature Range",
+  "@temperatureRangeLabel": {
+    "description": "Label for min/max body temperatures"
+  },
+  "systemMomentumLabel": "System Momentum",
+  "@systemMomentumLabel": {
+    "description": "Label for total system momentum"
+  },
+  "energyDynamicsTitle": "Energy & Dynamics",
+  "@energyDynamicsTitle": {
+    "description": "Title for energy and dynamics section"
+  },
+  "orbitalMechanicsTitle": "Orbital Mechanics",
+  "@orbitalMechanicsTitle": {
+    "description": "Title for orbital mechanics section"
+  },
+  "celestialBodiesTitle": "Celestial Bodies",
+  "@celestialBodiesTitle": {
+    "description": "Title for individual celestial bodies section"
+  },
+  "bodyNameLabel": "Name",
+  "@bodyNameLabel": {
+    "description": "Label for celestial body name"
+  },
+  "bodyMassLabel": "Mass",
+  "@bodyMassLabel": {
+    "description": "Label for celestial body mass"
+  },
+  "bodyRadiusLabel": "Radius",
+  "@bodyRadiusLabel": {
+    "description": "Label for celestial body radius"
+  },
+  "bodyVelocityLabel": "Velocity",
+  "@bodyVelocityLabel": {
+    "description": "Label for celestial body velocity"
+  },
+  "bodyTemperatureLabel": "Temperature",
+  "@bodyTemperatureLabel": {
+    "description": "Label for celestial body temperature"
+  },
+  "bodyLuminosityLabel": "Luminosity",
+  "@bodyLuminosityLabel": {
+    "description": "Label for stellar luminosity"
+  },
+  "bodyPositionLabel": "Position",
+  "@bodyPositionLabel": {
+    "description": "Label for celestial body position coordinates"
+  },
+  "bodyTypeLabel": "Type",
+  "@bodyTypeLabel": {
+    "description": "Label for celestial body type"
+  },
+  "bodyHabitabilityLabel": "Habitability",
+  "@bodyHabitabilityLabel": {
+    "description": "Label for planetary habitability status"
+  },
+  "bodyKineticEnergyLabel": "Kinetic Energy",
+  "@bodyKineticEnergyLabel": {
+    "description": "Label for individual body kinetic energy"
+  },
+  "bodyEscapeVelocityLabel": "Escape Velocity",
+  "@bodyEscapeVelocityLabel": {
+    "description": "Label for escape velocity from body surface"
+  },
+  "bodyDistanceFromCenterLabel": "Distance from Center",
+  "@bodyDistanceFromCenterLabel": {
+    "description": "Label for body's distance from system center of mass"
+  },
+  "bodyOrbitalPeriodLabel": "Orbital Period",
+  "@bodyOrbitalPeriodLabel": {
+    "description": "Label for estimated orbital period"
+  },
+  "notApplicableValue": "N/A",
+  "@notApplicableValue": {
+    "description": "Value shown when data is not applicable"
+  },
+  "habitableStatus": "Habitable",
+  "@habitableStatus": {
+    "description": "Status text for habitable worlds"
+  },
+  "unknownHabitabilityStatus": "Unknown",
+  "@unknownHabitabilityStatus": {
+    "description": "Status text for unknown habitability"
+  },
+  "tooHotStatus": "Too Hot",
+  "@tooHotStatus": {
+    "description": "Status text for too hot for life"
+  },
+  "tooColdStatus": "Too Cold",
+  "@tooColdStatus": {
+    "description": "Status text for too cold for life"
+  },
+  "noAtmosphereStatus": "No Atmosphere",
+  "@noAtmosphereStatus": {
+    "description": "Status text for no atmosphere"
   }
 }

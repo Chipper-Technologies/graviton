@@ -47,6 +47,7 @@ import 'package:graviton/widgets/maintenance_dialog.dart';
 import 'package:graviton/widgets/overlays/offscreen_indicators_overlay.dart';
 import 'package:graviton/widgets/overlays/camera_visual_aids_overlay.dart';
 import 'package:graviton/screens/scenario_selection_screen.dart';
+import 'package:graviton/screens/simulation_info_screen.dart';
 import 'package:graviton/screens/about_screen.dart';
 import 'package:graviton/screens/physics_settings_screen.dart';
 import 'package:graviton/widgets/screenshot_countdown.dart';
@@ -108,6 +109,9 @@ class _HomeScreenState extends State<HomeScreen>
     // Add app lifecycle observer to handle system UI restoration
     WidgetsBinding.instance.addObserver(this);
 
+    // Listen to sheet position changes to manage floating controls visibility
+    SlidingPanelBottomSheet.sheetPosition.addListener(_onSheetPositionChanged);
+
     // Register keyboard navigation callbacks
     _registerKeyboardCallbacks();
 
@@ -135,6 +139,9 @@ class _HomeScreenState extends State<HomeScreen>
     _ticker.dispose();
     _floatingControlsTimer?.cancel();
     _screenshotModeService.removeListener(_onScreenshotModeChanged);
+    SlidingPanelBottomSheet.sheetPosition.removeListener(
+      _onSheetPositionChanged,
+    );
     WidgetsBinding.instance.removeObserver(this);
 
     // Ensure fullscreen mode is exited when screen is disposed
@@ -337,14 +344,25 @@ class _HomeScreenState extends State<HomeScreen>
     // Cancel existing timer
     _floatingControlsTimer?.cancel();
 
-    // Set timer to hide controls after 3 seconds of inactivity
-    _floatingControlsTimer = Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        setState(() {
-          _showFloatingControls = false;
-        });
-      }
-    });
+    // Only set timer to hide controls when sheet is in closed position
+    // If sheet is expanded (positions 2 or 3), keep controls visible
+    final currentSheetPosition = SlidingPanelBottomSheet.sheetPosition.value;
+    const minPosition = 0.15; // Closed position
+
+    if (currentSheetPosition <= minPosition) {
+      // Set timer to hide controls after 3 seconds of inactivity only when closed
+      _floatingControlsTimer = Timer(const Duration(seconds: 3), () {
+        if (mounted) {
+          // Double-check sheet position before hiding
+          final sheetPosition = SlidingPanelBottomSheet.sheetPosition.value;
+          if (sheetPosition <= minPosition) {
+            setState(() {
+              _showFloatingControls = false;
+            });
+          }
+        }
+      });
+    }
   }
 
   /// Project a 3D world position to 2D screen coordinates
@@ -463,6 +481,22 @@ class _HomeScreenState extends State<HomeScreen>
         }
       },
     );
+  }
+
+  /// Handle sheet position changes to manage floating controls visibility
+  void _onSheetPositionChanged() {
+    const minPosition = 0.15; // Closed position
+    final currentPosition = SlidingPanelBottomSheet.sheetPosition.value;
+
+    if (mounted) {
+      if (currentPosition > minPosition) {
+        // Sheet is expanded (positions 2 or 3) - cancel any existing timer
+        _floatingControlsTimer?.cancel();
+      } else if (currentPosition <= minPosition && _showFloatingControls) {
+        // Sheet moved to closed position - restart timer if controls are currently showing
+        _showFloatingControlsTemporarily();
+      }
+    }
   }
 
   /// Handle screenshot mode changes to control system UI visibility
@@ -676,6 +710,25 @@ class _HomeScreenState extends State<HomeScreen>
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const HelpScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        opaque: false, // This makes the route transparent
+      ),
+    );
+  }
+
+  void _showSimulationInfoScreen(BuildContext context) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.screenOpened,
+      element: UIElement.settings,
+    );
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const SimulationInfoScreen(),
         transitionDuration: const Duration(milliseconds: 300),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
@@ -1084,6 +1137,7 @@ class _HomeScreenState extends State<HomeScreen>
 
           return Scaffold(
             key: _scaffoldKey,
+            extendBodyBehindAppBar: true,
             endDrawer: OptionsDrawer(
               onShowHelp: () => _showHelpScreen(context),
               onShowSettings: () => _showApplicationSettingsScreen(context),
@@ -1098,9 +1152,7 @@ class _HomeScreenState extends State<HomeScreen>
                 ? null
                 : HapticAppBar(
                     title: l10n.appTitle,
-                    backgroundColor: AppColors.uiBlack.withValues(
-                      alpha: AppTypography.opacityMedium,
-                    ),
+                    backgroundColor: AppColors.transparentColor,
                     titleSpacing: AppTypography
                         .spacingXLarge, // More space between logo and title
                     leading: Padding(
@@ -1392,13 +1444,24 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
 
                           // Floating simulation controls positioned above the bottom sheet
-                          if (!shouldHideUI && _showFloatingControls)
+                          if (!shouldHideUI)
                             Consumer<AppState>(
                               builder: (context, appState, child) {
                                 return ValueListenableBuilder<double>(
                                   valueListenable:
                                       SlidingPanelBottomSheet.sheetPosition,
                                   builder: (context, sheetPosition, child) {
+                                    // Always show controls when sheet is expanded (positions 2 or 3)
+                                    // Only use timer logic when sheet is closed (position 1)
+                                    const minPosition = 0.15; // Closed position
+                                    final shouldShowControls =
+                                        sheetPosition > minPosition ||
+                                        _showFloatingControls;
+
+                                    if (!shouldShowControls) {
+                                      return const SizedBox.shrink();
+                                    }
+
                                     final screenHeight = MediaQuery.of(
                                       context,
                                     ).size.height;
@@ -1411,6 +1474,7 @@ class _HomeScreenState extends State<HomeScreen>
 
                                     return Positioned(
                                       bottom: bottomPosition,
+                                      left: 32,
                                       right: 32,
                                       child: Builder(
                                         builder: (context) {
@@ -1592,48 +1656,13 @@ class _HomeScreenState extends State<HomeScreen>
   ) {
     return Material(
       color: AppColors.transparentColor,
-      elevation:
-          8, // Add elevation to ensure proper rendering above other content
+      elevation: 0, // Remove shadow background
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Play/Pause Button
-          appState.simulation.isPaused
-              ? HapticCircularButton.play(
-                  onTap: () {
-                    // Reset floating controls timer when button is pressed
-                    _showFloatingControlsTemporarily();
-
-                    FirebaseService.instance.logUIEventWithEnums(
-                      UIAction.buttonPressed,
-                      element: UIElement.simulationControl,
-                      value: 'play',
-                    );
-                    appState.simulation.pause();
-                  },
-                  tooltip: l10n.playButton,
-                  semanticsLabel: l10n.playButton,
-                )
-              : HapticCircularButton.pause(
-                  onTap: () {
-                    // Reset floating controls timer when button is pressed
-                    _showFloatingControlsTemporarily();
-
-                    FirebaseService.instance.logUIEventWithEnums(
-                      UIAction.buttonPressed,
-                      element: UIElement.simulationControl,
-                      value: 'pause',
-                    );
-                    appState.simulation.pause();
-                  },
-                  tooltip: l10n.pauseButton,
-                  semanticsLabel: l10n.pauseButton,
-                ),
-
-          const SizedBox(width: AppTypography.spacingSmall),
-
-          // Reset Button
-          HapticCircularButton.reset(
+          // Info Button (far left)
+          HapticCircularButton(
+            icon: Icons.info_outline,
             onTap: () {
               // Reset floating controls timer when button is pressed
               _showFloatingControlsTemporarily();
@@ -1641,19 +1670,89 @@ class _HomeScreenState extends State<HomeScreen>
               FirebaseService.instance.logUIEventWithEnums(
                 UIAction.buttonPressed,
                 element: UIElement.simulationControl,
-                value: 'reset',
+                value: 'info',
               );
 
-              // Check if screenshot mode is active and deactivate it first
-              final screenshotService = ScreenshotModeService();
-              if (screenshotService.isActive) {
-                screenshotService.deactivate(uiState: appState.ui);
-              }
-
-              appState.resetAll();
+              // Show simulation info screen
+              _showSimulationInfoScreen(context);
             },
-            tooltip: l10n.resetButton,
-            semanticsLabel: l10n.resetButton,
+            size: 36,
+            iconColor: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityNearlyOpaque,
+            ),
+            backgroundColor: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityHigh,
+            ),
+            borderColor: AppColors.uiWhite.withValues(
+              alpha: AppTypography.opacityFaint,
+            ),
+            tooltip: l10n.aboutButtonTooltip,
+            semanticsLabel: l10n.aboutButtonTooltip,
+          ),
+
+          // Play/Pause and Reset buttons (far right)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Play/Pause Button
+              appState.simulation.isPaused
+                  ? HapticCircularButton.play(
+                      onTap: () {
+                        // Reset floating controls timer when button is pressed
+                        _showFloatingControlsTemporarily();
+
+                        FirebaseService.instance.logUIEventWithEnums(
+                          UIAction.buttonPressed,
+                          element: UIElement.simulationControl,
+                          value: 'play',
+                        );
+                        appState.simulation.pause();
+                      },
+                      tooltip: l10n.playButton,
+                      semanticsLabel: l10n.playButton,
+                    )
+                  : HapticCircularButton.pause(
+                      onTap: () {
+                        // Reset floating controls timer when button is pressed
+                        _showFloatingControlsTemporarily();
+
+                        FirebaseService.instance.logUIEventWithEnums(
+                          UIAction.buttonPressed,
+                          element: UIElement.simulationControl,
+                          value: 'pause',
+                        );
+                        appState.simulation.pause();
+                      },
+                      tooltip: l10n.pauseButton,
+                      semanticsLabel: l10n.pauseButton,
+                    ),
+
+              const SizedBox(width: AppTypography.spacingSmall),
+
+              // Reset Button
+              HapticCircularButton.reset(
+                onTap: () {
+                  // Reset floating controls timer when button is pressed
+                  _showFloatingControlsTemporarily();
+
+                  FirebaseService.instance.logUIEventWithEnums(
+                    UIAction.buttonPressed,
+                    element: UIElement.simulationControl,
+                    value: 'reset',
+                  );
+
+                  // Check if screenshot mode is active and deactivate it first
+                  final screenshotService = ScreenshotModeService();
+                  if (screenshotService.isActive) {
+                    screenshotService.deactivate(uiState: appState.ui);
+                  }
+
+                  appState.resetAll();
+                },
+                tooltip: l10n.resetButton,
+                semanticsLabel: l10n.resetButton,
+              ),
+            ],
           ),
         ],
       ),

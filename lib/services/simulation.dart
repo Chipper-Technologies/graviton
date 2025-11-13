@@ -9,6 +9,7 @@ import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/accessibility_service.dart';
+import 'package:graviton/services/custom_scenario_manager.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
@@ -176,6 +177,11 @@ class Simulation {
     bool preserveCustomSettings = false,
   }) {
     _isResetting = true; // Mark that we're in a legitimate reset operation
+
+    // Clear custom scenario manager if switching to a preset scenario
+    if (scenario != ScenarioType.custom) {
+      CustomScenarioManager.instance.clearCurrentCustomScenario();
+    }
 
     // Preserve custom body settings if requested (for localization updates)
     List<bool> gravityWellSettings = [];
