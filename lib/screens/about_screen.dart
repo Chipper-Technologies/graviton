@@ -7,6 +7,7 @@ import 'package:graviton/services/version_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/clipboard_utils.dart';
+import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -265,17 +266,14 @@ class _AboutScreenState extends State<AboutScreen> {
       } else {
         if (mounted) {
           final l10n = AppLocalizations.of(context)!;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.couldNotOpenUrl(url)),
-              action: SnackBarAction(
-                label: l10n.copyButton,
-                onPressed: () {
-                  // Copy URL to clipboard as fallback
-                  ClipboardUtils.copyToClipboardSilent(url);
-                },
-              ),
-            ),
+          GravitonSnackBar.warning(
+            context: context,
+            message: l10n.couldNotOpenUrl(url),
+            actionLabel: l10n.copyButton,
+            onActionPressed: () {
+              // Copy URL to clipboard as fallback
+              ClipboardUtils.copyToClipboardSilent(url);
+            },
           );
         }
       }
@@ -283,16 +281,13 @@ class _AboutScreenState extends State<AboutScreen> {
       debugPrint('Could not launch URL: $url, error: $e');
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.errorOpeningLink(e.toString())),
-            action: SnackBarAction(
-              label: l10n.copyButton,
-              onPressed: () {
-                ClipboardUtils.copyToClipboardSilent(url);
-              },
-            ),
-          ),
+        GravitonSnackBar.error(
+          context: context,
+          message: l10n.errorOpeningLink(e.toString()),
+          actionLabel: l10n.copyButton,
+          onActionPressed: () {
+            ClipboardUtils.copyToClipboardSilent(url);
+          },
         );
       }
     }

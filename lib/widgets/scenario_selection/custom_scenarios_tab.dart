@@ -22,6 +22,7 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/color_utils.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
+import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/scenario_selection/create_scenario_tile.dart';
 import 'package:graviton/widgets/scenario_selection/custom_scenario_tile.dart';
@@ -286,11 +287,9 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       _openRoguePlanetEditor(context, experiment);
     } else {
       // For other experiments, show "coming soon" message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.experimentComingSoon(experimentName)),
-          backgroundColor: experiment.color,
-        ),
+      GravitonSnackBar.info(
+        context: context,
+        message: l10n.experimentComingSoon(experimentName),
       );
     }
   }
@@ -764,11 +763,9 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         await _loadCustomScenarios();
 
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.deleteScenarioSuccessMessage(scenarioName)),
-              backgroundColor: AppColors.primaryColor,
-            ),
+          GravitonSnackBar.success(
+            context: context,
+            message: l10n.deleteScenarioSuccessMessage(scenarioName),
           );
         }
       } catch (e) {
@@ -780,11 +777,9 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         );
 
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.deleteScenarioFailedMessage(e.toString())),
-              backgroundColor: AppColors.celestialRed,
-            ),
+          GravitonSnackBar.error(
+            context: context,
+            message: l10n.deleteScenarioFailedMessage(e.toString()),
           );
         }
       }
@@ -839,11 +834,9 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       ); // For development
 
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.exportScenarioNotImplementedMessage),
-            backgroundColor: AppColors.celestialOrange,
-          ),
+        GravitonSnackBar.warning(
+          context: context,
+          message: l10n.exportScenarioNotImplementedMessage,
         );
       }
     } catch (e) {
@@ -855,11 +848,9 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       );
 
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.exportScenarioFailedMessage(e.toString())),
-            backgroundColor: AppColors.celestialRed,
-          ),
+        GravitonSnackBar.error(
+          context: context,
+          message: l10n.exportScenarioFailedMessage(e.toString()),
         );
       }
     }

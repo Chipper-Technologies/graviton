@@ -23,6 +23,7 @@ import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
 import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
 import 'package:graviton/widgets/common/graviton_popup_menu.dart';
+import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
@@ -2225,17 +2226,13 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     HapticFeedback.mediumImpact();
 
     // Show detailed feedback to user
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          AppLocalizations.of(context)!.orbitStabilizedMessage(
-            changeDescription,
-            _orbitRadius.toStringAsFixed(1),
-          ),
-        ),
-        backgroundColor: AppColors.uiStatusGreen,
-        duration: const Duration(seconds: 4),
+    GravitonSnackBar.success(
+      context: context,
+      message: AppLocalizations.of(context)!.orbitStabilizedMessage(
+        changeDescription,
+        _orbitRadius.toStringAsFixed(1),
       ),
+      duration: const Duration(seconds: 4),
     );
   }
 

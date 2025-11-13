@@ -24,6 +24,7 @@ import 'package:graviton/utils/body_type_ranges.dart';
 import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
 import 'package:graviton/widgets/common/graviton_popup_menu.dart';
+import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:graviton/widgets/common/graviton_tabs.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/common/styled_text_field.dart';
@@ -1101,13 +1102,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
 
     // Validate scenario first
     if (_bodies.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            l10n.addCelestialBodiesToCreateYourCustomScenarioEditor,
-          ),
-          backgroundColor: AppColors.celestialOrange,
-        ),
+      GravitonSnackBar.warning(
+        context: context,
+        message: l10n.addCelestialBodiesToCreateYourCustomScenarioEditor,
       );
       return;
     }
@@ -1160,11 +1157,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
 
   void _showErrorMessage(String message) {
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: AppColors.celestialOrange,
-        ),
+      GravitonSnackBar.error(
+        context: context,
+        message: message,
       );
     }
   }
@@ -1197,24 +1192,18 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
 
         // Show test message
         if (currentContext.mounted) {
-          ScaffoldMessenger.of(currentContext).showSnackBar(
-            SnackBar(
-              content: Text(localizedL10n.accessibilityNewScenarioLoaded),
-              backgroundColor: AppColors.uiStatusGreen,
-              duration: const Duration(seconds: 3),
-            ),
+          GravitonSnackBar.success(
+            context: currentContext,
+            message: localizedL10n.accessibilityNewScenarioLoaded,
+            duration: const Duration(seconds: 3),
           );
         }
       } catch (e) {
         debugPrint('Failed to load test scenario: $e');
         if (currentContext.mounted) {
-          ScaffoldMessenger.of(currentContext).showSnackBar(
-            SnackBar(
-              content: Text(
-                localizedL10n.failedToSwitchScenarioError(e.toString()),
-              ),
-              backgroundColor: AppColors.celestialOrange,
-            ),
+          GravitonSnackBar.error(
+            context: currentContext,
+            message: localizedL10n.failedToSwitchScenarioError(e.toString()),
           );
         }
       }
@@ -1243,11 +1232,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       // TODO: Implement file export functionality
       debugPrint('Exported JSON:\n$jsonString'); // For development
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.exportScenarioNotImplementedMessage),
-          backgroundColor: AppColors.celestialOrange,
-        ),
+      GravitonSnackBar.warning(
+        context: context,
+        message: l10n.exportScenarioNotImplementedMessage,
       );
     } catch (e) {
       // Log error analytics
@@ -1258,11 +1245,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
       );
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.exportScenarioFailedMessage(e.toString())),
-            backgroundColor: AppColors.celestialRed,
-          ),
+        GravitonSnackBar.error(
+          context: context,
+          message: l10n.exportScenarioFailedMessage(e.toString()),
         );
       }
     }

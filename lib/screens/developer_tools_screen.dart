@@ -10,6 +10,7 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/common/action_option.dart';
+import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/screenshot_mode_widget.dart';
 import 'package:graviton/widgets/section_title.dart';
@@ -132,11 +133,9 @@ class DeveloperToolsScreen extends StatelessWidget {
 
       if (changelogs.isEmpty) {
         if (currentContext.mounted) {
-          ScaffoldMessenger.of(currentContext).showSnackBar(
-            SnackBar(
-              content: Text(l10n.noChangelogsAvailable),
-              backgroundColor: AppColors.uiOrange,
-            ),
+          GravitonSnackBar.info(
+            context: currentContext,
+            message: l10n.noChangelogsAvailable,
           );
         }
         return;
@@ -161,11 +160,9 @@ class DeveloperToolsScreen extends StatelessWidget {
       }
     } catch (e) {
       if (currentContext.mounted) {
-        ScaffoldMessenger.of(currentContext).showSnackBar(
-          SnackBar(
-            content: Text(l10n.changelogLoadError(e.toString())),
-            backgroundColor: AppColors.uiOrange,
-          ),
+        GravitonSnackBar.error(
+          context: currentContext,
+          message: l10n.changelogLoadError(e.toString()),
         );
       }
     }

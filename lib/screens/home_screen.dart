@@ -34,6 +34,7 @@ import 'package:graviton/widgets/semantics/semantic_simulation_canvas.dart';
 import 'package:graviton/widgets/semantics/semantic_live_region.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
+import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
 import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
@@ -667,11 +668,9 @@ class _HomeScreenState extends State<HomeScreen>
 
       // Show success message
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.accessibilityNewScenarioLoaded),
-            backgroundColor: AppColors.uiStatusGreen,
-          ),
+        GravitonSnackBar.success(
+          context: context,
+          message: l10n.accessibilityNewScenarioLoaded,
         );
       }
     } catch (e) {
@@ -1034,15 +1033,11 @@ class _HomeScreenState extends State<HomeScreen>
     } catch (e) {
       // Show error message
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(
-                context,
-              )!.errorLoadingChangelogEHome(e.toString()),
-            ),
-            backgroundColor: AppColors.uiRed,
-          ),
+        GravitonSnackBar.error(
+          context: context,
+          message: AppLocalizations.of(
+            context,
+          )!.errorLoadingChangelogEHome(e.toString()),
         );
       }
     }
@@ -1613,38 +1608,30 @@ class _HomeScreenState extends State<HomeScreen>
     resetAutoHideTimer();
 
     // Also show the deactivate snackbar below
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          l10n.appliedPreset(
-            screenshotService.getPresetDisplayName(
-              screenshotService.currentPresetIndex,
-              l10n,
-            ),
-          ),
-        ),
-        duration: const Duration(seconds: 3),
-        action: SnackBarAction(
-          label: l10n.deactivate,
-          onPressed: () {
-            // Remove overlay if still present
-            try {
-              overlayEntry.remove();
-            } catch (e) {
-              // Overlay already removed, ignore
-            }
-
-            // Close the snackbar first
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-            // Deactivate screenshot mode and ensure simulation is unpaused
-            screenshotService.deactivate(
-              uiState: appState.ui,
-              simulationState: appState.simulation,
-            );
-          },
+    GravitonSnackBar.info(
+      context: context,
+      message: l10n.appliedPreset(
+        screenshotService.getPresetDisplayName(
+          screenshotService.currentPresetIndex,
+          l10n,
         ),
       ),
+      duration: const Duration(seconds: 3),
+      actionLabel: l10n.deactivate,
+      onActionPressed: () {
+        // Remove overlay if still present
+        try {
+          overlayEntry.remove();
+        } catch (e) {
+          // Overlay already removed, ignore
+        }
+
+        // Deactivate screenshot mode and ensure simulation is unpaused
+        screenshotService.deactivate(
+          uiState: appState.ui,
+          simulationState: appState.simulation,
+        );
+      },
     );
   }
 
