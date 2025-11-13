@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/scenario_metadata.dart';
 import 'package:graviton/models/objectives_config.dart';
+import 'package:graviton/models/scenario_metadata.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 
 /// Metadata configuration panel for scenario editor
 class ScenarioEditorMetadataPanel extends StatefulWidget {
@@ -72,8 +72,10 @@ class _ScenarioEditorMetadataPanelState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SectionTitle(title: l10n.scenarioInformationEditortitle),
-          SizedBox(height: AppTypography.spacingMedium),
+          SectionDivider.labeled(
+            l10n.scenarioInformationEditortitle,
+            bottomSpacing: AppTypography.spacingMedium,
+          ),
 
           // Name field
           _buildTextField(
@@ -110,8 +112,10 @@ class _ScenarioEditorMetadataPanelState
 
           SizedBox(height: AppTypography.spacingLarge),
 
-          SectionTitle(title: l10n.educationalObjectivesEditortitle),
-          SizedBox(height: AppTypography.spacingMedium),
+          SectionDivider.labeled(
+            l10n.educationalObjectivesEditortitle,
+            bottomSpacing: AppTypography.spacingMedium,
+          ),
 
           Container(
             padding: EdgeInsets.all(AppTypography.spacingMedium),

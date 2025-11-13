@@ -6,7 +6,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/screens/application_settings_screen.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -75,8 +75,8 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Should have section titles (general settings and haptic feedback)
-        expect(find.byType(SectionTitle), findsNWidgets(2));
+        // Should have section dividers (general settings and haptic feedback)
+        expect(find.byType(SectionDivider), findsNWidgets(2));
 
         // Should have language icon
         expect(find.byIcon(Icons.language), findsOneWidget);
@@ -321,7 +321,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Should still have all content after scrolling
-        expect(find.byType(SectionTitle), findsWidgets);
+        expect(find.byType(SectionDivider), findsWidgets);
       });
 
       testWidgets('should handle dropdown interaction properly', (
@@ -514,7 +514,7 @@ void main() {
 
         // Should have proper semantic structure with headers and content
         // (language settings and haptic feedback sections)
-        expect(find.byType(SectionTitle), findsNWidgets(2));
+        expect(find.byType(SectionDivider), findsNWidgets(2));
         expect(find.byType(Text), findsWidgets);
         expect(find.byIcon(Icons.language), findsOneWidget);
       });

@@ -240,8 +240,8 @@ void main() {
           borderColor: customBorderColor,
         );
 
-        expect(config.iconColor?.value, equals(0xFF123456));
-        expect(config.borderColor?.value, equals(0xFFABCDEF));
+        expect(config.iconColor, equals(customIconColor));
+        expect(config.borderColor, equals(customBorderColor));
       });
 
       test('handles transparent and translucent colors', () {
@@ -255,23 +255,23 @@ void main() {
         );
 
         expect(config.iconColor, equals(Colors.transparent));
-        expect(config.borderColor?.alpha, equals(0x80));
+        expect(config.borderColor?.a, closeTo(0.5, 0.01)); // 50% opacity
       });
 
       test('validates color accessibility', () {
-        // Colors should have valid alpha, red, green, blue components
+        // Colors should have valid component values (0.0-1.0 range)
         if (testConfig.iconColor != null) {
-          expect(testConfig.iconColor!.alpha, inInclusiveRange(0, 255));
-          expect(testConfig.iconColor!.red, inInclusiveRange(0, 255));
-          expect(testConfig.iconColor!.green, inInclusiveRange(0, 255));
-          expect(testConfig.iconColor!.blue, inInclusiveRange(0, 255));
+          expect(testConfig.iconColor!.a, inInclusiveRange(0.0, 1.0));
+          expect(testConfig.iconColor!.r, inInclusiveRange(0.0, 1.0));
+          expect(testConfig.iconColor!.g, inInclusiveRange(0.0, 1.0));
+          expect(testConfig.iconColor!.b, inInclusiveRange(0.0, 1.0));
         }
 
         if (testConfig.borderColor != null) {
-          expect(testConfig.borderColor!.alpha, inInclusiveRange(0, 255));
-          expect(testConfig.borderColor!.red, inInclusiveRange(0, 255));
-          expect(testConfig.borderColor!.green, inInclusiveRange(0, 255));
-          expect(testConfig.borderColor!.blue, inInclusiveRange(0, 255));
+          expect(testConfig.borderColor!.a, inInclusiveRange(0.0, 1.0));
+          expect(testConfig.borderColor!.r, inInclusiveRange(0.0, 1.0));
+          expect(testConfig.borderColor!.g, inInclusiveRange(0.0, 1.0));
+          expect(testConfig.borderColor!.b, inInclusiveRange(0.0, 1.0));
         }
       });
     });
@@ -341,7 +341,7 @@ void main() {
           hintKey: 'deleteHint',
           icon: Icons.delete,
           iconColor: Colors.red,
-          borderColor: Colors.red.withOpacity(0.3),
+          borderColor: Colors.red.withValues(alpha: 0.3),
           onTap: () {
             actionTriggered = true;
           },

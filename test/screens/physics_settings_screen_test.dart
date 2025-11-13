@@ -6,9 +6,9 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/screens/physics_settings_screen.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/widgets/common/action_option.dart';
-import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 
 void main() {
   group('PhysicsSettingsScreen Tests', () {
@@ -346,7 +346,7 @@ void main() {
 
       // Verify section components
       expect(
-        find.byType(SectionTitle),
+        find.byType(SectionDivider),
         findsNWidgets(4),
       ); // Physics, Collision, Trails, Haptics
       expect(

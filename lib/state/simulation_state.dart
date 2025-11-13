@@ -3,6 +3,8 @@ import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/firebase_event.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/simulation_status.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/merge_flash.dart';
@@ -138,6 +140,20 @@ class SimulationState extends ChangeNotifier {
       // Announce state change to screen readers
       AccessibilityService.instance.announceSimulationStateChange('started');
 
+      // Enhanced analytics for simulation start with context
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.simulationStarted,
+        element: UIElement.simulationPlaybackControls,
+        additionalParams: {
+          'scenario': _simulation.currentScenario.name,
+          'body_count': _simulation.bodies.length.toString(),
+          'time_scale': _timeScale.toString(),
+          'previous_status': _status == SimulationStatus.stopped
+              ? 'stopped'
+              : 'error',
+        },
+      );
+
       FirebaseService.instance.logEventWithEnum(
         FirebaseEvent.simulationStarted,
       );
@@ -155,6 +171,19 @@ class SimulationState extends ChangeNotifier {
       // Announce state change to screen readers
       AccessibilityService.instance.announceSimulationStateChange('paused');
 
+      // Enhanced analytics for simulation pause
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.simulationPaused,
+        element: UIElement.simulationPlaybackControls,
+        additionalParams: {
+          'scenario': _simulation.currentScenario.name,
+          'body_count': _simulation.bodies.length.toString(),
+          'time_scale': _timeScale.toString(),
+          'step_count': _stepCount.toString(),
+          'total_time_seconds': _totalTime.toStringAsFixed(1),
+        },
+      );
+
       FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationPaused);
     } else if (_status.canResume) {
       _status = SimulationStatus.running;
@@ -164,6 +193,20 @@ class SimulationState extends ChangeNotifier {
 
       // Announce state change to screen readers
       AccessibilityService.instance.announceSimulationStateChange('resumed');
+
+      // Enhanced analytics for simulation resume
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.simulationResumed,
+        element: UIElement.simulationPlaybackControls,
+        additionalParams: {
+          'scenario': _simulation.currentScenario.name,
+          'body_count': _simulation.bodies.length.toString(),
+          'time_scale': _timeScale.toString(),
+          'step_count': _stepCount.toString(),
+          'pause_duration_estimate':
+              'unknown', // Could track this with timestamps
+        },
+      );
 
       FirebaseService.instance.logEventWithEnum(
         FirebaseEvent.simulationResumed,
@@ -206,11 +249,28 @@ class SimulationState extends ChangeNotifier {
     // Provide haptic feedback for simulation stop
     HapticFeedbackService.instance.mediumImpact();
 
+    // Enhanced analytics for simulation stop
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.simulationStopped,
+      element: UIElement.simulationPlaybackControls,
+      additionalParams: {
+        'scenario': _simulation.currentScenario.name,
+        'body_count': _simulation.bodies.length.toString(),
+        'time_scale': _timeScale.toString(),
+        'step_count': _stepCount.toString(),
+        'total_time_seconds': _totalTime.toStringAsFixed(1),
+        'session_duration_steps': _stepCount.toString(),
+      },
+    );
+
     FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationStopped);
     notifyListeners();
   }
 
   void reset() {
+    final previousStepCount = _stepCount;
+    final previousTotalTime = _totalTime;
+
     stop();
 
     // Reset physics simulation to current scenario, preserving custom gravity well settings
@@ -223,6 +283,21 @@ class SimulationState extends ChangeNotifier {
 
     // Provide haptic feedback for simulation reset
     HapticFeedbackService.instance.heavyImpact();
+
+    // Enhanced analytics for simulation reset
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.simulationReset,
+      element: UIElement.simulationLifecycleControls,
+      additionalParams: {
+        'scenario': _simulation.currentScenario.name,
+        'body_count': _simulation.bodies.length.toString(),
+        'time_scale': _timeScale.toString(),
+        'previous_step_count': previousStepCount.toString(),
+        'previous_total_time': previousTotalTime.toStringAsFixed(1),
+        'reset_trigger':
+            'manual', // Could be 'manual', 'automatic', 'scenario_change'
+      },
+    );
 
     FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationReset);
     notifyListeners();
@@ -299,6 +374,39 @@ class SimulationState extends ChangeNotifier {
     if (_timeScale >= 16.0 || _timeScale <= 0.1) {
       HapticFeedbackService.instance.heavyImpact();
     }
+
+    // Enhanced analytics for time scale changes with performance context
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.simulationSpeedChanged,
+      element: UIElement.timeScaleControls,
+      value: _timeScale.toString(),
+      additionalParams: {
+        'previous_scale': oldScale.toString(),
+        'new_scale': _timeScale.toString(),
+        'scale_change': scaleChange.toString(),
+        'body_count': _simulation.bodies.length.toString(),
+        'simulation_status': _status.name,
+        'at_extreme': (_timeScale >= 16.0 || _timeScale <= 0.1).toString(),
+        'step_count': _stepCount.toString(),
+        'scale_direction': _timeScale > oldScale ? 'increase' : 'decrease',
+      },
+    );
+
+    // Keep the existing performance analytics as well
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.timeScaleAdjusted,
+      element: UIElement.performanceMonitor,
+      value: _timeScale.toString(),
+      additionalParams: {
+        'previous_scale': oldScale.toString(),
+        'new_scale': _timeScale.toString(),
+        'scale_change': scaleChange.toString(),
+        'body_count': _simulation.bodies.length.toString(),
+        'simulation_status': _status.name,
+        'at_extreme': (_timeScale >= 16.0 || _timeScale <= 0.1).toString(),
+        'step_count': _stepCount.toString(),
+      },
+    );
 
     _saveSetting(_keyTimeScale, _timeScale);
     FirebaseService.instance.logSettingsChange('time_scale', _timeScale);

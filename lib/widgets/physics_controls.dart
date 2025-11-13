@@ -8,8 +8,11 @@ import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
+import 'package:graviton/services/firebase_service.dart';
 
 /// Physics controls content for the persistent bottom sheet
 class PhysicsControls extends StatelessWidget {
@@ -31,20 +34,32 @@ class PhysicsControls extends StatelessWidget {
       padding: EdgeInsets.only(
         left: AppTypography.spacingXLarge,
         right: AppTypography.spacingXLarge,
-        top: AppTypography.spacingLarge,
         bottom:
             PlatformUtils.getBottomSheetSystemBarPadding(), // Platform-specific padding for system bar
       ),
       children: [
-        SectionTitle(title: l10n.physicsVisualizationTitle),
-        SizedBox(height: AppTypography.spacingMedium),
+        SectionDivider.labeled(
+          l10n.physicsVisualizationTitle,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
 
         ToggleOption(
           title: l10n.gravityFieldsTitle,
           description: l10n.gravityFieldsDescription,
           icon: Icons.scatter_plot,
           isEnabled: appState.ui.globalGravityFields,
-          onChanged: (_) => appState.ui.toggleGlobalGravityFields(),
+          onChanged: (_) {
+            // Track analytics before toggling
+            FirebaseService.instance.logUIEventWithEnums(
+              UIAction.gravityFieldsToggle,
+              element: UIElement.gravityFieldControls,
+              value: (!appState.ui.globalGravityFields).toString(),
+              additionalParams: {
+                'previous_state': appState.ui.globalGravityFields.toString(),
+              },
+            );
+            appState.ui.toggleGlobalGravityFields();
+          },
         ),
 
         if (appState.ui.globalGravityFields) ...[
@@ -53,7 +68,21 @@ class PhysicsControls extends StatelessWidget {
             description: l10n.equipotentialSurfacesDescription,
             icon: Icons.layers,
             isEnabled: appState.ui.showEquipotentialSurfaces,
-            onChanged: (_) => appState.ui.toggleEquipotentialSurfaces(),
+            onChanged: (_) {
+              // Track analytics before toggling
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.equipotentialSurfacesToggle,
+                element: UIElement.equipotentialSurfaces,
+                value: (!appState.ui.showEquipotentialSurfaces).toString(),
+                additionalParams: {
+                  'previous_state': appState.ui.showEquipotentialSurfaces
+                      .toString(),
+                  'gravity_fields_enabled': appState.ui.globalGravityFields
+                      .toString(),
+                },
+              );
+              appState.ui.toggleEquipotentialSurfaces();
+            },
           ),
 
           ToggleOption(
@@ -61,7 +90,21 @@ class PhysicsControls extends StatelessWidget {
             description: l10n.gravityFieldIndicatorsDescription,
             icon: Icons.my_location,
             isEnabled: appState.ui.showGravityFieldIndicators,
-            onChanged: (_) => appState.ui.toggleGravityFieldIndicators(),
+            onChanged: (_) {
+              // Track analytics before toggling
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.gravityFieldIndicatorsToggle,
+                element: UIElement.gravityFieldIndicators,
+                value: (!appState.ui.showGravityFieldIndicators).toString(),
+                additionalParams: {
+                  'previous_state': appState.ui.showGravityFieldIndicators
+                      .toString(),
+                  'gravity_fields_enabled': appState.ui.globalGravityFields
+                      .toString(),
+                },
+              );
+              appState.ui.toggleGravityFieldIndicators();
+            },
           ),
 
           Container(
@@ -133,11 +176,12 @@ class PhysicsControls extends StatelessWidget {
           ),
         ],
 
-        SizedBox(height: AppTypography.spacingXXLarge),
-
         // Simulation Speed Section
-        SectionTitle(title: l10n.simulationSpeed),
-        SizedBox(height: AppTypography.spacingMedium),
+        SectionDivider.labeled(
+          l10n.simulationSpeed,
+          topSpacing: AppTypography.spacingSmall,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
 
         HapticSliderOption.detailed(
           label: l10n.speedLabel,
@@ -166,10 +210,11 @@ class PhysicsControls extends StatelessWidget {
           ],
         ),
 
-        SizedBox(height: AppTypography.spacingXXLarge),
-
-        SectionTitle(title: l10n.debugStatisticsTitle),
-        SizedBox(height: AppTypography.spacingMedium),
+        SectionDivider.labeled(
+          l10n.debugStatisticsTitle,
+          topSpacing: AppTypography.spacingLarge,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
 
         ToggleOption(
           title: l10n.showStatisticsTitle,
@@ -181,10 +226,11 @@ class PhysicsControls extends StatelessWidget {
         ),
 
         if (appState.ui.showStats) ...[
-          SizedBox(height: AppTypography.spacingXXLarge),
-
-          SectionTitle(title: l10n.currentStatisticsTitle),
-          SizedBox(height: AppTypography.spacingMedium),
+          SectionDivider.labeled(
+            l10n.currentStatisticsTitle,
+            topSpacing: AppTypography.spacingSmall,
+            bottomSpacing: AppTypography.spacingMedium,
+          ),
 
           Container(
             padding: EdgeInsets.all(AppTypography.spacingLarge),
@@ -273,6 +319,20 @@ class PhysicsControls extends StatelessWidget {
               (e) => e.name == scheme,
               orElse: () => GravityFieldColorScheme.classic,
             );
+
+            // Track analytics before changing color scheme
+            FirebaseService.instance.logUIEventWithEnums(
+              UIAction.gravityFieldColorSchemeChanged,
+              element: UIElement.gravityFieldColorScheme,
+              value: colorScheme.name,
+              additionalParams: {
+                'previous_scheme': appState.ui.gravityFieldColorScheme.name,
+                'new_scheme': colorScheme.name,
+                'gravity_fields_enabled': appState.ui.globalGravityFields
+                    .toString(),
+              },
+            );
+
             appState.ui.setGravityFieldColorScheme(colorScheme);
           },
           borderRadius: BorderRadius.circular(AppTypography.radiusMedium),

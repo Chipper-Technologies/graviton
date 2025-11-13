@@ -314,6 +314,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _selectBody(AppState appState, int bodyIndex, List<Body> bodies) {
+    final selectedBody = bodies[bodyIndex];
     appState.camera.selectBody(bodyIndex);
 
     // If follow mode is active, immediately start following the newly selected body
@@ -323,7 +324,11 @@ class _HomeScreenState extends State<HomeScreen>
       FirebaseService.instance.logUIEventWithEnums(
         UIAction.followToggle,
         element: UIElement.cameraControls,
-        value: 'body_$bodyIndex',
+        value: 'body_${selectedBody.name}',
+        additionalParams: {
+          'body_type': selectedBody.bodyType.name,
+          'body_index': bodyIndex.toString(),
+        },
       );
     } else {
       // Focus on the selected body for better viewing
@@ -331,9 +336,16 @@ class _HomeScreenState extends State<HomeScreen>
     }
 
     FirebaseService.instance.logUIEventWithEnums(
-      UIAction.bodySelected,
-      element: UIElement.simulationViewport,
-      value: 'body_$bodyIndex',
+      UIAction.bodyTapInteraction,
+      element: UIElement.viewportCanvas,
+      value: 'body_selected',
+      additionalParams: {
+        'body_name': selectedBody.name,
+        'body_type': selectedBody.bodyType.name,
+        'body_index': bodyIndex.toString(),
+        'follow_mode': appState.camera.followMode.toString(),
+        'camera_technique': appState.ui.cinematicCameraTechnique.name,
+      },
     );
   }
 
@@ -519,7 +531,7 @@ class _HomeScreenState extends State<HomeScreen>
         _showFloatingControls = false;
       });
 
-      await FullscreenUtils.toggleFullscreen(appState);
+      await FullscreenUtils.toggleFullscreen(appState, 'viewport_tap');
 
       // Force a rebuild after fullscreen toggle and show controls again
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -1247,15 +1259,26 @@ class _HomeScreenState extends State<HomeScreen>
 
                     if (d.pointerCount >= 2) {
                       FirebaseService.instance.logUIEventWithEnums(
-                        UIAction.gestureStart,
-                        element: UIElement.cameraControls,
-                        value: 'multi_touch',
+                        UIAction.viewportGestureStart,
+                        element: UIElement.viewportCanvas,
+                        value: 'multi_touch_zoom',
+                        additionalParams: {
+                          'pointer_count': d.pointerCount.toString(),
+                          'camera_technique':
+                              appState.ui.cinematicCameraTechnique.name,
+                          'follow_mode': appState.camera.followMode.toString(),
+                        },
                       );
                     } else {
                       FirebaseService.instance.logUIEventWithEnums(
-                        UIAction.gestureStart,
-                        element: UIElement.cameraControls,
-                        value: 'single_touch',
+                        UIAction.viewportGestureStart,
+                        element: UIElement.viewportCanvas,
+                        value: 'pan_rotate',
+                        additionalParams: {
+                          'camera_technique':
+                              appState.ui.cinematicCameraTechnique.name,
+                          'follow_mode': appState.camera.followMode.toString(),
+                        },
                       );
                     }
                   },
@@ -1298,6 +1321,24 @@ class _HomeScreenState extends State<HomeScreen>
                     _lastPan = pos;
                   },
                   onScaleEnd: (_) {
+                    // Track analytics for gesture end before resetting state
+                    if (_hasMoved || _isDragging) {
+                      FirebaseService.instance.logUIEventWithEnums(
+                        UIAction.viewportGestureEnd,
+                        element: UIElement.viewportCanvas,
+                        value: _lastTwoFingerRotation != null
+                            ? 'zoom_rotate'
+                            : 'pan_rotate',
+                        additionalParams: {
+                          'had_movement': _hasMoved.toString(),
+                          'was_dragging': _isDragging.toString(),
+                          'camera_technique':
+                              appState.ui.cinematicCameraTechnique.name,
+                          'follow_mode': appState.camera.followMode.toString(),
+                        },
+                      );
+                    }
+
                     _lastPan = null;
                     _isDragging = false; // Reset drag state
                     _hasMoved = false; // Reset movement flag
@@ -1414,7 +1455,10 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                           if (appState.ui.showStats)
                             Positioned(
-                              top: 16,
+                              top:
+                                  MediaQuery.of(context).padding.top +
+                                  kToolbarHeight +
+                                  16,
                               left: 16,
                               child: SemanticLiveRegion(
                                 currentValue:

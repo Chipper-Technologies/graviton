@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/changelog.dart';
+import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
@@ -41,6 +44,19 @@ class _ChangelogDialogState extends State<ChangelogDialog>
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
     _animationController.forward();
+
+    // Track changelog dialog opening
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.changelogShown,
+      element: UIElement.changelogViewer,
+      value: 'changelog_opened',
+      additionalParams: {
+        'changelog_count': widget.changelogs.length.toString(),
+        'latest_version': widget.changelogs.isNotEmpty
+            ? widget.changelogs.first.version
+            : 'unknown',
+      },
+    );
   }
 
   @override

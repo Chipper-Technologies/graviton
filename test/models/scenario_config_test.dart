@@ -537,9 +537,12 @@ void main() {
 
       test('all default configurations have valid colors', () {
         for (final config in ScenarioConfig.defaults.values) {
-          expect(config.primaryColor.value, isA<int>());
-          expect(config.primaryColor.value, greaterThan(0));
-          expect(config.primaryColor.alpha, equals(255)); // Should be opaque
+          // Color values are valid integers
+          expect(config.primaryColor, isA<Color>());
+          expect(
+            config.primaryColor.a,
+            equals(1.0),
+          ); // Should be opaque (1.0 = 100% alpha)
         }
       });
 

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/ui_utils.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 
 /// Full-screen Help & Objectives page
 class HelpScreen extends StatelessWidget {
@@ -13,6 +16,13 @@ class HelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
+    // Track help screen access analytics
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.helpSectionAccessed,
+      element: UIElement.helpDocumentation,
+      value: 'help_screen_opened',
+    );
 
     return Scaffold(
       backgroundColor: AppColors.transparentColor,
@@ -40,11 +50,9 @@ class HelpScreen extends StatelessWidget {
                           title: l10n.whatToDoTitle,
                           content: l10n.whatToDoDescription,
                         ),
-                        SizedBox(height: AppTypography.spacingXXLarge),
 
                         // Learning Objectives section
                         _buildObjectivesSection(context, l10n),
-                        SizedBox(height: AppTypography.spacingXXLarge),
 
                         // Quick Start section
                         _buildQuickStartSection(context, l10n),
@@ -85,8 +93,10 @@ class HelpScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionTitle(title: title),
-        SizedBox(height: AppTypography.spacingMedium),
+        SectionDivider.labeled(
+          title,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
         _buildFormattedContent(content),
       ],
     );
@@ -97,8 +107,11 @@ class HelpScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionTitle(title: l10n.objectivesTitle),
-        SizedBox(height: AppTypography.spacingMedium),
+        SectionDivider.labeled(
+          l10n.objectivesTitle,
+          topSpacing: AppTypography.spacingMedium,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
         // Try to use individual list items, fall back to description if they don't exist
         _tryBuildObjectivesList(l10n) ??
             Text(
@@ -117,8 +130,11 @@ class HelpScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionTitle(title: l10n.quickStartTitle),
-        SizedBox(height: AppTypography.spacingMedium),
+        SectionDivider.labeled(
+          l10n.quickStartTitle,
+          topSpacing: AppTypography.spacingMedium,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
         // Try to use individual list items, fall back to description if they don't exist
         _tryBuildQuickStartList(l10n) ??
             Text(

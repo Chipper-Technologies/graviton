@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -9,10 +12,10 @@ import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/widgets/camera_mode_option.dart';
 import 'package:graviton/widgets/camera_action_button.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/widgets/haptics/haptic_switch.dart';
 import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
-import 'package:graviton/widgets/section_title.dart';
 
 /// Camera controls content for the persistent bottom sheet
 class CameraControls extends StatelessWidget {
@@ -34,14 +37,15 @@ class CameraControls extends StatelessWidget {
       padding: EdgeInsets.only(
         left: AppTypography.spacingXLarge,
         right: AppTypography.spacingXLarge,
-        top: AppTypography.spacingLarge,
         bottom:
             PlatformUtils.getBottomSheetSystemBarPadding(), // Platform-specific padding for system bar
       ),
       children: [
         // AI Camera Mode Selection
-        SectionTitle(title: l10n.aiCameraModesTitle),
-        const SizedBox(height: AppTypography.spacingMedium),
+        SectionDivider.labeled(
+          l10n.aiCameraModesTitle,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
 
         CameraModeOption(
           title: l10n.cameraManual,
@@ -51,9 +55,21 @@ class CameraControls extends StatelessWidget {
           isSelected:
               appState.ui.cinematicCameraTechnique ==
               CinematicCameraTechnique.manual,
-          onTap: () => appState.ui.setCinematicCameraTechnique(
-            CinematicCameraTechnique.manual,
-          ),
+          onTap: () {
+            // Track analytics before changing camera technique
+            FirebaseService.instance.logUIEventWithEnums(
+              UIAction.cameraTechniqueSelected,
+              element: UIElement.cameraTechniqueSelector,
+              value: CinematicCameraTechnique.manual.name,
+              additionalParams: {
+                'previous_technique': appState.ui.cinematicCameraTechnique.name,
+                'new_technique': CinematicCameraTechnique.manual.name,
+              },
+            );
+            appState.ui.setCinematicCameraTechnique(
+              CinematicCameraTechnique.manual,
+            );
+          },
         ),
 
         CameraModeOption(
@@ -64,9 +80,22 @@ class CameraControls extends StatelessWidget {
           isSelected:
               appState.ui.cinematicCameraTechnique ==
               CinematicCameraTechnique.predictiveOrbital,
-          onTap: () => appState.ui.setCinematicCameraTechnique(
-            CinematicCameraTechnique.predictiveOrbital,
-          ),
+          onTap: () {
+            // Track analytics before changing camera technique
+            FirebaseService.instance.logUIEventWithEnums(
+              UIAction.cameraTechniqueSelected,
+              element: UIElement.cameraTechniqueSelector,
+              value: CinematicCameraTechnique.predictiveOrbital.name,
+              additionalParams: {
+                'previous_technique': appState.ui.cinematicCameraTechnique.name,
+                'new_technique':
+                    CinematicCameraTechnique.predictiveOrbital.name,
+              },
+            );
+            appState.ui.setCinematicCameraTechnique(
+              CinematicCameraTechnique.predictiveOrbital,
+            );
+          },
         ),
 
         CameraModeOption(
@@ -77,18 +106,31 @@ class CameraControls extends StatelessWidget {
           isSelected:
               appState.ui.cinematicCameraTechnique ==
               CinematicCameraTechnique.dynamicFraming,
-          onTap: () => appState.ui.setCinematicCameraTechnique(
-            CinematicCameraTechnique.dynamicFraming,
-          ),
+          onTap: () {
+            // Track analytics before changing camera technique
+            FirebaseService.instance.logUIEventWithEnums(
+              UIAction.cameraTechniqueSelected,
+              element: UIElement.cameraTechniqueSelector,
+              value: CinematicCameraTechnique.dynamicFraming.name,
+              additionalParams: {
+                'previous_technique': appState.ui.cinematicCameraTechnique.name,
+                'new_technique': CinematicCameraTechnique.dynamicFraming.name,
+              },
+            );
+            appState.ui.setCinematicCameraTechnique(
+              CinematicCameraTechnique.dynamicFraming,
+            );
+          },
         ),
-
-        const SizedBox(height: AppTypography.spacingXXLarge),
 
         // Manual Controls (only show if manual mode)
         if (appState.ui.cinematicCameraTechnique ==
             CinematicCameraTechnique.manual) ...[
-          SectionTitle(title: l10n.manualControlsTitle),
-          const SizedBox(height: AppTypography.spacingMedium),
+          SectionDivider.labeled(
+            l10n.manualControlsTitle,
+            topSpacing: AppTypography.spacingSmall,
+            bottomSpacing: AppTypography.spacingMedium,
+          ),
 
           Row(
             children: [
@@ -175,10 +217,11 @@ class CameraControls extends StatelessWidget {
         ],
 
         // Camera Settings - Combined FOV, Speed, and Visual Aids
-        const SizedBox(height: AppTypography.spacingLarge),
-
-        SectionTitle(title: l10n.cameraSettingsTitle),
-        const SizedBox(height: AppTypography.spacingMedium),
+        SectionDivider.labeled(
+          l10n.cameraSettingsTitle,
+          topSpacing: AppTypography.spacingLarge,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
 
         HapticSliderOption.detailed(
           label: l10n.fieldOfViewLabel,
@@ -188,6 +231,20 @@ class CameraControls extends StatelessWidget {
           divisions: SimulationConstants.cameraFovDivisions,
           icon: Icons.camera_alt,
           onChanged: (value) {
+            // Track analytics for field of view changes
+            FirebaseService.instance.logUIEventWithEnums(
+              UIAction.manualCameraControlsUsed,
+              element: UIElement.manualCameraControls,
+              value: value.round().toString(),
+              additionalParams: {
+                'control_type': 'field_of_view',
+                'previous_value': appState.camera.fieldOfView
+                    .round()
+                    .toString(),
+                'new_value': value.round().toString(),
+                'camera_technique': appState.ui.cinematicCameraTechnique.name,
+              },
+            );
             appState.camera.setFieldOfView(value);
           },
           formatter: (value) => '${value.round()}°',
@@ -206,13 +263,25 @@ class CameraControls extends StatelessWidget {
             divisions: SimulationConstants.cameraSpeedDivisions,
             icon: Icons.speed,
             onChanged: (value) {
+              // Track analytics for camera speed changes
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.cameraSpeedAdjusted,
+                element: UIElement.cameraSpeedControls,
+                value: NumberUtils.formatDecimal(value, 1),
+                additionalParams: {
+                  'previous_speed': NumberUtils.formatDecimal(
+                    appState.ui.cameraSpeed,
+                    1,
+                  ),
+                  'new_speed': NumberUtils.formatDecimal(value, 1),
+                  'camera_technique': appState.ui.cinematicCameraTechnique.name,
+                },
+              );
               appState.ui.setCameraSpeed(value);
             },
             formatter: (value) => '${NumberUtils.formatDecimal(value, 1)}x',
           ),
         ],
-
-        const SizedBox(height: AppTypography.spacingLarge),
 
         _buildToggleOption(
           l10n.crosshairsTitle,
@@ -222,8 +291,6 @@ class CameraControls extends StatelessWidget {
           () => appState.camera.toggleCrosshairs(),
           isLast: true,
         ),
-
-        SizedBox(height: AppTypography.spacingXXLarge),
       ],
     );
   }

@@ -247,7 +247,7 @@ python3 tools/i18n_manager.py --scan --generate-keys
 - `hintText: 'Enter value'`
 - `labelText: 'Field name'`
 - `title: 'Dialog title'`
-- Custom widget parameters like `SectionTitle(title: 'Section')`
+- Custom widget parameters like `SectionDivider.labeled('Section', bottomSpacing: AppTypography.spacingMedium)`
 
 #### Object Properties
 - Constructor parameters: `name: 'Custom Scenario'`

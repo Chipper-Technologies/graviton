@@ -9,7 +9,7 @@ import 'package:graviton/widgets/common/action_option.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 
 /// Full-screen physics settings page with transparent background
 class PhysicsSettingsScreen extends StatefulWidget {
@@ -102,8 +102,10 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Physics section
-                        SectionTitle(title: l10n.physicsSection),
-                        SizedBox(height: AppTypography.spacingMedium),
+                        SectionDivider.labeled(
+                          l10n.physicsSection,
+                          bottomSpacing: AppTypography.spacingMedium,
+                        ),
 
                         HapticSliderOption.detailed(
                           label: l10n.gravitationalConstant,
@@ -150,11 +152,11 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                               '${NumberUtils.formatDecimal(value, 1)}x',
                         ),
 
-                        const SizedBox(height: AppTypography.spacingXXXLarge),
-
                         // Collision section
-                        SectionTitle(title: l10n.collisionsSection),
-                        const SizedBox(height: AppTypography.spacingLarge),
+                        SectionDivider.labeled(
+                          l10n.collisionsSection,
+                          bottomSpacing: AppTypography.spacingLarge,
+                        ),
 
                         HapticSliderOption.detailed(
                           label: l10n.collisionSensitivity,
@@ -171,11 +173,11 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                               '${NumberUtils.formatDecimal(value * 100, 0)}%',
                         ),
 
-                        const SizedBox(height: AppTypography.spacingXXXLarge),
-
                         // Trails section
-                        SectionTitle(title: l10n.trailsLabel),
-                        const SizedBox(height: AppTypography.spacingLarge),
+                        SectionDivider.labeled(
+                          l10n.trailsLabel,
+                          bottomSpacing: AppTypography.spacingLarge,
+                        ),
 
                         HapticSliderOption.detailed(
                           label: l10n.trailLength,
@@ -207,11 +209,11 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                               NumberUtils.formatDecimal(value, 1),
                         ),
 
-                        const SizedBox(height: AppTypography.spacingXXXLarge),
-
                         // Haptics section
-                        SectionTitle(title: l10n.hapticsSection),
-                        const SizedBox(height: AppTypography.spacingLarge),
+                        SectionDivider.labeled(
+                          l10n.hapticsSection,
+                          bottomSpacing: AppTypography.spacingLarge,
+                        ),
 
                         ToggleOption(
                           title: l10n.vibrationEnabled,
@@ -225,7 +227,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                         ),
 
                         if (_vibrationEnabled) ...[
-                          const SizedBox(height: AppTypography.spacingLarge),
+                          const SizedBox(height: AppTypography.spacingXSmall),
                           HapticSliderOption.detailed(
                             label: l10n.vibrationThrottle,
                             value: _vibrationThrottleTime,
@@ -241,8 +243,6 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                                 '${NumberUtils.formatDecimal(value * 1000, 0)}ms',
                           ),
                         ],
-
-                        const SizedBox(height: AppTypography.spacingXXLarge),
 
                         // Reset button
                         ActionOption(

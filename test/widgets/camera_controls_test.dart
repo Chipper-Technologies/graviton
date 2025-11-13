@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/camera_controls.dart';
 import 'package:graviton/widgets/camera_mode_option.dart';
 import 'package:graviton/widgets/camera_action_button.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -48,7 +48,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
 
       expect(find.text('AI Camera Modes'), findsOneWidget);
-      expect(find.byType(SectionTitle), findsWidgets);
+      expect(find.byType(SectionDivider), findsWidgets);
     });
 
     testWidgets('displays all camera modes', (WidgetTester tester) async {
@@ -184,7 +184,7 @@ void main() {
     testWidgets('displays proper section titles', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.byType(SectionTitle), findsWidgets);
+      expect(find.byType(SectionDivider), findsWidgets);
       expect(find.text('AI Camera Modes'), findsOneWidget);
       // Just test that the widget renders without specific text checks
       expect(find.byType(CameraControls), findsOneWidget);
@@ -312,10 +312,7 @@ void main() {
 
       expect(padding.left, AppTypography.spacingXLarge);
       expect(padding.right, AppTypography.spacingXLarge);
-      expect(
-        padding.top,
-        AppTypography.spacingLarge,
-      ); // Updated from spacingXLarge
+      expect(padding.top, 0.0); // No top padding in the implementation
       // Bottom should be non-negative (may be 0 in test environment)
       expect(padding.bottom, greaterThanOrEqualTo(0.0));
     });

@@ -13,7 +13,7 @@ import 'package:graviton/widgets/common/action_option.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/screenshot_mode_widget.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/overlays/tutorial_overlay.dart';
 
 /// Developer Tools full-screen page
@@ -46,15 +46,19 @@ class DeveloperToolsScreen extends StatelessWidget {
                       children: [
                         // Screenshot Mode Section
                         if (ScreenshotModeService().isAvailable) ...[
-                          SectionTitle(title: l10n.marketingLabel),
-                          SizedBox(height: AppTypography.spacingMedium),
+                          SectionDivider.labeled(
+                            l10n.marketingLabel,
+                            bottomSpacing: AppTypography.spacingMedium,
+                          ),
                           const ScreenshotModeWidget(),
-                          SizedBox(height: AppTypography.spacingXXLarge),
                         ],
 
                         // Actions Section
-                        SectionTitle(title: l10n.showHelpTooltip),
-                        SizedBox(height: AppTypography.spacingMedium),
+                        SectionDivider.labeled(
+                          l10n.showHelpTooltip,
+                          topSpacing: AppTypography.spacingXXSmall,
+                          bottomSpacing: AppTypography.spacingMedium,
+                        ),
 
                         // Tutorial Button
                         ActionOption(
@@ -64,11 +68,13 @@ class DeveloperToolsScreen extends StatelessWidget {
                           onPressed: () => _startTutorial(context),
                           isPrimary: true,
                         ),
-                        SizedBox(height: AppTypography.spacingLarge),
 
                         // Changelog Section
-                        SectionTitle(title: l10n.changelogHometitle),
-                        SizedBox(height: AppTypography.spacingMedium),
+                        SectionDivider.labeled(
+                          l10n.changelogHometitle,
+                          topSpacing: AppTypography.spacingXXSmall,
+                          bottomSpacing: AppTypography.spacingMedium,
+                        ),
 
                         // Changelog Button
                         ActionOption(

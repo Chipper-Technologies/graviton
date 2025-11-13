@@ -203,8 +203,11 @@ void main() {
           backgroundColor: customBackgroundColor,
         );
 
-        expect(customColorAction.textColor?.value, equals(0xFF123456));
-        expect(customColorAction.backgroundColor?.value, equals(0xFFABCDEF));
+        expect(customColorAction.textColor, equals(customTextColor));
+        expect(
+          customColorAction.backgroundColor,
+          equals(customBackgroundColor),
+        );
       });
 
       test('handles transparent and translucent colors', () {
@@ -216,23 +219,26 @@ void main() {
         );
 
         expect(transparentAction.textColor, equals(Colors.transparent));
-        expect(transparentAction.backgroundColor?.alpha, equals(0x80));
+        expect(
+          transparentAction.backgroundColor?.a,
+          closeTo(0.5, 0.01),
+        ); // 50% opacity
       });
 
       test('validates color accessibility', () {
-        // Colors should have valid ARGB components
+        // Colors should have valid ARGB components (0.0-1.0 range)
         if (testAction.textColor != null) {
-          expect(testAction.textColor!.alpha, inInclusiveRange(0, 255));
-          expect(testAction.textColor!.red, inInclusiveRange(0, 255));
-          expect(testAction.textColor!.green, inInclusiveRange(0, 255));
-          expect(testAction.textColor!.blue, inInclusiveRange(0, 255));
+          expect(testAction.textColor!.a, inInclusiveRange(0.0, 1.0));
+          expect(testAction.textColor!.r, inInclusiveRange(0.0, 1.0));
+          expect(testAction.textColor!.g, inInclusiveRange(0.0, 1.0));
+          expect(testAction.textColor!.b, inInclusiveRange(0.0, 1.0));
         }
 
         if (testAction.backgroundColor != null) {
-          expect(testAction.backgroundColor!.alpha, inInclusiveRange(0, 255));
-          expect(testAction.backgroundColor!.red, inInclusiveRange(0, 255));
-          expect(testAction.backgroundColor!.green, inInclusiveRange(0, 255));
-          expect(testAction.backgroundColor!.blue, inInclusiveRange(0, 255));
+          expect(testAction.backgroundColor!.a, inInclusiveRange(0.0, 1.0));
+          expect(testAction.backgroundColor!.r, inInclusiveRange(0.0, 1.0));
+          expect(testAction.backgroundColor!.g, inInclusiveRange(0.0, 1.0));
+          expect(testAction.backgroundColor!.b, inInclusiveRange(0.0, 1.0));
         }
       });
 

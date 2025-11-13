@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/scenario_metadata.dart';
 import 'package:graviton/models/objectives_config.dart';
+import 'package:graviton/models/scenario_metadata.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_metadata_panel.dart';
-import 'package:graviton/widgets/section_title.dart';
 
 /// Test widget wrapper with localization support
 Widget makeTestableWidget(Widget child) {
@@ -52,8 +52,8 @@ void main() {
         ),
       );
 
-      // Should display section title
-      expect(find.byType(SectionTitle), findsWidgets);
+      // Should display section dividers
+      expect(find.byType(SectionDivider), findsWidgets);
 
       // Should display text fields for name and description (using TextField, not TextFormField)
       expect(find.byType(TextField), findsAtLeastNWidgets(2));
@@ -190,7 +190,7 @@ void main() {
 
       // Should not crash with empty metadata
       expect(find.byType(ScenarioEditorMetadataPanel), findsOneWidget);
-      expect(find.byType(SectionTitle), findsWidgets);
+      expect(find.byType(SectionDivider), findsWidgets);
     });
 
     testWidgets('displays scrollable content', (WidgetTester tester) async {

@@ -7,7 +7,7 @@ import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/haptic_utils.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_switch.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:provider/provider.dart';
 
 /// Full-screen Application Settings page
@@ -40,14 +40,18 @@ class ApplicationSettingsScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // General Settings Section (Language and Temperature Units)
-                            SectionTitle(title: l10n.languageLabel),
-                            SizedBox(height: AppTypography.spacingMedium),
+                            SectionDivider.labeled(
+                              l10n.languageLabel,
+                              bottomSpacing: AppTypography.spacingMedium,
+                            ),
                             _buildGeneralOptions(context, l10n, appState),
-                            SizedBox(height: AppTypography.spacingXXLarge),
 
                             // Haptic Feedback Settings Section
-                            SectionTitle(title: l10n.hapticsSection),
-                            const SizedBox(height: AppTypography.spacingMedium),
+                            SectionDivider.labeled(
+                              l10n.hapticsSection,
+                              topSpacing: AppTypography.spacingMedium,
+                              bottomSpacing: AppTypography.spacingMedium,
+                            ),
                             _buildUIHapticFeedbackOption(
                               context,
                               l10n,
