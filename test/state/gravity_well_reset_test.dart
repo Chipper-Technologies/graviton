@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/state/simulation_state.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import '../test_utils.dart';
 
 void main() {
   group('Gravity Well Reset Preservation Tests', () {
@@ -8,6 +9,8 @@ void main() {
 
     setUp(() async {
       simulationState = SimulationState();
+      final mockL10n = TestUtils.createMockAppLocalizations();
+      simulationState.updateLocalization(mockL10n);
       await simulationState.initialize();
     });
 

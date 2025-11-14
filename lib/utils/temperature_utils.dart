@@ -95,7 +95,7 @@ class TemperatureUtils {
   /// Get descriptive temperature range for a spectral class
   static String getTemperatureRange(
     String spectralClass, {
-    AppLocalizations? l10n,
+    required AppLocalizations l10n,
   }) {
     switch (spectralClass.toUpperCase()) {
       case 'O':
@@ -113,32 +113,32 @@ class TemperatureUtils {
       case 'M':
         return '< 3,700K';
       default:
-        return l10n?.habitabilityUnknown ?? 'Unknown';
+        return l10n.habitabilityUnknown;
     }
   }
 
   /// Get color description for a spectral class
   static String getColorDescription(
     String spectralClass, {
-    AppLocalizations? l10n,
+    required AppLocalizations l10n,
   }) {
     switch (spectralClass.toUpperCase()) {
       case 'O':
-        return l10n?.stellarColorBlue ?? 'Blue';
+        return l10n.stellarColorBlue;
       case 'B':
-        return l10n?.stellarColorBlueWhite ?? 'Blue-white';
+        return l10n.stellarColorBlueWhite;
       case 'A':
-        return l10n?.stellarColorWhite ?? 'White';
+        return l10n.stellarColorWhite;
       case 'F':
-        return l10n?.stellarColorYellowWhite ?? 'Yellow-white';
+        return l10n.stellarColorYellowWhite;
       case 'G':
-        return l10n?.stellarColorYellow ?? 'Yellow';
+        return l10n.stellarColorYellow;
       case 'K':
-        return l10n?.stellarColorOrange ?? 'Orange';
+        return l10n.stellarColorOrange;
       case 'M':
-        return l10n?.stellarColorRed ?? 'Red';
+        return l10n.stellarColorRed;
       default:
-        return l10n?.habitabilityUnknown ?? 'Unknown';
+        return l10n.habitabilityUnknown;
     }
   }
 

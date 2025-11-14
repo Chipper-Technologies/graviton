@@ -79,70 +79,26 @@ class AccessibilityService {
   void announceMergeEvent(
     String body1Name,
     String body2Name, {
-    AppLocalizations? l10n,
+    required AppLocalizations l10n,
   }) {
-    if (l10n != null) {
-      final message = l10n.accessibilityMergeEvent(body1Name, body2Name);
-      announceSimulationEvent(
-        message,
-        additionalContext: l10n.accessibilityMergeEventContext,
-      );
-    } else {
-      // Fallback to English - these should be rare cases when l10n is not available
-      announceSimulationEvent(
-        'Collision detected: $body1Name merged with $body2Name',
-        additionalContext: 'The combined mass creates a new celestial body',
-      );
-    }
+    final message = l10n.accessibilityMergeEvent(body1Name, body2Name);
+    announceSimulationEvent(
+      message,
+      additionalContext: l10n.accessibilityMergeEventContext,
+    );
   }
 
   /// Announce simulation state changes
-  void announceSimulationStateChange(String state, {AppLocalizations? l10n}) {
-    if (l10n == null) {
-      // Fallback to English if no localization provided
-      _announceSimulationStateChangeFallback(state);
-      return;
-    }
-
+  void announceSimulationStateChange(
+    String state, {
+    required AppLocalizations l10n,
+  }) {
     final accessibilityState = AccessibilitySimulationState.fromString(state);
     final announcement = _getLocalizedStateAnnouncement(
       accessibilityState,
       l10n,
     );
     final context = _getLocalizedStateContext(accessibilityState, l10n);
-
-    announceSimulationEvent(announcement, additionalContext: context);
-  }
-
-  /// Fallback method for when localization is not available
-  void _announceSimulationStateChangeFallback(String state) {
-    final accessibilityState = AccessibilitySimulationState.fromString(state);
-    String announcement;
-    String? context;
-
-    switch (accessibilityState) {
-      case AccessibilitySimulationState.started:
-      case AccessibilitySimulationState.running:
-        announcement = 'Simulation started';
-        context = 'Celestial bodies are now in motion';
-        break;
-      case AccessibilitySimulationState.paused:
-        announcement = 'Simulation paused';
-        context = 'All celestial bodies have stopped moving';
-        break;
-      case AccessibilitySimulationState.resumed:
-        announcement = 'Simulation resumed';
-        context = 'Celestial bodies are moving again';
-        break;
-      case AccessibilitySimulationState.stopped:
-        announcement = 'Simulation stopped';
-        context = 'All celestial bodies have been reset';
-        break;
-      case AccessibilitySimulationState.reset:
-        announcement = 'Simulation reset';
-        context = 'New scenario loaded with fresh celestial bodies';
-        break;
-    }
 
     announceSimulationEvent(announcement, additionalContext: context);
   }
@@ -188,41 +144,29 @@ class AccessibilityService {
   }
 
   /// Announce scenario changes
-  void announceScenarioChange(String scenarioName, {AppLocalizations? l10n}) {
-    if (l10n != null) {
-      final message = l10n.accessibilityScenarioChange(scenarioName);
-      announceSimulationEvent(
-        message,
-        additionalContext: l10n.accessibilityScenarioChangeContext,
-      );
-    } else {
-      // Fallback to English
-      announceSimulationEvent(
-        'Scenario changed to $scenarioName',
-        additionalContext: 'New celestial bodies and physics parameters loaded',
-      );
-    }
+  void announceScenarioChange(
+    String scenarioName, {
+    required AppLocalizations l10n,
+  }) {
+    final message = l10n.accessibilityScenarioChange(scenarioName);
+    announceSimulationEvent(
+      message,
+      additionalContext: l10n.accessibilityScenarioChangeContext,
+    );
   }
 
   /// Announce physics parameter changes
   void announcePhysicsChange(
     String parameter,
     String newValue, {
-    AppLocalizations? l10n,
+    required AppLocalizations l10n,
   }) {
     final physicsParam = AccessibilityPhysicsParameter.fromString(parameter);
-    String announcement;
-
-    if (l10n != null) {
-      announcement = _getLocalizedPhysicsAnnouncement(
-        physicsParam,
-        newValue,
-        l10n,
-      );
-    } else {
-      // Fallback to English
-      announcement = _getPhysicsAnnouncementFallback(physicsParam, newValue);
-    }
+    final announcement = _getLocalizedPhysicsAnnouncement(
+      physicsParam,
+      newValue,
+      l10n,
+    );
 
     announceToScreenReader(announcement);
   }
@@ -243,32 +187,10 @@ class AccessibilityService {
     }
   }
 
-  /// Fallback physics change announcement for when localization is not available
-  String _getPhysicsAnnouncementFallback(
-    AccessibilityPhysicsParameter parameter,
-    String newValue,
-  ) {
-    switch (parameter) {
-      case AccessibilityPhysicsParameter.speed:
-        return 'Simulation speed changed to $newValue';
-      case AccessibilityPhysicsParameter.gravity:
-        return 'Gravity strength changed to $newValue';
-      case AccessibilityPhysicsParameter.collisionRadius:
-        return 'Collision sensitivity changed to $newValue';
-    }
-  }
-
   /// Announce camera actions
-  void announceCameraAction(String action, {AppLocalizations? l10n}) {
+  void announceCameraAction(String action, {required AppLocalizations l10n}) {
     final cameraAction = AccessibilityCameraAction.fromString(action);
-    String announcement;
-
-    if (l10n != null) {
-      announcement = _getLocalizedCameraAnnouncement(cameraAction, l10n);
-    } else {
-      // Fallback to English
-      announcement = _getCameraAnnouncementFallback(cameraAction);
-    }
+    final announcement = _getLocalizedCameraAnnouncement(cameraAction, l10n);
 
     announceToScreenReader(announcement);
   }
@@ -290,39 +212,18 @@ class AccessibilityService {
     }
   }
 
-  /// Fallback camera action announcement for when localization is not available
-  String _getCameraAnnouncementFallback(AccessibilityCameraAction action) {
-    switch (action) {
-      case AccessibilityCameraAction.reset:
-        return 'Camera view reset to default position';
-      case AccessibilityCameraAction.focus:
-        return 'Camera focused on nearest celestial body';
-      case AccessibilityCameraAction.follow:
-        return 'Camera now following selected celestial body';
-      case AccessibilityCameraAction.unfollow:
-        return 'Camera stopped following celestial body';
-    }
-  }
-
   /// Announce tutorial progress
   void announceTutorialProgress(
     String stepName,
     int currentStep,
     int totalSteps, {
-    AppLocalizations? l10n,
+    required AppLocalizations l10n,
   }) {
-    String announcement;
-
-    if (l10n != null) {
-      announcement = l10n.accessibilityTutorialProgress(
-        currentStep,
-        totalSteps,
-        stepName,
-      );
-    } else {
-      // Fallback to English
-      announcement = 'Tutorial step $currentStep of $totalSteps: $stepName';
-    }
+    final announcement = l10n.accessibilityTutorialProgress(
+      currentStep,
+      totalSteps,
+      stepName,
+    );
 
     announceToScreenReader(
       announcement,
@@ -331,15 +232,8 @@ class AccessibilityService {
   }
 
   /// Announce error messages with high priority
-  void announceError(String errorMessage, {AppLocalizations? l10n}) {
-    String announcement;
-
-    if (l10n != null) {
-      announcement = l10n.accessibilityError(errorMessage);
-    } else {
-      // Fallback to English
-      announcement = 'Error: $errorMessage';
-    }
+  void announceError(String errorMessage, {required AppLocalizations l10n}) {
+    final announcement = l10n.accessibilityError(errorMessage);
 
     announceToScreenReader(
       announcement,
@@ -351,19 +245,11 @@ class AccessibilityService {
   void announceSettingChange(
     String settingName,
     bool isEnabled, {
-    AppLocalizations? l10n,
+    required AppLocalizations l10n,
   }) {
-    String announcement;
-
-    if (l10n != null) {
-      announcement = isEnabled
-          ? l10n.accessibilitySettingEnabled(settingName)
-          : l10n.accessibilitySettingDisabled(settingName);
-    } else {
-      // Fallback to English
-      final status = isEnabled ? 'enabled' : 'disabled';
-      announcement = '$settingName $status';
-    }
+    final announcement = isEnabled
+        ? l10n.accessibilitySettingEnabled(settingName)
+        : l10n.accessibilitySettingDisabled(settingName);
 
     announceToScreenReader(announcement);
   }

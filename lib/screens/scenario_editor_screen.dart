@@ -1061,11 +1061,10 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
 
     // Use defaults if fields are empty
     final finalName = name.isEmpty
-        ? (AppLocalizations.of(context)?.newScenarioEditor ?? 'New Scenario')
+        ? AppLocalizations.of(context)!.newScenarioEditor
         : name;
     final finalDescription = description.isEmpty
-        ? (AppLocalizations.of(context)?.customGravitationalSimulationEditor ??
-              'A custom gravitational simulation')
+        ? AppLocalizations.of(context)!.customGravitationalSimulationEditor
         : description;
 
     // Create updated metadata with current values

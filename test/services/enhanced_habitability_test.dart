@@ -7,6 +7,7 @@ import 'package:graviton/services/habitable_zone_service.dart';
 import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
+import '../test_utils.dart';
 
 void main() {
   group('Enhanced Habitability Classifications', () {
@@ -21,9 +22,12 @@ void main() {
     test(
       'Solar system should have appropriate habitability classifications',
       () {
+        final mockL10n = TestUtils.createMockAppLocalizations();
+
         // Generate solar system
         final bodies = scenarioService.generateScenario(
           ScenarioType.solarSystem,
+          l10n: mockL10n,
         );
 
         // Find planets by name and verify their initial classifications

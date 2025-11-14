@@ -4,15 +4,30 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 
 void main() {
   group('HapticAppBar', () {
+    Widget createTestWidget({Widget? child}) {
+      return MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('en', ''), Locale('es', '')],
+        home: child ?? const Scaffold(appBar: HapticAppBar(title: 'Test')),
+      );
+    }
+
     testWidgets('displays title correctly', (WidgetTester tester) async {
       const title = 'Test Screen';
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(appBar: const HapticAppBar(title: title)),
+        createTestWidget(
+          child: const Scaffold(appBar: HapticAppBar(title: title)),
         ),
       );
 
@@ -23,8 +38,8 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(appBar: const HapticAppBar(title: 'Test')),
+        createTestWidget(
+          child: Scaffold(appBar: const HapticAppBar(title: 'Test')),
         ),
       );
 
@@ -46,8 +61,8 @@ void main() {
       const customElevation = 4.0;
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        createTestWidget(
+          child: Scaffold(
             appBar: const HapticAppBar(
               title: 'Test',
               backgroundColor: customBg,
@@ -107,8 +122,8 @@ void main() {
       'does not show back button when automaticallyImplyLeading is false',
       (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
-            home: Navigator(
+          createTestWidget(
+            child: Navigator(
               onGenerateRoute: (settings) {
                 return MaterialPageRoute(
                   builder: (context) => Scaffold(
@@ -135,9 +150,9 @@ void main() {
       const customLeading = Icon(Icons.menu);
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            appBar: const HapticAppBar(title: 'Test', leading: customLeading),
+        createTestWidget(
+          child: const Scaffold(
+            appBar: HapticAppBar(title: 'Test', leading: customLeading),
           ),
         ),
       );
@@ -156,8 +171,8 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        createTestWidget(
+          child: Scaffold(
             appBar: HapticAppBar(title: 'Test', actions: actions),
           ),
         ),
@@ -219,8 +234,8 @@ void main() {
 
     testWidgets('handles null actions gracefully', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        createTestWidget(
+          child: Scaffold(
             appBar: const HapticAppBar(title: 'Test', actions: null),
           ),
         ),
@@ -235,8 +250,8 @@ void main() {
       (WidgetTester tester) async {
         // Test with root route (cannot pop)
         await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(appBar: const HapticAppBar(title: 'Root')),
+          createTestWidget(
+            child: Scaffold(appBar: const HapticAppBar(title: 'Root')),
           ),
         );
 
@@ -252,8 +267,8 @@ void main() {
       const customTitleSpacing = 24.0;
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        createTestWidget(
+          child: Scaffold(
             appBar: const HapticAppBar(
               title: 'Test',
               titleSpacing: customTitleSpacing,
@@ -270,8 +285,8 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(appBar: const HapticAppBar(title: 'Test')),
+        createTestWidget(
+          child: Scaffold(appBar: const HapticAppBar(title: 'Test')),
         ),
       );
 

@@ -176,105 +176,60 @@ class SemanticFocusService {
   }
 
   /// Get accessibility description for current focus state
-  String getFocusDescription([AppLocalizations? l10n]) {
-    if (l10n != null) {
-      // Use localized descriptions when available
-      switch (_currentFocusIndex) {
-        case 0:
-          return l10n.simulationCanvasFocused;
-        case 1:
-          return l10n.cameraControlsFocused;
-        case 2:
-          return l10n.simulationControlsFocused;
-        case 3:
-          return l10n.bottomSheetFocused;
-        case 4:
-          return l10n.scenarioSelectorFocused;
-        case 5:
-          return l10n.settingsButtonFocused;
-        default:
-          return l10n.simulationCanvasFocused;
-      }
+  String getFocusDescription(AppLocalizations l10n) {
+    // Use localized descriptions
+    switch (_currentFocusIndex) {
+      case 0:
+        return l10n.simulationCanvasFocused;
+      case 1:
+        return l10n.cameraControlsFocused;
+      case 2:
+        return l10n.simulationControlsFocused;
+      case 3:
+        return l10n.bottomSheetFocused;
+      case 4:
+        return l10n.scenarioSelectorFocused;
+      case 5:
+        return l10n.settingsButtonFocused;
+      default:
+        return l10n.simulationCanvasFocused;
     }
-
-    // Fallback for when localization is not available
-    const focusDescriptions = [
-      'Simulation canvas focused - main physics simulation area',
-      'Camera controls focused - adjust view and perspective',
-      'Simulation controls focused - play, pause, reset simulation',
-      'Bottom sheet focused - scenario and settings access',
-      'Scenario selector focused - choose different simulations',
-      'Settings button focused - open application settings',
-    ];
-
-    return focusDescriptions[_currentFocusIndex];
   }
 
   /// Get available focus actions for current element
-  List<String> getAvailableActions([AppLocalizations? l10n]) {
+  List<String> getAvailableActions(AppLocalizations l10n) {
     switch (_currentFocusIndex) {
       case 0: // Simulation canvas
-        return l10n != null
-            ? [
-                l10n.tapToInteractWithSimulation,
-                l10n.useKeyboardShortcutsForControls,
-                l10n.dragToRotateCameraView,
-                l10n.pinchToZoomInOut,
-              ]
-            : [
-                'Tap to interact with simulation',
-                'Use keyboard shortcuts for controls',
-                'Drag to rotate camera view',
-                'Pinch to zoom in/out',
-              ];
+        return [
+          l10n.tapToInteractWithSimulation,
+          l10n.useKeyboardShortcutsForControls,
+          l10n.dragToRotateCameraView,
+          l10n.pinchToZoomInOut,
+        ];
       case 1: // Camera controls
-        return l10n != null
-            ? [
-                l10n.tapToCenterCamera,
-                l10n.tapToToggleAutoRotation,
-                l10n.useZoomControls,
-              ]
-            : [
-                'Tap to center camera',
-                'Tap to toggle auto-rotation',
-                'Use zoom controls',
-              ];
+        return [
+          l10n.tapToCenterCamera,
+          l10n.tapToToggleAutoRotation,
+          l10n.useZoomControls,
+        ];
       case 2: // Simulation controls
-        return l10n != null
-            ? [
-                l10n.tapPlayPauseButton,
-                l10n.tapResetButton,
-                l10n.adjustSimulationSpeed,
-              ]
-            : [
-                'Tap play/pause button',
-                'Tap reset button',
-                'Adjust simulation speed',
-              ];
+        return [
+          l10n.tapPlayPauseButton,
+          l10n.tapResetButton,
+          l10n.adjustSimulationSpeed,
+        ];
       case 3: // Bottom sheet
-        return l10n != null
-            ? [
-                l10n.swipeUpToExpand,
-                l10n.accessScenarioOptions,
-                l10n.viewPhysicsSettings,
-              ]
-            : [
-                'Swipe up to expand',
-                'Access scenario options',
-                'View physics settings',
-              ];
+        return [
+          l10n.swipeUpToExpand,
+          l10n.accessScenarioOptions,
+          l10n.viewPhysicsSettings,
+        ];
       case 4: // Scenario selector
-        return l10n != null
-            ? [l10n.tapToChangeScenario, l10n.browseAvailableSimulations]
-            : ['Tap to change scenario', 'Browse available simulations'];
+        return [l10n.tapToChangeScenario, l10n.browseAvailableSimulations];
       case 5: // Settings button
-        return l10n != null
-            ? [l10n.tapToOpenSettings, l10n.accessAppPreferences]
-            : ['Tap to open settings', 'Access app preferences'];
+        return [l10n.tapToOpenSettings, l10n.accessAppPreferences];
       default:
-        return l10n != null
-            ? [l10n.noActionsAvailable]
-            : ['No actions available'];
+        return [l10n.noActionsAvailable];
     }
   }
 

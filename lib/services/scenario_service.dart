@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -17,8 +16,11 @@ import 'package:vector_math/vector_math_64.dart' as vm;
 class ScenarioService {
   final math.Random _random = math.Random();
 
-  /// Generate bodies for a specific scenario type
-  List<Body> generateScenario(ScenarioType type, {AppLocalizations? l10n}) {
+  /// Generate bodies for a specific scenario type with localized names/descriptions
+  List<Body> generateScenario(
+    ScenarioType type, {
+    required AppLocalizations l10n,
+  }) {
     switch (type) {
       case ScenarioType.random:
         return _generateRandomBodies(l10n);
@@ -44,7 +46,7 @@ class ScenarioService {
   }
 
   /// Generate random three-body system (original behavior)
-  List<Body> _generateRandomBodies(AppLocalizations? l10n) {
+  List<Body> _generateRandomBodies(AppLocalizations l10n) {
     // Enhanced 3D Body Generation System:
     // - Stars now span ±20 units in Z-axis for true 3D distribution
     // - Planets span ±15 units in Z-axis with enhanced Z-velocity
@@ -117,13 +119,7 @@ class ScenarioService {
       );
 
       // Assign star names
-      final starNames = l10n != null
-          ? [l10n.bodyAlpha, l10n.bodyBeta, l10n.bodyGamma]
-          : [
-              CelestialBodyName.alpha.value,
-              CelestialBodyName.beta.value,
-              CelestialBodyName.gamma.value,
-            ];
+      final starNames = [l10n.bodyAlpha, l10n.bodyBeta, l10n.bodyGamma];
 
       // Generate star mass and radius first
       final starMass =
@@ -263,11 +259,11 @@ class ScenarioService {
     String planetName;
 
     if (planetMass < 2.0) {
-      planetName = l10n?.bodyRockyPlanet ?? 'Rocky Planet';
+      planetName = l10n.bodyRockyPlanet;
     } else if (planetMass < 4.0) {
-      planetName = l10n?.bodyEarthLike ?? 'Earth-like';
+      planetName = l10n.bodyEarthLike;
     } else {
-      planetName = l10n?.bodySuperEarth ?? 'Super-Earth';
+      planetName = l10n.bodySuperEarth;
     }
 
     bodies.add(
@@ -301,7 +297,7 @@ class ScenarioService {
   /// - Moon size: accurate 0.27x Earth diameter
   /// - Moon inclination: realistic 5.14° to ecliptic plane
   /// - Moon mass: scaled 5x for simulation stability (real mass too small for stable orbit)
-  List<Body> _generateEarthMoonSun(AppLocalizations? l10n) {
+  List<Body> _generateEarthMoonSun(AppLocalizations l10n) {
     final bodies = <Body>[];
 
     // Use same approach as solar system - stationary Sun, simple stable orbits
@@ -313,7 +309,7 @@ class ScenarioService {
             45.0, // Further reduced from 60.0 to minimize Sun's disruptive influence
         radius: 4.8, // Same realistic Sun size as solar system scenario
         color: AppColors.celestialGold, // Gold
-        name: l10n?.bodySun ?? CelestialBodyName.sun.value,
+        name: l10n.bodySun,
         bodyType: BodyType.star,
         stellarLuminosity: SimulationConstants.solarLuminosity,
         showGravityWell:
@@ -357,7 +353,7 @@ class ScenarioService {
             0.30, // Maximally increased from 0.20 to completely dominate Moon's orbit
         radius: 0.6,
         color: AppColors.planetEarth, // Same blue as solar system Earth
-        name: l10n?.bodyEarth ?? CelestialBodyName.earth.value,
+        name: l10n.bodyEarth,
         isPlanet: true,
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0,
@@ -414,7 +410,7 @@ class ScenarioService {
             0.015, // Significantly increased Moon mass from 0.008 for maximum Earth-Moon coupling
         radius: 0.162, // Accurate Moon radius: 0.27x Earth (0.60) = 0.162
         color: AppColors.celestialSilver, // Silver
-        name: l10n?.bodyMoon ?? CelestialBodyName.moon.value,
+        name: l10n.bodyMoon,
         bodyType: BodyType.moon,
         stellarLuminosity: 0.0,
       ),
@@ -424,7 +420,7 @@ class ScenarioService {
   }
 
   /// Generate binary star system with planets
-  List<Body> _generateBinaryStars(AppLocalizations? l10n) {
+  List<Body> _generateBinaryStars(AppLocalizations l10n) {
     final bodies = <Body>[];
 
     // APPLY EARTH-MOON-SUN SUCCESS FORMULA: Much simpler, conservative approach
@@ -465,7 +461,7 @@ class ScenarioService {
         mass: starMass,
         radius: 1.5,
         color: AppColors.celestialRedPlanet, // Red
-        name: l10n?.bodyStarA ?? CelestialBodyName.starA.value,
+        name: l10n.bodyStarA,
         bodyType: BodyType.star,
         stellarLuminosity: stellarLuminosity,
       ),
@@ -483,7 +479,7 @@ class ScenarioService {
         mass: starMass,
         radius: 1.5,
         color: AppColors.celestialTealPlanet, // Teal
-        name: l10n?.bodyStarB ?? CelestialBodyName.starB.value,
+        name: l10n.bodyStarB,
         bodyType: BodyType.star,
         stellarLuminosity: stellarLuminosity,
       ),
@@ -516,7 +512,7 @@ class ScenarioService {
         mass: 0.25, // MUCH smaller mass (Earth-Moon-Sun Earth is 0.30)
         radius: 0.5,
         color: AppColors.celestialBluePlanet, // Blue
-        name: l10n?.bodyPlanetP ?? 'Planet P',
+        name: l10n.bodyPlanetP,
         bodyType: BodyType.planet,
       ),
     );
@@ -552,7 +548,7 @@ class ScenarioService {
         mass: 0.015, // MUCH smaller mass (Earth-Moon-Sun Moon is 0.015)
         radius: 0.15,
         color: AppColors.celestialPlumPlanet, // Plum
-        name: l10n?.bodyMoonM ?? 'Moon M',
+        name: l10n.bodyMoonM,
         bodyType: BodyType.moon,
       ),
     );
@@ -561,7 +557,7 @@ class ScenarioService {
   }
 
   /// Generate asteroid belt around central star (now uses particle system)
-  List<Body> _generateAsteroidBelt(AppLocalizations? l10n) {
+  List<Body> _generateAsteroidBelt(AppLocalizations l10n) {
     final bodies = <Body>[];
 
     // Central star (fixed in position - no drift)
@@ -572,7 +568,7 @@ class ScenarioService {
         mass: 20.0, // Increased mass for more stable belt
         radius: 2.0, // Larger for better visibility
         color: AppColors.celestialGold, // Gold
-        name: l10n?.bodyCentralStar ?? CelestialBodyName.centralStar.value,
+        name: l10n.bodyCentralStar,
         bodyType: BodyType.star,
         stellarLuminosity: 15.0, // Bright star
       ),
@@ -603,7 +599,7 @@ class ScenarioService {
         mass: 0.1, // Much smaller mass to minimize gravitational disruption
         radius: 1.2, // Larger radius for better visibility at greater distance
         color: AppColors.celestialBluePlanet2, // Blue planet
-        name: l10n?.bodyOuterPlanet ?? 'Outer Planet',
+        name: l10n.bodyOuterPlanet,
         bodyType: BodyType.planet,
       ),
     );
@@ -632,7 +628,7 @@ class ScenarioService {
         mass: 0.3, // Even smaller mass
         radius: 0.6,
         color: AppColors.celestialRedPlanet2, // Red planet
-        name: l10n?.bodyInnerPlanet ?? 'Inner Planet',
+        name: l10n.bodyInnerPlanet,
         bodyType: BodyType.planet,
       ),
     );
@@ -644,7 +640,7 @@ class ScenarioService {
   }
 
   /// Generate galaxy formation simulation
-  List<Body> _generateGalaxyFormation(AppLocalizations? l10n) {
+  List<Body> _generateGalaxyFormation(AppLocalizations l10n) {
     final bodies = <Body>[];
 
     // Central supermassive black hole - much more massive and menacing
@@ -656,9 +652,7 @@ class ScenarioService {
             300.0, // Increased from 200 to 300 for stronger gravitational binding
         radius: 2.5, // Larger, more menacing presence
         color: AppColors.celestialBlackHole, // Black (event horizon)
-        name:
-            l10n?.bodyBlackHole ??
-            CelestialBodyName.supermassiveBlackHole.value,
+        name: l10n.bodyBlackHole,
         bodyType: BodyType.star, // Behaves like a star gravitationally
         stellarLuminosity:
             0.0, // Black holes don't emit light (except accretion disk)
@@ -821,9 +815,7 @@ class ScenarioService {
             mass: massVariation,
             radius: radiusBody,
             color: color,
-            name:
-                l10n?.bodyStarNumber((arm * starsPerArm) + i + 1) ??
-                'Star ${(arm * starsPerArm) + i + 1}',
+            name: l10n.bodyStarNumber((arm * starsPerArm) + i + 1),
             bodyType: BodyType.star,
             stellarLuminosity: stellarLuminosity,
             temperature: stellarTemperature,
@@ -838,7 +830,7 @@ class ScenarioService {
   }
 
   /// Generate realistic solar system
-  List<Body> _generateSolarSystem(AppLocalizations? l10n) {
+  List<Body> _generateSolarSystem(AppLocalizations l10n) {
     final bodies = <Body>[];
 
     // Sun - central star with realistic mass dominance and size
@@ -850,7 +842,7 @@ class ScenarioService {
         mass: 50.0, // Much more massive to dominate the system
         radius: 4.8, // 8x Earth (0.6) = visibly larger star
         color: AppColors.celestialGold, // Gold
-        name: l10n?.bodySun ?? CelestialBodyName.sun.value,
+        name: l10n.bodySun,
         bodyType: BodyType.star,
         stellarLuminosity: SimulationConstants.solarLuminosity,
         showGravityWell:
@@ -913,14 +905,14 @@ class ScenarioService {
 
     // Planet names
     final planetNames = [
-      l10n?.bodyMercury ?? CelestialBodyName.mercury.value,
-      l10n?.bodyVenus ?? CelestialBodyName.venus.value,
-      l10n?.bodyEarth ?? CelestialBodyName.earth.value,
-      l10n?.bodyMars ?? CelestialBodyName.mars.value,
-      l10n?.bodyJupiter ?? CelestialBodyName.jupiter.value,
-      l10n?.bodySaturn ?? CelestialBodyName.saturn.value,
-      l10n?.bodyUranus ?? CelestialBodyName.uranus.value,
-      l10n?.bodyNeptune ?? CelestialBodyName.neptune.value,
+      l10n.bodyMercury,
+      l10n.bodyVenus,
+      l10n.bodyEarth,
+      l10n.bodyMars,
+      l10n.bodyJupiter,
+      l10n.bodySaturn,
+      l10n.bodyUranus,
+      l10n.bodyNeptune,
     ];
 
     // Generate planets with stable circular orbits and realistic inclinations
@@ -991,7 +983,7 @@ class ScenarioService {
   ///
   /// This method interfaces with the CustomScenarioManager to load bodies
   /// from user-created custom scenarios.
-  List<Body> _generateCustomScenario(AppLocalizations? l10n) {
+  List<Body> _generateCustomScenario(AppLocalizations l10n) {
     final customManager = CustomScenarioManager.instance;
 
     // If no custom scenario is loaded, fall back to random generation

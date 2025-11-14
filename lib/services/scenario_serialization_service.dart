@@ -54,19 +54,16 @@ class ScenarioSerializationService {
 
   /// Validate a JSON string before parsing
   static ScenarioValidationResult validateJsonString(
-    String jsonString, [
-    AppLocalizations? l10n,
-  ]) {
+    String jsonString,
+    AppLocalizations l10n,
+  ) {
     try {
       final Map<String, dynamic> json = jsonDecode(jsonString);
       return _validateScenarioJson(json, l10n);
     } catch (e) {
       return ScenarioValidationResult(
         isValid: false,
-        errors: [
-          l10n?.invalidJsonFormat(e.toString()) ??
-              'Invalid JSON format: ${e.toString()}',
-        ],
+        errors: [l10n.invalidJsonFormat(e.toString())],
       );
     }
   }
@@ -157,44 +154,29 @@ class ScenarioSerializationService {
 
   /// Validate scenario JSON structure
   static ScenarioValidationResult _validateScenarioJson(
-    Map<String, dynamic> json, [
-    AppLocalizations? l10n,
-  ]) {
+    Map<String, dynamic> json,
+    AppLocalizations l10n,
+  ) {
     final List<String> errors = [];
 
     // Check required top-level fields
     if (!json.containsKey('version')) {
-      errors.add(
-        l10n?.missingRequiredFieldVersion ?? 'Missing required field: version',
-      );
+      errors.add(l10n.missingRequiredFieldVersion);
     }
     if (!json.containsKey('metadata')) {
-      errors.add(
-        l10n?.missingRequiredFieldMetadata ??
-            'Missing required field: metadata',
-      );
+      errors.add(l10n.missingRequiredFieldMetadata);
     }
     if (!json.containsKey('configuration')) {
-      errors.add(
-        l10n?.missingRequiredFieldConfiguration ??
-            'Missing required field: configuration',
-      );
+      errors.add(l10n.missingRequiredFieldConfiguration);
     }
     if (!json.containsKey('physics')) {
-      errors.add(
-        l10n?.missingRequiredFieldPhysics ?? 'Missing required field: physics',
-      );
+      errors.add(l10n.missingRequiredFieldPhysics);
     }
     if (!json.containsKey('bodies')) {
-      errors.add(
-        l10n?.missingRequiredFieldBodies ?? 'Missing required field: bodies',
-      );
+      errors.add(l10n.missingRequiredFieldBodies);
     }
     if (!json.containsKey('particleSystems')) {
-      errors.add(
-        l10n?.missingRequiredFieldParticleSystems ??
-            'Missing required field: particleSystems',
-      );
+      errors.add(l10n.missingRequiredFieldParticleSystems);
     }
 
     if (errors.isNotEmpty) {
@@ -204,28 +186,20 @@ class ScenarioSerializationService {
     // Validate metadata
     final metadata = json['metadata'] as Map<String, dynamic>;
     if (!metadata.containsKey('name') || (metadata['name'] as String).isEmpty) {
-      errors.add(
-        l10n?.scenarioNameRequired ??
-            'Scenario name is required and cannot be empty',
-      );
+      errors.add(l10n.scenarioNameRequired);
     }
     if (metadata.containsKey('name') &&
         (metadata['name'] as String).length > 100) {
-      errors.add(
-        l10n?.scenarioNameTooLong ??
-            'Scenario name must be 100 characters or less',
-      );
+      errors.add(l10n.scenarioNameTooLong);
     }
 
     // Validate bodies
     final bodies = json['bodies'] as List;
     if (bodies.isEmpty) {
-      errors.add(
-        l10n?.atLeastOneBodyIsRequired ?? 'At least one body is required',
-      );
+      errors.add(l10n.atLeastOneBodyIsRequired);
     }
     if (bodies.length > 50) {
-      errors.add(l10n?.maximum50BodiesAllowed ?? 'Maximum 50 bodies allowed');
+      errors.add(l10n.maximum50BodiesAllowed);
     }
 
     // Validate each body
@@ -246,49 +220,37 @@ class ScenarioSerializationService {
   /// Validate individual body data
   static List<String> _validateBodyData(
     Map<String, dynamic> body,
-    int index, [
-    AppLocalizations? l10n,
-  ]) {
+    int index,
+    AppLocalizations l10n,
+  ) {
     final List<String> errors = [];
-    final String prefix = l10n?.bodyIndex(index) ?? 'Body $index';
+    final String prefix = l10n.bodyIndex(index);
 
     // Check required fields
     if (!body.containsKey('name') || (body['name'] as String).isEmpty) {
-      errors.add(l10n?.bodyNameRequired(prefix) ?? '$prefix: name is required');
+      errors.add(l10n.bodyNameRequired(prefix));
     }
 
     if (!body.containsKey('position') ||
         (body['position'] as List).length != 3) {
-      errors.add(
-        l10n?.bodyPositionInvalid(prefix) ??
-            '$prefix: position must be a 3D array [x, y, z]',
-      );
+      errors.add(l10n.bodyPositionInvalid(prefix));
     } else {
       final pos = body['position'] as List;
       for (int i = 0; i < 3; i++) {
         if (pos[i] is! num || !pos[i].isFinite) {
-          errors.add(
-            l10n?.bodyPositionComponentInvalid(prefix, i) ??
-                '$prefix: position[$i] must be a finite number',
-          );
+          errors.add(l10n.bodyPositionComponentInvalid(prefix, i));
         }
       }
     }
 
     if (!body.containsKey('velocity') ||
         (body['velocity'] as List).length != 3) {
-      errors.add(
-        l10n?.bodyVelocityInvalid(prefix) ??
-            '$prefix: velocity must be a 3D array [vx, vy, vz]',
-      );
+      errors.add(l10n.bodyVelocityInvalid(prefix));
     } else {
       final vel = body['velocity'] as List;
       for (int i = 0; i < 3; i++) {
         if (vel[i] is! num || !vel[i].isFinite) {
-          errors.add(
-            l10n?.bodyVelocityComponentInvalid(prefix, i) ??
-                '$prefix: velocity[$i] must be a finite number',
-          );
+          errors.add(l10n.bodyVelocityComponentInvalid(prefix, i));
         }
       }
     }
@@ -297,20 +259,14 @@ class ScenarioSerializationService {
     if (body.containsKey('mass')) {
       final mass = body['mass'];
       if (mass is! num || mass <= 0 || mass > 1000) {
-        errors.add(
-          l10n?.bodyMassInvalid(prefix) ??
-              '$prefix: mass must be between 0.001 and 1000',
-        );
+        errors.add(l10n.bodyMassInvalid(prefix));
       }
     }
 
     if (body.containsKey('radius')) {
       final radius = body['radius'];
-      if (radius is! num || radius <= 0 || radius > 50) {
-        errors.add(
-          l10n?.bodyRadiusInvalid(prefix) ??
-              '$prefix: radius must be between 0.1 and 50',
-        );
+      if (radius <= 0 || radius > 50) {
+        errors.add(l10n.bodyRadiusInvalid(prefix));
       }
     }
 
@@ -318,10 +274,7 @@ class ScenarioSerializationService {
     if (body.containsKey('color')) {
       final color = body['color'] as String;
       if (!_isValidHexColor(color)) {
-        errors.add(
-          l10n?.bodyColorInvalid(prefix) ??
-              '$prefix: color must be valid hex format (#RRGGBB or #AARRGGBB)',
-        );
+        errors.add(l10n.bodyColorInvalid(prefix));
       }
     }
 
@@ -329,10 +282,7 @@ class ScenarioSerializationService {
     if (body.containsKey('bodyType')) {
       final bodyType = body['bodyType'] as String;
       if (!BodyType.values.any((type) => type.name == bodyType)) {
-        errors.add(
-          l10n?.bodyTypeInvalid(prefix, bodyType) ??
-              '$prefix: invalid bodyType "$bodyType"',
-        );
+        errors.add(l10n.bodyTypeInvalid(prefix, bodyType));
       }
     }
 
@@ -341,9 +291,9 @@ class ScenarioSerializationService {
 
   /// Validate physics settings
   static List<String> _validatePhysicsSettings(
-    Map<String, dynamic> physics, [
-    AppLocalizations? l10n,
-  ]) {
+    Map<String, dynamic> physics,
+    AppLocalizations l10n,
+  ) {
     final List<String> errors = [];
 
     final fieldsToValidate = {
@@ -359,10 +309,7 @@ class ScenarioSerializationService {
         final value = physics[field];
         final range = fieldsToValidate[field]!;
         if (value is! num || value < range.$1 || value > range.$2) {
-          errors.add(
-            l10n?.physicsFieldRangeError(field, range.$1, range.$2) ??
-                '$field must be between ${range.$1} and ${range.$2}',
-          );
+          errors.add(l10n.physicsFieldRangeError(field, range.$1, range.$2));
         }
       }
     }
@@ -370,10 +317,7 @@ class ScenarioSerializationService {
     if (physics.containsKey('maxTrailPoints')) {
       final value = physics['maxTrailPoints'];
       if (value is! int || value < 10 || value > 5000) {
-        errors.add(
-          l10n?.maxTrailPointsInvalid ??
-              'maxTrailPoints must be between 10 and 5000',
-        );
+        errors.add(l10n.maxTrailPointsInvalid);
       }
     }
 

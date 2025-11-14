@@ -174,14 +174,13 @@ class RemoteConfigService {
   String get maintenanceMessage => _maintenanceMessage;
 
   /// Get localized maintenance message with fallback to remote config value
-  String getMaintenanceMessage(AppLocalizations? l10n) {
+  String getMaintenanceMessage(AppLocalizations l10n) {
     // If remote config provides a custom message, use it
     if (_maintenanceMessage.isNotEmpty) {
       return _maintenanceMessage;
     }
     // Otherwise use localized fallback
-    return l10n?.scheduledMaintenanceInProgress ??
-        'Scheduled maintenance in progress';
+    return l10n.scheduledMaintenanceInProgress;
   }
 
   bool get newsBannerEnabled => _newsBannerEnabled;

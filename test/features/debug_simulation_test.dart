@@ -1,10 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/state/simulation_state.dart';
+import '../test_utils.dart';
 
 void main() {
   group('Debug Simulation State', () {
     test('Check if simulation stays running after reset', () async {
       final simulationState = SimulationState();
+
+      // Initialize localization for simulation operations
+      simulationState.updateLocalization(
+        TestUtils.createMockAppLocalizations(),
+      );
 
       // Initial state
       expect(simulationState.isRunning, false);

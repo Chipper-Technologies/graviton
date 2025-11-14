@@ -76,14 +76,11 @@ class _ScenarioSelectionScreenState extends State<ScenarioSelectionScreen> {
             tabs: [
               GravitonTab(
                 icon: Icons.explore,
-                label:
-                    AppLocalizations.of(context)?.scenarioTabPresets ??
-                    'Presets',
+                label: AppLocalizations.of(context)!.scenarioTabPresets,
               ),
               GravitonTab(
                 icon: Icons.palette,
-                label:
-                    AppLocalizations.of(context)?.scenarioTabCustom ?? 'Custom',
+                label: AppLocalizations.of(context)!.scenarioTabCustom,
               ),
             ],
             children: [

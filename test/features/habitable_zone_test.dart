@@ -2,13 +2,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/services/habitable_zone_service.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import '../test_utils.dart';
 
 void main() {
   group('Habitable Zone Tests', () {
     test('Solar system habitable zone calculations', () {
       // Generate solar system
       final scenarioService = ScenarioService();
-      final bodies = scenarioService.generateScenario(ScenarioType.solarSystem);
+      final mockL10n = TestUtils.createMockAppLocalizations();
+      final bodies = scenarioService.generateScenario(
+        ScenarioType.solarSystem,
+        l10n: mockL10n,
+      );
 
       // Find the Sun
       final sun = bodies.firstWhere((body) => body.name == 'Sun');

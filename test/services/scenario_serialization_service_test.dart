@@ -13,14 +13,19 @@ import 'package:graviton/models/scenario_physics_settings.dart';
 import 'package:graviton/services/scenario_serialization_service.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
+import '../test_utils.dart';
+
 void main() {
   group('ScenarioSerializationService Tests', () {
     late Body testBody;
     late List<Body> testBodies;
     late ScenarioMetadata testMetadata;
     late ScenarioPhysicsSettings testPhysics;
+    late dynamic mockL10n;
 
     setUp(() {
+      mockL10n = TestUtils.createMockAppLocalizations();
+
       // Create test data that matches real physics
       testBody = Body(
         name: 'Test Earth',
@@ -395,6 +400,7 @@ void main() {
         final jsonString = ScenarioSerializationService.toJsonString(scenario);
         final result = ScenarioSerializationService.validateJsonString(
           jsonString,
+          mockL10n,
         );
 
         // Debug: Check errors if validation fails
@@ -411,6 +417,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           malformedJson,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -427,6 +434,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           incompleteJson,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -461,6 +469,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithEmptyName,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -491,6 +500,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithLongName,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -522,6 +532,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithNoBodies,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -574,6 +585,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithManyBodies,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -607,6 +619,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithNoBodyName,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -638,6 +651,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInvalidPosition,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -669,6 +683,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInfinitePosition,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -700,6 +715,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInvalidVelocity,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -731,6 +747,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInvalidMass,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -762,6 +779,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInvalidRadius,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -795,6 +813,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInvalidColor,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -826,6 +845,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInvalidBodyType,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -859,6 +879,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInvalidGravity,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -890,6 +911,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInvalidTimeScale,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -921,6 +943,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInvalidTrailPoints,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -936,6 +959,7 @@ void main() {
         expect(
           () => ScenarioSerializationService.validateJsonString(
             '{"color": "invalid"}',
+            mockL10n,
           ),
           returnsNormally,
         );
@@ -964,6 +988,7 @@ void main() {
         // This should trigger validation error for invalid hex color format
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithShortHexColor,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -978,6 +1003,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           malformedJson,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -985,7 +1011,10 @@ void main() {
       });
 
       test('should handle null values gracefully', () {
-        final result = ScenarioSerializationService.validateJsonString('null');
+        final result = ScenarioSerializationService.validateJsonString(
+          'null',
+          mockL10n,
+        );
 
         expect(result.isValid, isFalse);
         expect(result.errors, isNotEmpty);
@@ -1013,6 +1042,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithoutParticleSystems,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -1069,6 +1099,7 @@ void main() {
         final jsonString = ScenarioSerializationService.toJsonString(scenario);
         final result = ScenarioSerializationService.validateJsonString(
           jsonString,
+          mockL10n,
         );
 
         expect(result.isValid, isTrue);
@@ -1123,6 +1154,7 @@ void main() {
         final jsonString = ScenarioSerializationService.toJsonString(scenario);
         final result = ScenarioSerializationService.validateJsonString(
           jsonString,
+          mockL10n,
         );
 
         expect(result.isValid, isTrue);
@@ -1161,6 +1193,7 @@ void main() {
         final jsonString = ScenarioSerializationService.toJsonString(scenario);
         final result = ScenarioSerializationService.validateJsonString(
           jsonString,
+          mockL10n,
         );
 
         expect(result.isValid, isTrue);
@@ -1185,6 +1218,7 @@ void main() {
         final jsonString = ScenarioSerializationService.toJsonString(scenario);
         final result = ScenarioSerializationService.validateJsonString(
           jsonString,
+          mockL10n,
         );
 
         expect(result.isValid, isTrue);
@@ -1214,6 +1248,7 @@ void main() {
         final jsonString = ScenarioSerializationService.toJsonString(scenario);
         final result = ScenarioSerializationService.validateJsonString(
           jsonString,
+          mockL10n,
         );
 
         expect(result.isValid, isTrue);
@@ -1250,6 +1285,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInfinitePosition,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);
@@ -1281,6 +1317,7 @@ void main() {
 
         final result = ScenarioSerializationService.validateJsonString(
           jsonWithInfiniteVelocity,
+          mockL10n,
         );
 
         expect(result.isValid, isFalse);

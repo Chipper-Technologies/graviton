@@ -72,7 +72,7 @@ class MaintenanceDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final remoteConfig = RemoteConfigService.instance;
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     if (_isMaintenanceMode) {
       return _buildMaintenanceDialog(context, l10n, remoteConfig);
@@ -83,11 +83,11 @@ class MaintenanceDialog extends StatelessWidget {
 
   Widget _buildMaintenanceDialog(
     BuildContext context,
-    AppLocalizations? l10n,
+    AppLocalizations l10n,
     RemoteConfigService remoteConfig,
   ) {
     // Use test values if provided, otherwise use remote config values
-    final title = _testTitle ?? l10n?.maintenanceTitle ?? 'Maintenance';
+    final title = _testTitle ?? l10n.maintenanceTitle;
     final message = _testMessage ?? remoteConfig.getMaintenanceMessage(l10n);
 
     return ConstrainedBox(
@@ -115,7 +115,7 @@ class MaintenanceDialog extends StatelessWidget {
           HapticTextButton(
             onPressed: _testOnClose ?? () => Navigator.of(context).pop(),
             child: Text(
-              l10n?.ok ?? 'OK',
+              l10n.ok,
               style: TextStyle(color: AppColors.uiLightBlueAccent),
             ),
           ),
@@ -126,7 +126,7 @@ class MaintenanceDialog extends StatelessWidget {
 
   Widget _buildNotificationDialog(
     BuildContext context,
-    AppLocalizations? l10n,
+    AppLocalizations l10n,
     RemoteConfigService remoteConfig,
   ) {
     final isEmergency = remoteConfig.isEmergencyNotification;
@@ -137,7 +137,7 @@ class MaintenanceDialog extends StatelessWidget {
         _testTitle ??
         (remoteConfig.activeNotificationTitle.isNotEmpty
             ? remoteConfig.activeNotificationTitle
-            : _getDefaultTitle(l10n!, isEmergency, notificationTypeEnum));
+            : _getDefaultTitle(l10n, isEmergency, notificationTypeEnum));
     final message = _testMessage ?? remoteConfig.activeNotificationText;
 
     return ConstrainedBox(
@@ -236,7 +236,7 @@ class MaintenanceDialog extends StatelessWidget {
 
   List<Widget> _buildActions(
     BuildContext context,
-    AppLocalizations? l10n,
+    AppLocalizations l10n,
     RemoteConfigService remoteConfig,
     bool isEmergency,
     CustomMessageType notificationType,
@@ -272,7 +272,7 @@ class MaintenanceDialog extends StatelessWidget {
       HapticTextButton(
         onPressed: _testOnClose ?? () => Navigator.of(context).pop(),
         child: Text(
-          l10n?.ok ?? 'OK',
+          l10n.ok,
           style: TextStyle(
             color: isEmergency ? AppColors.uiRed : AppColors.uiLightBlueAccent,
           ),

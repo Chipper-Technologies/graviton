@@ -23,16 +23,26 @@ class SimulationState extends ChangeNotifier {
   SimulationStatus _status = SimulationStatus.stopped;
   double _timeScale = 4.0;
   int _stepCount = 0;
+
+  // Store localization context for accessibility announcements
+  AppLocalizations? _l10n;
   double _totalTime = 0.0;
 
   // SharedPreferences keys
   static const String _keyTimeScale = 'timeScale';
   static const String _keyScenario = 'scenario';
 
+  /// Update localization context for accessibility announcements
+  void updateLocalization(AppLocalizations l10n) {
+    _l10n = l10n;
+    // Also update simulation service localization
+    _simulation.updateScenarioLocalization(l10n);
+  }
+
   /// Initialize and load saved settings
   Future<void> initialize() async {
     // First, explicitly set the simulation to random scenario as the default
-    _simulation.resetWithScenario(ScenarioType.random);
+    _simulation.resetWithScenario(ScenarioType.random, l10n: _l10n);
 
     // Then load settings, which may override the scenario if one was saved
     await _loadSettings();
@@ -57,7 +67,7 @@ class SimulationState extends ChangeNotifier {
           final savedScenario = ScenarioType.values.firstWhere(
             (s) => s.name == savedScenarioName,
           );
-          _simulation.resetWithScenario(savedScenario);
+          _simulation.resetWithScenario(savedScenario, l10n: _l10n);
         } catch (e) {
           // If saved scenario is invalid, keep the default (random)
         }
@@ -94,7 +104,7 @@ class SimulationState extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_keyScenario);
       // Reset to default scenario
-      _simulation.resetWithScenario(ScenarioType.random);
+      _simulation.resetWithScenario(ScenarioType.random, l10n: _l10n);
       notifyListeners();
     } catch (e) {
       // Ignore errors
@@ -138,7 +148,12 @@ class SimulationState extends ChangeNotifier {
       HapticFeedbackService.instance.lightImpact();
 
       // Announce state change to screen readers
-      AccessibilityService.instance.announceSimulationStateChange('started');
+      if (_l10n != null) {
+        AccessibilityService.instance.announceSimulationStateChange(
+          'started',
+          l10n: _l10n!,
+        );
+      }
 
       // Enhanced analytics for simulation start with context
       FirebaseService.instance.logUIEventWithEnums(
@@ -169,7 +184,12 @@ class SimulationState extends ChangeNotifier {
       HapticFeedbackService.instance.selectionClick();
 
       // Announce state change to screen readers
-      AccessibilityService.instance.announceSimulationStateChange('paused');
+      if (_l10n != null) {
+        AccessibilityService.instance.announceSimulationStateChange(
+          'paused',
+          l10n: _l10n!,
+        );
+      }
 
       // Enhanced analytics for simulation pause
       FirebaseService.instance.logUIEventWithEnums(
@@ -192,7 +212,12 @@ class SimulationState extends ChangeNotifier {
       HapticFeedbackService.instance.lightImpact();
 
       // Announce state change to screen readers
-      AccessibilityService.instance.announceSimulationStateChange('resumed');
+      if (_l10n != null) {
+        AccessibilityService.instance.announceSimulationStateChange(
+          'resumed',
+          l10n: _l10n!,
+        );
+      }
 
       // Enhanced analytics for simulation resume
       FirebaseService.instance.logUIEventWithEnums(
@@ -276,6 +301,7 @@ class SimulationState extends ChangeNotifier {
     // Reset physics simulation to current scenario, preserving custom gravity well settings
     _simulation.resetWithScenario(
       _simulation.currentScenario,
+      l10n: _l10n,
       preserveCustomSettings: true,
     );
     _stepCount = 0;
@@ -318,12 +344,17 @@ class SimulationState extends ChangeNotifier {
     HapticFeedbackService.instance.mediumImpact();
 
     // Announce scenario change to screen readers
-    AccessibilityService.instance.announceScenarioChange(scenario.name);
+    if (_l10n != null) {
+      AccessibilityService.instance.announceScenarioChange(
+        scenario.name,
+        l10n: _l10n!,
+      );
+    }
 
     // Reset physics simulation to the specified scenario
     _simulation.resetWithScenario(
       scenario,
-      l10n: l10n,
+      l10n: l10n ?? _l10n,
       preserveCustomSettings: preserveCustomSettings,
     );
     _stepCount = 0;

@@ -4,18 +4,20 @@ import 'package:graviton/state/camera_state.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/utils/number_utils.dart';
+import '../test_utils.dart';
 
 void main() {
   print('🚀 Auto-Zoom Feature Demonstration 🚀\n');
 
   final cameraState = CameraState();
   final scenarioService = ScenarioService();
+  final mockL10n = TestUtils.createMockAppLocalizations();
 
   print('Testing auto-zoom behavior for different scenarios:\n');
 
   for (final scenario in ScenarioType.values) {
     try {
-      final bodies = scenarioService.generateScenario(scenario);
+      final bodies = scenarioService.generateScenario(scenario, l10n: mockL10n);
       cameraState.resetViewForScenario(scenario, bodies);
 
       print('📊 ${scenario.name}:');

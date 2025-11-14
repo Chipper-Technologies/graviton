@@ -4,6 +4,7 @@ import 'package:graviton/models/merge_flash.dart';
 import 'package:graviton/services/simulation.dart' as physics;
 import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
+import '../test_utils.dart';
 
 void main() {
   group('Simulation Service Tests', () {
@@ -11,6 +12,9 @@ void main() {
 
     setUp(() {
       simulation = physics.Simulation();
+      // Initialize localization for proper scenario generation
+      final mockL10n = TestUtils.createMockAppLocalizations();
+      simulation.updateScenarioLocalization(mockL10n);
     });
 
     test('Simulation should initialize with bodies', () {

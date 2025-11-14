@@ -117,10 +117,8 @@ class _ColorPickerState extends State<ColorPicker> {
         return KeyEventResult.handled;
       },
       child: Semantics(
-        label: AppLocalizations.of(context)?.colorSelector ?? 'Color selector',
-        hint:
-            AppLocalizations.of(context)?.selectAColorForTheCelestialBody ??
-            'Select a color for the celestial body',
+        label: AppLocalizations.of(context)?.colorSelector,
+        hint: AppLocalizations.of(context)?.selectAColorForTheCelestialBody,
         enabled: widget.enabled,
         child: Container(
           width: double.infinity, // Force container to fill available width
@@ -262,58 +260,58 @@ class _ColorPickerState extends State<ColorPicker> {
 
   /// Get a human-readable name for common colors
   String _getColorName(BuildContext context, Color color) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     // AppColors celestial bodies
     if (color == AppColors.planetEarth) {
-      return l10n?.earthBlueColor ?? 'earth blue';
+      return l10n.earthBlueColor;
     }
     if (color == AppColors.planetMars) {
-      return l10n?.marsRedColor ?? 'mars red';
+      return l10n.marsRedColor;
     }
     if (color == AppColors.planetJupiter) {
-      return l10n?.jupiterTanColor ?? 'jupiter tan';
+      return l10n.jupiterTanColor;
     }
     if (color == AppColors.planetVenus) {
-      return l10n?.venusYellowColor ?? 'venus yellow';
+      return l10n.venusYellowColor;
     }
     if (color == AppColors.planetMercury) {
-      return l10n?.mercuryGrayColor ?? 'mercury gray';
+      return l10n.mercuryGrayColor;
     }
     if (color == AppColors.planetUranus) {
-      return l10n?.uranusCyanColor ?? 'uranus cyan';
+      return l10n.uranusCyanColor;
     }
     if (color == AppColors.planetNeptune) {
-      return l10n?.neptuneBlueColor ?? 'neptune blue';
+      return l10n.neptuneBlueColor;
     }
     if (color == AppColors.planetSaturn) {
-      return l10n?.saturnCreamColor ?? 'saturn cream';
+      return l10n.saturnCreamColor;
     }
 
     // AppColors UI colors
     if (color == AppColors.uiOrange) {
-      return l10n?.orangeColor ?? 'orange';
+      return l10n.orangeColor;
     }
     if (color == AppColors.uiRed) {
-      return l10n?.redColor ?? 'red';
+      return l10n.redColor;
     }
     if (color == AppColors.uiWhite) {
-      return l10n?.whiteColor ?? 'white';
+      return l10n.whiteColor;
     }
     if (color == AppColors.uiBlack) {
-      return l10n?.blackColor ?? 'black';
+      return l10n.blackColor;
     }
     if (color == AppColors.uiGreen) {
-      return l10n?.greenColor ?? 'green';
+      return l10n.greenColor;
     }
     if (color == AppColors.uiYellow) {
-      return l10n?.yellowColor ?? 'yellow';
+      return l10n.yellowColor;
     }
     if (color == AppColors.uiCyan) {
-      return l10n?.cyanColor ?? 'cyan';
+      return l10n.cyanColor;
     }
 
     // Fallback for any other colors
-    return l10n?.customColor ?? 'custom color';
+    return l10n.customColor;
   }
 }

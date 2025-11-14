@@ -80,10 +80,8 @@ class _ScenarioEditorMetadataPanelState
           // Name field
           _buildTextField(
             controller: _nameController,
-            label: AppLocalizations.of(context)?.bodyPropertiesName ?? 'Name',
-            hint:
-                AppLocalizations.of(context)?.enterScenarioNameEditorHint ??
-                'Enter scenario name',
+            label: AppLocalizations.of(context)!.bodyPropertiesName,
+            hint: AppLocalizations.of(context)!.enterScenarioNameEditorHint,
             onChanged: (_) => _updateMetadata(),
           ),
 
@@ -237,7 +235,7 @@ class _ScenarioEditorMetadataPanelState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)?.difficultyEditorLabel ?? 'Difficulty',
+          AppLocalizations.of(context)!.difficultyEditorLabel,
           style: AppTypography.mediumText.copyWith(
             color: AppColors.uiWhite,
             fontWeight: FontWeight.bold,

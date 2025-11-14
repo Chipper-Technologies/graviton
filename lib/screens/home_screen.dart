@@ -1358,11 +1358,10 @@ class _HomeScreenState extends State<HomeScreen>
                       autoRotate: appState.camera.autoRotate,
                       followMode: appState.camera.followMode,
                       followingBodyName: appState.camera.selectedBody != null
-                          ? (AppLocalizations.of(context)?.bodySelectedTemplate(
-                                  '${appState.camera.selectedBody}',
-                                  appState.camera.selectedBody.toString(),
-                                ) ??
-                                'Body ${appState.camera.selectedBody}')
+                          ? AppLocalizations.of(context)?.bodySelectedTemplate(
+                              '${appState.camera.selectedBody}',
+                              appState.camera.selectedBody.toString(),
+                            )
                           : null,
                       onTap: () {
                         // Show floating controls on tap

@@ -1,11 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/state/app_state.dart';
+import 'package:graviton/enums/scenario_type.dart';
+import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../test_mocks.mocks.dart';
 
 void main() {
   group('AppState Tests', () {
     late AppState appState;
 
     setUp(() {
+      // Set up mock SharedPreferences for all tests
+      SharedPreferences.setMockInitialValues({});
       appState = AppState();
     });
 
@@ -195,19 +201,47 @@ void main() {
       () async {
         TestWidgetsFlutterBinding.ensureInitialized();
 
-        // Ensure global gravity fields is enabled (should be default now)
+        // Initialize async first
+        await appState.initializeAsync();
+
+        // Load a specific scenario that has bodies
+        appState.simulation.resetWithScenario(ScenarioType.solarSystem);
+
+        // Create a mock localization with all required strings for solar system
+        final mockL10n = MockAppLocalizations();
+        // Stub the strings needed for solar system scenario
+        when(mockL10n.bodySun).thenReturn('Sun');
+        when(mockL10n.bodyMercury).thenReturn('Mercury');
+        when(mockL10n.bodyVenus).thenReturn('Venus');
+        when(mockL10n.bodyEarth).thenReturn('Earth');
+        when(mockL10n.bodyMars).thenReturn('Mars');
+        when(mockL10n.bodyJupiter).thenReturn('Jupiter');
+        when(mockL10n.bodySaturn).thenReturn('Saturn');
+        when(mockL10n.bodyUranus).thenReturn('Uranus');
+        when(mockL10n.bodyNeptune).thenReturn('Neptune');
+
+        // In test environment, we need to manually provide localization to generate bodies
+        appState.simulation.simulation.updateScenarioLocalization(mockL10n);
+
+        // Ensure global gravity fields is enabled AFTER loading the scenario
+        // so all bodies get their gravity wells enabled
         if (!appState.ui.globalGravityFields) {
           appState.ui.toggleGlobalGravityFields();
+        } else {
+          // If it was already enabled, toggle it off and back on to apply to new bodies
+          appState.ui.toggleGlobalGravityFields(); // Turn off
+          appState.ui.toggleGlobalGravityFields(); // Turn back on
         }
 
-        // Initialize async which loads simulation with bodies
-        await appState.initializeAsync();
+        // Allow the UI change to propagate to simulation state
+        await Future.delayed(Duration.zero);
 
         // Verify that all bodies have gravity wells enabled after initialization
         expect(
           appState.simulation.bodies,
           isNotEmpty,
-          reason: "Simulation should have bodies after initialization",
+          reason:
+              "Simulation should have bodies after loading solar system scenario",
         );
 
         for (final body in appState.simulation.bodies) {

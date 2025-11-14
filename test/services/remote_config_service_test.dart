@@ -4,6 +4,8 @@ import 'package:graviton/enums/custom_message_type.dart';
 import 'package:graviton/enums/user_behavior_tracking_mode.dart';
 import 'package:graviton/services/remote_config_service.dart';
 
+import '../test_utils.dart';
+
 void main() {
   group('RemoteConfigService Tests', () {
     late RemoteConfigService service;
@@ -19,6 +21,8 @@ void main() {
     });
 
     test('Should have default values before initialization', () {
+      final mockL10n = TestUtils.createMockAppLocalizations();
+
       // Analytics & A/B Testing defaults
       expect(service.analyticsSamplingRate, equals(0.1));
       expect(service.crashReportingEnabled, isTrue);
@@ -29,7 +33,7 @@ void main() {
       // Maintenance & Communication defaults
       expect(service.maintenanceMode, isFalse);
       expect(
-        service.getMaintenanceMessage(null),
+        service.getMaintenanceMessage(mockL10n),
         equals('Scheduled maintenance in progress'),
       );
       expect(service.newsBannerEnabled, isFalse);

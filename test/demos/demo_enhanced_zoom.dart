@@ -4,12 +4,14 @@ import 'package:graviton/state/camera_state.dart';
 import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/utils/number_utils.dart';
+import '../test_utils.dart';
 
 void main() {
   print('🎯 Enhanced Zoom Feature Demonstration 🎯\n');
 
   final cameraState = CameraState();
   final scenarioService = ScenarioService();
+  final mockL10n = TestUtils.createMockAppLocalizations();
 
   print(
     'Testing the enhanced zoom behavior that solves the "bodies far apart" problem:\n',
@@ -19,6 +21,7 @@ void main() {
   print('📊 Solar System Scenario:');
   final solarBodies = scenarioService.generateScenario(
     ScenarioType.solarSystem,
+    l10n: mockL10n,
   );
   cameraState.resetViewForScenario(ScenarioType.solarSystem, solarBodies);
 

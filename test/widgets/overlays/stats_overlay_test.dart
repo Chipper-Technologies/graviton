@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -57,6 +58,10 @@ void main() {
       });
 
       testWidgets('Should reflect current simulation values', (tester) async {
+        // Load a scenario that has bodies for testing
+        appState.simulation.resetWithScenario(ScenarioType.earthMoonSun);
+        await tester.pumpAndSettle(); // Allow scenario to load
+
         // Modify simulation state
         appState.simulation.step(1.0 / 60.0); // Advance one step
 
@@ -64,7 +69,8 @@ void main() {
           createTestWidget(child: StatsOverlay(appState: appState)),
         );
 
-        expect(find.textContaining('Bodies: 4'), findsOneWidget);
+        // EarthMoonSun has 3 bodies (Sun, Earth, Moon)
+        expect(find.textContaining('Bodies: 3'), findsOneWidget);
         expect(
           find.textContaining('Speed: 4.0x'),
           findsOneWidget,

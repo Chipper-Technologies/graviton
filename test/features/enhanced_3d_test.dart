@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/services/simulation.dart';
+import '../test_utils.dart';
 import 'dart:math' as math;
 
 void main() {
@@ -8,6 +9,10 @@ void main() {
 
     setUp(() {
       simulation = Simulation();
+      // Initialize localization for all simulation operations
+      simulation.updateScenarioLocalization(
+        TestUtils.createMockAppLocalizations(),
+      );
     });
 
     test('Bodies should be distributed in full 3D space', () {

@@ -197,45 +197,39 @@ class BodyTypePicker extends StatelessWidget {
 
   /// Get the tooltip text for each body type
   String _getBodyTypeTooltip(BodyType bodyType, BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     switch (bodyType) {
       case BodyType.star:
-        return l10n?.bodyTypeTooltipStar ??
-            'Massive celestial bodies that generate light and heat through nuclear fusion. Stars are the primary energy sources in stellar systems.';
+        return l10n.bodyTypeTooltipStar;
       case BodyType.planet:
-        return l10n?.bodyTypeTooltipPlanet ??
-            'Large celestial bodies that orbit stars and have cleared their orbital path. Planets can be rocky or gaseous and may host moons.';
+        return l10n.bodyTypeTooltipPlanet;
       case BodyType.moon:
-        return l10n?.bodyTypeTooltipMoon ??
-            'Natural satellites that orbit planets. Moons can influence tides and provide stability to planetary systems.';
+        return l10n.bodyTypeTooltipMoon;
       case BodyType.asteroid:
-        return l10n?.bodyTypeTooltipAsteroid ??
-            'Small rocky bodies that orbit the sun. Asteroids are remnants from the early formation of the solar system.';
+        return l10n.bodyTypeTooltipAsteroid;
       case BodyType.blackHole:
-        return l10n?.bodyTypeTooltipBlackHole ??
-            'Regions of spacetime with gravitational fields so intense that nothing, not even light, can escape from them.';
+        return l10n.bodyTypeTooltipBlackHole;
       case BodyType.neutronStar:
-        return l10n?.bodyTypeTooltipNeutronStar ??
-            'Extremely dense stellar remnants formed when massive stars collapse. They have incredibly strong gravitational and magnetic fields.';
+        return l10n.bodyTypeTooltipNeutronStar;
     }
   }
 
   /// Get the display name for each body type
   String _getBodyTypeDisplayName(BodyType bodyType, BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     switch (bodyType) {
       case BodyType.star:
-        return (l10n?.bodyTypeStar ?? 'STAR').toUpperCase();
+        return l10n.bodyTypeStar.toUpperCase();
       case BodyType.planet:
-        return (l10n?.bodyTypePlanet ?? 'PLANET').toUpperCase();
+        return l10n.bodyTypePlanet.toUpperCase();
       case BodyType.moon:
-        return (l10n?.bodyTypeMoon ?? 'MOON').toUpperCase();
+        return l10n.bodyTypeMoon.toUpperCase();
       case BodyType.asteroid:
-        return (l10n?.bodyTypeAsteroid ?? 'ASTEROID').toUpperCase();
+        return l10n.bodyTypeAsteroid.toUpperCase();
       case BodyType.blackHole:
-        return (l10n?.bodyTypeBlackHole ?? 'BLACK HOLE').toUpperCase();
+        return l10n.bodyTypeBlackHole.toUpperCase();
       case BodyType.neutronStar:
-        return (l10n?.bodyTypeNeutronStar ?? 'NEUTRON STAR').toUpperCase();
+        return l10n.bodyTypeNeutronStar.toUpperCase();
     }
   }
 }

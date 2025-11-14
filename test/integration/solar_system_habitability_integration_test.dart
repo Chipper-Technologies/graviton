@@ -3,12 +3,17 @@ import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/scenario_service.dart';
+import '../test_utils.dart';
 
 void main() {
   group('Solar System Habitability Integration Test', () {
     test('Solar system planets have correct habitability classifications', () {
       final scenarioService = ScenarioService();
-      final bodies = scenarioService.generateScenario(ScenarioType.solarSystem);
+      final mockL10n = TestUtils.createMockAppLocalizations();
+      final bodies = scenarioService.generateScenario(
+        ScenarioType.solarSystem,
+        l10n: mockL10n,
+      );
 
       // Get all planets
       final planets = bodies

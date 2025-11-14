@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/services/semantic_focus_service.dart';
 
+import '../test_utils.dart';
+
 void main() {
   group('SemanticFocusService', () {
     late SemanticFocusService service;
+    late dynamic mockL10n;
 
     setUp(() {
+      mockL10n = TestUtils.createMockAppLocalizations();
       service = SemanticFocusService.instance;
       service.setEnabled(true);
     });
@@ -122,7 +126,7 @@ void main() {
       test('should provide focus descriptions for all elements', () {
         for (int i = 0; i < 6; i++) {
           service.focusAt(i);
-          final description = service.getFocusDescription();
+          final description = service.getFocusDescription(mockL10n);
 
           expect(description, isNotEmpty);
           expect(description, contains('focused'));
@@ -132,7 +136,7 @@ void main() {
       test('should provide available actions for all elements', () {
         for (int i = 0; i < 6; i++) {
           service.focusAt(i);
-          final actions = service.getAvailableActions();
+          final actions = service.getAvailableActions(mockL10n);
 
           expect(actions, isNotEmpty);
           expect(actions.first, isNotEmpty);
@@ -141,7 +145,7 @@ void main() {
 
       test('should provide specific actions for simulation canvas', () {
         service.focusSimulation();
-        final actions = service.getAvailableActions();
+        final actions = service.getAvailableActions(mockL10n);
 
         expect(actions, contains(contains('Tap to interact')));
         expect(actions, contains(contains('keyboard shortcuts')));
@@ -149,7 +153,7 @@ void main() {
 
       test('should provide specific actions for camera controls', () {
         service.focusCameraControls();
-        final actions = service.getAvailableActions();
+        final actions = service.getAvailableActions(mockL10n);
 
         expect(actions, contains(contains('center camera')));
         expect(actions, contains(contains('zoom')));
@@ -238,8 +242,8 @@ void main() {
 
         for (int i = 0; i < 1000; i++) {
           service.focusNext();
-          service.getFocusDescription();
-          service.getAvailableActions();
+          service.getFocusDescription(mockL10n);
+          service.getAvailableActions(mockL10n);
         }
 
         stopwatch.stop();
