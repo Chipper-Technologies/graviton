@@ -27,7 +27,8 @@ import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
 import 'package:graviton/widgets/common/graviton_popup_menu.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
-import 'package:graviton/widgets/common/graviton_tabs.dart';
+import 'package:graviton/widgets/common/graviton_tab.dart';
+import 'package:graviton/widgets/common/graviton_tabbed_view.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/common/styled_text_field.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
@@ -54,9 +55,7 @@ class ScenarioEditorScreen extends StatefulWidget {
   State<ScenarioEditorScreen> createState() => _ScenarioEditorScreenState();
 }
 
-class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
-    with TickerProviderStateMixin {
-  late TabController _tabController;
+class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
   late List<Body> _bodies;
   late ScenarioMetadata _metadata;
   late ScenarioPhysicsSettings _physics;
@@ -81,7 +80,6 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
     _setupTabScrollController = ScrollController();
 
     // Initialize text controllers before scenario initialization
@@ -105,31 +103,6 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
             : 0,
       },
     );
-
-    // Track tab changes for UI updates (FAB visibility, etc.)
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging && !_hasUnsavedChanges) {
-        _markAsChanged();
-      }
-
-      // Log tab change analytics
-      if (_tabController.indexIsChanging) {
-        final tabNames = ['setup', 'physics', 'preview'];
-        FirebaseService.instance.logUIEventWithEnums(
-          UIAction.tabChanged,
-          element: UIElement.scenarioEditor,
-          value: tabNames[_tabController.index],
-        );
-      }
-
-      // Update FAB visibility based on current tab - show only on Setup tab (index 0)
-      final shouldShowFAB = _tabController.index == 0;
-      if (_showFAB != shouldShowFAB) {
-        setState(() {
-          _showFAB = shouldShowFAB;
-        });
-      }
-    });
   }
 
   @override
@@ -191,7 +164,6 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
   @override
   void dispose() {
     _autoSaveTimer?.cancel();
-    _tabController.dispose();
     _setupTabScrollController.dispose();
     _nameController.dispose();
     _descriptionController.dispose();
@@ -283,35 +255,52 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
               key: _formKey,
               child: Column(
                 children: [
-                  // Tab bar using Graviton design system
-                  GravitonTabBar(
-                    controller: _tabController,
-                    disabledTabs: [
-                      false,
-                      _bodies.isEmpty,
-                      _bodies.isEmpty,
-                    ], // Disable Physics and Preview if no bodies
-                    tabs: [
-                      GravitonTab(
-                        icon: Icons.settings,
-                        label: l10n.setupEditorTitle,
-                      ),
-                      GravitonTab(
-                        icon: Icons.science,
-                        label: l10n.physicsSection,
-                        isEnabled: _bodies.isNotEmpty,
-                      ),
-                      GravitonTab(
-                        icon: Icons.visibility,
-                        label: l10n.previewEditortitle,
-                        isEnabled: _bodies.isNotEmpty,
-                      ),
-                    ],
-                  ),
-                  // Content
+                  // Tabbed view using Graviton design system with disabled tab swiping
                   Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
+                    child: GravitonTabbedView(
+                      tabs: [
+                        GravitonTab(
+                          icon: Icons.settings,
+                          label: l10n.setupEditorTitle,
+                        ),
+                        GravitonTab(
+                          icon: Icons.science,
+                          label: l10n.physicsSection,
+                          isEnabled: _bodies.isNotEmpty,
+                        ),
+                        GravitonTab(
+                          icon: Icons.visibility,
+                          label: l10n.previewEditortitle,
+                          isEnabled: _bodies.isNotEmpty,
+                        ),
+                      ],
+                      disabledTabs: [
+                        false,
+                        _bodies.isEmpty,
+                        _bodies.isEmpty,
+                      ], // Disable Physics and Preview if no bodies
+                      onTabChanged: (index) {
+                        // Update FAB visibility based on current tab - show only on Setup tab (index 0)
+                        final shouldShowFAB = index == 0;
+                        if (_showFAB != shouldShowFAB) {
+                          setState(() {
+                            _showFAB = shouldShowFAB;
+                          });
+                        }
+
+                        // Mark as changed if not already
+                        if (!_hasUnsavedChanges) {
+                          _markAsChanged();
+                        }
+
+                        // Log tab change analytics
+                        final tabNames = ['setup', 'physics', 'preview'];
+                        FirebaseService.instance.logUIEventWithEnums(
+                          UIAction.tabChanged,
+                          element: UIElement.scenarioEditor,
+                          value: tabNames[index],
+                        );
+                      },
                       children: [
                         // Setup Tab (Metadata + Bodies)
                         _buildSetupTab(context, l10n),
@@ -885,13 +874,8 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
     });
     _triggerAutoSave();
 
-    // If all bodies are removed and user is on Physics or Preview tab, switch to Setup tab
-    if (_bodies.isEmpty &&
-        (_tabController.index == 1 || _tabController.index == 2)) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _tabController.animateTo(0);
-      });
-    }
+    // Note: Tab switching is now handled automatically by GravitonTabbedView
+    // when tabs are disabled based on _bodies.isEmpty
   }
 
   void _onPhysicsChanged(ScenarioPhysicsSettings newPhysics) {
@@ -960,10 +944,8 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen>
               final updatedBodies = List<Body>.from(_bodies)..add(finalBody);
               _onBodiesChanged(updatedBodies);
 
-              // Switch to bodies tab if not already there
-              if (_tabController.index != 0) {
-                _tabController.animateTo(0);
-              }
+              // Note: Tab switching is now handled automatically by GravitonTabbedView
+              // The Setup tab will become available and user can navigate there manually
             },
           ),
         ),

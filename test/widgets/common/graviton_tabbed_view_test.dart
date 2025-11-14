@@ -368,6 +368,120 @@ void main() {
       });
     });
 
+    group('Tab Swiping Control', () {
+      testWidgets('should disable swiping when tabs are disabled', (
+        tester,
+      ) async {
+        final tabs = [
+          const GravitonTab(icon: Icons.settings, label: 'Setup'),
+          const GravitonTab(icon: Icons.science, label: 'Physics'),
+          const GravitonTab(icon: Icons.preview, label: 'Preview'),
+        ];
+
+        final children = [
+          const Center(child: Text('Setup Content')),
+          const Center(child: Text('Physics Content')),
+          const Center(child: Text('Preview Content')),
+        ];
+
+        // Create widget with disabled tabs
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: GravitonTabbedView(
+                tabs: tabs,
+                disabledTabs: [
+                  false,
+                  true,
+                  true,
+                ], // Physics and Preview disabled
+                children: children,
+              ),
+            ),
+          ),
+        );
+
+        // Verify initial content is shown (Setup tab)
+        expect(find.text('Setup Content'), findsOneWidget);
+        expect(find.text('Physics Content'), findsNothing);
+        expect(find.text('Preview Content'), findsNothing);
+
+        // Find the TabBarView widget
+        final tabBarView = tester.widget<TabBarView>(find.byType(TabBarView));
+
+        // Verify that swiping is disabled (physics is NeverScrollableScrollPhysics)
+        expect(tabBarView.physics, isA<NeverScrollableScrollPhysics>());
+      });
+
+      testWidgets('should allow swiping when no tabs are disabled', (
+        tester,
+      ) async {
+        final tabs = [
+          const GravitonTab(icon: Icons.settings, label: 'Setup'),
+          const GravitonTab(icon: Icons.science, label: 'Physics'),
+        ];
+
+        final children = [
+          const Center(child: Text('Setup Content')),
+          const Center(child: Text('Physics Content')),
+        ];
+
+        // Create widget with no disabled tabs
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: GravitonTabbedView(
+                tabs: tabs,
+                disabledTabs: [false, false], // No tabs disabled
+                children: children,
+              ),
+            ),
+          ),
+        );
+
+        // Find the TabBarView widget
+        final tabBarView = tester.widget<TabBarView>(find.byType(TabBarView));
+
+        // Verify that swiping is enabled (physics is null, using default)
+        expect(tabBarView.physics, isNull);
+      });
+
+      testWidgets('should disable swiping when some tabs are disabled', (
+        tester,
+      ) async {
+        final tabs = [
+          const GravitonTab(icon: Icons.settings, label: 'Setup'),
+          const GravitonTab(icon: Icons.science, label: 'Physics'),
+          const GravitonTab(icon: Icons.preview, label: 'Preview'),
+        ];
+
+        final children = [
+          const Center(child: Text('Setup Content')),
+          const Center(child: Text('Physics Content')),
+          const Center(child: Text('Preview Content')),
+        ];
+
+        // Create widget with one disabled tab
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: GravitonTabbedView(
+                tabs: tabs,
+                disabledTabs: [false, false, true], // Only Preview disabled
+                children: children,
+              ),
+            ),
+          ),
+        );
+
+        // Find the TabBarView widget
+        final tabBarView = tester.widget<TabBarView>(find.byType(TabBarView));
+
+        // Verify that swiping is disabled when any tab is disabled
+        expect(tabBarView.physics, isA<NeverScrollableScrollPhysics>());
+      });
+    });
+
     group('Accessibility', () {
       testWidgets('should be accessible for screen readers', (tester) async {
         final tabs = [

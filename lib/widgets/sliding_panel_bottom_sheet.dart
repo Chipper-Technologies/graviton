@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -333,6 +335,58 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
     return _tabController.index == tabIndex;
   }
 
+  /// Check if tab swiping should be disabled based on app state
+  bool _shouldDisableTabSwiping(AppState appState) {
+    // Debug: Print current state for troubleshooting
+    // Remove this debug code after confirming it works
+    debugPrint(
+      'Tab swiping check: Screenshot mode enabled: ${ScreenshotModeService().isEnabled}, active: ${ScreenshotModeService().isActive}',
+    );
+    debugPrint(
+      'Simulation paused: ${appState.simulation.isPaused}, scenario: ${appState.simulation.currentScenario.name}',
+    );
+
+    // Disable tab swiping during screenshot mode to prevent accidental navigation
+    // when users are trying to capture specific content
+    final screenshotService = ScreenshotModeService();
+    if (screenshotService.isEnabled && screenshotService.isActive) {
+      debugPrint('Disabling tab swiping: Screenshot mode active');
+      return true;
+    }
+
+    // Disable tab swiping when simulation is paused and in certain scenarios
+    // where physics controls should be locked
+    if (appState.simulation.isPaused) {
+      // For educational scenarios like solar system, prevent accidental tab switching
+      // when users are focused on observing paused content
+      final currentScenario = appState.simulation.currentScenario;
+      if (currentScenario.name.contains('solar') ||
+          currentScenario.name.contains('earth')) {
+        debugPrint('Disabling tab swiping: Educational scenario paused');
+        return true;
+      }
+    }
+
+    // Alternative approach: Always disable swiping for specific scenarios regardless of pause state
+    final currentScenario = appState.simulation.currentScenario;
+    if (currentScenario == ScenarioType.solarSystem ||
+        currentScenario == ScenarioType.earthMoonSun) {
+      debugPrint(
+        'Disabling tab swiping: Educational scenario (${currentScenario.name})',
+      );
+      return true;
+    }
+
+    // Temporary: Disable swiping when Physics tab is active to test the fix
+    if (_tabController.index == 2) {
+      debugPrint('Disabling tab swiping: Physics tab active');
+      return true;
+    }
+
+    debugPrint('Allowing tab swiping');
+    return false;
+  }
+
   /// Build the tab bar
   Widget _buildTabBar(
     BuildContext context,
@@ -503,6 +557,9 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
       ),
       child: TabBarView(
         controller: _tabController,
+        physics: _shouldDisableTabSwiping(appState)
+            ? const NeverScrollableScrollPhysics()
+            : null,
         children: [
           // Camera Controls Tab
           Container(

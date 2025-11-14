@@ -9,6 +9,7 @@ class GravitonTabbedView extends StatefulWidget {
   final List<Widget> children;
   final int initialIndex;
   final Function(int)? onTabChanged;
+  final List<bool>? disabledTabs;
 
   const GravitonTabbedView({
     super.key,
@@ -16,6 +17,7 @@ class GravitonTabbedView extends StatefulWidget {
     required this.children,
     this.initialIndex = 0,
     this.onTabChanged,
+    this.disabledTabs,
   });
 
   @override
@@ -54,12 +56,22 @@ class _GravitonTabbedViewState extends State<GravitonTabbedView>
 
   @override
   Widget build(BuildContext context) {
+    // Check if any tabs are disabled to determine if swiping should be disabled
+    final hasDisabledTabs = widget.disabledTabs?.contains(true) ?? false;
+
     return Column(
       children: [
-        GravitonTabBar(controller: _tabController, tabs: widget.tabs),
+        GravitonTabBar(
+          controller: _tabController,
+          tabs: widget.tabs,
+          disabledTabs: widget.disabledTabs,
+        ),
         Expanded(
           child: TabBarView(
             controller: _tabController,
+            physics: hasDisabledTabs
+                ? const NeverScrollableScrollPhysics()
+                : null,
             children: widget.children,
           ),
         ),

@@ -46,42 +46,44 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
 
   Widget _buildEmptyState(AppLocalizations l10n) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppTypography.spacingMedium,
-          vertical: AppTypography.spacingLarge,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.public_off,
-              size: AppTypography.iconSizeXXXXLarge,
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityFaint,
-              ),
-            ),
-            SizedBox(height: AppTypography.spacingMedium),
-            Text(
-              l10n.noBodiesYetEditor,
-              style: AppTypography.titleText.copyWith(
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppTypography.spacingMedium,
+            vertical: AppTypography.spacingLarge,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.public_off,
+                size: AppTypography.iconSizeXXXXLarge,
                 color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityHigh,
+                  alpha: AppTypography.opacityFaint,
                 ),
               ),
-            ),
-            SizedBox(height: AppTypography.spacingSmall),
-            Text(
-              l10n.addCelestialBodiesToCreateYourCustomScenarioEditor,
-              style: AppTypography.smallText.copyWith(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityMedium,
+              SizedBox(height: AppTypography.spacingMedium),
+              Text(
+                l10n.noBodiesYetEditor,
+                style: AppTypography.titleText.copyWith(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityHigh,
+                  ),
                 ),
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              SizedBox(height: AppTypography.spacingSmall),
+              Text(
+                l10n.addCelestialBodiesToCreateYourCustomScenarioEditor,
+                style: AppTypography.smallText.copyWith(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityMedium,
+                  ),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
