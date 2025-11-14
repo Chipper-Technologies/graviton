@@ -215,33 +215,34 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
               ? l10n.editScenarioTitle
               : l10n.createScenarioTitle,
           actions: [
-            // Export menu
-            GravitonPopupMenu(
-              accessibilityLabel: l10n.moreActionsAccessibility,
-              accessibilityHint: l10n.scenarioEditorMenuHint,
-              analyticsElement: UIElement.scenarioEditor,
-              menuItems: [
-                GravitonMenuItemConfig(
-                  value: 'test',
-                  labelKey: 'testScenarioButton',
-                  hintKey: 'testScenarioHint',
-                  icon: Icons.play_arrow,
-                  onTap: () => _testScenario(context, l10n),
-                ),
-                GravitonMenuItemConfig(
-                  value: 'export',
-                  labelKey: 'exportScenarioButton',
-                  hintKey: 'exportScenarioHint',
-                  icon: Icons.file_download,
-                  iconColor: AppColors.uiWhite,
-                  borderColor: AppColors.uiWhite.withValues(
-                    alpha: AppColors.alphaMediumVisible,
+            if (widget.isEditing) ...[
+              GravitonPopupMenu(
+                accessibilityLabel: l10n.moreActionsAccessibility,
+                accessibilityHint: l10n.scenarioEditorMenuHint,
+                analyticsElement: UIElement.scenarioEditor,
+                menuItems: [
+                  GravitonMenuItemConfig(
+                    value: 'test',
+                    labelKey: 'testScenarioButton',
+                    hintKey: 'testScenarioHint',
+                    icon: Icons.play_arrow,
+                    onTap: () => _testScenario(context, l10n),
                   ),
-                  onTap: () => _exportScenario(context, l10n),
-                ),
-              ],
-            ),
-            const SizedBox(width: AppTypography.spacingMedium),
+                  GravitonMenuItemConfig(
+                    value: 'export',
+                    labelKey: 'exportScenarioButton',
+                    hintKey: 'exportScenarioHint',
+                    icon: Icons.file_download,
+                    iconColor: AppColors.uiWhite,
+                    borderColor: AppColors.uiWhite.withValues(
+                      alpha: AppColors.alphaMediumVisible,
+                    ),
+                    onTap: () => _exportScenario(context, l10n),
+                  ),
+                ],
+              ),
+              const SizedBox(width: AppTypography.spacingMedium),
+            ],
           ],
         ),
         body: SafeArea(

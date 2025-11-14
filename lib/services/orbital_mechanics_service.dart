@@ -222,7 +222,7 @@ class OrbitalMechanicsService {
     double orbitRadius,
   ) {
     return orbitRadius *
-        math.pow(orbitingBody.mass / (3 * centralBody.mass), 1 / 3);
+        math.pow(orbitingBody.mass / (3 * centralBody.mass), 1.0 / 3.0);
   }
 
   /// Check if an orbit is stable (inside Hill sphere)

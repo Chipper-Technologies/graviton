@@ -37,6 +37,129 @@ void main() {
       });
     });
 
+    group('formatDecimal', () {
+      test('formats zero with specified decimal places', () {
+        expect(NumberUtils.formatDecimal(0.0, 0), equals('0'));
+        expect(NumberUtils.formatDecimal(0.0, 1), equals('0.0'));
+        expect(NumberUtils.formatDecimal(0.0, 2), equals('0.00'));
+        expect(NumberUtils.formatDecimal(0.0, 3), equals('0.000'));
+      });
+
+      test('formats positive numbers with specified precision', () {
+        expect(NumberUtils.formatDecimal(123.456789, 0), equals('123'));
+        expect(NumberUtils.formatDecimal(123.456789, 1), equals('123.5'));
+        expect(NumberUtils.formatDecimal(123.456789, 2), equals('123.46'));
+        expect(NumberUtils.formatDecimal(123.456789, 3), equals('123.457'));
+      });
+
+      test('formats negative numbers with specified precision', () {
+        expect(NumberUtils.formatDecimal(-123.456789, 0), equals('-123'));
+        expect(NumberUtils.formatDecimal(-123.456789, 1), equals('-123.5'));
+        expect(NumberUtils.formatDecimal(-123.456789, 2), equals('-123.46'));
+        expect(NumberUtils.formatDecimal(-123.456789, 3), equals('-123.457'));
+      });
+
+      test('adds thousands separators to large numbers', () {
+        expect(NumberUtils.formatDecimal(1234.567, 2), equals('1,234.57'));
+        expect(NumberUtils.formatDecimal(1234567.89, 1), equals('1,234,567.9'));
+        expect(NumberUtils.formatDecimal(12345678.0, 0), equals('12,345,678'));
+      });
+
+      test('handles very small numbers correctly', () {
+        expect(NumberUtils.formatDecimal(0.000123, 6), equals('0.000123'));
+        expect(NumberUtils.formatDecimal(0.001, 3), equals('0.001'));
+        expect(NumberUtils.formatDecimal(0.00001, 5), equals('0.00001'));
+      });
+
+      test('handles rounding correctly', () {
+        expect(NumberUtils.formatDecimal(1.999, 2), equals('2.00'));
+        expect(NumberUtils.formatDecimal(1.995, 2), equals('2.00'));
+        expect(NumberUtils.formatDecimal(1.994, 2), equals('1.99'));
+        expect(NumberUtils.formatDecimal(1.9999, 3), equals('2.000'));
+      });
+
+      group('Edge cases for debug scenarios', () {
+        test('handles NaN gracefully', () {
+          expect(NumberUtils.formatDecimal(double.nan, 2), equals('NaN'));
+          expect(NumberUtils.formatDecimal(double.nan, 0), equals('NaN'));
+          expect(NumberUtils.formatDecimal(double.nan, 5), equals('NaN'));
+        });
+
+        test('handles positive infinity gracefully', () {
+          expect(NumberUtils.formatDecimal(double.infinity, 2), equals('∞'));
+          expect(NumberUtils.formatDecimal(double.infinity, 0), equals('∞'));
+          expect(NumberUtils.formatDecimal(double.infinity, 5), equals('∞'));
+        });
+
+        test('handles negative infinity gracefully', () {
+          expect(
+            NumberUtils.formatDecimal(double.negativeInfinity, 2),
+            equals('-∞'),
+          );
+          expect(
+            NumberUtils.formatDecimal(double.negativeInfinity, 0),
+            equals('-∞'),
+          );
+          expect(
+            NumberUtils.formatDecimal(double.negativeInfinity, 5),
+            equals('-∞'),
+          );
+        });
+
+        test('handles very large finite numbers', () {
+          expect(NumberUtils.formatDecimal(double.maxFinite, 0), isA<String>());
+          expect(NumberUtils.formatDecimal(double.maxFinite, 2), isA<String>());
+          // Should not throw exceptions
+          expect(
+            () => NumberUtils.formatDecimal(double.maxFinite, 1),
+            returnsNormally,
+          );
+        });
+
+        test('handles very small positive numbers', () {
+          expect(
+            NumberUtils.formatDecimal(double.minPositive, 0),
+            isA<String>(),
+          );
+          expect(
+            NumberUtils.formatDecimal(double.minPositive, 10),
+            isA<String>(),
+          );
+          // Should not throw exceptions
+          expect(
+            () => NumberUtils.formatDecimal(double.minPositive, 5),
+            returnsNormally,
+          );
+        });
+      });
+
+      group('Physics simulation edge cases', () {
+        test('handles calculation results that might be NaN', () {
+          // Simulate division by zero scenario in physics calculations
+          final result = 0.0 / 0.0; // This produces NaN
+          expect(NumberUtils.formatDecimal(result, 3), equals('NaN'));
+        });
+
+        test('handles calculation results that might be infinite', () {
+          // Simulate overflow scenario in physics calculations
+          final positiveResult = 1.0 / 0.0; // This produces positive infinity
+          final negativeResult = -1.0 / 0.0; // This produces negative infinity
+
+          expect(NumberUtils.formatDecimal(positiveResult, 2), equals('∞'));
+          expect(NumberUtils.formatDecimal(negativeResult, 2), equals('-∞'));
+        });
+
+        test('handles gravitational force calculations edge cases', () {
+          // Test scenarios that might occur in three-body problem calculations
+          final nanResult = double.nan;
+          final infiniteResult = double.infinity;
+
+          expect(NumberUtils.formatDecimal(nanResult, 6), equals('NaN'));
+          expect(NumberUtils.formatDecimal(infiniteResult, 6), equals('∞'));
+        });
+      });
+    });
+
     group('formatDistance', () {
       test('formats zero distance', () {
         expect(NumberUtils.formatDistance(0), equals('0 m'));

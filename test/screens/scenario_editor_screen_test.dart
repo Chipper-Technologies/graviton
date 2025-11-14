@@ -169,7 +169,9 @@ void main() {
     testWidgets('Popup menu is visible in app bar', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
       await tester.pump();
 
       // Find the popup menu button (three dots icon)
@@ -180,7 +182,9 @@ void main() {
     testWidgets('Popup menu has proper accessibility', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
       await tester.pump();
 
       // Find the popup menu and check its semantics
@@ -199,7 +203,9 @@ void main() {
     testWidgets('Popup menu shows test and export options when opened', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
       await tester.pump();
 
       // Tap the popup menu button
@@ -218,7 +224,9 @@ void main() {
     testWidgets('Test scenario menu item is accessible', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
       await tester.pump();
 
       // Open the popup menu
@@ -236,7 +244,9 @@ void main() {
     testWidgets('Export scenario menu item is accessible', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
       await tester.pump();
 
       // Open the popup menu
@@ -254,7 +264,9 @@ void main() {
     testWidgets('Menu items have proper visual styling', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
       await tester.pump();
 
       // Open the popup menu
@@ -278,7 +290,9 @@ void main() {
     testWidgets('Menu items can be tapped (test scenario)', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
       await tester.pump();
 
       // Open the popup menu
@@ -297,7 +311,9 @@ void main() {
     testWidgets('Menu items can be tapped (export scenario)', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
       await tester.pump();
 
       // Open the popup menu
@@ -316,7 +332,9 @@ void main() {
     testWidgets('Menu maintains consistent styling with app theme', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
       await tester.pump();
 
       // Open the popup menu
@@ -351,7 +369,9 @@ void main() {
     testWidgets('Menu remains accessible across different tabs', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
       await tester.pump();
 
       // Menu should be visible on Bodies tab
@@ -398,7 +418,9 @@ void main() {
     testWidgets('Menu functionality works regardless of current tab', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
       await tester.pump();
 
       // Add a body to enable other tabs

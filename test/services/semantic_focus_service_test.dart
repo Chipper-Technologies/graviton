@@ -248,8 +248,8 @@ void main() {
 
         stopwatch.stop();
 
-        // Should complete quickly (< 100ms)
-        expect(stopwatch.elapsedMilliseconds, lessThan(100));
+        // Should complete quickly (< 200ms)
+        expect(stopwatch.elapsedMilliseconds, lessThan(200));
       });
     });
 

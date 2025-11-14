@@ -13,13 +13,25 @@ class NumberUtils {
   /// Formats a decimal value with specified precision.
   ///
   /// Provides consistent decimal formatting for general use cases.
+  /// Handles edge cases like NaN and infinity gracefully for debug scenarios.
   ///
   /// Examples:
   /// - formatDecimal(123.456789, 2) → "123.46"
   /// - formatDecimal(0.0, 1) → "0.0"
   /// - formatDecimal(1000.5, 1) → "1,000.5"
+  /// - formatDecimal(double.nan, 2) → "NaN"
+  /// - formatDecimal(double.infinity, 2) → "∞"
+  /// - formatDecimal(double.negativeInfinity, 2) → "-∞"
   static String formatDecimal(double value, int decimals) {
-    if (value == 0) return '0.${'0' * decimals}';
+    // Handle edge cases gracefully for debug scenarios
+    if (value.isNaN) return 'NaN';
+    if (value.isInfinite) {
+      return value.isNegative ? '-∞' : '∞';
+    }
+
+    if (value == 0) {
+      return decimals == 0 ? '0' : '0.${'0' * decimals}';
+    }
 
     final formatted = value.toStringAsFixed(decimals);
     final parts = formatted.split('.');
@@ -31,7 +43,7 @@ class NumberUtils {
       (Match m) => '${m[1]},',
     );
 
-    if (parts.length > 1) {
+    if (parts.length > 1 && decimals > 0) {
       return '$formattedInteger.${parts[1]}';
     }
 

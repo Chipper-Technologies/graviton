@@ -146,7 +146,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
           // Experiments section
           SectionDivider.labeled(
             l10n.experimentsTitle,
-            topSpacing: AppTypography.spacingLarge,
+            topSpacing: AppTypography.spacingSmall,
             bottomSpacing: AppTypography.spacingMedium,
           ),
 
@@ -178,7 +178,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
   /// Build empty state when no saved scenarios exist
   Widget _buildEmptyState(AppLocalizations l10n) {
     return Container(
-      padding: EdgeInsets.all(AppTypography.spacingLarge),
+      padding: EdgeInsets.only(bottom: AppTypography.spacingSmall),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
