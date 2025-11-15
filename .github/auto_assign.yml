@@ -1,0 +1,36 @@
+# Auto-assign configuration for pull requests
+# https://github.com/kentaro-m/auto-assign-action
+
+# Add reviewers to pull requests
+addReviewers: true
+
+# Add assignees to pull requests
+addAssignees: false
+
+# A list of reviewers to be added to pull requests (GitHub user names)
+# reviewers:
+#   - scarnett
+
+# A number of reviewers added to the pull request
+# Set to 0 to add all of the reviewers (default: 0)
+numberOfReviewers: 0
+
+# A list of assignees to be added to pull requests (GitHub user names)
+assignees:
+  - scarnett
+
+# A number of assignees to add to the pull request
+# Set to 0 to add all of the assignees (default: 0)
+# numberOfAssignees: 1
+
+# Set to true to skip adding reviewers if the PR has a label matching one in `skipKeywords`
+skipDraft: true
+
+# A list of keywords to match against PR labels - if matched, reviewers are not added
+skipKeywords:
+  - wip
+  - work-in-progress
+
+# Uncomment to use a different workflow trigger (default is "pull_request" event)
+# runOn:
+#   - pull_request_target
