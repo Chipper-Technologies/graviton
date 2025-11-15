@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/semantic_focus_service.dart';
+import 'package:graviton/utils/number_utils.dart';
 
 /// Semantic wrapper for camera control buttons with proper focus management
 class SemanticCameraControls extends StatelessWidget {
@@ -32,13 +33,12 @@ class SemanticCameraControls extends StatelessWidget {
         ? l10n.autoRotateActive
         : l10n.autoRotateInactive;
     final distanceText = l10n.distanceFormatted(
-      cameraDistance.toStringAsFixed(1),
+      NumberUtils.formatDistance(cameraDistance),
     );
 
     return SemanticFocusService.instance.createSemanticFocusWrapper(
       focusNode: SemanticFocusService.instance.cameraControlsFocusNode,
-      semanticLabel:
-          '${l10n.bottomNavCameraLabel}. $autoRotateText. $distanceText',
+      semanticLabel: '${l10n.cameraLabel}. $autoRotateText. $distanceText',
       semanticHint: l10n.cameraTooltip,
       child: Semantics(container: true, explicitChildNodes: true, child: child),
     );

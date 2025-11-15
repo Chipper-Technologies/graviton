@@ -10,6 +10,7 @@ import 'package:graviton/painters/asteroid_belt_painter.dart';
 import 'package:graviton/services/simulation.dart' as physics;
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/color_utils.dart';
 import 'package:graviton/utils/painter_utils.dart';
 import 'package:graviton/utils/star_generator.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
@@ -464,51 +465,51 @@ class GravitonPainter extends CustomPainter {
       galaxyRadius,
       galaxyHeight,
       [
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxySlateBlue,
           AppColors.alphaSemiVisible * distanceAlphaMultiplier,
         ),
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyDarkSlateBlue,
           AppColors.alphaMediumHigh * distanceAlphaMultiplier,
         ),
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyRoyalBlue,
           AppColors.alphaMedium * distanceAlphaMultiplier,
         ),
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyPureBlue,
           AppColors.alphaLowMedium * distanceAlphaMultiplier,
         ),
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           AppColors.alphaLow * distanceAlphaMultiplier,
         ),
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           AppColors.alphaFaint2 * distanceAlphaMultiplier,
         ),
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           AppColors.alphaVeryFaint2 * distanceAlphaMultiplier,
         ),
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           AppColors.alphaAlmostInvisible * distanceAlphaMultiplier,
         ),
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           AppColors.alphaExtremelyFaint * distanceAlphaMultiplier,
         ),
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           AppColors.alphaVeryFaint * distanceAlphaMultiplier,
         ),
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           0.001 * distanceAlphaMultiplier,
         ), // Nearly transparent
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           0.0,
         ), // Fully transparent edge
@@ -546,43 +547,43 @@ class GravitonPainter extends CustomPainter {
       bulgeRadius,
       bulgeHeight,
       [
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionMoccasin,
           AppColors.alphaMoreVisible * distanceAlphaMultiplier,
         ), // Moccasin center - much brighter
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionPlum,
           AppColors.alphaSemiVisible * distanceAlphaMultiplier,
         ), // Plum middle - much brighter
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionMediumPurple,
           AppColors.alphaMedium * distanceAlphaMultiplier,
         ), // Medium purple - much brighter
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           AppColors.alphaMediumFaint * distanceAlphaMultiplier,
         ), // Indigo outer
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           AppColors.alphaVeryFaint4 * distanceAlphaMultiplier,
         ), // Very faint outer
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           AppColors.alphaExtremelyFaint * distanceAlphaMultiplier,
         ), // Extremely faint
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           AppColors.alphaVeryFaint * distanceAlphaMultiplier,
         ), // Almost invisible
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           AppColors.alphaAlmostInvisible * distanceAlphaMultiplier,
         ), // Nearly invisible
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.galaxyIndigo,
           0.002 * distanceAlphaMultiplier,
         ), // Barely visible
-        AppColors.withAlpha(AppColors.galaxyIndigo, 0.0), // Transparent edge
+        ColorUtils.withAlpha(AppColors.galaxyIndigo, 0.0), // Transparent edge
       ],
       const [0.0, 0.2, 0.4, 0.6, 0.75, 0.85, 0.92, 0.96, 0.99, 1.0],
     );
@@ -602,39 +603,39 @@ class GravitonPainter extends CustomPainter {
       outerRadius,
       outerHeight,
       [
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionOrangeRed,
           AppColors.alphaQuarter * distanceAlphaMultiplier,
         ), // Orange-red center - brighter
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionTomato,
           AppColors.alphaVisible * distanceAlphaMultiplier,
         ), // Tomato middle - brighter
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionRed,
           AppColors.alphaLowMedium * distanceAlphaMultiplier,
         ), // Red outer - brighter
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionRed,
           AppColors.alphaFaint3 * distanceAlphaMultiplier,
         ), // Faint red
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionRed,
           AppColors.alphaFaint * distanceAlphaMultiplier,
         ), // Very faint red
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionRed,
           AppColors.alphaVeryFaint * distanceAlphaMultiplier,
         ), // Almost invisible red
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionRed,
           0.003 * distanceAlphaMultiplier,
         ), // Barely visible red
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionRed,
           0.001 * distanceAlphaMultiplier,
         ), // Nearly transparent red
-        AppColors.withAlpha(AppColors.accretionRed, 0.0), // Transparent edge
+        ColorUtils.withAlpha(AppColors.accretionRed, 0.0), // Transparent edge
       ],
       const [0.0, 0.25, 0.5, 0.7, 0.82, 0.90, 0.95, 0.98, 1.0],
     );
@@ -657,43 +658,43 @@ class GravitonPainter extends CustomPainter {
       middleRadius,
       middleHeight,
       [
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionGold,
           AppColors.alphaSemiTransparent *
               distanceAlphaMultiplier *
               middleDimMultiplier,
         ), // Dimmed gold center
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionOrange,
           AppColors.alphaMediumVisible *
               distanceAlphaMultiplier *
               middleDimMultiplier,
         ), // Dimmed orange middle
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionDarkOrange,
           AppColors.alphaVisible * distanceAlphaMultiplier,
         ), // Normal dark orange outer
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionDarkOrange,
           AppColors.alphaMediumFaint * distanceAlphaMultiplier,
         ), // Faint orange
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionDarkOrange,
           AppColors.alphaVeryFaint4 * distanceAlphaMultiplier,
         ), // Very faint orange
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionDarkOrange,
           AppColors.alphaExtremelyFaint * distanceAlphaMultiplier,
         ), // Almost invisible
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionDarkOrange,
           AppColors.alphaAlmostInvisible * distanceAlphaMultiplier,
         ), // Nearly invisible
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionDarkOrange,
           0.002 * distanceAlphaMultiplier,
         ), // Barely visible
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionDarkOrange,
           0.0,
         ), // Transparent edge
@@ -719,49 +720,52 @@ class GravitonPainter extends CustomPainter {
       innerRadius,
       innerHeight,
       [
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionGold,
           AppColors.alphaSemiVisible *
               distanceAlphaMultiplier *
               centerDimMultiplier,
         ), // Dimmed gold center instead of white
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionOrange,
           AppColors.alphaMediumVisible *
               distanceAlphaMultiplier *
               centerDimMultiplier,
         ), // Dimmed orange instead of gold
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionDarkOrange,
           AppColors.alphaVisible *
               distanceAlphaMultiplier *
               centerDimMultiplier,
         ), // Dimmed dark orange
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionOrange,
           AppColors.alphaSemiVisible * distanceAlphaMultiplier,
         ), // Faint orange
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionOrange,
           AppColors.alphaMediumFaint * distanceAlphaMultiplier,
         ), // Very faint orange
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionOrange,
           AppColors.alphaVeryFaint4 * distanceAlphaMultiplier,
         ), // Almost invisible
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionOrange,
           AppColors.alphaExtremelyFaint * distanceAlphaMultiplier,
         ), // Nearly invisible
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionOrange,
           0.003 * distanceAlphaMultiplier,
         ), // Barely visible
-        AppColors.withAlpha(
+        ColorUtils.withAlpha(
           AppColors.accretionOrange,
           0.001 * distanceAlphaMultiplier,
         ), // Nearly transparent
-        AppColors.withAlpha(AppColors.accretionOrange, 0.0), // Transparent edge
+        ColorUtils.withAlpha(
+          AppColors.accretionOrange,
+          0.0,
+        ), // Transparent edge
       ],
       const [0.0, 0.1, 0.3, 0.6, 0.75, 0.85, 0.92, 0.96, 0.99, 1.0],
     );

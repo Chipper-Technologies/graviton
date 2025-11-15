@@ -5,7 +5,8 @@ import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
-import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/utils/color_utils.dart';
+import 'package:graviton/utils/number_utils.dart';
 
 /// Service for calculating planetary surface temperatures based on stellar radiation
 class TemperatureService {
@@ -88,6 +89,14 @@ class TemperatureService {
               SimulationConstants.temperatureMassExponent,
             ); // Sun surface temp * mass factor
 
+      case BodyType.neutronStar:
+        // Neutron stars are extremely hot due to intense gravity
+        return 1000000.0; // 1 million K surface temperature
+
+      case BodyType.blackHole:
+        // Black holes have very low temperature due to Hawking radiation
+        return 2.7; // Close to cosmic microwave background
+
       case BodyType.planet:
       case BodyType.moon:
         // Base temperature for distant bodies
@@ -114,18 +123,12 @@ class TemperatureService {
     bool showUnit = true,
     AppLocalizations? l10n,
   }) {
-    final celsius =
-        temperatureKelvin - SimulationConstants.kelvinToCelsiusOffset;
-    final unitSymbol = l10n?.temperatureUnitCelsius ?? '°C';
-
     if (showUnit) {
-      if (celsius.abs() < 1000) {
-        return '${celsius.toStringAsFixed(0)}$unitSymbol';
-      } else {
-        return '${(celsius / 1000).toStringAsFixed(1)}k$unitSymbol';
-      }
+      return NumberUtils.formatTemperature(temperatureKelvin);
     }
-    return celsius.toStringAsFixed(0);
+    // For no unit display, still use NumberUtils but strip the unit
+    final formatted = NumberUtils.formatTemperature(temperatureKelvin);
+    return formatted.replaceAll(' K', '').trim();
   }
 
   /// Get localized temperature category string
@@ -153,6 +156,6 @@ class TemperatureService {
 
   /// Get color for temperature visualization
   static Color getTemperatureColor(double temperatureKelvin) {
-    return AppColors.getTemperatureColor(temperatureKelvin);
+    return ColorUtils.getTemperatureColor(temperatureKelvin);
   }
 }

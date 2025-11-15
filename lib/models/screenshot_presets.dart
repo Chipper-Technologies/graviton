@@ -366,6 +366,5 @@ class ScreenshotPresets {
   }
 
   /// Get total number of presets
-  static int getPresetCount() =>
-      12; // Fixed count since we know the number of presets
+  static int getPresetCount() => 12;
 }

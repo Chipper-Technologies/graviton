@@ -62,41 +62,6 @@ class ScreenshotModeService extends ChangeNotifier {
   List<ScreenshotPreset> getPresets(AppLocalizations l10n) =>
       ScreenshotPresets.getPresets(l10n);
 
-  /// Simple test preset for unit testing when l10n is not available
-  ScreenshotPreset? _getTestPreset() {
-    if (_currentPresetIndex < 0 || _currentPresetIndex >= presetCount) {
-      return null;
-    }
-
-    // Import the required classes for the test preset
-    return ScreenshotPreset(
-      name: 'Test Preset',
-      description: 'Test preset for unit testing',
-      scenarioType: ScenarioType.galaxyFormation,
-      configuration: {
-        'bodyCount': 100,
-        'centralMass': 10000.0,
-        'diskRadius': 1000.0,
-        'timeStep': 0.1,
-      },
-      camera: const CameraPosition(
-        distance: 300.0,
-        yaw: 0.0,
-        pitch: 0.0,
-        roll: 0.0,
-      ),
-      cameraDistance: 12.8,
-      cameraYaw: 0.0,
-      cameraPitch: 0.0,
-      cameraAutoRotate: false,
-      showTrails: true,
-      trailType: 'warm',
-      showLabels: false,
-      showOffScreenIndicators: false,
-      timerSeconds: 0,
-    );
-  }
-
   /// Toggle screenshot mode on/off
   void toggleScreenshotMode() {
     _isScreenshotModeEnabled = !_isScreenshotModeEnabled;
@@ -150,11 +115,9 @@ class ScreenshotModeService extends ChangeNotifier {
     required SimulationState simulationState,
     required CameraState cameraState,
     required dynamic uiState, // UIState but avoiding import cycle
-    AppLocalizations? l10n, // Optional for testing
+    required AppLocalizations l10n,
   }) async {
-    final preset = l10n != null
-        ? getCurrentPreset(l10n)
-        : _getTestPreset(); // Use test preset when l10n is null
+    final preset = getCurrentPreset(l10n);
     if (preset == null || !isEnabled) return;
 
     try {
@@ -594,7 +557,7 @@ class ScreenshotModeService extends ChangeNotifier {
   /// Get preset name for dropdown display
   String getPresetDisplayName(int index, AppLocalizations l10n) {
     final preset = ScreenshotPresets.getPreset(index, l10n);
-    return preset?.name ?? 'Unknown';
+    return preset?.name ?? l10n.habitabilityUnknown;
   }
 
   /// Get preset description for UI

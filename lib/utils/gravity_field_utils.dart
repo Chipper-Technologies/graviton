@@ -5,6 +5,7 @@ import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
+import 'package:graviton/utils/number_utils.dart';
 
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -193,13 +194,13 @@ class GravityFieldUtils {
     if (fieldStrength >= 1.0) {
       // For strong fields, show with 2 decimal places
       return l10n.gravityFieldStrengthFormatted(
-        fieldStrength.toStringAsFixed(2),
+        NumberUtils.formatDecimal(fieldStrength, 2),
         l10n.gravityFieldStrengthUnit,
       );
     } else if (fieldStrength >= 0.01) {
       // For moderate fields, show with 3 decimal places
       return l10n.gravityFieldStrengthFormatted(
-        fieldStrength.toStringAsFixed(3),
+        NumberUtils.formatDecimal(fieldStrength, 3),
         l10n.gravityFieldStrengthUnit,
       );
     } else {

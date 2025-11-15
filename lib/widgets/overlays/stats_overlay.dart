@@ -8,6 +8,7 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/localization_utils.dart';
+import 'package:graviton/utils/number_utils.dart';
 
 /// Stats overlay widget to display simulation information
 class StatsOverlay extends StatelessWidget {
@@ -46,28 +47,28 @@ class StatsOverlay extends StatelessWidget {
               ),
             ),
             Text(
-              '${l10n.timeLabel}: ${l10n.timeFormatted(appState.simulation.totalTime.toStringAsFixed(1))}',
+              '${l10n.timeLabel}: ${l10n.timeFormatted(NumberUtils.formatDecimal(appState.simulation.totalTime, 1))}',
               style: const TextStyle(
                 color: AppColors.uiWhite70,
                 fontSize: AppTypography.fontSizeSmall,
               ),
             ),
             Text(
-              '${l10n.earthYearsLabel}: ${l10n.earthYearsFormatted(appState.simulation.totalTimeInEarthYears.toStringAsFixed(2))}',
+              '${l10n.earthYearsLabel}: ${l10n.earthYearsFormatted(NumberUtils.formatDecimal(appState.simulation.totalTimeInEarthYears, 2))}',
               style: const TextStyle(
                 color: AppColors.uiWhite70,
                 fontSize: AppTypography.fontSizeSmall,
               ),
             ),
             Text(
-              '${l10n.speedStatsLabel}: ${l10n.speedFormatted(appState.simulation.timeScale.toStringAsFixed(1))}',
+              '${l10n.speedLabel}: ${l10n.speedFormatted(NumberUtils.formatDecimal(appState.simulation.timeScale, 1))}',
               style: const TextStyle(
                 color: AppColors.uiWhite70,
                 fontSize: AppTypography.fontSizeSmall,
               ),
             ),
             Text(
-              '${l10n.bodiesLabel}: ${l10n.bodiesCount(appState.simulation.bodies.length)}',
+              '${l10n.bodiesLabel}: ${l10n.stepsCount(appState.simulation.bodies.length)}',
               style: const TextStyle(
                 color: AppColors.uiWhite70,
                 fontSize: AppTypography.fontSizeSmall,
@@ -89,7 +90,7 @@ class StatsOverlay extends StatelessWidget {
               ),
             ),
             Text(
-              '${l10n.distanceLabel}: ${l10n.distanceFormatted(appState.camera.distance.toStringAsFixed(1))}',
+              '${l10n.distanceLabel}: ${l10n.distanceFormatted(NumberUtils.formatDistance(appState.camera.distance))}',
               style: const TextStyle(
                 color: AppColors.uiWhite70,
                 fontSize: AppTypography.fontSizeSmall,
@@ -103,28 +104,28 @@ class StatsOverlay extends StatelessWidget {
               ),
             ),
             Text(
-              '${l10n.yawLabel}: ${appState.camera.yaw.toStringAsFixed(2)}',
+              '${l10n.yawLabel}: ${NumberUtils.formatDecimal(appState.camera.yaw, 2)}',
               style: const TextStyle(
                 color: AppColors.uiWhite70,
                 fontSize: AppTypography.fontSizeSmall,
               ),
             ),
             Text(
-              '${l10n.pitchLabel}: ${appState.camera.pitch.toStringAsFixed(2)}',
+              '${l10n.pitchLabel}: ${NumberUtils.formatDecimal(appState.camera.pitch, 2)}',
               style: const TextStyle(
                 color: AppColors.uiWhite70,
                 fontSize: AppTypography.fontSizeSmall,
               ),
             ),
             Text(
-              '${l10n.rollLabel}: ${appState.camera.roll.toStringAsFixed(2)}',
+              '${l10n.rollLabel}: ${NumberUtils.formatDecimal(appState.camera.roll, 2)}',
               style: const TextStyle(
                 color: AppColors.uiWhite70,
                 fontSize: AppTypography.fontSizeSmall,
               ),
             ),
             Text(
-              '${l10n.zoomLabel}: ${appState.camera.distance.toStringAsFixed(1)}',
+              '${l10n.zoomLabel}: ${NumberUtils.formatDistance(appState.camera.distance)}',
               style: const TextStyle(
                 color: AppColors.uiWhite70,
                 fontSize: AppTypography.fontSizeSmall,

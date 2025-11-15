@@ -5,6 +5,7 @@ import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/simulation.dart' as physics;
 import 'package:graviton/services/stellar_color_service.dart';
 import 'package:graviton/theme/app_colors.dart';
+import '../test_utils.dart';
 
 void main() {
   group('Galaxy Formation Realistic Colors Tests', () {
@@ -12,6 +13,9 @@ void main() {
 
     setUp(() {
       simulation = physics.Simulation();
+      simulation.updateScenarioLocalization(
+        TestUtils.createMockAppLocalizations(),
+      );
       simulation.resetWithScenario(ScenarioType.galaxyFormation);
     });
 

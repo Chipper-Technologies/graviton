@@ -138,7 +138,7 @@ class GravitonApp extends StatelessWidget {
                         alpha: AppTypography.opacityVeryFaint,
                       );
                     }
-                    return Colors.transparent;
+                    return AppColors.transparentColor;
                   }),
                 ),
               ),
@@ -158,7 +158,7 @@ class GravitonApp extends StatelessWidget {
                         alpha: AppTypography.opacityVeryFaint,
                       );
                     }
-                    return Colors.transparent;
+                    return AppColors.transparentColor;
                   }),
                 ),
               ),

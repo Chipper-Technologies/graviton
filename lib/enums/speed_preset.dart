@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/utils/number_utils.dart';
 
 /// Represents predefined speed settings for the simulation
 enum SpeedPreset {
@@ -38,7 +39,7 @@ enum SpeedPreset {
 extension SpeedPresetExtension on SpeedPreset {
   /// Get formatted speed string (e.g., "1.0x")
   String get formattedSpeed =>
-      '${multiplier.toStringAsFixed(multiplier == multiplier.toInt() ? 0 : 1)}x';
+      '${NumberUtils.formatDecimal(multiplier.toDouble(), multiplier == multiplier.toInt() ? 0 : 1)}x';
 
   /// Get localization key for this speed preset
   String get localizationKey {

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/temperature_unit.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/haptic_utils.dart';
-import 'package:graviton/widgets/common/haptic_app_bar.dart';
-import 'package:graviton/widgets/common/haptic_switch.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
+import 'package:graviton/widgets/haptics/haptic_switch.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:provider/provider.dart';
 
 /// Full-screen Application Settings page
@@ -20,8 +21,8 @@ class ApplicationSettingsScreen extends StatelessWidget {
     return Consumer<AppState>(
       builder: (context, appState, child) {
         return Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: HapticAppBar(title: l10n.settingsTitle),
+          backgroundColor: AppColors.transparentColor,
+          appBar: HapticAppBar(title: l10n.settingsTooltip),
           body: SafeArea(
             child: Container(
               decoration: BoxDecoration(
@@ -38,15 +39,19 @@ class ApplicationSettingsScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Language Settings Section
-                            SectionTitle(title: l10n.languageLabel),
-                            SizedBox(height: AppTypography.spacingMedium),
-                            _buildLanguageOption(context, l10n, appState),
-                            SizedBox(height: AppTypography.spacingXXLarge),
+                            // General Settings Section (Language and Temperature Units)
+                            SectionDivider.labeled(
+                              l10n.languageLabel,
+                              bottomSpacing: AppTypography.spacingMedium,
+                            ),
+                            _buildGeneralOptions(context, l10n, appState),
 
                             // Haptic Feedback Settings Section
-                            SectionTitle(title: l10n.hapticsSection),
-                            const SizedBox(height: AppTypography.spacingMedium),
+                            SectionDivider.labeled(
+                              l10n.hapticsSection,
+                              topSpacing: AppTypography.spacingMedium,
+                              bottomSpacing: AppTypography.spacingMedium,
+                            ),
                             _buildUIHapticFeedbackOption(
                               context,
                               l10n,
@@ -76,7 +81,7 @@ class ApplicationSettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLanguageOption(
+  Widget _buildGeneralOptions(
     BuildContext context,
     AppLocalizations l10n,
     AppState appState,
@@ -96,6 +101,7 @@ class ApplicationSettingsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Language Setting
           Row(
             children: [
               Icon(
@@ -109,7 +115,7 @@ class ApplicationSettingsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.languageLabel,
+                      l10n.languageDescription,
                       style: TextStyle(
                         color: AppColors.uiWhite,
                         fontSize: AppTypography.fontSizeLarge,
@@ -118,7 +124,7 @@ class ApplicationSettingsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: AppTypography.spacingXSmall),
                     Text(
-                      l10n.languageDescription,
+                      l10n.languageSelectionHint,
                       style: TextStyle(
                         color: AppColors.uiWhite.withValues(
                           alpha: AppTypography.opacityHigh,
@@ -131,7 +137,7 @@ class ApplicationSettingsScreen extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: AppTypography.spacingLarge),
+          SizedBox(height: AppTypography.spacingMedium),
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(
@@ -218,6 +224,106 @@ class ApplicationSettingsScreen extends StatelessWidget {
                   value: 'ko',
                   child: Text(
                     l10n.languageKorean,
+                    style: TextStyle(color: AppColors.uiWhite),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: AppTypography.spacingXLarge),
+
+          // Temperature Unit Setting
+          Row(
+            children: [
+              Icon(
+                Icons.thermostat,
+                color: AppColors.primaryColor,
+                size: AppTypography.iconSizeXXLarge,
+              ),
+              SizedBox(width: AppTypography.spacingLarge),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.temperatureUnitsLabel,
+                      style: TextStyle(
+                        color: AppColors.uiWhite,
+                        fontSize: AppTypography.fontSizeLarge,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: AppTypography.spacingXSmall),
+                    Text(
+                      l10n.temperatureUnitsDescription,
+                      style: TextStyle(
+                        color: AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityHigh,
+                        ),
+                        fontSize: AppTypography.fontSizeMedium,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: AppTypography.spacingMedium),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(
+              horizontal: AppTypography.spacingMedium,
+              vertical: AppTypography.spacingSmall,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.uiBlack.withValues(
+                alpha: AppTypography.opacityMedium,
+              ),
+              borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
+              border: Border.all(
+                color: AppColors.primaryColor.withValues(
+                  alpha: AppTypography.opacityMedium,
+                ),
+                width: AppTypography.borderThin,
+              ),
+            ),
+            child: DropdownButton<String>(
+              value: appState.ui.temperatureUnit.name,
+              underline: Container(),
+              isExpanded: true,
+              dropdownColor: AppColors.uiBlack,
+              style: TextStyle(
+                color: AppColors.uiWhite,
+                fontSize: AppTypography.fontSizeMedium,
+              ),
+              onChanged: (String? newValue) {
+                if (newValue != null) {
+                  // Add haptic feedback for temperature unit selection
+                  HapticUtils.navigate();
+                  final unit = TemperatureUnit.fromString(newValue);
+                  appState.ui.setTemperatureUnit(unit);
+                }
+              },
+              items: [
+                DropdownMenuItem<String>(
+                  value: 'celsius',
+                  child: Text(
+                    l10n.temperatureUnitCelsiusName,
+                    style: TextStyle(color: AppColors.uiWhite),
+                  ),
+                ),
+                DropdownMenuItem<String>(
+                  value: 'fahrenheit',
+                  child: Text(
+                    l10n.temperatureUnitFahrenheitName,
+                    style: TextStyle(color: AppColors.uiWhite),
+                  ),
+                ),
+                DropdownMenuItem<String>(
+                  value: 'kelvin',
+                  child: Text(
+                    l10n.temperatureUnitKelvinName,
                     style: TextStyle(color: AppColors.uiWhite),
                   ),
                 ),

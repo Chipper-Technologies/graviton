@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/state/camera_state.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/scenario_service.dart';
+import '../test_utils.dart';
 
 void main() {
   group('Auto-Zoom Tests', () {
@@ -14,9 +15,12 @@ void main() {
     });
 
     test('Should set different distances for different scenarios', () {
+      final mockL10n = TestUtils.createMockAppLocalizations();
+
       // Test Binary Stars scenario (auto-calculated distance)
       final binaryBodies = scenarioService.generateScenario(
         ScenarioType.binaryStars,
+        l10n: mockL10n,
       );
       cameraState.resetViewForScenario(ScenarioType.binaryStars, binaryBodies);
 
@@ -36,6 +40,7 @@ void main() {
       // Test Earth-Moon-Sun scenario (auto-calculated distance)
       final earthMoonSunBodies = scenarioService.generateScenario(
         ScenarioType.earthMoonSun,
+        l10n: mockL10n,
       );
       cameraState.resetViewForScenario(
         ScenarioType.earthMoonSun,
@@ -55,6 +60,7 @@ void main() {
       // Test Solar System scenario (fixed distance)
       final solarSystemBodies = scenarioService.generateScenario(
         ScenarioType.solarSystem,
+        l10n: mockL10n,
       );
       cameraState.resetViewForScenario(
         ScenarioType.solarSystem,
@@ -69,6 +75,7 @@ void main() {
       // Test Random scenario (auto-calculated)
       final randomBodies = scenarioService.generateScenario(
         ScenarioType.random,
+        l10n: mockL10n,
       );
       cameraState.resetViewForScenario(ScenarioType.random, randomBodies);
       expect(
@@ -84,7 +91,11 @@ void main() {
     });
 
     test('Should calculate optimal target based on body positions', () {
-      final bodies = scenarioService.generateScenario(ScenarioType.binaryStars);
+      final mockL10n = TestUtils.createMockAppLocalizations();
+      final bodies = scenarioService.generateScenario(
+        ScenarioType.binaryStars,
+        l10n: mockL10n,
+      );
       cameraState.resetViewForScenario(ScenarioType.binaryStars, bodies);
 
       // Target should be close to center for binary stars
@@ -111,9 +122,12 @@ void main() {
     });
 
     test('Auto-calculated scenarios should use distance multipliers', () {
+      final mockL10n = TestUtils.createMockAppLocalizations();
+
       // Test Asteroid Belt scenario (auto-calculated with 1.3x multiplier)
       final asteroidBodies = scenarioService.generateScenario(
         ScenarioType.asteroidBelt,
+        l10n: mockL10n,
       );
       cameraState.resetViewForScenario(
         ScenarioType.asteroidBelt,
@@ -124,6 +138,7 @@ void main() {
       // Test Galaxy Formation scenario (auto-calculated with 1.5x multiplier)
       final galaxyBodies = scenarioService.generateScenario(
         ScenarioType.galaxyFormation,
+        l10n: mockL10n,
       );
       cameraState.resetViewForScenario(
         ScenarioType.galaxyFormation,

@@ -51,8 +51,9 @@ void main() {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
 
-        // Initial position is 0.25, which is above minimum (0.15), so should be true
-        expect(SlidingPanelBottomSheet.isExpanded, true);
+        // Initial position is at minimum (0.15), so should be false initially
+        // (Would need to expand the panel to make it true)
+        expect(SlidingPanelBottomSheet.isExpanded, false);
       });
 
       testWidgets('closePanel should work when instance exists', (

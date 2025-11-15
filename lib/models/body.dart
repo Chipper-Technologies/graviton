@@ -24,11 +24,49 @@ class Body {
   bool
   _showGravityWell; // whether to display gravity well visualization for this body
 
+  bool
+  _isOrbitalPlacementActive; // whether orbital placement mode is currently active for this body
+
+  // Orbital parameters (used when orbital placement is active)
+  double _orbitRadius; // distance from central body
+  double _orbitPhase; // orbital phase (0 to 2π)
+  double _orbitInclination; // orbital inclination (0 to π/2)
+
   // Getter and setter for showGravityWell
   bool get showGravityWell => _showGravityWell;
   set showGravityWell(bool value) {
     if (_showGravityWell != value) {
       _showGravityWell = value;
+    }
+  }
+
+  // Getter and setter for isOrbitalPlacementActive
+  bool get isOrbitalPlacementActive => _isOrbitalPlacementActive;
+  set isOrbitalPlacementActive(bool value) {
+    if (_isOrbitalPlacementActive != value) {
+      _isOrbitalPlacementActive = value;
+    }
+  }
+
+  // Getters and setters for orbital parameters
+  double get orbitRadius => _orbitRadius;
+  set orbitRadius(double value) {
+    if (_orbitRadius != value) {
+      _orbitRadius = value;
+    }
+  }
+
+  double get orbitPhase => _orbitPhase;
+  set orbitPhase(double value) {
+    if (_orbitPhase != value) {
+      _orbitPhase = value;
+    }
+  }
+
+  double get orbitInclination => _orbitInclination;
+  set orbitInclination(double value) {
+    if (_orbitInclination != value) {
+      _orbitInclination = value;
     }
   }
 
@@ -46,7 +84,15 @@ class Body {
     this.temperature =
         SimulationConstants.kelvinToCelsiusOffset, // Default to 0°C
     bool showGravityWell = false, // Disabled by default
-  }) : _showGravityWell = showGravityWell;
+    bool isOrbitalPlacementActive = false, // Disabled by default
+    double orbitRadius = SimulationConstants.defaultOrbitRadius,
+    double orbitPhase = 0.0, // Default phase (0 to 2π)
+    double orbitInclination = 0.0, // Default inclination (0 to π/2)
+  }) : _showGravityWell = showGravityWell,
+       _isOrbitalPlacementActive = isOrbitalPlacementActive,
+       _orbitRadius = orbitRadius,
+       _orbitPhase = orbitPhase,
+       _orbitInclination = orbitInclination;
 
   /// Whether this body is a star that emits light
   bool get isLuminous => bodyType.isLuminous;
@@ -85,5 +131,49 @@ class Body {
   /// Update surface temperature based on stellar heating
   void updateTemperature(double newTemperature) {
     temperature = newTemperature;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Body &&
+        other.position == position &&
+        other.velocity == velocity &&
+        other.mass == mass &&
+        other.radius == radius &&
+        other.color == color &&
+        other.name == name &&
+        other.isPlanet == isPlanet &&
+        other.bodyType == bodyType &&
+        other.stellarLuminosity == stellarLuminosity &&
+        other.habitabilityStatus == habitabilityStatus &&
+        other.temperature == temperature &&
+        other.showGravityWell == showGravityWell &&
+        other.isOrbitalPlacementActive == isOrbitalPlacementActive &&
+        other.orbitRadius == orbitRadius &&
+        other.orbitPhase == orbitPhase &&
+        other.orbitInclination == orbitInclination;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      position,
+      velocity,
+      mass,
+      radius,
+      color,
+      name,
+      isPlanet,
+      bodyType,
+      stellarLuminosity,
+      habitabilityStatus,
+      temperature,
+      showGravityWell,
+      isOrbitalPlacementActive,
+      orbitRadius,
+      orbitPhase,
+      orbitInclination,
+    );
   }
 }

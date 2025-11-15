@@ -4,7 +4,8 @@ import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_icon_button.dart';
+import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
+import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:provider/provider.dart';
 
@@ -173,33 +174,26 @@ class ScreenshotModeWidget extends StatelessWidget {
                                   ).pop(); // Close settings dialog
 
                                   // Show a snackbar to inform user
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        l10n.appliedPreset(
-                                          screenshotService
-                                              .getPresetDisplayName(
-                                                screenshotService
-                                                    .currentPresetIndex,
-                                                l10n,
-                                              ),
-                                        ),
-                                      ),
-                                      duration: const Duration(seconds: 3),
-                                      action: SnackBarAction(
-                                        label: l10n.deactivate,
-                                        onPressed: () {
-                                          screenshotService.deactivate(
-                                            uiState: appState.ui,
-                                          );
-                                          // Resume simulation when deactivating
-                                          if (appState.simulation.isPaused) {
-                                            appState.simulation
-                                                .pause(); // Toggle pause to resume
-                                          }
-                                        },
+                                  GravitonSnackBar.info(
+                                    context: context,
+                                    message: l10n.appliedPreset(
+                                      screenshotService.getPresetDisplayName(
+                                        screenshotService.currentPresetIndex,
+                                        l10n,
                                       ),
                                     ),
+                                    duration: const Duration(seconds: 3),
+                                    actionLabel: l10n.deactivate,
+                                    onActionPressed: () {
+                                      screenshotService.deactivate(
+                                        uiState: appState.ui,
+                                      );
+                                      // Resume simulation when deactivating
+                                      if (appState.simulation.isPaused) {
+                                        appState.simulation
+                                            .pause(); // Toggle pause to resume
+                                      }
+                                    },
                                   );
                                 },
                                 icon: const Icon(Icons.camera),

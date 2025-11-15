@@ -1,5 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/models/orbital_event.dart';
+import 'package:graviton/models/camera_movement.dart';
+import 'package:graviton/models/predictive_orbital_config.dart';
+import 'package:graviton/enums/orbital_event_type.dart';
+import 'package:graviton/enums/camera_movement_type.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 void main() {

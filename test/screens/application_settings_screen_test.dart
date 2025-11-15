@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/temperature_unit.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/screens/application_settings_screen.dart';
 import 'package:graviton/state/app_state.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -41,7 +43,7 @@ void main() {
         // Should have Scaffold with transparent background
         expect(find.byType(Scaffold), findsOneWidget);
         final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-        expect(scaffold.backgroundColor, equals(Colors.transparent));
+        expect(scaffold.backgroundColor, equals(AppColors.transparentColor));
 
         // Should have AppBar
         expect(find.byType(AppBar), findsOneWidget);
@@ -67,20 +69,26 @@ void main() {
         expect(appBar.backgroundColor, isNotNull);
       });
 
-      testWidgets('should display language settings section', (tester) async {
+      testWidgets('should display general settings section', (tester) async {
         await tester.pumpWidget(
           createTestWidget(child: const ApplicationSettingsScreen()),
         );
         await tester.pumpAndSettle();
 
-        // Should have section titles (language settings and haptic feedback)
-        expect(find.byType(SectionTitle), findsNWidgets(2));
+        // Should have section dividers (general settings and haptic feedback)
+        expect(find.byType(SectionDivider), findsNWidgets(2));
 
         // Should have language icon
         expect(find.byIcon(Icons.language), findsOneWidget);
 
-        // Should have dropdown for language selection
+        // Should have temperature icon
+        expect(find.byIcon(Icons.thermostat), findsOneWidget);
+
+        // Should have language dropdown (nullable String)
         expect(find.byType(DropdownButton<String?>), findsOneWidget);
+
+        // Should have temperature unit dropdown (non-nullable String)
+        expect(find.byType(DropdownButton<String>), findsOneWidget);
       });
     });
 
@@ -151,6 +159,20 @@ void main() {
         expect(dropdown.value, equals('de'));
       });
 
+      testWidgets('should display language selection hint text', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          createTestWidget(child: const ApplicationSettingsScreen()),
+        );
+        await tester.pumpAndSettle();
+
+        // Should display the language selection hint text
+        expect(
+          find.text('Choose your preferred display language'),
+          findsOneWidget,
+        );
+      });
       testWidgets('should handle system default language selection', (
         tester,
       ) async {
@@ -175,6 +197,112 @@ void main() {
       });
     });
 
+    group('Temperature Unit Settings', () {
+      testWidgets(
+        'should display temperature unit dropdown with correct options',
+        (tester) async {
+          await tester.pumpWidget(
+            createTestWidget(child: const ApplicationSettingsScreen()),
+          );
+          await tester.pumpAndSettle();
+
+          // Find the temperature unit dropdown button (non-nullable String type)
+          final dropdown = find.byType(DropdownButton<String>);
+          expect(dropdown, findsOneWidget);
+
+          // Tap to open dropdown
+          await tester.tap(dropdown);
+          await tester.pumpAndSettle();
+
+          // Should have all temperature unit options
+          expect(find.text('Celsius'), findsWidgets);
+          expect(find.text('Fahrenheit'), findsWidgets);
+          expect(find.text('Kelvin'), findsWidgets);
+        },
+      );
+
+      testWidgets('should handle temperature unit selection', (tester) async {
+        await tester.pumpWidget(
+          createTestWidget(child: const ApplicationSettingsScreen()),
+        );
+        await tester.pumpAndSettle();
+
+        // Initially should be Kelvin (default)
+        expect(appState.ui.temperatureUnit, equals(TemperatureUnit.kelvin));
+
+        // Tap dropdown to open it
+        await tester.tap(find.byType(DropdownButton<String>));
+        await tester.pumpAndSettle();
+
+        // Select Celsius
+        await tester.tap(find.text('Celsius').last);
+        await tester.pumpAndSettle();
+
+        // Should update the app state
+        expect(appState.ui.temperatureUnit, equals(TemperatureUnit.celsius));
+      });
+
+      testWidgets(
+        'should display current temperature unit selection correctly',
+        (tester) async {
+          // Set initial temperature unit to Fahrenheit
+          appState.ui.setTemperatureUnit(TemperatureUnit.fahrenheit);
+
+          await tester.pumpWidget(
+            createTestWidget(child: const ApplicationSettingsScreen()),
+          );
+          await tester.pumpAndSettle();
+
+          // Should show current selection
+          final dropdown = tester.widget<DropdownButton<String>>(
+            find.byType(DropdownButton<String>),
+          );
+          expect(dropdown.value, equals('fahrenheit'));
+        },
+      );
+
+      testWidgets(
+        'should maintain temperature unit selection across rebuilds',
+        (tester) async {
+          await tester.pumpWidget(
+            createTestWidget(child: const ApplicationSettingsScreen()),
+          );
+          await tester.pumpAndSettle();
+
+          // Set temperature unit to Celsius
+          appState.ui.setTemperatureUnit(TemperatureUnit.celsius);
+          await tester.pump();
+
+          // Should maintain selection
+          final dropdown = tester.widget<DropdownButton<String>>(
+            find.byType(DropdownButton<String>),
+          );
+          expect(dropdown.value, equals('celsius'));
+
+          // Trigger a rebuild
+          await tester.pumpAndSettle();
+
+          // Should still maintain selection
+          final dropdownAfterRebuild = tester.widget<DropdownButton<String>>(
+            find.byType(DropdownButton<String>),
+          );
+          expect(dropdownAfterRebuild.value, equals('celsius'));
+        },
+      );
+
+      testWidgets('should persist temperature unit selection', (tester) async {
+        // Change temperature unit
+        appState.ui.setTemperatureUnit(TemperatureUnit.fahrenheit);
+        await tester.pumpWidget(
+          createTestWidget(child: const ApplicationSettingsScreen()),
+        );
+        await tester.pumpAndSettle();
+
+        // Verify persistence by checking state
+        expect(appState.ui.temperatureUnit, equals(TemperatureUnit.fahrenheit));
+      });
+    });
+
     group('Interactions', () {
       testWidgets('should be scrollable', (tester) async {
         await tester.pumpWidget(
@@ -193,7 +321,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Should still have all content after scrolling
-        expect(find.byType(SectionTitle), findsWidgets);
+        expect(find.byType(SectionDivider), findsWidgets);
       });
 
       testWidgets('should handle dropdown interaction properly', (
@@ -234,7 +362,7 @@ void main() {
 
         // Scaffold should be transparent
         final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-        expect(scaffold.backgroundColor, equals(Colors.transparent));
+        expect(scaffold.backgroundColor, equals(AppColors.transparentColor));
 
         // Content container should have semi-transparent background
         expect(find.byType(Container), findsWidgets);
@@ -386,7 +514,7 @@ void main() {
 
         // Should have proper semantic structure with headers and content
         // (language settings and haptic feedback sections)
-        expect(find.byType(SectionTitle), findsNWidgets(2));
+        expect(find.byType(SectionDivider), findsNWidgets(2));
         expect(find.byType(Text), findsWidgets);
         expect(find.byIcon(Icons.language), findsOneWidget);
       });

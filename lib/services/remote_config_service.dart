@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:graviton/enums/ab_test_group.dart';
 import 'package:graviton/enums/custom_message_type.dart';
 import 'package:graviton/enums/user_behavior_tracking_mode.dart';
+import 'package:graviton/l10n/app_localizations.dart';
 
 /// Service for managing all Firebase Remote Config features
 class RemoteConfigService {
@@ -25,7 +26,7 @@ class RemoteConfigService {
 
   // Maintenance & Communication
   bool _maintenanceMode = false;
-  String _maintenanceMessage = 'Scheduled maintenance in progress';
+  String _maintenanceMessage = '';
   bool _newsBannerEnabled = false;
   String _newsBannerText = '';
   String _emergencyNotification = '';
@@ -69,7 +70,7 @@ class RemoteConfigService {
 
       // Maintenance & Communication
       'maintenance_mode': false,
-      'maintenance_message': 'Scheduled maintenance in progress',
+      'maintenance_message': '',
       'news_banner_enabled': false,
       'news_banner_text': '',
       'emergency_notification': '',
@@ -171,6 +172,17 @@ class RemoteConfigService {
   // Maintenance & Communication Getters
   bool get maintenanceMode => _maintenanceMode;
   String get maintenanceMessage => _maintenanceMessage;
+
+  /// Get localized maintenance message with fallback to remote config value
+  String getMaintenanceMessage(AppLocalizations l10n) {
+    // If remote config provides a custom message, use it
+    if (_maintenanceMessage.isNotEmpty) {
+      return _maintenanceMessage;
+    }
+    // Otherwise use localized fallback
+    return l10n.scheduledMaintenanceInProgress;
+  }
+
   bool get newsBannerEnabled => _newsBannerEnabled;
   String get newsBannerText => _newsBannerText;
   String get emergencyNotification => _emergencyNotification;

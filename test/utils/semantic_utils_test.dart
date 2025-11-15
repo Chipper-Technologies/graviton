@@ -132,7 +132,7 @@ void main() {
         );
 
         expect(description, contains('free mode'));
-        expect(description, contains('1000.0'));
+        expect(description, contains('1 km'));
       });
 
       testWidgets('should describe follow camera mode', (tester) async {
@@ -148,7 +148,7 @@ void main() {
 
         expect(description, contains('following'));
         expect(description, contains('Earth'));
-        expect(description, contains('500.0'));
+        expect(description, contains('500 m'));
       });
     });
 

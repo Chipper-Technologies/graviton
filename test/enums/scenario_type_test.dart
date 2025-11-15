@@ -4,7 +4,7 @@ import 'package:graviton/enums/scenario_type.dart';
 void main() {
   group('ScenarioType Enum', () {
     test('should have all expected scenario types', () {
-      expect(ScenarioType.values.length, equals(9));
+      expect(ScenarioType.values.length, equals(10));
       expect(ScenarioType.values, contains(ScenarioType.random));
       expect(ScenarioType.values, contains(ScenarioType.earthMoonSun));
       expect(ScenarioType.values, contains(ScenarioType.binaryStars));
@@ -14,6 +14,7 @@ void main() {
       expect(ScenarioType.values, contains(ScenarioType.threeBodyClassic));
       expect(ScenarioType.values, contains(ScenarioType.collisionDemo));
       expect(ScenarioType.values, contains(ScenarioType.deepSpace));
+      expect(ScenarioType.values, contains(ScenarioType.custom));
     });
 
     test('should convert from string correctly', () {
@@ -50,6 +51,7 @@ void main() {
         ScenarioType.fromString('deep_space'),
         equals(ScenarioType.deepSpace),
       );
+      expect(ScenarioType.fromString('custom'), equals(ScenarioType.custom));
     });
 
     test('should throw ArgumentError for invalid string', () {
@@ -77,6 +79,7 @@ void main() {
         equals('scenarioCollisionDemo'),
       );
       expect(ScenarioType.deepSpace.nameKey, equals('scenarioDeepSpace'));
+      expect(ScenarioType.custom.nameKey, equals('scenarioCustom'));
     });
 
     test('should have correct description keys', () {
@@ -116,6 +119,10 @@ void main() {
         ScenarioType.deepSpace.descriptionKey,
         equals('scenarioDeepSpaceDescription'),
       );
+      expect(
+        ScenarioType.custom.descriptionKey,
+        equals('scenarioCustomDescription'),
+      );
     });
 
     test('should have correct string values', () {
@@ -134,6 +141,7 @@ void main() {
       );
       expect(ScenarioType.collisionDemo.stringValue, equals('collision_demo'));
       expect(ScenarioType.deepSpace.stringValue, equals('deep_space'));
+      expect(ScenarioType.custom.stringValue, equals('custom'));
     });
 
     test('should have consistent fromString and stringValue', () {

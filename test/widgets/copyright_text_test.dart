@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/widgets/copyright_text.dart';
-import 'package:graviton/screens/about_screen.dart';
-import 'package:graviton/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/screens/about_screen.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/widgets/copyright_text.dart';
 
 void main() {
   group('CopyrightText Tests', () {
@@ -123,7 +124,7 @@ void main() {
 
       // Verify the AboutScreen uses transparent scaffold
       final scaffold = tester.widget<Scaffold>(find.byType(Scaffold).last);
-      expect(scaffold.backgroundColor, Colors.transparent);
+      expect(scaffold.backgroundColor, AppColors.transparentColor);
     });
   });
 }

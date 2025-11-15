@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/physics_controls.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -47,7 +47,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Physics Visualization'), findsOneWidget);
-      expect(find.byType(SectionTitle), findsWidgets);
+      expect(find.byType(SectionDivider), findsWidgets);
     });
 
     testWidgets('displays physics toggle options', (WidgetTester tester) async {
@@ -228,7 +228,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.byType(SectionTitle), findsWidgets);
+      expect(find.byType(SectionDivider), findsWidgets);
       expect(find.text('Physics Visualization'), findsOneWidget);
 
       // Scroll down to see the other section titles
@@ -358,8 +358,8 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      // Scroll down to see the speed preset buttons
-      await tester.drag(find.byType(ListView), const Offset(0, -300));
+      // Scroll down to see the speed preset buttons - need more scroll to reach them
+      await tester.drag(find.byType(ListView), const Offset(0, -400));
       await tester.pumpAndSettle();
 
       // Should have speed preset buttons

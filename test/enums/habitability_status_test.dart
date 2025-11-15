@@ -4,10 +4,32 @@ import 'package:graviton/enums/habitability_status.dart';
 void main() {
   group('HabitabilityStatus Enum', () {
     test('should have all expected habitability statuses', () {
-      expect(HabitabilityStatus.values.length, equals(4));
+      expect(HabitabilityStatus.values.length, equals(11));
       expect(HabitabilityStatus.values, contains(HabitabilityStatus.habitable));
       expect(HabitabilityStatus.values, contains(HabitabilityStatus.tooHot));
       expect(HabitabilityStatus.values, contains(HabitabilityStatus.tooCold));
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.gasGiant));
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.tooSmall));
+      expect(
+        HabitabilityStatus.values,
+        contains(HabitabilityStatus.noAtmosphere),
+      );
+      expect(
+        HabitabilityStatus.values,
+        contains(HabitabilityStatus.toxicAtmosphere),
+      );
+      expect(
+        HabitabilityStatus.values,
+        contains(HabitabilityStatus.highRadiation),
+      );
+      expect(
+        HabitabilityStatus.values,
+        contains(HabitabilityStatus.tidallyLocked),
+      );
+      expect(
+        HabitabilityStatus.values,
+        contains(HabitabilityStatus.extremeGravity),
+      );
       expect(HabitabilityStatus.values, contains(HabitabilityStatus.unknown));
     });
 
@@ -29,6 +51,34 @@ void main() {
           HabitabilityStatus.unknown.statusColor,
           equals(0xFF9E9E9E),
         ); // Grey
+        expect(
+          HabitabilityStatus.gasGiant.statusColor,
+          equals(0xFFFF9800),
+        ); // Orange
+        expect(
+          HabitabilityStatus.tooSmall.statusColor,
+          equals(0xFF795548),
+        ); // Brown
+        expect(
+          HabitabilityStatus.noAtmosphere.statusColor,
+          equals(0xFF607D8B),
+        ); // Blue grey
+        expect(
+          HabitabilityStatus.toxicAtmosphere.statusColor,
+          equals(0xFF9C27B0),
+        ); // Purple
+        expect(
+          HabitabilityStatus.highRadiation.statusColor,
+          equals(0xFFE91E63),
+        ); // Pink
+        expect(
+          HabitabilityStatus.tidallyLocked.statusColor,
+          equals(0xFFFF5722),
+        ); // Deep orange
+        expect(
+          HabitabilityStatus.extremeGravity.statusColor,
+          equals(0xFF3F51B5),
+        ); // Indigo
       });
 
       test('should use semantically appropriate colors', () {
@@ -110,6 +160,34 @@ void main() {
         expect(
           HabitabilityStatus.unknown.localizationKey,
           equals('habitabilityUnknown'),
+        );
+        expect(
+          HabitabilityStatus.gasGiant.localizationKey,
+          equals('habitabilityGasGiant'),
+        );
+        expect(
+          HabitabilityStatus.tooSmall.localizationKey,
+          equals('habitabilityTooSmall'),
+        );
+        expect(
+          HabitabilityStatus.noAtmosphere.localizationKey,
+          equals('habitabilityNoAtmosphere'),
+        );
+        expect(
+          HabitabilityStatus.toxicAtmosphere.localizationKey,
+          equals('habitabilityToxicAtmosphere'),
+        );
+        expect(
+          HabitabilityStatus.highRadiation.localizationKey,
+          equals('habitabilityHighRadiation'),
+        );
+        expect(
+          HabitabilityStatus.tidallyLocked.localizationKey,
+          equals('habitabilityTidallyLocked'),
+        );
+        expect(
+          HabitabilityStatus.extremeGravity.localizationKey,
+          equals('habitabilityExtremeGravity'),
         );
       });
 
