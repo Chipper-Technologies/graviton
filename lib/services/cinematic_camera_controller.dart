@@ -1375,9 +1375,10 @@ class CinematicCameraController {
       }
     }
 
-    // For random scenarios, prefer just the 2 closest bodies for tight action
+    // Ensure we always return at least 2 bodies if available (for any scenario type)
+    // This prevents crashes in _findBestScoredPair which expects pairs
     if (filteredBodies.length < 2 && bodies.length >= 2) {
-      // Always use the 2 closest bodies for maximum action focus
+      // Use the 2 closest bodies to center of mass for maximum action focus
       return [bodyDistances[0].key, bodyDistances[1].key];
     }
 
@@ -1444,6 +1445,16 @@ class CinematicCameraController {
 
   /// Standard scoring-based pair selection (original logic)
   List<Body> _findBestScoredPair(List<Body> bodies) {
+    // Guard against edge cases with insufficient bodies
+    if (bodies.isEmpty) {
+      return [];
+    }
+
+    if (bodies.length == 1) {
+      // Return single body twice to maintain pair structure
+      return [bodies[0], bodies[0]];
+    }
+
     // Score body pairs based on multiple factors
     double bestScore = 0.0;
     List<Body> bestPair = [bodies[0], bodies[1]];
