@@ -1236,20 +1236,26 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
 
       // Schedule cleanup after a longer delay to ensure everything has loaded
       // and give the user time to see the simulation working
-      // Use unawaited to prevent blocking, but cleanup will check mounted state
-      unawaited(
-        Future.delayed(const Duration(seconds: 3)).then((_) async {
-          // Check if still mounted before cleanup
-          if (!mounted) return;
+      // Handle cleanup explicitly with proper error logging
+      Future.delayed(const Duration(seconds: 3))
+          .then((_) async {
+            // Check if still mounted before cleanup
+            if (!mounted) return;
 
-          try {
-            // Clean up the temporary test scenario
-            await _cleanupTestScenario(testScenarioName);
-          } catch (e) {
-            // Don't show error to user for cleanup failures
-          }
-        }),
-      );
+            try {
+              // Clean up the temporary test scenario
+              await _cleanupTestScenario(testScenarioName);
+            } catch (e, stackTrace) {
+              // Log cleanup failures for debugging even though not shown to user
+              debugPrint('Failed to cleanup test scenario: $e');
+              debugPrint('Stack trace: $stackTrace');
+            }
+          })
+          .catchError((error, stackTrace) {
+            // Catch any unexpected errors in the delayed future itself
+            debugPrint('Unexpected error during cleanup scheduling: $error');
+            debugPrint('Stack trace: $stackTrace');
+          });
     } catch (e) {
       // Check mounted state before showing error
       if (mounted && currentContext.mounted) {

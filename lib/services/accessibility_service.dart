@@ -26,6 +26,16 @@ class AccessibilityService {
     // Check if we have a valid binding before attempting to announce
     if (_hasValidBinding()) {
       try {
+        // Guard against empty views collection (app not initialized or disposed)
+        if (WidgetsBinding.instance.platformDispatcher.views.isEmpty) {
+          if (kDebugMode) {
+            debugPrint(
+              'Accessibility announcement skipped (no views): $message',
+            );
+          }
+          return;
+        }
+
         // Use SemanticsService to announce the message
         final view = WidgetsBinding.instance.platformDispatcher.views.first;
         SemanticsService.sendAnnouncement(view, message, TextDirection.ltr);

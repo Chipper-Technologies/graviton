@@ -186,12 +186,10 @@ class CustomScenarioStorage {
     // Extract timestamp from name (format: __test_scenario_<milliseconds>)
     // When split by '_': ['', '', 'test', 'scenario', '<milliseconds>']
     final nameParts = scenarioName.split('_');
-    if (nameParts.length < 5) return null; // Fixed: need 5 parts, not 4
+    if (nameParts.length < 5) return null;
 
     try {
-      final timestamp = int.parse(
-        nameParts[4],
-      ); // Fixed: timestamp is at index 4
+      final timestamp = int.parse(nameParts[4]);
       return DateTime.fromMillisecondsSinceEpoch(timestamp);
     } catch (e) {
       return null;

@@ -12,7 +12,10 @@ class OrbitalEvent {
   final double dramaticScore;
   final String description;
 
-  const OrbitalEvent({
+  /// Cached string representation to avoid expensive formatting on repeated calls
+  String? _cachedToString;
+
+  OrbitalEvent({
     required this.timestamp,
     required this.type,
     required this.involvedBodies,
@@ -23,6 +26,10 @@ class OrbitalEvent {
   });
 
   @override
-  String toString() =>
-      'OrbitalEvent($type, score: ${NumberUtils.formatDecimal(dramaticScore, 2)}, bodies: $involvedBodies)';
+  String toString() {
+    // Use cached value if available to avoid expensive formatting calls
+    _cachedToString ??=
+        'OrbitalEvent($type, score: ${NumberUtils.formatDecimal(dramaticScore, 2)}, bodies: $involvedBodies)';
+    return _cachedToString!;
+  }
 }

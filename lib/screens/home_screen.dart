@@ -73,6 +73,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+  // Timing constants
+  static const Duration _postNavigationDelay = Duration(milliseconds: 100);
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late final Ticker _ticker;
   Offset? _lastPan;
@@ -540,7 +543,7 @@ class _HomeScreenState extends State<HomeScreen>
           SlidingPanelBottomSheet.refreshPosition();
 
           // Small delay to ensure layout has settled before showing controls
-          Future.delayed(const Duration(milliseconds: 100), () {
+          Future.delayed(_postNavigationDelay, () {
             if (mounted) {
               setState(() {
                 _showFloatingControls = true;
@@ -599,7 +602,7 @@ class _HomeScreenState extends State<HomeScreen>
                   _cinematicCameraController.reset();
 
                   // Use a timer instead of post-frame callback for more reliable execution
-                  Future.delayed(const Duration(milliseconds: 100), () {
+                  Future.delayed(_postNavigationDelay, () {
                     try {
                       // Auto-zoom camera to fit the new scenario
                       if (appState.simulation.bodies.isNotEmpty) {
@@ -664,7 +667,7 @@ class _HomeScreenState extends State<HomeScreen>
       _cinematicCameraController.reset();
 
       // Use a timer instead of post-frame callback for more reliable execution
-      Future.delayed(const Duration(milliseconds: 100), () {
+      Future.delayed(_postNavigationDelay, () {
         try {
           // Auto-zoom camera to fit the new scenario
           if (appState.simulation.bodies.isNotEmpty) {

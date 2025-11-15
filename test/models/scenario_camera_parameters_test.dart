@@ -86,7 +86,7 @@ void main() {
         const parameters = ScenarioCameraParameters(
           safetyMargin: 1.0,
           minDistance: 10.0,
-          maxDistance: 10.0, // Fixed distance scenario
+          maxDistance: 10.0,
           pitchSensitivity: 0.5,
           targetLockFrames: 30,
           orbitSpeed: 1.0,

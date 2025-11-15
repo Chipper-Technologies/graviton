@@ -2251,7 +2251,7 @@ class CinematicCameraController {
 
     // Apply pitch correction to account for viewing angle
     final pitchAngle = scenario == ScenarioType.solarSystem
-        ? 0.3 // Fixed angle above the plane for solar system
+        ? 0.3
         : 0.2 + math.sin(_verticalOscillation) * 0.6; // Current pitch
 
     final pitchCorrection =

@@ -7,7 +7,7 @@ void main() {
   group('BodyTypeRanges Star Mass Generation', () {
     test('star mass generation produces medium-sized stars more frequently', () {
       final masses = <double>[];
-      final random = math.Random(42); // Fixed seed for reproducible tests
+      final random = math.Random(42);
 
       // Simulate the exact algorithm from _generateRealisticProperties
       final massRange = BodyTypeRanges.getMassRange(BodyType.star);

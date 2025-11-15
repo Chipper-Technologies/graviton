@@ -408,10 +408,7 @@ void main() {
           config.expectedBodyCount,
           equals(100),
         ); // Many bodies for research
-        expect(
-          config.optimalCameraDistance,
-          equals(5000.0),
-        ); // Fixed far distance
+        expect(config.optimalCameraDistance, equals(5000.0));
         expect(config.cameraDistanceMultiplier, equals(3.0)); // Wide overview
       });
     });
