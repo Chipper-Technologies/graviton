@@ -85,7 +85,7 @@ class Body {
         SimulationConstants.kelvinToCelsiusOffset, // Default to 0°C
     bool showGravityWell = false, // Disabled by default
     bool isOrbitalPlacementActive = false, // Disabled by default
-    double orbitRadius = 20.0, // Default orbit radius
+    double orbitRadius = SimulationConstants.defaultOrbitRadius,
     double orbitPhase = 0.0, // Default phase (0 to 2π)
     double orbitInclination = 0.0, // Default inclination (0 to π/2)
   }) : _showGravityWell = showGravityWell,

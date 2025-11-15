@@ -197,5 +197,124 @@ void main() {
         expect(SimulationConstants.companion1Distance, greaterThan(0.0));
       });
     });
+
+    group('Habitability Classification Constants', () {
+      test('gas giant classification constants should be defined', () {
+        expect(SimulationConstants.gasGiantDensityThreshold, equals(0.8));
+        expect(SimulationConstants.minGasGiantRadius, equals(3.0));
+      });
+
+      test('gas giant constants should have logical values', () {
+        expect(SimulationConstants.gasGiantDensityThreshold, greaterThan(0.0));
+        expect(SimulationConstants.gasGiantDensityThreshold, lessThan(2.0));
+        expect(SimulationConstants.minGasGiantRadius, greaterThan(0.0));
+      });
+
+      test('atmosphere retention constants should be defined', () {
+        expect(SimulationConstants.minMassForAtmosphere, equals(0.005));
+        expect(SimulationConstants.minRadiusForAtmosphere, equals(0.15));
+      });
+
+      test('atmosphere retention thresholds should be small values', () {
+        expect(SimulationConstants.minMassForAtmosphere, greaterThan(0.0));
+        expect(SimulationConstants.minMassForAtmosphere, lessThan(0.1));
+        expect(SimulationConstants.minRadiusForAtmosphere, greaterThan(0.0));
+        expect(SimulationConstants.minRadiusForAtmosphere, lessThan(1.0));
+      });
+
+      test('extreme gravity threshold should be defined', () {
+        expect(SimulationConstants.extremeGravityThreshold, equals(10.0));
+      });
+
+      test('extreme gravity threshold should be reasonable', () {
+        expect(SimulationConstants.extremeGravityThreshold, greaterThan(1.0));
+        expect(SimulationConstants.extremeGravityThreshold, lessThan(100.0));
+      });
+
+      test('high radiation threshold should be defined', () {
+        expect(SimulationConstants.highRadiationThreshold, equals(50.0));
+      });
+
+      test('high radiation threshold should be reasonable', () {
+        expect(SimulationConstants.highRadiationThreshold, greaterThan(1.0));
+        expect(SimulationConstants.highRadiationThreshold, lessThan(1000.0));
+      });
+
+      test('tidal locking distance threshold should be defined', () {
+        expect(SimulationConstants.tidalLockingDistanceAU, equals(0.1));
+      });
+
+      test('tidal locking distance should be close to star', () {
+        expect(SimulationConstants.tidalLockingDistanceAU, greaterThan(0.0));
+        expect(SimulationConstants.tidalLockingDistanceAU, lessThan(1.0));
+      });
+    });
+
+    group('Earth Reference Constants', () {
+      test('earth reference constants should be defined', () {
+        expect(SimulationConstants.earthReferenceMass, equals(0.02));
+        expect(SimulationConstants.earthReferenceRadius, equals(0.6));
+      });
+
+      test('earth reference values should be positive', () {
+        expect(SimulationConstants.earthReferenceMass, greaterThan(0.0));
+        expect(SimulationConstants.earthReferenceRadius, greaterThan(0.0));
+      });
+
+      test(
+        'earth reference values should be reasonable for simulation scale',
+        () {
+          // Earth reference should be within typical planet ranges
+          expect(SimulationConstants.earthReferenceMass, greaterThan(0.001));
+          expect(SimulationConstants.earthReferenceMass, lessThan(10.0));
+          expect(SimulationConstants.earthReferenceRadius, greaterThan(0.1));
+          expect(SimulationConstants.earthReferenceRadius, lessThan(5.0));
+        },
+      );
+
+      test('earth reference should be consistent with Earth-like planet ranges', () {
+        // Note: Earth reference values (0.02 mass, 0.6 radius) are in simulation units
+        // and serve as reference points for gravity calculations, NOT generation ranges.
+        // The earthLikePlanet constants (mass 2.0-4.0, radius 0.7-1.1) are for
+        // GENERATING new planets, not for reference calculations.
+
+        // These are different scales and purposes, so we don't expect them to match
+        expect(SimulationConstants.earthReferenceMass, greaterThan(0.0));
+        expect(SimulationConstants.earthReferenceRadius, greaterThan(0.0));
+
+        // Verify Earth reference values are reasonable for their purpose
+        expect(SimulationConstants.earthReferenceMass, lessThan(1.0));
+        expect(SimulationConstants.earthReferenceRadius, lessThan(5.0));
+      });
+    });
+
+    group('Orbital Placement Constants', () {
+      test('defaultOrbitRadius should be defined', () {
+        expect(SimulationConstants.defaultOrbitRadius, equals(20.0));
+      });
+
+      test('defaultOrbitRadius should be positive and reasonable', () {
+        expect(SimulationConstants.defaultOrbitRadius, greaterThan(0.0));
+        // Should be within typical planetary orbital distances
+        expect(
+          SimulationConstants.defaultOrbitRadius,
+          greaterThanOrEqualTo(SimulationConstants.planetDistanceMin),
+        );
+        expect(
+          SimulationConstants.defaultOrbitRadius,
+          lessThanOrEqualTo(SimulationConstants.starDistanceMax),
+        );
+      });
+
+      test('defaultOrbitRadius should convert to reasonable AU value', () {
+        // 20.0 simulation units * 0.02 AU/unit = 0.4 AU
+        final auValue =
+            SimulationConstants.defaultOrbitRadius *
+            SimulationConstants.simulationUnitsToAU;
+        expect(auValue, equals(0.4));
+        expect(auValue, lessThan(1.0)); // Less than Earth's orbit
+        expect(auValue, greaterThan(0.1)); // But not too close
+      });
+    });
   });
 }

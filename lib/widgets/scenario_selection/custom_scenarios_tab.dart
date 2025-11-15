@@ -61,54 +61,13 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
   }
 
   Future<void> _cleanupOldTestScenarios() async {
-    try {
-      final allScenarios = await CustomScenarioStorage.getAllScenarios();
-
-      // Find test scenarios that are older than 1 minute (stale)
-      final now = DateTime.now();
-      final staleTestScenarios = allScenarios.where((scenario) {
-        final isTestScenario = scenario.metadata.name.startsWith(
-          '__test_scenario_',
-        );
-        if (!isTestScenario) return false;
-
-        // Extract timestamp from name (format: __test_scenario_<milliseconds>)
-        final nameParts = scenario.metadata.name.split('_');
-        if (nameParts.length < 4) return true; // Invalid format, remove it
-
-        try {
-          final timestamp = int.parse(nameParts[3]);
-          final scenarioTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-          return now.difference(scenarioTime).inMinutes > 1;
-        } catch (e) {
-          return true; // Invalid timestamp, remove it
-        }
-      }).toList();
-
-      // Remove stale test scenarios
-      for (final scenario in staleTestScenarios) {
-        try {
-          await CustomScenarioStorage.deleteScenario(scenario.metadata.name);
-        } catch (e) {
-          // Silent cleanup - don't spam logs
-        }
-      }
-    } catch (e) {
-      // Silent cleanup failure
-    }
+    await CustomScenarioStorage.cleanupStaleTestScenarios();
   }
 
   Future<void> _loadCustomScenarios() async {
     try {
-      final allScenarios = await CustomScenarioStorage.getAllScenarios();
-
-      // Filter out temporary test scenarios to prevent them from showing in UI
-      final visibleScenarios = allScenarios
-          .where(
-            (scenario) =>
-                !scenario.metadata.name.startsWith('__test_scenario_'),
-          )
-          .toList();
+      final visibleScenarios =
+          await CustomScenarioStorage.getAllVisibleScenarios();
 
       if (mounted) {
         setState(() {

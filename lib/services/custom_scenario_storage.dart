@@ -10,6 +10,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CustomScenarioStorage {
   static const String _scenariosKey = 'custom_scenarios';
 
+  // Test scenario naming convention
+  /// Prefix used to identify temporary test scenarios
+  /// Format: __test_scenario_&lt;milliseconds_since_epoch&gt;
+  static const String testScenarioPrefix = '__test_scenario_';
+
+  /// Duration after which test scenarios are considered stale and can be cleaned up
+  static const Duration testScenarioStaleThreshold = Duration(minutes: 1);
+
   /// Save a custom scenario to local storage
   static Future<void> saveScenario(CustomScenario scenario) async {
     try {
@@ -153,5 +161,87 @@ class CustomScenarioStorage {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_scenariosKey);
     debugPrint('Cleared all scenarios');
+  }
+
+  // =============================================================================
+  // TEST SCENARIO UTILITIES
+  // =============================================================================
+
+  /// Generate a test scenario name with the standard naming convention
+  /// Format: __test_scenario_<milliseconds_since_epoch>
+  static String generateTestScenarioName() {
+    return '$testScenarioPrefix${DateTime.now().millisecondsSinceEpoch}';
+  }
+
+  /// Check if a scenario name follows the test scenario naming convention
+  static bool isTestScenario(String scenarioName) {
+    return scenarioName.startsWith(testScenarioPrefix);
+  }
+
+  /// Extract timestamp from a test scenario name
+  /// Returns null if the name doesn't follow the convention or parsing fails
+  static DateTime? getTestScenarioTimestamp(String scenarioName) {
+    if (!isTestScenario(scenarioName)) return null;
+
+    // Extract timestamp from name (format: __test_scenario_<milliseconds>)
+    // When split by '_': ['', '', 'test', 'scenario', '<milliseconds>']
+    final nameParts = scenarioName.split('_');
+    if (nameParts.length < 5) return null; // Fixed: need 5 parts, not 4
+
+    try {
+      final timestamp = int.parse(
+        nameParts[4],
+      ); // Fixed: timestamp is at index 4
+      return DateTime.fromMillisecondsSinceEpoch(timestamp);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Check if a test scenario is stale (older than threshold)
+  static bool isStaleTestScenario(String scenarioName) {
+    final timestamp = getTestScenarioTimestamp(scenarioName);
+    if (timestamp == null) return false;
+
+    final age = DateTime.now().difference(timestamp);
+    return age > testScenarioStaleThreshold;
+  }
+
+  /// Clean up stale test scenarios
+  /// Returns the number of scenarios deleted
+  static Future<int> cleanupStaleTestScenarios() async {
+    try {
+      final allScenarios = await _getAllFromPreferences();
+      int deletedCount = 0;
+
+      for (final scenario in allScenarios) {
+        final scenarioName = scenario.metadata.name;
+        if (isTestScenario(scenarioName) && isStaleTestScenario(scenarioName)) {
+          try {
+            await deleteScenario(scenarioName);
+            deletedCount++;
+          } catch (e) {
+            debugPrint('Failed to delete stale test scenario: $scenarioName');
+          }
+        }
+      }
+
+      if (deletedCount > 0) {
+        debugPrint('Cleaned up $deletedCount stale test scenario(s)');
+      }
+
+      return deletedCount;
+    } catch (e) {
+      debugPrint('Failed to cleanup stale test scenarios: $e');
+      return 0;
+    }
+  }
+
+  /// Get all scenarios excluding test scenarios
+  static Future<List<CustomScenario>> getAllVisibleScenarios() async {
+    final allScenarios = await _getAllFromPreferences();
+    return allScenarios
+        .where((scenario) => !isTestScenario(scenario.metadata.name))
+        .toList();
   }
 }

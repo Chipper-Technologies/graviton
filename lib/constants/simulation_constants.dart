@@ -45,6 +45,12 @@ class SimulationConstants {
   static const double planetZVelocityMax = 0.125;
   static const double planetVelocityRandomness = 0.10;
 
+  // Orbital placement defaults
+  // Default orbit radius for manual body placement in the scenario editor
+  // In simulation units: 20.0 units ≈ 0.4 AU (slightly inside Earth's orbit)
+  // Provides a reasonable starting point for placing bodies in orbital configurations
+  static const double defaultOrbitRadius = 20.0;
+
   // Planet mass and size categories
   static const double smallPlanetProbability = 0.3;
   static const double earthLikePlanetProbability =
@@ -61,6 +67,14 @@ class SimulationConstants {
   static const double earthLikePlanetMassMax = 4.0;
   static const double earthLikePlanetRadiusMin = 0.7;
   static const double earthLikePlanetRadiusMax = 1.1;
+
+  // Earth reference values in simulation units
+  // Used for gravity calculations and physical comparisons
+  // These represent a typical Earth-analog in the simulation
+  static const double earthReferenceMass =
+      0.02; // Earth mass in simulation units
+  static const double earthReferenceRadius =
+      0.6; // Earth radius in simulation units
 
   // Super-Earth planets
   static const double superEarthMassMin = 4.0;
@@ -126,6 +140,35 @@ class SimulationConstants {
   static const double mainSequenceStarLuminosityMax = 2.0;
   static const double giantStarLuminosityMin = 2.0;
   static const double giantStarLuminosityMax = 10.0;
+
+  // Habitability classification thresholds
+  // Gas giant density threshold in simulation units (mass/volume ratio)
+  // Based on density = mass / ((4/3) * π * radius³)
+  // Rocky planets (Earth-like): density ≈ 1.0-2.0 in simulation units
+  // Gas giants (Jupiter-like): density ≈ 0.2-0.5 in simulation units
+  // Threshold at 0.8 distinguishes between rocky and gaseous compositions
+  static const double gasGiantDensityThreshold = 0.8;
+
+  // Minimum radius for gas giant classification (simulation units)
+  // Ensures small bodies with low density aren't misclassified as gas giants
+  static const double minGasGiantRadius = 3.0;
+
+  // Minimum mass and radius for atmosphere retention (simulation units)
+  // Bodies below these thresholds cannot maintain significant atmospheres
+  static const double minMassForAtmosphere = 0.005; // ~10% of Moon mass
+  static const double minRadiusForAtmosphere = 0.15; // ~25% of Moon radius
+
+  // Surface gravity threshold for extreme gravity classification
+  // Relative to Earth's surface gravity (g = GM/r²)
+  static const double extremeGravityThreshold = 10.0; // 10x Earth's gravity
+
+  // Radiation threshold for high radiation classification
+  // Relative to Earth's energy received from the Sun
+  static const double highRadiationThreshold = 50.0; // 50x Earth's insolation
+
+  // Tidal locking distance threshold in AU
+  // Planets closer than this to their star are likely tidally locked
+  static const double tidalLockingDistanceAU = 0.1;
 
   // Temperature calculation constants
   // Kelvin to Celsius conversion offset - the freezing point of water

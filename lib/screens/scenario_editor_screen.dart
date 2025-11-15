@@ -1104,8 +1104,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
 
     // Create scenario data synchronously first
     final scenario = _createCustomScenario();
-    final testScenarioName =
-        '__test_scenario_${DateTime.now().millisecondsSinceEpoch}';
+    final testScenarioName = CustomScenarioStorage.generateTestScenarioName();
     final testMetadata = ScenarioMetadata(
       name: testScenarioName,
       description: 'Temporary test scenario - will be deleted automatically',

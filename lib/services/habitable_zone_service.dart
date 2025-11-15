@@ -197,26 +197,16 @@ class HabitableZoneService {
     final volume = (4.0 / 3.0) * math.pi * math.pow(planet.radius, 3);
     final density = planet.mass / volume;
 
-    // Threshold for gas giant classification
-    // Typical rocky planets have much higher density than gas giants
-    const gasGiantDensityThreshold = 0.8;
-
-    // Also require minimum size to be considered a gas giant
-    const minGasGiantRadius = 3.0;
-
-    return density < gasGiantDensityThreshold &&
-        planet.radius > minGasGiantRadius;
+    return density < SimulationConstants.gasGiantDensityThreshold &&
+        planet.radius > SimulationConstants.minGasGiantRadius;
   }
 
   /// Check if a planet is too small to maintain an atmosphere
   bool _isTooSmall(Body planet) {
     // Very small bodies cannot retain significant atmospheres
     // Based on mass and radius thresholds
-    const minMassForAtmosphere = 0.005; // Much smaller than Earth
-    const minRadiusForAtmosphere = 0.15; // Much smaller than Earth
-
-    return planet.mass < minMassForAtmosphere ||
-        planet.radius < minRadiusForAtmosphere;
+    return planet.mass < SimulationConstants.minMassForAtmosphere ||
+        planet.radius < SimulationConstants.minRadiusForAtmosphere;
   }
 
   /// Check if a planet has extreme gravity conditions
@@ -225,14 +215,14 @@ class HabitableZoneService {
     // g = GM/r² where G=1 in our simulation units
     final surfaceGravity = planet.mass / (planet.radius * planet.radius);
 
-    // Earth-like gravity reference (mass ≈ 0.02, radius ≈ 0.6)
-    const earthGravityReference = 0.02 / (0.6 * 0.6);
+    // Earth-like gravity reference using simulation constants
+    final earthGravityReference =
+        SimulationConstants.earthReferenceMass /
+        (SimulationConstants.earthReferenceRadius *
+            SimulationConstants.earthReferenceRadius);
     final gravityRatio = surfaceGravity / earthGravityReference;
 
-    // Consider extreme if gravity is more than 10x Earth's gravity
-    const extremeGravityThreshold = 10.0;
-
-    return gravityRatio > extremeGravityThreshold;
+    return gravityRatio > SimulationConstants.extremeGravityThreshold;
   }
 
   /// Check if energy received indicates dangerous radiation levels
@@ -245,10 +235,7 @@ class HabitableZoneService {
 
     final energyRatio = totalEnergyReceived / earthEnergyReference;
 
-    // Threshold for dangerous radiation (much higher than habitable zone limit)
-    const highRadiationThreshold = 50.0;
-
-    return energyRatio > highRadiationThreshold;
+    return energyRatio > SimulationConstants.highRadiationThreshold;
   }
 
   /// Check if a planet is likely tidally locked
@@ -266,10 +253,7 @@ class HabitableZoneService {
       // Convert to AU equivalent for comparison
       final distanceAU = distance * SimulationConstants.simulationUnitsToAU;
 
-      // Tidal locking threshold - planets closer than ~0.1 AU are likely locked
-      const tidalLockingDistanceAU = 0.1;
-
-      if (distanceAU < tidalLockingDistanceAU) {
+      if (distanceAU < SimulationConstants.tidalLockingDistanceAU) {
         return true;
       }
     }
