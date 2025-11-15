@@ -431,18 +431,20 @@ graviton/
 │   ├── FASTLANE.md           # Deployment documentation
 │   └── MARKETING.md          # Marketing materials
 ├── test/                        # Test suites
+│   ├── config/                # Configuration tests
 │   ├── constants/             # Constants tests
 │   ├── core/                  # Core functionality tests
-│   ├── debug/                 # Debug utilities tests
-│   ├── demos/                 # Demo scenario tests
 │   ├── enums/                 # Enumeration tests
+│   ├── experiments/           # Advanced physics experiments
 │   ├── features/              # Feature-specific tests
 │   ├── integration/           # Integration tests
 │   ├── models/                # Model tests
 │   ├── painters/              # Painter tests
 │   ├── scenarios/             # Scenario tests
+│   ├── screens/               # Screen tests
 │   ├── services/              # Service tests
 │   ├── state/                 # State management tests
+│   ├── theme/                 # Theme tests
 │   ├── utils/                 # Utility tests
 │   └── widgets/               # Widget tests
 ├── tools/                       # Development tools
@@ -478,20 +480,29 @@ lib/
 │   └── test_constants.dart     # Testing configuration constants
 ├── enums/                       # Type definitions
 │   ├── ab_test_group.dart      # A/B testing groups
+│   ├── accessibility_camera_action.dart # Accessibility camera actions
+│   ├── accessibility_physics_parameter.dart # Accessibility physics parameters
+│   ├── accessibility_simulation_state.dart # Accessibility simulation states
 │   ├── app_bar_menu_item.dart  # App bar menu options
 │   ├── app_flavor.dart         # Application flavors
 │   ├── auto_rotate_status.dart # Screen rotation status
 │   ├── body_type.dart          # Celestial body types
+│   ├── camera_movement_type.dart # Camera movement types
 │   ├── celestial_body_name.dart # Body name enumeration
 │   ├── changelog_category.dart # Change log categories
-│   ├── cinematic_camera_technique.dart # Camera movement types
+│   ├── cinematic_camera_technique.dart # Cinematic camera techniques
+│   ├── custom_message_type.dart # Custom message types
 │   ├── firebase_event.dart     # Analytics event types
 │   ├── gravity_field_color_scheme.dart # Gravity visualization colors
 │   ├── habitability_status.dart # Life zone status types
+│   ├── live_region_importance.dart # Live region importance levels
 │   ├── notification_type.dart  # System notification types
+│   ├── orbital_event_type.dart # Orbital event types
 │   ├── scenario_type.dart      # Educational scenario types
 │   ├── simulation_status.dart  # Physics simulation states
+│   ├── snack_bar_severity.dart # Snack bar severity levels
 │   ├── speed_preset.dart       # Time speed presets
+│   ├── temperature_unit.dart   # Temperature unit types
 │   ├── tutorial_action.dart    # Tutorial interaction types
 │   ├── ui_action.dart          # User interface actions
 │   ├── ui_element.dart         # UI component types
@@ -525,11 +536,15 @@ lib/
 │   ├── chaos_events.dart       # Chaotic simulation events
 │   ├── custom_scenario.dart    # User-created scenarios
 │   ├── custom_scenario_summary.dart # Scenario summary data
+│   ├── dialog_action.dart      # Dialog action definitions
+│   ├── experimental_scenario_config.dart # Experimental scenario configuration
+│   ├── graviton_menu_item_config.dart # Menu item configuration
 │   ├── indicator_data.dart     # UI indicator information
 │   ├── merge_flash.dart        # Collision effects
 │   ├── objectives_config.dart  # Educational objectives
 │   ├── orbital_event.dart      # Orbital mechanics events
 │   ├── orbital_parameters.dart # Keplerian elements
+│   ├── orbital_placement.dart  # Orbital placement calculations
 │   ├── particle_system_data.dart # Particle system configuration
 │   ├── particle_systems_config.dart # Multi-particle system setup
 │   ├── physics_settings.dart   # Physics configuration
@@ -537,15 +552,18 @@ lib/
 │   ├── predictive_orbital_config.dart # Orbital prediction settings
 │   ├── preset_scenario.dart    # Educational scenarios
 │   ├── ring_particle.dart      # Planetary ring systems
+│   ├── scenario_camera_parameters.dart # Scenario camera settings
 │   ├── scenario_config.dart    # Scenario definitions
 │   ├── scenario_configuration.dart # Complete scenario setup
 │   ├── scenario_json_schema.dart # JSON validation schema
 │   ├── scenario_metadata.dart  # Scenario information
 │   ├── scenario_physics_settings.dart # Per-scenario physics
 │   ├── scenario_validation_result.dart # Validation results
+│   ├── scenario_validation_rules.dart # Validation rule definitions
 │   ├── screenshot_models.dart  # Screenshot system data
 │   ├── screenshot_preset.dart  # Screenshot configurations
 │   ├── screenshot_presets.dart # Predefined screenshot sets
+│   ├── snack_bar_theme.dart    # Snack bar theming
 │   ├── success_criteria.dart   # Educational success metrics
 │   ├── sunspot_data.dart       # Solar activity data
 │   ├── trail_point.dart        # Motion trail data
@@ -581,17 +599,26 @@ lib/
 │   ├── simulation_state.dart   # Simulation control state
 │   └── ui_state.dart           # UI preferences state
 ├── utils/                       # Utility functions
-│   ├── app_utils.dart          # General utilities
-│   ├── camera_utils.dart       # Camera calculations
+│   ├── body_type_ranges.dart   # Body type range definitions
+│   ├── clipboard_utils.dart    # Clipboard operations
+│   ├── collision_utils.dart    # Collision detection utilities
 │   ├── color_utils.dart        # Color manipulation
-│   ├── constants_manager.dart  # Dynamic constants
 │   ├── fullscreen_utils.dart   # Fullscreen coordination
+│   ├── gravity_field_utils.dart # Gravity field calculations
 │   ├── haptic_utils.dart       # Haptic feedback utilities
-│   ├── math_utils.dart         # Mathematical operations
+│   ├── localization_utils.dart # Localization helpers
+│   ├── number_utils.dart       # Number formatting utilities
+│   ├── painter_utils.dart      # Painter helper functions
 │   ├── physics_utils.dart      # Physics calculations
 │   ├── platform_utils.dart     # Platform detection
-│   ├── screenshot_utils.dart   # Screenshot functionality
-│   └── vector_utils.dart       # 3D vector operations
+│   ├── random_utils.dart       # Random number generation
+│   ├── safe_haptic_feedback.dart # Safe haptic feedback wrapper
+│   ├── semantic_utils.dart     # Accessibility utilities
+│   ├── star_generator.dart     # Star generation utilities
+│   ├── temperature_utils.dart  # Temperature calculations
+│   ├── ui_utils.dart           # UI helper functions
+│   ├── vector_utils.dart       # 3D vector operations
+│   └── version_utils.dart      # Version management utilities
 ├── painters/                    # Custom rendering engines
 │   ├── asteroid_belt_painter.dart # Asteroid belt visualization
 │   ├── background_painter.dart # Starfield background
@@ -601,16 +628,19 @@ lib/
 │   ├── gravity_painter.dart    # Gravity field visualization
 │   ├── habitability_painter.dart # Habitable zone rendering
 │   ├── highlight_painter.dart  # Object highlighting
+│   ├── indicator_painter.dart  # UI indicators rendering
 │   ├── orbital_path_painter.dart # Trajectory visualization
 │   └── trail_painter.dart      # Motion trail rendering
 ├── widgets/                     # UI components
 │   ├── common/                 # Reusable components
 │   │   ├── action_option.dart  # Action button component
+│   │   ├── base_confirmation_dialog.dart # Base dialog for confirmations
 │   │   ├── body_type_picker.dart # Body type selection widget
 │   │   ├── color_picker.dart   # Color selection widget
 │   │   ├── delete_confirmation_dialog.dart # Deletion confirmation
 │   │   ├── dialog_title.dart   # Standardized dialog titles
 │   │   ├── graviton_popup_menu.dart # Custom popup menu
+│   │   ├── graviton_snack_bar.dart # Custom snack bar
 │   │   ├── graviton_tab.dart   # Custom tab widget
 │   │   ├── graviton_tab_bar.dart # Custom tab bar
 │   │   ├── graviton_tabbed_view.dart # Tabbed interface
@@ -621,6 +651,7 @@ lib/
 │   │   └── toggle_option.dart  # Toggle control component
 │   ├── haptics/                # Haptic-enabled widgets
 │   │   ├── haptic_app_bar.dart # Haptic-enabled app bar
+│   │   ├── haptic_button.dart  # Haptic button widget
 │   │   ├── haptic_circular_button.dart # Haptic circular button
 │   │   ├── haptic_elevated_button.dart # Haptic elevated button
 │   │   ├── haptic_floating_action_button.dart # Haptic FAB
@@ -643,6 +674,7 @@ lib/
 │   │   ├── create_scenario_tile.dart # New scenario creation tile
 │   │   ├── custom_scenario_tile.dart # Custom scenario display
 │   │   ├── custom_scenarios_tab.dart # User scenarios tab
+│   │   ├── experimental_scenario_tile.dart # Experimental scenario display
 │   │   ├── preset_scenario_tile.dart # Preset scenario display
 │   │   ├── preset_scenarios_tab.dart # Educational scenarios tab
 │   │   ├── scenario_body_tile.dart # Body management in editor
@@ -674,7 +706,6 @@ lib/
 │   ├── physics_controls.dart   # Physics parameter controls
 │   ├── screenshot_countdown.dart # Screenshot countdown timer
 │   ├── screenshot_mode_widget.dart # Screenshot mode interface
-│   ├── section_title.dart      # Section header component
 │   ├── sliding_panel_bottom_sheet.dart # Sliding panel bottom controls
 │   ├── version_check_dialog.dart # Version update dialog
 │   └── visuals_controls.dart   # Visual settings controls
@@ -686,7 +717,8 @@ lib/
 │   ├── home_screen.dart        # Main simulation screen
 │   ├── physics_settings_screen.dart # Physics parameter settings
 │   ├── scenario_editor_screen.dart # Custom scenario creation/editing
-│   └── scenario_selection_screen.dart # Educational scenario picker
+│   ├── scenario_selection_screen.dart # Educational scenario picker
+│   └── simulation_info_screen.dart # Simulation information display
 └── theme/                       # Design system
     ├── app_colors.dart         # Color palette definitions
     ├── app_constraints.dart    # Layout constraints and dimensions
@@ -749,18 +781,20 @@ The project maintains extensive test coverage across all architectural layers:
 
 ```
 test/
-├── constants/          # Physics and app constants tests
+├── config/            # Configuration tests
+├── constants/         # Physics and app constants tests
 ├── core/              # Core functionality tests
-├── debug/             # Debug utilities tests  
-├── demos/             # Scenario demonstration tests
 ├── enums/             # Enumeration value tests
+├── experiments/       # Advanced physics experiments tests
 ├── features/          # Feature-specific test suites
 ├── integration/       # End-to-end integration tests
 ├── models/            # Data model validation tests
 ├── painters/          # Custom painter tests
 ├── scenarios/         # Physics scenario tests
+├── screens/           # Screen tests
 ├── services/          # Service layer tests (haptic, fullscreen, physics)
 ├── state/             # State management tests
+├── theme/             # Theme tests
 ├── utils/             # Utility function tests
 └── widgets/           # UI component tests (including haptic widgets)
 ```

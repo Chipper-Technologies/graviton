@@ -17,27 +17,27 @@ This document describes the organization of tests in the Graviton project. The t
 - ✅ **Accessibility**: Full coverage for semantic widgets, focus management, and screen reader support
 - ✅ **Scenario Editor**: Comprehensive testing of custom scenario creation, editing, and validation
 - ✅ **Features**: Comprehensive testing of advanced features like cinematic cameras, galaxy formation, and immersive modes
+- ✅ **Experiments**: Physics experiments for advanced celestial mechanics (binary pulsars, Trojan asteroids)
 
 ## Directory Structure
 
 ```
 test/
-├── ⚙️ config/             # Configuration management tests
-├── � constants/           # Constants and configuration tests
-├── �📱 core/              # Core application functionality
-├── � debug/               # Debug utilities and development tools
-├── � demos/               # Demo scripts and examples
-├── �️ enums/               # Enumeration tests
+├── ⚙️ config/              # Configuration management tests
+├── 📋 constants/           # Constants and configuration tests
+├── 📱 core/                # Core application functionality
+├── 🧪 experiments/         # Physics experiments and advanced mechanics
+├── 🏷️ enums/               # Enumeration tests
 ├── 🚀 features/            # Feature-specific tests
 ├── 🔧 integration/         # Integration tests
 ├── 📊 models/              # Data model tests
 ├── 🎨 painters/            # Rendering and painting tests
 ├── 🌌 scenarios/           # Simulation scenario tests
 ├── 📱 screens/             # Screen-level component tests
-├── � services/             # Service layer tests
-├── � state/                # State management tests
-├── � theme/                # Theming and visual styling tests
-├── � utils/                # Utility function tests
+├── 🔌 services/            # Service layer tests
+├── 🎯 state/               # State management tests
+├── 🎨 theme/               # Theming and visual styling tests
+├── 🛠 utils/               # Utility function tests
 └── 🎪 widgets/             # UI widget tests
 ```
 
@@ -55,51 +55,36 @@ Tests for application constants and configuration values:
 Tests for fundamental app functionality:
 - `initialization_test.dart` - App startup and initialization
 
-### 🐛 Debug (`test/debug/`)
-Tests for debugging utilities and development tools:
-- Debug helpers and development-only functionality (directory currently empty)
-
-### � Demos (`test/demos/`)
-Demonstration scripts and examples:
-- `demo_auto_zoom.dart` - Auto zoom feature demonstration
-- `demo_enhanced_zoom.dart` - Enhanced zoom feature demonstration
+### 🧪 Experiments (`test/experiments/`)
+Tests for advanced physics experiments and celestial mechanics:
+- `binary_pulsar_physics_test.dart` - Binary pulsar gravitational wave physics
+- `trojan_asteroids_physics_test.dart` - Trojan asteroid Lagrange point stability
 
 ### 🏷️ Enums (`test/enums/`)
 Tests for enumeration types and their behaviors:
 - `cinematic_camera_technique_test.dart` - Cinematic camera technique validation
 
-### 🎯 Features (`test/features/`)
-Feature-specific test suites organized by major application capabilities:
-
-#### Accessibility Features (`test/features/accessibility/`)
-- `focus_navigation_test.dart` - Keyboard and assistive technology navigation
-- `screen_reader_support_test.dart` - Screen reader compatibility and announcements
-- `semantic_accessibility_test.dart` - Semantic widget accessibility validation
-
-#### Haptic Features (`test/features/haptics/`)
-- `comprehensive_haptic_test.dart` - Complete haptic feedback system validation
-- `haptic_feedback_patterns_test.dart` - Haptic pattern consistency across platforms
-- `haptic_integration_test.dart` - Haptic system integration with UI components
-
-#### Physics Features (`test/features/physics/`)
-- `gravity_calculations_test.dart` - Gravitational force computation validation
-- `orbital_mechanics_test.dart` - Orbital trajectory and stability testing
-- `physics_integration_test.dart` - Physics engine integration and performance
-
-#### Scenario Management Features (`test/features/scenarios/`)
-- `custom_scenario_creation_test.dart` - Custom scenario editor workflow
-- `scenario_persistence_test.dart` - Scenario saving and loading functionality
-- `scenario_validation_test.dart` - Scenario configuration validation
-
-#### Simulation Features (`test/features/simulation/`)
-- `real_time_simulation_test.dart` - Live simulation performance and accuracy
-- `simulation_controls_test.dart` - Play/pause/reset functionality
-- `time_control_test.dart` - Time manipulation and speed controls
-
-#### User Interface Features (`test/features/ui/`)
-- `camera_interaction_test.dart` - Camera control and movement system
-- `responsive_design_test.dart` - Multi-platform layout adaptation
-- `theme_consistency_test.dart` - Visual theme and styling validation
+### 🚀 Features (`test/features/`)
+Feature-specific test suites for major application capabilities:
+- `auto_zoom_test.dart` - Automatic camera zoom functionality
+- `camera_haptic_feedback_test.dart` - Camera control haptic feedback
+- `cinematic_camera_integration_test.dart` - Cinematic camera system integration
+- `debug_simulation_test.dart` - Debug and development simulation features
+- `enhanced_3d_test.dart` - Enhanced 3D rendering features
+- `enhanced_zoom_test.dart` - Enhanced zoom capabilities
+- `galaxy_formation_stability_test.dart` - Galaxy formation physics stability
+- `galaxy_long_term_test.dart` - Long-term galaxy simulation stability
+- `galaxy_realistic_colors_test.dart` - Realistic stellar colors in galaxies
+- `galaxy_stellar_temperature_test.dart` - Stellar temperature calculations
+- `habitable_zone_test.dart` - Habitable zone visualization and calculations
+- `i18n_test.dart` - Internationalization and localization
+- `language_selection_test.dart` - Language selection functionality
+- `realistic_colors_test.dart` - Realistic color rendering system
+- `simulation_reset_test.dart` - Simulation reset functionality
+- `star_color_mode_test.dart` - Star color rendering modes
+- `star_merger_realistic_colors_test.dart` - Star merger color effects
+- `stellar_sunspot_physics_test.dart` - Stellar sunspot physics
+- `trail_debug_test.dart` - Trail rendering debug features
 
 These feature tests ensure:
 - Complete user workflows function correctly
@@ -136,9 +121,13 @@ Tests for theming and visual styling:
 End-to-end testing scenarios that validate complete user workflows:
 
 - `app_integration_test.dart` - Full application lifecycle testing
-- `comprehensive_scenario_test.dart` - Complete scenario testing workflow
-- `onboarding_flow_test.dart` - New user tutorial flow
-- `scenario_selection_integration_test.dart` - Complete scenario selection workflow
+- `body_editor_astronomical_units_test.dart` - Scenario editor astronomical unit handling
+- `description_field_integration_test.dart` - Scenario description field validation
+- `experimental_scenarios_integration_test.dart` - Experimental scenario functionality
+- `i18n_custom_scenarios_test.dart` - Custom scenario internationalization
+- `scenario_selection_behavior_test.dart` - Scenario selection interface behavior
+- `settings_persistence_test.dart` - Settings persistence across sessions
+- `solar_system_habitability_integration_test.dart` - Solar system habitability features
 
 These integration tests verify:
 - App startup and initialization across all configurations
@@ -227,8 +216,14 @@ Tests for utility functions and test infrastructure:
 - `physics_utils_test.dart` - Physics calculations
 - `random_utils_test.dart` - Random number generation
 - `star_generator_test.dart` - Background star generation
-- `test_helpers.dart` - **Integration test utilities and patterns**
 - `vector_utils_test.dart` - Vector mathematics
+
+### Test Infrastructure (`test/`)
+Core test utilities and mocks:
+- `test_helpers.dart` - **Integration test utilities and patterns**
+- `test_mocks.dart` - Centralized mock object definitions
+- `test_mocks.mocks.dart` - Generated mock implementations
+- `test_utils.dart` - Shared test helper functions and assertions
 
 ### 🎪 Widgets (`test/widgets/`)
 Tests for UI widgets and components organized by functionality:
@@ -312,7 +307,11 @@ Tests for UI widgets and components organized by functionality:
 - `semantic_simulation_controls_test.dart` - Simulation control accessibility
 
 #### Overlay Widgets (`test/widgets/overlays/`)
-- Additional overlay components for enhanced user interface functionality
+- `body_property_editor_overlay_test.dart` - Body property editing overlay
+- `camera_visual_aids_overlay_test.dart` - Camera visual aids overlay
+- `offscreen_indicators_overlay_test.dart` - Off-screen body indicators
+- `stats_overlay_test.dart` - Statistics display overlay
+- `tutorial_overlay_test.dart` - Tutorial and onboarding overlay
 
 ### 🏷️ Enums (`test/enums/`)
 Tests for enumeration types and constants:
@@ -417,8 +416,10 @@ Use the predefined VS Code tasks for convenient testing:
 - **Localization Testing**: All 7 supported languages
 
 ### Test Data and Mocks
-- `test_mocks.dart` - Centralized mock objects and test utilities
-- `test_utils.dart` - Shared test helper functions and assertions
+- `test_mocks.dart` - Centralized mock object definitions and annotations
+- `test_mocks.mocks.dart` - Auto-generated mock implementations (via mockito)
+- `test_utils.dart` - Shared test helper functions, assertions, and test data
+- `test_helpers.dart` - Integration test patterns and utilities (in utils/)
 - Mock scenarios and physics configurations for consistent testing
 - Accessibility testing utilities for semantic validation
 
