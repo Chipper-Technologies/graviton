@@ -38,7 +38,10 @@ class PresetScenariosTab extends StatelessWidget {
       children: [
         // Scenarios count header
         Padding(
-          padding: EdgeInsets.all(AppTypography.spacingMedium),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppTypography.spacingXXLarge,
+            vertical: AppTypography.spacingMedium,
+          ),
           child: Text(
             l10n.scenariosHeaderPlural(availableScenarios.length),
             style: AppTypography.titleText.copyWith(
