@@ -168,7 +168,7 @@ class CustomScenarioStorage {
   // =============================================================================
 
   /// Generate a test scenario name with the standard naming convention
-  /// Format: __test_scenario_<milliseconds_since_epoch>
+  /// Format: __test_scenario_&lt;milliseconds_since_epoch&gt;
   static String generateTestScenarioName() {
     return '$testScenarioPrefix${DateTime.now().millisecondsSinceEpoch}';
   }
