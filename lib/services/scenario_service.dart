@@ -988,9 +988,6 @@ class ScenarioService {
 
     // If no custom scenario is loaded, fall back to random generation
     if (!customManager.hasCustomScenario) {
-      debugPrint(
-        'No custom scenario loaded, falling back to random generation',
-      );
       return _generateRandomBodies(l10n);
     }
 
@@ -1030,7 +1027,6 @@ class ScenarioService {
           )
           .toList();
     } catch (e) {
-      debugPrint('Failed to generate custom scenario: $e');
       // Fall back to random generation on error
       return _generateRandomBodies(l10n);
     }

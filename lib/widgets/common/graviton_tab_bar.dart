@@ -32,74 +32,80 @@ class GravitonTabBar extends StatelessWidget {
           width: 1,
         ),
       ),
-      child: Stack(
-        children: [
-          SizedBox(
-            height: 50, // Ensure TabBar takes full height
-            child: TabBar(
-              controller: controller,
-              onTap: (index) {
-                // This onTap is only reached if the gesture isn't blocked
-                HapticUtils.navigate();
-              },
-              indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.primaryColor.withValues(
-                      alpha: AppTypography.opacityMedium,
-                    ),
-                    AppColors.primaryColor.withValues(
-                      alpha: AppTypography.opacityFaint,
-                    ),
-                  ],
-                ),
-              ),
-              indicatorSize: TabBarIndicatorSize.tab,
-              dividerColor: AppColors.transparentColor,
-              labelColor: AppColors.uiWhite,
-              unselectedLabelColor: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityMediumHigh,
-              ),
-              labelStyle: const TextStyle(
-                fontSize: AppTypography.fontSizeMedium,
-                fontWeight: FontWeight.w600,
-              ),
-              unselectedLabelStyle: const TextStyle(
-                fontSize: AppTypography.fontSizeMedium,
-                fontWeight: FontWeight.w500,
-              ),
-              tabs: tabs,
-            ),
-          ),
-          // Overlay gesture detectors for disabled tabs
-          if (disabledTabs != null) ...{
-            for (int i = 0; i < disabledTabs!.length; i++)
-              if (disabledTabs![i])
-                Positioned.fill(
-                  child: Row(
-                    children: List.generate(tabs.length, (index) {
-                      if (index != i) {
-                        return Expanded(
-                          child: Container(),
-                        ); // Empty space for enabled tabs
-                      }
-                      return Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            // Block the tap and provide error feedback
-                            HapticUtils.error();
-                          },
-                          child: Container(
-                            color: Colors.transparent, // Invisible overlay
-                          ),
-                        ),
-                      );
-                    }),
+      child: Material(
+        type: MaterialType.transparency,
+        child: Stack(
+          children: [
+            SizedBox(
+              height: 50, // Ensure TabBar takes full height
+              child: TabBar(
+                controller: controller,
+                onTap: (index) {
+                  // This onTap is only reached if the gesture isn't blocked
+                  HapticUtils.navigate();
+                },
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusMedium,
+                  ),
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.primaryColor.withValues(
+                        alpha: AppTypography.opacityMedium,
+                      ),
+                      AppColors.primaryColor.withValues(
+                        alpha: AppTypography.opacityFaint,
+                      ),
+                    ],
                   ),
                 ),
-          },
-        ],
+                indicatorSize: TabBarIndicatorSize.tab,
+                dividerColor: AppColors.transparentColor,
+                labelColor: AppColors.uiWhite,
+                unselectedLabelColor: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityMediumHigh,
+                ),
+                labelStyle: const TextStyle(
+                  fontSize: AppTypography.fontSizeMedium,
+                  fontWeight: FontWeight.w600,
+                ),
+                unselectedLabelStyle: const TextStyle(
+                  fontSize: AppTypography.fontSizeMedium,
+                  fontWeight: FontWeight.w500,
+                ),
+                tabs: tabs,
+              ),
+            ),
+            // Overlay gesture detectors for disabled tabs
+            if (disabledTabs != null) ...{
+              for (int i = 0; i < disabledTabs!.length; i++)
+                if (disabledTabs![i])
+                  Positioned.fill(
+                    child: Row(
+                      children: List.generate(tabs.length, (index) {
+                        if (index != i) {
+                          return Expanded(
+                            child: Container(),
+                          ); // Empty space for enabled tabs
+                        }
+                        return Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              // Block the tap and provide error feedback
+                              HapticUtils.error();
+                            },
+                            child: Container(
+                              color: Colors.transparent, // Invisible overlay
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+            },
+          ],
+        ),
       ),
     );
   }

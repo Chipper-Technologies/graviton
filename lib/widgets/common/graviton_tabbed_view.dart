@@ -37,15 +37,15 @@ class _GravitonTabbedViewState extends State<GravitonTabbedView>
       initialIndex: widget.initialIndex,
     );
 
-    if (widget.onTabChanged != null) {
-      _tabController.addListener(() {
-        if (_tabController.indexIsChanging) {
-          // Add haptic feedback for tab navigation
-          HapticUtils.navigate();
-          widget.onTabChanged!(_tabController.index);
-        }
-      });
-    }
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        // Add haptic feedback for tab navigation
+        HapticUtils.navigate();
+        widget.onTabChanged?.call(_tabController.index);
+        // Rebuild to update active state
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -59,11 +59,22 @@ class _GravitonTabbedViewState extends State<GravitonTabbedView>
     // Check if any tabs are disabled to determine if swiping should be disabled
     final hasDisabledTabs = widget.disabledTabs?.contains(true) ?? false;
 
+    // Rebuild tabs with current active state
+    final updatedTabs = List.generate(
+      widget.tabs.length,
+      (index) => GravitonTab(
+        icon: widget.tabs[index].icon,
+        label: widget.tabs[index].label,
+        isActive: _tabController.index == index,
+        isEnabled: widget.tabs[index].isEnabled,
+      ),
+    );
+
     return Column(
       children: [
         GravitonTabBar(
           controller: _tabController,
-          tabs: widget.tabs,
+          tabs: updatedTabs,
           disabledTabs: widget.disabledTabs,
         ),
         Expanded(

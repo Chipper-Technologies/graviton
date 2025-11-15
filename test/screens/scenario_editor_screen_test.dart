@@ -347,6 +347,81 @@ void main() {
       );
       expect(popupMenu, findsAtLeastNWidgets(1));
     });
+
+    testWidgets('Popup menu is visible in creation mode', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: false)),
+      );
+      await tester.pump();
+
+      // Find the popup menu button (three dots icon)
+      expect(find.byIcon(Icons.more_vert), findsOneWidget);
+      expect(find.byType(GravitonPopupMenu), findsOneWidget);
+    });
+
+    testWidgets('Creation mode shows only test scenario menu item', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: false)),
+      );
+      await tester.pump();
+
+      // Tap the popup menu button
+      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.pumpAndSettle();
+
+      // Verify only test scenario is shown
+      expect(find.text('Test Scenario'), findsOneWidget);
+      expect(find.text('Export Scenario'), findsNothing);
+
+      // Verify only the test scenario icon is present
+      expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+      expect(find.byIcon(Icons.file_download), findsNothing);
+    });
+
+    testWidgets('Edit mode shows both test and export menu items', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: true)),
+      );
+      await tester.pump();
+
+      // Tap the popup menu button
+      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.pumpAndSettle();
+
+      // Verify both menu items are shown
+      expect(find.text('Test Scenario'), findsOneWidget);
+      expect(find.text('Export Scenario'), findsOneWidget);
+
+      // Verify both icons are present
+      expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+      expect(find.byIcon(Icons.file_download), findsOneWidget);
+    });
+
+    testWidgets('Test scenario can be tapped in creation mode', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        makeTestableWidget(const ScenarioEditorScreen(isEditing: false)),
+      );
+      await tester.pump();
+
+      // Open the popup menu
+      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.pumpAndSettle();
+
+      // Tap test scenario item
+      await tester.tap(find.text('Test Scenario'));
+      await tester.pumpAndSettle();
+
+      // Menu should close after selection
+      expect(find.text('Test Scenario'), findsNothing);
+    });
   });
 
   group('Menu Integration with Screen State', () {

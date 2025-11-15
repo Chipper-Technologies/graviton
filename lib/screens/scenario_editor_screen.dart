@@ -215,19 +215,21 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
               ? l10n.editScenarioTitle
               : l10n.createScenarioTitle,
           actions: [
-            if (widget.isEditing) ...[
-              GravitonPopupMenu(
-                accessibilityLabel: l10n.moreActionsAccessibility,
-                accessibilityHint: l10n.scenarioEditorMenuHint,
-                analyticsElement: UIElement.scenarioEditor,
-                menuItems: [
-                  GravitonMenuItemConfig(
-                    value: 'test',
-                    labelKey: 'testScenarioButton',
-                    hintKey: 'testScenarioHint',
-                    icon: Icons.play_arrow,
-                    onTap: () => _testScenario(context, l10n),
-                  ),
+            GravitonPopupMenu(
+              accessibilityLabel: l10n.moreActionsAccessibility,
+              accessibilityHint: l10n.scenarioEditorMenuHint,
+              analyticsElement: UIElement.scenarioEditor,
+              menuItems: [
+                // Test Scenario - always available
+                GravitonMenuItemConfig(
+                  value: 'test',
+                  labelKey: 'testScenarioButton',
+                  hintKey: 'testScenarioHint',
+                  icon: Icons.play_arrow,
+                  onTap: () => _testScenario(context, l10n),
+                ),
+                // Export Scenario - only available when editing
+                if (widget.isEditing)
                   GravitonMenuItemConfig(
                     value: 'export',
                     labelKey: 'exportScenarioButton',
@@ -239,10 +241,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
                     ),
                     onTap: () => _exportScenario(context, l10n),
                   ),
-                ],
-              ),
-              const SizedBox(width: AppTypography.spacingMedium),
-            ],
+              ],
+            ),
+            const SizedBox(width: AppTypography.spacingMedium),
           ],
         ),
         body: SafeArea(
@@ -901,6 +902,10 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       BodyType.planet,
     );
 
+    // Get the global gravity fields setting to use as default for new bodies
+    final appState = Provider.of<AppState>(context, listen: false);
+    final shouldShowGravityWell = appState.ui.globalGravityFields;
+
     final newBody = Body(
       name: '', // Start with empty name so user sees placeholder text
       position: vm.Vector3(20.0 * _bodies.length, 0, 0), // Spread them out
@@ -911,6 +916,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       bodyType: BodyType.planet, // Start with planet as default
       stellarLuminosity: defaultProperties['luminosity']!, // 0.0 for planets
       temperature: 288.0,
+      showGravityWell: shouldShowGravityWell, // Use global setting as default
     );
 
     // Show bottom sheet for editing the new body
@@ -1074,6 +1080,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
     BuildContext context,
     AppLocalizations l10n,
   ) async {
+    // Cancel auto-save timer to prevent race condition with test scenario
+    _autoSaveTimer?.cancel();
+
     // Log analytics for scenario test
     FirebaseService.instance.logUIEventWithEnums(
       UIAction.scenarioTested,
@@ -1093,17 +1102,17 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       return;
     }
 
-    // Create scenario data synchronously
+    // Create scenario data synchronously first
     final scenario = _createCustomScenario();
     final testScenarioName =
         '__test_scenario_${DateTime.now().millisecondsSinceEpoch}';
     final testMetadata = ScenarioMetadata(
       name: testScenarioName,
-      description: scenario.metadata.description,
-      author: scenario.metadata.author,
+      description: 'Temporary test scenario - will be deleted automatically',
+      author: 'System',
       createdAt: scenario.metadata.createdAt,
       educationalFocus: scenario.metadata.educationalFocus,
-      tags: scenario.metadata.tags,
+      tags: [...scenario.metadata.tags, 'temporary', 'test'],
       difficulty: scenario.metadata.difficulty,
     );
 
@@ -1117,9 +1126,18 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       objectives: scenario.objectives,
     );
 
-    // Navigate immediately (synchronous)
-    if (mounted) {
-      Navigator.of(context).popUntil((route) => route.isFirst);
+    // Navigate immediately (synchronous) before any async operations
+    Navigator.of(context).popUntil((route) => route.isFirst);
+
+    // Save the scenario if it has unsaved changes or doesn't exist yet
+    // This ensures new scenarios get saved when user first tests them
+    if (_hasUnsavedChanges || !widget.isEditing) {
+      try {
+        await _autoSaveScenario();
+      } catch (e) {
+        debugPrint('Failed to save scenario before testing: $e');
+        // Continue with testing even if save fails
+      }
     }
 
     // Handle async operations after navigation
@@ -1134,14 +1152,13 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       debugPrint('Failed to test scenario: $e');
       // Use a callback to show error since we already navigated
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showErrorMessage(l10n.failedToSwitchScenarioError(e.toString()));
+        if (mounted) {
+          GravitonSnackBar.error(
+            context: context,
+            message: l10n.failedToSwitchScenarioError(e.toString()),
+          );
+        }
       });
-    }
-  }
-
-  void _showErrorMessage(String message) {
-    if (mounted) {
-      GravitonSnackBar.error(context: context, message: message);
     }
   }
 
@@ -1158,20 +1175,37 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       final appState = Provider.of<AppState>(currentContext, listen: false);
 
       try {
-        // Load the test scenario
+        // Load the test scenario into the custom manager
         final customManager = CustomScenarioManager.instance;
         await customManager.loadCustomScenario(testScenarioName);
 
-        // Switch to custom scenario type to load our test scenario
+        // Verify the scenario was loaded correctly
+        if (!customManager.hasCustomScenario) {
+          throw Exception('Test scenario failed to load into manager');
+        }
+
+        // Small delay to ensure everything is ready
+        await Future.delayed(const Duration(milliseconds: 100));
+
+        // Reset with custom scenario type
         appState.simulation.resetWithScenario(
           ScenarioType.custom,
           l10n: localizedL10n,
         );
 
-        // Clean up the temporary test scenario
-        await CustomScenarioStorage.deleteScenario(testScenarioName);
+        // Another small delay for the simulation to process
+        await Future.delayed(const Duration(milliseconds: 100));
 
-        // Show test message
+        // Verify that the bodies were loaded correctly
+        final bodyCount = appState.simulation.bodies.length;
+
+        if (bodyCount == 0) {
+          throw Exception(
+            'Test scenario loaded but no bodies found in simulation',
+          );
+        }
+
+        // Show test message first
         if (currentContext.mounted) {
           GravitonSnackBar.success(
             context: currentContext,
@@ -1179,8 +1213,21 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
             duration: const Duration(seconds: 3),
           );
         }
+
+        // Schedule cleanup after a longer delay to ensure everything has loaded
+        // and give the user time to see the simulation working
+        Timer(const Duration(seconds: 3), () async {
+          try {
+            // Clean up the temporary test scenario
+            final wasDeleted = await _cleanupTestScenario(testScenarioName);
+            if (wasDeleted) {
+              // Cleanup successful
+            }
+          } catch (e) {
+            // Don't show error to user for cleanup failures
+          }
+        });
       } catch (e) {
-        debugPrint('Failed to load test scenario: $e');
         if (currentContext.mounted) {
           GravitonSnackBar.error(
             context: currentContext,
@@ -1258,5 +1305,29 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
           ],
         ) ??
         false;
+  }
+
+  /// Clean up a test scenario with better error handling and verification
+  Future<bool> _cleanupTestScenario(String testScenarioName) async {
+    try {
+      // First check if the scenario still exists
+      final exists = await CustomScenarioStorage.scenarioExists(
+        testScenarioName,
+      );
+      if (!exists) {
+        return false; // Already cleaned up
+      }
+
+      // Delete the scenario
+      await CustomScenarioStorage.deleteScenario(testScenarioName);
+
+      // Verify deletion
+      final stillExists = await CustomScenarioStorage.scenarioExists(
+        testScenarioName,
+      );
+      return !stillExists;
+    } catch (e) {
+      return false;
+    }
   }
 }

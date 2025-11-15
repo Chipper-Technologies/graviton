@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/enums/scenario_type.dart';
@@ -18,6 +19,7 @@ import 'package:graviton/screens/scenario_editor_screen.dart';
 import 'package:graviton/services/custom_scenario_storage.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/scenario_serialization_service.dart';
+import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/color_utils.dart';
@@ -55,14 +57,62 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
   void initState() {
     super.initState();
     _loadCustomScenarios();
+    _cleanupOldTestScenarios(); // Clean up any leftover test scenarios
+  }
+
+  Future<void> _cleanupOldTestScenarios() async {
+    try {
+      final allScenarios = await CustomScenarioStorage.getAllScenarios();
+
+      // Find test scenarios that are older than 1 minute (stale)
+      final now = DateTime.now();
+      final staleTestScenarios = allScenarios.where((scenario) {
+        final isTestScenario = scenario.metadata.name.startsWith(
+          '__test_scenario_',
+        );
+        if (!isTestScenario) return false;
+
+        // Extract timestamp from name (format: __test_scenario_<milliseconds>)
+        final nameParts = scenario.metadata.name.split('_');
+        if (nameParts.length < 4) return true; // Invalid format, remove it
+
+        try {
+          final timestamp = int.parse(nameParts[3]);
+          final scenarioTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+          return now.difference(scenarioTime).inMinutes > 1;
+        } catch (e) {
+          return true; // Invalid timestamp, remove it
+        }
+      }).toList();
+
+      // Remove stale test scenarios
+      for (final scenario in staleTestScenarios) {
+        try {
+          await CustomScenarioStorage.deleteScenario(scenario.metadata.name);
+        } catch (e) {
+          // Silent cleanup - don't spam logs
+        }
+      }
+    } catch (e) {
+      // Silent cleanup failure
+    }
   }
 
   Future<void> _loadCustomScenarios() async {
     try {
-      final scenarios = await CustomScenarioStorage.getAllScenarios();
+      final allScenarios = await CustomScenarioStorage.getAllScenarios();
+
+      // Filter out temporary test scenarios to prevent them from showing in UI
+      final visibleScenarios = allScenarios
+          .where(
+            (scenario) =>
+                !scenario.metadata.name.startsWith('__test_scenario_'),
+          )
+          .toList();
+
       if (mounted) {
         setState(() {
-          _customScenarios = scenarios;
+          _customScenarios = visibleScenarios;
           _isLoading = false;
         });
       }
@@ -409,6 +459,10 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
     AppLocalizations l10n,
     ExperimentalScenarioConfig experiment,
   ) {
+    // Get the global gravity fields setting
+    final appState = Provider.of<AppState>(context, listen: false);
+    final shouldShowGravityWells = appState.ui.globalGravityFields;
+
     // Binary Pulsar: Two neutron stars spiraling inward due to gravitational waves
     // Based on the famous Hulse-Taylor binary pulsar PSR B1913+16
 
@@ -441,7 +495,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.neutronStar, // Now using proper neutron star type
         stellarLuminosity: 8.0, // High luminosity from magnetic field radiation
         temperature: 1000000.0, // Extremely hot neutron star surface
-        showGravityWell: true,
+        showGravityWell: shouldShowGravityWells,
         isPlanet: false,
         habitabilityStatus: HabitabilityStatus.tooHot,
       ),
@@ -461,7 +515,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.neutronStar, // Now using proper neutron star type
         stellarLuminosity: 6.0, // Lower luminosity companion
         temperature: 800000.0, // Hot but slightly cooler
-        showGravityWell: true,
+        showGravityWell: shouldShowGravityWells,
         isPlanet: false,
         habitabilityStatus: HabitabilityStatus.tooHot,
       ),
@@ -486,6 +540,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         color: ColorUtils.parseHexColor(bodyData.color),
         bodyType: bodyData.bodyType,
         stellarLuminosity: bodyData.stellarLuminosity,
+        showGravityWell: bodyData.showGravityWell,
       );
     }).toList();
 
@@ -525,6 +580,10 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
     AppLocalizations l10n,
     ExperimentalScenarioConfig experiment,
   ) {
+    // Get the global gravity fields setting
+    final appState = Provider.of<AppState>(context, listen: false);
+    final shouldShowGravityWells = appState.ui.globalGravityFields;
+
     // Trojan Asteroids: Jupiter with asteroids at L4 and L5 Lagrange points
     // Demonstrates stable orbital mechanics and three-body dynamics
 
@@ -559,7 +618,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.star,
         stellarLuminosity: 1.0,
         temperature: 5778.0, // Sun's surface temperature
-        showGravityWell: true,
+        showGravityWell: shouldShowGravityWells,
         isPlanet: false,
         habitabilityStatus: HabitabilityStatus.tooHot,
       ),
@@ -579,7 +638,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0,
         temperature: 165.0, // Jupiter's temperature
-        showGravityWell: true,
+        showGravityWell: shouldShowGravityWells,
         isPlanet: true,
         habitabilityStatus: HabitabilityStatus.gasGiant,
       ),
@@ -613,7 +672,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
           bodyType: BodyType.asteroid, // Correct asteroid body type
           stellarLuminosity: 0.0,
           temperature: 150.0,
-          showGravityWell: false,
+          showGravityWell: shouldShowGravityWells,
           isPlanet: false,
           habitabilityStatus: HabitabilityStatus.tooSmall,
         ),
@@ -648,7 +707,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
           bodyType: BodyType.asteroid, // Correct asteroid body type
           stellarLuminosity: 0.0,
           temperature: 150.0,
-          showGravityWell: false,
+          showGravityWell: shouldShowGravityWells,
           isPlanet: false,
           habitabilityStatus: HabitabilityStatus.tooSmall,
         ),
@@ -674,6 +733,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         color: ColorUtils.parseHexColor(bodyData.color),
         bodyType: bodyData.bodyType,
         stellarLuminosity: bodyData.stellarLuminosity,
+        showGravityWell: bodyData.showGravityWell,
       );
     }).toList();
 
@@ -861,6 +921,10 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
     AppLocalizations l10n,
     ExperimentalScenarioConfig experiment,
   ) {
+    // Get the global gravity fields setting
+    final appState = Provider.of<AppState>(context, listen: false);
+    final shouldShowGravityWells = appState.ui.globalGravityFields;
+
     // Double Star Eclipse: A binary star system where one star regularly eclipses the other
     // Educational focus on eclipsing binary systems and stellar photometry
 
@@ -894,7 +958,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.star,
         stellarLuminosity: 12.0, // High luminosity
         temperature: 15000.0, // Hot O-type star
-        showGravityWell: true,
+        showGravityWell: shouldShowGravityWells,
         isPlanet: false,
         habitabilityStatus: HabitabilityStatus.tooHot,
       ),
@@ -914,7 +978,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.star,
         stellarLuminosity: 6.0, // Lower luminosity
         temperature: 4500.0, // K-type star
-        showGravityWell: true,
+        showGravityWell: shouldShowGravityWells,
         isPlanet: false,
         habitabilityStatus: HabitabilityStatus.tooHot,
       ),
@@ -939,6 +1003,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         color: ColorUtils.parseHexColor(bodyData.color),
         bodyType: bodyData.bodyType,
         stellarLuminosity: bodyData.stellarLuminosity,
+        showGravityWell: bodyData.showGravityWell,
       );
     }).toList();
 
@@ -978,10 +1043,15 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
     AppLocalizations l10n,
     ExperimentalScenarioConfig experiment,
   ) {
+    // Get the global gravity fields setting
+    final appState = Provider.of<AppState>(context, listen: false);
+    final shouldShowGravityWells = appState.ui.globalGravityFields;
+
     // Rogue Planet: A planet ejected from its original system encounters a new solar system
     // Demonstrates gravitational slingshot effects and chaotic dynamics
 
     final bodies = <BodyData>[];
+    final random = math.Random();
 
     // Central star of the target solar system (much higher mass for stability)
     const starMass = 120.0; // Doubled mass for strong gravitational dominance
@@ -1000,18 +1070,19 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.star,
         stellarLuminosity: 10.0,
         temperature: 5800.0, // Sun-like temperature
-        showGravityWell: true,
+        showGravityWell: shouldShowGravityWells,
         isPlanet: false,
         habitabilityStatus: HabitabilityStatus.tooHot,
       ),
     );
 
-    // Inner rocky planet (Mercury-like) - start at 90 degrees
+    // Inner rocky planet (Mercury-like) - randomize starting position
     const innerPlanetOrbitRadius = 40.0; // Much more separation
     final innerPlanetOrbitalSpeed = math.sqrt(
       1.2 * starMass / innerPlanetOrbitRadius,
     );
-    const innerPlanetAngle = math.pi / 2; // 90 degrees
+    final innerPlanetAngle =
+        random.nextDouble() * 2 * math.pi; // Random angle 0-360 degrees
 
     bodies.add(
       BodyData(
@@ -1034,18 +1105,19 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0,
         temperature: 450.0, // Hot inner planet
-        showGravityWell: false,
+        showGravityWell: shouldShowGravityWells,
         isPlanet: true,
         habitabilityStatus: HabitabilityStatus.tooHot,
       ),
     );
 
-    // Habitable zone planet (Earth-like) - start at 180 degrees
+    // Habitable zone planet (Earth-like) - randomize starting position
     const habitablePlanetOrbitRadius = 80.0; // Much better spacing
     final habitablePlanetOrbitalSpeed = math.sqrt(
       1.2 * starMass / habitablePlanetOrbitRadius,
     );
-    const habitablePlanetAngle = math.pi; // 180 degrees
+    final habitablePlanetAngle =
+        random.nextDouble() * 2 * math.pi; // Random angle 0-360 degrees
 
     bodies.add(
       BodyData(
@@ -1068,18 +1140,19 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0,
         temperature: 288.0, // Earth-like temperature
-        showGravityWell: false,
+        showGravityWell: shouldShowGravityWells,
         isPlanet: true,
         habitabilityStatus: HabitabilityStatus.habitable,
       ),
     );
 
-    // Outer gas giant (Jupiter-like) - start at 270 degrees
+    // Outer gas giant (Jupiter-like) - randomize starting position
     const gasGiantOrbitRadius = 160.0; // Much more separation
     final gasGiantOrbitalSpeed = math.sqrt(
       1.2 * starMass / gasGiantOrbitRadius,
     );
-    const gasGiantAngle = 3 * math.pi / 2; // 270 degrees
+    final gasGiantAngle =
+        random.nextDouble() * 2 * math.pi; // Random angle 0-360 degrees
 
     bodies.add(
       BodyData(
@@ -1102,18 +1175,19 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0,
         temperature: 120.0, // Cold outer planet
-        showGravityWell: false, // Remove gravity well for stability
+        showGravityWell: shouldShowGravityWells,
         isPlanet: true,
         habitabilityStatus: HabitabilityStatus.gasGiant,
       ),
     );
 
-    // Ice giant in outer system - start at 45 degrees
+    // Ice giant in outer system - randomize starting position
     const iceGiantOrbitRadius = 240.0; // Much more separation
     final iceGiantOrbitalSpeed = math.sqrt(
       1.2 * starMass / iceGiantOrbitRadius,
     );
-    const iceGiantAngle = math.pi / 4; // 45 degrees
+    final iceGiantAngle =
+        random.nextDouble() * 2 * math.pi; // Random angle 0-360 degrees
 
     bodies.add(
       BodyData(
@@ -1136,31 +1210,55 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0,
         temperature: 60.0, // Very cold outer planet
-        showGravityWell: false,
+        showGravityWell: shouldShowGravityWells,
         isPlanet: true,
         habitabilityStatus: HabitabilityStatus.tooCold,
       ),
     );
 
-    // Rogue planet approaching at an angle for gravitational encounters
-    // RE-ENABLED with slower velocity for controlled interaction
+    // Rogue planet approaching at random angle and trajectory for gravitational encounters
+    // Randomize approach direction, distance, and 3D trajectory
     const roguePlanetMass = 18.0; // Massive rogue planet
-    const rogueApproachDistance = 350.0; // Start much further away
-    const rogueApproachSpeed = 2.2; // Slower approach speed (was 3.2)
+
+    // Randomize approach distance and angle
+    final rogueApproachDistance =
+        300.0 + (random.nextDouble() * 100.0); // 300-400 units
+    final rogueApproachAngle =
+        random.nextDouble() * 2 * math.pi; // Random approach direction
+    final rogueApproachSpeed =
+        1.8 + (random.nextDouble() * 0.8); // 1.8-2.6 speed variation
+
+    // Add 3D component - rogue planet can approach from above or below the system plane
+    final rogueZOffset =
+        (random.nextDouble() - 0.5) * 100.0; // ±50 units above/below plane
+    final rogueZVelocity =
+        (random.nextDouble() - 0.5) * 0.4; // Small vertical velocity component
+
+    // Calculate randomized approach vector
+    final rogueStartX = rogueApproachDistance * math.cos(rogueApproachAngle);
+    final rogueStartY = rogueApproachDistance * math.sin(rogueApproachAngle);
+
+    // Velocity vector aims roughly toward system center with some randomization
+    final targetAngle =
+        rogueApproachAngle +
+        math.pi +
+        (random.nextDouble() - 0.5) * 0.6; // ±17 degrees variation
+    final rogueVelX = rogueApproachSpeed * math.cos(targetAngle);
+    final rogueVelY = rogueApproachSpeed * math.sin(targetAngle);
 
     bodies.add(
       BodyData(
         name: l10n.bodyRoguePlanet,
         position: [
-          -rogueApproachDistance,
-          75.0,
-          0.0,
-        ], // Approaching at angle, much further out
+          rogueStartX,
+          rogueStartY,
+          rogueZOffset,
+        ], // Randomized 3D approach position
         velocity: [
-          rogueApproachSpeed,
-          -0.6,
-          0.0,
-        ], // Slower angled trajectory for controlled slingshot effect
+          rogueVelX,
+          rogueVelY,
+          rogueZVelocity,
+        ], // Randomized 3D trajectory toward system
         mass: roguePlanetMass,
         radius: 2.8,
         color: ColorUtils.colorToHexRGB(
@@ -1169,7 +1267,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0,
         temperature: 30.0, // Extremely cold from interstellar space
-        showGravityWell: true, // Show gravity well for interesting interactions
+        showGravityWell: shouldShowGravityWells,
         isPlanet: true,
         habitabilityStatus: HabitabilityStatus.tooCold,
       ),
@@ -1194,6 +1292,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         color: ColorUtils.parseHexColor(bodyData.color),
         bodyType: bodyData.bodyType,
         stellarLuminosity: bodyData.stellarLuminosity,
+        showGravityWell: bodyData.showGravityWell,
       );
     }).toList();
 

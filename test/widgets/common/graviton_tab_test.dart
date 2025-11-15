@@ -101,52 +101,53 @@ void main() {
     });
 
     group('Active Dot Indicator', () {
-      testWidgets(
-        'should show active dot when enabled and showActiveDot is true',
-        (tester) async {
-          await tester.pumpWidget(
-            createTestWidget(
-              child: const GravitonTab(
-                icon: Icons.notification_important,
-                label: 'Notifications',
-                showActiveDot: true,
-                isEnabled: true,
-              ),
-            ),
-          );
-
-          expect(
-            find.descendant(
-              of: find.byType(GravitonTab),
-              matching: find.byType(Stack),
-            ),
-            findsOneWidget,
-          );
-          expect(find.byType(Positioned), findsOneWidget);
-
-          final Container dotContainer = tester.widget<Container>(
-            find.descendant(
-              of: find.byType(Positioned),
-              matching: find.byType(Container),
-            ),
-          );
-          expect(dotContainer.constraints?.minWidth, 6);
-          expect(dotContainer.constraints?.minHeight, 6);
-
-          final BoxDecoration decoration =
-              dotContainer.decoration as BoxDecoration;
-          expect(decoration.color, AppColors.uiOrange);
-          expect(decoration.shape, BoxShape.circle);
-        },
-      );
-
-      testWidgets('should not show active dot when disabled', (tester) async {
+      testWidgets('should show active dot when tab is active and enabled', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           createTestWidget(
             child: const GravitonTab(
               icon: Icons.notification_important,
               label: 'Notifications',
-              showActiveDot: true,
+              isActive: true,
+              isEnabled: true,
+            ),
+          ),
+        );
+
+        expect(
+          find.descendant(
+            of: find.byType(GravitonTab),
+            matching: find.byType(Stack),
+          ),
+          findsOneWidget,
+        );
+        expect(find.byType(Positioned), findsOneWidget);
+
+        final Container dotContainer = tester.widget<Container>(
+          find.descendant(
+            of: find.byType(Positioned),
+            matching: find.byType(Container),
+          ),
+        );
+        expect(dotContainer.constraints?.minWidth, 6);
+        expect(dotContainer.constraints?.minHeight, 6);
+
+        final BoxDecoration decoration =
+            dotContainer.decoration as BoxDecoration;
+        expect(decoration.color, AppColors.uiOrange);
+        expect(decoration.shape, BoxShape.circle);
+      });
+
+      testWidgets('should not show active dot when tab is disabled', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          createTestWidget(
+            child: const GravitonTab(
+              icon: Icons.notification_important,
+              label: 'Notifications',
+              isActive: true,
               isEnabled: false,
             ),
           ),
@@ -155,7 +156,7 @@ void main() {
         expect(find.byType(Positioned), findsNothing);
       });
 
-      testWidgets('should not show active dot when showActiveDot is false', (
+      testWidgets('should not show active dot when tab is inactive', (
         tester,
       ) async {
         await tester.pumpWidget(
@@ -163,7 +164,7 @@ void main() {
             child: const GravitonTab(
               icon: Icons.notification_important,
               label: 'Notifications',
-              showActiveDot: false,
+              isActive: false,
               isEnabled: true,
             ),
           ),
@@ -211,14 +212,15 @@ void main() {
     });
 
     group('All Properties Combinations', () {
-      testWidgets('should handle all properties together', (tester) async {
+      testWidgets('should handle active tab with all properties', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           createTestWidget(
             child: const GravitonTab(
               icon: Icons.star,
               label: 'Featured',
               isActive: true,
-              showActiveDot: true,
               isEnabled: true,
             ),
           ),
@@ -248,7 +250,6 @@ void main() {
               icon: Icons.star,
               label: 'Featured',
               isActive: true,
-              showActiveDot: true,
               isEnabled: false,
             ),
           ),
@@ -280,14 +281,13 @@ void main() {
 
         final GravitonTab tab = tester.widget(find.byType(GravitonTab));
         expect(tab.isActive, false);
-        expect(tab.showActiveDot, false);
         expect(tab.isEnabled, true);
 
         // Verify default styling
         final Opacity opacity = tester.widget(find.byType(Opacity));
         expect(opacity.opacity, 1.0);
 
-        // No active dot by default
+        // No active dot by default (since isActive is false)
         expect(find.byType(Positioned), findsNothing);
       });
     });

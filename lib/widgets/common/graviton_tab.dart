@@ -7,7 +7,6 @@ class GravitonTab extends StatelessWidget {
   final IconData icon;
   final String label;
   final bool isActive;
-  final bool showActiveDot;
   final bool isEnabled;
 
   const GravitonTab({
@@ -15,7 +14,6 @@ class GravitonTab extends StatelessWidget {
     required this.icon,
     required this.label,
     this.isActive = false,
-    this.showActiveDot = false,
     this.isEnabled = true,
   });
 
@@ -39,8 +37,8 @@ class GravitonTab extends StatelessWidget {
                 size: AppTypography.iconSizeLarge,
                 color: effectiveColor,
               ),
-              // Active indicator dot
-              if (showActiveDot && isEnabled)
+              // Active indicator dot - always show on active tabs
+              if (isActive && isEnabled)
                 Positioned(
                   top: 0,
                   right: 0,

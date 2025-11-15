@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -9,6 +7,8 @@ import 'package:graviton/utils/haptic_utils.dart';
 import 'package:graviton/widgets/camera_controls.dart';
 import 'package:graviton/widgets/visuals_controls.dart';
 import 'package:graviton/widgets/physics_controls.dart';
+import 'package:graviton/widgets/common/graviton_tabbed_view.dart';
+import 'package:graviton/widgets/common/graviton_tab.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -28,7 +28,7 @@ class SlidingPanelBottomSheet extends StatefulWidget {
 
   // Public getter for sheet position - creates if needed
   static ValueNotifier<double> get sheetPosition {
-    _sheetPosition ??= ValueNotifier(0.25);
+    _sheetPosition ??= ValueNotifier(0.15); // Start at minimum height
     return _sheetPosition!;
   }
 
@@ -80,10 +80,9 @@ class SlidingPanelBottomSheet extends StatefulWidget {
       _SlidingPanelBottomSheetState();
 }
 
-class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
-    with TickerProviderStateMixin {
+class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
   late final PanelController _panelController;
-  late final TabController _tabController;
+  int _currentTabIndex = 0;
 
   // ScrollControllers for each tab to prevent memory leaks
   late final ScrollController _cameraScrollController;
@@ -100,7 +99,6 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
     super.initState();
 
     _panelController = PanelController();
-    _tabController = TabController(length: 3, vsync: this);
 
     // Initialize ScrollControllers to prevent memory leaks
     _cameraScrollController = ScrollController();
@@ -113,18 +111,8 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
     // Register this instance for position updates
     SlidingPanelBottomSheet._currentInstance = this;
 
-    // Initialize sheet position
-    SlidingPanelBottomSheet.sheetPosition.value = _mediumHeight;
-
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        // Add haptic feedback for tab navigation
-        HapticUtils.navigate();
-        setState(() {
-          // Force rebuild when tab changes to update active states
-        });
-      }
-    });
+    // Initialize sheet position to match the actual panel start position (minimum)
+    SlidingPanelBottomSheet.sheetPosition.value = _minHeight;
   }
 
   @override
@@ -143,7 +131,6 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
     _visualsScrollController.dispose();
     _physicsScrollController.dispose();
 
-    _tabController.dispose();
     super.dispose();
   }
 
@@ -226,21 +213,72 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
   ) {
     return Column(
       children: [
-        // Header with drag handle and tabs
-        _buildPanelHeader(context, appState, l10n),
+        // Drag handle
+        _buildDragHandle(context),
 
-        // Content area
-        Expanded(child: _buildTabContent(context, appState, l10n)),
+        // Tabbed content using GravitonTabbedView
+        Expanded(
+          child: GravitonTabbedView(
+            initialIndex: _currentTabIndex,
+            onTabChanged: (index) {
+              HapticUtils.navigate();
+              setState(() {
+                _currentTabIndex = index;
+              });
+            },
+            tabs: [
+              GravitonTab(
+                icon: Icons.videocam,
+                label: l10n.cameraLabel,
+                isActive: _currentTabIndex == 0,
+              ),
+              GravitonTab(
+                icon: Icons.palette,
+                label: l10n.bottomNavVisualsLabel,
+                isActive: _currentTabIndex == 1,
+              ),
+              GravitonTab(
+                icon: Icons.tune,
+                label: l10n.physicsSection,
+                isActive: _currentTabIndex == 2,
+              ),
+            ],
+            children: [
+              // Camera Controls Tab
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: CameraControls(
+                  appState: appState,
+                  scrollController: _cameraScrollController,
+                ),
+              ),
+
+              // Visuals Controls Tab
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: VisualsControls(
+                  appState: appState,
+                  scrollController: _visualsScrollController,
+                ),
+              ),
+
+              // Physics Controls Tab
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: PhysicsControls(
+                  appState: appState,
+                  scrollController: _physicsScrollController,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
 
-  /// Build the panel header with drag handle and tabs
-  Widget _buildPanelHeader(
-    BuildContext context,
-    AppState appState,
-    AppLocalizations l10n,
-  ) {
+  /// Build the drag handle
+  Widget _buildDragHandle(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.vertical(
@@ -264,330 +302,53 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet>
           ),
         ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Drag handle
-          _buildDragHandle(context),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          widget.onInteraction?.call();
 
-          // Tab bar
-          _buildTabBar(context, appState, l10n),
-        ],
-      ),
-    );
-  }
+          // Check current panel position and only animate to medium if currently at minimum
+          if (_panelController.isAttached) {
+            final currentPosition = _panelController.panelPosition;
 
-  /// Build the drag handle
-  Widget _buildDragHandle(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        widget.onInteraction?.call();
-
-        // Check current panel position and only animate to medium if currently at minimum
-        if (_panelController.isAttached) {
-          final currentPosition = _panelController.panelPosition;
-
-          // If panel is in position 1 (closed/minimum), slide to position 2 (medium)
-          // Position 0.0 = minimum, so anything close to 0.0 is position 1
-          if (currentPosition <= 0.1) {
-            // Small threshold for "closed" state
-            _panelController.animatePanelToPosition(
-              (_mediumHeight - _minHeight) / (_maxHeight - _minHeight),
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOutCubic,
-            );
+            // If panel is in position 1 (closed/minimum), slide to position 2 (medium)
+            // Position 0.0 = minimum, so anything close to 0.0 is position 1
+            if (currentPosition <= 0.1) {
+              // Small threshold for "closed" state
+              _panelController.animatePanelToPosition(
+                (_mediumHeight - _minHeight) / (_maxHeight - _minHeight),
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOutCubic,
+              );
+            }
+            // If already at medium or above, don't do anything (let normal drag behavior handle it)
           }
-          // If already at medium or above, don't do anything (let normal drag behavior handle it)
-        }
-      },
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-        child: Center(
-          child: Container(
-            width: 80,
-            height: 5,
-            decoration: BoxDecoration(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
-              borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.uiBlack.withValues(
-                    alpha: AppTypography.opacityMedium,
+        },
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          child: Center(
+            child: Container(
+              width: 80,
+              height: 5,
+              decoration: BoxDecoration(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityHigh,
+                ),
+                borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.uiBlack.withValues(
+                      alpha: AppTypography.opacityMedium,
+                    ),
+                    blurRadius: 2,
+                    offset: const Offset(0, 1),
                   ),
-                  blurRadius: 2,
-                  offset: const Offset(0, 1),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// Check if a tab is currently active based on state
-  bool _isTabActive(int tabIndex, AppState appState) {
-    // Simple implementation - could be expanded based on app state
-    return _tabController.index == tabIndex;
-  }
-
-  /// Check if tab swiping should be disabled based on app state
-  bool _shouldDisableTabSwiping(AppState appState) {
-    // Debug: Print current state for troubleshooting
-    // Remove this debug code after confirming it works
-    debugPrint(
-      'Tab swiping check: Screenshot mode enabled: ${ScreenshotModeService().isEnabled}, active: ${ScreenshotModeService().isActive}',
-    );
-    debugPrint(
-      'Simulation paused: ${appState.simulation.isPaused}, scenario: ${appState.simulation.currentScenario.name}',
-    );
-
-    // Disable tab swiping during screenshot mode to prevent accidental navigation
-    // when users are trying to capture specific content
-    final screenshotService = ScreenshotModeService();
-    if (screenshotService.isEnabled && screenshotService.isActive) {
-      debugPrint('Disabling tab swiping: Screenshot mode active');
-      return true;
-    }
-
-    // Disable tab swiping when simulation is paused and in certain scenarios
-    // where physics controls should be locked
-    if (appState.simulation.isPaused) {
-      // For educational scenarios like solar system, prevent accidental tab switching
-      // when users are focused on observing paused content
-      final currentScenario = appState.simulation.currentScenario;
-      if (currentScenario.name.contains('solar') ||
-          currentScenario.name.contains('earth')) {
-        debugPrint('Disabling tab swiping: Educational scenario paused');
-        return true;
-      }
-    }
-
-    // Alternative approach: Always disable swiping for specific scenarios regardless of pause state
-    final currentScenario = appState.simulation.currentScenario;
-    if (currentScenario == ScenarioType.solarSystem ||
-        currentScenario == ScenarioType.earthMoonSun) {
-      debugPrint(
-        'Disabling tab swiping: Educational scenario (${currentScenario.name})',
-      );
-      return true;
-    }
-
-    // Temporary: Disable swiping when Physics tab is active to test the fix
-    if (_tabController.index == 2) {
-      debugPrint('Disabling tab swiping: Physics tab active');
-      return true;
-    }
-
-    debugPrint('Allowing tab swiping');
-    return false;
-  }
-
-  /// Build the tab bar
-  Widget _buildTabBar(
-    BuildContext context,
-    AppState appState,
-    AppLocalizations l10n,
-  ) {
-    return Container(
-      height: 50,
-      margin: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityFaint),
-        borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-        border: Border.all(
-          color: AppColors.primaryColor.withValues(
-            alpha: AppTypography.opacityVeryFaint,
-          ),
-          width: 1,
-        ),
-      ),
-      child: TabBar(
-        controller: _tabController,
-        indicator: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-          gradient: LinearGradient(
-            colors: [
-              AppColors.primaryColor.withValues(
-                alpha: AppTypography.opacityMedium,
+                ],
               ),
-              AppColors.primaryColor.withValues(
-                alpha: AppTypography.opacityFaint,
-              ),
-            ],
+            ),
           ),
         ),
-        indicatorSize: TabBarIndicatorSize.tab,
-        dividerColor: AppColors.transparentColor,
-        labelColor: AppColors.uiWhite,
-        unselectedLabelColor: AppColors.uiWhite.withValues(
-          alpha: AppTypography.opacityMediumHigh,
-        ),
-        labelStyle: const TextStyle(
-          fontSize: AppTypography.fontSizeMedium,
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: const TextStyle(
-          fontSize: AppTypography.fontSizeMedium,
-          fontWeight: FontWeight.w500,
-        ),
-        tabs: [
-          Tab(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Stack(
-                  children: [
-                    Icon(
-                      Icons.videocam,
-                      size: AppTypography.iconSizeLarge,
-                      color: _isTabActive(0, appState)
-                          ? AppColors.primaryColor
-                          : null,
-                    ),
-                    // Active indicator dot
-                    if (_isTabActive(0, appState))
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Container(
-                          width: 6,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            color: AppColors.uiOrange,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                const SizedBox(width: AppTypography.spacingSmall),
-                Text(l10n.cameraLabel),
-              ],
-            ),
-          ),
-          Tab(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Stack(
-                  children: [
-                    Icon(
-                      Icons.palette,
-                      size: AppTypography.iconSizeLarge,
-                      color: _isTabActive(1, appState)
-                          ? AppColors.primaryColor
-                          : null,
-                    ),
-                    // Active indicator dot
-                    if (_isTabActive(1, appState))
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Container(
-                          width: 6,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            color: AppColors.uiOrange,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                const SizedBox(width: AppTypography.spacingSmall),
-                Text(l10n.bottomNavVisualsLabel),
-              ],
-            ),
-          ),
-          Tab(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Stack(
-                  children: [
-                    Icon(
-                      Icons.tune,
-                      size: AppTypography.iconSizeLarge,
-                      color: _isTabActive(2, appState)
-                          ? AppColors.primaryColor
-                          : null,
-                    ),
-                    // Active indicator dot
-                    if (_isTabActive(2, appState))
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Container(
-                          width: 6,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            color: AppColors.uiOrange,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                const SizedBox(width: AppTypography.spacingSmall),
-                Text(l10n.physicsSection),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Build the tab content
-  Widget _buildTabContent(
-    BuildContext context,
-    AppState appState,
-    AppLocalizations l10n,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.uiBlack.withValues(
-          alpha: AppTypography.opacityVeryHigh,
-        ),
-      ),
-      child: TabBarView(
-        controller: _tabController,
-        physics: _shouldDisableTabSwiping(appState)
-            ? const NeverScrollableScrollPhysics()
-            : null,
-        children: [
-          // Camera Controls Tab
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: CameraControls(
-              appState: appState,
-              scrollController: _cameraScrollController,
-            ),
-          ),
-
-          // Visuals Controls Tab
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: VisualsControls(
-              appState: appState,
-              scrollController: _visualsScrollController,
-            ),
-          ),
-
-          // Physics Controls Tab
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: PhysicsControls(
-              appState: appState,
-              scrollController: _physicsScrollController,
-            ),
-          ),
-        ],
       ),
     );
   }

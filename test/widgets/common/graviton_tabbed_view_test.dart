@@ -268,7 +268,12 @@ void main() {
           find.byType(GravitonTabBar),
         );
         expect(tabBar.controller, isNotNull);
-        expect(tabBar.tabs, tabs);
+        // Tabs are regenerated with isActive state, check count instead
+        expect(tabBar.tabs.length, tabs.length);
+        expect(tabBar.tabs[0].icon, tabs[0].icon);
+        expect(tabBar.tabs[0].label, tabs[0].label);
+        expect(tabBar.tabs[1].icon, tabs[1].icon);
+        expect(tabBar.tabs[1].label, tabs[1].label);
 
         final TabBarView tabBarView = tester.widget(find.byType(TabBarView));
         expect(tabBarView.controller, isNotNull);
