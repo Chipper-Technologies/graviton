@@ -1300,8 +1300,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bodySaturn => '土星';
 
   @override
-  String bodySelectedTemplate(String bodyNumber, Object bodyName) {
-    return '已选择 $bodyName';
+  String bodySelectedTemplate(String bodyNumber) {
+    return '已选择 $bodyNumber';
   }
 
   @override

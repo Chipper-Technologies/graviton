@@ -1310,8 +1310,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bodySaturn => '土星';
 
   @override
-  String bodySelectedTemplate(String bodyNumber, Object bodyName) {
-    return '$bodyNameが選択されました';
+  String bodySelectedTemplate(String bodyNumber) {
+    return '$bodyNumberが選択されました';
   }
 
   @override

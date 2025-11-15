@@ -662,7 +662,7 @@
   "bodyPositionComponentInvalid": "天体位置分量无效",
   "bodyPositionInvalid": "天体位置无效",
   "bodyRadiusInvalid": "天体半径无效",
-  "bodySelectedTemplate": "已选择 {bodyName}",
+  "bodySelectedTemplate": "已选择 {bodyNumber}",
   "bodyTypeInvalid": "天体类型无效",
   "bodyTypeSelector": "天体类型选择器",
   "bodyTypeTemplate": "天体类型：{type}",

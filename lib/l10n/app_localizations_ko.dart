@@ -1312,8 +1312,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get bodySaturn => '토성';
 
   @override
-  String bodySelectedTemplate(String bodyNumber, Object bodyName) {
-    return '$bodyName이(가) 선택됨';
+  String bodySelectedTemplate(String bodyNumber) {
+    return '$bodyNumber이(가) 선택됨';
   }
 
   @override

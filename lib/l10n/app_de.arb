@@ -635,7 +635,7 @@
   "bodyPositionComponentInvalid": "Körperpositions-Komponente ungültig",
   "bodyPositionInvalid": "Körperposition ungültig",
   "bodyRadiusInvalid": "Körperradius ungültig",
-  "bodySelectedTemplate": "{bodyName} ausgewählt",
+  "bodySelectedTemplate": "{bodyNumber} ausgewählt",
   "bodyTypeInvalid": "Körpertyp ungültig",
   "bodyTypeSelector": "Körpertyp-Auswahl",
   "bodyTypeTemplate": "Körpertyp: {type}",

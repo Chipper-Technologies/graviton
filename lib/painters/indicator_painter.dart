@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/celestial_body_name.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/indicator_data.dart';
@@ -117,20 +116,7 @@ class IndicatorPainter extends CustomPainter {
     );
 
     // Draw body name
-    _drawBodyName(canvas, position, _formatBodyName(body), isSelected);
-  }
-
-  /// Formats body name for display, showing "Planet+Moon" for moons
-  String _formatBodyName(Body body) {
-    if (body.bodyType == BodyType.moon) {
-      // For moons, try to show the parent planet name if available
-      // Note: In this context we don't have access to all bodies,
-      // so we just use the moon name. The parent logic would need
-      // to be handled at the widget level.
-      return body.name;
-    }
-
-    return body.name;
+    _drawBodyName(canvas, position, body.name, isSelected);
   }
 
   /// Draws the body name label below the indicator

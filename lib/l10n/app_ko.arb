@@ -662,7 +662,7 @@
   "bodyPositionComponentInvalid": "천체 위치 구성 요소가 무효",
   "bodyPositionInvalid": "천체 위치가 무효",
   "bodyRadiusInvalid": "천체 반지름이 무효",
-  "bodySelectedTemplate": "{bodyName}이(가) 선택됨",
+  "bodySelectedTemplate": "{bodyNumber}이(가) 선택됨",
   "bodyTypeInvalid": "천체 유형이 무효",
   "bodyTypeSelector": "천체 유형 선택기",
   "bodyTypeTemplate": "천체 유형: {type}",

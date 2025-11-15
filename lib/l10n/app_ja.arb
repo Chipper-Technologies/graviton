@@ -662,7 +662,7 @@
   "bodyPositionComponentInvalid": "天体位置コンポーネントが無効",
   "bodyPositionInvalid": "天体位置が無効",
   "bodyRadiusInvalid": "天体半径が無効",
-  "bodySelectedTemplate": "{bodyName}が選択されました",
+  "bodySelectedTemplate": "{bodyNumber}が選択されました",
   "bodyTypeInvalid": "天体タイプが無効",
   "bodyTypeSelector": "天体タイプセレクター",
   "bodyTypeTemplate": "天体タイプ: {type}",

@@ -1374,8 +1374,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bodySaturn => 'Saturno';
 
   @override
-  String bodySelectedTemplate(String bodyNumber, Object bodyName) {
-    return '$bodyName seleccionado';
+  String bodySelectedTemplate(String bodyNumber) {
+    return '$bodyNumber seleccionado';
   }
 
   @override

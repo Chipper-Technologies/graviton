@@ -726,7 +726,7 @@
   "bodyPositionComponentInvalid": "Composant de position du corps invalide",
   "bodyPositionInvalid": "Position du corps invalide",
   "bodyRadiusInvalid": "Rayon du corps invalide",
-  "bodySelectedTemplate": "{bodyName} sélectionné",
+  "bodySelectedTemplate": "{bodyNumber} sélectionné",
   "bodyTypeInvalid": "Type de corps invalide",
   "bodyTypeSelector": "Sélecteur de type de corps",
   "bodyTypeTemplate": "Type de corps: {type}",

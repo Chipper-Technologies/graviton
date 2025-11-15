@@ -9207,12 +9207,12 @@ class MockAppLocalizations extends _i1.Mock implements _i2.AppLocalizations {
           as String);
 
   @override
-  String bodySelectedTemplate(String? bodyNumber, Object? bodyName) =>
+  String bodySelectedTemplate(String? bodyNumber) =>
       (super.noSuchMethod(
-            Invocation.method(#bodySelectedTemplate, [bodyNumber, bodyName]),
+            Invocation.method(#bodySelectedTemplate, [bodyNumber]),
             returnValue: _i3.dummyValue<String>(
               this,
-              Invocation.method(#bodySelectedTemplate, [bodyNumber, bodyName]),
+              Invocation.method(#bodySelectedTemplate, [bodyNumber]),
             ),
           )
           as String);

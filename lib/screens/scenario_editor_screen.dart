@@ -677,17 +677,22 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [color.withValues(alpha: 0.1), color.withValues(alpha: 0.05)],
+          colors: [
+            color.withValues(alpha: AppTypography.opacityDisabled),
+            color.withValues(alpha: AppTypography.opacityBarely),
+          ],
         ),
         borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: color.withValues(alpha: AppTypography.opacityFaint),
+        ),
       ),
       child: Row(
         children: [
           Container(
             padding: EdgeInsets.all(AppTypography.spacingSmall),
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.2),
+              color: color.withValues(alpha: AppTypography.opacityVeryFaint),
               borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
             ),
             child: Icon(icon, color: color, size: AppTypography.iconSizeMedium),
@@ -700,7 +705,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
                 Text(
                   label,
                   style: AppTypography.smallText.copyWith(
-                    color: AppColors.uiWhite.withValues(alpha: 0.7),
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -1102,7 +1109,21 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       return;
     }
 
-    // Create scenario data synchronously first
+    // Save the scenario if it has unsaved changes or doesn't exist yet
+    // This ensures new scenarios get saved when user first tests them
+    if (_hasUnsavedChanges || !widget.isEditing) {
+      try {
+        await _autoSaveScenario();
+      } catch (e) {
+        debugPrint('Failed to save scenario before testing: $e');
+        // Continue with testing even if save fails
+      }
+    }
+
+    // Check if still mounted after async save
+    if (!mounted || !context.mounted) return;
+
+    // Create scenario data after save completes
     final scenario = _createCustomScenario();
     final testScenarioName = CustomScenarioStorage.generateTestScenarioName();
     final testMetadata = ScenarioMetadata(
@@ -1125,116 +1146,119 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       objectives: scenario.objectives,
     );
 
-    // Navigate immediately (synchronous) before any async operations
-    Navigator.of(context).popUntil((route) => route.isFirst);
-
-    // Save the scenario if it has unsaved changes or doesn't exist yet
-    // This ensures new scenarios get saved when user first tests them
-    if (_hasUnsavedChanges || !widget.isEditing) {
-      try {
-        await _autoSaveScenario();
-      } catch (e) {
-        debugPrint('Failed to save scenario before testing: $e');
-        // Continue with testing even if save fails
-      }
-    }
-
-    // Handle async operations after navigation
+    // Save test scenario before navigation
     try {
       await CustomScenarioStorage.saveScenario(testScenario);
-
-      // Schedule loading after frame to ensure navigation is complete
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _loadTestScenarioAsync(testScenarioName);
-      });
     } catch (e) {
-      debugPrint('Failed to test scenario: $e');
-      // Use a callback to show error since we already navigated
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          GravitonSnackBar.error(
-            context: context,
-            message: l10n.failedToSwitchScenarioError(e.toString()),
-          );
-        }
-      });
+      debugPrint('Failed to save test scenario: $e');
+      if (mounted && context.mounted) {
+        GravitonSnackBar.error(
+          context: context,
+          message: l10n.failedToSwitchScenarioError(e.toString()),
+        );
+      }
+      return;
     }
+
+    // Check if still mounted after async save
+    if (!mounted || !context.mounted) return;
+
+    // Navigate and schedule loading in post-frame callback
+    Navigator.of(context).popUntil((route) => route.isFirst);
+
+    // Use post-frame callback to ensure navigation completes before loading
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Double-check mounted state after navigation
+      if (mounted) {
+        _loadTestScenarioAsync(testScenarioName);
+      }
+    });
   }
 
   Future<void> _loadTestScenarioAsync(String testScenarioName) async {
-    // Use a post-frame callback to ensure navigation is complete
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // Re-check context and get fresh references after navigation
-      if (!mounted) return;
+    // Wait for next frame to ensure navigation is complete
+    await WidgetsBinding.instance.endOfFrame;
 
-      final currentContext = context;
-      if (!currentContext.mounted) return;
+    // Early exit if widget was disposed during frame delay
+    if (!mounted) return;
 
-      final localizedL10n = AppLocalizations.of(currentContext)!;
-      final appState = Provider.of<AppState>(currentContext, listen: false);
+    final currentContext = context;
+    if (!currentContext.mounted) return;
 
-      try {
-        // Load the test scenario into the custom manager
-        final customManager = CustomScenarioManager.instance;
-        await customManager.loadCustomScenario(testScenarioName);
+    final localizedL10n = AppLocalizations.of(currentContext)!;
+    final appState = Provider.of<AppState>(currentContext, listen: false);
 
-        // Verify the scenario was loaded correctly
-        if (!customManager.hasCustomScenario) {
-          throw Exception('Test scenario failed to load into manager');
-        }
+    try {
+      // Load the test scenario into the custom manager
+      final customManager = CustomScenarioManager.instance;
+      await customManager.loadCustomScenario(testScenarioName);
 
-        // Small delay to ensure everything is ready
-        await Future.delayed(const Duration(milliseconds: 100));
+      // Verify the scenario was loaded correctly
+      if (!customManager.hasCustomScenario) {
+        throw Exception('Test scenario failed to load into manager');
+      }
 
-        // Reset with custom scenario type
-        appState.simulation.resetWithScenario(
-          ScenarioType.custom,
-          l10n: localizedL10n,
+      // Small delay to ensure everything is ready
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      // Check mounted state after async gap
+      if (!mounted || !currentContext.mounted) return;
+
+      // Reset with custom scenario type
+      appState.simulation.resetWithScenario(
+        ScenarioType.custom,
+        l10n: localizedL10n,
+      );
+
+      // Another small delay for the simulation to process
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      // Check mounted state after async gap
+      if (!mounted || !currentContext.mounted) return;
+
+      // Verify that the bodies were loaded correctly
+      final bodyCount = appState.simulation.bodies.length;
+
+      if (bodyCount == 0) {
+        throw Exception(
+          'Test scenario loaded but no bodies found in simulation',
         );
+      }
 
-        // Another small delay for the simulation to process
-        await Future.delayed(const Duration(milliseconds: 100));
+      // Show test message first
+      if (currentContext.mounted) {
+        GravitonSnackBar.success(
+          context: currentContext,
+          message: localizedL10n.accessibilityNewScenarioLoaded,
+          duration: const Duration(seconds: 3),
+        );
+      }
 
-        // Verify that the bodies were loaded correctly
-        final bodyCount = appState.simulation.bodies.length;
+      // Schedule cleanup after a longer delay to ensure everything has loaded
+      // and give the user time to see the simulation working
+      // Use unawaited to prevent blocking, but cleanup will check mounted state
+      unawaited(
+        Future.delayed(const Duration(seconds: 3)).then((_) async {
+          // Check if still mounted before cleanup
+          if (!mounted) return;
 
-        if (bodyCount == 0) {
-          throw Exception(
-            'Test scenario loaded but no bodies found in simulation',
-          );
-        }
-
-        // Show test message first
-        if (currentContext.mounted) {
-          GravitonSnackBar.success(
-            context: currentContext,
-            message: localizedL10n.accessibilityNewScenarioLoaded,
-            duration: const Duration(seconds: 3),
-          );
-        }
-
-        // Schedule cleanup after a longer delay to ensure everything has loaded
-        // and give the user time to see the simulation working
-        Timer(const Duration(seconds: 3), () async {
           try {
             // Clean up the temporary test scenario
-            final wasDeleted = await _cleanupTestScenario(testScenarioName);
-            if (wasDeleted) {
-              // Cleanup successful
-            }
+            await _cleanupTestScenario(testScenarioName);
           } catch (e) {
             // Don't show error to user for cleanup failures
           }
-        });
-      } catch (e) {
-        if (currentContext.mounted) {
-          GravitonSnackBar.error(
-            context: currentContext,
-            message: localizedL10n.failedToSwitchScenarioError(e.toString()),
-          );
-        }
+        }),
+      );
+    } catch (e) {
+      // Check mounted state before showing error
+      if (mounted && currentContext.mounted) {
+        GravitonSnackBar.error(
+          context: currentContext,
+          message: localizedL10n.failedToSwitchScenarioError(e.toString()),
+        );
       }
-    });
+    }
   }
 
   Future<void> _exportScenario(
@@ -1292,7 +1316,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
             DialogAction(
               text: l10n.cancel,
               onPressed: () => Navigator.of(context).pop(false),
-              textColor: AppColors.uiWhite.withValues(alpha: 0.7),
+              textColor: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacityHigh,
+              ),
             ),
             DialogAction(
               text: l10n.discardButton,

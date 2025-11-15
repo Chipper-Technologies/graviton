@@ -1388,17 +1388,22 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [color.withValues(alpha: 0.1), color.withValues(alpha: 0.05)],
+          colors: [
+            color.withValues(alpha: AppTypography.opacityDisabled),
+            color.withValues(alpha: AppTypography.opacityBarely),
+          ],
         ),
         borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: color.withValues(alpha: AppTypography.opacityFaint),
+        ),
       ),
       child: Row(
         children: [
           Container(
             padding: EdgeInsets.all(AppTypography.spacingSmall),
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.2),
+              color: color.withValues(alpha: AppTypography.opacityVeryFaint),
               borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
             ),
             child: Icon(icon, color: color, size: AppTypography.iconSizeMedium),
@@ -1411,7 +1416,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                 Text(
                   label,
                   style: AppTypography.smallText.copyWith(
-                    color: AppColors.uiWhite.withValues(alpha: 0.7),
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -1836,8 +1843,12 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          AppColors.primaryColor.withValues(alpha: 0.1),
-                          AppColors.primaryColor.withValues(alpha: 0.05),
+                          AppColors.primaryColor.withValues(
+                            alpha: AppTypography.opacityDisabled,
+                          ),
+                          AppColors.primaryColor.withValues(
+                            alpha: AppTypography.opacityBarely,
+                          ),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -1846,7 +1857,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                         AppTypography.radiusLarge,
                       ),
                       border: Border.all(
-                        color: AppColors.primaryColor.withValues(alpha: 0.4),
+                        color: AppColors.primaryColor.withValues(
+                          alpha: AppTypography.opacitySemiTransparent,
+                        ),
                         width: AppTypography.borderMedium,
                       ),
                     ),
@@ -1896,15 +1909,19 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                       gradient: LinearGradient(
                         colors: _isCurrentOrbitStable()
                             ? [
-                                AppColors.primaryColor.withValues(alpha: 0.1),
-                                AppColors.primaryColor.withValues(alpha: 0.05),
+                                AppColors.primaryColor.withValues(
+                                  alpha: AppTypography.opacityDisabled,
+                                ),
+                                AppColors.primaryColor.withValues(
+                                  alpha: AppTypography.opacityBarely,
+                                ),
                               ]
                             : [
                                 AppColors.celestialOrange.withValues(
-                                  alpha: 0.2,
+                                  alpha: AppTypography.opacityVeryFaint,
                                 ),
                                 AppColors.celestialOrange.withValues(
-                                  alpha: 0.1,
+                                  alpha: AppTypography.opacityDisabled,
                                 ),
                               ],
                         begin: Alignment.topLeft,
@@ -1915,8 +1932,12 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                       ),
                       border: Border.all(
                         color: _isCurrentOrbitStable()
-                            ? AppColors.primaryColor.withValues(alpha: 0.4)
-                            : AppColors.celestialOrange.withValues(alpha: 0.6),
+                            ? AppColors.primaryColor.withValues(
+                                alpha: AppTypography.opacitySemiTransparent,
+                              )
+                            : AppColors.celestialOrange.withValues(
+                                alpha: AppTypography.opacityMediumHigh,
+                              ),
                         width: AppTypography.borderMedium,
                       ),
                     ),
@@ -1984,13 +2005,17 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                     width: double.infinity,
                     padding: EdgeInsets.all(AppTypography.spacingMedium),
                     decoration: BoxDecoration(
-                      color: AppColors.backgroundBlack.withValues(alpha: 0.7),
+                      color: AppColors.backgroundBlack.withValues(
+                        alpha: AppTypography.opacityHigh,
+                      ),
                       borderRadius: BorderRadius.circular(
                         AppTypography.radiusMedium,
                       ),
                       border: Border.all(
-                        color: AppColors.primaryColor.withValues(alpha: 0.3),
-                        width: 1.0,
+                        color: AppColors.primaryColor.withValues(
+                          alpha: AppTypography.opacityFaint,
+                        ),
+                        width: AppTypography.borderThin,
                       ),
                     ),
                     child: Text(
@@ -2079,7 +2104,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                       Text(
                         NumberUtils.formatMassInSolarMasses(body.mass),
                         style: AppTypography.smallText.copyWith(
-                          color: AppColors.uiWhite.withValues(alpha: 0.7),
+                          color: AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacityHigh,
+                          ),
                         ),
                       ),
                     ],

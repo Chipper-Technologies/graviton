@@ -27,7 +27,8 @@ class AccessibilityService {
     if (_hasValidBinding()) {
       try {
         // Use SemanticsService to announce the message
-        SemanticsService.announce(message, TextDirection.ltr);
+        final view = WidgetsBinding.instance.platformDispatcher.views.first;
+        SemanticsService.sendAnnouncement(view, message, TextDirection.ltr);
       } catch (e) {
         // Gracefully handle any cases where accessibility services are unavailable
         if (kDebugMode) {

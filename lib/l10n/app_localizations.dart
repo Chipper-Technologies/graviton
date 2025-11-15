@@ -2416,7 +2416,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Body {bodyNumber}'**
-  String bodySelectedTemplate(String bodyNumber, Object bodyName);
+  String bodySelectedTemplate(String bodyNumber);
 
   /// Name for first star in binary systems
   ///

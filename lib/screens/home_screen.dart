@@ -1359,7 +1359,6 @@ class _HomeScreenState extends State<HomeScreen>
                       followMode: appState.camera.followMode,
                       followingBodyName: appState.camera.selectedBody != null
                           ? AppLocalizations.of(context)?.bodySelectedTemplate(
-                              '${appState.camera.selectedBody}',
                               appState.camera.selectedBody.toString(),
                             )
                           : null,

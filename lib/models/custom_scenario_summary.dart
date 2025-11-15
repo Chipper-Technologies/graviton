@@ -29,8 +29,9 @@ class CustomScenarioSummary {
   }
 
   /// Create a formatted difficulty display with capitalization
-  String get difficultyDisplay =>
-      difficulty.substring(0, 1).toUpperCase() + difficulty.substring(1);
+  String get difficultyDisplay => difficulty.isEmpty
+      ? ''
+      : difficulty.substring(0, 1).toUpperCase() + difficulty.substring(1);
 
   /// Get a color for the difficulty level
   Color get difficultyColor {
