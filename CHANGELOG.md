@@ -5,6 +5,65 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-11-16
+
+### Added
+- **Comprehensive Scene Editor**: Revolutionary scenario creation system allowing users to design custom gravitational simulations from scratch
+  - **Complete Scenario Creation Workflow**: Intuitive multi-tab interface for building custom astronomical scenarios with metadata, physics settings, and celestial body configuration
+  - **Advanced Body Property Editor**: Sophisticated celestial body editing system with real-time physics validation and astronomical unit support
+  - **Orbital Mechanics Calculator**: Physics-accurate orbital placement tools for creating stable planetary systems with proper circular and elliptical orbits
+  - **Physics Configuration System**: Per-scenario physics parameter customization with preset configurations for educational vs. experimental scenarios
+  - **Custom Scenario Storage**: Persistent local storage system for saving, loading, and managing user-created scenarios with JSON serialization
+  - **Auto-Save Functionality**: Intelligent auto-save mechanism preventing data loss with 2-second delay timers during scenario editing
+  - **Scenario Export/Import**: Complete scenario sharing capabilities with structured JSON format for educational content distribution
+- **Enhanced Android Back Button Handling**: Intuitive navigation behavior for Android devices
+  - **Smart Bottom Sheet Management**: Back button first closes expanded bottom sheet before app exit
+  - **Exit Confirmation Dialog**: User-friendly confirmation dialog with proper localization before app termination
+  - **Static Panel Control Methods**: New programmatic access methods for bottom sheet state management
+
+### Improved
+- **Orbital Mechanics Integration**: Advanced orbital calculation services providing physics-accurate body placement
+  - **Circular Orbit Calculator**: Mathematical precision for stable planetary orbit generation with inclination and phase control
+  - **Gravitational Parameter Validation**: Real-time validation ensuring orbital stability and preventing physics violations
+  - **Astronomical Unit Support**: Proper scaling between simulation units and real astronomical distances for educational accuracy
+- **Custom Scenario Management**: Complete lifecycle management for user-created scenarios
+  - **Scenario Summary System**: Efficient metadata display with body count, difficulty, and educational focus categorization
+  - **Duplicate and Delete Operations**: Full CRUD operations for custom scenario management with confirmation dialogs
+  - **Integration with Simulation Engine**: Seamless loading of custom scenarios into the main simulation system
+
+### Fixed
+- **Statistics Overlay Positioning**: Resolved ParentDataWidget assertion error when toggling statistics display
+  - **Widget Hierarchy Optimization**: Removed problematic Positioned widget wrapper causing console errors
+  - **Improved Rendering Stability**: Enhanced widget tree structure for more reliable statistics overlay rendering
+
+### Technical Improvements
+- **Modular Architecture Enhancement**: Sophisticated separation of concerns with dedicated services for scenario management
+  - **OrbitalMechanicsService**: Centralized orbital calculations with physics validation and error handling
+  - **CustomScenarioManager**: Singleton pattern for managing custom scenario state and simulation integration
+  - **CustomScenarioStorage**: Persistent storage layer with JSON serialization and async operations
+  - **ScenarioSerializationService**: Robust data conversion between custom scenarios and simulation bodies
+- **Advanced UI Components**: Reusable widget architecture for complex scenario editing interfaces
+  - **ScenarioEditorScreen**: 1,200+ line comprehensive editing interface with tabbed organization
+  - **BodyPropertyEditorOverlay**: Sophisticated celestial body editing with real-time validation
+  - **ScenarioEditorPhysicsPanel**: Physics parameter configuration with preset and custom options
+  - **CustomScenariosTab**: Management interface for saved scenarios with filtering and sorting
+- **Physics State Management**: Per-scenario physics configuration with persistent storage
+  - **PhysicsState Provider**: Scenario-specific physics settings with SharedPreferences persistence
+  - **Realistic vs Experimental Presets**: Educational scenario optimization with appropriate physics constants
+  - **Custom Physics Validation**: Real-time parameter validation preventing simulation instability
+- **Comprehensive Test Coverage**: Added dedicated test suites for scenario editor functionality
+  - **Orbital Mechanics Testing**: Physics calculation validation with astronomical accuracy verification
+  - **Custom Scenario Testing**: Complete CRUD operation testing with data persistence validation
+  - **UI Component Testing**: Widget testing for all scenario editor interfaces with accessibility verification
+  - **Integration Testing**: End-to-end testing of scenario creation workflow and simulation loading
+- **Internationalization Enhancement**: Complete localization support for scenario editor features
+  - **Editor-Specific Translations**: 50+ new localization keys for scenario creation interface
+  - **Physics Parameter Labels**: Multilingual support for technical physics terminology
+  - **Educational Focus Categories**: Localized descriptions for astronomical educational content
+- **Architecture Enhancements**: Improved separation of concerns and widget communication patterns
+  - **Static Singleton Pattern**: Enhanced SlidingPanelBottomSheet with external state access capabilities
+  - **PopScope Integration**: Modern Flutter navigation handling with proper back button interception
+
 ## [1.3.1] - 2025-11-07
 
 ### Added

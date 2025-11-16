@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/semantic_focus_service.dart';
+import 'package:graviton/utils/number_utils.dart';
 
 /// Semantic wrapper for simulation control buttons with proper focus management
 class SemanticSimulationControls extends StatelessWidget {
@@ -27,7 +28,9 @@ class SemanticSimulationControls extends StatelessWidget {
     if (l10n == null) return child;
 
     final playState = isPlaying ? l10n.statusRunning : l10n.statusPaused;
-    final speedText = l10n.speedFormatted(timeScale.toStringAsFixed(1));
+    final speedText = l10n.speedFormatted(
+      NumberUtils.formatDecimal(timeScale, 1),
+    );
     final playButtonText = isPlaying ? l10n.pauseButton : l10n.playButton;
 
     return SemanticFocusService.instance.createSemanticFocusWrapper(

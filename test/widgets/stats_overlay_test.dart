@@ -5,13 +5,23 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/widgets/overlays/stats_overlay.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../test_utils.dart';
 
 void main() {
   group('StatsOverlay', () {
     late AppState appState;
 
-    setUp(() {
+    setUp(() async {
+      // Set up mock SharedPreferences for all tests
+      SharedPreferences.setMockInitialValues({});
+
       appState = AppState();
+
+      // Initialize localization and app state properly
+      final mockL10n = TestUtils.createMockAppLocalizations();
+      appState.initializeLanguageTracking(mockL10n);
+      await appState.initializeAsync();
     });
 
     Widget createTestWidget({required Widget child}) {
@@ -39,7 +49,7 @@ void main() {
         );
 
         expect(find.byType(StatsOverlay), findsOneWidget);
-        expect(find.byType(Positioned), findsOneWidget);
+        // Note: Positioned widget was removed to fix ParentDataWidget error
         expect(find.byType(Opacity), findsOneWidget);
         expect(find.byType(Container), findsOneWidget);
         expect(find.byType(Column), findsOneWidget);
@@ -87,7 +97,11 @@ void main() {
       });
 
       testWidgets('Should handle zero opacity', (tester) async {
+        // Set UI opacity and wait for it to complete (it's async due to SharedPreferences)
         appState.ui.setUIOpacity(0.0); // Minimum allowed by clamp
+
+        // Wait a short time for any async operations to complete
+        await tester.pumpAndSettle();
 
         await tester.pumpWidget(
           createTestWidget(child: StatsOverlay(appState: appState)),
@@ -110,17 +124,21 @@ void main() {
     });
 
     group('Positioning', () {
-      testWidgets('Should be positioned in top-left corner', (tester) async {
-        await tester.pumpWidget(
-          createTestWidget(child: StatsOverlay(appState: appState)),
-        );
+      testWidgets(
+        'Should render without Positioned widget (fix for ParentDataWidget error)',
+        (tester) async {
+          await tester.pumpWidget(
+            createTestWidget(child: StatsOverlay(appState: appState)),
+          );
 
-        final positioned = tester.widget<Positioned>(find.byType(Positioned));
-        expect(positioned.top, equals(16));
-        expect(positioned.left, equals(16));
-        expect(positioned.right, isNull);
-        expect(positioned.bottom, isNull);
-      });
+          // Verify Positioned was removed to fix ParentDataWidget error
+          expect(find.byType(Positioned), findsNothing);
+
+          // Should still have the main structure
+          expect(find.byType(Opacity), findsOneWidget);
+          expect(find.byType(Container), findsOneWidget);
+        },
+      );
     });
 
     group('Styling', () {

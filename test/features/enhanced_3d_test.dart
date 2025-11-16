@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/services/simulation.dart';
+import '../test_utils.dart';
 import 'dart:math' as math;
 
 void main() {
@@ -8,6 +9,10 @@ void main() {
 
     setUp(() {
       simulation = Simulation();
+      // Initialize localization for all simulation operations
+      simulation.updateScenarioLocalization(
+        TestUtils.createMockAppLocalizations(),
+      );
     });
 
     test('Bodies should be distributed in full 3D space', () {
@@ -102,7 +107,7 @@ void main() {
         final averageStarMass =
             stars.map((s) => s.mass).reduce((a, b) => a + b) / stars.length;
 
-        // Planet should be at least 8% of average star mass (was ~5% before)
+        // Planet should be at least 8% of average star mass
         final massRatio = planet.mass / averageStarMass;
         expect(
           massRatio,

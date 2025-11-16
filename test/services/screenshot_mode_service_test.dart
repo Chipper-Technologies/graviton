@@ -6,14 +6,19 @@ import 'package:graviton/state/camera_state.dart';
 import 'package:graviton/state/simulation_state.dart';
 import 'package:graviton/state/ui_state.dart';
 
+import '../test_utils.dart';
+
 void main() {
   group('ScreenshotModeService Tests', () {
     late ScreenshotModeService service;
     late SimulationState simulationState;
     late CameraState cameraState;
     late UIState uiState;
+    late dynamic mockL10n;
 
     setUp(() {
+      mockL10n = TestUtils.createMockAppLocalizations();
+
       // Initialize FlavorConfig for testing
       FlavorConfig.instance.initialize(
         flavor: AppFlavor.dev,
@@ -84,6 +89,7 @@ void main() {
         simulationState: simulationState,
         cameraState: cameraState,
         uiState: uiState,
+        l10n: mockL10n,
       );
 
       expect(service.isEnabled, isTrue);
@@ -145,6 +151,7 @@ void main() {
         simulationState: simulationState,
         cameraState: cameraState,
         uiState: uiState,
+        l10n: mockL10n,
       );
 
       expect(service.isActive, isTrue);
@@ -159,6 +166,7 @@ void main() {
         simulationState: simulationState,
         cameraState: cameraState,
         uiState: uiState,
+        l10n: mockL10n,
       );
 
       expect(service.isActive, isFalse);
@@ -194,6 +202,7 @@ void main() {
         simulationState: simulationState,
         cameraState: cameraState,
         uiState: uiState,
+        l10n: mockL10n,
       );
 
       expect(service.isActive, isTrue);
@@ -231,6 +240,7 @@ void main() {
         simulationState: simulationState,
         cameraState: cameraState,
         uiState: uiState,
+        l10n: mockL10n,
       );
       expect(
         notificationCount,
@@ -257,6 +267,7 @@ void main() {
         simulationState: simulationState,
         cameraState: cameraState,
         uiState: uiState,
+        l10n: mockL10n,
       );
 
       // Add a small delay to ensure camera updates complete
@@ -326,6 +337,7 @@ void main() {
           simulationState: simulationState,
           cameraState: cameraState,
           uiState: uiState,
+          l10n: mockL10n,
         ),
         completes,
       );
@@ -369,6 +381,7 @@ void main() {
             simulationState: simulationState,
             cameraState: cameraState,
             uiState: uiState,
+            l10n: mockL10n,
           ),
           completes,
         );
@@ -385,6 +398,7 @@ void main() {
           simulationState: simulationState,
           cameraState: cameraState,
           uiState: uiState,
+          l10n: mockL10n,
         );
 
         // Deactivate should not throw errors even if fullscreen operations fail in tests

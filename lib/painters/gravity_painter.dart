@@ -535,11 +535,9 @@ class GravityPainter {
                 SimulationConstants.gravityWellDiameterExpansion)
             .clamp(
               body.radius *
-                  SimulationConstants
-                      .gravityWellMinimumRadiusMultiplier, // Expanded minimum: 2.8x physical radius (was 2.0x)
+                  SimulationConstants.gravityWellMinimumRadiusMultiplier,
               body.radius *
-                  SimulationConstants
-                      .gravityWellMaximumRadiusMultiplier, // Expanded maximum to allow for larger visual impact (was 20.0x)
+                  SimulationConstants.gravityWellMaximumRadiusMultiplier,
             );
 
     // Depth calculation that balances physics accuracy with visual proportionality

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
+import 'package:graviton/services/firebase_service.dart';
 
 /// Service for managing fullscreen mode functionality
 ///
@@ -26,7 +29,7 @@ class FullscreenService extends ChangeNotifier {
   /// Enter fullscreen mode
   ///
   /// Hides all UI elements and system overlays for immersive experience
-  Future<void> enterFullscreen() async {
+  Future<void> enterFullscreen([String? trigger]) async {
     if (_isFullscreen || _isTransitioning) return;
 
     _isTransitioning = true;
@@ -40,8 +43,30 @@ class FullscreenService extends ChangeNotifier {
       );
 
       _isFullscreen = true;
+
+      // Log fullscreen entry analytics
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.fullscreenEntered,
+        element: UIElement.fullscreenControls,
+        additionalParams: {
+          'trigger': trigger ?? 'unknown',
+          'system_ui_mode': 'immersive',
+          'overlays_hidden': 'true',
+        },
+      );
     } catch (e) {
       debugPrint('Error entering fullscreen: $e');
+
+      // Log fullscreen entry error
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.navigationError,
+        element: UIElement.fullscreenControls,
+        value: 'enter_fullscreen_failed',
+        additionalParams: {
+          'error': e.toString(),
+          'trigger': trigger ?? 'unknown',
+        },
+      );
     } finally {
       _isTransitioning = false;
       notifyListeners();
@@ -51,7 +76,7 @@ class FullscreenService extends ChangeNotifier {
   /// Exit fullscreen mode
   ///
   /// Restores all UI elements and system overlays
-  Future<void> exitFullscreen() async {
+  Future<void> exitFullscreen([String? trigger]) async {
     if (!_isFullscreen || _isTransitioning) return;
 
     _isTransitioning = true;
@@ -65,8 +90,30 @@ class FullscreenService extends ChangeNotifier {
       );
 
       _isFullscreen = false;
+
+      // Log fullscreen exit analytics
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.fullscreenExited,
+        element: UIElement.fullscreenControls,
+        additionalParams: {
+          'trigger': trigger ?? 'unknown',
+          'system_ui_mode': 'edge_to_edge',
+          'overlays_restored': 'true',
+        },
+      );
     } catch (e) {
       debugPrint('Error exiting fullscreen: $e');
+
+      // Log fullscreen exit error
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.navigationError,
+        element: UIElement.fullscreenControls,
+        value: 'exit_fullscreen_failed',
+        additionalParams: {
+          'error': e.toString(),
+          'trigger': trigger ?? 'unknown',
+        },
+      );
     } finally {
       _isTransitioning = false;
       notifyListeners();
@@ -74,18 +121,32 @@ class FullscreenService extends ChangeNotifier {
   }
 
   /// Toggle between fullscreen and normal mode
-  Future<void> toggleFullscreen() async {
+  Future<void> toggleFullscreen([String? trigger]) async {
     if (_isTransitioning) return;
 
+    final wasFullscreen = _isFullscreen;
+
+    // Log toggle action before attempting the change
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.fullscreenToggled,
+      element: UIElement.fullscreenToggle,
+      value: wasFullscreen ? 'exit' : 'enter',
+      additionalParams: {
+        'previous_state': wasFullscreen ? 'fullscreen' : 'windowed',
+        'requested_state': wasFullscreen ? 'windowed' : 'fullscreen',
+        'trigger': trigger ?? 'toggle_button',
+      },
+    );
+
     if (_isFullscreen) {
-      await exitFullscreen();
+      await exitFullscreen(trigger ?? 'toggle');
     } else {
-      await enterFullscreen();
+      await enterFullscreen(trigger ?? 'toggle');
     }
   }
 
   /// Force exit fullscreen (useful for cleanup)
-  void forceExitFullscreen() {
+  void forceExitFullscreen([String? reason]) {
     if (_isFullscreen) {
       _isFullscreen = false;
       _isTransitioning = false;
@@ -93,6 +154,19 @@ class FullscreenService extends ChangeNotifier {
         SystemUiMode.edgeToEdge,
         overlays: SystemUiOverlay.values,
       );
+
+      // Log forced fullscreen exit
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.fullscreenExited,
+        element: UIElement.systemUIControls,
+        value: 'forced',
+        additionalParams: {
+          'reason': reason ?? 'force_cleanup',
+          'method': 'force_exit',
+          'system_ui_mode': 'edge_to_edge',
+        },
+      );
+
       notifyListeners();
     }
   }

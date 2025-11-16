@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
+import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/enums/temperature_unit.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/utils/safe_haptic_feedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,6 +37,9 @@ class UIState extends ChangeNotifier {
 
   // Language settings
   String? _selectedLanguageCode; // null means system default
+
+  // Temperature unit settings
+  TemperatureUnit _temperatureUnit = TemperatureUnit.kelvin;
 
   // Cinematic camera settings
   CinematicCameraTechnique _cinematicCameraTechnique =
@@ -77,6 +82,7 @@ class UIState extends ChangeNotifier {
   static const String _keyShowHabitabilityIndicators =
       'showHabitabilityIndicators';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
+  static const String _keyTemperatureUnit = 'temperatureUnit';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
   static const String _keyCameraSpeed = 'cameraSpeed';
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
@@ -155,6 +161,12 @@ class UIState extends ChangeNotifier {
       _showHabitabilityIndicators =
           prefs.getBool(_keyShowHabitabilityIndicators) ?? false;
       _selectedLanguageCode = prefs.getString(_keySelectedLanguageCode);
+
+      // Load temperature unit setting
+      final temperatureUnitValue = prefs.getString(_keyTemperatureUnit);
+      _temperatureUnit = temperatureUnitValue != null
+          ? TemperatureUnit.fromString(temperatureUnitValue)
+          : TemperatureUnit.kelvin;
 
       // Load cinematic camera technique setting
       final cinematicTechniqueValue = prefs.getString(
@@ -235,6 +247,9 @@ class UIState extends ChangeNotifier {
 
   // Language getters
   String? get selectedLanguageCode => _selectedLanguageCode;
+
+  // Temperature unit getters
+  TemperatureUnit get temperatureUnit => _temperatureUnit;
 
   // Cinematic camera getters
   CinematicCameraTechnique get cinematicCameraTechnique =>
@@ -446,6 +461,14 @@ class UIState extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Temperature unit setters
+  void setTemperatureUnit(TemperatureUnit unit) {
+    _temperatureUnit = unit;
+    _saveSetting(_keyTemperatureUnit, unit.name);
+    FirebaseService.instance.logSettingsChange('temperature_unit', unit.name);
+    notifyListeners();
+  }
+
   // Cinematic camera setters
   void setCinematicCameraTechnique(CinematicCameraTechnique technique) {
     _cinematicCameraTechnique = technique;
@@ -513,5 +536,99 @@ class UIState extends ChangeNotifier {
 
     // If last seen version is different from current, show changelog
     return _lastSeenChangelogVersion != currentAppVersion;
+  }
+
+  /// Apply performance optimizations for scenarios with many bodies or complex scenarios
+  void applyPerformanceOptimizationsForScenario(
+    ScenarioType scenario,
+    int bodyCount,
+  ) {
+    // List of scenarios that are known to be performance-heavy
+    final performanceHeavyScenarios = {
+      ScenarioType.galaxyFormation,
+      ScenarioType.asteroidBelt,
+    };
+
+    // Apply optimizations for scenarios with many bodies (>= 20) or known heavy scenarios
+    if (bodyCount >= 20 || performanceHeavyScenarios.contains(scenario)) {
+      // Disable labels for better performance with many bodies
+      if (_showLabels) {
+        _showLabels = false;
+        _saveSetting(_keyShowLabels, false);
+        FirebaseService.instance.logSettingsChange('show_labels', false);
+      }
+
+      // Disable orbital paths for better performance
+      if (_showOrbitalPaths) {
+        _showOrbitalPaths = false;
+        _saveSetting(_keyShowOrbitalPaths, false);
+        FirebaseService.instance.logSettingsChange('show_orbital_paths', false);
+      }
+
+      // Disable off-screen indicators for better performance
+      if (_showOffScreenIndicators) {
+        _showOffScreenIndicators = false;
+        _saveSetting(_keyShowOffScreenIndicators, false);
+        FirebaseService.instance.logSettingsChange(
+          'show_offscreen_indicators',
+          false,
+        );
+      }
+
+      // Disable gravity wells for better performance with many bodies
+      if (_globalGravityFields) {
+        _globalGravityFields = false;
+        _saveSetting(_keyGlobalGravityFields, false);
+        FirebaseService.instance.logSettingsChange(
+          'global_gravity_fields',
+          false,
+        );
+      }
+
+      notifyListeners();
+    }
+  }
+
+  /// Apply performance optimizations for scenarios with many bodies (legacy method)
+  @Deprecated('Use applyPerformanceOptimizationsForScenario instead')
+  void applyPerformanceOptimizations(int bodyCount) {
+    // For scenarios with many bodies (>= 20), automatically disable heavy features
+    if (bodyCount >= 20) {
+      // Disable labels for better performance with many bodies
+      if (_showLabels) {
+        _showLabels = false;
+        _saveSetting(_keyShowLabels, false);
+        FirebaseService.instance.logSettingsChange('show_labels', false);
+      }
+
+      // Disable orbital paths for better performance
+      if (_showOrbitalPaths) {
+        _showOrbitalPaths = false;
+        _saveSetting(_keyShowOrbitalPaths, false);
+        FirebaseService.instance.logSettingsChange('show_orbital_paths', false);
+      }
+
+      // Disable off-screen indicators for better performance
+      if (_showOffScreenIndicators) {
+        _showOffScreenIndicators = false;
+        _saveSetting(_keyShowOffScreenIndicators, false);
+        FirebaseService.instance.logSettingsChange(
+          'show_offscreen_indicators',
+          false,
+        );
+      }
+
+      // Disable gravity wells for better performance with many bodies
+      if (_globalGravityFields) {
+        _globalGravityFields = false;
+        _saveSetting(_keyGlobalGravityFields, false);
+        FirebaseService.instance.logSettingsChange(
+          'global_gravity_fields',
+          false,
+        );
+      }
+
+      notifyListeners();
+    }
   }
 }

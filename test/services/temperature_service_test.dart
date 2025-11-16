@@ -307,8 +307,8 @@ void main() {
       test('Should format temperature with units by default', () {
         final formatted = TemperatureService.formatTemperature(288.15);
 
-        expect(formatted, contains('15'));
-        expect(formatted, contains('°C'));
+        expect(formatted, contains('288'));
+        expect(formatted, contains('K'));
       });
 
       test('Should format temperature without units when requested', () {
@@ -317,8 +317,8 @@ void main() {
           showUnit: false,
         );
 
-        expect(formatted, contains('15'));
-        expect(formatted, isNot(contains('°C')));
+        expect(formatted, contains('288'));
+        expect(formatted, isNot(contains('K')));
       });
 
       test('Should handle very high temperatures with k suffix', () {
@@ -326,20 +326,22 @@ void main() {
           1000 + SimulationConstants.kelvinToCelsiusOffset,
         );
 
-        expect(formatted, contains('k'));
-        expect(formatted, contains('1.0k°C'));
+        expect(formatted, contains('K'));
+        expect(formatted, contains('1,273'));
       });
 
       test('Should handle negative temperatures', () {
         final formatted = TemperatureService.formatTemperature(200.0);
 
-        expect(formatted, contains('-73°C'));
+        expect(formatted, contains('200'));
+        expect(formatted, contains('K'));
       });
 
       test('Should round temperatures appropriately', () {
         final formatted = TemperatureService.formatTemperature(288.7);
 
-        expect(formatted, contains('16°C')); // Rounded to nearest degree
+        expect(formatted, contains('289'));
+        expect(formatted, contains('K'));
       });
     });
 
@@ -366,8 +368,12 @@ void main() {
       });
 
       test('Should handle extreme temperatures', () {
-        final coldColor = TemperatureService.getTemperatureColor(100.0);
-        final hotColor = TemperatureService.getTemperatureColor(1000.0);
+        final coldColor = TemperatureService.getTemperatureColor(
+          1000.0,
+        ); // Red dwarf range (< 3500K)
+        final hotColor = TemperatureService.getTemperatureColor(
+          15000.0,
+        ); // Hot blue star (> 10000K)
 
         expect(coldColor, isA<Color>());
         expect(hotColor, isA<Color>());

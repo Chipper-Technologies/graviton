@@ -1,11 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/simulation.dart' as physics;
+import '../test_utils.dart';
 
 void main() {
   group('Galaxy Formation Long-term Stability', () {
     test('Outer stars should remain stable over very long simulation', () {
       final simulation = physics.Simulation();
+      simulation.updateScenarioLocalization(
+        TestUtils.createMockAppLocalizations(),
+      );
       simulation.resetWithScenario(ScenarioType.galaxyFormation);
 
       // Find and track all outer stars (distance > 100)

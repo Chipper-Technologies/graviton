@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_icon_button.dart';
+import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:provider/provider.dart';
 
@@ -162,6 +164,10 @@ class ScreenshotModeWidget extends StatelessWidget {
                             Expanded(
                               child: ElevatedButton.icon(
                                 onPressed: () {
+                                  // Capture the scaffold messenger before popping
+                                  final scaffoldMessenger =
+                                      ScaffoldMessenger.of(context);
+
                                   screenshotService.applyCurrentPreset(
                                     l10n: l10n,
                                     simulationState: appState.simulation,
@@ -172,34 +178,58 @@ class ScreenshotModeWidget extends StatelessWidget {
                                     context,
                                   ).pop(); // Close settings dialog
 
-                                  // Show a snackbar to inform user
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        l10n.appliedPreset(
-                                          screenshotService
-                                              .getPresetDisplayName(
+                                  // Wait for dialog to close before showing snackbar
+                                  Future.delayed(
+                                    const Duration(milliseconds: 100),
+                                    () {
+                                      // Clear any existing snackbars first
+                                      scaffoldMessenger.clearSnackBars();
+
+                                      // Show a snackbar to inform user
+                                      scaffoldMessenger.showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            l10n.appliedPreset(
+                                              screenshotService
+                                                  .getPresetDisplayName(
                                                 screenshotService
                                                     .currentPresetIndex,
                                                 l10n,
                                               ),
+                                            ),
+                                          ),
+                                          duration: const Duration(seconds: 4),
+                                          behavior: SnackBarBehavior.floating,
+                                          margin: const EdgeInsets.only(
+                                            left: 16,
+                                            right: 16,
+                                            bottom: 16,
+                                          ),
+                                          action: SnackBarAction(
+                                            label: l10n.deactivate,
+                                            onPressed: () {
+                                              screenshotService.deactivate(
+                                                uiState: appState.ui,
+                                              );
+                                              // Resume simulation when deactivating
+                                              if (appState.simulation.isPaused) {
+                                                appState.simulation
+                                                    .pause(); // Toggle pause to resume
+                                              }
+                                            },
+                                          ),
                                         ),
-                                      ),
-                                      duration: const Duration(seconds: 3),
-                                      action: SnackBarAction(
-                                        label: l10n.deactivate,
-                                        onPressed: () {
-                                          screenshotService.deactivate(
-                                            uiState: appState.ui,
-                                          );
-                                          // Resume simulation when deactivating
-                                          if (appState.simulation.isPaused) {
-                                            appState.simulation
-                                                .pause(); // Toggle pause to resume
-                                          }
+                                      );
+
+                                      // Manually dismiss snackbar after duration (action buttons prevent auto-dismiss)
+                                      Future.delayed(
+                                        const Duration(seconds: 4),
+                                        () {
+                                          scaffoldMessenger
+                                              .hideCurrentSnackBar();
                                         },
-                                      ),
-                                    ),
+                                      );
+                                    },
                                   );
                                 },
                                 icon: const Icon(Icons.camera),

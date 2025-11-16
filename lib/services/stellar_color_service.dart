@@ -80,6 +80,12 @@ class StellarColorService {
       case BodyType.star:
         // Fallback for edge cases where a non-luminous star reaches this point
         return AppColors.celestialGold;
+      case BodyType.neutronStar:
+        // Neutron stars appear as intense white-blue
+        return AppColors.pulsarCyan;
+      case BodyType.blackHole:
+        // Black holes appear completely black
+        return AppColors.spacePureBlack;
       case BodyType.planet:
       case BodyType.moon:
         // These cases should never be reached due to early return in getRealisticBodyColor,

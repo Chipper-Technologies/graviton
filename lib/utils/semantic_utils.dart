@@ -1,6 +1,7 @@
 import 'package:graviton/enums/simulation_status.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
+import 'package:graviton/utils/number_utils.dart';
 
 /// Utility class for creating accessible semantic descriptions and actions
 class SemanticUtils {
@@ -16,7 +17,9 @@ class SemanticUtils {
   ) {
     final bodyCount = bodies.length;
     final statusText = _getStatusDescription(status, l10n);
-    final speedText = l10n.speedFormatted(timeScale.toStringAsFixed(1));
+    final speedText = l10n.speedFormatted(
+      NumberUtils.formatDecimal(timeScale, 1),
+    );
 
     return l10n.simulationStateDescription(
       bodyCount,
@@ -59,7 +62,9 @@ class SemanticUtils {
     bool followMode,
     String? followingBodyName,
   ) {
-    final distanceText = l10n.distanceFormatted(distance.toStringAsFixed(1));
+    final distanceText = l10n.distanceFormatted(
+      NumberUtils.formatDistance(distance),
+    );
     final rotateText = autoRotate
         ? l10n.autoRotateActive
         : l10n.autoRotateInactive;
@@ -102,8 +107,8 @@ class SemanticUtils {
     int stepCount,
   ) {
     return l10n.physicsStatsDescription(
-      totalTime.toStringAsFixed(1),
-      earthYears.toStringAsFixed(2),
+      NumberUtils.formatDecimal(totalTime, 1),
+      NumberUtils.formatDecimal(earthYears, 2),
       stepCount,
     );
   }
@@ -133,7 +138,7 @@ class SemanticUtils {
     } else if (body.mass > 1e24) {
       return l10n.bodyTypePlanet;
     } else if (body.mass > 1e22) {
-      return l10n.bodyTypeMoon;
+      return l10n.bodyMoon;
     } else {
       return l10n.bodyTypeAsteroid;
     }
@@ -150,7 +155,7 @@ class SemanticUtils {
       return l10n.bodyTypeStarPlural(count);
     } else if (bodyTypeName == l10n.bodyTypePlanet) {
       return l10n.bodyTypePlanetPlural(count);
-    } else if (bodyTypeName == l10n.bodyTypeMoon) {
+    } else if (bodyTypeName == l10n.bodyMoon) {
       return l10n.bodyTypeMoonPlural(count);
     } else if (bodyTypeName == l10n.bodyTypeAsteroid) {
       return l10n.bodyTypeAsteroidPlural(count);

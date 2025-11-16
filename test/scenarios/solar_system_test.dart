@@ -3,12 +3,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/services/simulation.dart' as physics;
+import '../test_utils.dart';
 
 void main() {
   group('Solar System Orbital Mechanics', () {
     test('Planets should have stable circular orbital velocities', () {
       final scenarioService = ScenarioService();
-      final bodies = scenarioService.generateScenario(ScenarioType.solarSystem);
+      final mockL10n = TestUtils.createMockAppLocalizations();
+      final bodies = scenarioService.generateScenario(
+        ScenarioType.solarSystem,
+        l10n: mockL10n,
+      );
 
       // Find the Sun
       final sun = bodies.firstWhere((body) => body.name == 'Sun');
@@ -66,7 +71,8 @@ void main() {
 
     test('Simulation should maintain stable orbits over time', () {
       final simulation = physics.Simulation();
-      simulation.resetWithScenario(ScenarioType.solarSystem);
+      final mockL10n = TestUtils.createMockAppLocalizations();
+      simulation.resetWithScenario(ScenarioType.solarSystem, l10n: mockL10n);
 
       // Get initial positions
       final initialPositions = simulation.bodies

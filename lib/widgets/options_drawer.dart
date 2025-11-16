@@ -4,8 +4,9 @@ import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
-import 'package:graviton/widgets/common/haptic_list_tile.dart';
+import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/haptics/haptic_list_tile.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /// Right-side drawer for app options and settings
@@ -62,186 +63,199 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
 
     return Drawer(
       backgroundColor: AppColors.uiBlack.withValues(
-        alpha: AppTypography.opacityNearlyOpaque,
+        alpha: AppTypography.opacityHigh,
       ),
       width: 320,
-      child: SafeArea(
-        child: Column(
-          children: [
-            // Drawer header
-            Container(
-              padding: const EdgeInsets.all(AppTypography.spacingLarge),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityVeryFaint,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              color: AppColors.primaryColor.withValues(
+                alpha: AppTypography.opacityHigh,
+              ),
+              width: 3.0,
+            ),
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Drawer header
+              Container(
+                padding: const EdgeInsets.all(AppTypography.spacingLarge),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityVeryFaint,
+                      ),
+                      width: 1,
                     ),
-                    width: 1,
                   ),
                 ),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    margin: const EdgeInsets.only(
-                      right: AppTypography.spacingMedium,
-                    ),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.primaryColor,
-                        width: 2,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 32,
+                      height: 32,
+                      margin: const EdgeInsets.only(
+                        right: AppTypography.spacingMedium,
                       ),
-                      image: DecorationImage(
-                        image: AssetImage(AppConfig.appLogoPath),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          l10n.appTitle,
-                          style: AppTypography.largeText.copyWith(
-                            color: AppColors.uiWhite,
-                            fontWeight: FontWeight.w700,
-                          ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.primaryColor,
+                          width: 2,
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              _version,
-                              style: AppTypography.smallText.copyWith(
-                                color: AppColors.uiWhite.withValues(
-                                  alpha: AppTypography.opacitySemiTransparent,
-                                ),
-                              ),
+                        image: DecorationImage(
+                          image: AssetImage(AppConfig.appLogoPath),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            l10n.appTitle,
+                            style: AppTypography.largeText.copyWith(
+                              color: AppColors.uiWhite,
+                              fontWeight: FontWeight.w700,
                             ),
-                            if (_version.isNotEmpty) ...[
+                          ),
+                          Row(
+                            children: [
                               Text(
-                                ' • ',
+                                _version,
                                 style: AppTypography.smallText.copyWith(
                                   color: AppColors.uiWhite.withValues(
                                     alpha: AppTypography.opacitySemiTransparent,
                                   ),
                                 ),
                               ),
-                              HapticGestureDetector(
-                                onTap: () {
-                                  // Close drawer first
-                                  Navigator.of(context).pop();
-
-                                  // Use the callback to let parent handle changelog dialog
-                                  if (widget.onShowChangelog != null) {
-                                    widget.onShowChangelog!();
-                                  }
-                                },
-                                child: Text(
-                                  l10n.changelogDebugTitle,
+                              if (_version.isNotEmpty) ...[
+                                Text(
+                                  ' • ',
                                   style: AppTypography.smallText.copyWith(
-                                    color: AppColors.primaryColor,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: AppColors.primaryColor,
+                                    color: AppColors.uiWhite.withValues(
+                                      alpha:
+                                          AppTypography.opacitySemiTransparent,
+                                    ),
                                   ),
                                 ),
-                              ),
+                                HapticGestureDetector(
+                                  onTap: () {
+                                    // Close drawer first
+                                    Navigator.of(context).pop();
+
+                                    // Use the callback to let parent handle changelog dialog
+                                    if (widget.onShowChangelog != null) {
+                                      widget.onShowChangelog!();
+                                    }
+                                  },
+                                  child: Text(
+                                    l10n.changelogHometitle,
+                                    style: AppTypography.smallText.copyWith(
+                                      color: AppColors.primaryColor,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: AppColors.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ],
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Menu items
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(
-                  vertical: AppTypography.spacingSmall,
+                  ],
                 ),
-                children: [
-                  _buildDrawerItem(
-                    context: context,
-                    icon: Icons.explore,
-                    title: l10n.selectScenarioTooltip,
-                    subtitle: l10n.scenariosMenuDescription,
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      widget.onShowScenarios();
-                    },
-                  ),
-                  _buildDivider(),
-                  _buildDrawerItem(
-                    context: context,
-                    icon: Icons.science,
-                    title: l10n.physicsSettingsTitle,
-                    subtitle: l10n.physicsSettingsDescription,
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      widget.onShowPhysicsSettings();
-                    },
-                  ),
-                  _buildDivider(),
-                  _buildDrawerItem(
-                    context: context,
-                    icon: Icons.tune,
-                    title: l10n.settingsTitle,
-                    subtitle: l10n.settingsMenuDescription,
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      widget.onShowSettings();
-                    },
-                  ),
-                  _buildDivider(),
-                  _buildDrawerItem(
-                    context: context,
-                    icon: Icons.lightbulb_outline,
-                    title: l10n.showHelpTooltip,
-                    subtitle: l10n.helpMenuDescription,
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      widget.onShowHelp();
-                    },
-                  ),
-                  _buildDivider(),
+              ),
 
-                  // Developer Tools (Debug only)
-                  if (kDebugMode) ...[
+              // Menu items
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppTypography.spacingSmall,
+                  ),
+                  children: [
                     _buildDrawerItem(
                       context: context,
-                      icon: Icons.developer_mode,
-                      title: l10n.developerToolsTitle,
-                      subtitle: l10n.developerToolsMenuDescription,
+                      icon: Icons.explore,
+                      title: l10n.selectScenarioTooltip,
+                      subtitle: l10n.scenariosMenuDescription,
                       onTap: () {
                         Navigator.of(context).pop();
-                        widget.onShowDeveloperTools();
+                        widget.onShowScenarios();
                       },
                     ),
-                    _buildDivider(),
-                  ],
+                    const SectionDivider.plain(),
+                    _buildDrawerItem(
+                      context: context,
+                      icon: Icons.science,
+                      title: l10n.physicsSettingsTitle,
+                      subtitle: l10n.physicsSettingsDescription,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        widget.onShowPhysicsSettings();
+                      },
+                    ),
+                    const SectionDivider.plain(),
+                    _buildDrawerItem(
+                      context: context,
+                      icon: Icons.tune,
+                      title: l10n.settingsTooltip,
+                      subtitle: l10n.settingsMenuDescription,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        widget.onShowSettings();
+                      },
+                    ),
+                    const SectionDivider.plain(),
+                    _buildDrawerItem(
+                      context: context,
+                      icon: Icons.lightbulb_outline,
+                      title: l10n.showHelpTooltip,
+                      subtitle: l10n.helpMenuDescription,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        widget.onShowHelp();
+                      },
+                    ),
+                    const SectionDivider.plain(),
 
-                  _buildDrawerItem(
-                    context: context,
-                    icon: Icons.info_outline,
-                    title: l10n.aboutButtonTooltip,
-                    subtitle: l10n.aboutMenuDescription,
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      widget.onShowAbout();
-                    },
-                  ),
-                ],
+                    // Developer Tools (Debug only)
+                    if (kDebugMode) ...[
+                      _buildDrawerItem(
+                        context: context,
+                        icon: Icons.developer_mode,
+                        title: l10n.developerToolsTitle,
+                        subtitle: l10n.developerToolsMenuDescription,
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          widget.onShowDeveloperTools();
+                        },
+                      ),
+                      const SectionDivider.plain(),
+                    ],
+
+                    _buildDrawerItem(
+                      context: context,
+                      icon: Icons.info_outline,
+                      title: l10n.aboutButtonTooltip,
+                      subtitle: l10n.aboutMenuDescription,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        widget.onShowAbout();
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -255,10 +269,25 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
     required VoidCallback onTap,
   }) {
     return HapticListTile(
-      leading: Icon(
-        icon,
-        size: AppTypography.iconSizeXLarge,
-        color: AppColors.sectionTitlePurple,
+      leading: Container(
+        width: AppTypography.iconSizeXLarge * 1.8,
+        height: AppTypography.iconSizeXLarge * 1.8,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: AppColors.primaryColor.withValues(
+              alpha: AppTypography.opacityMedium,
+            ),
+            width: 2.0,
+          ),
+        ),
+        child: Icon(
+          icon,
+          size: AppTypography.iconSizeLarge,
+          color: AppColors.primaryColor.withValues(
+            alpha: AppTypography.opacityHigh,
+          ),
+        ),
       ),
       title: Text(
         title,
@@ -283,16 +312,6 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
         vertical: AppTypography.spacingSmall,
       ),
       dense: false,
-    );
-  }
-
-  Widget _buildDivider() {
-    return Divider(
-      color: AppColors.uiDividerGrey,
-      thickness: 1,
-      height: 1,
-      indent: AppTypography.spacingLarge,
-      endIndent: AppTypography.spacingLarge,
     );
   }
 }

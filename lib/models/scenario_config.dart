@@ -60,7 +60,7 @@ class ScenarioConfig {
       primaryColor: AppColors.celestialPink,
       expectedBodyCount: 31,
       educationalFocus: EducationalFocusKeys.structureFormation,
-      optimalCameraDistance: 600.0, // Fixed distance for optimal galaxy view
+      optimalCameraDistance: 600.0,
     ),
     ScenarioType.solarSystem: ScenarioConfig(
       type: ScenarioType.solarSystem,
@@ -68,8 +68,7 @@ class ScenarioConfig {
       primaryColor: AppColors.celestialOrange,
       expectedBodyCount: 9,
       educationalFocus: EducationalFocusKeys.planetaryMotion,
-      optimalCameraDistance:
-          1200.0, // Fixed distance for optimal solar system view
+      optimalCameraDistance: 1200.0,
     ),
   };
 }

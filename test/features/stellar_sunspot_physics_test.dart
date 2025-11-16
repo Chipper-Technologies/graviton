@@ -9,6 +9,7 @@ import 'package:graviton/services/stellar_color_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'dart:ui' as ui;
+import '../test_utils.dart';
 
 void main() {
   group('Stellar Sunspot Physics Tests', () {
@@ -23,9 +24,12 @@ void main() {
     });
 
     test('should assign sunspots to temperature-appropriate stars', () {
+      final mockL10n = TestUtils.createMockAppLocalizations();
+
       // Generate galaxy formation scenario with realistic temperatures
       final bodies = scenarioService.generateScenario(
         ScenarioType.galaxyFormation,
+        l10n: mockL10n,
       );
 
       // Find stars with different temperatures
@@ -157,8 +161,11 @@ void main() {
     test(
       'should handle galaxy formation stars with varying sunspot characteristics',
       () {
+        final mockL10n = TestUtils.createMockAppLocalizations();
+
         final bodies = scenarioService.generateScenario(
           ScenarioType.galaxyFormation,
+          l10n: mockL10n,
         );
 
         // Find stars at different distances from black hole

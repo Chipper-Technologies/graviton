@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -39,7 +40,6 @@ void main() {
         );
 
         expect(find.byType(StatsOverlay), findsOneWidget);
-        expect(find.byType(Positioned), findsOneWidget);
         expect(find.byType(Opacity), findsOneWidget);
         expect(find.byType(Container), findsOneWidget);
         expect(find.byType(Column), findsOneWidget);
@@ -58,6 +58,10 @@ void main() {
       });
 
       testWidgets('Should reflect current simulation values', (tester) async {
+        // Load a scenario that has bodies for testing
+        appState.simulation.resetWithScenario(ScenarioType.earthMoonSun);
+        await tester.pumpAndSettle(); // Allow scenario to load
+
         // Modify simulation state
         appState.simulation.step(1.0 / 60.0); // Advance one step
 
@@ -65,7 +69,8 @@ void main() {
           createTestWidget(child: StatsOverlay(appState: appState)),
         );
 
-        expect(find.textContaining('Bodies: 4'), findsOneWidget);
+        // EarthMoonSun has 3 bodies (Sun, Earth, Moon)
+        expect(find.textContaining('Bodies: 3'), findsOneWidget);
         expect(
           find.textContaining('Speed: 4.0x'),
           findsOneWidget,
@@ -109,21 +114,10 @@ void main() {
       });
     });
 
-    group('Positioning', () {
-      testWidgets('Should be positioned in top-left corner', (tester) async {
-        await tester.pumpWidget(
-          createTestWidget(child: StatsOverlay(appState: appState)),
-        );
+    // Note: Positioning tests have been removed as StatsOverlay no longer
+    // handles its own positioning. Positioning is now handled by the parent widget.
 
-        final positioned = tester.widget<Positioned>(find.byType(Positioned));
-        expect(positioned.top, equals(16));
-        expect(positioned.left, equals(16));
-        expect(positioned.right, isNull);
-        expect(positioned.bottom, isNull);
-      });
-    });
-
-    group('Styling', () {
+    group('Content', () {
       testWidgets('Should have proper container styling', (tester) async {
         await tester.pumpWidget(
           createTestWidget(child: StatsOverlay(appState: appState)),

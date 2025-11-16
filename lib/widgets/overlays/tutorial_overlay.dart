@@ -6,9 +6,9 @@ import 'package:graviton/models/tutorial_step.dart';
 import 'package:graviton/painters/highlight_painter.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/common/haptic_elevated_button.dart';
-import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
-import 'package:graviton/widgets/common/haptic_text_button.dart';
+import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
+import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/haptics/haptic_text_button.dart';
 
 /// Tutorial overlay that guides new users through the app
 class TutorialOverlay extends StatefulWidget {
@@ -279,7 +279,9 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                                         color: _getIconColor(_currentStep),
                                       ),
                               ),
-                              const SizedBox(height: 24),
+                              const SizedBox(
+                                height: AppTypography.spacingXXLarge,
+                              ),
 
                               // Title
                               Text(

@@ -137,6 +137,13 @@ class AppState extends ChangeNotifier {
 
   void resetAll() {
     simulation.reset();
+
+    // Apply performance optimizations based on current scenario and body count
+    ui.applyPerformanceOptimizationsForScenario(
+      simulation.simulation.currentScenario,
+      simulation.bodies.length,
+    );
+
     // Reset camera with optimal zoom for current scenario
     camera.resetViewForScenario(
       simulation.simulation.currentScenario,
@@ -158,6 +165,12 @@ class AppState extends ChangeNotifier {
 
     // Apply the physics settings for this scenario
     simulation.applyPhysicsSettings(physics.currentSettings);
+
+    // Apply performance optimizations based on scenario type and body count
+    ui.applyPerformanceOptimizationsForScenario(
+      scenario,
+      simulation.bodies.length,
+    );
 
     // Reset camera view
     camera.resetViewForScenario(scenario, simulation.bodies);

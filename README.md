@@ -279,10 +279,12 @@ dependencies:
   firebase_analytics: ^12.0.3 # Analytics and user behavior tracking
   firebase_crashlytics: ^5.0.3 # Crash reporting and monitoring
   firebase_remote_config: ^6.1.0 # Dynamic app configuration
+  cloud_firestore: ^6.0.3   # Firestore database for changelogs
   # Additional dependencies
   flutter_svg: ^2.2.1       # SVG rendering support
   package_info_plus: ^9.0.0 # Package information utilities
   shared_preferences: ^2.5.3 # Local data persistence
+  sliding_up_panel: ^2.0.0+1 # Sliding panel UI component
   url_launcher: ^6.3.1      # URL launching capabilities
 
 dev_dependencies:
@@ -582,6 +584,17 @@ Create release keystores for Google Play Store distribution:
 - Automatic `android/key.properties` configuration
 - Security validation and backup reminders
 - Google Play compatible keystore generation
+
+### 🤖 GitHub Copilot Integration
+Graviton includes comprehensive GitHub Copilot configuration for AI-assisted development:
+
+**[📖 View Complete GitHub Copilot Guide →](docs/COPILOT.md)**
+
+- **Automatic Instructions**: Project standards automatically applied to all Copilot suggestions
+- **Specialized Chat Modes**: 8 expert modes (`@quality`, `@physics`, `@ui`, etc.) for focused assistance
+- **Reference Documentation**: 11 comprehensive prompt files for detailed guidance
+- **Code Quality Enforcement**: Zero tolerance for magic numbers, strict AppTypography usage
+- **Physics Accuracy**: AI assistance trained on gravitational mechanics and orbital calculations
 
 ### 📚 Complete Documentation
 For detailed tool documentation, including troubleshooting, advanced options, and integration examples:
@@ -1227,7 +1240,7 @@ For detailed information about each technique and implementation details, see [C
 
 ### 🧪 Comprehensive Testing
 ```bash
-# Run all tests (35+ test cases)
+# Run all tests (270+ test files)
 flutter test
 
 # Run specific test suites
@@ -1237,11 +1250,10 @@ flutter test test/models/                  # Data model tests
 flutter test test/services/                # Physics and simulation tests
 
 # Run internationalization tests
-flutter test test/i18n_test.dart
+flutter test test/features/i18n_test.dart
 
 # Run physics accuracy tests
-flutter test test/earth_moon_sun_test.dart
-flutter test test/habitable_zone_test.dart
+flutter test test/scenarios/
 
 # Run with coverage
 flutter test --coverage
@@ -1316,7 +1328,7 @@ flutter clean && flutter pub get
 
 ### 🔧 Key Development Features
 - **Lint-free codebase**: All 42 previous lint warnings resolved
-- **Comprehensive test coverage**: 473+ tests with 41% line coverage across models, services, state, and UI
+- **Comprehensive test coverage**: 270+ test files across models, services, state, and UI
 - **Modular architecture**: Clean separation between rendering, physics, and state management
 - **Enhanced debugging**: Preserved debug information in comments for future development
 - **Centralized configuration**: `AppConfig` class provides unified access to asset paths, URLs, and environment-specific settings
@@ -1474,7 +1486,7 @@ We welcome contributions! Here's how you can help improve the Gravitational Phys
 
 - **Follow clean architecture principles**
 - **Maintain comprehensive test coverage**
-- **Follow established testing patterns** (see `test/README.md` for 473+ existing tests)
+- **Follow established testing patterns** (see `test/README.md` for 270+ test files)
 - **Keep code lint-free** (we're at 0 warnings!)
 - **Add proper documentation** for new APIs
 - **Preserve physics accuracy** in simulations

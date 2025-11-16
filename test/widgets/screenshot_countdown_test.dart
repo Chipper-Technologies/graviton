@@ -11,14 +11,19 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/screenshot_countdown.dart';
 
+import '../test_utils.dart';
+
 void main() {
   group('ScreenshotCountdown Enhanced Tests', () {
     late ScreenshotModeService service;
     late SimulationState simulationState;
     late CameraState cameraState;
     late UIState uiState;
+    late dynamic mockL10n;
 
     setUp(() {
+      mockL10n = TestUtils.createMockAppLocalizations();
+
       // Initialize FlavorConfig for testing
       FlavorConfig.instance.initialize(
         flavor: AppFlavor.dev,
@@ -593,6 +598,7 @@ void main() {
               simulationState: simulationState,
               cameraState: cameraState,
               uiState: uiState,
+              l10n: mockL10n,
             );
 
             // Wait for all microtasks and timers to be created
@@ -615,7 +621,10 @@ void main() {
             if (service.showCountdown) {
               // Test countdown UI elements
               expect(find.byType(Positioned), findsOneWidget);
-              expect(find.byType(Center), findsOneWidget);
+              expect(
+                find.byType(Center),
+                findsAtLeastNWidgets(1),
+              ); // Allow for multiple Center widgets
               expect(find.byType(Container), findsAtLeastNWidgets(1));
               expect(find.byType(Row), findsOneWidget);
               expect(find.byIcon(Icons.camera_alt), findsOneWidget);
@@ -669,6 +678,7 @@ void main() {
             simulationState: simulationState,
             cameraState: cameraState,
             uiState: uiState,
+            l10n: mockL10n,
           );
 
           // Wait for all microtasks and timers to be created

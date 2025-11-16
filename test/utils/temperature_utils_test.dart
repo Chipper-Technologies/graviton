@@ -4,8 +4,16 @@ import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/utils/temperature_utils.dart';
 
+import '../test_utils.dart';
+
 void main() {
   group('TemperatureUtils Tests', () {
+    late dynamic mockL10n;
+
+    setUp(() {
+      mockL10n = TestUtils.createMockAppLocalizations();
+    });
+
     group('calculateStellarTemperature', () {
       test('should calculate temperature for Sun-like mass', () {
         final sunMass = SimulationConstants.sunMassReference;
@@ -142,66 +150,111 @@ void main() {
 
     group('getTemperatureRange', () {
       test('should return correct temperature ranges for spectral classes', () {
-        expect(TemperatureUtils.getTemperatureRange('O'), equals('> 30,000K'));
         expect(
-          TemperatureUtils.getTemperatureRange('B'),
+          TemperatureUtils.getTemperatureRange('O', l10n: mockL10n),
+          equals('> 30,000K'),
+        );
+        expect(
+          TemperatureUtils.getTemperatureRange('B', l10n: mockL10n),
           equals('10,000-30,000K'),
         );
         expect(
-          TemperatureUtils.getTemperatureRange('A'),
+          TemperatureUtils.getTemperatureRange('A', l10n: mockL10n),
           equals('7,500-10,000K'),
         );
         expect(
-          TemperatureUtils.getTemperatureRange('F'),
+          TemperatureUtils.getTemperatureRange('F', l10n: mockL10n),
           equals('6,000-7,500K'),
         );
         expect(
-          TemperatureUtils.getTemperatureRange('G'),
+          TemperatureUtils.getTemperatureRange('G', l10n: mockL10n),
           equals('5,200-6,000K'),
         );
         expect(
-          TemperatureUtils.getTemperatureRange('K'),
+          TemperatureUtils.getTemperatureRange('K', l10n: mockL10n),
           equals('3,700-5,200K'),
         );
-        expect(TemperatureUtils.getTemperatureRange('M'), equals('< 3,700K'));
+        expect(
+          TemperatureUtils.getTemperatureRange('M', l10n: mockL10n),
+          equals('< 3,700K'),
+        );
       });
 
       test('should handle lowercase input', () {
         expect(
-          TemperatureUtils.getTemperatureRange('g'),
+          TemperatureUtils.getTemperatureRange('g', l10n: mockL10n),
           equals('5,200-6,000K'),
         );
-        expect(TemperatureUtils.getTemperatureRange('m'), equals('< 3,700K'));
+        expect(
+          TemperatureUtils.getTemperatureRange('m', l10n: mockL10n),
+          equals('< 3,700K'),
+        );
       });
 
       test('should handle invalid input', () {
-        expect(TemperatureUtils.getTemperatureRange('X'), equals('Unknown'));
-        expect(TemperatureUtils.getTemperatureRange(''), equals('Unknown'));
+        expect(
+          TemperatureUtils.getTemperatureRange('X', l10n: mockL10n),
+          equals('Unknown'),
+        );
+        expect(
+          TemperatureUtils.getTemperatureRange('', l10n: mockL10n),
+          equals('Unknown'),
+        );
       });
     });
 
     group('getColorDescription', () {
       test('should return correct color descriptions for spectral classes', () {
-        expect(TemperatureUtils.getColorDescription('O'), equals('Blue'));
-        expect(TemperatureUtils.getColorDescription('B'), equals('Blue-white'));
-        expect(TemperatureUtils.getColorDescription('A'), equals('White'));
         expect(
-          TemperatureUtils.getColorDescription('F'),
+          TemperatureUtils.getColorDescription('O', l10n: mockL10n),
+          equals('Blue'),
+        );
+        expect(
+          TemperatureUtils.getColorDescription('B', l10n: mockL10n),
+          equals('Blue-white'),
+        );
+        expect(
+          TemperatureUtils.getColorDescription('A', l10n: mockL10n),
+          equals('White'),
+        );
+        expect(
+          TemperatureUtils.getColorDescription('F', l10n: mockL10n),
           equals('Yellow-white'),
         );
-        expect(TemperatureUtils.getColorDescription('G'), equals('Yellow'));
-        expect(TemperatureUtils.getColorDescription('K'), equals('Orange'));
-        expect(TemperatureUtils.getColorDescription('M'), equals('Red'));
+        expect(
+          TemperatureUtils.getColorDescription('G', l10n: mockL10n),
+          equals('Yellow'),
+        );
+        expect(
+          TemperatureUtils.getColorDescription('K', l10n: mockL10n),
+          equals('Orange'),
+        );
+        expect(
+          TemperatureUtils.getColorDescription('M', l10n: mockL10n),
+          equals('Red'),
+        );
       });
 
       test('should handle lowercase input', () {
-        expect(TemperatureUtils.getColorDescription('g'), equals('Yellow'));
-        expect(TemperatureUtils.getColorDescription('m'), equals('Red'));
+        expect(
+          TemperatureUtils.getColorDescription('g', l10n: mockL10n),
+          equals('Yellow'),
+        );
+        expect(
+          TemperatureUtils.getColorDescription('m', l10n: mockL10n),
+          equals('Red'),
+        );
       });
 
       test('should handle invalid input', () {
-        expect(TemperatureUtils.getColorDescription('X'), equals('Unknown'));
-        expect(TemperatureUtils.getColorDescription(''), equals('Unknown'));
+        expect(
+          TemperatureUtils.getColorDescription('X', l10n: mockL10n),
+          equals('Unknown'),
+        );
+        expect(
+          TemperatureUtils.getColorDescription('', l10n: mockL10n),
+          equals('Unknown'),
+        );
       });
     });
 
@@ -293,11 +346,17 @@ void main() {
           expect(color, isA<Color>()); // Should return a valid color
 
           // Temperature range should be consistent
-          final tempRange = TemperatureUtils.getTemperatureRange(spectralClass);
+          final tempRange = TemperatureUtils.getTemperatureRange(
+            spectralClass,
+            l10n: mockL10n,
+          );
           expect(tempRange, isNot(equals('Unknown')));
 
           // Color description should be consistent
-          final colorDesc = TemperatureUtils.getColorDescription(spectralClass);
+          final colorDesc = TemperatureUtils.getColorDescription(
+            spectralClass,
+            l10n: mockL10n,
+          );
           expect(colorDesc, isNot(equals('Unknown')));
         }
       });
