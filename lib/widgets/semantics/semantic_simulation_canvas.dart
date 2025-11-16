@@ -129,7 +129,7 @@ class _SemanticSimulationCanvasState extends State<SemanticSimulationCanvas> {
     }
 
     return Semantics(
-      label: l10n.gravitationalSimulationLabel,
+      label: l10n.simulationCanvasLabel,
       hint: SemanticUtils.createKeyboardHints(l10n),
       value: _buildComprehensiveDescription(),
       onTap: widget.onTap,

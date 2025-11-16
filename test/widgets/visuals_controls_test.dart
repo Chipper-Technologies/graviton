@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/visuals_controls.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +46,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Display Options'), findsOneWidget);
-      expect(find.byType(SectionTitle), findsWidgets);
+      expect(find.byType(SectionDivider), findsWidgets);
     });
 
     testWidgets('displays all visual toggles', (WidgetTester tester) async {
@@ -152,7 +152,7 @@ void main() {
       expect(find.text('Path Visualization'), findsOneWidget);
 
       // Just verify we have section titles - the Navigation Aids section might have been removed
-      expect(find.byType(SectionTitle), findsWidgets);
+      expect(find.byType(SectionDivider), findsWidgets);
     });
 
     testWidgets('can toggle off-screen indicators if present', (
@@ -215,7 +215,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.byType(SectionTitle), findsWidgets);
+      expect(find.byType(SectionDivider), findsWidgets);
       expect(find.text('Display Options'), findsOneWidget);
       expect(find.text('Path Visualization'), findsOneWidget);
     });

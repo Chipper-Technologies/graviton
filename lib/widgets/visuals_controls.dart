@@ -4,9 +4,12 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/platform_utils.dart';
-import 'package:graviton/widgets/common/haptic_ink_well.dart';
-import 'package:graviton/widgets/common/haptic_switch.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_switch.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
+import 'package:graviton/services/firebase_service.dart';
 
 /// Visuals controls content for the persistent bottom sheet
 class VisualsControls extends StatelessWidget {
@@ -28,20 +31,27 @@ class VisualsControls extends StatelessWidget {
       padding: EdgeInsets.only(
         left: AppTypography.spacingXLarge,
         right: AppTypography.spacingXLarge,
-        top: AppTypography.spacingLarge,
         bottom:
             PlatformUtils.getBottomSheetSystemBarPadding(), // Platform-specific padding for system bar
       ),
       children: [
-        SectionTitle(title: l10n.displayOptionsTitle),
-        SizedBox(height: AppTypography.spacingMedium),
+        SectionDivider.labeled(
+          l10n.displayOptionsTitle,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
 
         _buildToggleOption(
-          l10n.showTrailsTitle,
+          l10n.showTrails,
           l10n.showTrailsDescription,
           Icons.timeline,
           appState.ui.showTrails,
-          () => appState.ui.toggleTrails(),
+          () => _toggleWithAnalytics(
+            UIAction.trailDisplayToggle,
+            UIElement.trailControls,
+            'trails',
+            appState.ui.showTrails,
+            appState.ui.toggleTrails,
+          ),
         ),
 
         _buildToggleOption(
@@ -49,15 +59,27 @@ class VisualsControls extends StatelessWidget {
           l10n.showLabelsDescription,
           Icons.label,
           appState.ui.showLabels,
-          () => appState.ui.toggleLabels(),
+          () => _toggleWithAnalytics(
+            UIAction.labelDisplayToggle,
+            UIElement.labelControls,
+            'labels',
+            appState.ui.showLabels,
+            appState.ui.toggleLabels,
+          ),
         ),
 
         _buildToggleOption(
-          l10n.realisticColorsTitle,
+          l10n.realisticColors,
           l10n.realisticColorsDescription,
           Icons.color_lens,
           appState.ui.useRealisticColors,
-          () => appState.ui.toggleRealisticColors(),
+          () => _toggleWithAnalytics(
+            UIAction.realisticColorsToggle,
+            UIElement.colorSchemeControls,
+            'realistic_colors',
+            appState.ui.useRealisticColors,
+            appState.ui.toggleRealisticColors,
+          ),
         ),
 
         _buildToggleOption(
@@ -65,7 +87,13 @@ class VisualsControls extends StatelessWidget {
           l10n.habitableZonesDescription,
           Icons.eco,
           appState.ui.showHabitableZones,
-          () => appState.ui.toggleHabitableZones(),
+          () => _toggleWithAnalytics(
+            UIAction.habitableZonesToggle,
+            UIElement.habitableZoneControls,
+            'habitable_zones',
+            appState.ui.showHabitableZones,
+            appState.ui.toggleHabitableZones,
+          ),
         ),
 
         _buildToggleOption(
@@ -73,20 +101,33 @@ class VisualsControls extends StatelessWidget {
           l10n.habitabilityIndicatorsDescription,
           Icons.circle,
           appState.ui.showHabitabilityIndicators,
-          () => appState.ui.toggleHabitabilityIndicators(),
+          () => _toggleWithAnalytics(
+            UIAction.habitabilityIndicatorsToggle,
+            UIElement.habitableZoneControls,
+            'habitability_indicators',
+            appState.ui.showHabitabilityIndicators,
+            appState.ui.toggleHabitabilityIndicators,
+          ),
         ),
 
-        SizedBox(height: AppTypography.spacingXXLarge),
-
-        SectionTitle(title: l10n.pathVisualizationTitle),
-        SizedBox(height: AppTypography.spacingMedium),
+        SectionDivider.labeled(
+          l10n.pathVisualizationTitle,
+          topSpacing: AppTypography.spacingSmall,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
 
         _buildToggleOption(
           l10n.showOrbitalPaths,
           l10n.showOrbitalPathsDescription,
           Icons.radio_button_unchecked,
           appState.ui.showOrbitalPaths,
-          () => appState.ui.toggleOrbitalPaths(),
+          () => _toggleWithAnalytics(
+            UIAction.orbitalPathsToggle,
+            UIElement.orbitalPathControls,
+            'orbital_paths',
+            appState.ui.showOrbitalPaths,
+            appState.ui.toggleOrbitalPaths,
+          ),
         ),
 
         if (appState.ui.showOrbitalPaths)
@@ -95,20 +136,33 @@ class VisualsControls extends StatelessWidget {
             l10n.dualOrbitalPathsDescription,
             Icons.donut_small,
             appState.ui.dualOrbitalPaths,
-            () => appState.ui.toggleDualOrbitalPaths(),
+            () => _toggleWithAnalytics(
+              UIAction.dualOrbitalPathsToggle,
+              UIElement.orbitalPathControls,
+              'dual_orbital_paths',
+              appState.ui.dualOrbitalPaths,
+              appState.ui.toggleDualOrbitalPaths,
+            ),
           ),
 
-        SizedBox(height: AppTypography.spacingXXLarge),
-
-        SectionTitle(title: l10n.navigationAidsTitle),
-        SizedBox(height: AppTypography.spacingMedium),
+        SectionDivider.labeled(
+          l10n.navigationAidsTitle,
+          topSpacing: AppTypography.spacingSmall,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
 
         _buildToggleOption(
           l10n.offScreenIndicatorsTitle,
           l10n.offScreenIndicatorsDescription,
           Icons.navigation,
           appState.ui.showOffScreenIndicators,
-          () => appState.ui.toggleOffScreenIndicators(),
+          () => _toggleWithAnalytics(
+            UIAction.offscreenIndicatorsToggle,
+            UIElement.navigationAidsControls,
+            'offscreen_indicators',
+            appState.ui.showOffScreenIndicators,
+            appState.ui.toggleOffScreenIndicators,
+          ),
           isLast: true,
         ),
       ],
@@ -126,7 +180,7 @@ class VisualsControls extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingSmall),
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparentColor,
         child: HapticInkWell(
           onTap: onToggle,
           borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
@@ -212,5 +266,29 @@ class VisualsControls extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Helper method to track analytics for toggle operations
+  void _toggleWithAnalytics(
+    UIAction action,
+    UIElement element,
+    String settingName,
+    bool currentValue,
+    VoidCallback toggleFunction,
+  ) {
+    // Track analytics before toggling
+    FirebaseService.instance.logUIEventWithEnums(
+      action,
+      element: element,
+      value: (!currentValue).toString(),
+      additionalParams: {
+        'setting': settingName,
+        'previous_state': currentValue.toString(),
+        'new_state': (!currentValue).toString(),
+      },
+    );
+
+    // Execute the toggle function
+    toggleFunction();
   }
 }

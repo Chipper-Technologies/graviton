@@ -12,13 +12,16 @@ class FullscreenUtils {
   /// 1. Updates the UI state
   /// 2. Manages system UI overlays
   /// 3. Handles any errors gracefully
-  static Future<void> enterFullscreen(AppState appState) async {
+  static Future<void> enterFullscreen(
+    AppState appState, [
+    String? trigger,
+  ]) async {
     try {
       // Update UI state first
       appState.ui.setFullscreen(true);
 
       // Use the fullscreen service to handle system UI
-      await FullscreenService.instance.enterFullscreen();
+      await FullscreenService.instance.enterFullscreen(trigger ?? 'utils');
     } catch (e) {
       // If something goes wrong, revert the state
       appState.ui.setFullscreen(false);
@@ -32,13 +35,16 @@ class FullscreenUtils {
   /// 1. Updates the UI state
   /// 2. Restores system UI overlays
   /// 3. Handles any errors gracefully
-  static Future<void> exitFullscreen(AppState appState) async {
+  static Future<void> exitFullscreen(
+    AppState appState, [
+    String? trigger,
+  ]) async {
     try {
       // Update UI state first
       appState.ui.setFullscreen(false);
 
       // Use the fullscreen service to handle system UI
-      await FullscreenService.instance.exitFullscreen();
+      await FullscreenService.instance.exitFullscreen(trigger ?? 'utils');
     } catch (e) {
       // If something goes wrong, revert the state
       appState.ui.setFullscreen(true);
@@ -50,11 +56,14 @@ class FullscreenUtils {
   ///
   /// This is the main function that should be called when the user
   /// taps the simulation to toggle fullscreen mode
-  static Future<void> toggleFullscreen(AppState appState) async {
+  static Future<void> toggleFullscreen(
+    AppState appState, [
+    String? trigger,
+  ]) async {
     if (appState.ui.isFullscreen) {
-      await exitFullscreen(appState);
+      await exitFullscreen(appState, trigger ?? 'toggle');
     } else {
-      await enterFullscreen(appState);
+      await enterFullscreen(appState, trigger ?? 'toggle');
     }
   }
 
@@ -87,9 +96,14 @@ class FullscreenUtils {
   }
 
   /// Force exit fullscreen (useful for cleanup or error recovery)
-  static Future<void> forceExitFullscreen(AppState appState) async {
+  static Future<void> forceExitFullscreen(
+    AppState appState, [
+    String? reason,
+  ]) async {
     appState.ui.setFullscreen(false);
-    FullscreenService.instance.forceExitFullscreen();
+    FullscreenService.instance.forceExitFullscreen(
+      reason ?? 'utils_force_exit',
+    );
   }
 
   /// Reset fullscreen state (useful for testing)

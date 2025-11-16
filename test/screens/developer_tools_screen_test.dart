@@ -3,8 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/screens/developer_tools_screen.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/widgets/common/action_option.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 
 void main() {
   group('DeveloperToolsScreen', () {
@@ -31,7 +32,7 @@ void main() {
         // Should have Scaffold with transparent background
         expect(find.byType(Scaffold), findsOneWidget);
         final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-        expect(scaffold.backgroundColor, equals(Colors.transparent));
+        expect(scaffold.backgroundColor, equals(AppColors.transparentColor));
 
         // Should have AppBar
         expect(find.byType(AppBar), findsOneWidget);
@@ -63,8 +64,8 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Should have section titles
-        expect(find.byType(SectionTitle), findsWidgets);
+        // Should have section dividers
+        expect(find.byType(SectionDivider), findsWidgets);
 
         // Should have action options for tutorial and changelog
         expect(find.byType(ActionOption), findsAtLeastNWidgets(2));
@@ -86,7 +87,7 @@ void main() {
         // Screenshot mode widget should be conditionally displayed
         // We don't assert its presence since it depends on ScreenshotModeService availability
         expect(find.byType(Column), findsWidgets);
-        expect(find.byType(SectionTitle), findsWidgets);
+        expect(find.byType(SectionDivider), findsWidgets);
       });
 
       testWidgets('should display tutorial button', (tester) async {
@@ -130,7 +131,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Should still have all content after scrolling
-        expect(find.byType(SectionTitle), findsWidgets);
+        expect(find.byType(SectionDivider), findsWidgets);
       });
 
       testWidgets('should handle tutorial button tap', (tester) async {
@@ -182,7 +183,7 @@ void main() {
 
         // Scaffold should be transparent
         final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-        expect(scaffold.backgroundColor, equals(Colors.transparent));
+        expect(scaffold.backgroundColor, equals(AppColors.transparentColor));
 
         // Content container should have semi-transparent background
         expect(find.byType(Container), findsWidgets);
@@ -284,7 +285,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Should have proper semantic structure with headers and content
-        expect(find.byType(SectionTitle), findsWidgets);
+        expect(find.byType(SectionDivider), findsWidgets);
         expect(find.byType(Text), findsWidgets);
         expect(find.byType(ActionOption), findsWidgets);
       });
@@ -323,8 +324,8 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Should have organized sections with proper titles
-        expect(find.byType(SectionTitle), findsWidgets);
+        // Should have organized sections with proper dividers
+        expect(find.byType(SectionDivider), findsWidgets);
 
         // Should have proper content organization
         expect(find.byType(ActionOption), findsAtLeastNWidgets(2));

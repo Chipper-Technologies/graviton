@@ -67,6 +67,7 @@ class PhysicsSettings {
       case ScenarioType.galaxyFormation:
       case ScenarioType.collisionDemo:
       case ScenarioType.deepSpace:
+      case ScenarioType.custom:
         return PhysicsSettings.experimental();
     }
   }

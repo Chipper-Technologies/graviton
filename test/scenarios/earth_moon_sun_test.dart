@@ -3,13 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/services/simulation.dart' as physics;
+import '../test_utils.dart';
 
 void main() {
   group('Earth-Moon-Sun Orbital Mechanics', () {
     test('System should be simple and stable like solar system', () {
       final scenarioService = ScenarioService();
+      final mockL10n = TestUtils.createMockAppLocalizations();
       final bodies = scenarioService.generateScenario(
         ScenarioType.earthMoonSun,
+        l10n: mockL10n,
       );
 
       final sun = bodies.firstWhere((body) => body.name == 'Sun');
@@ -34,8 +37,10 @@ void main() {
 
     test('Bodies should have stable circular orbital velocities', () {
       final scenarioService = ScenarioService();
+      final mockL10n = TestUtils.createMockAppLocalizations();
       final bodies = scenarioService.generateScenario(
         ScenarioType.earthMoonSun,
+        l10n: mockL10n,
       );
 
       // Find the bodies
@@ -85,8 +90,10 @@ void main() {
 
     test('Moon should orbit Earth, not directly the Sun', () {
       final scenarioService = ScenarioService();
+      final mockL10n = TestUtils.createMockAppLocalizations();
       final bodies = scenarioService.generateScenario(
         ScenarioType.earthMoonSun,
+        l10n: mockL10n,
       );
 
       final sun = bodies.firstWhere((body) => body.name == 'Sun');
@@ -108,8 +115,10 @@ void main() {
 
     test('Moon should remain bound to Earth throughout simulation', () {
       final scenarioService = ScenarioService();
+      final mockL10n = TestUtils.createMockAppLocalizations();
       final bodies = scenarioService.generateScenario(
         ScenarioType.earthMoonSun,
+        l10n: mockL10n,
       );
 
       final simulation = physics.Simulation();
@@ -156,8 +165,10 @@ void main() {
 
     test('System should be stable in short-term simulation', () {
       final scenarioService = ScenarioService();
+      final mockL10n = TestUtils.createMockAppLocalizations();
       final bodies = scenarioService.generateScenario(
         ScenarioType.earthMoonSun,
+        l10n: mockL10n,
       );
 
       final simulation = physics.Simulation();

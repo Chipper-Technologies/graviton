@@ -4,11 +4,12 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/action_option.dart';
-import 'package:graviton/widgets/common/haptic_app_bar.dart';
-import 'package:graviton/widgets/common/haptic_slider_option.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
+import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 import 'package:graviton/widgets/common/toggle_option.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 
 /// Full-screen physics settings page with transparent background
 class PhysicsSettingsScreen extends StatefulWidget {
@@ -82,7 +83,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparentColor,
       appBar: HapticAppBar(title: l10n.physicsSettingsTitle),
       body: SafeArea(
         child: Container(
@@ -101,8 +102,10 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Physics section
-                        SectionTitle(title: l10n.physicsSection),
-                        SizedBox(height: AppTypography.spacingMedium),
+                        SectionDivider.labeled(
+                          l10n.physicsSection,
+                          bottomSpacing: AppTypography.spacingMedium,
+                        ),
 
                         HapticSliderOption.detailed(
                           label: l10n.gravitationalConstant,
@@ -115,7 +118,8 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             setState(() => _gravitationalConstant = value);
                             _updateSettings();
                           },
-                          formatter: (value) => value.toStringAsFixed(2),
+                          formatter: (value) =>
+                              NumberUtils.formatDecimal(value, 2),
                         ),
 
                         HapticSliderOption.detailed(
@@ -129,7 +133,8 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             setState(() => _softening = value);
                             _updateSettings();
                           },
-                          formatter: (value) => value.toStringAsFixed(3),
+                          formatter: (value) =>
+                              NumberUtils.formatDecimal(value, 3),
                         ),
 
                         HapticSliderOption.detailed(
@@ -143,14 +148,15 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             setState(() => _timeScale = value);
                             _updateSettings();
                           },
-                          formatter: (value) => '${value.toStringAsFixed(1)}x',
+                          formatter: (value) =>
+                              '${NumberUtils.formatDecimal(value, 1)}x',
                         ),
 
-                        const SizedBox(height: 32),
-
                         // Collision section
-                        SectionTitle(title: l10n.collisionsSection),
-                        const SizedBox(height: 16),
+                        SectionDivider.labeled(
+                          l10n.collisionsSection,
+                          bottomSpacing: AppTypography.spacingLarge,
+                        ),
 
                         HapticSliderOption.detailed(
                           label: l10n.collisionSensitivity,
@@ -164,14 +170,14 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             _updateSettings();
                           },
                           formatter: (value) =>
-                              '${(value * 100).toStringAsFixed(0)}%',
+                              '${NumberUtils.formatDecimal(value * 100, 0)}%',
                         ),
 
-                        const SizedBox(height: 32),
-
                         // Trails section
-                        SectionTitle(title: l10n.trailsSection),
-                        const SizedBox(height: 16),
+                        SectionDivider.labeled(
+                          l10n.trailsLabel,
+                          bottomSpacing: AppTypography.spacingLarge,
+                        ),
 
                         HapticSliderOption.detailed(
                           label: l10n.trailLength,
@@ -184,7 +190,8 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             setState(() => _maxTrailPoints = value);
                             _updateSettings();
                           },
-                          formatter: (value) => value.toStringAsFixed(0),
+                          formatter: (value) =>
+                              NumberUtils.formatDecimal(value, 0),
                         ),
 
                         HapticSliderOption.detailed(
@@ -198,14 +205,15 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                             setState(() => _trailFadeRate = value);
                             _updateSettings();
                           },
-                          formatter: (value) => value.toStringAsFixed(1),
+                          formatter: (value) =>
+                              NumberUtils.formatDecimal(value, 1),
                         ),
 
-                        const SizedBox(height: 32),
-
                         // Haptics section
-                        SectionTitle(title: l10n.hapticsSection),
-                        const SizedBox(height: 16),
+                        SectionDivider.labeled(
+                          l10n.hapticsSection,
+                          bottomSpacing: AppTypography.spacingLarge,
+                        ),
 
                         ToggleOption(
                           title: l10n.vibrationEnabled,
@@ -219,7 +227,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                         ),
 
                         if (_vibrationEnabled) ...[
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTypography.spacingXSmall),
                           HapticSliderOption.detailed(
                             label: l10n.vibrationThrottle,
                             value: _vibrationThrottleTime,
@@ -232,11 +240,9 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                               _updateSettings();
                             },
                             formatter: (value) =>
-                                '${(value * 1000).toStringAsFixed(0)}ms',
+                                '${NumberUtils.formatDecimal(value * 1000, 0)}ms',
                           ),
                         ],
-
-                        const SizedBox(height: 24),
 
                         // Reset button
                         ActionOption(

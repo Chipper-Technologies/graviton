@@ -3,7 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/screens/help_screen.dart';
-import 'package:graviton/widgets/section_title.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
 
 void main() {
   group('HelpScreen', () {
@@ -28,7 +29,7 @@ void main() {
         // Should have Scaffold with transparent background
         expect(find.byType(Scaffold), findsOneWidget);
         final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-        expect(scaffold.backgroundColor, equals(Colors.transparent));
+        expect(scaffold.backgroundColor, equals(AppColors.transparentColor));
 
         // Should have AppBar
         expect(find.byType(AppBar), findsOneWidget);
@@ -56,8 +57,8 @@ void main() {
         await tester.pumpWidget(createTestWidget(child: const HelpScreen()));
         await tester.pumpAndSettle();
 
-        // Should have section titles
-        expect(find.byType(SectionTitle), findsAtLeastNWidgets(3));
+        // Should have section dividers
+        expect(find.byType(SectionDivider), findsAtLeastNWidgets(3));
 
         // Should have text content
         expect(find.byType(Text), findsWidgets);
@@ -74,7 +75,7 @@ void main() {
 
         // Should find "What to Do" content (exact text depends on localization)
         expect(find.byType(Text), findsWidgets);
-        expect(find.byType(SectionTitle), findsWidgets);
+        expect(find.byType(SectionDivider), findsWidgets);
       });
 
       testWidgets('should display objectives section', (tester) async {
@@ -83,7 +84,7 @@ void main() {
 
         // Should find objectives content
         expect(find.byType(Text), findsWidgets);
-        expect(find.byType(SectionTitle), findsWidgets);
+        expect(find.byType(SectionDivider), findsWidgets);
       });
 
       testWidgets('should display quick start section', (tester) async {
@@ -92,7 +93,7 @@ void main() {
 
         // Should find quick start content
         expect(find.byType(Text), findsWidgets);
-        expect(find.byType(SectionTitle), findsWidgets);
+        expect(find.byType(SectionDivider), findsWidgets);
       });
 
       testWidgets('should display get started button', (tester) async {
@@ -121,7 +122,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Should still have all content after scrolling
-        expect(find.byType(SectionTitle), findsWidgets);
+        expect(find.byType(SectionDivider), findsWidgets);
       });
     });
 
@@ -134,7 +135,7 @@ void main() {
 
         // Scaffold should be transparent
         final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-        expect(scaffold.backgroundColor, equals(Colors.transparent));
+        expect(scaffold.backgroundColor, equals(AppColors.transparentColor));
 
         // Content container should have semi-transparent background
         expect(find.byType(Container), findsWidgets);
@@ -185,7 +186,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Should have proper semantic structure with headers and content
-        expect(find.byType(SectionTitle), findsWidgets);
+        expect(find.byType(SectionDivider), findsWidgets);
         expect(find.byType(Text), findsWidgets);
       });
     });

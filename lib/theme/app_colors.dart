@@ -1,8 +1,5 @@
 import 'dart:ui';
 
-import 'package:graviton/constants/simulation_constants.dart';
-import 'package:graviton/enums/celestial_body_name.dart';
-
 /// Comprehensive color theme for the Graviton app.
 class AppColors {
   // Private constructor to prevent instantiation
@@ -137,6 +134,12 @@ class AppColors {
 
   /// Asteroid and small body colors
   static const Color asteroidBrownish = Color(0xFF8B6B3F);
+  static const Color asteroidRockyBrown = Color(
+    0xFF8B7355,
+  ); // Brown - rocky asteroid color
+  static const Color asteroidSienna = Color(
+    0xFFA0522D,
+  ); // Sienna - varied asteroid color
   static const Color kuiperBeltIcy = Color(
     0xFFB8E6FF,
   ); // Icy blue-white for Kuiper objects
@@ -147,6 +150,9 @@ class AppColors {
     0xFFE8E8E8,
   ); // White companion star
   static const Color binaryStarBlue = Color(0xFF87CEEB); // Blue companion star
+  static const Color pulsarCyan = Color(
+    0xFF4FC3F7,
+  ); // Cyan - high energy pulsar radiation
 
   // =============================================================================
   // HABITABILITY & STATUS COLORS
@@ -157,6 +163,27 @@ class AppColors {
   static const Color habitabilityTooHot = Color(0xFFF44336); // Red
   static const Color habitabilityTooCold = Color(0xFF2196F3); // Blue
   static const Color habitabilityUnknown = Color(0xFF9E9E9E); // Grey
+  static const Color habitabilityGasGiant = Color(
+    0xFFFF9800,
+  ); // Orange - gas giant
+  static const Color habitabilityTooSmall = Color(
+    0xFF795548,
+  ); // Brown - rocky small body
+  static const Color habitabilityNoAtmosphere = Color(
+    0xFF607D8B,
+  ); // Blue grey - airless world
+  static const Color habitabilityToxicAtmosphere = Color(
+    0xFF9C27B0,
+  ); // Purple - toxic/poisonous
+  static const Color habitabilityHighRadiation = Color(
+    0xFFE91E63,
+  ); // Pink - radiation hazard
+  static const Color habitabilityTidallyLocked = Color(
+    0xFFFF5722,
+  ); // Deep orange - extreme temperature gradient
+  static const Color habitabilityExtremeGravity = Color(
+    0xFF3F51B5,
+  ); // Indigo - extreme gravitational effects
   static const Color habitabilityDangerZone = Color(
     0xFFFF5722,
   ); // Deep orange/red
@@ -209,6 +236,11 @@ class AppColors {
   static const Color uiYellow = Color(0xFFFFEB3B); // Colors.yellow
   static const Color uiOrange = Color(0xFFFF9800); // Colors.orange
   static const Color uiRed = Color(0xFFF44336); // Colors.red
+  static const Color uiBlue = Color(0xFF2196F3); // Colors.blue
+  static const Color uiPurple = Color(0xFF9C27B0); // Colors.purple
+  static const Color uiTeal = Color(0xFF009688); // Colors.teal
+  static const Color uiIndigo = Color(0xFF3F51B5); // Colors.indigo
+  static const Color uiAmber = Color(0xFFFFC107); // Colors.amber
   static const Color uiBlack = Color(0xFF000000); // Colors.black
   static const Color uiSelectionYellow = Color(
     0xFFFFEB3B,
@@ -625,76 +657,4 @@ class AppColors {
   static const double alphaVeryOpaque = 0.8;
   static const double alphaNearlyOpaque = 0.9;
   static const double alphaFullyOpaque = 1.0;
-
-  // =============================================================================
-  // HELPER METHODS
-  // =============================================================================
-
-  /// Create a color with specified alpha from any base color
-  static Color withAlpha(Color baseColor, double alpha) {
-    return baseColor.withValues(alpha: alpha);
-  }
-
-  /// Create gradient colors for glow effects
-  static List<Color> createGlowGradient(
-    Color baseColor,
-    List<double> alphaStops,
-  ) {
-    return alphaStops.map((alpha) => withAlpha(baseColor, alpha)).toList();
-  }
-
-  /// Get habitability color by status
-  static Color getHabitabilityColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'habitable':
-        return habitabilityHabitable;
-      case 'too_hot':
-        return habitabilityTooHot;
-      case 'too_cold':
-        return habitabilityTooCold;
-      default:
-        return habitabilityUnknown;
-    }
-  }
-
-  /// Get temperature visualization color based on temperature in Kelvin
-  static Color getTemperatureColor(double temperatureKelvin) {
-    final celsius =
-        temperatureKelvin - SimulationConstants.kelvinToCelsiusOffset;
-
-    // Color scale from blue (cold) to red (hot)
-    if (celsius < -50) return temperatureFrozen;
-    if (celsius < 0) return temperatureCold;
-    if (celsius < 25) return temperatureCool;
-    if (celsius < 50) return temperatureWarm;
-    if (celsius < 100) return temperatureHot;
-    if (celsius < 200) return temperatureVeryHot;
-    return temperatureScorching;
-  }
-
-  /// Get planet color by name
-  static Color getPlanetColor(String planetName) {
-    final celestialBody = CelestialBodyName.fromString(planetName);
-
-    switch (celestialBody) {
-      case CelestialBodyName.mercury:
-        return planetMercury;
-      case CelestialBodyName.venus:
-        return planetVenus;
-      case CelestialBodyName.earth:
-        return planetEarth;
-      case CelestialBodyName.mars:
-        return planetMars;
-      case CelestialBodyName.jupiter:
-        return planetJupiter;
-      case CelestialBodyName.saturn:
-        return planetSaturn;
-      case CelestialBodyName.uranus:
-        return planetUranus;
-      case CelestialBodyName.neptune:
-        return planetNeptune;
-      default:
-        return celestialBlue;
-    }
-  }
 }

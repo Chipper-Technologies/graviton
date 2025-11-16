@@ -3,7 +3,7 @@ import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/screens/about_screen.dart';
-import 'package:graviton/widgets/common/haptic_gesture_detector.dart';
+import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
 
 /// Copyright text widget positioned in bottom center
 class CopyrightText extends StatelessWidget {

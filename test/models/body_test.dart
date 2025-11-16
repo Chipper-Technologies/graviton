@@ -473,5 +473,79 @@ void main() {
         expect(body.temperature, equals(newTemperature));
       });
     });
+
+    group('Equality and HashCode', () {
+      test('should be equal for identical properties', () {
+        final body1 = Body(
+          position: vm.Vector3(1.0, 2.0, 3.0),
+          velocity: vm.Vector3(0.1, 0.2, 0.3),
+          mass: 10.0,
+          radius: 1.5,
+          color: AppColors.basicRed,
+          name: 'Test Body',
+          isPlanet: true,
+          bodyType: BodyType.planet,
+          stellarLuminosity: 0.5,
+          habitabilityStatus: HabitabilityStatus.habitable,
+          temperature: 300.0,
+          showGravityWell: true,
+        );
+
+        final body2 = Body(
+          position: vm.Vector3(1.0, 2.0, 3.0),
+          velocity: vm.Vector3(0.1, 0.2, 0.3),
+          mass: 10.0,
+          radius: 1.5,
+          color: AppColors.basicRed,
+          name: 'Test Body',
+          isPlanet: true,
+          bodyType: BodyType.planet,
+          stellarLuminosity: 0.5,
+          habitabilityStatus: HabitabilityStatus.habitable,
+          temperature: 300.0,
+          showGravityWell: true,
+        );
+
+        expect(body1, equals(body2));
+        expect(body1.hashCode, equals(body2.hashCode));
+      });
+
+      test('should not be equal for different properties', () {
+        final body1 = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Body 1',
+        );
+
+        final body2 = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Body 2', // Different name
+        );
+
+        expect(body1, isNot(equals(body2)));
+        expect(body1.hashCode, isNot(equals(body2.hashCode)));
+      });
+
+      test('should be equal to itself', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+        );
+
+        expect(body, equals(body));
+        expect(body.hashCode, equals(body.hashCode));
+      });
+    });
   });
 }

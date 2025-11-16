@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 
 /// Utility functions for clipboard operations and user feedback
 class ClipboardUtils {
@@ -17,11 +18,10 @@ class ClipboardUtils {
 
     final localizations = l10n ?? AppLocalizations.of(context);
     if (localizations != null && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(localizations.copiedToClipboard(text)),
-          duration: duration,
-        ),
+      GravitonSnackBar.success(
+        context: context,
+        message: localizations.copiedToClipboard(text),
+        duration: duration,
       );
     }
   }

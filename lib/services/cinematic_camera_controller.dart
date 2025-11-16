@@ -6,31 +6,13 @@ import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
-import 'package:graviton/models/orbital_event.dart';
+import 'package:graviton/models/predictive_orbital_config.dart';
+import 'package:graviton/models/scenario_camera_parameters.dart';
 import 'package:graviton/services/orbital_prediction_engine.dart';
 import 'package:graviton/state/camera_state.dart';
 import 'package:graviton/state/simulation_state.dart';
 import 'package:graviton/state/ui_state.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
-
-/// Camera parameters specific to different simulation scenarios
-class ScenarioCameraParameters {
-  final double safetyMargin;
-  final double minDistance;
-  final double maxDistance;
-  final double pitchSensitivity;
-  final int targetLockFrames;
-  final double orbitSpeed;
-
-  const ScenarioCameraParameters({
-    required this.safetyMargin,
-    required this.minDistance,
-    required this.maxDistance,
-    required this.pitchSensitivity,
-    required this.targetLockFrames,
-    required this.orbitSpeed,
-  });
-}
 
 /// Controller for cinematic camera techniques
 ///
@@ -1322,7 +1304,7 @@ class CinematicCameraController {
 
     // If separation ratio is very high, all bodies are likely ejected
     if (separationRatio > 2.5 && bodies.length > 2) {
-      // Much more aggressive threshold (was 5.0) - detect ejections earlier
+      // Much more aggressive threshold - detect ejections earlier
       // Find the closest pair among all bodies for focused tracking
       double closestPairDistance = double.infinity;
       List<Body> closestPair = [];
@@ -1344,7 +1326,7 @@ class CinematicCameraController {
     }
 
     // More aggressive normal filtering for active interactions
-    // Filter out bodies that are farther than 1.2x median distance (was 1.5x)
+    // Filter out bodies that are farther than 1.2x median distance
     final ejectionThreshold =
         medianDistance * 1.2; // More aggressive ejection filtering
     final filteredBodies = <Body>[];
@@ -1393,9 +1375,10 @@ class CinematicCameraController {
       }
     }
 
-    // For random scenarios, prefer just the 2 closest bodies for tight action
+    // Ensure we always return at least 2 bodies if available (for any scenario type)
+    // This prevents crashes in _findBestScoredPair which expects pairs
     if (filteredBodies.length < 2 && bodies.length >= 2) {
-      // Always use the 2 closest bodies for maximum action focus
+      // Use the 2 closest bodies to center of mass for maximum action focus
       return [bodyDistances[0].key, bodyDistances[1].key];
     }
 
@@ -1462,6 +1445,16 @@ class CinematicCameraController {
 
   /// Standard scoring-based pair selection (original logic)
   List<Body> _findBestScoredPair(List<Body> bodies) {
+    // Guard against edge cases with insufficient bodies
+    if (bodies.isEmpty) {
+      return [];
+    }
+
+    if (bodies.length == 1) {
+      // Return single body twice to maintain pair structure
+      return [bodies[0], bodies[0]];
+    }
+
     // Score body pairs based on multiple factors
     double bestScore = 0.0;
     List<Body> bestPair = [bodies[0], bodies[1]];
@@ -1581,8 +1574,7 @@ class CinematicCameraController {
               _currentFramedBodies[0],
               _currentFramedBodies[1],
             )) {
-          score *=
-              2.5; // Much stronger stickiness for dramatic moments (was 1.4)
+          score *= 2.5; // Much stronger stickiness for dramatic moments
 
           // Extra stickiness for very close interactions
           final currentDistance = (body1.position - body2.position).length;
@@ -2270,7 +2262,7 @@ class CinematicCameraController {
 
     // Apply pitch correction to account for viewing angle
     final pitchAngle = scenario == ScenarioType.solarSystem
-        ? 0.3 // Fixed angle above the plane for solar system
+        ? 0.3
         : 0.2 + math.sin(_verticalOscillation) * 0.6; // Current pitch
 
     final pitchCorrection =
@@ -2425,8 +2417,8 @@ class CinematicCameraController {
         // Random: Extremely aggressive close-up shots for maximum drama
         return ScenarioCameraParameters(
           safetyMargin: 0.8, // Get as close as possible without clipping
-          minDistance: 1.5, // Ultra-close dramatic shots (was 3.0)
-          maxDistance: 35.0, // Very tight maximum framing (was 60.0)
+          minDistance: 1.5, // Ultra-close dramatic shots
+          maxDistance: 35.0, // Very tight maximum framing
           pitchSensitivity: 0.6, // High sensitivity for dynamic angles
           targetLockFrames:
               360, // 6 seconds - faster switching for intense action
@@ -2436,6 +2428,7 @@ class CinematicCameraController {
       case ScenarioType.threeBodyClassic:
       case ScenarioType.collisionDemo:
       case ScenarioType.deepSpace:
+      case ScenarioType.custom:
         // Default: Balanced for other scenarios
         return ScenarioCameraParameters(
           safetyMargin: 1.4, // Versatile distance

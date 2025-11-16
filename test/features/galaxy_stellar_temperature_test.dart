@@ -3,6 +3,7 @@ import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/services/stellar_color_service.dart';
+import '../test_utils.dart';
 
 void main() {
   group('Galaxy Formation Stellar Temperature Tests', () {
@@ -13,9 +14,12 @@ void main() {
     });
 
     test('should assign hotter temperatures to stars closer to black hole', () {
+      final mockL10n = TestUtils.createMockAppLocalizations();
+
       // Generate galaxy formation scenario
       final bodies = scenarioService.generateScenario(
         ScenarioType.galaxyFormation,
+        l10n: mockL10n,
       );
 
       // Find black hole (should be first body at position 0,0,0)
@@ -84,9 +88,12 @@ void main() {
     test(
       'should use stellar temperatures for realistic colors when enabled',
       () {
+        final mockL10n = TestUtils.createMockAppLocalizations();
+
         // Generate galaxy formation scenario
         final bodies = scenarioService.generateScenario(
           ScenarioType.galaxyFormation,
+          l10n: mockL10n,
         );
 
         // Find stars at different distances
@@ -125,8 +132,11 @@ void main() {
     );
 
     test('should apply temperature heating based on distance thresholds', () {
+      final mockL10n = TestUtils.createMockAppLocalizations();
+
       final bodies = scenarioService.generateScenario(
         ScenarioType.galaxyFormation,
+        l10n: mockL10n,
       );
       final blackHole = bodies[0];
 

@@ -1,14 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/services/accessibility_service.dart';
+import 'package:graviton/l10n/app_localizations.dart';
+import '../test_utils.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('AccessibilityService', () {
     late AccessibilityService accessibilityService;
+    late AppLocalizations mockL10n;
 
     setUp(() {
       accessibilityService = AccessibilityService.instance;
+      mockL10n = TestUtils.createMockAppLocalizations();
     });
 
     group('singleton pattern', () {
@@ -63,12 +67,16 @@ void main() {
     });
 
     group('announceMergeEvent', () {
-      test('should not throw when called without localization', () {
+      test('should not throw when called with localization', () {
         const body1 = 'Earth';
         const body2 = 'Mars';
 
         expect(
-          () => accessibilityService.announceMergeEvent(body1, body2),
+          () => accessibilityService.announceMergeEvent(
+            body1,
+            body2,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
       });
@@ -79,7 +87,10 @@ void main() {
         const state = 'running';
 
         expect(
-          () => accessibilityService.announceSimulationStateChange(state),
+          () => accessibilityService.announceSimulationStateChange(
+            state,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
       });
@@ -88,7 +99,10 @@ void main() {
         const state = 'paused';
 
         expect(
-          () => accessibilityService.announceSimulationStateChange(state),
+          () => accessibilityService.announceSimulationStateChange(
+            state,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
       });
@@ -97,7 +111,10 @@ void main() {
         const state = 'unknown';
 
         expect(
-          () => accessibilityService.announceSimulationStateChange(state),
+          () => accessibilityService.announceSimulationStateChange(
+            state,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
       });
@@ -108,7 +125,10 @@ void main() {
         const scenarioName = 'Solar System';
 
         expect(
-          () => accessibilityService.announceScenarioChange(scenarioName),
+          () => accessibilityService.announceScenarioChange(
+            scenarioName,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
       });
@@ -120,7 +140,11 @@ void main() {
         const value = '2.5';
 
         expect(
-          () => accessibilityService.announcePhysicsChange(parameter, value),
+          () => accessibilityService.announcePhysicsChange(
+            parameter,
+            value,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
       });
@@ -130,7 +154,11 @@ void main() {
         const value = '9.81';
 
         expect(
-          () => accessibilityService.announcePhysicsChange(parameter, value),
+          () => accessibilityService.announcePhysicsChange(
+            parameter,
+            value,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
       });
@@ -140,7 +168,11 @@ void main() {
         const value = '300.0';
 
         expect(
-          () => accessibilityService.announcePhysicsChange(parameter, value),
+          () => accessibilityService.announcePhysicsChange(
+            parameter,
+            value,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
       });
@@ -150,7 +182,11 @@ void main() {
         const value = '1.5';
 
         expect(
-          () => accessibilityService.announcePhysicsChange(parameter, value),
+          () => accessibilityService.announcePhysicsChange(
+            parameter,
+            value,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
       });
@@ -160,7 +196,11 @@ void main() {
         const value = '3.0';
 
         expect(
-          () => accessibilityService.announcePhysicsChange(parameter, value),
+          () => accessibilityService.announcePhysicsChange(
+            parameter,
+            value,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
       });
@@ -171,7 +211,8 @@ void main() {
         const action = 'reset';
 
         expect(
-          () => accessibilityService.announceCameraAction(action),
+          () =>
+              accessibilityService.announceCameraAction(action, l10n: mockL10n),
           returnsNormally,
         );
       });
@@ -180,7 +221,8 @@ void main() {
         const action = 'focus';
 
         expect(
-          () => accessibilityService.announceCameraAction(action),
+          () =>
+              accessibilityService.announceCameraAction(action, l10n: mockL10n),
           returnsNormally,
         );
       });
@@ -189,7 +231,8 @@ void main() {
         const action = 'rotate';
 
         expect(
-          () => accessibilityService.announceCameraAction(action),
+          () =>
+              accessibilityService.announceCameraAction(action, l10n: mockL10n),
           returnsNormally,
         );
       });
@@ -199,11 +242,17 @@ void main() {
         const unfollowAction = 'unfollow';
 
         expect(
-          () => accessibilityService.announceCameraAction(followAction),
+          () => accessibilityService.announceCameraAction(
+            followAction,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
         expect(
-          () => accessibilityService.announceCameraAction(unfollowAction),
+          () => accessibilityService.announceCameraAction(
+            unfollowAction,
+            l10n: mockL10n,
+          ),
           returnsNormally,
         );
       });
@@ -212,7 +261,8 @@ void main() {
         const action = 'RESET';
 
         expect(
-          () => accessibilityService.announceCameraAction(action),
+          () =>
+              accessibilityService.announceCameraAction(action, l10n: mockL10n),
           returnsNormally,
         );
       });
@@ -229,6 +279,7 @@ void main() {
             stepName,
             currentStep,
             totalSteps,
+            l10n: mockL10n,
           ),
           returnsNormally,
         );
@@ -240,7 +291,8 @@ void main() {
         const errorMessage = 'Physics calculation failed';
 
         expect(
-          () => accessibilityService.announceError(errorMessage),
+          () =>
+              accessibilityService.announceError(errorMessage, l10n: mockL10n),
           returnsNormally,
         );
       });
@@ -255,6 +307,7 @@ void main() {
           () => accessibilityService.announceSettingChange(
             settingName,
             isEnabled,
+            l10n: mockL10n,
           ),
           returnsNormally,
         );
@@ -268,6 +321,7 @@ void main() {
           () => accessibilityService.announceSettingChange(
             settingName,
             isEnabled,
+            l10n: mockL10n,
           ),
           returnsNormally,
         );

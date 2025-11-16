@@ -1,13 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/state/simulation_state.dart';
+import '../test_utils.dart';
 
 void main() {
   group('Simulation Reset Tests', () {
     test('Reset should restart simulation properly', () async {
       final simulation = SimulationState();
+      final mockL10n = TestUtils.createMockAppLocalizations();
 
-      // Let the simulation initialize
-      await Future.delayed(Duration(milliseconds: 100));
+      // Update localization context before any operations
+      simulation.updateLocalization(mockL10n);
+
+      // Initialize simulation
+      await simulation.initialize();
 
       // Verify initial state
       expect(

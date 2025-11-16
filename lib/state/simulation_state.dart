@@ -3,6 +3,8 @@ import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/firebase_event.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/simulation_status.dart';
+import 'package:graviton/enums/ui_action.dart';
+import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/merge_flash.dart';
@@ -21,16 +23,26 @@ class SimulationState extends ChangeNotifier {
   SimulationStatus _status = SimulationStatus.stopped;
   double _timeScale = 4.0;
   int _stepCount = 0;
+
+  // Store localization context for accessibility announcements
+  AppLocalizations? _l10n;
   double _totalTime = 0.0;
 
   // SharedPreferences keys
   static const String _keyTimeScale = 'timeScale';
   static const String _keyScenario = 'scenario';
 
+  /// Update localization context for accessibility announcements
+  void updateLocalization(AppLocalizations l10n) {
+    _l10n = l10n;
+    // Also update simulation service localization
+    _simulation.updateScenarioLocalization(l10n);
+  }
+
   /// Initialize and load saved settings
   Future<void> initialize() async {
     // First, explicitly set the simulation to random scenario as the default
-    _simulation.resetWithScenario(ScenarioType.random);
+    _simulation.resetWithScenario(ScenarioType.random, l10n: _l10n);
 
     // Then load settings, which may override the scenario if one was saved
     await _loadSettings();
@@ -55,7 +67,7 @@ class SimulationState extends ChangeNotifier {
           final savedScenario = ScenarioType.values.firstWhere(
             (s) => s.name == savedScenarioName,
           );
-          _simulation.resetWithScenario(savedScenario);
+          _simulation.resetWithScenario(savedScenario, l10n: _l10n);
         } catch (e) {
           // If saved scenario is invalid, keep the default (random)
         }
@@ -92,7 +104,7 @@ class SimulationState extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_keyScenario);
       // Reset to default scenario
-      _simulation.resetWithScenario(ScenarioType.random);
+      _simulation.resetWithScenario(ScenarioType.random, l10n: _l10n);
       notifyListeners();
     } catch (e) {
       // Ignore errors
@@ -136,7 +148,26 @@ class SimulationState extends ChangeNotifier {
       HapticFeedbackService.instance.lightImpact();
 
       // Announce state change to screen readers
-      AccessibilityService.instance.announceSimulationStateChange('started');
+      if (_l10n != null) {
+        AccessibilityService.instance.announceSimulationStateChange(
+          'started',
+          l10n: _l10n!,
+        );
+      }
+
+      // Enhanced analytics for simulation start with context
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.simulationStarted,
+        element: UIElement.simulationPlaybackControls,
+        additionalParams: {
+          'scenario': _simulation.currentScenario.name,
+          'body_count': _simulation.bodies.length.toString(),
+          'time_scale': _timeScale.toString(),
+          'previous_status': _status == SimulationStatus.stopped
+              ? 'stopped'
+              : 'error',
+        },
+      );
 
       FirebaseService.instance.logEventWithEnum(
         FirebaseEvent.simulationStarted,
@@ -153,7 +184,25 @@ class SimulationState extends ChangeNotifier {
       HapticFeedbackService.instance.selectionClick();
 
       // Announce state change to screen readers
-      AccessibilityService.instance.announceSimulationStateChange('paused');
+      if (_l10n != null) {
+        AccessibilityService.instance.announceSimulationStateChange(
+          'paused',
+          l10n: _l10n!,
+        );
+      }
+
+      // Enhanced analytics for simulation pause
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.simulationPaused,
+        element: UIElement.simulationPlaybackControls,
+        additionalParams: {
+          'scenario': _simulation.currentScenario.name,
+          'body_count': _simulation.bodies.length.toString(),
+          'time_scale': _timeScale.toString(),
+          'step_count': _stepCount.toString(),
+          'total_time_seconds': _totalTime.toStringAsFixed(1),
+        },
+      );
 
       FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationPaused);
     } else if (_status.canResume) {
@@ -163,7 +212,26 @@ class SimulationState extends ChangeNotifier {
       HapticFeedbackService.instance.lightImpact();
 
       // Announce state change to screen readers
-      AccessibilityService.instance.announceSimulationStateChange('resumed');
+      if (_l10n != null) {
+        AccessibilityService.instance.announceSimulationStateChange(
+          'resumed',
+          l10n: _l10n!,
+        );
+      }
+
+      // Enhanced analytics for simulation resume
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.simulationResumed,
+        element: UIElement.simulationPlaybackControls,
+        additionalParams: {
+          'scenario': _simulation.currentScenario.name,
+          'body_count': _simulation.bodies.length.toString(),
+          'time_scale': _timeScale.toString(),
+          'step_count': _stepCount.toString(),
+          'pause_duration_estimate':
+              'unknown', // Could track this with timestamps
+        },
+      );
 
       FirebaseService.instance.logEventWithEnum(
         FirebaseEvent.simulationResumed,
@@ -206,16 +274,34 @@ class SimulationState extends ChangeNotifier {
     // Provide haptic feedback for simulation stop
     HapticFeedbackService.instance.mediumImpact();
 
+    // Enhanced analytics for simulation stop
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.simulationStopped,
+      element: UIElement.simulationPlaybackControls,
+      additionalParams: {
+        'scenario': _simulation.currentScenario.name,
+        'body_count': _simulation.bodies.length.toString(),
+        'time_scale': _timeScale.toString(),
+        'step_count': _stepCount.toString(),
+        'total_time_seconds': _totalTime.toStringAsFixed(1),
+        'session_duration_steps': _stepCount.toString(),
+      },
+    );
+
     FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationStopped);
     notifyListeners();
   }
 
   void reset() {
+    final previousStepCount = _stepCount;
+    final previousTotalTime = _totalTime;
+
     stop();
 
     // Reset physics simulation to current scenario, preserving custom gravity well settings
     _simulation.resetWithScenario(
       _simulation.currentScenario,
+      l10n: _l10n,
       preserveCustomSettings: true,
     );
     _stepCount = 0;
@@ -223,6 +309,21 @@ class SimulationState extends ChangeNotifier {
 
     // Provide haptic feedback for simulation reset
     HapticFeedbackService.instance.heavyImpact();
+
+    // Enhanced analytics for simulation reset
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.simulationReset,
+      element: UIElement.simulationLifecycleControls,
+      additionalParams: {
+        'scenario': _simulation.currentScenario.name,
+        'body_count': _simulation.bodies.length.toString(),
+        'time_scale': _timeScale.toString(),
+        'previous_step_count': previousStepCount.toString(),
+        'previous_total_time': previousTotalTime.toStringAsFixed(1),
+        'reset_trigger':
+            'manual', // Could be 'manual', 'automatic', 'scenario_change'
+      },
+    );
 
     FirebaseService.instance.logEventWithEnum(FirebaseEvent.simulationReset);
     notifyListeners();
@@ -243,12 +344,17 @@ class SimulationState extends ChangeNotifier {
     HapticFeedbackService.instance.mediumImpact();
 
     // Announce scenario change to screen readers
-    AccessibilityService.instance.announceScenarioChange(scenario.name);
+    if (_l10n != null) {
+      AccessibilityService.instance.announceScenarioChange(
+        scenario.name,
+        l10n: _l10n!,
+      );
+    }
 
     // Reset physics simulation to the specified scenario
     _simulation.resetWithScenario(
       scenario,
-      l10n: l10n,
+      l10n: l10n ?? _l10n,
       preserveCustomSettings: preserveCustomSettings,
     );
     _stepCount = 0;
@@ -299,6 +405,39 @@ class SimulationState extends ChangeNotifier {
     if (_timeScale >= 16.0 || _timeScale <= 0.1) {
       HapticFeedbackService.instance.heavyImpact();
     }
+
+    // Enhanced analytics for time scale changes with performance context
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.simulationSpeedChanged,
+      element: UIElement.timeScaleControls,
+      value: _timeScale.toString(),
+      additionalParams: {
+        'previous_scale': oldScale.toString(),
+        'new_scale': _timeScale.toString(),
+        'scale_change': scaleChange.toString(),
+        'body_count': _simulation.bodies.length.toString(),
+        'simulation_status': _status.name,
+        'at_extreme': (_timeScale >= 16.0 || _timeScale <= 0.1).toString(),
+        'step_count': _stepCount.toString(),
+        'scale_direction': _timeScale > oldScale ? 'increase' : 'decrease',
+      },
+    );
+
+    // Keep the existing performance analytics as well
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.timeScaleAdjusted,
+      element: UIElement.performanceMonitor,
+      value: _timeScale.toString(),
+      additionalParams: {
+        'previous_scale': oldScale.toString(),
+        'new_scale': _timeScale.toString(),
+        'scale_change': scaleChange.toString(),
+        'body_count': _simulation.bodies.length.toString(),
+        'simulation_status': _status.name,
+        'at_extreme': (_timeScale >= 16.0 || _timeScale <= 0.1).toString(),
+        'step_count': _stepCount.toString(),
+      },
+    );
 
     _saveSetting(_keyTimeScale, _timeScale);
     FirebaseService.instance.logSettingsChange('time_scale', _timeScale);

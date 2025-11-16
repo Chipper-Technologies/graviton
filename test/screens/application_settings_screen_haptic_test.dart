@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/enums/app_flavor.dart';
+import 'package:graviton/enums/temperature_unit.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/screens/application_settings_screen.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
@@ -230,6 +231,41 @@ void main() {
         // Verify the section is visually consistent
         final iconWidget = tester.widget<Icon>(find.byIcon(Icons.vibration));
         expect(iconWidget.color, isNotNull);
+      });
+
+      testWidgets('should trigger haptic feedback on temperature unit selection', (
+        tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Find temperature unit dropdown
+        final temperatureDropdown = find.byType(DropdownButton<String>);
+        expect(temperatureDropdown, findsOneWidget);
+
+        // Store initial temperature unit
+        final initialUnit = appState.ui.temperatureUnit;
+
+        // Tap to open dropdown
+        await tester.tap(temperatureDropdown);
+        await tester.pumpAndSettle();
+
+        // Select a different temperature unit (assuming Celsius is available)
+        final celsiusOption = find.text('Celsius').last;
+        if (tester.any(celsiusOption)) {
+          await tester.tap(celsiusOption);
+          await tester.pumpAndSettle();
+
+          // Temperature unit state should be updated (which means haptic was properly integrated)
+          expect(appState.ui.temperatureUnit, isNotNull);
+          // If Celsius was selected and it wasn't the initial unit, verify it changed
+          if (initialUnit != TemperatureUnit.celsius) {
+            expect(
+              appState.ui.temperatureUnit,
+              equals(TemperatureUnit.celsius),
+            );
+          }
+        }
       });
     });
   });

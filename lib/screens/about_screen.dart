@@ -7,8 +7,9 @@ import 'package:graviton/services/version_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/clipboard_utils.dart';
-import 'package:graviton/widgets/common/haptic_app_bar.dart';
-import 'package:graviton/widgets/common/haptic_ink_well.dart';
+import 'package:graviton/widgets/common/graviton_snack_bar.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -61,8 +62,8 @@ class _AboutScreenState extends State<AboutScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: HapticAppBar(title: l10n.aboutDialogTitle),
+      backgroundColor: AppColors.transparentColor,
+      appBar: HapticAppBar(title: l10n.aboutButtonTooltip),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -99,14 +100,14 @@ class _AboutScreenState extends State<AboutScreen> {
 
                     // Centered app name
                     Text(
-                      l10n.appNameGraviton,
+                      l10n.appTitle,
                       style: theme.textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: AppColors.uiWhite,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTypography.spacingMedium),
 
                     // Centered version with status color
                     if (_packageInfo != null)
@@ -121,7 +122,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTypography.spacingMedium),
 
                     // Description
                     Text(
@@ -129,7 +130,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       style: theme.textTheme.bodyMedium,
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTypography.spacingXXLarge),
 
                     // Author Section with Chipper Logo
                     _buildInfoSection(
@@ -143,7 +144,7 @@ class _AboutScreenState extends State<AboutScreen> {
                             width: 20,
                             height: 20,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTypography.spacingSmall),
                           Flexible(
                             child: Text(
                               l10n.companyName,
@@ -153,7 +154,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTypography.spacingLarge),
 
                     // Website Section
                     _buildInfoSection(
@@ -175,7 +176,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTypography.spacingMedium),
 
                     // Privacy Policy Section
                     _buildInfoSection(
@@ -197,7 +198,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTypography.spacingXXLarge),
 
                     // Copyright Section
                     _buildInfoSection(
@@ -236,7 +237,7 @@ class _AboutScreenState extends State<AboutScreen> {
           size: AppTypography.iconSizeXLarge,
           color: theme.colorScheme.primary,
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTypography.spacingMedium),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +249,7 @@ class _AboutScreenState extends State<AboutScreen> {
                   color: AppColors.uiTextGrey,
                 ),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: AppTypography.spacingXXSmall),
               child,
             ],
           ),
@@ -265,17 +266,14 @@ class _AboutScreenState extends State<AboutScreen> {
       } else {
         if (mounted) {
           final l10n = AppLocalizations.of(context)!;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.couldNotOpenUrl(url)),
-              action: SnackBarAction(
-                label: l10n.copyButton,
-                onPressed: () {
-                  // Copy URL to clipboard as fallback
-                  ClipboardUtils.copyToClipboardSilent(url);
-                },
-              ),
-            ),
+          GravitonSnackBar.warning(
+            context: context,
+            message: l10n.couldNotOpenUrl(url),
+            actionLabel: l10n.copyButton,
+            onActionPressed: () {
+              // Copy URL to clipboard as fallback
+              ClipboardUtils.copyToClipboardSilent(url);
+            },
           );
         }
       }
@@ -283,16 +281,13 @@ class _AboutScreenState extends State<AboutScreen> {
       debugPrint('Could not launch URL: $url, error: $e');
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.errorOpeningLink(e.toString())),
-            action: SnackBarAction(
-              label: l10n.copyButton,
-              onPressed: () {
-                ClipboardUtils.copyToClipboardSilent(url);
-              },
-            ),
-          ),
+        GravitonSnackBar.error(
+          context: context,
+          message: l10n.errorOpeningLink(e.toString()),
+          actionLabel: l10n.copyButton,
+          onActionPressed: () {
+            ClipboardUtils.copyToClipboardSilent(url);
+          },
         );
       }
     }
@@ -319,7 +314,7 @@ class _AboutScreenState extends State<AboutScreen> {
         break;
       case VersionStatus.beta:
         badgeColor = AppColors.basicBlue;
-        badgeText = l10n.versionStatusBeta;
+        badgeText = l10n.bodyBeta;
         break;
       case VersionStatus.outdated:
         badgeColor = AppColors.uiRed;
@@ -337,7 +332,7 @@ class _AboutScreenState extends State<AboutScreen> {
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: AppTypography.spacingSmall),
         Container(
           padding: const EdgeInsets.symmetric(
             horizontal: AppTypography.spacingSmall,
@@ -360,7 +355,7 @@ class _AboutScreenState extends State<AboutScreen> {
         // Show upgrade link for outdated versions
         if (versionStatus == VersionStatus.outdated &&
             VersionService.instance.getStoreUrl() != null) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTypography.spacingLarge),
           ElevatedButton.icon(
             onPressed: () => VersionService.instance.launchStore(),
             icon: Icon(

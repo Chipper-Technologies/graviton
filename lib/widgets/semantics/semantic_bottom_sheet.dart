@@ -27,7 +27,7 @@ class SemanticBottomSheet extends StatelessWidget {
     final expandState = isExpanded ? l10n.expandedState : l10n.collapsedState;
     final scenarioText = currentScenario != null
         ? '${l10n.currentScenario}: $currentScenario'
-        : l10n.scenarioSelectionTitle;
+        : l10n.selectScenarioTooltip;
 
     return SemanticFocusService.instance.createSemanticFocusWrapper(
       focusNode: SemanticFocusService.instance.bottomSheetFocusNode,

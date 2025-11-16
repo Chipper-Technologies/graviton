@@ -1,29 +1,39 @@
-/// Represents the type of celestial body in the simulation
+/// Represents the type of celestial body
 enum BodyType {
-  /// A star that emits light and heat
+  /// A black hole - region of spacetime with extreme gravity
+  blackHole,
+
+  /// A neutron star - extremely dense stellar remnant
+  neutronStar,
+
+  /// A star - massive, luminous celestial body
   star,
 
-  /// A planet that orbits a star
+  /// A planet - orbits a star, cleared its orbital path
   planet,
 
-  /// A moon that orbits a planet
+  /// A moon - natural satellite orbiting a planet
   moon,
 
-  /// A small rocky body (asteroid, comet, etc.)
+  /// An asteroid - small rocky body orbiting the sun
   asteroid,
 }
 
 /// Extension methods for BodyType
 extension BodyTypeExtension on BodyType {
   /// Whether this body type emits light and heat
-  bool get isLuminous => this == BodyType.star;
+  bool get isLuminous => this == BodyType.star || this == BodyType.neutronStar;
 
-  /// Whether this body type can be potentially habitable
+  /// Whether this body type can potentially be habitable
   bool get canBeHabitable => this == BodyType.planet || this == BodyType.moon;
 
   /// Localization key for the body type display name
   String get localizationKey {
     switch (this) {
+      case BodyType.blackHole:
+        return 'bodyTypeBlackHole';
+      case BodyType.neutronStar:
+        return 'bodyTypeNeutronStar';
       case BodyType.star:
         return 'bodyTypeStar';
       case BodyType.planet:

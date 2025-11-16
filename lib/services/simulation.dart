@@ -9,6 +9,7 @@ import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/services/accessibility_service.dart';
+import 'package:graviton/services/custom_scenario_manager.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
@@ -56,6 +57,12 @@ class Simulation {
   final ScenarioService _scenarioService = ScenarioService();
   final HabitableZoneService _habitableZoneService = HabitableZoneService();
   ScenarioType _currentScenario = ScenarioType.random;
+
+  // Flag to track when scenario needs localization update
+  bool _needsLocalizationUpdate = false;
+
+  // Store localization context for use throughout simulation
+  AppLocalizations? _currentL10n;
 
   // Habitability update throttling
   double _timeSinceLastHabitabilityUpdate = 0.0;
@@ -164,9 +171,71 @@ class Simulation {
     _applyRealisticColorsIfEnabled();
   }
 
+  /// Update scenario with localization when it becomes available
+  /// This is called by the UI when AppLocalizations context is ready
+  void updateScenarioLocalization(AppLocalizations l10n) {
+    _currentL10n = l10n; // Store for use throughout simulation
+
+    if (_needsLocalizationUpdate) {
+      // Generate bodies for the current scenario with proper localization
+      bodies = _scenarioService.generateScenario(_currentScenario, l10n: l10n);
+
+      // Reset trails and other scenario-specific setup
+      trails = List.generate(bodies.length, (_) => <TrailPoint>[]);
+      mergeFlashes.clear();
+
+      // Initialize belt systems based on scenario
+      if (_currentScenario == ScenarioType.asteroidBelt) {
+        _initializeAsteroidBelt();
+      } else if (_currentScenario == ScenarioType.galaxyFormation) {
+        _initializeGalaxyFormation();
+      }
+
+      _needsLocalizationUpdate = false;
+      _markChanged();
+    }
+  }
+
+  /// Initialize asteroid belt system for asteroid belt scenario
+  void _initializeAsteroidBelt() {
+    // Clear any existing particles
+    asteroidBelt.clear();
+    kuiperBelt.clear();
+
+    // Generate asteroid belt around the central star
+    // Belt parameters: fits perfectly within outer planet orbit
+    asteroidBelt.generateBelt(
+      innerRadius: 8.0, // Closer to center
+      outerRadius:
+          22.0, // Reduced to fit neatly within outer planet orbit (30.0)
+      particleCount: 2500, // More particles for denser belt
+      centralMass: 20.0, // Match the central star mass
+      gravitationalConstant: 1.2,
+      baseColor: AppColors.asteroidBrownish, // Brownish asteroids
+      colorVariation: 0.2,
+      useXZPlane: false, // Asteroid belt scenario uses XY plane
+      minSize: 0.02, // Smaller particles for asteroid belt scenario
+      maxSize: 0.08, // Reduced maximum size for subtler appearance
+    );
+  }
+
+  /// Initialize galaxy formation scenario
+  void _initializeGalaxyFormation() {
+    // Clear any existing particles (galaxy formation doesn't use particle belts)
+    asteroidBelt.clear();
+    kuiperBelt.clear();
+
+    // Galaxy formation uses individual Body objects, no additional initialization needed
+    // The stars are already generated in the scenario service
+  }
+
   /// Reset simulation with current scenario
   void reset() {
-    resetWithScenario(_currentScenario, preserveCustomSettings: true);
+    resetWithScenario(
+      _currentScenario,
+      l10n: _currentL10n,
+      preserveCustomSettings: true,
+    );
   }
 
   /// Reset simulation with a specific scenario
@@ -177,6 +246,11 @@ class Simulation {
   }) {
     _isResetting = true; // Mark that we're in a legitimate reset operation
 
+    // Clear custom scenario manager if switching to a preset scenario
+    if (scenario != ScenarioType.custom) {
+      CustomScenarioManager.instance.clearCurrentCustomScenario();
+    }
+
     // Preserve custom body settings if requested (for localization updates)
     List<bool> gravityWellSettings = [];
     if (preserveCustomSettings) {
@@ -185,7 +259,20 @@ class Simulation {
     }
 
     _currentScenario = scenario;
-    bodies = _scenarioService.generateScenario(scenario, l10n: l10n);
+
+    // If localization is available, generate scenario immediately
+    // If not, defer until localization becomes available
+    final effectiveL10n = l10n ?? _currentL10n;
+    if (effectiveL10n != null) {
+      _currentL10n = effectiveL10n; // Store for later use
+      bodies = _scenarioService.generateScenario(scenario, l10n: effectiveL10n);
+      _needsLocalizationUpdate = false;
+    } else {
+      // For app initialization when l10n isn't available yet
+      // Set empty bodies list and mark for later generation
+      bodies = [];
+      _needsLocalizationUpdate = true;
+    }
 
     // Restore custom settings by index (more reliable than name matching)
     if (preserveCustomSettings && gravityWellSettings.isNotEmpty) {
@@ -275,9 +362,8 @@ class Simulation {
       // Generate galactic disk using asteroid belt system for background stars/dust
       asteroidBelt.generateBelt(
         innerRadius: 10.0, // Start closer to center
-        outerRadius: 300.0, // Much wider disk to encompass all stars (was 150)
-        particleCount:
-            15000, // Optimal density for good performance (was 100000)
+        outerRadius: 300.0, // Much wider disk to encompass all stars
+        particleCount: 15000, // Optimal density for good performance
         centralMass: 200.0, // Match the supermassive black hole mass
         gravitationalConstant: 1.2,
         baseColor:
@@ -292,7 +378,7 @@ class Simulation {
       kuiperBelt.generateBelt(
         innerRadius: 300.0, // Beyond main disk
         outerRadius: 500.0, // Much wider extended halo
-        particleCount: 8000, // Reasonable outer structure (was 50000)
+        particleCount: 8000, // Reasonable outer structure
         centralMass: 200.0, // Match the supermassive black hole mass
         gravitationalConstant: 1.2,
         baseColor: AppColors
@@ -641,8 +727,14 @@ class Simulation {
     final b1 = bodies[i];
     final b2 = bodies[j];
 
-    // Announce collision to screen readers
-    AccessibilityService.instance.announceMergeEvent(b1.name, b2.name);
+    // Announce collision to screen readers (only if l10n context available)
+    if (_currentL10n != null) {
+      AccessibilityService.instance.announceMergeEvent(
+        b1.name,
+        b2.name,
+        l10n: _currentL10n!,
+      );
+    }
 
     final m = b1.mass + b2.mass;
     final p =
