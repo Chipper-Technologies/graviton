@@ -1653,32 +1653,54 @@ class _HomeScreenState extends State<HomeScreen>
     // Start the initial timer
     resetAutoHideTimer();
 
-    // Also show the deactivate snackbar below
-    GravitonSnackBar.info(
-      context: context,
-      message: l10n.appliedPreset(
-        screenshotService.getPresetDisplayName(
-          screenshotService.currentPresetIndex,
-          l10n,
+    // Capture the scaffold messenger
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    // Clear any existing snackbars first
+    scaffoldMessenger.clearSnackBars();
+
+    // Show the preset name snackbar with action button
+    scaffoldMessenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          l10n.appliedPreset(
+            screenshotService.getPresetDisplayName(
+              screenshotService.currentPresetIndex,
+              l10n,
+            ),
+          ),
+        ),
+        duration: const Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.only(
+          left: 16,
+          right: 16,
+          bottom: 16,
+        ),
+        action: SnackBarAction(
+          label: l10n.deactivate,
+          onPressed: () {
+            // Remove overlay if still present
+            try {
+              overlayEntry.remove();
+            } catch (e) {
+              // Overlay already removed, ignore
+            }
+
+            // Deactivate screenshot mode and ensure simulation is unpaused
+            screenshotService.deactivate(
+              uiState: appState.ui,
+              simulationState: appState.simulation,
+            );
+          },
         ),
       ),
-      duration: const Duration(seconds: 3),
-      actionLabel: l10n.deactivate,
-      onActionPressed: () {
-        // Remove overlay if still present
-        try {
-          overlayEntry.remove();
-        } catch (e) {
-          // Overlay already removed, ignore
-        }
-
-        // Deactivate screenshot mode and ensure simulation is unpaused
-        screenshotService.deactivate(
-          uiState: appState.ui,
-          simulationState: appState.simulation,
-        );
-      },
     );
+
+    // Manually dismiss snackbar after duration (action buttons prevent auto-dismiss)
+    Future.delayed(const Duration(seconds: 4), () {
+      scaffoldMessenger.hideCurrentSnackBar();
+    });
   }
 
   /// Build floating simulation controls that appear above the bottom sheet

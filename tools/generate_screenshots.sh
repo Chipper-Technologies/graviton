@@ -21,7 +21,7 @@ fi
 echo "🔍 Checking dependencies..."
 if ! python3 -c "import PIL" &> /dev/null; then
     echo "📦 Installing Pillow..."
-    pip3 install -r "$SCRIPT_DIR/requirements.txt"
+    python3 -m pip install -r "$SCRIPT_DIR/requirements.txt"
 else
     echo "✅ Dependencies satisfied"
 fi

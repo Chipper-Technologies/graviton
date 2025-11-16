@@ -46,7 +46,12 @@ class GravitonSnackBar {
         backgroundColor: theme.backgroundColor,
         duration: duration,
         behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.all(AppTypography.spacingMedium),
+        margin: EdgeInsets.only(
+          left: AppTypography.spacingMedium,
+          right: AppTypography.spacingMedium,
+          bottom: 80.0, // Higher margin to avoid blocking controls
+          top: AppTypography.spacingMedium,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
           side: BorderSide(
