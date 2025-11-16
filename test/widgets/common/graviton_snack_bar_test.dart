@@ -469,8 +469,16 @@ void main() {
         // Verify floating behavior
         expect(snackBar.behavior, SnackBarBehavior.floating);
 
-        // Verify margins
-        expect(snackBar.margin, EdgeInsets.all(AppTypography.spacingMedium));
+        // Verify margins (bottom is 80.0 to avoid blocking controls)
+        expect(
+          snackBar.margin,
+          EdgeInsets.only(
+            left: AppTypography.spacingMedium,
+            right: AppTypography.spacingMedium,
+            bottom: 80.0,
+            top: AppTypography.spacingMedium,
+          ),
+        );
 
         // Verify elevation
         expect(snackBar.elevation, AppTypography.spacingMedium);
