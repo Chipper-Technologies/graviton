@@ -159,15 +159,20 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
           minHeight: MediaQuery.of(context).size.height * _minHeight,
           maxHeight: MediaQuery.of(context).size.height * _maxHeight,
           snapPoint: _mediumHeight, // 35% - our medium position
+          
           // Panel styling
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(AppTypography.radiusXLarge),
           ),
           color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityHigh),
 
-          // Enable dragging and snapping
+          // Enable dragging and snapping with improved behavior
           isDraggable: true,
           panelSnapping: true,
+          
+          // Disable parallax to prevent bounce issues
+          parallaxEnabled: false,
+          parallaxOffset: 0.0,
 
           // Callbacks for position tracking
           onPanelSlide: (position) {
@@ -211,69 +216,75 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
     AppState appState,
     AppLocalizations l10n,
   ) {
-    return Column(
-      children: [
-        // Drag handle
-        _buildDragHandle(context),
+    // Wrap in AbsorbPointer with absorbing=false to ensure proper hit testing
+    // This prevents tap pass-through to the simulation behind
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {}, // Absorb taps
+      child: Column(
+        children: [
+          // Drag handle
+          _buildDragHandle(context),
 
-        // Tabbed content using GravitonTabbedView
-        Expanded(
-          child: GravitonTabbedView(
-            initialIndex: _currentTabIndex,
-            onTabChanged: (index) {
-              HapticUtils.navigate();
-              setState(() {
-                _currentTabIndex = index;
-              });
-            },
-            tabs: [
-              GravitonTab(
-                icon: Icons.videocam,
-                label: l10n.cameraLabel,
-                isActive: _currentTabIndex == 0,
-              ),
-              GravitonTab(
-                icon: Icons.palette,
-                label: l10n.bottomNavVisualsLabel,
-                isActive: _currentTabIndex == 1,
-              ),
-              GravitonTab(
-                icon: Icons.tune,
-                label: l10n.physicsSection,
-                isActive: _currentTabIndex == 2,
-              ),
-            ],
-            children: [
-              // Camera Controls Tab
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: CameraControls(
-                  appState: appState,
-                  scrollController: _cameraScrollController,
+          // Tabbed content using GravitonTabbedView
+          Expanded(
+            child: GravitonTabbedView(
+              initialIndex: _currentTabIndex,
+              onTabChanged: (index) {
+                HapticUtils.navigate();
+                setState(() {
+                  _currentTabIndex = index;
+                });
+              },
+              tabs: [
+                GravitonTab(
+                  icon: Icons.videocam,
+                  label: l10n.cameraLabel,
+                  isActive: _currentTabIndex == 0,
                 ),
-              ),
+                GravitonTab(
+                  icon: Icons.palette,
+                  label: l10n.bottomNavVisualsLabel,
+                  isActive: _currentTabIndex == 1,
+                ),
+                GravitonTab(
+                  icon: Icons.tune,
+                  label: l10n.physicsSection,
+                  isActive: _currentTabIndex == 2,
+                ),
+              ],
+              children: [
+                // Camera Controls Tab
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: CameraControls(
+                    appState: appState,
+                    scrollController: _cameraScrollController,
+                  ),
+                ),
 
-              // Visuals Controls Tab
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: VisualsControls(
-                  appState: appState,
-                  scrollController: _visualsScrollController,
+                // Visuals Controls Tab
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: VisualsControls(
+                    appState: appState,
+                    scrollController: _visualsScrollController,
+                  ),
                 ),
-              ),
 
-              // Physics Controls Tab
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: PhysicsControls(
-                  appState: appState,
-                  scrollController: _physicsScrollController,
+                // Physics Controls Tab
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: PhysicsControls(
+                    appState: appState,
+                    scrollController: _physicsScrollController,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
