@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:graviton/config/flavor_config.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
@@ -26,7 +27,6 @@ import 'package:graviton/services/cinematic_camera_controller.dart';
 import 'package:graviton/services/custom_scenario_manager.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/fullscreen_service.dart';
-import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/services/keyboard_navigation_service.dart';
 import 'package:graviton/services/onboarding_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
@@ -101,6 +101,9 @@ class _HomeScreenState extends State<HomeScreen>
   // Floating controls visibility state
   bool _showFloatingControls = false;
   Timer? _floatingControlsTimer;
+
+  // Cursor state for body hover detection
+  bool _isHoveringOverBody = false;
 
   @override
   void initState() {
@@ -303,6 +306,48 @@ class _HomeScreenState extends State<HomeScreen>
         final hitRadius = baseHitRadius * distanceScale;
 
         // Check if tap is within body's hit radius and is the closest
+        if (distance <= hitRadius && distance < closestDistance) {
+          closestDistance = distance;
+          closestBodyIndex = i;
+        }
+      }
+    }
+
+    return closestBodyIndex;
+  }
+
+  /// Find the body at the given hover location (more precise than tap)
+  /// Returns the body index if a body is found, null otherwise
+  int? _findBodyAtHoverLocation(
+    AppState appState,
+    Size size,
+    Offset? hoverPosition,
+  ) {
+    final bodies = appState.simulation.bodies;
+    if (bodies.isEmpty || hoverPosition == null) return null;
+
+    // Find the body closest to the hover position
+    final view = _buildView();
+    final proj = _buildProjection(size.aspectRatio);
+
+    int? closestBodyIndex;
+    double closestDistance = double.infinity;
+    const double baseHitRadius = 15.0; // Smaller hit radius for hover precision
+
+    for (int i = 0; i < bodies.length; i++) {
+      final body = bodies[i];
+
+      // Project 3D world position to 2D screen coordinates
+      final screenPos = _projectToScreen(body.position, view, proj, size);
+
+      if (screenPos != null) {
+        final distance = (hoverPosition - screenPos).distance;
+
+        // Use a smaller hit radius for more precise hover detection
+        final distanceScale = math.max(1.0, appState.camera.distance / 400.0);
+        final hitRadius = baseHitRadius * distanceScale;
+
+        // Check if hover is within body's hit radius and is the closest
         if (distance <= hitRadius && distance < closestDistance) {
           closestDistance = distance;
           closestBodyIndex = i;
@@ -844,23 +889,26 @@ class _HomeScreenState extends State<HomeScreen>
       isScrollControlled: true,
       backgroundColor: AppColors.transparentColor,
       builder: (context) => StatefulBuilder(
-        builder: (context, setSheetState) => SizedBox(
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: ScenarioEditorBodyDetailsBottomSheet(
-            body: selectedBody,
-            onBodyChanged: (updatedBody) {
-              // Update the body in the simulation
-              appState.simulation.bodies[selectedIndex] = updatedBody;
-              appState.simulation.notifyBodyPropertiesChanged();
-              // Update sheet state for immediate visual feedback
-              setSheetState(() {});
-            },
-            availableCentralBodies:
-                [], // Not needed for editing existing bodies
-            isAddMode: false,
-          ),
-        ),
-      ),
+        builder: (context, setSheetState) => Center(
+          child: SizedBox(
+            width: RenderingConstants.bottomSheetMaxWidth,
+            height: MediaQuery.of(context).size.height * 0.75,
+            child: ScenarioEditorBodyDetailsBottomSheet(
+              body: selectedBody,
+              onBodyChanged: (updatedBody) {
+                // Update the body in the simulation
+                appState.simulation.bodies[selectedIndex] = updatedBody;
+                appState.simulation.notifyBodyPropertiesChanged();
+                // Update sheet state for immediate visual feedback
+                setSheetState(() {});
+              },
+              availableCentralBodies:
+                  [], // Not needed for editing existing bodies
+              isAddMode: false,
+            ),
+          ), // End Container
+        ), // End Center
+      ), // End StatefulBuilder
     ).then((_) {
       // Resume simulation if it was playing
       if (wasPlaying) {
@@ -1168,9 +1216,8 @@ class _HomeScreenState extends State<HomeScreen>
                         left: AppTypography
                             .spacingLarge, // More space on the left
                       ),
-                      child: GestureDetector(
+                      child: HapticGestureDetector(
                         onTap: () {
-                          HapticFeedbackService.instance.lightImpact();
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => const AboutScreen(),
@@ -1216,324 +1263,364 @@ class _HomeScreenState extends State<HomeScreen>
                 final size = Size(constraints.maxWidth, constraints.maxHeight);
                 final view = _buildView();
 
-                return HapticGestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTapUp: (details) {
-                    // Show floating controls on tap
-                    _showFloatingControlsTemporarily();
-                    _handleTapWithDelay(
-                      context,
+                return MouseRegion(
+                  cursor: _isHoveringOverBody
+                      ? SystemMouseCursors.click
+                      : MouseCursor.defer,
+                  onHover: (event) {
+                    // Check if mouse is over a body (using precise hover detection)
+                    final bodyIndex = _findBodyAtHoverLocation(
                       appState,
                       size,
-                      l10n,
-                      details.localPosition,
+                      event.localPosition,
                     );
+                    // Update cursor based on whether we're over a body
+                    if ((_isHoveringOverBody && bodyIndex == null) ||
+                        (!_isHoveringOverBody && bodyIndex != null)) {
+                      setState(() {
+                        _isHoveringOverBody = bodyIndex != null;
+                      });
+                    }
                   },
-                  onDoubleTap: () {
-                    // Show floating controls on double-tap
-                    _showFloatingControlsTemporarily();
+                  child: HapticGestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTapUp: (details) {
+                      // Show floating controls on tap
+                      _showFloatingControlsTemporarily();
+                      _handleTapWithDelay(
+                        context,
+                        appState,
+                        size,
+                        l10n,
+                        details.localPosition,
+                      );
+                    },
+                    onDoubleTap: () {
+                      // Show floating controls on double-tap
+                      _showFloatingControlsTemporarily();
 
-                    // Double-tap to toggle fullscreen mode
-                    _handleFullscreenToggle(appState);
+                      // Double-tap to toggle fullscreen mode
+                      _handleFullscreenToggle(appState);
 
-                    FirebaseService.instance.logUIEventWithEnums(
-                      UIAction.doubleTap,
-                      element: UIElement.simulationViewport,
-                      value: 'fullscreen_toggle',
-                    );
-                  },
-                  onScaleStart: (d) {
-                    _lastPan = d.focalPoint;
-                    _isDragging = false; // Reset dragging state
-                    _hasMoved = false; // Reset movement flag
-                    _lastTwoFingerRotation = null; // Reset rotation tracking
-                    // Don't clear selection on drag start - let user drag selected objects
-
-                    // Show simulation controls when starting camera interaction
-                    _showSimulationControls?.call();
-
-                    // Show floating controls on interaction
-                    _showFloatingControlsTemporarily();
-
-                    if (d.pointerCount >= 2) {
                       FirebaseService.instance.logUIEventWithEnums(
-                        UIAction.viewportGestureStart,
-                        element: UIElement.viewportCanvas,
-                        value: 'multi_touch_zoom',
-                        additionalParams: {
-                          'pointer_count': d.pointerCount.toString(),
-                          'camera_technique':
-                              appState.ui.cinematicCameraTechnique.name,
-                          'follow_mode': appState.camera.followMode.toString(),
-                        },
+                        UIAction.doubleTap,
+                        element: UIElement.simulationViewport,
+                        value: 'fullscreen_toggle',
                       );
-                    } else {
-                      FirebaseService.instance.logUIEventWithEnums(
-                        UIAction.viewportGestureStart,
-                        element: UIElement.viewportCanvas,
-                        value: 'pan_rotate',
-                        additionalParams: {
-                          'camera_technique':
-                              appState.ui.cinematicCameraTechnique.name,
-                          'follow_mode': appState.camera.followMode.toString(),
-                        },
-                      );
-                    }
-                  },
-                  onScaleUpdate: (d) {
-                    final pos = d.focalPoint;
-                    final delta = pos - (_lastPan ?? pos);
+                    },
+                    onScaleStart: (d) {
+                      _lastPan = d.focalPoint;
+                      _isDragging = false; // Reset dragging state
+                      _hasMoved = false; // Reset movement flag
+                      _lastTwoFingerRotation = null; // Reset rotation tracking
+                      // Don't clear selection on drag start - let user drag selected objects
 
-                    // Mark as dragging if there's significant movement
-                    if (delta.distance > 2.0) {
-                      if (!_hasMoved) {
-                        _hasMoved = true;
+                      // Show simulation controls when starting camera interaction
+                      _showSimulationControls?.call();
+
+                      // Show floating controls on interaction
+                      _showFloatingControlsTemporarily();
+
+                      if (d.pointerCount >= 2) {
+                        FirebaseService.instance.logUIEventWithEnums(
+                          UIAction.viewportGestureStart,
+                          element: UIElement.viewportCanvas,
+                          value: 'multi_touch_zoom',
+                          additionalParams: {
+                            'pointer_count': d.pointerCount.toString(),
+                            'camera_technique':
+                                appState.ui.cinematicCameraTechnique.name,
+                            'follow_mode': appState.camera.followMode
+                                .toString(),
+                          },
+                        );
+                      } else {
+                        FirebaseService.instance.logUIEventWithEnums(
+                          UIAction.viewportGestureStart,
+                          element: UIElement.viewportCanvas,
+                          value: 'pan_rotate',
+                          additionalParams: {
+                            'camera_technique':
+                                appState.ui.cinematicCameraTechnique.name,
+                            'follow_mode': appState.camera.followMode
+                                .toString(),
+                          },
+                        );
                       }
-                      if (delta.distance > 5.0 && !_isDragging) {
-                        _isDragging = true;
-                      }
-                    }
+                    },
+                    onScaleUpdate: (d) {
+                      final pos = d.focalPoint;
+                      final delta = pos - (_lastPan ?? pos);
 
-                    if (d.pointerCount >= 2) {
-                      // Handle two-finger gestures: zoom and roll
-                      final dz = (1 - d.scale) * 0.1;
-                      appState.camera.zoomTowardBody(
-                        dz,
-                        appState.simulation.bodies,
-                      );
-
-                      // Handle roll rotation
-                      if (_lastTwoFingerRotation != null) {
-                        final deltaRotation =
-                            d.rotation - _lastTwoFingerRotation!;
-                        appState.camera.rotateRoll(deltaRotation);
+                      // Mark as dragging if there's significant movement
+                      if (delta.distance > 2.0) {
+                        if (!_hasMoved) {
+                          _hasMoved = true;
+                        }
+                        if (delta.distance > 5.0 && !_isDragging) {
+                          _isDragging = true;
+                        }
                       }
-                      _lastTwoFingerRotation = d.rotation;
-                    } else {
-                      // Always rotate camera when dragging
-                      // Object movement is disabled for better UX
-                      final deltaYaw = -delta.dx * 0.01;
-                      final deltaPitch = -delta.dy * 0.01;
-                      appState.camera.rotate(deltaYaw, deltaPitch);
-                    }
-                    _lastPan = pos;
-                  },
-                  onScaleEnd: (_) {
-                    // Track analytics for gesture end before resetting state
-                    if (_hasMoved || _isDragging) {
-                      FirebaseService.instance.logUIEventWithEnums(
-                        UIAction.viewportGestureEnd,
-                        element: UIElement.viewportCanvas,
-                        value: _lastTwoFingerRotation != null
-                            ? 'zoom_rotate'
-                            : 'pan_rotate',
-                        additionalParams: {
-                          'had_movement': _hasMoved.toString(),
-                          'was_dragging': _isDragging.toString(),
-                          'camera_technique':
-                              appState.ui.cinematicCameraTechnique.name,
-                          'follow_mode': appState.camera.followMode.toString(),
+
+                      if (d.pointerCount >= 2) {
+                        // Handle two-finger gestures: zoom and roll
+                        final dz = (1 - d.scale) * 0.1;
+                        appState.camera.zoomTowardBody(
+                          dz,
+                          appState.simulation.bodies,
+                        );
+
+                        // Handle roll rotation
+                        if (_lastTwoFingerRotation != null) {
+                          final deltaRotation =
+                              d.rotation - _lastTwoFingerRotation!;
+                          appState.camera.rotateRoll(deltaRotation);
+                        }
+                        _lastTwoFingerRotation = d.rotation;
+                      } else {
+                        // Always rotate camera when dragging
+                        // Object movement is disabled for better UX
+                        final deltaYaw = -delta.dx * 0.01;
+                        final deltaPitch = -delta.dy * 0.01;
+                        appState.camera.rotate(deltaYaw, deltaPitch);
+                      }
+                      _lastPan = pos;
+                    },
+                    onScaleEnd: (_) {
+                      // Track analytics for gesture end before resetting state
+                      if (_hasMoved || _isDragging) {
+                        FirebaseService.instance.logUIEventWithEnums(
+                          UIAction.viewportGestureEnd,
+                          element: UIElement.viewportCanvas,
+                          value: _lastTwoFingerRotation != null
+                              ? 'zoom_rotate'
+                              : 'pan_rotate',
+                          additionalParams: {
+                            'had_movement': _hasMoved.toString(),
+                            'was_dragging': _isDragging.toString(),
+                            'camera_technique':
+                                appState.ui.cinematicCameraTechnique.name,
+                            'follow_mode': appState.camera.followMode
+                                .toString(),
+                          },
+                        );
+                      }
+
+                      _lastPan = null;
+                      _isDragging = false; // Reset drag state
+                      _hasMoved = false; // Reset movement flag
+                      _lastTwoFingerRotation = null; // Reset rotation tracking
+                      // Don't clear selection if in follow mode
+                      if (!appState.camera.followMode) {
+                        appState.camera.selectBody(null);
+                      }
+                    },
+                    child: KeyboardNavigationService.instance.createKeyboardListener(
+                      child: SemanticSimulationCanvas(
+                        bodies: appState.simulation.bodies,
+                        status: appState.simulation.status,
+                        timeScale: appState.simulation.timeScale,
+                        stepCount: appState.simulation.stepCount,
+                        cameraDistance: appState.camera.distance,
+                        autoRotate: appState.camera.autoRotate,
+                        followMode: appState.camera.followMode,
+                        followingBodyName: appState.camera.selectedBody != null
+                            ? AppLocalizations.of(
+                                context,
+                              )?.bodySelectedTemplate(
+                                appState.camera.selectedBody.toString(),
+                              )
+                            : null,
+                        onTap: () {
+                          // Show floating controls on tap
+                          _showFloatingControlsTemporarily();
                         },
-                      );
-                    }
-
-                    _lastPan = null;
-                    _isDragging = false; // Reset drag state
-                    _hasMoved = false; // Reset movement flag
-                    _lastTwoFingerRotation = null; // Reset rotation tracking
-                    // Don't clear selection if in follow mode
-                    if (!appState.camera.followMode) {
-                      appState.camera.selectBody(null);
-                    }
-                  },
-                  child: KeyboardNavigationService.instance.createKeyboardListener(
-                    child: SemanticSimulationCanvas(
-                      bodies: appState.simulation.bodies,
-                      status: appState.simulation.status,
-                      timeScale: appState.simulation.timeScale,
-                      stepCount: appState.simulation.stepCount,
-                      cameraDistance: appState.camera.distance,
-                      autoRotate: appState.camera.autoRotate,
-                      followMode: appState.camera.followMode,
-                      followingBodyName: appState.camera.selectedBody != null
-                          ? AppLocalizations.of(context)?.bodySelectedTemplate(
-                              appState.camera.selectedBody.toString(),
-                            )
-                          : null,
-                      onTap: () {
-                        // Show floating controls on tap
-                        _showFloatingControlsTemporarily();
-                      },
-                      onCenter: () => appState.camera.resetView(
-                        appState.simulation.currentScenario,
-                      ),
-                      onToggleRotate: () => appState.camera.toggleAutoRotate(),
-                      child: Stack(
-                        children: [
-                          CustomPaint(
-                            painter: GravitonPainter(
-                              sim: appState.simulation.simulation,
-                              view: view,
-                              proj: _buildProjection(size.aspectRatio),
-                              stars: _stars,
-                              showTrails: appState.ui.showTrails,
-                              useWarmTrails: appState.ui.useWarmTrails,
-                              useRealisticColors:
-                                  appState.ui.useRealisticColors,
-                              showOrbitalPaths: appState.ui.showOrbitalPaths,
-                              dualOrbitalPaths: appState.ui.dualOrbitalPaths,
-                              showHabitableZones:
-                                  appState.ui.showHabitableZones,
-                              showHabitabilityIndicators:
-                                  appState.ui.showHabitabilityIndicators,
-                              selectedBodyIndex: appState.camera.selectedBody,
-                              followMode: appState.camera.followMode,
-                              cameraDistance: appState.camera.distance,
-                              globalGravityFields:
-                                  appState.ui.globalGravityFields,
-                              gravityFieldColorScheme:
-                                  appState.ui.gravityFieldColorScheme,
-                              showEquipotentialSurfaces:
-                                  appState.ui.showEquipotentialSurfaces,
-                              showGravityFieldIndicators:
-                                  appState.ui.showGravityFieldIndicators,
+                        onCenter: () => appState.camera.resetView(
+                          appState.simulation.currentScenario,
+                        ),
+                        onToggleRotate: () =>
+                            appState.camera.toggleAutoRotate(),
+                        child: Stack(
+                          children: [
+                            CustomPaint(
+                              painter: GravitonPainter(
+                                sim: appState.simulation.simulation,
+                                view: view,
+                                proj: _buildProjection(size.aspectRatio),
+                                stars: _stars,
+                                showTrails: appState.ui.showTrails,
+                                useWarmTrails: appState.ui.useWarmTrails,
+                                useRealisticColors:
+                                    appState.ui.useRealisticColors,
+                                showOrbitalPaths: appState.ui.showOrbitalPaths,
+                                dualOrbitalPaths: appState.ui.dualOrbitalPaths,
+                                showHabitableZones:
+                                    appState.ui.showHabitableZones,
+                                showHabitabilityIndicators:
+                                    appState.ui.showHabitabilityIndicators,
+                                selectedBodyIndex: appState.camera.selectedBody,
+                                followMode: appState.camera.followMode,
+                                cameraDistance: appState.camera.distance,
+                                globalGravityFields:
+                                    appState.ui.globalGravityFields,
+                                gravityFieldColorScheme:
+                                    appState.ui.gravityFieldColorScheme,
+                                showEquipotentialSurfaces:
+                                    appState.ui.showEquipotentialSurfaces,
+                                showGravityFieldIndicators:
+                                    appState.ui.showGravityFieldIndicators,
+                              ),
+                              child: const SizedBox.expand(),
                             ),
-                            child: const SizedBox.expand(),
-                          ),
-                          if (appState.ui.showLabels)
-                            BodyLabelsOverlay(
-                              bodies: appState.simulation.bodies,
-                              viewMatrix: view,
-                              projMatrix: _buildProjection(size.aspectRatio),
-                              screenSize: size,
-                              l10n: AppLocalizations.of(context),
-                            ),
-                          if (appState.ui.showOffScreenIndicators)
-                            OffScreenIndicatorsOverlay(
-                              bodies: appState.simulation.bodies,
-                              viewMatrix: view,
-                              projMatrix: _buildProjection(size.aspectRatio),
-                              screenSize: size,
-                              selectedBodyIndex: appState.camera.selectedBody,
-                              onIndicatorTapped: (bodyIndex) {
-                                _selectBody(
-                                  appState,
-                                  bodyIndex,
-                                  appState.simulation.bodies,
-                                );
-                              },
-                            ),
-                          // Body property editor overlay for selected bodies
-                          if (!shouldHideUI &&
-                              appState.camera.selectedBody != null)
-                            BodyPropertyEditorOverlay(
-                              bodies: appState.simulation.bodies,
-                              viewMatrix: view,
-                              projMatrix: _buildProjection(size.aspectRatio),
-                              screenSize: size,
-                              selectedBodyIndex: appState.camera.selectedBody,
-                              onPropertyIconTapped: () =>
-                                  _showBodyPropertiesBottomSheet(
-                                    context,
+                            if (appState.ui.showLabels)
+                              BodyLabelsOverlay(
+                                bodies: appState.simulation.bodies,
+                                viewMatrix: view,
+                                projMatrix: _buildProjection(size.aspectRatio),
+                                screenSize: size,
+                                l10n: AppLocalizations.of(context),
+                              ),
+                            if (appState.ui.showOffScreenIndicators)
+                              OffScreenIndicatorsOverlay(
+                                bodies: appState.simulation.bodies,
+                                viewMatrix: view,
+                                projMatrix: _buildProjection(size.aspectRatio),
+                                screenSize: size,
+                                selectedBodyIndex: appState.camera.selectedBody,
+                                onIndicatorTapped: (bodyIndex) {
+                                  _selectBody(
                                     appState,
-                                  ),
-                            ),
-                          // Camera visual aids overlay
-                          if (!shouldHideUI)
-                            CameraVisualAidsOverlay(
-                              bodies: appState.simulation.bodies,
-                              viewMatrix: view,
-                              projMatrix: _buildProjection(size.aspectRatio),
-                              screenSize: size,
-                              selectedBodyIndex: appState.camera.selectedBody,
-                              cameraDistance: appState.camera.distance,
-                              showCrosshairs: appState.camera.showCrosshairs,
-                            ),
-                          if (appState.ui.showStats)
-                            Positioned(
-                              top:
-                                  MediaQuery.of(context).padding.top +
-                                  kToolbarHeight +
-                                  16,
-                              left: 16,
-                              child: SemanticLiveRegion(
-                                currentValue:
-                                    '${appState.simulation.stepCount}',
-                                dataType: l10n.simulationStepsLabel,
-                                child: StatsOverlay(appState: appState),
+                                    bodyIndex,
+                                    appState.simulation.bodies,
+                                  );
+                                },
                               ),
-                            ),
-                          ScreenshotCountdown(
-                            screenshotService: _screenshotModeService,
-                          ),
-
-                          // Persistent bottom sheet positioned at bottom of screen
-                          if (!shouldHideUI)
-                            Positioned(
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
-                              height: MediaQuery.of(context).size.height,
-                              child: SlidingPanelBottomSheet(
-                                onInteraction: _showFloatingControlsTemporarily,
-                              ),
-                            ),
-
-                          // Floating simulation controls positioned above the bottom sheet
-                          if (!shouldHideUI)
-                            Consumer<AppState>(
-                              builder: (context, appState, child) {
-                                return ValueListenableBuilder<double>(
-                                  valueListenable:
-                                      SlidingPanelBottomSheet.sheetPosition,
-                                  builder: (context, sheetPosition, child) {
-                                    // Always show controls when sheet is expanded (positions 2 or 3)
-                                    // Only use timer logic when sheet is closed (position 1)
-                                    const minPosition = 0.15; // Closed position
-                                    final shouldShowControls =
-                                        sheetPosition > minPosition ||
-                                        _showFloatingControls;
-
-                                    if (!shouldShowControls) {
-                                      return const SizedBox.shrink();
-                                    }
-
-                                    final screenHeight = MediaQuery.of(
+                            // Body property editor overlay for selected bodies
+                            if (!shouldHideUI &&
+                                appState.camera.selectedBody != null)
+                              BodyPropertyEditorOverlay(
+                                bodies: appState.simulation.bodies,
+                                viewMatrix: view,
+                                projMatrix: _buildProjection(size.aspectRatio),
+                                screenSize: size,
+                                selectedBodyIndex: appState.camera.selectedBody,
+                                onPropertyIconTapped: () =>
+                                    _showBodyPropertiesBottomSheet(
                                       context,
-                                    ).size.height;
-
-                                    // sheetPosition represents the fraction of screen height the sheet occupies
-                                    // So the floating controls should be positioned above the sheet
-                                    // at screenHeight * sheetPosition + 20 from the bottom
-                                    final bottomPosition =
-                                        screenHeight * sheetPosition + 20;
-
-                                    return Positioned(
-                                      bottom: bottomPosition,
-                                      left: 32,
-                                      right: 32,
-                                      child: Builder(
-                                        builder: (context) {
-                                          final l10n = AppLocalizations.of(
-                                            context,
-                                          )!;
-                                          return _buildFloatingSimulationControls(
-                                            context,
-                                            appState,
-                                            l10n,
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
+                                      appState,
+                                    ),
+                              ),
+                            // Camera visual aids overlay
+                            if (!shouldHideUI)
+                              CameraVisualAidsOverlay(
+                                bodies: appState.simulation.bodies,
+                                viewMatrix: view,
+                                projMatrix: _buildProjection(size.aspectRatio),
+                                screenSize: size,
+                                selectedBodyIndex: appState.camera.selectedBody,
+                                cameraDistance: appState.camera.distance,
+                                showCrosshairs: appState.camera.showCrosshairs,
+                              ),
+                            if (appState.ui.showStats)
+                              Positioned(
+                                top:
+                                    MediaQuery.of(context).padding.top +
+                                    kToolbarHeight +
+                                    16,
+                                left: 16,
+                                child: SemanticLiveRegion(
+                                  currentValue:
+                                      '${appState.simulation.stepCount}',
+                                  dataType: l10n.simulationStepsLabel,
+                                  child: StatsOverlay(appState: appState),
+                                ),
+                              ),
+                            ScreenshotCountdown(
+                              screenshotService: _screenshotModeService,
                             ),
-                        ],
+
+                            // Persistent bottom sheet positioned at bottom of screen
+                            if (!shouldHideUI)
+                              Positioned(
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                height: MediaQuery.of(context).size.height,
+                                child: SlidingPanelBottomSheet(
+                                  onInteraction:
+                                      _showFloatingControlsTemporarily,
+                                ),
+                              ),
+
+                            // Floating simulation controls positioned above the bottom sheet
+                            if (!shouldHideUI)
+                              Consumer<AppState>(
+                                builder: (context, appState, child) {
+                                  return ValueListenableBuilder<double>(
+                                    valueListenable:
+                                        SlidingPanelBottomSheet.sheetPosition,
+                                    builder: (context, sheetPosition, child) {
+                                      // Always show controls when sheet is expanded (positions 2 or 3)
+                                      // Only use timer logic when sheet is closed (position 1)
+                                      const minPosition =
+                                          0.15; // Closed position
+                                      final shouldShowControls =
+                                          sheetPosition > minPosition ||
+                                          _showFloatingControls;
+
+                                      if (!shouldShowControls) {
+                                        return const SizedBox.shrink();
+                                      }
+
+                                      final screenHeight = MediaQuery.of(
+                                        context,
+                                      ).size.height;
+
+                                      // sheetPosition represents the fraction of screen height the sheet occupies
+                                      // So the floating controls should be positioned above the sheet
+                                      // at screenHeight * sheetPosition + 20 from the bottom
+                                      final bottomPosition =
+                                          screenHeight * sheetPosition + 20;
+
+                                      return Positioned(
+                                        bottom: bottomPosition,
+                                        left: 0,
+                                        right: 0,
+                                        child: Center(
+                                          child: Container(
+                                            constraints: BoxConstraints(
+                                              maxWidth: RenderingConstants
+                                                  .bottomSheetMaxWidth,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 32,
+                                            ),
+                                            child: Builder(
+                                              builder: (context) {
+                                                final l10n =
+                                                    AppLocalizations.of(
+                                                      context,
+                                                    )!;
+                                                return _buildFloatingSimulationControls(
+                                                  context,
+                                                  appState,
+                                                  l10n,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                );
+                ); // Close MouseRegion
               },
             ),
           );

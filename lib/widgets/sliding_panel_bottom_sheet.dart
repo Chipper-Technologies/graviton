@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -159,11 +160,8 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
           minHeight: MediaQuery.of(context).size.height * _minHeight,
           maxHeight: MediaQuery.of(context).size.height * _maxHeight,
           snapPoint: _mediumHeight, // 35% - our medium position
-          // Panel styling
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(AppTypography.radiusXLarge),
-          ),
-          color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityHigh),
+          // Panel styling - let the content handle borders and colors
+          color: Colors.transparent,
 
           // Enable dragging and snapping with improved behavior
           isDraggable: true,
@@ -215,110 +213,171 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
     AppState appState,
     AppLocalizations l10n,
   ) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final showSideBorders =
+        screenWidth > RenderingConstants.bottomSheetMaxWidth;
+
     // Wrap in Material to ensure proper hit testing and prevent tap pass-through
-    return Material(
-      type: MaterialType.transparency,
-      child: Column(
-        children: [
-          // Drag handle
-          _buildDragHandle(context),
+    return Center(
+      child: Container(
+        constraints: BoxConstraints(
+          maxWidth: RenderingConstants.bottomSheetMaxWidth,
+        ),
+        child: Material(
+          type: MaterialType.transparency,
+          child: Column(
+            children: [
+              // Drag handle
+              _buildDragHandle(context),
 
-          // Tabbed content using GravitonTabbedView
-          Expanded(
-            child: GravitonTabbedView(
-              initialIndex: _currentTabIndex,
-              onTabChanged: (index) {
-                HapticUtils.navigate();
-                setState(() {
-                  _currentTabIndex = index;
-                });
-              },
-              onTabTap: () {
-                // When a tab is tapped and panel is at minimum position,
-                // expand it to medium position
-                if (_panelController.isAttached) {
-                  final currentPosition = _panelController.panelPosition;
-
-                  // If panel is in position 1 (closed/minimum), slide to position 2 (medium)
-                  if (currentPosition <= 0.1) {
-                    _panelController.animatePanelToPosition(
-                      (_mediumHeight - _minHeight) / (_maxHeight - _minHeight),
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeOutCubic,
-                    );
-                  }
-                }
-              },
-              tabs: [
-                GravitonTab(
-                  icon: Icons.videocam,
-                  label: l10n.cameraLabel,
-                  isActive: _currentTabIndex == 0,
-                ),
-                GravitonTab(
-                  icon: Icons.palette,
-                  label: l10n.bottomNavVisualsLabel,
-                  isActive: _currentTabIndex == 1,
-                ),
-                GravitonTab(
-                  icon: Icons.tune,
-                  label: l10n.physicsSection,
-                  isActive: _currentTabIndex == 2,
-                ),
-              ],
-              children: [
-                // Camera Controls Tab
-                Container(
-                  color: AppColors.transparentColor,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: CameraControls(
-                    appState: appState,
-                    scrollController: _cameraScrollController,
+              // Tabbed content using GravitonTabbedView
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.uiBlack.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                    border: showSideBorders
+                        ? Border(
+                            left: BorderSide(
+                              color: AppColors.primaryColor.withValues(
+                                alpha: AppTypography.opacityHigh,
+                              ),
+                              width: 2,
+                            ),
+                            right: BorderSide(
+                              color: AppColors.primaryColor.withValues(
+                                alpha: AppTypography.opacityHigh,
+                              ),
+                              width: 2,
+                            ),
+                          )
+                        : null,
                   ),
-                ),
+                  child: GravitonTabbedView(
+                    initialIndex: _currentTabIndex,
+                    onTabChanged: (index) {
+                      HapticUtils.navigate();
+                      setState(() {
+                        _currentTabIndex = index;
+                      });
+                    },
+                    onTabTap: () {
+                      // When a tab is tapped and panel is at minimum position,
+                      // expand it to medium position
+                      if (_panelController.isAttached) {
+                        final currentPosition = _panelController.panelPosition;
 
-                // Visuals Controls Tab
-                Container(
-                  color: AppColors.transparentColor,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: VisualsControls(
-                    appState: appState,
-                    scrollController: _visualsScrollController,
-                  ),
-                ),
+                        // If panel is in position 1 (closed/minimum), slide to position 2 (medium)
+                        if (currentPosition <= 0.1) {
+                          _panelController.animatePanelToPosition(
+                            (_mediumHeight - _minHeight) /
+                                (_maxHeight - _minHeight),
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeOutCubic,
+                          );
+                        }
+                      }
+                    },
+                    tabs: [
+                      GravitonTab(
+                        icon: Icons.videocam,
+                        label: l10n.cameraLabel,
+                        isActive: _currentTabIndex == 0,
+                      ),
+                      GravitonTab(
+                        icon: Icons.palette,
+                        label: l10n.bottomNavVisualsLabel,
+                        isActive: _currentTabIndex == 1,
+                      ),
+                      GravitonTab(
+                        icon: Icons.tune,
+                        label: l10n.physicsSection,
+                        isActive: _currentTabIndex == 2,
+                      ),
+                    ],
+                    children: [
+                      // Camera Controls Tab
+                      Container(
+                        color: AppColors.transparentColor,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: CameraControls(
+                          appState: appState,
+                          scrollController: _cameraScrollController,
+                        ),
+                      ),
 
-                // Physics Controls Tab
-                Container(
-                  color: AppColors.transparentColor,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: PhysicsControls(
-                    appState: appState,
-                    scrollController: _physicsScrollController,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+                      // Visuals Controls Tab
+                      Container(
+                        color: AppColors.transparentColor,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: VisualsControls(
+                          appState: appState,
+                          scrollController: _visualsScrollController,
+                        ),
+                      ),
+
+                      // Physics Controls Tab
+                      Container(
+                        color: AppColors.transparentColor,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: PhysicsControls(
+                          appState: appState,
+                          scrollController: _physicsScrollController,
+                        ),
+                      ),
+                    ],
+                  ), // End GravitonTabbedView
+                ), // End Container with borders
+              ), // End Expanded
+            ],
+          ), // End Column
+        ), // End Material
+      ), // End Container
+    ); // End Center
   }
 
   /// Build the drag handle
   Widget _buildDragHandle(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final showSideBorders =
+        screenWidth > RenderingConstants.bottomSheetMaxWidth;
+
     return Container(
       decoration: BoxDecoration(
+        color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityHigh),
         borderRadius: const BorderRadius.vertical(
           top: Radius.circular(AppTypography.radiusXLarge),
         ),
-        border: Border(
-          top: BorderSide(
-            color: AppColors.primaryColor.withValues(
-              alpha: AppTypography.opacityMedium,
-            ),
-            width: 2,
-          ),
-        ),
+        border: showSideBorders
+            ? Border(
+                top: BorderSide(
+                  color: AppColors.primaryColor.withValues(
+                    alpha: AppTypography.opacityHigh,
+                  ),
+                  width: 2,
+                ),
+                left: BorderSide(
+                  color: AppColors.primaryColor.withValues(
+                    alpha: AppTypography.opacityHigh,
+                  ),
+                  width: 2,
+                ),
+                right: BorderSide(
+                  color: AppColors.primaryColor.withValues(
+                    alpha: AppTypography.opacityHigh,
+                  ),
+                  width: 2,
+                ),
+              )
+            : Border(
+                top: BorderSide(
+                  color: AppColors.primaryColor.withValues(
+                    alpha: AppTypography.opacityHigh,
+                  ),
+                  width: 2,
+                ),
+              ),
         boxShadow: [
           BoxShadow(
             color: AppColors.uiBlack.withValues(

@@ -1,0 +1,12 @@
+// Application-level settings for the Runner target - Production
+//
+// Prod environment configuration
+
+// The application's name. By default this is also the title of the Flutter window.
+PRODUCT_NAME = Graviton
+
+// The application's bundle identifier
+PRODUCT_BUNDLE_IDENTIFIER = io.chipper.graviton
+
+// The copyright displayed in application information
+PRODUCT_COPYRIGHT = Copyright © 2025 io.chipper.graviton. All rights reserved.

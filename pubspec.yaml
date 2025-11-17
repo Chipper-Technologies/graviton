@@ -46,9 +46,12 @@ flutter:
 
 flutter_launcher_icons:
   adaptive_icon_background: "assets/images/app-logo-bg.png"
-  adaptive_icon_foreground: "assets/images/app-logo-nobg.png"
+  adaptive_icon_foreground: "assets/images/graviton-logo-transparent.png"
   android: true
   ios: true
+  macos:
+    generate: true
+    image_path: "assets/images/app-logo.png"
   image_path: "assets/images/app-logo.png"
   min_sdk_android: 21
   remove_alpha_ios: true

@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/temperature_unit.dart';
@@ -258,6 +259,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final showSideBorders =
+        screenWidth > RenderingConstants.bottomSheetMaxWidth;
 
     return PopScope(
       canPop: !_hasUnsavedChanges,
@@ -278,14 +282,35 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(AppTypography.radiusXLarge),
           ),
-          border: Border(
-            top: BorderSide(
-              color: AppColors.primaryColor.withValues(
-                alpha: AppTypography.opacityMedium,
-              ),
-              width: 2,
-            ),
-          ),
+          border: showSideBorders
+              ? Border(
+                  top: BorderSide(
+                    color: AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                    width: 2,
+                  ),
+                  left: BorderSide(
+                    color: AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                    width: 2,
+                  ),
+                  right: BorderSide(
+                    color: AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                    width: 2,
+                  ),
+                )
+              : Border(
+                  top: BorderSide(
+                    color: AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                    width: 2,
+                  ),
+                ),
           boxShadow: [
             BoxShadow(
               color: AppColors.uiBlack.withValues(
@@ -409,8 +434,8 @@ class _ScenarioEditorBodyDetailsBottomSheetState
               ),
             ),
           ],
-        ), // End Column
-      ), // End Container (PopScope child)
+        ),
+      ),
     ); // End PopScope
   }
 

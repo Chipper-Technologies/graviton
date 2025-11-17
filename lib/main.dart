@@ -12,6 +12,8 @@ import 'config/flavor_config.dart';
 import 'enums/app_flavor.dart';
 import 'enums/firebase_event.dart';
 import 'l10n/app_localizations.dart';
+import 'screens/about_screen.dart';
+import 'screens/application_settings_screen.dart';
 import 'screens/home_screen.dart';
 import 'services/firebase_service.dart';
 import 'services/remote_config_service.dart';
@@ -23,6 +25,9 @@ import 'widgets/dev_ribbon.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Set up platform channel for macOS menu integration
+  _setupPlatformChannels();
 
   // Detect flavor from dart-define or default to production
   final flavorString = const String.fromEnvironment(
@@ -77,6 +82,45 @@ void main() async {
   runApp(GravitonApp(appState: appState));
 }
 
+// Global navigator key to access navigation from platform channels
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+void _setupPlatformChannels() {
+  const platform = MethodChannel('io.chipper.graviton/navigation');
+
+  platform.setMethodCallHandler((call) async {
+    switch (call.method) {
+      case 'showAbout':
+        // Navigate to About screen
+        final context = navigatorKey.currentContext;
+        if (context != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AboutScreen()),
+          );
+        }
+        break;
+      case 'showSettings':
+        // Navigate to Application Settings screen
+        final context = navigatorKey.currentContext;
+        if (context != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ApplicationSettingsScreen(),
+            ),
+          );
+        }
+        break;
+      default:
+        throw PlatformException(
+          code: 'UNIMPLEMENTED',
+          message: 'Method ${call.method} not implemented',
+        );
+    }
+  });
+}
+
 class GravitonApp extends StatelessWidget {
   final AppState appState;
 
@@ -102,6 +146,7 @@ class GravitonApp extends StatelessWidget {
           // If null, Flutter will use system locale
 
           return MaterialApp(
+            navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             title: FlavorConfig.instance.appName,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
