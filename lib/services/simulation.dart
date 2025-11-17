@@ -93,6 +93,11 @@ class Simulation {
     _changeCounter++;
   }
 
+  /// Public method to mark simulation as changed (for external state modifications)
+  void markChanged() {
+    _markChanged();
+  }
+
   /// Get the current scenario type
   ScenarioType get currentScenario => _currentScenario;
 

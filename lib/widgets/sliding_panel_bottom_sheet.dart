@@ -159,7 +159,6 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
           minHeight: MediaQuery.of(context).size.height * _minHeight,
           maxHeight: MediaQuery.of(context).size.height * _maxHeight,
           snapPoint: _mediumHeight, // 35% - our medium position
-          
           // Panel styling
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(AppTypography.radiusXLarge),
@@ -169,7 +168,7 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
           // Enable dragging and snapping with improved behavior
           isDraggable: true,
           panelSnapping: true,
-          
+
           // Disable parallax to prevent bounce issues
           parallaxEnabled: false,
           parallaxOffset: 0.0,
@@ -216,11 +215,9 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
     AppState appState,
     AppLocalizations l10n,
   ) {
-    // Wrap in AbsorbPointer with absorbing=false to ensure proper hit testing
-    // This prevents tap pass-through to the simulation behind
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {}, // Absorb taps
+    // Wrap in Material to ensure proper hit testing and prevent tap pass-through
+    return Material(
+      type: MaterialType.transparency,
       child: Column(
         children: [
           // Drag handle
@@ -235,6 +232,22 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
                 setState(() {
                   _currentTabIndex = index;
                 });
+              },
+              onTabTap: () {
+                // When a tab is tapped and panel is at minimum position,
+                // expand it to medium position
+                if (_panelController.isAttached) {
+                  final currentPosition = _panelController.panelPosition;
+
+                  // If panel is in position 1 (closed/minimum), slide to position 2 (medium)
+                  if (currentPosition <= 0.1) {
+                    _panelController.animatePanelToPosition(
+                      (_mediumHeight - _minHeight) / (_maxHeight - _minHeight),
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOutCubic,
+                    );
+                  }
+                }
               },
               tabs: [
                 GravitonTab(
@@ -256,6 +269,7 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
               children: [
                 // Camera Controls Tab
                 Container(
+                  color: AppColors.transparentColor,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: CameraControls(
                     appState: appState,
@@ -265,6 +279,7 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
 
                 // Visuals Controls Tab
                 Container(
+                  color: AppColors.transparentColor,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: VisualsControls(
                     appState: appState,
@@ -274,6 +289,7 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
 
                 // Physics Controls Tab
                 Container(
+                  color: AppColors.transparentColor,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: PhysicsControls(
                     appState: appState,

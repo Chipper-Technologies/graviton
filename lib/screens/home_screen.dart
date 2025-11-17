@@ -251,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen>
             l10n,
           );
         } else {
-          // First check if we tapped on a body
+          // Check if we tapped on a body
           final tappedBodyIndex = _findBodyAtTapLocation(
             appState,
             size,
@@ -259,13 +259,10 @@ class _HomeScreenState extends State<HomeScreen>
           );
 
           if (tappedBodyIndex != null) {
-            // Tapped on a body - select it without toggling fullscreen
+            // Tapped on a body - select it
             _selectBody(appState, tappedBodyIndex, appState.simulation.bodies);
           } else {
-            // Tapped on empty space - toggle fullscreen mode
-            _handleFullscreenToggle(appState);
-
-            // Deselect any currently selected body and show controls
+            // Tapped on empty space - deselect any currently selected body
             appState.camera.selectBody(null);
             _showSimulationControls?.call();
           }
@@ -526,7 +523,7 @@ class _HomeScreenState extends State<HomeScreen>
     // is handled by the ScreenshotModeService via FullscreenService
   }
 
-  /// Handle fullscreen mode toggle
+  /// Handle fullscreen mode toggle (triggered by double-tap on simulation viewport)
   void _handleFullscreenToggle(AppState appState) async {
     try {
       // Hide floating controls temporarily during fullscreen transition
@@ -534,7 +531,7 @@ class _HomeScreenState extends State<HomeScreen>
         _showFloatingControls = false;
       });
 
-      await FullscreenUtils.toggleFullscreen(appState, 'viewport_tap');
+      await FullscreenUtils.toggleFullscreen(appState, 'viewport_double_tap');
 
       // Force a rebuild after fullscreen toggle and show controls again
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -553,9 +550,9 @@ class _HomeScreenState extends State<HomeScreen>
         }
       });
 
-      // Log the fullscreen toggle event
+      // Log the fullscreen toggle event (triggered by double-tap)
       FirebaseService.instance.logUIEventWithEnums(
-        UIAction.tap,
+        UIAction.doubleTap,
         element: UIElement.simulationViewport,
         value: appState.ui.isFullscreen
             ? 'enter_fullscreen'
@@ -1236,15 +1233,13 @@ class _HomeScreenState extends State<HomeScreen>
                     // Show floating controls on double-tap
                     _showFloatingControlsTemporarily();
 
-                    // Double-tap to reset camera view
-                    appState.camera.resetView(
-                      appState.simulation.currentScenario,
-                    );
+                    // Double-tap to toggle fullscreen mode
+                    _handleFullscreenToggle(appState);
 
                     FirebaseService.instance.logUIEventWithEnums(
                       UIAction.doubleTap,
-                      element: UIElement.cameraControls,
-                      value: 'reset_view',
+                      element: UIElement.simulationViewport,
+                      value: 'fullscreen_toggle',
                     );
                   },
                   onScaleStart: (d) {
@@ -1672,11 +1667,7 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         duration: const Duration(seconds: 4),
         behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.only(
-          left: 16,
-          right: 16,
-          bottom: 16,
-        ),
+        margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
         action: SnackBarAction(
           label: l10n.deactivate,
           onPressed: () {
