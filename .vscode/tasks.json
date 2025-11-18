@@ -398,6 +398,68 @@
       "problemMatcher": [],
       "detail": "Build macOS app for production"
     },
+    {
+      "label": "📦 Archive macOS (Prod)",
+      "type": "shell",
+      "command": "xcodebuild",
+      "args": [
+        "-workspace",
+        "macos/Runner.xcworkspace",
+        "-scheme",
+        "Runner",
+        "-configuration",
+        "Release",
+        "archive",
+        "-archivePath",
+        "build/macos/Graviton.xcarchive",
+        "DART_DEFINES=Y29uZmlnL3Byb2QuanNvbg==",
+        "DART_OBFUSCATION=false",
+        "TREE_SHAKE_ICONS=true"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Create Xcode archive for macOS (for App Store or direct distribution)"
+    },
+    {
+      "label": "💿 Export macOS Archive (App Store)",
+      "type": "shell",
+      "command": "xcodebuild",
+      "args": [
+        "-exportArchive",
+        "-archivePath",
+        "build/macos/Graviton.xcarchive",
+        "-exportPath",
+        "build/macos/AppStore",
+        "-exportOptionsPlist",
+        "macos/ExportOptions.plist"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "dependsOn": ["📦 Archive macOS (Prod)"],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Export archive for App Store distribution (requires ExportOptions.plist)"
+    },
 
     // ============================================================================
     // MAINTENANCE TASKS
