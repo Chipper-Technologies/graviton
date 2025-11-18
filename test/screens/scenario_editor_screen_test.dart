@@ -522,11 +522,11 @@ void main() {
       // Test menu button is present and accessible from Physics tab
       final menuButton = find.byIcon(Icons.more_vert);
       expect(menuButton, findsOneWidget);
-      
+
       // Verify the menu button is a PopupMenuButton
       final popupMenuButton = find.byType(PopupMenuButton<String>);
       expect(popupMenuButton, findsOneWidget);
-      
+
       // Skip actual menu interaction test due to hit test blocking issue
       // The menu functionality is tested in other test cases
     });

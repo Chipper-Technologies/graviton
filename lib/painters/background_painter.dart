@@ -150,21 +150,25 @@ class BackgroundPainter {
       // Use overlay on native, plus on web for compatibility
       // For first layer, don't end with transparent to avoid white showing through
       final radialGradient1 = Paint()
-        ..blendMode = layer == 0 ? BlendMode.src : (kIsWeb ? BlendMode.plus : BlendMode.overlay)
+        ..blendMode = layer == 0
+            ? BlendMode.src
+            : (kIsWeb ? BlendMode.plus : BlendMode.overlay)
         ..shader = RadialGradient(
           center: Alignment(centerX * 2 - 1, centerY * 2 - 1),
           radius: baseRadius,
-          colors: layer == 0 ? [
-            color1,
-            color2.withValues(alpha: color2.a * 0.7),
-            color3.withValues(alpha: color3.a * 0.4),
-            Colors.black,
-          ] : [
-            color1,
-            color2.withValues(alpha: color2.a * 0.7),
-            color3.withValues(alpha: color3.a * 0.4),
-            AppColors.transparentColor,
-          ],
+          colors: layer == 0
+              ? [
+                  color1,
+                  color2.withValues(alpha: color2.a * 0.7),
+                  color3.withValues(alpha: color3.a * 0.4),
+                  Colors.black,
+                ]
+              : [
+                  color1,
+                  color2.withValues(alpha: color2.a * 0.7),
+                  color3.withValues(alpha: color3.a * 0.4),
+                  AppColors.transparentColor,
+                ],
           stops: const [0.0, 0.4, 0.7, 1.0],
         ).createShader(Offset.zero & size);
 
@@ -352,7 +356,9 @@ class BackgroundPainter {
       // Draw the spherical gradient source with softer, more gradual falloff
       // Use plus on web, softLight on native for compatibility
       final gradientPaint = Paint()
-        ..blendMode = source == 0 ? BlendMode.src : (kIsWeb ? BlendMode.plus : BlendMode.softLight)
+        ..blendMode = source == 0
+            ? BlendMode.src
+            : (kIsWeb ? BlendMode.plus : BlendMode.softLight)
         ..shader = RadialGradient(
           center: Alignment(
             (center.dx / size.width) * 2 - 1,

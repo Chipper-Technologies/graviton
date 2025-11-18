@@ -13,10 +13,11 @@
     <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart" />
     <img src="https://img.shields.io/badge/Physics-E34F26?style=for-the-badge&logo=atom&logoColor=white" alt="Physics" />
     <img src="https://img.shields.io/badge/3D_Graphics-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="3D Graphics" />
+    <img src="https://img.shields.io/badge/Web-Chrome%20%7C%20Edge%20%7C%20Safari-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Web Support" />
   </p>
   
   <p align="center">
-    <img src="https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20macOS%20%7C%20Web-lightgrey?style=for-the-badge" alt="Platform Support" />
+    <img src="https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20macOS%20%7C%20Windows%20%7C%20Web-lightgrey?style=for-the-badge" alt="Platform Support" />
     <img src="https://img.shields.io/badge/Languages-7_Languages_Supported-green?style=for-the-badge" alt="Internationalization" />
   </p>
   
@@ -25,6 +26,11 @@
       <img src="https://img.shields.io/badge/iOS-Available_on_App_Store-007AFF?style=for-the-badge&logo=apple&logoColor=white" alt="Available on iOS App Store" />
     </a>
     <img src="https://img.shields.io/badge/Android-Coming_Soon-lightgrey?style=for-the-badge&logo=android&logoColor=white" alt="Coming Soon on Google Play" />
+    <a href="https://graviton.chipperlabs.com" target="_blank">
+      <img src="https://img.shields.io/badge/Web-Available_Now-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Available on the Web" />
+    </a>
+    <img src="https://img.shields.io/badge/macOS-Coming_Soon-lightgrey?style=for-the-badge&logo=apple&logoColor=white" alt="Coming Soon on Mac App Store" />
+    <img src="https://img.shields.io/badge/Windows-Coming_Soon-lightgrey?style=for-the-badge&logo=windows&logoColor=white" alt="Coming Soon on Windows" />
   </p>
 </div>
 
