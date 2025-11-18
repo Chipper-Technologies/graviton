@@ -388,49 +388,54 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
           ),
         ],
       ),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          widget.onInteraction?.call();
+      child: MouseRegion(
+        cursor: SystemMouseCursors.grab,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            widget.onInteraction?.call();
 
-          // Check current panel position and only animate to medium if currently at minimum
-          if (_panelController.isAttached) {
-            final currentPosition = _panelController.panelPosition;
+            // Check current panel position and only animate to medium if currently at minimum
+            if (_panelController.isAttached) {
+              final currentPosition = _panelController.panelPosition;
 
-            // If panel is in position 1 (closed/minimum), slide to position 2 (medium)
-            // Position 0.0 = minimum, so anything close to 0.0 is position 1
-            if (currentPosition <= 0.1) {
-              // Small threshold for "closed" state
-              _panelController.animatePanelToPosition(
-                (_mediumHeight - _minHeight) / (_maxHeight - _minHeight),
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeOutCubic,
-              );
+              // If panel is in position 1 (closed/minimum), slide to position 2 (medium)
+              // Position 0.0 = minimum, so anything close to 0.0 is position 1
+              if (currentPosition <= 0.1) {
+                // Small threshold for "closed" state
+                _panelController.animatePanelToPosition(
+                  (_mediumHeight - _minHeight) / (_maxHeight - _minHeight),
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOutCubic,
+                );
+              }
+              // If already at medium or above, don't do anything (let normal drag behavior handle it)
             }
-            // If already at medium or above, don't do anything (let normal drag behavior handle it)
-          }
-        },
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-          child: Center(
-            child: Container(
-              width: 80,
-              height: 5,
-              decoration: BoxDecoration(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityHigh,
-                ),
-                borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.uiBlack.withValues(
-                      alpha: AppTypography.opacityMedium,
-                    ),
-                    blurRadius: 2,
-                    offset: const Offset(0, 1),
+          },
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            child: Center(
+              child: Container(
+                width: 80,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityHigh,
                   ),
-                ],
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusMedium,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.uiBlack.withValues(
+                        alpha: AppTypography.opacityMedium,
+                      ),
+                      blurRadius: 2,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
