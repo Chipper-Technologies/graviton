@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
@@ -273,31 +274,35 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
       isScrollControlled: true,
       backgroundColor: AppColors.transparentColor,
       builder: (context) => StatefulBuilder(
-        builder: (context, setSheetState) => SizedBox(
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: ScenarioEditorBodyDetailsBottomSheet(
-            body: widget
-                .bodies[index], // Always use the current body from the list
-            isAddMode: false, // This is edit mode
-            availableCentralBodies: widget.bodies
-                .where((body) => body != widget.bodies[index])
-                .toList(), // Exclude the body being edited
-            onBodyChanged: (updatedBody) {
-              _updateBody(index, updatedBody);
-              setSheetState(() {}); // Force the bottom sheet to rebuild
-            },
-            onDuplicate: () {
-              Navigator.pop(context);
-              _duplicateBody(index);
-            },
-            onDelete: () {
-              // Direct deletion - confirmation already shown in bottom sheet
-              _performBodyDeletion(index, widget.bodies[index]);
-            },
+        builder: (context, setSheetState) => Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: RenderingConstants.bottomSheetMaxWidth,
+            height: MediaQuery.of(context).size.height * 0.75,
+            child: ScenarioEditorBodyDetailsBottomSheet(
+              body: widget
+                  .bodies[index], // Always use the current body from the list
+              isAddMode: false, // This is edit mode
+              availableCentralBodies: widget.bodies
+                  .where((body) => body != widget.bodies[index])
+                  .toList(), // Exclude the body being edited
+              onBodyChanged: (updatedBody) {
+                _updateBody(index, updatedBody);
+                setSheetState(() {}); // Force the bottom sheet to rebuild
+              },
+              onDuplicate: () {
+                Navigator.pop(context);
+                _duplicateBody(index);
+              },
+              onDelete: () {
+                // Direct deletion - confirmation already shown in bottom sheet
+                _performBodyDeletion(index, widget.bodies[index]);
+              },
+            ),
           ),
         ),
       ),
-    );
+    ); 
   }
 
   void _updateBody(int index, Body updatedBody) {

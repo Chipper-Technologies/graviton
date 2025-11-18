@@ -211,52 +211,55 @@ class HapticCircularButton extends StatelessWidget {
     final buttonSize = size ?? AppTypography.spacingXXXLarge;
     final buttonIconSize = iconSize ?? AppTypography.iconSizeMedium;
 
-    final button = GestureDetector(
-      onTap: () {
-        // Provide haptic feedback
-        switch (hapticFeedbackType) {
-          case HapticFeedbackType.lightImpact:
-            HapticFeedback.lightImpact();
-            break;
-          case HapticFeedbackType.mediumImpact:
-            HapticFeedback.mediumImpact();
-            break;
-          case HapticFeedbackType.heavyImpact:
-            HapticFeedback.heavyImpact();
-            break;
-          case HapticFeedbackType.selectionClick:
-            HapticFeedback.selectionClick();
-            break;
-          case HapticFeedbackType.vibrate:
-            HapticFeedback.vibrate();
-            break;
-        }
+    final button = MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          // Provide haptic feedback
+          switch (hapticFeedbackType) {
+            case HapticFeedbackType.lightImpact:
+              HapticFeedback.lightImpact();
+              break;
+            case HapticFeedbackType.mediumImpact:
+              HapticFeedback.mediumImpact();
+              break;
+            case HapticFeedbackType.heavyImpact:
+              HapticFeedback.heavyImpact();
+              break;
+            case HapticFeedbackType.selectionClick:
+              HapticFeedback.selectionClick();
+              break;
+            case HapticFeedbackType.vibrate:
+              HapticFeedback.vibrate();
+              break;
+          }
 
-        // Call the provided callback
-        onTap();
-      },
-      child: Container(
-        width: buttonSize,
-        height: buttonSize,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color:
-              backgroundColor ??
-              AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityDisabled,
-              ),
-          border: borderColor != null
-              ? Border.all(color: borderColor!, width: 1)
-              : null,
-        ),
-        child: Icon(
-          icon,
-          size: buttonIconSize,
-          color:
-              iconColor ??
-              AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityVeryHigh,
-              ),
+          // Call the provided callback
+          onTap();
+        },
+        child: Container(
+          width: buttonSize,
+          height: buttonSize,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color:
+                backgroundColor ??
+                AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityDisabled,
+                ),
+            border: borderColor != null
+                ? Border.all(color: borderColor!, width: 1)
+                : null,
+          ),
+          child: Icon(
+            icon,
+            size: buttonIconSize,
+            color:
+                iconColor ??
+                AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityVeryHigh,
+                ),
+          ),
         ),
       ),
     );

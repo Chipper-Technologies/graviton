@@ -889,7 +889,8 @@ class _HomeScreenState extends State<HomeScreen>
       isScrollControlled: true,
       backgroundColor: AppColors.transparentColor,
       builder: (context) => StatefulBuilder(
-        builder: (context, setSheetState) => Center(
+        builder: (context, setSheetState) => Align(
+          alignment: Alignment.bottomCenter,
           child: SizedBox(
             width: RenderingConstants.bottomSheetMaxWidth,
             height: MediaQuery.of(context).size.height * 0.75,
@@ -906,8 +907,8 @@ class _HomeScreenState extends State<HomeScreen>
                   [], // Not needed for editing existing bodies
               isAddMode: false,
             ),
-          ), // End Container
-        ), // End Center
+          ), // End SizedBox
+        ), // End Align
       ), // End StatefulBuilder
     ).then((_) {
       // Resume simulation if it was playing
