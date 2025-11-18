@@ -160,8 +160,8 @@ class _SlidingPanelBottomSheetState extends State<SlidingPanelBottomSheet> {
           minHeight: MediaQuery.of(context).size.height * _minHeight,
           maxHeight: MediaQuery.of(context).size.height * _maxHeight,
           snapPoint: _mediumHeight, // 35% - our medium position
-          // Panel styling - let the content handle borders and colors
           color: Colors.transparent,
+          boxShadow: const [],
 
           // Enable dragging and snapping with improved behavior
           isDraggable: true,

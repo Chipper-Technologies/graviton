@@ -52,7 +52,52 @@
         "config/prod.json",
         "--flavor",
         "prod"
+      ]
+    },
+    {
+      "name": "Web Development [DEBUG]",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file",
+        "config/dev.json"
       ],
+      "deviceId": "chrome"
+    },
+    {
+      "name": "Web Production [DEBUG]",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file",
+        "config/prod.json"
+      ],
+      "deviceId": "chrome"
+    },
+    {
+      "name": "Web Development [RELEASE]",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file",
+        "config/dev.json"
+      ],
+      "deviceId": "chrome",
+      "flutterMode": "release"
+    },
+    {
+      "name": "Web Production [RELEASE]",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file",
+        "config/prod.json"
+      ],
+      "deviceId": "chrome",
       "flutterMode": "release"
     }
   ]

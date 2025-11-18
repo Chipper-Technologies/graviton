@@ -1443,35 +1443,39 @@ class _HomeScreenState extends State<HomeScreen>
                             appState.camera.toggleAutoRotate(),
                         child: Stack(
                           children: [
-                            CustomPaint(
-                              painter: GravitonPainter(
-                                sim: appState.simulation.simulation,
-                                view: view,
-                                proj: _buildProjection(size.aspectRatio),
-                                stars: _stars,
-                                showTrails: appState.ui.showTrails,
-                                useWarmTrails: appState.ui.useWarmTrails,
-                                useRealisticColors:
-                                    appState.ui.useRealisticColors,
-                                showOrbitalPaths: appState.ui.showOrbitalPaths,
-                                dualOrbitalPaths: appState.ui.dualOrbitalPaths,
-                                showHabitableZones:
-                                    appState.ui.showHabitableZones,
-                                showHabitabilityIndicators:
-                                    appState.ui.showHabitabilityIndicators,
-                                selectedBodyIndex: appState.camera.selectedBody,
-                                followMode: appState.camera.followMode,
-                                cameraDistance: appState.camera.distance,
-                                globalGravityFields:
-                                    appState.ui.globalGravityFields,
-                                gravityFieldColorScheme:
-                                    appState.ui.gravityFieldColorScheme,
-                                showEquipotentialSurfaces:
-                                    appState.ui.showEquipotentialSurfaces,
-                                showGravityFieldIndicators:
-                                    appState.ui.showGravityFieldIndicators,
+                            SizedBox(
+                              width: size.width,
+                              height: size.height,
+                              child: CustomPaint(
+                                painter: GravitonPainter(
+                                  sim: appState.simulation.simulation,
+                                  view: view,
+                                  proj: _buildProjection(size.aspectRatio),
+                                  stars: _stars,
+                                  showTrails: appState.ui.showTrails,
+                                  useWarmTrails: appState.ui.useWarmTrails,
+                                  useRealisticColors:
+                                      appState.ui.useRealisticColors,
+                                  showOrbitalPaths: appState.ui.showOrbitalPaths,
+                                  dualOrbitalPaths: appState.ui.dualOrbitalPaths,
+                                  showHabitableZones:
+                                      appState.ui.showHabitableZones,
+                                  showHabitabilityIndicators:
+                                      appState.ui.showHabitabilityIndicators,
+                                  selectedBodyIndex: appState.camera.selectedBody,
+                                  followMode: appState.camera.followMode,
+                                  cameraDistance: appState.camera.distance,
+                                  globalGravityFields:
+                                      appState.ui.globalGravityFields,
+                                  gravityFieldColorScheme:
+                                      appState.ui.gravityFieldColorScheme,
+                                  showEquipotentialSurfaces:
+                                      appState.ui.showEquipotentialSurfaces,
+                                  showGravityFieldIndicators:
+                                      appState.ui.showGravityFieldIndicators,
+                                ),
+                                size: Size(size.width, size.height),
                               ),
-                              child: const SizedBox.expand(),
                             ),
                             if (appState.ui.showLabels)
                               BodyLabelsOverlay(

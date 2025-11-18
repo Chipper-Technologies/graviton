@@ -211,6 +211,11 @@ Professional screenshot capture system for creating marketing materials:
 - **IDE**: VS Code with Flutter extension (recommended) or Android Studio
 - **Platforms**: iOS 11+, Android API 21+, macOS 10.14+, or modern web browser
 
+**For Web Development:**
+- **Chrome Browser**: Recommended for development and testing
+- **Web Server**: For production deployment (Firebase Hosting, Netlify, etc.)
+- **No Additional Setup**: Web support works out of the box
+
 **For iOS Development:**
 - **macOS**: Required for iOS builds and simulator testing
 - **Xcode**: Latest version for iOS compilation
@@ -304,17 +309,22 @@ dev_dependencies:
 
 ### 🎯 Quick Start Guide
 
-1. **Launch the app** - Choose your preferred platform
+1. **Launch the app** - Choose your preferred platform:
+   - **Mobile**: Run on iOS/Android device or simulator
+   - **Web**: Run in Chrome browser (`flutter run -d chrome`)
+   - **macOS**: Run as native desktop app
 2. **Select a scenario** - Start with "Solar System" for the full experience
 3. **Explore controls**:
-   - 🖱️ **Drag** to rotate the camera
-   - 🤏 **Pinch** to zoom in/out
+   - 🖱️ **Drag** to rotate the camera (touch or mouse)
+   - 🤏 **Pinch** to zoom in/out (touch or scroll wheel)
    - 🔄 **Two-finger rotate** for camera roll
    - ▶️ **Play/Pause** to control simulation
 4. **Customize experience**:
    - ⚡ Adjust speed with the slider
    - 🌟 Toggle trails for orbital visualization
    - 📊 Enable stats for detailed information
+
+> **Web Performance Tip**: The web version uses CanvasKit renderer for optimal 3D graphics performance. For best results, use Chrome or Edge browsers.
 
 ### 💻 VS Code Development Workflow
 
@@ -324,10 +334,17 @@ Graviton includes comprehensive VS Code integration for streamlined development:
 
 Access via the Debug panel or `F5` key:
 
+**Mobile Platforms:**
 - **Development [DEBUG]** - Full debugging with development config
 - **Development [PROFILE]** - Profile mode for performance testing
 - **Development [RELEASE]** - Release mode with development config
 - **Production [RELEASE]** - Production configuration testing
+
+**Web Platform:**
+- **Web Development [DEBUG]** - Debug mode in Chrome with dev config
+- **Web Production [DEBUG]** - Debug mode in Chrome with production config
+- **Web Development [RELEASE]** - Release mode in Chrome with dev config
+- **Web Production [RELEASE]** - Release mode in Chrome with production config
 
 *All configurations use `--dart-define-from-file` for cross-platform compatibility.*
 
@@ -338,6 +355,12 @@ Access via `Cmd/Ctrl + Shift + P` → "Tasks: Run Task":
 **Development & Running:**
 - 🚀 **Run Development** *(Default)* - Quick development testing
 - 🎯 **Run Production** - Test with production configuration
+
+**Web Development:**
+- 🌐 **Run Web Development** - Run in Chrome with dev configuration
+- 🌐 **Run Web Production** - Run in Chrome with production configuration
+- 🌐 **Build Web (Dev)** - Build for development deployment
+- 🌐 **Build Web (Prod)** - Build for production deployment
 
 **Android Builds:**
 - 📱 **Build Android APK (Dev/Prod)** - Direct installation APKs
@@ -471,6 +494,49 @@ Each configuration can have different:
 - App identifiers
 - Feature flags
 - Screenshot mode availability (dev only)
+
+#### 🌐 Web Deployment
+
+The web build can be deployed to various hosting platforms:
+
+**Firebase Hosting** (Recommended)
+```bash
+# Install Firebase CLI
+npm install -g firebase-tools
+
+# Login to Firebase
+firebase login
+
+# Initialize Firebase Hosting
+firebase init hosting
+
+# Build and deploy
+flutter build web --dart-define-from-file config/prod.json --release
+firebase deploy --only hosting
+```
+
+**GitHub Pages**
+```bash
+# Build the web app
+flutter build web --dart-define-from-file config/prod.json --release --base-href "/graviton/"
+
+# Deploy to gh-pages branch
+# (Requires GitHub Pages to be enabled in repository settings)
+```
+
+**Netlify / Vercel**
+1. Build the web app: `flutter build web --dart-define-from-file config/prod.json --release`
+2. Connect repository to Netlify/Vercel
+3. Set build command: `flutter build web --release`
+4. Set publish directory: `build/web`
+
+**Web Features:**
+- ✅ Progressive Web App (PWA) support with offline capability
+- ✅ Optimized for 3D graphics performance
+- ✅ Service Worker for caching and improved load times
+- ✅ Responsive design works on desktop and mobile browsers
+- ✅ Firebase integration for analytics and remote config
+- ⚠️ Best performance on Chrome, Edge, and Safari
 
 #### � Android Release Signing Setup
 

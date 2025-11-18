@@ -64,4 +64,4 @@ flutter_native_splash:
   android_gravity: center
   ios_content_mode: scaleAspectFit
   fullscreen: false
-  web: false
+  web: true
