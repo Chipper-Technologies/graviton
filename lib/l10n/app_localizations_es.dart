@@ -3035,4 +3035,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get noAtmosphereStatus => 'Sin Atmósfera';
+
+  @override
+  String get selectBody => 'Select Body';
+
+  @override
+  String get noBodiesAvailable => 'No bodies available';
 }

@@ -2840,4 +2840,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get noAtmosphereStatus => '无大气';
+
+  @override
+  String get selectBody => 'Select Body';
+
+  @override
+  String get noBodiesAvailable => 'No bodies available';
 }

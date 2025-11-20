@@ -39,6 +39,9 @@ enum UIElement {
   /// Body properties dialog
   bodyProperties('body_properties'),
 
+  /// Body selection dialog
+  bodySelection('body_selection'),
+
   /// Physics/simulation settings dialog
   physicsSettings('physics_settings'),
 

@@ -2,7 +2,8 @@ import Cocoa
 import FlutterMacOS
 
 @main
-class AppDelegate: FlutterAppDelegate {
+class AppDelegate: FlutterAppDelegate, MenuActionDelegate {
+  
   override func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
     return true
   }
@@ -11,94 +12,129 @@ class AppDelegate: FlutterAppDelegate {
     return true
   }
   
+  override func applicationDidFinishLaunching(_ notification: Notification) {
+    super.applicationDidFinishLaunching(notification)
+    
+    // Load config from plist
+    ConfigLoader.shared.loadConfig()
+  }
+  
   override func applicationWillFinishLaunching(_ notification: Notification) {
     super.applicationWillFinishLaunching(notification)
     
-    // Customize the menu bar early in the launch cycle
-    customizeMenuBar()
+    // Customize the menu bar
+    MenuBuilder.shared.customizeMenuBar(delegate: self)
   }
   
-  private func customizeMenuBar() {
-    guard let mainMenu = NSApp.mainMenu else { return }
-    
-    // Remove specific unwanted menus, keep the App menu (index 0)
-    // Remove in reverse order to maintain correct indices
-    let menusToRemove = ["Help", "Window", "View", "Edit"]
-    
-    for menuTitle in menusToRemove {
-      if let index = mainMenu.items.firstIndex(where: { $0.title == menuTitle }) {
-        mainMenu.removeItem(at: index)
-      }
-    }
-    
-    // Customize the About menu item
-    if let appMenu = mainMenu.items.first?.submenu {
-      if let aboutItem = appMenu.item(withTitle: "About \(ProcessInfo.processInfo.processName)") {
-        aboutItem.action = #selector(showAboutScreen)
-        aboutItem.target = self
-      }
-      
-      // Enable and customize the Preferences menu item
-      if let preferencesItem = appMenu.item(withTitle: "Preferences…") {
-        preferencesItem.action = #selector(showSettings)
-        preferencesItem.target = self
-        preferencesItem.isEnabled = true
-      }
-    }
-    
-    // Now you should only see the "Graviton" (or "Graviton Dev") app menu
+  // MARK: - App Menu Actions
+  
+  @objc func showAboutScreen() {
+    FlutterChannelManager.shared.sendNavigationCommand("showAbout")
   }
   
-  @objc private func showAboutScreen() {
-    // Get the Flutter view controller
-    if let window = NSApp.windows.first,
-       let flutterViewController = window.contentViewController as? FlutterViewController {
-      
-      // Send message to Flutter to navigate to About screen
-      let channel = FlutterMethodChannel(
-        name: "io.chipper.graviton/navigation",
-        binaryMessenger: flutterViewController.engine.binaryMessenger
-      )
-      
-      channel.invokeMethod("showAbout", arguments: nil)
-    }
+  @objc func showSettings() {
+    FlutterChannelManager.shared.sendNavigationCommand("showSettings")
   }
   
-  @objc private func showSettings() {
-    // Get the Flutter view controller
-    if let window = NSApp.windows.first,
-       let flutterViewController = window.contentViewController as? FlutterViewController {
-      
-      // Send message to Flutter to navigate to Settings screen
-      let channel = FlutterMethodChannel(
-        name: "io.chipper.graviton/navigation",
-        binaryMessenger: flutterViewController.engine.binaryMessenger
-      )
-      
-      channel.invokeMethod("showSettings", arguments: nil)
+  // MARK: - File Menu Actions
+  
+  @objc func takeScreenshot() {
+    ScreenshotManager.shared.takeScreenshot()
+  }
+  
+  @objc func copyScreenshot() {
+    ScreenshotManager.shared.copyScreenshot()
+  }
+  
+  // MARK: - Edit Menu Actions
+  
+  @objc func selectBody() {
+    FlutterChannelManager.shared.sendSimulationCommand("selectBody")
+  }
+  
+  // MARK: - Simulation Menu Actions
+  
+  @objc func togglePlayPause() {
+    FlutterChannelManager.shared.sendSimulationCommand("togglePlayPause")
+  }
+  
+  @objc func resetSimulation() {
+    FlutterChannelManager.shared.sendSimulationCommand("reset")
+  }
+  
+  @objc func increaseSpeed() {
+    FlutterChannelManager.shared.sendSimulationCommand("increaseSpeed")
+  }
+  
+  @objc func decreaseSpeed() {
+    FlutterChannelManager.shared.sendSimulationCommand("decreaseSpeed")
+  }
+  
+  // MARK: - View Menu Actions
+  
+  @objc func centerCamera() {
+    FlutterChannelManager.shared.sendSimulationCommand("centerCamera")
+  }
+  
+  @objc func toggleFullscreen() {
+    if let window = NSApp.windows.first {
+      window.toggleFullScreen(nil)
     }
   }
   
-  private func addCustomMenuItem() {
-    guard let mainMenu = NSApp.mainMenu else { return }
-    
-    // Create a new menu
-    let customMenu = NSMenu(title: "Custom")
-    let customMenuItem = NSMenuItem(title: "Custom", action: nil, keyEquivalent: "")
-    customMenuItem.submenu = customMenu
-    
-    // Add items to the custom menu
-    let item1 = NSMenuItem(title: "Settings", action: #selector(openSettings), keyEquivalent: ",")
-    item1.target = self
-    customMenu.addItem(item1)
-    
-    // Insert the custom menu before Help menu (usually last)
-    let insertIndex = mainMenu.items.count - 1
-    mainMenu.insertItem(customMenuItem, at: insertIndex)
+  @objc func toggleStatistics() {
+    FlutterChannelManager.shared.sendSimulationCommand("toggleStatistics")
   }
   
-  @objc private func openSettings() {
-    // Handle settings action
-    print("Open Settings")
+  @objc func toggleBodyLabels() {
+    FlutterChannelManager.shared.sendSimulationCommand("toggleBodyLabels")
+  }
+  
+  @objc func toggleTrails() {
+    FlutterChannelManager.shared.sendSimulationCommand("toggleTrails")
+  }
+  
+  @objc func zoomIn() {
+    FlutterChannelManager.shared.sendSimulationCommand("zoomIn")
+  }
+  
+  @objc func zoomOut() {
+    FlutterChannelManager.shared.sendSimulationCommand("zoomOut")
+  }
+  
+  @objc func actualSize() {
+    FlutterChannelManager.shared.sendSimulationCommand("actualSize")
+  }
+  
+  // MARK: - Help Menu Actions
+  
+  @objc func showHelp() {
+    FlutterChannelManager.shared.sendNavigationCommand("showHelp")
+  }
+  
+  @objc func showTutorial() {
+    FlutterChannelManager.shared.sendSimulationCommand("showTutorial")
+  }
+  
+  @objc func showChangelog() {
+    FlutterChannelManager.shared.sendNavigationCommand("showChangelog")
+  }
+  
+  @objc func reportIssue() {
+    if let url = URL(string: ConfigLoader.shared.reportIssueUrl) {
+      NSWorkspace.shared.open(url)
+    }
+  }
+  
+  @objc func showPrivacyPolicy() {
+    if let url = URL(string: ConfigLoader.shared.privacyPolicyUrl) {
+      NSWorkspace.shared.open(url)
+    }
+  }
+  
+  @objc func showLicenseInfo() {
+    if let url = URL(string: ConfigLoader.shared.licenseUrl) {
+      NSWorkspace.shared.open(url)
+    }
   }
 }

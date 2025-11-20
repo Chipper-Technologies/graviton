@@ -3046,4 +3046,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get noAtmosphereStatus => 'Pas d\'Atmosphère';
+
+  @override
+  String get selectBody => 'Select Body';
+
+  @override
+  String get noBodiesAvailable => 'No bodies available';
 }

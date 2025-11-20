@@ -302,7 +302,7 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
           ),
         ),
       ),
-    ); 
+    );
   }
 
   void _updateBody(int index, Body updatedBody) {

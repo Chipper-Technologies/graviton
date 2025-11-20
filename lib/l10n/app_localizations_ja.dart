@@ -2859,4 +2859,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get noAtmosphereStatus => '大気なし';
+
+  @override
+  String get selectBody => 'Select Body';
+
+  @override
+  String get noBodiesAvailable => 'No bodies available';
 }

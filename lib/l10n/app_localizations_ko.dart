@@ -2872,4 +2872,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get noAtmosphereStatus => '대기 없음';
+
+  @override
+  String get selectBody => 'Select Body';
+
+  @override
+  String get noBodiesAvailable => 'No bodies available';
 }
