@@ -1429,6 +1429,7 @@ class _HomeScreenState extends State<HomeScreen>
                         // Double-tap to toggle fullscreen mode
                         _handleFullscreenToggle(appState);
 
+
                         FirebaseService.instance.logUIEventWithEnums(
                           UIAction.doubleTap,
                           element: UIElement.simulationViewport,
