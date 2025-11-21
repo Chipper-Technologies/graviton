@@ -2861,8 +2861,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get noAtmosphereStatus => '大気なし';
 
   @override
-  String get selectBody => 'Select Body';
+  String get selectBody => '天体を選択';
 
   @override
-  String get noBodiesAvailable => 'No bodies available';
+  String get noBodiesAvailable => '選択可能な天体がありません';
 }

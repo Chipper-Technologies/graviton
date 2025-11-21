@@ -3039,17 +3039,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get unknownHabitabilityStatus => 'Inconnu';
 
   @override
-  String get tooHotStatus => 'Trop Chaud';
+  String get tooHotStatus => 'Trop chaud';
 
   @override
-  String get tooColdStatus => 'Trop Froid';
+  String get tooColdStatus => 'Trop froid';
 
   @override
-  String get noAtmosphereStatus => 'Pas d\'Atmosphère';
+  String get noAtmosphereStatus => 'Pas d\'atmosphère';
 
   @override
-  String get selectBody => 'Select Body';
+  String get selectBody => 'Sélectionner un corps';
 
   @override
-  String get noBodiesAvailable => 'No bodies available';
+  String get noBodiesAvailable => 'Aucun corps disponible';
 }

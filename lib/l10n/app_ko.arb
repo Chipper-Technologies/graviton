@@ -901,5 +901,7 @@
   "unknownHabitabilityStatus": "알 수 없음",
   "tooHotStatus": "너무 뜨거움",
   "tooColdStatus": "너무 추움",
-  "noAtmosphereStatus": "대기 없음"
+  "noAtmosphereStatus": "대기 없음",
+  "selectBody": "천체 선택",
+  "noBodiesAvailable": "선택 가능한 천체가 없습니다"
 }
