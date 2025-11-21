@@ -22,7 +22,9 @@ dependencies:
   cloud_firestore: ^6.0.3
   flutter_svg: ^2.2.1
   package_info_plus: ^9.0.0
+  path_provider: ^2.1.5
   provider: ^6.1.2
+  share_plus: ^12.0.1
   shared_preferences: ^2.5.3
   sliding_up_panel: ^2.0.0+1
   url_launcher: ^6.3.1
