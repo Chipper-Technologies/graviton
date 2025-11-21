@@ -2,7 +2,7 @@
 """
 Screenshot Generator for Graviton App
 
-This script processes raw screenshots from Android and iOS devices to generate:
+This script processes raw screenshots from Android, iOS, and macOS devices to generate:
 1. Low-resolution images suitable for README display
 2. Platform-specific feature images for app stores
 3. Organized folder structure for different use cases
@@ -14,7 +14,7 @@ Usage:
     # Default: Generate highest resolution feature images + README images
     python3 tools/generate_screenshots.py
     
-    # Generate all available sizes for both platforms
+    # Generate all available sizes for all platforms
     python3 tools/generate_screenshots.py --all-sizes
     
     # Custom Android sizes only
@@ -22,6 +22,9 @@ Usage:
     
     # Custom iOS sizes only  
     python3 tools/generate_screenshots.py --ios-sizes 2778x1284 2688x1242
+    
+    # Custom macOS sizes only (supports 1280x800, 1440x900, 2560x1600, 2880x1800)
+    python3 tools/generate_screenshots.py --macos-sizes 2880x1800 2560x1600
     
     # Generate only README images
     python3 tools/generate_screenshots.py --readme-only
@@ -42,7 +45,8 @@ class ScreenshotProcessor:
     """Handles processing of screenshots for different platforms and use cases."""
     
     def __init__(self, project_root: Path, android_sizes: Optional[List[Tuple[int, int]]] = None, 
-                 ios_sizes: Optional[List[Tuple[int, int]]] = None):
+                 ios_sizes: Optional[List[Tuple[int, int]]] = None,
+                 macos_sizes: Optional[List[Tuple[int, int]]] = None):
         self.project_root = project_root
         self.assets_path = project_root / "assets" / "screenshots"
         self.output_path = project_root / "assets" / "screenshots"
@@ -66,9 +70,17 @@ class ScreenshotProcessor:
             (2778, 1284),  # iPhone 12 Pro, 13 Pro landscape
         ]
         
+        self.all_macos_sizes = [
+            (1280, 800),   # Mac App Store size (16:10)
+            (1440, 900),   # Mac App Store size (16:10)
+            (2560, 1600),  # Mac App Store size (16:10)
+            (2880, 1800),  # Mac App Store size (16:10) - Retina
+        ]
+        
         # Use provided sizes or Apple/Google required dimensions
         self.android_feature_sizes = android_sizes or [(1080, 2400)]  # Android original size is fine
         self.ios_feature_sizes = ios_sizes or [(1284, 2778)]  # Apple required iPhone size
+        self.macos_feature_sizes = macos_sizes or [(2880, 1800)]  # Mac App Store highest resolution
         
         # Quality settings
         self.feature_quality = 95
@@ -81,6 +93,8 @@ class ScreenshotProcessor:
             self.output_path / "android" / "feature",
             self.output_path / "ios" / "readme",
             self.output_path / "ios" / "feature",
+            self.output_path / "macos" / "readme",
+            self.output_path / "macos" / "feature",
         ]
         
         for directory in directories:
@@ -161,7 +175,7 @@ class ScreenshotProcessor:
         """Generate low-resolution images for README."""
         print("\n🔄 Processing README images...")
         
-        for platform in ["android", "ios"]:
+        for platform in ["android", "ios", "macos"]:
             screenshots = self.get_raw_screenshots(platform)
             if not screenshots:
                 continue
@@ -246,6 +260,30 @@ class ScreenshotProcessor:
                             
                     except Exception as e:
                         print(f"  ❌ Failed to create iOS feature {size} for {screenshot_path.name}: {e}")
+        
+        # Process macOS feature images
+        macos_screenshots = self.get_raw_screenshots("macos")
+        if macos_screenshots:
+            print(f"\n💻 Processing macOS feature images...")
+            macos_feature_path = self.output_path / "macos" / "feature"
+            
+            # Create feature images for all screenshots in all required sizes
+            for screenshot_path in macos_screenshots:
+                screenshot_name = screenshot_path.stem  # e.g., "macos-1"
+                
+                for size in self.macos_feature_sizes:
+                    try:
+                        with Image.open(screenshot_path) as img:
+                            feature_img = self.create_feature_image(img, size)
+                            
+                            output_name = f"{screenshot_name}_{size[0]}x{size[1]}.png"
+                            output_path = macos_feature_path / output_name
+                            
+                            feature_img.save(output_path, "PNG", quality=self.feature_quality)
+                            print(f"  ✅ macOS {size[0]}×{size[1]}: {output_name}")
+                            
+                    except Exception as e:
+                        print(f"  ❌ Failed to create macOS feature {size} for {screenshot_path.name}: {e}")
 
     def print_summary(self):
         """Print processing summary."""
@@ -253,16 +291,25 @@ class ScreenshotProcessor:
         print(f"{'='*50}")
         
         # Count generated files
-        readme_count = len(list((self.output_path / "readme").rglob("*.png")))
-        android_feature_count = len(list((self.output_path / "feature" / "android").glob("*.png")))
-        ios_feature_count = len(list((self.output_path / "feature" / "ios").glob("*.png")))
+        android_readme_count = len(list((self.output_path / "android" / "readme").glob("*.png")))
+        ios_readme_count = len(list((self.output_path / "ios" / "readme").glob("*.png")))
+        macos_readme_count = len(list((self.output_path / "macos" / "readme").glob("*.png")))
+        android_feature_count = len(list((self.output_path / "android" / "feature").glob("*.png")))
+        ios_feature_count = len(list((self.output_path / "ios" / "feature").glob("*.png")))
+        macos_feature_count = len(list((self.output_path / "macos" / "feature").glob("*.png")))
         
-        print(f"📱 README images generated: {readme_count}")
-        print(f"🤖 Android feature images: {android_feature_count}")
-        print(f"🍎 iOS feature images: {ios_feature_count}")
+        print(f"📱 README images:")
+        print(f"   🤖 Android: {android_readme_count}")
+        print(f"   🍎 iOS: {ios_readme_count}")
+        print(f"   💻 macOS: {macos_readme_count}")
+        print(f"\n🎨 Feature images:")
+        print(f"   🤖 Android: {android_feature_count}")
+        print(f"   🍎 iOS: {ios_feature_count}")
+        print(f"   💻 macOS: {macos_feature_count}")
         print(f"\n📁 Output structure:")
-        print(f"  assets/screenshots/readme/     - Low-res for README")
-        print(f"  assets/screenshots/feature/    - App store images")
+        print(f"  assets/screenshots/android/    - Android images")
+        print(f"  assets/screenshots/ios/        - iOS images")
+        print(f"  assets/screenshots/macos/      - macOS images")
 
 def parse_size_argument(size_str: str) -> Tuple[int, int]:
     """Parse a size string like '2560x1440' into a tuple."""
@@ -284,23 +331,28 @@ def main():
                        help="Android feature image sizes (e.g., 2560x1440 1920x1080). Defaults to highest resolution.")
     parser.add_argument("--ios-sizes", nargs="+", type=parse_size_argument,
                        help="iOS feature image sizes (e.g., 2778x1284 2688x1242). Defaults to highest resolution.")
+    parser.add_argument("--macos-sizes", nargs="+", type=parse_size_argument,
+                       help="macOS feature image sizes (e.g., 2880x1800 2560x1600 1440x900 1280x800). Defaults to highest resolution.")
     parser.add_argument("--all-sizes", action="store_true",
-                       help="Generate all available sizes for both platforms")
+                       help="Generate all available sizes for all platforms")
     
     args = parser.parse_args()
     
     # Determine feature image sizes
     android_sizes = None
     ios_sizes = None
+    macos_sizes = None
     
     if args.all_sizes:
         # Use all available sizes
         android_sizes = [(1920, 1080), (1080, 1920), (2560, 1440), (1440, 2560)]
         ios_sizes = [(1242, 2688), (2688, 1242), (1284, 2778), (2778, 1284)]
+        macos_sizes = [(1280, 800), (1440, 900), (2560, 1600), (2880, 1800)]
     else:
         # Use custom sizes if provided
         android_sizes = args.android_sizes
         ios_sizes = args.ios_sizes
+        macos_sizes = args.macos_sizes
     
     # Detect project root
     script_path = Path(__file__).parent
@@ -317,11 +369,12 @@ def main():
         sys.exit(1)
     
     # Initialize processor with custom sizes
-    processor = ScreenshotProcessor(project_root, android_sizes, ios_sizes)
+    processor = ScreenshotProcessor(project_root, android_sizes, ios_sizes, macos_sizes)
     
     # Print configuration
     print(f"📱 Android feature sizes: {processor.android_feature_sizes}")
     print(f"🍎 iOS feature sizes: {processor.ios_feature_sizes}")
+    print(f"💻 macOS feature sizes: {processor.macos_feature_sizes}")
     
     # Override max width if specified
     if args.max_width:

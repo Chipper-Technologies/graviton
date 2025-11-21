@@ -901,5 +901,7 @@
   "unknownHabitabilityStatus": "不明",
   "tooHotStatus": "高温すぎ",
   "tooColdStatus": "低温すぎ",
-  "noAtmosphereStatus": "大気なし"
+  "noAtmosphereStatus": "大気なし",
+  "selectBody": "天体を選択",
+  "noBodiesAvailable": "選択可能な天体がありません"
 }

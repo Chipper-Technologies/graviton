@@ -303,7 +303,9 @@
         "-d",
         "macos",
         "--dart-define-from-file",
-        "config/dev.json"
+        "config/dev.json",
+        "--flavor",
+        "dev"
       ],
       "group": {
         "kind": "build",
@@ -329,7 +331,9 @@
         "-d",
         "macos",
         "--dart-define-from-file",
-        "config/prod.json"
+        "config/prod.json",
+        "--flavor",
+        "prod"
       ],
       "group": {
         "kind": "build",
@@ -355,6 +359,8 @@
         "macos",
         "--dart-define-from-file",
         "config/dev.json",
+        "--flavor",
+        "dev",
         "--release"
       ],
       "group": {
@@ -381,6 +387,8 @@
         "macos",
         "--dart-define-from-file",
         "config/prod.json",
+        "--flavor",
+        "prod",
         "--release"
       ],
       "group": {
@@ -406,9 +414,9 @@
         "-workspace",
         "macos/Runner.xcworkspace",
         "-scheme",
-        "Runner",
+        "prod",
         "-configuration",
-        "Release",
+        "Release-prod",
         "archive",
         "-archivePath",
         "build/macos/Graviton.xcarchive",

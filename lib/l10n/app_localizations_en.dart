@@ -3019,4 +3019,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noAtmosphereStatus => 'No Atmosphere';
+
+  @override
+  String get selectBody => 'Select Body';
+
+  @override
+  String get noBodiesAvailable => 'No bodies available';
 }

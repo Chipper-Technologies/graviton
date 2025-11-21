@@ -3923,5 +3923,13 @@
   "noAtmosphereStatus": "No Atmosphere",
   "@noAtmosphereStatus": {
     "description": "Status text for no atmosphere"
+  },
+  "selectBody": "Select Body",
+  "@selectBody": {
+    "description": "Title for body selection dialog"
+  },
+  "noBodiesAvailable": "No bodies available",
+  "@noBodiesAvailable": {
+    "description": "Message shown when no bodies are available to select"
   }
 }

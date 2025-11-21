@@ -5283,6 +5283,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Atmosphere'**
   String get noAtmosphereStatus;
+
+  /// Title for body selection dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Select Body'**
+  String get selectBody;
+
+  /// Message shown when no bodies are available to select
+  ///
+  /// In en, this message translates to:
+  /// **'No bodies available'**
+  String get noBodiesAvailable;
 }
 
 class _AppLocalizationsDelegate

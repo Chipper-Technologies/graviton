@@ -5,7 +5,9 @@ import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:graviton/config/flavor_config.dart';
+import 'package:graviton/constants/platform_channel_constants.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
@@ -36,8 +38,10 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/fullscreen_utils.dart';
+import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/utils/star_generator.dart';
 import 'package:graviton/widgets/auto_pause_dialog_wrapper.dart';
+import 'package:graviton/widgets/body_selection_dialog.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
@@ -123,6 +127,9 @@ class _HomeScreenState extends State<HomeScreen>
 
     // Register keyboard navigation callbacks
     _registerKeyboardCallbacks();
+
+    // Setup platform channel for simulation control
+    _setupSimulationChannel();
 
     // Check for app updates and maintenance after the widget tree is built
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -834,6 +841,72 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  /// Setup platform channel for macOS simulation commands
+  void _setupSimulationChannel() {
+    final simulationChannel = MethodChannel(
+      PlatformChannelConstants.simulation,
+    );
+    simulationChannel.setMethodCallHandler((call) async {
+      if (!mounted) return;
+
+      final appState = Provider.of<AppState>(context, listen: false);
+
+      switch (call.method) {
+        case 'showTutorial':
+          _showTutorial(context);
+          break;
+        case 'selectBody':
+          // Show body selection dialog
+          _showBodySelectionDialog(context, appState);
+          break;
+        // Handle all other simulation commands here since this handler
+        // overrides the one in main.dart
+        case 'togglePlayPause':
+          appState.simulation.pause();
+          break;
+        case 'reset':
+          appState.simulation.reset();
+          break;
+        case 'increaseSpeed':
+          final currentSpeed = appState.simulation.timeScale;
+          appState.simulation.setTimeScale(
+            (currentSpeed * 1.5).clamp(0.1, 16.0),
+          );
+          break;
+        case 'decreaseSpeed':
+          final currentSpeed = appState.simulation.timeScale;
+          appState.simulation.setTimeScale(
+            (currentSpeed / 1.5).clamp(0.1, 16.0),
+          );
+          break;
+        case 'centerCamera':
+          appState.camera.resetView(appState.simulation.currentScenario);
+          break;
+        case 'toggleStatistics':
+          appState.ui.toggleStats();
+          break;
+        case 'toggleBodyLabels':
+          appState.ui.toggleLabels();
+          break;
+        case 'toggleTrails':
+          appState.ui.toggleTrails();
+          break;
+        case 'zoomIn':
+          appState.camera.zoom(-0.1); // Zoom in by reducing distance 10%
+          break;
+        case 'zoomOut':
+          appState.camera.zoom(0.1); // Zoom out by increasing distance 10%
+          break;
+        case 'actualSize':
+          appState.camera.resetView(appState.simulation.currentScenario);
+          break;
+        default:
+          debugPrint('Unhandled simulation channel method: ${call.method}');
+          break;
+      }
+    });
+  }
+
   void _showTutorial(BuildContext context) {
     FirebaseService.instance.logUIEventWithEnums(
       UIAction.tutorialStarted,
@@ -862,6 +935,20 @@ class _HomeScreenState extends State<HomeScreen>
         },
       ),
     );
+  }
+
+  void _showBodySelectionDialog(BuildContext context, AppState appState) {
+    BodySelectionDialog.show(
+      context: context,
+      bodies: appState.simulation.bodies,
+      selectedIndex: appState.camera.selectedBody,
+    ).then((selectedIndex) {
+      if (selectedIndex != null && context.mounted) {
+        _selectBody(appState, selectedIndex, appState.simulation.bodies);
+        // Show body properties after selection
+        _showBodyPropertiesBottomSheet(context, appState);
+      }
+    });
   }
 
   void _showBodyPropertiesBottomSheet(BuildContext context, AppState appState) {
@@ -1115,7 +1202,12 @@ class _HomeScreenState extends State<HomeScreen>
       return false; // Prevent app exit
     }
 
-    // If bottom sheet is already closed, show exit confirmation
+    // On web and desktop, allow immediate exit without confirmation
+    if (PlatformUtils.isWeb || PlatformUtils.isDesktop) {
+      exit(0);
+    }
+
+    // On mobile, show exit confirmation dialog
     _showExitConfirmationDialog();
     return false; // Prevent immediate exit
   }
@@ -1268,27 +1360,32 @@ class _HomeScreenState extends State<HomeScreen>
                 return Listener(
                   onPointerSignal: (event) {
                     if (event is PointerScrollEvent) {
-                      // Handle mouse wheel scrolling for zoom
-                      // Negative scrollY = scroll up = zoom in
-                      // Positive scrollY = scroll down = zoom out
-                      final delta = event.scrollDelta.dy * 0.001;
+                      // Handle mouse wheel scroll for zoom
+                      // Negative scrollDelta.dy means scroll up (zoom in)
+                      // Positive scrollDelta.dy means scroll down (zoom out)
+                      final scrollDelta = event.scrollDelta.dy;
+                      final zoomDelta =
+                          scrollDelta * 0.001; // Adjust sensitivity
+
                       appState.camera.zoomTowardBody(
-                        delta,
+                        zoomDelta,
                         appState.simulation.bodies,
                       );
 
-                      // Show floating controls on mouse wheel interaction
+                      // Show floating controls on scroll
                       _showFloatingControlsTemporarily();
 
-                      // Log analytics
                       FirebaseService.instance.logUIEventWithEnums(
                         UIAction.zoomLevelChanged,
                         element: UIElement.viewportCanvas,
-                        value: 'mouse_wheel_zoom',
+                        value: scrollDelta < 0
+                            ? 'scroll_zoom_in'
+                            : 'scroll_zoom_out',
                         additionalParams: {
-                          'zoom_direction': delta < 0 ? 'in' : 'out',
+                          'scroll_delta': scrollDelta.toString(),
                           'camera_distance': appState.camera.distance
                               .toString(),
+                          'input_method': 'mouse_wheel',
                         },
                       );
                     }
@@ -1331,6 +1428,7 @@ class _HomeScreenState extends State<HomeScreen>
 
                         // Double-tap to toggle fullscreen mode
                         _handleFullscreenToggle(appState);
+
 
                         FirebaseService.instance.logUIEventWithEnums(
                           UIAction.doubleTap,
@@ -1475,42 +1573,38 @@ class _HomeScreenState extends State<HomeScreen>
                               appState.camera.toggleAutoRotate(),
                           child: Stack(
                             children: [
-                              SizedBox(
-                                width: size.width,
-                                height: size.height,
-                                child: CustomPaint(
-                                  painter: GravitonPainter(
-                                    sim: appState.simulation.simulation,
-                                    view: view,
-                                    proj: _buildProjection(size.aspectRatio),
-                                    stars: _stars,
-                                    showTrails: appState.ui.showTrails,
-                                    useWarmTrails: appState.ui.useWarmTrails,
-                                    useRealisticColors:
-                                        appState.ui.useRealisticColors,
-                                    showOrbitalPaths:
-                                        appState.ui.showOrbitalPaths,
-                                    dualOrbitalPaths:
-                                        appState.ui.dualOrbitalPaths,
-                                    showHabitableZones:
-                                        appState.ui.showHabitableZones,
-                                    showHabitabilityIndicators:
-                                        appState.ui.showHabitabilityIndicators,
-                                    selectedBodyIndex:
-                                        appState.camera.selectedBody,
-                                    followMode: appState.camera.followMode,
-                                    cameraDistance: appState.camera.distance,
-                                    globalGravityFields:
-                                        appState.ui.globalGravityFields,
-                                    gravityFieldColorScheme:
-                                        appState.ui.gravityFieldColorScheme,
-                                    showEquipotentialSurfaces:
-                                        appState.ui.showEquipotentialSurfaces,
-                                    showGravityFieldIndicators:
-                                        appState.ui.showGravityFieldIndicators,
-                                  ),
-                                  size: Size(size.width, size.height),
+                              CustomPaint(
+                                painter: GravitonPainter(
+                                  sim: appState.simulation.simulation,
+                                  view: view,
+                                  proj: _buildProjection(size.aspectRatio),
+                                  stars: _stars,
+                                  showTrails: appState.ui.showTrails,
+                                  useWarmTrails: appState.ui.useWarmTrails,
+                                  useRealisticColors:
+                                      appState.ui.useRealisticColors,
+                                  showOrbitalPaths:
+                                      appState.ui.showOrbitalPaths,
+                                  dualOrbitalPaths:
+                                      appState.ui.dualOrbitalPaths,
+                                  showHabitableZones:
+                                      appState.ui.showHabitableZones,
+                                  showHabitabilityIndicators:
+                                      appState.ui.showHabitabilityIndicators,
+                                  selectedBodyIndex:
+                                      appState.camera.selectedBody,
+                                  followMode: appState.camera.followMode,
+                                  cameraDistance: appState.camera.distance,
+                                  globalGravityFields:
+                                      appState.ui.globalGravityFields,
+                                  gravityFieldColorScheme:
+                                      appState.ui.gravityFieldColorScheme,
+                                  showEquipotentialSurfaces:
+                                      appState.ui.showEquipotentialSurfaces,
+                                  showGravityFieldIndicators:
+                                      appState.ui.showGravityFieldIndicators,
                                 ),
+                                child: const SizedBox.expand(),
                               ),
                               if (appState.ui.showLabels)
                                 BodyLabelsOverlay(
@@ -1672,14 +1766,14 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),
                       ),
-                    ), // Close HapticGestureDetector
+                    ),
                   ), // Close MouseRegion
-                ); // Close Listener (return statement of LayoutBuilder)
-              }, // Close LayoutBuilder builder function
-            ), // Close Scaffold
-          ); // Close return statement
-        }, // Close Consumer builder
-      ), // Close PopScope
+                ); // Close Listener
+              },
+            ),
+          );
+        },
+      ), // Close Consumer
     ); // Close PopScope
   }
 
