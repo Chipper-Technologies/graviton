@@ -3025,4 +3025,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noBodiesAvailable => 'No bodies available';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get shareSimulation => 'Share Simulation';
+
+  @override
+  String get shareImage => 'Share Image';
+
+  @override
+  String get shareImageDescription => 'Capture and share the current view';
+
+  @override
+  String get shareState => 'Share State';
+
+  @override
+  String get shareStateDescription =>
+      'Export simulation data as importable file';
+
+  @override
+  String get shareSuccess => 'Shared successfully';
+
+  @override
+  String get shareFailed => 'Failed to share';
+
+  @override
+  String get shareImageError => 'Cannot capture image. Please try again.';
 }

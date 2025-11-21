@@ -903,5 +903,14 @@
   "tooColdStatus": "Zu kalt",
   "noAtmosphereStatus": "Keine Atmosphäre",
   "selectBody": "Körper auswählen",
-  "noBodiesAvailable": "Keine Körper verfügbar"
+  "noBodiesAvailable": "Keine Körper verfügbar",
+  "share": "Teilen",
+  "shareSimulation": "Simulation teilen",
+  "shareImage": "Bild teilen",
+  "shareImageDescription": "Aktuelle Ansicht aufnehmen und teilen",
+  "shareState": "Zustand teilen",
+  "shareStateDescription": "Simulationsdaten als importierbare Datei exportieren",
+  "shareSuccess": "Erfolgreich geteilt",
+  "shareFailed": "Teilen fehlgeschlagen",
+  "shareImageError": "Bild kann nicht erfasst werden. Bitte versuchen Sie es erneut."
 }

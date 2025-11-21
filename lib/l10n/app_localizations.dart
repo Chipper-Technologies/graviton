@@ -5295,6 +5295,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No bodies available'**
   String get noBodiesAvailable;
+
+  /// Label for share action button
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// Title for share simulation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Share Simulation'**
+  String get shareSimulation;
+
+  /// Option to share simulation as an image
+  ///
+  /// In en, this message translates to:
+  /// **'Share Image'**
+  String get shareImage;
+
+  /// Description for share image option
+  ///
+  /// In en, this message translates to:
+  /// **'Capture and share the current view'**
+  String get shareImageDescription;
+
+  /// Option to share simulation state as JSON
+  ///
+  /// In en, this message translates to:
+  /// **'Share State'**
+  String get shareState;
+
+  /// Description for share state option
+  ///
+  /// In en, this message translates to:
+  /// **'Export simulation data as importable file'**
+  String get shareStateDescription;
+
+  /// Success message after sharing
+  ///
+  /// In en, this message translates to:
+  /// **'Shared successfully'**
+  String get shareSuccess;
+
+  /// Error message when sharing fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to share'**
+  String get shareFailed;
+
+  /// Error message when image capture fails
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot capture image. Please try again.'**
+  String get shareImageError;
 }
 
 class _AppLocalizationsDelegate

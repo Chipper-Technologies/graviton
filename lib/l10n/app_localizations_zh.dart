@@ -2846,4 +2846,31 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get noBodiesAvailable => '没有可用的天体';
+
+  @override
+  String get share => '分享';
+
+  @override
+  String get shareSimulation => '分享模拟';
+
+  @override
+  String get shareImage => '分享图片';
+
+  @override
+  String get shareImageDescription => '捕获并分享当前视图';
+
+  @override
+  String get shareState => '分享状态';
+
+  @override
+  String get shareStateDescription => '将模拟数据导出为可导入文件';
+
+  @override
+  String get shareSuccess => '分享成功';
+
+  @override
+  String get shareFailed => '分享失败';
+
+  @override
+  String get shareImageError => '无法捕获图片。请重试。';
 }

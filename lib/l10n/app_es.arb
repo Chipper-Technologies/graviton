@@ -901,7 +901,16 @@
   "unknownHabitabilityStatus": "Desconocido",
   "tooHotStatus": "Demasiado caliente",
   "tooColdStatus": "Demasiado frío",
-  "noAtmosphereStatus": "Sin atmósfera",
-  "selectBody": "Seleccionar cuerpo",
-  "noBodiesAvailable": "No hay cuerpos disponibles"
+  "noAtmosphereStatus": "Sin Atmósfera",
+  "selectBody": "Seleccionar Cuerpo",
+  "noBodiesAvailable": "No hay cuerpos disponibles",
+  "share": "Compartir",
+  "shareSimulation": "Compartir Simulación",
+  "shareImage": "Compartir Imagen",
+  "shareImageDescription": "Capturar y compartir la vista actual",
+  "shareState": "Compartir Estado",
+  "shareStateDescription": "Exportar datos de simulación como archivo importable",
+  "shareSuccess": "Compartido exitosamente",
+  "shareFailed": "Error al compartir",
+  "shareImageError": "No se puede capturar la imagen. Por favor, inténtelo de nuevo."
 }

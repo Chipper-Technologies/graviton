@@ -62,6 +62,7 @@ import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details
 import 'package:graviton/widgets/screenshot_countdown.dart';
 import 'package:graviton/widgets/semantics/semantic_live_region.dart';
 import 'package:graviton/widgets/semantics/semantic_simulation_canvas.dart';
+import 'package:graviton/widgets/share_action_button.dart';
 import 'package:graviton/widgets/sliding_panel_bottom_sheet.dart';
 import 'package:graviton/widgets/version_check_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -99,6 +100,9 @@ class _HomeScreenState extends State<HomeScreen>
       CinematicCameraController();
   CinematicCameraTechnique? _lastCameraTechnique;
   ScenarioType? _lastScenario;
+
+  // GlobalKey for capturing simulation viewport as image
+  final GlobalKey _simulationViewportKey = GlobalKey();
 
   // Function to show simulation controls
   VoidCallback? _showSimulationControls;
@@ -1429,7 +1433,6 @@ class _HomeScreenState extends State<HomeScreen>
                         // Double-tap to toggle fullscreen mode
                         _handleFullscreenToggle(appState);
 
-
                         FirebaseService.instance.logUIEventWithEnums(
                           UIAction.doubleTap,
                           element: UIElement.simulationViewport,
@@ -1573,38 +1576,41 @@ class _HomeScreenState extends State<HomeScreen>
                               appState.camera.toggleAutoRotate(),
                           child: Stack(
                             children: [
-                              CustomPaint(
-                                painter: GravitonPainter(
-                                  sim: appState.simulation.simulation,
-                                  view: view,
-                                  proj: _buildProjection(size.aspectRatio),
-                                  stars: _stars,
-                                  showTrails: appState.ui.showTrails,
-                                  useWarmTrails: appState.ui.useWarmTrails,
-                                  useRealisticColors:
-                                      appState.ui.useRealisticColors,
-                                  showOrbitalPaths:
-                                      appState.ui.showOrbitalPaths,
-                                  dualOrbitalPaths:
-                                      appState.ui.dualOrbitalPaths,
-                                  showHabitableZones:
-                                      appState.ui.showHabitableZones,
-                                  showHabitabilityIndicators:
-                                      appState.ui.showHabitabilityIndicators,
-                                  selectedBodyIndex:
-                                      appState.camera.selectedBody,
-                                  followMode: appState.camera.followMode,
-                                  cameraDistance: appState.camera.distance,
-                                  globalGravityFields:
-                                      appState.ui.globalGravityFields,
-                                  gravityFieldColorScheme:
-                                      appState.ui.gravityFieldColorScheme,
-                                  showEquipotentialSurfaces:
-                                      appState.ui.showEquipotentialSurfaces,
-                                  showGravityFieldIndicators:
-                                      appState.ui.showGravityFieldIndicators,
+                              RepaintBoundary(
+                                key: _simulationViewportKey,
+                                child: CustomPaint(
+                                  painter: GravitonPainter(
+                                    sim: appState.simulation.simulation,
+                                    view: view,
+                                    proj: _buildProjection(size.aspectRatio),
+                                    stars: _stars,
+                                    showTrails: appState.ui.showTrails,
+                                    useWarmTrails: appState.ui.useWarmTrails,
+                                    useRealisticColors:
+                                        appState.ui.useRealisticColors,
+                                    showOrbitalPaths:
+                                        appState.ui.showOrbitalPaths,
+                                    dualOrbitalPaths:
+                                        appState.ui.dualOrbitalPaths,
+                                    showHabitableZones:
+                                        appState.ui.showHabitableZones,
+                                    showHabitabilityIndicators:
+                                        appState.ui.showHabitabilityIndicators,
+                                    selectedBodyIndex:
+                                        appState.camera.selectedBody,
+                                    followMode: appState.camera.followMode,
+                                    cameraDistance: appState.camera.distance,
+                                    globalGravityFields:
+                                        appState.ui.globalGravityFields,
+                                    gravityFieldColorScheme:
+                                        appState.ui.gravityFieldColorScheme,
+                                    showEquipotentialSurfaces:
+                                        appState.ui.showEquipotentialSurfaces,
+                                    showGravityFieldIndicators:
+                                        appState.ui.showGravityFieldIndicators,
+                                  ),
+                                  child: const SizedBox.expand(),
                                 ),
-                                child: const SizedBox.expand(),
                               ),
                               if (appState.ui.showLabels)
                                 BodyLabelsOverlay(
@@ -1941,34 +1947,84 @@ class _HomeScreenState extends State<HomeScreen>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Info Button (far left)
-          HapticCircularButton(
-            icon: Icons.info_outline,
-            onTap: () {
-              // Reset floating controls timer when button is pressed
-              _showFloatingControlsTemporarily();
+          // Left side buttons
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Info Button
+              HapticCircularButton(
+                icon: Icons.info_outline,
+                onTap: () {
+                  // Reset floating controls timer when button is pressed
+                  _showFloatingControlsTemporarily();
 
-              FirebaseService.instance.logUIEventWithEnums(
-                UIAction.buttonPressed,
-                element: UIElement.simulationControl,
-                value: 'info',
-              );
+                  FirebaseService.instance.logUIEventWithEnums(
+                    UIAction.buttonPressed,
+                    element: UIElement.simulationControl,
+                    value: 'info',
+                  );
 
-              // Show simulation info screen
-              _showSimulationInfoScreen(context);
-            },
-            size: 36,
-            iconColor: AppColors.uiWhite.withValues(
-              alpha: AppTypography.opacityNearlyOpaque,
-            ),
-            backgroundColor: AppColors.uiBlack.withValues(
-              alpha: AppTypography.opacityHigh,
-            ),
-            borderColor: AppColors.uiWhite.withValues(
-              alpha: AppTypography.opacityFaint,
-            ),
-            tooltip: l10n.aboutButtonTooltip,
-            semanticsLabel: l10n.aboutButtonTooltip,
+                  // Show simulation info screen
+                  _showSimulationInfoScreen(context);
+                },
+                size: 36,
+                iconColor: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityNearlyOpaque,
+                ),
+                backgroundColor: AppColors.uiBlack.withValues(
+                  alpha: AppTypography.opacityHigh,
+                ),
+                borderColor: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityFaint,
+                ),
+                tooltip: l10n.aboutButtonTooltip,
+                semanticsLabel: l10n.aboutButtonTooltip,
+              ),
+
+              const SizedBox(width: AppTypography.spacingSmall),
+
+              // Share Button
+              HapticCircularButton(
+                icon: Icons.share,
+                onTap: () async {
+                  // Reset floating controls timer when button is pressed
+                  _showFloatingControlsTemporarily();
+
+                  FirebaseService.instance.logUIEventWithEnums(
+                    UIAction.buttonPressed,
+                    element: UIElement.simulationControl,
+                    value: 'share',
+                  );
+
+                  // Show share dialog
+                  final shareButton = ShareActionButton(
+                    simulationState: appState.simulation,
+                    repaintBoundaryKey: _simulationViewportKey,
+                    onShareStarted: () {
+                      // Keep controls visible during sharing
+                      _showFloatingControlsTemporarily();
+                    },
+                    onShareCompleted: () {
+                      // Reset timer after sharing completes
+                      _showFloatingControlsTemporarily();
+                    },
+                  );
+                  await shareButton.showShareOptions(context);
+                },
+                size: 36,
+                iconColor: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityNearlyOpaque,
+                ),
+                backgroundColor: AppColors.uiBlack.withValues(
+                  alpha: AppTypography.opacityHigh,
+                ),
+                borderColor: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityFaint,
+                ),
+                tooltip: l10n.share,
+                semanticsLabel: l10n.share,
+              ),
+            ],
           ),
 
           // Play/Pause and Reset buttons (far right)

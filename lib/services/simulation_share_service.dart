@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -58,6 +57,7 @@ class SimulationShareService {
       await file.writeAsString(jsonData);
 
       // Share the file
+      // ignore: deprecated_member_use
       final result = await Share.shareXFiles(
         [XFile(file.path, mimeType: 'application/json')],
         subject: 'Graviton Simulation',
@@ -113,6 +113,7 @@ class SimulationShareService {
       await file.writeAsBytes(imageBytes);
 
       // Share the file
+      // ignore: deprecated_member_use
       final result = await Share.shareXFiles(
         [XFile(file.path, mimeType: 'image/png')],
         subject: 'Graviton Simulation Snapshot',
@@ -145,7 +146,7 @@ class SimulationShareService {
     String? customName,
   }) async {
     final sim = simulationState.simulation;
-    
+
     final Map<String, dynamic> exportData = {
       'version': '1.0.0',
       'timestamp': DateTime.now().toIso8601String(),
@@ -179,9 +180,9 @@ class SimulationShareService {
   ) async {
     try {
       final data = jsonDecode(jsonString) as Map<String, dynamic>;
-      
+
       // Validate required fields
-      if (!data.containsKey('version') || 
+      if (!data.containsKey('version') ||
           !data.containsKey('bodies') ||
           !data.containsKey('physics')) {
         debugPrint('Invalid simulation state JSON: missing required fields');
@@ -202,9 +203,10 @@ class SimulationShareService {
     GlobalKey repaintBoundaryKey,
   ) async {
     try {
-      final boundary = repaintBoundaryKey.currentContext?.findRenderObject()
-          as RenderRepaintBoundary?;
-      
+      final boundary =
+          repaintBoundaryKey.currentContext?.findRenderObject()
+              as RenderRepaintBoundary?;
+
       if (boundary == null) {
         debugPrint('Failed to capture image: boundary is null');
         return null;
@@ -213,7 +215,7 @@ class SimulationShareService {
       // Capture at 2x resolution for better quality
       final image = await boundary.toImage(pixelRatio: 2.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-      
+
       return byteData?.buffer.asUint8List();
     } catch (e) {
       debugPrint('Failed to capture simulation image: $e');
@@ -324,7 +326,7 @@ class SimulationShareService {
         'y': body.velocity.y,
         'z': body.velocity.z,
       },
-      'color': body.color.value,
+      'color': body.color.toARGB32(),
     };
   }
 
@@ -332,7 +334,7 @@ class SimulationShareService {
   Body deserializeBody(Map<String, dynamic> json) {
     final position = json['position'] as Map<String, dynamic>;
     final velocity = json['velocity'] as Map<String, dynamic>;
-    
+
     return Body(
       name: json['name'] as String,
       mass: (json['mass'] as num).toDouble(),
@@ -354,14 +356,17 @@ class SimulationShareService {
   /// Create PhysicsSettings from imported JSON data
   PhysicsSettings createPhysicsSettingsFromJson(Map<String, dynamic> json) {
     final physicsData = json['physics'] as Map<String, dynamic>;
-    
+
     return PhysicsSettings(
-      gravitationalConstant: (physicsData['gravitationalConstant'] as num).toDouble(),
+      gravitationalConstant: (physicsData['gravitationalConstant'] as num)
+          .toDouble(),
       softening: (physicsData['softening'] as num).toDouble(),
-      collisionRadiusMultiplier: (physicsData['collisionRadiusMultiplier'] as num).toDouble(),
+      collisionRadiusMultiplier:
+          (physicsData['collisionRadiusMultiplier'] as num).toDouble(),
       maxTrailPoints: physicsData['maxTrailPoints'] as int,
       trailFadeRate: (physicsData['trailFadeRate'] as num?)?.toDouble() ?? 0.5,
-      vibrationThrottleTime: (physicsData['vibrationThrottleTime'] as num?)?.toDouble() ?? 0.18,
+      vibrationThrottleTime:
+          (physicsData['vibrationThrottleTime'] as num?)?.toDouble() ?? 0.18,
       vibrationEnabled: physicsData['vibrationEnabled'] as bool? ?? true,
     );
   }

@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.5.0] - 2025-11-20
 
 ### Added
+- **Simulation Sharing Feature**: Export and share gravitational simulations with others
+  - **State Export**: Export complete simulation state as JSON files for sharing and backup
+    - Includes all bodies with positions, velocities, masses, radii, and colors
+    - Preserves physics settings (gravity, time scale, collision detection)
+    - Contains scenario type and timestamp metadata
+    - JSON format version 1.0.0 for future compatibility
+  - **Screenshot Capture**: Capture and share simulation snapshots as PNG images
+    - High-resolution 2x rendering for crisp screenshots
+    - Uses RepaintBoundary for efficient image capture
+    - Native share dialog integration via share_plus package
+  - **Cross-Platform Support**: Share via native dialogs on iOS, Android, macOS, and web
+  - **Multi-Language Support**: Sharing UI fully localized in all 7 supported languages
+  - **Analytics Tracking**: Firebase events for share dialog interactions and success/failure metrics
+  - **User-Friendly UI**: Material Design dialog with clear options for image vs. state sharing
+  - **Share Action Button**: New floating control button next to info button for easy access
 - **Comprehensive macOS Platform Support**: Native macOS implementation with full platform integration
   - **Native Swift Integration**: Complete macOS app structure with native Swift code for platform-specific functionality
   - **Custom Menu Bar**: Native macOS menu system with File, Edit, Simulation, View, Window, and Help menus
@@ -56,6 +71,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Platform-Specific Files**: Organized Swift files for different functionality areas
   - **Build Configuration**: Clean separation of dev/prod configurations
   - **Asset Management**: Proper macOS icon and asset organization
+
+### Dependencies
+- Added `share_plus: ^12.0.1` for native sharing functionality
+- Added `path_provider: ^2.1.5` for temporary file management
 
 ### Technical Improvements
 - **Cross-Platform Consistency**: Unified behavior across iOS, Android, web, and macOS platforms

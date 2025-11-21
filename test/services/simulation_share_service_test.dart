@@ -28,7 +28,7 @@ void main() {
       service = SimulationShareService.instance;
       simulationState = SimulationState();
       await simulationState.initialize(); // Initialize with a scenario
-      
+
       // Create mock localization and reset with a scenario that has bodies
       final mockL10n = TestUtils.createMockAppLocalizations();
       simulationState.updateLocalization(mockL10n);
@@ -43,7 +43,7 @@ void main() {
       test('Should return same instance', () {
         final instance1 = SimulationShareService.instance;
         final instance2 = SimulationShareService.instance;
-        
+
         expect(identical(instance1, instance2), isTrue);
       });
     });
@@ -62,7 +62,7 @@ void main() {
 
         // Assert
         expect(jsonString, isNotEmpty);
-        
+
         final data = jsonDecode(jsonString) as Map<String, dynamic>;
         expect(data['version'], equals('1.0.0'));
         expect(data['name'], equals('Test Simulation'));
@@ -116,7 +116,7 @@ void main() {
 
         // Assert
         expect(bodies, isNotEmpty);
-        
+
         for (final bodyJson in bodies) {
           final body = bodyJson as Map<String, dynamic>;
           expect(body['name'], isNotNull);
@@ -125,12 +125,12 @@ void main() {
           expect(body['position'], isNotNull);
           expect(body['velocity'], isNotNull);
           expect(body['color'], isNotNull);
-          
+
           final position = body['position'] as Map<String, dynamic>;
           expect(position['x'], isNotNull);
           expect(position['y'], isNotNull);
           expect(position['z'], isNotNull);
-          
+
           final velocity = body['velocity'] as Map<String, dynamic>;
           expect(velocity['x'], isNotNull);
           expect(velocity['y'], isNotNull);
@@ -171,10 +171,13 @@ void main() {
 
         // Assert
         expect(() => DateTime.parse(timestamp), returnsNormally);
-        
+
         final parsedTime = DateTime.parse(timestamp);
         final now = DateTime.now();
-        expect(parsedTime.isBefore(now) || parsedTime.isAtSameMomentAs(now), isTrue);
+        expect(
+          parsedTime.isBefore(now) || parsedTime.isAtSameMomentAs(now),
+          isTrue,
+        );
       });
 
       test('Should export scenario type correctly', () async {
@@ -200,7 +203,9 @@ void main() {
         );
 
         // Act
-        final result = await service.importSimulationStateFromJson(exportedJson);
+        final result = await service.importSimulationStateFromJson(
+          exportedJson,
+        );
 
         // Assert
         expect(result, isNotNull);
@@ -226,7 +231,9 @@ void main() {
         final incompleteJson = jsonEncode(incompleteData);
 
         // Act
-        final result = await service.importSimulationStateFromJson(incompleteJson);
+        final result = await service.importSimulationStateFromJson(
+          incompleteJson,
+        );
 
         // Assert
         expect(result, isNull);
@@ -234,10 +241,7 @@ void main() {
 
       test('Should validate presence of version field', () async {
         // Arrange
-        final dataWithoutVersion = {
-          'bodies': [],
-          'physics': {},
-        };
+        final dataWithoutVersion = {'bodies': [], 'physics': {}};
         final json = jsonEncode(dataWithoutVersion);
 
         // Act
@@ -249,10 +253,7 @@ void main() {
 
       test('Should validate presence of bodies field', () async {
         // Arrange
-        final dataWithoutBodies = {
-          'version': '1.0.0',
-          'physics': {},
-        };
+        final dataWithoutBodies = {'version': '1.0.0', 'physics': {}};
         final json = jsonEncode(dataWithoutBodies);
 
         // Act
@@ -264,10 +265,7 @@ void main() {
 
       test('Should validate presence of physics field', () async {
         // Arrange
-        final dataWithoutPhysics = {
-          'version': '1.0.0',
-          'bodies': [],
-        };
+        final dataWithoutPhysics = {'version': '1.0.0', 'bodies': []};
         final json = jsonEncode(dataWithoutPhysics);
 
         // Act
@@ -297,7 +295,7 @@ void main() {
           'radius': 5.0,
           'position': {'x': 10.0, 'y': 20.0, 'z': 30.0},
           'velocity': {'x': 1.0, 'y': 2.0, 'z': 3.0},
-          'color': AppColors.stellarOType.value,
+          'color': AppColors.stellarOType.toARGB32(),
         };
 
         // Act
@@ -313,7 +311,10 @@ void main() {
         expect(body.velocity.x, equals(1.0));
         expect(body.velocity.y, equals(2.0));
         expect(body.velocity.z, equals(3.0));
-        expect(body.color.value, equals(AppColors.stellarOType.value));
+        expect(
+          body.color.toARGB32(),
+          equals(AppColors.stellarOType.toARGB32()),
+        );
       });
 
       test('Should preserve all body properties in round-trip', () async {
@@ -323,7 +324,7 @@ void main() {
         );
         final data = jsonDecode(exportedJson) as Map<String, dynamic>;
         final bodies = service.extractBodiesFromJson(data);
-        
+
         // Get first body from simulation
         final originalBody = simulationState.bodies.first;
 
@@ -340,7 +341,10 @@ void main() {
         expect(deserializedBody.velocity.x, equals(originalBody.velocity.x));
         expect(deserializedBody.velocity.y, equals(originalBody.velocity.y));
         expect(deserializedBody.velocity.z, equals(originalBody.velocity.z));
-        expect(deserializedBody.color.value, equals(originalBody.color.value));
+        expect(
+          deserializedBody.color.toARGB32(),
+          equals(originalBody.color.toARGB32()),
+        );
       });
     });
 
@@ -382,7 +386,10 @@ void main() {
         // Assert
         expect(physics.gravitationalConstant, equals(originalG));
         expect(physics.softening, equals(originalSoftening));
-        expect(physics.collisionRadiusMultiplier, equals(originalCollisionMultiplier));
+        expect(
+          physics.collisionRadiusMultiplier,
+          equals(originalCollisionMultiplier),
+        );
         expect(physics.maxTrailPoints, equals(originalMaxTrail));
       });
     });
@@ -448,7 +455,7 @@ void main() {
       test('Should extract scenario type from JSON', () async {
         // Arrange
         simulationState.resetWithScenario(ScenarioType.binaryStars);
-        
+
         final exportedJson = await service.exportSimulationStateToJson(
           simulationState: simulationState,
         );
@@ -463,9 +470,7 @@ void main() {
 
       test('Should return default for invalid scenario type', () {
         // Arrange
-        final invalidData = {
-          'scenarioType': 'nonExistentScenario',
-        };
+        final invalidData = {'scenarioType': 'nonExistentScenario'};
 
         // Act
         final scenarioType = service.extractScenarioTypeFromJson(invalidData);
@@ -479,7 +484,9 @@ void main() {
         final dataWithoutScenario = <String, dynamic>{};
 
         // Act
-        final scenarioType = service.extractScenarioTypeFromJson(dataWithoutScenario);
+        final scenarioType = service.extractScenarioTypeFromJson(
+          dataWithoutScenario,
+        );
 
         // Assert
         expect(scenarioType, isNull);
@@ -506,32 +513,38 @@ void main() {
           final extractedType = service.extractScenarioTypeFromJson(data);
 
           // Assert
-          expect(extractedType, equals(scenario),
-              reason: 'Failed for scenario: ${scenario.name}');
+          expect(
+            extractedType,
+            equals(scenario),
+            reason: 'Failed for scenario: ${scenario.name}',
+          );
         }
       });
     });
 
     group('Filename Generation', () {
-      test('Should generate filenames with timestamp (tested via export)', () async {
-        // Since _generateFileName is private, we test it indirectly through file operations
-        // The method should generate unique filenames with timestamps
-        
-        // Act - Export twice with small delay
-        final export1 = await service.exportSimulationStateToJson(
-          simulationState: simulationState,
-        );
-        await Future.delayed(const Duration(milliseconds: 10));
-        final export2 = await service.exportSimulationStateToJson(
-          simulationState: simulationState,
-        );
+      test(
+        'Should generate filenames with timestamp (tested via export)',
+        () async {
+          // Since _generateFileName is private, we test it indirectly through file operations
+          // The method should generate unique filenames with timestamps
 
-        // Assert - Both exports should succeed and produce valid JSON
-        expect(export1, isNotEmpty);
-        expect(export2, isNotEmpty);
-        expect(() => jsonDecode(export1), returnsNormally);
-        expect(() => jsonDecode(export2), returnsNormally);
-      });
+          // Act - Export twice with small delay
+          final export1 = await service.exportSimulationStateToJson(
+            simulationState: simulationState,
+          );
+          await Future.delayed(const Duration(milliseconds: 10));
+          final export2 = await service.exportSimulationStateToJson(
+            simulationState: simulationState,
+          );
+
+          // Assert - Both exports should succeed and produce valid JSON
+          expect(export1, isNotEmpty);
+          expect(export2, isNotEmpty);
+          expect(() => jsonDecode(export1), returnsNormally);
+          expect(() => jsonDecode(export2), returnsNormally);
+        },
+      );
     });
 
     group('Complete Round-Trip Test', () {
@@ -540,7 +553,7 @@ void main() {
         simulationState.resetWithScenario(ScenarioType.solarSystem);
         simulationState.start();
         await Future.delayed(const Duration(milliseconds: 100));
-        
+
         final originalBodies = simulationState.bodies.length;
         final originalScenario = simulationState.simulation.currentScenario;
 
@@ -551,21 +564,29 @@ void main() {
         );
 
         // Act - Import
-        final importedData = await service.importSimulationStateFromJson(exportedJson);
+        final importedData = await service.importSimulationStateFromJson(
+          exportedJson,
+        );
 
         // Assert
         expect(importedData, isNotNull);
         expect(importedData!['name'], equals('Round Trip Test'));
-        
+
         final extractedBodies = service.extractBodiesFromJson(importedData);
         expect(extractedBodies.length, equals(originalBodies));
-        
-        final extractedScenario = service.extractScenarioTypeFromJson(importedData);
+
+        final extractedScenario = service.extractScenarioTypeFromJson(
+          importedData,
+        );
         expect(extractedScenario, equals(originalScenario));
-        
-        final extractedPhysics = service.createPhysicsSettingsFromJson(importedData);
-        expect(extractedPhysics.gravitationalConstant, 
-            equals(simulationState.simulation.gravitationalConstant));
+
+        final extractedPhysics = service.createPhysicsSettingsFromJson(
+          importedData,
+        );
+        expect(
+          extractedPhysics.gravitationalConstant,
+          equals(simulationState.simulation.gravitationalConstant),
+        );
       });
 
       test('Should handle multiple export-import cycles', () async {
@@ -576,21 +597,27 @@ void main() {
         var exportedJson = await service.exportSimulationStateToJson(
           simulationState: simulationState,
         );
-        var importedData = await service.importSimulationStateFromJson(exportedJson);
+        var importedData = await service.importSimulationStateFromJson(
+          exportedJson,
+        );
         expect(importedData, isNotNull);
 
         // Act & Assert - Second cycle
         exportedJson = await service.exportSimulationStateToJson(
           simulationState: simulationState,
         );
-        importedData = await service.importSimulationStateFromJson(exportedJson);
+        importedData = await service.importSimulationStateFromJson(
+          exportedJson,
+        );
         expect(importedData, isNotNull);
 
         // Act & Assert - Third cycle
         exportedJson = await service.exportSimulationStateToJson(
           simulationState: simulationState,
         );
-        importedData = await service.importSimulationStateFromJson(exportedJson);
+        importedData = await service.importSimulationStateFromJson(
+          exportedJson,
+        );
         expect(importedData, isNotNull);
       });
     });
@@ -612,7 +639,9 @@ void main() {
         const malformedJson = '{invalid json}';
 
         // Act
-        final result = await service.importSimulationStateFromJson(malformedJson);
+        final result = await service.importSimulationStateFromJson(
+          malformedJson,
+        );
 
         // Assert
         expect(result, isNull);
@@ -673,7 +702,7 @@ void main() {
         for (final bodyJson in bodies) {
           final body = bodyJson as Map<String, dynamic>;
           final position = body['position'] as Map<String, dynamic>;
-          
+
           expect((position['x'] as num).toDouble().isFinite, isTrue);
           expect((position['y'] as num).toDouble().isFinite, isTrue);
           expect((position['z'] as num).toDouble().isFinite, isTrue);
@@ -692,7 +721,7 @@ void main() {
         for (final bodyJson in bodies) {
           final body = bodyJson as Map<String, dynamic>;
           final velocity = body['velocity'] as Map<String, dynamic>;
-          
+
           expect((velocity['x'] as num).toDouble().isFinite, isTrue);
           expect((velocity['y'] as num).toDouble().isFinite, isTrue);
           expect((velocity['z'] as num).toDouble().isFinite, isTrue);
@@ -719,7 +748,10 @@ void main() {
 
         // Assert
         expect(jsonString.contains('\n'), isTrue);
-        expect(jsonString.contains('  '), isTrue); // Should have 2-space indentation
+        expect(
+          jsonString.contains('  '),
+          isTrue,
+        ); // Should have 2-space indentation
       });
 
       test('Should have consistent structure across exports', () async {
@@ -736,8 +768,14 @@ void main() {
 
         // Assert
         expect(data1.keys.toSet(), equals(data2.keys.toSet()));
-        expect(data1['physics'].keys.toSet(), equals(data2['physics'].keys.toSet()));
-        expect(data1['simulation'].keys.toSet(), equals(data2['simulation'].keys.toSet()));
+        expect(
+          data1['physics'].keys.toSet(),
+          equals(data2['physics'].keys.toSet()),
+        );
+        expect(
+          data1['simulation'].keys.toSet(),
+          equals(data2['simulation'].keys.toSet()),
+        );
       });
     });
   });

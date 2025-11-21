@@ -903,5 +903,14 @@
   "tooColdStatus": "太冷",
   "noAtmosphereStatus": "无大气层",
   "selectBody": "选择天体",
-  "noBodiesAvailable": "没有可用的天体"
+  "noBodiesAvailable": "没有可用的天体",
+  "share": "分享",
+  "shareSimulation": "分享模拟",
+  "shareImage": "分享图片",
+  "shareImageDescription": "捕获并分享当前视图",
+  "shareState": "分享状态",
+  "shareStateDescription": "将模拟数据导出为可导入文件",
+  "shareSuccess": "分享成功",
+  "shareFailed": "分享失败",
+  "shareImageError": "无法捕获图片。请重试。"
 }

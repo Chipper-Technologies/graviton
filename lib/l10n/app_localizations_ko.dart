@@ -2877,5 +2877,32 @@ class AppLocalizationsKo extends AppLocalizations {
   String get selectBody => '천체 선택';
 
   @override
-  String get noBodiesAvailable => '선택 가능한 천체가 없습니다';
+  String get noBodiesAvailable => '사용 가능한 천체가 없습니다';
+
+  @override
+  String get share => '공유';
+
+  @override
+  String get shareSimulation => '시뮬레이션 공유';
+
+  @override
+  String get shareImage => '이미지 공유';
+
+  @override
+  String get shareImageDescription => '현재 뷰 캡처 및 공유';
+
+  @override
+  String get shareState => '상태 공유';
+
+  @override
+  String get shareStateDescription => '가져올 수 있는 파일로 시뮬레이션 데이터 내보내기';
+
+  @override
+  String get shareSuccess => '공유 성공';
+
+  @override
+  String get shareFailed => '공유 실패';
+
+  @override
+  String get shareImageError => '이미지를 캡처할 수 없습니다. 다시 시도해 주세요.';
 }

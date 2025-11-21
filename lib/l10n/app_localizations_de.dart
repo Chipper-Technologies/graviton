@@ -3016,4 +3016,33 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noBodiesAvailable => 'Keine Körper verfügbar';
+
+  @override
+  String get share => 'Teilen';
+
+  @override
+  String get shareSimulation => 'Simulation teilen';
+
+  @override
+  String get shareImage => 'Bild teilen';
+
+  @override
+  String get shareImageDescription => 'Aktuelle Ansicht aufnehmen und teilen';
+
+  @override
+  String get shareState => 'Zustand teilen';
+
+  @override
+  String get shareStateDescription =>
+      'Simulationsdaten als importierbare Datei exportieren';
+
+  @override
+  String get shareSuccess => 'Erfolgreich geteilt';
+
+  @override
+  String get shareFailed => 'Teilen fehlgeschlagen';
+
+  @override
+  String get shareImageError =>
+      'Bild kann nicht erfasst werden. Bitte versuchen Sie es erneut.';
 }

@@ -3045,11 +3045,40 @@ class AppLocalizationsFr extends AppLocalizations {
   String get tooColdStatus => 'Trop froid';
 
   @override
-  String get noAtmosphereStatus => 'Pas d\'atmosphère';
+  String get noAtmosphereStatus => 'Pas d\'Atmosphère';
 
   @override
-  String get selectBody => 'Sélectionner un corps';
+  String get selectBody => 'Sélectionner le Corps';
 
   @override
   String get noBodiesAvailable => 'Aucun corps disponible';
+
+  @override
+  String get share => 'Partager';
+
+  @override
+  String get shareSimulation => 'Partager la Simulation';
+
+  @override
+  String get shareImage => 'Partager l\'Image';
+
+  @override
+  String get shareImageDescription => 'Capturer et partager la vue actuelle';
+
+  @override
+  String get shareState => 'Partager l\'État';
+
+  @override
+  String get shareStateDescription =>
+      'Exporter les données de simulation sous forme de fichier importable';
+
+  @override
+  String get shareSuccess => 'Partagé avec succès';
+
+  @override
+  String get shareFailed => 'Échec du partage';
+
+  @override
+  String get shareImageError =>
+      'Impossible de capturer l\'image. Veuillez réessayer.';
 }

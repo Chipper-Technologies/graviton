@@ -903,5 +903,14 @@
   "tooColdStatus": "低温すぎ",
   "noAtmosphereStatus": "大気なし",
   "selectBody": "天体を選択",
-  "noBodiesAvailable": "選択可能な天体がありません"
+  "noBodiesAvailable": "利用可能な天体がありません",
+  "share": "共有",
+  "shareSimulation": "シミュレーションを共有",
+  "shareImage": "画像を共有",
+  "shareImageDescription": "現在のビューをキャプチャして共有",
+  "shareState": "状態を共有",
+  "shareStateDescription": "インポート可能なファイルとしてシミュレーションデータをエクスポート",
+  "shareSuccess": "共有に成功しました",
+  "shareFailed": "共有に失敗しました",
+  "shareImageError": "画像をキャプチャできません。もう一度お試しください。"
 }
