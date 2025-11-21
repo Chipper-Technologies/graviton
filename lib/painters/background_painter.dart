@@ -313,18 +313,27 @@ class BackgroundPainter {
         center = Offset(screenX, screenY);
       }
 
-      // Large, overlapping gradients using theme radius constants
+      // Large, overlapping gradients scaled to screen size
+      // Use percentage of screen diagonal for responsive sizing
+      final screenDiagonal = math.sqrt(
+        size.width * size.width + size.height * size.height,
+      );
+      final baseRadiusScale =
+          0.7; // 70% of screen diagonal for smoother coverage
+      final radiusVariationScale = 0.15; // 15% variation
+
       final gradientRadius =
-          RenderingConstants.sphericalGradientBaseRadius +
+          screenDiagonal * baseRadiusScale +
           math.sin(time * 0.08 + source * 0.5) *
-              RenderingConstants.sphericalGradientRadiusVariation;
+              screenDiagonal *
+              radiusVariationScale;
       final intensity =
           visibility *
           (RenderingConstants.sphericalGradientBaseIntensity +
               RenderingConstants.sphericalGradientIntensityVariation *
                   math.sin(time * 0.12 + source));
 
-      // Draw the spherical gradient source using theme alpha values
+      // Draw the spherical gradient source with softer, more gradual falloff
       final gradientPaint = Paint()
         ..blendMode = source == 0 ? BlendMode.src : BlendMode.softLight
         ..shader = RadialGradient(
@@ -347,9 +356,11 @@ class BackgroundPainter {
               alpha:
                   intensity * RenderingConstants.sphericalGradientTertiaryAlpha,
             ),
+            sourceColor.withValues(alpha: intensity * 0.05),
+            sourceColor.withValues(alpha: intensity * 0.01),
             AppColors.transparentColor,
           ],
-          stops: const [0.0, 0.4, 0.8, 1.0],
+          stops: const [0.0, 0.3, 0.5, 0.7, 0.9, 1.0],
         ).createShader(Offset.zero & size);
 
       canvas.drawRect(Offset.zero & size, gradientPaint);

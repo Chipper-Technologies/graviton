@@ -16,7 +16,7 @@
   </p>
   
   <p align="center">
-    <img src="https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20Web-lightgrey?style=for-the-badge" alt="Platform Support" />
+    <img src="https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20macOS%20%7C%20Web-lightgrey?style=for-the-badge" alt="Platform Support" />
     <img src="https://img.shields.io/badge/Languages-7_Languages_Supported-green?style=for-the-badge" alt="Internationalization" />
   </p>
   
@@ -209,12 +209,17 @@ Professional screenshot capture system for creating marketing materials:
 - **Flutter SDK**: Version 3.0 or higher
 - **Dart SDK**: Version 3.0 or higher  
 - **IDE**: VS Code with Flutter extension (recommended) or Android Studio
-- **Platforms**: iOS 11+, Android API 21+, or modern web browser
+- **Platforms**: iOS 11+, Android API 21+, macOS 10.14+, or modern web browser
 
 **For iOS Development:**
 - **macOS**: Required for iOS builds and simulator testing
 - **Xcode**: Latest version for iOS compilation
 - **iOS Simulator**: Included with Xcode for testing
+
+**For macOS Development:**
+- **macOS**: Required for macOS builds
+- **Xcode**: Latest version for macOS compilation
+- **Code Signing**: Apple Developer account for distribution
 
 **For Android Development:**
 - **Android Studio** or **Android SDK**: For emulator and device testing
@@ -403,6 +408,38 @@ flutter build ipa --dart-define-from-file config/dev.json --release
 flutter build ipa --dart-define-from-file config/prod.json --release
 ```
 
+#### 🖥️ macOS Builds
+
+**macOS App**
+```bash
+# Development build
+flutter build macos --dart-define-from-file config/dev.json --release
+
+# Production build
+flutter build macos --dart-define-from-file config/prod.json --release
+```
+
+**macOS Archive (Xcode)**
+```bash
+# Create Xcode archive for App Store or notarization
+xcodebuild -workspace macos/Runner.xcworkspace \
+  -scheme Runner \
+  -configuration Release \
+  archive \
+  -archivePath build/macos/Graviton.xcarchive \
+  DART_DEFINES=Y29uZmlnL3Byb2QuanNvbg== \
+  DART_OBFUSCATION=false \
+  TREE_SHAKE_ICONS=true
+```
+
+**DMG Creation**
+```bash
+# Create DMG for direct distribution
+hdiutil create -volname "Graviton" \
+  -srcfolder build/macos/Build/Products/Release/Graviton.app \
+  -ov -format UDZO build/Graviton.dmg
+```
+
 #### 🌐 Web Build
 
 ```bash
@@ -416,6 +453,9 @@ flutter build web --dart-define-from-file config/prod.json --release
 - **Android App Bundle**: `build/app/outputs/bundle/`
 - **iOS App**: `build/ios/iphoneos/Runner.app`
 - **iOS IPA**: `build/ios/ipa/`
+- **macOS App**: `build/macos/Build/Products/Release/Graviton.app`
+- **macOS Archive**: `build/macos/Graviton.xcarchive`
+- **macOS DMG**: `build/Graviton.dmg`
 - **Web**: `build/web/`
 
 #### ⚙️ Build Configuration
@@ -602,7 +642,7 @@ For detailed tool documentation, including troubleshooting, advanced options, an
 **[📖 View Complete Tools Documentation →](tools/README.md)**
 
 ### 🚀 Fastlane Automation
-Automated build and deployment pipelines for both iOS and Android platforms:
+Automated build and deployment pipelines for iOS, Android, and macOS platforms:
 
 ```bash
 # Android builds
@@ -616,19 +656,30 @@ cd ios && bundle exec fastlane build_flutter   # Development IPA
 cd ios && bundle exec fastlane beta            # Deploy to TestFlight (includes dSYM upload)
 cd ios && bundle exec fastlane deploy          # Deploy to App Store (includes dSYM upload)
 
+# macOS builds
+cd macos && bundle exec fastlane mac build_flutter flavor:dev   # Development build
+cd macos && bundle exec fastlane mac build_flutter flavor:prod  # Production build
+cd macos && bundle exec fastlane mac dmg flavor:prod           # Create DMG
+cd macos && bundle exec fastlane mac notarize flavor:prod      # Build and notarize
+cd macos && bundle exec fastlane mac release flavor:prod       # Deploy to Mac App Store
+
 # Firebase Crashlytics dSYM uploads
 cd ios && bundle exec fastlane upload_dsyms flavor:dev     # Upload dSYMs for dev
 cd ios && bundle exec fastlane upload_dsyms flavor:prod    # Upload dSYMs for prod
 cd ios && bundle exec fastlane build_and_upload_dsyms      # Build and upload dSYMs
+cd macos && bundle exec fastlane mac upload_dsyms flavor:dev   # Upload macOS dSYMs for dev
+cd macos && bundle exec fastlane mac upload_dsyms flavor:prod  # Upload macOS dSYMs for prod
 ```
 
 **Features:**
 - Multi-flavor support (dev/prod environments)
+- Multi-platform support (iOS, Android, macOS)
 - Automatic version management and Firebase integration
 - **Firebase Crashlytics dSYM upload** for crash symbolication
 - Screenshot generation and metadata management
 - Code signing and certificate management
 - One-command deployment to app stores
+- macOS notarization for direct distribution
 
 **[📖 View Complete Fastlane Documentation →](docs/FASTLANE.md)**
 

@@ -40,7 +40,11 @@ class HapticGestureDetector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    // Only show pointer cursor for explicit tap/click actions, not for
+    // drag/pan/scale gestures which might cover large interactive areas
+    final bool hasClickableAction = onTap != null || onLongPress != null;
+
+    final gestureDetector = GestureDetector(
       onTap: onTap == null
           ? null
           : () {
@@ -72,5 +76,15 @@ class HapticGestureDetector extends StatelessWidget {
       excludeFromSemantics: excludeFromSemantics,
       child: child,
     );
+
+    // Only wrap in MouseRegion if we have clickable actions
+    if (hasClickableAction) {
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: gestureDetector,
+      );
+    }
+
+    return gestureDetector;
   }
 }

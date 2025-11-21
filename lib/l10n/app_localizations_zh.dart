@@ -2827,17 +2827,23 @@ class AppLocalizationsZh extends AppLocalizations {
   String get notApplicableValue => '不适用';
 
   @override
-  String get habitableStatus => '宜居';
+  String get habitableStatus => '适宜居住';
 
   @override
   String get unknownHabitabilityStatus => '未知';
 
   @override
-  String get tooHotStatus => '过热';
+  String get tooHotStatus => '太热';
 
   @override
-  String get tooColdStatus => '过冷';
+  String get tooColdStatus => '太冷';
 
   @override
-  String get noAtmosphereStatus => '无大气';
+  String get noAtmosphereStatus => '无大气层';
+
+  @override
+  String get selectBody => '选择天体';
+
+  @override
+  String get noBodiesAvailable => '没有可用的天体';
 }

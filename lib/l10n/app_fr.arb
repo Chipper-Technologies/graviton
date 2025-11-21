@@ -899,7 +899,9 @@
   "notApplicableValue": "N/A",
   "habitableStatus": "Habitable",
   "unknownHabitabilityStatus": "Inconnu",
-  "tooHotStatus": "Trop Chaud",
-  "tooColdStatus": "Trop Froid",
-  "noAtmosphereStatus": "Pas d'Atmosphère"
+  "tooHotStatus": "Trop chaud",
+  "tooColdStatus": "Trop froid",
+  "noAtmosphereStatus": "Pas d'atmosphère",
+  "selectBody": "Sélectionner un corps",
+  "noBodiesAvailable": "Aucun corps disponible"
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
@@ -932,35 +933,39 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       isScrollControlled: true,
       backgroundColor: AppColors.transparentColor,
       builder: (context) => StatefulBuilder(
-        builder: (context, setSheetState) => SizedBox(
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: ScenarioEditorBodyDetailsBottomSheet(
-            body: newBody,
-            isAddMode: true,
-            availableCentralBodies:
-                _bodies, // Pass existing bodies as potential central bodies
-            onBodyChanged: (updatedBody) {
-              // Update the local body reference
-              setSheetState(() {});
-            },
-            onSave: (finalBody) {
-              // Log analytics for body addition
-              FirebaseService.instance.logUIEventWithEnums(
-                UIAction.bodyAdded,
-                element: UIElement.scenarioEditorBodies,
-                additionalParams: {
-                  'total_bodies': _bodies.length + 1,
-                  'scenario_editing': widget.isEditing,
-                },
-              );
+        builder: (context, setSheetState) => Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: RenderingConstants.bottomSheetMaxWidth,
+            height: MediaQuery.of(context).size.height * 0.75,
+            child: ScenarioEditorBodyDetailsBottomSheet(
+              body: newBody,
+              isAddMode: true,
+              availableCentralBodies:
+                  _bodies, // Pass existing bodies as potential central bodies
+              onBodyChanged: (updatedBody) {
+                // Update the local body reference
+                setSheetState(() {});
+              },
+              onSave: (finalBody) {
+                // Log analytics for body addition
+                FirebaseService.instance.logUIEventWithEnums(
+                  UIAction.bodyAdded,
+                  element: UIElement.scenarioEditorBodies,
+                  additionalParams: {
+                    'total_bodies': _bodies.length + 1,
+                    'scenario_editing': widget.isEditing,
+                  },
+                );
 
-              // Actually add the body to the list
-              final updatedBodies = List<Body>.from(_bodies)..add(finalBody);
-              _onBodiesChanged(updatedBodies);
+                // Actually add the body to the list
+                final updatedBodies = List<Body>.from(_bodies)..add(finalBody);
+                _onBodiesChanged(updatedBodies);
 
-              // Note: Tab switching is now handled automatically by GravitonTabbedView
-              // The Setup tab will become available and user can navigate there manually
-            },
+                // Note: Tab switching is now handled automatically by GravitonTabbedView
+                // The Setup tab will become available and user can navigate there manually
+              },
+            ),
           ),
         ),
       ),

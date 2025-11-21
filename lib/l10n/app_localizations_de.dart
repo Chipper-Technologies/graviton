@@ -3010,4 +3010,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noAtmosphereStatus => 'Keine Atmosphäre';
+
+  @override
+  String get selectBody => 'Körper auswählen';
+
+  @override
+  String get noBodiesAvailable => 'Keine Körper verfügbar';
 }

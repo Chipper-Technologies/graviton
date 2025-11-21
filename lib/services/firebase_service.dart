@@ -7,6 +7,7 @@ import 'package:graviton/enums/firebase_event.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/services/remote_config_service.dart';
+import 'package:graviton/utils/platform_utils.dart';
 
 /// Service class for managing Firebase functionality
 class FirebaseService {
@@ -29,11 +30,19 @@ class FirebaseService {
   Future<void> initialize() async {
     try {
       _analytics = FirebaseAnalytics.instance;
-      _crashlytics = FirebaseCrashlytics.instance;
-      _remoteConfig = FirebaseRemoteConfig.instance;
 
-      // Configure Crashlytics
-      await _configureCrashlytics();
+      // Only initialize Crashlytics on mobile platforms (Android & iOS)
+      if (PlatformUtils.isMobile) {
+        _crashlytics = FirebaseCrashlytics.instance;
+        // Configure Crashlytics
+        await _configureCrashlytics();
+      } else {
+        debugPrint(
+          'Crashlytics not initialized - not supported on web/desktop',
+        );
+      }
+
+      _remoteConfig = FirebaseRemoteConfig.instance;
 
       // Configure Remote Config
       await _configureRemoteConfig();
@@ -64,9 +73,12 @@ class FirebaseService {
   }
 
   /// Configure Firebase Crashlytics
+  /// Only called on mobile platforms (Android & iOS)
   Future<void> _configureCrashlytics() async {
+    if (_crashlytics == null) return;
+
     // Enable Crashlytics collection in release mode only
-    await _crashlytics?.setCrashlyticsCollectionEnabled(!kDebugMode);
+    await _crashlytics!.setCrashlyticsCollectionEnabled(!kDebugMode);
 
     // Pass all uncaught errors from the framework to Crashlytics
     FlutterError.onError = (FlutterErrorDetails details) {

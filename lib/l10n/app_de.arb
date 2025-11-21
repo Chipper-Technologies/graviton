@@ -901,5 +901,7 @@
   "unknownHabitabilityStatus": "Unbekannt",
   "tooHotStatus": "Zu heiß",
   "tooColdStatus": "Zu kalt",
-  "noAtmosphereStatus": "Keine Atmosphäre"
+  "noAtmosphereStatus": "Keine Atmosphäre",
+  "selectBody": "Körper auswählen",
+  "noBodiesAvailable": "Keine Körper verfügbar"
 }

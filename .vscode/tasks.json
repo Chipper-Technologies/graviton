@@ -292,6 +292,174 @@
     },
 
     // ============================================================================
+    // MACOS BUILD TASKS
+    // ============================================================================
+    {
+      "label": "🖥️ Run macOS (Dev)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "run",
+        "-d",
+        "macos",
+        "--dart-define-from-file",
+        "config/dev.json",
+        "--flavor",
+        "dev"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter app on macOS with development configuration"
+    },
+    {
+      "label": "🖥️ Run macOS (Prod)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "run",
+        "-d",
+        "macos",
+        "--dart-define-from-file",
+        "config/prod.json",
+        "--flavor",
+        "prod"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter app on macOS with production configuration"
+    },
+    {
+      "label": "🖥️ Build macOS (Dev)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "macos",
+        "--dart-define-from-file",
+        "config/dev.json",
+        "--flavor",
+        "dev",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build macOS app for development"
+    },
+    {
+      "label": "🖥️ Build macOS (Prod)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "macos",
+        "--dart-define-from-file",
+        "config/prod.json",
+        "--flavor",
+        "prod",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build macOS app for production"
+    },
+    {
+      "label": "📦 Archive macOS (Prod)",
+      "type": "shell",
+      "command": "sh",
+      "args": [
+        "-c",
+        "flutter build macos --dart-define-from-file config/prod.json --release && xcodebuild -workspace macos/Runner.xcworkspace -scheme prod -configuration Release-prod archive -archivePath build/macos/Graviton.xcarchive"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build with Flutter and create Xcode archive for macOS (for App Store or direct distribution)"
+    },
+    {
+      "label": "💿 Export macOS Archive (App Store)",
+      "type": "shell",
+      "command": "xcodebuild",
+      "args": [
+        "-exportArchive",
+        "-archivePath",
+        "build/macos/Graviton.xcarchive",
+        "-exportPath",
+        "build/macos/AppStore",
+        "-exportOptionsPlist",
+        "macos/ExportOptions.plist"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "dependsOn": ["📦 Archive macOS (Prod)"],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Export archive for App Store distribution (requires ExportOptions.plist)"
+    },
+
+    // ============================================================================
     // MAINTENANCE TASKS
     // ============================================================================
     {

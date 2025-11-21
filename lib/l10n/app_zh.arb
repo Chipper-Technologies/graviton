@@ -897,9 +897,11 @@
   "bodyDistanceFromCenterLabel": "距离中心",
   "bodyOrbitalPeriodLabel": "轨道周期",
   "notApplicableValue": "不适用",
-  "habitableStatus": "宜居",
+  "habitableStatus": "适宜居住",
   "unknownHabitabilityStatus": "未知",
-  "tooHotStatus": "过热",
-  "tooColdStatus": "过冷",
-  "noAtmosphereStatus": "无大气"
+  "tooHotStatus": "太热",
+  "tooColdStatus": "太冷",
+  "noAtmosphereStatus": "无大气层",
+  "selectBody": "选择天体",
+  "noBodiesAvailable": "没有可用的天体"
 }

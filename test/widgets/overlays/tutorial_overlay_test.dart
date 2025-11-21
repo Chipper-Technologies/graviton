@@ -119,12 +119,16 @@ void main() {
         );
 
         // Advance to second step first
-        await tester.tap(find.byType(ElevatedButton));
-        await tester.pump();
+        final nextButton = find.byType(ElevatedButton);
+        await tester.ensureVisible(nextButton);
+        await tester.tap(nextButton, warnIfMissed: false);
+        await tester.pumpAndSettle();
 
         // Now tap the previous button
-        await tester.tap(find.text('Previous'));
-        await tester.pump();
+        final prevButton = find.text('Previous');
+        await tester.ensureVisible(prevButton);
+        await tester.tap(prevButton, warnIfMissed: false);
+        await tester.pumpAndSettle();
 
         // Should be back to first step (only Skip button)
         expect(find.byType(TextButton), findsOneWidget); // Only Skip button
@@ -236,8 +240,9 @@ void main() {
         for (int i = 0; i < 6; i++) {
           final button = find.byType(ElevatedButton);
           if (button.evaluate().isNotEmpty) {
-            await tester.tap(button);
-            await tester.pump();
+            await tester.ensureVisible(button);
+            await tester.tap(button, warnIfMissed: false);
+            await tester.pumpAndSettle();
           }
         }
 

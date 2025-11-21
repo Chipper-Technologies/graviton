@@ -2872,4 +2872,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get noAtmosphereStatus => '대기 없음';
+
+  @override
+  String get selectBody => '천체 선택';
+
+  @override
+  String get noBodiesAvailable => '선택 가능한 천체가 없습니다';
 }

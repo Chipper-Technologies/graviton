@@ -3028,11 +3028,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get unknownHabitabilityStatus => 'Desconocido';
 
   @override
-  String get tooHotStatus => 'Demasiado Caliente';
+  String get tooHotStatus => 'Demasiado caliente';
 
   @override
-  String get tooColdStatus => 'Demasiado Frío';
+  String get tooColdStatus => 'Demasiado frío';
 
   @override
-  String get noAtmosphereStatus => 'Sin Atmósfera';
+  String get noAtmosphereStatus => 'Sin atmósfera';
+
+  @override
+  String get selectBody => 'Seleccionar cuerpo';
+
+  @override
+  String get noBodiesAvailable => 'No hay cuerpos disponibles';
 }
