@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/widgets/share_action_button.dart';
+import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/simulation_state.dart';
-import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/widgets/share_action_button.dart';
 
 import '../test_utils.dart';
 
@@ -24,10 +24,7 @@ void main() {
       simulationState.dispose();
     });
 
-    Widget createTestWidget({
-      VoidCallback? onShareStarted,
-      VoidCallback? onShareCompleted,
-    }) {
+    Widget createTestWidget() {
       return MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
@@ -35,8 +32,6 @@ void main() {
           body: ShareActionButton(
             simulationState: simulationState,
             repaintBoundaryKey: repaintBoundaryKey,
-            onShareStarted: onShareStarted,
-            onShareCompleted: onShareCompleted,
           ),
         ),
       );
@@ -61,21 +56,6 @@ void main() {
       expect(find.text('Share Simulation'), findsOneWidget);
       expect(find.text('Share Image'), findsOneWidget);
       expect(find.text('Share State'), findsOneWidget);
-    });
-
-    testWidgets('calls onShareStarted callback when dialog opens', (
-      WidgetTester tester,
-    ) async {
-      bool callbackCalled = false;
-      await tester.pumpWidget(
-        createTestWidget(onShareStarted: () => callbackCalled = true),
-      );
-
-      // Tap the share button
-      await tester.tap(find.byIcon(Icons.share));
-      await tester.pumpAndSettle();
-
-      expect(callbackCalled, isTrue);
     });
 
     testWidgets('displays correct share image description', (
@@ -238,25 +218,6 @@ void main() {
 
       expect(widget.simulationState, equals(simulationState));
       expect(widget.repaintBoundaryKey, equals(repaintBoundaryKey));
-      expect(widget.onShareStarted, isNull);
-      expect(widget.onShareCompleted, isNull);
-    });
-
-    testWidgets('stores all provided parameters', (WidgetTester tester) async {
-      void startCallback() {}
-      void completeCallback() {}
-
-      final widget = ShareActionButton(
-        simulationState: simulationState,
-        repaintBoundaryKey: repaintBoundaryKey,
-        onShareStarted: startCallback,
-        onShareCompleted: completeCallback,
-      );
-
-      expect(widget.simulationState, equals(simulationState));
-      expect(widget.repaintBoundaryKey, equals(repaintBoundaryKey));
-      expect(widget.onShareStarted, equals(startCallback));
-      expect(widget.onShareCompleted, equals(completeCallback));
     });
 
     testWidgets('dialog options are tappable', (WidgetTester tester) async {

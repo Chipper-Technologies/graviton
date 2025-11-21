@@ -3967,5 +3967,17 @@
   "shareImageError": "Cannot capture image. Please try again.",
   "@shareImageError": {
     "description": "Error message when image capture fails"
+  },
+  "shareSubject": "Graviton Simulation",
+  "@shareSubject": {
+    "description": "Subject line when sharing simulation"
+  },
+  "shareSnapshotSubject": "Graviton Simulation Snapshot",
+  "@shareSnapshotSubject": {
+    "description": "Subject line when sharing simulation snapshot"
+  },
+  "shareText": "Check out this gravitational simulation!",
+  "@shareText": {
+    "description": "Text message when sharing simulation"
   }
 }

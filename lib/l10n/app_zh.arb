@@ -909,8 +909,11 @@
   "shareImage": "分享图片",
   "shareImageDescription": "捕获并分享当前视图",
   "shareState": "分享状态",
-  "shareStateDescription": "将模拟数据导出为可导入文件",
+  "shareStateDescription": "将模拟数据导出为可导入的文件",
   "shareSuccess": "分享成功",
   "shareFailed": "分享失败",
-  "shareImageError": "无法捕获图片。请重试。"
+  "shareImageError": "无法捕获图像。请重试。",
+  "shareSubject": "Graviton模拟",
+  "shareSnapshotSubject": "Graviton模拟快照",
+  "shareText": "看看这个引力模拟！"
 }

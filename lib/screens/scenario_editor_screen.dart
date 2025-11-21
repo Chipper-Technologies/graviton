@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
@@ -38,7 +39,9 @@ import 'package:graviton/widgets/haptics/haptic_floating_action_button.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_list.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_physics_panel.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Screen for creating and editing custom gravitational simulation scenarios
@@ -1291,13 +1294,39 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
         },
       );
 
-      // TODO: Implement file export functionality
-      debugPrint('Exported JSON:\n$jsonString'); // For development
+      // Save JSON file to temporary directory and share
+      final fileName =
+          '${_metadata.name.replaceAll(RegExp(r'[^\w\s-]'), '')}_${DateTime.now().millisecondsSinceEpoch}.json';
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/$fileName');
+      await file.writeAsString(jsonString);
 
-      GravitonSnackBar.warning(
-        context: context,
-        message: l10n.exportScenarioNotImplementedMessage,
+      // Share the exported file
+      // ignore: deprecated_member_use
+      final result = await Share.shareXFiles(
+        [XFile(file.path, mimeType: 'application/json')],
+        subject: l10n.shareSubject,
+        text: l10n.shareText,
       );
+
+      // Clean up temp file after a delay
+      Future.delayed(const Duration(seconds: 5), () {
+        try {
+          if (file.existsSync()) {
+            file.deleteSync();
+          }
+        } catch (e) {
+          debugPrint('Failed to delete temp file: $e');
+        }
+      });
+
+      // Show result feedback
+      if (!mounted) return;
+      if (result.status == ShareResultStatus.success) {
+        GravitonSnackBar.success(context: context, message: l10n.shareSuccess);
+      } else {
+        GravitonSnackBar.error(context: context, message: l10n.shareFailed);
+      }
     } catch (e) {
       // Log error analytics
       FirebaseService.instance.logErrorEvent(

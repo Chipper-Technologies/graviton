@@ -912,5 +912,8 @@
   "shareStateDescription": "インポート可能なファイルとしてシミュレーションデータをエクスポート",
   "shareSuccess": "共有に成功しました",
   "shareFailed": "共有に失敗しました",
-  "shareImageError": "画像をキャプチャできません。もう一度お試しください。"
+  "shareImageError": "画像をキャプチャできません。もう一度お試しください。",
+  "shareSubject": "Gravitonシミュレーション",
+  "shareSnapshotSubject": "Gravitonシミュレーションスナップショット",
+  "shareText": "この重力シミュレーションをチェックしてください！"
 }

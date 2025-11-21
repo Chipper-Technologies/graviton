@@ -29,7 +29,9 @@
     <a href="https://graviton.chipperlabs.com" target="_blank">
       <img src="https://img.shields.io/badge/Web-Available_Now-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Available on the Web" />
     </a>
-    <img src="https://img.shields.io/badge/macOS-Coming_Soon-lightgrey?style=for-the-badge&logo=apple&logoColor=white" alt="Coming Soon on Mac App Store" />
+    <a href="https://apps.apple.com/us/app/graviton-sim/id6754208416" target="_blank">
+      <img src="https://img.shields.io/badge/macOS-Available_on_App_Store-007AFF?style=for-the-badge&logo=apple&logoColor=white" alt="Available on Mac App Store" />
+    </a>
     <img src="https://img.shields.io/badge/Windows-Coming_Soon-lightgrey?style=for-the-badge&logo=windows&logoColor=white" alt="Coming Soon on Windows" />
   </p>
 </div>

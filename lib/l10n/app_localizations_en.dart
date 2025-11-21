@@ -3053,4 +3053,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareImageError => 'Cannot capture image. Please try again.';
+
+  @override
+  String get shareSubject => 'Graviton Simulation';
+
+  @override
+  String get shareSnapshotSubject => 'Graviton Simulation Snapshot';
+
+  @override
+  String get shareText => 'Check out this gravitational simulation!';
 }

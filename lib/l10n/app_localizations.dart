@@ -5349,6 +5349,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cannot capture image. Please try again.'**
   String get shareImageError;
+
+  /// Subject line when sharing simulation
+  ///
+  /// In en, this message translates to:
+  /// **'Graviton Simulation'**
+  String get shareSubject;
+
+  /// Subject line when sharing simulation snapshot
+  ///
+  /// In en, this message translates to:
+  /// **'Graviton Simulation Snapshot'**
+  String get shareSnapshotSubject;
+
+  /// Text message when sharing simulation
+  ///
+  /// In en, this message translates to:
+  /// **'Check out this gravitational simulation!'**
+  String get shareText;
 }
 
 class _AppLocalizationsDelegate

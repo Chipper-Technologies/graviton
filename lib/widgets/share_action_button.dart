@@ -12,16 +12,12 @@ import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 /// Action button for sharing simulation state or images
 class ShareActionButton extends StatelessWidget {
   final SimulationState simulationState;
-  final GlobalKey? repaintBoundaryKey;
-  final VoidCallback? onShareStarted;
-  final VoidCallback? onShareCompleted;
+  final GlobalKey repaintBoundaryKey;
 
   const ShareActionButton({
-    super.key,
     required this.simulationState,
-    this.repaintBoundaryKey,
-    this.onShareStarted,
-    this.onShareCompleted,
+    required this.repaintBoundaryKey,
+    super.key,
   });
 
   /// Show share options dialog
@@ -30,8 +26,6 @@ class ShareActionButton extends StatelessWidget {
 
     // Log dialog open event
     FirebaseService.instance.logEventWithEnum(FirebaseEvent.shareDialogOpened);
-
-    onShareStarted?.call();
 
     final option = await showDialog<String>(
       context: context,
@@ -102,7 +96,6 @@ class ShareActionButton extends StatelessWidget {
       if (option == null) {
         FirebaseService.instance.logEventWithEnum(FirebaseEvent.shareCancelled);
       }
-      onShareCompleted?.call();
       return;
     }
 
@@ -111,21 +104,16 @@ class ShareActionButton extends StatelessWidget {
       bool success = false;
 
       if (option == 'image') {
-        if (repaintBoundaryKey == null) {
-          if (context.mounted) {
-            GravitonSnackBar.error(
-              context: context,
-              message: l10n!.shareImageError,
-            );
-          }
-        } else {
-          success = await service.shareSimulationImage(
-            repaintBoundaryKey: repaintBoundaryKey!,
-          );
-        }
+        success = await service.shareSimulationImage(
+          repaintBoundaryKey: repaintBoundaryKey,
+          subject: l10n!.shareSnapshotSubject,
+          text: l10n.shareText,
+        );
       } else if (option == 'state') {
         success = await service.shareSimulationState(
           simulationState: simulationState,
+          subject: l10n!.shareSubject,
+          text: l10n.shareText,
         );
       }
 
@@ -162,8 +150,6 @@ class ShareActionButton extends StatelessWidget {
       if (context.mounted) {
         GravitonSnackBar.error(context: context, message: l10n!.shareFailed);
       }
-    } finally {
-      onShareCompleted?.call();
     }
   }
 

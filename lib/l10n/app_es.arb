@@ -910,7 +910,10 @@
   "shareImageDescription": "Capturar y compartir la vista actual",
   "shareState": "Compartir Estado",
   "shareStateDescription": "Exportar datos de simulación como archivo importable",
-  "shareSuccess": "Compartido exitosamente",
+  "shareSuccess": "Compartido con éxito",
   "shareFailed": "Error al compartir",
-  "shareImageError": "No se puede capturar la imagen. Por favor, inténtelo de nuevo."
+  "shareImageError": "No se puede capturar la imagen. Por favor, inténtelo de nuevo.",
+  "shareSubject": "Simulación Graviton",
+  "shareSnapshotSubject": "Captura de Simulación Graviton",
+  "shareText": "¡Mira esta simulación gravitacional!"
 }

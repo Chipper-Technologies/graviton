@@ -3062,7 +3062,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Exportar datos de simulación como archivo importable';
 
   @override
-  String get shareSuccess => 'Compartido exitosamente';
+  String get shareSuccess => 'Compartido con éxito';
 
   @override
   String get shareFailed => 'Error al compartir';
@@ -3070,4 +3070,13 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get shareImageError =>
       'No se puede capturar la imagen. Por favor, inténtelo de nuevo.';
+
+  @override
+  String get shareSubject => 'Simulación Graviton';
+
+  @override
+  String get shareSnapshotSubject => 'Captura de Simulación Graviton';
+
+  @override
+  String get shareText => '¡Mira esta simulación gravitacional!';
 }

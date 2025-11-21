@@ -912,5 +912,8 @@
   "shareStateDescription": "Simulationsdaten als importierbare Datei exportieren",
   "shareSuccess": "Erfolgreich geteilt",
   "shareFailed": "Teilen fehlgeschlagen",
-  "shareImageError": "Bild kann nicht erfasst werden. Bitte versuchen Sie es erneut."
+  "shareImageError": "Bild kann nicht erfasst werden. Bitte versuchen Sie es erneut.",
+  "shareSubject": "Graviton-Simulation",
+  "shareSnapshotSubject": "Graviton-Simulationsschnappschuss",
+  "shareText": "Sehen Sie sich diese Gravitationssimulation an!"
 }

@@ -1578,68 +1578,138 @@ class _HomeScreenState extends State<HomeScreen>
                             children: [
                               RepaintBoundary(
                                 key: _simulationViewportKey,
-                                child: CustomPaint(
-                                  painter: GravitonPainter(
-                                    sim: appState.simulation.simulation,
-                                    view: view,
-                                    proj: _buildProjection(size.aspectRatio),
-                                    stars: _stars,
-                                    showTrails: appState.ui.showTrails,
-                                    useWarmTrails: appState.ui.useWarmTrails,
-                                    useRealisticColors:
-                                        appState.ui.useRealisticColors,
-                                    showOrbitalPaths:
-                                        appState.ui.showOrbitalPaths,
-                                    dualOrbitalPaths:
-                                        appState.ui.dualOrbitalPaths,
-                                    showHabitableZones:
-                                        appState.ui.showHabitableZones,
-                                    showHabitabilityIndicators:
-                                        appState.ui.showHabitabilityIndicators,
-                                    selectedBodyIndex:
-                                        appState.camera.selectedBody,
-                                    followMode: appState.camera.followMode,
-                                    cameraDistance: appState.camera.distance,
-                                    globalGravityFields:
-                                        appState.ui.globalGravityFields,
-                                    gravityFieldColorScheme:
-                                        appState.ui.gravityFieldColorScheme,
-                                    showEquipotentialSurfaces:
-                                        appState.ui.showEquipotentialSurfaces,
-                                    showGravityFieldIndicators:
-                                        appState.ui.showGravityFieldIndicators,
+                                child: Container(
+                                  color: AppColors.backgroundBlack,
+                                  child: Stack(
+                                    children: [
+                                      CustomPaint(
+                                        painter: GravitonPainter(
+                                          sim: appState.simulation.simulation,
+                                          view: view,
+                                          proj: _buildProjection(
+                                            size.aspectRatio,
+                                          ),
+                                          stars: _stars,
+                                          showTrails: appState.ui.showTrails,
+                                          useWarmTrails:
+                                              appState.ui.useWarmTrails,
+                                          useRealisticColors:
+                                              appState.ui.useRealisticColors,
+                                          showOrbitalPaths:
+                                              appState.ui.showOrbitalPaths,
+                                          dualOrbitalPaths:
+                                              appState.ui.dualOrbitalPaths,
+                                          showHabitableZones:
+                                              appState.ui.showHabitableZones,
+                                          showHabitabilityIndicators: appState
+                                              .ui
+                                              .showHabitabilityIndicators,
+                                          selectedBodyIndex:
+                                              appState.camera.selectedBody,
+                                          followMode:
+                                              appState.camera.followMode,
+                                          cameraDistance:
+                                              appState.camera.distance,
+                                          globalGravityFields:
+                                              appState.ui.globalGravityFields,
+                                          gravityFieldColorScheme: appState
+                                              .ui
+                                              .gravityFieldColorScheme,
+                                          showEquipotentialSurfaces: appState
+                                              .ui
+                                              .showEquipotentialSurfaces,
+                                          showGravityFieldIndicators: appState
+                                              .ui
+                                              .showGravityFieldIndicators,
+                                        ),
+                                        child: const SizedBox.expand(),
+                                      ),
+                                      if (appState.ui.showLabels)
+                                        BodyLabelsOverlay(
+                                          bodies: appState.simulation.bodies,
+                                          viewMatrix: view,
+                                          projMatrix: _buildProjection(
+                                            size.aspectRatio,
+                                          ),
+                                          screenSize: size,
+                                          l10n: AppLocalizations.of(context),
+                                        ),
+                                      if (appState.ui.showOffScreenIndicators)
+                                        OffScreenIndicatorsOverlay(
+                                          bodies: appState.simulation.bodies,
+                                          viewMatrix: view,
+                                          projMatrix: _buildProjection(
+                                            size.aspectRatio,
+                                          ),
+                                          screenSize: size,
+                                          selectedBodyIndex:
+                                              appState.camera.selectedBody,
+                                          onIndicatorTapped: (bodyIndex) {
+                                            _selectBody(
+                                              appState,
+                                              bodyIndex,
+                                              appState.simulation.bodies,
+                                            );
+                                          },
+                                        ),
+                                      if (!shouldHideUI &&
+                                          appState.camera.selectedBody != null)
+                                        BodyPropertyEditorOverlay(
+                                          bodies: appState.simulation.bodies,
+                                          viewMatrix: view,
+                                          projMatrix: _buildProjection(
+                                            size.aspectRatio,
+                                          ),
+                                          screenSize: size,
+                                          selectedBodyIndex:
+                                              appState.camera.selectedBody,
+                                          onPropertyIconTapped: () =>
+                                              _showBodyPropertiesBottomSheet(
+                                                context,
+                                                appState,
+                                              ),
+                                        ),
+                                      if (!shouldHideUI)
+                                        CameraVisualAidsOverlay(
+                                          bodies: appState.simulation.bodies,
+                                          viewMatrix: view,
+                                          projMatrix: _buildProjection(
+                                            size.aspectRatio,
+                                          ),
+                                          screenSize: size,
+                                          selectedBodyIndex:
+                                              appState.camera.selectedBody,
+                                          cameraDistance:
+                                              appState.camera.distance,
+                                          showCrosshairs:
+                                              appState.camera.showCrosshairs,
+                                        ),
+                                      if (appState.ui.showStats)
+                                        Positioned(
+                                          top:
+                                              MediaQuery.of(
+                                                context,
+                                              ).padding.top +
+                                              kToolbarHeight +
+                                              16,
+                                          left: 16,
+                                          child: SemanticLiveRegion(
+                                            currentValue:
+                                                '${appState.simulation.stepCount}',
+                                            dataType: l10n.simulationStepsLabel,
+                                            child: StatsOverlay(
+                                              appState: appState,
+                                            ),
+                                          ),
+                                        ),
+                                      ScreenshotCountdown(
+                                        screenshotService:
+                                            _screenshotModeService,
+                                      ),
+                                    ],
                                   ),
-                                  child: const SizedBox.expand(),
                                 ),
                               ),
-                              if (appState.ui.showLabels)
-                                BodyLabelsOverlay(
-                                  bodies: appState.simulation.bodies,
-                                  viewMatrix: view,
-                                  projMatrix: _buildProjection(
-                                    size.aspectRatio,
-                                  ),
-                                  screenSize: size,
-                                  l10n: AppLocalizations.of(context),
-                                ),
-                              if (appState.ui.showOffScreenIndicators)
-                                OffScreenIndicatorsOverlay(
-                                  bodies: appState.simulation.bodies,
-                                  viewMatrix: view,
-                                  projMatrix: _buildProjection(
-                                    size.aspectRatio,
-                                  ),
-                                  screenSize: size,
-                                  selectedBodyIndex:
-                                      appState.camera.selectedBody,
-                                  onIndicatorTapped: (bodyIndex) {
-                                    _selectBody(
-                                      appState,
-                                      bodyIndex,
-                                      appState.simulation.bodies,
-                                    );
-                                  },
-                                ),
                               // Body property editor overlay for selected bodies
                               if (!shouldHideUI &&
                                   appState.camera.selectedBody != null)
@@ -2000,14 +2070,6 @@ class _HomeScreenState extends State<HomeScreen>
                   final shareButton = ShareActionButton(
                     simulationState: appState.simulation,
                     repaintBoundaryKey: _simulationViewportKey,
-                    onShareStarted: () {
-                      // Keep controls visible during sharing
-                      _showFloatingControlsTemporarily();
-                    },
-                    onShareCompleted: () {
-                      // Reset timer after sharing completes
-                      _showFloatingControlsTemporarily();
-                    },
                   );
                   await shareButton.showShareOptions(context);
                 },

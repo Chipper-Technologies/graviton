@@ -2892,4 +2892,13 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get shareImageError => '画像をキャプチャできません。もう一度お試しください。';
+
+  @override
+  String get shareSubject => 'Gravitonシミュレーション';
+
+  @override
+  String get shareSnapshotSubject => 'Gravitonシミュレーションスナップショット';
+
+  @override
+  String get shareText => 'この重力シミュレーションをチェックしてください！';
 }

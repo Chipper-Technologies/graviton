@@ -2863,7 +2863,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get shareState => '分享状态';
 
   @override
-  String get shareStateDescription => '将模拟数据导出为可导入文件';
+  String get shareStateDescription => '将模拟数据导出为可导入的文件';
 
   @override
   String get shareSuccess => '分享成功';
@@ -2872,5 +2872,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get shareFailed => '分享失败';
 
   @override
-  String get shareImageError => '无法捕获图片。请重试。';
+  String get shareImageError => '无法捕获图像。请重试。';
+
+  @override
+  String get shareSubject => 'Graviton模拟';
+
+  @override
+  String get shareSnapshotSubject => 'Graviton模拟快照';
+
+  @override
+  String get shareText => '看看这个引力模拟！';
 }

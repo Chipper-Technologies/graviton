@@ -5,15 +5,15 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show GlobalKey;
 import 'package:flutter/rendering.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:vector_math/vector_math_64.dart' as vm;
-
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/state/simulation_state.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Service for sharing simulation states and screenshots
 ///
@@ -32,6 +32,8 @@ class SimulationShareService {
   Future<bool> shareSimulationState({
     required SimulationState simulationState,
     String? customName,
+    String? subject,
+    String? text,
   }) async {
     try {
       final jsonData = await exportSimulationStateToJson(
@@ -60,8 +62,8 @@ class SimulationShareService {
       // ignore: deprecated_member_use
       final result = await Share.shareXFiles(
         [XFile(file.path, mimeType: 'application/json')],
-        subject: 'Graviton Simulation',
-        text: 'Check out this gravitational simulation!',
+        subject: subject,
+        text: text,
       );
 
       // Clean up temp file after a delay
@@ -89,6 +91,8 @@ class SimulationShareService {
   Future<bool> shareSimulationImage({
     required GlobalKey repaintBoundaryKey,
     String? customName,
+    String? subject,
+    String? text,
   }) async {
     try {
       final imageBytes = await captureSimulationImage(repaintBoundaryKey);
@@ -116,8 +120,8 @@ class SimulationShareService {
       // ignore: deprecated_member_use
       final result = await Share.shareXFiles(
         [XFile(file.path, mimeType: 'image/png')],
-        subject: 'Graviton Simulation Snapshot',
-        text: 'Check out this gravitational simulation!',
+        subject: subject,
+        text: text,
       );
 
       // Clean up temp file after a delay
@@ -214,7 +218,27 @@ class SimulationShareService {
 
       // Capture at 2x resolution for better quality
       final image = await boundary.toImage(pixelRatio: 2.0);
-      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+      // Create a new image with black background to ensure no transparency
+      final recorder = ui.PictureRecorder();
+      final canvas = Canvas(recorder);
+      final size = Size(image.width.toDouble(), image.height.toDouble());
+
+      // Fill with opaque black background
+      canvas.drawRect(
+        Offset.zero & size,
+        Paint()..color = AppColors.backgroundBlack,
+      );
+
+      // Draw captured image on top
+      canvas.drawImage(image, Offset.zero, Paint());
+
+      // Convert to image
+      final picture = recorder.endRecording();
+      final finalImage = await picture.toImage(image.width, image.height);
+      final byteData = await finalImage.toByteData(
+        format: ui.ImageByteFormat.png,
+      );
 
       return byteData?.buffer.asUint8List();
     } catch (e) {

@@ -912,5 +912,8 @@
   "shareStateDescription": "가져올 수 있는 파일로 시뮬레이션 데이터 내보내기",
   "shareSuccess": "공유 성공",
   "shareFailed": "공유 실패",
-  "shareImageError": "이미지를 캡처할 수 없습니다. 다시 시도해 주세요."
+  "shareImageError": "이미지를 캡처할 수 없습니다. 다시 시도해 주세요.",
+  "shareSubject": "Graviton 시뮬레이션",
+  "shareSnapshotSubject": "Graviton 시뮬레이션 스냅샷",
+  "shareText": "이 중력 시뮬레이션을 확인하세요!"
 }

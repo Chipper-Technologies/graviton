@@ -1,7 +1,7 @@
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/enums/scenario_type.dart';
@@ -29,6 +29,9 @@ import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/widgets/scenario_selection/create_scenario_tile.dart';
 import 'package:graviton/widgets/scenario_selection/custom_scenario_tile.dart';
 import 'package:graviton/widgets/scenario_selection/experimental_scenario_tile.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Tab widget displaying custom scenarios with create/manage options
@@ -847,16 +850,41 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         },
       );
 
-      // TODO: Implement file export functionality
-      debugPrint(
-        'Exported JSON for $scenarioName:\n$jsonString',
-      ); // For development
+      // Save JSON file to temporary directory and share
+      final fileName =
+          '${scenarioName.replaceAll(RegExp(r'[^\w\s-]'), '')}_${DateTime.now().millisecondsSinceEpoch}.json';
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/$fileName');
+      await file.writeAsString(jsonString);
+
+      // Share the exported file
+      // ignore: deprecated_member_use
+      final result = await Share.shareXFiles(
+        [XFile(file.path, mimeType: 'application/json')],
+        subject: l10n.shareSubject,
+        text: l10n.shareText,
+      );
+
+      // Clean up temp file after a delay
+      Future.delayed(const Duration(seconds: 5), () {
+        try {
+          if (file.existsSync()) {
+            file.deleteSync();
+          }
+        } catch (e) {
+          debugPrint('Failed to delete temp file: $e');
+        }
+      });
 
       if (context.mounted) {
-        GravitonSnackBar.warning(
-          context: context,
-          message: l10n.exportScenarioNotImplementedMessage,
-        );
+        if (result.status == ShareResultStatus.success) {
+          GravitonSnackBar.success(
+            context: context,
+            message: l10n.shareSuccess,
+          );
+        } else {
+          GravitonSnackBar.error(context: context, message: l10n.shareFailed);
+        }
       }
     } catch (e) {
       // Log error analytics

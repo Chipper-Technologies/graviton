@@ -3045,4 +3045,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get shareImageError =>
       'Bild kann nicht erfasst werden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get shareSubject => 'Graviton-Simulation';
+
+  @override
+  String get shareSnapshotSubject => 'Graviton-Simulationsschnappschuss';
+
+  @override
+  String get shareText => 'Sehen Sie sich diese Gravitationssimulation an!';
 }

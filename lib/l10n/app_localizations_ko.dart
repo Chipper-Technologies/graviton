@@ -2905,4 +2905,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get shareImageError => '이미지를 캡처할 수 없습니다. 다시 시도해 주세요.';
+
+  @override
+  String get shareSubject => 'Graviton 시뮬레이션';
+
+  @override
+  String get shareSnapshotSubject => 'Graviton 시뮬레이션 스냅샷';
+
+  @override
+  String get shareText => '이 중력 시뮬레이션을 확인하세요!';
 }
