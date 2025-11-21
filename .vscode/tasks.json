@@ -409,20 +409,10 @@
     {
       "label": "📦 Archive macOS (Prod)",
       "type": "shell",
-      "command": "xcodebuild",
+      "command": "sh",
       "args": [
-        "-workspace",
-        "macos/Runner.xcworkspace",
-        "-scheme",
-        "prod",
-        "-configuration",
-        "Release-prod",
-        "archive",
-        "-archivePath",
-        "build/macos/Graviton.xcarchive",
-        "DART_DEFINES=Y29uZmlnL3Byb2QuanNvbg==",
-        "DART_OBFUSCATION=false",
-        "TREE_SHAKE_ICONS=true"
+        "-c",
+        "flutter build macos --dart-define-from-file config/prod.json --release && xcodebuild -workspace macos/Runner.xcworkspace -scheme prod -configuration Release-prod archive -archivePath build/macos/Graviton.xcarchive"
       ],
       "group": {
         "kind": "build",
@@ -437,7 +427,7 @@
         "clear": false
       },
       "problemMatcher": [],
-      "detail": "Create Xcode archive for macOS (for App Store or direct distribution)"
+      "detail": "Build with Flutter and create Xcode archive for macOS (for App Store or direct distribution)"
     },
     {
       "label": "💿 Export macOS Archive (App Store)",
