@@ -3054,4 +3054,27 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get shareText => 'Sehen Sie sich diese Gravitationssimulation an!';
+
+  @override
+  String get importScenario => 'Szenario importieren';
+
+  @override
+  String get importScenarioDescription => 'Szenario aus einer JSON-Datei laden';
+
+  @override
+  String get importSuccess => 'Szenario erfolgreich importiert';
+
+  @override
+  String get importFailed => 'Importieren des Szenarios fehlgeschlagen';
+
+  @override
+  String get importInvalidFile =>
+      'Ungültiges Dateiformat. Bitte wählen Sie eine gültige JSON-Datei aus.';
+
+  @override
+  String get importFileNotFound =>
+      'Datei nicht gefunden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get importCancelled => 'Import abgebrochen';
 }

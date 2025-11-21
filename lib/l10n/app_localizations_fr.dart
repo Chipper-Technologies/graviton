@@ -3066,11 +3066,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get shareImageDescription => 'Capturer et partager la vue actuelle';
 
   @override
-  String get shareState => 'Partager l\'État';
+  String get shareState => 'Partager l\'état';
 
   @override
   String get shareStateDescription =>
-      'Exporter les données de simulation comme fichier importable';
+      'Exporter les données de simulation sous forme de fichier importable';
 
   @override
   String get shareSuccess => 'Partagé avec succès';
@@ -3086,8 +3086,31 @@ class AppLocalizationsFr extends AppLocalizations {
   String get shareSubject => 'Simulation Graviton';
 
   @override
-  String get shareSnapshotSubject => 'Capture de Simulation Graviton';
+  String get shareSnapshotSubject => 'Instantané de simulation Graviton';
 
   @override
   String get shareText => 'Découvrez cette simulation gravitationnelle !';
+
+  @override
+  String get importScenario => 'Importer un scénario';
+
+  @override
+  String get importScenarioDescription =>
+      'Charger un scénario à partir d\'un fichier JSON';
+
+  @override
+  String get importSuccess => 'Scénario importé avec succès';
+
+  @override
+  String get importFailed => 'Échec de l\'importation du scénario';
+
+  @override
+  String get importInvalidFile =>
+      'Format de fichier non valide. Veuillez sélectionner un fichier JSON valide.';
+
+  @override
+  String get importFileNotFound => 'Fichier introuvable. Veuillez réessayer.';
+
+  @override
+  String get importCancelled => 'Importation annulée';
 }

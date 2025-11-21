@@ -3062,4 +3062,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareText => 'Check out this gravitational simulation!';
+
+  @override
+  String get importScenario => 'Import Scenario';
+
+  @override
+  String get importScenarioDescription => 'Load a scenario from a JSON file';
+
+  @override
+  String get importSuccess => 'Scenario imported successfully';
+
+  @override
+  String get importFailed => 'Failed to import scenario';
+
+  @override
+  String get importInvalidFile =>
+      'Invalid file format. Please select a valid JSON file.';
+
+  @override
+  String get importFileNotFound => 'File not found. Please try again.';
+
+  @override
+  String get importCancelled => 'Import cancelled';
 }

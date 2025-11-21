@@ -2882,4 +2882,25 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get shareText => '看看这个引力模拟！';
+
+  @override
+  String get importScenario => '导入场景';
+
+  @override
+  String get importScenarioDescription => '从JSON文件加载场景';
+
+  @override
+  String get importSuccess => '场景导入成功';
+
+  @override
+  String get importFailed => '场景导入失败';
+
+  @override
+  String get importInvalidFile => '无效的文件格式。请选择有效的JSON文件。';
+
+  @override
+  String get importFileNotFound => '未找到文件。请重试。';
+
+  @override
+  String get importCancelled => '导入已取消';
 }

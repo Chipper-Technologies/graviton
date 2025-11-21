@@ -2901,4 +2901,25 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get shareText => 'この重力シミュレーションをチェックしてください！';
+
+  @override
+  String get importScenario => 'シナリオをインポート';
+
+  @override
+  String get importScenarioDescription => 'JSONファイルからシナリオを読み込む';
+
+  @override
+  String get importSuccess => 'シナリオが正常にインポートされました';
+
+  @override
+  String get importFailed => 'シナリオのインポートに失敗しました';
+
+  @override
+  String get importInvalidFile => 'ファイル形式が無効です。有効なJSONファイルを選択してください。';
+
+  @override
+  String get importFileNotFound => 'ファイルが見つかりません。もう一度お試しください。';
+
+  @override
+  String get importCancelled => 'インポートがキャンセルされました';
 }

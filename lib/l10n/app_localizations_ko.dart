@@ -2914,4 +2914,25 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get shareText => '이 중력 시뮬레이션을 확인하세요!';
+
+  @override
+  String get importScenario => '시나리오 가져오기';
+
+  @override
+  String get importScenarioDescription => 'JSON 파일에서 시나리오 불러오기';
+
+  @override
+  String get importSuccess => '시나리오를 성공적으로 가져왔습니다';
+
+  @override
+  String get importFailed => '시나리오 가져오기 실패';
+
+  @override
+  String get importInvalidFile => '잘못된 파일 형식입니다. 유효한 JSON 파일을 선택하세요.';
+
+  @override
+  String get importFileNotFound => '파일을 찾을 수 없습니다. 다시 시도해주세요.';
+
+  @override
+  String get importCancelled => '가져오기 취소됨';
 }

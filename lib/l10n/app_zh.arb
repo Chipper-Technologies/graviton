@@ -915,5 +915,12 @@
   "shareImageError": "无法捕获图像。请重试。",
   "shareSubject": "Graviton模拟",
   "shareSnapshotSubject": "Graviton模拟快照",
-  "shareText": "看看这个引力模拟！"
+  "shareText": "看看这个引力模拟！",
+  "importScenario": "导入场景",
+  "importScenarioDescription": "从JSON文件加载场景",
+  "importSuccess": "场景导入成功",
+  "importFailed": "场景导入失败",
+  "importInvalidFile": "无效的文件格式。请选择有效的JSON文件。",
+  "importFileNotFound": "未找到文件。请重试。",
+  "importCancelled": "导入已取消"
 }

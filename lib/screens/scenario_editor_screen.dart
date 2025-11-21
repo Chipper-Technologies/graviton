@@ -1322,6 +1322,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
 
       // Show result feedback
       if (!mounted) return;
+      if (!context.mounted) return;
       if (result.status == ShareResultStatus.success) {
         GravitonSnackBar.success(context: context, message: l10n.shareSuccess);
       } else {
@@ -1335,12 +1336,12 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
         context: 'scenario_editor',
       );
 
-      if (mounted) {
-        GravitonSnackBar.error(
-          context: context,
-          message: l10n.exportScenarioFailedMessage(e.toString()),
-        );
-      }
+      if (!mounted) return;
+      if (!context.mounted) return;
+      GravitonSnackBar.error(
+        context: context,
+        message: l10n.exportScenarioFailedMessage(e.toString()),
+      );
     }
   }
 

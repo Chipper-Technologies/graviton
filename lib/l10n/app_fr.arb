@@ -908,12 +908,19 @@
   "shareSimulation": "Partager la Simulation",
   "shareImage": "Partager l'Image",
   "shareImageDescription": "Capturer et partager la vue actuelle",
-  "shareState": "Partager l'État",
-  "shareStateDescription": "Exporter les données de simulation comme fichier importable",
+  "shareState": "Partager l'état",
+  "shareStateDescription": "Exporter les données de simulation sous forme de fichier importable",
   "shareSuccess": "Partagé avec succès",
   "shareFailed": "Échec du partage",
   "shareImageError": "Impossible de capturer l'image. Veuillez réessayer.",
   "shareSubject": "Simulation Graviton",
-  "shareSnapshotSubject": "Capture de Simulation Graviton",
-  "shareText": "Découvrez cette simulation gravitationnelle !"
+  "shareSnapshotSubject": "Instantané de simulation Graviton",
+  "shareText": "Découvrez cette simulation gravitationnelle !",
+  "importScenario": "Importer un scénario",
+  "importScenarioDescription": "Charger un scénario à partir d'un fichier JSON",
+  "importSuccess": "Scénario importé avec succès",
+  "importFailed": "Échec de l'importation du scénario",
+  "importInvalidFile": "Format de fichier non valide. Veuillez sélectionner un fichier JSON valide.",
+  "importFileNotFound": "Fichier introuvable. Veuillez réessayer.",
+  "importCancelled": "Importation annulée"
 }

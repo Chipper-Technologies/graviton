@@ -5367,6 +5367,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check out this gravitational simulation!'**
   String get shareText;
+
+  /// Button to import a scenario from file
+  ///
+  /// In en, this message translates to:
+  /// **'Import Scenario'**
+  String get importScenario;
+
+  /// Description for import scenario button
+  ///
+  /// In en, this message translates to:
+  /// **'Load a scenario from a JSON file'**
+  String get importScenarioDescription;
+
+  /// Success message after importing scenario
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario imported successfully'**
+  String get importSuccess;
+
+  /// Error message when import fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to import scenario'**
+  String get importFailed;
+
+  /// Error message for invalid file format
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid file format. Please select a valid JSON file.'**
+  String get importInvalidFile;
+
+  /// Error message when selected file is not found
+  ///
+  /// In en, this message translates to:
+  /// **'File not found. Please try again.'**
+  String get importFileNotFound;
+
+  /// Message when user cancels file selection
+  ///
+  /// In en, this message translates to:
+  /// **'Import cancelled'**
+  String get importCancelled;
 }
 
 class _AppLocalizationsDelegate
