@@ -1301,12 +1301,12 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       final file = File('${tempDir.path}/$fileName');
       await file.writeAsString(jsonString);
 
-      // Share the exported file
-      // ignore: deprecated_member_use
-      final result = await Share.shareXFiles(
-        [XFile(file.path, mimeType: 'application/json')],
-        subject: l10n.shareSubject,
-        text: l10n.shareText,
+      final result = await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path, mimeType: 'application/json')],
+          subject: l10n.shareSubject,
+          text: l10n.shareText,
+        ),
       );
 
       // Clean up temp file after a delay

@@ -1042,8 +1042,28 @@ class GravitonPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant GravitonPainter oldDelegate) {
-    // Always repaint - the simulation is constantly updating
-    // The changeCounter check doesn't work reliably because sim is the same object reference
-    return true;
+    // Check simulation state changes using change counter for better performance
+    if (sim.changeCounter != oldDelegate.sim.changeCounter) {
+      return true;
+    }
+
+    // Check other rendering parameters for changes
+    return cameraDistance != oldDelegate.cameraDistance ||
+        view != oldDelegate.view ||
+        proj != oldDelegate.proj ||
+        stars != oldDelegate.stars ||
+        showTrails != oldDelegate.showTrails ||
+        useWarmTrails != oldDelegate.useWarmTrails ||
+        useRealisticColors != oldDelegate.useRealisticColors ||
+        showOrbitalPaths != oldDelegate.showOrbitalPaths ||
+        dualOrbitalPaths != oldDelegate.dualOrbitalPaths ||
+        showHabitableZones != oldDelegate.showHabitableZones ||
+        showHabitabilityIndicators != oldDelegate.showHabitabilityIndicators ||
+        selectedBodyIndex != oldDelegate.selectedBodyIndex ||
+        followMode != oldDelegate.followMode ||
+        globalGravityFields != oldDelegate.globalGravityFields ||
+        gravityFieldColorScheme != oldDelegate.gravityFieldColorScheme ||
+        showEquipotentialSurfaces != oldDelegate.showEquipotentialSurfaces ||
+        showGravityFieldIndicators != oldDelegate.showGravityFieldIndicators;
   }
 }

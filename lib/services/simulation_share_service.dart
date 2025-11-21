@@ -59,11 +59,12 @@ class SimulationShareService {
       await file.writeAsString(jsonData);
 
       // Share the file
-      // ignore: deprecated_member_use
-      final result = await Share.shareXFiles(
-        [XFile(file.path, mimeType: 'application/json')],
-        subject: subject,
-        text: text,
+      final result = await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path, mimeType: 'application/json')],
+          subject: subject,
+          text: text,
+        ),
       );
 
       // Clean up temp file after a delay
@@ -117,11 +118,12 @@ class SimulationShareService {
       await file.writeAsBytes(imageBytes);
 
       // Share the file
-      // ignore: deprecated_member_use
-      final result = await Share.shareXFiles(
-        [XFile(file.path, mimeType: 'image/png')],
-        subject: subject,
-        text: text,
+      final result = await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path, mimeType: 'image/png')],
+          subject: subject,
+          text: text,
+        ),
       );
 
       // Clean up temp file after a delay
