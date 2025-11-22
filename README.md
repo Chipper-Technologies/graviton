@@ -25,7 +25,9 @@
     <a href="https://apps.apple.com/us/app/graviton-sim/id6754208416" target="_blank">
       <img src="https://img.shields.io/badge/iOS-Available_on_App_Store-007AFF?style=for-the-badge&logo=apple&logoColor=white" alt="Available on iOS App Store" />
     </a>
-    <img src="https://img.shields.io/badge/Android-Coming_Soon-lightgrey?style=for-the-badge&logo=android&logoColor=white" alt="Coming Soon on Google Play" />
+    <a href="https://play.google.com/store/apps/details?id=io.chipper.graviton" target="_blank">
+      <img src="https://img.shields.io/badge/Android-Available_on_Google_Play-007AFF?style=for-the-badge&logo=android&logoColor=white" alt="Available on Google Play" />
+    </a>
     <a href="https://graviton.chipperlabs.com" target="_blank">
       <img src="https://img.shields.io/badge/Web-Available_Now-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Available on the Web" />
     </a>
