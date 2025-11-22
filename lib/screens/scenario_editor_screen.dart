@@ -1309,16 +1309,17 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
         ),
       );
 
-      // Clean up temp file after a delay
-      Future.delayed(const Duration(seconds: 5), () {
-        try {
-          if (file.existsSync()) {
-            file.deleteSync();
+      unawaited(
+        Future.delayed(const Duration(seconds: 5), () async {
+          try {
+            if (await file.exists()) {
+              await file.delete();
+            }
+          } catch (e) {
+            debugPrint('Failed to delete temp file: $e');
           }
-        } catch (e) {
-          debugPrint('Failed to delete temp file: $e');
-        }
-      });
+        }),
+      );
 
       // Show result feedback
       if (!mounted) return;

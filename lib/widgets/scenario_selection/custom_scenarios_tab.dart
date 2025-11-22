@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -889,16 +890,17 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         ),
       );
 
-      // Clean up temp file after a delay
-      Future.delayed(const Duration(seconds: 5), () {
-        try {
-          if (file.existsSync()) {
-            file.deleteSync();
+      unawaited(
+        Future.delayed(const Duration(seconds: 5), () async {
+          try {
+            if (await file.exists()) {
+              await file.delete();
+            }
+          } catch (e) {
+            debugPrint('Failed to delete temp file: $e');
           }
-        } catch (e) {
-          debugPrint('Failed to delete temp file: $e');
-        }
-      });
+        }),
+      );
 
       if (context.mounted) {
         if (result.status == ShareResultStatus.success) {

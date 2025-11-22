@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -67,16 +68,17 @@ class SimulationShareService {
         ),
       );
 
-      // Clean up temp file after a delay
-      Future.delayed(const Duration(seconds: 5), () {
-        try {
-          if (file.existsSync()) {
-            file.deleteSync();
+      unawaited(
+        Future.delayed(const Duration(seconds: 5), () async {
+          try {
+            if (await file.exists()) {
+              await file.delete();
+            }
+          } catch (e) {
+            debugPrint('Failed to delete temp file: $e');
           }
-        } catch (e) {
-          debugPrint('Failed to delete temp file: $e');
-        }
-      });
+        }),
+      );
 
       return result.status == ShareResultStatus.success;
     } catch (e) {
@@ -126,16 +128,17 @@ class SimulationShareService {
         ),
       );
 
-      // Clean up temp file after a delay
-      Future.delayed(const Duration(seconds: 5), () {
-        try {
-          if (file.existsSync()) {
-            file.deleteSync();
+      unawaited(
+        Future.delayed(const Duration(seconds: 5), () async {
+          try {
+            if (await file.exists()) {
+              await file.delete();
+            }
+          } catch (e) {
+            debugPrint('Failed to delete temp file: $e');
           }
-        } catch (e) {
-          debugPrint('Failed to delete temp file: $e');
-        }
-      });
+        }),
+      );
 
       return result.status == ShareResultStatus.success;
     } catch (e) {
