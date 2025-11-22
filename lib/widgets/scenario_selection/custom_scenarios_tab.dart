@@ -1,7 +1,9 @@
+import 'dart:async';
+import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/enums/scenario_type.dart';
@@ -16,6 +18,7 @@ import 'package:graviton/models/particle_systems_config.dart';
 import 'package:graviton/models/scenario_metadata.dart';
 import 'package:graviton/models/scenario_physics_settings.dart';
 import 'package:graviton/screens/scenario_editor_screen.dart';
+import 'package:graviton/services/custom_scenario_manager.dart';
 import 'package:graviton/services/custom_scenario_storage.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/scenario_serialization_service.dart';
@@ -23,12 +26,16 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/color_utils.dart';
+import 'package:graviton/models/graviton_menu_item_config.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
+import 'package:graviton/widgets/common/graviton_popup_menu.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
-import 'package:graviton/widgets/scenario_selection/create_scenario_tile.dart';
 import 'package:graviton/widgets/scenario_selection/custom_scenario_tile.dart';
 import 'package:graviton/widgets/scenario_selection/experimental_scenario_tile.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Tab widget displaying custom scenarios with create/manage options
@@ -99,33 +106,53 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Create New Scenario button
-          CreateScenarioTile(onTap: () => _createNewScenario(context)),
-
-          // Saved Scenarios section
+          // Saved Scenarios section with menu
           SectionDivider.labeled(
             l10n.savedScenariosTitle,
-            topSpacing: AppTypography.spacingLarge,
             bottomSpacing: AppTypography.spacingMedium,
           ),
 
-          // Scenarios count header (only show if there are scenarios)
-          if (_customScenarios.isNotEmpty)
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppTypography.spacingLarge,
-              ),
-              child: Text(
-                l10n.scenariosHeaderPlural(_customScenarios.length),
-                style: AppTypography.titleText.copyWith(
-                  color: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityHigh,
+          // Scenarios count header with menu button
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppTypography.spacingLarge,
+            ),
+            child: Row(
+              children: [
+                Text(
+                  l10n.scenariosHeaderPlural(_customScenarios.length),
+                  style: AppTypography.titleText.copyWith(
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
                   ),
                 ),
-              ),
+                const Spacer(),
+                GravitonPopupMenu(
+                  accessibilityLabel: l10n.moreActionsAccessibility,
+                  accessibilityHint: l10n.moreActionsHint,
+                  analyticsElement: UIElement.customScenariosTab,
+                  menuItems: [
+                    GravitonMenuItemConfig(
+                      value: 'create',
+                      labelKey: 'createScenarioTitle',
+                      hintKey: 'createScenarioButton',
+                      icon: Icons.add_circle_outline,
+                      onTap: () => _createNewScenario(context),
+                    ),
+                    GravitonMenuItemConfig(
+                      value: 'import',
+                      labelKey: 'importScenario',
+                      hintKey: 'importScenarioDescription',
+                      icon: Icons.file_upload_outlined,
+                      onTap: () => _importScenario(context),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          if (_customScenarios.isNotEmpty)
-            SizedBox(height: AppTypography.spacingMedium),
+          ),
+          SizedBox(height: AppTypography.spacingMedium),
 
           // Saved scenarios list
           if (_customScenarios.isEmpty)
@@ -847,16 +874,43 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
         },
       );
 
-      // TODO: Implement file export functionality
-      debugPrint(
-        'Exported JSON for $scenarioName:\n$jsonString',
-      ); // For development
+      // Save JSON file to temporary directory and share
+      final fileName =
+          '${scenarioName.replaceAll(RegExp(r'[^\w\s-]'), '')}_${DateTime.now().millisecondsSinceEpoch}.json';
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/$fileName');
+      await file.writeAsString(jsonString);
+
+      // Share the exported file
+      final result = await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path, mimeType: 'application/json')],
+          subject: l10n.shareSubject,
+          text: l10n.shareText,
+        ),
+      );
+
+      unawaited(
+        Future.delayed(const Duration(seconds: 5), () async {
+          try {
+            if (await file.exists()) {
+              await file.delete();
+            }
+          } catch (e) {
+            debugPrint('Failed to delete temp file: $e');
+          }
+        }),
+      );
 
       if (context.mounted) {
-        GravitonSnackBar.warning(
-          context: context,
-          message: l10n.exportScenarioNotImplementedMessage,
-        );
+        if (result.status == ShareResultStatus.success) {
+          GravitonSnackBar.success(
+            context: context,
+            message: l10n.shareSuccess,
+          );
+        } else {
+          GravitonSnackBar.error(context: context, message: l10n.shareFailed);
+        }
       }
     } catch (e) {
       // Log error analytics
@@ -871,6 +925,85 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
           context: context,
           message: l10n.exportScenarioFailedMessage(e.toString()),
         );
+      }
+    }
+  }
+
+  Future<void> _importScenario(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+
+    try {
+      // Pick a JSON file
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+        allowMultiple: false,
+      );
+
+      if (result == null || result.files.isEmpty) {
+        // User cancelled the picker
+        return;
+      }
+
+      final pickedFile = result.files.first;
+
+      // Read file content
+      String jsonString;
+      if (pickedFile.path != null) {
+        // Mobile/Desktop: read from path
+        final file = File(pickedFile.path!);
+        if (!await file.exists()) {
+          if (context.mounted) {
+            GravitonSnackBar.error(
+              context: context,
+              message: l10n.importFileNotFound,
+            );
+          }
+          return;
+        }
+        jsonString = await file.readAsString();
+      } else if (pickedFile.bytes != null) {
+        // Web: read from bytes
+        jsonString = String.fromCharCodes(pickedFile.bytes!);
+      } else {
+        if (context.mounted) {
+          GravitonSnackBar.error(
+            context: context,
+            message: l10n.importFileNotFound,
+          );
+        }
+        return;
+      }
+
+      // Import the scenario using CustomScenarioManager
+      await CustomScenarioManager.instance.importScenarioFromJson(jsonString);
+
+      // Log analytics for scenario import
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.scenarioImported,
+        element: UIElement.customScenariosTab,
+        additionalParams: {
+          'file_name': pickedFile.name,
+          'file_size_bytes': pickedFile.size,
+        },
+      );
+
+      // Reload scenarios list
+      await _loadCustomScenarios();
+
+      if (context.mounted) {
+        GravitonSnackBar.success(context: context, message: l10n.importSuccess);
+      }
+    } catch (e) {
+      // Log error analytics
+      FirebaseService.instance.logErrorEvent(
+        'scenario_import_failed',
+        errorMessage: e.toString(),
+        context: 'custom_scenarios_tab',
+      );
+
+      if (context.mounted) {
+        GravitonSnackBar.error(context: context, message: l10n.importFailed);
       }
     }
   }

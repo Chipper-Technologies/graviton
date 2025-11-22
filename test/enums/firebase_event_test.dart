@@ -4,7 +4,7 @@ import 'package:graviton/enums/firebase_event.dart';
 void main() {
   group('FirebaseEvent Enum', () {
     test('should have all expected Firebase events', () {
-      expect(FirebaseEvent.values.length, equals(12));
+      expect(FirebaseEvent.values.length, equals(18));
       expect(FirebaseEvent.values, contains(FirebaseEvent.appInitialized));
       expect(FirebaseEvent.values, contains(FirebaseEvent.appStart));
       expect(FirebaseEvent.values, contains(FirebaseEvent.appError));
@@ -17,6 +17,18 @@ void main() {
       expect(FirebaseEvent.values, contains(FirebaseEvent.performanceMetric));
       expect(FirebaseEvent.values, contains(FirebaseEvent.uiInteraction));
       expect(FirebaseEvent.values, contains(FirebaseEvent.simulationAction));
+      expect(FirebaseEvent.values, contains(FirebaseEvent.simulationShared));
+      expect(
+        FirebaseEvent.values,
+        contains(FirebaseEvent.simulationImageShared),
+      );
+      expect(
+        FirebaseEvent.values,
+        contains(FirebaseEvent.simulationStateShared),
+      );
+      expect(FirebaseEvent.values, contains(FirebaseEvent.shareDialogOpened));
+      expect(FirebaseEvent.values, contains(FirebaseEvent.shareCancelled));
+      expect(FirebaseEvent.values, contains(FirebaseEvent.shareFailed));
     });
 
     test('should have correct string values', () {
@@ -44,6 +56,21 @@ void main() {
       );
       expect(FirebaseEvent.uiInteraction.value, equals('ui_'));
       expect(FirebaseEvent.simulationAction.value, equals('simulation_'));
+      expect(FirebaseEvent.simulationShared.value, equals('simulation_shared'));
+      expect(
+        FirebaseEvent.simulationImageShared.value,
+        equals('simulation_image_shared'),
+      );
+      expect(
+        FirebaseEvent.simulationStateShared.value,
+        equals('simulation_state_shared'),
+      );
+      expect(
+        FirebaseEvent.shareDialogOpened.value,
+        equals('share_dialog_opened'),
+      );
+      expect(FirebaseEvent.shareCancelled.value, equals('share_cancelled'));
+      expect(FirebaseEvent.shareFailed.value, equals('share_failed'));
     });
 
     test('should follow snake_case convention for string values', () {
@@ -78,9 +105,36 @@ void main() {
           .toList();
       expect(
         simulationEvents.length,
-        equals(5),
-        reason: 'Should have exactly 5 simulation lifecycle events',
+        equals(8),
+        reason:
+            'Should have exactly 8 simulation lifecycle events (5 original + 3 sharing)',
       );
+
+      // Share events
+      final shareEvents = FirebaseEvent.values
+          .where((event) => event.value.contains('share'))
+          .toList();
+      expect(
+        shareEvents.length,
+        equals(6),
+        reason: 'Should have exactly 6 share-related events',
+      );
+    });
+
+    test('should have all sharing events', () {
+      final sharingEvents = [
+        FirebaseEvent.simulationShared,
+        FirebaseEvent.simulationImageShared,
+        FirebaseEvent.simulationStateShared,
+        FirebaseEvent.shareDialogOpened,
+        FirebaseEvent.shareCancelled,
+        FirebaseEvent.shareFailed,
+      ];
+
+      for (final event in sharingEvents) {
+        expect(FirebaseEvent.values, contains(event));
+        expect(event.value, contains('share'));
+      }
     });
 
     test('should have static methods for dynamic event creation', () {

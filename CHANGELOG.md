@@ -8,6 +8,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.5.0] - 2025-11-20
 
 ### Added
+- **Simulation Sharing Feature**: Export and share gravitational simulations with others
+  - **SimulationShareService**: New service layer for comprehensive simulation export/import functionality
+    - Export complete simulation state as JSON files including all bodies, physics settings, and metadata
+    - Import shared scenarios with validation and error handling
+    - JSON format version 1.0.0 for future compatibility and backward compatibility support
+  - **Screenshot Capture**: High-quality viewport screenshot generation for visual sharing
+    - 2x pixel ratio rendering for crisp, high-resolution images
+    - RepaintBoundary integration for efficient image capture
+    - PNG format output with temporary file management via path_provider
+  - **Native Sharing Integration**: Cross-platform share dialog using share_plus package
+    - Native share sheet on iOS and Android for seamless mobile sharing
+    - System share dialog on macOS following platform conventions
+    - Web sharing API support with fallback for unsupported browsers
+  - **Import Scenario UI**: New file picker integration in custom scenarios tab
+    - "Import Scenario" action button for loading shared simulation files
+    - JSON validation and error handling with user-friendly feedback
+    - Seamless integration with existing custom scenario management
+  - **Share Action Button**: Prominent floating control button on home screen
+    - Positioned next to info button for consistent UI placement
+    - Single-tap access to sharing options dialog
+    - Haptic feedback integration for tactile user experience
+  - **Sharing Options Dialog**: Material Design dialog with clear sharing choices
+    - "Share as Image" option for visual screenshots
+    - "Share Simulation State" option for complete scenario files
+    - Cancel action with proper dialog dismissal
+  - **Analytics Tracking**: Comprehensive Firebase event tracking for sharing interactions
+    - `share_dialog_opened` event when users open sharing options
+    - `share_image_initiated` and `share_state_initiated` events for user choice tracking
+    - `share_image_success`, `share_state_success` events for successful shares
+    - `share_image_failed`, `share_state_failed` events with error details for debugging
+  - **Multi-Language Support**: Full localization across all 7 supported languages
+    - English, Spanish, French, German, Italian, Portuguese, and Japanese translations
+    - Localized dialog titles, button labels, and error messages
+    - Consistent terminology across sharing UI components
 - **Comprehensive macOS Platform Support**: Native macOS implementation with full platform integration
   - **Native Swift Integration**: Complete macOS app structure with native Swift code for platform-specific functionality
   - **Custom Menu Bar**: Native macOS menu system with File, Edit, Simulation, View, Window, and Help menus
@@ -57,8 +91,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Build Configuration**: Clean separation of dev/prod configurations
   - **Asset Management**: Proper macOS icon and asset organization
 
+### Dependencies
+- Added `share_plus: ^12.0.1` for native sharing functionality across iOS, Android, macOS, and web
+- Added `path_provider: ^2.1.5` for temporary file management and screenshot storage
+- Added `file_picker: ^8.1.4` for scenario import file selection
+
 ### Technical Improvements
-- **Cross-Platform Consistency**: Unified behavior across iOS, Android, web, and macOS platforms
+- **Service Layer Architecture**: New `SimulationShareService` providing clean separation of concerns
+  - JSON serialization/deserialization for simulation state persistence
+  - Screenshot capture logic isolated from UI components
+  - File system operations abstracted for testability
+- **Cross-Platform Sharing**: Native share dialog integration following platform conventions
+  - iOS: UIActivityViewController for native sharing experience
+  - Android: Intent-based sharing with MIME type support
+  - macOS: NSSharingService for system-integrated sharing
+  - Web: Web Share API with fallback for legacy browsers
+- **Analytics Integration**: Comprehensive event tracking for sharing feature usage
+  - Dialog interaction tracking for UX insights
+  - Success/failure metrics for reliability monitoring
+  - Error details captured for debugging and improvement
+- **File Format Design**: Structured JSON schema for simulation state interchange
+  - Version field for format evolution and backward compatibility
+  - Complete physics state preservation for accurate reconstruction
+  - Human-readable format for debugging and manual editing
+- **UI/UX Enhancements**: Consistent sharing experience across all platforms
+  - Material Design dialog following Flutter design patterns
+  - Haptic feedback for tactile user engagement
+  - Loading indicators and error handling for user feedback
 - **Build System Optimization**: Streamlined build process with environment-specific configurations
 - **Native Integration**: Proper Flutter-native communication patterns for macOS
 - **Menu System**: Professional native menu bar following macOS Human Interface Guidelines

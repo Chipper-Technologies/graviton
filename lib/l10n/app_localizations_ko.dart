@@ -2877,5 +2877,62 @@ class AppLocalizationsKo extends AppLocalizations {
   String get selectBody => '천체 선택';
 
   @override
-  String get noBodiesAvailable => '선택 가능한 천체가 없습니다';
+  String get noBodiesAvailable => '사용 가능한 천체가 없습니다';
+
+  @override
+  String get share => '공유';
+
+  @override
+  String get shareSimulation => '시뮬레이션 공유';
+
+  @override
+  String get shareImage => '이미지 공유';
+
+  @override
+  String get shareImageDescription => '현재 뷰 캡처 및 공유';
+
+  @override
+  String get shareState => '상태 공유';
+
+  @override
+  String get shareStateDescription => '가져올 수 있는 파일로 시뮬레이션 데이터 내보내기';
+
+  @override
+  String get shareSuccess => '공유 성공';
+
+  @override
+  String get shareFailed => '공유 실패';
+
+  @override
+  String get shareImageError => '이미지를 캡처할 수 없습니다. 다시 시도해 주세요.';
+
+  @override
+  String get shareSubject => 'Graviton 시뮬레이션';
+
+  @override
+  String get shareSnapshotSubject => 'Graviton 시뮬레이션 스냅샷';
+
+  @override
+  String get shareText => '이 중력 시뮬레이션을 확인하세요!';
+
+  @override
+  String get importScenario => '시나리오 가져오기';
+
+  @override
+  String get importScenarioDescription => 'JSON 파일에서 시나리오 불러오기';
+
+  @override
+  String get importSuccess => '시나리오를 성공적으로 가져왔습니다';
+
+  @override
+  String get importFailed => '시나리오 가져오기 실패';
+
+  @override
+  String get importInvalidFile => '잘못된 파일 형식입니다. 유효한 JSON 파일을 선택하세요.';
+
+  @override
+  String get importFileNotFound => '파일을 찾을 수 없습니다. 다시 시도해주세요.';
+
+  @override
+  String get importCancelled => '가져오기 취소됨';
 }

@@ -2864,5 +2864,62 @@ class AppLocalizationsJa extends AppLocalizations {
   String get selectBody => '天体を選択';
 
   @override
-  String get noBodiesAvailable => '選択可能な天体がありません';
+  String get noBodiesAvailable => '利用可能な天体がありません';
+
+  @override
+  String get share => '共有';
+
+  @override
+  String get shareSimulation => 'シミュレーションを共有';
+
+  @override
+  String get shareImage => '画像を共有';
+
+  @override
+  String get shareImageDescription => '現在のビューをキャプチャして共有';
+
+  @override
+  String get shareState => '状態を共有';
+
+  @override
+  String get shareStateDescription => 'インポート可能なファイルとしてシミュレーションデータをエクスポート';
+
+  @override
+  String get shareSuccess => '共有に成功しました';
+
+  @override
+  String get shareFailed => '共有に失敗しました';
+
+  @override
+  String get shareImageError => '画像をキャプチャできません。もう一度お試しください。';
+
+  @override
+  String get shareSubject => 'Gravitonシミュレーション';
+
+  @override
+  String get shareSnapshotSubject => 'Gravitonシミュレーションスナップショット';
+
+  @override
+  String get shareText => 'この重力シミュレーションをチェックしてください！';
+
+  @override
+  String get importScenario => 'シナリオをインポート';
+
+  @override
+  String get importScenarioDescription => 'JSONファイルからシナリオを読み込む';
+
+  @override
+  String get importSuccess => 'シナリオが正常にインポートされました';
+
+  @override
+  String get importFailed => 'シナリオのインポートに失敗しました';
+
+  @override
+  String get importInvalidFile => 'ファイル形式が無効です。有効なJSONファイルを選択してください。';
+
+  @override
+  String get importFileNotFound => 'ファイルが見つかりません。もう一度お試しください。';
+
+  @override
+  String get importCancelled => 'インポートがキャンセルされました';
 }

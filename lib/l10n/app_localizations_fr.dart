@@ -3045,11 +3045,72 @@ class AppLocalizationsFr extends AppLocalizations {
   String get tooColdStatus => 'Trop froid';
 
   @override
-  String get noAtmosphereStatus => 'Pas d\'atmosphère';
+  String get noAtmosphereStatus => 'Pas d\'Atmosphère';
 
   @override
-  String get selectBody => 'Sélectionner un corps';
+  String get selectBody => 'Sélectionner le Corps';
 
   @override
   String get noBodiesAvailable => 'Aucun corps disponible';
+
+  @override
+  String get share => 'Partager';
+
+  @override
+  String get shareSimulation => 'Partager la Simulation';
+
+  @override
+  String get shareImage => 'Partager l\'Image';
+
+  @override
+  String get shareImageDescription => 'Capturer et partager la vue actuelle';
+
+  @override
+  String get shareState => 'Partager l\'état';
+
+  @override
+  String get shareStateDescription =>
+      'Exporter les données de simulation sous forme de fichier importable';
+
+  @override
+  String get shareSuccess => 'Partagé avec succès';
+
+  @override
+  String get shareFailed => 'Échec du partage';
+
+  @override
+  String get shareImageError =>
+      'Impossible de capturer l\'image. Veuillez réessayer.';
+
+  @override
+  String get shareSubject => 'Simulation Graviton';
+
+  @override
+  String get shareSnapshotSubject => 'Instantané de simulation Graviton';
+
+  @override
+  String get shareText => 'Découvrez cette simulation gravitationnelle !';
+
+  @override
+  String get importScenario => 'Importer un scénario';
+
+  @override
+  String get importScenarioDescription =>
+      'Charger un scénario à partir d\'un fichier JSON';
+
+  @override
+  String get importSuccess => 'Scénario importé avec succès';
+
+  @override
+  String get importFailed => 'Échec de l\'importation du scénario';
+
+  @override
+  String get importInvalidFile =>
+      'Format de fichier non valide. Veuillez sélectionner un fichier JSON valide.';
+
+  @override
+  String get importFileNotFound => 'Fichier introuvable. Veuillez réessayer.';
+
+  @override
+  String get importCancelled => 'Importation annulée';
 }

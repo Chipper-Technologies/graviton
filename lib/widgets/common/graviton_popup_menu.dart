@@ -146,6 +146,10 @@ class GravitonPopupMenu extends StatelessWidget {
         'editScenarioHint': (l10n) => l10n.editScenarioHint,
         'deleteScenarioButton': (l10n) => l10n.deleteScenarioButton,
         'deleteScenarioHint': (l10n) => l10n.deleteScenarioHint,
+        'createScenarioTitle': (l10n) => l10n.createScenarioTitle,
+        'createScenarioButton': (l10n) => l10n.createScenarioButton,
+        'importScenario': (l10n) => l10n.importScenario,
+        'importScenarioDescription': (l10n) => l10n.importScenarioDescription,
         // Add more keys here as needed
       };
 

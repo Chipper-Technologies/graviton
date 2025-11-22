@@ -43,13 +43,14 @@ class _AboutScreenState extends State<AboutScreen> {
       }
     } catch (e) {
       debugPrint('Error loading package info: $e');
+      // Use AppConfig constants as fallback (especially for web builds)
       if (mounted) {
         setState(() {
           _packageInfo = PackageInfo(
             appName: 'Graviton',
             packageName: 'io.chipper.graviton',
-            version: '1.0.0',
-            buildNumber: '1',
+            version: AppConfig.appVersion,
+            buildNumber: AppConfig.buildNumber,
           );
         });
       }
