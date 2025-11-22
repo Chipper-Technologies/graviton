@@ -9,12 +9,14 @@ class GravitonTabBar extends StatelessWidget {
   final TabController controller;
   final List<GravitonTab> tabs;
   final List<bool>? disabledTabs;
+  final VoidCallback? onTabTap;
 
   const GravitonTabBar({
     super.key,
     required this.controller,
     required this.tabs,
     this.disabledTabs,
+    this.onTabTap,
   });
 
   @override
@@ -41,7 +43,9 @@ class GravitonTabBar extends StatelessWidget {
               child: TabBar(
                 controller: controller,
                 onTap: (index) {
-                  // This onTap is only reached if the gesture isn't blocked
+                  // Trigger the callback first (e.g., to expand bottom sheet)
+                  onTabTap?.call();
+                  // Then provide haptic feedback
                   HapticUtils.navigate();
                 },
                 indicator: BoxDecoration(

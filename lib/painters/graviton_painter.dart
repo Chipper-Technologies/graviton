@@ -70,6 +70,14 @@ class GravitonPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final vp = proj * view;
 
+    // Fill canvas with opaque black background first
+    // This is essential for blend modes in background painter to work correctly
+    // especially when capturing screenshots where canvas starts transparent
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()..color = AppColors.backgroundBlack,
+    );
+
     // Draw spherical space background that wraps around the scene
     BackgroundPainter.drawSphericalSpaceBackground(canvas, size, vp, view, 42);
 

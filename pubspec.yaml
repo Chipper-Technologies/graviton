@@ -1,7 +1,7 @@
 name: graviton
 description: "A physics simulation exploring gravitational dynamics and orbital mechanics."
 publish_to: "none"
-version: 1.4.0+12
+version: 1.5.0+17
 repository: https://github.com/Chipper-Technologies/graviton
 license: MIT
 
@@ -14,15 +14,18 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  cloud_firestore: ^6.0.3
   cupertino_icons: ^1.0.8
+  file_picker: ^10.3.7
   firebase_core: ^4.2.0
   firebase_analytics: ^12.0.3
   firebase_crashlytics: ^5.0.3
   firebase_remote_config: ^6.1.0
-  cloud_firestore: ^6.0.3
   flutter_svg: ^2.2.1
   package_info_plus: ^9.0.0
+  path_provider: ^2.1.5
   provider: ^6.1.2
+  share_plus: ^12.0.1
   shared_preferences: ^2.5.3
   sliding_up_panel: ^2.0.0+1
   url_launcher: ^6.3.1
@@ -46,9 +49,12 @@ flutter:
 
 flutter_launcher_icons:
   adaptive_icon_background: "assets/images/app-logo-bg.png"
-  adaptive_icon_foreground: "assets/images/app-logo-nobg.png"
+  adaptive_icon_foreground: "assets/images/graviton-logo-transparent.png"
   android: true
   ios: true
+  macos:
+    generate: true
+    image_path: "assets/images/app-logo.png"
   image_path: "assets/images/app-logo.png"
   min_sdk_android: 21
   remove_alpha_ios: true
@@ -61,4 +67,4 @@ flutter_native_splash:
   android_gravity: center
   ios_content_mode: scaleAspectFit
   fullscreen: false
-  web: false
+  web: true

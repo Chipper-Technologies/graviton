@@ -3010,4 +3010,71 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noAtmosphereStatus => 'Keine Atmosphäre';
+
+  @override
+  String get selectBody => 'Körper auswählen';
+
+  @override
+  String get noBodiesAvailable => 'Keine Körper verfügbar';
+
+  @override
+  String get share => 'Teilen';
+
+  @override
+  String get shareSimulation => 'Simulation teilen';
+
+  @override
+  String get shareImage => 'Bild teilen';
+
+  @override
+  String get shareImageDescription => 'Aktuelle Ansicht aufnehmen und teilen';
+
+  @override
+  String get shareState => 'Zustand teilen';
+
+  @override
+  String get shareStateDescription =>
+      'Simulationsdaten als importierbare Datei exportieren';
+
+  @override
+  String get shareSuccess => 'Erfolgreich geteilt';
+
+  @override
+  String get shareFailed => 'Teilen fehlgeschlagen';
+
+  @override
+  String get shareImageError =>
+      'Bild kann nicht erfasst werden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get shareSubject => 'Graviton-Simulation';
+
+  @override
+  String get shareSnapshotSubject => 'Graviton-Simulationsschnappschuss';
+
+  @override
+  String get shareText => 'Sehen Sie sich diese Gravitationssimulation an!';
+
+  @override
+  String get importScenario => 'Szenario importieren';
+
+  @override
+  String get importScenarioDescription => 'Szenario aus einer JSON-Datei laden';
+
+  @override
+  String get importSuccess => 'Szenario erfolgreich importiert';
+
+  @override
+  String get importFailed => 'Importieren des Szenarios fehlgeschlagen';
+
+  @override
+  String get importInvalidFile =>
+      'Ungültiges Dateiformat. Bitte wählen Sie eine gültige JSON-Datei aus.';
+
+  @override
+  String get importFileNotFound =>
+      'Datei nicht gefunden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get importCancelled => 'Import abgebrochen';
 }

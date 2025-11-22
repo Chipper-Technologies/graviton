@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -146,17 +147,28 @@ class BackgroundPainter {
           0.8 + math.sin(layerTime * 0.2 + layer * 1.1 + seedOffset3) * 0.3;
 
       // Create multiple overlapping radial gradients for organic patterns
+      // Use overlay on native, plus on web for compatibility
+      // For first layer, don't end with transparent to avoid white showing through
       final radialGradient1 = Paint()
-        ..blendMode = layer == 0 ? BlendMode.src : BlendMode.overlay
+        ..blendMode = layer == 0
+            ? BlendMode.src
+            : (kIsWeb ? BlendMode.plus : BlendMode.overlay)
         ..shader = RadialGradient(
           center: Alignment(centerX * 2 - 1, centerY * 2 - 1),
           radius: baseRadius,
-          colors: [
-            color1,
-            color2.withValues(alpha: color2.a * 0.7),
-            color3.withValues(alpha: color3.a * 0.4),
-            AppColors.transparentColor,
-          ],
+          colors: layer == 0
+              ? [
+                  color1,
+                  color2.withValues(alpha: color2.a * 0.7),
+                  color3.withValues(alpha: color3.a * 0.4),
+                  Colors.black,
+                ]
+              : [
+                  color1,
+                  color2.withValues(alpha: color2.a * 0.7),
+                  color3.withValues(alpha: color3.a * 0.4),
+                  AppColors.transparentColor,
+                ],
           stops: const [0.0, 0.4, 0.7, 1.0],
         ).createShader(Offset.zero & size);
 
@@ -176,7 +188,7 @@ class BackgroundPainter {
           0.6 + math.cos(layerTime * 0.25 + layer * 0.7 + seedOffset1) * 0.2;
 
       final radialGradient2 = Paint()
-        ..blendMode = BlendMode.softLight
+        ..blendMode = kIsWeb ? BlendMode.plus : BlendMode.softLight
         ..shader = RadialGradient(
           center: Alignment(centerX2 * 2 - 1, centerY2 * 2 - 1),
           radius: radius2,
@@ -229,6 +241,14 @@ class BackgroundPainter {
 
     // Use seed to create stable variations
     final random = math.Random(seed);
+
+    // Draw base black background first (especially important for web)
+    // Use a solid color with src blend mode to ensure it covers everything
+    final blackPaint = Paint()
+      ..color = AppColors.uiBlack
+      ..style = PaintingStyle.fill
+      ..blendMode = BlendMode.src;
+    canvas.drawRect(Offset.zero & size, blackPaint);
 
     // Create gradient sources using theme constants
     for (
@@ -313,20 +333,32 @@ class BackgroundPainter {
         center = Offset(screenX, screenY);
       }
 
-      // Large, overlapping gradients using theme radius constants
+      // Large, overlapping gradients scaled to screen size
+      // Use percentage of screen diagonal for responsive sizing
+      final screenDiagonal = math.sqrt(
+        size.width * size.width + size.height * size.height,
+      );
+      final baseRadiusScale =
+          0.7; // 70% of screen diagonal for smoother coverage
+      final radiusVariationScale = 0.15; // 15% variation
+
       final gradientRadius =
-          RenderingConstants.sphericalGradientBaseRadius +
+          screenDiagonal * baseRadiusScale +
           math.sin(time * 0.08 + source * 0.5) *
-              RenderingConstants.sphericalGradientRadiusVariation;
+              screenDiagonal *
+              radiusVariationScale;
       final intensity =
           visibility *
           (RenderingConstants.sphericalGradientBaseIntensity +
               RenderingConstants.sphericalGradientIntensityVariation *
                   math.sin(time * 0.12 + source));
 
-      // Draw the spherical gradient source using theme alpha values
+      // Draw the spherical gradient source with softer, more gradual falloff
+      // Use plus on web, softLight on native for compatibility
       final gradientPaint = Paint()
-        ..blendMode = source == 0 ? BlendMode.src : BlendMode.softLight
+        ..blendMode = source == 0
+            ? BlendMode.src
+            : (kIsWeb ? BlendMode.plus : BlendMode.softLight)
         ..shader = RadialGradient(
           center: Alignment(
             (center.dx / size.width) * 2 - 1,
@@ -347,9 +379,11 @@ class BackgroundPainter {
               alpha:
                   intensity * RenderingConstants.sphericalGradientTertiaryAlpha,
             ),
+            sourceColor.withValues(alpha: intensity * 0.05),
+            sourceColor.withValues(alpha: intensity * 0.01),
             AppColors.transparentColor,
           ],
-          stops: const [0.0, 0.4, 0.8, 1.0],
+          stops: const [0.0, 0.3, 0.5, 0.7, 0.9, 1.0],
         ).createShader(Offset.zero & size);
 
       canvas.drawRect(Offset.zero & size, gradientPaint);

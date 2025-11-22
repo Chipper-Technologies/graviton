@@ -49,12 +49,16 @@
 		<false/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
-		<key>LSApplicationQueriesSchemes</key>
-		<array>
-			<string>https</string>
-			<string>http</string>
-			<string>itms-apps</string>
-			<string>mailto</string>
-		</array>
-	</dict>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+		<string>http</string>
+		<string>itms-apps</string>
+		<string>mailto</string>
+	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Graviton needs access to save simulation screenshots to your photo library.</string>
+</dict>
 </plist>

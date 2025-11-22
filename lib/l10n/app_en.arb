@@ -3923,5 +3923,89 @@
   "noAtmosphereStatus": "No Atmosphere",
   "@noAtmosphereStatus": {
     "description": "Status text for no atmosphere"
+  },
+  "selectBody": "Select Body",
+  "@selectBody": {
+    "description": "Title for body selection dialog"
+  },
+  "noBodiesAvailable": "No bodies available",
+  "@noBodiesAvailable": {
+    "description": "Message shown when no bodies are available to select"
+  },
+  "share": "Share",
+  "@share": {
+    "description": "Label for share action button"
+  },
+  "shareSimulation": "Share Simulation",
+  "@shareSimulation": {
+    "description": "Title for share simulation dialog"
+  },
+  "shareImage": "Share Image",
+  "@shareImage": {
+    "description": "Option to share simulation as an image"
+  },
+  "shareImageDescription": "Capture and share the current view",
+  "@shareImageDescription": {
+    "description": "Description for share image option"
+  },
+  "shareState": "Share State",
+  "@shareState": {
+    "description": "Option to share simulation state as JSON"
+  },
+  "shareStateDescription": "Export simulation data as importable file",
+  "@shareStateDescription": {
+    "description": "Description for share state option"
+  },
+  "shareSuccess": "Shared successfully",
+  "@shareSuccess": {
+    "description": "Success message after sharing"
+  },
+  "shareFailed": "Failed to share",
+  "@shareFailed": {
+    "description": "Error message when sharing fails"
+  },
+  "shareImageError": "Cannot capture image. Please try again.",
+  "@shareImageError": {
+    "description": "Error message when image capture fails"
+  },
+  "shareSubject": "Graviton Simulation",
+  "@shareSubject": {
+    "description": "Subject line when sharing simulation"
+  },
+  "shareSnapshotSubject": "Graviton Simulation Snapshot",
+  "@shareSnapshotSubject": {
+    "description": "Subject line when sharing simulation snapshot"
+  },
+  "shareText": "Check out this gravitational simulation!",
+  "@shareText": {
+    "description": "Text message when sharing simulation"
+  },
+  "importScenario": "Import Scenario",
+  "@importScenario": {
+    "description": "Button to import a scenario from file"
+  },
+  "importScenarioDescription": "Load a scenario from a JSON file",
+  "@importScenarioDescription": {
+    "description": "Description for import scenario button"
+  },
+  "importSuccess": "Scenario imported successfully",
+  "@importSuccess": {
+    "description": "Success message after importing scenario"
+  },
+  "importFailed": "Failed to import scenario",
+  "@importFailed": {
+    "description": "Error message when import fails"
+  },
+  "importInvalidFile": "Invalid file format. Please select a valid JSON file.",
+  "@importInvalidFile": {
+    "description": "Error message for invalid file format"
+  },
+  "importFileNotFound": "File not found. Please try again.",
+  "@importFileNotFound": {
+    "description": "Error message when selected file is not found"
+  },
+  "importCancelled": "Import cancelled",
+  "@importCancelled": {
+    "description": "Message when user cancels file selection"
   }
 }

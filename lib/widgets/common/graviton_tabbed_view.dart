@@ -10,6 +10,7 @@ class GravitonTabbedView extends StatefulWidget {
   final int initialIndex;
   final Function(int)? onTabChanged;
   final List<bool>? disabledTabs;
+  final VoidCallback? onTabTap;
 
   const GravitonTabbedView({
     super.key,
@@ -18,6 +19,7 @@ class GravitonTabbedView extends StatefulWidget {
     this.initialIndex = 0,
     this.onTabChanged,
     this.disabledTabs,
+    this.onTabTap,
   });
 
   @override
@@ -76,6 +78,7 @@ class _GravitonTabbedViewState extends State<GravitonTabbedView>
           controller: _tabController,
           tabs: updatedTabs,
           disabledTabs: widget.disabledTabs,
+          onTabTap: widget.onTabTap,
         ),
         Expanded(
           child: TabBarView(

@@ -15,6 +15,14 @@ enum FirebaseEvent {
   simulationStopped('simulation_stopped'),
   simulationReset('simulation_reset'),
 
+  /// Sharing events
+  simulationShared('simulation_shared'),
+  simulationImageShared('simulation_image_shared'),
+  simulationStateShared('simulation_state_shared'),
+  shareDialogOpened('share_dialog_opened'),
+  shareCancelled('share_cancelled'),
+  shareFailed('share_failed'),
+
   /// Settings and configuration events
   settingsChanged('settings_changed'),
 

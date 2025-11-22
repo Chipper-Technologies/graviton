@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
@@ -37,7 +39,9 @@ import 'package:graviton/widgets/haptics/haptic_floating_action_button.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_list.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_physics_panel.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Screen for creating and editing custom gravitational simulation scenarios
@@ -932,35 +936,39 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       isScrollControlled: true,
       backgroundColor: AppColors.transparentColor,
       builder: (context) => StatefulBuilder(
-        builder: (context, setSheetState) => SizedBox(
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: ScenarioEditorBodyDetailsBottomSheet(
-            body: newBody,
-            isAddMode: true,
-            availableCentralBodies:
-                _bodies, // Pass existing bodies as potential central bodies
-            onBodyChanged: (updatedBody) {
-              // Update the local body reference
-              setSheetState(() {});
-            },
-            onSave: (finalBody) {
-              // Log analytics for body addition
-              FirebaseService.instance.logUIEventWithEnums(
-                UIAction.bodyAdded,
-                element: UIElement.scenarioEditorBodies,
-                additionalParams: {
-                  'total_bodies': _bodies.length + 1,
-                  'scenario_editing': widget.isEditing,
-                },
-              );
+        builder: (context, setSheetState) => Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: RenderingConstants.bottomSheetMaxWidth,
+            height: MediaQuery.of(context).size.height * 0.75,
+            child: ScenarioEditorBodyDetailsBottomSheet(
+              body: newBody,
+              isAddMode: true,
+              availableCentralBodies:
+                  _bodies, // Pass existing bodies as potential central bodies
+              onBodyChanged: (updatedBody) {
+                // Update the local body reference
+                setSheetState(() {});
+              },
+              onSave: (finalBody) {
+                // Log analytics for body addition
+                FirebaseService.instance.logUIEventWithEnums(
+                  UIAction.bodyAdded,
+                  element: UIElement.scenarioEditorBodies,
+                  additionalParams: {
+                    'total_bodies': _bodies.length + 1,
+                    'scenario_editing': widget.isEditing,
+                  },
+                );
 
-              // Actually add the body to the list
-              final updatedBodies = List<Body>.from(_bodies)..add(finalBody);
-              _onBodiesChanged(updatedBodies);
+                // Actually add the body to the list
+                final updatedBodies = List<Body>.from(_bodies)..add(finalBody);
+                _onBodiesChanged(updatedBodies);
 
-              // Note: Tab switching is now handled automatically by GravitonTabbedView
-              // The Setup tab will become available and user can navigate there manually
-            },
+                // Note: Tab switching is now handled automatically by GravitonTabbedView
+                // The Setup tab will become available and user can navigate there manually
+              },
+            ),
           ),
         ),
       ),
@@ -1286,13 +1294,41 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
         },
       );
 
-      // TODO: Implement file export functionality
-      debugPrint('Exported JSON:\n$jsonString'); // For development
+      // Save JSON file to temporary directory and share
+      final fileName =
+          '${_metadata.name.replaceAll(RegExp(r'[^\w\s-]'), '')}_${DateTime.now().millisecondsSinceEpoch}.json';
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/$fileName');
+      await file.writeAsString(jsonString);
 
-      GravitonSnackBar.warning(
-        context: context,
-        message: l10n.exportScenarioNotImplementedMessage,
+      final result = await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path, mimeType: 'application/json')],
+          subject: l10n.shareSubject,
+          text: l10n.shareText,
+        ),
       );
+
+      unawaited(
+        Future.delayed(const Duration(seconds: 5), () async {
+          try {
+            if (await file.exists()) {
+              await file.delete();
+            }
+          } catch (e) {
+            debugPrint('Failed to delete temp file: $e');
+          }
+        }),
+      );
+
+      // Show result feedback
+      if (!mounted) return;
+      if (!context.mounted) return;
+      if (result.status == ShareResultStatus.success) {
+        GravitonSnackBar.success(context: context, message: l10n.shareSuccess);
+      } else {
+        GravitonSnackBar.error(context: context, message: l10n.shareFailed);
+      }
     } catch (e) {
       // Log error analytics
       FirebaseService.instance.logErrorEvent(
@@ -1301,12 +1337,12 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
         context: 'scenario_editor',
       );
 
-      if (mounted) {
-        GravitonSnackBar.error(
-          context: context,
-          message: l10n.exportScenarioFailedMessage(e.toString()),
-        );
-      }
+      if (!mounted) return;
+      if (!context.mounted) return;
+      GravitonSnackBar.error(
+        context: context,
+        message: l10n.exportScenarioFailedMessage(e.toString()),
+      );
     }
   }
 

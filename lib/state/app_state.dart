@@ -100,18 +100,34 @@ class AppState extends ChangeNotifier {
   /// so they can be individually toggled off by the user
   void _ensureAllBodiesHaveGravityWellsEnabled() {
     final bodies = simulation.bodies;
+    bool anyChanged = false;
     for (final body in bodies) {
       if (!body.showGravityWell) {
         body.showGravityWell = true;
+        anyChanged = true;
       }
+    }
+    // If we changed any bodies, mark simulation as changed and notify listeners
+    if (anyChanged) {
+      simulation.simulation.markChanged();
+      notifyListeners();
     }
   }
 
   /// When global gravity fields is disabled, turn off all gravity wells
   void _disableAllGravityWells() {
     final bodies = simulation.bodies;
+    bool anyChanged = false;
     for (final body in bodies) {
-      body.showGravityWell = false;
+      if (body.showGravityWell) {
+        body.showGravityWell = false;
+        anyChanged = true;
+      }
+    }
+    // If we changed any bodies, mark simulation as changed and notify listeners
+    if (anyChanged) {
+      simulation.simulation.markChanged();
+      notifyListeners();
     }
   }
 

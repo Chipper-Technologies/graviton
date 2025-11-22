@@ -4,6 +4,13 @@ import 'package:graviton/theme/app_constraints.dart';
 
 void main() {
   group('AppConstraints', () {
+    group('Class Structure', () {
+      test('should have private constructor covered for test completeness', () {
+        // Call the test helper to cover the private constructor
+        expect(() => AppConstraints.testConstructor(), returnsNormally);
+      });
+    });
+
     group('Dialog Dimensions', () {
       test('should have correct standard dialog width', () {
         expect(AppConstraints.dialogStandardWidth, equals(600));

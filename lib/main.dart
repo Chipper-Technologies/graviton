@@ -9,11 +9,17 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'config/flavor_config.dart';
+import 'constants/platform_channel_constants.dart';
 import 'enums/app_flavor.dart';
 import 'enums/firebase_event.dart';
 import 'l10n/app_localizations.dart';
+import 'screens/about_screen.dart';
+import 'screens/application_settings_screen.dart';
+import 'screens/help_screen.dart';
 import 'screens/home_screen.dart';
+import 'services/changelog_service.dart';
 import 'services/firebase_service.dart';
+import 'widgets/changelog_dialog.dart';
 import 'services/remote_config_service.dart';
 import 'services/version_service.dart';
 import 'state/app_state.dart';
@@ -23,6 +29,9 @@ import 'widgets/dev_ribbon.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Set up platform channel for macOS menu integration
+  _setupPlatformChannels();
 
   // Detect flavor from dart-define or default to production
   final flavorString = const String.fromEnvironment(
@@ -77,6 +86,80 @@ void main() async {
   runApp(GravitonApp(appState: appState));
 }
 
+// Global navigator key to access navigation from platform channels
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+void _setupPlatformChannels() {
+  // Navigation channel
+  const navigationChannel = MethodChannel(PlatformChannelConstants.navigation);
+  navigationChannel.setMethodCallHandler((call) async {
+    switch (call.method) {
+      case 'showAbout':
+        // Navigate to About screen
+        final context = navigatorKey.currentContext;
+        if (context != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AboutScreen()),
+          );
+        }
+        break;
+      case 'showSettings':
+        // Navigate to Application Settings screen
+        final context = navigatorKey.currentContext;
+        if (context != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ApplicationSettingsScreen(),
+            ),
+          );
+        }
+        break;
+      case 'showHelp':
+        // Navigate to Help screen
+        final context = navigatorKey.currentContext;
+        if (context != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HelpScreen()),
+          );
+        }
+        break;
+      case 'showChangelog':
+        // Show changelog dialog
+        final context = navigatorKey.currentContext;
+        if (context != null) {
+          // Fetch changelogs and show dialog
+          ChangelogService.instance.fetchChangelogs().then((changelogs) {
+            if (context.mounted && changelogs.isNotEmpty) {
+              showDialog(
+                context: context,
+                builder: (context) => ChangelogDialog(
+                  changelogs: changelogs,
+                  onComplete: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              );
+            }
+          });
+        }
+        break;
+      default:
+        throw PlatformException(
+          code: 'UNIMPLEMENTED',
+          message: 'Method ${call.method} not implemented',
+        );
+    }
+  });
+
+  // Note: Simulation channel is handled by HomeScreen._setupSimulationChannel()
+  // since it needs access to the home screen context for UI operations like
+  // showing the tutorial overlay and body selection sheet. The handler in
+  // HomeScreen will override any handler set here.
+}
+
 class GravitonApp extends StatelessWidget {
   final AppState appState;
 
@@ -102,6 +185,7 @@ class GravitonApp extends StatelessWidget {
           // If null, Flutter will use system locale
 
           return MaterialApp(
+            navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             title: FlavorConfig.instance.appName,
             localizationsDelegates: AppLocalizations.localizationsDelegates,

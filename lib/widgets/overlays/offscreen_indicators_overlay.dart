@@ -41,26 +41,29 @@ class OffScreenIndicatorsOverlay extends StatelessWidget {
           return Positioned(
             left: indicator.position.dx - 20, // 20 = tap area radius
             top: indicator.position.dy - 20,
-            child: HapticGestureDetector(
-              onTap: () {
-                FirebaseService.instance.logUIEventWithEnums(
-                  UIAction.tap,
-                  element: UIElement.body,
-                  value: 'offscreen_indicator_${indicator.bodyIndex}',
-                );
-                onIndicatorTapped?.call(indicator.bodyIndex);
-              },
-              child: Container(
-                width: 40, // 20 radius * 2
-                height: 40,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.transparentColor,
-                ),
-                child: CustomPaint(
-                  painter: IndicatorPainter(
-                    indicator: indicator,
-                    isSelected: indicator.bodyIndex == selectedBodyIndex,
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: HapticGestureDetector(
+                onTap: () {
+                  FirebaseService.instance.logUIEventWithEnums(
+                    UIAction.tap,
+                    element: UIElement.body,
+                    value: 'offscreen_indicator_${indicator.bodyIndex}',
+                  );
+                  onIndicatorTapped?.call(indicator.bodyIndex);
+                },
+                child: Container(
+                  width: 40, // 20 radius * 2
+                  height: 40,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.transparentColor,
+                  ),
+                  child: CustomPaint(
+                    painter: IndicatorPainter(
+                      indicator: indicator,
+                      isSelected: indicator.bodyIndex == selectedBodyIndex,
+                    ),
                   ),
                 ),
               ),

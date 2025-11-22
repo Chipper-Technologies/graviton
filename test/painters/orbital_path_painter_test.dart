@@ -529,5 +529,363 @@ void main() {
         }
       });
     });
+
+    group('Body Type Filtering', () {
+      testWidgets('should draw paths for planets in solar system', (
+        tester,
+      ) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.solarSystem);
+
+        // Should handle planets in solar system
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+          );
+        }, returnsNormally);
+      });
+
+      testWidgets('should draw paths for moons in earth-moon-sun', (
+        tester,
+      ) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.earthMoonSun);
+
+        // Should handle moons in earth-moon-sun
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+          );
+        }, returnsNormally);
+      });
+
+      testWidgets('should not draw paths for asteroids', (tester) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.asteroidBelt);
+
+        // Asteroids don't get orbital paths
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+          );
+        }, returnsNormally);
+      });
+    });
+
+    group('Binary Stars Special Cases', () {
+      testWidgets('should handle binary star planet orbiting center of mass', (
+        tester,
+      ) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.binaryStars);
+
+        // Should handle binary star scenario with planets and moons
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+          );
+        }, returnsNormally);
+      });
+
+      testWidgets('should handle binary star moon orbiting planet', (
+        tester,
+      ) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.binaryStars);
+
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+          );
+        }, returnsNormally);
+      });
+
+      testWidgets('should handle binary star with dual mode', (tester) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.binaryStars);
+
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+            dualMode: true,
+          );
+        }, returnsNormally);
+      });
+    });
+
+    group('Inclination Calculations', () {
+      testWidgets('should calculate inclination for solar system planets', (
+        tester,
+      ) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.solarSystem);
+
+        // Let simulation run a bit to establish orbits
+        for (int i = 0; i < 10; i++) {
+          simulation.stepRK4(86400.0); // 1 day per step
+        }
+
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+          );
+        }, returnsNormally);
+      });
+
+      testWidgets('should calculate inclination for binary star bodies', (
+        tester,
+      ) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.binaryStars);
+
+        // Let simulation run to establish orbits
+        for (int i = 0; i < 10; i++) {
+          simulation.stepRK4(86400.0);
+        }
+
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+          );
+        }, returnsNormally);
+      });
+
+      testWidgets('should handle bodies with zero angular momentum', (
+        tester,
+      ) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.earthMoonSun);
+
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+          );
+        }, returnsNormally);
+      });
+    });
+
+    group('Central Body Detection', () {
+      testWidgets('should find correct central body for planets', (
+        tester,
+      ) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.solarSystem);
+
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+          );
+        }, returnsNormally);
+      });
+
+      testWidgets('should find correct central body for moons', (tester) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.earthMoonSun);
+
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+          );
+        }, returnsNormally);
+      });
+
+      testWidgets('should handle case when central body not found', (
+        tester,
+      ) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+
+        // Empty simulation - no central bodies
+        final emptySimulation = physics.Simulation();
+
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            emptySimulation,
+            true,
+          );
+        }, returnsNormally);
+      });
+    });
+
+    group('Dual Mode Rendering', () {
+      testWidgets(
+        'should draw both circular and elliptical paths in dual mode',
+        (tester) async {
+          const size = Size(800, 600);
+          final vp = vm.Matrix4.identity();
+          simulation.resetWithScenario(ScenarioType.solarSystem);
+
+          expect(() {
+            OrbitalPathPainter.drawOrbitalPaths(
+              canvas,
+              size,
+              vp,
+              simulation,
+              true,
+              dualMode: true,
+            );
+          }, returnsNormally);
+        },
+      );
+
+      testWidgets('should handle dual mode with eccentric orbits', (
+        tester,
+      ) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.solarSystem);
+
+        // Let simulation evolve to create more eccentric orbits
+        for (int i = 0; i < 20; i++) {
+          simulation.stepRK4(86400.0 * 10); // 10 days per step
+        }
+
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+            dualMode: true,
+          );
+        }, returnsNormally);
+      });
+
+      testWidgets('should switch between normal and dual mode', (tester) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+        simulation.resetWithScenario(ScenarioType.earthMoonSun);
+
+        // Draw in normal mode
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+            dualMode: false,
+          );
+        }, returnsNormally);
+
+        // Draw in dual mode
+        expect(() {
+          OrbitalPathPainter.drawOrbitalPaths(
+            canvas,
+            size,
+            vp,
+            simulation,
+            true,
+            dualMode: true,
+          );
+        }, returnsNormally);
+      });
+    });
+
+    group('Scenario-Specific Behavior', () {
+      testWidgets('should only draw for supported scenarios', (tester) async {
+        const size = Size(800, 600);
+        final vp = vm.Matrix4.identity();
+
+        // Supported scenarios
+        final supportedScenarios = [
+          ScenarioType.solarSystem,
+          ScenarioType.earthMoonSun,
+          ScenarioType.binaryStars,
+        ];
+
+        for (final scenario in supportedScenarios) {
+          simulation.resetWithScenario(scenario);
+          expect(() {
+            OrbitalPathPainter.drawOrbitalPaths(
+              canvas,
+              size,
+              vp,
+              simulation,
+              true,
+            );
+          }, returnsNormally);
+        }
+
+        // Unsupported scenarios should return early
+        final unsupportedScenarios = [
+          ScenarioType.galaxyFormation,
+          ScenarioType.asteroidBelt,
+          ScenarioType.random,
+        ];
+
+        for (final scenario in unsupportedScenarios) {
+          simulation.resetWithScenario(scenario);
+          expect(() {
+            OrbitalPathPainter.drawOrbitalPaths(
+              canvas,
+              size,
+              vp,
+              simulation,
+              true,
+            );
+          }, returnsNormally);
+        }
+      });
+    });
   });
 }

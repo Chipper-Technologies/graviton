@@ -427,5 +427,82 @@ void main() {
         },
       );
     });
+
+    group('Environment Constants', () {
+      test('should have default appVersion', () {
+        expect(AppConfig.appVersion, isNotEmpty);
+        expect(AppConfig.appVersion, equals('1.0.0'));
+      });
+
+      test('should have default buildNumber', () {
+        expect(AppConfig.buildNumber, isNotEmpty);
+        expect(AppConfig.buildNumber, equals('1'));
+      });
+
+      test('should have default githubUrl', () {
+        expect(AppConfig.githubUrl, isNotEmpty);
+        expect(
+          AppConfig.githubUrl,
+          equals('https://github.com/Chipper-Technologies/graviton'),
+        );
+      });
+
+      test('should have default websiteUrl', () {
+        expect(AppConfig.websiteUrl, isNotEmpty);
+        expect(AppConfig.websiteUrl, equals('https://chippertechnology.com'));
+      });
+
+      test('should have default privacyPolicyUrl', () {
+        expect(AppConfig.privacyPolicyUrl, isNotEmpty);
+        expect(
+          AppConfig.privacyPolicyUrl,
+          equals('https://chippertechnology.com/privacy-policy/graviton'),
+        );
+      });
+
+      test('should have default companyWebsiteUrl', () {
+        expect(AppConfig.companyWebsiteUrl, isNotEmpty);
+        expect(
+          AppConfig.companyWebsiteUrl,
+          equals('https://chippertechnology.com'),
+        );
+      });
+
+      test('should have default appLogoPath', () {
+        expect(AppConfig.appLogoPath, isNotEmpty);
+        expect(AppConfig.appLogoPath, equals('assets/images/app-logo.png'));
+      });
+
+      test('should have default chipperLogoPath', () {
+        expect(AppConfig.chipperLogoPath, isNotEmpty);
+        expect(
+          AppConfig.chipperLogoPath,
+          equals('assets/images/chipper-logo.svg'),
+        );
+      });
+
+      test('should have default gravitonLogoPath', () {
+        expect(AppConfig.gravitonLogoPath, isNotEmpty);
+        expect(
+          AppConfig.gravitonLogoPath,
+          equals('assets/images/graviton-logo.svg'),
+        );
+      });
+
+      test('should return valid URLs format', () {
+        // Test URL format
+        expect(AppConfig.githubUrl.startsWith('https://'), isTrue);
+        expect(AppConfig.websiteUrl.startsWith('https://'), isTrue);
+        expect(AppConfig.privacyPolicyUrl.startsWith('https://'), isTrue);
+        expect(AppConfig.companyWebsiteUrl.startsWith('https://'), isTrue);
+      });
+
+      test('should return valid asset paths format', () {
+        // Test asset path format
+        expect(AppConfig.appLogoPath.startsWith('assets/'), isTrue);
+        expect(AppConfig.chipperLogoPath.startsWith('assets/'), isTrue);
+        expect(AppConfig.gravitonLogoPath.startsWith('assets/'), isTrue);
+      });
+    });
   });
 }

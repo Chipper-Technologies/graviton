@@ -144,10 +144,9 @@ class GravityPainter {
       final body = sim.bodies[i];
 
       // Check if gravity well should be drawn:
-      // With the new approach, body.showGravityWell represents the final decision
-      // When global gravity fields is enabled, all bodies are set to showGravityWell = true by default
-      // Users can then toggle individual bodies to false to override
-      final shouldDrawGravityWell = body.showGravityWell;
+      // Priority: body.showGravityWell (user override) OR globalGravityFields (global toggle)
+      // This ensures gravity wells appear on initial load when globalGravityFields is enabled
+      final shouldDrawGravityWell = body.showGravityWell || globalGravityFields;
       if (!shouldDrawGravityWell) continue;
 
       // Calculate the same projection and radius as used for body rendering

@@ -192,10 +192,10 @@ class ScreenshotModeWidget extends StatelessWidget {
                                             l10n.appliedPreset(
                                               screenshotService
                                                   .getPresetDisplayName(
-                                                screenshotService
-                                                    .currentPresetIndex,
-                                                l10n,
-                                              ),
+                                                    screenshotService
+                                                        .currentPresetIndex,
+                                                    l10n,
+                                                  ),
                                             ),
                                           ),
                                           duration: const Duration(seconds: 4),
@@ -212,7 +212,9 @@ class ScreenshotModeWidget extends StatelessWidget {
                                                 uiState: appState.ui,
                                               );
                                               // Resume simulation when deactivating
-                                              if (appState.simulation.isPaused) {
+                                              if (appState
+                                                  .simulation
+                                                  .isPaused) {
                                                 appState.simulation
                                                     .pause(); // Toggle pause to resume
                                               }

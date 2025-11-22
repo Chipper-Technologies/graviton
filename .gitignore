@@ -63,6 +63,7 @@ app.*.map.json
 
 # Environment Configuration Files (sensitive)
 config/
+macos/Runner/Config.plist
 keys/
 *.env
 .env.*

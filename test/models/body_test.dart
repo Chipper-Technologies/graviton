@@ -103,6 +103,323 @@ void main() {
       expect(body.velocity.z, equals(-0.3));
     });
 
+    group('Temperature Conversions', () {
+      test('should convert temperature to Celsius correctly', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          temperature: 293.15, // 20°C in Kelvin
+        );
+
+        expect(body.temperatureCelsius, closeTo(20.0, 0.01));
+      });
+
+      test('should convert temperature to Fahrenheit correctly', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          temperature: 273.15, // 0°C in Kelvin
+        );
+
+        expect(body.temperatureFahrenheit, closeTo(32.0, 0.01));
+      });
+
+      test('should identify reasonable temperature range', () {
+        final coldBody = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Cold Body',
+          bodyType: BodyType.planet,
+          temperature: 223.15, // -50°C
+        );
+
+        final hotBody = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicRed,
+          name: 'Hot Body',
+          bodyType: BodyType.planet,
+          temperature: 423.15, // 150°C
+        );
+
+        final comfortableBody = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicGreen,
+          name: 'Comfortable Body',
+          bodyType: BodyType.planet,
+          temperature: 293.15, // 20°C
+        );
+
+        expect(coldBody.hasReasonableTemperature, isTrue);
+        expect(hotBody.hasReasonableTemperature, isTrue);
+        expect(comfortableBody.hasReasonableTemperature, isTrue);
+      });
+
+      test('should categorize temperatures correctly', () {
+        final frozen = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Frozen',
+          bodyType: BodyType.planet,
+          temperature: 100.0, // -173°C
+        );
+
+        final cold = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Cold',
+          bodyType: BodyType.planet,
+          temperature: 250.0, // -23°C
+        );
+
+        final moderate = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicGreen,
+          name: 'Moderate',
+          bodyType: BodyType.planet,
+          temperature: 293.15, // 20°C
+        );
+
+        final hot = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicOrange,
+          name: 'Hot',
+          bodyType: BodyType.planet,
+          temperature: 373.15, // 100°C
+        );
+
+        final scorching = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicRed,
+          name: 'Scorching',
+          bodyType: BodyType.planet,
+          temperature: 500.0, // 227°C
+        );
+
+        expect(frozen.temperatureCategory, equals('temperatureFrozen'));
+        expect(cold.temperatureCategory, equals('temperatureCold'));
+        expect(moderate.temperatureCategory, equals('temperatureModerate'));
+        expect(hot.temperatureCategory, equals('temperatureHot'));
+        expect(scorching.temperatureCategory, equals('temperatureScorching'));
+      });
+    });
+
+    group('Body Type Properties', () {
+      test('should identify luminous bodies correctly', () {
+        final star = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.stellarGType,
+          name: 'Star',
+          bodyType: BodyType.star,
+        );
+
+        expect(star.isLuminous, isTrue);
+      });
+
+      test('should identify habitable bodies correctly', () {
+        final planet = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Planet',
+          bodyType: BodyType.planet,
+        );
+
+        expect(planet.canBeHabitable, isTrue);
+      });
+    });
+
+    group('Status Updates', () {
+      test('should update habitability status', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          habitabilityStatus: HabitabilityStatus.unknown,
+        );
+
+        expect(body.habitabilityStatus, equals(HabitabilityStatus.unknown));
+
+        body.updateHabitabilityStatus(HabitabilityStatus.habitable);
+        expect(body.habitabilityStatus, equals(HabitabilityStatus.habitable));
+
+        body.updateHabitabilityStatus(HabitabilityStatus.tooHot);
+        expect(body.habitabilityStatus, equals(HabitabilityStatus.tooHot));
+      });
+
+      test('should update temperature', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          temperature: 273.15,
+        );
+
+        expect(body.temperature, equals(273.15));
+
+        body.updateTemperature(293.15);
+        expect(body.temperature, equals(293.15));
+        expect(body.temperatureCelsius, closeTo(20.0, 0.01));
+      });
+    });
+
+    group('Equality and Hashing', () {
+      test('should compare bodies for equality correctly', () {
+        final body1 = Body(
+          position: vm.Vector3(1.0, 2.0, 3.0),
+          velocity: vm.Vector3(0.1, 0.2, 0.3),
+          mass: 10.0,
+          radius: 1.5,
+          color: AppColors.basicRed,
+          name: 'Body 1',
+        );
+
+        final body2 = Body(
+          position: vm.Vector3(1.0, 2.0, 3.0),
+          velocity: vm.Vector3(0.1, 0.2, 0.3),
+          mass: 10.0,
+          radius: 1.5,
+          color: AppColors.basicRed,
+          name: 'Body 1',
+        );
+
+        final body3 = Body(
+          position: vm.Vector3(2.0, 3.0, 4.0),
+          velocity: vm.Vector3(0.2, 0.3, 0.4),
+          mass: 20.0,
+          radius: 2.0,
+          color: AppColors.basicBlue,
+          name: 'Body 3',
+        );
+
+        expect(body1 == body2, isTrue);
+        expect(body1 == body3, isFalse);
+        expect(body1 == body1, isTrue);
+      });
+
+      test('should generate consistent hash codes', () {
+        final body1 = Body(
+          position: vm.Vector3(1.0, 2.0, 3.0),
+          velocity: vm.Vector3(0.1, 0.2, 0.3),
+          mass: 10.0,
+          radius: 1.5,
+          color: AppColors.basicRed,
+          name: 'Body 1',
+        );
+
+        final body2 = Body(
+          position: vm.Vector3(1.0, 2.0, 3.0),
+          velocity: vm.Vector3(0.1, 0.2, 0.3),
+          mass: 10.0,
+          radius: 1.5,
+          color: AppColors.basicRed,
+          name: 'Body 1',
+        );
+
+        expect(body1.hashCode, equals(body2.hashCode));
+      });
+    });
+
+    group('Orbital Parameters', () {
+      test('should set orbital parameters from constructor', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          orbitRadius: 100.0,
+          orbitPhase: 1.57,
+          orbitInclination: 0.5,
+        );
+
+        expect(body.orbitRadius, equals(100.0));
+        expect(body.orbitPhase, equals(1.57));
+        expect(body.orbitInclination, equals(0.5));
+      });
+
+      test('should update orbital parameters', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+        );
+
+        body.orbitRadius = 200.0;
+        body.orbitPhase = 3.14;
+        body.orbitInclination = 1.0;
+
+        expect(body.orbitRadius, equals(200.0));
+        expect(body.orbitPhase, equals(3.14));
+        expect(body.orbitInclination, equals(1.0));
+      });
+
+      test('should toggle orbital placement mode', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+        );
+
+        expect(body.isOrbitalPlacementActive, isFalse);
+
+        body.isOrbitalPlacementActive = true;
+        expect(body.isOrbitalPlacementActive, isTrue);
+
+        body.isOrbitalPlacementActive = false;
+        expect(body.isOrbitalPlacementActive, isFalse);
+      });
+    });
+
     group('Gravity Well', () {
       test('should default showGravityWell to false', () {
         final body = Body(

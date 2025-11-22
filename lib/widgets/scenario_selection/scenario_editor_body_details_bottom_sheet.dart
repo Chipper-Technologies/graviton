@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/temperature_unit.dart';
@@ -258,6 +259,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final showSideBorders =
+        screenWidth > RenderingConstants.bottomSheetMaxWidth;
 
     return PopScope(
       canPop: !_hasUnsavedChanges,
@@ -278,14 +282,35 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(AppTypography.radiusXLarge),
           ),
-          border: Border(
-            top: BorderSide(
-              color: AppColors.primaryColor.withValues(
-                alpha: AppTypography.opacityMedium,
-              ),
-              width: 2,
-            ),
-          ),
+          border: showSideBorders
+              ? Border(
+                  top: BorderSide(
+                    color: AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                    width: 2,
+                  ),
+                  left: BorderSide(
+                    color: AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                    width: 2,
+                  ),
+                  right: BorderSide(
+                    color: AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                    width: 2,
+                  ),
+                )
+              : Border(
+                  top: BorderSide(
+                    color: AppColors.primaryColor.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                    width: 2,
+                  ),
+                ),
           boxShadow: [
             BoxShadow(
               color: AppColors.uiBlack.withValues(
@@ -300,24 +325,29 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           mainAxisSize: MainAxisSize.min,
           children: [
             // Handle indicator
-            Container(
-              margin: const EdgeInsets.only(top: 20, bottom: 8),
-              width: 80,
-              height: 5,
-              decoration: BoxDecoration(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityHigh,
-                ),
-                borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.uiBlack.withValues(
-                      alpha: AppTypography.opacityMedium,
-                    ),
-                    blurRadius: 2,
-                    offset: const Offset(0, 1),
+            MouseRegion(
+              cursor: SystemMouseCursors.grab,
+              child: Container(
+                margin: const EdgeInsets.only(top: 20, bottom: 8),
+                width: 80,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityHigh,
                   ),
-                ],
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusMedium,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.uiBlack.withValues(
+                        alpha: AppTypography.opacityMedium,
+                      ),
+                      blurRadius: 2,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
               ),
             ),
 
@@ -409,8 +439,8 @@ class _ScenarioEditorBodyDetailsBottomSheetState
               ),
             ),
           ],
-        ), // End Column
-      ), // End Container (PopScope child)
+        ),
+      ),
     ); // End PopScope
   }
 
@@ -552,7 +582,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         AppTypography.spacingMedium,
         AppTypography.spacingMedium,
         AppTypography.spacingMedium,
-        AppTypography.spacingMedium + MediaQuery.of(context).padding.bottom,
+        AppTypography.spacingMedium + MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -666,7 +696,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         AppTypography.spacingMedium,
         AppTypography.spacingMedium,
         AppTypography.spacingMedium,
-        AppTypography.spacingMedium + MediaQuery.of(context).padding.bottom,
+        AppTypography.spacingMedium + MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
