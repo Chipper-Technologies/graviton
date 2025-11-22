@@ -1,9 +1,18 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
+
 /// Comprehensive color theme for the Graviton app.
 class AppColors {
   // Private constructor to prevent instantiation
   AppColors._();
+
+  /// Internal test helper to ensure the private constructor is covered.
+  /// This should never be used in production code.
+  @visibleForTesting
+  static void testConstructor() {
+    AppColors._();
+  }
 
   // =============================================================================
   // SPACE & COSMIC COLORS

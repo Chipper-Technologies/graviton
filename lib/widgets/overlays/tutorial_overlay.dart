@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/config/flavor_config.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/tutorial_action.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/tutorial_step.dart';
@@ -191,173 +192,190 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                           _nextStep();
                         }
                       },
-                      child: Material(
-                        borderRadius: BorderRadius.circular(
-                          AppTypography.radiusXLarge,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: RenderingConstants.tutorialOverlayMaxWidth,
                         ),
-                        elevation: 8,
-                        color: theme.colorScheme.surface,
-                        child: Container(
-                          margin: const EdgeInsets.all(32),
-                          padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              AppTypography.radiusXLarge,
-                            ),
+                        child: Material(
+                          borderRadius: BorderRadius.circular(
+                            AppTypography.radiusXLarge,
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // Step indicator
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(_steps.length, (index) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 4,
-                                    ),
-                                    width: 8,
-                                    height: 8,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: index == _currentStep
-                                          ? _getIconColor(_currentStep)
-                                          : theme.colorScheme.onSurface
-                                                .withValues(
-                                                  alpha: AppTypography
-                                                      .opacityFaint,
-                                                ),
-                                    ),
-                                  );
-                                }),
+                          elevation: 8,
+                          color: theme.colorScheme.surface,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 32,
+                              vertical: 16,
+                            ),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                AppTypography.radiusXLarge,
                               ),
-                              const SizedBox(
-                                height: AppTypography.spacingSmall,
-                              ),
-
-                              // Swipe hint
-                              Text(
-                                l10n.tutorialNavigationHint,
-                                style: AppTypography.smallText.copyWith(
-                                  color: theme.colorScheme.onSurface.withValues(
-                                    alpha: AppTypography.opacityMediumHigh,
-                                  ),
-                                  fontSize: 11,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(
-                                height: AppTypography.spacingLarge,
-                              ),
-
-                              // Icon or Logo
-                              Container(
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: theme.colorScheme.primary.withValues(
-                                    alpha: AppTypography.opacitySubtle,
-                                  ),
-                                ),
-                                child: step.isLogoStep
-                                    ? Container(
-                                        width: 48,
-                                        height: 48,
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Step indicator
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(_steps.length, (
+                                      index,
+                                    ) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 4,
+                                        ),
+                                        width: 8,
+                                        height: 8,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                            image: AssetImage(
-                                              AppConfig.appLogoPath,
-                                            ),
-                                            fit: BoxFit.cover,
-                                          ),
+                                          color: index == _currentStep
+                                              ? _getIconColor(_currentStep)
+                                              : theme.colorScheme.onSurface
+                                                    .withValues(
+                                                      alpha: AppTypography
+                                                          .opacityFaint,
+                                                    ),
                                         ),
-                                      )
-                                    : Icon(
-                                        step.icon,
-                                        size: AppTypography.iconSizeXXXXLarge,
-                                        color: _getIconColor(_currentStep),
-                                      ),
-                              ),
-                              const SizedBox(
-                                height: AppTypography.spacingXXLarge,
-                              ),
-
-                              // Title
-                              Text(
-                                step.title,
-                                style: AppTypography.titleText.copyWith(
-                                  color: theme.colorScheme.onSurface,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(
-                                height: AppTypography.spacingLarge,
-                              ),
-
-                              // Description - left aligned
-                              SizedBox(
-                                width: double.infinity,
-                                child: _buildDescriptionText(
-                                  step.description,
-                                  theme,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: AppTypography.spacingXXXLarge,
-                              ),
-
-                              // Navigation buttons
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // Skip button
-                                  HapticTextButton(
-                                    onPressed: _skipTutorial,
-                                    child: Text(l10n.skipTutorial),
+                                      );
+                                    }),
+                                  ),
+                                  const SizedBox(
+                                    height: AppTypography.spacingSmall,
                                   ),
 
-                                  // Previous/Next buttons
+                                  // Swipe hint
+                                  Text(
+                                    l10n.tutorialNavigationHint,
+                                    style: AppTypography.smallText.copyWith(
+                                      color: theme.colorScheme.onSurface
+                                          .withValues(
+                                            alpha:
+                                                AppTypography.opacityMediumHigh,
+                                          ),
+                                      fontSize: 11,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(
+                                    height: AppTypography.spacingLarge,
+                                  ),
+
+                                  // Icon or Logo
+                                  Container(
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: theme.colorScheme.primary
+                                          .withValues(
+                                            alpha: AppTypography.opacitySubtle,
+                                          ),
+                                    ),
+                                    child: step.isLogoStep
+                                        ? Container(
+                                            width: 48,
+                                            height: 48,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                  AppConfig.appLogoPath,
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )
+                                        : Icon(
+                                            step.icon,
+                                            size:
+                                                AppTypography.iconSizeXXXXLarge,
+                                            color: _getIconColor(_currentStep),
+                                          ),
+                                  ),
+                                  const SizedBox(
+                                    height: AppTypography.spacingXXLarge,
+                                  ),
+
+                                  // Title
+                                  Text(
+                                    step.title,
+                                    style: AppTypography.titleText.copyWith(
+                                      color: theme.colorScheme.onSurface,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(
+                                    height: AppTypography.spacingLarge,
+                                  ),
+
+                                  // Description - left aligned
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: _buildDescriptionText(
+                                      step.description,
+                                      theme,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: AppTypography.spacingXXXLarge,
+                                  ),
+
+                                  // Navigation buttons
                                   Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      if (_currentStep > 0)
-                                        HapticTextButton(
-                                          onPressed: _previousStep,
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: _getIconColor(
-                                              _currentStep,
+                                      // Skip button
+                                      HapticTextButton(
+                                        onPressed: _skipTutorial,
+                                        child: Text(l10n.skipTutorial),
+                                      ),
+
+                                      // Previous/Next buttons
+                                      Row(
+                                        children: [
+                                          if (_currentStep > 0)
+                                            HapticTextButton(
+                                              onPressed: _previousStep,
+                                              style: TextButton.styleFrom(
+                                                foregroundColor: _getIconColor(
+                                                  _currentStep,
+                                                ),
+                                              ),
+                                              child: Text(l10n.previous),
+                                            ),
+                                          const SizedBox(
+                                            width: AppTypography.spacingSmall,
+                                          ),
+                                          HapticElevatedButton(
+                                            onPressed: _nextStep,
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: _getIconColor(
+                                                _currentStep,
+                                              ),
+                                              foregroundColor:
+                                                  AppColors.uiWhite,
+                                            ),
+                                            child: Text(
+                                              _currentStep == _steps.length - 1
+                                                  ? l10n.getStarted
+                                                  : l10n.next,
                                             ),
                                           ),
-                                          child: Text(l10n.previous),
-                                        ),
-                                      const SizedBox(
-                                        width: AppTypography.spacingSmall,
-                                      ),
-                                      HapticElevatedButton(
-                                        onPressed: _nextStep,
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: _getIconColor(
-                                            _currentStep,
-                                          ),
-                                          foregroundColor: AppColors.uiWhite,
-                                        ),
-                                        child: Text(
-                                          _currentStep == _steps.length - 1
-                                              ? l10n.getStarted
-                                              : l10n.next,
-                                        ),
+                                        ],
                                       ),
                                     ],
                                   ),
                                 ],
-                              ),
-                            ],
+                              ), // End Column
+                            ), // End SingleChildScrollView
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
+                        ), // End Material
+                      ), // End ConstrainedBox
+                    ), // End HapticGestureDetector
+                  ), // End Center
                 ],
               ),
             ),

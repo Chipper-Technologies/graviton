@@ -13,10 +13,11 @@
     <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart" />
     <img src="https://img.shields.io/badge/Physics-E34F26?style=for-the-badge&logo=atom&logoColor=white" alt="Physics" />
     <img src="https://img.shields.io/badge/3D_Graphics-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="3D Graphics" />
+    <img src="https://img.shields.io/badge/Web-Chrome%20%7C%20Edge%20%7C%20Safari-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Web Support" />
   </p>
   
   <p align="center">
-    <img src="https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20Web-lightgrey?style=for-the-badge" alt="Platform Support" />
+    <img src="https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20macOS%20%7C%20Windows%20%7C%20Web-lightgrey?style=for-the-badge" alt="Platform Support" />
     <img src="https://img.shields.io/badge/Languages-7_Languages_Supported-green?style=for-the-badge" alt="Internationalization" />
   </p>
   
@@ -25,6 +26,13 @@
       <img src="https://img.shields.io/badge/iOS-Available_on_App_Store-007AFF?style=for-the-badge&logo=apple&logoColor=white" alt="Available on iOS App Store" />
     </a>
     <img src="https://img.shields.io/badge/Android-Coming_Soon-lightgrey?style=for-the-badge&logo=android&logoColor=white" alt="Coming Soon on Google Play" />
+    <a href="https://graviton.chipperlabs.com" target="_blank">
+      <img src="https://img.shields.io/badge/Web-Available_Now-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Available on the Web" />
+    </a>
+    <a href="https://apps.apple.com/us/app/graviton-sim/id6754208416" target="_blank">
+      <img src="https://img.shields.io/badge/macOS-Available_on_App_Store-007AFF?style=for-the-badge&logo=apple&logoColor=white" alt="Available on Mac App Store" />
+    </a>
+    <img src="https://img.shields.io/badge/Windows-Coming_Soon-lightgrey?style=for-the-badge&logo=windows&logoColor=white" alt="Coming Soon on Windows" />
   </p>
 </div>
 
@@ -209,12 +217,22 @@ Professional screenshot capture system for creating marketing materials:
 - **Flutter SDK**: Version 3.0 or higher
 - **Dart SDK**: Version 3.0 or higher  
 - **IDE**: VS Code with Flutter extension (recommended) or Android Studio
-- **Platforms**: iOS 11+, Android API 21+, or modern web browser
+- **Platforms**: iOS 11+, Android API 21+, macOS 10.14+, or modern web browser
+
+**For Web Development:**
+- **Chrome Browser**: Recommended for development and testing
+- **Web Server**: For production deployment (Firebase Hosting, Netlify, etc.)
+- **No Additional Setup**: Web support works out of the box
 
 **For iOS Development:**
 - **macOS**: Required for iOS builds and simulator testing
 - **Xcode**: Latest version for iOS compilation
 - **iOS Simulator**: Included with Xcode for testing
+
+**For macOS Development:**
+- **macOS**: Required for macOS builds
+- **Xcode**: Latest version for macOS compilation
+- **Code Signing**: Apple Developer account for distribution
 
 **For Android Development:**
 - **Android Studio** or **Android SDK**: For emulator and device testing
@@ -299,17 +317,22 @@ dev_dependencies:
 
 ### 🎯 Quick Start Guide
 
-1. **Launch the app** - Choose your preferred platform
+1. **Launch the app** - Choose your preferred platform:
+   - **Mobile**: Run on iOS/Android device or simulator
+   - **Web**: Run in Chrome browser (`flutter run -d chrome`)
+   - **macOS**: Run as native desktop app
 2. **Select a scenario** - Start with "Solar System" for the full experience
 3. **Explore controls**:
-   - 🖱️ **Drag** to rotate the camera
-   - 🤏 **Pinch** to zoom in/out
+   - 🖱️ **Drag** to rotate the camera (touch or mouse)
+   - 🤏 **Pinch** to zoom in/out (touch or scroll wheel)
    - 🔄 **Two-finger rotate** for camera roll
    - ▶️ **Play/Pause** to control simulation
 4. **Customize experience**:
    - ⚡ Adjust speed with the slider
    - 🌟 Toggle trails for orbital visualization
    - 📊 Enable stats for detailed information
+
+> **Web Performance Tip**: The web version uses CanvasKit renderer for optimal 3D graphics performance. For best results, use Chrome or Edge browsers.
 
 ### 💻 VS Code Development Workflow
 
@@ -319,10 +342,17 @@ Graviton includes comprehensive VS Code integration for streamlined development:
 
 Access via the Debug panel or `F5` key:
 
+**Mobile Platforms:**
 - **Development [DEBUG]** - Full debugging with development config
 - **Development [PROFILE]** - Profile mode for performance testing
 - **Development [RELEASE]** - Release mode with development config
 - **Production [RELEASE]** - Production configuration testing
+
+**Web Platform:**
+- **Web Development [DEBUG]** - Debug mode in Chrome with dev config
+- **Web Production [DEBUG]** - Debug mode in Chrome with production config
+- **Web Development [RELEASE]** - Release mode in Chrome with dev config
+- **Web Production [RELEASE]** - Release mode in Chrome with production config
 
 *All configurations use `--dart-define-from-file` for cross-platform compatibility.*
 
@@ -333,6 +363,12 @@ Access via `Cmd/Ctrl + Shift + P` → "Tasks: Run Task":
 **Development & Running:**
 - 🚀 **Run Development** *(Default)* - Quick development testing
 - 🎯 **Run Production** - Test with production configuration
+
+**Web Development:**
+- 🌐 **Run Web Development** - Run in Chrome with dev configuration
+- 🌐 **Run Web Production** - Run in Chrome with production configuration
+- 🌐 **Build Web (Dev)** - Build for development deployment
+- 🌐 **Build Web (Prod)** - Build for production deployment
 
 **Android Builds:**
 - 📱 **Build Android APK (Dev/Prod)** - Direct installation APKs
@@ -403,6 +439,38 @@ flutter build ipa --dart-define-from-file config/dev.json --release
 flutter build ipa --dart-define-from-file config/prod.json --release
 ```
 
+#### 🖥️ macOS Builds
+
+**macOS App**
+```bash
+# Development build
+flutter build macos --dart-define-from-file config/dev.json --release
+
+# Production build
+flutter build macos --dart-define-from-file config/prod.json --release
+```
+
+**macOS Archive (Xcode)**
+```bash
+# Create Xcode archive for App Store or notarization
+xcodebuild -workspace macos/Runner.xcworkspace \
+  -scheme Runner \
+  -configuration Release \
+  archive \
+  -archivePath build/macos/Graviton.xcarchive \
+  DART_DEFINES=Y29uZmlnL3Byb2QuanNvbg== \
+  DART_OBFUSCATION=false \
+  TREE_SHAKE_ICONS=true
+```
+
+**DMG Creation**
+```bash
+# Create DMG for direct distribution
+hdiutil create -volname "Graviton" \
+  -srcfolder build/macos/Build/Products/Release/Graviton.app \
+  -ov -format UDZO build/Graviton.dmg
+```
+
 #### 🌐 Web Build
 
 ```bash
@@ -416,6 +484,9 @@ flutter build web --dart-define-from-file config/prod.json --release
 - **Android App Bundle**: `build/app/outputs/bundle/`
 - **iOS App**: `build/ios/iphoneos/Runner.app`
 - **iOS IPA**: `build/ios/ipa/`
+- **macOS App**: `build/macos/Build/Products/Release/Graviton.app`
+- **macOS Archive**: `build/macos/Graviton.xcarchive`
+- **macOS DMG**: `build/Graviton.dmg`
 - **Web**: `build/web/`
 
 #### ⚙️ Build Configuration
@@ -431,6 +502,49 @@ Each configuration can have different:
 - App identifiers
 - Feature flags
 - Screenshot mode availability (dev only)
+
+#### 🌐 Web Deployment
+
+The web build can be deployed to various hosting platforms:
+
+**Firebase Hosting** (Recommended)
+```bash
+# Install Firebase CLI
+npm install -g firebase-tools
+
+# Login to Firebase
+firebase login
+
+# Initialize Firebase Hosting
+firebase init hosting
+
+# Build and deploy
+flutter build web --dart-define-from-file config/prod.json --release
+firebase deploy --only hosting
+```
+
+**GitHub Pages**
+```bash
+# Build the web app
+flutter build web --dart-define-from-file config/prod.json --release --base-href "/graviton/"
+
+# Deploy to gh-pages branch
+# (Requires GitHub Pages to be enabled in repository settings)
+```
+
+**Netlify / Vercel**
+1. Build the web app: `flutter build web --dart-define-from-file config/prod.json --release`
+2. Connect repository to Netlify/Vercel
+3. Set build command: `flutter build web --release`
+4. Set publish directory: `build/web`
+
+**Web Features:**
+- ✅ Progressive Web App (PWA) support with offline capability
+- ✅ Optimized for 3D graphics performance
+- ✅ Service Worker for caching and improved load times
+- ✅ Responsive design works on desktop and mobile browsers
+- ✅ Firebase integration for analytics and remote config
+- ⚠️ Best performance on Chrome, Edge, and Safari
 
 #### � Android Release Signing Setup
 
@@ -602,7 +716,7 @@ For detailed tool documentation, including troubleshooting, advanced options, an
 **[📖 View Complete Tools Documentation →](tools/README.md)**
 
 ### 🚀 Fastlane Automation
-Automated build and deployment pipelines for both iOS and Android platforms:
+Automated build and deployment pipelines for iOS, Android, and macOS platforms:
 
 ```bash
 # Android builds
@@ -616,19 +730,30 @@ cd ios && bundle exec fastlane build_flutter   # Development IPA
 cd ios && bundle exec fastlane beta            # Deploy to TestFlight (includes dSYM upload)
 cd ios && bundle exec fastlane deploy          # Deploy to App Store (includes dSYM upload)
 
+# macOS builds
+cd macos && bundle exec fastlane mac build_flutter flavor:dev   # Development build
+cd macos && bundle exec fastlane mac build_flutter flavor:prod  # Production build
+cd macos && bundle exec fastlane mac dmg flavor:prod           # Create DMG
+cd macos && bundle exec fastlane mac notarize flavor:prod      # Build and notarize
+cd macos && bundle exec fastlane mac release flavor:prod       # Deploy to Mac App Store
+
 # Firebase Crashlytics dSYM uploads
 cd ios && bundle exec fastlane upload_dsyms flavor:dev     # Upload dSYMs for dev
 cd ios && bundle exec fastlane upload_dsyms flavor:prod    # Upload dSYMs for prod
 cd ios && bundle exec fastlane build_and_upload_dsyms      # Build and upload dSYMs
+cd macos && bundle exec fastlane mac upload_dsyms flavor:dev   # Upload macOS dSYMs for dev
+cd macos && bundle exec fastlane mac upload_dsyms flavor:prod  # Upload macOS dSYMs for prod
 ```
 
 **Features:**
 - Multi-flavor support (dev/prod environments)
+- Multi-platform support (iOS, Android, macOS)
 - Automatic version management and Firebase integration
 - **Firebase Crashlytics dSYM upload** for crash symbolication
 - Screenshot generation and metadata management
 - Code signing and certificate management
 - One-command deployment to app stores
+- macOS notarization for direct distribution
 
 **[📖 View Complete Fastlane Documentation →](docs/FASTLANE.md)**
 

@@ -1,0 +1,169 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:mac)
+
+platform :mac do
+  desc "Build Flutter macOS app"
+  lane :build_flutter do |options|
+    # Default to dev flavor if none specified
+    flavor = options[:flavor] || "dev"
+    config_file = flavor == "prod" ? "config/prod.json" : "config/dev.json"
+    
+    sh("cd ../../ && flutter clean")
+    sh("cd ../../ && flutter pub get")
+    
+    # Run pod install using bundle exec to ensure correct environment
+    sh("bundle exec pod install")
+    
+    sh("cd ../../ && flutter build macos --dart-define-from-file #{config_file} --release")
+    
+    build_app(
+      scheme: "Runner",
+      workspace: "Runner.xcworkspace",
+      configuration: "Release",
+      export_method: "developer-id",
+      output_directory: "./build",
+      output_name: "Graviton-#{flavor}.app"
+    )
+  end
+
+  desc "Build and notarize macOS app for direct distribution"
+  lane :notarize do |options|
+    # Default to prod flavor
+    flavor = options[:flavor] || "prod"
+    
+    # Build the app
+    build_flutter(flavor: flavor)
+    
+    # Notarize the app
+    notarize(
+      package: "./build/Graviton-#{flavor}.app",
+      bundle_id: "io.chipper.graviton"
+    )
+    
+    UI.success "Successfully notarized Graviton-#{flavor}.app"
+  end
+
+  desc "Build, archive, and submit to Mac App Store"
+  lane :release do |options|
+    # Default to prod flavor
+    flavor = options[:flavor] || "prod"
+    config_file = flavor == "prod" ? "config/prod.json" : "config/dev.json"
+    
+    # Match for distribution certificates
+    match(type: "appstore", platform: "macos")
+    
+    sh("cd ../../ && flutter clean")
+    sh("cd ../../ && flutter pub get")
+    sh("bundle exec pod install")
+    sh("cd ../../ && flutter build macos --dart-define-from-file #{config_file} --release")
+    
+    # Build and archive
+    build_app(
+      scheme: "Runner",
+      workspace: "Runner.xcworkspace",
+      configuration: "Release",
+      export_method: "app-store",
+      output_directory: "./build",
+      output_name: "Graviton.app",
+      skip_package_pkg: false
+    )
+    
+    # Upload to Mac App Store
+    upload_to_app_store(
+      platform: "osx",
+      skip_screenshots: true,
+      skip_metadata: false
+    )
+    
+    UI.success "Successfully released to Mac App Store"
+  end
+
+  desc "Create DMG for direct distribution"
+  lane :dmg do |options|
+    # Default to prod flavor
+    flavor = options[:flavor] || "prod"
+    
+    # Build the app first
+    build_flutter(flavor: flavor)
+    
+    # Create DMG
+    dmg_name = flavor == "prod" ? "Graviton" : "Graviton-#{flavor}"
+    sh("hdiutil create -volname '#{dmg_name}' -srcfolder './build/Graviton-#{flavor}.app' -ov -format UDZO '../build/#{dmg_name}.dmg'")
+    
+    UI.success "Successfully created #{dmg_name}.dmg"
+  end
+
+  desc "Sync certificates and profiles for macOS"
+  lane :certificates do
+    match(type: "development", platform: "macos")
+    match(type: "appstore", platform: "macos")
+    match(type: "developer_id", platform: "macos")
+  end
+
+  desc "Upload dSYMs to Firebase Crashlytics"
+  lane :upload_dsyms do |options|
+    # Default to Dev configuration if no flavor specified
+    flavor = options[:flavor] || "dev"
+    
+    UI.message "Uploading dSYMs for #{flavor} flavor..."
+    
+    # Set the path to the GoogleService-Info.plist based on flavor
+    google_service_info_path = case flavor
+    when "prod"
+      "./Config/Prod/GoogleService-Info.plist"
+    else
+      "./Config/Dev/GoogleService-Info.plist"
+    end
+    
+    # Ensure the GoogleService-Info.plist exists
+    unless File.exist?(google_service_info_path)
+      UI.user_error!("GoogleService-Info.plist not found at #{google_service_info_path}")
+    end
+    
+    # Upload dSYMs to Crashlytics
+    upload_symbols_to_crashlytics(
+      gsp_path: google_service_info_path,
+      dsym_path: "./build/Graviton-#{flavor}.app.dSYM.zip",
+      binary_path: "./Pods/FirebaseCrashlytics/upload-symbols"
+    )
+    
+    UI.success "Successfully uploaded dSYMs to Firebase Crashlytics for #{flavor} flavor"
+  end
+
+  desc "Build and upload dSYMs to Crashlytics"
+  lane :build_and_upload_dsyms do |options|
+    # Default to Dev flavor if no flavor specified
+    flavor = options[:flavor] || "dev"
+    
+    UI.message "Building app and uploading dSYMs for #{flavor} flavor..."
+    
+    # Build the Flutter app first
+    build_flutter(flavor: flavor)
+    
+    # Upload the dSYMs
+    upload_dsyms(flavor: flavor)
+  end
+
+  desc "Update app metadata on Mac App Store"
+  lane :metadata do
+    upload_to_app_store(
+      platform: "osx",
+      skip_binary_upload: true,
+      skip_screenshots: true
+    )
+  end
+end

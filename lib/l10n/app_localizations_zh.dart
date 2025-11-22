@@ -2827,17 +2827,80 @@ class AppLocalizationsZh extends AppLocalizations {
   String get notApplicableValue => '不适用';
 
   @override
-  String get habitableStatus => '宜居';
+  String get habitableStatus => '适宜居住';
 
   @override
   String get unknownHabitabilityStatus => '未知';
 
   @override
-  String get tooHotStatus => '过热';
+  String get tooHotStatus => '太热';
 
   @override
-  String get tooColdStatus => '过冷';
+  String get tooColdStatus => '太冷';
 
   @override
-  String get noAtmosphereStatus => '无大气';
+  String get noAtmosphereStatus => '无大气层';
+
+  @override
+  String get selectBody => '选择天体';
+
+  @override
+  String get noBodiesAvailable => '没有可用的天体';
+
+  @override
+  String get share => '分享';
+
+  @override
+  String get shareSimulation => '分享模拟';
+
+  @override
+  String get shareImage => '分享图片';
+
+  @override
+  String get shareImageDescription => '捕获并分享当前视图';
+
+  @override
+  String get shareState => '分享状态';
+
+  @override
+  String get shareStateDescription => '将模拟数据导出为可导入的文件';
+
+  @override
+  String get shareSuccess => '分享成功';
+
+  @override
+  String get shareFailed => '分享失败';
+
+  @override
+  String get shareImageError => '无法捕获图像。请重试。';
+
+  @override
+  String get shareSubject => 'Graviton模拟';
+
+  @override
+  String get shareSnapshotSubject => 'Graviton模拟快照';
+
+  @override
+  String get shareText => '看看这个引力模拟！';
+
+  @override
+  String get importScenario => '导入场景';
+
+  @override
+  String get importScenarioDescription => '从JSON文件加载场景';
+
+  @override
+  String get importSuccess => '场景导入成功';
+
+  @override
+  String get importFailed => '场景导入失败';
+
+  @override
+  String get importInvalidFile => '无效的文件格式。请选择有效的JSON文件。';
+
+  @override
+  String get importFileNotFound => '未找到文件。请重试。';
+
+  @override
+  String get importCancelled => '导入已取消';
 }

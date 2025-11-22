@@ -105,6 +105,10 @@ class RenderingConstants {
   // Bottom sheet UI constants
   static const double bottomSheetSystemBarPadding =
       50.0; // Extra padding for Android system bar clearance
+  static const double bottomSheetMaxWidth =
+      800.0; // Maximum width for bottom sheets on wide screens
+  static const double tutorialOverlayMaxWidth =
+      700.0; // Maximum width for tutorial overlay on wide screens
 
   // Cinematic Camera - Dramatic Scoring Constants
   // These constants control how the camera scoring algorithm weighs different dramatic factors

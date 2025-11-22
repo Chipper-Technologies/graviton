@@ -105,6 +105,9 @@ enum UIAction {
   /// Scenario exported
   scenarioExported('scenario_exported'),
 
+  /// Scenario imported
+  scenarioImported('scenario_imported'),
+
   /// Scenario tested
   scenarioTested('scenario_tested'),
 

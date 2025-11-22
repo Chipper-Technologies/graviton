@@ -42,6 +42,13 @@ class AppConfig {
     prod: 'https://api.chipperlabs.com',
   );
 
+  // Version information (injected at build time for web)
+  static String get appVersion =>
+      const String.fromEnvironment('APP_VERSION', defaultValue: '1.0.0');
+
+  static String get buildNumber =>
+      const String.fromEnvironment('BUILD_NUMBER', defaultValue: '1');
+
   // External URLs
   static String get githubUrl => const String.fromEnvironment(
     'GITHUB_URL',

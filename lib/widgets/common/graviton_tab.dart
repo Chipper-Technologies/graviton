@@ -27,35 +27,40 @@ class GravitonTab extends StatelessWidget {
 
     return Opacity(
       opacity: isEnabled ? 1.0 : 0.7,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Stack(
-            children: [
-              Icon(
-                icon,
-                size: AppTypography.iconSizeLarge,
-                color: effectiveColor,
-              ),
-              // Active indicator dot - always show on active tabs
-              if (isActive && isEnabled)
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Container(
-                    width: 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: AppColors.uiOrange,
-                      shape: BoxShape.circle,
+      child: SizedBox(
+        height: double.infinity,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Stack(
+              children: [
+                Icon(
+                  icon,
+                  size: AppTypography.iconSizeLarge,
+                  color: effectiveColor,
+                ),
+                // Active indicator dot - always show on active tabs
+                if (isActive && isEnabled)
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: AppColors.uiOrange,
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
-                ),
-            ],
-          ),
-          const SizedBox(width: AppTypography.spacingSmall),
-          Text(label, style: TextStyle(color: effectiveColor)),
-        ],
+              ],
+            ),
+            const SizedBox(width: AppTypography.spacingSmall),
+            Text(label, style: TextStyle(color: effectiveColor)),
+          ],
+        ),
       ),
     );
   }

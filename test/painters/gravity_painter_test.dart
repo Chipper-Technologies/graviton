@@ -1080,5 +1080,138 @@ void main() {
         expect(earthField, greaterThan(moonField));
       });
     });
+
+    group('Global Gravity Fields Fallback', () {
+      test(
+        'should render gravity wells when globalGravityFields is true even if body.showGravityWell is false',
+        () {
+          final body = Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 1e30,
+            radius: 7e8,
+            color: AppColors.basicYellow,
+            name: 'Star',
+            bodyType: BodyType.star,
+            showGravityWell: false, // Explicitly disabled
+          );
+
+          simulation.bodies = [body];
+
+          final recorder = ui.PictureRecorder();
+          final canvas = Canvas(recorder);
+          final size = const Size(800, 600);
+          final viewMatrix = vm.Matrix4.identity();
+          final vpMatrix = vm.Matrix4.identity();
+
+          // Should render gravity well because globalGravityFields is true
+          expect(
+            () => GravityPainter.drawGravityWells(
+              canvas,
+              size,
+              vpMatrix,
+              simulation,
+              1000.0,
+              viewMatrix,
+              globalGravityFields: true,
+            ),
+            returnsNormally,
+            reason:
+                'Should render when globalGravityFields is true regardless of body.showGravityWell',
+          );
+
+          final picture = recorder.endRecording();
+          expect(picture, isNotNull);
+          picture.dispose();
+        },
+      );
+
+      test(
+        'should NOT render gravity wells when both globalGravityFields and body.showGravityWell are false',
+        () {
+          final body = Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 1e30,
+            radius: 7e8,
+            color: AppColors.basicYellow,
+            name: 'Star',
+            bodyType: BodyType.star,
+            showGravityWell: false,
+          );
+
+          simulation.bodies = [body];
+
+          final recorder = ui.PictureRecorder();
+          final canvas = Canvas(recorder);
+          final size = const Size(800, 600);
+          final viewMatrix = vm.Matrix4.identity();
+          final vpMatrix = vm.Matrix4.identity();
+
+          // Should still not throw, just skip rendering the gravity well
+          expect(
+            () => GravityPainter.drawGravityWells(
+              canvas,
+              size,
+              vpMatrix,
+              simulation,
+              1000.0,
+              viewMatrix,
+              globalGravityFields: false,
+            ),
+            returnsNormally,
+            reason: 'Should handle no gravity wells gracefully',
+          );
+
+          final picture = recorder.endRecording();
+          expect(picture, isNotNull);
+          picture.dispose();
+        },
+      );
+
+      test(
+        'should render gravity wells when body.showGravityWell is true regardless of globalGravityFields',
+        () {
+          final body = Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 1e30,
+            radius: 7e8,
+            color: AppColors.basicYellow,
+            name: 'Star',
+            bodyType: BodyType.star,
+            showGravityWell: true, // Explicitly enabled
+          );
+
+          simulation.bodies = [body];
+
+          final recorder = ui.PictureRecorder();
+          final canvas = Canvas(recorder);
+          final size = const Size(800, 600);
+          final viewMatrix = vm.Matrix4.identity();
+          final vpMatrix = vm.Matrix4.identity();
+
+          // Should render gravity well even when globalGravityFields is false
+          expect(
+            () => GravityPainter.drawGravityWells(
+              canvas,
+              size,
+              vpMatrix,
+              simulation,
+              1000.0,
+              viewMatrix,
+              globalGravityFields: false,
+            ),
+            returnsNormally,
+            reason:
+                'Should render when body.showGravityWell is true regardless of globalGravityFields',
+          );
+
+          final picture = recorder.endRecording();
+          expect(picture, isNotNull);
+          picture.dispose();
+        },
+      );
+    });
   });
 }

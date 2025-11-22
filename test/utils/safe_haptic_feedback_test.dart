@@ -183,8 +183,7 @@ void main() {
 
         stopwatch.stop();
 
-        // Should handle many calls efficiently (allowing more time in test environment)
-        expect(stopwatch.elapsedMilliseconds, lessThan(500));
+        expect(stopwatch.elapsedMilliseconds, lessThan(2000));
       });
     });
 

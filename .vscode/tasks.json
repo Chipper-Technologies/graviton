@@ -7,7 +7,7 @@
     // DEVELOPMENT & RUNNING TASKS
     // ============================================================================
     {
-      "label": "🚀 Run Development",
+      "label": "[DEV] Run App",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -33,7 +33,7 @@
       "detail": "Run Flutter app with development configuration"
     },
     {
-      "label": "🎯 Run Production",
+      "label": "[PROD] Run App",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -63,7 +63,7 @@
     // ANDROID BUILD TASKS
     // ============================================================================
     {
-      "label": "📱 Build Android APK (Dev)",
+      "label": "[DEV][ANDROID] Build APK",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -91,7 +91,7 @@
       "detail": "Build Android APK for development"
     },
     {
-      "label": "📱 Build Android APK (Prod)",
+      "label": "[PROD][ANDROID] Build APK",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -121,7 +121,7 @@
       "detail": "Build Android APK for production"
     },
     {
-      "label": "📦 Build Android Bundle (Dev)",
+      "label": "[DEV][ANDROID] Build App Bundle",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -149,7 +149,7 @@
       "detail": "Build Android App Bundle for development"
     },
     {
-      "label": "📦 Build Android Bundle (Prod)",
+      "label": "[PROD][ANDROID] Build App Bundle",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -183,7 +183,7 @@
     // iOS BUILD TASKS
     // ============================================================================
     {
-      "label": "🍎 Build iOS (Dev)",
+      "label": "[DEV][IOS] Build App",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -209,7 +209,7 @@
       "detail": "Build iOS app for development"
     },
     {
-      "label": "🍎 Build iOS (Prod)",
+      "label": "[PROD][IOS] Build App",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -237,7 +237,7 @@
       "detail": "Build iOS app for production"
     },
     {
-      "label": "📋 Build iOS Archive (Dev)",
+      "label": "[DEV][IOS] Build IPA Archive",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -263,7 +263,7 @@
       "detail": "Build iOS IPA archive for development"
     },
     {
-      "label": "📋 Build iOS Archive (Prod)",
+      "label": "[PROD][IOS] Build IPA Archive",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -292,10 +292,287 @@
     },
 
     // ============================================================================
+    // MACOS BUILD TASKS
+    // ============================================================================
+    {
+      "label": "[DEV][MACOS] Run App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "run",
+        "-d",
+        "macos",
+        "--dart-define-from-file",
+        "config/dev.json",
+        "--flavor",
+        "dev"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter app on macOS with development configuration"
+    },
+    {
+      "label": "[PROD][MACOS] Run App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "run",
+        "-d",
+        "macos",
+        "--dart-define-from-file",
+        "config/prod.json",
+        "--flavor",
+        "prod"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter app on macOS with production configuration"
+    },
+    {
+      "label": "[DEV][MACOS] Build App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "macos",
+        "--dart-define-from-file",
+        "config/dev.json",
+        "--flavor",
+        "dev",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build macOS app for development"
+    },
+    {
+      "label": "[PROD][MACOS] Build App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "macos",
+        "--dart-define-from-file",
+        "config/prod.json",
+        "--flavor",
+        "prod",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build macOS app for production"
+    },
+    {
+      "label": "[PROD][MACOS] Build Archive",
+      "type": "shell",
+      "command": "sh",
+      "args": [
+        "-c",
+        "flutter build macos --dart-define-from-file config/prod.json --release && xcodebuild -workspace macos/Runner.xcworkspace -scheme prod -configuration Release-prod archive -archivePath build/macos/Graviton.xcarchive"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build with Flutter and create Xcode archive for macOS (for App Store or direct distribution)"
+    },
+    {
+      "label": "[PROD][MACOS] Export Archive for App Store",
+      "type": "shell",
+      "command": "xcodebuild",
+      "args": [
+        "-exportArchive",
+        "-archivePath",
+        "build/macos/Graviton.xcarchive",
+        "-exportPath",
+        "build/macos/AppStore",
+        "-exportOptionsPlist",
+        "macos/ExportOptions.plist"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "dependsOn": ["[PROD][MACOS] Build Archive"],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Export archive for App Store distribution (requires ExportOptions.plist)"
+    },
+
+    // ============================================================================
+    // WEB TASKS
+    // ============================================================================
+    {
+      "label": "[DEV][WEB] Run App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "run",
+        "-d",
+        "chrome",
+        "--dart-define-from-file",
+        "config/dev.json"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter web app in Chrome with development configuration"
+    },
+    {
+      "label": "[PROD][WEB] Run App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "run",
+        "-d",
+        "chrome",
+        "--dart-define-from-file",
+        "config/prod.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter web app in Chrome with production configuration"
+    },
+    {
+      "label": "[DEV][WEB] Build App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "web",
+        "--dart-define-from-file",
+        "config/dev.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build Flutter web app for development deployment"
+    },
+    {
+      "label": "[PROD][WEB] Build App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "web",
+        "--dart-define-from-file",
+        "config/prod.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build Flutter web app for production deployment"
+    },
+
+    // ============================================================================
     // MAINTENANCE TASKS
     // ============================================================================
     {
-      "label": "🧹 Clean Build",
+      "label": "Clean Build Cache",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -317,7 +594,7 @@
       "detail": "Clean Flutter build cache and artifacts"
     },
     {
-      "label": "📦 Get Dependencies",
+      "label": "Get Dependencies",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -340,7 +617,7 @@
       "detail": "Get Flutter package dependencies"
     },
     {
-      "label": "🔍 Analyze Code",
+      "label": "Analyze Code",
       "type": "shell",
       "command": "flutter",
       "args": [
@@ -362,7 +639,7 @@
       "detail": "Run Flutter static analysis"
     },
     {
-      "label": "🧪 Run Tests",
+      "label": "Run Tests",
       "type": "shell",
       "command": "flutter",
       "args": [

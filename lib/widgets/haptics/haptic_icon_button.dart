@@ -59,6 +59,9 @@ class HapticIconButton extends StatelessWidget {
               HapticUtils.tap();
               onPressed!();
             },
+      mouseCursor: onPressed == null
+          ? SystemMouseCursors.basic
+          : SystemMouseCursors.click,
       icon: icon,
       iconSize: iconSize,
       visualDensity: visualDensity,

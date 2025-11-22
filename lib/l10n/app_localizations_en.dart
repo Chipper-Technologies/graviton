@@ -3019,4 +3019,69 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noAtmosphereStatus => 'No Atmosphere';
+
+  @override
+  String get selectBody => 'Select Body';
+
+  @override
+  String get noBodiesAvailable => 'No bodies available';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get shareSimulation => 'Share Simulation';
+
+  @override
+  String get shareImage => 'Share Image';
+
+  @override
+  String get shareImageDescription => 'Capture and share the current view';
+
+  @override
+  String get shareState => 'Share State';
+
+  @override
+  String get shareStateDescription =>
+      'Export simulation data as importable file';
+
+  @override
+  String get shareSuccess => 'Shared successfully';
+
+  @override
+  String get shareFailed => 'Failed to share';
+
+  @override
+  String get shareImageError => 'Cannot capture image. Please try again.';
+
+  @override
+  String get shareSubject => 'Graviton Simulation';
+
+  @override
+  String get shareSnapshotSubject => 'Graviton Simulation Snapshot';
+
+  @override
+  String get shareText => 'Check out this gravitational simulation!';
+
+  @override
+  String get importScenario => 'Import Scenario';
+
+  @override
+  String get importScenarioDescription => 'Load a scenario from a JSON file';
+
+  @override
+  String get importSuccess => 'Scenario imported successfully';
+
+  @override
+  String get importFailed => 'Failed to import scenario';
+
+  @override
+  String get importInvalidFile =>
+      'Invalid file format. Please select a valid JSON file.';
+
+  @override
+  String get importFileNotFound => 'File not found. Please try again.';
+
+  @override
+  String get importCancelled => 'Import cancelled';
 }

@@ -4,7 +4,7 @@ import 'package:graviton/enums/ui_action.dart';
 void main() {
   group('UIAction Enum', () {
     test('should have all expected UI actions', () {
-      expect(UIAction.values.length, equals(106));
+      expect(UIAction.values.length, equals(107));
       expect(UIAction.values, contains(UIAction.tap));
       expect(UIAction.values, contains(UIAction.doubleTap));
       expect(UIAction.values, contains(UIAction.dialogOpened));

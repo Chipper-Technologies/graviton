@@ -43,13 +43,14 @@ class _AboutScreenState extends State<AboutScreen> {
       }
     } catch (e) {
       debugPrint('Error loading package info: $e');
+      // Use AppConfig constants as fallback (especially for web builds)
       if (mounted) {
         setState(() {
           _packageInfo = PackageInfo(
             appName: 'Graviton',
             packageName: 'io.chipper.graviton',
-            version: '1.0.0',
-            buildNumber: '1',
+            version: AppConfig.appVersion,
+            buildNumber: AppConfig.buildNumber,
           );
         });
       }
@@ -64,161 +65,240 @@ class _AboutScreenState extends State<AboutScreen> {
     return Scaffold(
       backgroundColor: AppColors.transparentColor,
       appBar: HapticAppBar(title: l10n.aboutButtonTooltip),
-      body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: AppColors.uiBlack.withValues(
-            alpha: AppTypography.opacityNearlyOpaque,
-          ),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppTypography.spacingLarge),
-            child: Center(
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: Column(
-                  children: [
-                    // Large centered logo
-                    Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.uiWhiteBorder.withValues(
-                            alpha: AppTypography.opacityVeryFaint,
-                          ),
-                          width: 2,
+      body: SafeArea(child: _buildBody(context, l10n, theme)),
+    );
+  }
+
+  /// Build the main body with error handling for Chrome OS compatibility
+  Widget _buildBody(
+    BuildContext context,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
+    try {
+      return Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: AppColors.uiBlack.withValues(
+          alpha: AppTypography.opacityNearlyOpaque,
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(AppTypography.spacingLarge),
+          child: Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: Column(
+                children: [
+                  // Large centered logo with error handling
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.uiWhiteBorder.withValues(
+                          alpha: AppTypography.opacityVeryFaint,
                         ),
-                        image: DecorationImage(
-                          image: AssetImage(AppConfig.appLogoPath),
-                          fit: BoxFit.cover,
-                        ),
+                        width: 2,
                       ),
                     ),
-                    const SizedBox(height: AppTypography.spacingXLarge),
-
-                    // Centered app name
-                    Text(
-                      l10n.appTitle,
-                      style: theme.textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.uiWhite,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: AppTypography.spacingMedium),
-
-                    // Centered version with status color
-                    if (_packageInfo != null)
-                      _buildVersionInfo(context, theme, l10n)
-                    else
-                      Text(
-                        l10n.loadingVersion,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurface.withValues(
-                            alpha: AppTypography.opacityHigh,
-                          ),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    const SizedBox(height: AppTypography.spacingMedium),
-
-                    // Description
-                    Text(
-                      l10n.appDescription,
-                      style: theme.textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: AppTypography.spacingXXLarge),
-
-                    // Author Section with Chipper Logo
-                    _buildInfoSection(
-                      context,
-                      icon: Icons.business,
-                      title: l10n.authorLabel,
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            AppConfig.chipperLogoPath,
-                            width: 20,
-                            height: 20,
-                          ),
-                          const SizedBox(width: AppTypography.spacingSmall),
-                          Flexible(
-                            child: Text(
-                              l10n.companyName,
-                              style: theme.textTheme.bodyMedium,
+                    child: ClipOval(
+                      child: Image.asset(
+                        AppConfig.appLogoPath,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          // Fallback for image loading errors on Chrome OS
+                          debugPrint('Error loading app logo: $error');
+                          return Container(
+                            color: AppColors.uiBlack,
+                            child: Icon(
+                              Icons.public,
+                              size: 60,
+                              color: AppColors.primaryColor,
                             ),
-                          ),
-                        ],
+                          );
+                        },
                       ),
                     ),
-                    const SizedBox(height: AppTypography.spacingLarge),
+                  ),
+                  const SizedBox(height: AppTypography.spacingXLarge),
 
-                    // Website Section
-                    _buildInfoSection(
-                      context,
-                      icon: Icons.language,
-                      title: l10n.websiteLabel,
-                      child: HapticInkWell(
-                        onTap: () => _launchUrl(AppConfig.githubUrl),
-                        child: Text(
-                          AppConfig.githubUrl,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.primary,
-                            decoration: TextDecoration.underline,
-                            decorationColor: theme.colorScheme.primary
-                                .withValues(
-                                  alpha: AppTypography.opacityMediumHigh,
-                                ),
-                          ),
+                  // Centered app name
+                  Text(
+                    l10n.appTitle,
+                    style: theme.textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.uiWhite,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: AppTypography.spacingMedium),
+
+                  // Centered version with status color
+                  if (_packageInfo != null)
+                    _buildVersionInfo(context, theme, l10n)
+                  else
+                    Text(
+                      l10n.loadingVersion,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: AppTypography.opacityHigh,
                         ),
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: AppTypography.spacingMedium),
+                  const SizedBox(height: AppTypography.spacingMedium),
 
-                    // Privacy Policy Section
-                    _buildInfoSection(
-                      context,
-                      icon: Icons.privacy_tip,
-                      title: l10n.privacyPolicyLabel,
-                      child: HapticInkWell(
-                        onTap: () => _launchUrl(AppConfig.privacyPolicyUrl),
-                        child: Text(
-                          AppConfig.privacyPolicyUrl,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.primary,
-                            decoration: TextDecoration.underline,
-                            decorationColor: theme.colorScheme.primary
-                                .withValues(
-                                  alpha: AppTypography.opacityMediumHigh,
-                                ),
+                  // Description
+                  Text(
+                    l10n.appDescription,
+                    style: theme.textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: AppTypography.spacingXXLarge),
+
+                  // Author Section with Chipper Logo
+                  _buildInfoSection(
+                    context,
+                    icon: Icons.business,
+                    title: l10n.authorLabel,
+                    child: Row(
+                      children: [
+                        // Wrap SVG in error handling for Chrome OS compatibility
+                        _buildSvgWithFallback(
+                          AppConfig.chipperLogoPath,
+                          width: 20,
+                          height: 20,
+                          fallbackIcon: Icons.business,
+                        ),
+                        const SizedBox(width: AppTypography.spacingSmall),
+                        Flexible(
+                          child: Text(
+                            l10n.companyName,
+                            style: theme.textTheme.bodyMedium,
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                    const SizedBox(height: AppTypography.spacingXXLarge),
+                  ),
+                  const SizedBox(height: AppTypography.spacingLarge),
 
-                    // Copyright Section
-                    _buildInfoSection(
-                      context,
-                      icon: Icons.copyright,
-                      title: l10n.copyrightLabel,
+                  // Website Section
+                  _buildInfoSection(
+                    context,
+                    icon: Icons.language,
+                    title: l10n.websiteLabel,
+                    child: HapticInkWell(
+                      onTap: () => _launchUrl(AppConfig.githubUrl),
                       child: Text(
-                        '© ${DateTime.now().year} ${l10n.companyName}. ${l10n.allRightsReserved}.',
-                        style: theme.textTheme.bodyMedium,
+                        AppConfig.githubUrl,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.primary,
+                          decoration: TextDecoration.underline,
+                          decorationColor: theme.colorScheme.primary.withValues(
+                            alpha: AppTypography.opacityMediumHigh,
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: AppTypography.spacingXXLarge),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: AppTypography.spacingMedium),
+
+                  // Privacy Policy Section
+                  _buildInfoSection(
+                    context,
+                    icon: Icons.privacy_tip,
+                    title: l10n.privacyPolicyLabel,
+                    child: HapticInkWell(
+                      onTap: () => _launchUrl(AppConfig.privacyPolicyUrl),
+                      child: Text(
+                        AppConfig.privacyPolicyUrl,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.primary,
+                          decoration: TextDecoration.underline,
+                          decorationColor: theme.colorScheme.primary.withValues(
+                            alpha: AppTypography.opacityMediumHigh,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppTypography.spacingXXLarge),
+
+                  // Copyright Section
+                  _buildInfoSection(
+                    context,
+                    icon: Icons.copyright,
+                    title: l10n.copyrightLabel,
+                    child: Text(
+                      '© ${DateTime.now().year} ${l10n.companyName}. ${l10n.allRightsReserved}.',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ),
+                  const SizedBox(height: AppTypography.spacingXXLarge),
+                ],
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    } catch (e, stackTrace) {
+      // Catch any rendering errors (common on Chrome OS with SVG/asset issues)
+      debugPrint('Error rendering About screen: $e');
+      debugPrint('Stack trace: $stackTrace');
+
+      // Return a safe fallback UI
+      return Container(
+        color: AppColors.uiBlack.withValues(
+          alpha: AppTypography.opacityNearlyOpaque,
+        ),
+        padding: const EdgeInsets.all(AppTypography.spacingLarge),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, size: 64, color: AppColors.uiRed),
+              const SizedBox(height: AppTypography.spacingLarge),
+              Text(
+                l10n.appTitle,
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  color: AppColors.uiWhite,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppTypography.spacingMedium),
+              if (_packageInfo != null)
+                Text(
+                  '${l10n.versionLabel} ${_packageInfo!.version}+${_packageInfo!.buildNumber}',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.uiWhite,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              const SizedBox(height: AppTypography.spacingLarge),
+              Text(
+                l10n.appDescription,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.uiWhite,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppTypography.spacingXLarge),
+              Text(
+                '© ${DateTime.now().year} ${l10n.companyName}',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityMedium,
+                  ),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildInfoSection(
@@ -255,6 +335,28 @@ class _AboutScreenState extends State<AboutScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  /// Build SVG with error handling and fallback for Chrome OS compatibility
+  Widget _buildSvgWithFallback(
+    String assetPath, {
+    required double width,
+    required double height,
+    required IconData fallbackIcon,
+  }) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: SvgPicture.asset(
+        assetPath,
+        width: width,
+        height: height,
+        placeholderBuilder: (context) =>
+            Icon(fallbackIcon, size: width, color: AppColors.primaryColor),
+        // Error handling for platforms with SVG rendering issues (Chrome OS)
+        fit: BoxFit.contain,
+      ),
     );
   }
 

@@ -2,10 +2,10 @@
 # https://github.com/kentaro-m/auto-assign-action
 
 # Add reviewers to pull requests
-addReviewers: true
+addReviewers: false
 
 # Add assignees to pull requests
-addAssignees: false
+addAssignees: true
 
 # A list of reviewers to be added to pull requests (GitHub user names)
 # reviewers:
