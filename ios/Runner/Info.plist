@@ -58,5 +58,7 @@
 		<string>itms-apps</string>
 		<string>mailto</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Graviton needs access to save simulation screenshots to your photo library.</string>
 </dict>
 </plist>

@@ -42,5 +42,7 @@
 	<string>NSApplication</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Graviton needs access to save simulation screenshots to your photo library.</string>
 </dict>
 </plist>
