@@ -4,7 +4,7 @@ import 'package:graviton/enums/ui_element.dart';
 void main() {
   group('UIElement Enum', () {
     test('should have all expected UI elements', () {
-      expect(UIElement.values.length, equals(62));
+      expect(UIElement.values.length, equals(63));
       expect(UIElement.values, contains(UIElement.simulationViewport));
       expect(UIElement.values, contains(UIElement.scenarioSelection));
       expect(UIElement.values, contains(UIElement.scenarioDialog));
@@ -19,6 +19,7 @@ void main() {
       expect(UIElement.values, contains(UIElement.bodyProperties));
       expect(UIElement.values, contains(UIElement.physicsSettings));
       expect(UIElement.values, contains(UIElement.changelog));
+      expect(UIElement.values, contains(UIElement.accountManagement));
     });
 
     test('should have correct string values', () {
@@ -36,6 +37,9 @@ void main() {
       expect(UIElement.bodyProperties.value, equals('body_properties'));
       expect(UIElement.physicsSettings.value, equals('physics_settings'));
       expect(UIElement.changelog.value, equals('changelog'));
+      expect(UIElement.accountManagement.value, equals('account_management'));
+      expect(UIElement.about.value, equals('about'));
+      expect(UIElement.bodySelection.value, equals('body_selection'));
     });
 
     test('should have unique string values', () {
@@ -48,10 +52,11 @@ void main() {
     });
 
     test('should follow snake_case convention for string values', () {
+      final snakeCasePattern = RegExp(r'^[a-z][a-z0-9]*(_[a-z0-9]+)*$');
       for (final element in UIElement.values) {
         expect(
-          element.value,
-          matches(RegExp(r'^[a-z]+(_[a-z]+)*$')),
+          snakeCasePattern.hasMatch(element.value),
+          isTrue,
           reason: '${element.value} should follow snake_case convention',
         );
       }

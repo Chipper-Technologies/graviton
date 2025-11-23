@@ -2925,4 +2925,142 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get importCancelled => 'インポートがキャンセルされました';
+
+  @override
+  String get accountManagementTitle => 'アカウント';
+
+  @override
+  String get accountButtonTooltip => 'アカウントとプロフィール';
+
+  @override
+  String get signInPromptTitle => 'アカウントにサインイン';
+
+  @override
+  String get signInPromptMessage => 'アカウントを作成またはサインインして、デバイス間でデータと設定を同期します。';
+
+  @override
+  String get signInButton => 'サインイン';
+
+  @override
+  String get signOutButton => 'サインアウト';
+
+  @override
+  String get signOutSuccess => 'サインアウトしました';
+
+  @override
+  String get continueAsGuestButton => 'ゲストとして続ける';
+
+  @override
+  String get signInAnonymousSuccess => 'ゲストとしてサインインしました';
+
+  @override
+  String get anonymousUserLabel => 'ゲストユーザー';
+
+  @override
+  String get guestAccountLabel => 'ゲストアカウント';
+
+  @override
+  String get authenticatedLabel => 'アカウント';
+
+  @override
+  String get changeAvatarTooltip => 'アバターを変更';
+
+  @override
+  String get editDisplayNameTooltip => '名前を編集';
+
+  @override
+  String get accountActionsSection => 'アカウント操作';
+
+  @override
+  String get upgradeAccountTitle => '完全なアカウントにアップグレード';
+
+  @override
+  String get upgradeAccountDescription => 'データを保存し、どのデバイスからでもアクセスできます';
+
+  @override
+  String get dangerZoneSection => 'アカウント管理';
+
+  @override
+  String get deleteAccountButton => 'アカウントを削除';
+
+  @override
+  String get avatarChangedSuccess => 'アバターを更新しました';
+
+  @override
+  String get avatarChangedError => 'アバターの更新に失敗しました';
+
+  @override
+  String get accountMenuDescription => 'アカウントとプロフィールを管理';
+
+  @override
+  String get emailLabel => 'メールアドレス';
+
+  @override
+  String get passwordLabel => 'パスワード';
+
+  @override
+  String get createAccountButton => 'アカウントを作成';
+
+  @override
+  String get pleaseEnterEmail => 'メールアドレスを入力してください';
+
+  @override
+  String get pleaseEnterValidEmail => '有効なメールアドレスを入力してください';
+
+  @override
+  String get pleaseEnterPassword => 'パスワードを入力してください';
+
+  @override
+  String get passwordMinLength => 'パスワードは6文字以上である必要があります';
+
+  @override
+  String get alreadyHaveAccount => 'すでにアカウントをお持ちですか？サインイン';
+
+  @override
+  String get needAccount => 'アカウントが必要ですか？作成する';
+
+  @override
+  String get continueWithGoogle => 'Googleで続ける';
+
+  @override
+  String get continueWithApple => 'Appleで続ける';
+
+  @override
+  String get selectAvatarTitle => 'アバターを選択';
+
+  @override
+  String get editDisplayNameTitle => '表示名を編集';
+
+  @override
+  String get displayNameLabel => '表示名';
+
+  @override
+  String get pleaseEnterDisplayName => '表示名を入力してください';
+
+  @override
+  String get displayNameMinLength => '名前は2文字以上である必要があります';
+
+  @override
+  String get deleteAccountTitle => 'アカウントを削除';
+
+  @override
+  String get deleteAccountWarning => 'この操作は元に戻せません。';
+
+  @override
+  String get deleteAccountMessage => 'アカウントを削除すると、次の項目が完全に削除されます：';
+
+  @override
+  String get deleteAccountItem1 => 'プロフィールとアバター';
+
+  @override
+  String get deleteAccountItem2 => 'すべての保存された設定';
+
+  @override
+  String get deleteAccountItem3 => 'カスタムシナリオと設定';
+
+  @override
+  String get deleteAccountItem4 => 'アカウント認証';
+
+  @override
+  String get deleteAccountPasswordPrompt => '確認のためパスワードを入力してください：';
 }

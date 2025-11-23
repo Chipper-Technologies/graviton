@@ -18,6 +18,7 @@ class OptionsDrawer extends StatefulWidget {
   final VoidCallback onShowAbout;
   final VoidCallback onShowDeveloperTools;
   final VoidCallback? onShowChangelog;
+  final VoidCallback onShowAccount;
 
   const OptionsDrawer({
     super.key,
@@ -28,6 +29,7 @@ class OptionsDrawer extends StatefulWidget {
     required this.onShowAbout,
     required this.onShowDeveloperTools,
     this.onShowChangelog,
+    required this.onShowAccount,
   });
 
   @override
@@ -222,6 +224,17 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                       onTap: () {
                         Navigator.of(context).pop();
                         widget.onShowHelp();
+                      },
+                    ),
+                    const SectionDivider.plain(),
+                    _buildDrawerItem(
+                      context: context,
+                      icon: Icons.account_circle,
+                      title: l10n.accountManagementTitle,
+                      subtitle: l10n.accountMenuDescription,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        widget.onShowAccount();
                       },
                     ),
                     const SectionDivider.plain(),

@@ -4011,5 +4011,189 @@
   "importCancelled": "Import cancelled",
   "@importCancelled": {
     "description": "Message when user cancels file selection"
+  },
+  "accountManagementTitle": "Account",
+  "@accountManagementTitle": {
+    "description": "Title for account management screen"
+  },
+  "accountButtonTooltip": "Account & Profile",
+  "@accountButtonTooltip": {
+    "description": "Tooltip for account button in app bar"
+  },
+  "signInPromptTitle": "Sign In to Your Account",
+  "@signInPromptTitle": {
+    "description": "Title for sign in prompt"
+  },
+  "signInPromptMessage": "Create an account or sign in to sync your data and preferences across devices.",
+  "@signInPromptMessage": {
+    "description": "Message explaining benefits of signing in"
+  },
+  "signInButton": "Sign In",
+  "@signInButton": {
+    "description": "Button to sign in"
+  },
+  "signOutButton": "Sign Out",
+  "@signOutButton": {
+    "description": "Button to sign out"
+  },
+  "signOutSuccess": "Successfully signed out",
+  "@signOutSuccess": {
+    "description": "Success message after signing out"
+  },
+  "continueAsGuestButton": "Continue as Guest",
+  "@continueAsGuestButton": {
+    "description": "Button to continue without account"
+  },
+  "signInAnonymousSuccess": "Signed in as guest",
+  "@signInAnonymousSuccess": {
+    "description": "Success message for anonymous sign in"
+  },
+  "anonymousUserLabel": "Guest User",
+  "@anonymousUserLabel": {
+    "description": "Label for anonymous users"
+  },
+  "guestAccountLabel": "Guest Account",
+  "@guestAccountLabel": {
+    "description": "Label for guest account type"
+  },
+  "authenticatedLabel": "Account",
+  "@authenticatedLabel": {
+    "description": "Label for authenticated account"
+  },
+  "changeAvatarTooltip": "Change Avatar",
+  "@changeAvatarTooltip": {
+    "description": "Tooltip for change avatar button"
+  },
+  "editDisplayNameTooltip": "Edit Name",
+  "@editDisplayNameTooltip": {
+    "description": "Tooltip for edit display name button"
+  },
+  "accountActionsSection": "Account Actions",
+  "@accountActionsSection": {
+    "description": "Section title for account actions"
+  },
+  "upgradeAccountTitle": "Upgrade to Full Account",
+  "@upgradeAccountTitle": {
+    "description": "Title for upgrade account option"
+  },
+  "upgradeAccountDescription": "Save your data and access it from any device",
+  "@upgradeAccountDescription": {
+    "description": "Description for upgrade account"
+  },
+  "dangerZoneSection": "Account Management",
+  "@dangerZoneSection": {
+    "description": "Section title for danger zone"
+  },
+  "deleteAccountButton": "Delete Account",
+  "@deleteAccountButton": {
+    "description": "Button to delete account"
+  },
+  "avatarChangedSuccess": "Avatar updated successfully",
+  "@avatarChangedSuccess": {
+    "description": "Success message after changing avatar"
+  },
+  "avatarChangedError": "Failed to update avatar",
+  "@avatarChangedError": {
+    "description": "Error message when avatar change fails"
+  },
+  "accountMenuDescription": "Manage your account and profile",
+  "@accountMenuDescription": {
+    "description": "Description for account menu item in drawer"
+  },
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Label for email input field"
+  },
+  "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Label for password input field"
+  },
+  "createAccountButton": "Create Account",
+  "@createAccountButton": {
+    "description": "Button text to create a new account"
+  },
+  "pleaseEnterEmail": "Please enter your email",
+  "@pleaseEnterEmail": {
+    "description": "Validation error when email field is empty"
+  },
+  "pleaseEnterValidEmail": "Please enter a valid email",
+  "@pleaseEnterValidEmail": {
+    "description": "Validation error when email format is invalid"
+  },
+  "pleaseEnterPassword": "Please enter your password",
+  "@pleaseEnterPassword": {
+    "description": "Validation error when password field is empty"
+  },
+  "passwordMinLength": "Password must be at least 6 characters",
+  "@passwordMinLength": {
+    "description": "Validation error when password is too short"
+  },
+  "alreadyHaveAccount": "Already have an account? Sign In",
+  "@alreadyHaveAccount": {
+    "description": "Text to toggle from create account to sign in"
+  },
+  "needAccount": "Need an account? Create One",
+  "@needAccount": {
+    "description": "Text to toggle from sign in to create account"
+  },
+  "continueWithGoogle": "Continue with Google",
+  "@continueWithGoogle": {
+    "description": "Button text for Google sign-in"
+  },
+  "continueWithApple": "Continue with Apple",
+  "@continueWithApple": {
+    "description": "Button text for Apple sign-in"
+  },
+  "selectAvatarTitle": "Select Avatar",
+  "@selectAvatarTitle": {
+    "description": "Title for avatar selector dialog"
+  },
+  "editDisplayNameTitle": "Edit Display Name",
+  "@editDisplayNameTitle": {
+    "description": "Title for edit display name dialog"
+  },
+  "displayNameLabel": "Display Name",
+  "@displayNameLabel": {
+    "description": "Label for display name input field"
+  },
+  "pleaseEnterDisplayName": "Please enter a display name",
+  "@pleaseEnterDisplayName": {
+    "description": "Validation error when display name is empty"
+  },
+  "displayNameMinLength": "Name must be at least 2 characters",
+  "@displayNameMinLength": {
+    "description": "Validation error when display name is too short"
+  },
+  "deleteAccountTitle": "Delete Account",
+  "@deleteAccountTitle": {
+    "description": "Title for delete account dialog"
+  },
+  "deleteAccountWarning": "This action cannot be undone.",
+  "@deleteAccountWarning": {
+    "description": "Warning message in delete account dialog"
+  },
+  "deleteAccountMessage": "Deleting your account will permanently remove:",
+  "@deleteAccountMessage": {
+    "description": "Message explaining what will be deleted"
+  },
+  "deleteAccountItem1": "Your profile and avatar",
+  "@deleteAccountItem1": {
+    "description": "First item in delete account list"
+  },
+  "deleteAccountItem2": "All saved preferences",
+  "@deleteAccountItem2": {
+    "description": "Second item in delete account list"
+  },
+  "deleteAccountItem3": "Custom scenarios and settings",
+  "@deleteAccountItem3": {
+    "description": "Third item in delete account list"
+  },
+  "deleteAccountItem4": "Account authentication",
+  "@deleteAccountItem4": {
+    "description": "Fourth item in delete account list"
+  },
+  "deleteAccountPasswordPrompt": "Please enter your password to confirm:",
+  "@deleteAccountPasswordPrompt": {
+    "description": "Prompt for password confirmation before deleting account"
   }
 }

@@ -3,6 +3,7 @@ import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
 
+import 'auth_state.dart';
 import 'camera_state.dart';
 import 'physics_state.dart';
 import 'simulation_state.dart';
@@ -14,6 +15,7 @@ class AppState extends ChangeNotifier {
   final UIState ui = UIState();
   final CameraState camera = CameraState();
   final PhysicsState physics = PhysicsState();
+  final AuthState auth = AuthState();
 
   bool _isInitialized = false;
   String? _lastError;
@@ -33,6 +35,7 @@ class AppState extends ChangeNotifier {
     ui.addListener(_onUIStateChanged); // Use specific UI listener
     camera.addListener(_onChildStateChanged);
     physics.addListener(_onChildStateChanged);
+    auth.addListener(_onChildStateChanged);
 
     _isInitialized = true;
     notifyListeners();
@@ -43,6 +46,7 @@ class AppState extends ChangeNotifier {
     await ui.initialize();
     await simulation.initialize();
     await physics.initialize();
+    await auth.initialize();
 
     // Initialize realistic colors setting in simulation
     simulation.setUseRealisticColors(ui.useRealisticColors);
@@ -218,9 +222,11 @@ class AppState extends ChangeNotifier {
     ui.removeListener(_onChildStateChanged);
     camera.removeListener(_onChildStateChanged);
     physics.removeListener(_onChildStateChanged);
+    auth.removeListener(_onChildStateChanged);
     simulation.dispose();
     ui.dispose();
     camera.dispose();
+    auth.dispose();
     super.dispose();
   }
 }

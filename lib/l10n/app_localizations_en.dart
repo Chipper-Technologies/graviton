@@ -3087,4 +3087,146 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get importCancelled => 'Import cancelled';
+
+  @override
+  String get accountManagementTitle => 'Account';
+
+  @override
+  String get accountButtonTooltip => 'Account & Profile';
+
+  @override
+  String get signInPromptTitle => 'Sign In to Your Account';
+
+  @override
+  String get signInPromptMessage =>
+      'Create an account or sign in to sync your data and preferences across devices.';
+
+  @override
+  String get signInButton => 'Sign In';
+
+  @override
+  String get signOutButton => 'Sign Out';
+
+  @override
+  String get signOutSuccess => 'Successfully signed out';
+
+  @override
+  String get continueAsGuestButton => 'Continue as Guest';
+
+  @override
+  String get signInAnonymousSuccess => 'Signed in as guest';
+
+  @override
+  String get anonymousUserLabel => 'Guest User';
+
+  @override
+  String get guestAccountLabel => 'Guest Account';
+
+  @override
+  String get authenticatedLabel => 'Account';
+
+  @override
+  String get changeAvatarTooltip => 'Change Avatar';
+
+  @override
+  String get editDisplayNameTooltip => 'Edit Name';
+
+  @override
+  String get accountActionsSection => 'Account Actions';
+
+  @override
+  String get upgradeAccountTitle => 'Upgrade to Full Account';
+
+  @override
+  String get upgradeAccountDescription =>
+      'Save your data and access it from any device';
+
+  @override
+  String get dangerZoneSection => 'Account Management';
+
+  @override
+  String get deleteAccountButton => 'Delete Account';
+
+  @override
+  String get avatarChangedSuccess => 'Avatar updated successfully';
+
+  @override
+  String get avatarChangedError => 'Failed to update avatar';
+
+  @override
+  String get accountMenuDescription => 'Manage your account and profile';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get passwordLabel => 'Password';
+
+  @override
+  String get createAccountButton => 'Create Account';
+
+  @override
+  String get pleaseEnterEmail => 'Please enter your email';
+
+  @override
+  String get pleaseEnterValidEmail => 'Please enter a valid email';
+
+  @override
+  String get pleaseEnterPassword => 'Please enter your password';
+
+  @override
+  String get passwordMinLength => 'Password must be at least 6 characters';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account? Sign In';
+
+  @override
+  String get needAccount => 'Need an account? Create One';
+
+  @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get continueWithApple => 'Continue with Apple';
+
+  @override
+  String get selectAvatarTitle => 'Select Avatar';
+
+  @override
+  String get editDisplayNameTitle => 'Edit Display Name';
+
+  @override
+  String get displayNameLabel => 'Display Name';
+
+  @override
+  String get pleaseEnterDisplayName => 'Please enter a display name';
+
+  @override
+  String get displayNameMinLength => 'Name must be at least 2 characters';
+
+  @override
+  String get deleteAccountTitle => 'Delete Account';
+
+  @override
+  String get deleteAccountWarning => 'This action cannot be undone.';
+
+  @override
+  String get deleteAccountMessage =>
+      'Deleting your account will permanently remove:';
+
+  @override
+  String get deleteAccountItem1 => 'Your profile and avatar';
+
+  @override
+  String get deleteAccountItem2 => 'All saved preferences';
+
+  @override
+  String get deleteAccountItem3 => 'Custom scenarios and settings';
+
+  @override
+  String get deleteAccountItem4 => 'Account authentication';
+
+  @override
+  String get deleteAccountPasswordPrompt =>
+      'Please enter your password to confirm:';
 }

@@ -2938,4 +2938,142 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get importCancelled => '가져오기 취소됨';
+
+  @override
+  String get accountManagementTitle => '계정';
+
+  @override
+  String get accountButtonTooltip => '계정 및 프로필';
+
+  @override
+  String get signInPromptTitle => '계정에 로그인';
+
+  @override
+  String get signInPromptMessage => '계정을 만들거나 로그인하여 기기 간에 데이터와 설정을 동기화하세요.';
+
+  @override
+  String get signInButton => '로그인';
+
+  @override
+  String get signOutButton => '로그아웃';
+
+  @override
+  String get signOutSuccess => '로그아웃되었습니다';
+
+  @override
+  String get continueAsGuestButton => '게스트로 계속';
+
+  @override
+  String get signInAnonymousSuccess => '게스트로 로그인했습니다';
+
+  @override
+  String get anonymousUserLabel => '게스트 사용자';
+
+  @override
+  String get guestAccountLabel => '게스트 계정';
+
+  @override
+  String get authenticatedLabel => '계정';
+
+  @override
+  String get changeAvatarTooltip => '아바타 변경';
+
+  @override
+  String get editDisplayNameTooltip => '이름 편집';
+
+  @override
+  String get accountActionsSection => '계정 작업';
+
+  @override
+  String get upgradeAccountTitle => '전체 계정으로 업그레이드';
+
+  @override
+  String get upgradeAccountDescription => '데이터를 저장하고 모든 기기에서 액세스하세요';
+
+  @override
+  String get dangerZoneSection => '계정 관리';
+
+  @override
+  String get deleteAccountButton => '계정 삭제';
+
+  @override
+  String get avatarChangedSuccess => '아바타가 업데이트되었습니다';
+
+  @override
+  String get avatarChangedError => '아바타 업데이트 실패';
+
+  @override
+  String get accountMenuDescription => '계정 및 프로필 관리';
+
+  @override
+  String get emailLabel => '이메일';
+
+  @override
+  String get passwordLabel => '비밀번호';
+
+  @override
+  String get createAccountButton => '계정 만들기';
+
+  @override
+  String get pleaseEnterEmail => '이메일을 입력하세요';
+
+  @override
+  String get pleaseEnterValidEmail => '유효한 이메일을 입력하세요';
+
+  @override
+  String get pleaseEnterPassword => '비밀번호를 입력하세요';
+
+  @override
+  String get passwordMinLength => '비밀번호는 최소 6자 이상이어야 합니다';
+
+  @override
+  String get alreadyHaveAccount => '이미 계정이 있으신가요? 로그인';
+
+  @override
+  String get needAccount => '계정이 필요하신가요? 만들기';
+
+  @override
+  String get continueWithGoogle => 'Google로 계속하기';
+
+  @override
+  String get continueWithApple => 'Apple로 계속하기';
+
+  @override
+  String get selectAvatarTitle => '아바타 선택';
+
+  @override
+  String get editDisplayNameTitle => '표시 이름 편집';
+
+  @override
+  String get displayNameLabel => '표시 이름';
+
+  @override
+  String get pleaseEnterDisplayName => '표시 이름을 입력하세요';
+
+  @override
+  String get displayNameMinLength => '이름은 최소 2자 이상이어야 합니다';
+
+  @override
+  String get deleteAccountTitle => '계정 삭제';
+
+  @override
+  String get deleteAccountWarning => '이 작업은 취소할 수 없습니다.';
+
+  @override
+  String get deleteAccountMessage => '계정을 삭제하면 다음 항목이 영구적으로 제거됩니다:';
+
+  @override
+  String get deleteAccountItem1 => '프로필 및 아바타';
+
+  @override
+  String get deleteAccountItem2 => '저장된 모든 환경설정';
+
+  @override
+  String get deleteAccountItem3 => '사용자 지정 시나리오 및 설정';
+
+  @override
+  String get deleteAccountItem4 => '계정 인증';
+
+  @override
+  String get deleteAccountPasswordPrompt => '확인하려면 비밀번호를 입력하세요:';
 }

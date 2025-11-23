@@ -16,6 +16,7 @@ void main() {
       VoidCallback? onShowAbout,
       VoidCallback? onShowDeveloperTools,
       VoidCallback? onShowChangelog,
+      VoidCallback? onShowAccount,
     }) {
       return TestUtils.wrapWithMaterialApp(
         child: OptionsDrawer(
@@ -26,6 +27,7 @@ void main() {
           onShowAbout: onShowAbout ?? () {},
           onShowDeveloperTools: onShowDeveloperTools ?? () {},
           onShowChangelog: onShowChangelog,
+          onShowAccount: onShowAccount ?? () {},
         ),
       );
     }
@@ -57,6 +59,11 @@ void main() {
     testWidgets('displays all menu items with correct icons and text', (
       tester,
     ) async {
+      // Set larger view size to ensure all menu items fit
+      tester.view.physicalSize = const Size(400, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
@@ -65,6 +72,7 @@ void main() {
       expect(find.byIcon(Icons.science), findsOneWidget);
       expect(find.byIcon(Icons.tune), findsOneWidget);
       expect(find.byIcon(Icons.lightbulb_outline), findsOneWidget);
+      expect(find.byIcon(Icons.account_circle), findsOneWidget);
       expect(find.byIcon(Icons.info_outline), findsOneWidget);
 
       // Verify ListTile widgets for menu items
@@ -175,6 +183,11 @@ void main() {
     testWidgets('calls onShowAbout when about item is tapped', (tester) async {
       bool aboutCalled = false;
 
+      // Set larger view size to ensure about item is visible
+      tester.view.physicalSize = const Size(400, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
       await tester.pumpWidget(
         createTestWidget(
           onShowAbout: () {
@@ -184,14 +197,40 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Find and tap the about menu item
-      final aboutItem = find.byIcon(Icons.info_outline).first;
-      await tester.ensureVisible(aboutItem);
-      await tester.pumpAndSettle();
-      await tester.tap(aboutItem, warnIfMissed: false);
+      // Find and tap the about menu item ListTile
+      final aboutListTile = find.ancestor(
+        of: find.byIcon(Icons.info_outline),
+        matching: find.byType(ListTile),
+      );
+      await tester.tap(aboutListTile);
       await tester.pumpAndSettle();
 
       expect(aboutCalled, isTrue);
+    });
+
+    testWidgets('calls onShowAccount when account item is tapped', (
+      tester,
+    ) async {
+      bool accountCalled = false;
+
+      await tester.pumpWidget(
+        createTestWidget(
+          onShowAccount: () {
+            accountCalled = true;
+          },
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap the account menu item ListTile
+      final accountListTile = find.ancestor(
+        of: find.byIcon(Icons.account_circle),
+        matching: find.byType(ListTile),
+      );
+      await tester.tap(accountListTile);
+      await tester.pumpAndSettle();
+
+      expect(accountCalled, isTrue);
     });
 
     testWidgets('calls onShowChangelog when changelog link is tapped', (
@@ -305,6 +344,7 @@ void main() {
             onShowPhysicsSettings: () {},
             onShowAbout: () {},
             onShowDeveloperTools: () {},
+            onShowAccount: () {},
           ),
         ),
       );
@@ -325,7 +365,7 @@ void main() {
 
     testWidgets('proper icon and text layout', (tester) async {
       await tester.pumpWidget(
-        TestUtils.wrapWithMaterialApp(
+        TestUtils.wrapWithScaffold(
           child: OptionsDrawer(
             onShowHelp: () {},
             onShowSettings: () {},
@@ -333,6 +373,7 @@ void main() {
             onShowPhysicsSettings: () {},
             onShowAbout: () {},
             onShowDeveloperTools: () {},
+            onShowAccount: () {},
           ),
         ),
       );
@@ -370,6 +411,7 @@ void main() {
             onShowPhysicsSettings: () {},
             onShowAbout: () {},
             onShowDeveloperTools: () {},
+            onShowAccount: () {},
           ),
         ),
       );

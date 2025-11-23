@@ -2906,4 +2906,142 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get importCancelled => '导入已取消';
+
+  @override
+  String get accountManagementTitle => '账户';
+
+  @override
+  String get accountButtonTooltip => '账户和个人资料';
+
+  @override
+  String get signInPromptTitle => '登录您的账户';
+
+  @override
+  String get signInPromptMessage => '创建账户或登录以在设备间同步您的数据和偏好设置。';
+
+  @override
+  String get signInButton => '登录';
+
+  @override
+  String get signOutButton => '退出登录';
+
+  @override
+  String get signOutSuccess => '已成功退出登录';
+
+  @override
+  String get continueAsGuestButton => '以访客身份继续';
+
+  @override
+  String get signInAnonymousSuccess => '已以访客身份登录';
+
+  @override
+  String get anonymousUserLabel => '访客用户';
+
+  @override
+  String get guestAccountLabel => '访客账户';
+
+  @override
+  String get authenticatedLabel => '账户';
+
+  @override
+  String get changeAvatarTooltip => '更改头像';
+
+  @override
+  String get editDisplayNameTooltip => '编辑名称';
+
+  @override
+  String get accountActionsSection => '账户操作';
+
+  @override
+  String get upgradeAccountTitle => '升级到完整账户';
+
+  @override
+  String get upgradeAccountDescription => '保存您的数据并从任何设备访问';
+
+  @override
+  String get dangerZoneSection => '账户管理';
+
+  @override
+  String get deleteAccountButton => '删除账户';
+
+  @override
+  String get avatarChangedSuccess => '头像更新成功';
+
+  @override
+  String get avatarChangedError => '头像更新失败';
+
+  @override
+  String get accountMenuDescription => '管理您的账户和个人资料';
+
+  @override
+  String get emailLabel => '电子邮件';
+
+  @override
+  String get passwordLabel => '密码';
+
+  @override
+  String get createAccountButton => '创建账户';
+
+  @override
+  String get pleaseEnterEmail => '请输入您的电子邮件';
+
+  @override
+  String get pleaseEnterValidEmail => '请输入有效的电子邮件';
+
+  @override
+  String get pleaseEnterPassword => '请输入您的密码';
+
+  @override
+  String get passwordMinLength => '密码必须至少6个字符';
+
+  @override
+  String get alreadyHaveAccount => '已有账户？登录';
+
+  @override
+  String get needAccount => '需要账户？创建一个';
+
+  @override
+  String get continueWithGoogle => '使用 Google 继续';
+
+  @override
+  String get continueWithApple => '使用 Apple 继续';
+
+  @override
+  String get selectAvatarTitle => '选择头像';
+
+  @override
+  String get editDisplayNameTitle => '编辑显示名称';
+
+  @override
+  String get displayNameLabel => '显示名称';
+
+  @override
+  String get pleaseEnterDisplayName => '请输入显示名称';
+
+  @override
+  String get displayNameMinLength => '名称必须至少2个字符';
+
+  @override
+  String get deleteAccountTitle => '删除账户';
+
+  @override
+  String get deleteAccountWarning => '此操作无法撤消。';
+
+  @override
+  String get deleteAccountMessage => '删除您的账户将永久删除：';
+
+  @override
+  String get deleteAccountItem1 => '您的个人资料和头像';
+
+  @override
+  String get deleteAccountItem2 => '所有保存的偏好设置';
+
+  @override
+  String get deleteAccountItem3 => '自定义场景和设置';
+
+  @override
+  String get deleteAccountItem4 => '账户身份验证';
+
+  @override
+  String get deleteAccountPasswordPrompt => '请输入您的密码以确认：';
 }

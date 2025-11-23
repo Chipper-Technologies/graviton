@@ -5415,6 +5415,282 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Import cancelled'**
   String get importCancelled;
+
+  /// Title for account management screen
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountManagementTitle;
+
+  /// Tooltip for account button in app bar
+  ///
+  /// In en, this message translates to:
+  /// **'Account & Profile'**
+  String get accountButtonTooltip;
+
+  /// Title for sign in prompt
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In to Your Account'**
+  String get signInPromptTitle;
+
+  /// Message explaining benefits of signing in
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account or sign in to sync your data and preferences across devices.'**
+  String get signInPromptMessage;
+
+  /// Button to sign in
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signInButton;
+
+  /// Button to sign out
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOutButton;
+
+  /// Success message after signing out
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully signed out'**
+  String get signOutSuccess;
+
+  /// Button to continue without account
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as Guest'**
+  String get continueAsGuestButton;
+
+  /// Success message for anonymous sign in
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as guest'**
+  String get signInAnonymousSuccess;
+
+  /// Label for anonymous users
+  ///
+  /// In en, this message translates to:
+  /// **'Guest User'**
+  String get anonymousUserLabel;
+
+  /// Label for guest account type
+  ///
+  /// In en, this message translates to:
+  /// **'Guest Account'**
+  String get guestAccountLabel;
+
+  /// Label for authenticated account
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get authenticatedLabel;
+
+  /// Tooltip for change avatar button
+  ///
+  /// In en, this message translates to:
+  /// **'Change Avatar'**
+  String get changeAvatarTooltip;
+
+  /// Tooltip for edit display name button
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Name'**
+  String get editDisplayNameTooltip;
+
+  /// Section title for account actions
+  ///
+  /// In en, this message translates to:
+  /// **'Account Actions'**
+  String get accountActionsSection;
+
+  /// Title for upgrade account option
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Full Account'**
+  String get upgradeAccountTitle;
+
+  /// Description for upgrade account
+  ///
+  /// In en, this message translates to:
+  /// **'Save your data and access it from any device'**
+  String get upgradeAccountDescription;
+
+  /// Section title for danger zone
+  ///
+  /// In en, this message translates to:
+  /// **'Account Management'**
+  String get dangerZoneSection;
+
+  /// Button to delete account
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccountButton;
+
+  /// Success message after changing avatar
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar updated successfully'**
+  String get avatarChangedSuccess;
+
+  /// Error message when avatar change fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update avatar'**
+  String get avatarChangedError;
+
+  /// Description for account menu item in drawer
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your account and profile'**
+  String get accountMenuDescription;
+
+  /// Label for email input field
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// Label for password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordLabel;
+
+  /// Button text to create a new account
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccountButton;
+
+  /// Validation error when email field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get pleaseEnterEmail;
+
+  /// Validation error when email format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email'**
+  String get pleaseEnterValidEmail;
+
+  /// Validation error when password field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get pleaseEnterPassword;
+
+  /// Validation error when password is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMinLength;
+
+  /// Text to toggle from create account to sign in
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign In'**
+  String get alreadyHaveAccount;
+
+  /// Text to toggle from sign in to create account
+  ///
+  /// In en, this message translates to:
+  /// **'Need an account? Create One'**
+  String get needAccount;
+
+  /// Button text for Google sign-in
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
+
+  /// Button text for Apple sign-in
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get continueWithApple;
+
+  /// Title for avatar selector dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Select Avatar'**
+  String get selectAvatarTitle;
+
+  /// Title for edit display name dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Display Name'**
+  String get editDisplayNameTitle;
+
+  /// Label for display name input field
+  ///
+  /// In en, this message translates to:
+  /// **'Display Name'**
+  String get displayNameLabel;
+
+  /// Validation error when display name is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a display name'**
+  String get pleaseEnterDisplayName;
+
+  /// Validation error when display name is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be at least 2 characters'**
+  String get displayNameMinLength;
+
+  /// Title for delete account dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccountTitle;
+
+  /// Warning message in delete account dialog
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get deleteAccountWarning;
+
+  /// Message explaining what will be deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting your account will permanently remove:'**
+  String get deleteAccountMessage;
+
+  /// First item in delete account list
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile and avatar'**
+  String get deleteAccountItem1;
+
+  /// Second item in delete account list
+  ///
+  /// In en, this message translates to:
+  /// **'All saved preferences'**
+  String get deleteAccountItem2;
+
+  /// Third item in delete account list
+  ///
+  /// In en, this message translates to:
+  /// **'Custom scenarios and settings'**
+  String get deleteAccountItem3;
+
+  /// Fourth item in delete account list
+  ///
+  /// In en, this message translates to:
+  /// **'Account authentication'**
+  String get deleteAccountItem4;
+
+  /// Prompt for password confirmation before deleting account
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password to confirm:'**
+  String get deleteAccountPasswordPrompt;
 }
 
 class _AppLocalizationsDelegate

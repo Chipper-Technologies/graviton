@@ -3106,4 +3106,150 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get importCancelled => 'Importación cancelada';
+
+  @override
+  String get accountManagementTitle => 'Cuenta';
+
+  @override
+  String get accountButtonTooltip => 'Cuenta y Perfil';
+
+  @override
+  String get signInPromptTitle => 'Iniciar sesión en su cuenta';
+
+  @override
+  String get signInPromptMessage =>
+      'Cree una cuenta o inicie sesión para sincronizar sus datos y preferencias entre dispositivos.';
+
+  @override
+  String get signInButton => 'Iniciar sesión';
+
+  @override
+  String get signOutButton => 'Cerrar sesión';
+
+  @override
+  String get signOutSuccess => 'Sesión cerrada correctamente';
+
+  @override
+  String get continueAsGuestButton => 'Continuar como invitado';
+
+  @override
+  String get signInAnonymousSuccess => 'Sesión iniciada como invitado';
+
+  @override
+  String get anonymousUserLabel => 'Usuario invitado';
+
+  @override
+  String get guestAccountLabel => 'Cuenta de invitado';
+
+  @override
+  String get authenticatedLabel => 'Cuenta';
+
+  @override
+  String get changeAvatarTooltip => 'Cambiar avatar';
+
+  @override
+  String get editDisplayNameTooltip => 'Editar nombre';
+
+  @override
+  String get accountActionsSection => 'Acciones de cuenta';
+
+  @override
+  String get upgradeAccountTitle => 'Actualizar a cuenta completa';
+
+  @override
+  String get upgradeAccountDescription =>
+      'Guarde sus datos y acceda a ellos desde cualquier dispositivo';
+
+  @override
+  String get dangerZoneSection => 'Gestión de cuenta';
+
+  @override
+  String get deleteAccountButton => 'Eliminar cuenta';
+
+  @override
+  String get avatarChangedSuccess => 'Avatar actualizado correctamente';
+
+  @override
+  String get avatarChangedError => 'Error al actualizar el avatar';
+
+  @override
+  String get accountMenuDescription => 'Administre su cuenta y perfil';
+
+  @override
+  String get emailLabel => 'Correo electrónico';
+
+  @override
+  String get passwordLabel => 'Contraseña';
+
+  @override
+  String get createAccountButton => 'Crear cuenta';
+
+  @override
+  String get pleaseEnterEmail => 'Por favor ingrese su correo electrónico';
+
+  @override
+  String get pleaseEnterValidEmail =>
+      'Por favor ingrese un correo electrónico válido';
+
+  @override
+  String get pleaseEnterPassword => 'Por favor ingrese su contraseña';
+
+  @override
+  String get passwordMinLength =>
+      'La contraseña debe tener al menos 6 caracteres';
+
+  @override
+  String get alreadyHaveAccount => '¿Ya tiene una cuenta? Iniciar sesión';
+
+  @override
+  String get needAccount => '¿Necesita una cuenta? Crear una';
+
+  @override
+  String get continueWithGoogle => 'Continuar con Google';
+
+  @override
+  String get continueWithApple => 'Continuar con Apple';
+
+  @override
+  String get selectAvatarTitle => 'Seleccionar avatar';
+
+  @override
+  String get editDisplayNameTitle => 'Editar nombre de usuario';
+
+  @override
+  String get displayNameLabel => 'Nombre de usuario';
+
+  @override
+  String get pleaseEnterDisplayName => 'Por favor ingrese un nombre de usuario';
+
+  @override
+  String get displayNameMinLength =>
+      'El nombre debe tener al menos 2 caracteres';
+
+  @override
+  String get deleteAccountTitle => 'Eliminar cuenta';
+
+  @override
+  String get deleteAccountWarning => 'Esta acción no se puede deshacer.';
+
+  @override
+  String get deleteAccountMessage =>
+      'Eliminar su cuenta eliminará permanentemente:';
+
+  @override
+  String get deleteAccountItem1 => 'Su perfil y avatar';
+
+  @override
+  String get deleteAccountItem2 => 'Todas las preferencias guardadas';
+
+  @override
+  String get deleteAccountItem3 =>
+      'Escenarios y configuraciones personalizados';
+
+  @override
+  String get deleteAccountItem4 => 'Autenticación de cuenta';
+
+  @override
+  String get deleteAccountPasswordPrompt =>
+      'Por favor ingrese su contraseña para confirmar:';
 }

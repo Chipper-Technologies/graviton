@@ -6,7 +6,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/constants/platform_channel_constants.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
@@ -20,6 +19,7 @@ import 'package:graviton/models/changelog.dart';
 import 'package:graviton/models/dialog_action.dart';
 import 'package:graviton/painters/graviton_painter.dart';
 import 'package:graviton/screens/about_screen.dart';
+import 'package:graviton/screens/account_management_screen.dart';
 import 'package:graviton/screens/application_settings_screen.dart';
 import 'package:graviton/screens/developer_tools_screen.dart';
 import 'package:graviton/screens/help_screen.dart';
@@ -65,6 +65,7 @@ import 'package:graviton/widgets/semantics/semantic_live_region.dart';
 import 'package:graviton/widgets/semantics/semantic_simulation_canvas.dart';
 import 'package:graviton/widgets/share_action_button.dart';
 import 'package:graviton/widgets/sliding_panel_bottom_sheet.dart';
+import 'package:graviton/widgets/auth/avatar_button.dart';
 import 'package:graviton/widgets/version_check_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -857,6 +858,25 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  void _showAccountManagementScreen(BuildContext context) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.screenOpened,
+      element: UIElement.accountManagement,
+    );
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const AccountManagementScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        opaque: false,
+      ),
+    );
+  }
+
   void _showDeveloperToolsScreen(BuildContext context) {
     FirebaseService.instance.logUIEventWithEnums(
       UIAction.screenOpened,
@@ -1332,6 +1352,7 @@ class _HomeScreenState extends State<HomeScreen>
               onShowAbout: () => _showAboutScreen(context),
               onShowDeveloperTools: () => _showDeveloperToolsScreen(context),
               onShowChangelog: _showCurrentVersionChangelog,
+              onShowAccount: () => _showAccountManagementScreen(context),
             ),
             appBar: shouldHideUI
                 ? null
@@ -1339,42 +1360,16 @@ class _HomeScreenState extends State<HomeScreen>
                     title: l10n.appTitle,
                     backgroundColor: AppColors.transparentColor,
                     titleSpacing: AppTypography
-                        .spacingXLarge, // More space between logo and title
-                    leading: Padding(
-                      padding: const EdgeInsets.only(
-                        left: AppTypography
-                            .spacingLarge, // More space on the left
-                      ),
-                      child: HapticGestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const AboutScreen(),
-                            ),
-                          );
-                        },
-                        child: Tooltip(
-                          message: l10n.aboutButtonTooltip,
-                          child: Container(
-                            width: 28,
-                            height: 28,
-                            margin: const EdgeInsets.symmetric(vertical: 8),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: AppColors.uiWhite.withValues(
-                                  alpha: AppTypography.opacityVeryFaint,
-                                ),
-                                width: 1.5,
-                              ),
-                              image: DecorationImage(
-                                image: AssetImage(AppConfig.appLogoPath),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                        .spacingSmall, // Space between avatar and title
+                    leading: AvatarButton(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const AccountManagementScreen(),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                     actions: [
                       // Options drawer toggle
