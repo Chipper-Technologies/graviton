@@ -78,8 +78,7 @@ void main() {
       expect(testAppState.camera.autoRotate, isTrue);
 
       // Scroll down to make the rotate speed slider visible
-      await tester.drag(find.byType(ListView), const Offset(0, -500));
-      await tester.pumpAndSettle();
+      await scrollToRotateSpeedSlider(tester);
 
       // Verify rotate speed slider is now visible
       expect(find.text('Rotate Speed'), findsOneWidget);
