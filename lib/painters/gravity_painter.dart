@@ -245,7 +245,7 @@ class GravityPainter {
     if (orbitingBodies.isEmpty) {
       // No orbiting bodies found, use default horizontal plane (XZ)
       return (
-        normal: vm.Vector3(0, 1, 0), // Y-up normal
+        normal: RenderingConstants.worldUp, // Y-up normal
         tangent1: vm.Vector3(1, 0, 0), // X-axis tangent
         tangent2: vm.Vector3(0, 0, 1), // Z-axis tangent
       );
@@ -276,7 +276,7 @@ class GravityPainter {
       if (normal.x.abs() < 0.9) {
         tangent1 = vm.Vector3(1, 0, 0).cross(normal).normalized();
       } else {
-        tangent1 = vm.Vector3(0, 1, 0).cross(normal).normalized();
+        tangent1 = RenderingConstants.worldUp.cross(normal).normalized();
       }
 
       // Second tangent: cross product of normal and first tangent
@@ -287,7 +287,7 @@ class GravityPainter {
 
     // Fallback to default horizontal plane
     return (
-      normal: vm.Vector3(0, 1, 0),
+      normal: RenderingConstants.worldUp,
       tangent1: vm.Vector3(1, 0, 0),
       tangent2: vm.Vector3(0, 0, 1),
     );

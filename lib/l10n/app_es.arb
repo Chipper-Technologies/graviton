@@ -323,7 +323,7 @@
   "tutorialControlsDescriptionPart1": "Toca en cualquier lugar para mostrar los controles flotantes de Reproducir/Pausar para la simulación. El control de velocidad está en la esquina superior derecha. Toca el menú",
   "tutorialControlsDescriptionPart2": "para escenarios, configuración y ajustes de física.",
   "tutorialCameraTitle": "Controles de Cámara y Vista",
-  "tutorialCameraDescription": "Arrastra para rotar la vista, pellizca para hacer zoom, y usa dos dedos para rotar la cámara. La barra inferior tiene controles de enfoque, centrado y rotación automática para una experiencia cinematográfica.",
+  "tutorialCameraDescription": "Arrastra para rotar la vista, pellizca para hacer zoom, usa dos dedos para rotar la cámara y usa tres dedos para desplazar. La barra inferior tiene controles de enfoque, centrado y rotación automática para una experiencia cinematográfica.",
   "tutorialScenariosTitle": "Explorar Escenarios",
   "tutorialScenariosDescription": "Accede al menú (⋮) en la esquina superior derecha para explorar diferentes escenarios: nuestro Sistema Solar, dinámicas Tierra-Luna, Estrellas Binarias, o el caótico Problema de Tres Cuerpos. ¡Cada uno ofrece física única por descubrir!",
   "tutorialScenariosDescriptionPart1": "Accede al menú",

@@ -1,3 +1,5 @@
+import 'package:vector_math/vector_math_64.dart' as vm;
+
 /// Rendering and visual constants for Graviton
 class RenderingConstants {
   // 3D Projection and rendering
@@ -246,4 +248,13 @@ class RenderingConstants {
   /// bodies separated by large distances (>25 units).
   /// Caps the adaptive tolerance to maintain reasonable matching precision.
   static const double bodyMatchingMaxTolerance = 25.0;
+
+  // Common 3D vectors
+
+  /// World-space up vector (Y-axis up).
+  ///
+  /// Standard convention for 3D coordinate systems where Y points upward.
+  /// Reused across camera calculations, painter rendering, and 3D transformations
+  /// to avoid creating new vector instances repeatedly.
+  static final vm.Vector3 worldUp = vm.Vector3(0, 1, 0);
 }

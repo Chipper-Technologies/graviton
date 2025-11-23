@@ -323,7 +323,7 @@
   "tutorialControlsDescriptionPart1": "点击任何地方显示模拟的浮动播放/暂停控件。速度控制在右上角。点击菜单",
   "tutorialControlsDescriptionPart2": "获取场景、设置和物理调整。",
   "tutorialCameraTitle": "相机和视图控制",
-  "tutorialCameraDescription": "拖动来旋转视图，捏合缩放，使用两个手指滚动相机。底部栏有焦点、居中和自动旋转控件，提供电影般的体验。",
+  "tutorialCameraDescription": "拖动来旋转视图，捏合缩放，使用两个手指滚动相机，使用三个手指平移。底部栏有焦点、居中和自动旋转控件，提供电影般的体验。",
   "tutorialScenariosTitle": "选择您的冒险",
   "tutorialScenariosDescription": "访问右上角的菜单(⋮)探索不同场景：我们的太阳系、地月动力学、双星，或混沌的三体问题。每个都提供独特的物理学供您发现！",
   "tutorialScenariosDescriptionPart1": "访问右上角的菜单",

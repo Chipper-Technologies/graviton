@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/painters/gravity_painter.dart';
@@ -596,7 +597,7 @@ void main() {
         );
 
         // Calculate the tilt magnitude
-        final defaultNormal = vm.Vector3(0, 1, 0);
+        final defaultNormal = RenderingConstants.worldUp;
         final tiltAngleRadians = math.acos(
           orbitalPlane.normal.dot(defaultNormal).clamp(-1.0, 1.0),
         );
@@ -653,7 +654,7 @@ void main() {
         // v = (-1,0,0) - (1,0,0) = (-2,0,0) for star2 relative to star1
         // Actually, let's check if we get any tilt at all
         final tiltMagnitude =
-            (orbitalPlane1.normal - vm.Vector3(0, 1, 0)).length;
+            (orbitalPlane1.normal - RenderingConstants.worldUp).length;
 
         // Lower the expectation since the setup might need refinement
         expect(
@@ -714,9 +715,9 @@ void main() {
 
         // Calculate tilt magnitudes
         final lightStarTilt =
-            (lightStarPlane.normal - vm.Vector3(0, 1, 0)).length;
+            (lightStarPlane.normal - RenderingConstants.worldUp).length;
         final heavyStarTilt =
-            (heavyStarPlane.normal - vm.Vector3(0, 1, 0)).length;
+            (heavyStarPlane.normal - RenderingConstants.worldUp).length;
 
         // The algorithm uses sqrt(mass) weighting, so the difference might be subtle
         // Test that either there's a measurable difference OR both are responding to orbital motion

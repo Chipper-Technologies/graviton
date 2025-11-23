@@ -759,7 +759,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get tutorialCameraDescription =>
-      'Ziehen Sie, um Ihre Ansicht zu drehen, kneifen Sie zum Zoomen und verwenden Sie zwei Finger zum Rollen der Kamera. Die untere Leiste hat Fokus-, Zentrier- und automatische Rotationssteuerelemente für ein kinoreifes Erlebnis.';
+      'Ziehen Sie, um Ihre Ansicht zu drehen, kneifen Sie zum Zoomen, verwenden Sie zwei Finger zum Rollen der Kamera und verwenden Sie drei Finger zum Verschieben. Die untere Leiste hat Fokus-, Zentrier- und automatische Rotationssteuerelemente für ein kinoreifes Erlebnis.';
 
   @override
   String get tutorialCameraTitle => 'Kamera- & Ansichtssteuerung';

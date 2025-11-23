@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/constants/platform_channel_constants.dart';
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
@@ -478,8 +479,7 @@ class _HomeScreenState extends State<HomeScreen>
     final forward = (target - eye).normalized();
 
     // Calculate the right vector (cross product of forward and world up)
-    final worldUp = vm.Vector3(0, 1, 0);
-    final right = forward.cross(worldUp).normalized();
+    final right = forward.cross(RenderingConstants.worldUp).normalized();
 
     // Calculate the up vector (cross product of right and forward)
     final up = right.cross(forward).normalized();
@@ -624,6 +624,37 @@ class _HomeScreenState extends State<HomeScreen>
         });
       }
     }
+  }
+
+  /// Handle three-finger pan gesture to move camera target in view-relative directions
+  void _handleThreeFingerPan(Offset screenDelta, AppState appState) {
+    final camera = appState.camera;
+
+    // Don't allow panning in follow mode - it would break the follow behavior
+    if (camera.followMode) {
+      return;
+    }
+
+    // Convert screen delta to camera-relative movement
+    // Pan sensitivity scales with distance for consistent feel at all zoom levels
+    final panSensitivity =
+        camera.distance * SimulationConstants.cameraPanSensitivityFactor;
+
+    // Calculate camera's right and up vectors based on yaw angle
+    // Right vector is perpendicular to the view direction (for horizontal pan)
+    final cy = math.cos(camera.yaw);
+    final sy = math.sin(camera.yaw);
+    final rightVector = vm.Vector3(-cy, 0, sy);
+    final upVector = RenderingConstants.worldUp;
+
+    // Convert 2D screen delta to 3D world space delta
+    // Positive dx for natural panning direction (drag right = pan right)
+    // Positive dy inverted for natural vertical panning (drag up = pan up)
+    final worldDelta =
+        rightVector * (screenDelta.dx * panSensitivity) +
+        upVector * (screenDelta.dy * panSensitivity);
+
+    camera.pan(worldDelta);
   }
 
   void _showScenarioSelectionScreen(BuildContext context) {
@@ -1453,7 +1484,20 @@ class _HomeScreenState extends State<HomeScreen>
                         // Show floating controls on interaction
                         _showFloatingControlsTemporarily();
 
-                        if (d.pointerCount >= 2) {
+                        if (d.pointerCount >= 3) {
+                          FirebaseService.instance.logUIEventWithEnums(
+                            UIAction.viewportGestureStart,
+                            element: UIElement.viewportCanvas,
+                            value: 'three_finger_pan',
+                            additionalParams: {
+                              'pointer_count': d.pointerCount.toString(),
+                              'camera_technique':
+                                  appState.ui.cinematicCameraTechnique.name,
+                              'follow_mode': appState.camera.followMode
+                                  .toString(),
+                            },
+                          );
+                        } else if (d.pointerCount >= 2) {
                           FirebaseService.instance.logUIEventWithEnums(
                             UIAction.viewportGestureStart,
                             element: UIElement.viewportCanvas,
@@ -1494,7 +1538,10 @@ class _HomeScreenState extends State<HomeScreen>
                           }
                         }
 
-                        if (d.pointerCount >= 2) {
+                        if (d.pointerCount >= 3) {
+                          // Handle three-finger pan
+                          _handleThreeFingerPan(delta, appState);
+                        } else if (d.pointerCount >= 2) {
                           // Handle two-finger gestures: zoom and roll
                           final dz = (1 - d.scale) * 0.1;
                           appState.camera.zoomTowardBody(
