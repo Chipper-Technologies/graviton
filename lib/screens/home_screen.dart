@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/constants/platform_channel_constants.dart';
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/ui_action.dart';
@@ -478,8 +479,7 @@ class _HomeScreenState extends State<HomeScreen>
     final forward = (target - eye).normalized();
 
     // Calculate the right vector (cross product of forward and world up)
-    final worldUp = vm.Vector3(0, 1, 0);
-    final right = forward.cross(worldUp).normalized();
+    final right = forward.cross(RenderingConstants.worldUp).normalized();
 
     // Calculate the up vector (cross product of right and forward)
     final up = right.cross(forward).normalized();
@@ -637,14 +637,15 @@ class _HomeScreenState extends State<HomeScreen>
 
     // Convert screen delta to camera-relative movement
     // Pan sensitivity scales with distance for consistent feel at all zoom levels
-    final panSensitivity = camera.distance * 0.002;
+    final panSensitivity =
+        camera.distance * SimulationConstants.cameraPanSensitivityFactor;
 
     // Calculate camera's right and up vectors based on yaw angle
     // Right vector is perpendicular to the view direction (for horizontal pan)
     final cy = math.cos(camera.yaw);
     final sy = math.sin(camera.yaw);
     final rightVector = vm.Vector3(-cy, 0, sy);
-    final upVector = vm.Vector3(0, 1, 0);
+    final upVector = RenderingConstants.worldUp;
 
     // Convert 2D screen delta to 3D world space delta
     // Positive dx for natural panning direction (drag right = pan right)

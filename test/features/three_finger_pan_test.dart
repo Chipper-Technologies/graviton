@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/state/camera_state.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -76,18 +77,21 @@ void main() {
     group('Pan Sensitivity Scaling', () {
       test('pan sensitivity should scale with camera distance', () {
         // Test at default distance (300.0)
-        final sensitivity1 = camera.distance * 0.002;
+        final sensitivity1 =
+            camera.distance * SimulationConstants.cameraPanSensitivityFactor;
         expect(sensitivity1, equals(0.6));
 
         // Test at closer distance
         camera.zoom(-0.5); // Zoom in significantly
-        final sensitivity2 = camera.distance * 0.002;
+        final sensitivity2 =
+            camera.distance * SimulationConstants.cameraPanSensitivityFactor;
         expect(sensitivity2, lessThan(sensitivity1));
 
         // Test at farther distance
         camera.resetView();
         camera.zoom(2.0); // Zoom out significantly
-        final sensitivity3 = camera.distance * 0.002;
+        final sensitivity3 =
+            camera.distance * SimulationConstants.cameraPanSensitivityFactor;
         expect(sensitivity3, greaterThan(sensitivity1));
       });
     });
@@ -138,7 +142,8 @@ void main() {
 
         // Simulate screen delta (positive dx = drag right)
         const screenDelta = 100.0; // pixels
-        final panSensitivity = camera.distance * 0.002;
+        final panSensitivity =
+            camera.distance * SimulationConstants.cameraPanSensitivityFactor;
 
         final cy = math.cos(camera.yaw);
         final sy = math.sin(camera.yaw);
@@ -156,7 +161,8 @@ void main() {
 
         // Simulate screen delta (positive dy = drag down)
         const screenDelta = 100.0; // pixels
-        final panSensitivity = camera.distance * 0.002;
+        final panSensitivity =
+            camera.distance * SimulationConstants.cameraPanSensitivityFactor;
 
         final upVector = vm.Vector3(0, 1, 0);
         final worldDelta = upVector * (screenDelta * panSensitivity);
@@ -288,7 +294,8 @@ void main() {
 
         // Simulate 100px drag to the right
         const screenDeltaDx = 100.0;
-        final panSensitivity = camera.distance * 0.002;
+        final panSensitivity =
+            camera.distance * SimulationConstants.cameraPanSensitivityFactor;
 
         final cy = math.cos(camera.yaw);
         final sy = math.sin(camera.yaw);
@@ -306,7 +313,8 @@ void main() {
 
         // Simulate 100px drag up
         const screenDeltaDy = 100.0;
-        final panSensitivity = camera.distance * 0.002;
+        final panSensitivity =
+            camera.distance * SimulationConstants.cameraPanSensitivityFactor;
 
         final upVector = vm.Vector3(0, 1, 0);
         final worldDelta = upVector * (screenDeltaDy * panSensitivity);
@@ -323,7 +331,8 @@ void main() {
         // Simulate diagonal drag (right and up)
         const screenDeltaDx = 100.0;
         const screenDeltaDy = 100.0;
-        final panSensitivity = camera.distance * 0.002;
+        final panSensitivity =
+            camera.distance * SimulationConstants.cameraPanSensitivityFactor;
 
         final cy = math.cos(camera.yaw);
         final sy = math.sin(camera.yaw);

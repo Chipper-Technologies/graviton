@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/main.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -443,18 +444,24 @@ void main() {
       testAppState.camera.resetView();
 
       // At default distance
-      final sensitivity1 = testAppState.camera.distance * 0.002;
+      final sensitivity1 =
+          testAppState.camera.distance *
+          SimulationConstants.cameraPanSensitivityFactor;
       expect(sensitivity1, equals(0.6));
 
       // Zoom in
       testAppState.camera.zoom(-0.5);
-      final sensitivity2 = testAppState.camera.distance * 0.002;
+      final sensitivity2 =
+          testAppState.camera.distance *
+          SimulationConstants.cameraPanSensitivityFactor;
       expect(sensitivity2, lessThan(sensitivity1));
 
       // Zoom out
       testAppState.camera.resetView();
       testAppState.camera.zoom(1.0);
-      final sensitivity3 = testAppState.camera.distance * 0.002;
+      final sensitivity3 =
+          testAppState.camera.distance *
+          SimulationConstants.cameraPanSensitivityFactor;
       expect(sensitivity3, greaterThan(sensitivity1));
     });
   });

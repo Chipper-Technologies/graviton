@@ -387,6 +387,10 @@ class SimulationConstants {
   static const int cameraSpeedDecimalPlaces =
       1; // Decimal places for speed display
 
+  // Camera pan sensitivity
+  static const double cameraPanSensitivityFactor =
+      0.002; // Pan sensitivity scaling factor (distance-based)
+
   // Temperature calculation constants
   static const double sunSurfaceTemperature =
       5778.0; // Sun surface temp in Kelvin
