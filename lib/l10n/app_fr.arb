@@ -324,7 +324,7 @@
   "tutorialControlsDescriptionPart1": "Touchez n'importe où pour afficher les contrôles flottants de Lecture/Pause pour la simulation. Le contrôle de vitesse est dans le coin supérieur droit. Touchez le menu",
   "tutorialControlsDescriptionPart2": "pour les scénarios, paramètres et ajustements physiques.",
   "tutorialCameraTitle": "Contrôles de Caméra et Vue",
-  "tutorialCameraDescription": "Glissez pour faire pivoter la vue, pincez pour zoomer, et utilisez deux doigts pour faire rouler la caméra. La barre inférieure a des contrôles de focus, centrage et rotation automatique pour une expérience cinématographique.",
+  "tutorialCameraDescription": "Glissez pour faire pivoter la vue, pincez pour zoomer, utilisez deux doigts pour faire rouler la caméra et utilisez trois doigts pour déplacer. La barre inférieure a des contrôles de focus, centrage et rotation automatique pour une expérience cinématographique.",
   "tutorialScenariosTitle": "Explorer les Scénarios",
   "tutorialScenariosDescription": "Accédez au menu (⋮) dans le coin supérieur droit pour explorer différents scénarios : notre Système Solaire, dynamiques Terre-Lune, Étoiles Binaires, ou le chaotique Problème à Trois Corps. Chacun offre une physique unique à découvrir !",
   "tutorialScenariosDescriptionPart1": "Accédez au menu",

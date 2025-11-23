@@ -394,6 +394,10 @@ class SimulationConstants {
   static const int cameraAutoRotateSpeedDivisions =
       29; // Number of slider divisions for auto-rotate speed
 
+  // Camera pan sensitivity
+  static const double cameraPanSensitivityFactor =
+      0.002; // Pan sensitivity scaling factor (distance-based)
+
   // Temperature calculation constants
   static const double sunSurfaceTemperature =
       5778.0; // Sun surface temp in Kelvin

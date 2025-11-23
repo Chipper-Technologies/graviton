@@ -727,7 +727,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get tutorialCameraDescription =>
-      '드래그하여 뷰 회전, 핀치하여 줌, 두 손가락으로 카메라를 롤하세요. 하단 바에는 영화적 경험을 위한 포커스, 중앙 배치, 자동 회전 컨트롤이 있습니다.';
+      '드래그하여 뷰 회전, 핀치하여 줌, 두 손가락으로 카메라를 롤, 세 손가락으로 패닝하세요. 하단 바에는 영화적 경험을 위한 포커스, 중앙 배치, 자동 회전 컨트롤이 있습니다.';
 
   @override
   String get tutorialCameraTitle => '카메라 & 뷰 조작';

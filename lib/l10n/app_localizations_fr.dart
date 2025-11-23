@@ -769,7 +769,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get tutorialCameraDescription =>
-      'Glissez pour faire pivoter la vue, pincez pour zoomer, et utilisez deux doigts pour faire rouler la caméra. La barre inférieure a des contrôles de focus, centrage et rotation automatique pour une expérience cinématographique.';
+      'Glissez pour faire pivoter la vue, pincez pour zoomer, utilisez deux doigts pour faire rouler la caméra et utilisez trois doigts pour déplacer. La barre inférieure a des contrôles de focus, centrage et rotation automatique pour une expérience cinématographique.';
 
   @override
   String get tutorialCameraTitle => 'Contrôles de Caméra et Vue';

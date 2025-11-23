@@ -324,7 +324,7 @@
   "tutorialControlsDescriptionPart1": "どこでもタップしてシミュレーションのフローティング再生/一時停止コントロールを表示します。速度コントロールは右上角にあります。メニュー",
   "tutorialControlsDescriptionPart2": "をタップしてシナリオ、設定、物理調整を行ってください。",
   "tutorialCameraTitle": "カメラ & ビュー操作",
-  "tutorialCameraDescription": "ドラッグしてビューを回転、ピンチしてズーム、2本指でカメラをロールします。下部バーには映画的な体験のためのフォーカス、センタリング、自動回転コントロールがあります。",
+  "tutorialCameraDescription": "ドラッグしてビューを回転、ピンチしてズーム、2本指でカメラをロール、3本指でパンします。下部バーには映画的な体験のためのフォーカス、センタリング、自動回転コントロールがあります。",
   "tutorialScenariosTitle": "冒険を選択",
   "tutorialScenariosDescription": "右上角のメニュー（⋮）にアクセスして異なるシナリオを探索：太陽系、地球-月力学、連星、または混沌とした三体問題。それぞれが発見すべき独特な物理学を提供します！",
   "tutorialScenariosDescriptionPart1": "右上角のメニュー",

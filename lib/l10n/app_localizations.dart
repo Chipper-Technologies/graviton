@@ -1439,7 +1439,7 @@ abstract class AppLocalizations {
   /// Description for tutorial camera step
   ///
   /// In en, this message translates to:
-  /// **'Drag to rotate your view, pinch to zoom, and use two fingers to roll the camera. The bottom bar has focus, center, and auto-rotation controls for a cinematic experience.'**
+  /// **'Drag to rotate your view, pinch to zoom, use two fingers to roll the camera, and use three fingers to pan. The bottom bar has focus, center, and auto-rotation controls for a cinematic experience.'**
   String get tutorialCameraDescription;
 
   /// Title for tutorial camera step

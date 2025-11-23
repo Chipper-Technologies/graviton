@@ -719,7 +719,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tutorialCameraDescription =>
-      '拖动来旋转视图，捏合缩放，使用两个手指滚动相机。底部栏有焦点、居中和自动旋转控件，提供电影般的体验。';
+      '拖动来旋转视图，捏合缩放，使用两个手指滚动相机，使用三个手指平移。底部栏有焦点、居中和自动旋转控件，提供电影般的体验。';
 
   @override
   String get tutorialCameraTitle => '相机和视图控制';
