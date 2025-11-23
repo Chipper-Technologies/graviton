@@ -99,6 +99,7 @@
   - **Single finger drag**: Pan and rotate view (yaw/pitch)
   - **Two finger pinch/spread**: Zoom in/out 
   - **Two finger rotation**: Roll camera around viewing axis
+  - **Three finger pan**: Move camera target in view-relative directions
   - **Auto-rotation mode**: Smooth automatic camera rotation
   - **Enhanced center button**: Resets position, zoom, AND roll
 - **Trail Visualization**: 
@@ -328,6 +329,7 @@ dev_dependencies:
    - 🖱️ **Drag** to rotate the camera (touch or mouse)
    - 🤏 **Pinch** to zoom in/out (touch or scroll wheel)
    - 🔄 **Two-finger rotate** for camera roll
+   - 🤚 **Three-finger pan** to move camera target
    - ▶️ **Play/Pause** to control simulation
 4. **Customize experience**:
    - ⚡ Adjust speed with the slider
@@ -1333,7 +1335,8 @@ a = F / m
 ### 🎮 Advanced Gesture Controls
 - **Single finger drag**: Rotate camera around the simulation (yaw and pitch)
 - **Two finger pinch/spread**: Zoom in/out with enhanced range (5x to 2000x distance)
-- **Two finger rotation**: Roll camera around viewing axis ✨ *NEW FEATURE*
+- **Two finger rotation**: Roll camera around viewing axis
+- **Three finger pan**: Pan camera target in view-relative directions ✨ *NEW FEATURE*
 - **Tap celestial body**: Select and focus on specific objects
 
 ### 🎛️ UI Controls

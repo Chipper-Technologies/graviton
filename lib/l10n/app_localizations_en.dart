@@ -756,7 +756,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tutorialCameraDescription =>
-      'Drag to rotate your view, pinch to zoom, and use two fingers to roll the camera. The bottom bar has focus, center, and auto-rotation controls for a cinematic experience.';
+      'Drag to rotate your view, pinch to zoom, use two fingers to roll the camera, and use three fingers to pan. The bottom bar has focus, center, and auto-rotation controls for a cinematic experience.';
 
   @override
   String get tutorialCameraTitle => 'Camera & View Controls';

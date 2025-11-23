@@ -726,7 +726,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get tutorialCameraDescription =>
-      'ドラッグしてビューを回転、ピンチしてズーム、2本指でカメラをロールします。下部バーには映画的な体験のためのフォーカス、センタリング、自動回転コントロールがあります。';
+      'ドラッグしてビューを回転、ピンチしてズーム、2本指でカメラをロール、3本指でパンします。下部バーには映画的な体験のためのフォーカス、センタリング、自動回転コントロールがあります。';
 
   @override
   String get tutorialCameraTitle => 'カメラ & ビュー操作';

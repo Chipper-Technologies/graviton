@@ -5,6 +5,18 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2025-11-22
+
+### Added
+- **Three-Finger Pan Gesture**: New multi-touch gesture for intuitive camera control
+  - Pan camera target in view-relative directions using three-finger drag
+  - Smart sensitivity scaling that adapts to current zoom level for consistent control
+  - Natural gesture mapping (drag right = pan right, drag up = pan up)
+  - Automatically disabled in follow mode to preserve body tracking behavior
+  - Zero conflicts with existing two-finger zoom and roll gestures
+  - Full analytics integration for gesture tracking and user behavior insights
+  - Updated tutorial and documentation to include three-finger pan instructions
+
 ## [1.5.0] - 2025-11-22
 
 ### Added

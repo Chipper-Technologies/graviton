@@ -769,7 +769,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tutorialCameraDescription =>
-      'Arrastra para rotar la vista, pellizca para hacer zoom, y usa dos dedos para rotar la cámara. La barra inferior tiene controles de enfoque, centrado y rotación automática para una experiencia cinematográfica.';
+      'Arrastra para rotar la vista, pellizca para hacer zoom, usa dos dedos para rotar la cámara y usa tres dedos para desplazar. La barra inferior tiene controles de enfoque, centrado y rotación automática para una experiencia cinematográfica.';
 
   @override
   String get tutorialCameraTitle => 'Controles de Cámara y Vista';
