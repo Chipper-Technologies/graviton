@@ -22,6 +22,7 @@
   "offScreenIndicatorsTitle": "Indicateurs Hors Écran",
   "offScreenIndicatorsDescription": "Afficher des flèches pointant vers les objets en dehors de la zone visible",
   "autoRotateTooltip": "Rotation Automatique",
+  "rotateSpeed": "Vitesse de Rotation",
   "centerViewTooltip": "Centrer la Vue",
   "followObjectTooltip": "Suivre l'Objet Sélectionné",
   "stopFollowingTooltip": "Arrêter de Suivre l'Objet",

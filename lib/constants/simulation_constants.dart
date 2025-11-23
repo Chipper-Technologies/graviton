@@ -387,6 +387,13 @@ class SimulationConstants {
   static const int cameraSpeedDecimalPlaces =
       1; // Decimal places for speed display
 
+  static const double cameraAutoRotateSpeedMin =
+      0.1; // Minimum auto-rotate speed multiplier
+  static const double cameraAutoRotateSpeedMax =
+      3.0; // Maximum auto-rotate speed multiplier
+  static const int cameraAutoRotateSpeedDivisions =
+      29; // Number of slider divisions for auto-rotate speed
+
   // Temperature calculation constants
   static const double sunSurfaceTemperature =
       5778.0; // Sun surface temp in Kelvin

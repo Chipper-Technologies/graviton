@@ -29,9 +29,14 @@ void main() {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
-          body: CameraControls(
-            appState: appState,
-            scrollController: scrollController,
+          body: ListenableBuilder(
+            listenable: Listenable.merge([appState.camera, appState.ui]),
+            builder: (context, child) {
+              return CameraControls(
+                appState: appState,
+                scrollController: scrollController,
+              );
+            },
           ),
         ),
       );
@@ -475,6 +480,458 @@ void main() {
         expect(find.text('Camera Speed'), findsAtLeastNWidgets(1));
         expect(find.text('0.5x'), findsOneWidget); // Default value
         expect(find.byIcon(Icons.speed), findsOneWidget);
+      });
+    });
+
+    group('Rotate Speed Slider', () {
+      testWidgets('rotate speed value can be adjusted via state', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Enable auto-rotate
+        appState.camera.toggleAutoRotate();
+        expect(appState.camera.autoRotate, isTrue);
+
+        // Test the rotate speed functionality directly via the app state
+        final initialValue = appState.camera.autoRotateSpeed;
+        appState.camera.setAutoRotateSpeed(2.0);
+
+        // Value should have changed
+        expect(appState.camera.autoRotateSpeed, equals(2.0));
+        expect(appState.camera.autoRotateSpeed, isNot(equals(initialValue)));
+        expect(appState.camera.autoRotateSpeed, greaterThanOrEqualTo(0.1));
+        expect(appState.camera.autoRotateSpeed, lessThanOrEqualTo(3.0));
+      });
+
+      testWidgets('rotate speed respects min/max boundaries', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        appState.camera.toggleAutoRotate();
+        await tester.pump();
+        expect(appState.camera.autoRotate, isTrue);
+
+        // Test minimum value
+        appState.camera.setAutoRotateSpeed(0.1);
+        await tester.pump();
+        expect(appState.camera.autoRotateSpeed, equals(0.1));
+
+        // Test maximum value
+        appState.camera.setAutoRotateSpeed(3.0);
+        await tester.pump();
+        expect(appState.camera.autoRotateSpeed, equals(3.0));
+
+        // Test value in range
+        appState.camera.setAutoRotateSpeed(1.5);
+        await tester.pump();
+        expect(appState.camera.autoRotateSpeed, equals(1.5));
+      });
+
+      testWidgets('rotate speed persists across auto-rotate toggles', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Enable auto-rotate and set speed
+        appState.camera.toggleAutoRotate();
+        await tester.pump();
+        appState.camera.setAutoRotateSpeed(2.5);
+        await tester.pump();
+        expect(appState.camera.autoRotateSpeed, equals(2.5));
+
+        // Toggle off and on again
+        appState.camera.toggleAutoRotate();
+        await tester.pump();
+        expect(appState.camera.autoRotate, isFalse);
+
+        appState.camera.toggleAutoRotate();
+        await tester.pump();
+        expect(appState.camera.autoRotate, isTrue);
+
+        // Speed should still be the same
+        expect(appState.camera.autoRotateSpeed, equals(2.5));
+      });
+
+      testWidgets(
+        'rotate speed slider is not visible when auto-rotate is off',
+        (WidgetTester tester) async {
+          // Ensure auto-rotate is off
+          expect(appState.camera.autoRotate, isFalse);
+
+          await tester.pumpWidget(createTestWidget());
+          await tester.pumpAndSettle();
+
+          // Rotate speed slider should not be visible
+          expect(find.text('Rotate Speed'), findsNothing);
+        },
+      );
+
+      testWidgets('rotate speed slider appears when auto-rotate is enabled', (
+        WidgetTester tester,
+      ) async {
+        // Enable auto-rotate
+        appState.camera.toggleAutoRotate();
+        expect(appState.camera.autoRotate, isTrue);
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Scroll to make rotate speed slider visible
+        await tester.dragUntilVisible(
+          find.text('Rotate Speed'),
+          find.byType(ListView),
+          const Offset(0, -50),
+        );
+        await tester.pumpAndSettle();
+
+        // Rotate speed slider should be visible
+        expect(find.text('Rotate Speed'), findsOneWidget);
+        expect(find.byIcon(Icons.speed), findsAtLeastNWidgets(1));
+      });
+
+      testWidgets(
+        'rotate speed slider disappears when auto-rotate is toggled off',
+        (WidgetTester tester) async {
+          // Start with auto-rotate enabled
+          appState.camera.toggleAutoRotate();
+          expect(appState.camera.autoRotate, isTrue);
+
+          await tester.pumpWidget(createTestWidget());
+          await tester.pumpAndSettle();
+
+          // Scroll to make rotate speed slider visible
+          await tester.dragUntilVisible(
+            find.text('Rotate Speed'),
+            find.byType(ListView),
+            const Offset(0, -50),
+          );
+          await tester.pumpAndSettle();
+
+          // Rotate speed slider should be visible
+          expect(find.text('Rotate Speed'), findsOneWidget);
+
+          // Toggle auto-rotate off
+          appState.camera.toggleAutoRotate();
+          expect(appState.camera.autoRotate, isFalse);
+          await tester.pumpAndSettle();
+
+          // Rotate speed slider should now be hidden
+          expect(find.text('Rotate Speed'), findsNothing);
+        },
+      );
+
+      testWidgets('rotate speed slider displays current value correctly', (
+        WidgetTester tester,
+      ) async {
+        // Enable auto-rotate and set a specific speed
+        appState.camera.toggleAutoRotate();
+        appState.camera.setAutoRotateSpeed(1.5);
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Scroll to make rotate speed slider visible
+        await tester.dragUntilVisible(
+          find.text('Rotate Speed'),
+          find.byType(ListView),
+          const Offset(0, -50),
+        );
+        await tester.pumpAndSettle();
+
+        // Check for the rotate speed label and formatted value
+        expect(find.text('Rotate Speed'), findsOneWidget);
+        expect(find.text('1.5x'), findsAtLeastNWidgets(1));
+      });
+
+      testWidgets('rotate speed slider has correct range and divisions', (
+        WidgetTester tester,
+      ) async {
+        appState.camera.toggleAutoRotate();
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Scroll to make rotate speed slider visible
+        await tester.dragUntilVisible(
+          find.text('Rotate Speed'),
+          find.byType(ListView),
+          const Offset(0, -50),
+        );
+        await tester.pumpAndSettle();
+
+        // Find the rotate speed slider by looking for a slider with the auto-rotate speed value
+        final rotateSpeedSliderFinder = find.byWidgetPredicate(
+          (widget) =>
+              widget is Slider &&
+              widget.value == appState.camera.autoRotateSpeed &&
+              widget.min == 0.1 &&
+              widget.max == 3.0,
+        );
+
+        expect(rotateSpeedSliderFinder, findsOneWidget);
+
+        final slider = tester.widget<Slider>(rotateSpeedSliderFinder);
+        expect(slider.min, equals(0.1));
+        expect(slider.max, equals(3.0));
+        expect(slider.divisions, equals(29));
+      });
+
+      testWidgets('rotate speed slider updates display when value changes', (
+        WidgetTester tester,
+      ) async {
+        appState.camera.toggleAutoRotate();
+        appState.camera.setAutoRotateSpeed(0.5);
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Scroll to make rotate speed slider visible
+        await tester.dragUntilVisible(
+          find.text('Rotate Speed'),
+          find.byType(ListView),
+          const Offset(0, -50),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('0.5x'), findsAtLeastNWidgets(1));
+
+        // Update the speed
+        appState.camera.setAutoRotateSpeed(2.5);
+        await tester.pump();
+        await tester.pump();
+
+        // Scroll again to ensure the new value is visible
+        await tester.dragUntilVisible(
+          find.text('2.5x'),
+          find.byType(ListView),
+          const Offset(0, -50),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('2.5x'), findsAtLeastNWidgets(1));
+        expect(find.text('0.5x'), findsNothing);
+      });
+
+      testWidgets('rotate speed slider position is below auto-rotate toggle', (
+        WidgetTester tester,
+      ) async {
+        appState.camera.toggleAutoRotate();
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Scroll to make rotate speed slider visible
+        await tester.dragUntilVisible(
+          find.text('Rotate Speed'),
+          find.byType(ListView),
+          const Offset(0, -50),
+        );
+        await tester.pumpAndSettle();
+
+        // Find the auto-rotate toggle and rotate speed slider
+        final autoRotateToggle = find.text('Auto Rotate');
+        final rotateSpeedSlider = find.text('Rotate Speed');
+
+        expect(autoRotateToggle, findsOneWidget);
+        expect(rotateSpeedSlider, findsOneWidget);
+
+        // Get positions to verify rotate speed appears after auto-rotate toggle
+        final autoRotatePosition = tester.getTopLeft(autoRotateToggle);
+        final rotateSpeedPosition = tester.getTopLeft(rotateSpeedSlider);
+
+        // Rotate speed should be below auto-rotate toggle
+        expect(rotateSpeedPosition.dy, greaterThan(autoRotatePosition.dy));
+      });
+
+      testWidgets('rotate speed slider can be interacted with', (
+        WidgetTester tester,
+      ) async {
+        appState.camera.toggleAutoRotate();
+        appState.camera.setAutoRotateSpeed(1.0);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Scaffold(
+              body: SizedBox(
+                width: 400,
+                height: 800,
+                child: CameraControls(
+                  appState: appState,
+                  scrollController: scrollController,
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Scroll to make rotate speed slider visible
+        await tester.dragUntilVisible(
+          find.text('Rotate Speed'),
+          find.byType(ListView),
+          const Offset(0, -50),
+        );
+        await tester.pumpAndSettle();
+
+        // Find the rotate speed slider
+        final sliderFinder = find.byWidgetPredicate(
+          (widget) =>
+              widget is Slider &&
+              widget.value == appState.camera.autoRotateSpeed,
+        );
+
+        expect(sliderFinder, findsOneWidget);
+
+        final initialValue = appState.camera.autoRotateSpeed;
+
+        // Simulate dragging the slider
+        await tester.drag(sliderFinder, const Offset(100, 0));
+        await tester.pumpAndSettle();
+
+        // The value should have changed
+        expect(appState.camera.autoRotateSpeed, isNot(equals(initialValue)));
+      });
+
+      testWidgets(
+        'multiple toggles properly show and hide rotate speed slider',
+        (WidgetTester tester) async {
+          await tester.pumpWidget(createTestWidget());
+          await tester.pumpAndSettle();
+
+          // Initially off
+          expect(find.text('Rotate Speed'), findsNothing);
+
+          // Toggle on
+          appState.camera.toggleAutoRotate();
+          await tester.pumpAndSettle();
+
+          // Scroll to make rotate speed slider visible
+          await tester.dragUntilVisible(
+            find.text('Rotate Speed'),
+            find.byType(ListView),
+            const Offset(0, -50),
+          );
+          await tester.pumpAndSettle();
+
+          expect(find.text('Rotate Speed'), findsOneWidget);
+
+          // Toggle off
+          appState.camera.toggleAutoRotate();
+          await tester.pumpAndSettle();
+          expect(find.text('Rotate Speed'), findsNothing);
+
+          // Toggle on again
+          appState.camera.toggleAutoRotate();
+          await tester.pumpAndSettle();
+
+          // Scroll to make rotate speed slider visible again
+          await tester.dragUntilVisible(
+            find.text('Rotate Speed'),
+            find.byType(ListView),
+            const Offset(0, -50),
+          );
+          await tester.pumpAndSettle();
+
+          expect(find.text('Rotate Speed'), findsOneWidget);
+
+          // Toggle off again
+          appState.camera.toggleAutoRotate();
+          await tester.pumpAndSettle();
+          expect(find.text('Rotate Speed'), findsNothing);
+        },
+      );
+
+      testWidgets(
+        'rotate speed formatting displays correctly for various values',
+        (WidgetTester tester) async {
+          appState.camera.toggleAutoRotate();
+
+          await tester.pumpWidget(createTestWidget());
+          await tester.pumpAndSettle();
+
+          // Scroll to make rotate speed slider visible
+          await tester.dragUntilVisible(
+            find.text('Rotate Speed'),
+            find.byType(ListView),
+            const Offset(0, -50),
+          );
+          await tester.pumpAndSettle();
+
+          // Test minimum edge case
+          appState.camera.setAutoRotateSpeed(0.1);
+          await tester.pumpAndSettle();
+          expect(find.text('0.1x'), findsAtLeastNWidgets(1));
+
+          // Test maximum edge case
+          appState.camera.setAutoRotateSpeed(3.0);
+          await tester.pumpAndSettle();
+          expect(find.text('3.0x'), findsAtLeastNWidgets(1));
+
+          // Test middle values
+          appState.camera.setAutoRotateSpeed(1.7);
+          await tester.pumpAndSettle();
+          expect(find.text('1.7x'), findsAtLeastNWidgets(1));
+
+          appState.camera.setAutoRotateSpeed(0.9);
+          await tester.pumpAndSettle();
+          expect(find.text('0.9x'), findsAtLeastNWidgets(1));
+        },
+      );
+
+      testWidgets('rotate speed slider has speed icon', (
+        WidgetTester tester,
+      ) async {
+        appState.camera.toggleAutoRotate();
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Scroll to make rotate speed slider visible
+        await tester.dragUntilVisible(
+          find.text('Rotate Speed'),
+          find.byType(ListView),
+          const Offset(0, -50),
+        );
+        await tester.pumpAndSettle();
+
+        // Find the speed icon - there should be at least one for rotate speed
+        expect(find.byIcon(Icons.speed), findsAtLeastNWidgets(1));
+      });
+
+      testWidgets('rotate speed slider is part of camera controls section', (
+        WidgetTester tester,
+      ) async {
+        appState.camera.toggleAutoRotate();
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Scroll to make rotate speed slider visible
+        await tester.dragUntilVisible(
+          find.text('Rotate Speed'),
+          find.byType(ListView),
+          const Offset(0, -50),
+        );
+        await tester.pumpAndSettle();
+
+        // Verify the slider is within the CameraControls widget
+        final cameraControls = find.byType(CameraControls);
+        expect(cameraControls, findsOneWidget);
+
+        // And the rotate speed text is found within the widget tree
+        expect(
+          find.descendant(
+            of: cameraControls,
+            matching: find.text('Rotate Speed'),
+          ),
+          findsOneWidget,
+        );
       });
     });
   });

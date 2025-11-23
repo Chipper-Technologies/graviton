@@ -1523,6 +1523,10 @@
   "@autoRotateTooltip": {
     "description": "Tooltip for the auto-rotate button"
   },
+  "rotateSpeed": "Rotate Speed",
+  "@rotateSpeed": {
+    "description": "Label for camera auto-rotation speed control slider"
+  },
   "blackColor": "black",
   "@blackColor": {
     "description": "Name for black color"

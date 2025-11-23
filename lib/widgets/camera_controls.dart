@@ -204,6 +204,38 @@ class CameraControls extends StatelessWidget {
             () => appState.camera.toggleAutoRotate(),
           ),
 
+          // Rotate Speed Slider (only visible when auto-rotate is enabled)
+          if (appState.camera.autoRotate) ...[
+            const SizedBox(height: AppTypography.spacingLarge),
+
+            HapticSliderOption.detailed(
+              label: l10n.rotateSpeed,
+              value: appState.camera.autoRotateSpeed,
+              min: SimulationConstants.cameraAutoRotateSpeedMin,
+              max: SimulationConstants.cameraAutoRotateSpeedMax,
+              divisions: SimulationConstants.cameraAutoRotateSpeedDivisions,
+              icon: Icons.speed,
+              onChanged: (value) {
+                // Track analytics for rotate speed changes
+                FirebaseService.instance.logUIEventWithEnums(
+                  UIAction.manualCameraControlsUsed,
+                  element: UIElement.manualCameraControls,
+                  value: NumberUtils.formatDecimal(value, 1),
+                  additionalParams: {
+                    'control_type': 'auto_rotate_speed',
+                    'previous_value': NumberUtils.formatDecimal(
+                      appState.camera.autoRotateSpeed,
+                      1,
+                    ),
+                    'new_value': NumberUtils.formatDecimal(value, 1),
+                  },
+                );
+                appState.camera.setAutoRotateSpeed(value);
+              },
+              formatter: (value) => '${NumberUtils.formatDecimal(value, 1)}x',
+            ),
+          ],
+
           const SizedBox(height: AppTypography.spacingMedium),
 
           _buildToggleOption(

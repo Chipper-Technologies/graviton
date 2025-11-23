@@ -22,6 +22,7 @@
   "offScreenIndicatorsTitle": "屏幕外指示器",
   "offScreenIndicatorsDescription": "显示指向可见区域外对象的箭头",
   "autoRotateTooltip": "自动旋转",
+  "rotateSpeed": "旋转速度",
   "centerViewTooltip": "居中视图",
   "followObjectTooltip": "跟踪选定对象",
   "stopFollowingTooltip": "停止跟踪对象",
