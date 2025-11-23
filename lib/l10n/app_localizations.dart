@@ -2088,6 +2088,12 @@ abstract class AppLocalizations {
   /// **'Auto Rotate'**
   String get autoRotateTooltip;
 
+  /// Label for camera auto-rotation speed control slider
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate Speed'**
+  String get rotateSpeed;
+
   /// Name for black color
   ///
   /// In en, this message translates to:

@@ -1106,6 +1106,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get autoRotateTooltip => '자동 회전';
 
   @override
+  String get rotateSpeed => '회전 속도';
+
+  @override
   String get blackColor => '검은색';
 
   @override

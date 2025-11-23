@@ -1094,6 +1094,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get autoRotateTooltip => '自动旋转';
 
   @override
+  String get rotateSpeed => '旋转速度';
+
+  @override
   String get blackColor => '黑色';
 
   @override

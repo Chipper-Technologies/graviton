@@ -92,7 +92,7 @@ void main() {
       expect(cameraState.autoRotateSpeed, equals(0.1));
 
       cameraState.setAutoRotateSpeed(10.0);
-      expect(cameraState.autoRotateSpeed, equals(2.0));
+      expect(cameraState.autoRotateSpeed, equals(3.0));
     });
 
     test('SelectBody should update selectedBody', () {

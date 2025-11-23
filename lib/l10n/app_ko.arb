@@ -22,6 +22,7 @@
   "offScreenIndicatorsTitle": "화면 밖 표시기",
   "offScreenIndicatorsDescription": "보이는 영역 밖의 객체를 가리키는 화살표 표시",
   "autoRotateTooltip": "자동 회전",
+  "rotateSpeed": "회전 속도",
   "centerViewTooltip": "중앙 보기",
   "followObjectTooltip": "선택한 객체 추적",
   "stopFollowingTooltip": "객체 추적 중지",

@@ -22,6 +22,7 @@
   "offScreenIndicatorsTitle": "画面外インジケーター",
   "offScreenIndicatorsDescription": "可視領域外のオブジェクトを指す矢印を表示",
   "autoRotateTooltip": "自動回転",
+  "rotateSpeed": "回転速度",
   "centerViewTooltip": "ビューを中央に",
   "followObjectTooltip": "選択したオブジェクトを追跡",
   "stopFollowingTooltip": "オブジェクトの追跡を停止",

@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.6.0] - 2025-11-22
 
 ### Added
+- **Rotation Speed Slider Control**: New UI control for adjusting automatic camera rotation speed
+  - Rotation speed slider with configurable range (0.1x to 3.0x speed) and 29 divisions for precise control
+  - Conditional visibility - slider appears only when auto-rotate is enabled
+  - Updated camera state management to use simulation constants for rotation speed clamping
+
 - **Three-Finger Pan Gesture**: New multi-touch gesture for intuitive camera control
   - Pan camera target in view-relative directions using three-finger drag
   - Smart sensitivity scaling that adapts to current zoom level for consistent control
@@ -16,6 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Zero conflicts with existing two-finger zoom and roll gestures
   - Full analytics integration for gesture tracking and user behavior insights
   - Updated tutorial and documentation to include three-finger pan instructions
+
+### Improved
+- **Code Quality Enhancements**: Extracted magic numbers to named constants for better maintainability
+  - Added `RenderingConstants.worldUp` for world-space up vector (Vector3(0, 1, 0))
+  - Added `SimulationConstants.cameraPanSensitivityFactor` for camera pan sensitivity (0.002)
+  - Updated implementation files and all test files to use new constants
 
 ## [1.5.0] - 2025-11-22
 

@@ -1104,6 +1104,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get autoRotateTooltip => '自動回転';
 
   @override
+  String get rotateSpeed => '回転速度';
+
+  @override
   String get blackColor => '黒色';
 
   @override

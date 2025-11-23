@@ -22,6 +22,7 @@
   "offScreenIndicatorsTitle": "Bildschirm-Außen-Indikatoren",
   "offScreenIndicatorsDescription": "Pfeile zu Objekten außerhalb des sichtbaren Bereichs anzeigen",
   "autoRotateTooltip": "Auto-Rotation",
+  "rotateSpeed": "Rotationsgeschwindigkeit",
   "centerViewTooltip": "Ansicht zentrieren",
   "focusOnNearestTooltip": "Nächsten Körper Fokussieren",
   "followObjectTooltip": "Ausgewähltes Objekt Verfolgen",
