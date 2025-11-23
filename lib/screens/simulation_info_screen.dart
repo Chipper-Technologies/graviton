@@ -52,11 +52,21 @@ class SimulationInfoScreen extends StatelessWidget {
                         const SizedBox(height: AppTypography.spacingLarge),
                         _buildEnergyDynamicsSection(context, l10n, bodies),
                         const SizedBox(height: AppTypography.spacingLarge),
-                        _buildOrbitalMechanicsSection(context, l10n, bodies),
+                        _buildOrbitalMechanicsSection(
+                          context,
+                          l10n,
+                          bodies,
+                          appState,
+                        ),
                         const SizedBox(height: AppTypography.spacingLarge),
                         _buildPhysicsSection(context, l10n, appState),
                         const SizedBox(height: AppTypography.spacingLarge),
-                        _buildCelestialBodiesSection(context, l10n, bodies),
+                        _buildCelestialBodiesSection(
+                          context,
+                          l10n,
+                          bodies,
+                          appState,
+                        ),
                       ],
                     ),
                   ),
@@ -551,6 +561,7 @@ class SimulationInfoScreen extends StatelessWidget {
     BuildContext context,
     AppLocalizations l10n,
     List<Body> bodies,
+    AppState appState,
   ) {
     if (bodies.isEmpty) return const SizedBox.shrink();
 
@@ -596,7 +607,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 icon: Icons.thermostat,
                 label: l10n.temperatureRangeLabel,
                 value:
-                    '${NumberUtils.formatTemperature(tempStats['min']!)} - ${NumberUtils.formatTemperature(tempStats['max']!)}',
+                    '${NumberUtils.formatTemperatureWithUnit(tempStats['min']!, appState.ui.temperatureUnit)} - ${NumberUtils.formatTemperatureWithUnit(tempStats['max']!, appState.ui.temperatureUnit)}',
                 color: AppColors.uiAmber,
               ),
             ),
@@ -613,6 +624,7 @@ class SimulationInfoScreen extends StatelessWidget {
     BuildContext context,
     AppLocalizations l10n,
     List<Body> bodies,
+    AppState appState,
   ) {
     if (bodies.isEmpty) return const SizedBox.shrink();
 
@@ -628,7 +640,7 @@ class SimulationInfoScreen extends StatelessWidget {
           final body = entry.value;
           return Column(
             children: [
-              _buildBodyCard(context, l10n, body),
+              _buildBodyCard(context, l10n, body, appState),
               if (index < bodies.length - 1)
                 const SizedBox(height: AppTypography.spacingMedium),
             ],
@@ -643,8 +655,9 @@ class SimulationInfoScreen extends StatelessWidget {
     BuildContext context,
     AppLocalizations l10n,
     Body body,
+    AppState appState,
   ) {
-    final bodyStats = _calculateIndividualBodyStats(body, context);
+    final bodyStats = _calculateIndividualBodyStats(body, context, appState);
 
     return Container(
       padding: const EdgeInsets.all(AppTypography.spacingMedium),
@@ -1082,6 +1095,7 @@ class SimulationInfoScreen extends StatelessWidget {
   Map<String, dynamic> _calculateIndividualBodyStats(
     Body body,
     BuildContext context,
+    AppState appState,
   ) {
     final velocity = body.velocity.length;
     final kineticEnergy = PhysicsUtils.calculateKineticEnergy(
@@ -1097,7 +1111,10 @@ class SimulationInfoScreen extends StatelessWidget {
       'massFormatted': NumberUtils.formatMassInSolarMasses(body.mass),
       'radiusFormatted': NumberUtils.formatRadiusInSolarRadii(body.radius),
       'velocityFormatted': NumberUtils.formatVelocity(velocity),
-      'temperatureFormatted': NumberUtils.formatTemperature(body.temperature),
+      'temperatureFormatted': NumberUtils.formatTemperatureWithUnit(
+        body.temperature,
+        appState.ui.temperatureUnit,
+      ),
       'kineticEnergyFormatted': _formatEnergy(kineticEnergy),
       'escapeVelocityFormatted': NumberUtils.formatVelocity(escapeVelocity),
       'luminosityFormatted': NumberUtils.formatLuminosity(
