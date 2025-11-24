@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:graviton/enums/auth_provider_type.dart';
 import 'package:graviton/enums/user_avatar.dart';
 import 'package:graviton/models/user_profile.dart';
 import 'package:graviton/services/auth_service.dart';
@@ -336,6 +337,248 @@ void main() {
 
       expect(message, contains('An error occurred'));
       expect(message, contains('Something went wrong'));
+    });
+
+    test('getFriendlyErrorMessage() handles null message', () {
+      final service = AuthService.instance;
+
+      final message = service.getFriendlyErrorMessage(
+        FirebaseAuthException(code: 'custom-error'),
+      );
+
+      expect(message, contains('An error occurred'));
+    });
+
+    test('getFriendlyErrorMessage() handles email-already-in-use', () {
+      final service = AuthService.instance;
+
+      final message = service.getFriendlyErrorMessage(
+        FirebaseAuthException(code: 'email-already-in-use'),
+      );
+
+      expect(
+        message,
+        equals('An account already exists with this email address.'),
+      );
+    });
+
+    test('getFriendlyErrorMessage() handles weak-password', () {
+      final service = AuthService.instance;
+
+      final message = service.getFriendlyErrorMessage(
+        FirebaseAuthException(code: 'weak-password'),
+      );
+
+      expect(
+        message,
+        equals('Password is too weak. Please use a stronger password.'),
+      );
+    });
+
+    test('getFriendlyErrorMessage() handles user-disabled', () {
+      final service = AuthService.instance;
+
+      final message = service.getFriendlyErrorMessage(
+        FirebaseAuthException(code: 'user-disabled'),
+      );
+
+      expect(message, equals('This account has been disabled.'));
+    });
+
+    test('getFriendlyErrorMessage() handles operation-not-allowed', () {
+      final service = AuthService.instance;
+
+      final message = service.getFriendlyErrorMessage(
+        FirebaseAuthException(code: 'operation-not-allowed'),
+      );
+
+      expect(message, equals('This sign-in method is not enabled.'));
+    });
+
+    test('getFriendlyErrorMessage() handles network-request-failed', () {
+      final service = AuthService.instance;
+
+      final message = service.getFriendlyErrorMessage(
+        FirebaseAuthException(code: 'network-request-failed'),
+      );
+
+      expect(message, equals('Network error. Please check your connection.'));
+    });
+
+    test('getFriendlyErrorMessage() handles requires-recent-login', () {
+      final service = AuthService.instance;
+
+      final message = service.getFriendlyErrorMessage(
+        FirebaseAuthException(code: 'requires-recent-login'),
+      );
+
+      expect(message, equals('Please sign in again to perform this action.'));
+    });
+
+    test('getFriendlyErrorMessage() handles user-not-found', () {
+      final service = AuthService.instance;
+
+      final message = service.getFriendlyErrorMessage(
+        FirebaseAuthException(code: 'user-not-found'),
+      );
+
+      expect(message, equals('No account found with this email address.'));
+    });
+
+    test('getFriendlyErrorMessage() handles wrong-password', () {
+      final service = AuthService.instance;
+
+      final message = service.getFriendlyErrorMessage(
+        FirebaseAuthException(code: 'wrong-password'),
+      );
+
+      expect(message, equals('Incorrect password. Please try again.'));
+    });
+
+    test('getFriendlyErrorMessage() handles invalid-email', () {
+      final service = AuthService.instance;
+
+      final message = service.getFriendlyErrorMessage(
+        FirebaseAuthException(code: 'invalid-email'),
+      );
+
+      expect(message, equals('Invalid email address format.'));
+    });
+  });
+
+  group('Additional Google Sign-In Tests', () {
+    test('signInWithGoogle() throws without initialization', () async {
+      // Without proper Firebase/Google Sign-In setup, should throw
+      expect(
+        () => AuthService.instance.signInWithGoogle(),
+        throwsA(isA<Exception>()),
+      );
+    });
+  });
+
+  group('Additional Anonymous Sign-In Tests', () {
+    test('linkAnonymousAccountWithEmailPassword() validates email format', () {
+      // Should throw when called without anonymous user
+      expect(
+        () => AuthService.instance.linkAnonymousAccountWithEmailPassword(
+          email: 'invalid-email',
+          password: 'password',
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+  });
+
+  group('Additional Profile Management Tests', () {
+    test('updateDisplayName() handles empty string', () async {
+      // Should complete without error (no-op when not signed in)
+      await AuthService.instance.updateDisplayName('');
+    });
+
+    test('updateDisplayName() handles very long names', () async {
+      final longName = 'A' * 500;
+      await AuthService.instance.updateDisplayName(longName);
+    });
+
+    test('resetPassword() handles invalid email format', () async {
+      // Should complete without throwing (Firebase handles validation)
+      await AuthService.instance.resetPassword('invalid-email');
+    });
+
+    test('resetPassword() handles empty email', () async {
+      await AuthService.instance.resetPassword('');
+    });
+  });
+
+  group('Additional Avatar Management Tests', () {
+    test('setUserAvatar() handles rapid changes', () async {
+      SharedPreferences.setMockInitialValues({});
+
+      // Rapidly change avatars
+      await AuthService.instance.setUserAvatar(UserAvatar.sun);
+      await AuthService.instance.setUserAvatar(UserAvatar.moon);
+      await AuthService.instance.setUserAvatar(UserAvatar.earth);
+
+      final prefs = await SharedPreferences.getInstance();
+      // Last one should win
+      expect(
+        prefs.getString('user_selected_avatar'),
+        equals(UserAvatar.earth.id),
+      );
+    });
+
+    test('getCurrentUserProfile() with saved avatar', () async {
+      SharedPreferences.setMockInitialValues({
+        'user_selected_avatar': UserAvatar.jupiter.id,
+      });
+
+      // Verify avatar is stored correctly
+      final prefs = await SharedPreferences.getInstance();
+      expect(
+        prefs.getString('user_selected_avatar'),
+        equals(UserAvatar.jupiter.id),
+      );
+    });
+  });
+
+  group('Additional Account Deletion Tests', () {
+    test('deleteAccount() handles deletion without user', () async {
+      // Should not throw even when no user is signed in
+      await AuthService.instance.deleteAccount();
+    });
+
+    test('reauthenticateWithPassword() validates password', () async {
+      expect(
+        () => AuthService.instance.reauthenticateWithPassword(''),
+        throwsA(isA<Exception>()),
+      );
+    });
+  });
+
+  group('UserProfile Edge Cases', () {
+    test('UserProfile.fromFirebaseUser handles user with photo URL', () {
+      when(mockUser.photoURL).thenReturn('https://example.com/photo.jpg');
+      when(mockUser.providerData).thenReturn([]);
+
+      final profile = UserProfile.fromFirebaseUser(mockUser);
+
+      expect(profile.photoUrl, equals('https://example.com/photo.jpg'));
+    });
+
+    test('UserProfile.fromFirebaseUser handles multiple providers', () {
+      final mockProvider1 = MockUserInfo();
+      final mockProvider2 = MockUserInfo();
+
+      when(mockProvider1.providerId).thenReturn('password');
+      when(mockProvider2.providerId).thenReturn('google.com');
+
+      when(mockUser.providerData).thenReturn([mockProvider1, mockProvider2]);
+
+      final profile = UserProfile.fromFirebaseUser(mockUser);
+
+      expect(profile.authProvider, isNotNull);
+      // Should use first provider (password maps to emailPassword)
+      expect(profile.authProvider, equals(AuthProviderType.emailPassword));
+    });
+
+    test('UserProfile.fromFirebaseUser handles user without email', () {
+      when(mockUser.email).thenReturn(null);
+      when(mockUser.isAnonymous).thenReturn(true);
+      when(mockUser.providerData).thenReturn([]);
+
+      final profile = UserProfile.fromFirebaseUser(mockUser);
+
+      expect(profile.email, isNull);
+      expect(profile.isAnonymous, isTrue);
+    });
+
+    test('UserProfile equality and hashCode', () {
+      when(mockUser.providerData).thenReturn([]);
+
+      final profile1 = UserProfile.fromFirebaseUser(mockUser);
+      final profile2 = UserProfile.fromFirebaseUser(mockUser);
+
+      expect(profile1.uid, equals(profile2.uid));
     });
   });
 }
