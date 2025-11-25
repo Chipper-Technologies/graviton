@@ -7,26 +7,18 @@ import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
 
 /// Email verification banner widget
 ///
-/// Displays the user's email verification status with action buttons
-/// to send verification emails and check verification status.
+/// Displays the user's email verification status with a button
+/// to resend the verification email.
 class EmailVerificationBanner extends StatelessWidget {
-  /// Callback for sending verification email
-  final VoidCallback onSendVerification;
-
-  /// Callback for checking verification status
-  final VoidCallback onCheckVerification;
+  /// Callback for resending verification email
+  final VoidCallback onResendVerification;
 
   /// Whether verification email is being sent
   final bool isSendingVerification;
 
-  /// Whether verification status is being checked
-  final bool isCheckingVerification;
-
   const EmailVerificationBanner({
-    required this.onSendVerification,
-    required this.onCheckVerification,
+    required this.onResendVerification,
     required this.isSendingVerification,
-    required this.isCheckingVerification,
     super.key,
   });
 
@@ -79,64 +71,29 @@ class EmailVerificationBanner extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppTypography.spacingMedium),
-            Row(
-              children: [
-                Expanded(
-                  child: HapticElevatedButton(
-                    onPressed: isSendingVerification
-                        ? null
-                        : onSendVerification,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.uiYellow,
-                      foregroundColor: AppColors.uiBlack,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: AppTypography.spacingMedium,
-                      ),
-                    ),
-                    child: isSendingVerification
-                        ? const SizedBox(
-                            height: AppTypography.iconSizeMedium,
-                            width: AppTypography.iconSizeMedium,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                AppColors.uiBlack,
-                              ),
-                            ),
-                          )
-                        : Text(l10n.sendVerificationEmail),
-                  ),
+            HapticElevatedButton(
+              onPressed:
+                  isSendingVerification ? null : onResendVerification,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.uiYellow,
+                foregroundColor: AppColors.uiBlack,
+                padding: const EdgeInsets.symmetric(
+                  vertical: AppTypography.spacingMedium,
                 ),
-                const SizedBox(width: AppTypography.spacingMedium),
-                Expanded(
-                  child: HapticElevatedButton(
-                    onPressed: isCheckingVerification
-                        ? null
-                        : onCheckVerification,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacityDisabled,
+                minimumSize: const Size(double.infinity, 0),
+              ),
+              child: isSendingVerification
+                  ? const SizedBox(
+                      height: AppTypography.iconSizeMedium,
+                      width: AppTypography.iconSizeMedium,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          AppColors.uiBlack,
+                        ),
                       ),
-                      foregroundColor: AppColors.uiWhite,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: AppTypography.spacingMedium,
-                      ),
-                    ),
-                    child: isCheckingVerification
-                        ? const SizedBox(
-                            height: AppTypography.iconSizeMedium,
-                            width: AppTypography.iconSizeMedium,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                AppColors.uiWhite,
-                              ),
-                            ),
-                          )
-                        : Text(l10n.checkVerificationStatus),
-                  ),
-                ),
-              ],
+                    )
+                  : Text(l10n.resendVerificationEmail),
             ),
           ],
         ],

@@ -250,33 +250,33 @@ void main() {
         tester,
       ) async {
         authState.setCurrentUserForTest(
-          UserProfile(
+          const UserProfile(
             uid: 'user-uid',
-            email: 'user@example.com',
-            displayName: 'Registered User',
-            isAnonymous: false,
-            authProvider: AuthProviderType.emailPassword,
+            email: null,
+            displayName: 'Anonymous User',
+            isAnonymous: true,
+            authProvider: AuthProviderType.anonymous,
           ),
         );
 
         await tester.pumpWidget(buildTestWidget());
         await tester.pumpAndSettle();
 
-        // Should show Sign Out instead
-        expect(find.text('Sign Out'), findsOneWidget);
-        expect(find.text('Reset Session'), findsNothing);
+        // Anonymous users should show Reset Session instead of Sign Out
+        expect(find.text('Reset Session'), findsOneWidget);
+        expect(find.text('Sign Out'), findsNothing);
       });
     });
 
     group('Danger Zone', () {
       testWidgets('should show danger zone section', (tester) async {
         authState.setCurrentUserForTest(
-          UserProfile(
+          const UserProfile(
             uid: 'user-uid',
-            email: 'user@example.com',
+            email: null,
             displayName: 'Test User',
-            isAnonymous: false,
-            authProvider: AuthProviderType.emailPassword,
+            isAnonymous: true,
+            authProvider: AuthProviderType.anonymous,
           ),
         );
 
@@ -289,19 +289,20 @@ void main() {
 
       testWidgets('should show sign out option in danger zone', (tester) async {
         authState.setCurrentUserForTest(
-          UserProfile(
+          const UserProfile(
             uid: 'user-uid',
-            email: 'user@example.com',
+            email: null,
             displayName: 'Test User',
-            isAnonymous: false,
-            authProvider: AuthProviderType.emailPassword,
+            isAnonymous: true,
+            authProvider: AuthProviderType.anonymous,
           ),
         );
 
         await tester.pumpWidget(buildTestWidget());
         await tester.pumpAndSettle();
 
-        expect(find.text('Sign Out'), findsOneWidget);
+        // Anonymous users should show Reset Session
+        expect(find.text('Reset Session'), findsOneWidget);
       });
     });
 

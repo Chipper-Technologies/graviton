@@ -6,54 +6,26 @@ import '../../test_utils.dart';
 
 void main() {
   group('EmailVerificationBanner', () {
-    testWidgets('calls onSendVerification when send button is tapped', (
+    testWidgets('calls onResendVerification when resend button is tapped', (
       tester,
     ) async {
-      bool sendCalled = false;
+      bool resendCalled = false;
 
       await tester.pumpWidget(
         TestUtils.wrapWithMaterialApp(
           child: EmailVerificationBanner(
-            onSendVerification: () => sendCalled = true,
-            onCheckVerification: () {},
+            onResendVerification: () => resendCalled = true,
             isSendingVerification: false,
-            isCheckingVerification: false,
           ),
         ),
       );
 
-      // Find and tap the send button if it exists (only when not verified)
-      final sendButton = find.text('Send Verification Email');
-      if (tester.any(sendButton)) {
-        await tester.tap(sendButton);
-        await tester.pump();
-        expect(sendCalled, isTrue);
-      }
-    });
-
-    testWidgets('calls onCheckVerification when check button is tapped', (
-      tester,
-    ) async {
-      bool checkCalled = false;
-
-      await tester.pumpWidget(
-        TestUtils.wrapWithMaterialApp(
-          child: EmailVerificationBanner(
-            onSendVerification: () {},
-            onCheckVerification: () => checkCalled = true,
-            isSendingVerification: false,
-            isCheckingVerification: false,
-          ),
-        ),
-      );
-
-      // Find and tap the check button if it exists (only when not verified)
-      final checkButton = find.text('Check Verification Status');
-      if (tester.any(checkButton)) {
-        await tester.tap(checkButton);
-        await tester.pump();
-        expect(checkCalled, isTrue);
-      }
+      // Find and tap the resend button
+      final resendButton = find.text('Resend Verification Email');
+      expect(resendButton, findsOneWidget);
+      await tester.tap(resendButton);
+      await tester.pump();
+      expect(resendCalled, isTrue);
     });
 
     testWidgets('shows progress indicator when isSendingVerification is true', (
@@ -62,45 +34,22 @@ void main() {
       await tester.pumpWidget(
         TestUtils.wrapWithMaterialApp(
           child: EmailVerificationBanner(
-            onSendVerification: () {},
-            onCheckVerification: () {},
+            onResendVerification: () {},
             isSendingVerification: true,
-            isCheckingVerification: false,
           ),
         ),
       );
 
       // Check for progress indicator when sending
-      expect(find.byType(CircularProgressIndicator), findsWidgets);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
-
-    testWidgets(
-      'shows progress indicator when isCheckingVerification is true',
-      (tester) async {
-        await tester.pumpWidget(
-          TestUtils.wrapWithMaterialApp(
-            child: EmailVerificationBanner(
-              onSendVerification: () {},
-              onCheckVerification: () {},
-              isSendingVerification: false,
-              isCheckingVerification: true,
-            ),
-          ),
-        );
-
-        // Check for progress indicator when checking
-        expect(find.byType(CircularProgressIndicator), findsWidgets);
-      },
-    );
 
     testWidgets('displays proper layout structure', (tester) async {
       await tester.pumpWidget(
         TestUtils.wrapWithMaterialApp(
           child: EmailVerificationBanner(
-            onSendVerification: () {},
-            onCheckVerification: () {},
+            onResendVerification: () {},
             isSendingVerification: false,
-            isCheckingVerification: false,
           ),
         ),
       );
@@ -111,36 +60,18 @@ void main() {
       expect(find.byType(Icon), findsWidgets);
     });
 
-    testWidgets('renders with both loading states active', (tester) async {
+    testWidgets('uses correct button type', (tester) async {
       await tester.pumpWidget(
         TestUtils.wrapWithMaterialApp(
           child: EmailVerificationBanner(
-            onSendVerification: () {},
-            onCheckVerification: () {},
-            isSendingVerification: true,
-            isCheckingVerification: true,
-          ),
-        ),
-      );
-
-      expect(find.byType(Container), findsWidgets);
-      expect(find.byType(CircularProgressIndicator), findsWidgets);
-    });
-
-    testWidgets('uses correct button types', (tester) async {
-      await tester.pumpWidget(
-        TestUtils.wrapWithMaterialApp(
-          child: EmailVerificationBanner(
-            onSendVerification: () {},
-            onCheckVerification: () {},
+            onResendVerification: () {},
             isSendingVerification: false,
-            isCheckingVerification: false,
           ),
         ),
       );
 
-      // Should have elevated buttons
-      expect(find.byType(ElevatedButton), findsWidgets);
+      // Should have one elevated button
+      expect(find.byType(ElevatedButton), findsOneWidget);
     });
 
     testWidgets('renders in small screen size', (tester) async {
@@ -149,10 +80,8 @@ void main() {
       await tester.pumpWidget(
         TestUtils.wrapWithMaterialApp(
           child: EmailVerificationBanner(
-            onSendVerification: () {},
-            onCheckVerification: () {},
+            onResendVerification: () {},
             isSendingVerification: false,
-            isCheckingVerification: false,
           ),
         ),
       );

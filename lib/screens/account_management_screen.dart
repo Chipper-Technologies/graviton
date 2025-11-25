@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/screen_mode.dart';
 import 'package:graviton/enums/user_avatar.dart';
@@ -46,14 +48,39 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
   UserAvatar? _selectedAvatar;
   bool _acceptedTerms = false;
   bool _isSendingVerification = false;
-  bool _isCheckingVerification = false;
+
+  Timer? _emailVerificationTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startEmailVerificationMonitoring();
+  }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
+    _emailVerificationTimer?.cancel();
     super.dispose();
+  }
+
+  /// Start monitoring email verification status
+  void _startEmailVerificationMonitoring() {
+    // Check every 5 seconds
+    _emailVerificationTimer = Timer.periodic(
+      const Duration(seconds: 5),
+      (_) async {
+        // Only check if email is not verified
+        if (!AuthService.instance.isEmailVerified) {
+          await AuthService.instance.checkEmailVerified();
+          if (mounted) {
+            setState(() {}); // Refresh UI when verification status changes
+          }
+        }
+      },
+    );
   }
 
   /// Translates error codes/messages to localized strings
@@ -191,38 +218,35 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
         return Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(AppTypography.spacingXLarge),
-            child: Form(
-              key: _formKey,
-              child: SignInForm(
-                formKey: _formKey,
-                emailController: _emailController,
-                passwordController: _passwordController,
-                nameController: _nameController,
-                obscurePassword: _obscurePassword,
-                isCreatingAccount: _isCreatingAccount,
-                acceptedTerms: _acceptedTerms,
-                emailError: _emailError,
-                passwordError: _passwordError,
-                onGoogleSignIn: () => _handleGoogleSignIn(authState, l10n),
-                onEmailPasswordAuth: () =>
-                    _handleEmailPasswordAuth(authState, l10n),
-                onTogglePasswordVisibility: () =>
-                    setState(() => _obscurePassword = !_obscurePassword),
-                onToggleMode: () =>
-                    setState(() => _isCreatingAccount = !_isCreatingAccount),
-                onEmailChanged: (value) => setState(() => _emailError = null),
-                onPasswordChanged: (value) =>
-                    setState(() => _passwordError = null),
-                onNameChanged: (value) {},
-                onTermsChanged: (value) =>
-                    setState(() => _acceptedTerms = value),
-                onTermsTapped: () {
-                  // TODO: Open Terms of Service
-                },
-                onPrivacyTapped: () {
-                  // TODO: Open Privacy Policy
-                },
-              ),
+            child: SignInForm(
+              formKey: _formKey,
+              emailController: _emailController,
+              passwordController: _passwordController,
+              nameController: _nameController,
+              obscurePassword: _obscurePassword,
+              isCreatingAccount: _isCreatingAccount,
+              acceptedTerms: _acceptedTerms,
+              emailError: _emailError,
+              passwordError: _passwordError,
+              onGoogleSignIn: () => _handleGoogleSignIn(authState, l10n),
+              onEmailPasswordAuth: () =>
+                  _handleEmailPasswordAuth(authState, l10n),
+              onTogglePasswordVisibility: () =>
+                  setState(() => _obscurePassword = !_obscurePassword),
+              onToggleMode: () =>
+                  setState(() => _isCreatingAccount = !_isCreatingAccount),
+              onEmailChanged: (value) => setState(() => _emailError = null),
+              onPasswordChanged: (value) =>
+                  setState(() => _passwordError = null),
+              onNameChanged: (value) {},
+              onTermsChanged: (value) =>
+                  setState(() => _acceptedTerms = value),
+              onTermsTapped: () {
+                // TODO: Open Terms of Service
+              },
+              onPrivacyTapped: () {
+                // TODO: Open Privacy Policy
+              },
             ),
           ),
         );
@@ -322,45 +346,47 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
           children: [
             _buildProfileCard(authState, user, l10n),
             const SizedBox(height: AppTypography.spacingMedium),
-            if (!authState.isAnonymous && user.email != null)
+            if (!authState.isAnonymous &&
+                user.email != null &&
+                !AuthService.instance.isEmailVerified) ...[
               EmailVerificationBanner(
-                onSendVerification: () => _sendEmailVerification(l10n),
-                onCheckVerification: () => _checkEmailVerification(l10n),
+                onResendVerification: () => _sendEmailVerification(l10n),
                 isSendingVerification: _isSendingVerification,
-                isCheckingVerification: _isCheckingVerification,
               ),
-            if (!authState.isAnonymous && user.email != null)
               const SizedBox(height: AppTypography.spacingMedium),
-            SectionDivider.labeled(
-              l10n.accountManagementSection,
-              bottomSpacing: AppTypography.spacingMedium,
-            ),
-            AccountManagementOptions(
-              onEditAccount: () {
-                _nameController.text = user.displayName ?? '';
-                setState(() => _mode = ScreenMode.editName);
-              },
-              onChangeAvatar: () => setState(() {
-                _selectedAvatar = authState.currentUser?.avatar;
-                _mode = ScreenMode.avatarSelection;
-              }),
-              onSignOut: () => _signOut(authState, l10n),
-              isAnonymous: authState.isAnonymous,
-            ),
-            const SizedBox(height: AppTypography.spacingMedium),
-            SectionDivider.labeled(
-              l10n.dangerZoneSection,
-              bottomSpacing: AppTypography.spacingMedium,
-              color: AppColors.uiRed,
-              labelStyle: AppTypography.mediumText.copyWith(
-                color: AppColors.uiRed,
-                fontWeight: FontWeight.w600,
+            ],
+            if (authState.isAnonymous || AuthService.instance.isEmailVerified) ...[
+              SectionDivider.labeled(
+                l10n.accountManagementSection,
+                bottomSpacing: AppTypography.spacingMedium,
               ),
-            ),
-            DangerZoneSection(
-              onDeleteAccount: () =>
-                  setState(() => _mode = ScreenMode.deleteConfirmation),
-            ),
+              AccountManagementOptions(
+                onEditAccount: () {
+                  _nameController.text = user.displayName ?? '';
+                  setState(() => _mode = ScreenMode.editName);
+                },
+                onChangeAvatar: () => setState(() {
+                  _selectedAvatar = authState.currentUser?.avatar;
+                  _mode = ScreenMode.avatarSelection;
+                }),
+                onSignOut: () => _signOut(authState, l10n),
+                isAnonymous: authState.isAnonymous,
+              ),
+              const SizedBox(height: AppTypography.spacingMedium),
+              SectionDivider.labeled(
+                l10n.dangerZoneSection,
+                bottomSpacing: AppTypography.spacingMedium,
+                color: AppColors.uiRed,
+                labelStyle: AppTypography.mediumText.copyWith(
+                  color: AppColors.uiRed,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              DangerZoneSection(
+                onDeleteAccount: () =>
+                    setState(() => _mode = ScreenMode.deleteConfirmation),
+              ),
+            ],
           ],
         ),
       ),
@@ -446,6 +472,11 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
         } catch (e) {
           debugPrint('Failed to save terms acceptance: $e');
         }
+      }
+
+      // Auto-send verification email for new accounts
+      if (success) {
+        await _sendEmailVerification(l10n);
       }
     } else {
       success = await authState.signInWithEmailPassword(
@@ -588,34 +619,4 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     }
   }
 
-  Future<void> _checkEmailVerification(AppLocalizations l10n) async {
-    setState(() => _isCheckingVerification = true);
-
-    try {
-      final isVerified = await AuthService.instance.checkEmailVerified();
-
-      if (mounted) {
-        GravitonSnackBar.show(
-          context: context,
-          message: isVerified
-              ? l10n.emailVerified
-              : l10n.emailVerificationPending,
-        );
-
-        // Refresh the UI to show the updated status
-        setState(() {});
-      }
-    } catch (e) {
-      if (mounted) {
-        GravitonSnackBar.show(
-          context: context,
-          message: _getLocalizedErrorMessage(e.toString(), l10n),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isCheckingVerification = false);
-      }
-    }
-  }
 }
