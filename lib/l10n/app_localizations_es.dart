@@ -3133,6 +3133,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get signOutSuccess => 'Sesión cerrada correctamente';
 
   @override
+  String get operationTimeout =>
+      'La operación ha caducado. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get operationFailed =>
+      'La operación ha fallado. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get couldNotOpenLink =>
+      'No se pudo abrir el enlace. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get pleaseWaitBeforeRetrying =>
+      'Por favor, espera un momento antes de intentarlo de nuevo.';
+
+  @override
+  String rateLimitWithCooldown(int seconds) {
+    return 'Por favor, espera $seconds segundos antes de intentarlo de nuevo.';
+  }
+
+  @override
+  String get networkError =>
+      'Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.';
+
+  @override
   String get continueAsGuestButton => 'Continuar como invitado';
 
   @override

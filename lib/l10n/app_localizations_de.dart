@@ -3107,6 +3107,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get signOutSuccess => 'Erfolgreich abgemeldet';
 
   @override
+  String get operationTimeout =>
+      'Die Operation ist abgelaufen. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get operationFailed =>
+      'Die Operation ist fehlgeschlagen. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get couldNotOpenLink =>
+      'Link konnte nicht geöffnet werden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get pleaseWaitBeforeRetrying =>
+      'Bitte warten Sie einen Moment, bevor Sie es erneut versuchen.';
+
+  @override
+  String rateLimitWithCooldown(int seconds) {
+    return 'Bitte warten Sie $seconds Sekunden, bevor Sie es erneut versuchen.';
+  }
+
+  @override
+  String get networkError =>
+      'Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.';
+
+  @override
   String get continueAsGuestButton => 'Als Gast fortfahren';
 
   @override

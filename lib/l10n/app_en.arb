@@ -4044,6 +4044,36 @@
   "@signOutSuccess": {
     "description": "Success message after signing out"
   },
+  "operationTimeout": "Operation timed out. Please try again.",
+  "@operationTimeout": {
+    "description": "Error message when an operation times out"
+  },
+  "operationFailed": "Operation failed. Please try again.",
+  "@operationFailed": {
+    "description": "Generic error message when an operation fails"
+  },
+  "couldNotOpenLink": "Could not open link. Please try again.",
+  "@couldNotOpenLink": {
+    "description": "Error message when a link cannot be opened"
+  },
+  "pleaseWaitBeforeRetrying": "Please wait a moment before trying again.",
+  "@pleaseWaitBeforeRetrying": {
+    "description": "Message shown when user needs to wait before retrying an operation"
+  },
+  "rateLimitWithCooldown": "Please wait {seconds} seconds before trying again.",
+  "@rateLimitWithCooldown": {
+    "description": "Rate limit message with cooldown duration",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "description": "Number of seconds to wait"
+      }
+    }
+  },
+  "networkError": "Network error. Please check your connection and try again.",
+  "@networkError": {
+    "description": "Error message for network connectivity issues"
+  },
   "continueAsGuestButton": "Continue as Guest",
   "@continueAsGuestButton": {
     "description": "Button to continue without account"

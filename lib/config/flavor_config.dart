@@ -65,6 +65,11 @@ class AppConfig {
     defaultValue: 'https://chippertechnology.com/privacy-policy/graviton',
   );
 
+  static String get termsOfServiceUrl => const String.fromEnvironment(
+    'TERMS_OF_SERVICE_URL',
+    defaultValue: 'https://chippertechnology.com/terms-of-service/graviton',
+  );
+
   static String get companyWebsiteUrl => const String.fromEnvironment(
     'COMPANY_WEBSITE_URL',
     defaultValue: 'https://chippertechnology.com',

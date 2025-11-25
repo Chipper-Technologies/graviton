@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/enums/screen_mode.dart';
 import 'package:graviton/enums/user_avatar.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/auth_service.dart';
+import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/state/auth_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -23,6 +25,7 @@ import 'package:graviton/widgets/haptics/haptic_button.dart';
 import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Account management screen - single screen with mode-based content
 class AccountManagementScreen extends StatefulWidget {
@@ -48,6 +51,9 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
   UserAvatar? _selectedAvatar;
   bool _acceptedTerms = false;
   bool _isSendingVerification = false;
+  bool _isProcessing = false;
+  static const int _maxRetries = 3;
+  static const Duration _operationTimeout = Duration(seconds: 30);
 
   Timer? _emailVerificationTimer;
 
@@ -69,18 +75,17 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
   /// Start monitoring email verification status
   void _startEmailVerificationMonitoring() {
     // Check every 5 seconds
-    _emailVerificationTimer = Timer.periodic(
-      const Duration(seconds: 5),
-      (_) async {
-        // Only check if email is not verified
-        if (!AuthService.instance.isEmailVerified) {
-          await AuthService.instance.checkEmailVerified();
-          if (mounted) {
-            setState(() {}); // Refresh UI when verification status changes
-          }
+    _emailVerificationTimer = Timer.periodic(const Duration(seconds: 5), (
+      _,
+    ) async {
+      // Only check if email is not verified
+      if (!AuthService.instance.isEmailVerified) {
+        await AuthService.instance.checkEmailVerified();
+        if (mounted) {
+          setState(() {}); // Refresh UI when verification status changes
         }
-      },
-    );
+      }
+    });
   }
 
   /// Translates error codes/messages to localized strings
@@ -228,6 +233,7 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
               acceptedTerms: _acceptedTerms,
               emailError: _emailError,
               passwordError: _passwordError,
+              isProcessing: _isProcessing,
               onGoogleSignIn: () => _handleGoogleSignIn(authState, l10n),
               onEmailPasswordAuth: () =>
                   _handleEmailPasswordAuth(authState, l10n),
@@ -239,14 +245,11 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
               onPasswordChanged: (value) =>
                   setState(() => _passwordError = null),
               onNameChanged: (value) {},
-              onTermsChanged: (value) =>
-                  setState(() => _acceptedTerms = value),
-              onTermsTapped: () {
-                // TODO: Open Terms of Service
-              },
-              onPrivacyTapped: () {
-                // TODO: Open Privacy Policy
-              },
+              onTermsChanged: (value) => setState(() => _acceptedTerms = value),
+              onTermsTapped: () =>
+                  _launchUrl(AppConfig.termsOfServiceUrl, l10n),
+              onPrivacyTapped: () =>
+                  _launchUrl(AppConfig.privacyPolicyUrl, l10n),
             ),
           ),
         );
@@ -355,7 +358,8 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
               ),
               const SizedBox(height: AppTypography.spacingMedium),
             ],
-            if (authState.isAnonymous || AuthService.instance.isEmailVerified) ...[
+            if (authState.isAnonymous ||
+                AuthService.instance.isEmailVerified) ...[
               SectionDivider.labeled(
                 l10n.accountManagementSection,
                 bottomSpacing: AppTypography.spacingMedium,
@@ -425,74 +429,104 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     AuthState authState,
     AppLocalizations l10n,
   ) async {
+    // Prevent concurrent operations
+    if (!_canProceed()) {
+      return;
+    }
+
     // Clear previous errors
     setState(() {
       _emailError = null;
       _passwordError = null;
+      _isProcessing = true;
     });
 
-    // Validate email
-    final email = _emailController.text.trim();
-    if (email.isEmpty) {
-      setState(() => _emailError = l10n.emailRequired);
-      return;
-    }
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (!emailRegex.hasMatch(email)) {
-      setState(() => _emailError = l10n.emailInvalid);
-      return;
-    }
+    try {
+      // Validate email
+      final email = _emailController.text.trim();
+      if (email.isEmpty) {
+        setState(() => _emailError = l10n.emailRequired);
+        return;
+      }
+      final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+      if (!emailRegex.hasMatch(email)) {
+        setState(() => _emailError = l10n.emailInvalid);
+        return;
+      }
 
-    // Validate password
-    final password = _passwordController.text;
-    if (password.isEmpty) {
-      setState(() => _passwordError = l10n.passwordRequired);
-      return;
-    }
-    if (_isCreatingAccount && password.length < 6) {
-      setState(() => _passwordError = l10n.passwordTooShort);
-      return;
-    }
+      // Validate password
+      final password = _passwordController.text;
+      if (password.isEmpty) {
+        setState(() => _passwordError = l10n.passwordRequired);
+        return;
+      }
+      if (_isCreatingAccount && password.length < 6) {
+        setState(() => _passwordError = l10n.passwordTooShort);
+        return;
+      }
 
-    bool success;
-    if (_isCreatingAccount) {
-      final displayName = _nameController.text.trim().isEmpty
-          ? l10n.defaultUserName
-          : _nameController.text.trim();
-      success = await authState.createAccount(
-        email: email,
-        password: password,
-        displayName: displayName,
-      );
+      // Execute with timeout
+      final bool success =
+          await _executeWithRetry(
+            operation: () async {
+              if (_isCreatingAccount) {
+                final displayName = _nameController.text.trim().isEmpty
+                    ? l10n.defaultUserName
+                    : _nameController.text.trim();
+                return await authState.createAccount(
+                  email: email,
+                  password: password,
+                  displayName: displayName,
+                );
+              } else {
+                return await authState.signInWithEmailPassword(
+                  email: email,
+                  password: password,
+                );
+              }
+            },
+            l10n: l10n,
+          ) ??
+          false;
 
-      // Save terms acceptance after successful account creation
-      if (success && _acceptedTerms) {
-        try {
-          await AuthService.instance.saveTermsAcceptance();
-        } catch (e) {
-          debugPrint('Failed to save terms acceptance: $e');
+      if (!mounted) return;
+
+      if (success) {
+        // Save terms acceptance after successful account creation
+        if (_isCreatingAccount && _acceptedTerms) {
+          try {
+            await AuthService.instance.saveTermsAcceptance();
+          } catch (e) {
+            FirebaseService.instance.recordError(e, StackTrace.current);
+            debugPrint('Failed to save terms acceptance: $e');
+          }
         }
-      }
 
-      // Auto-send verification email for new accounts
-      if (success) {
-        await _sendEmailVerification(l10n);
-      }
-    } else {
-      success = await authState.signInWithEmailPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-      );
-    }
+        // Auto-send verification email for new accounts
+        if (_isCreatingAccount) {
+          await _sendEmailVerification(l10n);
+        }
 
-    if (mounted) {
-      if (success) {
         _resetToAccountView();
       } else if (authState.error != null) {
-        GravitonSnackBar.show(
-          context: context,
-          message: _getLocalizedErrorMessage(authState.error, l10n),
-        );
+        // Check for rate limiting
+        if (authState.error!.contains('too-many-requests')) {
+          _handleRateLimit(l10n, cooldown: const Duration(minutes: 1));
+        } else {
+          GravitonSnackBar.show(
+            context: context,
+            message: _getLocalizedErrorMessage(authState.error, l10n),
+          );
+        }
+      }
+    } catch (e) {
+      FirebaseService.instance.recordError(e, StackTrace.current);
+      if (mounted) {
+        GravitonSnackBar.show(context: context, message: l10n.operationFailed);
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
       }
     }
   }
@@ -501,15 +535,40 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     AuthState authState,
     AppLocalizations l10n,
   ) async {
-    final success = await authState.signInWithGoogle();
-    if (mounted) {
-      if (success) {
-        _resetToAccountView();
-      } else {
+    if (!_canProceed()) return;
+
+    setState(() => _isProcessing = true);
+
+    try {
+      final success =
+          await _executeWithRetry(
+            operation: () => authState.signInWithGoogle(),
+            l10n: l10n,
+            errorMessage: l10n.googleSignInError,
+          ) ??
+          false;
+
+      if (mounted) {
+        if (success) {
+          _resetToAccountView();
+        } else {
+          GravitonSnackBar.show(
+            context: context,
+            message: l10n.googleSignInError,
+          );
+        }
+      }
+    } catch (e) {
+      FirebaseService.instance.recordError(e, StackTrace.current);
+      if (mounted) {
         GravitonSnackBar.show(
           context: context,
           message: l10n.googleSignInError,
         );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
       }
     }
   }
@@ -619,4 +678,96 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     }
   }
 
+  /// Launch a URL in the default browser with timeout and error handling
+  Future<void> _launchUrl(String url, AppLocalizations l10n) async {
+    if (_isProcessing) return;
+
+    setState(() => _isProcessing = true);
+
+    try {
+      final uri = Uri.parse(url);
+      final launched =
+          await launchUrl(uri, mode: LaunchMode.externalApplication).timeout(
+            _operationTimeout,
+            onTimeout: () {
+              if (mounted) {
+                GravitonSnackBar.show(
+                  context: context,
+                  message: l10n.operationTimeout,
+                );
+              }
+              return false;
+            },
+          );
+
+      if (!launched && mounted) {
+        GravitonSnackBar.show(context: context, message: l10n.couldNotOpenLink);
+      }
+    } catch (e) {
+      FirebaseService.instance.recordError(e, StackTrace.current);
+      if (mounted) {
+        GravitonSnackBar.show(context: context, message: l10n.couldNotOpenLink);
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
+      }
+    }
+  }
+
+  /// Execute an operation with retry logic for transient failures
+  Future<T?> _executeWithRetry<T>({
+    required Future<T> Function() operation,
+    required AppLocalizations l10n,
+    String? errorMessage,
+  }) async {
+    for (int attempt = 0; attempt <= _maxRetries; attempt++) {
+      try {
+        return await operation().timeout(_operationTimeout);
+      } on TimeoutException {
+        if (attempt == _maxRetries) {
+          if (mounted) {
+            GravitonSnackBar.show(
+              context: context,
+              message: l10n.operationTimeout,
+            );
+          }
+          return null;
+        }
+        // Wait before retry with exponential backoff
+        await Future.delayed(Duration(seconds: 1 << attempt));
+      } catch (e) {
+        if (attempt == _maxRetries) {
+          FirebaseService.instance.recordError(e, StackTrace.current);
+          if (mounted) {
+            GravitonSnackBar.show(
+              context: context,
+              message: errorMessage ?? l10n.operationFailed,
+            );
+          }
+          return null;
+        }
+        // Wait before retry
+        await Future.delayed(Duration(seconds: 1 << attempt));
+      }
+    }
+    return null;
+  }
+
+  /// Check if operation should proceed (not already processing)
+  bool _canProceed() {
+    if (_isProcessing) {
+      return false;
+    }
+    return true;
+  }
+
+  /// Handle rate limiting with user feedback
+  void _handleRateLimit(AppLocalizations l10n, {Duration? cooldown}) {
+    final message = cooldown != null
+        ? l10n.rateLimitWithCooldown(cooldown.inSeconds)
+        : l10n.pleaseWaitBeforeRetrying;
+
+    GravitonSnackBar.show(context: context, message: message);
+  }
 }

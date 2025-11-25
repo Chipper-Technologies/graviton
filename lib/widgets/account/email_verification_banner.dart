@@ -72,8 +72,7 @@ class EmailVerificationBanner extends StatelessWidget {
             ),
             const SizedBox(height: AppTypography.spacingMedium),
             HapticElevatedButton(
-              onPressed:
-                  isSendingVerification ? null : onResendVerification,
+              onPressed: isSendingVerification ? null : onResendVerification,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.uiYellow,
                 foregroundColor: AppColors.uiBlack,

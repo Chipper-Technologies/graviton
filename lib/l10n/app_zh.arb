@@ -1010,5 +1010,11 @@
   "confirmAge": "我确认我已年满13岁",
   "exceptionEmailVerificationFailed": "exceptionEmailVerificationFailed",
   "exceptionEmailVerificationCooldown": "exceptionEmailVerificationCooldown",
-  "exceptionTermsNotAccepted": "exceptionTermsNotAccepted"
+  "exceptionTermsNotAccepted": "exceptionTermsNotAccepted",
+  "operationTimeout": "操作超时。请重试。",
+  "operationFailed": "操作失败。请重试。",
+  "couldNotOpenLink": "无法打开链接。请重试。",
+  "pleaseWaitBeforeRetrying": "请稍等片刻再重试。",
+  "rateLimitWithCooldown": "请等待{seconds}秒后再重试。",
+  "networkError": "网络错误。请检查您的连接并重试。"
 }

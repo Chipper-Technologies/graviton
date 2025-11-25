@@ -3114,6 +3114,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signOutSuccess => 'Successfully signed out';
 
   @override
+  String get operationTimeout => 'Operation timed out. Please try again.';
+
+  @override
+  String get operationFailed => 'Operation failed. Please try again.';
+
+  @override
+  String get couldNotOpenLink => 'Could not open link. Please try again.';
+
+  @override
+  String get pleaseWaitBeforeRetrying =>
+      'Please wait a moment before trying again.';
+
+  @override
+  String rateLimitWithCooldown(int seconds) {
+    return 'Please wait $seconds seconds before trying again.';
+  }
+
+  @override
+  String get networkError =>
+      'Network error. Please check your connection and try again.';
+
+  @override
   String get continueAsGuestButton => 'Continue as Guest';
 
   @override

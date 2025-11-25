@@ -1010,5 +1010,11 @@
   "confirmAge": "저는 13세 이상임을 확인합니다",
   "exceptionEmailVerificationFailed": "exceptionEmailVerificationFailed",
   "exceptionEmailVerificationCooldown": "exceptionEmailVerificationCooldown",
-  "exceptionTermsNotAccepted": "exceptionTermsNotAccepted"
+  "exceptionTermsNotAccepted": "exceptionTermsNotAccepted",
+  "operationTimeout": "작업 시간이 초과되었습니다. 다시 시도해 주세요.",
+  "operationFailed": "작업이 실패했습니다. 다시 시도해 주세요.",
+  "couldNotOpenLink": "링크를 열 수 없습니다. 다시 시도해 주세요.",
+  "pleaseWaitBeforeRetrying": "다시 시도하기 전에 잠시 기다려 주세요.",
+  "rateLimitWithCooldown": "다시 시도하기 전에 {seconds}초를 기다려 주세요.",
+  "networkError": "네트워크 오류입니다. 연결을 확인하고 다시 시도해 주세요."
 }

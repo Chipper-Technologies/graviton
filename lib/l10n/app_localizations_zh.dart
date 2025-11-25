@@ -2932,6 +2932,26 @@ class AppLocalizationsZh extends AppLocalizations {
   String get signOutSuccess => '已成功退出登录';
 
   @override
+  String get operationTimeout => '操作超时。请重试。';
+
+  @override
+  String get operationFailed => '操作失败。请重试。';
+
+  @override
+  String get couldNotOpenLink => '无法打开链接。请重试。';
+
+  @override
+  String get pleaseWaitBeforeRetrying => '请稍等片刻再重试。';
+
+  @override
+  String rateLimitWithCooldown(int seconds) {
+    return '请等待$seconds秒后再重试。';
+  }
+
+  @override
+  String get networkError => '网络错误。请检查您的连接并重试。';
+
+  @override
   String get continueAsGuestButton => '以访客身份继续';
 
   @override

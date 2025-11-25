@@ -2964,6 +2964,26 @@ class AppLocalizationsKo extends AppLocalizations {
   String get signOutSuccess => '로그아웃되었습니다';
 
   @override
+  String get operationTimeout => '작업 시간이 초과되었습니다. 다시 시도해 주세요.';
+
+  @override
+  String get operationFailed => '작업이 실패했습니다. 다시 시도해 주세요.';
+
+  @override
+  String get couldNotOpenLink => '링크를 열 수 없습니다. 다시 시도해 주세요.';
+
+  @override
+  String get pleaseWaitBeforeRetrying => '다시 시도하기 전에 잠시 기다려 주세요.';
+
+  @override
+  String rateLimitWithCooldown(int seconds) {
+    return '다시 시도하기 전에 $seconds초를 기다려 주세요.';
+  }
+
+  @override
+  String get networkError => '네트워크 오류입니다. 연결을 확인하고 다시 시도해 주세요.';
+
+  @override
   String get continueAsGuestButton => '게스트로 계속';
 
   @override

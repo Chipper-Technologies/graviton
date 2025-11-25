@@ -1010,5 +1010,11 @@
   "confirmAge": "Ich bestätige, dass ich mindestens 13 Jahre alt bin",
   "exceptionEmailVerificationFailed": "exceptionEmailVerificationFailed",
   "exceptionEmailVerificationCooldown": "exceptionEmailVerificationCooldown",
-  "exceptionTermsNotAccepted": "exceptionTermsNotAccepted"
+  "exceptionTermsNotAccepted": "exceptionTermsNotAccepted",
+  "operationTimeout": "Die Operation ist abgelaufen. Bitte versuchen Sie es erneut.",
+  "operationFailed": "Die Operation ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
+  "couldNotOpenLink": "Link konnte nicht geöffnet werden. Bitte versuchen Sie es erneut.",
+  "pleaseWaitBeforeRetrying": "Bitte warten Sie einen Moment, bevor Sie es erneut versuchen.",
+  "rateLimitWithCooldown": "Bitte warten Sie {seconds} Sekunden, bevor Sie es erneut versuchen.",
+  "networkError": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut."
 }

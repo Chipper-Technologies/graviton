@@ -3143,6 +3143,29 @@ class AppLocalizationsFr extends AppLocalizations {
   String get signOutSuccess => 'Déconnexion réussie';
 
   @override
+  String get operationTimeout => 'L\'opération a expiré. Veuillez réessayer.';
+
+  @override
+  String get operationFailed => 'L\'opération a échoué. Veuillez réessayer.';
+
+  @override
+  String get couldNotOpenLink =>
+      'Impossible d\'ouvrir le lien. Veuillez réessayer.';
+
+  @override
+  String get pleaseWaitBeforeRetrying =>
+      'Veuillez patienter un instant avant de réessayer.';
+
+  @override
+  String rateLimitWithCooldown(int seconds) {
+    return 'Veuillez attendre $seconds secondes avant de réessayer.';
+  }
+
+  @override
+  String get networkError =>
+      'Erreur réseau. Veuillez vérifier votre connexion et réessayer.';
+
+  @override
   String get continueAsGuestButton => 'Continuer en tant qu\'invité';
 
   @override

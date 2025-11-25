@@ -79,6 +79,9 @@ class SignInForm extends StatelessWidget {
   /// Callback when Privacy Policy is tapped
   final VoidCallback? onPrivacyTapped;
 
+  /// Whether authentication is in progress
+  final bool isProcessing;
+
   const SignInForm({
     super.key,
     required this.formKey,
@@ -100,6 +103,7 @@ class SignInForm extends StatelessWidget {
     required this.onTermsChanged,
     this.onTermsTapped,
     this.onPrivacyTapped,
+    this.isProcessing = false,
   });
 
   @override
@@ -116,12 +120,20 @@ class SignInForm extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Google sign-in button
-              SocialAuthButton(
-                assetPath: 'assets/images/google-logo.svg',
-                animatedBorder: true,
-                label: l10n.continueWithGoogle,
-                onPressed: onGoogleSignIn,
-              ),
+              if (isProcessing)
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(AppTypography.spacingLarge),
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              else
+                SocialAuthButton(
+                  assetPath: 'assets/images/google-logo.svg',
+                  animatedBorder: true,
+                  label: l10n.continueWithGoogle,
+                  onPressed: onGoogleSignIn,
+                ),
               SectionDivider.labeled(
                 l10n.orDivider,
                 topSpacing: AppTypography.spacingMedium,
@@ -189,7 +201,7 @@ class SignInForm extends StatelessWidget {
               const SizedBox(height: AppTypography.spacingXXLarge),
               // Submit button
               HapticElevatedButton(
-                onPressed: isCreatingAccount && !acceptedTerms
+                onPressed: isProcessing || (isCreatingAccount && !acceptedTerms)
                     ? null
                     : onEmailPasswordAuth,
                 style: ElevatedButton.styleFrom(

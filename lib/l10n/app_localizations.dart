@@ -5464,6 +5464,42 @@ abstract class AppLocalizations {
   /// **'Successfully signed out'**
   String get signOutSuccess;
 
+  /// Error message when an operation times out
+  ///
+  /// In en, this message translates to:
+  /// **'Operation timed out. Please try again.'**
+  String get operationTimeout;
+
+  /// Generic error message when an operation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Operation failed. Please try again.'**
+  String get operationFailed;
+
+  /// Error message when a link cannot be opened
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open link. Please try again.'**
+  String get couldNotOpenLink;
+
+  /// Message shown when user needs to wait before retrying an operation
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait a moment before trying again.'**
+  String get pleaseWaitBeforeRetrying;
+
+  /// Rate limit message with cooldown duration
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait {seconds} seconds before trying again.'**
+  String rateLimitWithCooldown(int seconds);
+
+  /// Error message for network connectivity issues
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection and try again.'**
+  String get networkError;
+
   /// Button to continue without account
   ///
   /// In en, this message translates to:

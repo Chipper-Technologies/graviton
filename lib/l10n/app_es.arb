@@ -1010,5 +1010,11 @@
   "confirmAge": "Confirmo que tengo 13 años o más",
   "exceptionEmailVerificationFailed": "exceptionEmailVerificationFailed",
   "exceptionEmailVerificationCooldown": "exceptionEmailVerificationCooldown",
-  "exceptionTermsNotAccepted": "exceptionTermsNotAccepted"
+  "exceptionTermsNotAccepted": "exceptionTermsNotAccepted",
+  "operationTimeout": "La operación ha caducado. Por favor, inténtalo de nuevo.",
+  "operationFailed": "La operación ha fallado. Por favor, inténtalo de nuevo.",
+  "couldNotOpenLink": "No se pudo abrir el enlace. Por favor, inténtalo de nuevo.",
+  "pleaseWaitBeforeRetrying": "Por favor, espera un momento antes de intentarlo de nuevo.",
+  "rateLimitWithCooldown": "Por favor, espera {seconds} segundos antes de intentarlo de nuevo.",
+  "networkError": "Error de red. Por favor, verifica tu conexión e inténtalo de nuevo."
 }
