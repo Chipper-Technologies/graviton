@@ -87,3 +87,8 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // AndroidX Core for edge-to-edge display support (Android 15+)
+    implementation("androidx.core:core-ktx:1.15.0")
+}
