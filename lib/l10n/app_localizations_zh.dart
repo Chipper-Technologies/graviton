@@ -2926,6 +2926,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get signOutButton => '退出登录';
 
   @override
+  String get resetSessionButton => '重置会话';
+
+  @override
   String get signOutSuccess => '已成功退出登录';
 
   @override
@@ -2957,6 +2960,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get upgradeAccountDescription => '保存您的数据并从任何设备访问';
+
+  @override
+  String get accountManagementSection => 'Account Management';
 
   @override
   String get dangerZoneSection => '账户管理';
@@ -3010,7 +3016,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get selectAvatarTitle => '选择头像';
 
   @override
-  String get editDisplayNameTitle => '编辑显示名称';
+  String get editAccountInformationTitle => '编辑显示名称';
 
   @override
   String get displayNameLabel => '显示名称';
@@ -3028,7 +3034,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get deleteAccountWarning => '此操作无法撤消。';
 
   @override
-  String get deleteAccountMessage => '删除您的账户将永久删除：';
+  String get deleteAccountMessage => '删除您的账户将永久删除与其关联的所有数据。';
 
   @override
   String get deleteAccountItem1 => '您的个人资料和头像';
@@ -3044,4 +3050,154 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get deleteAccountPasswordPrompt => '请输入您的密码以确认：';
+
+  @override
+  String get orDivider => 'OR';
+
+  @override
+  String get displayNameHint => 'Enter your name (optional)';
+
+  @override
+  String get emailHint => 'Your email address';
+
+  @override
+  String get passwordHint => 'Your password';
+
+  @override
+  String get alreadyHaveAccountSignIn => 'Already have an account? Sign in';
+
+  @override
+  String get needAccountCreateOne => 'Don\'t have an account? Create one';
+
+  @override
+  String get useGoogleProfilePhoto => 'Use Google Profile Photo';
+
+  @override
+  String get customAvatars => 'Custom Avatars';
+
+  @override
+  String get saveAvatar => 'Save Avatar';
+
+  @override
+  String get displayNameFieldLabel => 'Display Name';
+
+  @override
+  String get displayNameFieldHint => 'Enter your display name';
+
+  @override
+  String get saveAccountInformation => 'Save Account Information';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get emailInvalid => 'Please enter a valid email address';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters';
+
+  @override
+  String get defaultUserName => 'User';
+
+  @override
+  String get googleSignInError =>
+      'Google sign-in was canceled or failed. Please try again.';
+
+  @override
+  String get displayNameUpdated => 'Display name updated';
+
+  @override
+  String get displayNameUpdateFailed => 'Failed to update display name';
+
+  @override
+  String get sessionResetSuccess => 'Session reset successfully';
+
+  @override
+  String get accountDeletedSuccess => 'Account deleted successfully';
+
+  @override
+  String get errorUserNotFound => 'No account found with this email address.';
+
+  @override
+  String get errorWrongPassword => 'Incorrect password. Please try again.';
+
+  @override
+  String get errorInvalidEmail => 'Invalid email address format.';
+
+  @override
+  String get errorUserDisabled => 'This account has been disabled.';
+
+  @override
+  String get errorEmailInUse =>
+      'An account already exists with this email address.';
+
+  @override
+  String get errorWeakPassword =>
+      'Password is too weak. Please use a stronger password.';
+
+  @override
+  String get errorOperationNotAllowed => 'This sign-in method is not enabled.';
+
+  @override
+  String get errorRequiresRecentLogin =>
+      'Please sign in again to perform this action.';
+
+  @override
+  String get errorNetworkFailed =>
+      'Network error. Please check your connection.';
+
+  @override
+  String errorUnknown(String message) {
+    return 'An error occurred: $message';
+  }
+
+  @override
+  String get exceptionGoogleSignInNotInitialized => 'Google登录未初始化';
+
+  @override
+  String get exceptionGoogleSignInTimeout => 'Google登录超时';
+
+  @override
+  String get exceptionAppleSignInPlatform => 'Apple登录仅在Apple平台上可用';
+
+  @override
+  String get exceptionNoAnonymousUser => '没有匿名用户可链接';
+
+  @override
+  String get exceptionNoUserSignedIn => '没有用户登录';
+
+  @override
+  String get firebaseErrorUserNotFound => '未找到使用此电子邮件地址的账户。';
+
+  @override
+  String get firebaseErrorWrongPassword => '密码不正确。请重试。';
+
+  @override
+  String get firebaseErrorInvalidEmail => '电子邮件地址格式无效。';
+
+  @override
+  String get firebaseErrorUserDisabled => '此账户已被禁用。';
+
+  @override
+  String get firebaseErrorEmailInUse => '此电子邮件地址已存在账户。';
+
+  @override
+  String get firebaseErrorWeakPassword => '密码太弱。请使用更强的密码。';
+
+  @override
+  String get firebaseErrorOperationNotAllowed => '此登录方法未启用。';
+
+  @override
+  String get firebaseErrorRequiresRecentLogin => '请重新登录以执行此操作。';
+
+  @override
+  String get firebaseErrorNetworkFailed => '网络错误。请检查您的连接。';
+
+  @override
+  String firebaseErrorDefault(String message) {
+    return '发生错误：$message';
+  }
 }

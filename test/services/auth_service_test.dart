@@ -106,42 +106,42 @@ void main() {
         service.getFriendlyErrorMessage(
           FirebaseAuthException(code: 'user-not-found'),
         ),
-        equals('No account found with this email address.'),
+        equals('firebaseErrorUserNotFound'),
       );
 
       expect(
         service.getFriendlyErrorMessage(
           FirebaseAuthException(code: 'wrong-password'),
         ),
-        equals('Incorrect password. Please try again.'),
+        equals('firebaseErrorWrongPassword'),
       );
 
       expect(
         service.getFriendlyErrorMessage(
           FirebaseAuthException(code: 'invalid-email'),
         ),
-        equals('Invalid email address format.'),
+        equals('firebaseErrorInvalidEmail'),
       );
 
       expect(
         service.getFriendlyErrorMessage(
           FirebaseAuthException(code: 'email-already-in-use'),
         ),
-        equals('An account already exists with this email address.'),
+        equals('firebaseErrorEmailInUse'),
       );
 
       expect(
         service.getFriendlyErrorMessage(
           FirebaseAuthException(code: 'weak-password'),
         ),
-        equals('Password is too weak. Please use a stronger password.'),
+        equals('firebaseErrorWeakPassword'),
       );
 
       expect(
         service.getFriendlyErrorMessage(
           FirebaseAuthException(code: 'requires-recent-login'),
         ),
-        equals('Please sign in again to perform this action.'),
+        equals('firebaseErrorRequiresRecentLogin'),
       );
     });
   });
@@ -335,8 +335,7 @@ void main() {
         ),
       );
 
-      expect(message, contains('An error occurred'));
-      expect(message, contains('Something went wrong'));
+      expect(message, equals('firebaseErrorDefault:Something went wrong'));
     });
 
     test('getFriendlyErrorMessage() handles null message', () {
@@ -346,7 +345,7 @@ void main() {
         FirebaseAuthException(code: 'custom-error'),
       );
 
-      expect(message, contains('An error occurred'));
+      expect(message, equals('firebaseErrorDefault:null'));
     });
 
     test('getFriendlyErrorMessage() handles email-already-in-use', () {
@@ -356,10 +355,7 @@ void main() {
         FirebaseAuthException(code: 'email-already-in-use'),
       );
 
-      expect(
-        message,
-        equals('An account already exists with this email address.'),
-      );
+      expect(message, equals('firebaseErrorEmailInUse'));
     });
 
     test('getFriendlyErrorMessage() handles weak-password', () {
@@ -369,10 +365,7 @@ void main() {
         FirebaseAuthException(code: 'weak-password'),
       );
 
-      expect(
-        message,
-        equals('Password is too weak. Please use a stronger password.'),
-      );
+      expect(message, equals('firebaseErrorWeakPassword'));
     });
 
     test('getFriendlyErrorMessage() handles user-disabled', () {
@@ -382,7 +375,7 @@ void main() {
         FirebaseAuthException(code: 'user-disabled'),
       );
 
-      expect(message, equals('This account has been disabled.'));
+      expect(message, equals('firebaseErrorUserDisabled'));
     });
 
     test('getFriendlyErrorMessage() handles operation-not-allowed', () {
@@ -392,7 +385,7 @@ void main() {
         FirebaseAuthException(code: 'operation-not-allowed'),
       );
 
-      expect(message, equals('This sign-in method is not enabled.'));
+      expect(message, equals('firebaseErrorOperationNotAllowed'));
     });
 
     test('getFriendlyErrorMessage() handles network-request-failed', () {
@@ -402,7 +395,7 @@ void main() {
         FirebaseAuthException(code: 'network-request-failed'),
       );
 
-      expect(message, equals('Network error. Please check your connection.'));
+      expect(message, equals('firebaseErrorNetworkFailed'));
     });
 
     test('getFriendlyErrorMessage() handles requires-recent-login', () {
@@ -412,7 +405,7 @@ void main() {
         FirebaseAuthException(code: 'requires-recent-login'),
       );
 
-      expect(message, equals('Please sign in again to perform this action.'));
+      expect(message, equals('firebaseErrorRequiresRecentLogin'));
     });
 
     test('getFriendlyErrorMessage() handles user-not-found', () {
@@ -422,7 +415,7 @@ void main() {
         FirebaseAuthException(code: 'user-not-found'),
       );
 
-      expect(message, equals('No account found with this email address.'));
+      expect(message, equals('firebaseErrorUserNotFound'));
     });
 
     test('getFriendlyErrorMessage() handles wrong-password', () {
@@ -432,7 +425,7 @@ void main() {
         FirebaseAuthException(code: 'wrong-password'),
       );
 
-      expect(message, equals('Incorrect password. Please try again.'));
+      expect(message, equals('firebaseErrorWrongPassword'));
     });
 
     test('getFriendlyErrorMessage() handles invalid-email', () {
@@ -442,7 +435,7 @@ void main() {
         FirebaseAuthException(code: 'invalid-email'),
       );
 
-      expect(message, equals('Invalid email address format.'));
+      expect(message, equals('firebaseErrorInvalidEmail'));
     });
   });
 

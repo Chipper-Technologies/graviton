@@ -262,6 +262,16 @@ class AppColors {
     0xFFB19CD9,
   ); // Light purple for section titles
 
+  // =============================================================================
+  // BRAND COLORS
+  // =============================================================================
+
+  /// Google brand colors for authentication
+  static const Color googleBlue = Color(0xFF4285F4);
+  static const Color googleRed = Color(0xFFEA4335);
+  static const Color googleYellow = Color(0xFFFBBC05);
+  static const Color googleGreen = Color(0xFF34A853);
+
   /// Off-screen indicator colors
   static const Color offScreenBlackHole = Color(
     0xFF404040,

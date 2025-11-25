@@ -215,6 +215,25 @@ class AuthState extends ChangeNotifier {
     }
   }
 
+  /// Clear custom avatar (revert to profile photo if available)
+  Future<bool> clearAvatar() async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      await AuthService.instance.clearUserAvatar();
+
+      // Refresh current user profile
+      _currentUser = await AuthService.instance.getCurrentUserProfile();
+      _setLoading(false);
+      return true;
+    } catch (e) {
+      _setError(_getErrorMessage(e));
+      _setLoading(false);
+      return false;
+    }
+  }
+
   /// Delete account
   Future<bool> deleteAccount({String? password}) async {
     _setLoading(true);

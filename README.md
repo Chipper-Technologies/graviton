@@ -829,6 +829,52 @@ For detailed technical information and development guides, please refer to our c
 
 The app includes comprehensive Firebase integration with development and production flavors for robust analytics, crash reporting, and remote configuration.
 
+### Firebase Configuration
+
+#### 🔑 Getting SHA Fingerprints for Google Sign-In
+
+For Google Sign-In to work on Android, you need to register your app's SHA-1 and SHA-256 fingerprints in the Firebase Console. This is required for both debug (development) and release (production) builds.
+
+**Quick Method - Using Gradle:**
+
+Run this command from the project root to get all SHA fingerprints:
+
+```bash
+cd android && ./gradlew signingReport && cd ..
+```
+
+This will display SHA-1 and SHA-256 fingerprints for both **debug** and **release** variants:
+
+```
+Variant: debug
+Config: debug
+Store: /Users/username/.android/debug.keystore
+SHA1: AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD
+SHA-256: 11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66...
+
+Variant: release
+Config: release
+Store: android/app/upload-keystore.jks
+SHA1: EE:FF:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11
+SHA-256: 22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77...
+```
+
+**Adding Fingerprints to Firebase:**
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Select your project (graviton-dev or graviton-prod)
+3. Go to Project Settings → Your Apps → Android app
+4. Scroll to "SHA certificate fingerprints"
+5. Click "Add fingerprint"
+6. Add **both SHA-1 and SHA-256** from **both debug and release** variants
+7. Download the updated `google-services.json` and replace the file in `android/app/src/dev/` or `android/app/src/prod/`
+
+**Important Notes:**
+- You need fingerprints for **both debug and release** builds
+- Debug fingerprints are needed for local development/testing
+- Release fingerprints are needed for production builds from Google Play
+- Without correct fingerprints, Google Sign-In will fail with "Account reauth failed" or similar errors
+
 ### Firebase Services
 
 #### 📊 Analytics

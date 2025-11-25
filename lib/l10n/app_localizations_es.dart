@@ -3127,6 +3127,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get signOutButton => 'Cerrar sesión';
 
   @override
+  String get resetSessionButton => 'Restablecer sesión';
+
+  @override
   String get signOutSuccess => 'Sesión cerrada correctamente';
 
   @override
@@ -3159,6 +3162,9 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get upgradeAccountDescription =>
       'Guarde sus datos y acceda a ellos desde cualquier dispositivo';
+
+  @override
+  String get accountManagementSection => 'Account Management';
 
   @override
   String get dangerZoneSection => 'Gestión de cuenta';
@@ -3214,7 +3220,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get selectAvatarTitle => 'Seleccionar avatar';
 
   @override
-  String get editDisplayNameTitle => 'Editar nombre de usuario';
+  String get editAccountInformationTitle => 'Editar nombre de usuario';
 
   @override
   String get displayNameLabel => 'Nombre de usuario';
@@ -3234,7 +3240,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get deleteAccountMessage =>
-      'Eliminar su cuenta eliminará permanentemente:';
+      'Eliminar su cuenta eliminará permanentemente todos los datos asociados con ella.';
 
   @override
   String get deleteAccountItem1 => 'Su perfil y avatar';
@@ -3252,4 +3258,165 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get deleteAccountPasswordPrompt =>
       'Por favor ingrese su contraseña para confirmar:';
+
+  @override
+  String get orDivider => 'OR';
+
+  @override
+  String get displayNameHint => 'Enter your name (optional)';
+
+  @override
+  String get emailHint => 'Your email address';
+
+  @override
+  String get passwordHint => 'Your password';
+
+  @override
+  String get alreadyHaveAccountSignIn => 'Already have an account? Sign in';
+
+  @override
+  String get needAccountCreateOne => 'Don\'t have an account? Create one';
+
+  @override
+  String get useGoogleProfilePhoto => 'Use Google Profile Photo';
+
+  @override
+  String get customAvatars => 'Custom Avatars';
+
+  @override
+  String get saveAvatar => 'Save Avatar';
+
+  @override
+  String get displayNameFieldLabel => 'Display Name';
+
+  @override
+  String get displayNameFieldHint => 'Enter your display name';
+
+  @override
+  String get saveAccountInformation => 'Save Account Information';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get emailInvalid => 'Please enter a valid email address';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters';
+
+  @override
+  String get defaultUserName => 'User';
+
+  @override
+  String get googleSignInError =>
+      'Google sign-in was canceled or failed. Please try again.';
+
+  @override
+  String get displayNameUpdated => 'Display name updated';
+
+  @override
+  String get displayNameUpdateFailed => 'Failed to update display name';
+
+  @override
+  String get sessionResetSuccess => 'Session reset successfully';
+
+  @override
+  String get accountDeletedSuccess => 'Account deleted successfully';
+
+  @override
+  String get errorUserNotFound => 'No account found with this email address.';
+
+  @override
+  String get errorWrongPassword => 'Incorrect password. Please try again.';
+
+  @override
+  String get errorInvalidEmail => 'Invalid email address format.';
+
+  @override
+  String get errorUserDisabled => 'This account has been disabled.';
+
+  @override
+  String get errorEmailInUse =>
+      'An account already exists with this email address.';
+
+  @override
+  String get errorWeakPassword =>
+      'Password is too weak. Please use a stronger password.';
+
+  @override
+  String get errorOperationNotAllowed => 'This sign-in method is not enabled.';
+
+  @override
+  String get errorRequiresRecentLogin =>
+      'Please sign in again to perform this action.';
+
+  @override
+  String get errorNetworkFailed =>
+      'Network error. Please check your connection.';
+
+  @override
+  String errorUnknown(String message) {
+    return 'An error occurred: $message';
+  }
+
+  @override
+  String get exceptionGoogleSignInNotInitialized =>
+      'Inicio de sesión de Google no inicializado';
+
+  @override
+  String get exceptionGoogleSignInTimeout =>
+      'El inicio de sesión de Google ha caducado';
+
+  @override
+  String get exceptionAppleSignInPlatform =>
+      'Inicio de sesión de Apple solo está disponible en plataformas Apple';
+
+  @override
+  String get exceptionNoAnonymousUser => 'No hay usuario anónimo para vincular';
+
+  @override
+  String get exceptionNoUserSignedIn => 'No hay usuario conectado';
+
+  @override
+  String get firebaseErrorUserNotFound =>
+      'No se encontró ninguna cuenta con esta dirección de correo electrónico.';
+
+  @override
+  String get firebaseErrorWrongPassword =>
+      'Contraseña incorrecta. Por favor intente de nuevo.';
+
+  @override
+  String get firebaseErrorInvalidEmail =>
+      'Formato de dirección de correo electrónico no válido.';
+
+  @override
+  String get firebaseErrorUserDisabled => 'Esta cuenta ha sido deshabilitada.';
+
+  @override
+  String get firebaseErrorEmailInUse =>
+      'Ya existe una cuenta con esta dirección de correo electrónico.';
+
+  @override
+  String get firebaseErrorWeakPassword =>
+      'La contraseña es demasiado débil. Por favor use una contraseña más fuerte.';
+
+  @override
+  String get firebaseErrorOperationNotAllowed =>
+      'Este método de inicio de sesión no está habilitado.';
+
+  @override
+  String get firebaseErrorRequiresRecentLogin =>
+      'Por favor inicie sesión nuevamente para realizar esta acción.';
+
+  @override
+  String get firebaseErrorNetworkFailed =>
+      'Error de red. Por favor verifique su conexión.';
+
+  @override
+  String firebaseErrorDefault(String message) {
+    return 'Se produjo un error: $message';
+  }
 }

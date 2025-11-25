@@ -243,9 +243,9 @@ void main() {
       // Create user with both photo and avatar
       authState.setCurrentUserForTest(
         UserProfile(
-          uid: 'user-uid',
-          email: 'user@example.com',
-          displayName: 'User',
+          uid: 'user-with-photo',
+          email: 'photo@example.com',
+          displayName: 'Photo User',
           photoUrl: 'https://example.com/photo.jpg',
           avatar: UserAvatar.venus,
           isAnonymous: false,
@@ -255,10 +255,11 @@ void main() {
 
       await tester.pump();
 
-      // Should show Image.network
-      expect(find.byType(Image), findsOneWidget);
-      // Should not show emoji
-      expect(find.text(UserAvatar.venus.emoji), findsNothing);
+      // Custom avatar takes precedence over photoUrl
+      // Should show emoji
+      expect(find.text(UserAvatar.venus.emoji), findsOneWidget);
+      // Should not show photo
+      expect(find.byType(Image), findsNothing);
     });
   });
 }

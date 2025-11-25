@@ -2958,6 +2958,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get signOutButton => '로그아웃';
 
   @override
+  String get resetSessionButton => '세션 재설정';
+
+  @override
   String get signOutSuccess => '로그아웃되었습니다';
 
   @override
@@ -2989,6 +2992,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get upgradeAccountDescription => '데이터를 저장하고 모든 기기에서 액세스하세요';
+
+  @override
+  String get accountManagementSection => 'Account Management';
 
   @override
   String get dangerZoneSection => '계정 관리';
@@ -3042,7 +3048,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get selectAvatarTitle => '아바타 선택';
 
   @override
-  String get editDisplayNameTitle => '표시 이름 편집';
+  String get editAccountInformationTitle => '표시 이름 편집';
 
   @override
   String get displayNameLabel => '표시 이름';
@@ -3060,7 +3066,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get deleteAccountWarning => '이 작업은 취소할 수 없습니다.';
 
   @override
-  String get deleteAccountMessage => '계정을 삭제하면 다음 항목이 영구적으로 제거됩니다:';
+  String get deleteAccountMessage => '계정을 삭제하면 관련된 모든 데이터가 영구적으로 제거됩니다.';
 
   @override
   String get deleteAccountItem1 => '프로필 및 아바타';
@@ -3076,4 +3082,155 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get deleteAccountPasswordPrompt => '확인하려면 비밀번호를 입력하세요:';
+
+  @override
+  String get orDivider => 'OR';
+
+  @override
+  String get displayNameHint => 'Enter your name (optional)';
+
+  @override
+  String get emailHint => 'Your email address';
+
+  @override
+  String get passwordHint => 'Your password';
+
+  @override
+  String get alreadyHaveAccountSignIn => 'Already have an account? Sign in';
+
+  @override
+  String get needAccountCreateOne => 'Don\'t have an account? Create one';
+
+  @override
+  String get useGoogleProfilePhoto => 'Use Google Profile Photo';
+
+  @override
+  String get customAvatars => 'Custom Avatars';
+
+  @override
+  String get saveAvatar => 'Save Avatar';
+
+  @override
+  String get displayNameFieldLabel => 'Display Name';
+
+  @override
+  String get displayNameFieldHint => 'Enter your display name';
+
+  @override
+  String get saveAccountInformation => 'Save Account Information';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get emailInvalid => 'Please enter a valid email address';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters';
+
+  @override
+  String get defaultUserName => 'User';
+
+  @override
+  String get googleSignInError =>
+      'Google sign-in was canceled or failed. Please try again.';
+
+  @override
+  String get displayNameUpdated => 'Display name updated';
+
+  @override
+  String get displayNameUpdateFailed => 'Failed to update display name';
+
+  @override
+  String get sessionResetSuccess => 'Session reset successfully';
+
+  @override
+  String get accountDeletedSuccess => 'Account deleted successfully';
+
+  @override
+  String get errorUserNotFound => 'No account found with this email address.';
+
+  @override
+  String get errorWrongPassword => 'Incorrect password. Please try again.';
+
+  @override
+  String get errorInvalidEmail => 'Invalid email address format.';
+
+  @override
+  String get errorUserDisabled => 'This account has been disabled.';
+
+  @override
+  String get errorEmailInUse =>
+      'An account already exists with this email address.';
+
+  @override
+  String get errorWeakPassword =>
+      'Password is too weak. Please use a stronger password.';
+
+  @override
+  String get errorOperationNotAllowed => 'This sign-in method is not enabled.';
+
+  @override
+  String get errorRequiresRecentLogin =>
+      'Please sign in again to perform this action.';
+
+  @override
+  String get errorNetworkFailed =>
+      'Network error. Please check your connection.';
+
+  @override
+  String errorUnknown(String message) {
+    return 'An error occurred: $message';
+  }
+
+  @override
+  String get exceptionGoogleSignInNotInitialized => 'Google 로그인이 초기화되지 않았습니다';
+
+  @override
+  String get exceptionGoogleSignInTimeout => 'Google 로그인 시간이 초과되었습니다';
+
+  @override
+  String get exceptionAppleSignInPlatform =>
+      'Apple Sign-In은 Apple 플랫폼에서만 사용할 수 있습니다';
+
+  @override
+  String get exceptionNoAnonymousUser => '연결할 익명 사용자가 없습니다';
+
+  @override
+  String get exceptionNoUserSignedIn => '로그인한 사용자가 없습니다';
+
+  @override
+  String get firebaseErrorUserNotFound => '이 이메일 주소로 등록된 계정이 없습니다.';
+
+  @override
+  String get firebaseErrorWrongPassword => '비밀번호가 올바르지 않습니다. 다시 시도해주세요.';
+
+  @override
+  String get firebaseErrorInvalidEmail => '이메일 주소 형식이 올바르지 않습니다.';
+
+  @override
+  String get firebaseErrorUserDisabled => '이 계정은 비활성화되었습니다.';
+
+  @override
+  String get firebaseErrorEmailInUse => '이 이메일 주소로 이미 계정이 존재합니다.';
+
+  @override
+  String get firebaseErrorWeakPassword => '비밀번호가 너무 약합니다. 더 강력한 비밀번호를 사용하세요.';
+
+  @override
+  String get firebaseErrorOperationNotAllowed => '이 로그인 방법은 활성화되지 않았습니다.';
+
+  @override
+  String get firebaseErrorRequiresRecentLogin => '이 작업을 수행하려면 다시 로그인하세요.';
+
+  @override
+  String get firebaseErrorNetworkFailed => '네트워크 오류. 연결을 확인하세요.';
+
+  @override
+  String firebaseErrorDefault(String message) {
+    return '오류가 발생했습니다: $message';
+  }
 }

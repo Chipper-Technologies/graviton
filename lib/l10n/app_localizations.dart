@@ -5452,6 +5452,12 @@ abstract class AppLocalizations {
   /// **'Sign Out'**
   String get signOutButton;
 
+  /// Button for anonymous users to reset their session and start fresh
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Session'**
+  String get resetSessionButton;
+
   /// Success message after signing out
   ///
   /// In en, this message translates to:
@@ -5518,10 +5524,16 @@ abstract class AppLocalizations {
   /// **'Save your data and access it from any device'**
   String get upgradeAccountDescription;
 
-  /// Section title for danger zone
+  /// Section title for account management options
   ///
   /// In en, this message translates to:
   /// **'Account Management'**
+  String get accountManagementSection;
+
+  /// Section title for danger zone
+  ///
+  /// In en, this message translates to:
+  /// **'Danger Zone'**
   String get dangerZoneSection;
 
   /// Button to delete account
@@ -5620,11 +5632,11 @@ abstract class AppLocalizations {
   /// **'Select Avatar'**
   String get selectAvatarTitle;
 
-  /// Title for edit display name dialog
+  /// Title for edit account information screen
   ///
   /// In en, this message translates to:
-  /// **'Edit Display Name'**
-  String get editDisplayNameTitle;
+  /// **'Edit Account Information'**
+  String get editAccountInformationTitle;
 
   /// Label for display name input field
   ///
@@ -5659,7 +5671,7 @@ abstract class AppLocalizations {
   /// Message explaining what will be deleted
   ///
   /// In en, this message translates to:
-  /// **'Deleting your account will permanently remove:'**
+  /// **'Deleting your account will permanently remove any data associated with it.'**
   String get deleteAccountMessage;
 
   /// First item in delete account list
@@ -5691,6 +5703,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your password to confirm:'**
   String get deleteAccountPasswordPrompt;
+
+  /// Divider text between authentication options
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get orDivider;
+
+  /// Hint text for display name field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name (optional)'**
+  String get displayNameHint;
+
+  /// Hint text for email field
+  ///
+  /// In en, this message translates to:
+  /// **'Your email address'**
+  String get emailHint;
+
+  /// Hint text for password field
+  ///
+  /// In en, this message translates to:
+  /// **'Your password'**
+  String get passwordHint;
+
+  /// Text to switch from create account to sign in
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get alreadyHaveAccountSignIn;
+
+  /// Text to switch from sign in to create account
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? Create one'**
+  String get needAccountCreateOne;
+
+  /// Option to use Google profile photo as avatar
+  ///
+  /// In en, this message translates to:
+  /// **'Use Google Profile Photo'**
+  String get useGoogleProfilePhoto;
+
+  /// Section title for custom avatar selection
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Avatars'**
+  String get customAvatars;
+
+  /// Button text to save selected avatar
+  ///
+  /// In en, this message translates to:
+  /// **'Save Avatar'**
+  String get saveAvatar;
+
+  /// Label for display name input field in edit screen
+  ///
+  /// In en, this message translates to:
+  /// **'Display Name'**
+  String get displayNameFieldLabel;
+
+  /// Hint for display name input field in edit screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your display name'**
+  String get displayNameFieldHint;
+
+  /// Button text to save account information changes
+  ///
+  /// In en, this message translates to:
+  /// **'Save Account Information'**
+  String get saveAccountInformation;
+
+  /// Validation error when email is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// Validation error when email format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get emailInvalid;
+
+  /// Validation error when password is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
+
+  /// Validation error when password is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordTooShort;
+
+  /// Default display name for users who don't provide one
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get defaultUserName;
+
+  /// Error message when Google sign-in fails
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign-in was canceled or failed. Please try again.'**
+  String get googleSignInError;
+
+  /// Success message when display name is updated
+  ///
+  /// In en, this message translates to:
+  /// **'Display name updated'**
+  String get displayNameUpdated;
+
+  /// Error message when display name update fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update display name'**
+  String get displayNameUpdateFailed;
+
+  /// Success message when anonymous session is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Session reset successfully'**
+  String get sessionResetSuccess;
+
+  /// Success message when account is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted successfully'**
+  String get accountDeletedSuccess;
+
+  /// Error message for user-not-found Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'No account found with this email address.'**
+  String get errorUserNotFound;
+
+  /// Error message for wrong-password Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password. Please try again.'**
+  String get errorWrongPassword;
+
+  /// Error message for invalid-email Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email address format.'**
+  String get errorInvalidEmail;
+
+  /// Error message for user-disabled Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'This account has been disabled.'**
+  String get errorUserDisabled;
+
+  /// Error message for email-already-in-use Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'An account already exists with this email address.'**
+  String get errorEmailInUse;
+
+  /// Error message for weak-password Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'Password is too weak. Please use a stronger password.'**
+  String get errorWeakPassword;
+
+  /// Error message for operation-not-allowed Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'This sign-in method is not enabled.'**
+  String get errorOperationNotAllowed;
+
+  /// Error message for requires-recent-login Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in again to perform this action.'**
+  String get errorRequiresRecentLogin;
+
+  /// Error message for network-request-failed Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection.'**
+  String get errorNetworkFailed;
+
+  /// Generic error message with placeholder for error details
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred: {message}'**
+  String errorUnknown(String message);
+
+  /// Exception message when Google Sign-In is not properly initialized
+  ///
+  /// In en, this message translates to:
+  /// **'Google Sign-In not initialized'**
+  String get exceptionGoogleSignInNotInitialized;
+
+  /// Exception message when Google sign-in operation times out
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign-in timed out'**
+  String get exceptionGoogleSignInTimeout;
+
+  /// Exception message when attempting Apple Sign-In on non-Apple platforms
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Sign-In is only available on Apple platforms'**
+  String get exceptionAppleSignInPlatform;
+
+  /// Exception message when trying to link credentials but no anonymous user exists
+  ///
+  /// In en, this message translates to:
+  /// **'No anonymous user to link'**
+  String get exceptionNoAnonymousUser;
+
+  /// Exception message when an operation requires a signed-in user but none exists
+  ///
+  /// In en, this message translates to:
+  /// **'No user signed in'**
+  String get exceptionNoUserSignedIn;
+
+  /// Firebase auth error when user is not found
+  ///
+  /// In en, this message translates to:
+  /// **'No account found with this email address.'**
+  String get firebaseErrorUserNotFound;
+
+  /// Firebase auth error for wrong password
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password. Please try again.'**
+  String get firebaseErrorWrongPassword;
+
+  /// Firebase auth error for invalid email format
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email address format.'**
+  String get firebaseErrorInvalidEmail;
+
+  /// Firebase auth error when user account is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'This account has been disabled.'**
+  String get firebaseErrorUserDisabled;
+
+  /// Firebase auth error when email is already in use
+  ///
+  /// In en, this message translates to:
+  /// **'An account already exists with this email address.'**
+  String get firebaseErrorEmailInUse;
+
+  /// Firebase auth error for weak password
+  ///
+  /// In en, this message translates to:
+  /// **'Password is too weak. Please use a stronger password.'**
+  String get firebaseErrorWeakPassword;
+
+  /// Firebase auth error when operation is not allowed
+  ///
+  /// In en, this message translates to:
+  /// **'This sign-in method is not enabled.'**
+  String get firebaseErrorOperationNotAllowed;
+
+  /// Firebase auth error requiring recent login
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in again to perform this action.'**
+  String get firebaseErrorRequiresRecentLogin;
+
+  /// Firebase auth error for network failures
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection.'**
+  String get firebaseErrorNetworkFailed;
+
+  /// Default Firebase auth error message with placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred: {message}'**
+  String firebaseErrorDefault(String message);
 }
 
 class _AppLocalizationsDelegate

@@ -29,19 +29,12 @@ class AvatarButton extends StatelessWidget {
             child: Tooltip(
               message: l10n.accountButtonTooltip,
               child: Container(
-                width: 36,
-                height: 36,
+                width: 32,
+                height: 32,
                 margin: const EdgeInsets.symmetric(vertical: 6),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: user != null
-                        ? AppColors.primaryColor
-                        : AppColors.uiWhite.withValues(
-                            alpha: AppTypography.opacityFaint,
-                          ),
-                    width: 2,
-                  ),
+                  border: Border.all(color: AppColors.primaryColor, width: 2),
                   color: user == null
                       ? AppColors.uiWhite.withValues(
                           alpha: AppTypography.opacityBarely,
@@ -63,9 +56,14 @@ class AvatarButton extends StatelessWidget {
       return Icon(
         Icons.account_circle_outlined,
         size: AppTypography.iconSizeXLarge,
-        color: AppColors.uiWhite.withValues(
-          alpha: AppTypography.opacitySemiTransparent,
-        ),
+        color: AppColors.uiWhite,
+      );
+    }
+
+    // Prioritize custom avatar over social profile photo
+    if (user.avatar != null) {
+      return Center(
+        child: Text(user.avatar!.emoji, style: const TextStyle(fontSize: 20)),
       );
     }
 
@@ -81,13 +79,6 @@ class AvatarButton extends StatelessWidget {
             return _buildDefaultAvatar(user);
           },
         ),
-      );
-    }
-
-    // Show custom avatar emoji
-    if (user.avatar != null) {
-      return Center(
-        child: Text(user.avatar!.emoji, style: const TextStyle(fontSize: 20)),
       );
     }
 

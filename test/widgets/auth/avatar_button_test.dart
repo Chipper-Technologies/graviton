@@ -179,9 +179,9 @@ void main() {
       );
 
       final Size size = tester.getSize(innerContainer);
-      // Width is 36px, height is 36px + 12px vertical margin (6px top + 6px bottom)
-      expect(size.width, 36);
-      expect(size.height, 48); // 36 + 12 for vertical margin
+      // Width is 32px, height is 32px + 12px vertical margin (6px top + 6px bottom)
+      expect(size.width, 32.0);
+      expect(size.height, 44.0); // 32 + 12 for vertical margin
     });
 
     testWidgets('has correct padding', (WidgetTester tester) async {
@@ -200,7 +200,7 @@ void main() {
       );
     });
 
-    testWidgets('prefers photoUrl over avatar emoji', (
+    testWidgets('prefers avatar emoji over photoUrl', (
       WidgetTester tester,
     ) async {
       // Create a user with both photoUrl and avatar
@@ -219,11 +219,11 @@ void main() {
       await tester.pumpWidget(buildTestWidget());
       await tester.pump();
 
-      // Should find Image.network (photoUrl takes precedence)
-      expect(find.byType(Image), findsOneWidget);
+      // Should find emoji (custom avatar takes precedence)
+      expect(find.text(UserAvatar.sun.emoji), findsOneWidget);
 
-      // Should NOT find the emoji text
-      expect(find.text(UserAvatar.sun.emoji), findsNothing);
+      // Should NOT find the photo
+      expect(find.byType(Image), findsNothing);
     });
 
     testWidgets('handles network image error gracefully', (

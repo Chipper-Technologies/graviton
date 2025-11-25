@@ -13,7 +13,8 @@
         "--dart-define-from-file",
         "config/dev.json",
         "--flavor",
-        "dev"
+        "dev",
+        "--debug"
       ]
     },
     {
@@ -25,7 +26,8 @@
         "--dart-define-from-file",
         "config/dev.json",
         "--flavor",
-        "dev"
+        "dev",
+        "--debug"
       ],
       "flutterMode": "profile"
     },

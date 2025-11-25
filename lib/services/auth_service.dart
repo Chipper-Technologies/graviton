@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -29,6 +31,9 @@ class AuthService {
 
   /// Preference key for storing selected avatar
   static const String _avatarPreferenceKey = 'user_selected_avatar';
+
+  /// Preference key for storing anonymous user display name
+  static const String _anonymousDisplayNameKey = 'anonymous_display_name';
 
   /// Initialize authentication service
   Future<void> initialize() async {
@@ -71,7 +76,18 @@ class AuthService {
     // Load saved avatar preference
     final avatar = await _loadSavedAvatar();
 
-    return UserProfile.fromFirebaseUser(user, avatar: avatar);
+    // Load anonymous display name if applicable
+    String? displayNameOverride;
+    if (user.isAnonymous) {
+      final prefs = await SharedPreferences.getInstance();
+      displayNameOverride = prefs.getString(_anonymousDisplayNameKey);
+    }
+
+    return UserProfile.fromFirebaseUser(
+      user,
+      avatar: avatar,
+      displayNameOverride: displayNameOverride,
+    );
   }
 
   /// Stream of authentication state changes
@@ -84,7 +100,19 @@ class AuthService {
       if (user == null) return null;
 
       final avatar = await _loadSavedAvatar();
-      return UserProfile.fromFirebaseUser(user, avatar: avatar);
+
+      // Load anonymous display name if applicable
+      String? displayNameOverride;
+      if (user.isAnonymous) {
+        final prefs = await SharedPreferences.getInstance();
+        displayNameOverride = prefs.getString(_anonymousDisplayNameKey);
+      }
+
+      return UserProfile.fromFirebaseUser(
+        user,
+        avatar: avatar,
+        displayNameOverride: displayNameOverride,
+      );
     });
   }
 
@@ -143,19 +171,25 @@ class AuthService {
       // Update display name if provided
       if (displayName != null && displayName.isNotEmpty) {
         await credential!.user!.updateDisplayName(displayName);
-        await credential.user!.reload();
       }
 
       // Assign random avatar for new users
       final avatar = UserAvatar.random();
       await setUserAvatar(avatar);
 
+      // Reload user to get updated profile data
+      await credential!.user!.reload();
+      final updatedUser = _auth?.currentUser;
+
       await FirebaseService.instance.logEvent(
         'auth_account_created',
         parameters: {'method': AuthProviderType.emailPassword.displayName},
       );
 
-      return UserProfile.fromFirebaseUser(credential!.user!, avatar: avatar);
+      return UserProfile.fromFirebaseUser(
+        updatedUser ?? credential.user!,
+        avatar: avatar,
+      );
     } on FirebaseAuthException catch (e, stackTrace) {
       debugPrint('Create account error: ${e.code} - ${e.message}');
       await FirebaseService.instance.crashlytics?.recordError(
@@ -178,11 +212,34 @@ class AuthService {
   Future<UserProfile?> signInWithGoogle() async {
     try {
       if (_googleSignIn == null) {
-        throw Exception('Google Sign-In not initialized');
+        throw Exception('exceptionGoogleSignInNotInitialized');
       }
 
-      // Trigger the authentication flow using 7.x API
-      // First authenticate (sign in) the user with scope hint for email and profile
+      debugPrint('Starting Google sign-in flow...');
+
+      // Start listening to events BEFORE triggering authentication
+      final eventCompleter = Completer<GoogleSignInAuthenticationEvent>();
+      late final StreamSubscription<GoogleSignInAuthenticationEvent>
+      subscription;
+
+      subscription = _googleSignIn!.authenticationEvents.listen(
+        (event) {
+          debugPrint('Received authentication event: ${event.runtimeType}');
+          if (!eventCompleter.isCompleted) {
+            eventCompleter.complete(event);
+            subscription.cancel();
+          }
+        },
+        onError: (error) {
+          debugPrint('Authentication event error: $error');
+          if (!eventCompleter.isCompleted) {
+            eventCompleter.completeError(error);
+            subscription.cancel();
+          }
+        },
+      );
+
+      // Now trigger the authentication flow
       await _googleSignIn!.authenticate(
         scopeHint: [
           'email',
@@ -190,20 +247,26 @@ class AuthService {
         ],
       );
 
-      // Listen for the authentication event to get the authenticated user
+      // Wait for the authentication event with timeout
+      final event = await eventCompleter.future.timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          subscription.cancel();
+          throw TimeoutException('exceptionGoogleSignInTimeout');
+        },
+      );
+
       GoogleSignInAccount? googleUser;
-      await for (final event in _googleSignIn!.authenticationEvents.take(1)) {
-        if (event is GoogleSignInAuthenticationEventSignIn) {
-          googleUser = event.user;
-          break;
-        } else if (event is GoogleSignInAuthenticationEventSignOut) {
-          // User canceled the sign-in
-          return null;
-        }
+      if (event is GoogleSignInAuthenticationEventSignIn) {
+        googleUser = event.user;
+        debugPrint('Google sign-in successful: ${googleUser.email}');
+      } else if (event is GoogleSignInAuthenticationEventSignOut) {
+        debugPrint('Google sign-in canceled by user');
+        return null;
       }
 
       if (googleUser == null) {
-        // User canceled the sign-in
+        debugPrint('Google user is null after sign-in');
         return null;
       }
 
@@ -223,9 +286,14 @@ class AuthService {
       // Check if this is a new user
       final isNewUser = userCredential!.additionalUserInfo?.isNewUser ?? false;
       if (isNewUser) {
-        // Assign random avatar for new users
-        final avatar = UserAvatar.random();
-        await setUserAvatar(avatar);
+        // Assign random avatar only if user doesn't have a profile photo from Google
+        final hasProfilePhoto =
+            userCredential.user!.photoURL != null &&
+            userCredential.user!.photoURL!.isNotEmpty;
+        if (!hasProfilePhoto) {
+          final avatar = UserAvatar.random();
+          await setUserAvatar(avatar);
+        }
 
         await FirebaseService.instance.logEvent(
           'auth_account_created',
@@ -271,7 +339,7 @@ class AuthService {
     try {
       // Check if Apple Sign In is available on this platform
       if (!PlatformUtils.isApple) {
-        throw Exception('Apple Sign-In is only available on Apple platforms');
+        throw Exception('exceptionAppleSignInPlatform');
       }
 
       // Request credential for the currently signed in Apple account
@@ -307,9 +375,13 @@ class AuthService {
       // Check if this is a new user
       final isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
       if (isNewUser) {
-        // Assign random avatar for new users
-        final avatar = UserAvatar.random();
-        await setUserAvatar(avatar);
+        // Assign random avatar only if user doesn't have a profile photo from Apple
+        final hasProfilePhoto =
+            user.photoURL != null && user.photoURL!.isNotEmpty;
+        if (!hasProfilePhoto) {
+          final avatar = UserAvatar.random();
+          await setUserAvatar(avatar);
+        }
 
         await FirebaseService.instance.logEvent(
           'auth_account_created',
@@ -393,7 +465,7 @@ class AuthService {
     try {
       final user = _auth?.currentUser;
       if (user == null || !user.isAnonymous) {
-        throw Exception('No anonymous user to link');
+        throw Exception('exceptionNoAnonymousUser');
       }
 
       final credential = EmailAuthProvider.credential(
@@ -447,12 +519,19 @@ class AuthService {
       final user = _auth?.currentUser;
       if (user == null) return;
 
-      await user.updateDisplayName(displayName);
-      await user.reload();
+      if (user.isAnonymous) {
+        // For anonymous users, store display name locally
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString(_anonymousDisplayNameKey, displayName);
+      } else {
+        // For authenticated users, update Firebase profile
+        await user.updateDisplayName(displayName);
+        await user.reload();
+      }
 
       await FirebaseService.instance.logEvent(
         'auth_profile_updated',
-        parameters: {'field': 'display_name'},
+        parameters: {'field': 'display_name', 'is_anonymous': user.isAnonymous},
       );
     } on FirebaseAuthException catch (e, stackTrace) {
       debugPrint('Update display name error: ${e.code} - ${e.message}');
@@ -477,6 +556,23 @@ class AuthService {
       );
     } catch (e, stackTrace) {
       debugPrint('Error saving avatar: $e');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+    }
+  }
+
+  /// Clear custom avatar (allows profile photo to be shown again)
+  Future<void> clearUserAvatar() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_avatarPreferenceKey);
+
+      await FirebaseService.instance.logEvent('auth_avatar_cleared');
+    } catch (e, stackTrace) {
+      debugPrint('Error clearing avatar: $e');
       await FirebaseService.instance.crashlytics?.recordError(
         e,
         stackTrace,
@@ -563,7 +659,7 @@ class AuthService {
     try {
       final user = _auth?.currentUser;
       if (user == null || user.email == null) {
-        throw Exception('No user signed in');
+        throw Exception('exceptionNoUserSignedIn');
       }
 
       final credential = EmailAuthProvider.credential(
@@ -587,25 +683,25 @@ class AuthService {
   String getFriendlyErrorMessage(FirebaseAuthException exception) {
     switch (exception.code) {
       case 'user-not-found':
-        return 'No account found with this email address.';
+        return 'firebaseErrorUserNotFound';
       case 'wrong-password':
-        return 'Incorrect password. Please try again.';
+        return 'firebaseErrorWrongPassword';
       case 'invalid-email':
-        return 'Invalid email address format.';
+        return 'firebaseErrorInvalidEmail';
       case 'user-disabled':
-        return 'This account has been disabled.';
+        return 'firebaseErrorUserDisabled';
       case 'email-already-in-use':
-        return 'An account already exists with this email address.';
+        return 'firebaseErrorEmailInUse';
       case 'weak-password':
-        return 'Password is too weak. Please use a stronger password.';
+        return 'firebaseErrorWeakPassword';
       case 'operation-not-allowed':
-        return 'This sign-in method is not enabled.';
+        return 'firebaseErrorOperationNotAllowed';
       case 'requires-recent-login':
-        return 'Please sign in again to perform this action.';
+        return 'firebaseErrorRequiresRecentLogin';
       case 'network-request-failed':
-        return 'Network error. Please check your connection.';
+        return 'firebaseErrorNetworkFailed';
       default:
-        return 'An error occurred: ${exception.message}';
+        return 'firebaseErrorDefault:${exception.message}';
     }
   }
 }

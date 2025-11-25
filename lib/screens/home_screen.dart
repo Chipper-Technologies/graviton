@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/constants/platform_channel_constants.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
@@ -1360,18 +1361,55 @@ class _HomeScreenState extends State<HomeScreen>
                     title: l10n.appTitle,
                     backgroundColor: AppColors.transparentColor,
                     titleSpacing: AppTypography
-                        .spacingSmall, // Space between avatar and title
-                    leading: AvatarButton(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const AccountManagementScreen(),
+                        .spacingXLarge, // More space between logo and title
+                    leading: Padding(
+                      padding: const EdgeInsets.only(
+                        left: AppTypography
+                            .spacingLarge, // More space on the left
+                      ),
+                      child: HapticGestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AboutScreen(),
+                            ),
+                          );
+                        },
+                        child: Tooltip(
+                          message: l10n.aboutButtonTooltip,
+                          child: Container(
+                            width: 28,
+                            height: 28,
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacityVeryFaint,
+                                ),
+                                width: 1.5,
+                              ),
+                              image: DecorationImage(
+                                image: AssetImage(AppConfig.appLogoPath),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     ),
                     actions: [
+                      // Avatar button
+                      AvatarButton(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const AccountManagementScreen(),
+                            ),
+                          );
+                        },
+                      ),
                       // Options drawer toggle
                       Builder(
                         builder: (context) => HapticIconButton(

@@ -50,7 +50,7 @@ enum UserAvatar {
   neutronStar('neutron_star', '✨'),
 
   /// Asteroid - rocky minor planet
-  asteroid('asteroid', '☄️'),
+  asteroid('asteroid', '🪨'),
 
   /// Nebula - cosmic cloud
   nebula('nebula', '🌠'),

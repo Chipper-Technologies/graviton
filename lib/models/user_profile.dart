@@ -46,11 +46,15 @@ class UserProfile {
   });
 
   /// Create a profile from Firebase User data
-  factory UserProfile.fromFirebaseUser(dynamic user, {UserAvatar? avatar}) {
+  factory UserProfile.fromFirebaseUser(
+    dynamic user, {
+    UserAvatar? avatar,
+    String? displayNameOverride,
+  }) {
     return UserProfile(
       uid: user.uid as String,
       email: user.email as String?,
-      displayName: user.displayName as String?,
+      displayName: displayNameOverride ?? user.displayName as String?,
       photoUrl: user.photoURL as String?,
       avatar: avatar,
       isAnonymous: user.isAnonymous as bool,
