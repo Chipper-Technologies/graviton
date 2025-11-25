@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'config/flavor_config.dart';
+import 'firebase/firebase_options.dart';
 import 'constants/platform_channel_constants.dart';
 import 'enums/app_flavor.dart';
 import 'enums/firebase_event.dart';
@@ -49,7 +50,9 @@ void main() async {
 
   // Initialize Firebase (optional - don't block app startup if it fails)
   try {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     await FirebaseService.instance.initialize();
     await AuthService.instance.initialize();
     debugPrint('Firebase initialized successfully');

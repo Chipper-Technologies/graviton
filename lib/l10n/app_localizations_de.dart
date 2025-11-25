@@ -3213,6 +3213,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get continueWithGoogle => 'Mit Google fortfahren';
 
   @override
+  String get continueWithGitHub => 'Mit GitHub fortfahren';
+
+  @override
   String get continueWithApple => 'Mit Apple fortfahren';
 
   @override
@@ -3313,6 +3316,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get googleSignInError =>
       'Google sign-in was canceled or failed. Please try again.';
+
+  @override
+  String get gitHubSignInError =>
+      'GitHub sign-in was canceled or failed. Please try again.';
 
   @override
   String get displayNameUpdated => 'Display name updated';

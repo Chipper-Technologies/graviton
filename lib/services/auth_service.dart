@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:graviton/enums/auth_provider_type.dart';
 import 'package:graviton/enums/user_avatar.dart';
@@ -49,10 +50,20 @@ class AuthService {
   Future<void> initialize() async {
     try {
       _auth = FirebaseAuth.instance;
+      debugPrint('FirebaseAuth instance obtained');
 
       // Initialize Google Sign-In (7.x API requires explicit initialization)
       _googleSignIn = GoogleSignIn.instance;
-      await _googleSignIn!.initialize();
+      debugPrint('GoogleSignIn instance obtained');
+
+      try {
+        await _googleSignIn!.initialize();
+        debugPrint('Google Sign-In initialized successfully');
+      } catch (googleInitError) {
+        debugPrint('Google Sign-In initialization failed: $googleInitError');
+        debugPrint('Google Sign-In will not be available');
+        _googleSignIn = null; // Clear the instance if initialization fails
+      }
 
       _isInitialized = true;
       debugPrint('Auth service initialized successfully');
@@ -227,61 +238,23 @@ class AuthService {
 
       debugPrint('Starting Google sign-in flow...');
 
-      // Start listening to events BEFORE triggering authentication
-      final eventCompleter = Completer<GoogleSignInAuthenticationEvent>();
-      late final StreamSubscription<GoogleSignInAuthenticationEvent>
-      subscription;
-
-      subscription = _googleSignIn!.authenticationEvents.listen(
-        (event) {
-          debugPrint('Received authentication event: ${event.runtimeType}');
-          if (!eventCompleter.isCompleted) {
-            eventCompleter.complete(event);
-            subscription.cancel();
-          }
-        },
-        onError: (error) {
-          debugPrint('Authentication event error: $error');
-          if (!eventCompleter.isCompleted) {
-            eventCompleter.completeError(error);
-            subscription.cancel();
-          }
-        },
-      );
-
-      // Now trigger the authentication flow
-      await _googleSignIn!.authenticate(
+      // Trigger the authentication flow
+      final GoogleSignInAccount googleUser = await _googleSignIn!.authenticate(
         scopeHint: [
           'email',
           'https://www.googleapis.com/auth/userinfo.profile',
         ],
       );
 
-      // Wait for the authentication event with timeout
-      final event = await eventCompleter.future.timeout(
-        const Duration(seconds: 30),
-        onTimeout: () {
-          subscription.cancel();
-          throw TimeoutException('exceptionGoogleSignInTimeout');
-        },
-      );
-
-      GoogleSignInAccount? googleUser;
-      if (event is GoogleSignInAuthenticationEventSignIn) {
-        googleUser = event.user;
-        debugPrint('Google sign-in successful: ${googleUser.email}');
-      } else if (event is GoogleSignInAuthenticationEventSignOut) {
-        debugPrint('Google sign-in canceled by user');
-        return null;
-      }
-
-      if (googleUser == null) {
-        debugPrint('Google user is null after sign-in');
-        return null;
-      }
+      debugPrint('Google sign-in successful: ${googleUser.email}');
 
       // Get the authentication tokens (idToken) from the account
       final googleAuth = googleUser.authentication;
+
+      if (googleAuth.idToken == null) {
+        debugPrint('Google sign-in failed: no ID token received');
+        return null;
+      }
 
       // Create a new credential with the ID token
       final credential = GoogleAuthProvider.credential(
@@ -318,6 +291,22 @@ class AuthService {
 
       final avatar = await _loadSavedAvatar();
       return UserProfile.fromFirebaseUser(userCredential.user!, avatar: avatar);
+    } on PlatformException catch (e) {
+      // Handle user cancellation or other platform errors
+      if (e.code == 'sign_in_canceled' ||
+          e.code == 'popup_closed_by_user' ||
+          e.code == 'network_error') {
+        debugPrint('Google sign-in canceled by user: ${e.code}');
+        return null; // User cancellation is not an error
+      }
+
+      debugPrint('Google sign-in platform error: ${e.code} - ${e.message}');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        StackTrace.current,
+        reason: 'Google Sign-In Platform Error',
+      );
+      rethrow;
     } on FirebaseAuthException catch (e, stackTrace) {
       debugPrint('Google sign in error: ${e.code} - ${e.message}');
       await FirebaseService.instance.crashlytics?.recordError(
@@ -432,6 +421,68 @@ class AuthService {
         'auth_sign_in_error',
         parameters: {
           'method': AuthProviderType.apple.displayName,
+          'error_code': e.code,
+        },
+      );
+      rethrow;
+    }
+  }
+
+  /// Sign in with GitHub
+  Future<UserProfile?> signInWithGitHub() async {
+    try {
+      // Create GitHub OAuth provider
+      final githubProvider = GithubAuthProvider();
+
+      // Add scopes if needed
+      githubProvider.addScope('user:email');
+
+      // Sign in with popup or redirect depending on platform
+      UserCredential userCredential;
+      if (kIsWeb) {
+        userCredential = await _auth!.signInWithPopup(githubProvider);
+      } else {
+        userCredential = await _auth!.signInWithProvider(githubProvider);
+      }
+
+      if (userCredential.user == null) return null;
+
+      // Check if this is a new user
+      final isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
+      if (isNewUser) {
+        // Assign random avatar only if user doesn't have a profile photo from GitHub
+        final hasProfilePhoto =
+            userCredential.user!.photoURL != null &&
+            userCredential.user!.photoURL!.isNotEmpty;
+        if (!hasProfilePhoto) {
+          final avatar = UserAvatar.random();
+          await setUserAvatar(avatar);
+        }
+
+        await FirebaseService.instance.logEvent(
+          'auth_account_created',
+          parameters: {'method': AuthProviderType.github.displayName},
+        );
+      } else {
+        await FirebaseService.instance.logEvent(
+          'auth_sign_in_success',
+          parameters: {'method': AuthProviderType.github.displayName},
+        );
+      }
+
+      final avatar = await _loadSavedAvatar();
+      return UserProfile.fromFirebaseUser(userCredential.user!, avatar: avatar);
+    } on FirebaseAuthException catch (e, stackTrace) {
+      debugPrint('GitHub sign in error: ${e.code} - ${e.message}');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      await FirebaseService.instance.logEvent(
+        'auth_sign_in_error',
+        parameters: {
+          'method': AuthProviderType.github.displayName,
           'error_code': e.code,
         },
       );
@@ -680,6 +731,112 @@ class AuthService {
       await user.reauthenticateWithCredential(credential);
     } on FirebaseAuthException catch (e, stackTrace) {
       debugPrint('Re-authentication error: ${e.code} - ${e.message}');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      rethrow;
+    }
+  }
+
+  /// Re-authenticate with Google (required before sensitive operations)
+  Future<void> reauthenticateWithGoogle() async {
+    try {
+      final user = _auth?.currentUser;
+      if (user == null) {
+        throw Exception('exceptionNoUserSignedIn');
+      }
+
+      // Use the event-based Google Sign-In API
+      final eventCompleter = Completer<GoogleSignInAuthenticationEvent>();
+      late StreamSubscription<GoogleSignInAuthenticationEvent> subscription;
+
+      subscription = _googleSignIn!.authenticationEvents.listen(
+        (event) {
+          if (!eventCompleter.isCompleted) {
+            eventCompleter.complete(event);
+            subscription.cancel();
+          }
+        },
+        onError: (error) {
+          if (!eventCompleter.isCompleted) {
+            eventCompleter.completeError(error);
+            subscription.cancel();
+          }
+        },
+      );
+
+      // Trigger the authentication flow
+      await _googleSignIn!.authenticate(
+        scopeHint: [
+          'email',
+          'https://www.googleapis.com/auth/userinfo.profile',
+        ],
+      );
+
+      // Wait for the authentication event
+      final event = await eventCompleter.future.timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          subscription.cancel();
+          throw TimeoutException('exceptionGoogleSignInTimeout');
+        },
+      );
+
+      GoogleSignInAccount googleUser;
+      if (event is GoogleSignInAuthenticationEventSignIn) {
+        googleUser = event.user;
+      } else {
+        throw Exception('exceptionGoogleSignInCancelled');
+      }
+
+      // Get the authentication tokens
+      final googleAuth = googleUser.authentication;
+
+      // Create credential with the ID token
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+      );
+
+      await user.reauthenticateWithCredential(credential);
+    } on FirebaseAuthException catch (e, stackTrace) {
+      debugPrint('Google re-authentication error: ${e.code} - ${e.message}');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      rethrow;
+    }
+  }
+
+  /// Re-authenticate with Apple (required before sensitive operations)
+  Future<void> reauthenticateWithApple() async {
+    try {
+      final user = _auth?.currentUser;
+      if (user == null) {
+        throw Exception('exceptionNoUserSignedIn');
+      }
+
+      // Check platform support
+      if (!PlatformUtils.isApple) {
+        throw Exception('exceptionAppleSignInPlatform');
+      }
+
+      // Sign in with Apple to get fresh credential
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [AppleIDAuthorizationScopes.email],
+      );
+
+      final oauthCredential = OAuthProvider('apple.com').credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      await user.reauthenticateWithCredential(oauthCredential);
+    } on FirebaseAuthException catch (e, stackTrace) {
+      debugPrint('Apple re-authentication error: ${e.code} - ${e.message}');
       await FirebaseService.instance.crashlytics?.recordError(
         e,
         stackTrace,

@@ -4,6 +4,7 @@ import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/auth/avatar_button.dart';
 import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/haptics/haptic_list_tile.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
@@ -172,6 +173,12 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                         ],
                       ),
                     ),
+                    AvatarButton(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        widget.onShowAccount();
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -224,17 +231,6 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                       onTap: () {
                         Navigator.of(context).pop();
                         widget.onShowHelp();
-                      },
-                    ),
-                    const SectionDivider.plain(),
-                    _buildDrawerItem(
-                      context: context,
-                      icon: Icons.account_circle,
-                      title: l10n.accountManagementTitle,
-                      subtitle: l10n.accountMenuDescription,
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        widget.onShowAccount();
                       },
                     ),
                     const SectionDivider.plain(),

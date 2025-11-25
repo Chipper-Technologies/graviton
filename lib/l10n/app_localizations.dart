@@ -5656,6 +5656,12 @@ abstract class AppLocalizations {
   /// **'Continue with Google'**
   String get continueWithGoogle;
 
+  /// Button text for GitHub sign-in
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with GitHub'**
+  String get continueWithGitHub;
+
   /// Button text for Apple sign-in
   ///
   /// In en, this message translates to:
@@ -5847,6 +5853,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Google sign-in was canceled or failed. Please try again.'**
   String get googleSignInError;
+
+  /// Error message when GitHub sign-in fails
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub sign-in was canceled or failed. Please try again.'**
+  String get gitHubSignInError;
 
   /// Success message when display name is updated
   ///

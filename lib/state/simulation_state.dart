@@ -14,6 +14,7 @@ import 'package:graviton/services/accessibility_service.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
 import 'package:graviton/services/simulation.dart' as physics;
+import 'package:graviton/services/user_data_sync_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Manages the simulation state and physics
@@ -88,6 +89,9 @@ class SimulationState extends ChangeNotifier {
       } else if (value is String) {
         await prefs.setString(key, value);
       }
+
+      // Sync to cloud if user is authenticated
+      await UserDataSyncService.instance.syncSettings();
     } catch (e) {
       // Ignore errors (e.g., in tests where binding isn't initialized)
     }

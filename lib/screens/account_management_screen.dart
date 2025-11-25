@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:graviton/config/flavor_config.dart';
+import 'package:graviton/enums/auth_provider_type.dart';
 import 'package:graviton/enums/screen_mode.dart';
 import 'package:graviton/enums/user_avatar.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -13,7 +14,7 @@ import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/account/account_management_options.dart';
 import 'package:graviton/widgets/account/avatar_selection_grid.dart';
 import 'package:graviton/widgets/account/danger_zone_section.dart';
-import 'package:graviton/widgets/account/delete_confirmation_dialog.dart';
+import 'package:graviton/widgets/account/delete_account_with_reauth_dialog.dart';
 import 'package:graviton/widgets/account/edit_name_form.dart';
 import 'package:graviton/widgets/account/email_verification_banner.dart';
 import 'package:graviton/widgets/account/profile_card.dart';
@@ -191,7 +192,7 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
             }
           },
           child: Scaffold(
-            backgroundColor: AppColors.transparentColor,
+            backgroundColor: AppColors.backgroundBlack,
             appBar: HapticAppBar(
               title: title,
               leading: _mode != ScreenMode.accountView
@@ -235,6 +236,7 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
               passwordError: _passwordError,
               isProcessing: _isProcessing,
               onGoogleSignIn: () => _handleGoogleSignIn(authState, l10n),
+              onGitHubSignIn: () => _handleGitHubSignIn(authState, l10n),
               onEmailPasswordAuth: () =>
                   _handleEmailPasswordAuth(authState, l10n),
               onTogglePasswordVisibility: () =>
@@ -270,8 +272,12 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
           onChanged: (value) {},
         );
       case ScreenMode.deleteConfirmation:
-        return DeleteConfirmationDialog(
-          onConfirmDelete: () => _deleteAccount(authState, l10n),
+        return DeleteAccountWithReauthDialog(
+          providerType:
+              authState.currentUser?.authProvider ??
+              AuthProviderType.emailPassword,
+          onConfirmDelete: (password) =>
+              _deleteAccountWithPassword(authState, password, l10n),
           onCancel: _resetToAccountView,
         );
       default:
@@ -551,12 +557,8 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
       if (mounted) {
         if (success) {
           _resetToAccountView();
-        } else {
-          GravitonSnackBar.show(
-            context: context,
-            message: l10n.googleSignInError,
-          );
         }
+        // Don't show error if user simply canceled (success = false, no exception)
       }
     } catch (e) {
       FirebaseService.instance.recordError(e, StackTrace.current);
@@ -564,6 +566,44 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
         GravitonSnackBar.show(
           context: context,
           message: l10n.googleSignInError,
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
+      }
+    }
+  }
+
+  Future<void> _handleGitHubSignIn(
+    AuthState authState,
+    AppLocalizations l10n,
+  ) async {
+    if (!_canProceed()) return;
+
+    setState(() => _isProcessing = true);
+
+    try {
+      final success =
+          await _executeWithRetry(
+            operation: () => authState.signInWithGitHub(),
+            l10n: l10n,
+            errorMessage: l10n.gitHubSignInError,
+          ) ??
+          false;
+
+      if (mounted) {
+        if (success) {
+          _resetToAccountView();
+        }
+        // Don't show error if user simply canceled (success = false, no exception)
+      }
+    } catch (e) {
+      FirebaseService.instance.recordError(e, StackTrace.current);
+      if (mounted) {
+        GravitonSnackBar.show(
+          context: context,
+          message: l10n.gitHubSignInError,
         );
       }
     } finally {
@@ -629,18 +669,25 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     }
   }
 
-  Future<void> _deleteAccount(
+  Future<bool> _deleteAccountWithPassword(
     AuthState authState,
+    String? password,
     AppLocalizations l10n,
   ) async {
-    final success = await authState.deleteAccount();
-    if (mounted && success) {
-      GravitonSnackBar.show(
-        context: context,
-        message: l10n.accountDeletedSuccess,
-      );
-      Navigator.of(context).pop();
+    final success = await authState.deleteAccount(password: password);
+    if (mounted) {
+      if (success) {
+        GravitonSnackBar.show(
+          context: context,
+          message: l10n.accountDeletedSuccess,
+        );
+        Navigator.of(context).pop();
+      } else if (authState.error != null) {
+        // Show error from AuthState in snackbar
+        GravitonSnackBar.show(context: context, message: authState.error!);
+      }
     }
+    return success;
   }
 
   Future<void> _sendEmailVerification(AppLocalizations l10n) async {

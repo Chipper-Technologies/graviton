@@ -68,7 +68,14 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
 
   bool _hasUnsavedChanges = false;
   bool _showFAB = true; // Show FAB by default on Setup tab (index 0)
+  bool _isBodyBottomSheetOpen = false; // Track when body details sheet is open
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // Track original scenario name for deletion on rename
+  String? _originalScenarioName;
+
+  // Track if scenario was saved (to notify parent on pop)
+  bool _wasScenarioSaved = false;
 
   // Auto-save mechanism
   Timer? _autoSaveTimer;
@@ -125,6 +132,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       _physics = scenario.physics;
       _particleSystems = scenario.particleSystems;
       _objectives = scenario.objectives;
+
+      // Store original name for deletion if renamed
+      _originalScenarioName = scenario.metadata.name;
     } else {
       // Create new scenario with empty bodies list
       _bodies = <Body>[];
@@ -179,9 +189,12 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return PopScope(
-      canPop: !_hasUnsavedChanges,
+      canPop: false, // Always handle pop ourselves to return proper result
       onPopInvokedWithResult: (didPop, result) async {
-        if (!didPop && _hasUnsavedChanges) {
+        if (didPop) return; // Should never happen since canPop is false
+
+        if (_hasUnsavedChanges) {
+          // Show dialog if there are unsaved changes
           final shouldPop = await _showUnsavedChangesDialog(context, l10n);
           if (shouldPop && context.mounted) {
             // Log analytics for scenario creation/editing cancellation
@@ -195,20 +208,24 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
                 'body_count': _bodies.length,
               },
             );
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(_wasScenarioSaved);
           }
-        } else if (didPop) {
-          // Log normal exit (no unsaved changes)
-          FirebaseService.instance.logUIEventWithEnums(
-            widget.isEditing
-                ? UIAction.scenarioEditingCanceled
-                : UIAction.scenarioCreationCanceled,
-            element: UIElement.scenarioEditor,
-            additionalParams: {
-              'had_unsaved_changes': 'false',
-              'body_count': _bodies.length,
-            },
-          );
+        } else {
+          // No unsaved changes - pop immediately with saved status
+          if (context.mounted) {
+            // Log normal exit (no unsaved changes)
+            FirebaseService.instance.logUIEventWithEnums(
+              widget.isEditing
+                  ? UIAction.scenarioEditingCanceled
+                  : UIAction.scenarioCreationCanceled,
+              element: UIElement.scenarioEditor,
+              additionalParams: {
+                'had_unsaved_changes': 'false',
+                'body_count': _bodies.length,
+              },
+            );
+            Navigator.of(context).pop(_wasScenarioSaved);
+          }
         }
       },
       child: Scaffold(
@@ -322,7 +339,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
             ),
           ),
         ),
-        floatingActionButton: _showFAB
+        floatingActionButton: _showFAB && !_isBodyBottomSheetOpen
             ? HapticFloatingActionButton.extended(
                 onPressed: _addNewBody,
                 backgroundColor: AppColors.primaryColor,
@@ -863,6 +880,11 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
               bodies: _bodies,
               onBodiesChanged: _onBodiesChanged,
               onAddBody: _addNewBody,
+              onBottomSheetStateChanged: (isOpen) {
+                setState(() {
+                  _isBodyBottomSheetOpen = isOpen;
+                });
+              },
             ),
           ),
         ],
@@ -931,6 +953,10 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
     );
 
     // Show bottom sheet for editing the new body
+    setState(() {
+      _isBodyBottomSheetOpen = true;
+    });
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -972,7 +998,14 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
           ),
         ),
       ),
-    );
+    ).whenComplete(() {
+      // Reset bottom sheet state when closed
+      if (mounted) {
+        setState(() {
+          _isBodyBottomSheetOpen = false;
+        });
+      }
+    });
   }
 
   Color _getNextBodyColor() {
@@ -1027,12 +1060,24 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
         },
       );
 
-      // Save to local storage
-      await CustomScenarioStorage.saveScenario(scenario);
+      // If editing and name changed, use atomic rename operation
+      if (_originalScenarioName != null &&
+          _originalScenarioName != scenario.metadata.name) {
+        await CustomScenarioStorage.renameScenario(
+          _originalScenarioName!,
+          scenario,
+        );
+        // Update original name to prevent repeated deletions
+        _originalScenarioName = scenario.metadata.name;
+      } else {
+        // Normal save for new scenarios or when name hasn't changed
+        await CustomScenarioStorage.saveScenario(scenario);
+      }
 
       if (mounted) {
         setState(() {
           _hasUnsavedChanges = false;
+          _wasScenarioSaved = true; // Track that we saved
         });
       }
 

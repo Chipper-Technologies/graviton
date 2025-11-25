@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/enums/auth_provider_type.dart';
 import 'package:graviton/enums/user_avatar.dart';
 import 'package:graviton/models/user_profile.dart';
 import 'package:graviton/services/auth_service.dart';
+import 'package:graviton/services/user_data_sync_service.dart';
 
 /// Manages authentication state using Provider pattern
 ///
@@ -47,6 +49,16 @@ class AuthState extends ChangeNotifier {
       );
 
       _currentUser = profile;
+
+      // Initialize sync for authenticated user
+      if (profile != null && !profile.isAnonymous) {
+        try {
+          await UserDataSyncService.instance.initialize();
+        } catch (e) {
+          debugPrint('Failed to initialize sync after sign-in: $e');
+        }
+      }
+
       _setLoading(false);
       return profile != null;
     } catch (e) {
@@ -73,6 +85,18 @@ class AuthState extends ChangeNotifier {
       );
 
       _currentUser = profile;
+
+      // Migrate local data to cloud after successful account creation
+      if (profile != null) {
+        try {
+          await UserDataSyncService.instance.migrateLocalDataToCloud();
+          await UserDataSyncService.instance.initialize();
+        } catch (e) {
+          // Don't fail account creation if sync fails
+          debugPrint('Failed to sync data after account creation: $e');
+        }
+      }
+
       _setLoading(false);
       return profile != null;
     } catch (e) {
@@ -91,6 +115,16 @@ class AuthState extends ChangeNotifier {
       final profile = await AuthService.instance.signInWithGoogle();
 
       _currentUser = profile;
+
+      // Initialize sync for authenticated user
+      if (profile != null && !profile.isAnonymous) {
+        try {
+          await UserDataSyncService.instance.initialize();
+        } catch (e) {
+          debugPrint('Failed to initialize sync after Google sign-in: $e');
+        }
+      }
+
       _setLoading(false);
       return profile != null;
     } catch (e) {
@@ -109,6 +143,44 @@ class AuthState extends ChangeNotifier {
       final profile = await AuthService.instance.signInWithApple();
 
       _currentUser = profile;
+
+      // Initialize sync for authenticated user
+      if (profile != null && !profile.isAnonymous) {
+        try {
+          await UserDataSyncService.instance.initialize();
+        } catch (e) {
+          debugPrint('Failed to initialize sync after Apple sign-in: $e');
+        }
+      }
+
+      _setLoading(false);
+      return profile != null;
+    } catch (e) {
+      _setError(_getErrorMessage(e));
+      _setLoading(false);
+      return false;
+    }
+  }
+
+  /// Sign in with GitHub
+  Future<bool> signInWithGitHub() async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      final profile = await AuthService.instance.signInWithGitHub();
+
+      _currentUser = profile;
+
+      // Initialize sync for authenticated user
+      if (profile != null && !profile.isAnonymous) {
+        try {
+          await UserDataSyncService.instance.initialize();
+        } catch (e) {
+          debugPrint('Failed to initialize sync after GitHub sign-in: $e');
+        }
+      }
+
       _setLoading(false);
       return profile != null;
     } catch (e) {
@@ -240,9 +312,30 @@ class AuthState extends ChangeNotifier {
     _clearError();
 
     try {
-      // Re-authenticate if password provided
-      if (password != null && password.isNotEmpty) {
-        await AuthService.instance.reauthenticateWithPassword(password);
+      final userId = _currentUser?.uid;
+      final provider = _currentUser?.authProvider;
+
+      // Re-authenticate based on provider type
+      if (provider == AuthProviderType.emailPassword) {
+        if (password != null && password.isNotEmpty) {
+          await AuthService.instance.reauthenticateWithPassword(password);
+        }
+      } else if (provider == AuthProviderType.google) {
+        await AuthService.instance.reauthenticateWithGoogle();
+      } else if (provider == AuthProviderType.apple) {
+        await AuthService.instance.reauthenticateWithApple();
+      }
+
+      // Delete cloud data BEFORE deleting account
+      // This preserves local storage while removing cloud backup
+      if (userId != null) {
+        try {
+          await UserDataSyncService.instance.deleteCloudData(userId);
+          await UserDataSyncService.instance.stopSync();
+        } catch (e) {
+          debugPrint('Failed to delete cloud data: $e');
+          // Continue with account deletion even if cloud cleanup fails
+        }
       }
 
       await AuthService.instance.deleteAccount();
@@ -263,6 +356,9 @@ class AuthState extends ChangeNotifier {
     _clearError();
 
     try {
+      // Stop cloud sync before signing out
+      await UserDataSyncService.instance.stopSync();
+
       await AuthService.instance.signOut();
 
       _currentUser = null;

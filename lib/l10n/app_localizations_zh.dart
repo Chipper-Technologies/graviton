@@ -3030,6 +3030,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get continueWithGoogle => '使用 Google 继续';
 
   @override
+  String get continueWithGitHub => '使用 GitHub 继续';
+
+  @override
   String get continueWithApple => '使用 Apple 继续';
 
   @override
@@ -3125,6 +3128,10 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get googleSignInError =>
       'Google sign-in was canceled or failed. Please try again.';
+
+  @override
+  String get gitHubSignInError =>
+      'GitHub sign-in was canceled or failed. Please try again.';
 
   @override
   String get displayNameUpdated => 'Display name updated';

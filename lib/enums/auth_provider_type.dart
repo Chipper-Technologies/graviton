@@ -9,6 +9,9 @@ enum AuthProviderType {
   /// Google Sign-In
   google('google.com'),
 
+  /// GitHub Sign-In
+  github('github.com'),
+
   /// Apple Sign-In
   apple('apple.com'),
 
@@ -41,6 +44,8 @@ enum AuthProviderType {
         return 'Email';
       case AuthProviderType.google:
         return 'Google';
+      case AuthProviderType.github:
+        return 'GitHub';
       case AuthProviderType.apple:
         return 'Apple';
       case AuthProviderType.facebook:

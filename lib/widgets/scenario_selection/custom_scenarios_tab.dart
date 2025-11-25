@@ -100,113 +100,116 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
 
     final l10n = AppLocalizations.of(context)!;
 
-    return SingleChildScrollView(
-      controller: widget.scrollController,
-      padding: EdgeInsets.all(AppTypography.spacingMedium),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Saved Scenarios section with menu
-          SectionDivider.labeled(
-            l10n.savedScenariosTitle,
-            bottomSpacing: AppTypography.spacingMedium,
-          ),
-
-          // Scenarios count header with menu button
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppTypography.spacingLarge,
+    return RefreshIndicator(
+      onRefresh: _loadCustomScenarios,
+      child: SingleChildScrollView(
+        controller: widget.scrollController,
+        padding: EdgeInsets.all(AppTypography.spacingMedium),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Saved Scenarios section with menu
+            SectionDivider.labeled(
+              l10n.savedScenariosTitle,
+              bottomSpacing: AppTypography.spacingMedium,
             ),
-            child: Row(
-              children: [
-                Text(
-                  l10n.scenariosHeaderPlural(_customScenarios.length),
-                  style: AppTypography.titleText.copyWith(
-                    color: AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityHigh,
+
+            // Scenarios count header with menu button
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppTypography.spacingLarge,
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    l10n.scenariosHeaderPlural(_customScenarios.length),
+                    style: AppTypography.titleText.copyWith(
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityHigh,
+                      ),
                     ),
                   ),
-                ),
-                const Spacer(),
-                GravitonPopupMenu(
-                  accessibilityLabel: l10n.moreActionsAccessibility,
-                  accessibilityHint: l10n.moreActionsHint,
-                  analyticsElement: UIElement.customScenariosTab,
-                  menuItems: [
-                    GravitonMenuItemConfig(
-                      value: 'create',
-                      labelKey: 'createScenarioTitle',
-                      hintKey: 'createScenarioButton',
-                      icon: Icons.add_circle_outline,
-                      onTap: () => _createNewScenario(context),
-                    ),
-                    GravitonMenuItemConfig(
-                      value: 'import',
-                      labelKey: 'importScenario',
-                      hintKey: 'importScenarioDescription',
-                      icon: Icons.file_upload_outlined,
-                      onTap: () => _importScenario(context),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: AppTypography.spacingMedium),
-
-          // Saved scenarios list
-          if (_customScenarios.isEmpty)
-            _buildEmptyState(l10n)
-          else
-            ..._customScenarios.map((scenario) {
-              return Padding(
-                padding: EdgeInsets.only(bottom: AppTypography.spacingSmall),
-                child: CustomScenarioTile(
-                  scenarioName: scenario.metadata.name,
-                  scenarioDescription: scenario.metadata.description,
-                  isSelected: false,
-                  onTap: () =>
-                      _editCustomScenario(context, scenario.metadata.name),
-                  onView: () =>
-                      _viewCustomScenario(context, scenario.metadata.name),
-                  onExport: () =>
-                      _exportCustomScenario(context, scenario.metadata.name),
-                  onEdit: () =>
-                      _editCustomScenario(context, scenario.metadata.name),
-                  onDelete: () =>
-                      _deleteCustomScenario(context, scenario.metadata.name),
-                ),
-              );
-            }),
-
-          // Experiments section
-          SectionDivider.labeled(
-            l10n.experimentsTitle,
-            topSpacing: AppTypography.spacingSmall,
-            bottomSpacing: AppTypography.spacingMedium,
-          ),
-
-          // Experiments count header
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppTypography.spacingLarge,
-            ),
-            child: Text(
-              l10n.experimentsHeaderPlural(
-                ExperimentalScenarioConfig.experiments.length,
-              ),
-              style: AppTypography.titleText.copyWith(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityHigh,
-                ),
+                  const Spacer(),
+                  GravitonPopupMenu(
+                    accessibilityLabel: l10n.moreActionsAccessibility,
+                    accessibilityHint: l10n.moreActionsHint,
+                    analyticsElement: UIElement.customScenariosTab,
+                    menuItems: [
+                      GravitonMenuItemConfig(
+                        value: 'create',
+                        labelKey: 'createScenarioTitle',
+                        hintKey: 'createScenarioButton',
+                        icon: Icons.add_circle_outline,
+                        onTap: () => _createNewScenario(context),
+                      ),
+                      GravitonMenuItemConfig(
+                        value: 'import',
+                        labelKey: 'importScenario',
+                        hintKey: 'importScenarioDescription',
+                        icon: Icons.file_upload_outlined,
+                        onTap: () => _importScenario(context),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-          SizedBox(height: AppTypography.spacingMedium),
+            SizedBox(height: AppTypography.spacingMedium),
 
-          // Experiments grid
-          _buildExperimentsGrid(context),
-        ],
+            // Saved scenarios list
+            if (_customScenarios.isEmpty)
+              _buildEmptyState(l10n)
+            else
+              ..._customScenarios.map((scenario) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: AppTypography.spacingSmall),
+                  child: CustomScenarioTile(
+                    scenarioName: scenario.metadata.name,
+                    scenarioDescription: scenario.metadata.description,
+                    isSelected: false,
+                    onTap: () =>
+                        _editCustomScenario(context, scenario.metadata.name),
+                    onView: () =>
+                        _viewCustomScenario(context, scenario.metadata.name),
+                    onExport: () =>
+                        _exportCustomScenario(context, scenario.metadata.name),
+                    onEdit: () =>
+                        _editCustomScenario(context, scenario.metadata.name),
+                    onDelete: () =>
+                        _deleteCustomScenario(context, scenario.metadata.name),
+                  ),
+                );
+              }),
+
+            // Experiments section
+            SectionDivider.labeled(
+              l10n.experimentsTitle,
+              topSpacing: AppTypography.spacingSmall,
+              bottomSpacing: AppTypography.spacingMedium,
+            ),
+
+            // Experiments count header
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppTypography.spacingLarge,
+              ),
+              child: Text(
+                l10n.experimentsHeaderPlural(
+                  ExperimentalScenarioConfig.experiments.length,
+                ),
+                style: AppTypography.titleText.copyWith(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityHigh,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: AppTypography.spacingMedium),
+
+            // Experiments grid
+            _buildExperimentsGrid(context),
+          ],
+        ),
       ),
     );
   }
@@ -768,7 +771,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
 
     if (!context.mounted) return;
 
-    final result = await Navigator.push<bool>(
+    await Navigator.push<bool>(
       context,
       MaterialPageRoute(
         builder: (context) => ScenarioEditorScreen(
@@ -778,10 +781,9 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       ),
     );
 
-    if (result == true) {
-      // Reload custom scenarios if changes were saved
-      await _loadCustomScenarios();
-    }
+    // Always reload scenarios after returning from editor
+    // This ensures the list is updated even if result is null or false
+    await _loadCustomScenarios();
   }
 
   Future<void> _deleteCustomScenario(

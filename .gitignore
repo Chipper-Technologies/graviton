@@ -60,6 +60,7 @@ app.*.map.json
 **/ios/firebase_app_id_file.json
 **/macos/Runner/GoogleService-Info.plist
 **/macos/firebase_app_id_file.json
+lib/firebase/firebase_options.dart
 
 # Environment Configuration Files (sensitive)
 config/

@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/auth/social_auth_button.dart';
+import 'package:graviton/widgets/rainbow_border_button.dart';
 
 void main() {
   group('SocialAuthButton Widget Tests', () {
@@ -323,6 +324,68 @@ void main() {
       expect(find.text('Google'), findsOneWidget);
       expect(find.text('Apple'), findsOneWidget);
       expect(find.text('Guest'), findsOneWidget);
+    });
+
+    testWidgets('should use custom border color when provided', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SocialAuthButton(
+              icon: Icons.code,
+              label: 'GitHub',
+              borderColor: AppColors.uiWhite,
+              onPressed: () {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(SocialAuthButton), findsOneWidget);
+
+      final button = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+
+      final shape = button.style?.shape?.resolve({}) as RoundedRectangleBorder?;
+      expect(shape?.side.color, equals(AppColors.uiWhite));
+    });
+
+    testWidgets('should use RainbowBorderButton when rainbowBorder is true', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SocialAuthButton(
+              icon: Icons.login,
+              label: 'Google',
+              rainbowBorder: true,
+              onPressed: () {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(RainbowBorderButton), findsOneWidget);
+    });
+
+    testWidgets('rainbowBorder takes precedence over borderColor', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SocialAuthButton(
+              icon: Icons.login,
+              label: 'Google',
+              rainbowBorder: true,
+              borderColor: AppColors.uiWhite,
+              onPressed: () {},
+            ),
+          ),
+        ),
+      );
+
+      // Should render RainbowBorderButton, not regular button with custom color
+      expect(find.byType(RainbowBorderButton), findsOneWidget);
     });
   });
 }

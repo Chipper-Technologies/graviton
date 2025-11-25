@@ -265,7 +265,21 @@ Professional screenshot capture system for creating marketing materials:
    flutter gen-l10n
    ```
 
-4. **Run the app**
+4. **Configure Firebase (Required for authentication features)**
+   ```bash
+   # Copy the template file
+   cp lib/firebase/firebase_options.dart.template lib/firebase/firebase_options.dart
+   
+   # Edit lib/firebase/firebase_options.dart and replace placeholder values with your Firebase config
+   # Get these values from Firebase Console > Project Settings > Your apps
+   # Or run: flutterfire configure (requires FlutterFire CLI)
+   ```
+   
+   **Note**: The `firebase_options.dart` file is gitignored for security. Each developer needs to create their own from the template.
+   
+   **Flavor Support**: The app supports both dev and prod Firebase projects. Configure both sets of credentials in `firebase_options.dart`. The app automatically selects the appropriate configuration based on the build flavor. See `lib/firebase/README.md` for detailed setup instructions.
+
+5. **Run the app**
    ```bash
    # Quick start with development configuration
    flutter run --dart-define-from-file config/dev.json --flavor dev

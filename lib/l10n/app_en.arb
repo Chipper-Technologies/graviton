@@ -4178,6 +4178,10 @@
   "@continueWithGoogle": {
     "description": "Button text for Google sign-in"
   },
+  "continueWithGitHub": "Continue with GitHub",
+  "@continueWithGitHub": {
+    "description": "Button text for GitHub sign-in"
+  },
   "continueWithApple": "Continue with Apple",
   "@continueWithApple": {
     "description": "Button text for Apple sign-in"
@@ -4309,6 +4313,10 @@
   "googleSignInError": "Google sign-in was canceled or failed. Please try again.",
   "@googleSignInError": {
     "description": "Error message when Google sign-in fails"
+  },
+  "gitHubSignInError": "GitHub sign-in was canceled or failed. Please try again.",
+  "@gitHubSignInError": {
+    "description": "Error message when GitHub sign-in fails"
   },
   "displayNameUpdated": "Display name updated",
   "@displayNameUpdated": {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -52,6 +54,9 @@ class SignInForm extends StatelessWidget {
   /// Callback when Google sign-in is tapped
   final VoidCallback onGoogleSignIn;
 
+  /// Callback when GitHub sign-in is tapped
+  final VoidCallback onGitHubSignIn;
+
   /// Callback when email/password auth is submitted
   final VoidCallback onEmailPasswordAuth;
 
@@ -94,6 +99,7 @@ class SignInForm extends StatelessWidget {
     this.emailError,
     this.passwordError,
     required this.onGoogleSignIn,
+    required this.onGitHubSignIn,
     required this.onEmailPasswordAuth,
     required this.onTogglePasswordVisibility,
     required this.onToggleMode,
@@ -119,7 +125,7 @@ class SignInForm extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Google sign-in button
+              // Social sign-in buttons
               if (isProcessing)
                 const Center(
                   child: Padding(
@@ -127,13 +133,24 @@ class SignInForm extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   ),
                 )
-              else
+              else ...[
                 SocialAuthButton(
                   assetPath: 'assets/images/google-logo.svg',
-                  animatedBorder: true,
+                  rainbowBorder: true,
                   label: l10n.continueWithGoogle,
                   onPressed: onGoogleSignIn,
                 ),
+                // GitHub sign-in is not supported on macOS
+                if (!Platform.isMacOS) ...[
+                  const SizedBox(height: AppTypography.spacingMedium),
+                  SocialAuthButton(
+                    assetPath: 'assets/images/github-logo.svg',
+                    borderColor: AppColors.uiWhite,
+                    label: l10n.continueWithGitHub,
+                    onPressed: onGitHubSignIn,
+                  ),
+                ],
+              ],
               SectionDivider.labeled(
                 l10n.orDivider,
                 topSpacing: AppTypography.spacingMedium,

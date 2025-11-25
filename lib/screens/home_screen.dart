@@ -873,7 +873,6 @@ class _HomeScreenState extends State<HomeScreen>
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },
-        opaque: false,
       ),
     );
   }

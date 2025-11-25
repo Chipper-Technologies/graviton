@@ -4,7 +4,7 @@ import 'package:graviton/enums/auth_provider_type.dart';
 void main() {
   group('AuthProviderType', () {
     test('has correct number of provider types', () {
-      expect(AuthProviderType.values.length, 5);
+      expect(AuthProviderType.values.length, 6);
     });
 
     test('emailPassword has correct provider ID', () {

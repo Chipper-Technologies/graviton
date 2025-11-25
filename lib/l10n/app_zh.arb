@@ -957,6 +957,7 @@
   "alreadyHaveAccount": "已有账户？登录",
   "needAccount": "需要账户？创建一个",
   "continueWithGoogle": "使用 Google 继续",
+  "continueWithGitHub": "使用 GitHub 继续",
   "continueWithApple": "使用 Apple 继续",
   "selectAvatarTitle": "选择头像",
   "editAccountInformationTitle": "编辑显示名称",

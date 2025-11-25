@@ -957,6 +957,7 @@
   "alreadyHaveAccount": "すでにアカウントをお持ちですか？サインイン",
   "needAccount": "アカウントが必要ですか？作成する",
   "continueWithGoogle": "Googleで続ける",
+  "continueWithGitHub": "GitHubで続ける",
   "continueWithApple": "Appleで続ける",
   "selectAvatarTitle": "アバターを選択",
   "editAccountInformationTitle": "表示名を編集",

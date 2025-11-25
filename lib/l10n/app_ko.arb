@@ -957,6 +957,7 @@
   "alreadyHaveAccount": "이미 계정이 있으신가요? 로그인",
   "needAccount": "계정이 필요하신가요? 만들기",
   "continueWithGoogle": "Google로 계속하기",
+  "continueWithGitHub": "GitHub로 계속하기",
   "continueWithApple": "Apple로 계속하기",
   "selectAvatarTitle": "아바타 선택",
   "editAccountInformationTitle": "표시 이름 편집",

@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/options_drawer.dart';
+import 'package:graviton/widgets/auth/avatar_button.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/state/auth_state.dart';
+import 'package:provider/provider.dart';
 
 import '../test_utils.dart';
 
 void main() {
   group('OptionsDrawer Widget Tests', () {
+    late AuthState authState;
+
+    setUp(() {
+      authState = AuthState();
+    });
+
     Widget createTestWidget({
       VoidCallback? onShowHelp,
       VoidCallback? onShowSettings,
@@ -19,15 +28,18 @@ void main() {
       VoidCallback? onShowAccount,
     }) {
       return TestUtils.wrapWithMaterialApp(
-        child: OptionsDrawer(
-          onShowHelp: onShowHelp ?? () {},
-          onShowSettings: onShowSettings ?? () {},
-          onShowScenarios: onShowScenarios ?? () {},
-          onShowPhysicsSettings: onShowPhysicsSettings ?? () {},
-          onShowAbout: onShowAbout ?? () {},
-          onShowDeveloperTools: onShowDeveloperTools ?? () {},
-          onShowChangelog: onShowChangelog,
-          onShowAccount: onShowAccount ?? () {},
+        child: ChangeNotifierProvider<AuthState>.value(
+          value: authState,
+          child: OptionsDrawer(
+            onShowHelp: onShowHelp ?? () {},
+            onShowSettings: onShowSettings ?? () {},
+            onShowScenarios: onShowScenarios ?? () {},
+            onShowPhysicsSettings: onShowPhysicsSettings ?? () {},
+            onShowAbout: onShowAbout ?? () {},
+            onShowDeveloperTools: onShowDeveloperTools ?? () {},
+            onShowChangelog: onShowChangelog,
+            onShowAccount: onShowAccount ?? () {},
+          ),
         ),
       );
     }
@@ -72,8 +84,10 @@ void main() {
       expect(find.byIcon(Icons.science), findsOneWidget);
       expect(find.byIcon(Icons.tune), findsOneWidget);
       expect(find.byIcon(Icons.lightbulb_outline), findsOneWidget);
-      expect(find.byIcon(Icons.account_circle), findsOneWidget);
       expect(find.byIcon(Icons.info_outline), findsOneWidget);
+
+      // Verify avatar button in header (replaces Account menu item)
+      expect(find.byType(AvatarButton), findsOneWidget);
 
       // Verify ListTile widgets for menu items
       expect(find.byType(ListTile), findsWidgets);
@@ -208,7 +222,7 @@ void main() {
       expect(aboutCalled, isTrue);
     });
 
-    testWidgets('calls onShowAccount when account item is tapped', (
+    testWidgets('calls onShowAccount when avatar button is tapped', (
       tester,
     ) async {
       bool accountCalled = false;
@@ -222,12 +236,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Find and tap the account menu item ListTile
-      final accountListTile = find.ancestor(
-        of: find.byIcon(Icons.account_circle),
-        matching: find.byType(ListTile),
-      );
-      await tester.tap(accountListTile);
+      // Find and tap the avatar button in the header
+      final avatarButton = find.byType(AvatarButton);
+      expect(avatarButton, findsOneWidget);
+      await tester.tap(avatarButton);
       await tester.pumpAndSettle();
 
       expect(accountCalled, isTrue);
@@ -333,18 +345,27 @@ void main() {
   });
 
   group('OptionsDrawer Integration Tests', () {
+    late AuthState authState;
+
+    setUp(() {
+      authState = AuthState();
+    });
+
     testWidgets('drawer can be opened and closed in scaffold', (tester) async {
       await tester.pumpWidget(
-        TestUtils.wrapWithScaffold(
-          child: Container(),
-          endDrawer: OptionsDrawer(
-            onShowHelp: () {},
-            onShowSettings: () {},
-            onShowScenarios: () {},
-            onShowPhysicsSettings: () {},
-            onShowAbout: () {},
-            onShowDeveloperTools: () {},
-            onShowAccount: () {},
+        ChangeNotifierProvider<AuthState>.value(
+          value: authState,
+          child: TestUtils.wrapWithScaffold(
+            child: Container(),
+            endDrawer: OptionsDrawer(
+              onShowHelp: () {},
+              onShowSettings: () {},
+              onShowScenarios: () {},
+              onShowPhysicsSettings: () {},
+              onShowAbout: () {},
+              onShowDeveloperTools: () {},
+              onShowAccount: () {},
+            ),
           ),
         ),
       );
@@ -365,15 +386,18 @@ void main() {
 
     testWidgets('proper icon and text layout', (tester) async {
       await tester.pumpWidget(
-        TestUtils.wrapWithScaffold(
-          child: OptionsDrawer(
-            onShowHelp: () {},
-            onShowSettings: () {},
-            onShowScenarios: () {},
-            onShowPhysicsSettings: () {},
-            onShowAbout: () {},
-            onShowDeveloperTools: () {},
-            onShowAccount: () {},
+        ChangeNotifierProvider<AuthState>.value(
+          value: authState,
+          child: TestUtils.wrapWithScaffold(
+            child: OptionsDrawer(
+              onShowHelp: () {},
+              onShowSettings: () {},
+              onShowScenarios: () {},
+              onShowPhysicsSettings: () {},
+              onShowAbout: () {},
+              onShowDeveloperTools: () {},
+              onShowAccount: () {},
+            ),
           ),
         ),
       );
@@ -403,15 +427,18 @@ void main() {
 
     testWidgets('drawer maintains proper padding and spacing', (tester) async {
       await tester.pumpWidget(
-        TestUtils.wrapWithMaterialApp(
-          child: OptionsDrawer(
-            onShowHelp: () {},
-            onShowSettings: () {},
-            onShowScenarios: () {},
-            onShowPhysicsSettings: () {},
-            onShowAbout: () {},
-            onShowDeveloperTools: () {},
-            onShowAccount: () {},
+        ChangeNotifierProvider<AuthState>.value(
+          value: authState,
+          child: TestUtils.wrapWithMaterialApp(
+            child: OptionsDrawer(
+              onShowHelp: () {},
+              onShowSettings: () {},
+              onShowScenarios: () {},
+              onShowPhysicsSettings: () {},
+              onShowAbout: () {},
+              onShowDeveloperTools: () {},
+              onShowAccount: () {},
+            ),
           ),
         ),
       );

@@ -957,6 +957,7 @@
   "alreadyHaveAccount": "¿Ya tiene una cuenta? Iniciar sesión",
   "needAccount": "¿Necesita una cuenta? Crear una",
   "continueWithGoogle": "Continuar con Google",
+  "continueWithGitHub": "Continuar con GitHub",
   "continueWithApple": "Continuar con Apple",
   "selectAvatarTitle": "Seleccionar avatar",
   "editAccountInformationTitle": "Editar nombre de usuario",

@@ -44,5 +44,18 @@
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Graviton needs access to save simulation screenshots to your photo library.</string>
+	<key>GIDClientID</key>
+	<string>645841860075-osscdci4m1j65ku3bdvrb678stdj65p8.apps.googleusercontent.com</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.645841860075-osscdci4m1j65ku3bdvrb678stdj65p8</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
