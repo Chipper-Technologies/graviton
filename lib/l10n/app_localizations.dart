@@ -5985,6 +5985,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred: {message}'**
   String firebaseErrorDefault(String message);
+
+  /// Success message after sending verification email
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent! Please check your inbox.'**
+  String get emailVerificationSent;
+
+  /// Success message after resending verification email
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email resent successfully.'**
+  String get emailVerificationResent;
+
+  /// Label indicating email is not verified
+  ///
+  /// In en, this message translates to:
+  /// **'Email not verified'**
+  String get emailNotVerified;
+
+  /// Label indicating email is verified
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified'**
+  String get emailVerified;
+
+  /// Title for email verification section
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Email Address'**
+  String get verifyEmailAddress;
+
+  /// Message explaining email verification requirement
+  ///
+  /// In en, this message translates to:
+  /// **'Please verify your email address to access all features. Check your inbox for the verification link.'**
+  String get verifyEmailMessage;
+
+  /// Button text to send verification email
+  ///
+  /// In en, this message translates to:
+  /// **'Send Verification Email'**
+  String get sendVerificationEmail;
+
+  /// Button text to resend verification email
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Verification Email'**
+  String get resendVerificationEmail;
+
+  /// Button text to refresh email verification status
+  ///
+  /// In en, this message translates to:
+  /// **'Check Verification Status'**
+  String get checkVerificationStatus;
+
+  /// Status message when email verification is pending
+  ///
+  /// In en, this message translates to:
+  /// **'Email verification pending'**
+  String get emailVerificationPending;
+
+  /// Message shown when user must wait before resending verification email
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait {seconds} seconds before requesting another verification email.'**
+  String verificationEmailCooldown(int seconds);
+
+  /// Title for terms and privacy section
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Privacy'**
+  String get termsAndPrivacy;
+
+  /// Checkbox label for accepting terms and privacy
+  ///
+  /// In en, this message translates to:
+  /// **'I accept the Terms of Service and Privacy Policy'**
+  String get acceptTermsAndPrivacy;
+
+  /// Error message when terms are not accepted
+  ///
+  /// In en, this message translates to:
+  /// **'You must accept the Terms of Service and Privacy Policy to continue.'**
+  String get mustAcceptTerms;
+
+  /// Link text for Terms of Service
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
+  /// Link text for Privacy Policy
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// Action to view Terms of Service
+  ///
+  /// In en, this message translates to:
+  /// **'View Terms of Service'**
+  String get viewTermsOfService;
+
+  /// Action to view Privacy Policy
+  ///
+  /// In en, this message translates to:
+  /// **'View Privacy Policy'**
+  String get viewPrivacyPolicy;
+
+  /// Shows when terms were last updated
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: {date}'**
+  String termsLastUpdated(String date);
+
+  /// Shows when privacy policy was last updated
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: {date}'**
+  String privacyLastUpdated(String date);
+
+  /// Message about minimum age requirement (COPPA compliance)
+  ///
+  /// In en, this message translates to:
+  /// **'You must be 13 years or older to create an account.'**
+  String get ageRequirement;
+
+  /// Checkbox label for age confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'I confirm that I am 13 years or older'**
+  String get confirmAge;
+
+  /// Exception key when email verification fails
+  ///
+  /// In en, this message translates to:
+  /// **'exceptionEmailVerificationFailed'**
+  String get exceptionEmailVerificationFailed;
+
+  /// Exception key when verification email is rate limited
+  ///
+  /// In en, this message translates to:
+  /// **'exceptionEmailVerificationCooldown'**
+  String get exceptionEmailVerificationCooldown;
+
+  /// Exception key when terms are not accepted
+  ///
+  /// In en, this message translates to:
+  /// **'exceptionTermsNotAccepted'**
+  String get exceptionTermsNotAccepted;
 }
 
 class _AppLocalizationsDelegate

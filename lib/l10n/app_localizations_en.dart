@@ -3394,4 +3394,93 @@ class AppLocalizationsEn extends AppLocalizations {
   String firebaseErrorDefault(String message) {
     return 'An error occurred: $message';
   }
+
+  @override
+  String get emailVerificationSent =>
+      'Verification email sent! Please check your inbox.';
+
+  @override
+  String get emailVerificationResent =>
+      'Verification email resent successfully.';
+
+  @override
+  String get emailNotVerified => 'Email not verified';
+
+  @override
+  String get emailVerified => 'Email verified';
+
+  @override
+  String get verifyEmailAddress => 'Verify Email Address';
+
+  @override
+  String get verifyEmailMessage =>
+      'Please verify your email address to access all features. Check your inbox for the verification link.';
+
+  @override
+  String get sendVerificationEmail => 'Send Verification Email';
+
+  @override
+  String get resendVerificationEmail => 'Resend Verification Email';
+
+  @override
+  String get checkVerificationStatus => 'Check Verification Status';
+
+  @override
+  String get emailVerificationPending => 'Email verification pending';
+
+  @override
+  String verificationEmailCooldown(int seconds) {
+    return 'Please wait $seconds seconds before requesting another verification email.';
+  }
+
+  @override
+  String get termsAndPrivacy => 'Terms & Privacy';
+
+  @override
+  String get acceptTermsAndPrivacy =>
+      'I accept the Terms of Service and Privacy Policy';
+
+  @override
+  String get mustAcceptTerms =>
+      'You must accept the Terms of Service and Privacy Policy to continue.';
+
+  @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get viewTermsOfService => 'View Terms of Service';
+
+  @override
+  String get viewPrivacyPolicy => 'View Privacy Policy';
+
+  @override
+  String termsLastUpdated(String date) {
+    return 'Last updated: $date';
+  }
+
+  @override
+  String privacyLastUpdated(String date) {
+    return 'Last updated: $date';
+  }
+
+  @override
+  String get ageRequirement =>
+      'You must be 13 years or older to create an account.';
+
+  @override
+  String get confirmAge => 'I confirm that I am 13 years or older';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'exceptionEmailVerificationFailed';
+
+  @override
+  String get exceptionEmailVerificationCooldown =>
+      'exceptionEmailVerificationCooldown';
+
+  @override
+  String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
 }

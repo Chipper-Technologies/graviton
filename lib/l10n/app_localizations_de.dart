@@ -3394,4 +3394,94 @@ class AppLocalizationsDe extends AppLocalizations {
   String firebaseErrorDefault(String message) {
     return 'Ein Fehler ist aufgetreten: $message';
   }
+
+  @override
+  String get emailVerificationSent =>
+      'Bestätigungs-E-Mail gesendet! Bitte überprüfen Sie Ihren Posteingang.';
+
+  @override
+  String get emailVerificationResent =>
+      'Bestätigungs-E-Mail erfolgreich erneut gesendet.';
+
+  @override
+  String get emailNotVerified => 'E-Mail nicht bestätigt';
+
+  @override
+  String get emailVerified => 'E-Mail bestätigt';
+
+  @override
+  String get verifyEmailAddress => 'E-Mail-Adresse bestätigen';
+
+  @override
+  String get verifyEmailMessage =>
+      'Bitte bestätigen Sie Ihre E-Mail-Adresse, um auf alle Funktionen zuzugreifen. Überprüfen Sie Ihren Posteingang auf den Bestätigungslink.';
+
+  @override
+  String get sendVerificationEmail => 'Bestätigungs-E-Mail senden';
+
+  @override
+  String get resendVerificationEmail => 'Bestätigungs-E-Mail erneut senden';
+
+  @override
+  String get checkVerificationStatus => 'Bestätigungsstatus prüfen';
+
+  @override
+  String get emailVerificationPending => 'E-Mail-Bestätigung ausstehend';
+
+  @override
+  String verificationEmailCooldown(int seconds) {
+    return 'Bitte warten Sie $seconds Sekunden, bevor Sie eine weitere Bestätigungs-E-Mail anfordern.';
+  }
+
+  @override
+  String get termsAndPrivacy => 'Geschäftsbedingungen & Datenschutz';
+
+  @override
+  String get acceptTermsAndPrivacy =>
+      'Ich akzeptiere die Nutzungsbedingungen und Datenschutzerklärung';
+
+  @override
+  String get mustAcceptTerms =>
+      'Sie müssen die Nutzungsbedingungen und Datenschutzerklärung akzeptieren, um fortzufahren.';
+
+  @override
+  String get termsOfService => 'Nutzungsbedingungen';
+
+  @override
+  String get privacyPolicy => 'Datenschutzerklärung';
+
+  @override
+  String get viewTermsOfService => 'Nutzungsbedingungen anzeigen';
+
+  @override
+  String get viewPrivacyPolicy => 'Datenschutzerklärung anzeigen';
+
+  @override
+  String termsLastUpdated(String date) {
+    return 'Zuletzt aktualisiert: $date';
+  }
+
+  @override
+  String privacyLastUpdated(String date) {
+    return 'Zuletzt aktualisiert: $date';
+  }
+
+  @override
+  String get ageRequirement =>
+      'Sie müssen mindestens 13 Jahre alt sein, um ein Konto zu erstellen.';
+
+  @override
+  String get confirmAge =>
+      'Ich bestätige, dass ich mindestens 13 Jahre alt bin';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'exceptionEmailVerificationFailed';
+
+  @override
+  String get exceptionEmailVerificationCooldown =>
+      'exceptionEmailVerificationCooldown';
+
+  @override
+  String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
 }

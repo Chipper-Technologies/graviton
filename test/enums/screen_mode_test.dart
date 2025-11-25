@@ -94,11 +94,10 @@ void main() {
     });
 
     test('should be usable in collections', () {
-      // ignore: equal_elements_in_set
       final set = {
         ScreenMode.accountView,
         ScreenMode.signIn,
-        ScreenMode.accountView,
+        ScreenMode.accountView, // ignore: equal_elements_in_set
       };
       expect(set.length, equals(2)); // Duplicates removed
 

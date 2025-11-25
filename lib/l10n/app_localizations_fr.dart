@@ -3426,4 +3426,93 @@ class AppLocalizationsFr extends AppLocalizations {
   String firebaseErrorDefault(String message) {
     return 'Une erreur s\'est produite : $message';
   }
+
+  @override
+  String get emailVerificationSent =>
+      'E-mail de vérification envoyé ! Veuillez vérifier votre boîte de réception.';
+
+  @override
+  String get emailVerificationResent =>
+      'E-mail de vérification renvoyé avec succès.';
+
+  @override
+  String get emailNotVerified => 'E-mail non vérifié';
+
+  @override
+  String get emailVerified => 'E-mail vérifié';
+
+  @override
+  String get verifyEmailAddress => 'Vérifier l\'adresse e-mail';
+
+  @override
+  String get verifyEmailMessage =>
+      'Veuillez vérifier votre adresse e-mail pour accéder à toutes les fonctionnalités. Consultez votre boîte de réception pour le lien de vérification.';
+
+  @override
+  String get sendVerificationEmail => 'Envoyer l\'e-mail de vérification';
+
+  @override
+  String get resendVerificationEmail => 'Renvoyer l\'e-mail de vérification';
+
+  @override
+  String get checkVerificationStatus => 'Vérifier le statut de vérification';
+
+  @override
+  String get emailVerificationPending => 'Vérification d\'e-mail en attente';
+
+  @override
+  String verificationEmailCooldown(int seconds) {
+    return 'Veuillez attendre $seconds secondes avant de demander un autre e-mail de vérification.';
+  }
+
+  @override
+  String get termsAndPrivacy => 'Conditions et confidentialité';
+
+  @override
+  String get acceptTermsAndPrivacy =>
+      'J\'accepte les Conditions d\'utilisation et la Politique de confidentialité';
+
+  @override
+  String get mustAcceptTerms =>
+      'Vous devez accepter les Conditions d\'utilisation et la Politique de confidentialité pour continuer.';
+
+  @override
+  String get termsOfService => 'Conditions d\'utilisation';
+
+  @override
+  String get privacyPolicy => 'Politique de confidentialité';
+
+  @override
+  String get viewTermsOfService => 'Voir les Conditions d\'utilisation';
+
+  @override
+  String get viewPrivacyPolicy => 'Voir la Politique de confidentialité';
+
+  @override
+  String termsLastUpdated(String date) {
+    return 'Dernière mise à jour : $date';
+  }
+
+  @override
+  String privacyLastUpdated(String date) {
+    return 'Dernière mise à jour : $date';
+  }
+
+  @override
+  String get ageRequirement =>
+      'Vous devez avoir 13 ans ou plus pour créer un compte.';
+
+  @override
+  String get confirmAge => 'Je confirme que j\'ai 13 ans ou plus';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'exceptionEmailVerificationFailed';
+
+  @override
+  String get exceptionEmailVerificationCooldown =>
+      'exceptionEmailVerificationCooldown';
+
+  @override
+  String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
 }

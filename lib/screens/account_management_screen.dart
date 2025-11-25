@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:graviton/enums/screen_mode.dart';
 import 'package:graviton/enums/user_avatar.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/services/auth_service.dart';
 import 'package:graviton/state/auth_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/auth/social_auth_button.dart';
+import 'package:graviton/widgets/account/account_management_options.dart';
+import 'package:graviton/widgets/account/avatar_selection_grid.dart';
+import 'package:graviton/widgets/account/danger_zone_section.dart';
+import 'package:graviton/widgets/account/delete_confirmation_dialog.dart';
+import 'package:graviton/widgets/account/edit_name_form.dart';
+import 'package:graviton/widgets/account/email_verification_banner.dart';
+import 'package:graviton/widgets/account/profile_card.dart';
+import 'package:graviton/widgets/account/sign_in_form.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
-import 'package:graviton/widgets/common/styled_text_field.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_button.dart';
-import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
 import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
-import 'package:graviton/widgets/haptics/haptic_list_tile.dart';
-import 'package:graviton/widgets/haptics/haptic_text_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,6 +44,9 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
   bool _isCreatingAccount = false;
   bool _obscurePassword = true;
   UserAvatar? _selectedAvatar;
+  bool _acceptedTerms = false;
+  bool _isSendingVerification = false;
+  bool _isCheckingVerification = false;
 
   @override
   void dispose() {
@@ -72,6 +79,14 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
         return l10n.exceptionNoAnonymousUser;
       case 'exceptionNoUserSignedIn':
         return l10n.exceptionNoUserSignedIn;
+
+      // Email verification exceptions
+      case 'exceptionEmailVerificationFailed':
+        return l10n.exceptionEmailVerificationFailed;
+      case 'exceptionEmailVerificationCooldown':
+        return l10n.exceptionEmailVerificationCooldown;
+      case 'exceptionTermsNotAccepted':
+        return l10n.exceptionTermsNotAccepted;
 
       // Firebase auth errors
       case 'firebaseErrorUserNotFound':
@@ -173,13 +188,65 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
   Widget _buildContent(AuthState authState, AppLocalizations l10n) {
     switch (_mode) {
       case ScreenMode.signIn:
-        return _buildSignInScreen(authState, l10n);
+        return Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(AppTypography.spacingXLarge),
+            child: Form(
+              key: _formKey,
+              child: SignInForm(
+                formKey: _formKey,
+                emailController: _emailController,
+                passwordController: _passwordController,
+                nameController: _nameController,
+                obscurePassword: _obscurePassword,
+                isCreatingAccount: _isCreatingAccount,
+                acceptedTerms: _acceptedTerms,
+                emailError: _emailError,
+                passwordError: _passwordError,
+                onGoogleSignIn: () => _handleGoogleSignIn(authState, l10n),
+                onEmailPasswordAuth: () =>
+                    _handleEmailPasswordAuth(authState, l10n),
+                onTogglePasswordVisibility: () =>
+                    setState(() => _obscurePassword = !_obscurePassword),
+                onToggleMode: () =>
+                    setState(() => _isCreatingAccount = !_isCreatingAccount),
+                onEmailChanged: (value) => setState(() => _emailError = null),
+                onPasswordChanged: (value) =>
+                    setState(() => _passwordError = null),
+                onNameChanged: (value) {},
+                onTermsChanged: (value) =>
+                    setState(() => _acceptedTerms = value),
+                onTermsTapped: () {
+                  // TODO: Open Terms of Service
+                },
+                onPrivacyTapped: () {
+                  // TODO: Open Privacy Policy
+                },
+              ),
+            ),
+          ),
+        );
       case ScreenMode.avatarSelection:
-        return _buildAvatarSelectionScreen(authState, l10n);
+        final user = authState.currentUser;
+        return AvatarSelectionGrid(
+          selectedAvatar: _selectedAvatar,
+          photoUrl: user?.photoUrl,
+          onAvatarSelected: (avatar) =>
+              setState(() => _selectedAvatar = avatar),
+          onSave: () => _saveAvatar(authState, l10n),
+          onCancel: _resetToAccountView,
+        );
       case ScreenMode.editName:
-        return _buildEditNameScreen(authState, l10n);
+        return EditNameForm(
+          nameController: _nameController,
+          onSave: () => _saveName(authState, l10n),
+          onChanged: (value) {},
+        );
       case ScreenMode.deleteConfirmation:
-        return _buildDeleteConfirmationScreen(authState, l10n);
+        return DeleteConfirmationDialog(
+          onConfirmDelete: () => _deleteAccount(authState, l10n),
+          onCancel: _resetToAccountView,
+        );
       default:
         return authState.currentUser == null
             ? _buildSignInPrompt(authState, l10n)
@@ -255,11 +322,31 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
           children: [
             _buildProfileCard(authState, user, l10n),
             const SizedBox(height: AppTypography.spacingMedium),
+            if (!authState.isAnonymous && user.email != null)
+              EmailVerificationBanner(
+                onSendVerification: () => _sendEmailVerification(l10n),
+                onCheckVerification: () => _checkEmailVerification(l10n),
+                isSendingVerification: _isSendingVerification,
+                isCheckingVerification: _isCheckingVerification,
+              ),
+            if (!authState.isAnonymous && user.email != null)
+              const SizedBox(height: AppTypography.spacingMedium),
             SectionDivider.labeled(
               l10n.accountManagementSection,
               bottomSpacing: AppTypography.spacingMedium,
             ),
-            _buildAccountManagementOptions(authState, user, l10n),
+            AccountManagementOptions(
+              onEditAccount: () {
+                _nameController.text = user.displayName ?? '';
+                setState(() => _mode = ScreenMode.editName);
+              },
+              onChangeAvatar: () => setState(() {
+                _selectedAvatar = authState.currentUser?.avatar;
+                _mode = ScreenMode.avatarSelection;
+              }),
+              onSignOut: () => _signOut(authState, l10n),
+              isAnonymous: authState.isAnonymous,
+            ),
             const SizedBox(height: AppTypography.spacingMedium),
             SectionDivider.labeled(
               l10n.dangerZoneSection,
@@ -270,7 +357,10 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            _buildDangerZone(authState, l10n),
+            DangerZoneSection(
+              onDeleteAccount: () =>
+                  setState(() => _mode = ScreenMode.deleteConfirmation),
+            ),
           ],
         ),
       ),
@@ -282,575 +372,12 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     dynamic user,
     AppLocalizations l10n,
   ) {
-    return Container(
-      padding: const EdgeInsets.all(AppTypography.spacingLarge),
-      decoration: BoxDecoration(
-        color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
-        borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-        border: Border.all(
-          color: AppColors.uiWhite.withValues(
-            alpha: AppTypography.opacityDisabled,
-          ),
-          width: AppTypography.borderThin,
-        ),
-      ),
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              _buildAvatarDisplay(user),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: HapticIconButton(
-                  icon: const Icon(
-                    Icons.edit,
-                    size: AppTypography.iconSizeSmall,
-                  ),
-                  tooltip: l10n.changeAvatarTooltip,
-                  onPressed: () => setState(() {
-                    _selectedAvatar = user.avatar;
-                    _mode = ScreenMode.avatarSelection;
-                  }),
-                  style: IconButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    foregroundColor: AppColors.uiWhite,
-                    padding: const EdgeInsets.all(AppTypography.spacingXSmall),
-                    minimumSize: const Size(32, 32),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppTypography.spacingLarge),
-          SizedBox(
-            width: double.infinity,
-            child: Text(
-              user.displayName ?? l10n.anonymousUserLabel,
-              style: AppTypography.titleText.copyWith(
-                color: AppColors.uiWhite,
-                fontWeight: FontWeight.w600,
-              ),
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          if (user.email != null) ...[
-            const SizedBox(height: AppTypography.spacingXSmall),
-            Text(
-              user.email!,
-              style: AppTypography.mediumText.copyWith(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacitySemiTransparent,
-                ),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAvatarDisplay(dynamic user) {
-    // Prioritize custom avatar over Google/Apple photo
-    if (user.avatar != null) {
-      return Container(
-        width: AppTypography.iconSizeHuge * 1.5,
-        height: AppTypography.iconSizeHuge * 1.5,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: AppColors.primaryColor,
-            width: AppTypography.borderThick,
-          ),
-          color: AppColors.uiWhite.withValues(
-            alpha: AppTypography.opacityVeryFaint,
-          ),
-        ),
-        child: Center(
-          child: Text(user.avatar!.emoji, style: const TextStyle(fontSize: 48)),
-        ),
-      );
-    } else if (user.photoUrl != null && user.photoUrl!.isNotEmpty) {
-      return Container(
-        width: AppTypography.iconSizeHuge * 1.5,
-        height: AppTypography.iconSizeHuge * 1.5,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: AppColors.primaryColor,
-            width: AppTypography.borderThick,
-          ),
-          image: DecorationImage(
-            image: NetworkImage(user.photoUrl!),
-            fit: BoxFit.cover,
-          ),
-        ),
-      );
-    } else {
-      return Container(
-        width: AppTypography.iconSizeHuge * 1.5,
-        height: AppTypography.iconSizeHuge * 1.5,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: AppColors.primaryColor,
-            width: AppTypography.borderThick,
-          ),
-          color: AppColors.uiWhite.withValues(
-            alpha: AppTypography.opacityVeryFaint,
-          ),
-        ),
-        child: Icon(
-          Icons.account_circle,
-          size: AppTypography.iconSizeHuge,
-          color: AppColors.primaryColor,
-        ),
-      );
-    }
-  }
-
-  Widget _buildAccountManagementOptions(
-    AuthState authState,
-    dynamic user,
-    AppLocalizations l10n,
-  ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppTypography.spacingLarge,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
-        borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-        border: Border.all(
-          color: AppColors.uiWhite.withValues(
-            alpha: AppTypography.opacityDisabled,
-          ),
-          width: AppTypography.borderThin,
-        ),
-      ),
-      child: Column(
-        children: [
-          HapticListTile(
-            leading: Icon(
-              Icons.edit,
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
-            ),
-            title: Text(
-              l10n.editAccountInformationTitle,
-              style: AppTypography.mediumText.copyWith(
-                color: AppColors.uiWhite,
-              ),
-            ),
-            onTap: () {
-              _nameController.text = user.displayName ?? '';
-              setState(() => _mode = ScreenMode.editName);
-            },
-          ),
-          const SectionDivider.plain(),
-          HapticListTile(
-            leading: Icon(
-              Icons.account_circle,
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
-            ),
-            title: Text(
-              l10n.changeAvatarTooltip,
-              style: AppTypography.mediumText.copyWith(
-                color: AppColors.uiWhite,
-              ),
-            ),
-            onTap: () => setState(() {
-              _selectedAvatar = authState.currentUser?.avatar;
-              _mode = ScreenMode.avatarSelection;
-            }),
-          ),
-          const SectionDivider.plain(),
-          HapticListTile(
-            leading: Icon(
-              Icons.logout,
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
-            ),
-            title: Text(
-              authState.isAnonymous
-                  ? l10n.resetSessionButton
-                  : l10n.signOutButton,
-              style: AppTypography.mediumText.copyWith(
-                color: AppColors.uiWhite,
-              ),
-            ),
-            onTap: () => _signOut(authState, l10n),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDangerZone(AuthState authState, AppLocalizations l10n) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppTypography.spacingLarge,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
-        borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-        border: Border.all(
-          color: AppColors.uiRed.withValues(alpha: AppTypography.opacityFaint),
-          width: AppTypography.borderThin,
-        ),
-      ),
-      child: HapticListTile(
-        leading: Icon(Icons.delete_forever, color: AppColors.uiRed),
-        title: Text(
-          l10n.deleteAccountButton,
-          style: AppTypography.mediumText.copyWith(color: AppColors.uiRed),
-        ),
-        onTap: () => setState(() => _mode = ScreenMode.deleteConfirmation),
-      ),
-    );
-  }
-
-  Widget _buildSignInScreen(AuthState authState, AppLocalizations l10n) {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppTypography.spacingXLarge),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // TODO: Implement Apple sign-in
-              // if (PlatformUtils.isApple) ...[
-              //   SocialAuthButton(
-              //     icon: Icons.apple,
-              //     label: 'Continue with Apple',
-              //     onPressed: () => _handleAppleSignIn(authState, l10n),
-              //   ),
-              //   const SizedBox(height: AppTypography.spacingMedium),
-              // ],
-              SocialAuthButton(
-                assetPath: 'assets/images/google-logo.svg',
-                animatedBorder: true,
-                label: l10n.continueWithGoogle,
-                onPressed: () => _handleGoogleSignIn(authState, l10n),
-              ),
-              SectionDivider.labeled(
-                l10n.orDivider,
-                topSpacing: AppTypography.spacingMedium,
-                bottomSpacing: AppTypography.spacingMedium,
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityFaint,
-                ),
-                labelStyle: AppTypography.smallText.copyWith(
-                  color: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityMedium,
-                  ),
-                ),
-              ),
-              if (_isCreatingAccount) ...[
-                StyledTextField(
-                  controller: _nameController,
-                  icon: Icons.person,
-                  labelText: l10n.displayNameLabel,
-                  hintText: l10n.displayNameHint,
-                  onChanged: (value) {},
-                ),
-                const SizedBox(height: AppTypography.spacingMedium),
-              ],
-              StyledTextField(
-                controller: _emailController,
-                icon: Icons.email,
-                labelText: l10n.emailLabel,
-                hintText: l10n.emailHint,
-                keyboardType: TextInputType.emailAddress,
-                errorText: _emailError,
-                onChanged: (value) => setState(() => _emailError = null),
-              ),
-              const SizedBox(height: AppTypography.spacingMedium),
-              StyledTextField(
-                controller: _passwordController,
-                icon: Icons.lock,
-                labelText: l10n.passwordLabel,
-                hintText: l10n.passwordHint,
-                obscureText: _obscurePassword,
-                errorText: _passwordError,
-                suffixIcon: HapticIconButton(
-                  icon: Icon(
-                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                    color: AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacitySemiTransparent,
-                    ),
-                  ),
-                  onPressed: () =>
-                      setState(() => _obscurePassword = !_obscurePassword),
-                ),
-                onChanged: (value) => setState(() => _passwordError = null),
-              ),
-              const SizedBox(height: AppTypography.spacingXXLarge),
-              HapticElevatedButton(
-                onPressed: () => _handleEmailPasswordAuth(authState, l10n),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryColor,
-                  foregroundColor: AppColors.uiWhite,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: AppTypography.spacingLarge,
-                  ),
-                ),
-                child: Text(
-                  _isCreatingAccount
-                      ? l10n.createAccountButton
-                      : l10n.signInButton,
-                ),
-              ),
-              const SizedBox(height: AppTypography.spacingMedium),
-              HapticTextButton(
-                onPressed: () =>
-                    setState(() => _isCreatingAccount = !_isCreatingAccount),
-                child: Text(
-                  _isCreatingAccount
-                      ? l10n.alreadyHaveAccountSignIn
-                      : l10n.needAccountCreateOne,
-                  style: AppTypography.mediumText.copyWith(
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAvatarSelectionScreen(
-    AuthState authState,
-    AppLocalizations l10n,
-  ) {
-    final user = authState.currentUser;
-    final hasProfilePhoto =
-        user?.photoUrl != null && user!.photoUrl!.isNotEmpty;
-
-    return Padding(
-      padding: const EdgeInsets.all(AppTypography.spacingLarge),
-      child: Column(
-        children: [
-          if (hasProfilePhoto) ...[
-            GestureDetector(
-              onTap: () => setState(() => _selectedAvatar = null),
-              child: Container(
-                padding: const EdgeInsets.all(AppTypography.spacingMedium),
-                decoration: BoxDecoration(
-                  color: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityBarely,
-                  ),
-                  borderRadius: BorderRadius.circular(
-                    AppTypography.radiusMedium,
-                  ),
-                  border: Border.all(
-                    color: _selectedAvatar == null
-                        ? AppColors.primaryColor
-                        : AppColors.uiWhite.withValues(
-                            alpha: AppTypography.opacityFaint,
-                          ),
-                    width: _selectedAvatar == null ? 3 : 1,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    ClipOval(
-                      child: Image.network(
-                        user.photoUrl!,
-                        width: 48,
-                        height: 48,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(width: AppTypography.spacingMedium),
-                    Expanded(
-                      child: Text(
-                        l10n.useGoogleProfilePhoto,
-                        style: AppTypography.mediumText.copyWith(
-                          color: AppColors.uiWhite,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: AppTypography.spacingMedium),
-            SectionDivider.labeled(
-              l10n.customAvatars,
-              bottomSpacing: AppTypography.spacingMedium,
-            ),
-          ],
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                mainAxisSpacing: AppTypography.spacingMedium,
-                crossAxisSpacing: AppTypography.spacingMedium,
-              ),
-              itemCount: UserAvatar.values.length,
-              itemBuilder: (context, index) {
-                final avatar = UserAvatar.values[index];
-                final isSelected = _selectedAvatar == avatar;
-
-                return GestureDetector(
-                  onTap: () => setState(() => _selectedAvatar = avatar),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacityBarely,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        AppTypography.radiusMedium,
-                      ),
-                      border: Border.all(
-                        color: isSelected
-                            ? AppColors.primaryColor
-                            : AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacityFaint,
-                              ),
-                        width: isSelected ? 3 : 1,
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        avatar.emoji,
-                        style: const TextStyle(fontSize: 48),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: AppTypography.spacingLarge),
-          HapticElevatedButton(
-            onPressed: () => _saveAvatar(authState, l10n),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
-              foregroundColor: AppColors.uiWhite,
-              padding: const EdgeInsets.symmetric(
-                vertical: AppTypography.spacingLarge,
-              ),
-              minimumSize: const Size(double.infinity, 0),
-            ),
-            child: Text(l10n.saveAvatar),
-          ),
-          const SizedBox(height: AppTypography.spacingMedium),
-          Center(
-            child: HapticTextButton(
-              onPressed: _resetToAccountView,
-              child: Text(
-                l10n.cancel,
-                style: AppTypography.mediumText.copyWith(
-                  color: AppColors.uiWhite,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEditNameScreen(AuthState authState, AppLocalizations l10n) {
-    return Padding(
-      padding: const EdgeInsets.all(AppTypography.spacingXLarge),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          StyledTextField(
-            controller: _nameController,
-            icon: Icons.person,
-            labelText: l10n.displayNameFieldLabel,
-            hintText: l10n.displayNameFieldHint,
-            onChanged: (value) {},
-          ),
-          const SizedBox(height: AppTypography.spacingXXLarge),
-          HapticElevatedButton(
-            onPressed: () => _saveName(authState, l10n),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
-              foregroundColor: AppColors.uiWhite,
-              padding: const EdgeInsets.symmetric(
-                vertical: AppTypography.spacingLarge,
-              ),
-            ),
-            child: Text(l10n.saveAccountInformation),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDeleteConfirmationScreen(
-    AuthState authState,
-    AppLocalizations l10n,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.all(AppTypography.spacingXXLarge),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.warning_amber_rounded,
-            size: AppTypography.iconSizeHuge * 2,
-            color: AppColors.uiRed,
-          ),
-          const SizedBox(height: AppTypography.spacingXXLarge),
-          Text(
-            l10n.deleteAccountWarning,
-            style: AppTypography.titleText.copyWith(color: AppColors.uiWhite),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppTypography.spacingMedium),
-          Text(
-            l10n.deleteAccountMessage,
-            style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacitySemiTransparent,
-              ),
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppTypography.spacingXXLarge),
-          HapticElevatedButton(
-            onPressed: () => _deleteAccount(authState, l10n),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.uiRed,
-              foregroundColor: AppColors.uiWhite,
-              padding: const EdgeInsets.symmetric(
-                vertical: AppTypography.spacingLarge,
-              ),
-              minimumSize: const Size(double.infinity, 0),
-            ),
-            child: Text(l10n.deleteAccountButton),
-          ),
-          const SizedBox(height: AppTypography.spacingMedium),
-          HapticTextButton(
-            onPressed: _resetToAccountView,
-            child: Text(
-              l10n.cancel,
-              style: AppTypography.mediumText.copyWith(
-                color: AppColors.uiWhite,
-              ),
-            ),
-          ),
-        ],
-      ),
+    return ProfileCard(
+      user: user,
+      onEditAvatar: () => setState(() {
+        _selectedAvatar = user.avatar;
+        _mode = ScreenMode.avatarSelection;
+      }),
     );
   }
 
@@ -911,6 +438,15 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
         password: password,
         displayName: displayName,
       );
+
+      // Save terms acceptance after successful account creation
+      if (success && _acceptedTerms) {
+        try {
+          await AuthService.instance.saveTermsAcceptance();
+        } catch (e) {
+          debugPrint('Failed to save terms acceptance: $e');
+        }
+      }
     } else {
       success = await authState.signInWithEmailPassword(
         email: _emailController.text.trim(),
@@ -1014,6 +550,72 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
         message: l10n.accountDeletedSuccess,
       );
       Navigator.of(context).pop();
+    }
+  }
+
+  Future<void> _sendEmailVerification(AppLocalizations l10n) async {
+    setState(() => _isSendingVerification = true);
+
+    try {
+      final messageKey = await AuthService.instance.sendEmailVerification();
+
+      if (mounted) {
+        String message;
+        switch (messageKey) {
+          case 'emailVerificationSent':
+            message = l10n.emailVerificationSent;
+            break;
+          case 'emailVerified':
+            message = l10n.emailVerified;
+            break;
+          default:
+            message = messageKey;
+        }
+
+        GravitonSnackBar.show(context: context, message: message);
+      }
+    } catch (e) {
+      if (mounted) {
+        GravitonSnackBar.show(
+          context: context,
+          message: _getLocalizedErrorMessage(e.toString(), l10n),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSendingVerification = false);
+      }
+    }
+  }
+
+  Future<void> _checkEmailVerification(AppLocalizations l10n) async {
+    setState(() => _isCheckingVerification = true);
+
+    try {
+      final isVerified = await AuthService.instance.checkEmailVerified();
+
+      if (mounted) {
+        GravitonSnackBar.show(
+          context: context,
+          message: isVerified
+              ? l10n.emailVerified
+              : l10n.emailVerificationPending,
+        );
+
+        // Refresh the UI to show the updated status
+        setState(() {});
+      }
+    } catch (e) {
+      if (mounted) {
+        GravitonSnackBar.show(
+          context: context,
+          message: _getLocalizedErrorMessage(e.toString(), l10n),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isCheckingVerification = false);
+      }
     }
   }
 }

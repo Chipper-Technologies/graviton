@@ -3200,4 +3200,87 @@ class AppLocalizationsZh extends AppLocalizations {
   String firebaseErrorDefault(String message) {
     return '发生错误：$message';
   }
+
+  @override
+  String get emailVerificationSent => '验证邮件已发送！请检查您的收件箱。';
+
+  @override
+  String get emailVerificationResent => '验证邮件已成功重新发送。';
+
+  @override
+  String get emailNotVerified => '邮箱未验证';
+
+  @override
+  String get emailVerified => '邮箱已验证';
+
+  @override
+  String get verifyEmailAddress => '验证电子邮件地址';
+
+  @override
+  String get verifyEmailMessage => '请验证您的电子邮件地址以访问所有功能。请检查您的收件箱以获取验证链接。';
+
+  @override
+  String get sendVerificationEmail => '发送验证邮件';
+
+  @override
+  String get resendVerificationEmail => '重新发送验证邮件';
+
+  @override
+  String get checkVerificationStatus => '检查验证状态';
+
+  @override
+  String get emailVerificationPending => '邮箱验证待处理';
+
+  @override
+  String verificationEmailCooldown(int seconds) {
+    return '请等待$seconds秒后再请求另一封验证邮件。';
+  }
+
+  @override
+  String get termsAndPrivacy => '条款与隐私';
+
+  @override
+  String get acceptTermsAndPrivacy => '我接受服务条款和隐私政策';
+
+  @override
+  String get mustAcceptTerms => '您必须接受服务条款和隐私政策才能继续。';
+
+  @override
+  String get termsOfService => '服务条款';
+
+  @override
+  String get privacyPolicy => '隐私政策';
+
+  @override
+  String get viewTermsOfService => '查看服务条款';
+
+  @override
+  String get viewPrivacyPolicy => '查看隐私政策';
+
+  @override
+  String termsLastUpdated(String date) {
+    return '最后更新：$date';
+  }
+
+  @override
+  String privacyLastUpdated(String date) {
+    return '最后更新：$date';
+  }
+
+  @override
+  String get ageRequirement => '您必须年满13岁才能创建帐户。';
+
+  @override
+  String get confirmAge => '我确认我已年满13岁';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'exceptionEmailVerificationFailed';
+
+  @override
+  String get exceptionEmailVerificationCooldown =>
+      'exceptionEmailVerificationCooldown';
+
+  @override
+  String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
 }

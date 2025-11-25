@@ -29,11 +29,21 @@ class AuthService {
   FirebaseAuth? get auth => _auth;
   bool get isInitialized => _isInitialized;
 
+  // ============================================================================
+  // SharedPreferences Keys
+  // ============================================================================
+
   /// Preference key for storing selected avatar
   static const String _avatarPreferenceKey = 'user_selected_avatar';
 
   /// Preference key for storing anonymous user display name
   static const String _anonymousDisplayNameKey = 'anonymous_display_name';
+
+  /// Preference key for storing terms acceptance timestamp
+  static const String _termsAcceptanceKey = 'terms_acceptance_timestamp';
+
+  /// Preference key for storing accepted terms version
+  static const String _termsVersionKey = 'terms_version_accepted';
 
   /// Initialize authentication service
   Future<void> initialize() async {
@@ -670,6 +680,193 @@ class AuthService {
       await user.reauthenticateWithCredential(credential);
     } on FirebaseAuthException catch (e, stackTrace) {
       debugPrint('Re-authentication error: ${e.code} - ${e.message}');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      rethrow;
+    }
+  }
+
+  // ============================================================================
+  // Email Verification Methods
+  // ============================================================================
+
+  /// Send email verification to the current user
+  /// Returns a localization key for success/error messages
+  Future<String> sendEmailVerification() async {
+    try {
+      final user = _auth?.currentUser;
+      if (user == null) {
+        throw Exception('exceptionNoUserSignedIn');
+      }
+
+      if (user.emailVerified) {
+        return 'emailVerified';
+      }
+
+      await user.sendEmailVerification();
+
+      await FirebaseService.instance.logEvent(
+        'email_verification_sent',
+        parameters: {'email': user.email ?? 'unknown'},
+      );
+
+      return 'emailVerificationSent';
+    } on FirebaseAuthException catch (e, stackTrace) {
+      debugPrint('Email verification error: ${e.code} - ${e.message}');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      throw Exception('exceptionEmailVerificationFailed');
+    } catch (e, stackTrace) {
+      debugPrint('Email verification error: $e');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      throw Exception('exceptionEmailVerificationFailed');
+    }
+  }
+
+  /// Check if the current user's email is verified
+  /// Reloads user data from Firebase to get latest verification status
+  Future<bool> checkEmailVerified() async {
+    try {
+      final user = _auth?.currentUser;
+      if (user == null) {
+        return false;
+      }
+
+      // Reload user to get latest email verification status
+      await user.reload();
+      final refreshedUser = _auth?.currentUser;
+
+      final isVerified = refreshedUser?.emailVerified ?? false;
+
+      await FirebaseService.instance.logEvent(
+        'email_verification_checked',
+        parameters: {
+          'email': refreshedUser?.email ?? 'unknown',
+          'verified': isVerified,
+        },
+      );
+
+      return isVerified;
+    } catch (e, stackTrace) {
+      debugPrint('Check email verified error: $e');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      return false;
+    }
+  }
+
+  /// Get current user's email verification status without reloading
+  bool get isEmailVerified => _auth?.currentUser?.emailVerified ?? false;
+
+  // ============================================================================
+  // Terms & Privacy Acceptance Methods
+  // ============================================================================
+
+  /// Save that the user has accepted the terms and privacy policy
+  /// [termsVersion] allows tracking which version of terms was accepted
+  Future<void> saveTermsAcceptance({String termsVersion = '1.0'}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+
+      await prefs.setInt(_termsAcceptanceKey, timestamp);
+      await prefs.setString(_termsVersionKey, termsVersion);
+
+      await FirebaseService.instance.logEvent(
+        'terms_accepted',
+        parameters: {'version': termsVersion, 'timestamp': timestamp},
+      );
+    } catch (e, stackTrace) {
+      debugPrint('Save terms acceptance error: $e');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      rethrow;
+    }
+  }
+
+  /// Check if the user has accepted the terms and privacy policy
+  Future<bool> hasAcceptedTerms() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.containsKey(_termsAcceptanceKey);
+    } catch (e, stackTrace) {
+      debugPrint('Check terms acceptance error: $e');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      return false;
+    }
+  }
+
+  /// Get the date when terms were accepted
+  /// Returns null if terms have not been accepted
+  Future<DateTime?> getTermsAcceptanceDate() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final timestamp = prefs.getInt(_termsAcceptanceKey);
+
+      if (timestamp == null) return null;
+
+      return DateTime.fromMillisecondsSinceEpoch(timestamp);
+    } catch (e, stackTrace) {
+      debugPrint('Get terms acceptance date error: $e');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      return null;
+    }
+  }
+
+  /// Get the version of terms that was accepted
+  /// Returns null if terms have not been accepted
+  Future<String?> getAcceptedTermsVersion() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString(_termsVersionKey);
+    } catch (e, stackTrace) {
+      debugPrint('Get accepted terms version error: $e');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      return null;
+    }
+  }
+
+  /// Clear terms acceptance (useful for testing or policy updates)
+  Future<void> clearTermsAcceptance() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_termsAcceptanceKey);
+      await prefs.remove(_termsVersionKey);
+
+      await FirebaseService.instance.logEvent(
+        'terms_acceptance_cleared',
+        parameters: {},
+      );
+    } catch (e, stackTrace) {
+      debugPrint('Clear terms acceptance error: $e');
       await FirebaseService.instance.crashlytics?.recordError(
         e,
         stackTrace,

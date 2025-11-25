@@ -3233,4 +3233,88 @@ class AppLocalizationsKo extends AppLocalizations {
   String firebaseErrorDefault(String message) {
     return '오류가 발생했습니다: $message';
   }
+
+  @override
+  String get emailVerificationSent => '인증 이메일이 전송되었습니다! 받은편지함을 확인하세요.';
+
+  @override
+  String get emailVerificationResent => '인증 이메일을 다시 전송했습니다.';
+
+  @override
+  String get emailNotVerified => '이메일 미인증';
+
+  @override
+  String get emailVerified => '이메일 인증됨';
+
+  @override
+  String get verifyEmailAddress => '이메일 주소 인증';
+
+  @override
+  String get verifyEmailMessage =>
+      '모든 기능에 액세스하려면 이메일 주소를 인증하세요. 받은편지함에서 인증 링크를 확인하세요.';
+
+  @override
+  String get sendVerificationEmail => '인증 이메일 보내기';
+
+  @override
+  String get resendVerificationEmail => '인증 이메일 다시 보내기';
+
+  @override
+  String get checkVerificationStatus => '인증 상태 확인';
+
+  @override
+  String get emailVerificationPending => '이메일 인증 대기 중';
+
+  @override
+  String verificationEmailCooldown(int seconds) {
+    return '다른 인증 이메일을 요청하기 전에 $seconds초를 기다려 주세요.';
+  }
+
+  @override
+  String get termsAndPrivacy => '약관 및 개인정보';
+
+  @override
+  String get acceptTermsAndPrivacy => '서비스 약관 및 개인정보 처리방침에 동의합니다';
+
+  @override
+  String get mustAcceptTerms => '계속하려면 서비스 약관 및 개인정보 처리방침에 동의해야 합니다.';
+
+  @override
+  String get termsOfService => '서비스 약관';
+
+  @override
+  String get privacyPolicy => '개인정보 처리방침';
+
+  @override
+  String get viewTermsOfService => '서비스 약관 보기';
+
+  @override
+  String get viewPrivacyPolicy => '개인정보 처리방침 보기';
+
+  @override
+  String termsLastUpdated(String date) {
+    return '최종 업데이트: $date';
+  }
+
+  @override
+  String privacyLastUpdated(String date) {
+    return '최종 업데이트: $date';
+  }
+
+  @override
+  String get ageRequirement => '계정을 만들려면 13세 이상이어야 합니다.';
+
+  @override
+  String get confirmAge => '저는 13세 이상임을 확인합니다';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'exceptionEmailVerificationFailed';
+
+  @override
+  String get exceptionEmailVerificationCooldown =>
+      'exceptionEmailVerificationCooldown';
+
+  @override
+  String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
 }

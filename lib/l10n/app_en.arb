@@ -4407,5 +4407,123 @@
         "example": "Connection timeout"
       }
     }
+  },
+  "emailVerificationSent": "Verification email sent! Please check your inbox.",
+  "@emailVerificationSent": {
+    "description": "Success message after sending verification email"
+  },
+  "emailVerificationResent": "Verification email resent successfully.",
+  "@emailVerificationResent": {
+    "description": "Success message after resending verification email"
+  },
+  "emailNotVerified": "Email not verified",
+  "@emailNotVerified": {
+    "description": "Label indicating email is not verified"
+  },
+  "emailVerified": "Email verified",
+  "@emailVerified": {
+    "description": "Label indicating email is verified"
+  },
+  "verifyEmailAddress": "Verify Email Address",
+  "@verifyEmailAddress": {
+    "description": "Title for email verification section"
+  },
+  "verifyEmailMessage": "Please verify your email address to access all features. Check your inbox for the verification link.",
+  "@verifyEmailMessage": {
+    "description": "Message explaining email verification requirement"
+  },
+  "sendVerificationEmail": "Send Verification Email",
+  "@sendVerificationEmail": {
+    "description": "Button text to send verification email"
+  },
+  "resendVerificationEmail": "Resend Verification Email",
+  "@resendVerificationEmail": {
+    "description": "Button text to resend verification email"
+  },
+  "checkVerificationStatus": "Check Verification Status",
+  "@checkVerificationStatus": {
+    "description": "Button text to refresh email verification status"
+  },
+  "emailVerificationPending": "Email verification pending",
+  "@emailVerificationPending": {
+    "description": "Status message when email verification is pending"
+  },
+  "verificationEmailCooldown": "Please wait {seconds} seconds before requesting another verification email.",
+  "@verificationEmailCooldown": {
+    "description": "Message shown when user must wait before resending verification email",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "60"
+      }
+    }
+  },
+  "termsAndPrivacy": "Terms & Privacy",
+  "@termsAndPrivacy": {
+    "description": "Title for terms and privacy section"
+  },
+  "acceptTermsAndPrivacy": "I accept the Terms of Service and Privacy Policy",
+  "@acceptTermsAndPrivacy": {
+    "description": "Checkbox label for accepting terms and privacy"
+  },
+  "mustAcceptTerms": "You must accept the Terms of Service and Privacy Policy to continue.",
+  "@mustAcceptTerms": {
+    "description": "Error message when terms are not accepted"
+  },
+  "termsOfService": "Terms of Service",
+  "@termsOfService": {
+    "description": "Link text for Terms of Service"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Link text for Privacy Policy"
+  },
+  "viewTermsOfService": "View Terms of Service",
+  "@viewTermsOfService": {
+    "description": "Action to view Terms of Service"
+  },
+  "viewPrivacyPolicy": "View Privacy Policy",
+  "@viewPrivacyPolicy": {
+    "description": "Action to view Privacy Policy"
+  },
+  "termsLastUpdated": "Last updated: {date}",
+  "@termsLastUpdated": {
+    "description": "Shows when terms were last updated",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "November 24, 2025"
+      }
+    }
+  },
+  "privacyLastUpdated": "Last updated: {date}",
+  "@privacyLastUpdated": {
+    "description": "Shows when privacy policy was last updated",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "November 24, 2025"
+      }
+    }
+  },
+  "ageRequirement": "You must be 13 years or older to create an account.",
+  "@ageRequirement": {
+    "description": "Message about minimum age requirement (COPPA compliance)"
+  },
+  "confirmAge": "I confirm that I am 13 years or older",
+  "@confirmAge": {
+    "description": "Checkbox label for age confirmation"
+  },
+  "exceptionEmailVerificationFailed": "exceptionEmailVerificationFailed",
+  "@exceptionEmailVerificationFailed": {
+    "description": "Exception key when email verification fails"
+  },
+  "exceptionEmailVerificationCooldown": "exceptionEmailVerificationCooldown",
+  "@exceptionEmailVerificationCooldown": {
+    "description": "Exception key when verification email is rate limited"
+  },
+  "exceptionTermsNotAccepted": "exceptionTermsNotAccepted",
+  "@exceptionTermsNotAccepted": {
+    "description": "Exception key when terms are not accepted"
   }
 }
