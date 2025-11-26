@@ -202,7 +202,8 @@ class AuthState extends ChangeNotifier {
       _setLoading(false);
       return profile != null;
     } catch (e) {
-      _setError(_getErrorMessage(e));
+      final errorMessage = _getErrorMessage(e);
+      _setError(errorMessage);
       _setLoading(false);
       return false;
     }

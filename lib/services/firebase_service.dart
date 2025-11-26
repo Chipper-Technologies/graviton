@@ -58,8 +58,6 @@ class FirebaseService {
           'debug_mode': kDebugMode.toString(),
         },
       );
-
-      debugPrint('Firebase services initialized successfully');
     } catch (e, stackTrace) {
       debugPrint('Error initializing Firebase services: $e');
       // Don't throw here - app should continue to work without Firebase

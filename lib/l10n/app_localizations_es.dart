@@ -3189,7 +3189,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Guarde sus datos y acceda a ellos desde cualquier dispositivo';
 
   @override
-  String get accountManagementSection => 'Account Management';
+  String get accountManagementSection => 'Gestión de cuenta';
 
   @override
   String get dangerZoneSection => 'Gestión de cuenta';
@@ -3288,110 +3288,118 @@ class AppLocalizationsEs extends AppLocalizations {
       'Por favor ingrese su contraseña para confirmar:';
 
   @override
-  String get orDivider => 'OR';
+  String get orDivider => 'O';
 
   @override
-  String get displayNameHint => 'Enter your name (optional)';
+  String get displayNameHint => 'Ingresa tu nombre (opcional)';
 
   @override
-  String get emailHint => 'Your email address';
+  String get emailHint => 'Tu dirección de correo electrónico';
 
   @override
-  String get passwordHint => 'Your password';
+  String get passwordHint => 'Tu contraseña';
 
   @override
-  String get alreadyHaveAccountSignIn => 'Already have an account? Sign in';
+  String get alreadyHaveAccountSignIn =>
+      '¿Ya tienes una cuenta? Iniciar sesión';
 
   @override
-  String get needAccountCreateOne => 'Don\'t have an account? Create one';
+  String get needAccountCreateOne => '¿No tienes una cuenta? Crear una';
 
   @override
-  String get useGoogleProfilePhoto => 'Use Google Profile Photo';
+  String get useGoogleProfilePhoto => 'Usar foto de perfil de Google';
 
   @override
-  String get customAvatars => 'Custom Avatars';
+  String get customAvatars => 'Avatares personalizados';
 
   @override
-  String get saveAvatar => 'Save Avatar';
+  String get saveAvatar => 'Guardar avatar';
 
   @override
-  String get displayNameFieldLabel => 'Display Name';
+  String get displayNameFieldLabel => 'Nombre para mostrar';
 
   @override
-  String get displayNameFieldHint => 'Enter your display name';
+  String get displayNameFieldHint => 'Ingresa tu nombre para mostrar';
 
   @override
-  String get saveAccountInformation => 'Save Account Information';
+  String get saveAccountInformation => 'Guardar información de la cuenta';
 
   @override
-  String get emailRequired => 'Email is required';
+  String get emailRequired => 'El correo electrónico es obligatorio';
 
   @override
-  String get emailInvalid => 'Please enter a valid email address';
+  String get emailInvalid =>
+      'Por favor, ingresa una dirección de correo electrónico válida';
 
   @override
-  String get passwordRequired => 'Password is required';
+  String get passwordRequired => 'La contraseña es obligatoria';
 
   @override
-  String get passwordTooShort => 'Password must be at least 6 characters';
+  String get passwordTooShort =>
+      'La contraseña debe tener al menos 6 caracteres';
 
   @override
-  String get defaultUserName => 'User';
+  String get defaultUserName => 'Usuario';
 
   @override
   String get googleSignInError =>
-      'Google sign-in was canceled or failed. Please try again.';
+      'El inicio de sesión con Google fue cancelado o falló. Por favor, inténtalo de nuevo.';
 
   @override
   String get gitHubSignInError =>
-      'GitHub sign-in was canceled or failed. Please try again.';
+      'El inicio de sesión con GitHub fue cancelado o falló. Por favor, inténtalo de nuevo.';
 
   @override
-  String get displayNameUpdated => 'Display name updated';
+  String get displayNameUpdated => 'Nombre para mostrar actualizado';
 
   @override
-  String get displayNameUpdateFailed => 'Failed to update display name';
+  String get displayNameUpdateFailed =>
+      'No se pudo actualizar el nombre para mostrar';
 
   @override
-  String get sessionResetSuccess => 'Session reset successfully';
+  String get sessionResetSuccess => 'Sesión restablecida exitosamente';
 
   @override
-  String get accountDeletedSuccess => 'Account deleted successfully';
+  String get accountDeletedSuccess => 'Cuenta eliminada exitosamente';
 
   @override
-  String get errorUserNotFound => 'No account found with this email address.';
+  String get errorUserNotFound =>
+      'No se encontró ninguna cuenta con esta dirección de correo electrónico.';
 
   @override
-  String get errorWrongPassword => 'Incorrect password. Please try again.';
+  String get errorWrongPassword =>
+      'Contraseña incorrecta. Por favor, inténtalo de nuevo.';
 
   @override
-  String get errorInvalidEmail => 'Invalid email address format.';
+  String get errorInvalidEmail =>
+      'Formato de dirección de correo electrónico no válido.';
 
   @override
-  String get errorUserDisabled => 'This account has been disabled.';
+  String get errorUserDisabled => 'Esta cuenta ha sido deshabilitada.';
 
   @override
   String get errorEmailInUse =>
-      'An account already exists with this email address.';
+      'Ya existe una cuenta con esta dirección de correo electrónico.';
 
   @override
   String get errorWeakPassword =>
-      'Password is too weak. Please use a stronger password.';
+      'La contraseña es demasiado débil. Por favor, usa una contraseña más segura.';
 
   @override
-  String get errorOperationNotAllowed => 'This sign-in method is not enabled.';
+  String get errorOperationNotAllowed =>
+      'Este método de inicio de sesión no está habilitado.';
 
   @override
   String get errorRequiresRecentLogin =>
-      'Please sign in again to perform this action.';
+      'Por favor, inicia sesión nuevamente para realizar esta acción.';
 
   @override
   String get errorNetworkFailed =>
-      'Network error. Please check your connection.';
+      'Error de red. Por favor, verifica tu conexión.';
 
   @override
   String errorUnknown(String message) {
-    return 'An error occurred: $message';
+    return 'Ocurrió un error: $message';
   }
 
   @override

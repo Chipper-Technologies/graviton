@@ -3001,7 +3001,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get upgradeAccountDescription => 'データを保存し、どのデバイスからでもアクセスできます';
 
   @override
-  String get accountManagementSection => 'Account Management';
+  String get accountManagementSection => 'アカウント管理';
 
   @override
   String get dangerZoneSection => 'アカウント管理';
@@ -3094,110 +3094,104 @@ class AppLocalizationsJa extends AppLocalizations {
   String get deleteAccountPasswordPrompt => '確認のためパスワードを入力してください：';
 
   @override
-  String get orDivider => 'OR';
+  String get orDivider => 'または';
 
   @override
-  String get displayNameHint => 'Enter your name (optional)';
+  String get displayNameHint => 'お名前を入力してください（任意）';
 
   @override
-  String get emailHint => 'Your email address';
+  String get emailHint => 'メールアドレス';
 
   @override
-  String get passwordHint => 'Your password';
+  String get passwordHint => 'パスワード';
 
   @override
-  String get alreadyHaveAccountSignIn => 'Already have an account? Sign in';
+  String get alreadyHaveAccountSignIn => 'すでにアカウントをお持ちですか？ログイン';
 
   @override
-  String get needAccountCreateOne => 'Don\'t have an account? Create one';
+  String get needAccountCreateOne => 'アカウントをお持ちでないですか？作成する';
 
   @override
-  String get useGoogleProfilePhoto => 'Use Google Profile Photo';
+  String get useGoogleProfilePhoto => 'Googleプロフィール写真を使用';
 
   @override
-  String get customAvatars => 'Custom Avatars';
+  String get customAvatars => 'カスタムアバター';
 
   @override
-  String get saveAvatar => 'Save Avatar';
+  String get saveAvatar => 'アバターを保存';
 
   @override
-  String get displayNameFieldLabel => 'Display Name';
+  String get displayNameFieldLabel => '表示名';
 
   @override
-  String get displayNameFieldHint => 'Enter your display name';
+  String get displayNameFieldHint => '表示名を入力してください';
 
   @override
-  String get saveAccountInformation => 'Save Account Information';
+  String get saveAccountInformation => 'アカウント情報を保存';
 
   @override
-  String get emailRequired => 'Email is required';
+  String get emailRequired => 'メールアドレスは必須です';
 
   @override
-  String get emailInvalid => 'Please enter a valid email address';
+  String get emailInvalid => '有効なメールアドレスを入力してください';
 
   @override
-  String get passwordRequired => 'Password is required';
+  String get passwordRequired => 'パスワードは必須です';
 
   @override
-  String get passwordTooShort => 'Password must be at least 6 characters';
+  String get passwordTooShort => 'パスワードは6文字以上である必要があります';
 
   @override
-  String get defaultUserName => 'User';
+  String get defaultUserName => 'ユーザー';
 
   @override
-  String get googleSignInError =>
-      'Google sign-in was canceled or failed. Please try again.';
+  String get googleSignInError => 'Googleログインがキャンセルされたか失敗しました。もう一度お試しください。';
 
   @override
-  String get gitHubSignInError =>
-      'GitHub sign-in was canceled or failed. Please try again.';
+  String get gitHubSignInError => 'GitHubログインがキャンセルされたか失敗しました。もう一度お試しください。';
 
   @override
-  String get displayNameUpdated => 'Display name updated';
+  String get displayNameUpdated => '表示名を更新しました';
 
   @override
-  String get displayNameUpdateFailed => 'Failed to update display name';
+  String get displayNameUpdateFailed => '表示名の更新に失敗しました';
 
   @override
-  String get sessionResetSuccess => 'Session reset successfully';
+  String get sessionResetSuccess => 'セッションを正常にリセットしました';
 
   @override
-  String get accountDeletedSuccess => 'Account deleted successfully';
+  String get accountDeletedSuccess => 'アカウントを正常に削除しました';
 
   @override
-  String get errorUserNotFound => 'No account found with this email address.';
+  String get errorUserNotFound => 'このメールアドレスのアカウントが見つかりません。';
 
   @override
-  String get errorWrongPassword => 'Incorrect password. Please try again.';
+  String get errorWrongPassword => 'パスワードが正しくありません。もう一度お試しください。';
 
   @override
-  String get errorInvalidEmail => 'Invalid email address format.';
+  String get errorInvalidEmail => 'メールアドレスの形式が無効です。';
 
   @override
-  String get errorUserDisabled => 'This account has been disabled.';
+  String get errorUserDisabled => 'このアカウントは無効化されています。';
 
   @override
-  String get errorEmailInUse =>
-      'An account already exists with this email address.';
+  String get errorEmailInUse => 'このメールアドレスのアカウントは既に存在します。';
 
   @override
-  String get errorWeakPassword =>
-      'Password is too weak. Please use a stronger password.';
+  String get errorWeakPassword => 'パスワードが弱すぎます。より強力なパスワードを使用してください。';
 
   @override
-  String get errorOperationNotAllowed => 'This sign-in method is not enabled.';
+  String get errorOperationNotAllowed => 'このログイン方法は有効になっていません。';
 
   @override
-  String get errorRequiresRecentLogin =>
-      'Please sign in again to perform this action.';
+  String get errorRequiresRecentLogin => 'この操作を実行するには、もう一度ログインしてください。';
 
   @override
-  String get errorNetworkFailed =>
-      'Network error. Please check your connection.';
+  String get errorNetworkFailed => 'ネットワークエラー。接続を確認してください。';
 
   @override
   String errorUnknown(String message) {
-    return 'An error occurred: $message';
+    return 'エラーが発生しました：$message';
   }
 
   @override

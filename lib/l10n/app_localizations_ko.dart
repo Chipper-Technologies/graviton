@@ -3014,7 +3014,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get upgradeAccountDescription => '데이터를 저장하고 모든 기기에서 액세스하세요';
 
   @override
-  String get accountManagementSection => 'Account Management';
+  String get accountManagementSection => '계정 관리';
 
   @override
   String get dangerZoneSection => '계정 관리';
@@ -3107,110 +3107,104 @@ class AppLocalizationsKo extends AppLocalizations {
   String get deleteAccountPasswordPrompt => '확인하려면 비밀번호를 입력하세요:';
 
   @override
-  String get orDivider => 'OR';
+  String get orDivider => '또는';
 
   @override
-  String get displayNameHint => 'Enter your name (optional)';
+  String get displayNameHint => '이름을 입력하세요 (선택사항)';
 
   @override
-  String get emailHint => 'Your email address';
+  String get emailHint => '이메일 주소';
 
   @override
-  String get passwordHint => 'Your password';
+  String get passwordHint => '비밀번호';
 
   @override
-  String get alreadyHaveAccountSignIn => 'Already have an account? Sign in';
+  String get alreadyHaveAccountSignIn => '이미 계정이 있으신가요? 로그인';
 
   @override
-  String get needAccountCreateOne => 'Don\'t have an account? Create one';
+  String get needAccountCreateOne => '계정이 없으신가요? 만들기';
 
   @override
-  String get useGoogleProfilePhoto => 'Use Google Profile Photo';
+  String get useGoogleProfilePhoto => 'Google 프로필 사진 사용';
 
   @override
-  String get customAvatars => 'Custom Avatars';
+  String get customAvatars => '커스텀 아바타';
 
   @override
-  String get saveAvatar => 'Save Avatar';
+  String get saveAvatar => '아바타 저장';
 
   @override
-  String get displayNameFieldLabel => 'Display Name';
+  String get displayNameFieldLabel => '표시 이름';
 
   @override
-  String get displayNameFieldHint => 'Enter your display name';
+  String get displayNameFieldHint => '표시 이름을 입력하세요';
 
   @override
-  String get saveAccountInformation => 'Save Account Information';
+  String get saveAccountInformation => '계정 정보 저장';
 
   @override
-  String get emailRequired => 'Email is required';
+  String get emailRequired => '이메일이 필요합니다';
 
   @override
-  String get emailInvalid => 'Please enter a valid email address';
+  String get emailInvalid => '유효한 이메일 주소를 입력하세요';
 
   @override
-  String get passwordRequired => 'Password is required';
+  String get passwordRequired => '비밀번호가 필요합니다';
 
   @override
-  String get passwordTooShort => 'Password must be at least 6 characters';
+  String get passwordTooShort => '비밀번호는 최소 6자 이상이어야 합니다';
 
   @override
-  String get defaultUserName => 'User';
+  String get defaultUserName => '사용자';
 
   @override
-  String get googleSignInError =>
-      'Google sign-in was canceled or failed. Please try again.';
+  String get googleSignInError => 'Google 로그인이 취소되었거나 실패했습니다. 다시 시도해 주세요.';
 
   @override
-  String get gitHubSignInError =>
-      'GitHub sign-in was canceled or failed. Please try again.';
+  String get gitHubSignInError => 'GitHub 로그인이 취소되었거나 실패했습니다. 다시 시도해 주세요.';
 
   @override
-  String get displayNameUpdated => 'Display name updated';
+  String get displayNameUpdated => '표시 이름이 업데이트되었습니다';
 
   @override
-  String get displayNameUpdateFailed => 'Failed to update display name';
+  String get displayNameUpdateFailed => '표시 이름 업데이트에 실패했습니다';
 
   @override
-  String get sessionResetSuccess => 'Session reset successfully';
+  String get sessionResetSuccess => '세션이 성공적으로 재설정되었습니다';
 
   @override
-  String get accountDeletedSuccess => 'Account deleted successfully';
+  String get accountDeletedSuccess => '계정이 성공적으로 삭제되었습니다';
 
   @override
-  String get errorUserNotFound => 'No account found with this email address.';
+  String get errorUserNotFound => '이 이메일 주소로 계정을 찾을 수 없습니다.';
 
   @override
-  String get errorWrongPassword => 'Incorrect password. Please try again.';
+  String get errorWrongPassword => '비밀번호가 잘못되었습니다. 다시 시도해 주세요.';
 
   @override
-  String get errorInvalidEmail => 'Invalid email address format.';
+  String get errorInvalidEmail => '이메일 주소 형식이 잘못되었습니다.';
 
   @override
-  String get errorUserDisabled => 'This account has been disabled.';
+  String get errorUserDisabled => '이 계정은 비활성화되었습니다.';
 
   @override
-  String get errorEmailInUse =>
-      'An account already exists with this email address.';
+  String get errorEmailInUse => '이 이메일 주소로 이미 계정이 존재합니다.';
 
   @override
-  String get errorWeakPassword =>
-      'Password is too weak. Please use a stronger password.';
+  String get errorWeakPassword => '비밀번호가 너무 약합니다. 더 강력한 비밀번호를 사용하세요.';
 
   @override
-  String get errorOperationNotAllowed => 'This sign-in method is not enabled.';
+  String get errorOperationNotAllowed => '이 로그인 방법은 활성화되지 않았습니다.';
 
   @override
-  String get errorRequiresRecentLogin =>
-      'Please sign in again to perform this action.';
+  String get errorRequiresRecentLogin => '이 작업을 수행하려면 다시 로그인하세요.';
 
   @override
-  String get errorNetworkFailed =>
-      'Network error. Please check your connection.';
+  String get errorNetworkFailed => '네트워크 오류입니다. 연결을 확인하세요.';
 
   @override
   String errorUnknown(String message) {
-    return 'An error occurred: $message';
+    return '오류가 발생했습니다: $message';
   }
 
   @override

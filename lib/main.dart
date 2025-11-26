@@ -50,21 +50,26 @@ void main() async {
 
   // Initialize Firebase (optional - don't block app startup if it fails)
   try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    // Check if Firebase is already initialized (e.g., from hot restart)
+    try {
+      if (Firebase.apps.isEmpty) {
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
+      }
+    } catch (duplicateAppError) {
+      // Firebase was already initialized (race condition or hot restart)
+    }
+
     await FirebaseService.instance.initialize();
     await AuthService.instance.initialize();
-    debugPrint('Firebase initialized successfully');
   } catch (e) {
     debugPrint('Firebase initialization failed: $e');
-    debugPrint('App will continue without Firebase functionality');
   }
 
   // Initialize remote config service
   try {
     await RemoteConfigService.instance.initialize();
-    debugPrint('Remote config service initialized successfully');
   } catch (e) {
     debugPrint('Remote config service initialization failed: $e');
   }
@@ -72,7 +77,6 @@ void main() async {
   // Initialize version service
   try {
     await VersionService.instance.initialize();
-    debugPrint('Version service initialized successfully');
   } catch (e) {
     debugPrint('Version service initialization failed: $e');
   }

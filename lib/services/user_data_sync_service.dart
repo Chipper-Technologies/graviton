@@ -72,7 +72,6 @@ class UserDataSyncService {
       // Start listening to cloud changes
       await _startCloudSync();
       _isInitialized = true;
-      debugPrint('UserDataSync: Initialized for user ${user.uid}');
     } catch (e, stackTrace) {
       debugPrint('UserDataSync: Failed to initialize: $e');
       FirebaseService.instance.recordError(e, stackTrace);
@@ -92,7 +91,6 @@ class UserDataSyncService {
 
     try {
       _isSyncing = true;
-      debugPrint('UserDataSync: Migrating local data to cloud for ${user.uid}');
 
       // Gather all local data
       final localData = await _gatherLocalData();
@@ -108,10 +106,6 @@ class UserDataSyncService {
 
       // Track successful migration as a sync
       _lastSyncToCloud = DateTime.now();
-
-      debugPrint(
-        'UserDataSync: Migration complete - uploaded ${localData.length} data categories',
-      );
     } catch (e, stackTrace) {
       debugPrint('UserDataSync: Migration failed: $e');
       FirebaseService.instance.recordError(e, stackTrace);
@@ -189,9 +183,6 @@ class UserDataSyncService {
   /// Convenience method for syncing just the custom scenarios.
   Future<void> syncCustomScenarios() async {
     if (_isSyncing) {
-      debugPrint(
-        'UserDataSync: Already syncing, skipping custom scenarios sync',
-      );
       return;
     }
 
@@ -209,7 +200,6 @@ class UserDataSyncService {
   /// Convenience method for syncing app settings.
   Future<void> syncSettings() async {
     if (_isSyncing) {
-      debugPrint('UserDataSync: Already syncing, skipping settings sync');
       return;
     }
 
@@ -254,8 +244,6 @@ class UserDataSyncService {
 
       final userDoc = _getUserDocument(userId);
       await userDoc.delete();
-
-      debugPrint('UserDataSync: Cloud data deleted successfully');
     } catch (e, stackTrace) {
       debugPrint('UserDataSync: Failed to delete cloud data: $e');
       FirebaseService.instance.recordError(e, stackTrace);
@@ -268,7 +256,6 @@ class UserDataSyncService {
     await _syncSubscription?.cancel();
     _syncSubscription = null;
     _isInitialized = false;
-    debugPrint('UserDataSync: Stopped cloud sync');
   }
 
   // =============================================================================
@@ -476,8 +463,6 @@ class UserDataSyncService {
           cloudData[_onboardingField] as Map<String, dynamic>,
         );
       }
-
-      debugPrint('UserDataSync: Cloud data merged to local successfully');
     } catch (e, stackTrace) {
       debugPrint('UserDataSync: Failed to merge cloud data: $e');
       FirebaseService.instance.recordError(e, stackTrace);

@@ -49,24 +49,28 @@ class AuthService {
   /// Initialize authentication service
   Future<void> initialize() async {
     try {
-      _auth = FirebaseAuth.instance;
-      debugPrint('FirebaseAuth instance obtained');
+      try {
+        _auth = FirebaseAuth.instance;
+      } catch (authError) {
+        debugPrint(
+          'AuthService: CRITICAL - Failed to get FirebaseAuth.instance: $authError',
+        );
+        _auth = null;
+        rethrow;
+      }
 
       // Initialize Google Sign-In (7.x API requires explicit initialization)
-      _googleSignIn = GoogleSignIn.instance;
-      debugPrint('GoogleSignIn instance obtained');
-
       try {
+        _googleSignIn = GoogleSignIn.instance;
         await _googleSignIn!.initialize();
-        debugPrint('Google Sign-In initialized successfully');
       } catch (googleInitError) {
-        debugPrint('Google Sign-In initialization failed: $googleInitError');
-        debugPrint('Google Sign-In will not be available');
+        debugPrint(
+          'AuthService: Google Sign-In initialization failed: $googleInitError',
+        );
         _googleSignIn = null; // Clear the instance if initialization fails
       }
 
       _isInitialized = true;
-      debugPrint('Auth service initialized successfully');
 
       // Log authentication state
       final user = _auth?.currentUser;
@@ -80,12 +84,14 @@ class AuthService {
         );
       }
     } catch (e, stackTrace) {
-      debugPrint('Error initializing auth service: $e');
+      debugPrint('AuthService: CRITICAL ERROR during initialization: $e');
+      debugPrint('AuthService: Stack trace: $stackTrace');
       await FirebaseService.instance.crashlytics?.recordError(
         e,
         stackTrace,
         fatal: false,
       );
+      rethrow; // Rethrow to propagate the error
     }
   }
 
@@ -252,7 +258,6 @@ class AuthService {
       final googleAuth = googleUser.authentication;
 
       if (googleAuth.idToken == null) {
-        debugPrint('Google sign-in failed: no ID token received');
         return null;
       }
 
@@ -493,9 +498,16 @@ class AuthService {
   /// Sign in anonymously
   Future<UserProfile?> signInAnonymously() async {
     try {
-      final credential = await _auth?.signInAnonymously();
+      if (_auth == null) {
+        debugPrint('Anonymous sign in failed: FirebaseAuth not initialized');
+        throw Exception('exceptionAuthNotInitialized');
+      }
 
-      if (credential?.user == null) return null;
+      final credential = await _auth!.signInAnonymously();
+
+      if (credential.user == null) {
+        throw Exception('exceptionNoAnonymousUser');
+      }
 
       // Assign random avatar for anonymous users
       final avatar = UserAvatar.random();
@@ -503,12 +515,20 @@ class AuthService {
 
       await FirebaseService.instance.logEvent(
         'auth_anonymous_sign_in',
-        parameters: {'user_id': credential!.user!.uid},
+        parameters: {'user_id': credential.user!.uid},
       );
 
       return UserProfile.fromFirebaseUser(credential.user!, avatar: avatar);
     } on FirebaseAuthException catch (e, stackTrace) {
       debugPrint('Anonymous sign in error: ${e.code} - ${e.message}');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      rethrow;
+    } catch (e, stackTrace) {
+      debugPrint('Unexpected anonymous sign in error: $e');
       await FirebaseService.instance.crashlytics?.recordError(
         e,
         stackTrace,

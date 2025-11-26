@@ -160,7 +160,11 @@ void main() {
   group('Anonymous Sign-In', () {
     test('signInAnonymously() method signature validation', () {
       // Test validates anonymous sign-in method exists
-      expect(() => AuthService.instance.signInAnonymously(), returnsNormally);
+      // Without Firebase initialization, will throw expected exception
+      expect(
+        () async => await AuthService.instance.signInAnonymously(),
+        throwsA(isA<Exception>()),
+      );
     });
 
     test(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/enums/auth_provider_type.dart';
 import 'package:graviton/enums/screen_mode.dart';
+import 'package:graviton/enums/snack_bar_severity.dart';
 import 'package:graviton/enums/user_avatar.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/auth_service.dart';
@@ -102,6 +103,8 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     // Check if error is a localization key
     switch (error) {
       // Auth service exceptions
+      case 'exceptionAuthNotInitialized':
+        return 'Authentication service not initialized. Please restart the app.';
       case 'exceptionGoogleSignInNotInitialized':
         return l10n.exceptionGoogleSignInNotInitialized;
       case 'exceptionGoogleSignInTimeout':
@@ -289,56 +292,60 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
 
   Widget _buildSignInPrompt(AuthState authState, AppLocalizations l10n) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppTypography.spacingXXLarge),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.account_circle_outlined,
-              size: AppTypography.iconSizeHuge * 2,
-              color: AppColors.primaryColor.withValues(
-                alpha: AppTypography.opacityMedium,
-              ),
-            ),
-            const SizedBox(height: AppTypography.spacingXXLarge),
-            Text(
-              l10n.signInPromptTitle,
-              style: AppTypography.titleText.copyWith(color: AppColors.uiWhite),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppTypography.spacingMedium),
-            Text(
-              l10n.signInPromptMessage,
-              style: AppTypography.mediumText.copyWith(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacitySemiTransparent,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(AppTypography.spacingXXLarge),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.account_circle_outlined,
+                size: AppTypography.iconSizeHuge * 2,
+                color: AppColors.primaryColor.withValues(
+                  alpha: AppTypography.opacityMedium,
                 ),
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppTypography.spacingXXLarge),
-            HapticButton.primary(
-              onPressed: () => setState(() => _mode = ScreenMode.signIn),
-              text: l10n.signInButton,
-              isFullWidth: true,
-            ),
-            const SizedBox(height: AppTypography.spacingMedium),
-            HapticButton.primary(
-              onPressed: () => setState(() {
-                _mode = ScreenMode.signIn;
-                _isCreatingAccount = true;
-              }),
-              text: l10n.createAccountButton,
-              isFullWidth: true,
-            ),
-            const SizedBox(height: AppTypography.spacingMedium),
-            HapticButton.secondary(
-              onPressed: () => _signInAnonymously(authState, l10n),
-              text: l10n.continueAsGuestButton,
-              isFullWidth: true,
-            ),
-          ],
+              const SizedBox(height: AppTypography.spacingXXLarge),
+              Text(
+                l10n.signInPromptTitle,
+                style: AppTypography.titleText.copyWith(
+                  color: AppColors.uiWhite,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppTypography.spacingMedium),
+              Text(
+                l10n.signInPromptMessage,
+                style: AppTypography.mediumText.copyWith(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacitySemiTransparent,
+                  ),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppTypography.spacingXXLarge),
+              HapticButton.primary(
+                onPressed: () => setState(() => _mode = ScreenMode.signIn),
+                text: l10n.signInButton,
+                isFullWidth: true,
+              ),
+              const SizedBox(height: AppTypography.spacingMedium),
+              HapticButton.primary(
+                onPressed: () => setState(() {
+                  _mode = ScreenMode.signIn;
+                  _isCreatingAccount = true;
+                }),
+                text: l10n.createAccountButton,
+                isFullWidth: true,
+              ),
+              const SizedBox(height: AppTypography.spacingMedium),
+              HapticButton.secondary(
+                onPressed: () => _signInAnonymously(authState, l10n),
+                text: l10n.continueAsGuestButton,
+                isFullWidth: true,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -347,9 +354,9 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
   Widget _buildAccountView(AuthState authState, AppLocalizations l10n) {
     final user = authState.currentUser!;
 
-    return Padding(
-      padding: const EdgeInsets.all(AppTypography.spacingLarge),
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(AppTypography.spacingLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -421,13 +428,38 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     AuthState authState,
     AppLocalizations l10n,
   ) async {
-    final success = await authState.signInAnonymously();
-    if (mounted && success) {
-      GravitonSnackBar.show(
-        context: context,
-        message: l10n.signInAnonymousSuccess,
-      );
-      _resetToAccountView();
+    // Prevent concurrent operations
+    if (!_canProceed()) {
+      return;
+    }
+
+    setState(() => _isProcessing = true);
+
+    try {
+      final success = await authState.signInAnonymously();
+
+      if (!mounted) return;
+
+      if (success) {
+        GravitonSnackBar.show(
+          context: context,
+          message: l10n.signInAnonymousSuccess,
+        );
+        _resetToAccountView();
+      } else {
+        // Show error from AuthState or generic message
+        final errorMessage =
+            authState.error ?? 'Authentication failed. Please try again.';
+        GravitonSnackBar.show(
+          context: context,
+          message: errorMessage,
+          severity: SnackBarSeverity.error,
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
+      }
     }
   }
 

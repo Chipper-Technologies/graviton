@@ -1,28 +1,74 @@
 # Firebase Configuration
 
-This directory contains Firebase configuration files for the Graviton app.
+This directory contains Firebase configuration for the Graviton app.
 
 ## Files
 
-- `firebase_options.dart` - Firebase configuration for dev and prod environments (gitignored)
-- `firebase_options.dart.template` - Template with instructions for setting up Firebase
+- `firebase_options.dart` - Firebase configuration loader that reads from `--dart-define-from-file`
 - `README.md` - This file
+
+## Configuration Files
+
+Firebase configurations are stored as JSON files in the `config/` directory:
+
+```
+config/{env}-{platform}.json
+```
+
+Where:
+- `{env}` is either: `dev` or `prod`
+- `{platform}` is one of: `web`, `android`, `ios`, `macos`
+
+### Available Config Files
+
+- `config/dev-web.json` - Web development
+- `config/prod-web.json` - Web production
+- `config/dev-android.json` - Android development
+- `config/prod-android.json` - Android production
+- `config/dev-ios.json` - iOS development
+- `config/prod-ios.json` - iOS production
+- `config/dev-macos.json` - macOS development
+- `config/prod-macos.json` - macOS production
+
+### JSON Format
+
+Each configuration file contains environment properties, URLs, assets, and a nested Firebase object:
+
+```json
+{
+  "environment": "dev",
+  "urls": {
+    "github": "https://github.com/Chipper-Technologies/graviton",
+    "website": "https://chippertechnology.com",
+    "privacyPolicy": "https://chippertechnology.com/privacy-policy/graviton",
+    "termsOfService": "https://chippertechnology.com/terms-of-service/graviton",
+    "companyWebsite": "https://chippertechnology.com"
+  },
+  "assets": {
+    "appLogo": "assets/images/app-logo.png",
+    "chipperLogo": "assets/images/chipper-logo.svg",
+    "gravitonLogo": "assets/images/graviton-logo.svg"
+  },
+  "firebase": {
+    "apiKey": "your-api-key",
+    "appId": "your-app-id",
+    "messagingSenderId": "your-sender-id",
+    "projectId": "your-project-id",
+    "authDomain": "your-domain.firebaseapp.com",
+    "storageBucket": "your-bucket.firebasestorage.app",
+    "measurementId": "your-measurement-id",
+    "iosBundleId": "io.chipper.graviton.dev"
+  }
+}
+```
 
 ## Setup Instructions
 
-### 1. Create firebase_options.dart
+### 1. Update Configuration Files
 
-If you don't have `firebase_options.dart`, copy the template:
+Edit the appropriate JSON files in `config/` directory with your Firebase credentials.
 
-```bash
-cp lib/firebase/firebase_options.dart.template lib/firebase/firebase_options.dart
-```
-
-### 2. Get Firebase Configuration
-
-You need to configure both **dev** and **prod** Firebase projects.
-
-#### Option A: Using Firebase Console (Recommended)
+#### Getting Firebase Configuration
 
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Select your project (graviton-dev or graviton-prod)
@@ -30,68 +76,55 @@ You need to configure both **dev** and **prod** Firebase projects.
 4. Scroll down to "Your apps" section
 5. For each platform (Web, Android, iOS/macOS):
    - Click on the app (or add it if not exists)
-   - Copy the configuration values:
-     - `apiKey`
-     - `appId`
-     - `messagingSenderId`
-     - `projectId`
-     - `authDomain` (web only)
-     - `storageBucket`
-     - `iosBundleId` (iOS/macOS only)
+   - Copy the configuration values into the `firebase` object in the corresponding JSON file
 
-#### Option B: Using FlutterFire CLI
+### 2. Build with Configuration
 
-Install the FlutterFire CLI:
+The configuration is loaded at compile time via `--dart-define-from-file`:
 
 ```bash
-dart pub global activate flutterfire_cli
+# Development - macOS
+flutter run -d macos --dart-define-from-file config/dev-macos.json --flavor dev
+
+# Development - Web
+flutter run -d chrome --dart-define-from-file config/dev-web.json
+
+# Production - Android APK
+flutter build apk --dart-define-from-file config/prod-android.json --flavor prod --release
+
+# Production - Web
+flutter build web --dart-define-from-file config/prod-web.json --release
 ```
 
-Configure Firebase for dev environment:
+The `--dart-define-from-file` flag loads the JSON and makes nested values available as compile-time constants. For example, `firebase.apiKey` reads the `apiKey` from the `firebase` object.
 
-```bash
-flutterfire configure \
-  --project=graviton-dev \
-  --out=lib/firebase/firebase_options_dev.dart \
-  --platforms=web,android,ios,macos
+### 3. CI/CD Integration
+
+For CI/CD pipelines, store the config JSON files as secrets:
+
+#### GitHub Actions
+
+```yaml
+- name: Create Firebase Config
+  run: echo '${{ secrets.PROD_WEB_CONFIG }}' > config/prod-web.json
+
+- name: Build
+  run: flutter build web --dart-define-from-file config/prod-web.json --release
 ```
 
-Configure Firebase for prod environment:
+#### AWS Amplify
 
-```bash
-flutterfire configure \
-  --project=graviton-prod \
-  --out=lib/firebase/firebase_options_prod.dart \
-  --platforms=web,android,ios,macos
+Store configs in AWS Secrets Manager and retrieve in `amplify.yml`:
+
+```yaml
+preBuild:
+  commands:
+    - aws secretsmanager get-secret-value --secret-id firebase-prod-web \
+        --query SecretString --output text > config/prod-web.json
+build:
+  commands:
+    - flutter build web --dart-define-from-file config/prod-web.json --release
 ```
-
-Then manually merge the two files into `lib/firebase/firebase_options.dart` following the template structure.
-
-### 3. Update Bundle IDs
-
-Make sure the bundle IDs match your app configuration:
-
-- **Dev iOS/macOS**: `io.chipper.graviton.dev`
-- **Prod iOS/macOS**: `io.chipper.graviton`
-
-### 4. Verify Configuration
-
-Run the dev build to ensure Firebase initializes correctly:
-
-```bash
-flutter run -d macos --dart-define-from-file config/dev.json --flavor dev
-```
-
-Check the console for any Firebase initialization errors.
-
-## Flavor Support
-
-The app automatically selects the appropriate Firebase configuration based on the current flavor:
-
-- **Dev builds** (`--flavor dev`): Uses `*Dev` Firebase options
-- **Prod builds** (`--flavor prod`): Uses `*Prod` Firebase options
-
-The flavor is determined by `FlavorConfig.instance.isDevelopment` at runtime.
 
 ## Firebase Projects
 
@@ -106,12 +139,15 @@ The flavor is determined by `FlavorConfig.instance.isDevelopment` at runtime.
 
 ## Security Notes
 
-- `firebase_options.dart` is gitignored to protect API keys
+- Config files in `config/dev-*.json` and `config/prod-*.json` are gitignored
+- Only `config/README.md` is committed to version control
 - Firebase security rules should be configured to restrict access
 - Production API keys should be restricted by:
   - iOS bundle ID / Android package name
   - Referrer URLs (for web)
   - IP addresses (if applicable)
+- **Never commit** Firebase config files to version control
+- Use secure secret storage for CI/CD
 
 ## Troubleshooting
 
@@ -119,28 +155,26 @@ The flavor is determined by `FlavorConfig.instance.isDevelopment` at runtime.
 
 If you see "Firebase not initialized" errors:
 
-1. Check that `firebase_options.dart` exists
-2. Verify all placeholder values are replaced with real config
-3. Ensure the flavor matches your build command
+1. Check that the config file exists (e.g., `config/dev-macos.json`)
+2. Verify you're using `--dart-define-from-file` with the correct path
+3. Ensure all required Firebase fields are present in the JSON
 
 ### Wrong Firebase project
 
 If the wrong Firebase project is being used:
 
-1. Check the current flavor: Look for `FlavorConfig.instance.flavor` logs
-2. Verify dev/prod configurations are correct in `firebase_options.dart`
-3. Make sure you're running with the correct `--flavor` flag
+1. Verify you're passing the correct config file (dev vs prod, correct platform)
+2. Check the `projectId` in the config file
+3. Make sure you're using the correct `--flavor` flag with the matching config
 
 ### Platform-specific issues
 
-- **iOS/macOS**: Verify `iosBundleId` matches your app's bundle identifier
+- **iOS/macOS**: Verify `iosBundleId` in the config matches your app's bundle identifier
 - **Android**: Check that package name matches Firebase app registration
-- **Web**: Ensure `authDomain` is correctly configured
+- **Web**: Ensure `authDomain` and `measurementId` are correctly configured
 
 ## Resources
 
 - [Firebase Console](https://console.firebase.google.com/)
 - [FlutterFire Documentation](https://firebase.flutter.dev/)
-- [Firebase iOS Setup](https://firebase.google.com/docs/ios/setup)
-- [Firebase Android Setup](https://firebase.google.com/docs/android/setup)
-- [Firebase Web Setup](https://firebase.google.com/docs/web/setup)
+- [Flutter --dart-define-from-file](https://docs.flutter.dev/deployment/flavors#using---dart-define-from-file)

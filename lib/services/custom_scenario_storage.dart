@@ -137,8 +137,6 @@ class CustomScenarioStorage {
     final jsonList = existingScenarios.map((s) => s.toJson()).toList();
     final jsonString = jsonEncode(jsonList);
     await prefs.setString(_scenariosKey, jsonString);
-
-    debugPrint('Saved scenario: ${scenario.metadata.name}');
   }
 
   static Future<CustomScenario?> _loadFromPreferences(
@@ -180,8 +178,6 @@ class CustomScenarioStorage {
       final jsonList = existingScenarios.map((s) => s.toJson()).toList();
       final jsonString = jsonEncode(jsonList);
       await prefs.setString(_scenariosKey, jsonString);
-
-      debugPrint('Deleted scenario: $scenarioName');
     }
   }
 
@@ -189,7 +185,6 @@ class CustomScenarioStorage {
   static Future<void> clearAllScenarios() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_scenariosKey);
-    debugPrint('Cleared all scenarios');
   }
 
   // =============================================================================
@@ -251,10 +246,6 @@ class CustomScenarioStorage {
             debugPrint('Failed to delete stale test scenario: $scenarioName');
           }
         }
-      }
-
-      if (deletedCount > 0) {
-        debugPrint('Cleaned up $deletedCount stale test scenario(s)');
       }
 
       return deletedCount;

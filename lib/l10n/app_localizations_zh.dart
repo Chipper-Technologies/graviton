@@ -2982,7 +2982,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get upgradeAccountDescription => '保存您的数据并从任何设备访问';
 
   @override
-  String get accountManagementSection => 'Account Management';
+  String get accountManagementSection => '账户管理';
 
   @override
   String get dangerZoneSection => '账户管理';
@@ -3075,110 +3075,104 @@ class AppLocalizationsZh extends AppLocalizations {
   String get deleteAccountPasswordPrompt => '请输入您的密码以确认：';
 
   @override
-  String get orDivider => 'OR';
+  String get orDivider => '或';
 
   @override
-  String get displayNameHint => 'Enter your name (optional)';
+  String get displayNameHint => '输入您的姓名（可选）';
 
   @override
-  String get emailHint => 'Your email address';
+  String get emailHint => '您的电子邮件地址';
 
   @override
-  String get passwordHint => 'Your password';
+  String get passwordHint => '您的密码';
 
   @override
-  String get alreadyHaveAccountSignIn => 'Already have an account? Sign in';
+  String get alreadyHaveAccountSignIn => '已有账户？登录';
 
   @override
-  String get needAccountCreateOne => 'Don\'t have an account? Create one';
+  String get needAccountCreateOne => '没有账户？创建一个';
 
   @override
-  String get useGoogleProfilePhoto => 'Use Google Profile Photo';
+  String get useGoogleProfilePhoto => '使用Google个人资料照片';
 
   @override
-  String get customAvatars => 'Custom Avatars';
+  String get customAvatars => '自定义头像';
 
   @override
-  String get saveAvatar => 'Save Avatar';
+  String get saveAvatar => '保存头像';
 
   @override
-  String get displayNameFieldLabel => 'Display Name';
+  String get displayNameFieldLabel => '显示名称';
 
   @override
-  String get displayNameFieldHint => 'Enter your display name';
+  String get displayNameFieldHint => '输入您的显示名称';
 
   @override
-  String get saveAccountInformation => 'Save Account Information';
+  String get saveAccountInformation => '保存账户信息';
 
   @override
-  String get emailRequired => 'Email is required';
+  String get emailRequired => '电子邮件为必填项';
 
   @override
-  String get emailInvalid => 'Please enter a valid email address';
+  String get emailInvalid => '请输入有效的电子邮件地址';
 
   @override
-  String get passwordRequired => 'Password is required';
+  String get passwordRequired => '密码为必填项';
 
   @override
-  String get passwordTooShort => 'Password must be at least 6 characters';
+  String get passwordTooShort => '密码必须至少6个字符';
 
   @override
-  String get defaultUserName => 'User';
+  String get defaultUserName => '用户';
 
   @override
-  String get googleSignInError =>
-      'Google sign-in was canceled or failed. Please try again.';
+  String get googleSignInError => 'Google登录已取消或失败。请重试。';
 
   @override
-  String get gitHubSignInError =>
-      'GitHub sign-in was canceled or failed. Please try again.';
+  String get gitHubSignInError => 'GitHub登录已取消或失败。请重试。';
 
   @override
-  String get displayNameUpdated => 'Display name updated';
+  String get displayNameUpdated => '显示名称已更新';
 
   @override
-  String get displayNameUpdateFailed => 'Failed to update display name';
+  String get displayNameUpdateFailed => '更新显示名称失败';
 
   @override
-  String get sessionResetSuccess => 'Session reset successfully';
+  String get sessionResetSuccess => '会话重置成功';
 
   @override
-  String get accountDeletedSuccess => 'Account deleted successfully';
+  String get accountDeletedSuccess => '账户删除成功';
 
   @override
-  String get errorUserNotFound => 'No account found with this email address.';
+  String get errorUserNotFound => '未找到此电子邮件地址的账户。';
 
   @override
-  String get errorWrongPassword => 'Incorrect password. Please try again.';
+  String get errorWrongPassword => '密码不正确。请重试。';
 
   @override
-  String get errorInvalidEmail => 'Invalid email address format.';
+  String get errorInvalidEmail => '电子邮件地址格式无效。';
 
   @override
-  String get errorUserDisabled => 'This account has been disabled.';
+  String get errorUserDisabled => '此账户已被禁用。';
 
   @override
-  String get errorEmailInUse =>
-      'An account already exists with this email address.';
+  String get errorEmailInUse => '此电子邮件地址已存在账户。';
 
   @override
-  String get errorWeakPassword =>
-      'Password is too weak. Please use a stronger password.';
+  String get errorWeakPassword => '密码太弱。请使用更强的密码。';
 
   @override
-  String get errorOperationNotAllowed => 'This sign-in method is not enabled.';
+  String get errorOperationNotAllowed => '此登录方法未启用。';
 
   @override
-  String get errorRequiresRecentLogin =>
-      'Please sign in again to perform this action.';
+  String get errorRequiresRecentLogin => '请重新登录以执行此操作。';
 
   @override
-  String get errorNetworkFailed =>
-      'Network error. Please check your connection.';
+  String get errorNetworkFailed => '网络错误。请检查您的连接。';
 
   @override
   String errorUnknown(String message) {
-    return 'An error occurred: $message';
+    return '发生错误：$message';
   }
 
   @override
