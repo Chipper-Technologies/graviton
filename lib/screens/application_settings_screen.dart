@@ -35,39 +35,48 @@ class ApplicationSettingsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // General Settings Section (Language and Temperature Units)
-                            SectionDivider.labeled(
-                              l10n.languageLabel,
-                              bottomSpacing: AppTypography.spacingMedium,
+                      child: Center(
+                        child: SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              maxWidth: AppTypography.maxContentWidth,
                             ),
-                            _buildGeneralOptions(context, l10n, appState),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // General Settings Section (Language and Temperature Units)
+                                SectionDivider.labeled(
+                                  l10n.languageLabel,
+                                  bottomSpacing: AppTypography.spacingMedium,
+                                ),
+                                _buildGeneralOptions(context, l10n, appState),
 
-                            // Haptic Feedback Settings Section
-                            SectionDivider.labeled(
-                              l10n.hapticsSection,
-                              topSpacing: AppTypography.spacingMedium,
-                              bottomSpacing: AppTypography.spacingMedium,
-                            ),
-                            _buildUIHapticFeedbackOption(
-                              context,
-                              l10n,
-                              appState,
-                            ),
-                            const SizedBox(height: AppTypography.spacingMedium),
-                            _buildCollisionHapticFeedbackOption(
-                              context,
-                              l10n,
-                              appState,
-                            ),
-                            SizedBox(height: AppTypography.spacingXXLarge),
+                                // Haptic Feedback Settings Section
+                                SectionDivider.labeled(
+                                  l10n.hapticsSection,
+                                  topSpacing: AppTypography.spacingMedium,
+                                  bottomSpacing: AppTypography.spacingMedium,
+                                ),
+                                _buildUIHapticFeedbackOption(
+                                  context,
+                                  l10n,
+                                  appState,
+                                ),
+                                const SizedBox(
+                                  height: AppTypography.spacingMedium,
+                                ),
+                                _buildCollisionHapticFeedbackOption(
+                                  context,
+                                  l10n,
+                                  appState,
+                                ),
+                                SizedBox(height: AppTypography.spacingXXLarge),
 
-                            // Future settings sections can be added here
-                            // For example: Theme settings, Sound settings, etc.
-                          ],
+                                // Future settings sections can be added here
+                                // For example: Theme settings, Sound settings, etc.
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),

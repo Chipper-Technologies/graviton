@@ -4011,5 +4011,597 @@
   "importCancelled": "Import cancelled",
   "@importCancelled": {
     "description": "Message when user cancels file selection"
+  },
+  "accountManagementTitle": "Account",
+  "@accountManagementTitle": {
+    "description": "Title for account management screen"
+  },
+  "accountButtonTooltip": "Account & Profile",
+  "@accountButtonTooltip": {
+    "description": "Tooltip for account button in app bar"
+  },
+  "signInPromptTitle": "Sign In to Your Account",
+  "@signInPromptTitle": {
+    "description": "Title for sign in prompt"
+  },
+  "signInPromptMessage": "Create an account or sign in to sync your data and preferences across devices.",
+  "@signInPromptMessage": {
+    "description": "Message explaining benefits of signing in"
+  },
+  "signInButton": "Sign In",
+  "@signInButton": {
+    "description": "Button to sign in"
+  },
+  "signOutButton": "Sign Out",
+  "@signOutButton": {
+    "description": "Button to sign out"
+  },
+  "resetSessionButton": "Reset Session",
+  "@resetSessionButton": {
+    "description": "Button for anonymous users to reset their session and start fresh"
+  },
+  "signOutSuccess": "Successfully signed out",
+  "@signOutSuccess": {
+    "description": "Success message after signing out"
+  },
+  "operationTimeout": "Operation timed out. Please try again.",
+  "@operationTimeout": {
+    "description": "Error message when an operation times out"
+  },
+  "operationFailed": "Operation failed. Please try again.",
+  "@operationFailed": {
+    "description": "Generic error message when an operation fails"
+  },
+  "couldNotOpenLink": "Could not open link. Please try again.",
+  "@couldNotOpenLink": {
+    "description": "Error message when a link cannot be opened"
+  },
+  "pleaseWaitBeforeRetrying": "Please wait a moment before trying again.",
+  "@pleaseWaitBeforeRetrying": {
+    "description": "Message shown when user needs to wait before retrying an operation"
+  },
+  "rateLimitWithCooldown": "Please wait {seconds} seconds before trying again.",
+  "@rateLimitWithCooldown": {
+    "description": "Rate limit message with cooldown duration",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "description": "Number of seconds to wait"
+      }
+    }
+  },
+  "networkError": "Network error. Please check your connection and try again.",
+  "@networkError": {
+    "description": "Error message for network connectivity issues"
+  },
+  "continueAsGuestButton": "Continue as Guest",
+  "@continueAsGuestButton": {
+    "description": "Button to continue without account"
+  },
+  "signInAnonymousSuccess": "Signed in as guest",
+  "@signInAnonymousSuccess": {
+    "description": "Success message for anonymous sign in"
+  },
+  "anonymousUserLabel": "Guest User",
+  "@anonymousUserLabel": {
+    "description": "Label for anonymous users"
+  },
+  "guestAccountLabel": "Guest Account",
+  "@guestAccountLabel": {
+    "description": "Label for guest account type"
+  },
+  "authenticatedLabel": "Account",
+  "@authenticatedLabel": {
+    "description": "Label for authenticated account"
+  },
+  "changeAvatarTooltip": "Change Avatar",
+  "@changeAvatarTooltip": {
+    "description": "Tooltip for change avatar button"
+  },
+  "editDisplayNameTooltip": "Edit Name",
+  "@editDisplayNameTooltip": {
+    "description": "Tooltip for edit display name button"
+  },
+  "accountActionsSection": "Account Actions",
+  "@accountActionsSection": {
+    "description": "Section title for account actions"
+  },
+  "upgradeAccountTitle": "Upgrade to Full Account",
+  "@upgradeAccountTitle": {
+    "description": "Title for upgrade account option"
+  },
+  "upgradeAccountDescription": "Save your data and access it from any device",
+  "@upgradeAccountDescription": {
+    "description": "Description for upgrade account"
+  },
+  "accountManagementSection": "Account Management",
+  "@accountManagementSection": {
+    "description": "Section title for account management options"
+  },
+  "dangerZoneSection": "Danger Zone",
+  "@dangerZoneSection": {
+    "description": "Section title for danger zone"
+  },
+  "deleteAccountButton": "Delete Account",
+  "@deleteAccountButton": {
+    "description": "Button to delete account"
+  },
+  "avatarChangedSuccess": "Avatar updated successfully",
+  "@avatarChangedSuccess": {
+    "description": "Success message after changing avatar"
+  },
+  "avatarChangedError": "Failed to update avatar",
+  "@avatarChangedError": {
+    "description": "Error message when avatar change fails"
+  },
+  "accountMenuDescription": "Manage your account and profile",
+  "@accountMenuDescription": {
+    "description": "Description for account menu item in drawer"
+  },
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Label for email input field"
+  },
+  "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Label for password input field"
+  },
+  "createAccountButton": "Create Account",
+  "@createAccountButton": {
+    "description": "Button text to create a new account"
+  },
+  "pleaseEnterEmail": "Please enter your email",
+  "@pleaseEnterEmail": {
+    "description": "Validation error when email field is empty"
+  },
+  "pleaseEnterValidEmail": "Please enter a valid email",
+  "@pleaseEnterValidEmail": {
+    "description": "Validation error when email format is invalid"
+  },
+  "pleaseEnterPassword": "Please enter your password",
+  "@pleaseEnterPassword": {
+    "description": "Validation error when password field is empty"
+  },
+  "passwordMinLength": "Password must be at least 6 characters",
+  "@passwordMinLength": {
+    "description": "Validation error when password is too short"
+  },
+  "alreadyHaveAccount": "Already have an account? Sign In",
+  "@alreadyHaveAccount": {
+    "description": "Text to toggle from create account to sign in"
+  },
+  "needAccount": "Need an account? Create One",
+  "@needAccount": {
+    "description": "Text to toggle from sign in to create account"
+  },
+  "continueWithGoogle": "Continue with Google",
+  "@continueWithGoogle": {
+    "description": "Button text for Google sign-in"
+  },
+  "continueWithGitHub": "Continue with GitHub",
+  "@continueWithGitHub": {
+    "description": "Button text for GitHub sign-in"
+  },
+  "continueWithApple": "Continue with Apple",
+  "@continueWithApple": {
+    "description": "Button text for Apple sign-in"
+  },
+  "moreProviders": "More Providers",
+  "@moreProviders": {
+    "description": "Button text to show additional sign-in providers"
+  },
+  "chooseProvider": "Choose Provider",
+  "@chooseProvider": {
+    "description": "Title for provider selection dialog"
+  },
+  "selectAvatarTitle": "Select Avatar",
+  "@selectAvatarTitle": {
+    "description": "Title for avatar selector dialog"
+  },
+  "editAccountInformationTitle": "Edit Account Information",
+  "@editAccountInformationTitle": {
+    "description": "Title for edit account information screen"
+  },
+  "displayNameLabel": "Display Name",
+  "@displayNameLabel": {
+    "description": "Label for display name input field"
+  },
+  "pleaseEnterDisplayName": "Please enter a display name",
+  "@pleaseEnterDisplayName": {
+    "description": "Validation error when display name is empty"
+  },
+  "displayNameMinLength": "Name must be at least 2 characters",
+  "@displayNameMinLength": {
+    "description": "Validation error when display name is too short"
+  },
+  "deleteAccountTitle": "Delete Account",
+  "@deleteAccountTitle": {
+    "description": "Title for delete account dialog"
+  },
+  "deleteAccountWarning": "This action cannot be undone.",
+  "@deleteAccountWarning": {
+    "description": "Warning message in delete account dialog"
+  },
+  "deleteAccountMessage": "Deleting your account will permanently remove any data associated with it.",
+  "@deleteAccountMessage": {
+    "description": "Message explaining what will be deleted"
+  },
+  "deleteAccountItem1": "Your profile and avatar",
+  "@deleteAccountItem1": {
+    "description": "First item in delete account list"
+  },
+  "deleteAccountItem2": "All saved preferences",
+  "@deleteAccountItem2": {
+    "description": "Second item in delete account list"
+  },
+  "deleteAccountItem3": "Custom scenarios and settings",
+  "@deleteAccountItem3": {
+    "description": "Third item in delete account list"
+  },
+  "deleteAccountItem4": "Account authentication",
+  "@deleteAccountItem4": {
+    "description": "Fourth item in delete account list"
+  },
+  "deleteAccountPasswordPrompt": "Please enter your password to confirm:",
+  "@deleteAccountPasswordPrompt": {
+    "description": "Prompt for password confirmation before deleting account"
+  },
+  "orDivider": "OR",
+  "@orDivider": {
+    "description": "Divider text between authentication options"
+  },
+  "displayNameHint": "Enter your name (optional)",
+  "@displayNameHint": {
+    "description": "Hint text for display name field"
+  },
+  "emailHint": "Your email address",
+  "@emailHint": {
+    "description": "Hint text for email field"
+  },
+  "passwordHint": "Your password",
+  "@passwordHint": {
+    "description": "Hint text for password field"
+  },
+  "alreadyHaveAccountSignIn": "Already have an account? Sign in",
+  "@alreadyHaveAccountSignIn": {
+    "description": "Text to switch from create account to sign in"
+  },
+  "needAccountCreateOne": "Don't have an account? Create one",
+  "@needAccountCreateOne": {
+    "description": "Text to switch from sign in to create account"
+  },
+  "useGoogleProfilePhoto": "Use Google Profile Photo",
+  "@useGoogleProfilePhoto": {
+    "description": "Option to use Google profile photo as avatar"
+  },
+  "customAvatars": "Custom Avatars",
+  "@customAvatars": {
+    "description": "Section title for custom avatar selection"
+  },
+  "saveAvatar": "Save Avatar",
+  "@saveAvatar": {
+    "description": "Button text to save selected avatar"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "displayNameFieldLabel": "Display Name",
+  "@displayNameFieldLabel": {
+    "description": "Label for display name input field in edit screen"
+  },
+  "displayNameFieldHint": "Enter your display name",
+  "@displayNameFieldHint": {
+    "description": "Hint for display name input field in edit screen"
+  },
+  "saveAccountInformation": "Save Account Information",
+  "@saveAccountInformation": {
+    "description": "Button text to save account information changes"
+  },
+  "emailRequired": "Email is required",
+  "@emailRequired": {
+    "description": "Validation error when email is empty"
+  },
+  "emailInvalid": "Please enter a valid email address",
+  "@emailInvalid": {
+    "description": "Validation error when email format is invalid"
+  },
+  "passwordRequired": "Password is required",
+  "@passwordRequired": {
+    "description": "Validation error when password is empty"
+  },
+  "passwordTooShort": "Password must be at least 8 characters",
+  "@passwordTooShort": {
+    "description": "Validation error when password is too short"
+  },
+  "passwordMissingUppercase": "Password must contain at least one uppercase letter",
+  "@passwordMissingUppercase": {
+    "description": "Validation error when password is missing uppercase letter"
+  },
+  "passwordMissingLowercase": "Password must contain at least one lowercase letter",
+  "@passwordMissingLowercase": {
+    "description": "Validation error when password is missing lowercase letter"
+  },
+  "passwordMissingNumber": "Password must contain at least one number",
+  "@passwordMissingNumber": {
+    "description": "Validation error when password is missing number"
+  },
+  "passwordMissingSpecialChar": "Password must contain at least one special character (!@#$%^&*...)",
+  "@passwordMissingSpecialChar": {
+    "description": "Validation error when password is missing special character"
+  },
+  "tooManyAttempts": "Too many failed sign-in attempts. Please try again in 15 minutes.",
+  "@tooManyAttempts": {
+    "description": "Error message when user has exceeded rate limit for sign-in attempts"
+  },
+  "emailVerificationRequired": "Please verify your email address before accessing this feature. Check your inbox for the verification link.",
+  "@emailVerificationRequired": {
+    "description": "Error message when user tries to access a feature requiring email verification"
+  },
+  "defaultUserName": "User",
+  "@defaultUserName": {
+    "description": "Default display name for users who don't provide one"
+  },
+  "googleSignInError": "Google sign-in was canceled or failed. Please try again.",
+  "@googleSignInError": {
+    "description": "Error message when Google sign-in fails"
+  },
+  "gitHubSignInError": "GitHub sign-in was canceled or failed. Please try again.",
+  "@gitHubSignInError": {
+    "description": "Error message when GitHub sign-in fails"
+  },
+  "appleSignInError": "Apple sign-in was canceled or failed. Please try again.",
+  "@appleSignInError": {
+    "description": "Error message when Apple sign-in fails"
+  },
+  "displayNameUpdated": "Display name updated",
+  "@displayNameUpdated": {
+    "description": "Success message when display name is updated"
+  },
+  "displayNameUpdateFailed": "Failed to update display name",
+  "@displayNameUpdateFailed": {
+    "description": "Error message when display name update fails"
+  },
+  "sessionResetSuccess": "Session reset successfully",
+  "@sessionResetSuccess": {
+    "description": "Success message when anonymous session is reset"
+  },
+  "accountDeletedSuccess": "Account deleted successfully",
+  "@accountDeletedSuccess": {
+    "description": "Success message when account is deleted"
+  },
+  "errorUserNotFound": "No account found with this email address.",
+  "@errorUserNotFound": {
+    "description": "Error message for user-not-found Firebase error"
+  },
+  "errorWrongPassword": "Incorrect password. Please try again.",
+  "@errorWrongPassword": {
+    "description": "Error message for wrong-password Firebase error"
+  },
+  "errorInvalidEmail": "Invalid email address format.",
+  "@errorInvalidEmail": {
+    "description": "Error message for invalid-email Firebase error"
+  },
+  "errorUserDisabled": "This account has been disabled.",
+  "@errorUserDisabled": {
+    "description": "Error message for user-disabled Firebase error"
+  },
+  "errorEmailInUse": "An account already exists with this email address.",
+  "@errorEmailInUse": {
+    "description": "Error message for email-already-in-use Firebase error"
+  },
+  "errorWeakPassword": "Password is too weak. Please use a stronger password.",
+  "@errorWeakPassword": {
+    "description": "Error message for weak-password Firebase error"
+  },
+  "errorOperationNotAllowed": "This sign-in method is not enabled.",
+  "@errorOperationNotAllowed": {
+    "description": "Error message for operation-not-allowed Firebase error"
+  },
+  "errorRequiresRecentLogin": "Please sign in again to perform this action.",
+  "@errorRequiresRecentLogin": {
+    "description": "Error message for requires-recent-login Firebase error"
+  },
+  "errorNetworkFailed": "Network error. Please check your connection.",
+  "@errorNetworkFailed": {
+    "description": "Error message for network-request-failed Firebase error"
+  },
+  "errorUnknown": "An error occurred: {message}",
+  "@errorUnknown": {
+    "description": "Generic error message with placeholder for error details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Connection timeout"
+      }
+    }
+  },
+  "exceptionGoogleSignInNotInitialized": "Google Sign-In not initialized",
+  "@exceptionGoogleSignInNotInitialized": {
+    "description": "Exception message when Google Sign-In is not properly initialized"
+  },
+  "exceptionGoogleSignInTimeout": "Google sign-in timed out",
+  "@exceptionGoogleSignInTimeout": {
+    "description": "Exception message when Google sign-in operation times out"
+  },
+  "exceptionAppleSignInPlatform": "Apple Sign-In is only available on Apple platforms",
+  "@exceptionAppleSignInPlatform": {
+    "description": "Exception message when attempting Apple Sign-In on non-Apple platforms"
+  },
+  "exceptionNoAnonymousUser": "No anonymous user to link",
+  "@exceptionNoAnonymousUser": {
+    "description": "Exception message when trying to link credentials but no anonymous user exists"
+  },
+  "exceptionNoUserSignedIn": "No user signed in",
+  "@exceptionNoUserSignedIn": {
+    "description": "Exception message when an operation requires a signed-in user but none exists"
+  },
+  "firebaseErrorUserNotFound": "No account found with this email address.",
+  "@firebaseErrorUserNotFound": {
+    "description": "Firebase auth error when user is not found"
+  },
+  "firebaseErrorWrongPassword": "Incorrect password. Please try again.",
+  "@firebaseErrorWrongPassword": {
+    "description": "Firebase auth error for wrong password"
+  },
+  "firebaseErrorInvalidEmail": "Invalid email address format.",
+  "@firebaseErrorInvalidEmail": {
+    "description": "Firebase auth error for invalid email format"
+  },
+  "firebaseErrorUserDisabled": "This account has been disabled.",
+  "@firebaseErrorUserDisabled": {
+    "description": "Firebase auth error when user account is disabled"
+  },
+  "firebaseErrorEmailInUse": "An account already exists with this email address.",
+  "@firebaseErrorEmailInUse": {
+    "description": "Firebase auth error when email is already in use"
+  },
+  "firebaseErrorWeakPassword": "Password is too weak. Please use a stronger password.",
+  "@firebaseErrorWeakPassword": {
+    "description": "Firebase auth error for weak password"
+  },
+  "firebaseErrorOperationNotAllowed": "This sign-in method is not enabled.",
+  "@firebaseErrorOperationNotAllowed": {
+    "description": "Firebase auth error when operation is not allowed"
+  },
+  "firebaseErrorRequiresRecentLogin": "Please sign in again to perform this action.",
+  "@firebaseErrorRequiresRecentLogin": {
+    "description": "Firebase auth error requiring recent login"
+  },
+  "firebaseErrorNetworkFailed": "Network error. Please check your connection.",
+  "@firebaseErrorNetworkFailed": {
+    "description": "Firebase auth error for network failures"
+  },
+  "firebaseErrorAccountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method. Please sign in with the original method.",
+  "@firebaseErrorAccountExistsWithDifferentCredential": {
+    "description": "Firebase auth error when account exists with different credential"
+  },
+  "firebaseErrorDefault": "An error occurred: {message}",
+  "@firebaseErrorDefault": {
+    "description": "Default Firebase auth error message with placeholder",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Connection timeout"
+      }
+    }
+  },
+  "emailVerificationSent": "Verification email sent! Please check your inbox.",
+  "@emailVerificationSent": {
+    "description": "Success message after sending verification email"
+  },
+  "emailVerificationResent": "Verification email resent successfully.",
+  "@emailVerificationResent": {
+    "description": "Success message after resending verification email"
+  },
+  "emailNotVerified": "Email not verified",
+  "@emailNotVerified": {
+    "description": "Label indicating email is not verified"
+  },
+  "emailVerified": "Email verified",
+  "@emailVerified": {
+    "description": "Label indicating email is verified"
+  },
+  "verifyEmailAddress": "Verify Email Address",
+  "@verifyEmailAddress": {
+    "description": "Title for email verification section"
+  },
+  "verifyEmailMessage": "Please verify your email address to access all features. Check your inbox for the verification link.",
+  "@verifyEmailMessage": {
+    "description": "Message explaining email verification requirement"
+  },
+  "sendVerificationEmail": "Send Verification Email",
+  "@sendVerificationEmail": {
+    "description": "Button text to send verification email"
+  },
+  "resendVerificationEmail": "Resend Verification Email",
+  "@resendVerificationEmail": {
+    "description": "Button text to resend verification email"
+  },
+  "checkVerificationStatus": "Check Verification Status",
+  "@checkVerificationStatus": {
+    "description": "Button text to refresh email verification status"
+  },
+  "emailVerificationPending": "Email verification pending",
+  "@emailVerificationPending": {
+    "description": "Status message when email verification is pending"
+  },
+  "verificationEmailCooldown": "Please wait {seconds} seconds before requesting another verification email.",
+  "@verificationEmailCooldown": {
+    "description": "Message shown when user must wait before resending verification email",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "60"
+      }
+    }
+  },
+  "termsAndPrivacy": "Terms & Privacy",
+  "@termsAndPrivacy": {
+    "description": "Title for terms and privacy section"
+  },
+  "acceptTermsAndPrivacy": "I accept the Terms of Service and Privacy Policy",
+  "@acceptTermsAndPrivacy": {
+    "description": "Checkbox label for accepting terms and privacy"
+  },
+  "mustAcceptTerms": "You must accept the Terms of Service and Privacy Policy to continue.",
+  "@mustAcceptTerms": {
+    "description": "Error message when terms are not accepted"
+  },
+  "termsOfService": "Terms of Service",
+  "@termsOfService": {
+    "description": "Link text for Terms of Service"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Link text for Privacy Policy"
+  },
+  "viewTermsOfService": "View Terms of Service",
+  "@viewTermsOfService": {
+    "description": "Action to view Terms of Service"
+  },
+  "viewPrivacyPolicy": "View Privacy Policy",
+  "@viewPrivacyPolicy": {
+    "description": "Action to view Privacy Policy"
+  },
+  "termsLastUpdated": "Last updated: {date}",
+  "@termsLastUpdated": {
+    "description": "Shows when terms were last updated",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "November 24, 2025"
+      }
+    }
+  },
+  "privacyLastUpdated": "Last updated: {date}",
+  "@privacyLastUpdated": {
+    "description": "Shows when privacy policy was last updated",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "November 24, 2025"
+      }
+    }
+  },
+  "ageRequirement": "You must be 13 years or older to create an account.",
+  "@ageRequirement": {
+    "description": "Message about minimum age requirement (COPPA compliance)"
+  },
+  "confirmAge": "I confirm that I am 13 years or older",
+  "@confirmAge": {
+    "description": "Checkbox label for age confirmation"
+  },
+  "exceptionEmailVerificationFailed": "exceptionEmailVerificationFailed",
+  "@exceptionEmailVerificationFailed": {
+    "description": "Exception key when email verification fails"
+  },
+  "exceptionEmailVerificationCooldown": "exceptionEmailVerificationCooldown",
+  "@exceptionEmailVerificationCooldown": {
+    "description": "Exception key when verification email is rate limited"
+  },
+  "exceptionTermsNotAccepted": "exceptionTermsNotAccepted",
+  "@exceptionTermsNotAccepted": {
+    "description": "Exception key when terms are not accepted"
   }
 }

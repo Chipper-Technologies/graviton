@@ -231,7 +231,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1510;
-				ORGANIZATIONNAME = "";
+				ORGANIZATIONNAME = "Chipper Technologies LLC";
 				TargetAttributes = {
 					331C8080294A63A400263BE5 = {
 						CreatedOnToolsVersion = 14.0;

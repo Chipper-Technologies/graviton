@@ -65,6 +65,11 @@ class AppConfig {
     defaultValue: 'https://chippertechnology.com/privacy-policy/graviton',
   );
 
+  static String get termsOfServiceUrl => const String.fromEnvironment(
+    'TERMS_OF_SERVICE_URL',
+    defaultValue: 'https://chippertechnology.com/terms-of-service/graviton',
+  );
+
   static String get companyWebsiteUrl => const String.fromEnvironment(
     'COMPANY_WEBSITE_URL',
     defaultValue: 'https://chippertechnology.com',
@@ -115,4 +120,11 @@ class AppConfig {
   // Screenshot mode for capturing marketing materials
   static bool get enableScreenshotMode =>
       flavor.getFlavorValue(dev: true, prod: false);
+
+  // Apple Sign-In configuration (loaded from config JSON via --dart-define-from-file)
+  static String get appleClientId =>
+      const String.fromEnvironment('apple.clientId');
+
+  static String get appleRedirectUri =>
+      const String.fromEnvironment('apple.redirectUri');
 }

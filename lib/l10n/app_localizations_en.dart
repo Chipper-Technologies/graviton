@@ -3087,4 +3087,467 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get importCancelled => 'Import cancelled';
+
+  @override
+  String get accountManagementTitle => 'Account';
+
+  @override
+  String get accountButtonTooltip => 'Account & Profile';
+
+  @override
+  String get signInPromptTitle => 'Sign In to Your Account';
+
+  @override
+  String get signInPromptMessage =>
+      'Create an account or sign in to sync your data and preferences across devices.';
+
+  @override
+  String get signInButton => 'Sign In';
+
+  @override
+  String get signOutButton => 'Sign Out';
+
+  @override
+  String get resetSessionButton => 'Reset Session';
+
+  @override
+  String get signOutSuccess => 'Successfully signed out';
+
+  @override
+  String get operationTimeout => 'Operation timed out. Please try again.';
+
+  @override
+  String get operationFailed => 'Operation failed. Please try again.';
+
+  @override
+  String get couldNotOpenLink => 'Could not open link. Please try again.';
+
+  @override
+  String get pleaseWaitBeforeRetrying =>
+      'Please wait a moment before trying again.';
+
+  @override
+  String rateLimitWithCooldown(int seconds) {
+    return 'Please wait $seconds seconds before trying again.';
+  }
+
+  @override
+  String get networkError =>
+      'Network error. Please check your connection and try again.';
+
+  @override
+  String get continueAsGuestButton => 'Continue as Guest';
+
+  @override
+  String get signInAnonymousSuccess => 'Signed in as guest';
+
+  @override
+  String get anonymousUserLabel => 'Guest User';
+
+  @override
+  String get guestAccountLabel => 'Guest Account';
+
+  @override
+  String get authenticatedLabel => 'Account';
+
+  @override
+  String get changeAvatarTooltip => 'Change Avatar';
+
+  @override
+  String get editDisplayNameTooltip => 'Edit Name';
+
+  @override
+  String get accountActionsSection => 'Account Actions';
+
+  @override
+  String get upgradeAccountTitle => 'Upgrade to Full Account';
+
+  @override
+  String get upgradeAccountDescription =>
+      'Save your data and access it from any device';
+
+  @override
+  String get accountManagementSection => 'Account Management';
+
+  @override
+  String get dangerZoneSection => 'Danger Zone';
+
+  @override
+  String get deleteAccountButton => 'Delete Account';
+
+  @override
+  String get avatarChangedSuccess => 'Avatar updated successfully';
+
+  @override
+  String get avatarChangedError => 'Failed to update avatar';
+
+  @override
+  String get accountMenuDescription => 'Manage your account and profile';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get passwordLabel => 'Password';
+
+  @override
+  String get createAccountButton => 'Create Account';
+
+  @override
+  String get pleaseEnterEmail => 'Please enter your email';
+
+  @override
+  String get pleaseEnterValidEmail => 'Please enter a valid email';
+
+  @override
+  String get pleaseEnterPassword => 'Please enter your password';
+
+  @override
+  String get passwordMinLength => 'Password must be at least 6 characters';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account? Sign In';
+
+  @override
+  String get needAccount => 'Need an account? Create One';
+
+  @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get continueWithGitHub => 'Continue with GitHub';
+
+  @override
+  String get continueWithApple => 'Continue with Apple';
+
+  @override
+  String get moreProviders => 'More Providers';
+
+  @override
+  String get chooseProvider => 'Choose Provider';
+
+  @override
+  String get selectAvatarTitle => 'Select Avatar';
+
+  @override
+  String get editAccountInformationTitle => 'Edit Account Information';
+
+  @override
+  String get displayNameLabel => 'Display Name';
+
+  @override
+  String get pleaseEnterDisplayName => 'Please enter a display name';
+
+  @override
+  String get displayNameMinLength => 'Name must be at least 2 characters';
+
+  @override
+  String get deleteAccountTitle => 'Delete Account';
+
+  @override
+  String get deleteAccountWarning => 'This action cannot be undone.';
+
+  @override
+  String get deleteAccountMessage =>
+      'Deleting your account will permanently remove any data associated with it.';
+
+  @override
+  String get deleteAccountItem1 => 'Your profile and avatar';
+
+  @override
+  String get deleteAccountItem2 => 'All saved preferences';
+
+  @override
+  String get deleteAccountItem3 => 'Custom scenarios and settings';
+
+  @override
+  String get deleteAccountItem4 => 'Account authentication';
+
+  @override
+  String get deleteAccountPasswordPrompt =>
+      'Please enter your password to confirm:';
+
+  @override
+  String get orDivider => 'OR';
+
+  @override
+  String get displayNameHint => 'Enter your name (optional)';
+
+  @override
+  String get emailHint => 'Your email address';
+
+  @override
+  String get passwordHint => 'Your password';
+
+  @override
+  String get alreadyHaveAccountSignIn => 'Already have an account? Sign in';
+
+  @override
+  String get needAccountCreateOne => 'Don\'t have an account? Create one';
+
+  @override
+  String get useGoogleProfilePhoto => 'Use Google Profile Photo';
+
+  @override
+  String get customAvatars => 'Custom Avatars';
+
+  @override
+  String get saveAvatar => 'Save Avatar';
+
+  @override
+  String get displayNameFieldLabel => 'Display Name';
+
+  @override
+  String get displayNameFieldHint => 'Enter your display name';
+
+  @override
+  String get saveAccountInformation => 'Save Account Information';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get emailInvalid => 'Please enter a valid email address';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 8 characters';
+
+  @override
+  String get passwordMissingUppercase =>
+      'Password must contain at least one uppercase letter';
+
+  @override
+  String get passwordMissingLowercase =>
+      'Password must contain at least one lowercase letter';
+
+  @override
+  String get passwordMissingNumber =>
+      'Password must contain at least one number';
+
+  @override
+  String get passwordMissingSpecialChar =>
+      'Password must contain at least one special character (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts =>
+      'Too many failed sign-in attempts. Please try again in 15 minutes.';
+
+  @override
+  String get emailVerificationRequired =>
+      'Please verify your email address before accessing this feature. Check your inbox for the verification link.';
+
+  @override
+  String get defaultUserName => 'User';
+
+  @override
+  String get googleSignInError =>
+      'Google sign-in was canceled or failed. Please try again.';
+
+  @override
+  String get gitHubSignInError =>
+      'GitHub sign-in was canceled or failed. Please try again.';
+
+  @override
+  String get appleSignInError =>
+      'Apple sign-in was canceled or failed. Please try again.';
+
+  @override
+  String get displayNameUpdated => 'Display name updated';
+
+  @override
+  String get displayNameUpdateFailed => 'Failed to update display name';
+
+  @override
+  String get sessionResetSuccess => 'Session reset successfully';
+
+  @override
+  String get accountDeletedSuccess => 'Account deleted successfully';
+
+  @override
+  String get errorUserNotFound => 'No account found with this email address.';
+
+  @override
+  String get errorWrongPassword => 'Incorrect password. Please try again.';
+
+  @override
+  String get errorInvalidEmail => 'Invalid email address format.';
+
+  @override
+  String get errorUserDisabled => 'This account has been disabled.';
+
+  @override
+  String get errorEmailInUse =>
+      'An account already exists with this email address.';
+
+  @override
+  String get errorWeakPassword =>
+      'Password is too weak. Please use a stronger password.';
+
+  @override
+  String get errorOperationNotAllowed => 'This sign-in method is not enabled.';
+
+  @override
+  String get errorRequiresRecentLogin =>
+      'Please sign in again to perform this action.';
+
+  @override
+  String get errorNetworkFailed =>
+      'Network error. Please check your connection.';
+
+  @override
+  String errorUnknown(String message) {
+    return 'An error occurred: $message';
+  }
+
+  @override
+  String get exceptionGoogleSignInNotInitialized =>
+      'Google Sign-In not initialized';
+
+  @override
+  String get exceptionGoogleSignInTimeout => 'Google sign-in timed out';
+
+  @override
+  String get exceptionAppleSignInPlatform =>
+      'Apple Sign-In is only available on Apple platforms';
+
+  @override
+  String get exceptionNoAnonymousUser => 'No anonymous user to link';
+
+  @override
+  String get exceptionNoUserSignedIn => 'No user signed in';
+
+  @override
+  String get firebaseErrorUserNotFound =>
+      'No account found with this email address.';
+
+  @override
+  String get firebaseErrorWrongPassword =>
+      'Incorrect password. Please try again.';
+
+  @override
+  String get firebaseErrorInvalidEmail => 'Invalid email address format.';
+
+  @override
+  String get firebaseErrorUserDisabled => 'This account has been disabled.';
+
+  @override
+  String get firebaseErrorEmailInUse =>
+      'An account already exists with this email address.';
+
+  @override
+  String get firebaseErrorWeakPassword =>
+      'Password is too weak. Please use a stronger password.';
+
+  @override
+  String get firebaseErrorOperationNotAllowed =>
+      'This sign-in method is not enabled.';
+
+  @override
+  String get firebaseErrorRequiresRecentLogin =>
+      'Please sign in again to perform this action.';
+
+  @override
+  String get firebaseErrorNetworkFailed =>
+      'Network error. Please check your connection.';
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      'An account already exists with this email using a different sign-in method. Please sign in with the original method.';
+
+  @override
+  String firebaseErrorDefault(String message) {
+    return 'An error occurred: $message';
+  }
+
+  @override
+  String get emailVerificationSent =>
+      'Verification email sent! Please check your inbox.';
+
+  @override
+  String get emailVerificationResent =>
+      'Verification email resent successfully.';
+
+  @override
+  String get emailNotVerified => 'Email not verified';
+
+  @override
+  String get emailVerified => 'Email verified';
+
+  @override
+  String get verifyEmailAddress => 'Verify Email Address';
+
+  @override
+  String get verifyEmailMessage =>
+      'Please verify your email address to access all features. Check your inbox for the verification link.';
+
+  @override
+  String get sendVerificationEmail => 'Send Verification Email';
+
+  @override
+  String get resendVerificationEmail => 'Resend Verification Email';
+
+  @override
+  String get checkVerificationStatus => 'Check Verification Status';
+
+  @override
+  String get emailVerificationPending => 'Email verification pending';
+
+  @override
+  String verificationEmailCooldown(int seconds) {
+    return 'Please wait $seconds seconds before requesting another verification email.';
+  }
+
+  @override
+  String get termsAndPrivacy => 'Terms & Privacy';
+
+  @override
+  String get acceptTermsAndPrivacy =>
+      'I accept the Terms of Service and Privacy Policy';
+
+  @override
+  String get mustAcceptTerms =>
+      'You must accept the Terms of Service and Privacy Policy to continue.';
+
+  @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get viewTermsOfService => 'View Terms of Service';
+
+  @override
+  String get viewPrivacyPolicy => 'View Privacy Policy';
+
+  @override
+  String termsLastUpdated(String date) {
+    return 'Last updated: $date';
+  }
+
+  @override
+  String privacyLastUpdated(String date) {
+    return 'Last updated: $date';
+  }
+
+  @override
+  String get ageRequirement =>
+      'You must be 13 years or older to create an account.';
+
+  @override
+  String get confirmAge => 'I confirm that I am 13 years or older';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'exceptionEmailVerificationFailed';
+
+  @override
+  String get exceptionEmailVerificationCooldown =>
+      'exceptionEmailVerificationCooldown';
+
+  @override
+  String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
 }

@@ -2906,4 +2906,434 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get importCancelled => '导入已取消';
+
+  @override
+  String get accountManagementTitle => '账户';
+
+  @override
+  String get accountButtonTooltip => '账户和个人资料';
+
+  @override
+  String get signInPromptTitle => '登录您的账户';
+
+  @override
+  String get signInPromptMessage => '创建账户或登录以在设备间同步您的数据和偏好设置。';
+
+  @override
+  String get signInButton => '登录';
+
+  @override
+  String get signOutButton => '退出登录';
+
+  @override
+  String get resetSessionButton => '重置会话';
+
+  @override
+  String get signOutSuccess => '已成功退出登录';
+
+  @override
+  String get operationTimeout => '操作超时。请重试。';
+
+  @override
+  String get operationFailed => '操作失败。请重试。';
+
+  @override
+  String get couldNotOpenLink => '无法打开链接。请重试。';
+
+  @override
+  String get pleaseWaitBeforeRetrying => '请稍等片刻再重试。';
+
+  @override
+  String rateLimitWithCooldown(int seconds) {
+    return '请等待$seconds秒后再重试。';
+  }
+
+  @override
+  String get networkError => '网络错误。请检查您的连接并重试。';
+
+  @override
+  String get continueAsGuestButton => '以访客身份继续';
+
+  @override
+  String get signInAnonymousSuccess => '已以访客身份登录';
+
+  @override
+  String get anonymousUserLabel => '访客用户';
+
+  @override
+  String get guestAccountLabel => '访客账户';
+
+  @override
+  String get authenticatedLabel => '账户';
+
+  @override
+  String get changeAvatarTooltip => '更改头像';
+
+  @override
+  String get editDisplayNameTooltip => '编辑名称';
+
+  @override
+  String get accountActionsSection => '账户操作';
+
+  @override
+  String get upgradeAccountTitle => '升级到完整账户';
+
+  @override
+  String get upgradeAccountDescription => '保存您的数据并从任何设备访问';
+
+  @override
+  String get accountManagementSection => '账户管理';
+
+  @override
+  String get dangerZoneSection => '账户管理';
+
+  @override
+  String get deleteAccountButton => '删除账户';
+
+  @override
+  String get avatarChangedSuccess => '头像更新成功';
+
+  @override
+  String get avatarChangedError => '头像更新失败';
+
+  @override
+  String get accountMenuDescription => '管理您的账户和个人资料';
+
+  @override
+  String get emailLabel => '电子邮件';
+
+  @override
+  String get passwordLabel => '密码';
+
+  @override
+  String get createAccountButton => '创建账户';
+
+  @override
+  String get pleaseEnterEmail => '请输入您的电子邮件';
+
+  @override
+  String get pleaseEnterValidEmail => '请输入有效的电子邮件';
+
+  @override
+  String get pleaseEnterPassword => '请输入您的密码';
+
+  @override
+  String get passwordMinLength => '密码必须至少6个字符';
+
+  @override
+  String get alreadyHaveAccount => '已有账户？登录';
+
+  @override
+  String get needAccount => '需要账户？创建一个';
+
+  @override
+  String get continueWithGoogle => '使用 Google 继续';
+
+  @override
+  String get continueWithGitHub => '使用 GitHub 继续';
+
+  @override
+  String get continueWithApple => '使用 Apple 继续';
+
+  @override
+  String get moreProviders => '更多提供商';
+
+  @override
+  String get chooseProvider => '选择提供商';
+
+  @override
+  String get selectAvatarTitle => '选择头像';
+
+  @override
+  String get editAccountInformationTitle => '编辑显示名称';
+
+  @override
+  String get displayNameLabel => '显示名称';
+
+  @override
+  String get pleaseEnterDisplayName => '请输入显示名称';
+
+  @override
+  String get displayNameMinLength => '名称必须至少2个字符';
+
+  @override
+  String get deleteAccountTitle => '删除账户';
+
+  @override
+  String get deleteAccountWarning => '此操作无法撤消。';
+
+  @override
+  String get deleteAccountMessage => '删除您的账户将永久删除与其关联的所有数据。';
+
+  @override
+  String get deleteAccountItem1 => '您的个人资料和头像';
+
+  @override
+  String get deleteAccountItem2 => '所有保存的偏好设置';
+
+  @override
+  String get deleteAccountItem3 => '自定义场景和设置';
+
+  @override
+  String get deleteAccountItem4 => '账户身份验证';
+
+  @override
+  String get deleteAccountPasswordPrompt => '请输入您的密码以确认：';
+
+  @override
+  String get orDivider => '或';
+
+  @override
+  String get displayNameHint => '输入您的姓名（可选）';
+
+  @override
+  String get emailHint => '您的电子邮件地址';
+
+  @override
+  String get passwordHint => '您的密码';
+
+  @override
+  String get alreadyHaveAccountSignIn => '已有账户？登录';
+
+  @override
+  String get needAccountCreateOne => '没有账户？创建一个';
+
+  @override
+  String get useGoogleProfilePhoto => '使用Google个人资料照片';
+
+  @override
+  String get customAvatars => '自定义头像';
+
+  @override
+  String get saveAvatar => '保存头像';
+
+  @override
+  String get displayNameFieldLabel => '显示名称';
+
+  @override
+  String get displayNameFieldHint => '输入您的显示名称';
+
+  @override
+  String get saveAccountInformation => '保存账户信息';
+
+  @override
+  String get emailRequired => '电子邮件为必填项';
+
+  @override
+  String get emailInvalid => '请输入有效的电子邮件地址';
+
+  @override
+  String get passwordRequired => '密码为必填项';
+
+  @override
+  String get passwordTooShort => '密码必须至少8个字符';
+
+  @override
+  String get passwordMissingUppercase => '密码必须包含至少一个大写字母';
+
+  @override
+  String get passwordMissingLowercase => '密码必须包含至少一个小写字母';
+
+  @override
+  String get passwordMissingNumber => '密码必须包含至少一个数字';
+
+  @override
+  String get passwordMissingSpecialChar => '密码必须包含至少一个特殊字符 (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts => '登录尝试失败次数过多。请在15分钟后重试。';
+
+  @override
+  String get emailVerificationRequired =>
+      '在访问此功能之前,请验证您的电子邮件地址。请检查您的收件箱以获取验证链接。';
+
+  @override
+  String get defaultUserName => '用户';
+
+  @override
+  String get googleSignInError => 'Google登录已取消或失败。请重试。';
+
+  @override
+  String get gitHubSignInError => 'GitHub登录已取消或失败。请重试。';
+
+  @override
+  String get appleSignInError => 'Apple登录已取消或失败。请重试。';
+
+  @override
+  String get displayNameUpdated => '显示名称已更新';
+
+  @override
+  String get displayNameUpdateFailed => '更新显示名称失败';
+
+  @override
+  String get sessionResetSuccess => '会话重置成功';
+
+  @override
+  String get accountDeletedSuccess => '账户删除成功';
+
+  @override
+  String get errorUserNotFound => '未找到此电子邮件地址的账户。';
+
+  @override
+  String get errorWrongPassword => '密码不正确。请重试。';
+
+  @override
+  String get errorInvalidEmail => '电子邮件地址格式无效。';
+
+  @override
+  String get errorUserDisabled => '此账户已被禁用。';
+
+  @override
+  String get errorEmailInUse => '此电子邮件地址已存在账户。';
+
+  @override
+  String get errorWeakPassword => '密码太弱。请使用更强的密码。';
+
+  @override
+  String get errorOperationNotAllowed => '此登录方法未启用。';
+
+  @override
+  String get errorRequiresRecentLogin => '请重新登录以执行此操作。';
+
+  @override
+  String get errorNetworkFailed => '网络错误。请检查您的连接。';
+
+  @override
+  String errorUnknown(String message) {
+    return '发生错误：$message';
+  }
+
+  @override
+  String get exceptionGoogleSignInNotInitialized => 'Google登录未初始化';
+
+  @override
+  String get exceptionGoogleSignInTimeout => 'Google登录超时';
+
+  @override
+  String get exceptionAppleSignInPlatform => 'Apple登录仅在Apple平台上可用';
+
+  @override
+  String get exceptionNoAnonymousUser => '没有匿名用户可链接';
+
+  @override
+  String get exceptionNoUserSignedIn => '没有用户登录';
+
+  @override
+  String get firebaseErrorUserNotFound => '未找到使用此电子邮件地址的账户。';
+
+  @override
+  String get firebaseErrorWrongPassword => '密码不正确。请重试。';
+
+  @override
+  String get firebaseErrorInvalidEmail => '电子邮件地址格式无效。';
+
+  @override
+  String get firebaseErrorUserDisabled => '此账户已被禁用。';
+
+  @override
+  String get firebaseErrorEmailInUse => '此电子邮件地址已存在账户。';
+
+  @override
+  String get firebaseErrorWeakPassword => '密码太弱。请使用更强的密码。';
+
+  @override
+  String get firebaseErrorOperationNotAllowed => '此登录方法未启用。';
+
+  @override
+  String get firebaseErrorRequiresRecentLogin => '请重新登录以执行此操作。';
+
+  @override
+  String get firebaseErrorNetworkFailed => '网络错误。请检查您的连接。';
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      '该电子邮件已存在使用不同登录方式的账户。请使用原始方法登录。';
+
+  @override
+  String firebaseErrorDefault(String message) {
+    return '发生错误：$message';
+  }
+
+  @override
+  String get emailVerificationSent => '验证邮件已发送！请检查您的收件箱。';
+
+  @override
+  String get emailVerificationResent => '验证邮件已成功重新发送。';
+
+  @override
+  String get emailNotVerified => '邮箱未验证';
+
+  @override
+  String get emailVerified => '邮箱已验证';
+
+  @override
+  String get verifyEmailAddress => '验证电子邮件地址';
+
+  @override
+  String get verifyEmailMessage => '请验证您的电子邮件地址以访问所有功能。请检查您的收件箱以获取验证链接。';
+
+  @override
+  String get sendVerificationEmail => '发送验证邮件';
+
+  @override
+  String get resendVerificationEmail => '重新发送验证邮件';
+
+  @override
+  String get checkVerificationStatus => '检查验证状态';
+
+  @override
+  String get emailVerificationPending => '邮箱验证待处理';
+
+  @override
+  String verificationEmailCooldown(int seconds) {
+    return '请等待$seconds秒后再请求另一封验证邮件。';
+  }
+
+  @override
+  String get termsAndPrivacy => '条款与隐私';
+
+  @override
+  String get acceptTermsAndPrivacy => '我接受服务条款和隐私政策';
+
+  @override
+  String get mustAcceptTerms => '您必须接受服务条款和隐私政策才能继续。';
+
+  @override
+  String get termsOfService => '服务条款';
+
+  @override
+  String get privacyPolicy => '隐私政策';
+
+  @override
+  String get viewTermsOfService => '查看服务条款';
+
+  @override
+  String get viewPrivacyPolicy => '查看隐私政策';
+
+  @override
+  String termsLastUpdated(String date) {
+    return '最后更新：$date';
+  }
+
+  @override
+  String privacyLastUpdated(String date) {
+    return '最后更新：$date';
+  }
+
+  @override
+  String get ageRequirement => '您必须年满13岁才能创建帐户。';
+
+  @override
+  String get confirmAge => '我确认我已年满13岁';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'exceptionEmailVerificationFailed';
+
+  @override
+  String get exceptionEmailVerificationCooldown =>
+      'exceptionEmailVerificationCooldown';
+
+  @override
+  String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
 }

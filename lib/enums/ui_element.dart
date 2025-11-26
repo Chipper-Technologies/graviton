@@ -51,6 +51,9 @@ enum UIElement {
   /// About screen/dialog
   about('about'),
 
+  /// Account management screen
+  accountManagement('account_management'),
+
   /// Developer tools screen/dialog
   developerTools('developer_tools'),
 

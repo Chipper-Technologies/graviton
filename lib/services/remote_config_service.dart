@@ -52,7 +52,6 @@ class RemoteConfigService {
       await _fetchAndActivate();
       _loadValues();
       _initialized = true;
-      debugPrint('RemoteConfigService initialized successfully');
     } catch (e) {
       debugPrint('RemoteConfigService initialization failed: $e');
     }
@@ -92,7 +91,6 @@ class RemoteConfigService {
   Future<void> _fetchAndActivate() async {
     try {
       await _remoteConfig.fetchAndActivate();
-      debugPrint('Remote config fetched and activated');
     } catch (e) {
       debugPrint('Failed to fetch remote config: $e');
     }
@@ -140,14 +138,6 @@ class RemoteConfigService {
       'custom_message_persistent',
     );
     _customMessageExpiry = _remoteConfig.getString('custom_message_expiry');
-
-    debugPrint(
-      'Remote config values loaded: '
-      'analytics_rate=$_analyticsSamplingRate, '
-      'maintenance=$_maintenanceMode, '
-      'news_banner=$_newsBannerEnabled, '
-      'ab_test=${_abTestGroup.configValue}',
-    );
   }
 
   /// Refresh remote config values

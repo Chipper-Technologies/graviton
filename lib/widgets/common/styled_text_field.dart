@@ -13,7 +13,7 @@ import 'package:graviton/theme/app_typography.dart';
 class StyledTextField extends StatelessWidget {
   final TextEditingController controller;
   final IconData icon;
-  final String hintText;
+  final String? hintText;
   final ValueChanged<String> onChanged;
   final String? labelText;
   final TextInputType? keyboardType;
@@ -21,12 +21,14 @@ class StyledTextField extends StatelessWidget {
   final int? maxLines;
   final int? minLines;
   final String? errorText;
+  final bool obscureText;
+  final Widget? suffixIcon;
 
   const StyledTextField({
     super.key,
     required this.controller,
     required this.icon,
-    required this.hintText,
+    this.hintText,
     required this.onChanged,
     this.labelText,
     this.keyboardType,
@@ -34,6 +36,8 @@ class StyledTextField extends StatelessWidget {
     this.maxLines = 1,
     this.minLines,
     this.errorText,
+    this.obscureText = false,
+    this.suffixIcon,
   });
 
   @override
@@ -100,8 +104,9 @@ class StyledTextField extends StatelessWidget {
                   onChanged: enabled ? onChanged : null,
                   enabled: enabled,
                   keyboardType: keyboardType,
-                  maxLines: maxLines,
+                  maxLines: obscureText ? 1 : maxLines,
                   minLines: minLines,
+                  obscureText: obscureText,
                   style: TextStyle(
                     color: enabled
                         ? AppColors.uiWhite
@@ -128,6 +133,7 @@ class StyledTextField extends StatelessWidget {
                   ),
                 ),
               ),
+              if (suffixIcon != null) suffixIcon!,
               SizedBox(width: AppTypography.spacingLarge),
             ],
           ),

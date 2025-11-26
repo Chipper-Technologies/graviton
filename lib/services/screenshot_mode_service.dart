@@ -342,15 +342,10 @@ class ScreenshotModeService extends ChangeNotifier {
 
     // Apply habitable zones setting - if not specified, default to false
     final wantHabitableZones = preset.showHabitableZones ?? false;
-    debugPrint(
-      'Screenshot: Preset ${preset.name} wants showHabitableZones: $wantHabitableZones, current: ${uiState.showHabitableZones}',
-    );
 
     if (wantHabitableZones && !uiState.showHabitableZones) {
-      debugPrint('Screenshot: Enabling habitable zones for preset');
       uiState.toggleHabitableZones();
     } else if (!wantHabitableZones && uiState.showHabitableZones) {
-      debugPrint('Screenshot: Disabling habitable zones for preset');
       uiState.toggleHabitableZones();
     }
 

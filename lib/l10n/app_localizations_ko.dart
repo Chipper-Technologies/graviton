@@ -2938,4 +2938,437 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get importCancelled => '가져오기 취소됨';
+
+  @override
+  String get accountManagementTitle => '계정';
+
+  @override
+  String get accountButtonTooltip => '계정 및 프로필';
+
+  @override
+  String get signInPromptTitle => '계정에 로그인';
+
+  @override
+  String get signInPromptMessage => '계정을 만들거나 로그인하여 기기 간에 데이터와 설정을 동기화하세요.';
+
+  @override
+  String get signInButton => '로그인';
+
+  @override
+  String get signOutButton => '로그아웃';
+
+  @override
+  String get resetSessionButton => '세션 재설정';
+
+  @override
+  String get signOutSuccess => '로그아웃되었습니다';
+
+  @override
+  String get operationTimeout => '작업 시간이 초과되었습니다. 다시 시도해 주세요.';
+
+  @override
+  String get operationFailed => '작업이 실패했습니다. 다시 시도해 주세요.';
+
+  @override
+  String get couldNotOpenLink => '링크를 열 수 없습니다. 다시 시도해 주세요.';
+
+  @override
+  String get pleaseWaitBeforeRetrying => '다시 시도하기 전에 잠시 기다려 주세요.';
+
+  @override
+  String rateLimitWithCooldown(int seconds) {
+    return '다시 시도하기 전에 $seconds초를 기다려 주세요.';
+  }
+
+  @override
+  String get networkError => '네트워크 오류입니다. 연결을 확인하고 다시 시도해 주세요.';
+
+  @override
+  String get continueAsGuestButton => '게스트로 계속';
+
+  @override
+  String get signInAnonymousSuccess => '게스트로 로그인했습니다';
+
+  @override
+  String get anonymousUserLabel => '게스트 사용자';
+
+  @override
+  String get guestAccountLabel => '게스트 계정';
+
+  @override
+  String get authenticatedLabel => '계정';
+
+  @override
+  String get changeAvatarTooltip => '아바타 변경';
+
+  @override
+  String get editDisplayNameTooltip => '이름 편집';
+
+  @override
+  String get accountActionsSection => '계정 작업';
+
+  @override
+  String get upgradeAccountTitle => '전체 계정으로 업그레이드';
+
+  @override
+  String get upgradeAccountDescription => '데이터를 저장하고 모든 기기에서 액세스하세요';
+
+  @override
+  String get accountManagementSection => '계정 관리';
+
+  @override
+  String get dangerZoneSection => '계정 관리';
+
+  @override
+  String get deleteAccountButton => '계정 삭제';
+
+  @override
+  String get avatarChangedSuccess => '아바타가 업데이트되었습니다';
+
+  @override
+  String get avatarChangedError => '아바타 업데이트 실패';
+
+  @override
+  String get accountMenuDescription => '계정 및 프로필 관리';
+
+  @override
+  String get emailLabel => '이메일';
+
+  @override
+  String get passwordLabel => '비밀번호';
+
+  @override
+  String get createAccountButton => '계정 만들기';
+
+  @override
+  String get pleaseEnterEmail => '이메일을 입력하세요';
+
+  @override
+  String get pleaseEnterValidEmail => '유효한 이메일을 입력하세요';
+
+  @override
+  String get pleaseEnterPassword => '비밀번호를 입력하세요';
+
+  @override
+  String get passwordMinLength => '비밀번호는 최소 6자 이상이어야 합니다';
+
+  @override
+  String get alreadyHaveAccount => '이미 계정이 있으신가요? 로그인';
+
+  @override
+  String get needAccount => '계정이 필요하신가요? 만들기';
+
+  @override
+  String get continueWithGoogle => 'Google로 계속하기';
+
+  @override
+  String get continueWithGitHub => 'GitHub로 계속하기';
+
+  @override
+  String get continueWithApple => 'Apple로 계속하기';
+
+  @override
+  String get moreProviders => '더 많은 제공업체';
+
+  @override
+  String get chooseProvider => '제공업체 선택';
+
+  @override
+  String get selectAvatarTitle => '아바타 선택';
+
+  @override
+  String get editAccountInformationTitle => '표시 이름 편집';
+
+  @override
+  String get displayNameLabel => '표시 이름';
+
+  @override
+  String get pleaseEnterDisplayName => '표시 이름을 입력하세요';
+
+  @override
+  String get displayNameMinLength => '이름은 최소 2자 이상이어야 합니다';
+
+  @override
+  String get deleteAccountTitle => '계정 삭제';
+
+  @override
+  String get deleteAccountWarning => '이 작업은 취소할 수 없습니다.';
+
+  @override
+  String get deleteAccountMessage => '계정을 삭제하면 관련된 모든 데이터가 영구적으로 제거됩니다.';
+
+  @override
+  String get deleteAccountItem1 => '프로필 및 아바타';
+
+  @override
+  String get deleteAccountItem2 => '저장된 모든 환경설정';
+
+  @override
+  String get deleteAccountItem3 => '사용자 지정 시나리오 및 설정';
+
+  @override
+  String get deleteAccountItem4 => '계정 인증';
+
+  @override
+  String get deleteAccountPasswordPrompt => '확인하려면 비밀번호를 입력하세요:';
+
+  @override
+  String get orDivider => '또는';
+
+  @override
+  String get displayNameHint => '이름을 입력하세요 (선택사항)';
+
+  @override
+  String get emailHint => '이메일 주소';
+
+  @override
+  String get passwordHint => '비밀번호';
+
+  @override
+  String get alreadyHaveAccountSignIn => '이미 계정이 있으신가요? 로그인';
+
+  @override
+  String get needAccountCreateOne => '계정이 없으신가요? 만들기';
+
+  @override
+  String get useGoogleProfilePhoto => 'Google 프로필 사진 사용';
+
+  @override
+  String get customAvatars => '커스텀 아바타';
+
+  @override
+  String get saveAvatar => '아바타 저장';
+
+  @override
+  String get displayNameFieldLabel => '표시 이름';
+
+  @override
+  String get displayNameFieldHint => '표시 이름을 입력하세요';
+
+  @override
+  String get saveAccountInformation => '계정 정보 저장';
+
+  @override
+  String get emailRequired => '이메일이 필요합니다';
+
+  @override
+  String get emailInvalid => '유효한 이메일 주소를 입력하세요';
+
+  @override
+  String get passwordRequired => '비밀번호가 필요합니다';
+
+  @override
+  String get passwordTooShort => '비밀번호는 최소 8자 이상이어야 합니다';
+
+  @override
+  String get passwordMissingUppercase => '비밀번호에는 대문자가 하나 이상 포함되어야 합니다';
+
+  @override
+  String get passwordMissingLowercase => '비밀번호에는 소문자가 하나 이상 포함되어야 합니다';
+
+  @override
+  String get passwordMissingNumber => '비밀번호에는 숫자가 하나 이상 포함되어야 합니다';
+
+  @override
+  String get passwordMissingSpecialChar =>
+      '비밀번호에는 특수 문자가 하나 이상 포함되어야 합니다 (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts => '로그인 시도 횟수가 너무 많습니다. 15분 후에 다시 시도하세요.';
+
+  @override
+  String get emailVerificationRequired =>
+      '이 기능에 액세스하기 전에 이메일 주소를 확인하세요. 받은편지함에서 확인 링크를 확인하세요.';
+
+  @override
+  String get defaultUserName => '사용자';
+
+  @override
+  String get googleSignInError => 'Google 로그인이 취소되었거나 실패했습니다. 다시 시도해 주세요.';
+
+  @override
+  String get gitHubSignInError => 'GitHub 로그인이 취소되었거나 실패했습니다. 다시 시도해 주세요.';
+
+  @override
+  String get appleSignInError => 'Apple 로그인이 취소되었거나 실패했습니다. 다시 시도해 주세요.';
+
+  @override
+  String get displayNameUpdated => '표시 이름이 업데이트되었습니다';
+
+  @override
+  String get displayNameUpdateFailed => '표시 이름 업데이트에 실패했습니다';
+
+  @override
+  String get sessionResetSuccess => '세션이 성공적으로 재설정되었습니다';
+
+  @override
+  String get accountDeletedSuccess => '계정이 성공적으로 삭제되었습니다';
+
+  @override
+  String get errorUserNotFound => '이 이메일 주소로 계정을 찾을 수 없습니다.';
+
+  @override
+  String get errorWrongPassword => '비밀번호가 잘못되었습니다. 다시 시도해 주세요.';
+
+  @override
+  String get errorInvalidEmail => '이메일 주소 형식이 잘못되었습니다.';
+
+  @override
+  String get errorUserDisabled => '이 계정은 비활성화되었습니다.';
+
+  @override
+  String get errorEmailInUse => '이 이메일 주소로 이미 계정이 존재합니다.';
+
+  @override
+  String get errorWeakPassword => '비밀번호가 너무 약합니다. 더 강력한 비밀번호를 사용하세요.';
+
+  @override
+  String get errorOperationNotAllowed => '이 로그인 방법은 활성화되지 않았습니다.';
+
+  @override
+  String get errorRequiresRecentLogin => '이 작업을 수행하려면 다시 로그인하세요.';
+
+  @override
+  String get errorNetworkFailed => '네트워크 오류입니다. 연결을 확인하세요.';
+
+  @override
+  String errorUnknown(String message) {
+    return '오류가 발생했습니다: $message';
+  }
+
+  @override
+  String get exceptionGoogleSignInNotInitialized => 'Google 로그인이 초기화되지 않았습니다';
+
+  @override
+  String get exceptionGoogleSignInTimeout => 'Google 로그인 시간이 초과되었습니다';
+
+  @override
+  String get exceptionAppleSignInPlatform =>
+      'Apple Sign-In은 Apple 플랫폼에서만 사용할 수 있습니다';
+
+  @override
+  String get exceptionNoAnonymousUser => '연결할 익명 사용자가 없습니다';
+
+  @override
+  String get exceptionNoUserSignedIn => '로그인한 사용자가 없습니다';
+
+  @override
+  String get firebaseErrorUserNotFound => '이 이메일 주소로 등록된 계정이 없습니다.';
+
+  @override
+  String get firebaseErrorWrongPassword => '비밀번호가 올바르지 않습니다. 다시 시도해주세요.';
+
+  @override
+  String get firebaseErrorInvalidEmail => '이메일 주소 형식이 올바르지 않습니다.';
+
+  @override
+  String get firebaseErrorUserDisabled => '이 계정은 비활성화되었습니다.';
+
+  @override
+  String get firebaseErrorEmailInUse => '이 이메일 주소로 이미 계정이 존재합니다.';
+
+  @override
+  String get firebaseErrorWeakPassword => '비밀번호가 너무 약합니다. 더 강력한 비밀번호를 사용하세요.';
+
+  @override
+  String get firebaseErrorOperationNotAllowed => '이 로그인 방법은 활성화되지 않았습니다.';
+
+  @override
+  String get firebaseErrorRequiresRecentLogin => '이 작업을 수행하려면 다시 로그인하세요.';
+
+  @override
+  String get firebaseErrorNetworkFailed => '네트워크 오류. 연결을 확인하세요.';
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      '이 이메일로 다른 로그인 방법을 사용하는 계정이 이미 존재합니다. 원래 방법으로 로그인하세요.';
+
+  @override
+  String firebaseErrorDefault(String message) {
+    return '오류가 발생했습니다: $message';
+  }
+
+  @override
+  String get emailVerificationSent => '인증 이메일이 전송되었습니다! 받은편지함을 확인하세요.';
+
+  @override
+  String get emailVerificationResent => '인증 이메일을 다시 전송했습니다.';
+
+  @override
+  String get emailNotVerified => '이메일 미인증';
+
+  @override
+  String get emailVerified => '이메일 인증됨';
+
+  @override
+  String get verifyEmailAddress => '이메일 주소 인증';
+
+  @override
+  String get verifyEmailMessage =>
+      '모든 기능에 액세스하려면 이메일 주소를 인증하세요. 받은편지함에서 인증 링크를 확인하세요.';
+
+  @override
+  String get sendVerificationEmail => '인증 이메일 보내기';
+
+  @override
+  String get resendVerificationEmail => '인증 이메일 다시 보내기';
+
+  @override
+  String get checkVerificationStatus => '인증 상태 확인';
+
+  @override
+  String get emailVerificationPending => '이메일 인증 대기 중';
+
+  @override
+  String verificationEmailCooldown(int seconds) {
+    return '다른 인증 이메일을 요청하기 전에 $seconds초를 기다려 주세요.';
+  }
+
+  @override
+  String get termsAndPrivacy => '약관 및 개인정보';
+
+  @override
+  String get acceptTermsAndPrivacy => '서비스 약관 및 개인정보 처리방침에 동의합니다';
+
+  @override
+  String get mustAcceptTerms => '계속하려면 서비스 약관 및 개인정보 처리방침에 동의해야 합니다.';
+
+  @override
+  String get termsOfService => '서비스 약관';
+
+  @override
+  String get privacyPolicy => '개인정보 처리방침';
+
+  @override
+  String get viewTermsOfService => '서비스 약관 보기';
+
+  @override
+  String get viewPrivacyPolicy => '개인정보 처리방침 보기';
+
+  @override
+  String termsLastUpdated(String date) {
+    return '최종 업데이트: $date';
+  }
+
+  @override
+  String privacyLastUpdated(String date) {
+    return '최종 업데이트: $date';
+  }
+
+  @override
+  String get ageRequirement => '계정을 만들려면 13세 이상이어야 합니다.';
+
+  @override
+  String get confirmAge => '저는 13세 이상임을 확인합니다';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'exceptionEmailVerificationFailed';
+
+  @override
+  String get exceptionEmailVerificationCooldown =>
+      'exceptionEmailVerificationCooldown';
+
+  @override
+  String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
 }

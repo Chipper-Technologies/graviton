@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'config/flavor_config.dart';
+import 'firebase/firebase_options.dart';
 import 'constants/platform_channel_constants.dart';
 import 'enums/app_flavor.dart';
 import 'enums/firebase_event.dart';
@@ -17,6 +18,7 @@ import 'screens/about_screen.dart';
 import 'screens/application_settings_screen.dart';
 import 'screens/help_screen.dart';
 import 'screens/home_screen.dart';
+import 'services/auth_service.dart';
 import 'services/changelog_service.dart';
 import 'services/firebase_service.dart';
 import 'widgets/changelog_dialog.dart';
@@ -48,18 +50,26 @@ void main() async {
 
   // Initialize Firebase (optional - don't block app startup if it fails)
   try {
-    await Firebase.initializeApp();
+    // Check if Firebase is already initialized (e.g., from hot restart)
+    try {
+      if (Firebase.apps.isEmpty) {
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
+      }
+    } catch (duplicateAppError) {
+      // Firebase was already initialized (race condition or hot restart)
+    }
+
     await FirebaseService.instance.initialize();
-    debugPrint('Firebase initialized successfully');
+    await AuthService.instance.initialize();
   } catch (e) {
     debugPrint('Firebase initialization failed: $e');
-    debugPrint('App will continue without Firebase functionality');
   }
 
   // Initialize remote config service
   try {
     await RemoteConfigService.instance.initialize();
-    debugPrint('Remote config service initialized successfully');
   } catch (e) {
     debugPrint('Remote config service initialization failed: $e');
   }
@@ -67,7 +77,6 @@ void main() async {
   // Initialize version service
   try {
     await VersionService.instance.initialize();
-    debugPrint('Version service initialized successfully');
   } catch (e) {
     debugPrint('Version service initialization failed: $e');
   }
@@ -173,8 +182,11 @@ class GravitonApp extends StatelessWidget {
       parameters: {'flavor': FlavorConfig.instance.flavor.name},
     );
 
-    return ChangeNotifierProvider.value(
-      value: appState,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: appState),
+        ChangeNotifierProvider.value(value: appState.auth),
+      ],
       child: Consumer<AppState>(
         builder: (context, appState, child) {
           // Determine the locale to use

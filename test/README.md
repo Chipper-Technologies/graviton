@@ -5,14 +5,15 @@ This document describes the organization of tests in the Graviton project. The t
 ## Test Coverage Summary
 
 **Current Coverage: Comprehensive coverage across all architectural layers**
-- ✅ **4400+ passing tests** with extensive coverage across all test categories
+- ✅ **5000+ passing tests** with extensive coverage across all test categories
+- ✅ **Authentication & Account Management**: Complete Firebase Authentication integration with multi-provider support
 - ✅ **Integration Tests**: Complete end-to-end app functionality testing with robust timer management
 - ✅ **Models**: Complete coverage for all data models including physics, scenarios, custom content, and celestial bodies
-- ✅ **Services**: Comprehensive service layer testing including haptic feedback, accessibility, scenario management, and fullscreen services
-- ✅ **State Management**: Full coverage for app, UI, simulation, camera, physics, and accessibility state management
+- ✅ **Services**: Comprehensive service layer testing including authentication, user data sync, haptic feedback, accessibility, scenario management, and fullscreen services
+- ✅ **State Management**: Full coverage for app, UI, simulation, camera, physics, accessibility, and authentication state management
 - ✅ **Utilities**: Complete coverage for physics calculations, rendering utilities, accessibility coordination, and test helpers
 - ✅ **Painters**: Tests for all rendering components including gravity, trails, effects, and habitability visualization
-- ✅ **Widgets**: Comprehensive UI component tests with haptic feedback, accessibility support, and internationalization
+- ✅ **Widgets**: Comprehensive UI component tests with authentication UI, account management, haptic feedback, accessibility support, and internationalization
 - ✅ **Haptic System**: Complete testing of haptic feedback widgets and service integration
 - ✅ **Accessibility**: Full coverage for semantic widgets, focus management, and screen reader support
 - ✅ **Scenario Editor**: Comprehensive testing of custom scenario creation, editing, and validation
@@ -62,6 +63,7 @@ Tests for advanced physics experiments and celestial mechanics:
 
 ### 🏷️ Enums (`test/enums/`)
 Tests for enumeration types and their behaviors:
+- `auth_provider_type_test.dart` - Authentication provider type validation
 - `cinematic_camera_technique_test.dart` - Cinematic camera technique validation
 
 ### 🚀 Features (`test/features/`)
@@ -102,6 +104,8 @@ Tests for specific simulation scenarios:
 ### 📱 Screens (`test/screens/`)
 Tests for screen-level components and navigation:
 - `about_screen_test.dart` - About screen functionality
+- `account_management_error_handling_test.dart` - Account management error scenarios
+- `account_management_screen_test.dart` - Account management interface
 - `application_settings_screen_haptic_test.dart` - Application settings with haptic feedback
 - `application_settings_screen_test.dart` - Application settings screen
 - `developer_tools_screen_test.dart` - Developer tools interface
@@ -122,15 +126,23 @@ End-to-end testing scenarios that validate complete user workflows:
 
 - `app_integration_test.dart` - Full application lifecycle testing
 - `body_editor_astronomical_units_test.dart` - Scenario editor astronomical unit handling
+- `camera_rotate_speed_integration_test.dart` - Camera rotation speed control
 - `description_field_integration_test.dart` - Scenario description field validation
 - `experimental_scenarios_integration_test.dart` - Experimental scenario functionality
 - `i18n_custom_scenarios_test.dart` - Custom scenario internationalization
 - `scenario_selection_behavior_test.dart` - Scenario selection interface behavior
 - `settings_persistence_test.dart` - Settings persistence across sessions
 - `solar_system_habitability_integration_test.dart` - Solar system habitability features
+- `three_finger_pan_integration_test.dart` - Three-finger pan gesture functionality
+
+#### Authentication Integration (`test/integration/auth/`)
+- `auth_state_integration_test.dart` - Authentication state management and persistence
+- `auth_ui_integration_test.dart` - Authentication UI components and workflows
 
 These integration tests verify:
 - App startup and initialization across all configurations
+- Authentication flows with multiple providers (Google, Apple, email)
+- User account management and profile editing
 - Complete scenario loading and simulation lifecycle
 - User onboarding experience from start to finish
 - Scenario selection process including custom scenarios
@@ -139,6 +151,8 @@ These integration tests verify:
 - Settings persistence across app restarts
 - Tutorial system progression and completion
 - Cross-feature interactions and data flow
+- Authentication state persistence across sessions
+- User data sync with cloud storage
 
 ### 📊 Models (`test/models/`)
 Tests for data models and structures:
@@ -176,9 +190,11 @@ Tests for rendering and visual components:
 ### 🔌 Services (`test/services/`)
 Tests for service layer components:
 - `accessibility_service_test.dart` - Accessibility service and screen reader support
+- `auth_service_test.dart` - Firebase Authentication service (email, Google, Apple, GitHub)
 - `changelog_service_test.dart` - Version changelog management
 - `cinematic_camera_controller_test.dart` - Cinematic camera control system
 - `custom_message_test.dart` - Custom message handling system
+- `email_verification_test.dart` - Email verification functionality
 - `firebase_service_test.dart` - Firebase analytics and crashlytics integration
 - `fullscreen_service_test.dart` - Fullscreen system UI management
 - `haptic_feedback_service_test.dart` - Haptic feedback coordination and patterns
@@ -191,18 +207,22 @@ Tests for service layer components:
 - `screenshot_mode_service_test.dart` - Screenshot mode functionality
 - `semantic_focus_service_test.dart` - Semantic focus management for accessibility
 - `simulation_physics_test.dart` - Physics engine and calculations
+- `simulation_share_service_test.dart` - Simulation export and sharing
 - `simulation_test.dart` - Core simulation engine
 - `temperature_service_constants_test.dart` - Temperature calculation constants
 - `temperature_service_test.dart` - Temperature calculations and stellar radiation modeling
+- `user_data_sync_service_test.dart` - Cloud data synchronization with Firestore
 - `version_service_test.dart` - App version management and updates
 
 ### 🎯 State (`test/state/`)
 Tests for state management:
 - `app_state_physics_integration_test.dart` - App state and physics integration
 - `app_state_test.dart` - Application-wide state
+- `auth_state_test.dart` - Authentication state management
 - `camera_reset_test.dart` - Camera reset functionality
 - `camera_roll_test.dart` - Camera roll controls
 - `camera_state_test.dart` - Camera state management
+- `gravity_well_reset_test.dart` - Gravity well reset preservation
 - `physics_state_test.dart` - Physics state management
 - `simulation_state_test.dart` - Simulation state management
 - `ui_state_test.dart` - UI state and preferences
@@ -254,6 +274,22 @@ Tests for UI widgets and components organized by functionality:
 - `url_launcher_test.dart` - URL launching functionality
 - `version_check_dialog_test.dart` - Version update dialog
 - `visuals_controls_test.dart` - Visual settings controls
+
+#### Account Management Widgets (`test/widgets/account/`)
+- `account_management_options_test.dart` - Account management action options
+- `avatar_display_test.dart` - Avatar display component
+- `avatar_selection_grid_test.dart` - Avatar selection grid interface
+- `danger_zone_section_test.dart` - Account deletion controls
+- `delete_confirmation_dialog_test.dart` - Deletion confirmation dialog
+- `edit_name_form_test.dart` - Display name editing form
+- `email_verification_banner_test.dart` - Email verification banner
+- `profile_card_test.dart` - User profile card component
+- `sign_in_form_test.dart` - Email/password sign-in form
+- `terms_acceptance_checkbox_test.dart` - Terms of service acceptance
+
+#### Authentication Widgets (`test/widgets/auth/`)
+- `avatar_button_test.dart` - Avatar button with authentication state
+- `social_auth_button_test.dart` - Social authentication provider buttons
 
 #### Haptic Widgets (`test/widgets/haptics/`)
 - `haptic_app_bar_test.dart` - Haptic-enabled app bar

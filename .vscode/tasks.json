@@ -4,16 +4,16 @@
   "version": "2.0.0",
   "tasks": [
     // ============================================================================
-    // DEVELOPMENT & RUNNING TASKS
+    // ANDROID RUN TASKS
     // ============================================================================
     {
-      "label": "[DEV] Run App",
+      "label": "[DEV][ANDROID] Run App",
       "type": "shell",
       "command": "flutter",
       "args": [
         "run",
         "--dart-define-from-file",
-        "config/dev.json",
+        "config/dev-android.json",
         "--flavor",
         "dev"
       ],
@@ -30,16 +30,16 @@
         "clear": false
       },
       "problemMatcher": [],
-      "detail": "Run Flutter app with development configuration"
+      "detail": "Run Flutter app on Android with development configuration"
     },
     {
-      "label": "[PROD] Run App",
+      "label": "[PROD][ANDROID] Run App",
       "type": "shell",
       "command": "flutter",
       "args": [
         "run",
         "--dart-define-from-file",
-        "config/prod.json",
+        "config/prod-android.json",
         "--flavor",
         "prod"
       ],
@@ -56,7 +56,7 @@
         "clear": false
       },
       "problemMatcher": [],
-      "detail": "Run Flutter app with production configuration"
+      "detail": "Run Flutter app on Android with production configuration"
     },
     
     // ============================================================================
@@ -72,7 +72,7 @@
         "--flavor",
         "dev",
         "--dart-define-from-file",
-        "config/dev.json",
+        "config/dev-android.json",
         "--release"
       ],
       "group": {
@@ -100,7 +100,7 @@
         "--flavor",
         "prod",
         "--dart-define-from-file",
-        "config/prod.json",
+        "config/prod-android.json",
         "--release",
         "--obfuscate",
         "--split-debug-info=build/flutter_symbols/"
@@ -130,7 +130,7 @@
         "--flavor",
         "dev",
         "--dart-define-from-file",
-        "config/dev.json",
+        "config/dev-android.json",
         "--release"
       ],
       "group": {
@@ -158,7 +158,7 @@
         "--flavor",
         "prod",
         "--dart-define-from-file",
-        "config/prod.json",
+        "config/prod-android.json",
         "--release",
         "--obfuscate",
         "--split-debug-info=build/flutter_symbols/"
@@ -190,7 +190,7 @@
         "build",
         "ios",
         "--dart-define-from-file",
-        "config/dev.json",
+        "config/dev-ios.json",
         "--release"
       ],
       "group": {
@@ -216,7 +216,7 @@
         "build",
         "ios",
         "--dart-define-from-file",
-        "config/prod.json",
+        "config/prod-ios.json",
         "--release",
         "--obfuscate",
         "--split-debug-info=build/flutter_symbols/"
@@ -244,7 +244,7 @@
         "build",
         "ipa",
         "--dart-define-from-file",
-        "config/dev.json",
+        "config/dev-ios.json",
         "--release"
       ],
       "group": {
@@ -270,7 +270,7 @@
         "build",
         "ipa",
         "--dart-define-from-file",
-        "config/prod.json",
+        "config/prod-ios.json",
         "--release",
         "--obfuscate",
         "--split-debug-info=build/flutter_symbols/"
@@ -303,7 +303,7 @@
         "-d",
         "macos",
         "--dart-define-from-file",
-        "config/dev.json",
+        "config/dev-macos.json",
         "--flavor",
         "dev"
       ],
@@ -331,7 +331,7 @@
         "-d",
         "macos",
         "--dart-define-from-file",
-        "config/prod.json",
+        "config/prod-macos.json",
         "--flavor",
         "prod"
       ],
@@ -358,7 +358,7 @@
         "build",
         "macos",
         "--dart-define-from-file",
-        "config/dev.json",
+        "config/dev-macos.json",
         "--flavor",
         "dev",
         "--release"
@@ -386,7 +386,7 @@
         "build",
         "macos",
         "--dart-define-from-file",
-        "config/prod.json",
+        "config/prod-macos.json",
         "--flavor",
         "prod",
         "--release"
@@ -412,7 +412,7 @@
       "command": "sh",
       "args": [
         "-c",
-        "flutter build macos --dart-define-from-file config/prod.json --release && xcodebuild -workspace macos/Runner.xcworkspace -scheme prod -configuration Release-prod archive -archivePath build/macos/Graviton.xcarchive"
+        "flutter build macos --dart-define-from-file config/prod-macos.json --release && xcodebuild -workspace macos/Runner.xcworkspace -scheme prod -configuration Release-prod archive -archivePath build/macos/Graviton.xcarchive"
       ],
       "group": {
         "kind": "build",
@@ -471,7 +471,7 @@
         "-d",
         "chrome",
         "--dart-define-from-file",
-        "config/dev.json"
+        "config/dev-web.json"
       ],
       "group": {
         "kind": "build",
@@ -497,7 +497,7 @@
         "-d",
         "chrome",
         "--dart-define-from-file",
-        "config/prod.json",
+        "config/prod-web.json",
         "--release"
       ],
       "group": {
@@ -523,7 +523,7 @@
         "build",
         "web",
         "--dart-define-from-file",
-        "config/dev.json",
+        "config/dev-web.json",
         "--release"
       ],
       "group": {
@@ -549,7 +549,7 @@
         "build",
         "web",
         "--dart-define-from-file",
-        "config/prod.json",
+        "config/prod-web.json",
         "--release"
       ],
       "group": {
