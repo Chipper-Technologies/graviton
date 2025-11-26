@@ -46,7 +46,8 @@ class ProfileCard extends StatelessWidget {
               AvatarDisplay(
                 avatar: user.avatar,
                 photoUrl: user.photoUrl,
-                size: AppTypography.iconSizeHuge * 1.5,
+                size: AppTypography.iconSizeHuge *
+                    AppTypography.avatarDisplayMultiplier,
               ),
               Positioned(
                 bottom: 0,

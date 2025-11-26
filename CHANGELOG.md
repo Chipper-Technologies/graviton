@@ -5,9 +5,36 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.6.0] - 2025-11-22
+## [1.6.0] - 2025-11-26
 
 ### Added
+- **Account Management System**: Comprehensive user account functionality with Firebase integration
+  - **Firebase Authentication**: Multi-provider authentication support
+    - Email/password authentication with account creation and password reset
+    - Google Sign-In integration for quick authentication
+    - Apple Sign-In for iOS/macOS native authentication
+    - GitHub authentication for developer-friendly sign-in
+    - Anonymous authentication for guest users
+    - Email verification support with resend functionality
+  - **User Profile Management**: Complete profile customization features
+    - Custom avatar selection with 18 emoji options
+    - Profile photo upload from device gallery
+    - Display name editing and management
+    - Profile settings persistence across sessions
+  - **Cloud Data Sync**: Automatic backup and restore of user data
+    - UserDataSyncService for Firestore integration
+    - Automatic backup of custom scenarios, settings, and preferences
+    - Cross-device synchronization when signed in
+    - Local-first approach with cloud backup on changes
+    - Anonymous user data migration when upgrading to authenticated account
+  - **Authentication UI Components**: Complete authentication flow screens
+    - AvatarButton in AppBar for quick account access
+    - Sign-in screen with multiple provider options
+    - Account management screen with profile editing
+    - Email verification screen with resend capability
+    - Password reset flow with email validation
+    - Delete account functionality with re-authentication protection
+
 - **Rotation Speed Slider Control**: New UI control for adjusting automatic camera rotation speed
   - Rotation speed slider with configurable range (0.1x to 3.0x speed) and 29 divisions for precise control
   - Conditional visibility - slider appears only when auto-rotate is enabled
@@ -26,6 +53,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Code Quality Enhancements**: Extracted magic numbers to named constants for better maintainability
   - Added `RenderingConstants.worldUp` for world-space up vector (Vector3(0, 1, 0))
   - Added `SimulationConstants.cameraPanSensitivityFactor` for camera pan sensitivity (0.002)
+  - Added `AppTypography.avatarSize` (32.0), `avatarMargin` (6.0) for AppBar avatar button
+  - Added `AppTypography.avatarSelectionSize` (48.0) for profile photo selection grid
+  - Added `AppTypography.avatarDisplaySize` (96.0) for default avatar widget display
+  - Added `AppTypography.avatarDisplayMultiplier` (1.5) for large profile card avatars
+  - Added `AppTypography.iconWarningMultiplier` (2.0) for warning icon sizing
   - Updated implementation files and all test files to use new constants
 
 ## [1.5.0] - 2025-11-22

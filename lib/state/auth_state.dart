@@ -405,6 +405,26 @@ class AuthState extends ChangeNotifier {
   }
 
   /// Test-only method to set current user directly for widget testing
+  ///
+  /// **WARNING**: This method bypasses all authentication logic and should
+  /// ONLY be used in test environments. It does not:
+  /// - Validate the user with Firebase Authentication
+  /// - Update SharedPreferences or any persistent storage
+  /// - Trigger authentication-related side effects
+  /// - Initialize user-specific services or configurations
+  ///
+  /// **When to use**:
+  /// - Widget tests that need a pre-authenticated user state
+  /// - Unit tests for UI components that depend on user data
+  /// - Testing user-specific UI flows without full auth setup
+  ///
+  /// **Limitations**:
+  /// - Does not persist across test runs
+  /// - May leave state inconsistent if other auth methods are called
+  /// - Avatar and other user properties must be set manually if needed
+  ///
+  /// For integration tests or when testing actual authentication flows,
+  /// use the proper sign-in methods instead.
   @visibleForTesting
   void setCurrentUserForTest(UserProfile? user) {
     _currentUser = user;

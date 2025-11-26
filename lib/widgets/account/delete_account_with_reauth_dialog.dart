@@ -92,7 +92,8 @@ class _DeleteAccountWithReauthDialogState
         children: [
           Icon(
             Icons.warning_amber_rounded,
-            size: AppTypography.iconSizeHuge * 2,
+            size: AppTypography.iconSizeHuge *
+                AppTypography.iconWarningMultiplier,
             color: AppColors.uiRed,
           ),
           const SizedBox(height: AppTypography.spacingXXLarge),

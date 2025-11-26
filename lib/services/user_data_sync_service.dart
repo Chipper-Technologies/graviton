@@ -11,11 +11,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Service for syncing user data between local storage and Firestore
 ///
-/// This service implements a local-first architecture where:
-/// - Local storage (SharedPreferences) is the source of truth
-/// - Firestore serves as cloud backup/sync layer
-/// - Anonymous users work offline, data migrates when creating account
-/// - Account deletion removes cloud data but preserves local storage
+/// This service implements a local-first architecture with last-write-wins conflict resolution:
+/// - **Local-first writes**: All changes are written to local storage (SharedPreferences) first,
+///   then immediately synced to cloud for authenticated users
+/// - **Last-write-wins sync**: When cloud data changes (from another device), it overwrites
+///   local data to maintain cross-device consistency
+/// - **Offline support**: Anonymous users work fully offline; data automatically migrates
+///   when creating an account
+/// - **Stale update prevention**: Cloud updates older than the last local sync are ignored
+/// - **Account deletion**: Removes cloud data but preserves local storage for continued use
 ///
 /// Data synced includes:
 /// - Custom scenarios
@@ -471,10 +475,12 @@ class UserDataSyncService {
     }
   }
 
-  /// Merge custom scenarios from cloud
+  /// Merge custom scenarios from cloud using last-write-wins strategy
   ///
-  /// Replace local scenarios with cloud scenarios since cloud is the authority.
-  /// Local changes are synced immediately, so cloud always has the latest.
+  /// Replaces local scenarios with cloud scenarios to maintain cross-device consistency.
+  /// This implements last-write-wins conflict resolution: the most recent write (cloud)
+  /// overwrites local data. Stale cloud updates (older than last local sync) are ignored
+  /// by the caller. This prevents duplicates when scenarios are renamed on other devices.
   Future<void> _mergeCustomScenarios(List<dynamic> cloudScenarios) async {
     try {
       // Parse all cloud scenarios

@@ -119,15 +119,20 @@ void main() {
     testWidgets('tabs work properly when bodies exist', (
       WidgetTester tester,
     ) async {
-      // For now, let's just verify basic functionality and skip the FAB tests
-      // until we can debug why the tab controller isn't working in tests
-
       await tester.pumpWidget(makeTestableWidget(const ScenarioEditorScreen()));
       await tester.pumpAndSettle();
+
+      // Verify FAB is visible on Setup tab initially
+      expect(find.text('Add Body'), findsOneWidget);
+      expect(find.byType(FloatingActionButton), findsOneWidget);
 
       // First add a body to enable other tabs
       await tester.tap(find.text('Add Body'));
       await tester.pumpAndSettle();
+
+      // Verify FAB is hidden while bottom sheet is open
+      // This validates the _isBodyBottomSheetOpen functionality
+      expect(find.byType(FloatingActionButton), findsNothing);
 
       // Wait for auto-save to trigger by default (body will auto-save with default values)
       await tester.pump(const Duration(milliseconds: 500)); // Trigger auto-save
@@ -136,12 +141,14 @@ void main() {
       await tester.tapAt(const Offset(100, 100));
       await tester.pumpAndSettle();
 
-      // Verify all tabs exist (this part works)
+      // Verify all tabs exist after adding a body
       expect(find.text('Setup'), findsOneWidget);
       expect(find.text('Physics'), findsOneWidget);
       expect(find.text('Preview'), findsOneWidget);
 
       // TODO: Debug tab controller issues preventing proper tab switching tests
+      // Note: FAB visibility after bottom sheet close depends on bottom sheet 
+      // callback timing which is difficult to reliably test
     });
   });
 

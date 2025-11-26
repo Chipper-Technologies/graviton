@@ -311,16 +311,25 @@ dependencies:
   vibration: ^3.1.3         # Haptic feedback for interactions
   # Firebase dependencies
   firebase_core: ^4.2.0     # Firebase core functionality
+  firebase_auth: ^5.3.3     # Firebase authentication
   firebase_analytics: ^12.0.3 # Analytics and user behavior tracking
   firebase_crashlytics: ^5.0.3 # Crash reporting and monitoring
   firebase_remote_config: ^6.1.0 # Dynamic app configuration
-  cloud_firestore: ^6.0.3   # Firestore database for changelogs
+  cloud_firestore: ^6.0.3   # Firestore database for changelogs and user data
+  # Authentication providers
+  google_sign_in: ^6.2.2    # Google Sign-In integration
+  sign_in_with_apple: ^6.1.3 # Apple Sign-In integration
   # Additional dependencies
   flutter_svg: ^2.2.1       # SVG rendering support
   package_info_plus: ^9.0.0 # Package information utilities
   shared_preferences: ^2.5.3 # Local data persistence
   sliding_up_panel: ^2.0.0+1 # Sliding panel UI component
   url_launcher: ^6.3.1      # URL launching capabilities
+  image_picker: ^1.1.2      # Image selection for profile photos
+  file_picker: ^8.1.6       # File picker for scenario import
+  share_plus: ^10.1.2       # Native sharing for simulation export
+  path_provider: ^2.1.5     # File system paths for caching
+  device_info_plus: ^11.2.0 # Device information utilities
 
 dev_dependencies:
   flutter_test:

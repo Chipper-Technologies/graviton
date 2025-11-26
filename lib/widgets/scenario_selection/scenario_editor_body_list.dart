@@ -21,14 +21,14 @@ class ScenarioEditorBodyList extends StatefulWidget {
   final List<Body> bodies;
   final ValueChanged<List<Body>> onBodiesChanged;
   final VoidCallback onAddBody;
-  final ValueChanged<bool>? onBottomSheetStateChanged;
+  final ValueChanged<bool>? onBottomSheetVisibilityChanged;
 
   const ScenarioEditorBodyList({
     super.key,
     required this.bodies,
     required this.onBodiesChanged,
     required this.onAddBody,
-    this.onBottomSheetStateChanged,
+    this.onBottomSheetVisibilityChanged,
   });
 
   @override
@@ -272,7 +272,7 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
     HapticFeedback.lightImpact();
 
     // Notify parent that bottom sheet is opening
-    widget.onBottomSheetStateChanged?.call(true);
+    widget.onBottomSheetVisibilityChanged?.call(true);
 
     showModalBottomSheet(
       context: context,
@@ -309,7 +309,7 @@ class _ScenarioEditorBodyListState extends State<ScenarioEditorBodyList> {
       ),
     ).whenComplete(() {
       // Notify parent that bottom sheet is closed
-      widget.onBottomSheetStateChanged?.call(false);
+      widget.onBottomSheetVisibilityChanged?.call(false);
     });
   }
 

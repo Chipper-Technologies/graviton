@@ -880,7 +880,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
               bodies: _bodies,
               onBodiesChanged: _onBodiesChanged,
               onAddBody: _addNewBody,
-              onBottomSheetStateChanged: (isOpen) {
+              onBottomSheetVisibilityChanged: (isOpen) {
                 setState(() {
                   _isBodyBottomSheetOpen = isOpen;
                 });

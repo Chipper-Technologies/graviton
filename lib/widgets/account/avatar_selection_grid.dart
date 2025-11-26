@@ -79,8 +79,8 @@ class AvatarSelectionGrid extends StatelessWidget {
                     ClipOval(
                       child: Image.network(
                         photoUrl!,
-                        width: 48,
-                        height: 48,
+                        width: AppTypography.avatarSelectionSize,
+                        height: AppTypography.avatarSelectionSize,
                         fit: BoxFit.cover,
                       ),
                     ),

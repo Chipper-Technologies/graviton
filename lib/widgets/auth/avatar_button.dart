@@ -29,12 +29,17 @@ class AvatarButton extends StatelessWidget {
             child: Tooltip(
               message: l10n.accountButtonTooltip,
               child: Container(
-                width: 32,
-                height: 32,
-                margin: const EdgeInsets.symmetric(vertical: 6),
+                width: AppTypography.avatarSize,
+                height: AppTypography.avatarSize,
+                margin: const EdgeInsets.symmetric(
+                  vertical: AppTypography.avatarMargin,
+                ),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.primaryColor, width: 2),
+                  border: Border.all(
+                    color: AppColors.primaryColor,
+                    width: AppTypography.borderThick,
+                  ),
                   color: user == null
                       ? AppColors.uiWhite.withValues(
                           alpha: AppTypography.opacityBarely,
@@ -73,8 +78,8 @@ class AvatarButton extends StatelessWidget {
         child: Image.network(
           user.photoUrl!,
           fit: BoxFit.cover,
-          width: 32,
-          height: 32,
+          width: AppTypography.avatarSize,
+          height: AppTypography.avatarSize,
           errorBuilder: (context, error, stackTrace) {
             return _buildDefaultAvatar(user);
           },

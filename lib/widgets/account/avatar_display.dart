@@ -19,7 +19,7 @@ class AvatarDisplay extends StatelessWidget {
   const AvatarDisplay({
     this.avatar,
     this.photoUrl,
-    this.size = 96.0,
+    this.size = AppTypography.avatarDisplaySize,
     super.key,
   });
 
