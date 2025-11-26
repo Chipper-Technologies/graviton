@@ -120,4 +120,11 @@ class AppConfig {
   // Screenshot mode for capturing marketing materials
   static bool get enableScreenshotMode =>
       flavor.getFlavorValue(dev: true, prod: false);
+
+  // Apple Sign-In configuration (loaded from config JSON via --dart-define-from-file)
+  static String get appleClientId =>
+      const String.fromEnvironment('apple.clientId');
+
+  static String get appleRedirectUri =>
+      const String.fromEnvironment('apple.redirectUri');
 }

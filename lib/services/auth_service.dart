@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb, debugPrint;
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/enums/auth_provider_type.dart';
 import 'package:graviton/enums/user_avatar.dart';
 import 'package:graviton/models/user_profile.dart';
 import 'package:graviton/services/firebase_service.dart';
-import 'package:graviton/utils/platform_utils.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -435,10 +435,7 @@ class AuthService {
   /// Sign in with Apple
   Future<UserProfile?> signInWithApple() async {
     try {
-      // Check if Apple Sign In is available on this platform
-      if (!PlatformUtils.isApple) {
-        throw Exception('exceptionAppleSignInPlatform');
-      }
+      debugPrint('Apple sign in: Opening authentication dialog...');
 
       // Request credential for the currently signed in Apple account
       final appleCredential = await SignInWithApple.getAppleIDCredential(
@@ -446,6 +443,14 @@ class AuthService {
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          clientId: AppConfig.appleClientId,
+          redirectUri: Uri.parse(AppConfig.appleRedirectUri),
+        ),
+      );
+
+      debugPrint(
+        'Apple sign in: Received credential, signing in to Firebase...',
       );
 
       // Create an OAuthCredential from the credential returned by Apple
@@ -495,6 +500,13 @@ class AuthService {
       final avatar = await _loadSavedAvatar();
       return UserProfile.fromFirebaseUser(user, avatar: avatar);
     } on SignInWithAppleAuthorizationException catch (e, stackTrace) {
+      // User canceled the sign-in flow (closed Custom Tab) - this is normal, not an error
+      if (e.code == AuthorizationErrorCode.canceled) {
+        debugPrint('Apple sign in canceled by user');
+        return null; // Silently return null, don't log as error
+      }
+
+      // Log other Apple-specific errors to Crashlytics
       debugPrint('Apple sign in error: ${e.code} - ${e.message}');
       await FirebaseService.instance.crashlytics?.recordError(
         e,
@@ -933,14 +945,13 @@ class AuthService {
         throw Exception('exceptionNoUserSignedIn');
       }
 
-      // Check platform support
-      if (!PlatformUtils.isApple) {
-        throw Exception('exceptionAppleSignInPlatform');
-      }
-
       // Sign in with Apple to get fresh credential
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [AppleIDAuthorizationScopes.email],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          clientId: AppConfig.appleClientId,
+          redirectUri: Uri.parse(AppConfig.appleRedirectUri),
+        ),
       );
 
       final oauthCredential = OAuthProvider('apple.com').credential(
@@ -949,6 +960,21 @@ class AuthService {
       );
 
       await user.reauthenticateWithCredential(oauthCredential);
+    } on SignInWithAppleAuthorizationException catch (e, stackTrace) {
+      // User canceled the re-authentication flow (closed Custom Tab) - this is normal, not an error
+      if (e.code == AuthorizationErrorCode.canceled) {
+        debugPrint('Apple re-authentication canceled by user');
+        return; // Silently return, don't log as error
+      }
+
+      // Log other Apple-specific errors to Crashlytics
+      debugPrint('Apple re-authentication error: ${e.code} - ${e.message}');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      rethrow;
     } on FirebaseAuthException catch (e, stackTrace) {
       debugPrint('Apple re-authentication error: ${e.code} - ${e.message}');
       await FirebaseService.instance.crashlytics?.recordError(

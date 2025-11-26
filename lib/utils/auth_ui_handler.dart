@@ -6,6 +6,7 @@ import 'package:graviton/services/auth_service.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/state/auth_state.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 /// Utility class for handling authentication UI operations
 ///
@@ -14,7 +15,7 @@ import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 /// making the code more maintainable and easier to test.
 class AuthUIHandler {
   static const int _maxRetries = 3;
-  static const Duration _operationTimeout = Duration(seconds: 30);
+  static const Duration _operationTimeout = Duration(seconds: 60);
 
   /// Execute an operation with retry logic for transient failures
   static Future<T?> executeWithRetry<T>({
@@ -37,6 +38,24 @@ class AuthUIHandler {
           return null;
         }
         // Wait before retry with exponential backoff
+        await Future.delayed(Duration(seconds: 1 << attempt));
+      } on SignInWithAppleAuthorizationException catch (e) {
+        // Don't retry user cancellations - rethrow immediately
+        if (e.code == AuthorizationErrorCode.canceled) {
+          rethrow;
+        }
+        // Retry other Apple sign-in errors
+        if (attempt == _maxRetries) {
+          FirebaseService.instance.recordError(e, StackTrace.current);
+          if (context.mounted) {
+            GravitonSnackBar.show(
+              context: context,
+              message: errorMessage ?? l10n.operationFailed,
+            );
+          }
+          return null;
+        }
+        // Wait before retry
         await Future.delayed(Duration(seconds: 1 << attempt));
       } catch (e) {
         if (attempt == _maxRetries) {

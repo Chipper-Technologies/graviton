@@ -351,7 +351,9 @@ class SignInForm extends StatelessWidget {
   ) {
     final providers = <Widget>[];
 
-    // On Android, offer GitHub only (Apple Sign-In not supported)
+    // On Android, offer GitHub as alternative to Google
+    // Note: Apple Sign-In is disabled on Android due to sessionStorage issues
+    // with Custom Tabs in the OAuth flow
     if (PlatformUtils.isAndroid) {
       providers.add(
         SocialAuthButton(

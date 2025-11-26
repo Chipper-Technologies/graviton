@@ -32,35 +32,33 @@ Where:
 
 ### JSON Format
 
-Each configuration file contains environment properties, URLs, assets, and a nested Firebase object:
+**IMPORTANT**: Configuration files must use a **flat structure** with dot notation for nested properties. The `--dart-define-from-file` flag does not support nested JSON objects.
 
 ```json
 {
   "environment": "dev",
-  "urls": {
-    "github": "https://github.com/Chipper-Technologies/graviton",
-    "website": "https://chippertechnology.com",
-    "privacyPolicy": "https://chippertechnology.com/privacy-policy/graviton",
-    "termsOfService": "https://chippertechnology.com/terms-of-service/graviton",
-    "companyWebsite": "https://chippertechnology.com"
-  },
-  "assets": {
-    "appLogo": "assets/images/app-logo.png",
-    "chipperLogo": "assets/images/chipper-logo.svg",
-    "gravitonLogo": "assets/images/graviton-logo.svg"
-  },
-  "firebase": {
-    "apiKey": "your-api-key",
-    "appId": "your-app-id",
-    "messagingSenderId": "your-sender-id",
-    "projectId": "your-project-id",
-    "authDomain": "your-domain.firebaseapp.com",
-    "storageBucket": "your-bucket.firebasestorage.app",
-    "measurementId": "your-measurement-id",
-    "iosBundleId": "io.chipper.graviton.dev"
-  }
+  "urls.github": "https://github.com/Chipper-Technologies/graviton",
+  "urls.website": "https://chippertechnology.com",
+  "urls.privacyPolicy": "https://chippertechnology.com/privacy-policy/graviton",
+  "urls.termsOfService": "https://chippertechnology.com/terms-of-service/graviton",
+  "urls.companyWebsite": "https://chippertechnology.com",
+  "assets.appLogo": "assets/images/app-logo.png",
+  "assets.chipperLogo": "assets/images/chipper-logo.svg",
+  "assets.gravitonLogo": "assets/images/graviton-logo.svg",
+  "firebase.apiKey": "your-api-key",
+  "firebase.appId": "your-app-id",
+  "firebase.messagingSenderId": "your-sender-id",
+  "firebase.projectId": "your-project-id",
+  "firebase.authDomain": "your-domain.firebaseapp.com",
+  "firebase.storageBucket": "your-bucket.firebasestorage.app",
+  "firebase.measurementId": "your-measurement-id",
+  "firebase.iosBundleId": "io.chipper.graviton.dev",
+  "apple.clientId": "io.chipper.graviton.dev.web",
+  "apple.redirectUri": "https://graviton-dev.firebaseapp.com/__/auth/handler"
 }
 ```
+
+Note: The flat structure with dot notation (e.g., `"firebase.apiKey"`) is required because `String.fromEnvironment()` only reads top-level keys.
 
 ## Setup Instructions
 
@@ -96,7 +94,7 @@ flutter build apk --dart-define-from-file config/prod-android.json --flavor prod
 flutter build web --dart-define-from-file config/prod-web.json --release
 ```
 
-The `--dart-define-from-file` flag loads the JSON and makes nested values available as compile-time constants. For example, `firebase.apiKey` reads the `apiKey` from the `firebase` object.
+The `--dart-define-from-file` flag loads the JSON and makes values available as compile-time constants. The JSON keys use dot notation (e.g., `"firebase.apiKey"`) which can be accessed via `String.fromEnvironment('firebase.apiKey')`.
 
 ### 3. CI/CD Integration
 
