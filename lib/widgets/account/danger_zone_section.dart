@@ -12,7 +12,18 @@ class DangerZoneSection extends StatelessWidget {
   /// Callback when delete account is tapped
   final VoidCallback onDeleteAccount;
 
-  const DangerZoneSection({super.key, required this.onDeleteAccount});
+  /// Whether account deletion is in progress
+  final bool isDeletingAccount;
+
+  /// Whether the section should be disabled (e.g., during sign out)
+  final bool isDisabled;
+
+  const DangerZoneSection({
+    super.key,
+    required this.onDeleteAccount,
+    this.isDeletingAccount = false,
+    this.isDisabled = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +42,33 @@ class DangerZoneSection extends StatelessWidget {
         ),
       ),
       child: HapticListTile(
-        leading: Icon(Icons.delete_forever, color: AppColors.uiRed),
-        title: Text(
-          l10n.deleteAccountButton,
-          style: AppTypography.mediumText.copyWith(color: AppColors.uiRed),
+        leading: isDeletingAccount
+            ? SizedBox(
+                width: AppTypography.iconSizeMedium,
+                height: AppTypography.iconSizeMedium,
+                child: CircularProgressIndicator(
+                  strokeWidth: AppTypography.borderMedium,
+                  color: AppColors.uiRed,
+                ),
+              )
+            : Icon(
+                Icons.delete_forever,
+                color: AppColors.uiRed.withValues(
+                  alpha: (isDisabled || isDeletingAccount)
+                      ? AppTypography.opacityDisabled
+                      : AppTypography.opacityHigh,
+                ),
+              ),
+        title: Opacity(
+          opacity: (isDisabled || isDeletingAccount)
+              ? AppTypography.opacityDisabled
+              : 1.0,
+          child: Text(
+            l10n.deleteAccountButton,
+            style: AppTypography.mediumText.copyWith(color: AppColors.uiRed),
+          ),
         ),
-        onTap: onDeleteAccount,
+        onTap: (isDisabled || isDeletingAccount) ? null : onDeleteAccount,
       ),
     );
   }

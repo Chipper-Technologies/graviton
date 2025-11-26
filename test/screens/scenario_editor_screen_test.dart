@@ -147,7 +147,7 @@ void main() {
       expect(find.text('Preview'), findsOneWidget);
 
       // TODO: Debug tab controller issues preventing proper tab switching tests
-      // Note: FAB visibility after bottom sheet close depends on bottom sheet 
+      // Note: FAB visibility after bottom sheet close depends on bottom sheet
       // callback timing which is difficult to reliably test
     });
   });

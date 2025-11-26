@@ -175,7 +175,12 @@ void main() {
         await tester.tap(find.text('Sign In'));
         await tester.pumpAndSettle();
 
-        // Should find Google sign-in button
+        // On macOS, Google button is behind "More Providers" button
+        // Open the providers modal
+        await tester.tap(find.text('More Providers'));
+        await tester.pumpAndSettle();
+
+        // Should find Google sign-in button in modal
         expect(find.text('Continue with Google'), findsOneWidget);
 
         // Should find SocialAuthButton with animated border
@@ -196,6 +201,11 @@ void main() {
 
         // Navigate to sign-in screen
         await tester.tap(find.text('Sign In'));
+        await tester.pumpAndSettle();
+
+        // On macOS, Google button is behind "More Providers" button
+        // Open the providers modal
+        await tester.tap(find.text('More Providers'));
         await tester.pumpAndSettle();
 
         expect(find.text('Continue with Google'), findsOneWidget);

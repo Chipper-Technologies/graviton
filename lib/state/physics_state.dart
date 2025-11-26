@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/physics_settings.dart';
-import 'package:graviton/services/user_data_sync_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Manages physics settings per scenario with persistence
@@ -62,9 +61,6 @@ class PhysicsState extends ChangeNotifier {
       }
 
       await prefs.setString(_keyPhysicsSettings, jsonEncode(settingsMap));
-
-      // Sync to cloud if user is authenticated
-      await UserDataSyncService.instance.syncScenarioPhysics();
     } catch (e) {
       debugPrint('Failed to save physics settings: $e');
     }

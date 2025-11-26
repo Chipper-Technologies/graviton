@@ -3252,6 +3252,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get continueWithApple => 'Continuer avec Apple';
 
   @override
+  String get moreProviders => 'Plus de Fournisseurs';
+
+  @override
+  String get chooseProvider => 'Choisir le Fournisseur';
+
+  @override
   String get selectAvatarTitle => 'Sélectionner un avatar';
 
   @override
@@ -3353,6 +3359,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get gitHubSignInError =>
       'La connexion GitHub a été annulée ou a échoué. Veuillez réessayer.';
+
+  @override
+  String get appleSignInError =>
+      'La connexion Apple a été annulée ou a échoué. Veuillez réessayer.';
 
   @override
   String get displayNameUpdated => 'Nom d\'affichage mis à jour';
@@ -3457,6 +3467,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get firebaseErrorNetworkFailed =>
       'Erreur réseau. Veuillez vérifier votre connexion.';
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      'Un compte existe déjà avec cet e-mail en utilisant une méthode de connexion différente. Veuillez vous connecter avec la méthode d\'origine.';
 
   @override
   String firebaseErrorDefault(String message) {

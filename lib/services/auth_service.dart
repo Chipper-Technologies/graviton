@@ -1074,6 +1074,8 @@ class AuthService {
         return 'firebaseErrorRequiresRecentLogin';
       case 'network-request-failed':
         return 'firebaseErrorNetworkFailed';
+      case 'account-exists-with-different-credential':
+        return 'firebaseErrorAccountExistsWithDifferentCredential';
       default:
         return 'firebaseErrorDefault:${exception.message}';
     }

@@ -3036,6 +3036,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get continueWithApple => '使用 Apple 继续';
 
   @override
+  String get moreProviders => '更多提供商';
+
+  @override
+  String get chooseProvider => '选择提供商';
+
+  @override
   String get selectAvatarTitle => '选择头像';
 
   @override
@@ -3132,6 +3138,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get gitHubSignInError => 'GitHub登录已取消或失败。请重试。';
 
   @override
+  String get appleSignInError => 'Apple登录已取消或失败。请重试。';
+
+  @override
   String get displayNameUpdated => '显示名称已更新';
 
   @override
@@ -3216,6 +3225,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get firebaseErrorNetworkFailed => '网络错误。请检查您的连接。';
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      '该电子邮件已存在使用不同登录方式的账户。请使用原始方法登录。';
 
   @override
   String firebaseErrorDefault(String message) {

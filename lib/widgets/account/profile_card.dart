@@ -16,9 +16,13 @@ class ProfileCard extends StatelessWidget {
   /// Callback when edit avatar button is pressed
   final VoidCallback onEditAvatar;
 
+  /// Whether the edit button should be disabled
+  final bool isDisabled;
+
   const ProfileCard({
     required this.user,
     required this.onEditAvatar,
+    this.isDisabled = false,
     super.key,
   });
 
@@ -46,25 +50,31 @@ class ProfileCard extends StatelessWidget {
               AvatarDisplay(
                 avatar: user.avatar,
                 photoUrl: user.photoUrl,
-                size: AppTypography.iconSizeHuge *
+                size:
+                    AppTypography.iconSizeHuge *
                     AppTypography.avatarDisplayMultiplier,
               ),
               Positioned(
                 bottom: 0,
                 right: 0,
-                child: HapticIconButton(
-                  icon: const Icon(
-                    Icons.edit,
-                    size: AppTypography.iconSizeSmall,
-                  ),
-                  tooltip: l10n.changeAvatarTooltip,
-                  onPressed: onEditAvatar,
-                  style: IconButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    foregroundColor: AppColors.uiWhite,
-                    padding: const EdgeInsets.all(AppTypography.spacingXSmall),
-                    minimumSize: const Size(32, 32),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                child: Opacity(
+                  opacity: isDisabled ? AppTypography.opacityDisabled : 1.0,
+                  child: HapticIconButton(
+                    icon: const Icon(
+                      Icons.edit,
+                      size: AppTypography.iconSizeSmall,
+                    ),
+                    tooltip: l10n.changeAvatarTooltip,
+                    onPressed: isDisabled ? null : onEditAvatar,
+                    style: IconButton.styleFrom(
+                      backgroundColor: AppColors.primaryColor,
+                      foregroundColor: AppColors.uiWhite,
+                      padding: const EdgeInsets.all(
+                        AppTypography.spacingXSmall,
+                      ),
+                      minimumSize: const Size(32, 32),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
                   ),
                 ),
               ),

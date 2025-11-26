@@ -5,7 +5,6 @@ import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/enums/temperature_unit.dart';
 import 'package:graviton/services/firebase_service.dart';
-import 'package:graviton/services/user_data_sync_service.dart';
 import 'package:graviton/utils/safe_haptic_feedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -209,9 +208,6 @@ class UIState extends ChangeNotifier {
       } else if (value == null) {
         await prefs.remove(key);
       }
-
-      // Sync to cloud if user is authenticated
-      await UserDataSyncService.instance.syncSettings();
     } catch (e) {
       // Ignore errors (e.g., in tests where binding isn't initialized)
       // This allows tests to run without SharedPreferences

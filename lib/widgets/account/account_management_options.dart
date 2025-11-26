@@ -26,12 +26,16 @@ class AccountManagementOptions extends StatelessWidget {
   /// Whether the user is anonymous (affects sign out label)
   final bool isAnonymous;
 
+  /// Whether sign out is in progress
+  final bool isSigningOut;
+
   const AccountManagementOptions({
     super.key,
     required this.onEditAccount,
     required this.onChangeAvatar,
     required this.onSignOut,
     required this.isAnonymous,
+    this.isSigningOut = false,
   });
 
   @override
@@ -58,48 +62,67 @@ class AccountManagementOptions extends StatelessWidget {
             leading: Icon(
               Icons.edit,
               color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
+                alpha: isSigningOut
+                    ? AppTypography.opacityDisabled
+                    : AppTypography.opacityHigh,
               ),
             ),
             title: Text(
               l10n.editAccountInformationTitle,
               style: AppTypography.mediumText.copyWith(
-                color: AppColors.uiWhite,
+                color: AppColors.uiWhite.withValues(
+                  alpha: isSigningOut ? AppTypography.opacityDisabled : 1.0,
+                ),
               ),
             ),
-            onTap: onEditAccount,
+            onTap: isSigningOut ? null : onEditAccount,
           ),
           const SectionDivider.plain(),
           HapticListTile(
             leading: Icon(
               Icons.account_circle,
               color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
+                alpha: isSigningOut
+                    ? AppTypography.opacityDisabled
+                    : AppTypography.opacityHigh,
               ),
             ),
             title: Text(
               l10n.changeAvatarTooltip,
               style: AppTypography.mediumText.copyWith(
-                color: AppColors.uiWhite,
+                color: AppColors.uiWhite.withValues(
+                  alpha: isSigningOut ? AppTypography.opacityDisabled : 1.0,
+                ),
               ),
             ),
-            onTap: onChangeAvatar,
+            onTap: isSigningOut ? null : onChangeAvatar,
           ),
           const SectionDivider.plain(),
           HapticListTile(
-            leading: Icon(
-              Icons.logout,
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
-            ),
+            leading: isSigningOut
+                ? SizedBox(
+                    width: AppTypography.iconSizeMedium,
+                    height: AppTypography.iconSizeMedium,
+                    child: CircularProgressIndicator(
+                      strokeWidth: AppTypography.borderMedium,
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityHigh,
+                      ),
+                    ),
+                  )
+                : Icon(
+                    Icons.logout,
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityHigh,
+                    ),
+                  ),
             title: Text(
               isAnonymous ? l10n.resetSessionButton : l10n.signOutButton,
               style: AppTypography.mediumText.copyWith(
                 color: AppColors.uiWhite,
               ),
             ),
-            onTap: onSignOut,
+            onTap: isSigningOut ? null : onSignOut,
           ),
         ],
       ),

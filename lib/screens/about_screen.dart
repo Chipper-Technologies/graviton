@@ -223,6 +223,27 @@ class _AboutScreenState extends State<AboutScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: AppTypography.spacingMedium),
+
+                  // Terms of Service Section
+                  _buildInfoSection(
+                    context,
+                    icon: Icons.description,
+                    title: l10n.termsOfService,
+                    child: HapticInkWell(
+                      onTap: () => _launchUrl(AppConfig.termsOfServiceUrl),
+                      child: Text(
+                        AppConfig.termsOfServiceUrl,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.primary,
+                          decoration: TextDecoration.underline,
+                          decorationColor: theme.colorScheme.primary.withValues(
+                            alpha: AppTypography.opacityMediumHigh,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: AppTypography.spacingXXLarge),
 
                   // Copyright Section

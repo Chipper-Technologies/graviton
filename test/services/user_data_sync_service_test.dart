@@ -135,24 +135,6 @@ void main() {
       // Test passes if no exception
       expect(true, isTrue);
     });
-
-    test('syncSettings should skip if already syncing', () async {
-      final service = UserDataSyncService.instance;
-
-      await service.syncSettings();
-      await service.syncSettings();
-
-      expect(true, isTrue);
-    });
-
-    test('syncScenarioPhysics should skip if already syncing', () async {
-      final service = UserDataSyncService.instance;
-
-      await service.syncScenarioPhysics();
-      await service.syncScenarioPhysics();
-
-      expect(true, isTrue);
-    });
   });
 
   group('UserDataSyncService - Cloud merge logic', () {

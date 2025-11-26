@@ -183,5 +183,46 @@ void main() {
 
       await tester.binding.setSurfaceSize(null);
     });
+
+    testWidgets('shows spinner when signing out', (tester) async {
+      await tester.pumpWidget(
+        TestUtils.wrapWithMaterialApp(
+          child: AccountManagementOptions(
+            onEditAccount: () {},
+            onChangeAvatar: () {},
+            onSignOut: () {},
+            isAnonymous: false,
+            isSigningOut: true,
+          ),
+        ),
+      );
+
+      // Should show spinner instead of logout icon
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byIcon(Icons.logout), findsNothing);
+    });
+
+    testWidgets('disables sign out button when signing out', (tester) async {
+      bool tapped = false;
+
+      await tester.pumpWidget(
+        TestUtils.wrapWithMaterialApp(
+          child: AccountManagementOptions(
+            onEditAccount: () {},
+            onChangeAvatar: () {},
+            onSignOut: () => tapped = true,
+            isAnonymous: false,
+            isSigningOut: true,
+          ),
+        ),
+      );
+
+      // Try to tap the sign out option
+      await tester.tap(find.byType(ListTile).last);
+      await tester.pump();
+
+      // Should not have called the callback
+      expect(tapped, isFalse);
+    });
   });
 }

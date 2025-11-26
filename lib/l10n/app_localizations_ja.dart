@@ -3055,6 +3055,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get continueWithApple => 'Appleで続ける';
 
   @override
+  String get moreProviders => '他のプロバイダー';
+
+  @override
+  String get chooseProvider => 'プロバイダーを選択';
+
+  @override
   String get selectAvatarTitle => 'アバターを選択';
 
   @override
@@ -3151,6 +3157,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gitHubSignInError => 'GitHubログインがキャンセルされたか失敗しました。もう一度お試しください。';
 
   @override
+  String get appleSignInError => 'Appleログインがキャンセルされたか失敗しました。もう一度お試しください。';
+
+  @override
   String get displayNameUpdated => '表示名を更新しました';
 
   @override
@@ -3236,6 +3245,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get firebaseErrorNetworkFailed => 'ネットワークエラー。接続を確認してください。';
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      'このメールアドレスのアカウントは既に別のサインイン方法で存在しています。元の方法でサインインしてください。';
 
   @override
   String firebaseErrorDefault(String message) {

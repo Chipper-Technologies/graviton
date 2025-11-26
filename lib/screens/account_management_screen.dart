@@ -10,6 +10,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/auth_service.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/state/auth_state.dart';
+import 'package:graviton/utils/auth_ui_handler.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/account/account_management_options.dart';
@@ -54,7 +55,8 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
   bool _acceptedTerms = false;
   bool _isSendingVerification = false;
   bool _isProcessing = false;
-  static const int _maxRetries = 3;
+  bool _isSigningOut = false;
+  bool _isDeletingAccount = false;
   static const Duration _operationTimeout = Duration(seconds: 30);
 
   Timer? _emailVerificationTimer;
@@ -88,66 +90,6 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
         }
       }
     });
-  }
-
-  /// Translates error codes/messages to localized strings
-  String _getLocalizedErrorMessage(String? error, AppLocalizations l10n) {
-    if (error == null) return '';
-
-    // Check if error starts with firebaseErrorDefault (has embedded message)
-    if (error.startsWith('firebaseErrorDefault:')) {
-      final message = error.substring('firebaseErrorDefault:'.length);
-      return l10n.firebaseErrorDefault(message);
-    }
-
-    // Check if error is a localization key
-    switch (error) {
-      // Auth service exceptions
-      case 'exceptionAuthNotInitialized':
-        return 'Authentication service not initialized. Please restart the app.';
-      case 'exceptionGoogleSignInNotInitialized':
-        return l10n.exceptionGoogleSignInNotInitialized;
-      case 'exceptionGoogleSignInTimeout':
-        return l10n.exceptionGoogleSignInTimeout;
-      case 'exceptionAppleSignInPlatform':
-        return l10n.exceptionAppleSignInPlatform;
-      case 'exceptionNoAnonymousUser':
-        return l10n.exceptionNoAnonymousUser;
-      case 'exceptionNoUserSignedIn':
-        return l10n.exceptionNoUserSignedIn;
-
-      // Email verification exceptions
-      case 'exceptionEmailVerificationFailed':
-        return l10n.exceptionEmailVerificationFailed;
-      case 'exceptionEmailVerificationCooldown':
-        return l10n.exceptionEmailVerificationCooldown;
-      case 'exceptionTermsNotAccepted':
-        return l10n.exceptionTermsNotAccepted;
-
-      // Firebase auth errors
-      case 'firebaseErrorUserNotFound':
-        return l10n.firebaseErrorUserNotFound;
-      case 'firebaseErrorWrongPassword':
-        return l10n.firebaseErrorWrongPassword;
-      case 'firebaseErrorInvalidEmail':
-        return l10n.firebaseErrorInvalidEmail;
-      case 'firebaseErrorUserDisabled':
-        return l10n.firebaseErrorUserDisabled;
-      case 'firebaseErrorEmailInUse':
-        return l10n.firebaseErrorEmailInUse;
-      case 'firebaseErrorWeakPassword':
-        return l10n.firebaseErrorWeakPassword;
-      case 'firebaseErrorOperationNotAllowed':
-        return l10n.firebaseErrorOperationNotAllowed;
-      case 'firebaseErrorRequiresRecentLogin':
-        return l10n.firebaseErrorRequiresRecentLogin;
-      case 'firebaseErrorNetworkFailed':
-        return l10n.firebaseErrorNetworkFailed;
-
-      default:
-        // Return the error as-is if it's not a known key
-        return error;
-    }
   }
 
   void _resetToAccountView() {
@@ -238,8 +180,24 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
               emailError: _emailError,
               passwordError: _passwordError,
               isProcessing: _isProcessing,
-              onGoogleSignIn: () => _handleGoogleSignIn(authState, l10n),
-              onGitHubSignIn: () => _handleGitHubSignIn(authState, l10n),
+              onAppleSignIn: () => _handleSocialSignIn(
+                authState,
+                l10n,
+                authState.signInWithApple,
+                l10n.appleSignInError,
+              ),
+              onGoogleSignIn: () => _handleSocialSignIn(
+                authState,
+                l10n,
+                authState.signInWithGoogle,
+                l10n.googleSignInError,
+              ),
+              onGitHubSignIn: () => _handleSocialSignIn(
+                authState,
+                l10n,
+                authState.signInWithGitHub,
+                l10n.gitHubSignInError,
+              ),
               onEmailPasswordAuth: () =>
                   _handleEmailPasswordAuth(authState, l10n),
               onTogglePasswordVisibility: () =>
@@ -388,6 +346,7 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
                 }),
                 onSignOut: () => _signOut(authState, l10n),
                 isAnonymous: authState.isAnonymous,
+                isSigningOut: _isSigningOut,
               ),
               const SizedBox(height: AppTypography.spacingMedium),
               SectionDivider.labeled(
@@ -402,6 +361,8 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
               DangerZoneSection(
                 onDeleteAccount: () =>
                     setState(() => _mode = ScreenMode.deleteConfirmation),
+                isDeletingAccount: _isDeletingAccount,
+                isDisabled: _isSigningOut,
               ),
             ],
           ],
@@ -421,6 +382,7 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
         _selectedAvatar = user.avatar;
         _mode = ScreenMode.avatarSelection;
       }),
+      isDisabled: _isSigningOut,
     );
   }
 
@@ -428,33 +390,19 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     AuthState authState,
     AppLocalizations l10n,
   ) async {
-    // Prevent concurrent operations
-    if (!_canProceed()) {
-      return;
-    }
+    if (!_canProceed()) return;
 
     setState(() => _isProcessing = true);
 
     try {
-      final success = await authState.signInAnonymously();
+      final success = await AuthUIHandler.handleAnonymousSignIn(
+        context: context,
+        authState: authState,
+        l10n: l10n,
+      );
 
-      if (!mounted) return;
-
-      if (success) {
-        GravitonSnackBar.show(
-          context: context,
-          message: l10n.signInAnonymousSuccess,
-        );
+      if (mounted && success) {
         _resetToAccountView();
-      } else {
-        // Show error from AuthState or generic message
-        final errorMessage =
-            authState.error ?? 'Authentication failed. Please try again.';
-        GravitonSnackBar.show(
-          context: context,
-          message: errorMessage,
-          severity: SnackBarSeverity.error,
-        );
       }
     } finally {
       if (mounted) {
@@ -467,176 +415,96 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     AuthState authState,
     AppLocalizations l10n,
   ) async {
-    // Prevent concurrent operations
-    if (!_canProceed()) {
-      return;
-    }
+    if (!_canProceed()) return;
 
-    // Clear previous errors
+    // Clear previous errors and validate
     setState(() {
       _emailError = null;
       _passwordError = null;
-      _isProcessing = true;
     });
 
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    // Validate inputs
+    final emailError = AuthUIHandler.validateEmail(email, l10n);
+    final passwordError = AuthUIHandler.validatePassword(
+      password,
+      l10n,
+      isCreatingAccount: _isCreatingAccount,
+    );
+
+    if (emailError != null || passwordError != null) {
+      setState(() {
+        _emailError = emailError;
+        _passwordError = passwordError;
+      });
+      return;
+    }
+
+    setState(() => _isProcessing = true);
+
     try {
-      // Validate email
-      final email = _emailController.text.trim();
-      if (email.isEmpty) {
-        setState(() => _emailError = l10n.emailRequired);
-        return;
-      }
-      final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-      if (!emailRegex.hasMatch(email)) {
-        setState(() => _emailError = l10n.emailInvalid);
-        return;
-      }
+      final success = await AuthUIHandler.handleEmailPasswordAuth(
+        context: context,
+        authState: authState,
+        l10n: l10n,
+        email: email,
+        password: password,
+        isCreatingAccount: _isCreatingAccount,
+        displayName: _nameController.text.trim(),
+        acceptedTerms: _acceptedTerms,
+      );
 
-      // Validate password
-      final password = _passwordController.text;
-      if (password.isEmpty) {
-        setState(() => _passwordError = l10n.passwordRequired);
-        return;
-      }
-      if (_isCreatingAccount && password.length < 6) {
-        setState(() => _passwordError = l10n.passwordTooShort);
-        return;
-      }
-
-      // Execute with timeout
-      final bool success =
-          await _executeWithRetry(
-            operation: () async {
-              if (_isCreatingAccount) {
-                final displayName = _nameController.text.trim().isEmpty
-                    ? l10n.defaultUserName
-                    : _nameController.text.trim();
-                return await authState.createAccount(
-                  email: email,
-                  password: password,
-                  displayName: displayName,
-                );
-              } else {
-                return await authState.signInWithEmailPassword(
-                  email: email,
-                  password: password,
-                );
-              }
-            },
-            l10n: l10n,
-          ) ??
-          false;
-
-      if (!mounted) return;
-
-      if (success) {
-        // Save terms acceptance after successful account creation
-        if (_isCreatingAccount && _acceptedTerms) {
-          try {
-            await AuthService.instance.saveTermsAcceptance();
-          } catch (e) {
-            FirebaseService.instance.recordError(e, StackTrace.current);
-            debugPrint('Failed to save terms acceptance: $e');
-          }
-        }
-
-        // Auto-send verification email for new accounts
-        if (_isCreatingAccount) {
-          await _sendEmailVerification(l10n);
-        }
-
+      if (mounted && success) {
         _resetToAccountView();
-      } else if (authState.error != null) {
+      } else if (mounted && authState.error != null) {
         // Check for rate limiting
         if (authState.error!.contains('too-many-requests')) {
           _handleRateLimit(l10n, cooldown: const Duration(minutes: 1));
-        } else {
+        }
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
+      }
+    }
+  }
+
+  /// Unified handler for social sign-in (Google, Apple, GitHub)
+  Future<void> _handleSocialSignIn(
+    AuthState authState,
+    AppLocalizations l10n,
+    Future<bool> Function() signInMethod,
+    String errorMessage,
+  ) async {
+    if (!_canProceed()) return;
+
+    setState(() => _isProcessing = true);
+
+    try {
+      final success = await AuthUIHandler.handleSocialSignIn(
+        context: context,
+        authState: authState,
+        l10n: l10n,
+        signInMethod: signInMethod,
+        errorMessage: errorMessage,
+      );
+
+      if (mounted) {
+        if (success) {
+          _resetToAccountView();
+        } else if (authState.error != null) {
+          // Show specific error from AuthState if available
           GravitonSnackBar.show(
             context: context,
-            message: _getLocalizedErrorMessage(authState.error, l10n),
+            message: AuthUIHandler.getLocalizedErrorMessage(
+              authState.error,
+              l10n,
+            ),
+            severity: SnackBarSeverity.error,
           );
         }
-      }
-    } catch (e) {
-      FirebaseService.instance.recordError(e, StackTrace.current);
-      if (mounted) {
-        GravitonSnackBar.show(context: context, message: l10n.operationFailed);
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isProcessing = false);
-      }
-    }
-  }
-
-  Future<void> _handleGoogleSignIn(
-    AuthState authState,
-    AppLocalizations l10n,
-  ) async {
-    if (!_canProceed()) return;
-
-    setState(() => _isProcessing = true);
-
-    try {
-      final success =
-          await _executeWithRetry(
-            operation: () => authState.signInWithGoogle(),
-            l10n: l10n,
-            errorMessage: l10n.googleSignInError,
-          ) ??
-          false;
-
-      if (mounted) {
-        if (success) {
-          _resetToAccountView();
-        }
-        // Don't show error if user simply canceled (success = false, no exception)
-      }
-    } catch (e) {
-      FirebaseService.instance.recordError(e, StackTrace.current);
-      if (mounted) {
-        GravitonSnackBar.show(
-          context: context,
-          message: l10n.googleSignInError,
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isProcessing = false);
-      }
-    }
-  }
-
-  Future<void> _handleGitHubSignIn(
-    AuthState authState,
-    AppLocalizations l10n,
-  ) async {
-    if (!_canProceed()) return;
-
-    setState(() => _isProcessing = true);
-
-    try {
-      final success =
-          await _executeWithRetry(
-            operation: () => authState.signInWithGitHub(),
-            l10n: l10n,
-            errorMessage: l10n.gitHubSignInError,
-          ) ??
-          false;
-
-      if (mounted) {
-        if (success) {
-          _resetToAccountView();
-        }
-        // Don't show error if user simply canceled (success = false, no exception)
-      }
-    } catch (e) {
-      FirebaseService.instance.recordError(e, StackTrace.current);
-      if (mounted) {
-        GravitonSnackBar.show(
-          context: context,
-          message: l10n.gitHubSignInError,
-        );
       }
     } finally {
       if (mounted) {
@@ -677,26 +545,34 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
   }
 
   Future<void> _signOut(AuthState authState, AppLocalizations l10n) async {
-    if (authState.isAnonymous) {
-      // For anonymous users, clear local data and sign in again as a fresh anonymous user
-      await authState.clearAvatar();
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.remove('anonymous_display_name');
-      await authState.signOut();
-      await authState.signInAnonymously();
-      if (mounted) {
-        GravitonSnackBar.show(
-          context: context,
-          message: l10n.sessionResetSuccess,
-        );
-        Navigator.of(context).pop();
+    setState(() => _isSigningOut = true);
+
+    try {
+      if (authState.isAnonymous) {
+        // For anonymous users, clear local data and sign in again as a fresh anonymous user
+        await authState.clearAvatar();
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.remove('anonymous_display_name');
+        await authState.signOut();
+        await authState.signInAnonymously();
+        if (mounted) {
+          GravitonSnackBar.show(
+            context: context,
+            message: l10n.sessionResetSuccess,
+          );
+          // Stay on account screen after sign out
+        }
+      } else {
+        // For authenticated users, normal sign out
+        final success = await authState.signOut();
+        if (mounted && success) {
+          GravitonSnackBar.show(context: context, message: l10n.signOutSuccess);
+          // Stay on account screen after sign out
+        }
       }
-    } else {
-      // For authenticated users, normal sign out
-      final success = await authState.signOut();
-      if (mounted && success) {
-        GravitonSnackBar.show(context: context, message: l10n.signOutSuccess);
-        Navigator.of(context).pop();
+    } finally {
+      if (mounted) {
+        setState(() => _isSigningOut = false);
       }
     }
   }
@@ -706,50 +582,36 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     String? password,
     AppLocalizations l10n,
   ) async {
-    final success = await authState.deleteAccount(password: password);
-    if (mounted) {
-      if (success) {
-        GravitonSnackBar.show(
-          context: context,
-          message: l10n.accountDeletedSuccess,
-        );
-        Navigator.of(context).pop();
-      } else if (authState.error != null) {
-        // Show error from AuthState in snackbar
-        GravitonSnackBar.show(context: context, message: authState.error!);
+    setState(() => _isDeletingAccount = true);
+
+    try {
+      final success = await authState.deleteAccount(password: password);
+      if (mounted) {
+        if (success) {
+          GravitonSnackBar.show(
+            context: context,
+            message: l10n.accountDeletedSuccess,
+          );
+          // Reset to account view after successful deletion
+          _resetToAccountView();
+        } else if (authState.error != null) {
+          // Show error from AuthState in snackbar
+          GravitonSnackBar.show(context: context, message: authState.error!);
+        }
+      }
+      return success;
+    } finally {
+      if (mounted) {
+        setState(() => _isDeletingAccount = false);
       }
     }
-    return success;
   }
 
   Future<void> _sendEmailVerification(AppLocalizations l10n) async {
     setState(() => _isSendingVerification = true);
 
     try {
-      final messageKey = await AuthService.instance.sendEmailVerification();
-
-      if (mounted) {
-        String message;
-        switch (messageKey) {
-          case 'emailVerificationSent':
-            message = l10n.emailVerificationSent;
-            break;
-          case 'emailVerified':
-            message = l10n.emailVerified;
-            break;
-          default:
-            message = messageKey;
-        }
-
-        GravitonSnackBar.show(context: context, message: message);
-      }
-    } catch (e) {
-      if (mounted) {
-        GravitonSnackBar.show(
-          context: context,
-          message: _getLocalizedErrorMessage(e.toString(), l10n),
-        );
-      }
+      await AuthUIHandler.sendEmailVerification(context: context, l10n: l10n);
     } finally {
       if (mounted) {
         setState(() => _isSendingVerification = false);
@@ -792,45 +654,6 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
         setState(() => _isProcessing = false);
       }
     }
-  }
-
-  /// Execute an operation with retry logic for transient failures
-  Future<T?> _executeWithRetry<T>({
-    required Future<T> Function() operation,
-    required AppLocalizations l10n,
-    String? errorMessage,
-  }) async {
-    for (int attempt = 0; attempt <= _maxRetries; attempt++) {
-      try {
-        return await operation().timeout(_operationTimeout);
-      } on TimeoutException {
-        if (attempt == _maxRetries) {
-          if (mounted) {
-            GravitonSnackBar.show(
-              context: context,
-              message: l10n.operationTimeout,
-            );
-          }
-          return null;
-        }
-        // Wait before retry with exponential backoff
-        await Future.delayed(Duration(seconds: 1 << attempt));
-      } catch (e) {
-        if (attempt == _maxRetries) {
-          FirebaseService.instance.recordError(e, StackTrace.current);
-          if (mounted) {
-            GravitonSnackBar.show(
-              context: context,
-              message: errorMessage ?? l10n.operationFailed,
-            );
-          }
-          return null;
-        }
-        // Wait before retry
-        await Future.delayed(Duration(seconds: 1 << attempt));
-      }
-    }
-    return null;
   }
 
   /// Check if operation should proceed (not already processing)

@@ -3245,6 +3245,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get continueWithApple => 'Continuar con Apple';
 
   @override
+  String get moreProviders => 'Más Proveedores';
+
+  @override
+  String get chooseProvider => 'Elegir Proveedor';
+
+  @override
   String get selectAvatarTitle => 'Seleccionar avatar';
 
   @override
@@ -3348,6 +3354,10 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get gitHubSignInError =>
       'El inicio de sesión con GitHub fue cancelado o falló. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get appleSignInError =>
+      'El inicio de sesión con Apple fue cancelado o falló. Por favor, inténtalo de nuevo.';
 
   @override
   String get displayNameUpdated => 'Nombre para mostrar actualizado';
@@ -3454,6 +3464,10 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get firebaseErrorNetworkFailed =>
       'Error de red. Por favor verifique su conexión.';
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      'Ya existe una cuenta con este correo electrónico usando un método de inicio de sesión diferente. Por favor, inicia sesión con el método original.';
 
   @override
   String firebaseErrorDefault(String message) {

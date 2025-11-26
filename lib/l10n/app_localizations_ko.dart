@@ -3068,6 +3068,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get continueWithApple => 'Apple로 계속하기';
 
   @override
+  String get moreProviders => '더 많은 제공업체';
+
+  @override
+  String get chooseProvider => '제공업체 선택';
+
+  @override
   String get selectAvatarTitle => '아바타 선택';
 
   @override
@@ -3164,6 +3170,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get gitHubSignInError => 'GitHub 로그인이 취소되었거나 실패했습니다. 다시 시도해 주세요.';
 
   @override
+  String get appleSignInError => 'Apple 로그인이 취소되었거나 실패했습니다. 다시 시도해 주세요.';
+
+  @override
   String get displayNameUpdated => '표시 이름이 업데이트되었습니다';
 
   @override
@@ -3249,6 +3258,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get firebaseErrorNetworkFailed => '네트워크 오류. 연결을 확인하세요.';
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      '이 이메일로 다른 로그인 방법을 사용하는 계정이 이미 존재합니다. 원래 방법으로 로그인하세요.';
 
   @override
   String firebaseErrorDefault(String message) {

@@ -3219,6 +3219,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get continueWithApple => 'Mit Apple fortfahren';
 
   @override
+  String get moreProviders => 'Weitere Anbieter';
+
+  @override
+  String get chooseProvider => 'Anbieter Wählen';
+
+  @override
   String get selectAvatarTitle => 'Avatar auswählen';
 
   @override
@@ -3324,6 +3330,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'GitHub-Anmeldung wurde abgebrochen oder ist fehlgeschlagen. Bitte versuchen Sie es erneut.';
 
   @override
+  String get appleSignInError =>
+      'Apple-Anmeldung wurde abgebrochen oder ist fehlgeschlagen. Bitte versuchen Sie es erneut.';
+
+  @override
   String get displayNameUpdated => 'Anzeigename aktualisiert';
 
   @override
@@ -3427,6 +3437,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get firebaseErrorNetworkFailed =>
       'Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.';
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      'Es existiert bereits ein Konto mit dieser E-Mail-Adresse, das eine andere Anmeldemethode verwendet. Bitte melden Sie sich mit der ursprünglichen Methode an.';
 
   @override
   String firebaseErrorDefault(String message) {

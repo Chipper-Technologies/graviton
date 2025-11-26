@@ -5668,6 +5668,18 @@ abstract class AppLocalizations {
   /// **'Continue with Apple'**
   String get continueWithApple;
 
+  /// Button text to show additional sign-in providers
+  ///
+  /// In en, this message translates to:
+  /// **'More Providers'**
+  String get moreProviders;
+
+  /// Title for provider selection dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Provider'**
+  String get chooseProvider;
+
   /// Title for avatar selector dialog
   ///
   /// In en, this message translates to:
@@ -5860,6 +5872,12 @@ abstract class AppLocalizations {
   /// **'GitHub sign-in was canceled or failed. Please try again.'**
   String get gitHubSignInError;
 
+  /// Error message when Apple sign-in fails
+  ///
+  /// In en, this message translates to:
+  /// **'Apple sign-in was canceled or failed. Please try again.'**
+  String get appleSignInError;
+
   /// Success message when display name is updated
   ///
   /// In en, this message translates to:
@@ -6027,6 +6045,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Network error. Please check your connection.'**
   String get firebaseErrorNetworkFailed;
+
+  /// Firebase auth error when account exists with different credential
+  ///
+  /// In en, this message translates to:
+  /// **'An account already exists with this email using a different sign-in method. Please sign in with the original method.'**
+  String get firebaseErrorAccountExistsWithDifferentCredential;
 
   /// Default Firebase auth error message with placeholder
   ///

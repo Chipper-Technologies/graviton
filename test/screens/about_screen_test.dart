@@ -126,7 +126,8 @@ void main() {
 
       // Should display privacy policy section
       expect(find.text('Privacy Policy'), findsOneWidget);
-      expect(find.textContaining('chippertechnology.com'), findsOneWidget);
+      // Now we have both Privacy Policy and Terms of Service links
+      expect(find.textContaining('chippertechnology.com'), findsNWidgets(2));
 
       // Should have privacy tip icon
       expect(find.byIcon(Icons.privacy_tip), findsOneWidget);

@@ -22,10 +22,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// - **Account deletion**: Removes cloud data but preserves local storage for continued use
 ///
 /// Data synced includes:
-/// - Custom scenarios
-/// - App settings (UI preferences, physics settings)
-/// - Per-scenario physics settings
-/// - Onboarding completion status
+/// - Custom scenarios (user-created simulations)
+/// - Profile information (display name, avatar selection)
+///
+/// Note: Device-specific settings (UI preferences, physics settings, onboarding status)
+/// are intentionally kept local-only as they represent device-specific preferences.
 class UserDataSyncService {
   static final UserDataSyncService _instance = UserDataSyncService._internal();
   static UserDataSyncService get instance => _instance;
@@ -37,16 +38,14 @@ class UserDataSyncService {
 
   // Document field keys
   static const String _customScenariosField = 'customScenarios';
-  static const String _settingsField = 'settings';
-  static const String _scenarioPhysicsField = 'scenarioPhysics';
-  static const String _onboardingField = 'onboarding';
+  static const String _profileField = 'profile';
   static const String _lastSyncField = 'lastSync';
   static const String _createdAtField = 'createdAt';
   static const String _updatedAtField = 'updatedAt';
 
-  // Settings sub-fields (from UIState, SimulationState, PhysicsState)
-  static const String _uiSettingsField = 'ui';
-  static const String _simulationSettingsField = 'simulation';
+  // Profile sub-fields
+  static const String _displayNameField = 'displayName';
+  static const String _avatarField = 'avatar';
 
   // Sync state
   StreamSubscription<DocumentSnapshot>? _syncSubscription;
@@ -121,13 +120,11 @@ class UserDataSyncService {
 
   /// Sync local change to cloud
   ///
-  /// Call this whenever user makes a change locally (saves scenario, changes setting, etc.)
+  /// Call this whenever user saves or modifies custom scenarios or profile information.
   /// This uploads the change to Firestore if user is authenticated.
   Future<void> syncToCloud({
     List<CustomScenario>? scenarios,
-    Map<String, dynamic>? settings,
-    Map<String, dynamic>? scenarioPhysics,
-    Map<String, dynamic>? onboarding,
+    Map<String, dynamic>? profile,
   }) async {
     final user = await AuthService.instance.getCurrentUserProfile();
     if (user == null || user.isAnonymous) {
@@ -154,16 +151,8 @@ class UserDataSyncService {
             .toList();
       }
 
-      if (settings != null) {
-        updates[_settingsField] = settings;
-      }
-
-      if (scenarioPhysics != null) {
-        updates[_scenarioPhysicsField] = scenarioPhysics;
-      }
-
-      if (onboarding != null) {
-        updates[_onboardingField] = onboarding;
+      if (profile != null) {
+        updates[_profileField] = profile;
       }
 
       final userDoc = _getUserDocument(user.uid);
@@ -195,45 +184,6 @@ class UserDataSyncService {
       await syncToCloud(scenarios: scenarios);
     } catch (e, stackTrace) {
       debugPrint('UserDataSync: Failed to sync custom scenarios: $e');
-      FirebaseService.instance.recordError(e, stackTrace);
-    }
-  }
-
-  /// Sync settings to cloud
-  ///
-  /// Convenience method for syncing app settings.
-  Future<void> syncSettings() async {
-    if (_isSyncing) {
-      return;
-    }
-
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final settings = await _gatherSettingsData(prefs);
-      await syncToCloud(settings: settings);
-    } catch (e, stackTrace) {
-      debugPrint('UserDataSync: Failed to sync settings: $e');
-      FirebaseService.instance.recordError(e, stackTrace);
-    }
-  }
-
-  /// Sync per-scenario physics settings to cloud
-  ///
-  /// Convenience method for syncing physics settings.
-  Future<void> syncScenarioPhysics() async {
-    if (_isSyncing) {
-      debugPrint(
-        'UserDataSync: Already syncing, skipping scenario physics sync',
-      );
-      return;
-    }
-
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final scenarioPhysics = await _gatherScenarioPhysicsData(prefs);
-      await syncToCloud(scenarioPhysics: scenarioPhysics);
-    } catch (e, stackTrace) {
-      debugPrint('UserDataSync: Failed to sync scenario physics: $e');
       FirebaseService.instance.recordError(e, stackTrace);
     }
   }
@@ -332,96 +282,30 @@ class UserDataSyncService {
 
   /// Gather all local data for migration/sync
   Future<Map<String, dynamic>> _gatherLocalData() async {
-    final prefs = await SharedPreferences.getInstance();
-
     // Gather custom scenarios
     final scenarios = await CustomScenarioStorage.getAllScenarios();
     final scenariosJson = scenarios.map((s) => s.toJson()).toList();
 
-    // Gather settings
-    final settings = await _gatherSettingsData(prefs);
+    // Gather profile information
+    final profile = await _gatherProfileData();
 
-    // Gather per-scenario physics settings
-    final scenarioPhysics = await _gatherScenarioPhysicsData(prefs);
-
-    // Gather onboarding status
-    final onboarding = await _gatherOnboardingData(prefs);
-
-    return {
-      _customScenariosField: scenariosJson,
-      _settingsField: settings,
-      _scenarioPhysicsField: scenarioPhysics,
-      _onboardingField: onboarding,
-    };
+    return {_customScenariosField: scenariosJson, _profileField: profile};
   }
 
-  /// Gather settings data from SharedPreferences
-  Future<Map<String, dynamic>> _gatherSettingsData(
-    SharedPreferences prefs,
-  ) async {
-    // UI settings (from UIState)
-    final uiSettings = <String, dynamic>{};
-    for (final key in prefs.getKeys()) {
-      if (key.startsWith('ui_')) {
-        final value = prefs.get(key);
-        if (value != null) {
-          uiSettings[key] = value;
-        }
-      }
+  /// Gather profile data
+  Future<Map<String, dynamic>> _gatherProfileData() async {
+    final user = await AuthService.instance.getCurrentUserProfile();
+    final profile = <String, dynamic>{};
+
+    if (user?.displayName != null) {
+      profile[_displayNameField] = user!.displayName;
     }
 
-    // Simulation settings (from SimulationState)
-    final simulationSettings = <String, dynamic>{};
-    for (final key in prefs.getKeys()) {
-      if (key.startsWith('simulation_') && !key.contains('_scenario_')) {
-        final value = prefs.get(key);
-        if (value != null) {
-          simulationSettings[key] = value;
-        }
-      }
+    if (user?.avatar != null) {
+      profile[_avatarField] = user!.avatar!.name;
     }
 
-    return {
-      _uiSettingsField: uiSettings,
-      _simulationSettingsField: simulationSettings,
-    };
-  }
-
-  /// Gather per-scenario physics settings
-  Future<Map<String, dynamic>> _gatherScenarioPhysicsData(
-    SharedPreferences prefs,
-  ) async {
-    final scenarioPhysics = <String, dynamic>{};
-
-    // Per-scenario physics settings (from PhysicsState)
-    for (final key in prefs.getKeys()) {
-      if (key.startsWith('simulation_') && key.contains('_scenario_')) {
-        final value = prefs.get(key);
-        if (value != null) {
-          scenarioPhysics[key] = value;
-        }
-      }
-    }
-
-    return scenarioPhysics;
-  }
-
-  /// Gather onboarding data
-  Future<Map<String, dynamic>> _gatherOnboardingData(
-    SharedPreferences prefs,
-  ) async {
-    final onboarding = <String, dynamic>{};
-
-    for (final key in prefs.getKeys()) {
-      if (key.startsWith('onboarding_')) {
-        final value = prefs.get(key);
-        if (value != null) {
-          onboarding[key] = value;
-        }
-      }
-    }
-
-    return onboarding;
+    return profile;
   }
 
   /// Merge cloud data to local storage
@@ -435,8 +319,6 @@ class UserDataSyncService {
       _isSyncing = true;
       debugPrint('UserDataSync: Merging cloud data to local...');
 
-      final prefs = await SharedPreferences.getInstance();
-
       // Merge custom scenarios
       if (cloudData.containsKey(_customScenariosField)) {
         await _mergeCustomScenarios(
@@ -444,28 +326,9 @@ class UserDataSyncService {
         );
       }
 
-      // Merge settings
-      if (cloudData.containsKey(_settingsField)) {
-        await _mergeSettings(
-          prefs,
-          cloudData[_settingsField] as Map<String, dynamic>,
-        );
-      }
-
-      // Merge per-scenario physics
-      if (cloudData.containsKey(_scenarioPhysicsField)) {
-        await _mergeScenarioPhysics(
-          prefs,
-          cloudData[_scenarioPhysicsField] as Map<String, dynamic>,
-        );
-      }
-
-      // Merge onboarding status
-      if (cloudData.containsKey(_onboardingField)) {
-        await _mergeOnboarding(
-          prefs,
-          cloudData[_onboardingField] as Map<String, dynamic>,
-        );
+      // Merge profile information
+      if (cloudData.containsKey(_profileField)) {
+        await _mergeProfile(cloudData[_profileField] as Map<String, dynamic>);
       }
     } catch (e, stackTrace) {
       debugPrint('UserDataSync: Failed to merge cloud data: $e');
@@ -511,65 +374,41 @@ class UserDataSyncService {
     }
   }
 
-  /// Merge settings from cloud
-  Future<void> _mergeSettings(
-    SharedPreferences prefs,
-    Map<String, dynamic> settings,
-  ) async {
-    // Merge UI settings
-    if (settings.containsKey(_uiSettingsField)) {
-      final uiSettings = settings[_uiSettingsField] as Map<String, dynamic>;
-      for (final entry in uiSettings.entries) {
-        await _setPreferenceValue(prefs, entry.key, entry.value);
+  /// Merge profile information from cloud
+  Future<void> _mergeProfile(Map<String, dynamic> profile) async {
+    try {
+      // Note: Display name is stored in Firebase Auth, but we can use this
+      // to update local anonymous user display name if needed
+      final prefs = await SharedPreferences.getInstance();
+
+      if (profile.containsKey(_displayNameField)) {
+        await prefs.setString(
+          'anonymous_display_name',
+          profile[_displayNameField] as String,
+        );
       }
-    }
 
-    // Merge simulation settings
-    if (settings.containsKey(_simulationSettingsField)) {
-      final simSettings =
-          settings[_simulationSettingsField] as Map<String, dynamic>;
-      for (final entry in simSettings.entries) {
-        await _setPreferenceValue(prefs, entry.key, entry.value);
-      }
+      // Avatar will be handled by the auth system when profile is reloaded
+      debugPrint('UserDataSync: Merged profile data from cloud');
+    } catch (e) {
+      debugPrint('UserDataSync: Failed to merge profile: $e');
     }
   }
 
-  /// Merge per-scenario physics settings from cloud
-  Future<void> _mergeScenarioPhysics(
-    SharedPreferences prefs,
-    Map<String, dynamic> scenarioPhysics,
-  ) async {
-    for (final entry in scenarioPhysics.entries) {
-      await _setPreferenceValue(prefs, entry.key, entry.value);
+  /// Sync profile information to cloud
+  ///
+  /// Convenience method for syncing profile changes (display name, avatar).
+  Future<void> syncProfile() async {
+    if (_isSyncing) {
+      return;
     }
-  }
 
-  /// Merge onboarding status from cloud
-  Future<void> _mergeOnboarding(
-    SharedPreferences prefs,
-    Map<String, dynamic> onboarding,
-  ) async {
-    for (final entry in onboarding.entries) {
-      await _setPreferenceValue(prefs, entry.key, entry.value);
-    }
-  }
-
-  /// Set a preference value based on its type
-  Future<void> _setPreferenceValue(
-    SharedPreferences prefs,
-    String key,
-    dynamic value,
-  ) async {
-    if (value is bool) {
-      await prefs.setBool(key, value);
-    } else if (value is int) {
-      await prefs.setInt(key, value);
-    } else if (value is double) {
-      await prefs.setDouble(key, value);
-    } else if (value is String) {
-      await prefs.setString(key, value);
-    } else if (value is List<String>) {
-      await prefs.setStringList(key, value);
+    try {
+      final profile = await _gatherProfileData();
+      await syncToCloud(profile: profile);
+    } catch (e, stackTrace) {
+      debugPrint('UserDataSync: Failed to sync profile: $e');
+      FirebaseService.instance.recordError(e, stackTrace);
     }
   }
 }

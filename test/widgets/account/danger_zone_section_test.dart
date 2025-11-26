@@ -97,5 +97,40 @@ void main() {
 
       expect(tapCount, equals(2));
     });
+
+    testWidgets('shows spinner when deleting account', (tester) async {
+      await tester.pumpWidget(
+        TestUtils.wrapWithMaterialApp(
+          child: DangerZoneSection(
+            onDeleteAccount: () {},
+            isDeletingAccount: true,
+          ),
+        ),
+      );
+
+      // Should show spinner instead of delete icon
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byIcon(Icons.delete_forever), findsNothing);
+    });
+
+    testWidgets('disables delete button when deleting', (tester) async {
+      bool tapped = false;
+
+      await tester.pumpWidget(
+        TestUtils.wrapWithMaterialApp(
+          child: DangerZoneSection(
+            onDeleteAccount: () => tapped = true,
+            isDeletingAccount: true,
+          ),
+        ),
+      );
+
+      // Try to tap the delete button
+      await tester.tap(find.byType(ListTile));
+      await tester.pump();
+
+      // Should not have called the callback
+      expect(tapped, isFalse);
+    });
   });
 }

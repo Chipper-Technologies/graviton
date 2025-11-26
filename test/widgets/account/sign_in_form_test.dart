@@ -24,7 +24,9 @@ void main() {
       nameController.dispose();
     });
 
-    testWidgets('displays Google sign-in button', (tester) async {
+    testWidgets('displays platform-specific primary provider button', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         TestUtils.wrapWithMaterialApp(
           child: SignInForm(
@@ -35,6 +37,7 @@ void main() {
             obscurePassword: true,
             isCreatingAccount: false,
             acceptedTerms: false,
+            onAppleSignIn: () {},
             onGoogleSignIn: () {},
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
@@ -48,8 +51,9 @@ void main() {
         ),
       );
 
-      // Should have Google button (SocialAuthButton)
+      // Should have primary provider button and More Providers button
       expect(find.byType(ElevatedButton), findsWidgets);
+      expect(find.byType(OutlinedButton), findsOneWidget);
     });
 
     testWidgets('displays email and password fields', (tester) async {
@@ -63,6 +67,7 @@ void main() {
             obscurePassword: true,
             isCreatingAccount: false,
             acceptedTerms: false,
+            onAppleSignIn: () {},
             onGoogleSignIn: () {},
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
@@ -90,6 +95,7 @@ void main() {
             obscurePassword: true,
             isCreatingAccount: true,
             acceptedTerms: false,
+            onAppleSignIn: () {},
             onGoogleSignIn: () {},
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
@@ -118,6 +124,7 @@ void main() {
             isCreatingAccount: true,
             acceptedTerms: false,
             onGoogleSignIn: () {},
+            onAppleSignIn: () {},
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
             onTogglePasswordVisibility: () {},
@@ -144,6 +151,7 @@ void main() {
             obscurePassword: true,
             isCreatingAccount: false,
             acceptedTerms: false,
+            onAppleSignIn: () {},
             onGoogleSignIn: () {},
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
@@ -160,7 +168,7 @@ void main() {
       expect(find.byType(Checkbox), findsNothing);
     });
 
-    testWidgets('calls onGoogleSignIn when Google button tapped', (
+    testWidgets('calls appropriate callback when primary provider tapped', (
       tester,
     ) async {
       bool tapped = false;
@@ -175,6 +183,7 @@ void main() {
             obscurePassword: true,
             isCreatingAccount: false,
             acceptedTerms: false,
+            onAppleSignIn: () => tapped = true,
             onGoogleSignIn: () => tapped = true,
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
@@ -188,13 +197,51 @@ void main() {
         ),
       );
 
-      // Find and tap the first elevated button (Google sign-in)
+      // Find and tap the first elevated button (primary provider)
       final buttons = find.byType(ElevatedButton);
       if (tester.any(buttons)) {
         await tester.tap(buttons.first);
         await tester.pump();
         expect(tapped, isTrue);
       }
+    });
+
+    testWidgets('shows provider selection dialog when More Providers tapped', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        TestUtils.wrapWithMaterialApp(
+          child: SignInForm(
+            formKey: formKey,
+            emailController: emailController,
+            passwordController: passwordController,
+            nameController: nameController,
+            obscurePassword: true,
+            isCreatingAccount: false,
+            acceptedTerms: false,
+            onAppleSignIn: () {},
+            onGoogleSignIn: () {},
+            onGitHubSignIn: () {},
+            onEmailPasswordAuth: () {},
+            onTogglePasswordVisibility: () {},
+            onToggleMode: () {},
+            onEmailChanged: (_) {},
+            onPasswordChanged: (_) {},
+            onNameChanged: (_) {},
+            onTermsChanged: (_) {},
+          ),
+        ),
+      );
+
+      // Find and tap the "More Providers" button
+      final moreProvidersButton = find.byType(OutlinedButton);
+      expect(moreProvidersButton, findsOneWidget);
+
+      await tester.tap(moreProvidersButton);
+      await tester.pumpAndSettle();
+
+      // Should show bottom sheet with alternative providers
+      expect(find.byType(BottomSheet), findsOneWidget);
     });
 
     testWidgets('calls onTogglePasswordVisibility when eye icon tapped', (
@@ -212,6 +259,7 @@ void main() {
             obscurePassword: true,
             isCreatingAccount: false,
             acceptedTerms: false,
+            onAppleSignIn: () {},
             onGoogleSignIn: () {},
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
@@ -247,6 +295,7 @@ void main() {
             obscurePassword: true,
             isCreatingAccount: true,
             acceptedTerms: false,
+            onAppleSignIn: () {},
             onGoogleSignIn: () {},
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
@@ -281,6 +330,7 @@ void main() {
             obscurePassword: true,
             isCreatingAccount: true,
             acceptedTerms: true,
+            onAppleSignIn: () {},
             onGoogleSignIn: () {},
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
@@ -314,6 +364,7 @@ void main() {
             isCreatingAccount: false,
             acceptedTerms: false,
             emailError: 'Invalid email',
+            onAppleSignIn: () {},
             onGoogleSignIn: () {},
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
@@ -342,6 +393,7 @@ void main() {
             isCreatingAccount: false,
             acceptedTerms: false,
             passwordError: 'Password too short',
+            onAppleSignIn: () {},
             onGoogleSignIn: () {},
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
@@ -371,6 +423,7 @@ void main() {
             obscurePassword: true,
             isCreatingAccount: false,
             acceptedTerms: false,
+            onAppleSignIn: () {},
             onGoogleSignIn: () {},
             onGitHubSignIn: () {},
             onEmailPasswordAuth: () {},
@@ -408,6 +461,7 @@ void main() {
               obscurePassword: true,
               isCreatingAccount: false,
               acceptedTerms: false,
+              onAppleSignIn: () {},
               onGoogleSignIn: () {},
               onGitHubSignIn: () {},
               onEmailPasswordAuth: () {},

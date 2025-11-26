@@ -4186,6 +4186,14 @@
   "@continueWithApple": {
     "description": "Button text for Apple sign-in"
   },
+  "moreProviders": "More Providers",
+  "@moreProviders": {
+    "description": "Button text to show additional sign-in providers"
+  },
+  "chooseProvider": "Choose Provider",
+  "@chooseProvider": {
+    "description": "Title for provider selection dialog"
+  },
   "selectAvatarTitle": "Select Avatar",
   "@selectAvatarTitle": {
     "description": "Title for avatar selector dialog"
@@ -4318,6 +4326,10 @@
   "@gitHubSignInError": {
     "description": "Error message when GitHub sign-in fails"
   },
+  "appleSignInError": "Apple sign-in was canceled or failed. Please try again.",
+  "@appleSignInError": {
+    "description": "Error message when Apple sign-in fails"
+  },
   "displayNameUpdated": "Display name updated",
   "@displayNameUpdated": {
     "description": "Success message when display name is updated"
@@ -4435,6 +4447,10 @@
   "firebaseErrorNetworkFailed": "Network error. Please check your connection.",
   "@firebaseErrorNetworkFailed": {
     "description": "Firebase auth error for network failures"
+  },
+  "firebaseErrorAccountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method. Please sign in with the original method.",
+  "@firebaseErrorAccountExistsWithDifferentCredential": {
+    "description": "Firebase auth error when account exists with different credential"
   },
   "firebaseErrorDefault": "An error occurred: {message}",
   "@firebaseErrorDefault": {

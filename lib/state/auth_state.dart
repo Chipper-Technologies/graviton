@@ -260,6 +260,10 @@ class AuthState extends ChangeNotifier {
 
       // Refresh current user profile
       _currentUser = await AuthService.instance.getCurrentUserProfile();
+
+      // Sync profile to cloud
+      await UserDataSyncService.instance.syncProfile();
+
       _setLoading(false);
       return true;
     } catch (e) {
@@ -279,6 +283,10 @@ class AuthState extends ChangeNotifier {
 
       // Refresh current user profile
       _currentUser = await AuthService.instance.getCurrentUserProfile();
+
+      // Sync profile to cloud
+      await UserDataSyncService.instance.syncProfile();
+
       _setLoading(false);
       return true;
     } catch (e) {

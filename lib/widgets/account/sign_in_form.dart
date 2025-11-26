@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/widgets/account/terms_acceptance_checkbox.dart';
 import 'package:graviton/widgets/auth/social_auth_button.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
@@ -57,6 +56,9 @@ class SignInForm extends StatelessWidget {
   /// Callback when GitHub sign-in is tapped
   final VoidCallback onGitHubSignIn;
 
+  /// Callback when Apple sign-in is tapped
+  final VoidCallback onAppleSignIn;
+
   /// Callback when email/password auth is submitted
   final VoidCallback onEmailPasswordAuth;
 
@@ -100,6 +102,7 @@ class SignInForm extends StatelessWidget {
     this.passwordError,
     required this.onGoogleSignIn,
     required this.onGitHubSignIn,
+    required this.onAppleSignIn,
     required this.onEmailPasswordAuth,
     required this.onTogglePasswordVisibility,
     required this.onToggleMode,
@@ -134,22 +137,11 @@ class SignInForm extends StatelessWidget {
                   ),
                 )
               else ...[
-                SocialAuthButton(
-                  assetPath: 'assets/images/google-logo.svg',
-                  rainbowBorder: true,
-                  label: l10n.continueWithGoogle,
-                  onPressed: onGoogleSignIn,
-                ),
-                // GitHub sign-in is not supported on macOS
-                if (!Platform.isMacOS) ...[
-                  const SizedBox(height: AppTypography.spacingMedium),
-                  SocialAuthButton(
-                    assetPath: 'assets/images/github-logo.svg',
-                    borderColor: AppColors.uiWhite,
-                    label: l10n.continueWithGitHub,
-                    onPressed: onGitHubSignIn,
-                  ),
-                ],
+                // Platform-specific primary provider
+                _buildPrimaryProviderButton(l10n),
+                const SizedBox(height: AppTypography.spacingMedium),
+                // More providers button
+                _buildMoreProvidersButton(context, l10n),
               ],
               SectionDivider.labeled(
                 l10n.orDivider,
@@ -252,5 +244,194 @@ class SignInForm extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Builds the primary provider button based on platform
+  Widget _buildPrimaryProviderButton(AppLocalizations l10n) {
+    // Android: Show Google
+    if (PlatformUtils.isAndroid) {
+      return SocialAuthButton(
+        assetPath: 'assets/images/google-logo.svg',
+        rainbowBorder: true,
+        label: l10n.continueWithGoogle,
+        onPressed: onGoogleSignIn,
+      );
+    }
+    // iOS/macOS: Show Apple (or Google if on macOS since Apple isn't available)
+    else if (PlatformUtils.isIOS || PlatformUtils.isMacOS) {
+      return SocialAuthButton(
+        assetPath: 'assets/images/apple-logo.svg',
+        borderColor: AppColors.uiWhite,
+        label: l10n.continueWithApple,
+        onPressed: onAppleSignIn,
+      );
+    }
+    // Default: Show Google for other platforms
+    else {
+      return SocialAuthButton(
+        assetPath: 'assets/images/google-logo.svg',
+        rainbowBorder: true,
+        label: l10n.continueWithGoogle,
+        onPressed: onGoogleSignIn,
+      );
+    }
+  }
+
+  /// Builds the "More Providers" button
+  Widget _buildMoreProvidersButton(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) {
+    return OutlinedButton.icon(
+      onPressed: () => _showProviderSelectionDialog(context, l10n),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.uiWhite,
+        side: BorderSide(
+          color: AppColors.uiWhite.withValues(
+            alpha: AppTypography.opacityMedium,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(
+          vertical: AppTypography.spacingMedium,
+        ),
+      ),
+      icon: const Icon(Icons.more_horiz, size: AppTypography.iconSizeMedium),
+      label: Text(
+        l10n.moreProviders,
+        style: AppTypography.mediumText.copyWith(color: AppColors.uiWhite),
+      ),
+    );
+  }
+
+  /// Shows a dialog to select from other available providers
+  void _showProviderSelectionDialog(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.backgroundBlack,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppTypography.radiusLarge),
+        ),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(AppTypography.spacingXLarge),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Title
+                Text(
+                  l10n.chooseProvider,
+                  style: AppTypography.largeText.copyWith(
+                    color: AppColors.uiWhite,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppTypography.spacingXLarge),
+                // Available providers (excluding the primary one shown above)
+                ..._buildAlternativeProviders(context, l10n),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /// Builds list of alternative provider buttons
+  List<Widget> _buildAlternativeProviders(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) {
+    final providers = <Widget>[];
+
+    // On Android, offer GitHub only (Apple Sign-In not supported)
+    if (PlatformUtils.isAndroid) {
+      providers.add(
+        SocialAuthButton(
+          assetPath: 'assets/images/github-logo.svg',
+          borderColor: AppColors.uiWhite,
+          label: l10n.continueWithGitHub,
+          onPressed: () {
+            Navigator.pop(context);
+            onGitHubSignIn();
+          },
+        ),
+      );
+    }
+    // On iOS, offer Google and GitHub
+    else if (PlatformUtils.isIOS) {
+      providers.add(
+        SocialAuthButton(
+          assetPath: 'assets/images/google-logo.svg',
+          rainbowBorder: true,
+          label: l10n.continueWithGoogle,
+          onPressed: () {
+            Navigator.pop(context);
+            onGoogleSignIn();
+          },
+        ),
+      );
+      providers.add(const SizedBox(height: AppTypography.spacingMedium));
+      providers.add(
+        SocialAuthButton(
+          assetPath: 'assets/images/github-logo.svg',
+          borderColor: AppColors.uiWhite,
+          label: l10n.continueWithGitHub,
+          onPressed: () {
+            Navigator.pop(context);
+            onGitHubSignIn();
+          },
+        ),
+      );
+    }
+    // On macOS, offer Google only (GitHub has issues on macOS)
+    else if (PlatformUtils.isMacOS) {
+      providers.add(
+        SocialAuthButton(
+          assetPath: 'assets/images/google-logo.svg',
+          rainbowBorder: true,
+          label: l10n.continueWithGoogle,
+          onPressed: () {
+            Navigator.pop(context);
+            onGoogleSignIn();
+          },
+        ),
+      );
+    }
+    // Default: offer Apple and GitHub
+    else {
+      providers.add(
+        SocialAuthButton(
+          assetPath: 'assets/images/apple-logo.svg',
+          borderColor: AppColors.uiWhite,
+          label: l10n.continueWithApple,
+          onPressed: () {
+            Navigator.pop(context);
+            onAppleSignIn();
+          },
+        ),
+      );
+      providers.add(const SizedBox(height: AppTypography.spacingMedium));
+      providers.add(
+        SocialAuthButton(
+          assetPath: 'assets/images/github-logo.svg',
+          borderColor: AppColors.uiWhite,
+          label: l10n.continueWithGitHub,
+          onPressed: () {
+            Navigator.pop(context);
+            onGitHubSignIn();
+          },
+        ),
+      );
+    }
+
+    return providers;
   }
 }
