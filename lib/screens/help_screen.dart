@@ -39,40 +39,47 @@ class HelpScreen extends StatelessWidget {
             child: Column(
               children: [
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // What to Do section
-                        _buildSection(
-                          context,
-                          icon: Icons.rocket_launch,
-                          title: l10n.whatToDoTitle,
-                          content: l10n.whatToDoDescription,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: AppTypography.maxContentWidth,
                         ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // What to Do section
+                            _buildSection(
+                              context,
+                              icon: Icons.rocket_launch,
+                              title: l10n.whatToDoTitle,
+                              content: l10n.whatToDoDescription,
+                            ),
 
-                        // Learning Objectives section
-                        _buildObjectivesSection(context, l10n),
+                            // Learning Objectives section
+                            _buildObjectivesSection(context, l10n),
 
-                        // Quick Start section
-                        _buildQuickStartSection(context, l10n),
-                        SizedBox(height: AppTypography.spacingXXLarge),
+                            // Quick Start section
+                            _buildQuickStartSection(context, l10n),
+                            SizedBox(height: AppTypography.spacingXXLarge),
 
-                        // Call to action
-                        Center(
-                          child: ElevatedButton.icon(
-                            onPressed: () => Navigator.of(context).pop(),
-                            icon: const Icon(Icons.explore),
-                            label: Text(l10n.getStarted),
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 12,
+                            // Call to action
+                            Center(
+                              child: ElevatedButton.icon(
+                                onPressed: () => Navigator.of(context).pop(),
+                                icon: const Icon(Icons.explore),
+                                label: Text(l10n.getStarted),
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 12,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),

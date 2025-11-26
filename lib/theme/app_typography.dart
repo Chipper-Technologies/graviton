@@ -111,6 +111,9 @@ class AppTypography {
   /// Multiplier for extra large warning icons
   static const double iconWarningMultiplier = 2.0;
 
+  /// Maximum width for forms and content to prevent stretching on large screens
+  static const double maxContentWidth = 600.0;
+
   // =============================================================================
   // TEXT STYLES
   // =============================================================================

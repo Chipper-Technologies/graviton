@@ -97,163 +97,176 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
             child: Column(
               children: [
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Physics section
-                        SectionDivider.labeled(
-                          l10n.physicsSection,
-                          bottomSpacing: AppTypography.spacingMedium,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: AppTypography.maxContentWidth,
                         ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Physics section
+                            SectionDivider.labeled(
+                              l10n.physicsSection,
+                              bottomSpacing: AppTypography.spacingMedium,
+                            ),
 
-                        HapticSliderOption.detailed(
-                          label: l10n.gravitationalConstant,
-                          value: _gravitationalConstant,
-                          min: 0.1,
-                          max: 10.0,
-                          divisions: 99,
-                          icon: Icons.public,
-                          onChanged: (value) {
-                            setState(() => _gravitationalConstant = value);
-                            _updateSettings();
-                          },
-                          formatter: (value) =>
-                              NumberUtils.formatDecimal(value, 2),
+                            HapticSliderOption.detailed(
+                              label: l10n.gravitationalConstant,
+                              value: _gravitationalConstant,
+                              min: 0.1,
+                              max: 10.0,
+                              divisions: 99,
+                              icon: Icons.public,
+                              onChanged: (value) {
+                                setState(() => _gravitationalConstant = value);
+                                _updateSettings();
+                              },
+                              formatter: (value) =>
+                                  NumberUtils.formatDecimal(value, 2),
+                            ),
+
+                            HapticSliderOption.detailed(
+                              label: l10n.softeningParameter,
+                              value: _softening,
+                              min: 0.01,
+                              max: 2.0,
+                              divisions: 199,
+                              icon: Icons.blur_on,
+                              onChanged: (value) {
+                                setState(() => _softening = value);
+                                _updateSettings();
+                              },
+                              formatter: (value) =>
+                                  NumberUtils.formatDecimal(value, 3),
+                            ),
+
+                            HapticSliderOption.detailed(
+                              label: l10n.simulationSpeed,
+                              value: _timeScale,
+                              min: 0.1,
+                              max: 16.0,
+                              divisions: 159,
+                              icon: Icons.speed,
+                              onChanged: (value) {
+                                setState(() => _timeScale = value);
+                                _updateSettings();
+                              },
+                              formatter: (value) =>
+                                  '${NumberUtils.formatDecimal(value, 1)}x',
+                            ),
+
+                            // Collision section
+                            SectionDivider.labeled(
+                              l10n.collisionsSection,
+                              bottomSpacing: AppTypography.spacingLarge,
+                            ),
+
+                            HapticSliderOption.detailed(
+                              label: l10n.collisionSensitivity,
+                              value: _collisionRadiusMultiplier,
+                              min: 0.05,
+                              max: 1.0,
+                              divisions: 95,
+                              icon: Icons.radio_button_unchecked,
+                              onChanged: (value) {
+                                setState(
+                                  () => _collisionRadiusMultiplier = value,
+                                );
+                                _updateSettings();
+                              },
+                              formatter: (value) =>
+                                  '${NumberUtils.formatDecimal(value * 100, 0)}%',
+                            ),
+
+                            // Trails section
+                            SectionDivider.labeled(
+                              l10n.trailsLabel,
+                              bottomSpacing: AppTypography.spacingLarge,
+                            ),
+
+                            HapticSliderOption.detailed(
+                              label: l10n.trailLength,
+                              value: _maxTrailPoints,
+                              min: 50,
+                              max: 1000,
+                              divisions: 95,
+                              icon: Icons.linear_scale,
+                              onChanged: (value) {
+                                setState(() => _maxTrailPoints = value);
+                                _updateSettings();
+                              },
+                              formatter: (value) =>
+                                  NumberUtils.formatDecimal(value, 0),
+                            ),
+
+                            HapticSliderOption.detailed(
+                              label: l10n.trailFadeRate,
+                              value: _trailFadeRate,
+                              min: 0.1,
+                              max: 2.0,
+                              divisions: 19,
+                              icon: Icons.blur_linear,
+                              onChanged: (value) {
+                                setState(() => _trailFadeRate = value);
+                                _updateSettings();
+                              },
+                              formatter: (value) =>
+                                  NumberUtils.formatDecimal(value, 1),
+                            ),
+
+                            // Haptics section
+                            SectionDivider.labeled(
+                              l10n.hapticsSection,
+                              bottomSpacing: AppTypography.spacingLarge,
+                            ),
+
+                            ToggleOption(
+                              title: l10n.vibrationEnabled,
+                              description: l10n.hapticFeedbackCollisions,
+                              icon: Icons.vibration,
+                              isEnabled: _vibrationEnabled,
+                              onChanged: (value) {
+                                setState(() => _vibrationEnabled = value);
+                                _updateSettings();
+                              },
+                            ),
+
+                            if (_vibrationEnabled) ...[
+                              const SizedBox(
+                                height: AppTypography.spacingXSmall,
+                              ),
+                              HapticSliderOption.detailed(
+                                label: l10n.vibrationThrottle,
+                                value: _vibrationThrottleTime,
+                                min: 0.05,
+                                max: 1.0,
+                                divisions: 95,
+                                icon: Icons.timer,
+                                onChanged: (value) {
+                                  setState(
+                                    () => _vibrationThrottleTime = value,
+                                  );
+                                  _updateSettings();
+                                },
+                                formatter: (value) =>
+                                    '${NumberUtils.formatDecimal(value * 1000, 0)}ms',
+                              ),
+                            ],
+
+                            // Reset button
+                            ActionOption(
+                              title: l10n.resetButton,
+                              description: l10n.resetSettingsDescription,
+                              icon: Icons.refresh,
+                              onPressed: _resetToDefaults,
+                            ),
+
+                            SizedBox(height: AppTypography.spacingXXLarge),
+                          ],
                         ),
-
-                        HapticSliderOption.detailed(
-                          label: l10n.softeningParameter,
-                          value: _softening,
-                          min: 0.01,
-                          max: 2.0,
-                          divisions: 199,
-                          icon: Icons.blur_on,
-                          onChanged: (value) {
-                            setState(() => _softening = value);
-                            _updateSettings();
-                          },
-                          formatter: (value) =>
-                              NumberUtils.formatDecimal(value, 3),
-                        ),
-
-                        HapticSliderOption.detailed(
-                          label: l10n.simulationSpeed,
-                          value: _timeScale,
-                          min: 0.1,
-                          max: 16.0,
-                          divisions: 159,
-                          icon: Icons.speed,
-                          onChanged: (value) {
-                            setState(() => _timeScale = value);
-                            _updateSettings();
-                          },
-                          formatter: (value) =>
-                              '${NumberUtils.formatDecimal(value, 1)}x',
-                        ),
-
-                        // Collision section
-                        SectionDivider.labeled(
-                          l10n.collisionsSection,
-                          bottomSpacing: AppTypography.spacingLarge,
-                        ),
-
-                        HapticSliderOption.detailed(
-                          label: l10n.collisionSensitivity,
-                          value: _collisionRadiusMultiplier,
-                          min: 0.05,
-                          max: 1.0,
-                          divisions: 95,
-                          icon: Icons.radio_button_unchecked,
-                          onChanged: (value) {
-                            setState(() => _collisionRadiusMultiplier = value);
-                            _updateSettings();
-                          },
-                          formatter: (value) =>
-                              '${NumberUtils.formatDecimal(value * 100, 0)}%',
-                        ),
-
-                        // Trails section
-                        SectionDivider.labeled(
-                          l10n.trailsLabel,
-                          bottomSpacing: AppTypography.spacingLarge,
-                        ),
-
-                        HapticSliderOption.detailed(
-                          label: l10n.trailLength,
-                          value: _maxTrailPoints,
-                          min: 50,
-                          max: 1000,
-                          divisions: 95,
-                          icon: Icons.linear_scale,
-                          onChanged: (value) {
-                            setState(() => _maxTrailPoints = value);
-                            _updateSettings();
-                          },
-                          formatter: (value) =>
-                              NumberUtils.formatDecimal(value, 0),
-                        ),
-
-                        HapticSliderOption.detailed(
-                          label: l10n.trailFadeRate,
-                          value: _trailFadeRate,
-                          min: 0.1,
-                          max: 2.0,
-                          divisions: 19,
-                          icon: Icons.blur_linear,
-                          onChanged: (value) {
-                            setState(() => _trailFadeRate = value);
-                            _updateSettings();
-                          },
-                          formatter: (value) =>
-                              NumberUtils.formatDecimal(value, 1),
-                        ),
-
-                        // Haptics section
-                        SectionDivider.labeled(
-                          l10n.hapticsSection,
-                          bottomSpacing: AppTypography.spacingLarge,
-                        ),
-
-                        ToggleOption(
-                          title: l10n.vibrationEnabled,
-                          description: l10n.hapticFeedbackCollisions,
-                          icon: Icons.vibration,
-                          isEnabled: _vibrationEnabled,
-                          onChanged: (value) {
-                            setState(() => _vibrationEnabled = value);
-                            _updateSettings();
-                          },
-                        ),
-
-                        if (_vibrationEnabled) ...[
-                          const SizedBox(height: AppTypography.spacingXSmall),
-                          HapticSliderOption.detailed(
-                            label: l10n.vibrationThrottle,
-                            value: _vibrationThrottleTime,
-                            min: 0.05,
-                            max: 1.0,
-                            divisions: 95,
-                            icon: Icons.timer,
-                            onChanged: (value) {
-                              setState(() => _vibrationThrottleTime = value);
-                              _updateSettings();
-                            },
-                            formatter: (value) =>
-                                '${NumberUtils.formatDecimal(value * 1000, 0)}ms',
-                          ),
-                        ],
-
-                        // Reset button
-                        ActionOption(
-                          title: l10n.resetButton,
-                          description: l10n.resetSettingsDescription,
-                          icon: Icons.refresh,
-                          onPressed: _resetToDefaults,
-                        ),
-
-                        SizedBox(height: AppTypography.spacingXXLarge),
-                      ],
+                      ),
                     ),
                   ),
                 ),

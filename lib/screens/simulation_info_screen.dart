@@ -42,7 +42,9 @@ class SimulationInfoScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(AppTypography.spacingLarge),
                 child: Center(
                   child: Container(
-                    constraints: const BoxConstraints(maxWidth: 600),
+                    constraints: const BoxConstraints(
+                      maxWidth: AppTypography.maxContentWidth,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

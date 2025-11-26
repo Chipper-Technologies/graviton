@@ -169,50 +169,56 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
         return Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(AppTypography.spacingXLarge),
-            child: SignInForm(
-              formKey: _formKey,
-              emailController: _emailController,
-              passwordController: _passwordController,
-              nameController: _nameController,
-              obscurePassword: _obscurePassword,
-              isCreatingAccount: _isCreatingAccount,
-              acceptedTerms: _acceptedTerms,
-              emailError: _emailError,
-              passwordError: _passwordError,
-              isProcessing: _isProcessing,
-              onAppleSignIn: () => _handleSocialSignIn(
-                authState,
-                l10n,
-                authState.signInWithApple,
-                l10n.appleSignInError,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: AppTypography.maxContentWidth,
               ),
-              onGoogleSignIn: () => _handleSocialSignIn(
-                authState,
-                l10n,
-                authState.signInWithGoogle,
-                l10n.googleSignInError,
+              child: SignInForm(
+                formKey: _formKey,
+                emailController: _emailController,
+                passwordController: _passwordController,
+                nameController: _nameController,
+                obscurePassword: _obscurePassword,
+                isCreatingAccount: _isCreatingAccount,
+                acceptedTerms: _acceptedTerms,
+                emailError: _emailError,
+                passwordError: _passwordError,
+                isProcessing: _isProcessing,
+                onAppleSignIn: () => _handleSocialSignIn(
+                  authState,
+                  l10n,
+                  authState.signInWithApple,
+                  l10n.appleSignInError,
+                ),
+                onGoogleSignIn: () => _handleSocialSignIn(
+                  authState,
+                  l10n,
+                  authState.signInWithGoogle,
+                  l10n.googleSignInError,
+                ),
+                onGitHubSignIn: () => _handleSocialSignIn(
+                  authState,
+                  l10n,
+                  authState.signInWithGitHub,
+                  l10n.gitHubSignInError,
+                ),
+                onEmailPasswordAuth: () =>
+                    _handleEmailPasswordAuth(authState, l10n),
+                onTogglePasswordVisibility: () =>
+                    setState(() => _obscurePassword = !_obscurePassword),
+                onToggleMode: () =>
+                    setState(() => _isCreatingAccount = !_isCreatingAccount),
+                onEmailChanged: (value) => setState(() => _emailError = null),
+                onPasswordChanged: (value) =>
+                    setState(() => _passwordError = null),
+                onNameChanged: (value) {},
+                onTermsChanged: (value) =>
+                    setState(() => _acceptedTerms = value),
+                onTermsTapped: () =>
+                    _launchUrl(AppConfig.termsOfServiceUrl, l10n),
+                onPrivacyTapped: () =>
+                    _launchUrl(AppConfig.privacyPolicyUrl, l10n),
               ),
-              onGitHubSignIn: () => _handleSocialSignIn(
-                authState,
-                l10n,
-                authState.signInWithGitHub,
-                l10n.gitHubSignInError,
-              ),
-              onEmailPasswordAuth: () =>
-                  _handleEmailPasswordAuth(authState, l10n),
-              onTogglePasswordVisibility: () =>
-                  setState(() => _obscurePassword = !_obscurePassword),
-              onToggleMode: () =>
-                  setState(() => _isCreatingAccount = !_isCreatingAccount),
-              onEmailChanged: (value) => setState(() => _emailError = null),
-              onPasswordChanged: (value) =>
-                  setState(() => _passwordError = null),
-              onNameChanged: (value) {},
-              onTermsChanged: (value) => setState(() => _acceptedTerms = value),
-              onTermsTapped: () =>
-                  _launchUrl(AppConfig.termsOfServiceUrl, l10n),
-              onPrivacyTapped: () =>
-                  _launchUrl(AppConfig.privacyPolicyUrl, l10n),
             ),
           ),
         );
@@ -253,56 +259,61 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(AppTypography.spacingXXLarge),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.account_circle_outlined,
-                size: AppTypography.iconSizeHuge * 2,
-                color: AppColors.primaryColor.withValues(
-                  alpha: AppTypography.opacityMedium,
-                ),
-              ),
-              const SizedBox(height: AppTypography.spacingXXLarge),
-              Text(
-                l10n.signInPromptTitle,
-                style: AppTypography.titleText.copyWith(
-                  color: AppColors.uiWhite,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppTypography.spacingMedium),
-              Text(
-                l10n.signInPromptMessage,
-                style: AppTypography.mediumText.copyWith(
-                  color: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacitySemiTransparent,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: AppTypography.maxContentWidth,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.account_circle_outlined,
+                  size: AppTypography.iconSizeHuge * 2,
+                  color: AppColors.primaryColor.withValues(
+                    alpha: AppTypography.opacityMedium,
                   ),
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppTypography.spacingXXLarge),
-              HapticButton.primary(
-                onPressed: () => setState(() => _mode = ScreenMode.signIn),
-                text: l10n.signInButton,
-                isFullWidth: true,
-              ),
-              const SizedBox(height: AppTypography.spacingMedium),
-              HapticButton.primary(
-                onPressed: () => setState(() {
-                  _mode = ScreenMode.signIn;
-                  _isCreatingAccount = true;
-                }),
-                text: l10n.createAccountButton,
-                isFullWidth: true,
-              ),
-              const SizedBox(height: AppTypography.spacingMedium),
-              HapticButton.secondary(
-                onPressed: () => _signInAnonymously(authState, l10n),
-                text: l10n.continueAsGuestButton,
-                isFullWidth: true,
-              ),
-            ],
+                const SizedBox(height: AppTypography.spacingXXLarge),
+                Text(
+                  l10n.signInPromptTitle,
+                  style: AppTypography.titleText.copyWith(
+                    color: AppColors.uiWhite,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppTypography.spacingMedium),
+                Text(
+                  l10n.signInPromptMessage,
+                  style: AppTypography.mediumText.copyWith(
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacitySemiTransparent,
+                    ),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppTypography.spacingXXLarge),
+                HapticButton.primary(
+                  onPressed: () => setState(() => _mode = ScreenMode.signIn),
+                  text: l10n.signInButton,
+                  isFullWidth: true,
+                ),
+                const SizedBox(height: AppTypography.spacingMedium),
+                HapticButton.primary(
+                  onPressed: () => setState(() {
+                    _mode = ScreenMode.signIn;
+                    _isCreatingAccount = true;
+                  }),
+                  text: l10n.createAccountButton,
+                  isFullWidth: true,
+                ),
+                const SizedBox(height: AppTypography.spacingMedium),
+                HapticButton.secondary(
+                  onPressed: () => _signInAnonymously(authState, l10n),
+                  text: l10n.continueAsGuestButton,
+                  isFullWidth: true,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -312,60 +323,67 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
   Widget _buildAccountView(AuthState authState, AppLocalizations l10n) {
     final user = authState.currentUser!;
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(AppTypography.spacingLarge),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildProfileCard(authState, user, l10n),
-            const SizedBox(height: AppTypography.spacingMedium),
-            if (!authState.isAnonymous &&
-                user.email != null &&
-                !AuthService.instance.isEmailVerified) ...[
-              EmailVerificationBanner(
-                onResendVerification: () => _sendEmailVerification(l10n),
-                isSendingVerification: _isSendingVerification,
-              ),
-              const SizedBox(height: AppTypography.spacingMedium),
-            ],
-            if (authState.isAnonymous ||
-                AuthService.instance.isEmailVerified) ...[
-              SectionDivider.labeled(
-                l10n.accountManagementSection,
-                bottomSpacing: AppTypography.spacingMedium,
-              ),
-              AccountManagementOptions(
-                onEditAccount: () {
-                  _nameController.text = user.displayName ?? '';
-                  setState(() => _mode = ScreenMode.editName);
-                },
-                onChangeAvatar: () => setState(() {
-                  _selectedAvatar = authState.currentUser?.avatar;
-                  _mode = ScreenMode.avatarSelection;
-                }),
-                onSignOut: () => _signOut(authState, l10n),
-                isAnonymous: authState.isAnonymous,
-                isSigningOut: _isSigningOut,
-              ),
-              const SizedBox(height: AppTypography.spacingMedium),
-              SectionDivider.labeled(
-                l10n.dangerZoneSection,
-                bottomSpacing: AppTypography.spacingMedium,
-                color: AppColors.uiRed,
-                labelStyle: AppTypography.mediumText.copyWith(
-                  color: AppColors.uiRed,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              DangerZoneSection(
-                onDeleteAccount: () =>
-                    setState(() => _mode = ScreenMode.deleteConfirmation),
-                isDeletingAccount: _isDeletingAccount,
-                isDisabled: _isSigningOut,
-              ),
-            ],
-          ],
+    return Center(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(AppTypography.spacingLarge),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: AppTypography.maxContentWidth,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildProfileCard(authState, user, l10n),
+                const SizedBox(height: AppTypography.spacingMedium),
+                if (!authState.isAnonymous &&
+                    user.email != null &&
+                    !AuthService.instance.isEmailVerified) ...[
+                  EmailVerificationBanner(
+                    onResendVerification: () => _sendEmailVerification(l10n),
+                    isSendingVerification: _isSendingVerification,
+                  ),
+                  const SizedBox(height: AppTypography.spacingMedium),
+                ],
+                if (authState.isAnonymous ||
+                    AuthService.instance.isEmailVerified) ...[
+                  SectionDivider.labeled(
+                    l10n.accountManagementSection,
+                    bottomSpacing: AppTypography.spacingMedium,
+                  ),
+                  AccountManagementOptions(
+                    onEditAccount: () {
+                      _nameController.text = user.displayName ?? '';
+                      setState(() => _mode = ScreenMode.editName);
+                    },
+                    onChangeAvatar: () => setState(() {
+                      _selectedAvatar = authState.currentUser?.avatar;
+                      _mode = ScreenMode.avatarSelection;
+                    }),
+                    onSignOut: () => _signOut(authState, l10n),
+                    isAnonymous: authState.isAnonymous,
+                    isSigningOut: _isSigningOut,
+                  ),
+                  const SizedBox(height: AppTypography.spacingMedium),
+                  SectionDivider.labeled(
+                    l10n.dangerZoneSection,
+                    bottomSpacing: AppTypography.spacingMedium,
+                    color: AppColors.uiRed,
+                    labelStyle: AppTypography.mediumText.copyWith(
+                      color: AppColors.uiRed,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  DangerZoneSection(
+                    onDeleteAccount: () =>
+                        setState(() => _mode = ScreenMode.deleteConfirmation),
+                    isDeletingAccount: _isDeletingAccount,
+                    isDisabled: _isSigningOut,
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );
