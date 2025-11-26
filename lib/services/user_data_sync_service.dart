@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kDebugMode, debugPrint;
 import 'package:graviton/models/custom_scenario.dart';
 import 'package:graviton/services/auth_service.dart';
 import 'package:graviton/services/custom_scenario_storage.dart';
@@ -66,7 +66,19 @@ class UserDataSyncService {
 
     final user = await AuthService.instance.getCurrentUserProfile();
     if (user == null || user.isAnonymous) {
-      debugPrint('UserDataSync: User is anonymous, skipping cloud sync');
+      if (kDebugMode) {
+        debugPrint('UserDataSync: User is anonymous, skipping cloud sync');
+      }
+      _isInitialized = true;
+      return;
+    }
+
+    // Check email verification for cloud sync
+    final isVerified = await AuthService.instance.requireEmailVerification();
+    if (!isVerified) {
+      if (kDebugMode) {
+        debugPrint('UserDataSync: Email not verified, skipping cloud sync');
+      }
       _isInitialized = true;
       return;
     }
@@ -76,7 +88,9 @@ class UserDataSyncService {
       await _startCloudSync();
       _isInitialized = true;
     } catch (e, stackTrace) {
-      debugPrint('UserDataSync: Failed to initialize: $e');
+      if (kDebugMode) {
+        debugPrint('UserDataSync: Failed to initialize: $e');
+      }
       FirebaseService.instance.recordError(e, stackTrace);
     }
   }
@@ -88,7 +102,18 @@ class UserDataSyncService {
   Future<void> migrateLocalDataToCloud() async {
     final user = await AuthService.instance.getCurrentUserProfile();
     if (user == null || user.isAnonymous) {
-      debugPrint('UserDataSync: Cannot migrate - user not authenticated');
+      if (kDebugMode) {
+        debugPrint('UserDataSync: Cannot migrate - user not authenticated');
+      }
+      return;
+    }
+
+    // Check email verification before migrating data
+    final isVerified = await AuthService.instance.requireEmailVerification();
+    if (!isVerified) {
+      if (kDebugMode) {
+        debugPrint('UserDataSync: Cannot migrate - email not verified');
+      }
       return;
     }
 
@@ -194,12 +219,16 @@ class UserDataSyncService {
   /// but preserves local storage so they can continue using the app.
   Future<void> deleteCloudData(String userId) async {
     try {
-      debugPrint('UserDataSync: Deleting cloud data for user $userId');
+      if (kDebugMode) {
+        debugPrint('UserDataSync: Deleting cloud data');
+      }
 
       final userDoc = _getUserDocument(userId);
       await userDoc.delete();
     } catch (e, stackTrace) {
-      debugPrint('UserDataSync: Failed to delete cloud data: $e');
+      if (kDebugMode) {
+        debugPrint('UserDataSync: Failed to delete cloud data: $e');
+      }
       FirebaseService.instance.recordError(e, stackTrace);
       rethrow;
     }

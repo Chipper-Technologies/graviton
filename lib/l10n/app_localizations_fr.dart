@@ -3347,7 +3347,31 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get passwordTooShort =>
-      'Le mot de passe doit contenir au moins 6 caractères';
+      'Le mot de passe doit contenir au moins 8 caractères';
+
+  @override
+  String get passwordMissingUppercase =>
+      'Le mot de passe doit contenir au moins une lettre majuscule';
+
+  @override
+  String get passwordMissingLowercase =>
+      'Le mot de passe doit contenir au moins une lettre minuscule';
+
+  @override
+  String get passwordMissingNumber =>
+      'Le mot de passe doit contenir au moins un chiffre';
+
+  @override
+  String get passwordMissingSpecialChar =>
+      'Le mot de passe doit contenir au moins un caractère spécial (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts =>
+      'Trop de tentatives de connexion échouées. Veuillez réessayer dans 15 minutes.';
+
+  @override
+  String get emailVerificationRequired =>
+      'Veuillez vérifier votre adresse e-mail avant d\'accéder à cette fonctionnalité. Consultez votre boîte de réception pour le lien de vérification.';
 
   @override
   String get defaultUserName => 'Utilisateur';

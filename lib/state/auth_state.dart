@@ -261,8 +261,16 @@ class AuthState extends ChangeNotifier {
       // Refresh current user profile
       _currentUser = await AuthService.instance.getCurrentUserProfile();
 
-      // Sync profile to cloud
-      await UserDataSyncService.instance.syncProfile();
+      // Sync profile to cloud (only if email verified)
+      if (_currentUser != null && !_currentUser!.isAnonymous) {
+        final isVerified = await AuthService.instance
+            .requireEmailVerification();
+        if (isVerified) {
+          await UserDataSyncService.instance.syncProfile();
+        }
+      } else {
+        await UserDataSyncService.instance.syncProfile();
+      }
 
       _setLoading(false);
       return true;
@@ -323,6 +331,17 @@ class AuthState extends ChangeNotifier {
     try {
       final userId = _currentUser?.uid;
       final provider = _currentUser?.authProvider;
+
+      // Check email verification for non-anonymous users
+      if (_currentUser != null && !_currentUser!.isAnonymous) {
+        final isVerified = await AuthService.instance
+            .requireEmailVerification();
+        if (!isVerified) {
+          _setError('error_email_verification_required');
+          _setLoading(false);
+          return false;
+        }
+      }
 
       // Re-authenticate based on provider type
       if (provider == AuthProviderType.emailPassword) {

@@ -3342,7 +3342,31 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get passwordTooShort =>
-      'La contraseña debe tener al menos 6 caracteres';
+      'La contraseña debe tener al menos 8 caracteres';
+
+  @override
+  String get passwordMissingUppercase =>
+      'La contraseña debe contener al menos una letra mayúscula';
+
+  @override
+  String get passwordMissingLowercase =>
+      'La contraseña debe contener al menos una letra minúscula';
+
+  @override
+  String get passwordMissingNumber =>
+      'La contraseña debe contener al menos un número';
+
+  @override
+  String get passwordMissingSpecialChar =>
+      'La contraseña debe contener al menos un carácter especial (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts =>
+      'Demasiados intentos fallidos de inicio de sesión. Por favor, inténtelo de nuevo en 15 minutos.';
+
+  @override
+  String get emailVerificationRequired =>
+      'Por favor, verifique su dirección de correo electrónico antes de acceder a esta función. Revise su bandeja de entrada para el enlace de verificación.';
 
   @override
   String get defaultUserName => 'Usuario';

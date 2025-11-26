@@ -3145,7 +3145,27 @@ class AppLocalizationsJa extends AppLocalizations {
   String get passwordRequired => 'パスワードは必須です';
 
   @override
-  String get passwordTooShort => 'パスワードは6文字以上である必要があります';
+  String get passwordTooShort => 'パスワードは8文字以上である必要があります';
+
+  @override
+  String get passwordMissingUppercase => 'パスワードには少なくとも1つの大文字が必要です';
+
+  @override
+  String get passwordMissingLowercase => 'パスワードには少なくとも1つの小文字が必要です';
+
+  @override
+  String get passwordMissingNumber => 'パスワードには少なくとも1つの数字が必要です';
+
+  @override
+  String get passwordMissingSpecialChar =>
+      'パスワードには少なくとも1つの特殊文字が必要です (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts => 'サインイン試行が多すぎます。15分後に再試行してください。';
+
+  @override
+  String get emailVerificationRequired =>
+      'この機能にアクセスする前に、メールアドレスを確認してください。受信トレイで確認リンクを確認してください。';
 
   @override
   String get defaultUserName => 'ユーザー';

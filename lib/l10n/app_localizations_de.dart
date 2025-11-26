@@ -3316,7 +3316,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get passwordRequired => 'Passwort ist erforderlich';
 
   @override
-  String get passwordTooShort => 'Passwort muss mindestens 6 Zeichen lang sein';
+  String get passwordTooShort => 'Passwort muss mindestens 8 Zeichen lang sein';
+
+  @override
+  String get passwordMissingUppercase =>
+      'Passwort muss mindestens einen Großbuchstaben enthalten';
+
+  @override
+  String get passwordMissingLowercase =>
+      'Passwort muss mindestens einen Kleinbuchstaben enthalten';
+
+  @override
+  String get passwordMissingNumber =>
+      'Passwort muss mindestens eine Zahl enthalten';
+
+  @override
+  String get passwordMissingSpecialChar =>
+      'Passwort muss mindestens ein Sonderzeichen enthalten (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts =>
+      'Zu viele fehlgeschlagene Anmeldeversuche. Bitte versuchen Sie es in 15 Minuten erneut.';
+
+  @override
+  String get emailVerificationRequired =>
+      'Bitte verifizieren Sie Ihre E-Mail-Adresse, bevor Sie auf diese Funktion zugreifen. Überprüfen Sie Ihren Posteingang für den Verifizierungslink.';
 
   @override
   String get defaultUserName => 'Benutzer';

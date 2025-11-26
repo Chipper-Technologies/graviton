@@ -5851,8 +5851,44 @@ abstract class AppLocalizations {
   /// Validation error when password is too short
   ///
   /// In en, this message translates to:
-  /// **'Password must be at least 6 characters'**
+  /// **'Password must be at least 8 characters'**
   String get passwordTooShort;
+
+  /// Validation error when password is missing uppercase letter
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one uppercase letter'**
+  String get passwordMissingUppercase;
+
+  /// Validation error when password is missing lowercase letter
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one lowercase letter'**
+  String get passwordMissingLowercase;
+
+  /// Validation error when password is missing number
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one number'**
+  String get passwordMissingNumber;
+
+  /// Validation error when password is missing special character
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one special character (!@#\$%^&*...)'**
+  String get passwordMissingSpecialChar;
+
+  /// Error message when user has exceeded rate limit for sign-in attempts
+  ///
+  /// In en, this message translates to:
+  /// **'Too many failed sign-in attempts. Please try again in 15 minutes.'**
+  String get tooManyAttempts;
+
+  /// Error message when user tries to access a feature requiring email verification
+  ///
+  /// In en, this message translates to:
+  /// **'Please verify your email address before accessing this feature. Check your inbox for the verification link.'**
+  String get emailVerificationRequired;
 
   /// Default display name for users who don't provide one
   ///

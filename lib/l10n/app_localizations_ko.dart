@@ -3158,7 +3158,27 @@ class AppLocalizationsKo extends AppLocalizations {
   String get passwordRequired => '비밀번호가 필요합니다';
 
   @override
-  String get passwordTooShort => '비밀번호는 최소 6자 이상이어야 합니다';
+  String get passwordTooShort => '비밀번호는 최소 8자 이상이어야 합니다';
+
+  @override
+  String get passwordMissingUppercase => '비밀번호에는 대문자가 하나 이상 포함되어야 합니다';
+
+  @override
+  String get passwordMissingLowercase => '비밀번호에는 소문자가 하나 이상 포함되어야 합니다';
+
+  @override
+  String get passwordMissingNumber => '비밀번호에는 숫자가 하나 이상 포함되어야 합니다';
+
+  @override
+  String get passwordMissingSpecialChar =>
+      '비밀번호에는 특수 문자가 하나 이상 포함되어야 합니다 (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts => '로그인 시도 횟수가 너무 많습니다. 15분 후에 다시 시도하세요.';
+
+  @override
+  String get emailVerificationRequired =>
+      '이 기능에 액세스하기 전에 이메일 주소를 확인하세요. 받은편지함에서 확인 링크를 확인하세요.';
 
   @override
   String get defaultUserName => '사용자';

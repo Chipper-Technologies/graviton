@@ -4310,9 +4310,33 @@
   "@passwordRequired": {
     "description": "Validation error when password is empty"
   },
-  "passwordTooShort": "Password must be at least 6 characters",
+  "passwordTooShort": "Password must be at least 8 characters",
   "@passwordTooShort": {
     "description": "Validation error when password is too short"
+  },
+  "passwordMissingUppercase": "Password must contain at least one uppercase letter",
+  "@passwordMissingUppercase": {
+    "description": "Validation error when password is missing uppercase letter"
+  },
+  "passwordMissingLowercase": "Password must contain at least one lowercase letter",
+  "@passwordMissingLowercase": {
+    "description": "Validation error when password is missing lowercase letter"
+  },
+  "passwordMissingNumber": "Password must contain at least one number",
+  "@passwordMissingNumber": {
+    "description": "Validation error when password is missing number"
+  },
+  "passwordMissingSpecialChar": "Password must contain at least one special character (!@#$%^&*...)",
+  "@passwordMissingSpecialChar": {
+    "description": "Validation error when password is missing special character"
+  },
+  "tooManyAttempts": "Too many failed sign-in attempts. Please try again in 15 minutes.",
+  "@tooManyAttempts": {
+    "description": "Error message when user has exceeded rate limit for sign-in attempts"
+  },
+  "emailVerificationRequired": "Please verify your email address before accessing this feature. Check your inbox for the verification link.",
+  "@emailVerificationRequired": {
+    "description": "Error message when user tries to access a feature requiring email verification"
   },
   "defaultUserName": "User",
   "@defaultUserName": {

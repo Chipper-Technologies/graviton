@@ -3126,7 +3126,26 @@ class AppLocalizationsZh extends AppLocalizations {
   String get passwordRequired => '密码为必填项';
 
   @override
-  String get passwordTooShort => '密码必须至少6个字符';
+  String get passwordTooShort => '密码必须至少8个字符';
+
+  @override
+  String get passwordMissingUppercase => '密码必须包含至少一个大写字母';
+
+  @override
+  String get passwordMissingLowercase => '密码必须包含至少一个小写字母';
+
+  @override
+  String get passwordMissingNumber => '密码必须包含至少一个数字';
+
+  @override
+  String get passwordMissingSpecialChar => '密码必须包含至少一个特殊字符 (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts => '登录尝试失败次数过多。请在15分钟后重试。';
+
+  @override
+  String get emailVerificationRequired =>
+      '在访问此功能之前,请验证您的电子邮件地址。请检查您的收件箱以获取验证链接。';
 
   @override
   String get defaultUserName => '用户';

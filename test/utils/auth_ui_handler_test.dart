@@ -215,7 +215,7 @@ void main() {
                   isCreatingAccount: true,
                 );
                 expect(result, isNotNull);
-                expect(result, contains('6'));
+                expect(result, contains('8'));
                 return Container();
               },
             ),
@@ -237,7 +237,7 @@ void main() {
                     isCreatingAccount: true,
                   );
                   expect(result, isNotNull);
-                  expect(result, contains('6'));
+                  expect(result, contains('8'));
                   return Container();
                 },
               ),
@@ -247,7 +247,7 @@ void main() {
       );
 
       testWidgets(
-        'returns null for 6-character password when creating account',
+        'returns error for 7-character password when creating account',
         (tester) async {
           await tester.pumpWidget(
             TestUtils.wrapWithMaterialApp(
@@ -255,7 +255,30 @@ void main() {
                 builder: (context) {
                   final l10n = AppLocalizations.of(context)!;
                   final result = AuthUIHandler.validatePassword(
-                    '123456',
+                    'Pass1!a',
+                    l10n,
+                    isCreatingAccount: true,
+                  );
+                  expect(result, isNotNull);
+                  expect(result, contains('8'));
+                  return Container();
+                },
+              ),
+            ),
+          );
+        },
+      );
+
+      testWidgets(
+        'returns null for valid strong password when creating account',
+        (tester) async {
+          await tester.pumpWidget(
+            TestUtils.wrapWithMaterialApp(
+              child: Builder(
+                builder: (context) {
+                  final l10n = AppLocalizations.of(context)!;
+                  final result = AuthUIHandler.validatePassword(
+                    'ValidPassword123!',
                     l10n,
                     isCreatingAccount: true,
                   );
@@ -267,27 +290,6 @@ void main() {
           );
         },
       );
-
-      testWidgets('returns null for valid password when creating account', (
-        tester,
-      ) async {
-        await tester.pumpWidget(
-          TestUtils.wrapWithMaterialApp(
-            child: Builder(
-              builder: (context) {
-                final l10n = AppLocalizations.of(context)!;
-                final result = AuthUIHandler.validatePassword(
-                  'validPassword123',
-                  l10n,
-                  isCreatingAccount: true,
-                );
-                expect(result, isNull);
-                return Container();
-              },
-            ),
-          ),
-        );
-      });
 
       testWidgets('returns null for short password when not creating account', (
         tester,
@@ -320,6 +322,177 @@ void main() {
                 final l10n = AppLocalizations.of(context)!;
                 final result = AuthUIHandler.validatePassword('a', l10n);
                 expect(result, isNull);
+                return Container();
+              },
+            ),
+          ),
+        );
+      });
+
+      // New password validation requirements (8+ chars with complexity)
+      testWidgets('returns error for password shorter than 8 characters', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          TestUtils.wrapWithMaterialApp(
+            child: Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context)!;
+                final result = AuthUIHandler.validatePassword(
+                  'Short1!',
+                  l10n,
+                  isCreatingAccount: true,
+                );
+                expect(result, isNotNull);
+                expect(result, contains('8'));
+                return Container();
+              },
+            ),
+          ),
+        );
+      });
+
+      testWidgets('returns error for password missing uppercase letter', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          TestUtils.wrapWithMaterialApp(
+            child: Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context)!;
+                final result = AuthUIHandler.validatePassword(
+                  'password1!',
+                  l10n,
+                  isCreatingAccount: true,
+                );
+                expect(result, isNotNull);
+                expect(result, contains('uppercase'));
+                return Container();
+              },
+            ),
+          ),
+        );
+      });
+
+      testWidgets('returns error for password missing lowercase letter', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          TestUtils.wrapWithMaterialApp(
+            child: Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context)!;
+                final result = AuthUIHandler.validatePassword(
+                  'PASSWORD1!',
+                  l10n,
+                  isCreatingAccount: true,
+                );
+                expect(result, isNotNull);
+                expect(result, contains('lowercase'));
+                return Container();
+              },
+            ),
+          ),
+        );
+      });
+
+      testWidgets('returns error for password missing number', (tester) async {
+        await tester.pumpWidget(
+          TestUtils.wrapWithMaterialApp(
+            child: Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context)!;
+                final result = AuthUIHandler.validatePassword(
+                  'Password!',
+                  l10n,
+                  isCreatingAccount: true,
+                );
+                expect(result, isNotNull);
+                expect(result, contains('number'));
+                return Container();
+              },
+            ),
+          ),
+        );
+      });
+
+      testWidgets('returns error for password missing special character', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          TestUtils.wrapWithMaterialApp(
+            child: Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context)!;
+                final result = AuthUIHandler.validatePassword(
+                  'Password1',
+                  l10n,
+                  isCreatingAccount: true,
+                );
+                expect(result, isNotNull);
+                expect(result, contains('special'));
+                return Container();
+              },
+            ),
+          ),
+        );
+      });
+
+      testWidgets('returns null for password meeting all requirements', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          TestUtils.wrapWithMaterialApp(
+            child: Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context)!;
+                final result = AuthUIHandler.validatePassword(
+                  'Password123!',
+                  l10n,
+                  isCreatingAccount: true,
+                );
+                expect(result, isNull);
+                return Container();
+              },
+            ),
+          ),
+        );
+      });
+
+      testWidgets('accepts various special characters', (tester) async {
+        await tester.pumpWidget(
+          TestUtils.wrapWithMaterialApp(
+            child: Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context)!;
+                final passwords = [
+                  'Password1@',
+                  'Password1#',
+                  'Password1\$',
+                  'Password1%',
+                  'Password1^',
+                  'Password1&',
+                  'Password1*',
+                  'Password1(',
+                  'Password1)',
+                  'Password1.',
+                  'Password1,',
+                  'Password1?',
+                  'Password1:',
+                  'Password1{',
+                  'Password1}',
+                  'Password1|',
+                  'Password1<',
+                  'Password1>',
+                ];
+                for (final password in passwords) {
+                  final result = AuthUIHandler.validatePassword(
+                    password,
+                    l10n,
+                    isCreatingAccount: true,
+                  );
+                  expect(result, isNull, reason: 'Failed for: $password');
+                }
                 return Container();
               },
             ),

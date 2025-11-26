@@ -595,8 +595,12 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
           // Reset to account view after successful deletion
           _resetToAccountView();
         } else if (authState.error != null) {
-          // Show error from AuthState in snackbar
-          GravitonSnackBar.show(context: context, message: authState.error!);
+          // Show localized error message for email verification
+          final errorMessage =
+              authState.error == 'error_email_verification_required'
+              ? l10n.emailVerificationRequired
+              : authState.error!;
+          GravitonSnackBar.show(context: context, message: errorMessage);
         }
       }
       return success;

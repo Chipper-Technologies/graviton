@@ -3313,7 +3313,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordRequired => 'Password is required';
 
   @override
-  String get passwordTooShort => 'Password must be at least 6 characters';
+  String get passwordTooShort => 'Password must be at least 8 characters';
+
+  @override
+  String get passwordMissingUppercase =>
+      'Password must contain at least one uppercase letter';
+
+  @override
+  String get passwordMissingLowercase =>
+      'Password must contain at least one lowercase letter';
+
+  @override
+  String get passwordMissingNumber =>
+      'Password must contain at least one number';
+
+  @override
+  String get passwordMissingSpecialChar =>
+      'Password must contain at least one special character (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts =>
+      'Too many failed sign-in attempts. Please try again in 15 minutes.';
+
+  @override
+  String get emailVerificationRequired =>
+      'Please verify your email address before accessing this feature. Check your inbox for the verification link.';
 
   @override
   String get defaultUserName => 'User';

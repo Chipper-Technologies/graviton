@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb, debugPrint;
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:graviton/enums/auth_provider_type.dart';
@@ -29,6 +29,19 @@ class AuthService {
 
   FirebaseAuth? get auth => _auth;
   bool get isInitialized => _isInitialized;
+
+  // ============================================================================
+  // Rate Limiting State
+  // ============================================================================
+
+  /// Track failed sign-in attempts for rate limiting
+  final Map<String, List<DateTime>> _failedSignInAttempts = {};
+
+  /// Maximum failed attempts before rate limiting kicks in
+  static const int _maxFailedAttempts = 5;
+
+  /// Rate limit duration in minutes
+  static const int _rateLimitDurationMinutes = 15;
 
   // ============================================================================
   // SharedPreferences Keys
@@ -143,11 +156,80 @@ class AuthService {
     });
   }
 
+  /// Check if email/identifier is rate limited
+  bool _isRateLimited(String identifier) {
+    if (!_failedSignInAttempts.containsKey(identifier)) {
+      return false;
+    }
+
+    final attempts = _failedSignInAttempts[identifier]!;
+    final now = DateTime.now();
+
+    // Remove attempts older than rate limit duration
+    attempts.removeWhere(
+      (time) => now.difference(time).inMinutes > _rateLimitDurationMinutes,
+    );
+
+    // Check if still rate limited
+    if (attempts.length >= _maxFailedAttempts) {
+      if (kDebugMode) {
+        debugPrint(
+          'AuthService: Rate limit active for identifier (${attempts.length} attempts)',
+        );
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  /// Record a failed sign-in attempt
+  void _recordFailedAttempt(String identifier) {
+    if (!_failedSignInAttempts.containsKey(identifier)) {
+      _failedSignInAttempts[identifier] = [];
+    }
+    _failedSignInAttempts[identifier]!.add(DateTime.now());
+  }
+
+  /// Clear failed attempts after successful sign-in
+  void _clearFailedAttempts(String identifier) {
+    _failedSignInAttempts.remove(identifier);
+  }
+
+  /// Check if user's email is verified before allowing sensitive operations
+  Future<bool> requireEmailVerification() async {
+    final user = _auth?.currentUser;
+    if (user == null || user.isAnonymous) {
+      return true; // Anonymous users don't need verification
+    }
+
+    // Check if email verification is required
+    if (user.email != null && !user.emailVerified) {
+      // Reload to get latest verification status
+      await user.reload();
+      final refreshedUser = _auth?.currentUser;
+      return refreshedUser?.emailVerified ?? false;
+    }
+
+    return true;
+  }
+
   /// Sign in with email and password
   Future<UserProfile?> signInWithEmailPassword({
     required String email,
     required String password,
   }) async {
+    // Check rate limiting
+    if (_isRateLimited(email.toLowerCase())) {
+      if (kDebugMode) {
+        debugPrint('AuthService: Sign-in rate limited');
+      }
+      throw FirebaseAuthException(
+        code: 'too-many-requests',
+        message: 'Too many failed attempts. Please try again later.',
+      );
+    }
+
     try {
       final credential = await _auth?.signInWithEmailAndPassword(
         email: email,
@@ -155,6 +237,9 @@ class AuthService {
       );
 
       if (credential?.user == null) return null;
+
+      // Clear failed attempts on successful sign-in
+      _clearFailedAttempts(email.toLowerCase());
 
       await FirebaseService.instance.logEvent(
         'auth_sign_in_success',
@@ -164,7 +249,14 @@ class AuthService {
       final avatar = await _loadSavedAvatar();
       return UserProfile.fromFirebaseUser(credential!.user!, avatar: avatar);
     } on FirebaseAuthException catch (e, stackTrace) {
-      debugPrint('Sign in error: ${e.code} - ${e.message}');
+      // Record failed attempt for rate limiting
+      if (e.code == 'wrong-password' || e.code == 'user-not-found') {
+        _recordFailedAttempt(email.toLowerCase());
+      }
+
+      if (kDebugMode) {
+        debugPrint('AuthService: Sign in failed - ${e.code}');
+      }
       await FirebaseService.instance.crashlytics?.recordError(
         e,
         stackTrace,
@@ -252,7 +344,9 @@ class AuthService {
         ],
       );
 
-      debugPrint('Google sign-in successful: ${googleUser.email}');
+      if (kDebugMode) {
+        debugPrint('AuthService: Google sign-in successful');
+      }
 
       // Get the authentication tokens (idToken) from the account
       final googleAuth = googleUser.authentication;

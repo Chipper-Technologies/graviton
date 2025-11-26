@@ -306,9 +306,34 @@ class AuthUIHandler {
     if (password.isEmpty) {
       return l10n.passwordRequired;
     }
-    if (isCreatingAccount && password.length < 6) {
-      return l10n.passwordTooShort;
+
+    if (isCreatingAccount) {
+      // Minimum 8 characters
+      if (password.length < 8) {
+        return l10n.passwordTooShort;
+      }
+
+      // Require uppercase letter
+      if (!RegExp(r'[A-Z]').hasMatch(password)) {
+        return l10n.passwordMissingUppercase;
+      }
+
+      // Require lowercase letter
+      if (!RegExp(r'[a-z]').hasMatch(password)) {
+        return l10n.passwordMissingLowercase;
+      }
+
+      // Require number
+      if (!RegExp(r'[0-9]').hasMatch(password)) {
+        return l10n.passwordMissingNumber;
+      }
+
+      // Require special character
+      if (!RegExp(r'[!@#$%^&*(),.?\":{}|<>]').hasMatch(password)) {
+        return l10n.passwordMissingSpecialChar;
+      }
     }
+
     return null;
   }
 }
