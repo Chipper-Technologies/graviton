@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 /// Types of authentication providers supported by the app
 ///
 /// This enum represents different authentication methods that users
@@ -52,6 +54,38 @@ enum AuthProviderType {
         return 'Facebook';
       case AuthProviderType.anonymous:
         return 'Guest';
+    }
+  }
+
+  /// SVG asset path for the provider icon
+  String? get iconAsset {
+    switch (this) {
+      case AuthProviderType.google:
+        return 'assets/images/google-logo.svg';
+      case AuthProviderType.github:
+        return 'assets/images/github-logo.svg';
+      case AuthProviderType.apple:
+        return 'assets/images/apple-logo.svg';
+      case AuthProviderType.emailPassword:
+      case AuthProviderType.facebook:
+      case AuthProviderType.anonymous:
+        return null; // Use fallback Material icon
+    }
+  }
+
+  /// Fallback Material icon for providers without SVG assets
+  IconData get fallbackIcon {
+    switch (this) {
+      case AuthProviderType.emailPassword:
+        return Icons.email_outlined;
+      case AuthProviderType.facebook:
+        return Icons.facebook;
+      case AuthProviderType.anonymous:
+        return Icons.person_outline;
+      case AuthProviderType.google:
+      case AuthProviderType.github:
+      case AuthProviderType.apple:
+        return Icons.account_circle; // Should never be used
     }
   }
 }

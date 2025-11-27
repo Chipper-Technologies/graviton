@@ -99,6 +99,9 @@ class AppTypography {
   /// Vertical margin for avatar buttons to align properly in AppBar
   static const double avatarMargin = 6.0;
 
+  /// Size for provider badge icons in profile card
+  static const double providerBadgeIconSize = 12.0;
+
   /// Size for avatar selection grid items (profile photo option)
   static const double avatarSelectionSize = 48.0;
 

@@ -1,17 +1,21 @@
 #!/usr/bin/env dart
 
-/// Script to restore template variables in web/index.html
-/// This should be run before committing to avoid hardcoding credentials
-/// Usage: dart run tools/restore_web_template.dart
+/// Script to restore template variables in web/index.html.
+///
+/// This should be run before committing to avoid hardcoding credentials.
+///
+/// Usage: `dart run tools/restore_web_template.dart`
+library;
 
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 void main() {
   final indexHtmlPath = 'web/index.html';
   final indexHtmlFile = File(indexHtmlPath);
 
   if (!indexHtmlFile.existsSync()) {
-    print('Error: web/index.html not found');
+    debugPrint('Error: web/index.html not found');
     exit(1);
   }
 
@@ -29,8 +33,8 @@ void main() {
     );
 
     indexHtmlFile.writeAsStringSync(indexHtmlContent);
-    print('✓ Restored template variable in web/index.html');
+    debugPrint('✓ Restored template variable in web/index.html');
   } else {
-    print('✓ web/index.html already has template variable');
+    debugPrint('✓ web/index.html already has template variable');
   }
 }

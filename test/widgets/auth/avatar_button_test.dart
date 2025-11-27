@@ -109,9 +109,18 @@ void main() {
       // Should find Image.network widget
       expect(find.byType(Image), findsOneWidget);
       final image = tester.widget<Image>(find.byType(Image));
-      expect(image.image, isA<NetworkImage>());
-      final networkImage = image.image as NetworkImage;
-      expect(networkImage.url, 'https://example.com/photo.jpg');
+
+      // Flutter may wrap NetworkImage in ResizeImage for optimization
+      final imageProvider = image.image;
+      if (imageProvider is ResizeImage) {
+        expect(imageProvider.imageProvider, isA<NetworkImage>());
+        final networkImage = imageProvider.imageProvider as NetworkImage;
+        expect(networkImage.url, 'https://example.com/photo.jpg');
+      } else {
+        expect(imageProvider, isA<NetworkImage>());
+        final networkImage = imageProvider as NetworkImage;
+        expect(networkImage.url, 'https://example.com/photo.jpg');
+      }
     });
 
     testWidgets('displays default icon for authenticated user without avatar', (

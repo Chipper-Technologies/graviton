@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/user_profile.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/account/avatar_display.dart';
 import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
+import 'package:graviton/enums/auth_provider_type.dart';
 
 /// Profile card widget
 ///
@@ -105,6 +107,67 @@ class ProfileCard extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ],
+          const SizedBox(height: AppTypography.spacingMedium),
+          if (user.authProvider != null)
+            _buildProviderBadge(user.authProvider!),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProviderBadge(AuthProviderType provider) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTypography.spacingMedium,
+        vertical: AppTypography.spacingXSmall,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.uiWhite.withValues(
+          alpha: AppTypography.opacityDisabled,
+        ),
+        borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
+        border: Border.all(
+          color: AppColors.uiWhite.withValues(
+            alpha: AppTypography.opacityBarely,
+          ),
+          width: AppTypography.borderThin,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (provider.iconAsset != null)
+            SvgPicture.asset(
+              provider.iconAsset!,
+              width: AppTypography.providerBadgeIconSize,
+              height: AppTypography.providerBadgeIconSize,
+              colorFilter: provider == AuthProviderType.google
+                  ? null // Preserve Google's native colors
+                  : ColorFilter.mode(
+                      AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacitySemiTransparent,
+                      ),
+                      BlendMode.srcIn,
+                    ),
+            )
+          else
+            Icon(
+              provider.fallbackIcon,
+              size: AppTypography.providerBadgeIconSize,
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacitySemiTransparent,
+              ),
+            ),
+          const SizedBox(width: AppTypography.spacingXSmall),
+          Text(
+            provider.displayName,
+            style: AppTypography.smallText.copyWith(
+              color: AppColors.uiWhite.withValues(
+                alpha: AppTypography.opacitySemiTransparent,
+              ),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ],
       ),
     );

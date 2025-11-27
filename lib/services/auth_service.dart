@@ -925,7 +925,9 @@ class AuthService {
         // On web, use Firebase Auth popup (google_sign_in doesn't work on web)
         final googleProvider = GoogleAuthProvider();
         googleProvider.addScope('email');
-        googleProvider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+        googleProvider.addScope(
+          'https://www.googleapis.com/auth/userinfo.profile',
+        );
 
         final userCredential = await _auth!.signInWithPopup(googleProvider);
         if (userCredential.credential == null) {
@@ -985,9 +987,7 @@ class AuthService {
         final googleAuth = googleUser.authentication;
 
         // Create credential with the ID token
-        credential = GoogleAuthProvider.credential(
-          idToken: googleAuth.idToken,
-        );
+        credential = GoogleAuthProvider.credential(idToken: googleAuth.idToken);
       }
 
       await user.reauthenticateWithCredential(credential);
