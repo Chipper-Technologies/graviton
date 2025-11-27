@@ -85,112 +85,123 @@ class _DeleteAccountWithReauthDialogState
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Padding(
-      padding: const EdgeInsets.all(AppTypography.spacingXXLarge),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.warning_amber_rounded,
-            size:
-                AppTypography.iconSizeHuge *
-                AppTypography.iconWarningMultiplier,
-            color: AppColors.uiRed,
-          ),
-          const SizedBox(height: AppTypography.spacingXXLarge),
-          Text(
-            l10n.deleteAccountWarning,
-            style: AppTypography.titleText.copyWith(color: AppColors.uiWhite),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppTypography.spacingMedium),
-          Text(
-            l10n.deleteAccountMessage,
-            style: AppTypography.mediumText.copyWith(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacitySemiTransparent,
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: Padding(
+          padding: const EdgeInsets.all(AppTypography.spacingXXLarge),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                size:
+                    AppTypography.iconSizeHuge *
+                    AppTypography.iconWarningMultiplier,
+                color: AppColors.uiRed,
               ),
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppTypography.spacingXXLarge),
-
-          // Password field for email/password users
-          if (widget.providerType == AuthProviderType.emailPassword) ...[
-            Text(
-              l10n.deleteAccountPasswordPrompt,
-              style: AppTypography.mediumText.copyWith(
-                color: AppColors.uiWhite,
+              const SizedBox(height: AppTypography.spacingXXLarge),
+              Text(
+                l10n.deleteAccountWarning,
+                style: AppTypography.titleText.copyWith(
+                  color: AppColors.uiWhite,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppTypography.spacingLarge),
-            StyledTextField(
-              controller: _passwordController,
-              icon: Icons.lock,
-              labelText: l10n.passwordLabel,
-              hintText: l10n.passwordHint,
-              obscureText: _obscurePassword,
-              enabled: !_isDeleting,
-              onChanged: (_) {}, // No-op, we read from controller
-              suffixIcon: HapticIconButton(
-                icon: Icon(
-                  _obscurePassword ? Icons.visibility : Icons.visibility_off,
+              const SizedBox(height: AppTypography.spacingMedium),
+              Text(
+                l10n.deleteAccountMessage,
+                style: AppTypography.mediumText.copyWith(
                   color: AppColors.uiWhite.withValues(
                     alpha: AppTypography.opacitySemiTransparent,
                   ),
                 ),
-                onPressed: () {
-                  setState(() => _obscurePassword = !_obscurePassword);
-                },
+                textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(height: AppTypography.spacingLarge),
-          ],
+              const SizedBox(height: AppTypography.spacingXXLarge),
 
-          // Error message
-          if (_error != null) ...[
-            Text(
-              _error!,
-              style: AppTypography.smallText.copyWith(color: AppColors.uiRed),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppTypography.spacingLarge),
-          ],
-
-          // Delete button
-          HapticElevatedButton(
-            onPressed: _isDeleting ? null : _handleDelete,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.uiRed,
-              foregroundColor: AppColors.uiWhite,
-              padding: const EdgeInsets.symmetric(
-                vertical: AppTypography.spacingLarge,
-              ),
-              minimumSize: const Size(double.infinity, 0),
-            ),
-            child: _isDeleting
-                ? const SizedBox(
-                    height: AppTypography.iconSizeLarge,
-                    width: AppTypography.iconSizeLarge,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation(AppColors.uiWhite),
+              // Password field for email/password users
+              if (widget.providerType == AuthProviderType.emailPassword) ...[
+                Text(
+                  l10n.deleteAccountPasswordPrompt,
+                  style: AppTypography.mediumText.copyWith(
+                    color: AppColors.uiWhite,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppTypography.spacingLarge),
+                StyledTextField(
+                  controller: _passwordController,
+                  icon: Icons.lock,
+                  labelText: l10n.passwordLabel,
+                  hintText: l10n.passwordHint,
+                  obscureText: _obscurePassword,
+                  enabled: !_isDeleting,
+                  onChanged: (_) {}, // No-op, we read from controller
+                  suffixIcon: HapticIconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacitySemiTransparent,
+                      ),
                     ),
-                  )
-                : Text(l10n.deleteAccountButton),
-          ),
-          const SizedBox(height: AppTypography.spacingMedium),
-          HapticTextButton(
-            onPressed: _isDeleting ? null : widget.onCancel,
-            child: Text(
-              l10n.cancel,
-              style: AppTypography.mediumText.copyWith(
-                color: AppColors.uiWhite,
+                    onPressed: () {
+                      setState(() => _obscurePassword = !_obscurePassword);
+                    },
+                  ),
+                ),
+                const SizedBox(height: AppTypography.spacingLarge),
+              ],
+
+              // Error message
+              if (_error != null) ...[
+                Text(
+                  _error!,
+                  style: AppTypography.smallText.copyWith(
+                    color: AppColors.uiRed,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppTypography.spacingLarge),
+              ],
+
+              // Delete button
+              HapticElevatedButton(
+                onPressed: _isDeleting ? null : _handleDelete,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.uiRed,
+                  foregroundColor: AppColors.uiWhite,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppTypography.spacingLarge,
+                  ),
+                  minimumSize: const Size(double.infinity, 0),
+                ),
+                child: _isDeleting
+                    ? const SizedBox(
+                        height: AppTypography.iconSizeLarge,
+                        width: AppTypography.iconSizeLarge,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation(AppColors.uiWhite),
+                        ),
+                      )
+                    : Text(l10n.deleteAccountButton),
               ),
-            ),
+              const SizedBox(height: AppTypography.spacingMedium),
+              HapticTextButton(
+                onPressed: _isDeleting ? null : widget.onCancel,
+                child: Text(
+                  l10n.cancel,
+                  style: AppTypography.mediumText.copyWith(
+                    color: AppColors.uiWhite,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

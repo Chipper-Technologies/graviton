@@ -48,78 +48,19 @@ class AvatarSelectionGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Padding(
-      padding: const EdgeInsets.all(AppTypography.spacingLarge),
-      child: Column(
-        children: [
-          // Profile photo option
-          if (_hasProfilePhoto) ...[
-            GestureDetector(
-              onTap: () => onAvatarSelected(null),
-              child: Container(
-                padding: const EdgeInsets.all(AppTypography.spacingMedium),
-                decoration: BoxDecoration(
-                  color: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityBarely,
-                  ),
-                  borderRadius: BorderRadius.circular(
-                    AppTypography.radiusMedium,
-                  ),
-                  border: Border.all(
-                    color: selectedAvatar == null
-                        ? AppColors.primaryColor
-                        : AppColors.uiWhite.withValues(
-                            alpha: AppTypography.opacityFaint,
-                          ),
-                    width: selectedAvatar == null ? 3 : 1,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    ClipOval(
-                      child: Image.network(
-                        photoUrl!,
-                        width: AppTypography.avatarSelectionSize,
-                        height: AppTypography.avatarSelectionSize,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(width: AppTypography.spacingMedium),
-                    Expanded(
-                      child: Text(
-                        l10n.useGoogleProfilePhoto,
-                        style: AppTypography.mediumText.copyWith(
-                          color: AppColors.uiWhite,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: AppTypography.spacingMedium),
-            SectionDivider.labeled(
-              l10n.customAvatars,
-              bottomSpacing: AppTypography.spacingMedium,
-            ),
-          ],
-          // Avatar grid
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                mainAxisSpacing: AppTypography.spacingMedium,
-                crossAxisSpacing: AppTypography.spacingMedium,
-              ),
-              itemCount: UserAvatar.values.length,
-              itemBuilder: (context, index) {
-                final avatar = UserAvatar.values[index];
-                final isSelected = selectedAvatar == avatar;
-
-                return GestureDetector(
-                  onTap: () => onAvatarSelected(avatar),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: Padding(
+          padding: const EdgeInsets.all(AppTypography.spacingLarge),
+          child: Column(
+            children: [
+              // Profile photo option
+              if (_hasProfilePhoto) ...[
+                GestureDetector(
+                  onTap: () => onAvatarSelected(null),
                   child: Container(
+                    padding: const EdgeInsets.all(AppTypography.spacingMedium),
                     decoration: BoxDecoration(
                       color: AppColors.uiWhite.withValues(
                         alpha: AppTypography.opacityBarely,
@@ -128,53 +69,141 @@ class AvatarSelectionGrid extends StatelessWidget {
                         AppTypography.radiusMedium,
                       ),
                       border: Border.all(
-                        color: isSelected
+                        color: selectedAvatar == null
                             ? AppColors.primaryColor
                             : AppColors.uiWhite.withValues(
                                 alpha: AppTypography.opacityFaint,
                               ),
-                        width: isSelected ? 3 : 1,
+                        width: selectedAvatar == null ? 3 : 1,
                       ),
                     ),
-                    child: Center(
-                      child: Text(
-                        avatar.emoji,
-                        style: const TextStyle(fontSize: 48),
-                      ),
+                    child: Row(
+                      children: [
+                        ClipOval(
+                          child: Image.network(
+                            photoUrl!,
+                            width: AppTypography.avatarSelectionSize,
+                            height: AppTypography.avatarSelectionSize,
+                            fit: BoxFit.cover,
+                            cacheWidth:
+                                (AppTypography.avatarSelectionSize *
+                                        MediaQuery.of(context).devicePixelRatio)
+                                    .round(),
+                            cacheHeight:
+                                (AppTypography.avatarSelectionSize *
+                                        MediaQuery.of(context).devicePixelRatio)
+                                    .round(),
+                            errorBuilder: (context, error, stackTrace) {
+                              // Fallback to icon on error (e.g., 429 rate limit)
+                              return Container(
+                                width: AppTypography.avatarSelectionSize,
+                                height: AppTypography.avatarSelectionSize,
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacityVeryFaint,
+                                ),
+                                child: Icon(
+                                  Icons.account_circle,
+                                  size:
+                                      AppTypography.avatarSelectionSize * 0.67,
+                                  color: AppColors.primaryColor,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: AppTypography.spacingMedium),
+                        Expanded(
+                          child: Text(
+                            l10n.useGoogleProfilePhoto,
+                            style: AppTypography.mediumText.copyWith(
+                              color: AppColors.uiWhite,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: AppTypography.spacingLarge),
-          // Save button
-          HapticElevatedButton(
-            onPressed: onSave,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
-              foregroundColor: AppColors.uiWhite,
-              padding: const EdgeInsets.symmetric(
-                vertical: AppTypography.spacingLarge,
-              ),
-              minimumSize: const Size(double.infinity, 0),
-            ),
-            child: Text(l10n.saveAvatar),
-          ),
-          const SizedBox(height: AppTypography.spacingMedium),
-          // Cancel button
-          Center(
-            child: HapticTextButton(
-              onPressed: onCancel,
-              child: Text(
-                l10n.cancel,
-                style: AppTypography.mediumText.copyWith(
-                  color: AppColors.uiWhite,
+                ),
+                const SizedBox(height: AppTypography.spacingMedium),
+                SectionDivider.labeled(
+                  l10n.customAvatars,
+                  bottomSpacing: AppTypography.spacingMedium,
+                ),
+              ],
+              // Avatar grid
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: AppTypography.spacingMedium,
+                    crossAxisSpacing: AppTypography.spacingMedium,
+                  ),
+                  itemCount: UserAvatar.values.length,
+                  itemBuilder: (context, index) {
+                    final avatar = UserAvatar.values[index];
+                    final isSelected = selectedAvatar == avatar;
+
+                    return GestureDetector(
+                      onTap: () => onAvatarSelected(avatar),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.uiWhite.withValues(
+                            alpha: AppTypography.opacityBarely,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            AppTypography.radiusMedium,
+                          ),
+                          border: Border.all(
+                            color: isSelected
+                                ? AppColors.primaryColor
+                                : AppColors.uiWhite.withValues(
+                                    alpha: AppTypography.opacityFaint,
+                                  ),
+                            width: isSelected ? 3 : 1,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            avatar.emoji,
+                            style: const TextStyle(fontSize: 48),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
-            ),
+              const SizedBox(height: AppTypography.spacingLarge),
+              // Save button
+              HapticElevatedButton(
+                onPressed: onSave,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryColor,
+                  foregroundColor: AppColors.uiWhite,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppTypography.spacingLarge,
+                  ),
+                  minimumSize: const Size(double.infinity, 0),
+                ),
+                child: Text(l10n.saveAvatar),
+              ),
+              const SizedBox(height: AppTypography.spacingMedium),
+              // Cancel button
+              Center(
+                child: HapticTextButton(
+                  onPressed: onCancel,
+                  child: Text(
+                    l10n.cancel,
+                    style: AppTypography.mediumText.copyWith(
+                      color: AppColors.uiWhite,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

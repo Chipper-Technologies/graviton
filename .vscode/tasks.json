@@ -473,6 +473,7 @@
         "--dart-define-from-file",
         "config/dev-web.json"
       ],
+      "dependsOn": ["Inject Dev Web Config"],
       "group": {
         "kind": "build",
         "isDefault": false
@@ -500,6 +501,7 @@
         "config/prod-web.json",
         "--release"
       ],
+      "dependsOn": ["Inject Prod Web Config"],
       "group": {
         "kind": "build",
         "isDefault": false
@@ -526,6 +528,7 @@
         "config/dev-web.json",
         "--release"
       ],
+      "dependsOn": ["Inject Dev Web Config"],
       "group": {
         "kind": "build",
         "isDefault": false
@@ -552,6 +555,7 @@
         "config/prod-web.json",
         "--release"
       ],
+      "dependsOn": ["Inject Prod Web Config"],
       "group": {
         "kind": "build",
         "isDefault": false
@@ -659,6 +663,50 @@
       },
       "problemMatcher": [],
       "detail": "Run all Flutter tests"
+    },
+
+    // ============================================================================
+    // WEB CONFIG INJECTION TASKS
+    // ============================================================================
+    {
+      "label": "Inject Dev Web Config",
+      "type": "shell",
+      "command": "dart",
+      "args": [
+        "run",
+        "tools/inject_web_config.dart",
+        "config/dev-web.json"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Inject dev configuration into web/index.html"
+    },
+    {
+      "label": "Inject Prod Web Config",
+      "type": "shell",
+      "command": "dart",
+      "args": [
+        "run",
+        "tools/inject_web_config.dart",
+        "config/prod-web.json"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Inject prod configuration into web/index.html"
     }
   ]
 }

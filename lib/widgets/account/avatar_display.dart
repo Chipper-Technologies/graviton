@@ -54,9 +54,41 @@ class AvatarDisplay extends StatelessWidget {
             color: AppColors.primaryColor,
             width: AppTypography.borderThick,
           ),
-          image: DecorationImage(
-            image: NetworkImage(photoUrl!),
+        ),
+        child: ClipOval(
+          child: Image.network(
+            photoUrl!,
             fit: BoxFit.cover,
+            width: size,
+            height: size,
+            cacheWidth: (size * MediaQuery.of(context).devicePixelRatio)
+                .round(),
+            cacheHeight: (size * MediaQuery.of(context).devicePixelRatio)
+                .round(),
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              // Fallback to default avatar icon on error (e.g., 429 rate limit)
+              return Container(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityVeryFaint,
+                ),
+                child: Icon(
+                  Icons.account_circle,
+                  size: size * 0.67,
+                  color: AppColors.primaryColor,
+                ),
+              );
+            },
           ),
         ),
       );

@@ -21,94 +21,102 @@ class GravitonTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      margin: EdgeInsets.all(AppTypography.spacingMedium),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-        color: AppColors.uiBlack.withValues(alpha: AppTypography.opacityHigh),
-        border: Border.all(
-          color: AppColors.primaryColor.withValues(
-            alpha: AppTypography.opacityVeryFaint,
-          ),
-          width: 1,
-        ),
-      ),
-      child: Material(
-        type: MaterialType.transparency,
-        child: Stack(
-          children: [
-            SizedBox(
-              height: 50, // Ensure TabBar takes full height
-              child: TabBar(
-                controller: controller,
-                onTap: (index) {
-                  // Trigger the callback first (e.g., to expand bottom sheet)
-                  onTabTap?.call();
-                  // Then provide haptic feedback
-                  HapticUtils.navigate();
-                },
-                indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    AppTypography.radiusMedium,
-                  ),
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.primaryColor.withValues(
-                        alpha: AppTypography.opacityMedium,
-                      ),
-                      AppColors.primaryColor.withValues(
-                        alpha: AppTypography.opacityFaint,
-                      ),
-                    ],
-                  ),
-                ),
-                indicatorSize: TabBarIndicatorSize.tab,
-                dividerColor: AppColors.transparentColor,
-                labelColor: AppColors.uiWhite,
-                unselectedLabelColor: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityMediumHigh,
-                ),
-                labelStyle: const TextStyle(
-                  fontSize: AppTypography.fontSizeMedium,
-                  fontWeight: FontWeight.w600,
-                ),
-                unselectedLabelStyle: const TextStyle(
-                  fontSize: AppTypography.fontSizeMedium,
-                  fontWeight: FontWeight.w500,
-                ),
-                tabs: tabs,
-              ),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: Container(
+          height: 50,
+          margin: EdgeInsets.all(AppTypography.spacingMedium),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
+            color: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityHigh,
             ),
-            // Overlay gesture detectors for disabled tabs
-            if (disabledTabs != null) ...{
-              for (int i = 0; i < disabledTabs!.length; i++)
-                if (disabledTabs![i])
-                  Positioned.fill(
-                    child: Row(
-                      children: List.generate(tabs.length, (index) {
-                        if (index != i) {
-                          return Expanded(
-                            child: Container(),
-                          ); // Empty space for enabled tabs
-                        }
-                        return Expanded(
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              // Block the tap and provide error feedback
-                              HapticUtils.error();
-                            },
-                            child: Container(
-                              color: Colors.transparent, // Invisible overlay
-                            ),
+            border: Border.all(
+              color: AppColors.primaryColor.withValues(
+                alpha: AppTypography.opacityVeryFaint,
+              ),
+              width: 1,
+            ),
+          ),
+          child: Material(
+            type: MaterialType.transparency,
+            child: Stack(
+              children: [
+                SizedBox(
+                  height: 50, // Ensure TabBar takes full height
+                  child: TabBar(
+                    controller: controller,
+                    onTap: (index) {
+                      // Trigger the callback first (e.g., to expand bottom sheet)
+                      onTabTap?.call();
+                      // Then provide haptic feedback
+                      HapticUtils.navigate();
+                    },
+                    indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        AppTypography.radiusMedium,
+                      ),
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primaryColor.withValues(
+                            alpha: AppTypography.opacityMedium,
                           ),
-                        );
-                      }),
+                          AppColors.primaryColor.withValues(
+                            alpha: AppTypography.opacityFaint,
+                          ),
+                        ],
+                      ),
                     ),
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    dividerColor: AppColors.transparentColor,
+                    labelColor: AppColors.uiWhite,
+                    unselectedLabelColor: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityMediumHigh,
+                    ),
+                    labelStyle: const TextStyle(
+                      fontSize: AppTypography.fontSizeMedium,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    unselectedLabelStyle: const TextStyle(
+                      fontSize: AppTypography.fontSizeMedium,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    tabs: tabs,
                   ),
-            },
-          ],
+                ),
+                // Overlay gesture detectors for disabled tabs
+                if (disabledTabs != null) ...{
+                  for (int i = 0; i < disabledTabs!.length; i++)
+                    if (disabledTabs![i])
+                      Positioned.fill(
+                        child: Row(
+                          children: List.generate(tabs.length, (index) {
+                            if (index != i) {
+                              return Expanded(
+                                child: Container(),
+                              ); // Empty space for enabled tabs
+                            }
+                            return Expanded(
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  // Block the tap and provide error feedback
+                                  HapticUtils.error();
+                                },
+                                child: Container(
+                                  color:
+                                      Colors.transparent, // Invisible overlay
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                },
+              ],
+            ),
+          ),
         ),
       ),
     );

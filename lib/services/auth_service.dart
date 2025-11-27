@@ -330,20 +330,67 @@ class AuthService {
   /// Sign in with Google
   Future<UserProfile?> signInWithGoogle() async {
     try {
+      debugPrint('Starting Google sign-in flow...');
+
       if (_googleSignIn == null) {
         throw Exception('exceptionGoogleSignInNotInitialized');
       }
 
-      debugPrint('Starting Google sign-in flow...');
-
-      // Trigger the authentication flow
-      final GoogleSignInAccount googleUser = await _googleSignIn!.authenticate(
-        scopeHint: [
-          'email',
+      // On web, authenticate() is not supported - use Firebase Auth directly
+      // On mobile/desktop, use google_sign_in package
+      GoogleSignInAccount? googleUser;
+      if (kIsWeb) {
+        // On web, use Firebase Auth popup directly
+        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        googleProvider.addScope('email');
+        googleProvider.addScope(
           'https://www.googleapis.com/auth/userinfo.profile',
-        ],
-      );
+        );
 
+        final userCredential = await _auth?.signInWithPopup(googleProvider);
+
+        if (userCredential?.user == null) return null;
+
+        // Check if this is a new user
+        final isNewUser =
+            userCredential!.additionalUserInfo?.isNewUser ?? false;
+        if (isNewUser) {
+          // Assign random avatar only if user doesn't have a profile photo
+          final hasProfilePhoto =
+              userCredential.user!.photoURL != null &&
+              userCredential.user!.photoURL!.isNotEmpty;
+          if (!hasProfilePhoto) {
+            final avatar = UserAvatar.random();
+            await setUserAvatar(avatar);
+          }
+
+          await FirebaseService.instance.logEvent(
+            'auth_account_created',
+            parameters: {'method': AuthProviderType.google.displayName},
+          );
+        } else {
+          await FirebaseService.instance.logEvent(
+            'auth_sign_in_success',
+            parameters: {'method': AuthProviderType.google.displayName},
+          );
+        }
+
+        final avatar = await _loadSavedAvatar();
+        return UserProfile.fromFirebaseUser(
+          userCredential.user!,
+          avatar: avatar,
+        );
+      } else {
+        // On mobile/desktop, use google_sign_in package with authenticate()
+        googleUser = await _googleSignIn!.authenticate(
+          scopeHint: [
+            'email',
+            'https://www.googleapis.com/auth/userinfo.profile',
+          ],
+        );
+      }
+
+      // Mobile/desktop path continues here
       if (kDebugMode) {
         debugPrint('AuthService: Google sign-in successful');
       }
@@ -437,16 +484,18 @@ class AuthService {
     try {
       debugPrint('Apple sign in: Opening authentication dialog...');
 
-      // Request credential for the currently signed in Apple account
+      // Use sign_in_with_apple package on all platforms (including web)
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
-        webAuthenticationOptions: WebAuthenticationOptions(
-          clientId: AppConfig.appleClientId,
-          redirectUri: Uri.parse(AppConfig.appleRedirectUri),
-        ),
+        webAuthenticationOptions: kIsWeb
+            ? WebAuthenticationOptions(
+                clientId: AppConfig.appleClientId,
+                redirectUri: Uri.parse(AppConfig.appleRedirectUri),
+              )
+            : null,
       );
 
       debugPrint(
@@ -522,7 +571,10 @@ class AuthService {
       );
       rethrow;
     } on FirebaseAuthException catch (e, stackTrace) {
-      debugPrint('Apple sign in error: ${e.code} - ${e.message}');
+      debugPrint('Apple sign in Firebase error: ${e.code} - ${e.message}');
+      debugPrint(
+        'Firebase error details: code=${e.code}, message=${e.message}, email=${e.email}',
+      );
       await FirebaseService.instance.crashlytics?.recordError(
         e,
         stackTrace,
@@ -874,6 +926,11 @@ class AuthService {
         throw Exception('exceptionNoUserSignedIn');
       }
 
+      if (_googleSignIn == null) {
+        throw Exception('exceptionGoogleSignInNotInitialized');
+      }
+
+      // Use google_sign_in package on all platforms (including web)
       // Use the event-based Google Sign-In API
       final eventCompleter = Completer<GoogleSignInAuthenticationEvent>();
       late StreamSubscription<GoogleSignInAuthenticationEvent> subscription;
@@ -945,13 +1002,15 @@ class AuthService {
         throw Exception('exceptionNoUserSignedIn');
       }
 
-      // Sign in with Apple to get fresh credential
+      // Use sign_in_with_apple package on all platforms (including web)
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [AppleIDAuthorizationScopes.email],
-        webAuthenticationOptions: WebAuthenticationOptions(
-          clientId: AppConfig.appleClientId,
-          redirectUri: Uri.parse(AppConfig.appleRedirectUri),
-        ),
+        webAuthenticationOptions: kIsWeb
+            ? WebAuthenticationOptions(
+                clientId: AppConfig.appleClientId,
+                redirectUri: Uri.parse(AppConfig.appleRedirectUri),
+              )
+            : null,
       );
 
       final oauthCredential = OAuthProvider('apple.com').credential(

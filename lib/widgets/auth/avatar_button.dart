@@ -46,7 +46,7 @@ class AvatarButton extends StatelessWidget {
                         )
                       : null,
                 ),
-                child: _buildAvatarContent(user),
+                child: _buildAvatarContent(context, user),
               ),
             ),
           ),
@@ -55,7 +55,7 @@ class AvatarButton extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatarContent(dynamic user) {
+  Widget _buildAvatarContent(BuildContext context, dynamic user) {
     if (user == null) {
       // Not signed in - show default icon
       return Icon(
@@ -80,6 +80,14 @@ class AvatarButton extends StatelessWidget {
           fit: BoxFit.cover,
           width: AppTypography.avatarSize,
           height: AppTypography.avatarSize,
+          cacheWidth:
+              (AppTypography.avatarSize *
+                      MediaQuery.of(context).devicePixelRatio)
+                  .round(),
+          cacheHeight:
+              (AppTypography.avatarSize *
+                      MediaQuery.of(context).devicePixelRatio)
+                  .round(),
           errorBuilder: (context, error, stackTrace) {
             return _buildDefaultAvatar(user);
           },

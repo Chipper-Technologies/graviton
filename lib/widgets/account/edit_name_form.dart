@@ -30,31 +30,36 @@ class EditNameForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Padding(
-      padding: const EdgeInsets.all(AppTypography.spacingXLarge),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          StyledTextField(
-            controller: nameController,
-            icon: Icons.person,
-            labelText: l10n.displayNameFieldLabel,
-            hintText: l10n.displayNameFieldHint,
-            onChanged: onChanged,
-          ),
-          const SizedBox(height: AppTypography.spacingXXLarge),
-          HapticElevatedButton(
-            onPressed: onSave,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
-              foregroundColor: AppColors.uiWhite,
-              padding: const EdgeInsets.symmetric(
-                vertical: AppTypography.spacingLarge,
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: Padding(
+          padding: const EdgeInsets.all(AppTypography.spacingXLarge),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              StyledTextField(
+                controller: nameController,
+                icon: Icons.person,
+                labelText: l10n.displayNameFieldLabel,
+                hintText: l10n.displayNameFieldHint,
+                onChanged: onChanged,
               ),
-            ),
-            child: Text(l10n.saveAccountInformation),
+              const SizedBox(height: AppTypography.spacingXXLarge),
+              HapticElevatedButton(
+                onPressed: onSave,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryColor,
+                  foregroundColor: AppColors.uiWhite,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppTypography.spacingLarge,
+                  ),
+                ),
+                child: Text(l10n.saveAccountInformation),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

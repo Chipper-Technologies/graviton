@@ -36,54 +36,66 @@ class PresetScenariosTab extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Scenarios count header
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppTypography.spacingXXLarge,
-            vertical: AppTypography.spacingMedium,
-          ),
-          child: Text(
-            l10n.scenariosHeaderPlural(availableScenarios.length),
-            style: AppTypography.titleText.copyWith(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityHigh,
-              ),
-            ),
-          ),
-        ),
-
         // Scenarios list
         Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppTypography.spacingMedium,
-            ),
-            itemCount: availableScenarios.length,
-            itemBuilder: (context, index) {
-              final scenario = availableScenarios[index];
-              final config = ScenarioConfig.defaults[scenario]!;
-              final isSelected = scenario == currentScenario;
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Scenarios count header
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppTypography.spacingXXLarge,
+                      vertical: AppTypography.spacingMedium,
+                    ),
+                    child: Text(
+                      l10n.scenariosHeaderPlural(availableScenarios.length),
+                      style: AppTypography.titleText.copyWith(
+                        color: AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityHigh,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Scenarios list
+                  Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppTypography.spacingMedium,
+                      ),
+                      itemCount: availableScenarios.length,
+                      itemBuilder: (context, index) {
+                        final scenario = availableScenarios[index];
+                        final config = ScenarioConfig.defaults[scenario]!;
+                        final isSelected = scenario == currentScenario;
 
-              return Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: AppTypography.spacingSmall,
-                ),
-                child: PresetScenarioTile(
-                  scenario: scenario,
-                  config: config,
-                  isSelected: isSelected,
-                  onTap: () {
-                    // Log analytics for preset scenario selection
-                    FirebaseService.instance.logUIEventWithEnums(
-                      UIAction.scenarioSelected,
-                      element: UIElement.presetScenariosTab,
-                      value: scenario.name,
-                    );
-                    onScenarioSelected(scenario);
-                  },
-                ),
-              );
-            },
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppTypography.spacingSmall,
+                          ),
+                          child: PresetScenarioTile(
+                            scenario: scenario,
+                            config: config,
+                            isSelected: isSelected,
+                            onTap: () {
+                              // Log analytics for preset scenario selection
+                              FirebaseService.instance.logUIEventWithEnums(
+                                UIAction.scenarioSelected,
+                                element: UIElement.presetScenariosTab,
+                                value: scenario.name,
+                              );
+                              onScenarioSelected(scenario);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ],

@@ -185,7 +185,8 @@
         "--dart-define-from-file",
         "config/dev-web.json"
       ],
-      "deviceId": "chrome"
+      "deviceId": "chrome",
+      "preLaunchTask": "Inject Dev Web Config"
     },
     {
       "name": "Web Dev [PROFILE]",
@@ -197,7 +198,8 @@
         "config/dev-web.json"
       ],
       "deviceId": "chrome",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+      "preLaunchTask": "Inject Dev Web Config"
     },
     {
       "name": "Web Dev [RELEASE]",
@@ -209,7 +211,8 @@
         "config/dev-web.json"
       ],
       "deviceId": "chrome",
-      "flutterMode": "release"
+      "flutterMode": "release",
+      "preLaunchTask": "Inject Dev Web Config"
     },
     {
       "name": "Web Prod [RELEASE]",
@@ -221,7 +224,8 @@
         "config/prod-web.json"
       ],
       "deviceId": "chrome",
-      "flutterMode": "release"
+      "flutterMode": "release",
+      "preLaunchTask": "Inject Prod Web Config"
     }
   ]
 }

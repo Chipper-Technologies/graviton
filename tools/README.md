@@ -19,6 +19,10 @@ This directory contains development and build tools for the Graviton app.
 - `arb_auditor.py` - ARB file analysis and reorganization tool
 - `arb_duplicate_cleaner.py` - Intelligent duplicate value removal for ARB files
 
+### Web Configuration Tools
+- `inject_web_config.dart` - Injects environment-specific Google OAuth Client ID into web/index.html
+- `restore_web_template.dart` - Restores template variables in web/index.html for version control
+
 ## Screenshot Generation
 
 ### Features
@@ -1061,3 +1065,149 @@ All tools can be integrated into automated build processes:
 3. **Review**: Check generated thumbnails and feature images
 4. **Integration**: Update README with new screenshot markdown
 5. **Keystore**: Generate once per project, backup immediately
+
+## Web Configuration Injection
+
+### Problem
+
+The `google_sign_in_web` package requires a Google OAuth Client ID to be present in `web/index.html` as a meta tag at page load time (before Flutter code runs). However, we have different client IDs for dev and prod environments, so we cannot hardcode a single value.
+
+### Solution
+
+We use build-time injection to substitute the correct client ID based on the configuration file being used.
+
+### Configuration Files
+
+The Google Web Client ID must be added to the web config files:
+
+**`config/dev-web.json`**:
+```json
+{
+  "google.webClientId": "645841860075-om0guja4l633a3hic1lms1h38rfmvfj7.apps.googleusercontent.com"
+}
+```
+
+**`config/prod-web.json`**:
+```json
+{
+  "google.webClientId": "YOUR_PROD_CLIENT_ID.apps.googleusercontent.com"
+}
+```
+
+### Getting the Client ID
+
+The Web Client ID (OAuth 2.0 Client ID type 3) can be found in:
+1. **Google Cloud Console**: https://console.cloud.google.com/apis/credentials?project=graviton-dev
+2. **Firebase `google-services.json`**: Under `oauth_client` array with `"client_type": 3`
+
+Example from `android/app/src/dev/google-services.json`:
+```json
+{
+  "client_id": "645841860075-om0guja4l633a3hic1lms1h38rfmvfj7.apps.googleusercontent.com",
+  "client_type": 3
+}
+```
+
+### Usage
+
+#### Automated (Recommended)
+
+The VS Code tasks automatically inject the config before running/building:
+
+```bash
+# Via VS Code tasks
+[DEV][WEB] Run App     # Automatically injects dev config
+[PROD][WEB] Run App    # Automatically injects prod config
+[DEV][WEB] Build App   # Automatically injects dev config
+[PROD][WEB] Build App  # Automatically injects prod config
+```
+
+These tasks have a `dependsOn` relationship that runs the injection script first.
+
+#### Manual Injection
+
+```bash
+# Inject dev config
+dart run tools/inject_web_config.dart config/dev-web.json
+
+# Inject prod config
+dart run tools/inject_web_config.dart config/prod-web.json
+
+# Restore template (before committing)
+dart run tools/restore_web_template.dart
+```
+
+### Version Control
+
+The `web/index.html` file should be committed with the template variable `$GOOGLE_WEB_CLIENT_ID`, not a hardcoded value.
+
+**Pre-commit hook**: A git pre-commit hook (`.git/hooks/pre-commit`) automatically restores the template variable before each commit to prevent accidentally committing credentials.
+
+### How It Works
+
+1. **Template in HTML**: `web/index.html` contains `<meta name="google-signin-client_id" content="$GOOGLE_WEB_CLIENT_ID">`
+2. **Config file**: The client ID is stored in `config/dev-web.json` or `config/prod-web.json`
+3. **Injection script**: `inject_web_config.dart` reads the config and replaces `$GOOGLE_WEB_CLIENT_ID` with the actual value
+4. **Build process**: VS Code tasks run the injection before `flutter run` or `flutter build web`
+5. **Restoration**: `restore_web_template.dart` puts the template variable back before commits
+
+### Troubleshooting
+
+**Error: "google.webClientId not found in config file"**
+- Add the `google.webClientId` key to your config JSON file with the correct OAuth 2.0 Web Client ID
+
+**Google Sign-In not working on web**
+- Ensure the client ID in the meta tag matches your Google Cloud Console OAuth 2.0 Web Client
+- Verify **Authorized JavaScript Origins** includes your domain:
+  - `http://localhost`
+  - `http://localhost:7357` (or your dev port)
+  - `https://graviton-dev.firebaseapp.com`
+  - `https://graviton-dev.web.app`
+- Check browser console for detailed error messages
+
+**Template variable still in HTML after injection**
+- The injection script may have failed - check the terminal output
+- Ensure the config file has the correct key name: `google.webClientId`
+- Try running the injection script manually
+
+**Hardcoded client ID in web/index.html after git pull**
+- Run `dart run tools/restore_web_template.dart` to restore the template variable
+- This can happen if someone committed without the pre-commit hook running
+
+### Why Not Use Firebase Auth Directly?
+
+While Firebase Auth has OAuth providers, the `google_sign_in` package provides:
+- **Consistent API** across all platforms (mobile, desktop, web)
+- **Better session management** with lightweight authentication
+- **Access to Google APIs** beyond just authentication
+- **Event-based flows** for better user experience
+
+The 7.x API requires proper initialization and the web platform specifically requires the meta tag approach per Google Identity Services requirements.
+
+### AWS Amplify / Firebase Hosting Deployment
+
+For CI/CD deployments, add the injection step to your build configuration:
+
+**AWS Amplify** (`amplify.yml`):
+```yaml
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - flutter pub get
+        - dart run tools/inject_web_config.dart config/prod-web.json
+    build:
+      commands:
+        - flutter build web --release --dart-define-from-file=config/prod-web.json
+```
+
+**Firebase Hosting** (GitHub Actions `.github/workflows/deploy-web.yml`):
+```yaml
+- name: Inject Web Config
+  run: dart run tools/inject_web_config.dart config/prod-web.json
+
+- name: Build Web
+  run: flutter build web --release --dart-define-from-file=config/prod-web.json
+```
+
+**Important**: Set the correct config file for each environment (dev vs prod branch).
