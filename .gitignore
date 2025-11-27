@@ -102,9 +102,6 @@ keys/
 # macOS related
 **/macos/Flutter/GeneratedPluginRegistrant.swift
 
-# Web related
-lib/generated_plugin_registrant.dart
-
 # Crashlytics
 **/ios/**/crashlytics*
 **/android/**/crashlytics*

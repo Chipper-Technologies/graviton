@@ -8,14 +8,12 @@
 library;
 
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 
 void main() {
   final indexHtmlPath = 'web/index.html';
   final indexHtmlFile = File(indexHtmlPath);
 
   if (!indexHtmlFile.existsSync()) {
-    debugPrint('Error: web/index.html not found');
     exit(1);
   }
 
@@ -33,8 +31,5 @@ void main() {
     );
 
     indexHtmlFile.writeAsStringSync(indexHtmlContent);
-    debugPrint('✓ Restored template variable in web/index.html');
-  } else {
-    debugPrint('✓ web/index.html already has template variable');
   }
 }

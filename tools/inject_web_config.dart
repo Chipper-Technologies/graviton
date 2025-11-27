@@ -9,14 +9,9 @@ library;
 
 import 'dart:io';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 void main(List<String> args) {
   if (args.isEmpty) {
-    debugPrint('Usage: dart run tools/inject_web_config.dart <config-file>');
-    debugPrint(
-      'Example: dart run tools/inject_web_config.dart config/dev-web.json',
-    );
     exit(1);
   }
 
@@ -24,7 +19,6 @@ void main(List<String> args) {
   final configFile = File(configPath);
 
   if (!configFile.existsSync()) {
-    debugPrint('Error: Config file not found: $configPath');
     exit(1);
   }
 
@@ -33,7 +27,6 @@ void main(List<String> args) {
   final googleWebClientId = configJson['google.webClientId'] as String?;
 
   if (googleWebClientId == null) {
-    debugPrint('Error: google.webClientId not found in config file');
     exit(1);
   }
 
@@ -42,7 +35,6 @@ void main(List<String> args) {
   final indexHtmlFile = File(indexHtmlPath);
 
   if (!indexHtmlFile.existsSync()) {
-    debugPrint('Error: web/index.html not found');
     exit(1);
   }
 
@@ -56,7 +48,4 @@ void main(List<String> args) {
 
   // Write back to index.html
   indexHtmlFile.writeAsStringSync(indexHtmlContent);
-
-  debugPrint('✓ Injected Google Web Client ID into web/index.html');
-  debugPrint('  Client ID: $googleWebClientId');
 }
