@@ -482,8 +482,6 @@ class AuthService {
   /// Sign in with Apple
   Future<UserProfile?> signInWithApple() async {
     try {
-      debugPrint('Apple sign in: Opening authentication dialog...');
-
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
@@ -497,19 +495,11 @@ class AuthService {
             : null,
       );
 
-      debugPrint(
-        'Apple sign in: Received credential, signing in to Firebase...',
-      );
-      debugPrint('Apple ID Token: ${appleCredential.identityToken != null ? "present" : "null"}');
-      debugPrint('Apple Auth Code: ${appleCredential.authorizationCode != null ? "present" : "null"}');
-
       // Create an OAuthCredential from the credential returned by Apple
       final oauthCredential = OAuthProvider('apple.com').credential(
         idToken: appleCredential.identityToken,
         accessToken: appleCredential.authorizationCode,
       );
-
-      debugPrint('Created OAuth credential, attempting Firebase sign in...');
 
       // Sign in to Firebase with the Apple credential
       final userCredential = await _auth?.signInWithCredential(oauthCredential);
@@ -1056,7 +1046,7 @@ class AuthService {
         throw Exception('exceptionNoUserSignedIn');
       }
 
-      // Use sign_in_with_apple package on all platforms (including web)
+      // Use sign_in_with_apple package on all platforms
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [AppleIDAuthorizationScopes.email],
         webAuthenticationOptions: kIsWeb
