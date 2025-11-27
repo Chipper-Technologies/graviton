@@ -92,6 +92,12 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     });
   }
 
+  /// Stop monitoring email verification status
+  void _stopEmailVerificationMonitoring() {
+    _emailVerificationTimer?.cancel();
+    _emailVerificationTimer = null;
+  }
+
   void _resetToAccountView() {
     setState(() {
       _mode = ScreenMode.accountView;
@@ -338,7 +344,8 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
                 const SizedBox(height: AppTypography.spacingMedium),
                 if (!authState.isAnonymous &&
                     user.email != null &&
-                    !AuthService.instance.isEmailVerified) ...[
+                    !AuthService.instance.isEmailVerified &&
+                    !_isSigningOut) ...[
                   EmailVerificationBanner(
                     onResendVerification: () => _sendEmailVerification(l10n),
                     isSendingVerification: _isSendingVerification,
@@ -462,8 +469,12 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
 
     setState(() => _isProcessing = true);
 
+    // Stop email verification monitoring to prevent interference with auth flow
+    _stopEmailVerificationMonitoring();
+
+    bool success = false;
     try {
-      final success = await AuthUIHandler.handleEmailPasswordAuth(
+      success = await AuthUIHandler.handleEmailPasswordAuth(
         context: context,
         authState: authState,
         l10n: l10n,
@@ -485,6 +496,10 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     } finally {
       if (mounted) {
         setState(() => _isProcessing = false);
+        // Resume monitoring if authentication failed
+        if (!success) {
+          _startEmailVerificationMonitoring();
+        }
       }
     }
   }
@@ -500,8 +515,12 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
 
     setState(() => _isProcessing = true);
 
+    // Stop email verification monitoring to prevent interference with provider popups
+    _stopEmailVerificationMonitoring();
+
+    bool success = false;
     try {
-      final success = await AuthUIHandler.handleSocialSignIn(
+      success = await AuthUIHandler.handleSocialSignIn(
         context: context,
         authState: authState,
         l10n: l10n,
@@ -527,6 +546,10 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     } finally {
       if (mounted) {
         setState(() => _isProcessing = false);
+        // Resume monitoring if authentication failed
+        if (!success) {
+          _startEmailVerificationMonitoring();
+        }
       }
     }
   }
@@ -602,8 +625,12 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
   ) async {
     setState(() => _isDeletingAccount = true);
 
+    // Stop email verification monitoring to prevent interference with provider popups
+    _stopEmailVerificationMonitoring();
+
+    bool success = false;
     try {
-      final success = await authState.deleteAccount(password: password);
+      success = await authState.deleteAccount(password: password);
       if (mounted) {
         if (success) {
           GravitonSnackBar.show(
@@ -625,6 +652,11 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
     } finally {
       if (mounted) {
         setState(() => _isDeletingAccount = false);
+        // Resume email verification monitoring if account deletion failed
+        // (if successful, user is signed out and screen is disposed)
+        if (!success) {
+          _startEmailVerificationMonitoring();
+        }
       }
     }
   }

@@ -352,6 +352,8 @@ class AuthState extends ChangeNotifier {
         await AuthService.instance.reauthenticateWithGoogle();
       } else if (provider == AuthProviderType.apple) {
         await AuthService.instance.reauthenticateWithApple();
+      } else if (provider == AuthProviderType.github) {
+        await AuthService.instance.reauthenticateWithGitHub();
       }
 
       // Delete cloud data BEFORE deleting account

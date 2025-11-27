@@ -484,45 +484,59 @@ class AuthService {
     try {
       debugPrint('Apple sign in: Opening authentication dialog...');
 
-      // Use sign_in_with_apple package on all platforms (including web)
-      final appleCredential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
-        webAuthenticationOptions: kIsWeb
-            ? WebAuthenticationOptions(
-                clientId: AppConfig.appleClientId,
-                redirectUri: Uri.parse(AppConfig.appleRedirectUri),
-              )
-            : null,
-      );
+      UserCredential? userCredential;
 
-      debugPrint(
-        'Apple sign in: Received credential, signing in to Firebase...',
-      );
+      if (kIsWeb) {
+        // On web, use Firebase's OAuthProvider directly for better scope support
+        final appleProvider = OAuthProvider('apple.com')
+          ..addScope('email')
+          ..addScope('name');
 
-      // Create an OAuthCredential from the credential returned by Apple
-      final oauthCredential = OAuthProvider('apple.com').credential(
-        idToken: appleCredential.identityToken,
-        accessToken: appleCredential.authorizationCode,
-      );
+        // Set custom parameters for web
+        appleProvider.setCustomParameters({
+          'locale': 'en',
+        });
 
-      // Sign in to Firebase with the Apple credential
-      final userCredential = await _auth?.signInWithCredential(oauthCredential);
+        debugPrint('Apple sign in (web): Using Firebase OAuthProvider');
+        userCredential = await _auth?.signInWithPopup(appleProvider);
+      } else {
+        // On native platforms, use sign_in_with_apple package
+        final appleCredential = await SignInWithApple.getAppleIDCredential(
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName,
+          ],
+        );
+
+        debugPrint(
+          'Apple sign in (native): Received credential, signing in to Firebase...',
+        );
+
+        // Create an OAuthCredential from the credential returned by Apple
+        final oauthCredential = OAuthProvider('apple.com').credential(
+          idToken: appleCredential.identityToken,
+          accessToken: appleCredential.authorizationCode,
+        );
+
+        // Sign in to Firebase with the Apple credential
+        userCredential = await _auth?.signInWithCredential(oauthCredential);
+
+        // Update display name if provided by Apple and not already set (native only)
+        if (userCredential?.user != null) {
+          final user = userCredential!.user!;
+          if (user.displayName == null &&
+              appleCredential.givenName != null &&
+              appleCredential.familyName != null) {
+            final displayName =
+                '${appleCredential.givenName} ${appleCredential.familyName}';
+            await user.updateDisplayName(displayName);
+            await user.reload();
+          }
+        }
+      }
 
       if (userCredential?.user == null) return null;
-
-      // Update display name if provided by Apple and not already set
       final user = userCredential!.user!;
-      if (user.displayName == null &&
-          appleCredential.givenName != null &&
-          appleCredential.familyName != null) {
-        final displayName =
-            '${appleCredential.givenName} ${appleCredential.familyName}';
-        await user.updateDisplayName(displayName);
-        await user.reload();
-      }
 
       // Check if this is a new user
       final isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
@@ -926,65 +940,116 @@ class AuthService {
         throw Exception('exceptionNoUserSignedIn');
       }
 
-      if (_googleSignIn == null) {
-        throw Exception('exceptionGoogleSignInNotInitialized');
-      }
+      AuthCredential credential;
 
-      // Use google_sign_in package on all platforms (including web)
-      // Use the event-based Google Sign-In API
-      final eventCompleter = Completer<GoogleSignInAuthenticationEvent>();
-      late StreamSubscription<GoogleSignInAuthenticationEvent> subscription;
+      if (kIsWeb) {
+        // On web, use Firebase Auth popup (google_sign_in doesn't work on web)
+        final googleProvider = GoogleAuthProvider();
+        googleProvider.addScope('email');
+        googleProvider.addScope('https://www.googleapis.com/auth/userinfo.profile');
 
-      subscription = _googleSignIn!.authenticationEvents.listen(
-        (event) {
-          if (!eventCompleter.isCompleted) {
-            eventCompleter.complete(event);
-            subscription.cancel();
-          }
-        },
-        onError: (error) {
-          if (!eventCompleter.isCompleted) {
-            eventCompleter.completeError(error);
-            subscription.cancel();
-          }
-        },
-      );
-
-      // Trigger the authentication flow
-      await _googleSignIn!.authenticate(
-        scopeHint: [
-          'email',
-          'https://www.googleapis.com/auth/userinfo.profile',
-        ],
-      );
-
-      // Wait for the authentication event
-      final event = await eventCompleter.future.timeout(
-        const Duration(seconds: 30),
-        onTimeout: () {
-          subscription.cancel();
-          throw TimeoutException('exceptionGoogleSignInTimeout');
-        },
-      );
-
-      GoogleSignInAccount googleUser;
-      if (event is GoogleSignInAuthenticationEventSignIn) {
-        googleUser = event.user;
+        final userCredential = await _auth!.signInWithPopup(googleProvider);
+        if (userCredential.credential == null) {
+          throw Exception('exceptionGoogleSignInCancelled');
+        }
+        credential = userCredential.credential!;
       } else {
-        throw Exception('exceptionGoogleSignInCancelled');
+        // On mobile, use google_sign_in package
+        if (_googleSignIn == null) {
+          throw Exception('exceptionGoogleSignInNotInitialized');
+        }
+
+        // Use the event-based Google Sign-In API
+        final eventCompleter = Completer<GoogleSignInAuthenticationEvent>();
+        late StreamSubscription<GoogleSignInAuthenticationEvent> subscription;
+
+        subscription = _googleSignIn!.authenticationEvents.listen(
+          (event) {
+            if (!eventCompleter.isCompleted) {
+              eventCompleter.complete(event);
+              subscription.cancel();
+            }
+          },
+          onError: (error) {
+            if (!eventCompleter.isCompleted) {
+              eventCompleter.completeError(error);
+              subscription.cancel();
+            }
+          },
+        );
+
+        // Trigger the authentication flow
+        await _googleSignIn!.authenticate(
+          scopeHint: [
+            'email',
+            'https://www.googleapis.com/auth/userinfo.profile',
+          ],
+        );
+
+        // Wait for the authentication event
+        final event = await eventCompleter.future.timeout(
+          const Duration(seconds: 30),
+          onTimeout: () {
+            subscription.cancel();
+            throw TimeoutException('exceptionGoogleSignInTimeout');
+          },
+        );
+
+        GoogleSignInAccount googleUser;
+        if (event is GoogleSignInAuthenticationEventSignIn) {
+          googleUser = event.user;
+        } else {
+          throw Exception('exceptionGoogleSignInCancelled');
+        }
+
+        // Get the authentication tokens
+        final googleAuth = googleUser.authentication;
+
+        // Create credential with the ID token
+        credential = GoogleAuthProvider.credential(
+          idToken: googleAuth.idToken,
+        );
       }
-
-      // Get the authentication tokens
-      final googleAuth = googleUser.authentication;
-
-      // Create credential with the ID token
-      final credential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken,
-      );
 
       await user.reauthenticateWithCredential(credential);
     } on FirebaseAuthException catch (e, stackTrace) {
       debugPrint('Google re-authentication error: ${e.code} - ${e.message}');
+      await FirebaseService.instance.crashlytics?.recordError(
+        e,
+        stackTrace,
+        fatal: false,
+      );
+      rethrow;
+    }
+  }
+
+  /// Re-authenticate with GitHub (required before sensitive operations)
+  Future<void> reauthenticateWithGitHub() async {
+    try {
+      final user = _auth?.currentUser;
+      if (user == null) {
+        throw Exception('exceptionNoUserSignedIn');
+      }
+
+      // Create GitHub OAuth provider
+      final githubProvider = GithubAuthProvider();
+      githubProvider.addScope('user:email');
+
+      // Sign in with popup or redirect depending on platform
+      UserCredential userCredential;
+      if (kIsWeb) {
+        userCredential = await _auth!.signInWithPopup(githubProvider);
+      } else {
+        userCredential = await _auth!.signInWithProvider(githubProvider);
+      }
+
+      if (userCredential.credential == null) {
+        throw Exception('exceptionGitHubSignInCancelled');
+      }
+
+      await user.reauthenticateWithCredential(userCredential.credential!);
+    } on FirebaseAuthException catch (e, stackTrace) {
+      debugPrint('GitHub re-authentication error: ${e.code} - ${e.message}');
       await FirebaseService.instance.crashlytics?.recordError(
         e,
         stackTrace,
@@ -1002,23 +1067,26 @@ class AuthService {
         throw Exception('exceptionNoUserSignedIn');
       }
 
-      // Use sign_in_with_apple package on all platforms (including web)
-      final appleCredential = await SignInWithApple.getAppleIDCredential(
-        scopes: [AppleIDAuthorizationScopes.email],
-        webAuthenticationOptions: kIsWeb
-            ? WebAuthenticationOptions(
-                clientId: AppConfig.appleClientId,
-                redirectUri: Uri.parse(AppConfig.appleRedirectUri),
-              )
-            : null,
-      );
+      if (kIsWeb) {
+        // On web, use Firebase's OAuthProvider directly
+        final appleProvider = OAuthProvider('apple.com')
+          ..addScope('email')
+          ..addScope('name');
 
-      final oauthCredential = OAuthProvider('apple.com').credential(
-        idToken: appleCredential.identityToken,
-        accessToken: appleCredential.authorizationCode,
-      );
+        await user.reauthenticateWithPopup(appleProvider);
+      } else {
+        // On native platforms, use sign_in_with_apple package
+        final appleCredential = await SignInWithApple.getAppleIDCredential(
+          scopes: [AppleIDAuthorizationScopes.email],
+        );
 
-      await user.reauthenticateWithCredential(oauthCredential);
+        final oauthCredential = OAuthProvider('apple.com').credential(
+          idToken: appleCredential.identityToken,
+          accessToken: appleCredential.authorizationCode,
+        );
+
+        await user.reauthenticateWithCredential(oauthCredential);
+      }
     } on SignInWithAppleAuthorizationException catch (e, stackTrace) {
       // User canceled the re-authentication flow (closed Custom Tab) - this is normal, not an error
       if (e.code == AuthorizationErrorCode.canceled) {
