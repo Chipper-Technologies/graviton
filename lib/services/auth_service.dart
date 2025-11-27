@@ -484,59 +484,48 @@ class AuthService {
     try {
       debugPrint('Apple sign in: Opening authentication dialog...');
 
-      UserCredential? userCredential;
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        webAuthenticationOptions: kIsWeb
+            ? WebAuthenticationOptions(
+                clientId: AppConfig.appleClientId,
+                redirectUri: Uri.parse(AppConfig.appleRedirectUri),
+              )
+            : null,
+      );
 
-      if (kIsWeb) {
-        // On web, use Firebase's OAuthProvider directly for better scope support
-        final appleProvider = OAuthProvider('apple.com')
-          ..addScope('email')
-          ..addScope('name');
+      debugPrint(
+        'Apple sign in: Received credential, signing in to Firebase...',
+      );
+      debugPrint('Apple ID Token: ${appleCredential.identityToken != null ? "present" : "null"}');
+      debugPrint('Apple Auth Code: ${appleCredential.authorizationCode != null ? "present" : "null"}');
 
-        // Set custom parameters for web
-        appleProvider.setCustomParameters({
-          'locale': 'en',
-        });
+      // Create an OAuthCredential from the credential returned by Apple
+      final oauthCredential = OAuthProvider('apple.com').credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
 
-        debugPrint('Apple sign in (web): Using Firebase OAuthProvider');
-        userCredential = await _auth?.signInWithPopup(appleProvider);
-      } else {
-        // On native platforms, use sign_in_with_apple package
-        final appleCredential = await SignInWithApple.getAppleIDCredential(
-          scopes: [
-            AppleIDAuthorizationScopes.email,
-            AppleIDAuthorizationScopes.fullName,
-          ],
-        );
+      debugPrint('Created OAuth credential, attempting Firebase sign in...');
 
-        debugPrint(
-          'Apple sign in (native): Received credential, signing in to Firebase...',
-        );
-
-        // Create an OAuthCredential from the credential returned by Apple
-        final oauthCredential = OAuthProvider('apple.com').credential(
-          idToken: appleCredential.identityToken,
-          accessToken: appleCredential.authorizationCode,
-        );
-
-        // Sign in to Firebase with the Apple credential
-        userCredential = await _auth?.signInWithCredential(oauthCredential);
-
-        // Update display name if provided by Apple and not already set (native only)
-        if (userCredential?.user != null) {
-          final user = userCredential!.user!;
-          if (user.displayName == null &&
-              appleCredential.givenName != null &&
-              appleCredential.familyName != null) {
-            final displayName =
-                '${appleCredential.givenName} ${appleCredential.familyName}';
-            await user.updateDisplayName(displayName);
-            await user.reload();
-          }
-        }
-      }
+      // Sign in to Firebase with the Apple credential
+      final userCredential = await _auth?.signInWithCredential(oauthCredential);
 
       if (userCredential?.user == null) return null;
+
+      // Update display name if provided by Apple and not already set
       final user = userCredential!.user!;
+      if (user.displayName == null &&
+          appleCredential.givenName != null &&
+          appleCredential.familyName != null) {
+        final displayName =
+            '${appleCredential.givenName} ${appleCredential.familyName}';
+        await user.updateDisplayName(displayName);
+        await user.reload();
+      }
 
       // Check if this is a new user
       final isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
@@ -1067,26 +1056,23 @@ class AuthService {
         throw Exception('exceptionNoUserSignedIn');
       }
 
-      if (kIsWeb) {
-        // On web, use Firebase's OAuthProvider directly
-        final appleProvider = OAuthProvider('apple.com')
-          ..addScope('email')
-          ..addScope('name');
+      // Use sign_in_with_apple package on all platforms (including web)
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [AppleIDAuthorizationScopes.email],
+        webAuthenticationOptions: kIsWeb
+            ? WebAuthenticationOptions(
+                clientId: AppConfig.appleClientId,
+                redirectUri: Uri.parse(AppConfig.appleRedirectUri),
+              )
+            : null,
+      );
 
-        await user.reauthenticateWithPopup(appleProvider);
-      } else {
-        // On native platforms, use sign_in_with_apple package
-        final appleCredential = await SignInWithApple.getAppleIDCredential(
-          scopes: [AppleIDAuthorizationScopes.email],
-        );
+      final oauthCredential = OAuthProvider('apple.com').credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
 
-        final oauthCredential = OAuthProvider('apple.com').credential(
-          idToken: appleCredential.identityToken,
-          accessToken: appleCredential.authorizationCode,
-        );
-
-        await user.reauthenticateWithCredential(oauthCredential);
-      }
+      await user.reauthenticateWithCredential(oauthCredential);
     } on SignInWithAppleAuthorizationException catch (e, stackTrace) {
       // User canceled the re-authentication flow (closed Custom Tab) - this is normal, not an error
       if (e.code == AuthorizationErrorCode.canceled) {
