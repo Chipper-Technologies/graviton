@@ -33,7 +33,9 @@ class EditNameForm extends StatelessWidget {
 
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
+        constraints: const BoxConstraints(
+          maxWidth: AppConstraints.contentMaxWidth,
+        ),
         child: Padding(
           padding: const EdgeInsets.all(AppTypography.spacingXLarge),
           child: Column(

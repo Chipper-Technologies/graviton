@@ -88,7 +88,9 @@ class _DeleteAccountWithReauthDialogState
 
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
+        constraints: const BoxConstraints(
+          maxWidth: AppConstraints.contentMaxWidth,
+        ),
         child: Padding(
           padding: const EdgeInsets.all(AppTypography.spacingXXLarge),
           child: Column(

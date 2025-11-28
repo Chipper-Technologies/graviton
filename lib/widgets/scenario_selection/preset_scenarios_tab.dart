@@ -41,7 +41,9 @@ class PresetScenariosTab extends StatelessWidget {
         Expanded(
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
+              constraints: const BoxConstraints(
+                maxWidth: AppConstraints.contentMaxWidth,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

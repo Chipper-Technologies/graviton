@@ -53,14 +53,17 @@ class HapticAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    
+
     // Add horizontal padding for web and desktop platforms
-    final isWebOrDesktop = kIsWeb || 
+    final isWebOrDesktop =
+        kIsWeb ||
         defaultTargetPlatform == TargetPlatform.macOS ||
         defaultTargetPlatform == TargetPlatform.windows ||
         defaultTargetPlatform == TargetPlatform.linux;
-    
-    final horizontalPadding = isWebOrDesktop ? AppTypography.spacingMedium : 0.0;
+
+    final horizontalPadding = isWebOrDesktop
+        ? AppTypography.spacingMedium
+        : 0.0;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),

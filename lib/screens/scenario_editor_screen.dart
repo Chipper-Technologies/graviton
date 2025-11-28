@@ -364,56 +364,58 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       padding: EdgeInsets.all(AppTypography.spacingLarge),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
+          constraints: const BoxConstraints(
+            maxWidth: AppConstraints.contentMaxWidth,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-          // Scenario info container (body tile style)
-          _buildScenarioInfoTile(l10n),
+              // Scenario info container (body tile style)
+              _buildScenarioInfoTile(l10n),
 
-          SizedBox(height: AppTypography.spacingSmall),
+              SizedBox(height: AppTypography.spacingSmall),
 
-          // Bodies section divider
-          SectionDivider.labeled(l10n.bodiesLabel),
+              // Bodies section divider
+              SectionDivider.labeled(l10n.bodiesLabel),
 
-          SizedBox(height: AppTypography.spacingLarge),
+              SizedBox(height: AppTypography.spacingLarge),
 
-          // Bodies list using common widget
-          if (_bodies.isEmpty)
-            _buildEmptyState(
-              icon: Icons.add_circle_outline,
-              message: l10n.noBodiesAdded,
-              submessage: l10n.addBodiesInSetupTab,
-            )
-          else
-            _buildBodiesGrid(),
+              // Bodies list using common widget
+              if (_bodies.isEmpty)
+                _buildEmptyState(
+                  icon: Icons.add_circle_outline,
+                  message: l10n.noBodiesAdded,
+                  submessage: l10n.addBodiesInSetupTab,
+                )
+              else
+                _buildBodiesGrid(),
 
-          SizedBox(height: AppTypography.spacingLarge),
+              SizedBox(height: AppTypography.spacingLarge),
 
-          // Physics section divider
-          SectionDivider.labeled(l10n.physicsSection),
+              // Physics section divider
+              SectionDivider.labeled(l10n.physicsSection),
 
-          SizedBox(height: AppTypography.spacingLarge),
+              SizedBox(height: AppTypography.spacingLarge),
 
-          // Physics summary (simplified)
-          _buildSimplePhysicsPreview(l10n),
+              // Physics summary (simplified)
+              _buildSimplePhysicsPreview(l10n),
 
-          SizedBox(height: AppTypography.spacingXLarge),
+              SizedBox(height: AppTypography.spacingXLarge),
 
-          // Actions section divider
-          SectionDivider.plain(),
+              // Actions section divider
+              SectionDivider.plain(),
 
-          SizedBox(height: AppTypography.spacingLarge),
+              SizedBox(height: AppTypography.spacingLarge),
 
-          // Test button only
-          SizedBox(
-            width: double.infinity,
-            child: HapticButton.primary(
-              text: l10n.testScenarioButton,
-              onPressed: () => _testScenario(context, l10n),
-              icon: Icons.play_arrow,
-            ),
-          ),
+              // Test button only
+              SizedBox(
+                width: double.infinity,
+                child: HapticButton.primary(
+                  text: l10n.testScenarioButton,
+                  onPressed: () => _testScenario(context, l10n),
+                  icon: Icons.play_arrow,
+                ),
+              ),
             ],
           ),
         ),
@@ -813,89 +815,92 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       padding: const EdgeInsets.all(16.0),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
+          constraints: const BoxConstraints(
+            maxWidth: AppConstraints.contentMaxWidth,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-          // Metadata Section (Name & Description only)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Name field
-              StyledTextField(
-                controller: _nameController,
-                icon: Icons.title,
-                labelText: l10n.bodyPropertiesName,
-                hintText: l10n.enterScenarioNameEditorHint,
-                onChanged: (name) => setState(() {
-                  _metadata = ScenarioMetadata(
-                    name: name,
-                    description: _metadata.description,
-                    author: _metadata.author,
-                    createdAt: _metadata.createdAt,
-                    educationalFocus: _metadata.educationalFocus,
-                    tags: _metadata.tags,
-                    difficulty: _metadata.difficulty,
-                  );
-                  _hasUnsavedChanges = true;
-                  _triggerAutoSave();
-                }),
+              // Metadata Section (Name & Description only)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Name field
+                  StyledTextField(
+                    controller: _nameController,
+                    icon: Icons.title,
+                    labelText: l10n.bodyPropertiesName,
+                    hintText: l10n.enterScenarioNameEditorHint,
+                    onChanged: (name) => setState(() {
+                      _metadata = ScenarioMetadata(
+                        name: name,
+                        description: _metadata.description,
+                        author: _metadata.author,
+                        createdAt: _metadata.createdAt,
+                        educationalFocus: _metadata.educationalFocus,
+                        tags: _metadata.tags,
+                        difficulty: _metadata.difficulty,
+                      );
+                      _hasUnsavedChanges = true;
+                      _triggerAutoSave();
+                    }),
+                  ),
+
+                  const SizedBox(height: AppTypography.spacingLarge),
+
+                  // Description field
+                  StyledTextField(
+                    controller: _descriptionController,
+                    icon: Icons.description,
+                    labelText: l10n.descriptionEditorLabel,
+                    hintText:
+                        l10n.describeWhatThisScenarioDemonstratesEditorHint,
+                    minLines: 2,
+                    maxLines: 4,
+                    onChanged: (description) => setState(() {
+                      _metadata = ScenarioMetadata(
+                        name: _metadata.name,
+                        description: description,
+                        author: _metadata.author,
+                        createdAt: _metadata.createdAt,
+                        educationalFocus: _metadata.educationalFocus,
+                        tags: _metadata.tags,
+                        difficulty: _metadata.difficulty,
+                      );
+                      _hasUnsavedChanges = true;
+                      _triggerAutoSave();
+                    }),
+                  ),
+                ],
               ),
 
-              const SizedBox(height: AppTypography.spacingLarge),
+              const SizedBox(height: AppTypography.spacingMedium),
 
-              // Description field
-              StyledTextField(
-                controller: _descriptionController,
-                icon: Icons.description,
-                labelText: l10n.descriptionEditorLabel,
-                hintText: l10n.describeWhatThisScenarioDemonstratesEditorHint,
-                minLines: 2,
-                maxLines: 4,
-                onChanged: (description) => setState(() {
-                  _metadata = ScenarioMetadata(
-                    name: _metadata.name,
-                    description: description,
-                    author: _metadata.author,
-                    createdAt: _metadata.createdAt,
-                    educationalFocus: _metadata.educationalFocus,
-                    tags: _metadata.tags,
-                    difficulty: _metadata.difficulty,
-                  );
-                  _hasUnsavedChanges = true;
-                  _triggerAutoSave();
-                }),
+              // System Setup Tools Section
+              // Bodies Section Divider
+              SectionDivider.labeled(l10n.bodiesLabel),
+
+              // Bodies List - Give it a minimum height that can grow with content
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight:
+                      MediaQuery.of(context).size.height *
+                      0.3, // At least 30% of screen height
+                  maxHeight:
+                      MediaQuery.of(context).size.height *
+                      0.6, // At most 60% of screen height
+                ),
+                child: ScenarioEditorBodyList(
+                  bodies: _bodies,
+                  onBodiesChanged: _onBodiesChanged,
+                  onAddBody: _addNewBody,
+                  onBottomSheetVisibilityChanged: (isOpen) {
+                    setState(() {
+                      _isBodyBottomSheetOpen = isOpen;
+                    });
+                  },
+                ),
               ),
-            ],
-          ),
-
-          const SizedBox(height: AppTypography.spacingMedium),
-
-          // System Setup Tools Section
-          // Bodies Section Divider
-          SectionDivider.labeled(l10n.bodiesLabel),
-
-          // Bodies List - Give it a minimum height that can grow with content
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight:
-                  MediaQuery.of(context).size.height *
-                  0.3, // At least 30% of screen height
-              maxHeight:
-                  MediaQuery.of(context).size.height *
-                  0.6, // At most 60% of screen height
-            ),
-            child: ScenarioEditorBodyList(
-              bodies: _bodies,
-              onBodiesChanged: _onBodiesChanged,
-              onAddBody: _addNewBody,
-              onBottomSheetVisibilityChanged: (isOpen) {
-                setState(() {
-                  _isBodyBottomSheetOpen = isOpen;
-                });
-              },
-            ),
-          ),
             ],
           ),
         ),

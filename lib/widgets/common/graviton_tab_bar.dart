@@ -24,7 +24,9 @@ class GravitonTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
+        constraints: const BoxConstraints(
+          maxWidth: AppConstraints.contentMaxWidth,
+        ),
         child: Container(
           height: 50,
           margin: EdgeInsets.all(AppTypography.spacingMedium),
