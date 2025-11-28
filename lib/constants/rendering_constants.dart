@@ -249,6 +249,11 @@ class RenderingConstants {
   /// Caps the adaptive tolerance to maintain reasonable matching precision.
   static const double bodyMatchingMaxTolerance = 25.0;
 
+  // Collision particle effects rendering
+  static const double particleGlowBlurMultiplier = 0.5;
+  static const double particleGlowRadiusMultiplier = 1.5;
+  static const double cloudParticleSizeMultiplier = 1.5;
+
   // Common 3D vectors
 
   /// World-space up vector (Y-axis up).

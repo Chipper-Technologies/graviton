@@ -1,4 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/state/simulation_state.dart';
 
 void main() {
@@ -236,6 +238,184 @@ void main() {
 
         // resumeSimulation should work with regular pause too
         simulationState.resumeSimulation();
+        expect(simulationState.isPaused, isFalse);
+      });
+    });
+
+    group('Scenario Management', () {
+      test('Should reset with specific scenario', () {
+        simulationState.resetWithScenario(ScenarioType.solarSystem);
+        expect(
+          simulationState.currentScenario,
+          equals(ScenarioType.solarSystem),
+        );
+      });
+
+      test('Should handle scenario changes', () {
+        var notificationCount = 0;
+        simulationState.addListener(() => notificationCount++);
+
+        simulationState.resetWithScenario(ScenarioType.binaryStars);
+        expect(notificationCount, greaterThan(0));
+      });
+    });
+
+    group('Physics Settings', () {
+      test('Should apply physics settings', () {
+        final settings = PhysicsSettings(
+          gravitationalConstant: 2.0,
+          softening: 0.5,
+          collisionRadiusMultiplier: 0.15,
+          maxTrailPoints: 200,
+          trailFadeRate: 0.02,
+          vibrationThrottleTime: 0.18,
+          vibrationEnabled: true,
+        );
+
+        simulationState.applyPhysicsSettings(settings);
+
+        expect(simulationState.simulation.gravitationalConstant, equals(2.0));
+        expect(simulationState.simulation.softening, equals(0.5));
+      });
+
+      test('Should handle realistic colors setting', () {
+        simulationState.setUseRealisticColors(true);
+        expect(simulationState.simulation.useRealisticColors, isTrue);
+
+        simulationState.setUseRealisticColors(false);
+        expect(simulationState.simulation.useRealisticColors, isFalse);
+      });
+
+      test('Should handle vibration setting', () {
+        simulationState.setVibrationEnabled(false);
+        expect(simulationState.simulation.vibrationEnabled, isFalse);
+
+        simulationState.setVibrationEnabled(true);
+        expect(simulationState.simulation.vibrationEnabled, isTrue);
+      });
+    });
+
+    group('Simulation Access', () {
+      test('Should expose bodies list', () {
+        expect(simulationState.bodies, isNotNull);
+        expect(simulationState.bodies, isA<List>());
+      });
+
+      test('Should expose trails list', () {
+        expect(simulationState.trails, isNotNull);
+        expect(simulationState.trails, isA<List>());
+      });
+
+      test('Should expose merge flashes', () {
+        expect(simulationState.mergeFlashes, isNotNull);
+        expect(simulationState.mergeFlashes, isA<List>());
+      });
+
+      test('Should access simulation service', () {
+        expect(simulationState.simulation, isNotNull);
+      });
+    });
+
+    group('Body Properties Notification', () {
+      test('Should notify when body properties change', () {
+        var notificationCount = 0;
+        simulationState.addListener(() => notificationCount++);
+
+        simulationState.notifyBodyPropertiesChanged();
+        expect(notificationCount, equals(1));
+      });
+
+      test('Should handle multiple property change notifications', () {
+        var notificationCount = 0;
+        simulationState.addListener(() => notificationCount++);
+
+        for (int i = 0; i < 5; i++) {
+          simulationState.notifyBodyPropertiesChanged();
+        }
+
+        expect(notificationCount, equals(5));
+      });
+    });
+
+    group('Time Scale Edge Cases', () {
+      test('Should handle very small time scales', () {
+        simulationState.setTimeScale(0.1);
+        expect(simulationState.timeScale, equals(0.1));
+      });
+
+      test('Should handle very large time scales', () {
+        simulationState.setTimeScale(16.0);
+        expect(simulationState.timeScale, equals(16.0));
+      });
+
+      test('Should clamp negative time scales', () {
+        simulationState.setTimeScale(-1.0);
+        expect(simulationState.timeScale, equals(0.1));
+      });
+
+      test('Should clamp excessively large time scales', () {
+        simulationState.setTimeScale(100.0);
+        expect(simulationState.timeScale, equals(16.0));
+      });
+    });
+
+    group('State Persistence', () {
+      test('Should maintain state across multiple operations', () {
+        simulationState.start();
+        simulationState.setTimeScale(2.5);
+        simulationState.step(1 / 60.0);
+
+        expect(simulationState.isRunning, isTrue);
+        expect(simulationState.timeScale, equals(2.5));
+        expect(simulationState.stepCount, greaterThan(0));
+
+        simulationState.pause();
+        expect(simulationState.isPaused, isTrue);
+        expect(simulationState.timeScale, equals(2.5)); // Should persist
+      });
+
+      test('Should reset stepCount and totalTime on reset', () {
+        simulationState.start();
+        simulationState.step(1 / 60.0);
+
+        expect(simulationState.stepCount, greaterThan(0));
+        expect(simulationState.totalTime, greaterThan(0));
+
+        simulationState.reset();
+
+        expect(simulationState.stepCount, equals(0));
+        expect(simulationState.totalTime, equals(0.0));
+      });
+    });
+
+    group('Simulation Lifecycle', () {
+      test('Should handle start-pause-resume-stop cycle', () {
+        // Start
+        simulationState.start();
+        expect(simulationState.isRunning, isTrue);
+        expect(simulationState.isPaused, isFalse);
+
+        // Pause
+        simulationState.pause();
+        expect(simulationState.isPaused, isTrue);
+
+        // Resume
+        simulationState.pause();
+        expect(simulationState.isPaused, isFalse);
+
+        // Stop
+        simulationState.stop();
+        expect(simulationState.isRunning, isFalse);
+        expect(simulationState.isPaused, isFalse);
+      });
+
+      test('Should handle rapid start-stop cycles', () {
+        for (int i = 0; i < 10; i++) {
+          simulationState.start();
+          simulationState.stop();
+        }
+
+        expect(simulationState.isRunning, isFalse);
         expect(simulationState.isPaused, isFalse);
       });
     });

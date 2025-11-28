@@ -198,7 +198,10 @@ enum UIElement {
   systemUIControls('system_ui_controls'),
 
   /// Fullscreen toggle button
-  fullscreenToggle('fullscreen_toggle');
+  fullscreenToggle('fullscreen_toggle'),
+
+  /// Visual effects controls (collision effects)
+  visualEffectsControls('visual_effects_controls');
 
   const UIElement(this.value);
 

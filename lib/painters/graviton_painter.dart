@@ -87,8 +87,8 @@ class GravitonPainter extends CustomPainter {
     // Draw distant galaxies in 3D space
     BackgroundPainter.drawDistantGalaxies(canvas, vp, view, size);
 
-    // Draw merge flashes
-    EffectsPainter.drawMergeFlashes(canvas, size, vp, sim);
+    // Draw all collision effects (merge flashes, debris, shockwaves, plasma jets)
+    EffectsPainter.drawAllCollisionEffects(canvas, size, vp, sim);
 
     // Draw trails
     TrailPainter.drawTrails(

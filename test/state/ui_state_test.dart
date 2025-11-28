@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
+import 'package:graviton/enums/temperature_unit.dart';
 import 'package:graviton/state/ui_state.dart';
 
 void main() {
@@ -338,6 +340,334 @@ void main() {
 
         uiState.setCameraSpeed(2.99999);
         expect(uiState.cameraSpeed, equals(2.99999));
+      });
+    });
+
+    group('Habitability Features', () {
+      test('Should toggle habitable zones', () {
+        final initial = uiState.showHabitableZones;
+        uiState.toggleHabitableZones();
+        expect(uiState.showHabitableZones, equals(!initial));
+
+        uiState.toggleHabitableZones();
+        expect(uiState.showHabitableZones, equals(initial));
+      });
+
+      test('Should toggle habitability indicators', () {
+        final initial = uiState.showHabitabilityIndicators;
+        uiState.toggleHabitabilityIndicators();
+        expect(uiState.showHabitabilityIndicators, equals(!initial));
+
+        uiState.toggleHabitabilityIndicators();
+        expect(uiState.showHabitabilityIndicators, equals(initial));
+      });
+
+      test('Habitability toggles should notify listeners', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        uiState.toggleHabitableZones();
+        expect(notificationCount, equals(1));
+
+        uiState.toggleHabitabilityIndicators();
+        expect(notificationCount, equals(2));
+      });
+    });
+
+    group('Collision Effects', () {
+      test('Should toggle collision debris', () {
+        final initial = uiState.showCollisionDebris;
+        uiState.toggleCollisionDebris();
+        expect(uiState.showCollisionDebris, equals(!initial));
+
+        uiState.toggleCollisionDebris();
+        expect(uiState.showCollisionDebris, equals(initial));
+      });
+
+      test('Should toggle collision shockwaves', () {
+        final initial = uiState.showCollisionShockwaves;
+        uiState.toggleCollisionShockwaves();
+        expect(uiState.showCollisionShockwaves, equals(!initial));
+
+        uiState.toggleCollisionShockwaves();
+        expect(uiState.showCollisionShockwaves, equals(initial));
+      });
+
+      test('Should toggle collision ejection', () {
+        final initial = uiState.showCollisionEjection;
+        uiState.toggleCollisionEjection();
+        expect(uiState.showCollisionEjection, equals(!initial));
+
+        uiState.toggleCollisionEjection();
+        expect(uiState.showCollisionEjection, equals(initial));
+      });
+
+      test('Should toggle collision plasma jets', () {
+        final initial = uiState.showCollisionPlasmaJets;
+        uiState.toggleCollisionPlasmaJets();
+        expect(uiState.showCollisionPlasmaJets, equals(!initial));
+
+        uiState.toggleCollisionPlasmaJets();
+        expect(uiState.showCollisionPlasmaJets, equals(initial));
+      });
+
+      test('All collision effect toggles should notify listeners', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        uiState.toggleCollisionDebris();
+        uiState.toggleCollisionShockwaves();
+        uiState.toggleCollisionEjection();
+        uiState.toggleCollisionPlasmaJets();
+
+        expect(notificationCount, equals(4));
+      });
+    });
+
+    group('Language Settings', () {
+      test('Should set language code', () {
+        uiState.setLanguage('es');
+        expect(uiState.selectedLanguageCode, equals('es'));
+
+        uiState.setLanguage('fr');
+        expect(uiState.selectedLanguageCode, equals('fr'));
+      });
+
+      test('Should handle null language (system default)', () {
+        uiState.setLanguage(null);
+        expect(uiState.selectedLanguageCode, isNull);
+      });
+
+      test('Language changes should notify listeners', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        uiState.setLanguage('de');
+        expect(notificationCount, equals(1));
+
+        uiState.setLanguage('ja');
+        expect(notificationCount, equals(2));
+      });
+    });
+
+    group('Temperature Unit', () {
+      test('Should set temperature unit', () {
+        uiState.setTemperatureUnit(TemperatureUnit.fahrenheit);
+        expect(uiState.temperatureUnit, equals(TemperatureUnit.fahrenheit));
+
+        uiState.setTemperatureUnit(TemperatureUnit.kelvin);
+        expect(uiState.temperatureUnit, equals(TemperatureUnit.kelvin));
+
+        uiState.setTemperatureUnit(TemperatureUnit.celsius);
+        expect(uiState.temperatureUnit, equals(TemperatureUnit.celsius));
+      });
+
+      test('Temperature unit changes should notify listeners', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        uiState.setTemperatureUnit(TemperatureUnit.fahrenheit);
+        expect(notificationCount, equals(1));
+
+        uiState.setTemperatureUnit(TemperatureUnit.kelvin);
+        expect(notificationCount, equals(2));
+      });
+    });
+
+    group('Cinematic Camera', () {
+      test('Should set cinematic camera technique', () {
+        uiState.setCinematicCameraTechnique(
+          CinematicCameraTechnique.predictiveOrbital,
+        );
+        expect(
+          uiState.cinematicCameraTechnique,
+          equals(CinematicCameraTechnique.predictiveOrbital),
+        );
+
+        uiState.setCinematicCameraTechnique(
+          CinematicCameraTechnique.dynamicFraming,
+        );
+        expect(
+          uiState.cinematicCameraTechnique,
+          equals(CinematicCameraTechnique.dynamicFraming),
+        );
+
+        uiState.setCinematicCameraTechnique(CinematicCameraTechnique.manual);
+        expect(
+          uiState.cinematicCameraTechnique,
+          equals(CinematicCameraTechnique.manual),
+        );
+      });
+
+      test('Cinematic camera changes should notify listeners', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        uiState.setCinematicCameraTechnique(
+          CinematicCameraTechnique.predictiveOrbital,
+        );
+        expect(notificationCount, equals(1));
+
+        uiState.setCinematicCameraTechnique(
+          CinematicCameraTechnique.dynamicFraming,
+        );
+        expect(notificationCount, equals(2));
+      });
+    });
+
+    group('Fullscreen Mode', () {
+      test('Should set fullscreen state', () {
+        uiState.setFullscreen(true);
+        expect(uiState.isFullscreen, isTrue);
+
+        uiState.setFullscreen(false);
+        expect(uiState.isFullscreen, isFalse);
+      });
+
+      test('Should toggle screenshot mode UI hiding', () {
+        final initial = uiState.hideUIInScreenshotMode;
+        uiState.toggleHideUIInScreenshotMode();
+        expect(uiState.hideUIInScreenshotMode, equals(!initial));
+
+        uiState.toggleHideUIInScreenshotMode();
+        expect(uiState.hideUIInScreenshotMode, equals(initial));
+      });
+
+      test('Fullscreen changes should notify listeners', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        uiState.setFullscreen(true);
+        expect(notificationCount, equals(1));
+
+        uiState.setFullscreen(false);
+        expect(notificationCount, equals(2));
+      });
+    });
+
+    group('Changelog Tracking', () {
+      test('Should set last seen changelog version', () {
+        uiState.setLastSeenChangelogVersion('1.0.0');
+        expect(uiState.lastSeenChangelogVersion, equals('1.0.0'));
+
+        uiState.setLastSeenChangelogVersion('1.1.0');
+        expect(uiState.lastSeenChangelogVersion, equals('1.1.0'));
+      });
+
+      test('Changelog version changes should notify listeners', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        uiState.setLastSeenChangelogVersion('2.0.0');
+        expect(notificationCount, equals(1));
+      });
+    });
+
+    group('Additional UI Toggles', () {
+      test('Should toggle orbital paths', () {
+        final initial = uiState.showOrbitalPaths;
+        uiState.toggleOrbitalPaths();
+        expect(uiState.showOrbitalPaths, equals(!initial));
+      });
+
+      test('Should toggle dual orbital paths', () {
+        final initial = uiState.dualOrbitalPaths;
+        uiState.toggleDualOrbitalPaths();
+        expect(uiState.dualOrbitalPaths, equals(!initial));
+      });
+
+      test('Should toggle grid', () {
+        final initial = uiState.showGrid;
+        uiState.toggleGrid();
+        expect(uiState.showGrid, equals(!initial));
+      });
+
+      test('Should toggle labels', () {
+        final initial = uiState.showLabels;
+        uiState.toggleLabels();
+        expect(uiState.showLabels, equals(!initial));
+      });
+
+      test('Should toggle off-screen indicators', () {
+        final initial = uiState.showOffScreenIndicators;
+        uiState.toggleOffScreenIndicators();
+        expect(uiState.showOffScreenIndicators, equals(!initial));
+      });
+
+      test('All UI toggles should notify listeners', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        uiState.toggleOrbitalPaths();
+        uiState.toggleDualOrbitalPaths();
+        uiState.toggleGrid();
+        uiState.toggleLabels();
+        uiState.toggleOffScreenIndicators();
+
+        expect(notificationCount, equals(5));
+      });
+    });
+
+    group('State Persistence', () {
+      test('Should maintain all settings through multiple operations', () {
+        // Set various states
+        uiState.setLanguage('es');
+        uiState.setTemperatureUnit(TemperatureUnit.fahrenheit);
+        uiState.setCameraSpeed(2.0);
+        uiState.setFullscreen(true);
+        uiState.toggleHabitableZones();
+        uiState.toggleCollisionDebris();
+
+        // Verify persistence
+        expect(uiState.selectedLanguageCode, equals('es'));
+        expect(uiState.temperatureUnit, equals(TemperatureUnit.fahrenheit));
+        expect(uiState.cameraSpeed, equals(2.0));
+        expect(uiState.isFullscreen, isTrue);
+
+        // Perform other operations
+        uiState.toggleStats();
+        uiState.toggleGrid();
+
+        // Original settings should persist
+        expect(uiState.selectedLanguageCode, equals('es'));
+        expect(uiState.temperatureUnit, equals(TemperatureUnit.fahrenheit));
+        expect(uiState.cameraSpeed, equals(2.0));
+        expect(uiState.isFullscreen, isTrue);
+      });
+    });
+
+    group('Listener Management', () {
+      test('Should properly notify all listeners', () {
+        var listener1Count = 0;
+        var listener2Count = 0;
+
+        void listener1() => listener1Count++;
+        void listener2() => listener2Count++;
+
+        uiState.addListener(listener1);
+        uiState.addListener(listener2);
+
+        uiState.toggleStats();
+
+        expect(listener1Count, equals(1));
+        expect(listener2Count, equals(1));
+
+        uiState.removeListener(listener1);
+        uiState.toggleTrails();
+
+        expect(listener1Count, equals(1)); // Should not increment
+        expect(listener2Count, equals(2)); // Should increment
+      });
+
+      test('Should handle rapid state changes', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        for (int i = 0; i < 20; i++) {
+          uiState.toggleStats();
+        }
+
+        expect(notificationCount, equals(20));
       });
     });
   });

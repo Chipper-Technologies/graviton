@@ -86,6 +86,37 @@ class SimulationConstants {
   static const double collisionRadiusMultiplier =
       0.05; // only 5% of visual radius
 
+  // Collision particle physics
+  static const double particleDragCoefficient =
+      0.98; // Drag applied per frame to slow particles
+
+  // Collision shockwave physics
+  static const double shockwaveThicknessDecayRate =
+      0.98; // Decay rate applied per frame to shockwave thickness
+
+  // Plasma jet physics
+  static const double plasmaMaxTemperature =
+      50000.0; // Reference temperature for opacity calculations
+  static const double plasmaMinOpacityFactor =
+      0.5; // Minimum opacity factor for plasma jets
+  static const double plasmaMaxOpacityFactor =
+      1.0; // Maximum opacity factor for plasma jets
+  static const double plasmaJetSpreadAngle =
+      15.0; // Spread angle in degrees for plasma jet cone
+
+  // Particle temperature color physics
+  static const double particleTemperatureLerpFactor =
+      0.5; // Lerp factor for temperature-based color brightening
+
+  // Collision effects multipliers
+  static const double secondaryShockwaveThicknessMultiplier =
+      0.7; // Thickness multiplier for secondary shockwave
+  static const double cloudVelocityMultiplier =
+      0.5; // Velocity multiplier for debris cloud particles
+  static const double cloudExpansionMultiplier =
+      2.0; // Expansion rate multiplier for debris clouds
+  static const double cloudLifetime = 4.0; // Default lifetime for debris clouds
+
   // Emergency system regeneration
   static const double centralBodyMass = 50.0;
   static const double centralBodyRadius = 3.0;

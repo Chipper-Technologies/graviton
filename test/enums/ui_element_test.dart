@@ -4,7 +4,7 @@ import 'package:graviton/enums/ui_element.dart';
 void main() {
   group('UIElement Enum', () {
     test('should have all expected UI elements', () {
-      expect(UIElement.values.length, equals(63));
+      expect(UIElement.values.length, equals(64));
       expect(UIElement.values, contains(UIElement.simulationViewport));
       expect(UIElement.values, contains(UIElement.scenarioSelection));
       expect(UIElement.values, contains(UIElement.scenarioDialog));
@@ -146,6 +146,76 @@ void main() {
           reason: '${element.value} should be descriptive for analytics',
         );
       }
+    });
+
+    test('should include visual effects controls element', () {
+      expect(UIElement.values, contains(UIElement.visualEffectsControls));
+      expect(
+        UIElement.visualEffectsControls.value,
+        equals('visual_effects_controls'),
+      );
+    });
+
+    test('should include physics controls elements', () {
+      expect(UIElement.values, contains(UIElement.physicsVisualization));
+      expect(UIElement.values, contains(UIElement.gravityFieldControls));
+      expect(UIElement.values, contains(UIElement.equipotentialSurfaces));
+      expect(UIElement.values, contains(UIElement.gravityFieldIndicators));
+      expect(UIElement.values, contains(UIElement.gravityFieldColorScheme));
+    });
+
+    test('should include visual display elements', () {
+      expect(UIElement.values, contains(UIElement.visualDisplayControls));
+      expect(UIElement.values, contains(UIElement.trailControls));
+      expect(UIElement.values, contains(UIElement.labelControls));
+      expect(UIElement.values, contains(UIElement.colorSchemeControls));
+      expect(UIElement.values, contains(UIElement.habitableZoneControls));
+      expect(UIElement.values, contains(UIElement.orbitalPathControls));
+      expect(UIElement.values, contains(UIElement.navigationAidsControls));
+    });
+
+    test('should include camera elements', () {
+      expect(UIElement.values, contains(UIElement.viewportCanvas));
+      expect(UIElement.values, contains(UIElement.cameraTechniqueSelector));
+      expect(UIElement.values, contains(UIElement.cameraSpeedControls));
+      expect(UIElement.values, contains(UIElement.manualCameraControls));
+      expect(UIElement.values, contains(UIElement.cameraActionButtons));
+    });
+
+    test('should include scenario editor elements', () {
+      expect(UIElement.values, contains(UIElement.scenarioEditor));
+      expect(UIElement.values, contains(UIElement.scenarioEditorBodies));
+      expect(UIElement.values, contains(UIElement.scenarioEditorSettings));
+      expect(UIElement.values, contains(UIElement.scenarioEditorPreview));
+      expect(UIElement.values, contains(UIElement.bodyEditor));
+      expect(UIElement.values, contains(UIElement.scenarioMetadata));
+      expect(UIElement.values, contains(UIElement.scenarioPhysics));
+    });
+
+    test('should include performance monitoring elements', () {
+      expect(UIElement.values, contains(UIElement.performanceMonitor));
+      expect(UIElement.values, contains(UIElement.frameRateIndicator));
+      expect(UIElement.values, contains(UIElement.memoryUsageIndicator));
+    });
+
+    test('should include fullscreen elements', () {
+      expect(UIElement.values, contains(UIElement.fullscreenControls));
+      expect(UIElement.values, contains(UIElement.systemUIControls));
+      expect(UIElement.values, contains(UIElement.fullscreenToggle));
+    });
+
+    test('should include help and educational elements', () {
+      expect(UIElement.values, contains(UIElement.helpDocumentation));
+      expect(UIElement.values, contains(UIElement.tooltipSystem));
+      expect(UIElement.values, contains(UIElement.tutorialOverlay));
+      expect(UIElement.values, contains(UIElement.changelogViewer));
+      expect(UIElement.values, contains(UIElement.aboutInformation));
+    });
+
+    test('should include simulation control elements', () {
+      expect(UIElement.values, contains(UIElement.simulationPlaybackControls));
+      expect(UIElement.values, contains(UIElement.timeScaleControls));
+      expect(UIElement.values, contains(UIElement.simulationLifecycleControls));
     });
   });
 }

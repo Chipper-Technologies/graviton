@@ -3358,4 +3358,32 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
+
+  @override
+  String get collisionEffectsTitle => '衝突エフェクト';
+
+  @override
+  String get showCollisionDebris => '破片粒子';
+
+  @override
+  String get showCollisionDebrisDescription => '物理ベースの軌道を持つ衝突衝撃から放出される粒子';
+
+  @override
+  String get showCollisionShockwaves => '衝撃波リング';
+
+  @override
+  String get showCollisionShockwavesDescription => '衝突地点から衝撃力に応じて拡大するエネルギーリング';
+
+  @override
+  String get showCollisionEjection => '物質放出';
+
+  @override
+  String get showCollisionEjectionDescription => '高エネルギー衝撃時に排出される物質の渦巻く雲';
+
+  @override
+  String get showCollisionPlasmaJets => 'プラズマジェット';
+
+  @override
+  String get showCollisionPlasmaJetsDescription =>
+      '大質量星衝突からの方向性のある超高温ストリーム（実験的）';
 }

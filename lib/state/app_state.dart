@@ -37,6 +37,9 @@ class AppState extends ChangeNotifier {
     physics.addListener(_onChildStateChanged);
     auth.addListener(_onChildStateChanged);
 
+    // Wire AppState reference to Simulation for collision effects UI settings
+    simulation.setAppState(this);
+
     _isInitialized = true;
     notifyListeners();
   }
