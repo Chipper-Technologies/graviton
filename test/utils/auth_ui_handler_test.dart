@@ -879,6 +879,8 @@ void main() {
       ) async {
         final authState = AuthState();
 
+        var resultCapture = false;
+
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
             child: Builder(
@@ -894,8 +896,7 @@ void main() {
                       password: 'password123',
                       isCreatingAccount: false,
                     );
-                    // Will fail since Firebase is not initialized
-                    expect(result, isFalse);
+                    resultCapture = result;
                   },
                   child: const Text('Test'),
                 );
@@ -905,13 +906,21 @@ void main() {
         );
 
         await tester.tap(find.text('Test'));
-        await tester.pumpAndSettle();
+        await tester.pump();
+
+        // Wait for async operations and timers to complete
+        await tester.pumpAndSettle(const Duration(seconds: 2));
+
+        // Will fail since Firebase is not initialized
+        expect(resultCapture, isFalse);
 
         authState.dispose();
       });
 
       testWidgets('handles display name properly', (tester) async {
         final authState = AuthState();
+
+        var resultCapture = false;
 
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(
@@ -929,9 +938,7 @@ void main() {
                       isCreatingAccount: true,
                       displayName: '',
                     );
-                    // Should use defaultUserName from l10n
-                    // Will fail since Firebase is not initialized
-                    expect(result, isFalse);
+                    resultCapture = result;
                   },
                   child: const Text('Test'),
                 );
@@ -941,7 +948,14 @@ void main() {
         );
 
         await tester.tap(find.text('Test'));
-        await tester.pumpAndSettle();
+        await tester.pump();
+
+        // Wait for async operations and timers to complete
+        await tester.pumpAndSettle(const Duration(seconds: 2));
+
+        // Should use defaultUserName from l10n
+        // Will fail since Firebase is not initialized
+        expect(resultCapture, isFalse);
 
         authState.dispose();
       });

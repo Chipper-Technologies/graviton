@@ -8939,12 +8939,78 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
           as String);
 
   @override
+  String get resetSessionButton =>
+      (super.noSuchMethod(
+            Invocation.getter(#resetSessionButton),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#resetSessionButton),
+            ),
+          )
+          as String);
+
+  @override
   String get signOutSuccess =>
       (super.noSuchMethod(
             Invocation.getter(#signOutSuccess),
             returnValue: _i8.dummyValue<String>(
               this,
               Invocation.getter(#signOutSuccess),
+            ),
+          )
+          as String);
+
+  @override
+  String get operationTimeout =>
+      (super.noSuchMethod(
+            Invocation.getter(#operationTimeout),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#operationTimeout),
+            ),
+          )
+          as String);
+
+  @override
+  String get operationFailed =>
+      (super.noSuchMethod(
+            Invocation.getter(#operationFailed),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#operationFailed),
+            ),
+          )
+          as String);
+
+  @override
+  String get couldNotOpenLink =>
+      (super.noSuchMethod(
+            Invocation.getter(#couldNotOpenLink),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#couldNotOpenLink),
+            ),
+          )
+          as String);
+
+  @override
+  String get pleaseWaitBeforeRetrying =>
+      (super.noSuchMethod(
+            Invocation.getter(#pleaseWaitBeforeRetrying),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#pleaseWaitBeforeRetrying),
+            ),
+          )
+          as String);
+
+  @override
+  String get networkError =>
+      (super.noSuchMethod(
+            Invocation.getter(#networkError),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#networkError),
             ),
           )
           as String);
@@ -9060,6 +9126,17 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
           as String);
 
   @override
+  String get accountManagementSection =>
+      (super.noSuchMethod(
+            Invocation.getter(#accountManagementSection),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#accountManagementSection),
+            ),
+          )
+          as String);
+
+  @override
   String get dangerZoneSection =>
       (super.noSuchMethod(
             Invocation.getter(#dangerZoneSection),
@@ -9110,6 +9187,1143 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
             returnValue: _i8.dummyValue<String>(
               this,
               Invocation.getter(#accountMenuDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get emailLabel =>
+      (super.noSuchMethod(
+            Invocation.getter(#emailLabel),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#emailLabel),
+            ),
+          )
+          as String);
+
+  @override
+  String get passwordLabel =>
+      (super.noSuchMethod(
+            Invocation.getter(#passwordLabel),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#passwordLabel),
+            ),
+          )
+          as String);
+
+  @override
+  String get createAccountButton =>
+      (super.noSuchMethod(
+            Invocation.getter(#createAccountButton),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#createAccountButton),
+            ),
+          )
+          as String);
+
+  @override
+  String get pleaseEnterEmail =>
+      (super.noSuchMethod(
+            Invocation.getter(#pleaseEnterEmail),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#pleaseEnterEmail),
+            ),
+          )
+          as String);
+
+  @override
+  String get pleaseEnterValidEmail =>
+      (super.noSuchMethod(
+            Invocation.getter(#pleaseEnterValidEmail),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#pleaseEnterValidEmail),
+            ),
+          )
+          as String);
+
+  @override
+  String get pleaseEnterPassword =>
+      (super.noSuchMethod(
+            Invocation.getter(#pleaseEnterPassword),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#pleaseEnterPassword),
+            ),
+          )
+          as String);
+
+  @override
+  String get passwordMinLength =>
+      (super.noSuchMethod(
+            Invocation.getter(#passwordMinLength),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#passwordMinLength),
+            ),
+          )
+          as String);
+
+  @override
+  String get alreadyHaveAccount =>
+      (super.noSuchMethod(
+            Invocation.getter(#alreadyHaveAccount),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#alreadyHaveAccount),
+            ),
+          )
+          as String);
+
+  @override
+  String get needAccount =>
+      (super.noSuchMethod(
+            Invocation.getter(#needAccount),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#needAccount),
+            ),
+          )
+          as String);
+
+  @override
+  String get continueWithGoogle =>
+      (super.noSuchMethod(
+            Invocation.getter(#continueWithGoogle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#continueWithGoogle),
+            ),
+          )
+          as String);
+
+  @override
+  String get continueWithGitHub =>
+      (super.noSuchMethod(
+            Invocation.getter(#continueWithGitHub),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#continueWithGitHub),
+            ),
+          )
+          as String);
+
+  @override
+  String get continueWithApple =>
+      (super.noSuchMethod(
+            Invocation.getter(#continueWithApple),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#continueWithApple),
+            ),
+          )
+          as String);
+
+  @override
+  String get moreProviders =>
+      (super.noSuchMethod(
+            Invocation.getter(#moreProviders),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#moreProviders),
+            ),
+          )
+          as String);
+
+  @override
+  String get chooseProvider =>
+      (super.noSuchMethod(
+            Invocation.getter(#chooseProvider),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#chooseProvider),
+            ),
+          )
+          as String);
+
+  @override
+  String get selectAvatarTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#selectAvatarTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#selectAvatarTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get editAccountInformationTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#editAccountInformationTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#editAccountInformationTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get displayNameLabel =>
+      (super.noSuchMethod(
+            Invocation.getter(#displayNameLabel),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#displayNameLabel),
+            ),
+          )
+          as String);
+
+  @override
+  String get pleaseEnterDisplayName =>
+      (super.noSuchMethod(
+            Invocation.getter(#pleaseEnterDisplayName),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#pleaseEnterDisplayName),
+            ),
+          )
+          as String);
+
+  @override
+  String get displayNameMinLength =>
+      (super.noSuchMethod(
+            Invocation.getter(#displayNameMinLength),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#displayNameMinLength),
+            ),
+          )
+          as String);
+
+  @override
+  String get deleteAccountTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#deleteAccountTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#deleteAccountTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get deleteAccountWarning =>
+      (super.noSuchMethod(
+            Invocation.getter(#deleteAccountWarning),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#deleteAccountWarning),
+            ),
+          )
+          as String);
+
+  @override
+  String get deleteAccountMessage =>
+      (super.noSuchMethod(
+            Invocation.getter(#deleteAccountMessage),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#deleteAccountMessage),
+            ),
+          )
+          as String);
+
+  @override
+  String get deleteAccountItem1 =>
+      (super.noSuchMethod(
+            Invocation.getter(#deleteAccountItem1),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#deleteAccountItem1),
+            ),
+          )
+          as String);
+
+  @override
+  String get deleteAccountItem2 =>
+      (super.noSuchMethod(
+            Invocation.getter(#deleteAccountItem2),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#deleteAccountItem2),
+            ),
+          )
+          as String);
+
+  @override
+  String get deleteAccountItem3 =>
+      (super.noSuchMethod(
+            Invocation.getter(#deleteAccountItem3),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#deleteAccountItem3),
+            ),
+          )
+          as String);
+
+  @override
+  String get deleteAccountItem4 =>
+      (super.noSuchMethod(
+            Invocation.getter(#deleteAccountItem4),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#deleteAccountItem4),
+            ),
+          )
+          as String);
+
+  @override
+  String get deleteAccountPasswordPrompt =>
+      (super.noSuchMethod(
+            Invocation.getter(#deleteAccountPasswordPrompt),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#deleteAccountPasswordPrompt),
+            ),
+          )
+          as String);
+
+  @override
+  String get orDivider =>
+      (super.noSuchMethod(
+            Invocation.getter(#orDivider),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#orDivider),
+            ),
+          )
+          as String);
+
+  @override
+  String get displayNameHint =>
+      (super.noSuchMethod(
+            Invocation.getter(#displayNameHint),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#displayNameHint),
+            ),
+          )
+          as String);
+
+  @override
+  String get emailHint =>
+      (super.noSuchMethod(
+            Invocation.getter(#emailHint),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#emailHint),
+            ),
+          )
+          as String);
+
+  @override
+  String get passwordHint =>
+      (super.noSuchMethod(
+            Invocation.getter(#passwordHint),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#passwordHint),
+            ),
+          )
+          as String);
+
+  @override
+  String get alreadyHaveAccountSignIn =>
+      (super.noSuchMethod(
+            Invocation.getter(#alreadyHaveAccountSignIn),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#alreadyHaveAccountSignIn),
+            ),
+          )
+          as String);
+
+  @override
+  String get needAccountCreateOne =>
+      (super.noSuchMethod(
+            Invocation.getter(#needAccountCreateOne),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#needAccountCreateOne),
+            ),
+          )
+          as String);
+
+  @override
+  String get useGoogleProfilePhoto =>
+      (super.noSuchMethod(
+            Invocation.getter(#useGoogleProfilePhoto),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#useGoogleProfilePhoto),
+            ),
+          )
+          as String);
+
+  @override
+  String get customAvatars =>
+      (super.noSuchMethod(
+            Invocation.getter(#customAvatars),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#customAvatars),
+            ),
+          )
+          as String);
+
+  @override
+  String get saveAvatar =>
+      (super.noSuchMethod(
+            Invocation.getter(#saveAvatar),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#saveAvatar),
+            ),
+          )
+          as String);
+
+  @override
+  String get displayNameFieldLabel =>
+      (super.noSuchMethod(
+            Invocation.getter(#displayNameFieldLabel),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#displayNameFieldLabel),
+            ),
+          )
+          as String);
+
+  @override
+  String get displayNameFieldHint =>
+      (super.noSuchMethod(
+            Invocation.getter(#displayNameFieldHint),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#displayNameFieldHint),
+            ),
+          )
+          as String);
+
+  @override
+  String get saveAccountInformation =>
+      (super.noSuchMethod(
+            Invocation.getter(#saveAccountInformation),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#saveAccountInformation),
+            ),
+          )
+          as String);
+
+  @override
+  String get emailRequired =>
+      (super.noSuchMethod(
+            Invocation.getter(#emailRequired),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#emailRequired),
+            ),
+          )
+          as String);
+
+  @override
+  String get emailInvalid =>
+      (super.noSuchMethod(
+            Invocation.getter(#emailInvalid),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#emailInvalid),
+            ),
+          )
+          as String);
+
+  @override
+  String get passwordRequired =>
+      (super.noSuchMethod(
+            Invocation.getter(#passwordRequired),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#passwordRequired),
+            ),
+          )
+          as String);
+
+  @override
+  String get passwordTooShort =>
+      (super.noSuchMethod(
+            Invocation.getter(#passwordTooShort),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#passwordTooShort),
+            ),
+          )
+          as String);
+
+  @override
+  String get passwordMissingUppercase =>
+      (super.noSuchMethod(
+            Invocation.getter(#passwordMissingUppercase),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#passwordMissingUppercase),
+            ),
+          )
+          as String);
+
+  @override
+  String get passwordMissingLowercase =>
+      (super.noSuchMethod(
+            Invocation.getter(#passwordMissingLowercase),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#passwordMissingLowercase),
+            ),
+          )
+          as String);
+
+  @override
+  String get passwordMissingNumber =>
+      (super.noSuchMethod(
+            Invocation.getter(#passwordMissingNumber),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#passwordMissingNumber),
+            ),
+          )
+          as String);
+
+  @override
+  String get passwordMissingSpecialChar =>
+      (super.noSuchMethod(
+            Invocation.getter(#passwordMissingSpecialChar),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#passwordMissingSpecialChar),
+            ),
+          )
+          as String);
+
+  @override
+  String get tooManyAttempts =>
+      (super.noSuchMethod(
+            Invocation.getter(#tooManyAttempts),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#tooManyAttempts),
+            ),
+          )
+          as String);
+
+  @override
+  String get emailVerificationRequired =>
+      (super.noSuchMethod(
+            Invocation.getter(#emailVerificationRequired),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#emailVerificationRequired),
+            ),
+          )
+          as String);
+
+  @override
+  String get defaultUserName =>
+      (super.noSuchMethod(
+            Invocation.getter(#defaultUserName),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#defaultUserName),
+            ),
+          )
+          as String);
+
+  @override
+  String get googleSignInError =>
+      (super.noSuchMethod(
+            Invocation.getter(#googleSignInError),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#googleSignInError),
+            ),
+          )
+          as String);
+
+  @override
+  String get gitHubSignInError =>
+      (super.noSuchMethod(
+            Invocation.getter(#gitHubSignInError),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#gitHubSignInError),
+            ),
+          )
+          as String);
+
+  @override
+  String get appleSignInError =>
+      (super.noSuchMethod(
+            Invocation.getter(#appleSignInError),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#appleSignInError),
+            ),
+          )
+          as String);
+
+  @override
+  String get displayNameUpdated =>
+      (super.noSuchMethod(
+            Invocation.getter(#displayNameUpdated),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#displayNameUpdated),
+            ),
+          )
+          as String);
+
+  @override
+  String get displayNameUpdateFailed =>
+      (super.noSuchMethod(
+            Invocation.getter(#displayNameUpdateFailed),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#displayNameUpdateFailed),
+            ),
+          )
+          as String);
+
+  @override
+  String get sessionResetSuccess =>
+      (super.noSuchMethod(
+            Invocation.getter(#sessionResetSuccess),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#sessionResetSuccess),
+            ),
+          )
+          as String);
+
+  @override
+  String get accountDeletedSuccess =>
+      (super.noSuchMethod(
+            Invocation.getter(#accountDeletedSuccess),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#accountDeletedSuccess),
+            ),
+          )
+          as String);
+
+  @override
+  String get errorUserNotFound =>
+      (super.noSuchMethod(
+            Invocation.getter(#errorUserNotFound),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#errorUserNotFound),
+            ),
+          )
+          as String);
+
+  @override
+  String get errorWrongPassword =>
+      (super.noSuchMethod(
+            Invocation.getter(#errorWrongPassword),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#errorWrongPassword),
+            ),
+          )
+          as String);
+
+  @override
+  String get errorInvalidEmail =>
+      (super.noSuchMethod(
+            Invocation.getter(#errorInvalidEmail),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#errorInvalidEmail),
+            ),
+          )
+          as String);
+
+  @override
+  String get errorUserDisabled =>
+      (super.noSuchMethod(
+            Invocation.getter(#errorUserDisabled),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#errorUserDisabled),
+            ),
+          )
+          as String);
+
+  @override
+  String get errorEmailInUse =>
+      (super.noSuchMethod(
+            Invocation.getter(#errorEmailInUse),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#errorEmailInUse),
+            ),
+          )
+          as String);
+
+  @override
+  String get errorWeakPassword =>
+      (super.noSuchMethod(
+            Invocation.getter(#errorWeakPassword),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#errorWeakPassword),
+            ),
+          )
+          as String);
+
+  @override
+  String get errorOperationNotAllowed =>
+      (super.noSuchMethod(
+            Invocation.getter(#errorOperationNotAllowed),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#errorOperationNotAllowed),
+            ),
+          )
+          as String);
+
+  @override
+  String get errorRequiresRecentLogin =>
+      (super.noSuchMethod(
+            Invocation.getter(#errorRequiresRecentLogin),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#errorRequiresRecentLogin),
+            ),
+          )
+          as String);
+
+  @override
+  String get errorNetworkFailed =>
+      (super.noSuchMethod(
+            Invocation.getter(#errorNetworkFailed),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#errorNetworkFailed),
+            ),
+          )
+          as String);
+
+  @override
+  String get exceptionGoogleSignInNotInitialized =>
+      (super.noSuchMethod(
+            Invocation.getter(#exceptionGoogleSignInNotInitialized),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#exceptionGoogleSignInNotInitialized),
+            ),
+          )
+          as String);
+
+  @override
+  String get exceptionGoogleSignInTimeout =>
+      (super.noSuchMethod(
+            Invocation.getter(#exceptionGoogleSignInTimeout),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#exceptionGoogleSignInTimeout),
+            ),
+          )
+          as String);
+
+  @override
+  String get exceptionAppleSignInPlatform =>
+      (super.noSuchMethod(
+            Invocation.getter(#exceptionAppleSignInPlatform),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#exceptionAppleSignInPlatform),
+            ),
+          )
+          as String);
+
+  @override
+  String get exceptionNoAnonymousUser =>
+      (super.noSuchMethod(
+            Invocation.getter(#exceptionNoAnonymousUser),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#exceptionNoAnonymousUser),
+            ),
+          )
+          as String);
+
+  @override
+  String get exceptionNoUserSignedIn =>
+      (super.noSuchMethod(
+            Invocation.getter(#exceptionNoUserSignedIn),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#exceptionNoUserSignedIn),
+            ),
+          )
+          as String);
+
+  @override
+  String get firebaseErrorUserNotFound =>
+      (super.noSuchMethod(
+            Invocation.getter(#firebaseErrorUserNotFound),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#firebaseErrorUserNotFound),
+            ),
+          )
+          as String);
+
+  @override
+  String get firebaseErrorWrongPassword =>
+      (super.noSuchMethod(
+            Invocation.getter(#firebaseErrorWrongPassword),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#firebaseErrorWrongPassword),
+            ),
+          )
+          as String);
+
+  @override
+  String get firebaseErrorInvalidEmail =>
+      (super.noSuchMethod(
+            Invocation.getter(#firebaseErrorInvalidEmail),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#firebaseErrorInvalidEmail),
+            ),
+          )
+          as String);
+
+  @override
+  String get firebaseErrorUserDisabled =>
+      (super.noSuchMethod(
+            Invocation.getter(#firebaseErrorUserDisabled),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#firebaseErrorUserDisabled),
+            ),
+          )
+          as String);
+
+  @override
+  String get firebaseErrorEmailInUse =>
+      (super.noSuchMethod(
+            Invocation.getter(#firebaseErrorEmailInUse),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#firebaseErrorEmailInUse),
+            ),
+          )
+          as String);
+
+  @override
+  String get firebaseErrorWeakPassword =>
+      (super.noSuchMethod(
+            Invocation.getter(#firebaseErrorWeakPassword),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#firebaseErrorWeakPassword),
+            ),
+          )
+          as String);
+
+  @override
+  String get firebaseErrorOperationNotAllowed =>
+      (super.noSuchMethod(
+            Invocation.getter(#firebaseErrorOperationNotAllowed),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#firebaseErrorOperationNotAllowed),
+            ),
+          )
+          as String);
+
+  @override
+  String get firebaseErrorRequiresRecentLogin =>
+      (super.noSuchMethod(
+            Invocation.getter(#firebaseErrorRequiresRecentLogin),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#firebaseErrorRequiresRecentLogin),
+            ),
+          )
+          as String);
+
+  @override
+  String get firebaseErrorNetworkFailed =>
+      (super.noSuchMethod(
+            Invocation.getter(#firebaseErrorNetworkFailed),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#firebaseErrorNetworkFailed),
+            ),
+          )
+          as String);
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      (super.noSuchMethod(
+            Invocation.getter(
+              #firebaseErrorAccountExistsWithDifferentCredential,
+            ),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(
+                #firebaseErrorAccountExistsWithDifferentCredential,
+              ),
+            ),
+          )
+          as String);
+
+  @override
+  String get emailVerificationSent =>
+      (super.noSuchMethod(
+            Invocation.getter(#emailVerificationSent),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#emailVerificationSent),
+            ),
+          )
+          as String);
+
+  @override
+  String get emailVerificationResent =>
+      (super.noSuchMethod(
+            Invocation.getter(#emailVerificationResent),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#emailVerificationResent),
+            ),
+          )
+          as String);
+
+  @override
+  String get emailNotVerified =>
+      (super.noSuchMethod(
+            Invocation.getter(#emailNotVerified),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#emailNotVerified),
+            ),
+          )
+          as String);
+
+  @override
+  String get emailVerified =>
+      (super.noSuchMethod(
+            Invocation.getter(#emailVerified),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#emailVerified),
+            ),
+          )
+          as String);
+
+  @override
+  String get verifyEmailAddress =>
+      (super.noSuchMethod(
+            Invocation.getter(#verifyEmailAddress),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#verifyEmailAddress),
+            ),
+          )
+          as String);
+
+  @override
+  String get verifyEmailMessage =>
+      (super.noSuchMethod(
+            Invocation.getter(#verifyEmailMessage),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#verifyEmailMessage),
+            ),
+          )
+          as String);
+
+  @override
+  String get sendVerificationEmail =>
+      (super.noSuchMethod(
+            Invocation.getter(#sendVerificationEmail),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#sendVerificationEmail),
+            ),
+          )
+          as String);
+
+  @override
+  String get resendVerificationEmail =>
+      (super.noSuchMethod(
+            Invocation.getter(#resendVerificationEmail),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#resendVerificationEmail),
+            ),
+          )
+          as String);
+
+  @override
+  String get checkVerificationStatus =>
+      (super.noSuchMethod(
+            Invocation.getter(#checkVerificationStatus),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#checkVerificationStatus),
+            ),
+          )
+          as String);
+
+  @override
+  String get emailVerificationPending =>
+      (super.noSuchMethod(
+            Invocation.getter(#emailVerificationPending),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#emailVerificationPending),
+            ),
+          )
+          as String);
+
+  @override
+  String get termsAndPrivacy =>
+      (super.noSuchMethod(
+            Invocation.getter(#termsAndPrivacy),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#termsAndPrivacy),
+            ),
+          )
+          as String);
+
+  @override
+  String get acceptTermsAndPrivacy =>
+      (super.noSuchMethod(
+            Invocation.getter(#acceptTermsAndPrivacy),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#acceptTermsAndPrivacy),
+            ),
+          )
+          as String);
+
+  @override
+  String get mustAcceptTerms =>
+      (super.noSuchMethod(
+            Invocation.getter(#mustAcceptTerms),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#mustAcceptTerms),
+            ),
+          )
+          as String);
+
+  @override
+  String get termsOfService =>
+      (super.noSuchMethod(
+            Invocation.getter(#termsOfService),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#termsOfService),
+            ),
+          )
+          as String);
+
+  @override
+  String get privacyPolicy =>
+      (super.noSuchMethod(
+            Invocation.getter(#privacyPolicy),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#privacyPolicy),
+            ),
+          )
+          as String);
+
+  @override
+  String get viewTermsOfService =>
+      (super.noSuchMethod(
+            Invocation.getter(#viewTermsOfService),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#viewTermsOfService),
+            ),
+          )
+          as String);
+
+  @override
+  String get viewPrivacyPolicy =>
+      (super.noSuchMethod(
+            Invocation.getter(#viewPrivacyPolicy),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#viewPrivacyPolicy),
+            ),
+          )
+          as String);
+
+  @override
+  String get ageRequirement =>
+      (super.noSuchMethod(
+            Invocation.getter(#ageRequirement),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#ageRequirement),
+            ),
+          )
+          as String);
+
+  @override
+  String get confirmAge =>
+      (super.noSuchMethod(
+            Invocation.getter(#confirmAge),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#confirmAge),
+            ),
+          )
+          as String);
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      (super.noSuchMethod(
+            Invocation.getter(#exceptionEmailVerificationFailed),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#exceptionEmailVerificationFailed),
+            ),
+          )
+          as String);
+
+  @override
+  String get exceptionEmailVerificationCooldown =>
+      (super.noSuchMethod(
+            Invocation.getter(#exceptionEmailVerificationCooldown),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#exceptionEmailVerificationCooldown),
+            ),
+          )
+          as String);
+
+  @override
+  String get exceptionTermsNotAccepted =>
+      (super.noSuchMethod(
+            Invocation.getter(#exceptionTermsNotAccepted),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#exceptionTermsNotAccepted),
             ),
           )
           as String);
@@ -10170,6 +11384,72 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
             ),
           )
           as String);
+
+  @override
+  String rateLimitWithCooldown(int? seconds) =>
+      (super.noSuchMethod(
+            Invocation.method(#rateLimitWithCooldown, [seconds]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#rateLimitWithCooldown, [seconds]),
+            ),
+          )
+          as String);
+
+  @override
+  String errorUnknown(String? message) =>
+      (super.noSuchMethod(
+            Invocation.method(#errorUnknown, [message]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#errorUnknown, [message]),
+            ),
+          )
+          as String);
+
+  @override
+  String firebaseErrorDefault(String? message) =>
+      (super.noSuchMethod(
+            Invocation.method(#firebaseErrorDefault, [message]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#firebaseErrorDefault, [message]),
+            ),
+          )
+          as String);
+
+  @override
+  String verificationEmailCooldown(int? seconds) =>
+      (super.noSuchMethod(
+            Invocation.method(#verificationEmailCooldown, [seconds]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#verificationEmailCooldown, [seconds]),
+            ),
+          )
+          as String);
+
+  @override
+  String termsLastUpdated(String? date) =>
+      (super.noSuchMethod(
+            Invocation.method(#termsLastUpdated, [date]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#termsLastUpdated, [date]),
+            ),
+          )
+          as String);
+
+  @override
+  String privacyLastUpdated(String? date) =>
+      (super.noSuchMethod(
+            Invocation.method(#privacyLastUpdated, [date]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#privacyLastUpdated, [date]),
+            ),
+          )
+          as String);
 }
 
 /// A class which mocks [User].
@@ -11094,6 +12374,7 @@ class MockGoogleSignIn extends _i1.Mock implements _i5.GoogleSignIn {
 /// A class which mocks [GoogleSignInAccount].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockGoogleSignInAccount extends _i1.Mock
     implements _i5.GoogleSignInAccount {
   MockGoogleSignInAccount() {
@@ -11145,6 +12426,7 @@ class MockGoogleSignInAccount extends _i1.Mock
 /// A class which mocks [GoogleSignInAuthentication].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockGoogleSignInAuthentication extends _i1.Mock
     implements _i6.GoogleSignInAuthentication {
   MockGoogleSignInAuthentication() {

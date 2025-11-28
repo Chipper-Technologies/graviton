@@ -47,3 +47,17 @@
 
 # Keep all classes related to deferred components to prevent R8 issues
 -keep class * extends io.flutter.embedding.engine.deferredcomponents.DeferredComponentManager { *; }
+
+# Play Integrity API rules
+# Keep all Integrity API classes to ensure proper functionality
+-keep class com.google.android.play.core.integrity.** { *; }
+-keepclassmembers class com.google.android.play.core.integrity.** { *; }
+
+# Keep the integrity token response classes
+-keep class com.google.android.gms.tasks.** { *; }
+
+# Prevent obfuscation of Play Integrity API related classes
+-keepnames class com.google.android.play.core.integrity.IntegrityManager
+-keepnames class com.google.android.play.core.integrity.IntegrityManagerFactory
+-keepnames class com.google.android.play.core.integrity.IntegrityTokenRequest
+-keepnames class com.google.android.play.core.integrity.IntegrityTokenResponse

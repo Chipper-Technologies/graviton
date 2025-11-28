@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:graviton/models/custom_scenario.dart';
+import 'package:graviton/models/play_integrity_exception.dart';
+import 'package:graviton/services/auth_service.dart';
+import 'package:graviton/services/play_integrity_service.dart';
 import 'package:graviton/services/user_data_sync_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +25,9 @@ class CustomScenarioStorage {
   /// Save a custom scenario to local storage
   static Future<void> saveScenario(CustomScenario scenario) async {
     try {
+      // Verify device integrity before saving (Android only, prevents fraudulent scenarios)
+      await _verifyDeviceIntegrityForScenario();
+
       await _saveToPreferences(scenario);
 
       // Sync to cloud if user is authenticated (will skip if already syncing)
@@ -252,6 +258,43 @@ class CustomScenarioStorage {
     } catch (e) {
       debugPrint('Failed to cleanup stale test scenarios: $e');
       return 0;
+    }
+  }
+
+  /// Verify device integrity before saving scenarios (Android only)
+  ///
+  /// This helps prevent saving of fraudulent or tampered scenario data.
+  /// Silently succeeds on non-Android platforms or if verification fails.
+  static Future<void> _verifyDeviceIntegrityForScenario() async {
+    try {
+      final integrityService = PlayIntegrityService();
+      final user = await AuthService.instance.getCurrentUserProfile();
+      final userId = user?.uid ?? 'anonymous';
+
+      // ⚠️ TODO: Add backend verification for production security
+      // Current implementation generates tokens but doesn't verify them.
+      // See docs/PLAY_INTEGRITY.md for backend implementation guide.
+
+      // Use enforcement-aware verification
+      await integrityService.verifyWithEnforcement(
+        operationId: 'save_custom_scenario',
+        userId: userId,
+      );
+    } catch (e) {
+      // If it's an enforcement exception, rethrow to block operation
+      if (e is IntegrityVerificationFailedException) {
+        if (kDebugMode) {
+          debugPrint(
+            'CustomScenario: Integrity verification blocked save operation',
+          );
+        }
+        rethrow;
+      }
+
+      // For other errors, log but don't block (backward compatibility)
+      if (kDebugMode) {
+        debugPrint('CustomScenario: Integrity verification error: $e');
+      }
     }
   }
 

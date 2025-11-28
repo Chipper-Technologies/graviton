@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, debugPrint;
 import 'package:graviton/models/custom_scenario.dart';
+import 'package:graviton/models/play_integrity_exception.dart';
 import 'package:graviton/services/auth_service.dart';
 import 'package:graviton/services/custom_scenario_storage.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/services/play_integrity_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Service for syncing user data between local storage and Firestore
@@ -117,6 +119,9 @@ class UserDataSyncService {
       return;
     }
 
+    // Verify device integrity before cloud sync (Android only)
+    await _verifyDeviceIntegrityForSync(user.uid, 'sync_cloud_data');
+
     try {
       _isSyncing = true;
 
@@ -214,6 +219,12 @@ class UserDataSyncService {
   Future<void> syncCustomScenarios() async {
     if (_isSyncing) {
       return;
+    }
+
+    // Verify device integrity before syncing scenarios (Android only)
+    final user = await AuthService.instance.getCurrentUserProfile();
+    if (user != null && !user.isAnonymous) {
+      await _verifyDeviceIntegrityForSync(user.uid, 'sync_custom_scenarios');
     }
 
     try {
@@ -433,6 +444,44 @@ class UserDataSyncService {
       debugPrint('UserDataSync: Merged profile data from cloud');
     } catch (e) {
       debugPrint('UserDataSync: Failed to merge profile: $e');
+    }
+  }
+
+  /// Verify device integrity before cloud sync (Android only)
+  ///
+  /// This helps prevent fraudulent data from being synced to cloud storage.
+  /// Silently succeeds on non-Android platforms or if verification fails.
+  Future<void> _verifyDeviceIntegrityForSync(
+    String userId,
+    String operationId,
+  ) async {
+    try {
+      final integrityService = PlayIntegrityService();
+
+      // ⚠️ TODO: Add backend verification for production security
+      // Current implementation generates tokens but doesn't verify them.
+      // See docs/PLAY_INTEGRITY.md for backend implementation guide.
+
+      // Use enforcement-aware verification
+      await integrityService.verifyWithEnforcement(
+        operationId: operationId,
+        userId: userId,
+      );
+    } catch (e) {
+      // If it's an enforcement exception, rethrow to block operation
+      if (e is IntegrityVerificationFailedException) {
+        if (kDebugMode) {
+          debugPrint(
+            'UserDataSync: Integrity verification blocked operation: $operationId',
+          );
+        }
+        rethrow;
+      }
+
+      // For other errors, log but don't block (backward compatibility)
+      if (kDebugMode) {
+        debugPrint('UserDataSync: Integrity verification error: $e');
+      }
     }
   }
 
