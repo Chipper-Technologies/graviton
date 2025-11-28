@@ -460,6 +460,114 @@
     },
 
     // ============================================================================
+    // WINDOWS TASKS
+    // ============================================================================
+    {
+      "label": "[DEV][WINDOWS] Run App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "run",
+        "-d",
+        "windows",
+        "--dart-define-from-file",
+        "config/dev-windows.json"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter app on Windows with development configuration"
+    },
+    {
+      "label": "[PROD][WINDOWS] Run App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "run",
+        "-d",
+        "windows",
+        "--dart-define-from-file",
+        "config/prod-windows.json"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter app on Windows with production configuration"
+    },
+    {
+      "label": "[DEV][WINDOWS] Build App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "windows",
+        "--dart-define-from-file",
+        "config/dev-windows.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build Windows app for development"
+    },
+    {
+      "label": "[PROD][WINDOWS] Build App",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "windows",
+        "--dart-define-from-file",
+        "config/prod-windows.json",
+        "--release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Build Windows app for production"
+    },
+
+    // ============================================================================
     // WEB TASKS
     // ============================================================================
     {

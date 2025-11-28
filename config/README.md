@@ -8,7 +8,7 @@ Configuration files follow the naming convention: `{env}-{platform}.json`
 
 Where:
 - `{env}` is either `dev` or `prod`
-- `{platform}` is one of `web`, `android`, `ios`, `macos`
+- `{platform}` is one of `web`, `android`, `ios`, `macos`, `windows`
 
 ### Configuration Files
 
@@ -18,6 +18,8 @@ Where:
 - `prod-android.json` - Android production configuration
 - `dev-ios.json` - iOS development configuration
 - `prod-ios.json` - iOS production configuration
+- `dev-windows.json` - Windows development configuration
+- `prod-windows.json` - Windows production configuration
 - `dev-macos.json` - macOS development configuration
 - `prod-macos.json` - macOS production configuration
 

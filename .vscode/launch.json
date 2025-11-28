@@ -174,6 +174,57 @@
     },
     
     // ============================================================================
+    // WINDOWS CONFIGURATIONS
+    // ============================================================================
+    {
+      "name": "Windows Dev [DEBUG]",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file",
+        "config/dev-windows.json"
+      ],
+      "deviceId": "windows"
+    },
+    {
+      "name": "Windows Dev [PROFILE]",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file",
+        "config/dev-windows.json"
+      ],
+      "deviceId": "windows",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "Windows Dev [RELEASE]",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file",
+        "config/dev-windows.json"
+      ],
+      "deviceId": "windows",
+      "flutterMode": "release"
+    },
+    {
+      "name": "Windows Prod [RELEASE]",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file",
+        "config/prod-windows.json"
+      ],
+      "deviceId": "windows",
+      "flutterMode": "release"
+    },
+    
+    // ============================================================================
     // WEB CONFIGURATIONS
     // ============================================================================
     {
