@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/haptic_utils.dart';
 import 'package:graviton/widgets/common/graviton_tab.dart';
@@ -23,7 +24,7 @@ class GravitonTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 600),
+        constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
         child: Container(
           height: 50,
           margin: EdgeInsets.all(AppTypography.spacingMedium),

@@ -5,14 +5,15 @@ import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/custom_scenario_manager.dart';
+import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/utils/physics_utils.dart';
-import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:graviton/state/app_state.dart';
 
 /// Screen displaying detailed information about the current simulation scenario
 /// and statistics about the celestial bodies within it
@@ -43,7 +44,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 child: Center(
                   child: Container(
                     constraints: const BoxConstraints(
-                      maxWidth: AppTypography.maxContentWidth,
+                      maxWidth: AppConstraints.contentMaxWidth,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

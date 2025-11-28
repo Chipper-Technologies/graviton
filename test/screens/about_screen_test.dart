@@ -186,7 +186,7 @@ void main() {
 
       // Should have container with max width constraint
       final containers = find.byWidgetPredicate(
-        (widget) => widget is Container && widget.constraints?.maxWidth == 600,
+        (widget) => widget is Container && widget.constraints?.maxWidth == 800,
       );
       expect(containers, findsOneWidget);
     });

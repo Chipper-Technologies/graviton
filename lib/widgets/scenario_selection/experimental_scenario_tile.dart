@@ -56,84 +56,87 @@ class ExperimentalScenarioTile extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Icon and difficulty indicator
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(AppTypography.spacingSmall),
-                    decoration: BoxDecoration(
-                      color: experiment.color.withValues(
-                        alpha: AppTypography.opacityFaint,
+                  // Icon and difficulty indicator
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(AppTypography.spacingSmall),
+                        decoration: BoxDecoration(
+                          color: experiment.color.withValues(
+                            alpha: AppTypography.opacityFaint,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            AppTypography.radiusSmall,
+                          ),
+                        ),
+                        child: Icon(
+                          experiment.icon,
+                          color: experiment.color,
+                          size: AppTypography.iconSizeXXLarge,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(
-                        AppTypography.radiusSmall,
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppTypography.spacingSmall,
+                          vertical: AppTypography.spacingXSmall,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _getDifficultyColor(
+                            localizations,
+                          ).withValues(alpha: AppTypography.opacityFaint),
+                          borderRadius: BorderRadius.circular(
+                            AppTypography.radiusSmall,
+                          ),
+                        ),
+                        child: Text(
+                          experiment.difficulty(localizations).toUpperCase(),
+                          style: TextStyle(
+                            fontSize: AppTypography.fontSizeSmall,
+                            fontWeight: FontWeight.bold,
+                            color: _getDifficultyColor(localizations),
+                          ),
+                        ),
                       ),
-                    ),
-                    child: Icon(
-                      experiment.icon,
-                      color: experiment.color,
-                      size: AppTypography.iconSizeXXLarge,
-                    ),
+                    ],
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppTypography.spacingSmall,
-                      vertical: AppTypography.spacingXSmall,
+
+                  SizedBox(height: AppTypography.spacingMedium),
+
+                  // Title
+                  Text(
+                    experiment.name(localizations),
+                    style: TextStyle(
+                      fontSize: AppTypography.fontSizeLarge,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.uiWhite,
                     ),
-                    decoration: BoxDecoration(
-                      color: _getDifficultyColor(
-                        localizations,
-                      ).withValues(alpha: AppTypography.opacityFaint),
-                      borderRadius: BorderRadius.circular(
-                        AppTypography.radiusSmall,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+
+                  SizedBox(height: AppTypography.spacingXSmall),
+
+                  // Description
+                  Text(
+                    experiment.description(localizations),
+                    style: TextStyle(
+                      fontSize: AppTypography.fontSizeSmall,
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityHigh,
                       ),
+                      height: 1.3,
                     ),
-                    child: Text(
-                      experiment.difficulty(localizations).toUpperCase(),
-                      style: TextStyle(
-                        fontSize: AppTypography.fontSizeSmall,
-                        fontWeight: FontWeight.bold,
-                        color: _getDifficultyColor(localizations),
-                      ),
-                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
-
-              SizedBox(height: AppTypography.spacingMedium),
-
-              // Title
-              Text(
-                experiment.name(localizations),
-                style: TextStyle(
-                  fontSize: AppTypography.fontSizeLarge,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.uiWhite,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-
-              SizedBox(height: AppTypography.spacingXSmall),
-
-              // Description
-              Text(
-                experiment.description(localizations),
-                style: TextStyle(
-                  fontSize: AppTypography.fontSizeSmall,
-                  color: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityHigh,
-                  ),
-                  height: 1.3,
-                ),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-
-              SizedBox(height: AppTypography.spacingMedium),
 
               // Duration and tags
               Column(

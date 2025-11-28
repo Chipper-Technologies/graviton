@@ -275,13 +275,13 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         }
       },
       child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.uiBlack.withValues(
-            alpha: AppTypography.opacityVeryHigh,
-          ),
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(AppTypography.radiusXLarge),
-          ),
+          decoration: BoxDecoration(
+            color: AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityVeryHigh,
+            ),
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(AppTypography.radiusXLarge),
+            ),
           border: showSideBorders
               ? Border(
                   top: BorderSide(
@@ -422,12 +422,12 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             // Tab Content using GravitonTabbedView
             Expanded(
               child: GravitonTabbedView(
-                initialIndex: widget.isAddMode
-                    ? 1
-                    : 0, // Default to Edit tab when adding
-                tabs: [
-                  GravitonTab(
-                    icon: Icons.info_outline,
+                  initialIndex: widget.isAddMode
+                      ? 1
+                      : 0, // Default to Edit tab when adding
+                  tabs: [
+                    GravitonTab(
+                      icon: Icons.info_outline,
                     label: l10n.detailsEditorLabel,
                   ),
                   GravitonTab(

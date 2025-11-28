@@ -10,9 +10,10 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/auth_service.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/state/auth_state.dart';
-import 'package:graviton/utils/auth_ui_handler.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/utils/auth_ui_handler.dart';
 import 'package:graviton/widgets/account/account_management_options.dart';
 import 'package:graviton/widgets/account/avatar_selection_grid.dart';
 import 'package:graviton/widgets/account/danger_zone_section.dart';
@@ -177,7 +178,7 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
             padding: const EdgeInsets.all(AppTypography.spacingXLarge),
             child: ConstrainedBox(
               constraints: const BoxConstraints(
-                maxWidth: AppTypography.maxContentWidth,
+                maxWidth: AppConstraints.contentMaxWidth,
               ),
               child: SignInForm(
                 formKey: _formKey,
@@ -267,7 +268,7 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
           padding: const EdgeInsets.all(AppTypography.spacingXXLarge),
           child: ConstrainedBox(
             constraints: const BoxConstraints(
-              maxWidth: AppTypography.maxContentWidth,
+              maxWidth: AppConstraints.contentMaxWidth,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -335,7 +336,7 @@ class _AccountManagementScreenState extends State<AccountManagementScreen> {
           padding: const EdgeInsets.all(AppTypography.spacingLarge),
           child: ConstrainedBox(
             constraints: const BoxConstraints(
-              maxWidth: AppTypography.maxContentWidth,
+              maxWidth: AppConstraints.contentMaxWidth,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

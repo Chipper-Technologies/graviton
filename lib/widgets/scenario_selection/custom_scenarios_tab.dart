@@ -14,6 +14,7 @@ import 'package:graviton/models/body.dart';
 import 'package:graviton/models/body_data.dart';
 import 'package:graviton/models/custom_scenario.dart';
 import 'package:graviton/models/experimental_scenario_config.dart';
+import 'package:graviton/models/graviton_menu_item_config.dart';
 import 'package:graviton/models/particle_systems_config.dart';
 import 'package:graviton/models/scenario_metadata.dart';
 import 'package:graviton/models/scenario_physics_settings.dart';
@@ -24,9 +25,9 @@ import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/scenario_serialization_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/color_utils.dart';
-import 'package:graviton/models/graviton_menu_item_config.dart';
 import 'package:graviton/widgets/common/delete_confirmation_dialog.dart';
 import 'package:graviton/widgets/common/graviton_popup_menu.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
@@ -104,13 +105,14 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       onRefresh: _loadCustomScenarios,
       child: SingleChildScrollView(
         controller: widget.scrollController,
-        padding: EdgeInsets.all(AppTypography.spacingMedium),
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+            constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
+            child: Padding(
+              padding: EdgeInsets.all(AppTypography.spacingMedium),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 // Saved Scenarios section with menu
                 SectionDivider.labeled(
                   l10n.savedScenariosTitle,
@@ -223,7 +225,8 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
 
                 // Experiments grid
                 _buildExperimentsGrid(context),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -283,7 +286,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 0.75,
+        childAspectRatio: 1.35,
         crossAxisSpacing: AppTypography.spacingMedium,
         mainAxisSpacing: AppTypography.spacingMedium,
       ),

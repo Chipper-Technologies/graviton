@@ -6,6 +6,7 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/scenario_config.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/scenario_selection/preset_scenario_tile.dart';
 
@@ -40,7 +41,7 @@ class PresetScenariosTab extends StatelessWidget {
         Expanded(
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600),
+              constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

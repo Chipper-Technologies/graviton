@@ -5,6 +5,7 @@ import 'package:graviton/enums/version_status.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/version_service.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/clipboard_utils.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
@@ -87,7 +88,7 @@ class _AboutScreenState extends State<AboutScreen> {
           child: Center(
             child: Container(
               constraints: const BoxConstraints(
-                maxWidth: AppTypography.maxContentWidth,
+                maxWidth: AppConstraints.contentMaxWidth,
               ),
               child: Column(
                 children: [

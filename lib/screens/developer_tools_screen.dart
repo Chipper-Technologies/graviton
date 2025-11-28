@@ -7,14 +7,15 @@ import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/onboarding_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/common/action_option.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
-import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
-import 'package:graviton/widgets/screenshot_mode_widget.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/overlays/tutorial_overlay.dart';
+import 'package:graviton/widgets/screenshot_mode_widget.dart';
 
 /// Developer Tools full-screen page
 class DeveloperToolsScreen extends StatelessWidget {
@@ -44,7 +45,7 @@ class DeveloperToolsScreen extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(
-                          maxWidth: AppTypography.maxContentWidth,
+                          maxWidth: AppConstraints.contentMaxWidth,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

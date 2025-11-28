@@ -125,12 +125,17 @@ class UserDataSyncService {
 
       // Upload to Firestore
       final userDoc = _getUserDocument(user.uid);
-      await userDoc.set({
-        ...localData,
-        _createdAtField: FieldValue.serverTimestamp(),
-        _updatedAtField: FieldValue.serverTimestamp(),
-        _lastSyncField: FieldValue.serverTimestamp(),
-      });
+      
+      // Use set with merge for web compatibility
+      await userDoc.set(
+        {
+          ...localData,
+          _createdAtField: FieldValue.serverTimestamp(),
+          _updatedAtField: FieldValue.serverTimestamp(),
+          _lastSyncField: FieldValue.serverTimestamp(),
+        },
+        SetOptions(merge: true),
+      );
 
       // Track successful migration as a sync
       _lastSyncToCloud = DateTime.now();
@@ -181,12 +186,12 @@ class UserDataSyncService {
       }
 
       final userDoc = _getUserDocument(user.uid);
-      await userDoc.update(updates);
+      await userDoc.set(updates, SetOptions(merge: true));
 
       // Track when we successfully synced to cloud
       _lastSyncToCloud = DateTime.now();
 
-      debugPrint('UserDataSync: Synced ${updates.length - 2} fields to cloud');
+      debugPrint('UserDataSync: Synced ${updates.keys.where((k) => !k.startsWith('_')).length} fields to cloud');
     } catch (e, stackTrace) {
       debugPrint('UserDataSync: Sync to cloud failed: $e');
       FirebaseService.instance.recordError(e, stackTrace);

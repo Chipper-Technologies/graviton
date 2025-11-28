@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/styled_text_field.dart';
 import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
@@ -32,7 +33,7 @@ class EditNameForm extends StatelessWidget {
 
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 600),
+        constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
         child: Padding(
           padding: const EdgeInsets.all(AppTypography.spacingXLarge),
           child: Column(

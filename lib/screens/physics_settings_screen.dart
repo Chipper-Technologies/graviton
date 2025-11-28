@@ -3,13 +3,14 @@ import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/widgets/common/action_option.dart';
+import 'package:graviton/widgets/common/section_divider.dart';
+import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
-import 'package:graviton/widgets/common/toggle_option.dart';
-import 'package:graviton/widgets/common/section_divider.dart';
 
 /// Full-screen physics settings page with transparent background
 class PhysicsSettingsScreen extends StatefulWidget {
@@ -101,7 +102,7 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                     child: SingleChildScrollView(
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(
-                          maxWidth: AppTypography.maxContentWidth,
+                          maxWidth: AppConstraints.contentMaxWidth,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

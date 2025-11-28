@@ -23,6 +23,7 @@ import 'package:graviton/services/scenario_serialization_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart' as app_colors;
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/body_type_ranges.dart';
 import 'package:graviton/utils/number_utils.dart';
@@ -361,9 +362,12 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
   Widget _buildPreviewTab(BuildContext context, AppLocalizations l10n) {
     return SingleChildScrollView(
       padding: EdgeInsets.all(AppTypography.spacingLarge),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
           // Scenario info container (body tile style)
           _buildScenarioInfoTile(l10n),
 
@@ -410,7 +414,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
               icon: Icons.play_arrow,
             ),
           ),
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -805,9 +811,12 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
     return SingleChildScrollView(
       controller: _setupTabScrollController,
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: AppConstraints.contentMaxWidth),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
           // Metadata Section (Name & Description only)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -887,7 +896,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
               },
             ),
           ),
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }

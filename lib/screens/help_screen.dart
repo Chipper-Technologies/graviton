@@ -4,10 +4,11 @@ import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/ui_utils.dart';
-import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 
 /// Full-screen Help & Objectives page
 class HelpScreen extends StatelessWidget {
@@ -43,7 +44,7 @@ class HelpScreen extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(
-                          maxWidth: AppTypography.maxContentWidth,
+                          maxWidth: AppConstraints.contentMaxWidth,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

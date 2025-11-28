@@ -1409,6 +1409,7 @@ class _HomeScreenState extends State<HomeScreen>
                           );
                         },
                       ),
+                      SizedBox(width: AppTypography.spacingSmall),
                       // Options drawer toggle
                       Builder(
                         builder: (context) => HapticIconButton(
