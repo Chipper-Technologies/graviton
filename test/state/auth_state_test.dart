@@ -37,20 +37,17 @@ void main() {
     });
 
     group('Authentication State Properties', () {
-      test(
-        'isAuthenticated should return true for non-anonymous user',
-        () async {
-          // Manually set a non-anonymous user for testing
-          await authState.signInWithEmailPassword(
-            email: 'test@example.com',
-            password: 'password123',
-          );
+      test('isAuthenticated should return true for non-anonymous user', () async {
+        // Manually set a non-anonymous user for testing
+        // Note: Firebase won't be initialized, but the async call should complete
+        await authState.signInWithEmailPassword(
+          email: 'test@example.com',
+          password: 'password123',
+        );
 
-          // Note: In real scenario, this would be set by AuthService
-          // This test validates the getter logic
-          // Firebase won't be initialized, but the async call should complete
-        },
-      );
+        // Note: In real scenario, this would be set by AuthService
+        // This test validates the getter logic
+      });
 
       test('isAnonymous should return true for anonymous user', () {
         // Test validates the isAnonymous getter logic
