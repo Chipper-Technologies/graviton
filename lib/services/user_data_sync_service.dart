@@ -162,6 +162,15 @@ class UserDataSyncService {
       return;
     }
 
+
+    // Check email verification for cloud sync
+    final isVerified = await AuthService.instance.requireEmailVerification();
+    if (!isVerified) {
+      if (kDebugMode) {
+        debugPrint('UserDataSync: Email not verified, skipping cloud sync');
+      }
+      return;
+    }
     if (_isSyncing) {
       // Avoid sync loops
       return;
