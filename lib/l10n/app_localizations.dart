@@ -6094,6 +6094,114 @@ abstract class AppLocalizations {
   /// **'An error occurred: {message}'**
   String firebaseErrorDefault(String message);
 
+  /// Title for device integrity verification failure
+  ///
+  /// In en, this message translates to:
+  /// **'Device Security Issue'**
+  String get integrityErrorDeviceIntegrityTitle;
+
+  /// Error message when device integrity check fails
+  ///
+  /// In en, this message translates to:
+  /// **'Your device does not meet the security requirements for this operation.'**
+  String get integrityErrorDeviceIntegrity;
+
+  /// Guidance for device integrity failures
+  ///
+  /// In en, this message translates to:
+  /// **'Please ensure your device passes Google Play Protect checks and is not rooted or modified. If you believe this is an error, contact support with reference: {reference}'**
+  String integrityGuidanceDeviceIntegrity(String reference);
+
+  /// Title for app integrity verification failure
+  ///
+  /// In en, this message translates to:
+  /// **'App Installation Issue'**
+  String get integrityErrorAppIntegrityTitle;
+
+  /// Error message when app integrity check fails
+  ///
+  /// In en, this message translates to:
+  /// **'The app installation could not be verified.'**
+  String get integrityErrorAppIntegrity;
+
+  /// Guidance for app integrity failures
+  ///
+  /// In en, this message translates to:
+  /// **'Please ensure you\'re using the official app from Google Play Store. Sideloaded or modified apps are not supported. Reference: {reference}'**
+  String integrityGuidanceAppIntegrity(String reference);
+
+  /// Title for network error during integrity check
+  ///
+  /// In en, this message translates to:
+  /// **'Connection Error'**
+  String get integrityErrorNetworkTitle;
+
+  /// Error message when network error occurs during verification
+  ///
+  /// In en, this message translates to:
+  /// **'Could not verify device security due to a network error.'**
+  String get integrityErrorNetwork;
+
+  /// Guidance for network errors during integrity check
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your internet connection and try again. If the problem persists, contact support with reference: {reference}'**
+  String integrityGuidanceNetwork(String reference);
+
+  /// Title for backend verification failure
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Failed'**
+  String get integrityErrorBackendVerificationTitle;
+
+  /// Error message when backend verification fails
+  ///
+  /// In en, this message translates to:
+  /// **'Security verification could not be completed.'**
+  String get integrityErrorBackendVerification;
+
+  /// Guidance for backend verification failures
+  ///
+  /// In en, this message translates to:
+  /// **'There was an issue verifying your device. Please try again later. If this continues, contact support with reference: {reference}'**
+  String integrityGuidanceBackendVerification(String reference);
+
+  /// Title for token request failure
+  ///
+  /// In en, this message translates to:
+  /// **'Security Check Failed'**
+  String get integrityErrorTokenRequestTitle;
+
+  /// Error message when token request fails
+  ///
+  /// In en, this message translates to:
+  /// **'Could not perform security verification.'**
+  String get integrityErrorTokenRequest;
+
+  /// Guidance for token request failures
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to generate security token. Please restart the app and try again. If the issue persists, contact support with reference: {reference}'**
+  String integrityGuidanceTokenRequest(String reference);
+
+  /// Title for unknown integrity errors
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Error'**
+  String get integrityErrorUnknownTitle;
+
+  /// Error message for unknown integrity failures
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred during security verification.'**
+  String get integrityErrorUnknown;
+
+  /// Guidance for unknown integrity failures
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again. If the problem continues, contact support with reference: {reference}'**
+  String integrityGuidanceUnknown(String reference);
+
   /// Success message after sending verification email
   ///
   /// In en, this message translates to:

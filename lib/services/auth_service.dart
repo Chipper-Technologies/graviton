@@ -1324,9 +1324,11 @@ class AuthService {
       // );
 
       // Use the new enforcement-aware verification
+      // TODO: Remove allowUnverifiedForMonitoring after backend verification is implemented
       await integrityService.verifyWithEnforcement(
         operationId: operationId,
         userId: identifier,
+        allowUnverifiedForMonitoring: true, // Phase 1: Monitoring only
       );
     } catch (e) {
       // If it's an enforcement exception, rethrow to block operation

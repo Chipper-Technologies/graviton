@@ -4486,6 +4486,114 @@
       }
     }
   },
+  "integrityErrorDeviceIntegrityTitle": "Device Security Issue",
+  "@integrityErrorDeviceIntegrityTitle": {
+    "description": "Title for device integrity verification failure"
+  },
+  "integrityErrorDeviceIntegrity": "Your device does not meet the security requirements for this operation.",
+  "@integrityErrorDeviceIntegrity": {
+    "description": "Error message when device integrity check fails"
+  },
+  "integrityGuidanceDeviceIntegrity": "Please ensure your device passes Google Play Protect checks and is not rooted or modified. If you believe this is an error, contact support with reference: {reference}",
+  "@integrityGuidanceDeviceIntegrity": {
+    "description": "Guidance for device integrity failures",
+    "placeholders": {
+      "reference": {
+        "type": "String",
+        "example": "INT-12345"
+      }
+    }
+  },
+  "integrityErrorAppIntegrityTitle": "App Installation Issue",
+  "@integrityErrorAppIntegrityTitle": {
+    "description": "Title for app integrity verification failure"
+  },
+  "integrityErrorAppIntegrity": "The app installation could not be verified.",
+  "@integrityErrorAppIntegrity": {
+    "description": "Error message when app integrity check fails"
+  },
+  "integrityGuidanceAppIntegrity": "Please ensure you're using the official app from Google Play Store. Sideloaded or modified apps are not supported. Reference: {reference}",
+  "@integrityGuidanceAppIntegrity": {
+    "description": "Guidance for app integrity failures",
+    "placeholders": {
+      "reference": {
+        "type": "String",
+        "example": "INT-12345"
+      }
+    }
+  },
+  "integrityErrorNetworkTitle": "Connection Error",
+  "@integrityErrorNetworkTitle": {
+    "description": "Title for network error during integrity check"
+  },
+  "integrityErrorNetwork": "Could not verify device security due to a network error.",
+  "@integrityErrorNetwork": {
+    "description": "Error message when network error occurs during verification"
+  },
+  "integrityGuidanceNetwork": "Please check your internet connection and try again. If the problem persists, contact support with reference: {reference}",
+  "@integrityGuidanceNetwork": {
+    "description": "Guidance for network errors during integrity check",
+    "placeholders": {
+      "reference": {
+        "type": "String",
+        "example": "INT-12345"
+      }
+    }
+  },
+  "integrityErrorBackendVerificationTitle": "Verification Failed",
+  "@integrityErrorBackendVerificationTitle": {
+    "description": "Title for backend verification failure"
+  },
+  "integrityErrorBackendVerification": "Security verification could not be completed.",
+  "@integrityErrorBackendVerification": {
+    "description": "Error message when backend verification fails"
+  },
+  "integrityGuidanceBackendVerification": "There was an issue verifying your device. Please try again later. If this continues, contact support with reference: {reference}",
+  "@integrityGuidanceBackendVerification": {
+    "description": "Guidance for backend verification failures",
+    "placeholders": {
+      "reference": {
+        "type": "String",
+        "example": "INT-12345"
+      }
+    }
+  },
+  "integrityErrorTokenRequestTitle": "Security Check Failed",
+  "@integrityErrorTokenRequestTitle": {
+    "description": "Title for token request failure"
+  },
+  "integrityErrorTokenRequest": "Could not perform security verification.",
+  "@integrityErrorTokenRequest": {
+    "description": "Error message when token request fails"
+  },
+  "integrityGuidanceTokenRequest": "Unable to generate security token. Please restart the app and try again. If the issue persists, contact support with reference: {reference}",
+  "@integrityGuidanceTokenRequest": {
+    "description": "Guidance for token request failures",
+    "placeholders": {
+      "reference": {
+        "type": "String",
+        "example": "INT-12345"
+      }
+    }
+  },
+  "integrityErrorUnknownTitle": "Verification Error",
+  "@integrityErrorUnknownTitle": {
+    "description": "Title for unknown integrity errors"
+  },
+  "integrityErrorUnknown": "An unexpected error occurred during security verification.",
+  "@integrityErrorUnknown": {
+    "description": "Error message for unknown integrity failures"
+  },
+  "integrityGuidanceUnknown": "Please try again. If the problem continues, contact support with reference: {reference}",
+  "@integrityGuidanceUnknown": {
+    "description": "Guidance for unknown integrity failures",
+    "placeholders": {
+      "reference": {
+        "type": "String",
+        "example": "INT-12345"
+      }
+    }
+  },
   "emailVerificationSent": "Verification email sent! Please check your inbox.",
   "@emailVerificationSent": {
     "description": "Success message after sending verification email"

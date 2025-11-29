@@ -34,6 +34,9 @@ void main() {
       when(
         mockRemoteConfig.getBool('integrity_bypass_development'),
       ).thenReturn(true);
+      when(
+        mockRemoteConfig.getBool('integrity_enabled'),
+      ).thenReturn(true); // Enabled by default
     });
 
     test('singleton pattern returns same instance', () {
@@ -157,6 +160,39 @@ void main() {
         final bypass = config.isDevelopmentBypassEnabled();
 
         expect(bypass, isA<bool>());
+      });
+    });
+
+    group('isEnabled', () {
+      test('returns true by default', () {
+        final config = IntegrityConfig.instance;
+
+        expect(config.isEnabled(), isTrue);
+      });
+
+      test('returns boolean value from Remote Config', () {
+        // Cannot mock Remote Config in singleton, so just verify it returns bool
+        final config = IntegrityConfig.instance;
+        final enabled = config.isEnabled();
+
+        expect(enabled, isA<bool>());
+      });
+
+      test('returns true when not initialized', () {
+        final config = IntegrityConfig.instance;
+        // Even if not initialized, should default to enabled for security
+        expect(config.isEnabled(), isTrue);
+      });
+
+      test('method exists and is callable', () {
+        final config = IntegrityConfig.instance;
+        
+        // Verify method can be called multiple times consistently
+        final result1 = config.isEnabled();
+        final result2 = config.isEnabled();
+        
+        expect(result1, equals(result2));
+        expect(result1, isA<bool>());
       });
     });
 

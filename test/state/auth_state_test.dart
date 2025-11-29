@@ -38,15 +38,17 @@ void main() {
 
     group('Authentication State Properties', () {
       test('isAuthenticated should return true for non-anonymous user', () async {
-        // Manually set a non-anonymous user for testing
-        // Note: Firebase won't be initialized, but the async call should complete
+        // This test validates the state management flow during sign-in.
+        // Firebase won't be initialized in unit tests, but the async call should complete.
+        // For comprehensive Play Integrity integration tests during authentication,
+        // see test/services/auth_service_play_integrity_test.dart
         await authState.signInWithEmailPassword(
           email: 'test@example.com',
           password: 'password123',
         );
 
         // Note: In real scenario, this would be set by AuthService
-        // This test validates the getter logic
+        // This test validates the state change and getter logic
       });
 
       test('isAnonymous should return true for anonymous user', () {

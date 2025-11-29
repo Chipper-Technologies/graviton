@@ -10087,6 +10087,138 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
           as String);
 
   @override
+  String get integrityErrorDeviceIntegrityTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorDeviceIntegrityTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorDeviceIntegrityTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get integrityErrorDeviceIntegrity =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorDeviceIntegrity),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorDeviceIntegrity),
+            ),
+          )
+          as String);
+
+  @override
+  String get integrityErrorAppIntegrityTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorAppIntegrityTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorAppIntegrityTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get integrityErrorAppIntegrity =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorAppIntegrity),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorAppIntegrity),
+            ),
+          )
+          as String);
+
+  @override
+  String get integrityErrorNetworkTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorNetworkTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorNetworkTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get integrityErrorNetwork =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorNetwork),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorNetwork),
+            ),
+          )
+          as String);
+
+  @override
+  String get integrityErrorBackendVerificationTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorBackendVerificationTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorBackendVerificationTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get integrityErrorBackendVerification =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorBackendVerification),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorBackendVerification),
+            ),
+          )
+          as String);
+
+  @override
+  String get integrityErrorTokenRequestTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorTokenRequestTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorTokenRequestTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get integrityErrorTokenRequest =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorTokenRequest),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorTokenRequest),
+            ),
+          )
+          as String);
+
+  @override
+  String get integrityErrorUnknownTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorUnknownTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorUnknownTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get integrityErrorUnknown =>
+      (super.noSuchMethod(
+            Invocation.getter(#integrityErrorUnknown),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#integrityErrorUnknown),
+            ),
+          )
+          as String);
+
+  @override
   String get emailVerificationSent =>
       (super.noSuchMethod(
             Invocation.getter(#emailVerificationSent),
@@ -11414,6 +11546,76 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
             returnValue: _i8.dummyValue<String>(
               this,
               Invocation.method(#firebaseErrorDefault, [message]),
+            ),
+          )
+          as String);
+
+  @override
+  String integrityGuidanceDeviceIntegrity(String? reference) =>
+      (super.noSuchMethod(
+            Invocation.method(#integrityGuidanceDeviceIntegrity, [reference]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#integrityGuidanceDeviceIntegrity, [reference]),
+            ),
+          )
+          as String);
+
+  @override
+  String integrityGuidanceAppIntegrity(String? reference) =>
+      (super.noSuchMethod(
+            Invocation.method(#integrityGuidanceAppIntegrity, [reference]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#integrityGuidanceAppIntegrity, [reference]),
+            ),
+          )
+          as String);
+
+  @override
+  String integrityGuidanceNetwork(String? reference) =>
+      (super.noSuchMethod(
+            Invocation.method(#integrityGuidanceNetwork, [reference]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#integrityGuidanceNetwork, [reference]),
+            ),
+          )
+          as String);
+
+  @override
+  String integrityGuidanceBackendVerification(String? reference) =>
+      (super.noSuchMethod(
+            Invocation.method(#integrityGuidanceBackendVerification, [
+              reference,
+            ]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#integrityGuidanceBackendVerification, [
+                reference,
+              ]),
+            ),
+          )
+          as String);
+
+  @override
+  String integrityGuidanceTokenRequest(String? reference) =>
+      (super.noSuchMethod(
+            Invocation.method(#integrityGuidanceTokenRequest, [reference]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#integrityGuidanceTokenRequest, [reference]),
+            ),
+          )
+          as String);
+
+  @override
+  String integrityGuidanceUnknown(String? reference) =>
+      (super.noSuchMethod(
+            Invocation.method(#integrityGuidanceUnknown, [reference]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#integrityGuidanceUnknown, [reference]),
             ),
           )
           as String);

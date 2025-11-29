@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:math' show Random;
 
 import 'package:flutter/foundation.dart' show kDebugMode, debugPrint;
 import 'package:flutter/services.dart';
 import 'package:graviton/enums/integrity_enforcement_level.dart';
+import 'package:graviton/enums/integrity_failure_reason.dart';
 import 'package:graviton/models/integrity_config.dart';
 import 'package:graviton/models/play_integrity_exception.dart';
 import 'package:graviton/services/firebase_service.dart';
@@ -87,6 +89,13 @@ class PlayIntegrityService {
   /// **DO NOT USE IN PRODUCTION**. This method will log warnings in release builds
   /// and should only be used during development or migration.
   ///
+  /// **Security Improvements (v2)**:
+  /// While still insecure for production, this implementation now uses:
+  /// - Cryptographically secure random number generation (Random.secure())
+  /// - 32 bytes of entropy (256 bits) instead of predictable timestamp
+  /// - Base64URL encoding for safe transport
+  /// - User ID prefix for debugging (not for security)
+  ///
   /// **Migration Path**:
   /// 1. Create a backend endpoint that generates secure nonces
   /// 2. Fetch nonce from backend before calling requestIntegrityToken()
@@ -113,10 +122,43 @@ class PlayIntegrityService {
       );
     }
 
+    // Generate cryptographically secure random bytes
+    // Using 32 bytes (256 bits) for strong entropy
+    final random = Random.secure();
+    final randomBytes = Uint8List(32);
+    for (var i = 0; i < randomBytes.length; i++) {
+      randomBytes[i] = random.nextInt(256);
+    }
+
+    // Include timestamp for debugging/correlation (still client-controlled)
+    // but not as the primary entropy source
     final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final nonceData = '$userId:$timestamp';
-    final bytes = Uint8List.fromList(utf8.encode(nonceData));
-    return base64Url.encode(bytes);
+
+    // Combine: random data + timestamp + userId hash for debugging
+    // Format: random(32 bytes) + timestamp(8 bytes) + userId(variable)
+    final userIdBytes = utf8.encode(userId);
+    final timestampBytes = Uint8List(8);
+    for (var i = 0; i < 8; i++) {
+      timestampBytes[i] = (timestamp >> (i * 8)) & 0xFF;
+    }
+
+    // Concatenate all components
+    final combinedBytes = Uint8List(
+      randomBytes.length + timestampBytes.length + userIdBytes.length,
+    );
+    combinedBytes.setRange(0, randomBytes.length, randomBytes);
+    combinedBytes.setRange(
+      randomBytes.length,
+      randomBytes.length + timestampBytes.length,
+      timestampBytes,
+    );
+    combinedBytes.setRange(
+      randomBytes.length + timestampBytes.length,
+      combinedBytes.length,
+      userIdBytes,
+    );
+
+    return base64Url.encode(combinedBytes);
   }
 
   /// Checks if the Play Integrity API is available on this device.
@@ -155,9 +197,15 @@ class PlayIntegrityService {
   /// - [verifyTokenCallback]: **REQUIRED** Backend verification function that
   ///   returns true if token is valid. Without this, no actual verification occurs.
   /// - [nonce]: Backend-generated nonce (required for production security)
+  /// - [allowUnverifiedForMonitoring]: Set to true to explicitly allow monitoring-only
+  ///   mode without backend verification. **DANGEROUS**: Only use during initial
+  ///   rollout to collect metrics. MUST be false in production.
   ///
   /// Throws [IntegrityVerificationFailedException] if verification fails
   /// and enforcement level requires blocking.
+  ///
+  /// Throws [AssertionError] in production if [verifyTokenCallback] is null
+  /// without [allowUnverifiedForMonitoring] = true.
   ///
   /// Example WITH verification (secure):
   /// ```dart
@@ -182,13 +230,14 @@ class PlayIntegrityService {
   /// }
   /// ```
   ///
-  /// Example WITHOUT verification (INSECURE - monitoring only):
+  /// Example monitoring-only (MUST be temporary):
   /// ```dart
-  /// // ❌ NO SECURITY: Token generated but never verified
+  /// // ⚠️ MONITORING ONLY: Token generated but never verified
+  /// // This provides ZERO security - use only for initial metrics gathering
   /// await playIntegrityService.verifyWithEnforcement(
   ///   operationId: 'auth_sign_in',
   ///   userId: user.email,
-  ///   // Missing verifyTokenCallback = no verification!
+  ///   allowUnverifiedForMonitoring: true, // Explicit acknowledgment
   /// );
   /// ```
   Future<void> verifyWithEnforcement({
@@ -196,6 +245,7 @@ class PlayIntegrityService {
     required String userId,
     String? nonce,
     Future<bool> Function(String token)? verifyTokenCallback,
+    bool allowUnverifiedForMonitoring = false,
   }) async {
     // Check if API is available
     final available = await isAvailable();
@@ -215,6 +265,19 @@ class PlayIntegrityService {
       await config.initialize();
     }
 
+    // Check if Play Integrity is globally disabled via Remote Config
+    if (!config.isEnabled()) {
+      debugPrint(
+        'PlayIntegrityService: Play Integrity checks are disabled via Remote Config',
+      );
+      await _logIntegrityEvent(
+        operationId: operationId,
+        status: 'disabled',
+        enforcementLevel: IntegrityEnforcementLevel.logOnly,
+      );
+      return;
+    }
+
     // Check development bypass
     if (kDebugMode && config.isDevelopmentBypassEnabled()) {
       debugPrint(
@@ -226,11 +289,25 @@ class PlayIntegrityService {
     // Determine enforcement level for this operation
     final enforcementLevel = config.getEffectiveEnforcementLevel(operationId);
 
-    // ⚠️ Security Warning: Check if verification callback is provided
+    // 🛑 CRITICAL SECURITY CHECK: Require verification callback in production
     if (verifyTokenCallback == null) {
-      // NO VERIFICATION: Token will be generated but never verified
-      // This provides zero security value
-      if (!kDebugMode) {
+      // Development mode: Allow unverified if in debug mode
+      if (kDebugMode) {
+        debugPrint(
+          'PlayIntegrityService: Token verification disabled for $operationId '
+          '(development mode). Add verifyTokenCallback for production security.',
+        );
+      } else if (!allowUnverifiedForMonitoring) {
+        // Production mode: BLOCK unless explicitly allowed for monitoring
+        throw AssertionError(
+          '🛑 CRITICAL SECURITY ERROR: Play Integrity verification callback is '
+          'required in production for operation: $operationId. Either:\n'
+          '1. Provide verifyTokenCallback parameter (RECOMMENDED)\n'
+          '2. Set allowUnverifiedForMonitoring=true (TEMPORARY ONLY for Phase 1)\n'
+          'See docs/PLAY_INTEGRITY.md for backend verification implementation.',
+        );
+      } else {
+        // Production mode with explicit monitoring-only flag
         debugPrint(
           '⚠️ SECURITY WARNING: Play Integrity token generated but NOT verified '
           'for operation: $operationId. This provides NO security value. '
@@ -244,12 +321,8 @@ class PlayIntegrityService {
             'operation_id': operationId,
             'user_id': userId,
             'severity': 'critical',
+            'explicitly_allowed': true,
           },
-        );
-      } else {
-        debugPrint(
-          'PlayIntegrityService: Token verification disabled for $operationId '
-          '(development mode). Add verifyTokenCallback for production security.',
         );
       }
     }
@@ -309,12 +382,16 @@ class PlayIntegrityService {
     Exception? error,
     required bool hasVerification,
   }) async {
-    // Log the failure
+    // Determine specific failure reason from error
+    final failureReason = _determineFailureReason(error);
+
+    // Log the failure with specific reason
     await _logIntegrityEvent(
       operationId: operationId,
       status: 'failed',
       enforcementLevel: enforcementLevel,
       error: error?.toString(),
+      failureReason: failureReason,
     );
 
     // Take action based on enforcement level
@@ -323,7 +400,8 @@ class PlayIntegrityService {
         // Phase 1: Just log, don't block
         if (kDebugMode) {
           debugPrint(
-            'PlayIntegrityService: Integrity check failed for $operationId (log only)',
+            'PlayIntegrityService: Integrity check failed for $operationId '
+            '(log only) - Reason: ${failureReason.displayName}',
           );
         }
         break;
@@ -332,7 +410,8 @@ class PlayIntegrityService {
         // Phase 2: Log + warn user (caller should handle warning UI)
         if (kDebugMode) {
           debugPrint(
-            'PlayIntegrityService: Integrity check failed for $operationId (warning user)',
+            'PlayIntegrityService: Integrity check failed for $operationId '
+            '(warning user) - Reason: ${failureReason.displayName}',
           );
         }
         // Note: Caller should check enforcementLevel and show warning UI
@@ -342,10 +421,16 @@ class PlayIntegrityService {
       case IntegrityEnforcementLevel.blockAll:
         // Phase 3/4: Block operation ONLY if verification is configured
         if (hasVerification) {
+          // Generate support reference ID for debugging
+          final timestamp = DateTime.now().millisecondsSinceEpoch;
+          final supportRefId = 'INT-${timestamp.toString().substring(8)}';
+
           throw IntegrityVerificationFailedException(
-            message: 'Device integrity verification failed',
+            message: _getDetailedErrorMessage(failureReason, operationId),
             enforcementLevel: enforcementLevel,
             operationId: operationId,
+            failureReason: failureReason,
+            supportReferenceId: supportRefId,
             code: 'INTEGRITY_CHECK_FAILED',
             details: error?.toString(),
           );
@@ -361,12 +446,86 @@ class PlayIntegrityService {
     }
   }
 
+  /// Determine specific failure reason from error
+  IntegrityFailureReason _determineFailureReason(Exception? error) {
+    if (error == null) {
+      return IntegrityFailureReason.unknown;
+    }
+
+    final errorString = error.toString().toLowerCase();
+
+    // Check for network errors
+    if (errorString.contains('network') ||
+        errorString.contains('timeout') ||
+        errorString.contains('connection') ||
+        errorString.contains('internet')) {
+      return IntegrityFailureReason.networkError;
+    }
+
+    // Check for token request failures
+    if (errorString.contains('failed to request integrity token') ||
+        errorString.contains('token request')) {
+      return IntegrityFailureReason.tokenRequestFailed;
+    }
+
+    // Check for backend verification failures
+    if (errorString.contains('backend verification') ||
+        errorString.contains('invalid token') ||
+        errorString.contains('verification failed')) {
+      return IntegrityFailureReason.backendVerificationFailed;
+    }
+
+    // Check for device integrity issues (from Android API errors)
+    if (errorString.contains('device') ||
+        errorString.contains('play protect') ||
+        errorString.contains('integrity_api_not_available')) {
+      return IntegrityFailureReason.deviceIntegrity;
+    }
+
+    // Check for app integrity issues
+    if (errorString.contains('app') ||
+        errorString.contains('package') ||
+        errorString.contains('signature')) {
+      return IntegrityFailureReason.appIntegrity;
+    }
+
+    return IntegrityFailureReason.unknown;
+  }
+
+  /// Get detailed error message for internal logging
+  String _getDetailedErrorMessage(
+    IntegrityFailureReason reason,
+    String operationId,
+  ) {
+    switch (reason) {
+      case IntegrityFailureReason.deviceIntegrity:
+        return 'Device integrity verification failed for $operationId. '
+            'Device may not meet security requirements.';
+      case IntegrityFailureReason.appIntegrity:
+        return 'App integrity verification failed for $operationId. '
+            'App installation may be modified or unauthorized.';
+      case IntegrityFailureReason.networkError:
+        return 'Network error during integrity verification for $operationId. '
+            'Could not reach verification service.';
+      case IntegrityFailureReason.backendVerificationFailed:
+        return 'Backend verification failed for $operationId. '
+            'Integrity token was rejected by verification service.';
+      case IntegrityFailureReason.tokenRequestFailed:
+        return 'Failed to obtain integrity token for $operationId. '
+            'Could not generate verification token.';
+      case IntegrityFailureReason.unknown:
+        return 'Integrity verification failed for $operationId. '
+            'Unknown error occurred during verification.';
+    }
+  }
+
   /// Log integrity verification event to Firebase Analytics
   Future<void> _logIntegrityEvent({
     required String operationId,
     required String status,
     required IntegrityEnforcementLevel enforcementLevel,
     String? error,
+    IntegrityFailureReason? failureReason,
   }) async {
     try {
       await FirebaseService.instance.logEvent(
@@ -376,6 +535,8 @@ class PlayIntegrityService {
           'status': status,
           'enforcement_level': enforcementLevel.displayName,
           if (error != null) 'error': error,
+          if (failureReason != null)
+            'failure_reason': failureReason.displayName,
         },
       );
     } catch (e) {

@@ -6,6 +6,12 @@ import 'package:graviton/enums/integrity_enforcement_level.dart';
 ///
 /// This class manages enforcement levels and operation-specific risk
 /// classifications using Firebase Remote Config for dynamic updates.
+///
+/// ## Global Enable/Disable
+/// The [isEnabled] method checks the `integrity_enabled` Remote Config
+/// parameter to provide an emergency kill-switch for all Play Integrity checks.
+/// This defaults to `true` for security but can be toggled via Firebase Console
+/// for quick rollback if issues arise in production without requiring an app update.
 class IntegrityConfig {
   static IntegrityConfig? _instance;
   static IntegrityConfig get instance => _instance ??= IntegrityConfig._();
@@ -41,6 +47,7 @@ class IntegrityConfig {
   static const String _keyEnforcementLevel = 'integrity_enforcement_level';
   static const String _keyHighRiskOperations = 'integrity_high_risk_operations';
   static const String _keyBypassForDevelopment = 'integrity_bypass_development';
+  static const String _keyEnabled = 'integrity_enabled';
 
   // ============================================================================
   // Initialization
@@ -53,11 +60,12 @@ class IntegrityConfig {
     try {
       _remoteConfig = FirebaseRemoteConfig.instance;
 
-      // Set defaults
+      // Set defaults using constant values
       await _remoteConfig!.setDefaults({
         _keyEnforcementLevel: _defaultEnforcementLevel.displayName,
         _keyHighRiskOperations: _defaultHighRiskOperations.join(','),
-        _keyBypassForDevelopment: true.toString(),
+        _keyBypassForDevelopment: 'true',
+        _keyEnabled: 'true', // Enabled by default
       });
 
       // Configure settings for frequent updates during rollout
@@ -127,6 +135,21 @@ class IntegrityConfig {
     } catch (e) {
       debugPrint('IntegrityConfig: Error reading development bypass: $e');
       return true; // Safe default
+    }
+  }
+
+  /// Check if Play Integrity checks are globally enabled
+  ///
+  /// This allows disabling all Play Integrity checks via Remote Config.
+  /// Enabled by default for security.
+  bool isEnabled() {
+    if (_remoteConfig == null) return true; // Enabled by default
+
+    try {
+      return _remoteConfig!.getBool(_keyEnabled);
+    } catch (e) {
+      debugPrint('IntegrityConfig: Error reading enabled flag: $e');
+      return true; // Safe default (enabled)
     }
   }
 

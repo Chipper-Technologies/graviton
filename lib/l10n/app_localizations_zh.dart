@@ -3255,6 +3255,72 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get integrityErrorDeviceIntegrityTitle => '设备安全问题';
+
+  @override
+  String get integrityErrorDeviceIntegrity => '您的设备不符合此操作的安全要求。';
+
+  @override
+  String integrityGuidanceDeviceIntegrity(String reference) {
+    return '请确保您的设备通过了Google Play保护检查，并且没有被root或修改。如果您认为这是一个错误，请联系支持并提供参考编号：$reference';
+  }
+
+  @override
+  String get integrityErrorAppIntegrityTitle => '应用安装问题';
+
+  @override
+  String get integrityErrorAppIntegrity => '无法验证应用安装。';
+
+  @override
+  String integrityGuidanceAppIntegrity(String reference) {
+    return '请确保您使用的是来自Google Play商店的官方应用。不支持侧载或修改的应用。参考：$reference';
+  }
+
+  @override
+  String get integrityErrorNetworkTitle => '连接错误';
+
+  @override
+  String get integrityErrorNetwork => '由于网络错误，无法验证设备安全性。';
+
+  @override
+  String integrityGuidanceNetwork(String reference) {
+    return '请检查您的互联网连接并重试。如果问题仍然存在，请联系支持并提供参考编号：$reference';
+  }
+
+  @override
+  String get integrityErrorBackendVerificationTitle => '验证失败';
+
+  @override
+  String get integrityErrorBackendVerification => '无法完成安全验证。';
+
+  @override
+  String integrityGuidanceBackendVerification(String reference) {
+    return '验证您的设备时出现问题。请稍后重试。如果问题仍然存在，请联系支持并提供参考编号：$reference';
+  }
+
+  @override
+  String get integrityErrorTokenRequestTitle => '安全检查失败';
+
+  @override
+  String get integrityErrorTokenRequest => '无法执行安全验证。';
+
+  @override
+  String integrityGuidanceTokenRequest(String reference) {
+    return '无法生成安全令牌。请重新启动应用并重试。如果问题仍然存在，请联系支持并提供参考编号：$reference';
+  }
+
+  @override
+  String get integrityErrorUnknownTitle => '验证错误';
+
+  @override
+  String get integrityErrorUnknown => '安全验证期间发生意外错误。';
+
+  @override
+  String integrityGuidanceUnknown(String reference) {
+    return '请重试。如果问题仍然存在，请联系支持并提供参考编号：$reference';
+  }
+
+  @override
   String get emailVerificationSent => '验证邮件已发送！请检查您的收件箱。';
 
   @override

@@ -3276,6 +3276,73 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get integrityErrorDeviceIntegrityTitle => 'デバイスセキュリティの問題';
+
+  @override
+  String get integrityErrorDeviceIntegrity =>
+      'お使いのデバイスはこの操作のセキュリティ要件を満たしていません。';
+
+  @override
+  String integrityGuidanceDeviceIntegrity(String reference) {
+    return 'デバイスがGoogle Play Protectチェックに合格していること、およびroot化や改造されていないことを確認してください。エラーだと思われる場合は、参照番号でサポートにお問い合わせください：$reference';
+  }
+
+  @override
+  String get integrityErrorAppIntegrityTitle => 'アプリインストールの問題';
+
+  @override
+  String get integrityErrorAppIntegrity => 'アプリのインストールを確認できませんでした。';
+
+  @override
+  String integrityGuidanceAppIntegrity(String reference) {
+    return 'Google Play ストアから公式アプリを使用していることを確認してください。サイドロードまたは改造されたアプリはサポートされていません。参照：$reference';
+  }
+
+  @override
+  String get integrityErrorNetworkTitle => '接続エラー';
+
+  @override
+  String get integrityErrorNetwork => 'ネットワークエラーのため、デバイスのセキュリティを確認できませんでした。';
+
+  @override
+  String integrityGuidanceNetwork(String reference) {
+    return 'インターネット接続を確認して、もう一度お試しください。問題が解決しない場合は、参照番号でサポートにお問い合わせください：$reference';
+  }
+
+  @override
+  String get integrityErrorBackendVerificationTitle => '検証に失敗しました';
+
+  @override
+  String get integrityErrorBackendVerification => 'セキュリティ検証を完了できませんでした。';
+
+  @override
+  String integrityGuidanceBackendVerification(String reference) {
+    return 'デバイスの検証中に問題が発生しました。後でもう一度お試しください。問題が続く場合は、参照番号でサポートにお問い合わせください：$reference';
+  }
+
+  @override
+  String get integrityErrorTokenRequestTitle => 'セキュリティチェックに失敗しました';
+
+  @override
+  String get integrityErrorTokenRequest => 'セキュリティ検証を実行できませんでした。';
+
+  @override
+  String integrityGuidanceTokenRequest(String reference) {
+    return 'セキュリティトークンを生成できませんでした。アプリを再起動してもう一度お試しください。問題が解決しない場合は、参照番号でサポートにお問い合わせください：$reference';
+  }
+
+  @override
+  String get integrityErrorUnknownTitle => '検証エラー';
+
+  @override
+  String get integrityErrorUnknown => 'セキュリティ検証中に予期しないエラーが発生しました。';
+
+  @override
+  String integrityGuidanceUnknown(String reference) {
+    return 'もう一度お試しください。問題が続く場合は、参照番号でサポートにお問い合わせください：$reference';
+  }
+
+  @override
   String get emailVerificationSent => '確認メールを送信しました！受信トレイをご確認ください。';
 
   @override

@@ -463,9 +463,11 @@ class UserDataSyncService {
       // See docs/PLAY_INTEGRITY.md for backend implementation guide.
 
       // Use enforcement-aware verification
+      // TODO: Remove allowUnverifiedForMonitoring after backend verification is implemented
       await integrityService.verifyWithEnforcement(
         operationId: operationId,
         userId: userId,
+        allowUnverifiedForMonitoring: true, // Phase 1: Monitoring only
       );
     } catch (e) {
       // If it's an enforcement exception, rethrow to block operation

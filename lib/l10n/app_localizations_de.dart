@@ -3472,6 +3472,80 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get integrityErrorDeviceIntegrityTitle => 'Gerätesicherheitsproblem';
+
+  @override
+  String get integrityErrorDeviceIntegrity =>
+      'Ihr Gerät erfüllt nicht die Sicherheitsanforderungen für diesen Vorgang.';
+
+  @override
+  String integrityGuidanceDeviceIntegrity(String reference) {
+    return 'Bitte stellen Sie sicher, dass Ihr Gerät die Google Play Protect-Prüfungen besteht und nicht gerootet oder modifiziert ist. Wenn Sie glauben, dies sei ein Fehler, wenden Sie sich mit der Referenz an den Support: $reference';
+  }
+
+  @override
+  String get integrityErrorAppIntegrityTitle => 'App-Installationsproblem';
+
+  @override
+  String get integrityErrorAppIntegrity =>
+      'Die App-Installation konnte nicht überprüft werden.';
+
+  @override
+  String integrityGuidanceAppIntegrity(String reference) {
+    return 'Bitte stellen Sie sicher, dass Sie die offizielle App aus dem Google Play Store verwenden. Sideloadede oder modifizierte Apps werden nicht unterstützt. Referenz: $reference';
+  }
+
+  @override
+  String get integrityErrorNetworkTitle => 'Verbindungsfehler';
+
+  @override
+  String get integrityErrorNetwork =>
+      'Die Gerätesicherheit konnte aufgrund eines Netzwerkfehlers nicht überprüft werden.';
+
+  @override
+  String integrityGuidanceNetwork(String reference) {
+    return 'Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut. Wenn das Problem weiterhin besteht, wenden Sie sich mit der Referenz an den Support: $reference';
+  }
+
+  @override
+  String get integrityErrorBackendVerificationTitle =>
+      'Überprüfung fehlgeschlagen';
+
+  @override
+  String get integrityErrorBackendVerification =>
+      'Die Sicherheitsüberprüfung konnte nicht abgeschlossen werden.';
+
+  @override
+  String integrityGuidanceBackendVerification(String reference) {
+    return 'Bei der Überprüfung Ihres Geräts ist ein Problem aufgetreten. Bitte versuchen Sie es später erneut. Wenn dies weiterhin besteht, wenden Sie sich mit der Referenz an den Support: $reference';
+  }
+
+  @override
+  String get integrityErrorTokenRequestTitle =>
+      'Sicherheitsprüfung fehlgeschlagen';
+
+  @override
+  String get integrityErrorTokenRequest =>
+      'Die Sicherheitsüberprüfung konnte nicht durchgeführt werden.';
+
+  @override
+  String integrityGuidanceTokenRequest(String reference) {
+    return 'Das Sicherheitstoken konnte nicht generiert werden. Starten Sie die App neu und versuchen Sie es erneut. Wenn das Problem weiterhin besteht, wenden Sie sich mit der Referenz an den Support: $reference';
+  }
+
+  @override
+  String get integrityErrorUnknownTitle => 'Überprüfungsfehler';
+
+  @override
+  String get integrityErrorUnknown =>
+      'Bei der Sicherheitsüberprüfung ist ein unerwarteter Fehler aufgetreten.';
+
+  @override
+  String integrityGuidanceUnknown(String reference) {
+    return 'Bitte versuchen Sie es erneut. Wenn das Problem weiterhin besteht, wenden Sie sich mit der Referenz an den Support: $reference';
+  }
+
+  @override
   String get emailVerificationSent =>
       'Bestätigungs-E-Mail gesendet! Bitte überprüfen Sie Ihren Posteingang.';
 
