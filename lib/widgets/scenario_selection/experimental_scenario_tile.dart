@@ -56,10 +56,11 @@ class ExperimentalScenarioTile extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   // Icon and difficulty indicator
                   Row(
@@ -106,7 +107,7 @@ class ExperimentalScenarioTile extends StatelessWidget {
                     ],
                   ),
 
-                  SizedBox(height: AppTypography.spacingMedium),
+                  SizedBox(height: AppTypography.spacingSmall),
 
                   // Title
                   Text(
@@ -130,18 +131,15 @@ class ExperimentalScenarioTile extends StatelessWidget {
                       color: AppColors.uiWhite.withValues(
                         alpha: AppTypography.opacityHigh,
                       ),
-                      height: 1.3,
+                      height: 1.2,
                     ),
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                ],
-              ),
 
-              // Duration and tags
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                  SizedBox(height: AppTypography.spacingSmall),
+
+                  // Duration
                   Row(
                     children: [
                       Icon(
@@ -163,37 +161,6 @@ class ExperimentalScenarioTile extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (experiment.tags.isNotEmpty) ...[
-                    SizedBox(height: AppTypography.spacingXSmall),
-                    Wrap(
-                      spacing: AppTypography.spacingXSmall,
-                      children: experiment.tags.take(2).map((tag) {
-                        return Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppTypography.spacingSmall,
-                            vertical: 2.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.backgroundBlack.withValues(
-                              alpha: AppTypography.opacityHigh,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              AppTypography.radiusSmall,
-                            ),
-                          ),
-                          child: Text(
-                            tag,
-                            style: TextStyle(
-                              fontSize: AppTypography.fontSizeSmall - 1,
-                              color: AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacityMedium,
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
                 ],
               ),
             ],
