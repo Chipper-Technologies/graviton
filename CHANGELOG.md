@@ -5,6 +5,36 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Firebase App Check Integration**: Cross-platform backend protection for Firebase services
+  - **Multi-Platform Support**: Platform-specific attestation providers
+    - Android: Play Integrity API provider (leverages existing Play Integrity setup)
+    - iOS/macOS: DeviceCheck API provider (automatic attestation)
+    - Web: reCAPTCHA v3 provider (bot detection)
+    - Debug: Debug token provider for development/testing
+  - **App Check Service**: Centralized management of App Check functionality
+    - Automatic provider selection based on platform
+    - Token generation and refresh management
+    - Debug mode support with token registration
+    - Comprehensive error handling and logging
+  - **Firebase Service Protection**: Automatic enforcement for backend resources
+    - Cloud Firestore: Protected from unauthorized access
+    - Cloud Functions: Protected callable functions
+    - Remote Config: Protected configuration fetches
+    - Cloud Storage: Protected file access
+  - **Documentation**: Complete implementation guide (docs/APP_CHECK.md)
+    - Setup instructions for all platforms
+    - Firebase Console configuration steps
+    - Rollout strategy and best practices
+    - Integration examples with existing services
+    - Troubleshooting guide and security considerations
+  - **Testing**: Comprehensive test suite for App Check service
+    - Unit tests for initialization and token management
+    - Error handling and state management tests
+    - Platform support verification
+
 ## [1.6.0] - 2025-11-26
 
 ### Added

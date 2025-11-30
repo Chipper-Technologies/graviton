@@ -850,7 +850,35 @@ For detailed technical information and development guides, please refer to our c
 
 ## 🔥 Firebase Integration
 
-The app includes comprehensive Firebase integration with development and production flavors for robust analytics, crash reporting, and remote configuration.
+The app includes comprehensive Firebase integration with development and production flavors for robust analytics, crash reporting, remote configuration, and App Check protection.
+
+### Firebase App Check
+
+**Protects Firebase backend resources from abuse** by verifying requests come from legitimate app instances.
+
+**Platform Support:**
+- **Android**: Play Integrity API (automatic with existing Play Integrity setup)
+- **iOS/macOS**: DeviceCheck API (automatic attestation)
+- **Web**: reCAPTCHA v3 (requires site key configuration)
+
+**Protected Services:**
+- Cloud Firestore (user data, scenarios, leaderboards)
+- Cloud Functions (custom logic, webhooks)
+- Remote Config (feature flags, rollout)
+- Cloud Storage (user-generated content)
+
+**Quick Setup:**
+1. Enable App Check in Firebase Console → App Check
+2. Register providers for each platform (Play Integrity, DeviceCheck, reCAPTCHA)
+3. Enable enforcement for Firebase services (start with "Monitor" mode)
+4. For development: Register debug tokens from app logs
+
+**Remote Config Control:**
+- **Parameter**: `app_check_enabled` (Boolean, default: `true`)
+- **Purpose**: Emergency kill switch to disable App Check without app update
+- **Similar to**: Play Integrity's `integrity_enabled` parameter
+
+📖 **Complete guide**: See [docs/APP_CHECK.md](docs/APP_CHECK.md) for detailed setup, rollout strategy, and troubleshooting.
 
 ### Firebase Configuration
 
@@ -1195,6 +1223,7 @@ Here's the comprehensive list of all Firebase Remote Config parameters used by t
   "performance_monitoring_enabled": true,
   "user_behavior_tracking": "standard",
   "ab_test_group": "control",
+  "app_check_enabled": true,
   "maintenance_mode": false,
   "maintenance_message": "Scheduled maintenance in progress",
   "news_banner_enabled": false,
@@ -1203,10 +1232,17 @@ Here's the comprehensive list of all Firebase Remote Config parameters used by t
 }
 ```
 
+**Parameter Highlights:**
+- `app_check_enabled`: Emergency kill switch to disable Firebase App Check protection (default: `true`)
+- `analytics_sampling_rate`: Control analytics volume to reduce Firebase costs
+- `maintenance_mode`: Non-dismissible dialog for scheduled maintenance
+- `emergency_notification`: High-priority alerts for critical communications
+
 **Integration Benefits:**
 - **Zero Downtime Control**: Update app behavior without App Store releases
 - **Real-time Communication**: Instant user notifications for maintenance and news
 - **Cost Optimization**: Control analytics volume with sampling rates
+- **Security Control**: Enable/disable App Check without app updates
 - **A/B Testing**: Easy experimentation with different app configurations
 - **Version Management**: Flexible update enforcement with dual-threshold system
 - **Global Reach**: Full internationalization support for worldwide users

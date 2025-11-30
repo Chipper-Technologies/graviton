@@ -24,6 +24,9 @@ class RemoteConfigService {
       UserBehaviorTrackingMode.essential;
   ABTestGroup _abTestGroup = ABTestGroup.control;
 
+  // Security
+  bool _appCheckEnabled = true;
+
   // Maintenance & Communication
   bool _maintenanceMode = false;
   String _maintenanceMessage = '';
@@ -66,6 +69,9 @@ class RemoteConfigService {
       'performance_monitoring_enabled': true,
       'user_behavior_tracking': UserBehaviorTrackingMode.essential.configValue,
       'ab_test_group': ABTestGroup.control.configValue,
+
+      // Security
+      'app_check_enabled': true,
 
       // Maintenance & Communication
       'maintenance_mode': false,
@@ -110,6 +116,9 @@ class RemoteConfigService {
     _abTestGroup = ABTestGroupExtension.fromString(
       _remoteConfig.getString('ab_test_group'),
     );
+
+    // Security
+    _appCheckEnabled = _remoteConfig.getBool('app_check_enabled');
 
     // Maintenance & Communication
     _maintenanceMode = _remoteConfig.getBool('maintenance_mode');
@@ -158,6 +167,9 @@ class RemoteConfigService {
   bool get performanceMonitoringEnabled => _performanceMonitoringEnabled;
   UserBehaviorTrackingMode get userBehaviorTracking => _userBehaviorTracking;
   ABTestGroup get abTestGroup => _abTestGroup;
+
+  // Security Getters
+  bool get appCheckEnabled => _appCheckEnabled;
 
   // Maintenance & Communication Getters
   bool get maintenanceMode => _maintenanceMode;

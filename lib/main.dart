@@ -18,6 +18,7 @@ import 'screens/about_screen.dart';
 import 'screens/application_settings_screen.dart';
 import 'screens/help_screen.dart';
 import 'screens/home_screen.dart';
+import 'services/app_check_service.dart';
 import 'services/auth_service.dart';
 import 'services/changelog_service.dart';
 import 'services/firebase_service.dart';
@@ -61,6 +62,7 @@ void main() async {
       // Firebase was already initialized (race condition or hot restart)
     }
 
+    await AppCheckService.instance.initialize();
     await FirebaseService.instance.initialize();
     await AuthService.instance.initialize();
   } catch (e) {
