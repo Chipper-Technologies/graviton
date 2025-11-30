@@ -10,6 +10,7 @@ import 'package:graviton/enums/user_avatar.dart';
 import 'package:graviton/models/play_integrity_exception.dart';
 import 'package:graviton/models/user_profile.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/services/play_integrity_backend_service.dart';
 import 'package:graviton/services/play_integrity_service.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -1287,13 +1288,15 @@ class AuthService {
     }
   }
 
-  /// Verify device integrity using Play Integrity API with enforcement.
+  /// Verify device integrity using Play Integrity API with backend verification.
   ///
   /// This implements a phased rollout strategy:
   /// - Phase 1 (logOnly): Monitor failures without blocking
   /// - Phase 2 (warnUser): Show warnings but allow operation
   /// - Phase 3 (blockHighRisk): Block high-risk operations like auth
   /// - Phase 4 (blockAll): Block all operations requiring verification
+  ///
+  /// Tokens are cached to avoid unnecessary re-verification.
   ///
   /// Throws [IntegrityVerificationFailedException] if verification fails
   /// and enforcement policy requires blocking the operation.
@@ -1303,32 +1306,20 @@ class AuthService {
   ) async {
     try {
       final integrityService = PlayIntegrityService();
+      final backendService = PlayIntegrityBackendService.instance;
 
-      // ⚠️ TODO: Add backend verification for production security
-      // Current implementation generates tokens but doesn't verify them.
-      // See docs/PLAY_INTEGRITY.md for backend implementation guide.
-      //
-      // Example with verification:
-      // final nonce = await BackendService().generateIntegrityNonce(identifier);
-      // await integrityService.verifyWithEnforcement(
-      //   operationId: operationId,
-      //   userId: identifier,
-      //   nonce: nonce,
-      //   verifyTokenCallback: (token) async {
-      //     return await BackendService().verifyIntegrityToken(
-      //       token: token,
-      //       nonce: nonce,
-      //       userId: identifier,
-      //     );
-      //   },
-      // );
-
-      // Use the new enforcement-aware verification
-      // TODO: Remove allowUnverifiedForMonitoring after backend verification is implemented
+      // Use backend verification with token caching
       await integrityService.verifyWithEnforcement(
         operationId: operationId,
         userId: identifier,
-        allowUnverifiedForMonitoring: true, // Phase 1: Monitoring only
+        verifyTokenCallback: (token) async {
+          // Verify token with backend (uses cache if available)
+          final packageName = FlavorConfig.instance.getPackageName();
+          return await backendService.verifyToken(
+            token: token,
+            packageName: packageName,
+          );
+        },
       );
     } catch (e) {
       // If it's an enforcement exception, rethrow to block operation

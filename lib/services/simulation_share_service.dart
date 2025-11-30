@@ -6,12 +6,14 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show GlobalKey;
 import 'package:flutter/rendering.dart';
+import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/physics_settings.dart';
 import 'package:graviton/models/play_integrity_exception.dart';
 import 'package:graviton/services/auth_service.dart';
+import 'package:graviton/services/play_integrity_backend_service.dart';
 import 'package:graviton/services/play_integrity_service.dart';
 import 'package:graviton/state/simulation_state.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -395,19 +397,23 @@ class SimulationShareService {
   Future<void> _verifyDeviceIntegrityForShare() async {
     try {
       final integrityService = PlayIntegrityService();
+      final backendService = PlayIntegrityBackendService.instance;
       final user = await AuthService.instance.getCurrentUserProfile();
       final userId = user?.uid ?? 'anonymous';
 
-      // ⚠️ TODO: Add backend verification for production security
-      // Current implementation generates tokens but doesn't verify them.
-      // See docs/PLAY_INTEGRITY.md for backend implementation guide.
+      // Determine package name based on flavor
+      final packageName = FlavorConfig.instance.getPackageName();
 
-      // Use enforcement-aware verification
-      // TODO: Remove allowUnverifiedForMonitoring after backend verification is implemented
+      // Use enforcement-aware verification with backend callback
       await integrityService.verifyWithEnforcement(
         operationId: 'share_simulation',
         userId: userId,
-        allowUnverifiedForMonitoring: true, // Phase 1: Monitoring only
+        verifyTokenCallback: (token) async {
+          return await backendService.verifyToken(
+            token: token,
+            packageName: packageName,
+          );
+        },
       );
     } catch (e) {
       // If it's an enforcement exception, rethrow to block operation

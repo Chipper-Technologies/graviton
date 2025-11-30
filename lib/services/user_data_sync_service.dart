@@ -3,11 +3,13 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, debugPrint;
+import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/models/custom_scenario.dart';
 import 'package:graviton/models/play_integrity_exception.dart';
 import 'package:graviton/services/auth_service.dart';
 import 'package:graviton/services/custom_scenario_storage.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/services/play_integrity_backend_service.dart';
 import 'package:graviton/services/play_integrity_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -450,24 +452,30 @@ class UserDataSyncService {
   /// Verify device integrity before cloud sync (Android only)
   ///
   /// This helps prevent fraudulent data from being synced to cloud storage.
-  /// Silently succeeds on non-Android platforms or if verification fails.
+  /// Uses backend verification with token caching for efficient operation.
   Future<void> _verifyDeviceIntegrityForSync(
     String userId,
     String operationId,
   ) async {
     try {
       final integrityService = PlayIntegrityService();
+      final backendService = PlayIntegrityBackendService.instance;
+      final user = await AuthService.instance.getCurrentUserProfile();
 
-      // ⚠️ TODO: Add backend verification for production security
-      // Current implementation generates tokens but doesn't verify them.
-      // See docs/PLAY_INTEGRITY.md for backend implementation guide.
+      if (user == null) return;
 
-      // Use enforcement-aware verification
-      // TODO: Remove allowUnverifiedForMonitoring after backend verification is implemented
+      // Use backend verification with token caching
       await integrityService.verifyWithEnforcement(
         operationId: operationId,
         userId: userId,
-        allowUnverifiedForMonitoring: true, // Phase 1: Monitoring only
+        verifyTokenCallback: (token) async {
+          // Verify token with backend (uses cache if available)
+          final packageName = FlavorConfig.instance.getPackageName();
+          return await backendService.verifyToken(
+            token: token,
+            packageName: packageName,
+          );
+        },
       );
     } catch (e) {
       // If it's an enforcement exception, rethrow to block operation

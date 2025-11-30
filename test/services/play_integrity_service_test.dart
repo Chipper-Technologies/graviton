@@ -223,13 +223,15 @@ void main() {
         await IntegrityConfig.instance.initialize();
       });
 
-      test('skips verification when Play Integrity is disabled via config',
-          () async {
-        // This test would require mocking IntegrityConfig to return false
-        // for isEnabled(). In practice, this is tested through Remote Config.
-        // The service checks config.isEnabled() and returns early if false.
-        // Verified through code inspection and integration testing.
-      });
+      test(
+        'skips verification when Play Integrity is disabled via config',
+        () async {
+          // This test would require mocking IntegrityConfig to return false
+          // for isEnabled(). In practice, this is tested through Remote Config.
+          // The service checks config.isEnabled() and returns early if false.
+          // Verified through code inspection and integration testing.
+        },
+      );
 
       test(
         'completes successfully without verification callback (monitoring)',

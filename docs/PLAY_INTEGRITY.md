@@ -338,7 +338,7 @@ app.post('/api/integrity/nonce', async (req, res) => {
 class BackendService {
   Future<String> generateIntegrityNonce(String userId) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/api/integrity/nonce'),
+      Uri.parse('$apiUrl/api/integrity/nonce'),
       body: jsonEncode({'userId': userId}),
     );
     
@@ -435,7 +435,7 @@ class BackendService {
     required String userId,
   }) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/api/integrity/verify'),
+      Uri.parse('$apiUrl/api/integrity/verify'),
       body: jsonEncode({
         'token': token,
         'nonce': nonce,

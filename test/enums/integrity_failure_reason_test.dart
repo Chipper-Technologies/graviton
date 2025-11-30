@@ -115,14 +115,16 @@ void main() {
     });
 
     test('displayName has no duplicates', () {
-      final displayNames =
-          IntegrityFailureReason.values.map((e) => e.displayName).toSet();
+      final displayNames = IntegrityFailureReason.values
+          .map((e) => e.displayName)
+          .toSet();
       expect(displayNames.length, equals(IntegrityFailureReason.values.length));
     });
 
     test('localizationKey has no duplicates', () {
-      final localizationKeys =
-          IntegrityFailureReason.values.map((e) => e.localizationKey).toSet();
+      final localizationKeys = IntegrityFailureReason.values
+          .map((e) => e.localizationKey)
+          .toSet();
       expect(
         localizationKeys.length,
         equals(IntegrityFailureReason.values.length),
@@ -130,14 +132,16 @@ void main() {
     });
 
     test('titleKey has no duplicates', () {
-      final titleKeys =
-          IntegrityFailureReason.values.map((e) => e.titleKey).toSet();
+      final titleKeys = IntegrityFailureReason.values
+          .map((e) => e.titleKey)
+          .toSet();
       expect(titleKeys.length, equals(IntegrityFailureReason.values.length));
     });
 
     test('guidanceKey has no duplicates', () {
-      final guidanceKeys =
-          IntegrityFailureReason.values.map((e) => e.guidanceKey).toSet();
+      final guidanceKeys = IntegrityFailureReason.values
+          .map((e) => e.guidanceKey)
+          .toSet();
       expect(guidanceKeys.length, equals(IntegrityFailureReason.values.length));
     });
 
@@ -320,13 +324,18 @@ void main() {
         );
       });
 
-      test('detects backend verification without explicit "backend" keyword',
-          () {
-        expect(
-          IntegrityFailureReasonExtension.fromError(null, 'verification failed'),
-          equals(IntegrityFailureReason.backendVerificationFailed),
-        );
-      });
+      test(
+        'detects backend verification without explicit "backend" keyword',
+        () {
+          expect(
+            IntegrityFailureReasonExtension.fromError(
+              null,
+              'verification failed',
+            ),
+            equals(IntegrityFailureReason.backendVerificationFailed),
+          );
+        },
+      );
 
       test('handles various connection error keywords', () {
         expect(
@@ -352,10 +361,7 @@ void main() {
           equals(IntegrityFailureReason.deviceIntegrity),
         );
         expect(
-          IntegrityFailureReasonExtension.fromError(
-            null,
-            'device not trusted',
-          ),
+          IntegrityFailureReasonExtension.fromError(null, 'device not trusted'),
           equals(IntegrityFailureReason.deviceIntegrity),
         );
         expect(
@@ -399,10 +405,7 @@ void main() {
 
       test('handles partial keyword matches', () {
         expect(
-          IntegrityFailureReasonExtension.fromError(
-            null,
-            'networking issue',
-          ),
+          IntegrityFailureReasonExtension.fromError(null, 'networking issue'),
           equals(IntegrityFailureReason.networkError),
         );
         expect(

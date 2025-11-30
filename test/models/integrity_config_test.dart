@@ -186,11 +186,11 @@ void main() {
 
       test('method exists and is callable', () {
         final config = IntegrityConfig.instance;
-        
+
         // Verify method can be called multiple times consistently
         final result1 = config.isEnabled();
         final result2 = config.isEnabled();
-        
+
         expect(result1, equals(result2));
         expect(result1, isA<bool>());
       });
