@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -39,11 +40,6 @@ class CollisionEffectsService {
   bool showEjection = true;
   bool showPlasmaJets = false;
 
-  /// Maximum number of particles to maintain for performance
-  static const int maxDebrisParticles = 500;
-  static const int maxCloudParticles = 200;
-  static const int maxJetParticles = 100;
-
   /// Generate collision effects when two bodies merge
   ///
   /// Creates various particle effects based on collision properties
@@ -67,7 +63,8 @@ class CollisionEffectsService {
     final impactColor = _getImpactColor(body1, body2);
 
     // Generate debris particles
-    if (showDebris && debrisParticles.length < maxDebrisParticles) {
+    if (showDebris &&
+        debrisParticles.length < RenderingConstants.maxDebrisParticles) {
       _generateDebrisParticles(
         collisionPoint: collisionPoint,
         collisionDirection: collisionDirection,
@@ -192,7 +189,7 @@ class CollisionEffectsService {
           0,
           (sum, cloud) => sum + cloud.particles.length,
         ) >=
-        maxCloudParticles) {
+        RenderingConstants.maxCloudParticles) {
       return;
     }
 
@@ -269,7 +266,7 @@ class CollisionEffectsService {
   }) {
     // Limit jet particles for performance
     if (plasmaJets.fold<int>(0, (sum, jet) => sum + jet.particles.length) >=
-        maxJetParticles) {
+        RenderingConstants.maxJetParticles) {
       return;
     }
 
