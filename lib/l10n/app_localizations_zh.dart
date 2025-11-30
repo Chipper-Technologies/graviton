@@ -3402,4 +3402,31 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
+
+  @override
+  String get collisionEffectsTitle => '碰撞效果';
+
+  @override
+  String get showCollisionDebris => '碎片粒子';
+
+  @override
+  String get showCollisionDebrisDescription => '从碰撞冲击中弹出的具有基于物理的轨迹的粒子';
+
+  @override
+  String get showCollisionShockwaves => '冲击波环';
+
+  @override
+  String get showCollisionShockwavesDescription => '从碰撞点扩展的能量环，按冲击力缩放';
+
+  @override
+  String get showCollisionEjection => '物质喷射';
+
+  @override
+  String get showCollisionEjectionDescription => '高能量冲击期间喷出的翻滚物质云';
+
+  @override
+  String get showCollisionPlasmaJets => '等离子射流';
+
+  @override
+  String get showCollisionPlasmaJetsDescription => '来自大质量恒星碰撞的定向超高温流（实验性）';
 }

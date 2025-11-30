@@ -3437,4 +3437,32 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
+
+  @override
+  String get collisionEffectsTitle => '충돌 효과';
+
+  @override
+  String get showCollisionDebris => '파편 입자';
+
+  @override
+  String get showCollisionDebrisDescription => '물리 기반 궤적을 가진 충돌 충격에서 방출된 입자';
+
+  @override
+  String get showCollisionShockwaves => '충격파 링';
+
+  @override
+  String get showCollisionShockwavesDescription => '충돌 지점에서 충격력에 따라 확장되는 에너지 링';
+
+  @override
+  String get showCollisionEjection => '물질 방출';
+
+  @override
+  String get showCollisionEjectionDescription => '고에너지 충격 중에 방출되는 물질의 소용돌이 구름';
+
+  @override
+  String get showCollisionPlasmaJets => '플라즈마 제트';
+
+  @override
+  String get showCollisionPlasmaJetsDescription =>
+      '거대 별 충돌에서 나오는 방향성 초고온 흐름 (실험적)';
 }

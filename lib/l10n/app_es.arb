@@ -1079,5 +1079,14 @@
   "errorOperationNotAllowed": "Este método de inicio de sesión no está habilitado.",
   "errorRequiresRecentLogin": "Por favor, inicia sesión nuevamente para realizar esta acción.",
   "errorNetworkFailed": "Error de red. Por favor, verifica tu conexión.",
-  "errorUnknown": "Ocurrió un error: {message}"
+  "errorUnknown": "Ocurrió un error: {message}",
+  "collisionEffectsTitle": "Efectos de Colisión",
+  "showCollisionDebris": "Partículas de Escombros",
+  "showCollisionDebrisDescription": "Partículas expulsadas de impactos de colisión con trayectorias basadas en física",
+  "showCollisionShockwaves": "Ondas de Choque",
+  "showCollisionShockwavesDescription": "Anillos de energía en expansión desde puntos de colisión escalados por fuerza de impacto",
+  "showCollisionEjection": "Expulsión de Material",
+  "showCollisionEjectionDescription": "Nubes ondulantes de material expulsado durante impactos de alta energía",
+  "showCollisionPlasmaJets": "Chorros de Plasma",
+  "showCollisionPlasmaJetsDescription": "Corrientes direccionales sobrecalentadas de colisiones de estrellas masivas (experimental)"
 }

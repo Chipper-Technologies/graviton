@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/merge_flash.dart';
 import 'package:graviton/models/trail_point.dart';
@@ -538,6 +539,342 @@ void main() {
         expect(minimalPainter.useWarmTrails, isFalse);
         expect(minimalPainter.showHabitableZones, isFalse);
         expect(minimalPainter.showHabitabilityIndicators, isFalse);
+      });
+    });
+
+    group('Collision Effects Integration', () {
+      testWidgets('Should render collision effects correctly', (tester) async {
+        // Add collision flash
+        simulation.mergeFlashes.add(
+          MergeFlash(vm.Vector3(0, 0, -20), AppColors.basicYellow, age: 0.5),
+        );
+
+        final effectsPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: CustomPaint(
+                painter: effectsPainter,
+                child: const SizedBox(width: 800, height: 600),
+              ),
+            ),
+          ),
+        );
+
+        final customPaints = tester.widgetList<CustomPaint>(
+          find.byType(CustomPaint),
+        );
+        expect(customPaints.any((cp) => cp.painter == effectsPainter), isTrue);
+      });
+
+      testWidgets('Should handle multiple collision effects', (tester) async {
+        // Add multiple effects
+        for (int i = 0; i < 5; i++) {
+          simulation.mergeFlashes.add(
+            MergeFlash(
+              vm.Vector3(i * 10.0, 0, -20),
+              AppColors.basicPrimaries[i % AppColors.basicPrimaries.length],
+              age: i * 0.2,
+            ),
+          );
+        }
+
+        final multiEffectsPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: CustomPaint(
+                painter: multiEffectsPainter,
+                child: const SizedBox(width: 800, height: 600),
+              ),
+            ),
+          ),
+        );
+
+        final customPaints = tester.widgetList<CustomPaint>(
+          find.byType(CustomPaint),
+        );
+        expect(
+          customPaints.any((cp) => cp.painter == multiEffectsPainter),
+          isTrue,
+        );
+      });
+    });
+
+    group('Gravity Field Options', () {
+      test('Should handle gravity field color schemes', () {
+        final classicPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+          globalGravityFields: true,
+          gravityFieldColorScheme: GravityFieldColorScheme.classic,
+        );
+
+        expect(
+          classicPainter.gravityFieldColorScheme,
+          equals(GravityFieldColorScheme.classic),
+        );
+
+        final spectralPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+          globalGravityFields: true,
+          gravityFieldColorScheme: GravityFieldColorScheme.spectral,
+        );
+
+        expect(
+          spectralPainter.gravityFieldColorScheme,
+          equals(GravityFieldColorScheme.spectral),
+        );
+      });
+
+      test('Should handle equipotential surfaces toggle', () {
+        final withSurfacesPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+          showEquipotentialSurfaces: true,
+        );
+
+        expect(withSurfacesPainter.showEquipotentialSurfaces, isTrue);
+
+        final withoutSurfacesPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+          showEquipotentialSurfaces: false,
+        );
+
+        expect(withoutSurfacesPainter.showEquipotentialSurfaces, isFalse);
+      });
+
+      test('Should handle gravity field indicators toggle', () {
+        final withIndicatorsPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+          showGravityFieldIndicators: true,
+        );
+
+        expect(withIndicatorsPainter.showGravityFieldIndicators, isTrue);
+      });
+    });
+
+    group('Follow Mode', () {
+      test('Should handle follow mode enabled', () {
+        final followPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+          followMode: true,
+          selectedBodyIndex: 0,
+        );
+
+        expect(followPainter.followMode, isTrue);
+        expect(followPainter.selectedBodyIndex, equals(0));
+      });
+
+      test('Should handle follow mode disabled', () {
+        final noFollowPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+          followMode: false,
+          selectedBodyIndex: null,
+        );
+
+        expect(noFollowPainter.followMode, isFalse);
+        expect(noFollowPainter.selectedBodyIndex, isNull);
+      });
+    });
+
+    group('Dual Orbital Paths', () {
+      test('Should handle dual orbital paths enabled', () {
+        final dualPathsPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+          dualOrbitalPaths: true,
+        );
+
+        expect(dualPathsPainter.dualOrbitalPaths, isTrue);
+      });
+
+      test('Should handle dual orbital paths disabled', () {
+        final singlePathsPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+          dualOrbitalPaths: false,
+        );
+
+        expect(singlePathsPainter.dualOrbitalPaths, isFalse);
+      });
+    });
+
+    group('Camera Distance', () {
+      test('Should handle different camera distances', () {
+        final closePainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 100.0,
+        );
+
+        expect(closePainter.cameraDistance, equals(100.0));
+
+        final farPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 1000.0,
+        );
+
+        expect(farPainter.cameraDistance, equals(1000.0));
+      });
+
+      test('Should repaint when camera distance changes', () {
+        final painter1 = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 300.0,
+        );
+
+        final painter2 = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          cameraDistance: 500.0,
+        );
+
+        expect(painter1.shouldRepaint(painter2), isTrue);
+      });
+    });
+
+    group('Realistic Colors', () {
+      test('Should handle realistic colors enabled', () {
+        final realisticPainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          useRealisticColors: true,
+          cameraDistance: 300.0,
+        );
+
+        expect(realisticPainter.useRealisticColors, isTrue);
+      });
+
+      test('Should handle realistic colors disabled', () {
+        final simplePainter = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          useRealisticColors: false,
+          cameraDistance: 300.0,
+        );
+
+        expect(simplePainter.useRealisticColors, isFalse);
+      });
+
+      test('Should repaint when realistic colors toggle changes', () {
+        final painter1 = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          useRealisticColors: false,
+          cameraDistance: 300.0,
+        );
+
+        final painter2 = GravitonPainter(
+          sim: simulation,
+          view: viewMatrix,
+          proj: projMatrix,
+          stars: stars,
+          showTrails: true,
+          useWarmTrails: false,
+          useRealisticColors: true,
+          cameraDistance: 300.0,
+        );
+
+        expect(painter1.shouldRepaint(painter2), isTrue);
       });
     });
   });

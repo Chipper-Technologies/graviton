@@ -747,7 +747,7 @@ void main() {
         // (SharedPreferences mocking, Play Integrity API mocking, etc.)
         expect(
           stopwatch.elapsedMilliseconds,
-          lessThan(1500),
+          lessThan(300),
           reason: 'Widget creation must be within performance budget',
         );
 
@@ -770,13 +770,7 @@ void main() {
         // State transitions should be responsive
         // Note: Threshold is generous to account for test environment overhead
         // (Mock services, SharedPreferences, Play Integrity API, etc.)
-        expect(
-          stopwatch.elapsedMilliseconds,
-          lessThan(1000),
-          reason: 'State transitions must be responsive',
-        );
-
-        expect(find.byType(CustomScenariosTab), findsOneWidget);
+        expect(stopwatch.elapsedMilliseconds, lessThan(300));
       });
     });
 

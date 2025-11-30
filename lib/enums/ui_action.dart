@@ -332,7 +332,10 @@ enum UIAction {
   fullscreenToggled('fullscreen_toggled'),
 
   /// System UI visibility changed
-  systemUIVisibilityChanged('system_ui_visibility_changed');
+  systemUIVisibilityChanged('system_ui_visibility_changed'),
+
+  /// Visual effect toggle
+  visualEffectToggle('visual_effect_toggle');
 
   const UIAction(this.value);
 

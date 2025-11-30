@@ -316,5 +316,123 @@ void main() {
         expect(auValue, greaterThan(0.1)); // But not too close
       });
     });
+
+    group('Collision Particle Physics Constants', () {
+      test('particle drag coefficient should be defined', () {
+        expect(SimulationConstants.particleDragCoefficient, equals(0.98));
+      });
+
+      test('particle drag should be valid decay rate', () {
+        expect(SimulationConstants.particleDragCoefficient, greaterThan(0.0));
+        expect(SimulationConstants.particleDragCoefficient, lessThan(1.0));
+        // Should slow particles but not too aggressively
+        expect(SimulationConstants.particleDragCoefficient, greaterThan(0.9));
+      });
+    });
+
+    group('Collision Shockwave Physics Constants', () {
+      test('shockwave thickness decay rate should be defined', () {
+        expect(SimulationConstants.shockwaveThicknessDecayRate, equals(0.98));
+      });
+
+      test('shockwave decay should be valid rate', () {
+        expect(
+          SimulationConstants.shockwaveThicknessDecayRate,
+          greaterThan(0.0),
+        );
+        expect(SimulationConstants.shockwaveThicknessDecayRate, lessThan(1.0));
+        // Should decay gradually
+        expect(
+          SimulationConstants.shockwaveThicknessDecayRate,
+          greaterThan(0.9),
+        );
+      });
+    });
+
+    group('Plasma Jet Physics Constants', () {
+      test('plasma max temperature should be defined', () {
+        expect(SimulationConstants.plasmaMaxTemperature, equals(50000.0));
+      });
+
+      test('plasma opacity factors should be defined', () {
+        expect(SimulationConstants.plasmaMinOpacityFactor, equals(0.5));
+        expect(SimulationConstants.plasmaMaxOpacityFactor, equals(1.0));
+      });
+
+      test('plasma jet spread angle should be defined', () {
+        expect(SimulationConstants.plasmaJetSpreadAngle, equals(15.0));
+      });
+
+      test('plasma constants should have logical relationships', () {
+        expect(SimulationConstants.plasmaMaxTemperature, greaterThan(0.0));
+        expect(
+          SimulationConstants.plasmaMinOpacityFactor,
+          lessThan(SimulationConstants.plasmaMaxOpacityFactor),
+        );
+        expect(
+          SimulationConstants.plasmaMinOpacityFactor,
+          greaterThanOrEqualTo(0.0),
+        );
+        expect(
+          SimulationConstants.plasmaMaxOpacityFactor,
+          lessThanOrEqualTo(1.0),
+        );
+        expect(SimulationConstants.plasmaJetSpreadAngle, greaterThan(0.0));
+        expect(SimulationConstants.plasmaJetSpreadAngle, lessThan(180.0));
+      });
+    });
+
+    group('Particle Temperature Color Physics Constants', () {
+      test('particle temperature lerp factor should be defined', () {
+        expect(SimulationConstants.particleTemperatureLerpFactor, equals(0.5));
+      });
+
+      test('temperature lerp factor should be valid', () {
+        expect(
+          SimulationConstants.particleTemperatureLerpFactor,
+          greaterThan(0.0),
+        );
+        expect(
+          SimulationConstants.particleTemperatureLerpFactor,
+          lessThanOrEqualTo(1.0),
+        );
+      });
+    });
+
+    group('Collision Effects Multipliers Constants', () {
+      test('secondary shockwave thickness multiplier should be defined', () {
+        expect(
+          SimulationConstants.secondaryShockwaveThicknessMultiplier,
+          equals(0.7),
+        );
+      });
+
+      test('cloud velocity multiplier should be defined', () {
+        expect(SimulationConstants.cloudVelocityMultiplier, equals(0.5));
+      });
+
+      test('cloud expansion multiplier should be defined', () {
+        expect(SimulationConstants.cloudExpansionMultiplier, equals(2.0));
+      });
+
+      test('cloud lifetime should be defined', () {
+        expect(SimulationConstants.cloudLifetime, equals(4.0));
+      });
+
+      test('collision effects multipliers should be valid', () {
+        expect(
+          SimulationConstants.secondaryShockwaveThicknessMultiplier,
+          greaterThan(0.0),
+        );
+        expect(
+          SimulationConstants.secondaryShockwaveThicknessMultiplier,
+          lessThan(1.0),
+        );
+        expect(SimulationConstants.cloudVelocityMultiplier, greaterThan(0.0));
+        expect(SimulationConstants.cloudVelocityMultiplier, lessThan(1.0));
+        expect(SimulationConstants.cloudExpansionMultiplier, greaterThan(0.0));
+        expect(SimulationConstants.cloudLifetime, greaterThan(0.0));
+      });
+    });
   });
 }

@@ -3634,4 +3634,35 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
+
+  @override
+  String get collisionEffectsTitle => 'Kollisionseffekte';
+
+  @override
+  String get showCollisionDebris => 'Trümmerpartikel';
+
+  @override
+  String get showCollisionDebrisDescription =>
+      'Ausgeworfene Partikel von Kollisionseinschlägen mit physikbasierten Trajektorien';
+
+  @override
+  String get showCollisionShockwaves => 'Stoßwellenringe';
+
+  @override
+  String get showCollisionShockwavesDescription =>
+      'Expandierende Energieringe von Kollisionspunkten skaliert nach Aufprallkraft';
+
+  @override
+  String get showCollisionEjection => 'Materialauswurf';
+
+  @override
+  String get showCollisionEjectionDescription =>
+      'Aufwallende Materialwolken, die bei hochenergetischen Einschlägen ausgestoßen werden';
+
+  @override
+  String get showCollisionPlasmaJets => 'Plasmajets';
+
+  @override
+  String get showCollisionPlasmaJetsDescription =>
+      'Gerichtete überhitzte Ströme aus massiven Sternkollisionen (experimentell)';
 }

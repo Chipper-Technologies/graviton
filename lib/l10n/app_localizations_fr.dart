@@ -3665,4 +3665,35 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
+
+  @override
+  String get collisionEffectsTitle => 'Effets de Collision';
+
+  @override
+  String get showCollisionDebris => 'Particules de Débris';
+
+  @override
+  String get showCollisionDebrisDescription =>
+      'Particules éjectées des impacts de collision avec trajectoires basées sur la physique';
+
+  @override
+  String get showCollisionShockwaves => 'Ondes de Choc';
+
+  @override
+  String get showCollisionShockwavesDescription =>
+      'Anneaux d\'énergie en expansion depuis les points de collision proportionnels à la force d\'impact';
+
+  @override
+  String get showCollisionEjection => 'Éjection de Matière';
+
+  @override
+  String get showCollisionEjectionDescription =>
+      'Nuages ondulants de matière expulsée lors d\'impacts à haute énergie';
+
+  @override
+  String get showCollisionPlasmaJets => 'Jets de Plasma';
+
+  @override
+  String get showCollisionPlasmaJetsDescription =>
+      'Flux directionnels surchauffés issus de collisions d\'étoiles massives (expérimental)';
 }

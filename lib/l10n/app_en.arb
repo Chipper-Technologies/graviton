@@ -4711,5 +4711,41 @@
   "exceptionTermsNotAccepted": "exceptionTermsNotAccepted",
   "@exceptionTermsNotAccepted": {
     "description": "Exception key when terms are not accepted"
+  },
+  "collisionEffectsTitle": "Collision Effects",
+  "@collisionEffectsTitle": {
+    "description": "Section title for collision visual effects options"
+  },
+  "showCollisionDebris": "Debris Particles",
+  "@showCollisionDebris": {
+    "description": "Label for collision debris particles toggle"
+  },
+  "showCollisionDebrisDescription": "Ejected particles from collision impacts with physics-based trajectories",
+  "@showCollisionDebrisDescription": {
+    "description": "Description for collision debris particles feature"
+  },
+  "showCollisionShockwaves": "Shockwave Rings",
+  "@showCollisionShockwaves": {
+    "description": "Label for collision shockwave rings toggle"
+  },
+  "showCollisionShockwavesDescription": "Expanding energy rings from collision points scaled by impact force",
+  "@showCollisionShockwavesDescription": {
+    "description": "Description for collision shockwave rings feature"
+  },
+  "showCollisionEjection": "Material Ejection",
+  "@showCollisionEjection": {
+    "description": "Label for collision material ejection toggle"
+  },
+  "showCollisionEjectionDescription": "Billowing clouds of material expelled during high-energy impacts",
+  "@showCollisionEjectionDescription": {
+    "description": "Description for collision material ejection feature"
+  },
+  "showCollisionPlasmaJets": "Plasma Jets",
+  "@showCollisionPlasmaJets": {
+    "description": "Label for collision plasma jets toggle"
+  },
+  "showCollisionPlasmaJetsDescription": "Directional superheated streams from massive star collisions (experimental)",
+  "@showCollisionPlasmaJetsDescription": {
+    "description": "Description for collision plasma jets feature"
   }
 }

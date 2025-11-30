@@ -20,6 +20,8 @@ import 'package:graviton/services/habitable_zone_service.dart';
 import 'package:graviton/services/scenario_service.dart';
 import 'package:graviton/services/stellar_color_service.dart';
 import 'package:graviton/services/temperature_service.dart';
+import 'package:graviton/services/collision_effects_service.dart';
+import 'package:graviton/state/app_state.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/services/haptic_feedback_service.dart';
 
@@ -54,9 +56,15 @@ class Simulation {
   final AsteroidBeltSystem asteroidBelt = AsteroidBeltSystem();
   final AsteroidBeltSystem kuiperBelt = AsteroidBeltSystem();
 
+  // Collision effects system
+  final CollisionEffectsService collisionEffects = CollisionEffectsService();
+
   final ScenarioService _scenarioService = ScenarioService();
   final HabitableZoneService _habitableZoneService = HabitableZoneService();
   ScenarioType _currentScenario = ScenarioType.random;
+
+  // Optional reference to AppState for UI settings (collision effects toggles)
+  AppState? appState;
 
   // Flag to track when scenario needs localization update
   bool _needsLocalizationUpdate = false;
@@ -639,6 +647,9 @@ class Simulation {
       kuiperBelt.update(dt); // Galactic halo
     }
 
+    // Update collision effects (particles, shockwaves, etc.)
+    collisionEffects.update(dt);
+
     // Update temperatures and habitability (throttled for performance)
     updateTemperatures(dt);
     updateHabitability(dt);
@@ -811,6 +822,25 @@ class Simulation {
 
     // Use the final color for collision flash too
     mergeFlashes.add(MergeFlash(p.clone(), finalColor, age: 0));
+
+    // Generate collision particle effects (debris, shockwaves, etc.)
+    // Sync UI settings to collision effects service
+    final effectiveAppState = appState;
+    if (effectiveAppState != null) {
+      collisionEffects.showDebris = effectiveAppState.ui.showCollisionDebris;
+      collisionEffects.showShockwaves =
+          effectiveAppState.ui.showCollisionShockwaves;
+      collisionEffects.showEjection =
+          effectiveAppState.ui.showCollisionEjection;
+      collisionEffects.showPlasmaJets =
+          effectiveAppState.ui.showCollisionPlasmaJets;
+    }
+
+    collisionEffects.generateCollisionEffects(
+      body1: b1,
+      body2: b2,
+      collisionPoint: p,
+    );
 
     // Energy-scaled vibration
     final rel = (b1.velocity - b2.velocity).length;

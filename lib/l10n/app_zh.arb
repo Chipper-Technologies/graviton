@@ -1079,5 +1079,14 @@
   "errorOperationNotAllowed": "此登录方法未启用。",
   "errorRequiresRecentLogin": "请重新登录以执行此操作。",
   "errorNetworkFailed": "网络错误。请检查您的连接。",
-  "errorUnknown": "发生错误：{message}"
+  "errorUnknown": "发生错误：{message}",
+  "collisionEffectsTitle": "碰撞效果",
+  "showCollisionDebris": "碎片粒子",
+  "showCollisionDebrisDescription": "从碰撞冲击中弹出的具有基于物理的轨迹的粒子",
+  "showCollisionShockwaves": "冲击波环",
+  "showCollisionShockwavesDescription": "从碰撞点扩展的能量环，按冲击力缩放",
+  "showCollisionEjection": "物质喷射",
+  "showCollisionEjectionDescription": "高能量冲击期间喷出的翻滚物质云",
+  "showCollisionPlasmaJets": "等离子射流",
+  "showCollisionPlasmaJetsDescription": "来自大质量恒星碰撞的定向超高温流（实验性）"
 }

@@ -8,6 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.6.0] - 2025-11-26
 
 ### Added
+- **Collision Effects System**: Comprehensive particle-based visual effects for celestial body collisions
+  - **Physics-Based Particle Models**: Realistic collision visualization components
+    - Debris particles with physics-based trajectories and material properties
+    - Expanding shockwave effects with realistic propagation
+    - Material ejection clouds simulating impact dispersion
+    - High-energy plasma jets for energetic collisions
+  - **Collision Effects Service**: Centralized management of collision visual effects
+    - Automatic effect generation based on collision energy and impact parameters
+    - Dynamic particle lifecycle management with proper cleanup
+    - Performance-optimized rendering with conditional visibility controls
+  - **Physics Utilities**: Reusable collision physics calculations
+    - Impact energy and velocity computations
+    - Material ejection modeling based on collision mechanics
+    - Debris distribution algorithms for realistic scatter patterns
+  - **User Controls**: Full control over collision effect visibility
+    - Toggle collision effects on/off via VisualsControls widget
+    - Seamless integration into existing UI settings panel
+    - Complete localization support across all 7 supported languages
+
 - **Account Management System**: Comprehensive user account functionality with Firebase integration
   - **Firebase Authentication**: Multi-provider authentication support
     - Email/password authentication with account creation and password reset

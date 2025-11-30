@@ -6351,6 +6351,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'exceptionTermsNotAccepted'**
   String get exceptionTermsNotAccepted;
+
+  /// Section title for collision visual effects options
+  ///
+  /// In en, this message translates to:
+  /// **'Collision Effects'**
+  String get collisionEffectsTitle;
+
+  /// Label for collision debris particles toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Debris Particles'**
+  String get showCollisionDebris;
+
+  /// Description for collision debris particles feature
+  ///
+  /// In en, this message translates to:
+  /// **'Ejected particles from collision impacts with physics-based trajectories'**
+  String get showCollisionDebrisDescription;
+
+  /// Label for collision shockwave rings toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Shockwave Rings'**
+  String get showCollisionShockwaves;
+
+  /// Description for collision shockwave rings feature
+  ///
+  /// In en, this message translates to:
+  /// **'Expanding energy rings from collision points scaled by impact force'**
+  String get showCollisionShockwavesDescription;
+
+  /// Label for collision material ejection toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Material Ejection'**
+  String get showCollisionEjection;
+
+  /// Description for collision material ejection feature
+  ///
+  /// In en, this message translates to:
+  /// **'Billowing clouds of material expelled during high-energy impacts'**
+  String get showCollisionEjectionDescription;
+
+  /// Label for collision plasma jets toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Plasma Jets'**
+  String get showCollisionPlasmaJets;
+
+  /// Description for collision plasma jets feature
+  ///
+  /// In en, this message translates to:
+  /// **'Directional superheated streams from massive star collisions (experimental)'**
+  String get showCollisionPlasmaJetsDescription;
 }
 
 class _AppLocalizationsDelegate
