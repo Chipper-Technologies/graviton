@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/collision_effects_service.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -53,9 +54,9 @@ void main() {
       });
 
       test('Should have correct maximum particle counts', () {
-        expect(CollisionEffectsService.maxDebrisParticles, equals(500));
-        expect(CollisionEffectsService.maxCloudParticles, equals(200));
-        expect(CollisionEffectsService.maxJetParticles, equals(100));
+        expect(RenderingConstants.maxDebrisParticles, equals(500));
+        expect(RenderingConstants.maxCloudParticles, equals(200));
+        expect(RenderingConstants.maxJetParticles, equals(100));
       });
     });
 
@@ -114,7 +115,7 @@ void main() {
         // Service may generate one batch before checking limit
         expect(
           service.debrisParticles.length,
-          lessThanOrEqualTo(CollisionEffectsService.maxDebrisParticles + 40),
+          lessThanOrEqualTo(RenderingConstants.maxDebrisParticles + 40),
         );
       });
     });
@@ -237,7 +238,7 @@ void main() {
         // Service may generate one batch before checking limit
         expect(
           totalCloudParticles,
-          lessThanOrEqualTo(CollisionEffectsService.maxCloudParticles + 30),
+          lessThanOrEqualTo(RenderingConstants.maxCloudParticles + 30),
         );
       });
     });

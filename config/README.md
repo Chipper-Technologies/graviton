@@ -28,28 +28,23 @@ Each configuration file contains environment settings, URLs, assets, and Firebas
 ```json
 {
   "environment": "dev",
-  "urls": {
-    "github": "https://github.com/Chipper-Technologies/graviton",
-    "website": "https://chippertechnology.com",
-    "privacyPolicy": "https://chippertechnology.com/privacy-policy/graviton",
-    "termsOfService": "https://chippertechnology.com/terms-of-service/graviton",
-    "companyWebsite": "https://chippertechnology.com"
-  },
-  "assets": {
-    "appLogo": "assets/images/app-logo.png",
-    "chipperLogo": "assets/images/chipper-logo.svg",
-    "gravitonLogo": "assets/images/graviton-logo.svg"
-  },
-  "firebase": {
-    "apiKey": "AIzaSy...",
-    "appId": "1:123456789:platform:abc123...",
-    "messagingSenderId": "123456789",
-    "projectId": "graviton-dev",
-    "authDomain": "graviton-dev.firebaseapp.com",
-    "storageBucket": "graviton-dev.firebasestorage.app",
-    "measurementId": "G-XXXXXXXXXX",
-    "iosBundleId": "io.chipper.graviton.dev"
-  }
+  "urls.github": "https://github.com/Chipper-Technologies/graviton",
+  "urls.website": "https://chippertechnology.com",
+  "urls.privacyPolicy": "https://chippertechnology.com/privacy-policy/graviton",
+  "urls.termsOfService": "https://chippertechnology.com/terms-of-service/graviton",
+  "urls.companyWebsite": "https://chippertechnology.com",
+  "assets.appLogo": "assets/images/app-logo.png",
+  "assets.chipperLogo": "assets/images/chipper-logo.svg",
+  "assets.gravitonLogo": "assets/images/graviton-logo.svg",
+  "firebase.apiKey": "AIzaSy...",
+  "firebase.appId": "1:123456789:platform:abc123...",
+  "firebase.messagingSenderId": "123456789",
+  "firebase.projectId": "graviton-dev",
+  "firebase.authDomain": "graviton-dev.firebaseapp.com",
+  "firebase.storageBucket": "graviton-dev.firebasestorage.app",
+  "firebase.measurementId": "G-XXXXXXXXXX",
+  "firebase.recaptchaSiteKey": "6LeXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+  "firebase.iosBundleId": "io.chipper.graviton.dev"
 }
 ```
 
@@ -72,6 +67,7 @@ Each configuration file contains environment settings, URLs, assets, and Firebas
 
 - `authDomain` - (Web only) Firebase Auth domain
 - `measurementId` - (Web only) Google Analytics measurement ID
+- `recaptchaSiteKey` - (Web only) reCAPTCHA v3 site key for App Check
 - `iosBundleId` - (iOS/macOS only) Bundle identifier
 
 ## Usage
@@ -158,6 +154,22 @@ build:
    - Click on the app (or add it if it doesn't exist)
    - Copy the configuration values
    - Add them to the `firebase` object in the corresponding JSON file
+
+### Getting reCAPTCHA Site Key (Web Only)
+
+For App Check on web platforms:
+
+1. Go to [Firebase Console](https://console.firebase.google.com/) → App Check
+2. Select your web app
+3. If reCAPTCHA v3 is configured, you'll see the site key
+4. Alternatively, go to [reCAPTCHA Admin](https://www.google.com/recaptcha/admin)
+5. Find your site and copy the site key (starts with `6Le...`)
+6. Add to `config/dev-web.json` and `config/prod-web.json` using dot notation:
+   ```json
+   "firebase.recaptchaSiteKey": "6LeXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+   ```
+
+**Note**: App Check is already configured in Firebase Console for Android, iOS, and Web.
 
 ## Security
 

@@ -18,6 +18,7 @@ import 'screens/about_screen.dart';
 import 'screens/application_settings_screen.dart';
 import 'screens/help_screen.dart';
 import 'screens/home_screen.dart';
+import 'services/app_check_service.dart';
 import 'services/auth_service.dart';
 import 'services/changelog_service.dart';
 import 'services/firebase_service.dart';
@@ -61,17 +62,15 @@ void main() async {
       // Firebase was already initialized (race condition or hot restart)
     }
 
+    // Initialize remote config service BEFORE App Check
+    // App Check depends on Remote Config for the appCheckEnabled flag
+    await RemoteConfigService.instance.initialize();
+
+    await AppCheckService.instance.initialize();
     await FirebaseService.instance.initialize();
     await AuthService.instance.initialize();
   } catch (e) {
     debugPrint('Firebase initialization failed: $e');
-  }
-
-  // Initialize remote config service
-  try {
-    await RemoteConfigService.instance.initialize();
-  } catch (e) {
-    debugPrint('Remote config service initialization failed: $e');
   }
 
   // Initialize version service

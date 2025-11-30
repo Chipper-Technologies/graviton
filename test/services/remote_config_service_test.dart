@@ -30,6 +30,9 @@ void main() {
       expect(service.userBehaviorTracking, UserBehaviorTrackingMode.essential);
       expect(service.abTestGroup, ABTestGroup.control);
 
+      // Security defaults
+      expect(service.appCheckEnabled, isTrue);
+
       // Maintenance & Communication defaults
       expect(service.maintenanceMode, isFalse);
       expect(
