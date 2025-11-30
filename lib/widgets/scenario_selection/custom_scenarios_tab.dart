@@ -288,7 +288,7 @@ class _CustomScenariosTabState extends State<CustomScenariosTab> {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 1.35,
+        childAspectRatio: 0.85,
         crossAxisSpacing: AppTypography.spacingMedium,
         mainAxisSpacing: AppTypography.spacingMedium,
       ),

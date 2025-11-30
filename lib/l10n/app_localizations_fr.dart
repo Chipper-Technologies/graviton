@@ -3502,6 +3502,82 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get integrityErrorDeviceIntegrityTitle =>
+      'Problème de sécurité de l\'appareil';
+
+  @override
+  String get integrityErrorDeviceIntegrity =>
+      'Votre appareil ne répond pas aux exigences de sécurité pour cette opération.';
+
+  @override
+  String integrityGuidanceDeviceIntegrity(String reference) {
+    return 'Veuillez vous assurer que votre appareil passe les vérifications Google Play Protect et n\'est pas rooté ou modifié. Si vous pensez qu\'il s\'agit d\'une erreur, contactez le support avec la référence : $reference';
+  }
+
+  @override
+  String get integrityErrorAppIntegrityTitle =>
+      'Problème d\'installation de l\'application';
+
+  @override
+  String get integrityErrorAppIntegrity =>
+      'L\'installation de l\'application n\'a pas pu être vérifiée.';
+
+  @override
+  String integrityGuidanceAppIntegrity(String reference) {
+    return 'Veuillez vous assurer que vous utilisez l\'application officielle du Google Play Store. Les applications chargées latéralement ou modifiées ne sont pas prises en charge. Référence : $reference';
+  }
+
+  @override
+  String get integrityErrorNetworkTitle => 'Erreur de connexion';
+
+  @override
+  String get integrityErrorNetwork =>
+      'Impossible de vérifier la sécurité de l\'appareil en raison d\'une erreur réseau.';
+
+  @override
+  String integrityGuidanceNetwork(String reference) {
+    return 'Veuillez vérifier votre connexion Internet et réessayer. Si le problème persiste, contactez le support avec la référence : $reference';
+  }
+
+  @override
+  String get integrityErrorBackendVerificationTitle =>
+      'Échec de la vérification';
+
+  @override
+  String get integrityErrorBackendVerification =>
+      'La vérification de sécurité n\'a pas pu être complétée.';
+
+  @override
+  String integrityGuidanceBackendVerification(String reference) {
+    return 'Un problème est survenu lors de la vérification de votre appareil. Veuillez réessayer plus tard. Si cela persiste, contactez le support avec la référence : $reference';
+  }
+
+  @override
+  String get integrityErrorTokenRequestTitle =>
+      'Échec de la vérification de sécurité';
+
+  @override
+  String get integrityErrorTokenRequest =>
+      'Impossible d\'effectuer la vérification de sécurité.';
+
+  @override
+  String integrityGuidanceTokenRequest(String reference) {
+    return 'Impossible de générer le jeton de sécurité. Veuillez redémarrer l\'application et réessayer. Si le problème persiste, contactez le support avec la référence : $reference';
+  }
+
+  @override
+  String get integrityErrorUnknownTitle => 'Erreur de vérification';
+
+  @override
+  String get integrityErrorUnknown =>
+      'Une erreur inattendue s\'est produite lors de la vérification de sécurité.';
+
+  @override
+  String integrityGuidanceUnknown(String reference) {
+    return 'Veuillez réessayer. Si le problème persiste, contactez le support avec la référence : $reference';
+  }
+
+  @override
   String get emailVerificationSent =>
       'E-mail de vérification envoyé ! Veuillez vérifier votre boîte de réception.';
 

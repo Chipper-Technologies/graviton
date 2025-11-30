@@ -7,8 +7,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/enums/auth_provider_type.dart';
 import 'package:graviton/enums/user_avatar.dart';
+import 'package:graviton/models/play_integrity_exception.dart';
 import 'package:graviton/models/user_profile.dart';
 import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/services/play_integrity_backend_service.dart';
+import 'package:graviton/services/play_integrity_service.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -231,6 +234,9 @@ class AuthService {
     }
 
     try {
+      // Verify device integrity before sign-in (Android only)
+      await _verifyDeviceIntegrity(email, 'auth_sign_in');
+
       final credential = await _auth?.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -280,6 +286,9 @@ class AuthService {
     String? displayName,
   }) async {
     try {
+      // Verify device integrity before account creation (Android only)
+      await _verifyDeviceIntegrity(email, 'auth_create_account');
+
       final credential = await _auth?.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -335,6 +344,9 @@ class AuthService {
       if (_googleSignIn == null) {
         throw Exception('exceptionGoogleSignInNotInitialized');
       }
+
+      // Verify device integrity before Google sign-in (Android only)
+      await _verifyDeviceIntegrity('google_signin', 'auth_google_signin');
 
       // On web, authenticate() is not supported - use Firebase Auth directly
       // On mobile/desktop, use google_sign_in package
@@ -1273,6 +1285,57 @@ class AuthService {
         fatal: false,
       );
       rethrow;
+    }
+  }
+
+  /// Verify device integrity using Play Integrity API with backend verification.
+  ///
+  /// This implements a phased rollout strategy:
+  /// - Phase 1 (logOnly): Monitor failures without blocking
+  /// - Phase 2 (warnUser): Show warnings but allow operation
+  /// - Phase 3 (blockHighRisk): Block high-risk operations like auth
+  /// - Phase 4 (blockAll): Block all operations requiring verification
+  ///
+  /// Tokens are cached to avoid unnecessary re-verification.
+  ///
+  /// Throws [IntegrityVerificationFailedException] if verification fails
+  /// and enforcement policy requires blocking the operation.
+  Future<void> _verifyDeviceIntegrity(
+    String identifier,
+    String operationId,
+  ) async {
+    try {
+      final integrityService = PlayIntegrityService();
+      final backendService = PlayIntegrityBackendService.instance;
+
+      // Use backend verification with token caching
+      await integrityService.verifyWithEnforcement(
+        operationId: operationId,
+        userId: identifier,
+        verifyTokenCallback: (token) async {
+          // Verify token with backend (uses cache if available)
+          final packageName = FlavorConfig.instance.getPackageName();
+          return await backendService.verifyToken(
+            token: token,
+            packageName: packageName,
+          );
+        },
+      );
+    } catch (e) {
+      // If it's an enforcement exception, rethrow to block operation
+      if (e is IntegrityVerificationFailedException) {
+        if (kDebugMode) {
+          debugPrint(
+            'AuthService: Integrity verification blocked operation: $operationId',
+          );
+        }
+        rethrow;
+      }
+
+      // For other errors, log but don't block (backward compatibility)
+      if (kDebugMode) {
+        debugPrint('AuthService: Integrity verification error: $e');
+      }
     }
   }
 

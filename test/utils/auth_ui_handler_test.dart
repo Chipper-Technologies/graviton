@@ -884,19 +884,7 @@ void main() {
             child: Builder(
               builder: (context) {
                 return ElevatedButton(
-                  onPressed: () async {
-                    final l10n = AppLocalizations.of(context)!;
-                    final result = await AuthUIHandler.handleEmailPasswordAuth(
-                      context: context,
-                      authState: authState,
-                      l10n: l10n,
-                      email: 'test@example.com',
-                      password: 'password123',
-                      isCreatingAccount: false,
-                    );
-                    // Will fail since Firebase is not initialized
-                    expect(result, isFalse);
-                  },
+                  onPressed: () {},
                   child: const Text('Test'),
                 );
               },
@@ -904,8 +892,23 @@ void main() {
           ),
         );
 
-        await tester.tap(find.text('Test'));
-        await tester.pumpAndSettle();
+        // Run the async operation directly
+        final context = tester.element(find.byType(ElevatedButton));
+        final l10n = AppLocalizations.of(context)!;
+
+        final result = await tester.runAsync(() async {
+          return await AuthUIHandler.handleEmailPasswordAuth(
+            context: context,
+            authState: authState,
+            l10n: l10n,
+            email: 'test@example.com',
+            password: 'password123',
+            isCreatingAccount: false,
+          );
+        });
+
+        // Will fail since Firebase is not initialized
+        expect(result, isFalse);
 
         authState.dispose();
       });
@@ -918,21 +921,7 @@ void main() {
             child: Builder(
               builder: (context) {
                 return ElevatedButton(
-                  onPressed: () async {
-                    final l10n = AppLocalizations.of(context)!;
-                    final result = await AuthUIHandler.handleEmailPasswordAuth(
-                      context: context,
-                      authState: authState,
-                      l10n: l10n,
-                      email: 'test@example.com',
-                      password: 'password123',
-                      isCreatingAccount: true,
-                      displayName: '',
-                    );
-                    // Should use defaultUserName from l10n
-                    // Will fail since Firebase is not initialized
-                    expect(result, isFalse);
-                  },
+                  onPressed: () {},
                   child: const Text('Test'),
                 );
               },
@@ -940,8 +929,25 @@ void main() {
           ),
         );
 
-        await tester.tap(find.text('Test'));
-        await tester.pumpAndSettle();
+        // Run the async operation directly
+        final context = tester.element(find.byType(ElevatedButton));
+        final l10n = AppLocalizations.of(context)!;
+
+        final result = await tester.runAsync(() async {
+          return await AuthUIHandler.handleEmailPasswordAuth(
+            context: context,
+            authState: authState,
+            l10n: l10n,
+            email: 'test@example.com',
+            password: 'password123',
+            isCreatingAccount: true,
+            displayName: '',
+          );
+        });
+
+        // Should use defaultUserName from l10n
+        // Will fail since Firebase is not initialized
+        expect(result, isFalse);
 
         authState.dispose();
       });

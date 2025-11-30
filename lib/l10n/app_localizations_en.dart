@@ -3463,6 +3463,78 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get integrityErrorDeviceIntegrityTitle => 'Device Security Issue';
+
+  @override
+  String get integrityErrorDeviceIntegrity =>
+      'Your device does not meet the security requirements for this operation.';
+
+  @override
+  String integrityGuidanceDeviceIntegrity(String reference) {
+    return 'Please ensure your device passes Google Play Protect checks and is not rooted or modified. If you believe this is an error, contact support with reference: $reference';
+  }
+
+  @override
+  String get integrityErrorAppIntegrityTitle => 'App Installation Issue';
+
+  @override
+  String get integrityErrorAppIntegrity =>
+      'The app installation could not be verified.';
+
+  @override
+  String integrityGuidanceAppIntegrity(String reference) {
+    return 'Please ensure you\'re using the official app from Google Play Store. Sideloaded or modified apps are not supported. Reference: $reference';
+  }
+
+  @override
+  String get integrityErrorNetworkTitle => 'Connection Error';
+
+  @override
+  String get integrityErrorNetwork =>
+      'Could not verify device security due to a network error.';
+
+  @override
+  String integrityGuidanceNetwork(String reference) {
+    return 'Please check your internet connection and try again. If the problem persists, contact support with reference: $reference';
+  }
+
+  @override
+  String get integrityErrorBackendVerificationTitle => 'Verification Failed';
+
+  @override
+  String get integrityErrorBackendVerification =>
+      'Security verification could not be completed.';
+
+  @override
+  String integrityGuidanceBackendVerification(String reference) {
+    return 'There was an issue verifying your device. Please try again later. If this continues, contact support with reference: $reference';
+  }
+
+  @override
+  String get integrityErrorTokenRequestTitle => 'Security Check Failed';
+
+  @override
+  String get integrityErrorTokenRequest =>
+      'Could not perform security verification.';
+
+  @override
+  String integrityGuidanceTokenRequest(String reference) {
+    return 'Unable to generate security token. Please restart the app and try again. If the issue persists, contact support with reference: $reference';
+  }
+
+  @override
+  String get integrityErrorUnknownTitle => 'Verification Error';
+
+  @override
+  String get integrityErrorUnknown =>
+      'An unexpected error occurred during security verification.';
+
+  @override
+  String integrityGuidanceUnknown(String reference) {
+    return 'Please try again. If the problem continues, contact support with reference: $reference';
+  }
+
+  @override
   String get emailVerificationSent =>
       'Verification email sent! Please check your inbox.';
 

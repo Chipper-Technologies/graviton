@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graviton/config/flavor_config.dart';
+import 'package:graviton/constants/app_constants.dart';
 import 'package:graviton/enums/version_status.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/version_service.dart';
@@ -49,7 +50,7 @@ class _AboutScreenState extends State<AboutScreen> {
         setState(() {
           _packageInfo = PackageInfo(
             appName: 'Graviton',
-            packageName: 'io.chipper.graviton',
+            packageName: AppConstants.packageNameProd,
             version: AppConfig.appVersion,
             buildNumber: AppConfig.buildNumber,
           );

@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/constants/app_constants.dart';
 import 'package:graviton/constants/platform_channel_constants.dart';
 import 'package:graviton/enums/app_flavor.dart';
 import 'package:graviton/config/flavor_config.dart';
@@ -13,14 +14,14 @@ void main() {
     test('Navigation channel has expected prefix', () {
       expect(
         PlatformChannelConstants.navigation,
-        startsWith('io.chipper.graviton'),
+        startsWith(AppConstants.packageNameProd),
       );
     });
 
     test('Navigation channel is correctly formatted', () {
       expect(
         PlatformChannelConstants.navigation,
-        equals('io.chipper.graviton/navigation'),
+        equals('${AppConstants.packageNameProd}/navigation'),
       );
     });
 
@@ -32,14 +33,14 @@ void main() {
     test('Simulation channel has expected prefix', () {
       expect(
         PlatformChannelConstants.simulation,
-        startsWith('io.chipper.graviton'),
+        startsWith(AppConstants.packageNameProd),
       );
     });
 
     test('Simulation channel is correctly formatted', () {
       expect(
         PlatformChannelConstants.simulation,
-        equals('io.chipper.graviton/simulation'),
+        equals('${AppConstants.packageNameProd}/simulation'),
       );
     });
 

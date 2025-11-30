@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Graviton</string>
+    
+    <!-- Play Integrity Error Messages -->
+    <string name="integrity_invalid_argument">Nonce is required</string>
+    <string name="integrity_security_error">Device security requirements not met</string>
+    <string name="integrity_initialization_error">Play Integrity service not available</string>
+    <string name="integrity_unknown_error">An unexpected error occurred</string>
+    <string name="integrity_network_error">Network error occurred</string>
+    <string name="integrity_failed">Device integrity check failed</string>
+    <string name="integrity_service_unavailable">Play Integrity service not available</string>
+    <string name="integrity_rate_limited">Too many requests, please try again later</string>
+    <string name="integrity_token_request_failed">Failed to request integrity token</string>
+</resources>

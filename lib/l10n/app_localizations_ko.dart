@@ -3289,6 +3289,72 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get integrityErrorDeviceIntegrityTitle => '기기 보안 문제';
+
+  @override
+  String get integrityErrorDeviceIntegrity => '기기가 이 작업의 보안 요구 사항을 충족하지 않습니다.';
+
+  @override
+  String integrityGuidanceDeviceIntegrity(String reference) {
+    return '기기가 Google Play 프로텍트 검사를 통과하고 루팅되거나 수정되지 않았는지 확인하세요. 오류라고 생각되면 참조 번호와 함께 지원팀에 문의하세요: $reference';
+  }
+
+  @override
+  String get integrityErrorAppIntegrityTitle => '앱 설치 문제';
+
+  @override
+  String get integrityErrorAppIntegrity => '앱 설치를 확인할 수 없습니다.';
+
+  @override
+  String integrityGuidanceAppIntegrity(String reference) {
+    return 'Google Play 스토어에서 공식 앱을 사용하고 있는지 확인하세요. 사이드로드되거나 수정된 앱은 지원되지 않습니다. 참조: $reference';
+  }
+
+  @override
+  String get integrityErrorNetworkTitle => '연결 오류';
+
+  @override
+  String get integrityErrorNetwork => '네트워크 오류로 인해 기기 보안을 확인할 수 없습니다.';
+
+  @override
+  String integrityGuidanceNetwork(String reference) {
+    return '인터넷 연결을 확인하고 다시 시도하세요. 문제가 지속되면 참조 번호와 함께 지원팀에 문의하세요: $reference';
+  }
+
+  @override
+  String get integrityErrorBackendVerificationTitle => '확인 실패';
+
+  @override
+  String get integrityErrorBackendVerification => '보안 확인을 완료할 수 없습니다.';
+
+  @override
+  String integrityGuidanceBackendVerification(String reference) {
+    return '기기를 확인하는 중에 문제가 발생했습니다. 나중에 다시 시도하세요. 계속되면 참조 번호와 함께 지원팀에 문의하세요: $reference';
+  }
+
+  @override
+  String get integrityErrorTokenRequestTitle => '보안 검사 실패';
+
+  @override
+  String get integrityErrorTokenRequest => '보안 확인을 수행할 수 없습니다.';
+
+  @override
+  String integrityGuidanceTokenRequest(String reference) {
+    return '보안 토큰을 생성할 수 없습니다. 앱을 다시 시작하고 다시 시도하세요. 문제가 지속되면 참조 번호와 함께 지원팀에 문의하세요: $reference';
+  }
+
+  @override
+  String get integrityErrorUnknownTitle => '확인 오류';
+
+  @override
+  String get integrityErrorUnknown => '보안 확인 중에 예기치 않은 오류가 발생했습니다.';
+
+  @override
+  String integrityGuidanceUnknown(String reference) {
+    return '다시 시도하세요. 문제가 지속되면 참조 번호와 함께 지원팀에 문의하세요: $reference';
+  }
+
+  @override
   String get emailVerificationSent => '인증 이메일이 전송되었습니다! 받은편지함을 확인하세요.';
 
   @override

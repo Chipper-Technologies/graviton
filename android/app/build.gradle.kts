@@ -91,4 +91,7 @@ flutter {
 dependencies {
     // AndroidX Core for edge-to-edge display support (Android 15+)
     implementation("androidx.core:core-ktx:1.15.0")
+    
+    // Google Play Integrity API
+    implementation("com.google.android.play:integrity:1.6.0")
 }

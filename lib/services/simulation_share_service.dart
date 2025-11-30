@@ -6,10 +6,15 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show GlobalKey;
 import 'package:flutter/rendering.dart';
+import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/physics_settings.dart';
+import 'package:graviton/models/play_integrity_exception.dart';
+import 'package:graviton/services/auth_service.dart';
+import 'package:graviton/services/play_integrity_backend_service.dart';
+import 'package:graviton/services/play_integrity_service.dart';
 import 'package:graviton/state/simulation_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:path_provider/path_provider.dart';
@@ -37,6 +42,9 @@ class SimulationShareService {
     String? text,
   }) async {
     try {
+      // Verify device integrity before sharing (Android only, prevents fraudulent scenarios)
+      await _verifyDeviceIntegrityForShare();
+
       final jsonData = await exportSimulationStateToJson(
         simulationState: simulationState,
         customName: customName,
@@ -380,6 +388,49 @@ class SimulationShareService {
       ),
       color: ui.Color(json['color'] as int),
     );
+  }
+
+  /// Verify device integrity before sharing (Android only)
+  ///
+  /// This helps prevent sharing of fraudulent or tampered simulation data.
+  /// Silently succeeds on non-Android platforms or if verification fails.
+  Future<void> _verifyDeviceIntegrityForShare() async {
+    try {
+      final integrityService = PlayIntegrityService();
+      final backendService = PlayIntegrityBackendService.instance;
+      final user = await AuthService.instance.getCurrentUserProfile();
+      final userId = user?.uid ?? 'anonymous';
+
+      // Determine package name based on flavor
+      final packageName = FlavorConfig.instance.getPackageName();
+
+      // Use enforcement-aware verification with backend callback
+      await integrityService.verifyWithEnforcement(
+        operationId: 'share_simulation',
+        userId: userId,
+        verifyTokenCallback: (token) async {
+          return await backendService.verifyToken(
+            token: token,
+            packageName: packageName,
+          );
+        },
+      );
+    } catch (e) {
+      // If it's an enforcement exception, rethrow to block operation
+      if (e is IntegrityVerificationFailedException) {
+        if (kDebugMode) {
+          debugPrint(
+            'SimulationShare: Integrity verification blocked share operation',
+          );
+        }
+        rethrow;
+      }
+
+      // For other errors, log but don't block (backward compatibility)
+      if (kDebugMode) {
+        debugPrint('SimulationShare: Integrity verification error: $e');
+      }
+    }
   }
 
   /// Create PhysicsSettings from imported JSON data
