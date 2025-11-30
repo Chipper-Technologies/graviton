@@ -147,7 +147,7 @@ class AppCheckService {
     }
   }
 
-  /// Set a token auto-refresh enabled
+  /// Enable or disable token auto-refresh
   ///
   /// When enabled, App Check will automatically refresh tokens before
   /// they expire.

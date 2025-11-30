@@ -40,7 +40,7 @@ void main() {
       await service.initialize();
 
       // Second initialization should not throw
-      expect(() async => await service.initialize(), returnsNormally);
+      await expectLater(service.initialize(), completes);
     });
 
     test('should respect remote config disable flag', () async {
@@ -68,10 +68,7 @@ void main() {
       await service.initialize();
 
       // Should not throw even if token fetch fails in test environment
-      expect(
-        () async => await service.getToken(forceRefresh: true),
-        returnsNormally,
-      );
+      await expectLater(service.getToken(forceRefresh: true), completes);
     });
 
     test('should handle setTokenAutoRefreshEnabled', () {
@@ -96,7 +93,7 @@ void main() {
 
         // In test environment, initialization may fail
         // Service should handle this gracefully and not throw
-        expect(() async => await service.initialize(), returnsNormally);
+        await expectLater(service.initialize(), completes);
       });
 
       test('should handle token fetch errors gracefully', () async {

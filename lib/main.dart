@@ -62,18 +62,15 @@ void main() async {
       // Firebase was already initialized (race condition or hot restart)
     }
 
+    // Initialize remote config service BEFORE App Check
+    // App Check depends on Remote Config for the appCheckEnabled flag
+    await RemoteConfigService.instance.initialize();
+
     await AppCheckService.instance.initialize();
     await FirebaseService.instance.initialize();
     await AuthService.instance.initialize();
   } catch (e) {
     debugPrint('Firebase initialization failed: $e');
-  }
-
-  // Initialize remote config service
-  try {
-    await RemoteConfigService.instance.initialize();
-  } catch (e) {
-    debugPrint('Remote config service initialization failed: $e');
   }
 
   // Initialize version service
