@@ -1061,5 +1061,14 @@
   "errorOperationNotAllowed": "Diese Anmeldemethode ist nicht aktiviert.",
   "errorRequiresRecentLogin": "Bitte melden Sie sich erneut an, um diese Aktion durchzuführen.",
   "errorNetworkFailed": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.",
-  "errorUnknown": "Ein Fehler ist aufgetreten: {message}"
+  "errorUnknown": "Ein Fehler ist aufgetreten: {message}",
+  "collisionEffectsTitle": "Kollisionseffekte",
+  "showCollisionDebris": "Trümmerpartikel",
+  "showCollisionDebrisDescription": "Ausgeworfene Partikel von Kollisionseinschlägen mit physikbasierten Trajektorien",
+  "showCollisionShockwaves": "Stoßwellenringe",
+  "showCollisionShockwavesDescription": "Expandierende Energieringe von Kollisionspunkten skaliert nach Aufprallkraft",
+  "showCollisionEjection": "Materialauswurf",
+  "showCollisionEjectionDescription": "Aufwallende Materialwolken, die bei hochenergetischen Einschlägen ausgestoßen werden",
+  "showCollisionPlasmaJets": "Plasmajets",
+  "showCollisionPlasmaJetsDescription": "Gerichtete überhitzte Ströme aus massiven Sternkollisionen (experimentell)"
 }

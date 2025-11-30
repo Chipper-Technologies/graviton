@@ -1061,5 +1061,14 @@
   "errorOperationNotAllowed": "このログイン方法は有効になっていません。",
   "errorRequiresRecentLogin": "この操作を実行するには、もう一度ログインしてください。",
   "errorNetworkFailed": "ネットワークエラー。接続を確認してください。",
-  "errorUnknown": "エラーが発生しました：{message}"
+  "errorUnknown": "エラーが発生しました：{message}",
+  "collisionEffectsTitle": "衝突エフェクト",
+  "showCollisionDebris": "破片粒子",
+  "showCollisionDebrisDescription": "物理ベースの軌道を持つ衝突衝撃から放出される粒子",
+  "showCollisionShockwaves": "衝撃波リング",
+  "showCollisionShockwavesDescription": "衝突地点から衝撃力に応じて拡大するエネルギーリング",
+  "showCollisionEjection": "物質放出",
+  "showCollisionEjectionDescription": "高エネルギー衝撃時に排出される物質の渦巻く雲",
+  "showCollisionPlasmaJets": "プラズマジェット",
+  "showCollisionPlasmaJetsDescription": "大質量星衝突からの方向性のある超高温ストリーム（実験的）"
 }

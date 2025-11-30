@@ -131,6 +131,11 @@ class SimulationState extends ChangeNotifier {
   int get stepCount => _stepCount;
   double get totalTime => _totalTime;
 
+  /// Set AppState reference for collision effects UI settings
+  void setAppState(dynamic appState) {
+    _simulation.appState = appState;
+  }
+
   /// Convert simulation time to Earth years
   double get totalTimeInEarthYears =>
       _totalTime * SimulationConstants.simulationTimeToEarthYears;

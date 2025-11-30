@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/merge_flash.dart';
 import 'package:graviton/services/simulation.dart' as physics;
@@ -256,6 +257,406 @@ void main() {
       for (final body in simulation.bodies) {
         expect(expectedColors.contains(body.color), isTrue);
       }
+    });
+
+    group('Physics Parameters', () {
+      test('Should allow updating gravitational constant', () {
+        simulation.setGravitationalConstant(2.0);
+        expect(simulation.gravitationalConstant, equals(2.0));
+      });
+
+      test('Should allow updating softening parameter', () {
+        simulation.setSoftening(0.5);
+        expect(simulation.softening, equals(0.5));
+      });
+
+      test('Should allow updating collision radius multiplier', () {
+        simulation.setCollisionRadiusMultiplier(0.15);
+        expect(simulation.collisionRadiusMultiplier, equals(0.15));
+      });
+
+      test('Should allow updating max trail points', () {
+        simulation.setMaxTrailPoints(200);
+        expect(simulation.maxTrail, equals(200));
+      });
+
+      test('Should allow updating trail fade rate', () {
+        simulation.setTrailFadeRate(0.02);
+        expect(simulation.fadeRate, equals(0.02));
+      });
+
+      test('Should allow updating vibration settings', () {
+        simulation.setVibrationThrottleTime(0.5);
+        expect(simulation.vibrationThrottleTime, equals(0.5));
+
+        simulation.setVibrationEnabled(false);
+        expect(simulation.vibrationEnabled, isFalse);
+      });
+
+      test('Should update multiple physics settings at once', () {
+        simulation.updatePhysicsSettings(
+          gravitationalConstant: 1.5,
+          softening: 0.8,
+          collisionRadiusMultiplier: 0.12,
+          maxTrailPoints: 150,
+          trailFadeRate: 0.03,
+          vibrationThrottleTime: 0.6,
+          vibrationEnabled: true,
+        );
+
+        expect(simulation.gravitationalConstant, equals(1.5));
+        expect(simulation.softening, equals(0.8));
+        expect(simulation.collisionRadiusMultiplier, equals(0.12));
+        expect(simulation.maxTrail, equals(150));
+        expect(simulation.fadeRate, equals(0.03));
+        expect(simulation.vibrationThrottleTime, equals(0.6));
+        expect(simulation.vibrationEnabled, isTrue);
+      });
+    });
+
+    group('Realistic Colors', () {
+      test('Should toggle realistic colors', () {
+        expect(simulation.useRealisticColors, isFalse);
+
+        simulation.setUseRealisticColors(true);
+        expect(simulation.useRealisticColors, isTrue);
+
+        simulation.setUseRealisticColors(false);
+        expect(simulation.useRealisticColors, isFalse);
+      });
+
+      test('Should apply realistic colors when enabled', () {
+        simulation.setUseRealisticColors(true);
+
+        // Verify stars have temperature-based colors
+        final stars = simulation.bodies.where((b) => !b.isPlanet).toList();
+        for (final star in stars) {
+          expect(star.temperature, greaterThan(0));
+        }
+      });
+    });
+
+    group('Change Counter', () {
+      test('Should track simulation changes', () {
+        final initialCounter = simulation.changeCounter;
+
+        simulation.stepRK4(1.0 / 60.0);
+
+        expect(simulation.changeCounter, greaterThan(initialCounter));
+      });
+
+      test('Should increment counter on merge', () {
+        // Create two bodies very close together
+        simulation.bodies.clear();
+        simulation.bodies.addAll([
+          Body(
+            position: vm.Vector3(0, 0, 0),
+            velocity: vm.Vector3(0, 0, 0),
+            mass: 1.0,
+            radius: 1.0,
+            color: AppColors.basicRed,
+            name: 'Body 1',
+          ),
+          Body(
+            position: vm.Vector3(0.05, 0, 0),
+            velocity: vm.Vector3(0, 0, 0),
+            mass: 1.0,
+            radius: 1.0,
+            color: AppColors.basicBlue,
+            name: 'Body 2',
+          ),
+        ]);
+
+        final initialCounter = simulation.changeCounter;
+        simulation.stepRK4(1.0 / 60.0);
+
+        expect(simulation.changeCounter, greaterThan(initialCounter));
+      });
+
+      test('Should allow manual change marking', () {
+        final initialCounter = simulation.changeCounter;
+
+        simulation.markChanged();
+
+        expect(simulation.changeCounter, equals(initialCounter + 1));
+      });
+    });
+
+    group('Collision Effects Integration', () {
+      test('Should have collision effects service', () {
+        expect(simulation.collisionEffects, isNotNull);
+      });
+
+      test('Should update collision effects', () {
+        // Add some effects
+        final body1 = Body(
+          position: vm.Vector3(0, 0, 0),
+          velocity: vm.Vector3(1, 0, 0),
+          mass: 10.0,
+          radius: 2.0,
+          color: AppColors.basicRed,
+          name: 'Body 1',
+        );
+
+        final body2 = Body(
+          position: vm.Vector3(1, 0, 0),
+          velocity: vm.Vector3(-1, 0, 0),
+          mass: 8.0,
+          radius: 1.5,
+          color: AppColors.basicBlue,
+          name: 'Body 2',
+        );
+
+        simulation.collisionEffects.generateCollisionEffects(
+          body1: body1,
+          body2: body2,
+          collisionPoint: vm.Vector3(0.5, 0, 0),
+        );
+
+        expect(simulation.collisionEffects.debrisParticles, isNotEmpty);
+
+        // Update should process effects
+        simulation.collisionEffects.update(0.016);
+
+        expect(() => simulation.collisionEffects, returnsNormally);
+      });
+    });
+
+    group('Asteroid Belt Systems', () {
+      test('Should have asteroid belt systems', () {
+        expect(simulation.asteroidBelt, isNotNull);
+        expect(simulation.kuiperBelt, isNotNull);
+      });
+
+      test('Should initialize asteroid belts for appropriate scenarios', () {
+        // Reset with asteroid belt scenario
+        final mockL10n = TestUtils.createMockAppLocalizations();
+        simulation.resetWithScenario(ScenarioType.asteroidBelt, l10n: mockL10n);
+
+        // Asteroid belt should have particles
+        expect(simulation.asteroidBelt.particles, isNotEmpty);
+      });
+
+      test('Should clear asteroid belts for other scenarios', () {
+        final mockL10n = TestUtils.createMockAppLocalizations();
+
+        // First set asteroid belt scenario
+        simulation.resetWithScenario(ScenarioType.asteroidBelt, l10n: mockL10n);
+        expect(simulation.asteroidBelt.particles, isNotEmpty);
+
+        // Then switch to different scenario
+        simulation.resetWithScenario(ScenarioType.random, l10n: mockL10n);
+
+        // Belts should be cleared
+        expect(simulation.asteroidBelt.particles, isEmpty);
+        expect(simulation.kuiperBelt.particles, isEmpty);
+      });
+    });
+
+    group('Scenario Management', () {
+      test('Should track current scenario', () {
+        expect(simulation.currentScenario, isNotNull);
+      });
+
+      test('Should switch scenarios', () {
+        final mockL10n = TestUtils.createMockAppLocalizations();
+
+        simulation.resetWithScenario(ScenarioType.solarSystem, l10n: mockL10n);
+        expect(simulation.currentScenario, equals(ScenarioType.solarSystem));
+
+        simulation.resetWithScenario(ScenarioType.binaryStars, l10n: mockL10n);
+        expect(simulation.currentScenario, equals(ScenarioType.binaryStars));
+      });
+
+      test('Should preserve custom settings when requested', () {
+        final mockL10n = TestUtils.createMockAppLocalizations();
+
+        // Set custom gravity well setting
+        for (final body in simulation.bodies) {
+          body.showGravityWell = true;
+        }
+
+        simulation.resetWithScenario(
+          ScenarioType.solarSystem,
+          l10n: mockL10n,
+          preserveCustomSettings: true,
+        );
+
+        // At least some bodies should have gravity wells enabled
+        final hasEnabledWells = simulation.bodies.any(
+          (body) => body.showGravityWell,
+        );
+        expect(hasEnabledWells, isTrue);
+      });
+
+      test('Should update scenario with localization', () {
+        // Create a fresh simulation without l10n
+        final freshSim = physics.Simulation();
+
+        // Reset without l10n initially
+        freshSim.resetWithScenario(ScenarioType.random);
+
+        // Provide localization later
+        final mockL10n = TestUtils.createMockAppLocalizations();
+        freshSim.updateScenarioLocalization(mockL10n);
+
+        // Should have bodies after localization
+        expect(freshSim.bodies, isNotEmpty);
+      });
+    });
+
+    group('Trail Management Edge Cases', () {
+      test('Should handle empty bodies list gracefully', () {
+        simulation.bodies.clear();
+
+        expect(() => simulation.pushTrails(1.0 / 60.0), returnsNormally);
+      });
+
+      test('Should sync trail length with bodies length', () {
+        // Add extra trails
+        simulation.trails.add([]);
+        simulation.trails.add([]);
+
+        expect(simulation.trails.length, greaterThan(simulation.bodies.length));
+
+        simulation.pushTrails(1.0 / 60.0);
+
+        expect(simulation.trails.length, equals(simulation.bodies.length));
+      });
+
+      test('Should add missing trails for new bodies', () {
+        // Add a body without corresponding trail
+        simulation.bodies.add(
+          Body(
+            position: vm.Vector3(50, 0, 0),
+            velocity: vm.Vector3(0, 1, 0),
+            mass: 1.0,
+            radius: 1.0,
+            color: AppColors.basicGreen,
+            name: 'New Body',
+          ),
+        );
+
+        expect(simulation.trails.length, lessThan(simulation.bodies.length));
+
+        simulation.pushTrails(1.0 / 60.0);
+
+        expect(simulation.trails.length, equals(simulation.bodies.length));
+      });
+    });
+
+    group('System Regeneration', () {
+      test('Should regenerate system when bodies are depleted', () {
+        // Reduce to single body
+        while (simulation.bodies.length > 1) {
+          simulation.bodies.removeLast();
+        }
+
+        simulation.stepRK4(1.0 / 60.0);
+
+        // Should regenerate to at least 3 bodies
+        expect(simulation.bodies.length, greaterThanOrEqualTo(3));
+      });
+
+      test('Should regenerate system when no bodies remain', () {
+        simulation.bodies.clear();
+
+        simulation.stepRK4(1.0 / 60.0);
+
+        // Should regenerate system
+        expect(simulation.bodies, isNotEmpty);
+      });
+    });
+
+    group('Temperature and Habitability', () {
+      test('Should update temperatures over time', () {
+        // Update temperatures
+        simulation.updateTemperatures(1.0);
+
+        // Temperature tracking should work
+        expect(() => simulation.updateTemperatures(1.0), returnsNormally);
+      });
+
+      test('Should update habitability over time', () {
+        // Update habitability
+        expect(() => simulation.updateHabitability(1.0), returnsNormally);
+
+        // Run multiple updates
+        for (int i = 0; i < 10; i++) {
+          simulation.updateHabitability(0.1);
+        }
+
+        expect(() => simulation.updateHabitability(0.1), returnsNormally);
+      });
+    });
+
+    group('Merge Flash Management', () {
+      test('Should handle multiple merge flashes', () {
+        for (int i = 0; i < 5; i++) {
+          simulation.mergeFlashes.add(
+            MergeFlash(
+              vm.Vector3(i.toDouble(), 0, 0),
+              AppColors.basicPrimaries[i % AppColors.basicPrimaries.length],
+            ),
+          );
+        }
+
+        expect(simulation.mergeFlashes.length, equals(5));
+
+        simulation.pushTrails(1.0 / 60.0);
+
+        // All flashes should age
+        for (final flash in simulation.mergeFlashes) {
+          expect(flash.age, greaterThan(0));
+        }
+      });
+
+      test('Should remove multiple old flashes at once', () {
+        // Add several old flashes
+        for (int i = 0; i < 10; i++) {
+          final flash = MergeFlash(
+            vm.Vector3(i.toDouble(), 0, 0),
+            AppColors.basicRed,
+          );
+          flash.age = 1.0;
+          simulation.mergeFlashes.add(flash);
+        }
+
+        expect(simulation.mergeFlashes.length, equals(10));
+
+        simulation.pushTrails(1.0 / 60.0);
+
+        expect(simulation.mergeFlashes, isEmpty);
+      });
+    });
+
+    group('RK4 Integration Stability', () {
+      test('Should handle large time steps gracefully', () {
+        expect(() => simulation.stepRK4(1.0), returnsNormally);
+      });
+
+      test('Should maintain body count through multiple steps', () {
+        final initialCount = simulation.bodies.length;
+
+        // Run many steps without collisions
+        simulation.setCollisionRadiusMultiplier(0.001); // Very small
+        for (int i = 0; i < 100; i++) {
+          simulation.stepRK4(1.0 / 60.0);
+        }
+
+        // Body count should remain stable
+        expect(
+          simulation.bodies.length,
+          greaterThanOrEqualTo(initialCount - 1),
+        );
+      });
+
+      test('Should handle negative time step', () {
+        simulation.stepRK4(-1.0 / 60.0);
+
+        // Should not crash, positions may or may not change
+        expect(simulation.bodies.length, greaterThan(0));
+      });
     });
   });
 }

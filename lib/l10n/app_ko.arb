@@ -1061,5 +1061,14 @@
   "errorOperationNotAllowed": "이 로그인 방법은 활성화되지 않았습니다.",
   "errorRequiresRecentLogin": "이 작업을 수행하려면 다시 로그인하세요.",
   "errorNetworkFailed": "네트워크 오류입니다. 연결을 확인하세요.",
-  "errorUnknown": "오류가 발생했습니다: {message}"
+  "errorUnknown": "오류가 발생했습니다: {message}",
+  "collisionEffectsTitle": "충돌 효과",
+  "showCollisionDebris": "파편 입자",
+  "showCollisionDebrisDescription": "물리 기반 궤적을 가진 충돌 충격에서 방출된 입자",
+  "showCollisionShockwaves": "충격파 링",
+  "showCollisionShockwavesDescription": "충돌 지점에서 충격력에 따라 확장되는 에너지 링",
+  "showCollisionEjection": "물질 방출",
+  "showCollisionEjectionDescription": "고에너지 충격 중에 방출되는 물질의 소용돌이 구름",
+  "showCollisionPlasmaJets": "플라즈마 제트",
+  "showCollisionPlasmaJetsDescription": "거대 별 충돌에서 나오는 방향성 초고온 흐름 (실험적)"
 }

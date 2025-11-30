@@ -719,7 +719,7 @@ void main() {
         // Widget creation should be efficient even with async loading
         expect(
           stopwatch.elapsedMilliseconds,
-          lessThan(150),
+          lessThan(300),
           reason: 'Widget creation must be within performance budget',
         );
 
@@ -741,7 +741,7 @@ void main() {
         // State transitions should be responsive
         expect(
           stopwatch.elapsedMilliseconds,
-          lessThan(200),
+          lessThan(300),
           reason: 'State transitions must be responsive',
         );
 

@@ -1061,5 +1061,14 @@
   "errorOperationNotAllowed": "Cette méthode de connexion n'est pas activée.",
   "errorRequiresRecentLogin": "Veuillez vous reconnecter pour effectuer cette action.",
   "errorNetworkFailed": "Erreur réseau. Veuillez vérifier votre connexion.",
-  "errorUnknown": "Une erreur s'est produite : {message}"
+  "errorUnknown": "Une erreur s'est produite : {message}",
+  "collisionEffectsTitle": "Effets de Collision",
+  "showCollisionDebris": "Particules de Débris",
+  "showCollisionDebrisDescription": "Particules éjectées des impacts de collision avec trajectoires basées sur la physique",
+  "showCollisionShockwaves": "Ondes de Choc",
+  "showCollisionShockwavesDescription": "Anneaux d'énergie en expansion depuis les points de collision proportionnels à la force d'impact",
+  "showCollisionEjection": "Éjection de Matière",
+  "showCollisionEjectionDescription": "Nuages ondulants de matière expulsée lors d'impacts à haute énergie",
+  "showCollisionPlasmaJets": "Jets de Plasma",
+  "showCollisionPlasmaJetsDescription": "Flux directionnels surchauffés issus de collisions d'étoiles massives (expérimental)"
 }
