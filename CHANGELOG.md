@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Error handling and state management tests
     - Platform support verification
 
-## [1.6.0] - 2025-11-26
+## [1.6.0] - 2025-06-26
 
 ### Added
 - **Collision Effects System**: Comprehensive particle-based visual effects for celestial body collisions
