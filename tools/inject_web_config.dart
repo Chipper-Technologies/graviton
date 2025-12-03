@@ -66,12 +66,28 @@ void main(List<String> args) {
       
       // Store original console methods
       const originalError = console.error;
+      const originalWarn = console.warn;
       
       // Suppress all standard logging
       console.log = function() {};
       console.debug = function() {};
       console.info = function() {};
-      console.warn = function() {};
+      
+      // Filter console.warn to suppress browser violations/interventions
+      console.warn = function(...args) {
+        const message = args.join(' ');
+        
+        // Filter out performance violations and interventions
+        if (message.includes('Violation') ||
+            message.includes('Intervention') ||
+            message.includes('requestAnimationFrame') ||
+            message.includes('navigator.vibrate')) {
+          return;
+        }
+        
+        // Pass through other warnings
+        originalWarn.apply(console, args);
+      };
       
       // Filter console.error to suppress known non-critical messages
       console.error = function(...args) {
