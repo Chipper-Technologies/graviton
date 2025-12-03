@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:graviton/enums/auth_provider_type.dart';
 import 'package:graviton/enums/user_avatar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// User profile data model
 ///
@@ -46,11 +48,11 @@ class UserProfile {
   });
 
   /// Create a profile from Firebase User data
-  factory UserProfile.fromFirebaseUser(
+  static Future<UserProfile> fromFirebaseUser(
     dynamic user, {
     UserAvatar? avatar,
     String? displayNameOverride,
-  }) {
+  }) async {
     return UserProfile(
       uid: user.uid as String,
       email: user.email as String?,
@@ -58,7 +60,7 @@ class UserProfile {
       photoUrl: user.photoURL as String?,
       avatar: avatar,
       isAnonymous: user.isAnonymous as bool,
-      authProvider: _getAuthProvider(user),
+      authProvider: await _getAuthProvider(user),
       createdAt: user.metadata?.creationTime,
       lastSignInAt: user.metadata?.lastSignInTime,
     );
@@ -128,12 +130,34 @@ class UserProfile {
   }
 
   /// Determine primary auth provider from Firebase User
-  static AuthProviderType? _getAuthProvider(dynamic user) {
+  ///
+  /// This method now prioritizes the last-used provider stored in SharedPreferences
+  /// over simply taking the first provider from Firebase's providerData array.
+  /// This ensures the correct provider is shown when a user has multiple linked providers.
+  static Future<AuthProviderType?> _getAuthProvider(dynamic user) async {
+    // For anonymous users, return anonymous type immediately
+    if (user.isAnonymous as bool) {
+      return AuthProviderType.anonymous;
+    }
+
+    // Try to get the last used provider from SharedPreferences
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final lastProviderId = prefs.getString('last_auth_provider_${user.uid}');
+      if (lastProviderId != null) {
+        final savedProvider = AuthProviderType.fromProviderId(lastProviderId);
+        if (savedProvider != null) {
+          return savedProvider;
+        }
+        // If saved provider ID is invalid, fall through to use first provider
+      }
+    } catch (e) {
+      debugPrint('Error reading last auth provider: $e');
+    }
+
+    // Fallback to first provider in list if we don't have stored preference
     final providerData = user.providerData as List<dynamic>?;
     if (providerData == null || providerData.isEmpty) {
-      if (user.isAnonymous as bool) {
-        return AuthProviderType.anonymous;
-      }
       return null;
     }
 

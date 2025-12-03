@@ -12,8 +12,9 @@ import 'package:graviton/models/user_profile.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/play_integrity_backend_service.dart';
 import 'package:graviton/services/play_integrity_service.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:graviton/utils/platform_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 /// Service for managing Firebase Authentication
 ///
@@ -61,6 +62,9 @@ class AuthService {
 
   /// Preference key for storing accepted terms version
   static const String _termsVersionKey = 'terms_version_accepted';
+
+  /// Preference key prefix for storing last used auth provider (per user)
+  static const String _lastAuthProviderKeyPrefix = 'last_auth_provider_';
 
   /// Initialize authentication service
   Future<void> initialize() async {
@@ -126,7 +130,7 @@ class AuthService {
       displayNameOverride = prefs.getString(_anonymousDisplayNameKey);
     }
 
-    return UserProfile.fromFirebaseUser(
+    return await UserProfile.fromFirebaseUser(
       user,
       avatar: avatar,
       displayNameOverride: displayNameOverride,
@@ -151,7 +155,7 @@ class AuthService {
         displayNameOverride = prefs.getString(_anonymousDisplayNameKey);
       }
 
-      return UserProfile.fromFirebaseUser(
+      return await UserProfile.fromFirebaseUser(
         user,
         avatar: avatar,
         displayNameOverride: displayNameOverride,
@@ -197,6 +201,17 @@ class AuthService {
   /// Clear failed attempts after successful sign-in
   void _clearFailedAttempts(String identifier) {
     _failedSignInAttempts.remove(identifier);
+  }
+
+  /// Save the last used auth provider for the current user
+  /// This is used to display the correct provider badge when user has multiple linked providers
+  Future<void> _saveLastUsedProvider(String uid, String providerId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('$_lastAuthProviderKeyPrefix$uid', providerId);
+    } catch (e) {
+      debugPrint('Error saving last auth provider: $e');
+    }
   }
 
   /// Check if user's email is verified before allowing sensitive operations
@@ -252,8 +267,17 @@ class AuthService {
         parameters: {'method': AuthProviderType.emailPassword.displayName},
       );
 
+      // Save the provider used for this sign-in
+      await _saveLastUsedProvider(
+        credential!.user!.uid,
+        AuthProviderType.emailPassword.providerId,
+      );
+
       final avatar = await _loadSavedAvatar();
-      return UserProfile.fromFirebaseUser(credential!.user!, avatar: avatar);
+      return await UserProfile.fromFirebaseUser(
+        credential.user!,
+        avatar: avatar,
+      );
     } on FirebaseAuthException catch (e, stackTrace) {
       // Record failed attempt for rate limiting
       if (e.code == 'wrong-password' || e.code == 'user-not-found') {
@@ -314,7 +338,13 @@ class AuthService {
         parameters: {'method': AuthProviderType.emailPassword.displayName},
       );
 
-      return UserProfile.fromFirebaseUser(
+      // Save the provider used for this sign-in
+      await _saveLastUsedProvider(
+        (updatedUser ?? credential.user!).uid,
+        AuthProviderType.emailPassword.providerId,
+      );
+
+      return await UserProfile.fromFirebaseUser(
         updatedUser ?? credential.user!,
         avatar: avatar,
       );
@@ -387,8 +417,14 @@ class AuthService {
           );
         }
 
+        // Save the provider used for this sign-in
+        await _saveLastUsedProvider(
+          userCredential.user!.uid,
+          AuthProviderType.google.providerId,
+        );
+
         final avatar = await _loadSavedAvatar();
-        return UserProfile.fromFirebaseUser(
+        return await UserProfile.fromFirebaseUser(
           userCredential.user!,
           avatar: avatar,
         );
@@ -447,8 +483,17 @@ class AuthService {
         );
       }
 
+      // Save the provider used for this sign-in
+      await _saveLastUsedProvider(
+        userCredential.user!.uid,
+        AuthProviderType.google.providerId,
+      );
+
       final avatar = await _loadSavedAvatar();
-      return UserProfile.fromFirebaseUser(userCredential.user!, avatar: avatar);
+      return await UserProfile.fromFirebaseUser(
+        userCredential.user!,
+        avatar: avatar,
+      );
     } on PlatformException catch (e) {
       // Handle user cancellation or other platform errors
       if (e.code == 'sign_in_canceled' ||
@@ -499,7 +544,8 @@ class AuthService {
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
-        webAuthenticationOptions: kIsWeb
+        nonce: null, // Firebase handles nonce generation
+        webAuthenticationOptions: (kIsWeb || PlatformUtils.isAndroid)
             ? WebAuthenticationOptions(
                 clientId: AppConfig.appleClientId,
                 redirectUri: Uri.parse(AppConfig.appleRedirectUri),
@@ -551,8 +597,11 @@ class AuthService {
         );
       }
 
+      // Save the provider used for this sign-in
+      await _saveLastUsedProvider(user.uid, AuthProviderType.apple.providerId);
+
       final avatar = await _loadSavedAvatar();
-      return UserProfile.fromFirebaseUser(user, avatar: avatar);
+      return await UserProfile.fromFirebaseUser(user, avatar: avatar);
     } on SignInWithAppleAuthorizationException catch (e, stackTrace) {
       // User canceled the sign-in flow (closed Custom Tab) - this is normal, not an error
       if (e.code == AuthorizationErrorCode.canceled) {
@@ -638,8 +687,17 @@ class AuthService {
         );
       }
 
+      // Save the provider used for this sign-in
+      await _saveLastUsedProvider(
+        userCredential.user!.uid,
+        AuthProviderType.github.providerId,
+      );
+
       final avatar = await _loadSavedAvatar();
-      return UserProfile.fromFirebaseUser(userCredential.user!, avatar: avatar);
+      return await UserProfile.fromFirebaseUser(
+        userCredential.user!,
+        avatar: avatar,
+      );
     } on FirebaseAuthException catch (e, stackTrace) {
       debugPrint('GitHub sign in error: ${e.code} - ${e.message}');
       await FirebaseService.instance.crashlytics?.recordError(
@@ -681,7 +739,16 @@ class AuthService {
         parameters: {'user_id': credential.user!.uid},
       );
 
-      return UserProfile.fromFirebaseUser(credential.user!, avatar: avatar);
+      // Save the provider used for this sign-in
+      await _saveLastUsedProvider(
+        credential.user!.uid,
+        AuthProviderType.anonymous.providerId,
+      );
+
+      return await UserProfile.fromFirebaseUser(
+        credential.user!,
+        avatar: avatar,
+      );
     } on FirebaseAuthException catch (e, stackTrace) {
       debugPrint('Anonymous sign in error: ${e.code} - ${e.message}');
       await FirebaseService.instance.crashlytics?.recordError(
@@ -724,8 +791,17 @@ class AuthService {
         parameters: {'method': AuthProviderType.emailPassword.displayName},
       );
 
+      // Save the provider used for this sign-in
+      await _saveLastUsedProvider(
+        userCredential.user!.uid,
+        AuthProviderType.emailPassword.providerId,
+      );
+
       final avatar = await _loadSavedAvatar();
-      return UserProfile.fromFirebaseUser(userCredential.user!, avatar: avatar);
+      return await UserProfile.fromFirebaseUser(
+        userCredential.user!,
+        avatar: avatar,
+      );
     } on FirebaseAuthException catch (e, stackTrace) {
       debugPrint('Link account error: ${e.code} - ${e.message}');
       await FirebaseService.instance.crashlytics?.recordError(

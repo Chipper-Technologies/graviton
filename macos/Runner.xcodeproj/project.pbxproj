@@ -776,14 +776,17 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = MM85QY3NY5;
+				GID_CLIENT_ID = "645841860075-osscdci4m1j65ku3bdvrb678stdj65p8.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				PRODUCT_BUNDLE_IDENTIFIER = io.chipper.graviton.dev;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Graviton macOS DEV";
+				REVERSED_CLIENT_ID = "com.googleusercontent.apps.645841860075-osscdci4m1j65ku3bdvrb678stdj65p8";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Profile;
@@ -914,14 +917,17 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = MM85QY3NY5;
+				GID_CLIENT_ID = "645841860075-osscdci4m1j65ku3bdvrb678stdj65p8.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				PRODUCT_BUNDLE_IDENTIFIER = io.chipper.graviton.dev;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Graviton macOS DEV";
+				REVERSED_CLIENT_ID = "com.googleusercontent.apps.645841860075-osscdci4m1j65ku3bdvrb678stdj65p8";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -940,14 +946,17 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = MM85QY3NY5;
+				GID_CLIENT_ID = "669764555431-a265lekus21k9j2p892iktpme3rru8kr.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				PRODUCT_BUNDLE_IDENTIFIER = io.chipper.graviton.dev;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Graviton macOS DEV";
+				REVERSED_CLIENT_ID = "com.googleusercontent.apps.669764555431-a265lekus21k9j2p892iktpme3rru8kr";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -1032,16 +1041,22 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = MM85QY3NY5;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = MM85QY3NY5;
+				GID_CLIENT_ID = "645841860075-osscdci4m1j65ku3bdvrb678stdj65p8.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				PRODUCT_BUNDLE_IDENTIFIER = io.chipper.graviton.dev;
 				PROVISIONING_PROFILE_SPECIFIER = "Graviton macOS DEV";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Graviton macOS DEV";
+				REVERSED_CLIENT_ID = "com.googleusercontent.apps.645841860075-osscdci4m1j65ku3bdvrb678stdj65p8";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -1127,10 +1142,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Release.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "3rd Party Mac Developer Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = MM85QY3NY5;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = MM85QY3NY5;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GID_CLIENT_ID = "669764555431-a265lekus21k9j2p892iktpme3rru8kr.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1138,6 +1156,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				PROVISIONING_PROFILE_SPECIFIER = "Graviton macOS";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Graviton macOS";
+				REVERSED_CLIENT_ID = "com.googleusercontent.apps.669764555431-a265lekus21k9j2p892iktpme3rru8kr";
 				SWIFT_VERSION = 5.0;
 			};
 			name = "Release-dev";
@@ -1222,10 +1242,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Release.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "3rd Party Mac Developer Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = MM85QY3NY5;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = MM85QY3NY5;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GID_CLIENT_ID = "669764555431-a265lekus21k9j2p892iktpme3rru8kr.apps.googleusercontent.com";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1233,6 +1256,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				PROVISIONING_PROFILE_SPECIFIER = "Graviton macOS";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Graviton macOS";
+				REVERSED_CLIENT_ID = "com.googleusercontent.apps.669764555431-a265lekus21k9j2p892iktpme3rru8kr";
 				SWIFT_VERSION = 5.0;
 			};
 			name = "Release-prod";

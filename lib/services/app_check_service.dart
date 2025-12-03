@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graviton/services/remote_config_service.dart';
+import 'package:graviton/utils/platform_utils.dart';
 
 /// Service for managing Firebase App Check
 ///
@@ -76,13 +75,13 @@ class AppCheckService {
         // Production mode - use platform-specific providers
         debugPrint('AppCheckService: Initializing in PRODUCTION mode');
 
-        if (Platform.isAndroid) {
+        if (PlatformUtils.isAndroid) {
           // Android uses Play Integrity API
           await FirebaseAppCheck.instance.activate(
             providerAndroid: AndroidPlayIntegrityProvider(),
           );
           debugPrint('AppCheckService: Android Play Integrity activated');
-        } else if (Platform.isIOS || Platform.isMacOS) {
+        } else if (PlatformUtils.isIOS || PlatformUtils.isMacOS) {
           // iOS/macOS uses DeviceCheck API
           await FirebaseAppCheck.instance.activate(
             providerApple: AppleDeviceCheckProvider(),
@@ -171,7 +170,10 @@ class AppCheckService {
   ///
   /// Returns true if the platform supports App Check.
   bool isPlatformSupported() {
-    return Platform.isAndroid || Platform.isIOS || Platform.isMacOS || kIsWeb;
+    return PlatformUtils.isAndroid ||
+        PlatformUtils.isIOS ||
+        PlatformUtils.isMacOS ||
+        kIsWeb;
   }
 
   /// Reset the service (primarily for testing)

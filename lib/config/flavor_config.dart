@@ -118,7 +118,7 @@ class AppConfig {
   static bool get enableScreenshotMode =>
       flavor.getFlavorValue(dev: true, prod: false);
 
-  // Apple Sign-In configuration (loaded from config JSON via --dart-define-from-file)
+  // Apple Sign-In configuration
   static String get appleClientId =>
       const String.fromEnvironment('apple.clientId');
 

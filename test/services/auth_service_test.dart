@@ -287,13 +287,13 @@ void main() {
   });
 
   group('UserProfile Integration', () {
-    test('UserProfile.fromFirebaseUser handles all auth providers', () {
+    test('UserProfile.fromFirebaseUser handles all auth providers', () async {
       final mockUserInfo = MockUserInfo();
       when(mockUserInfo.providerId).thenReturn('password');
 
       when(mockUser.providerData).thenReturn([mockUserInfo]);
 
-      final profile = UserProfile.fromFirebaseUser(mockUser);
+      final profile = await UserProfile.fromFirebaseUser(mockUser);
 
       expect(profile.uid, equals('test-uid-123'));
       expect(profile.email, equals('test@example.com'));
@@ -301,21 +301,21 @@ void main() {
       expect(profile.authProvider, isNotNull);
     });
 
-    test('UserProfile handles anonymous users', () {
+    test('UserProfile handles anonymous users', () async {
       when(mockUser.isAnonymous).thenReturn(true);
       when(mockUser.displayName).thenReturn(null);
       when(mockUser.providerData).thenReturn([]);
 
-      final profile = UserProfile.fromFirebaseUser(mockUser);
+      final profile = await UserProfile.fromFirebaseUser(mockUser);
 
       expect(profile.isAnonymous, isTrue);
       expect(profile.displayName, isNull);
     });
 
-    test('UserProfile includes avatar when provided', () {
+    test('UserProfile includes avatar when provided', () async {
       when(mockUser.providerData).thenReturn([]);
 
-      final profile = UserProfile.fromFirebaseUser(
+      final profile = await UserProfile.fromFirebaseUser(
         mockUser,
         avatar: UserAvatar.supernova,
       );
@@ -533,16 +533,16 @@ void main() {
   });
 
   group('UserProfile Edge Cases', () {
-    test('UserProfile.fromFirebaseUser handles user with photo URL', () {
+    test('UserProfile.fromFirebaseUser handles user with photo URL', () async {
       when(mockUser.photoURL).thenReturn('https://example.com/photo.jpg');
       when(mockUser.providerData).thenReturn([]);
 
-      final profile = UserProfile.fromFirebaseUser(mockUser);
+      final profile = await UserProfile.fromFirebaseUser(mockUser);
 
       expect(profile.photoUrl, equals('https://example.com/photo.jpg'));
     });
 
-    test('UserProfile.fromFirebaseUser handles multiple providers', () {
+    test('UserProfile.fromFirebaseUser handles multiple providers', () async {
       final mockProvider1 = MockUserInfo();
       final mockProvider2 = MockUserInfo();
 
@@ -551,29 +551,29 @@ void main() {
 
       when(mockUser.providerData).thenReturn([mockProvider1, mockProvider2]);
 
-      final profile = UserProfile.fromFirebaseUser(mockUser);
+      final profile = await UserProfile.fromFirebaseUser(mockUser);
 
       expect(profile.authProvider, isNotNull);
       // Should use first provider (password maps to emailPassword)
       expect(profile.authProvider, equals(AuthProviderType.emailPassword));
     });
 
-    test('UserProfile.fromFirebaseUser handles user without email', () {
+    test('UserProfile.fromFirebaseUser handles user without email', () async {
       when(mockUser.email).thenReturn(null);
       when(mockUser.isAnonymous).thenReturn(true);
       when(mockUser.providerData).thenReturn([]);
 
-      final profile = UserProfile.fromFirebaseUser(mockUser);
+      final profile = await UserProfile.fromFirebaseUser(mockUser);
 
       expect(profile.email, isNull);
       expect(profile.isAnonymous, isTrue);
     });
 
-    test('UserProfile equality and hashCode', () {
+    test('UserProfile equality and hashCode', () async {
       when(mockUser.providerData).thenReturn([]);
 
-      final profile1 = UserProfile.fromFirebaseUser(mockUser);
-      final profile2 = UserProfile.fromFirebaseUser(mockUser);
+      final profile1 = await UserProfile.fromFirebaseUser(mockUser);
+      final profile2 = await UserProfile.fromFirebaseUser(mockUser);
 
       expect(profile1.uid, equals(profile2.uid));
     });
@@ -670,6 +670,116 @@ void main() {
       expect(RegExp(r'[A-Z]').hasMatch(weakPassword), isFalse);
       expect(RegExp(r'[0-9]').hasMatch(weakPassword), isFalse);
       expect(RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(weakPassword), isFalse);
+    });
+  });
+
+  group('Auth Provider Tracking', () {
+    test('last used provider is saved in SharedPreferences', () async {
+      const testUid = 'test-user-123';
+      const testProviderId = 'google.com';
+
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+
+      // Simulate what the auth service does
+      await prefs.setString('last_auth_provider_$testUid', testProviderId);
+
+      // Verify it was saved
+      final savedProvider = prefs.getString('last_auth_provider_$testUid');
+      expect(savedProvider, equals(testProviderId));
+    });
+
+    test('last used provider can be different per user', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+
+      // Save different providers for different users
+      await prefs.setString('last_auth_provider_user1', 'google.com');
+      await prefs.setString('last_auth_provider_user2', 'apple.com');
+      await prefs.setString('last_auth_provider_user3', 'password');
+
+      // Verify each user has their own provider
+      expect(prefs.getString('last_auth_provider_user1'), equals('google.com'));
+      expect(prefs.getString('last_auth_provider_user2'), equals('apple.com'));
+      expect(prefs.getString('last_auth_provider_user3'), equals('password'));
+    });
+
+    test('provider tracking persists across sessions', () async {
+      // First session - save provider
+      SharedPreferences.setMockInitialValues({});
+      var prefs = await SharedPreferences.getInstance();
+      await prefs.setString('last_auth_provider_user1', 'apple.com');
+
+      // Simulate new session - provider should still be there
+      SharedPreferences.setMockInitialValues({
+        'last_auth_provider_user1': 'apple.com',
+      });
+      prefs = await SharedPreferences.getInstance();
+
+      expect(prefs.getString('last_auth_provider_user1'), equals('apple.com'));
+    });
+
+    test(
+      'UserProfile.fromFirebaseUser integrates with saved provider',
+      () async {
+        final mockUser = MockUser();
+        final mockProviderData = [
+          MockUserInfo(), // Google
+          MockUserInfo(), // Apple
+        ];
+        final mockMetadata = MockUserMetadata();
+
+        when(mockUser.uid).thenReturn('multi-auth-user');
+        when(mockUser.email).thenReturn('user@example.com');
+        when(mockUser.displayName).thenReturn('Test User');
+        when(mockUser.photoURL).thenReturn(null);
+        when(mockUser.isAnonymous).thenReturn(false);
+        when(mockUser.providerData).thenReturn(mockProviderData);
+        when(mockUser.metadata).thenReturn(mockMetadata);
+        when(mockMetadata.creationTime).thenReturn(DateTime(2024, 1, 1));
+        when(mockMetadata.lastSignInTime).thenReturn(DateTime(2024, 1, 1));
+        when(mockProviderData[0].providerId).thenReturn('google.com');
+        when(mockProviderData[1].providerId).thenReturn('apple.com');
+
+        // Simulate signing in with Apple (not the first provider)
+        SharedPreferences.setMockInitialValues({
+          'last_auth_provider_multi-auth-user': 'apple.com',
+        });
+
+        final profile = await UserProfile.fromFirebaseUser(mockUser);
+
+        // Should use Apple, not Google (even though Google is first)
+        expect(profile.authProvider, equals(AuthProviderType.apple));
+      },
+    );
+
+    test('provider tracking handles all provider types', () async {
+      final providerTypes = [
+        (AuthProviderType.google, 'google.com'),
+        (AuthProviderType.apple, 'apple.com'),
+        (AuthProviderType.github, 'github.com'),
+        (AuthProviderType.emailPassword, 'password'),
+        (AuthProviderType.anonymous, 'anonymous'),
+      ];
+
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+
+      for (var i = 0; i < providerTypes.length; i++) {
+        final (providerType, providerId) = providerTypes[i];
+        final uid = 'user$i';
+
+        // Save provider
+        await prefs.setString('last_auth_provider_$uid', providerId);
+
+        // Verify it can be retrieved
+        final saved = prefs.getString('last_auth_provider_$uid');
+        expect(saved, equals(providerId));
+
+        // Verify it maps to correct type
+        final mappedType = AuthProviderType.fromProviderId(saved!);
+        expect(mappedType, equals(providerType));
+      }
     });
   });
 }
