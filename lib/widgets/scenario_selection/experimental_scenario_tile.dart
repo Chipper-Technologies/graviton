@@ -58,87 +58,88 @@ class ExperimentalScenarioTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Icon and difficulty indicator
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(AppTypography.spacingSmall),
-                    decoration: BoxDecoration(
-                      color: experiment.color.withValues(
-                        alpha: AppTypography.opacityFaint,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        AppTypography.radiusSmall,
-                      ),
-                    ),
-                    child: Icon(
-                      experiment.icon,
-                      color: experiment.color,
-                      size: AppTypography.iconSizeXXLarge,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppTypography.spacingSmall,
-                      vertical: AppTypography.spacingXSmall,
-                    ),
-                    decoration: BoxDecoration(
-                      color: _getDifficultyColor(
-                        localizations,
-                      ).withValues(alpha: AppTypography.opacityFaint),
-                      borderRadius: BorderRadius.circular(
-                        AppTypography.radiusSmall,
-                      ),
-                    ),
-                    child: Text(
-                      experiment.difficulty(localizations).toUpperCase(),
-                      style: TextStyle(
-                        fontSize: AppTypography.fontSizeSmall,
-                        fontWeight: FontWeight.bold,
-                        color: _getDifficultyColor(localizations),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: AppTypography.spacingMedium),
-
-              // Title
-              Text(
-                experiment.name(localizations),
-                style: TextStyle(
-                  fontSize: AppTypography.fontSizeLarge,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.uiWhite,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-
-              SizedBox(height: AppTypography.spacingXSmall),
-
-              // Description
-              Text(
-                experiment.description(localizations),
-                style: TextStyle(
-                  fontSize: AppTypography.fontSizeSmall,
-                  color: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityHigh,
-                  ),
-                  height: 1.3,
-                ),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-
-              SizedBox(height: AppTypography.spacingMedium),
-
-              // Duration and tags
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
+                  // Icon and difficulty indicator
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(AppTypography.spacingSmall),
+                        decoration: BoxDecoration(
+                          color: experiment.color.withValues(
+                            alpha: AppTypography.opacityFaint,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            AppTypography.radiusSmall,
+                          ),
+                        ),
+                        child: Icon(
+                          experiment.icon,
+                          color: experiment.color,
+                          size: AppTypography.iconSizeXXLarge,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppTypography.spacingSmall,
+                          vertical: AppTypography.spacingXSmall,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _getDifficultyColor(
+                            localizations,
+                          ).withValues(alpha: AppTypography.opacityFaint),
+                          borderRadius: BorderRadius.circular(
+                            AppTypography.radiusSmall,
+                          ),
+                        ),
+                        child: Text(
+                          experiment.difficulty(localizations).toUpperCase(),
+                          style: TextStyle(
+                            fontSize: AppTypography.fontSizeSmall,
+                            fontWeight: FontWeight.bold,
+                            color: _getDifficultyColor(localizations),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: AppTypography.spacingSmall),
+
+                  // Title
+                  Text(
+                    experiment.name(localizations),
+                    style: TextStyle(
+                      fontSize: AppTypography.fontSizeLarge,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.uiWhite,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+
+                  SizedBox(height: AppTypography.spacingXSmall),
+
+                  // Description
+                  Text(
+                    experiment.description(localizations),
+                    style: TextStyle(
+                      fontSize: AppTypography.fontSizeSmall,
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityHigh,
+                      ),
+                      height: 1.2,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+
+                  SizedBox(height: AppTypography.spacingSmall),
+
+                  // Duration
                   Row(
                     children: [
                       Icon(
@@ -160,37 +161,6 @@ class ExperimentalScenarioTile extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (experiment.tags.isNotEmpty) ...[
-                    SizedBox(height: AppTypography.spacingXSmall),
-                    Wrap(
-                      spacing: AppTypography.spacingXSmall,
-                      children: experiment.tags.take(2).map((tag) {
-                        return Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppTypography.spacingSmall,
-                            vertical: 2.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.backgroundBlack.withValues(
-                              alpha: AppTypography.opacityHigh,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              AppTypography.radiusSmall,
-                            ),
-                          ),
-                          child: Text(
-                            tag,
-                            style: TextStyle(
-                              fontSize: AppTypography.fontSizeSmall - 1,
-                              color: AppColors.uiWhite.withValues(
-                                alpha: AppTypography.opacityMedium,
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
                 ],
               ),
             ],

@@ -373,5 +373,27 @@ void main() {
         ); // Prevents jitter
       });
     });
+
+    group('Runtime instantiation', () {
+      test('Can create instance at runtime (non-const)', () {
+        // This ensures the constructor is called at runtime, not compile time
+        // which is necessary for coverage tracking
+        final params = ScenarioCameraParameters(
+          safetyMargin: 1.5,
+          minDistance: 10.0,
+          maxDistance: 1000.0,
+          pitchSensitivity: 0.5,
+          targetLockFrames: 60,
+          orbitSpeed: 0.1,
+        );
+
+        expect(params.safetyMargin, equals(1.5));
+        expect(params.minDistance, equals(10.0));
+        expect(params.maxDistance, equals(1000.0));
+        expect(params.pitchSensitivity, equals(0.5));
+        expect(params.targetLockFrames, equals(60));
+        expect(params.orbitSpeed, equals(0.1));
+      });
+    });
   });
 }

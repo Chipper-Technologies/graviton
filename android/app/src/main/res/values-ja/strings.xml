@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Graviton</string>
+    
+    <!-- Play Integrity Error Messages -->
+    <string name="integrity_invalid_argument">ノンスが必要です</string>
+    <string name="integrity_security_error">デバイスのセキュリティ要件が満たされていません</string>
+    <string name="integrity_initialization_error">Play Integrityサービスが利用できません</string>
+    <string name="integrity_unknown_error">予期しないエラーが発生しました</string>
+    <string name="integrity_network_error">ネットワークエラーが発生しました</string>
+    <string name="integrity_failed">デバイスの整合性チェックに失敗しました</string>
+    <string name="integrity_service_unavailable">Play Integrityサービスが利用できません</string>
+    <string name="integrity_rate_limited">リクエストが多すぎます。後でもう一度お試しください</string>
+    <string name="integrity_token_request_failed">整合性トークンのリクエストに失敗しました</string>
+</resources>

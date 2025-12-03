@@ -159,7 +159,7 @@ If you have any questions, concerns, or requests regarding this Privacy Policy o
 
 **Chipper Technologies**
 
-Email: privacy@chippertechnology.com
+Email: privacy@chippertechnologies.com
 
 Subject Line: Graviton Privacy Policy Inquiry
 

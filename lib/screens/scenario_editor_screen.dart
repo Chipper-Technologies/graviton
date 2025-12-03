@@ -23,6 +23,7 @@ import 'package:graviton/services/scenario_serialization_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart' as app_colors;
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/body_type_ranges.dart';
 import 'package:graviton/utils/number_utils.dart';
@@ -68,7 +69,14 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
 
   bool _hasUnsavedChanges = false;
   bool _showFAB = true; // Show FAB by default on Setup tab (index 0)
+  bool _isBodyBottomSheetOpen = false; // Track when body details sheet is open
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // Track original scenario name for deletion on rename
+  String? _originalScenarioName;
+
+  // Track if scenario was saved (to notify parent on pop)
+  bool _wasScenarioSaved = false;
 
   // Auto-save mechanism
   Timer? _autoSaveTimer;
@@ -125,6 +133,9 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
       _physics = scenario.physics;
       _particleSystems = scenario.particleSystems;
       _objectives = scenario.objectives;
+
+      // Store original name for deletion if renamed
+      _originalScenarioName = scenario.metadata.name;
     } else {
       // Create new scenario with empty bodies list
       _bodies = <Body>[];
@@ -179,9 +190,12 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return PopScope(
-      canPop: !_hasUnsavedChanges,
+      canPop: false, // Always handle pop ourselves to return proper result
       onPopInvokedWithResult: (didPop, result) async {
-        if (!didPop && _hasUnsavedChanges) {
+        if (didPop) return; // Should never happen since canPop is false
+
+        if (_hasUnsavedChanges) {
+          // Show dialog if there are unsaved changes
           final shouldPop = await _showUnsavedChangesDialog(context, l10n);
           if (shouldPop && context.mounted) {
             // Log analytics for scenario creation/editing cancellation
@@ -195,20 +209,24 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
                 'body_count': _bodies.length,
               },
             );
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(_wasScenarioSaved);
           }
-        } else if (didPop) {
-          // Log normal exit (no unsaved changes)
-          FirebaseService.instance.logUIEventWithEnums(
-            widget.isEditing
-                ? UIAction.scenarioEditingCanceled
-                : UIAction.scenarioCreationCanceled,
-            element: UIElement.scenarioEditor,
-            additionalParams: {
-              'had_unsaved_changes': 'false',
-              'body_count': _bodies.length,
-            },
-          );
+        } else {
+          // No unsaved changes - pop immediately with saved status
+          if (context.mounted) {
+            // Log normal exit (no unsaved changes)
+            FirebaseService.instance.logUIEventWithEnums(
+              widget.isEditing
+                  ? UIAction.scenarioEditingCanceled
+                  : UIAction.scenarioCreationCanceled,
+              element: UIElement.scenarioEditor,
+              additionalParams: {
+                'had_unsaved_changes': 'false',
+                'body_count': _bodies.length,
+              },
+            );
+            Navigator.of(context).pop(_wasScenarioSaved);
+          }
         }
       },
       child: Scaffold(
@@ -322,7 +340,7 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
             ),
           ),
         ),
-        floatingActionButton: _showFAB
+        floatingActionButton: _showFAB && !_isBodyBottomSheetOpen
             ? HapticFloatingActionButton.extended(
                 onPressed: _addNewBody,
                 backgroundColor: AppColors.primaryColor,
@@ -344,56 +362,63 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
   Widget _buildPreviewTab(BuildContext context, AppLocalizations l10n) {
     return SingleChildScrollView(
       padding: EdgeInsets.all(AppTypography.spacingLarge),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Scenario info container (body tile style)
-          _buildScenarioInfoTile(l10n),
-
-          SizedBox(height: AppTypography.spacingSmall),
-
-          // Bodies section divider
-          SectionDivider.labeled(l10n.bodiesLabel),
-
-          SizedBox(height: AppTypography.spacingLarge),
-
-          // Bodies list using common widget
-          if (_bodies.isEmpty)
-            _buildEmptyState(
-              icon: Icons.add_circle_outline,
-              message: l10n.noBodiesAdded,
-              submessage: l10n.addBodiesInSetupTab,
-            )
-          else
-            _buildBodiesGrid(),
-
-          SizedBox(height: AppTypography.spacingLarge),
-
-          // Physics section divider
-          SectionDivider.labeled(l10n.physicsSection),
-
-          SizedBox(height: AppTypography.spacingLarge),
-
-          // Physics summary (simplified)
-          _buildSimplePhysicsPreview(l10n),
-
-          SizedBox(height: AppTypography.spacingXLarge),
-
-          // Actions section divider
-          SectionDivider.plain(),
-
-          SizedBox(height: AppTypography.spacingLarge),
-
-          // Test button only
-          SizedBox(
-            width: double.infinity,
-            child: HapticButton.primary(
-              text: l10n.testScenarioButton,
-              onPressed: () => _testScenario(context, l10n),
-              icon: Icons.play_arrow,
-            ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: AppConstraints.contentMaxWidth,
           ),
-        ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Scenario info container (body tile style)
+              _buildScenarioInfoTile(l10n),
+
+              SizedBox(height: AppTypography.spacingSmall),
+
+              // Bodies section divider
+              SectionDivider.labeled(l10n.bodiesLabel),
+
+              SizedBox(height: AppTypography.spacingLarge),
+
+              // Bodies list using common widget
+              if (_bodies.isEmpty)
+                _buildEmptyState(
+                  icon: Icons.add_circle_outline,
+                  message: l10n.noBodiesAdded,
+                  submessage: l10n.addBodiesInSetupTab,
+                )
+              else
+                _buildBodiesGrid(),
+
+              SizedBox(height: AppTypography.spacingLarge),
+
+              // Physics section divider
+              SectionDivider.labeled(l10n.physicsSection),
+
+              SizedBox(height: AppTypography.spacingLarge),
+
+              // Physics summary (simplified)
+              _buildSimplePhysicsPreview(l10n),
+
+              SizedBox(height: AppTypography.spacingXLarge),
+
+              // Actions section divider
+              SectionDivider.plain(),
+
+              SizedBox(height: AppTypography.spacingLarge),
+
+              // Test button only
+              SizedBox(
+                width: double.infinity,
+                child: HapticButton.primary(
+                  text: l10n.testScenarioButton,
+                  onPressed: () => _testScenario(context, l10n),
+                  icon: Icons.play_arrow,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -788,84 +813,97 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
     return SingleChildScrollView(
       controller: _setupTabScrollController,
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Metadata Section (Name & Description only)
-          Column(
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: AppConstraints.contentMaxWidth,
+          ),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Name field
-              StyledTextField(
-                controller: _nameController,
-                icon: Icons.title,
-                labelText: l10n.bodyPropertiesName,
-                hintText: l10n.enterScenarioNameEditorHint,
-                onChanged: (name) => setState(() {
-                  _metadata = ScenarioMetadata(
-                    name: name,
-                    description: _metadata.description,
-                    author: _metadata.author,
-                    createdAt: _metadata.createdAt,
-                    educationalFocus: _metadata.educationalFocus,
-                    tags: _metadata.tags,
-                    difficulty: _metadata.difficulty,
-                  );
-                  _hasUnsavedChanges = true;
-                  _triggerAutoSave();
-                }),
+              // Metadata Section (Name & Description only)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Name field
+                  StyledTextField(
+                    controller: _nameController,
+                    icon: Icons.title,
+                    labelText: l10n.bodyPropertiesName,
+                    hintText: l10n.enterScenarioNameEditorHint,
+                    onChanged: (name) => setState(() {
+                      _metadata = ScenarioMetadata(
+                        name: name,
+                        description: _metadata.description,
+                        author: _metadata.author,
+                        createdAt: _metadata.createdAt,
+                        educationalFocus: _metadata.educationalFocus,
+                        tags: _metadata.tags,
+                        difficulty: _metadata.difficulty,
+                      );
+                      _hasUnsavedChanges = true;
+                      _triggerAutoSave();
+                    }),
+                  ),
+
+                  const SizedBox(height: AppTypography.spacingLarge),
+
+                  // Description field
+                  StyledTextField(
+                    controller: _descriptionController,
+                    icon: Icons.description,
+                    labelText: l10n.descriptionEditorLabel,
+                    hintText:
+                        l10n.describeWhatThisScenarioDemonstratesEditorHint,
+                    minLines: 2,
+                    maxLines: 4,
+                    onChanged: (description) => setState(() {
+                      _metadata = ScenarioMetadata(
+                        name: _metadata.name,
+                        description: description,
+                        author: _metadata.author,
+                        createdAt: _metadata.createdAt,
+                        educationalFocus: _metadata.educationalFocus,
+                        tags: _metadata.tags,
+                        difficulty: _metadata.difficulty,
+                      );
+                      _hasUnsavedChanges = true;
+                      _triggerAutoSave();
+                    }),
+                  ),
+                ],
               ),
 
-              const SizedBox(height: AppTypography.spacingLarge),
+              const SizedBox(height: AppTypography.spacingMedium),
 
-              // Description field
-              StyledTextField(
-                controller: _descriptionController,
-                icon: Icons.description,
-                labelText: l10n.descriptionEditorLabel,
-                hintText: l10n.describeWhatThisScenarioDemonstratesEditorHint,
-                minLines: 2,
-                maxLines: 4,
-                onChanged: (description) => setState(() {
-                  _metadata = ScenarioMetadata(
-                    name: _metadata.name,
-                    description: description,
-                    author: _metadata.author,
-                    createdAt: _metadata.createdAt,
-                    educationalFocus: _metadata.educationalFocus,
-                    tags: _metadata.tags,
-                    difficulty: _metadata.difficulty,
-                  );
-                  _hasUnsavedChanges = true;
-                  _triggerAutoSave();
-                }),
+              // System Setup Tools Section
+              // Bodies Section Divider
+              SectionDivider.labeled(l10n.bodiesLabel),
+
+              // Bodies List - Give it a minimum height that can grow with content
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight:
+                      MediaQuery.of(context).size.height *
+                      0.3, // At least 30% of screen height
+                  maxHeight:
+                      MediaQuery.of(context).size.height *
+                      0.6, // At most 60% of screen height
+                ),
+                child: ScenarioEditorBodyList(
+                  bodies: _bodies,
+                  onBodiesChanged: _onBodiesChanged,
+                  onAddBody: _addNewBody,
+                  onBottomSheetVisibilityChanged: (isOpen) {
+                    setState(() {
+                      _isBodyBottomSheetOpen = isOpen;
+                    });
+                  },
+                ),
               ),
             ],
           ),
-
-          const SizedBox(height: AppTypography.spacingMedium),
-
-          // System Setup Tools Section
-          // Bodies Section Divider
-          SectionDivider.labeled(l10n.bodiesLabel),
-
-          // Bodies List - Give it a minimum height that can grow with content
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight:
-                  MediaQuery.of(context).size.height *
-                  0.3, // At least 30% of screen height
-              maxHeight:
-                  MediaQuery.of(context).size.height *
-                  0.6, // At most 60% of screen height
-            ),
-            child: ScenarioEditorBodyList(
-              bodies: _bodies,
-              onBodiesChanged: _onBodiesChanged,
-              onAddBody: _addNewBody,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -931,6 +969,10 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
     );
 
     // Show bottom sheet for editing the new body
+    setState(() {
+      _isBodyBottomSheetOpen = true;
+    });
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -972,7 +1014,14 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
           ),
         ),
       ),
-    );
+    ).whenComplete(() {
+      // Reset bottom sheet state when closed
+      if (mounted) {
+        setState(() {
+          _isBodyBottomSheetOpen = false;
+        });
+      }
+    });
   }
 
   Color _getNextBodyColor() {
@@ -1027,12 +1076,24 @@ class _ScenarioEditorScreenState extends State<ScenarioEditorScreen> {
         },
       );
 
-      // Save to local storage
-      await CustomScenarioStorage.saveScenario(scenario);
+      // If editing and name changed, use atomic rename operation
+      if (_originalScenarioName != null &&
+          _originalScenarioName != scenario.metadata.name) {
+        await CustomScenarioStorage.renameScenario(
+          _originalScenarioName!,
+          scenario,
+        );
+        // Update original name to prevent repeated deletions
+        _originalScenarioName = scenario.metadata.name;
+      } else {
+        // Normal save for new scenarios or when name hasn't changed
+        await CustomScenarioStorage.saveScenario(scenario);
+      }
 
       if (mounted) {
         setState(() {
           _hasUnsavedChanges = false;
+          _wasScenarioSaved = true; // Track that we saved
         });
       }
 

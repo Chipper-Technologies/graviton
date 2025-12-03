@@ -58,8 +58,6 @@ class FirebaseService {
           'debug_mode': kDebugMode.toString(),
         },
       );
-
-      debugPrint('Firebase services initialized successfully');
     } catch (e, stackTrace) {
       debugPrint('Error initializing Firebase services: $e');
       // Don't throw here - app should continue to work without Firebase
@@ -147,7 +145,9 @@ class FirebaseService {
 
       // Check if we should sample this event
       if (!remoteConfigService.shouldSampleAnalytics()) {
-        debugPrint('Event $name skipped due to sampling rate');
+        if (kDebugMode) {
+          debugPrint('Event $name skipped due to sampling rate');
+        }
         return;
       }
 
@@ -158,9 +158,12 @@ class FirebaseService {
       };
 
       await _analytics!.logEvent(name: name, parameters: enhancedParameters);
-      debugPrint(
-        'Logged analytics event: $name with parameters: $enhancedParameters',
-      );
+
+      if (kDebugMode) {
+        debugPrint(
+          'Logged analytics event: $name with parameters: $enhancedParameters',
+        );
+      }
     } catch (e) {
       debugPrint('Error logging analytics event $name: $e');
     }

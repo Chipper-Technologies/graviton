@@ -7,13 +7,18 @@ import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/utils/number_utils.dart';
+import 'package:graviton/state/app_state.dart';
+import 'package:provider/provider.dart';
 
 /// Test widget wrapper with localization support
 Widget makeTestableWidget(Widget child) {
   return MaterialApp(
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
-    home: Scaffold(body: child),
+    home: ChangeNotifierProvider<AppState>.value(
+      value: AppState(),
+      child: Scaffold(body: child),
+    ),
   );
 }
 

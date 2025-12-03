@@ -13,7 +13,11 @@ void main() {
     late AppState testAppState;
 
     setUp(() async {
-      SharedPreferences.setMockInitialValues({});
+      // Set tutorial flags to prevent dialog overlays in tests
+      SharedPreferences.setMockInitialValues({
+        'has_seen_tutorial': true,
+        'tutorial_completed': true,
+      });
       testAppState = AppState();
       await TestHelpers.initializeAppStateWithTimeout(testAppState);
     });

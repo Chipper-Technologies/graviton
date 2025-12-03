@@ -20,6 +20,7 @@ import 'package:graviton/models/changelog.dart';
 import 'package:graviton/models/dialog_action.dart';
 import 'package:graviton/painters/graviton_painter.dart';
 import 'package:graviton/screens/about_screen.dart';
+import 'package:graviton/screens/account_management_screen.dart';
 import 'package:graviton/screens/application_settings_screen.dart';
 import 'package:graviton/screens/developer_tools_screen.dart';
 import 'package:graviton/screens/help_screen.dart';
@@ -65,6 +66,7 @@ import 'package:graviton/widgets/semantics/semantic_live_region.dart';
 import 'package:graviton/widgets/semantics/semantic_simulation_canvas.dart';
 import 'package:graviton/widgets/share_action_button.dart';
 import 'package:graviton/widgets/sliding_panel_bottom_sheet.dart';
+import 'package:graviton/widgets/auth/avatar_button.dart';
 import 'package:graviton/widgets/version_check_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -857,6 +859,24 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  void _showAccountManagementScreen(BuildContext context) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.screenOpened,
+      element: UIElement.accountManagement,
+    );
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const AccountManagementScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    );
+  }
+
   void _showDeveloperToolsScreen(BuildContext context) {
     FirebaseService.instance.logUIEventWithEnums(
       UIAction.screenOpened,
@@ -1332,6 +1352,7 @@ class _HomeScreenState extends State<HomeScreen>
               onShowAbout: () => _showAboutScreen(context),
               onShowDeveloperTools: () => _showDeveloperToolsScreen(context),
               onShowChangelog: _showCurrentVersionChangelog,
+              onShowAccount: () => _showAccountManagementScreen(context),
             ),
             appBar: shouldHideUI
                 ? null
@@ -1377,6 +1398,18 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                     actions: [
+                      // Avatar button
+                      AvatarButton(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const AccountManagementScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(width: AppTypography.spacingSmall),
                       // Options drawer toggle
                       Builder(
                         builder: (context) => HapticIconButton(

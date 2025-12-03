@@ -4,10 +4,11 @@ import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/ui_utils.dart';
-import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 
 /// Full-screen Help & Objectives page
 class HelpScreen extends StatelessWidget {
@@ -39,40 +40,47 @@ class HelpScreen extends StatelessWidget {
             child: Column(
               children: [
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // What to Do section
-                        _buildSection(
-                          context,
-                          icon: Icons.rocket_launch,
-                          title: l10n.whatToDoTitle,
-                          content: l10n.whatToDoDescription,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: AppConstraints.contentMaxWidth,
                         ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // What to Do section
+                            _buildSection(
+                              context,
+                              icon: Icons.rocket_launch,
+                              title: l10n.whatToDoTitle,
+                              content: l10n.whatToDoDescription,
+                            ),
 
-                        // Learning Objectives section
-                        _buildObjectivesSection(context, l10n),
+                            // Learning Objectives section
+                            _buildObjectivesSection(context, l10n),
 
-                        // Quick Start section
-                        _buildQuickStartSection(context, l10n),
-                        SizedBox(height: AppTypography.spacingXXLarge),
+                            // Quick Start section
+                            _buildQuickStartSection(context, l10n),
+                            SizedBox(height: AppTypography.spacingXXLarge),
 
-                        // Call to action
-                        Center(
-                          child: ElevatedButton.icon(
-                            onPressed: () => Navigator.of(context).pop(),
-                            icon: const Icon(Icons.explore),
-                            label: Text(l10n.getStarted),
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 12,
+                            // Call to action
+                            Center(
+                              child: ElevatedButton.icon(
+                                onPressed: () => Navigator.of(context).pop(),
+                                icon: const Icon(Icons.explore),
+                                label: Text(l10n.getStarted),
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 12,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),

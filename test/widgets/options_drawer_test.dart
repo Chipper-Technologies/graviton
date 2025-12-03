@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/options_drawer.dart';
+import 'package:graviton/widgets/auth/avatar_button.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/state/auth_state.dart';
+import 'package:provider/provider.dart';
 
 import '../test_utils.dart';
 
 void main() {
   group('OptionsDrawer Widget Tests', () {
+    late AuthState authState;
+
+    setUp(() {
+      authState = AuthState();
+    });
+
     Widget createTestWidget({
       VoidCallback? onShowHelp,
       VoidCallback? onShowSettings,
@@ -16,16 +25,21 @@ void main() {
       VoidCallback? onShowAbout,
       VoidCallback? onShowDeveloperTools,
       VoidCallback? onShowChangelog,
+      VoidCallback? onShowAccount,
     }) {
       return TestUtils.wrapWithMaterialApp(
-        child: OptionsDrawer(
-          onShowHelp: onShowHelp ?? () {},
-          onShowSettings: onShowSettings ?? () {},
-          onShowScenarios: onShowScenarios ?? () {},
-          onShowPhysicsSettings: onShowPhysicsSettings ?? () {},
-          onShowAbout: onShowAbout ?? () {},
-          onShowDeveloperTools: onShowDeveloperTools ?? () {},
-          onShowChangelog: onShowChangelog,
+        child: ChangeNotifierProvider<AuthState>.value(
+          value: authState,
+          child: OptionsDrawer(
+            onShowHelp: onShowHelp ?? () {},
+            onShowSettings: onShowSettings ?? () {},
+            onShowScenarios: onShowScenarios ?? () {},
+            onShowPhysicsSettings: onShowPhysicsSettings ?? () {},
+            onShowAbout: onShowAbout ?? () {},
+            onShowDeveloperTools: onShowDeveloperTools ?? () {},
+            onShowChangelog: onShowChangelog,
+            onShowAccount: onShowAccount ?? () {},
+          ),
         ),
       );
     }
@@ -57,6 +71,11 @@ void main() {
     testWidgets('displays all menu items with correct icons and text', (
       tester,
     ) async {
+      // Set larger view size to ensure all menu items fit
+      tester.view.physicalSize = const Size(400, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
@@ -66,6 +85,9 @@ void main() {
       expect(find.byIcon(Icons.tune), findsOneWidget);
       expect(find.byIcon(Icons.lightbulb_outline), findsOneWidget);
       expect(find.byIcon(Icons.info_outline), findsOneWidget);
+
+      // Verify avatar button in header (replaces Account menu item)
+      expect(find.byType(AvatarButton), findsOneWidget);
 
       // Verify ListTile widgets for menu items
       expect(find.byType(ListTile), findsWidgets);
@@ -175,6 +197,11 @@ void main() {
     testWidgets('calls onShowAbout when about item is tapped', (tester) async {
       bool aboutCalled = false;
 
+      // Set larger view size to ensure about item is visible
+      tester.view.physicalSize = const Size(400, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
       await tester.pumpWidget(
         createTestWidget(
           onShowAbout: () {
@@ -184,14 +211,38 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Find and tap the about menu item
-      final aboutItem = find.byIcon(Icons.info_outline).first;
-      await tester.ensureVisible(aboutItem);
-      await tester.pumpAndSettle();
-      await tester.tap(aboutItem, warnIfMissed: false);
+      // Find and tap the about menu item ListTile
+      final aboutListTile = find.ancestor(
+        of: find.byIcon(Icons.info_outline),
+        matching: find.byType(ListTile),
+      );
+      await tester.tap(aboutListTile);
       await tester.pumpAndSettle();
 
       expect(aboutCalled, isTrue);
+    });
+
+    testWidgets('calls onShowAccount when avatar button is tapped', (
+      tester,
+    ) async {
+      bool accountCalled = false;
+
+      await tester.pumpWidget(
+        createTestWidget(
+          onShowAccount: () {
+            accountCalled = true;
+          },
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap the avatar button in the header
+      final avatarButton = find.byType(AvatarButton);
+      expect(avatarButton, findsOneWidget);
+      await tester.tap(avatarButton);
+      await tester.pumpAndSettle();
+
+      expect(accountCalled, isTrue);
     });
 
     testWidgets('calls onShowChangelog when changelog link is tapped', (
@@ -294,17 +345,27 @@ void main() {
   });
 
   group('OptionsDrawer Integration Tests', () {
+    late AuthState authState;
+
+    setUp(() {
+      authState = AuthState();
+    });
+
     testWidgets('drawer can be opened and closed in scaffold', (tester) async {
       await tester.pumpWidget(
-        TestUtils.wrapWithScaffold(
-          child: Container(),
-          endDrawer: OptionsDrawer(
-            onShowHelp: () {},
-            onShowSettings: () {},
-            onShowScenarios: () {},
-            onShowPhysicsSettings: () {},
-            onShowAbout: () {},
-            onShowDeveloperTools: () {},
+        ChangeNotifierProvider<AuthState>.value(
+          value: authState,
+          child: TestUtils.wrapWithScaffold(
+            child: Container(),
+            endDrawer: OptionsDrawer(
+              onShowHelp: () {},
+              onShowSettings: () {},
+              onShowScenarios: () {},
+              onShowPhysicsSettings: () {},
+              onShowAbout: () {},
+              onShowDeveloperTools: () {},
+              onShowAccount: () {},
+            ),
           ),
         ),
       );
@@ -325,14 +386,18 @@ void main() {
 
     testWidgets('proper icon and text layout', (tester) async {
       await tester.pumpWidget(
-        TestUtils.wrapWithMaterialApp(
-          child: OptionsDrawer(
-            onShowHelp: () {},
-            onShowSettings: () {},
-            onShowScenarios: () {},
-            onShowPhysicsSettings: () {},
-            onShowAbout: () {},
-            onShowDeveloperTools: () {},
+        ChangeNotifierProvider<AuthState>.value(
+          value: authState,
+          child: TestUtils.wrapWithScaffold(
+            child: OptionsDrawer(
+              onShowHelp: () {},
+              onShowSettings: () {},
+              onShowScenarios: () {},
+              onShowPhysicsSettings: () {},
+              onShowAbout: () {},
+              onShowDeveloperTools: () {},
+              onShowAccount: () {},
+            ),
           ),
         ),
       );
@@ -362,14 +427,18 @@ void main() {
 
     testWidgets('drawer maintains proper padding and spacing', (tester) async {
       await tester.pumpWidget(
-        TestUtils.wrapWithMaterialApp(
-          child: OptionsDrawer(
-            onShowHelp: () {},
-            onShowSettings: () {},
-            onShowScenarios: () {},
-            onShowPhysicsSettings: () {},
-            onShowAbout: () {},
-            onShowDeveloperTools: () {},
+        ChangeNotifierProvider<AuthState>.value(
+          value: authState,
+          child: TestUtils.wrapWithMaterialApp(
+            child: OptionsDrawer(
+              onShowHelp: () {},
+              onShowSettings: () {},
+              onShowScenarios: () {},
+              onShowPhysicsSettings: () {},
+              onShowAbout: () {},
+              onShowDeveloperTools: () {},
+              onShowAccount: () {},
+            ),
           ),
         ),
       );

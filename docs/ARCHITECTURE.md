@@ -48,6 +48,7 @@ flowchart TD
         UIState["🎨 UIState<br/>UI Preferences"]
         CameraState["📷 CameraState<br/>3D Camera"]
         PhysicsState["🧪 PhysicsState<br/>Physics Parameters"]
+        AuthState["🔐 AuthState<br/>Authentication"]
     end
 
     %% Services
@@ -67,6 +68,8 @@ flowchart TD
         KeyboardSvc["⌨️ Keyboard Navigation<br/>Accessibility Controls"]
         SemanticFocusSvc["🎯 Semantic Focus<br/>Focus Management"]
         CustomScenarioSvc["🎨 Custom Scenarios<br/>User Content Creation"]
+        AuthSvc["🔐 Auth Service<br/>Firebase Authentication"]
+        UserDataSyncSvc["☁️ User Data Sync<br/>Cloud Storage"]
     end
 
     %% Rendering
@@ -97,6 +100,8 @@ flowchart TD
         FullscreenUI["🖥️ Fullscreen UI<br/>Immersive Mode"]
         SemanticWidgets["♿ Semantic Widgets<br/>Accessibility Support"]
         ScenarioEditor["🎨 Scenario Editor<br/>Custom Content Creation"]
+        AccountManagement["👤 Account Management<br/>User Profile & Auth"]
+        SignInScreen["🔑 Sign In Screen<br/>Authentication UI"]
     end
 
     %% Models
@@ -147,6 +152,7 @@ flowchart TD
     AppState -.-> UIState
     AppState -.-> CameraState
     AppState -.-> PhysicsState
+    AppState -.-> AuthState
     
     %% Service relationships
     SimulationSvc -.-> ScenarioSvc
@@ -166,10 +172,10 @@ flowchart TD
     classDef extNode fill:#795548,stroke:#5D4037,stroke-width:2px,color:#fff
     
     class Main,GravitonApp,HomeScreen primaryNode
-    class AppState,SimulationState,UIState,CameraState,PhysicsState stateNode
-    class SimulationSvc,ScenarioSvc,TempSvc,HabSvc,FirebaseSvc,ConfigSvc,VersionSvc,ScreenshotSvc,HapticSvc,FullscreenSvc,AccessibilitySvc,KeyboardSvc,SemanticFocusSvc,CustomScenarioSvc serviceNode
+    class AppState,SimulationState,UIState,CameraState,PhysicsState,AuthState stateNode
+    class SimulationSvc,ScenarioSvc,TempSvc,HabSvc,FirebaseSvc,ConfigSvc,VersionSvc,ScreenshotSvc,HapticSvc,FullscreenSvc,AccessibilitySvc,KeyboardSvc,SemanticFocusSvc,CustomScenarioSvc,AuthSvc,UserDataSyncSvc serviceNode
     class MainPainter,BodyPainter,TrailPainter,BgPainter,PathPainter,HabPainter,GravPainter,FxPainter,AsteroidPainter renderNode
-    class FloatingControls,SettingsDialog,StatsOverlay,ScenarioSelector,HapticControls,FullscreenUI,SemanticWidgets,ScenarioEditor uiNode
+    class FloatingControls,SettingsDialog,StatsOverlay,ScenarioSelector,HapticControls,FullscreenUI,SemanticWidgets,ScenarioEditor,AccountManagement,SignInScreen uiNode
     class Body,TrailPoint,PhysicsSettings,ScreenshotModels modelNode
 ```
 
@@ -228,7 +234,8 @@ AppState
 ├── SimulationState (physics simulation)
 ├── UIState (user preferences)
 ├── CameraState (3D camera control)
-└── PhysicsState (physics parameters)
+├── PhysicsState (physics parameters)
+└── AuthState (authentication and user profile)
 ```
 
 ### State Synchronization
@@ -308,6 +315,8 @@ GravitonPainter (Main Orchestrator)
 - **Fullscreen Service**: System UI control for immersive viewing experience
 - **Accessibility Services**: Screen reader support and semantic focus management
 - **Custom Scenario Management**: User-created content storage and serialization
+- **Authentication Service**: Firebase Authentication with multi-provider support (email/password, Google, Apple, GitHub, anonymous)
+- **User Data Sync Service**: Cloud-based user profile and settings synchronization
 
 ## 📱 UI Components
 
@@ -365,6 +374,31 @@ The scenario editor provides a comprehensive interface for creating and editing 
 - **Body List Management**: Sortable list with duplicate, edit, and delete actions
 - **Physics Panel**: Simulation parameter configuration with live preview
 - **Metadata Panel**: Scenario information and organizational features
+
+### Account Management & Authentication
+
+The app features a comprehensive authentication and user account management system:
+
+#### Authentication Features
+- **Multi-Provider Support**: Email/password, Google, Apple, GitHub, and anonymous authentication
+- **Email Verification**: Automatic verification flow with status tracking
+- **Profile Management**: Display name, avatar selection, and profile photo uploads
+- **Cloud Data Sync**: Automatic synchronization of user preferences and custom scenarios
+- **Account Security**: Password changes, account deletion, and secure sign-out
+
+#### Authentication Components
+- **Avatar Button**: Authenticated user avatar display in app bar
+- **Sign-In Screen**: Comprehensive authentication interface with social provider buttons
+- **Account Management Screen**: Full user profile and settings management
+- **Profile Card**: Visual display of user information and authentication status
+- **Social Auth Buttons**: Branded buttons for Google, Apple, and GitHub sign-in
+- **Email Verification Banner**: Status banner for unverified email addresses
+
+#### User Data Management
+- **Automatic Cloud Backup**: User preferences and custom scenarios synced to Firestore
+- **Cross-Device Sync**: Settings and content available across all user devices
+- **Privacy Controls**: User data deletion and account management options
+- **Offline Support**: Local caching with background sync when online
 
 ## 🌐 Internationalization
 
@@ -485,6 +519,7 @@ lib/
 │   ├── accessibility_simulation_state.dart # Accessibility simulation states
 │   ├── app_bar_menu_item.dart  # App bar menu options
 │   ├── app_flavor.dart         # Application flavors
+│   ├── auth_provider_type.dart # Authentication provider types
 │   ├── auto_rotate_status.dart # Screen rotation status
 │   ├── body_type.dart          # Celestial body types
 │   ├── camera_movement_type.dart # Camera movement types
@@ -571,6 +606,7 @@ lib/
 ├── services/                    # Business logic services
 │   ├── accessibility_service.dart # Accessibility support
 │   ├── asteroid_belt_system.dart # Asteroid belt simulation
+│   ├── auth_service.dart       # Firebase Authentication (multi-provider)
 │   ├── changelog_service.dart  # Version change management
 │   ├── cinematic_camera_controller.dart # Automated camera movements
 │   ├── custom_scenario_manager.dart # User scenario management
@@ -591,9 +627,11 @@ lib/
 │   ├── simulation.dart         # Core physics engine
 │   ├── stellar_color_service.dart # Star color calculations
 │   ├── temperature_service.dart # Thermal modeling
+│   ├── user_data_sync_service.dart # Cloud user data synchronization
 │   └── version_service.dart    # App version management
 ├── state/                       # State management
 │   ├── app_state.dart          # Central application state
+│   ├── auth_state.dart         # Authentication and user state
 │   ├── camera_state.dart       # 3D camera state
 │   ├── physics_state.dart      # Physics parameters state
 │   ├── simulation_state.dart   # Simulation control state
@@ -632,6 +670,20 @@ lib/
 │   ├── orbital_path_painter.dart # Trajectory visualization
 │   └── trail_painter.dart      # Motion trail rendering
 ├── widgets/                     # UI components
+│   ├── account/                # Account management widgets
+│   │   ├── account_management_options.dart # Account action options
+│   │   ├── avatar_display.dart # Avatar display component
+│   │   ├── avatar_selection_grid.dart # Avatar selection interface
+│   │   ├── danger_zone_section.dart # Account deletion controls
+│   │   ├── delete_confirmation_dialog.dart # Deletion confirmation
+│   │   ├── edit_name_form.dart # Display name editing
+│   │   ├── email_verification_banner.dart # Email verification status
+│   │   ├── profile_card.dart   # User profile card
+│   │   ├── sign_in_form.dart   # Email/password sign-in form
+│   │   └── terms_acceptance_checkbox.dart # Terms of service
+│   ├── auth/                   # Authentication widgets
+│   │   ├── avatar_button.dart  # Avatar button with auth state
+│   │   └── social_auth_button.dart # Social provider buttons
 │   ├── common/                 # Reusable components
 │   │   ├── action_option.dart  # Action button component
 │   │   ├── base_confirmation_dialog.dart # Base dialog for confirmations
@@ -711,6 +763,7 @@ lib/
 │   └── visuals_controls.dart   # Visual settings controls
 ├── screens/                     # Application screens
 │   ├── about_screen.dart       # About/credits screen
+│   ├── account_management_screen.dart # User account management
 │   ├── application_settings_screen.dart # App-wide settings
 │   ├── developer_tools_screen.dart # Development utilities
 │   ├── help_screen.dart        # User help and tutorials
@@ -718,6 +771,7 @@ lib/
 │   ├── physics_settings_screen.dart # Physics parameter settings
 │   ├── scenario_editor_screen.dart # Custom scenario creation/editing
 │   ├── scenario_selection_screen.dart # Educational scenario picker
+│   ├── sign_in_screen.dart     # Authentication interface
 │   └── simulation_info_screen.dart # Simulation information display
 └── theme/                       # Design system
     ├── app_colors.dart         # Color palette definitions
@@ -740,6 +794,15 @@ lib/
 - **Firebase Analytics**: User behavior tracking
 - **Firebase Crashlytics**: Error reporting
 - **Firebase Remote Config**: Feature flag management
+- **Firebase Auth**: Multi-provider authentication (email, Google, Apple, GitHub)
+- **Cloud Firestore**: User data synchronization and cloud storage
+
+### Authentication & User Management
+
+- **Google Sign-In**: Google authentication integration
+- **Sign in with Apple**: Apple authentication integration  
+- **Image Picker**: Profile photo uploads
+- **Device Info Plus**: Device identification for authentication
 
 ### Development Dependencies
 
@@ -791,8 +854,8 @@ test/
 ├── models/            # Data model validation tests
 ├── painters/          # Custom painter tests
 ├── scenarios/         # Physics scenario tests
-├── screens/           # Screen tests
-├── services/          # Service layer tests (haptic, fullscreen, physics)
+├── screens/           # Screen tests (including authentication screens)
+├── services/          # Service layer tests (auth, haptic, fullscreen, physics)
 ├── state/             # State management tests
 ├── theme/             # Theme tests
 ├── utils/             # Utility function tests
@@ -809,6 +872,8 @@ test/
 - **Accessibility Tests**: Screen reader and haptic feedback validation
 - **Scenario Tests**: Custom scenario creation and validation
 - **Haptic Tests**: Tactile feedback system validation
+- **Authentication Tests**: Multi-provider authentication flows and user management
+- **Cloud Sync Tests**: User data synchronization and Firestore integration
 
 ### Testing Tools
 

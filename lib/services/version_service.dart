@@ -95,13 +95,6 @@ class VersionService {
 
       // Load legacy values as fallback
       _loadLegacyConfig(remoteConfig);
-
-      debugPrint(
-        'Remote config loaded: current=$_currentVersion, '
-        'android=${_androidConfig?.toString()}, '
-        'ios=${_iosConfig?.toString()}, '
-        'legacy: enforced=$_minimumEnforcedVersion, preferred=$_minimumPreferredVersion',
-      );
     } catch (e) {
       debugPrint('Failed to load remote config: $e');
     }
@@ -120,7 +113,6 @@ class VersionService {
             final androidJson =
                 jsonDecode(androidJsonString) as Map<String, dynamic>;
             _androidConfig = PlatformVersionConfig.fromJson(androidJson);
-            debugPrint('Loaded Android config: $_androidConfig');
           }
         } catch (e) {
           debugPrint('Failed to parse Android JSON config: $e');
@@ -136,7 +128,6 @@ class VersionService {
           if (iosJsonString.isNotEmpty) {
             final iosJson = jsonDecode(iosJsonString) as Map<String, dynamic>;
             _iosConfig = PlatformVersionConfig.fromJson(iosJson);
-            debugPrint('Loaded iOS config: $_iosConfig');
           }
         } catch (e) {
           debugPrint('Failed to parse iOS JSON config: $e');

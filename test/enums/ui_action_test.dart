@@ -4,7 +4,7 @@ import 'package:graviton/enums/ui_action.dart';
 void main() {
   group('UIAction Enum', () {
     test('should have all expected UI actions', () {
-      expect(UIAction.values.length, equals(107));
+      expect(UIAction.values.length, equals(108));
       expect(UIAction.values, contains(UIAction.tap));
       expect(UIAction.values, contains(UIAction.doubleTap));
       expect(UIAction.values, contains(UIAction.dialogOpened));
@@ -126,6 +126,66 @@ void main() {
       // Changelog should have show/complete pair
       expect(UIAction.values, contains(UIAction.changelogShown));
       expect(UIAction.values, contains(UIAction.changelogCompleted));
+    });
+
+    test('should include visual effect toggle action', () {
+      expect(UIAction.values, contains(UIAction.visualEffectToggle));
+      expect(UIAction.visualEffectToggle.value, equals('visual_effect_toggle'));
+    });
+
+    test('should include physics controls actions', () {
+      expect(UIAction.values, contains(UIAction.gravityFieldsToggle));
+      expect(UIAction.values, contains(UIAction.equipotentialSurfacesToggle));
+      expect(UIAction.values, contains(UIAction.gravityFieldIndicatorsToggle));
+      expect(
+        UIAction.values,
+        contains(UIAction.gravityFieldColorSchemeChanged),
+      );
+      expect(UIAction.values, contains(UIAction.physicsSettingAdjusted));
+    });
+
+    test('should include visual controls actions', () {
+      expect(UIAction.values, contains(UIAction.trailDisplayToggle));
+      expect(UIAction.values, contains(UIAction.labelDisplayToggle));
+      expect(UIAction.values, contains(UIAction.realisticColorsToggle));
+      expect(UIAction.values, contains(UIAction.habitableZonesToggle));
+      expect(UIAction.values, contains(UIAction.habitabilityIndicatorsToggle));
+      expect(UIAction.values, contains(UIAction.orbitalPathsToggle));
+      expect(UIAction.values, contains(UIAction.dualOrbitalPathsToggle));
+      expect(UIAction.values, contains(UIAction.offscreenIndicatorsToggle));
+    });
+
+    test('should include simulation control actions', () {
+      expect(UIAction.values, contains(UIAction.simulationStarted));
+      expect(UIAction.values, contains(UIAction.simulationStopped));
+      expect(UIAction.values, contains(UIAction.simulationPaused));
+      expect(UIAction.values, contains(UIAction.simulationResumed));
+      expect(UIAction.values, contains(UIAction.simulationReset));
+      expect(UIAction.values, contains(UIAction.timeScaleAdjusted));
+    });
+
+    test('should include scenario management actions', () {
+      expect(UIAction.values, contains(UIAction.scenarioCreationStarted));
+      expect(UIAction.values, contains(UIAction.scenarioCreationCompleted));
+      expect(UIAction.values, contains(UIAction.scenarioCreationCanceled));
+      expect(UIAction.values, contains(UIAction.scenarioEditingStarted));
+      expect(UIAction.values, contains(UIAction.scenarioEditingCompleted));
+      expect(UIAction.values, contains(UIAction.bodyAdded));
+      expect(UIAction.values, contains(UIAction.bodyRemoved));
+      expect(UIAction.values, contains(UIAction.bodyEdited));
+    });
+
+    test('should include performance analytics actions', () {
+      expect(UIAction.values, contains(UIAction.frameRateDegradation));
+      expect(UIAction.values, contains(UIAction.memoryUsageSpike));
+      expect(UIAction.values, contains(UIAction.renderingPerformanceIssue));
+      expect(UIAction.values, contains(UIAction.physicsCalculationSlowdown));
+    });
+
+    test('should include fullscreen actions', () {
+      expect(UIAction.values, contains(UIAction.fullscreenEntered));
+      expect(UIAction.values, contains(UIAction.fullscreenExited));
+      expect(UIAction.values, contains(UIAction.fullscreenToggled));
     });
   });
 }

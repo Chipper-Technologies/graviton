@@ -4,6 +4,7 @@ import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/auth/avatar_button.dart';
 import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/haptics/haptic_list_tile.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
@@ -18,6 +19,7 @@ class OptionsDrawer extends StatefulWidget {
   final VoidCallback onShowAbout;
   final VoidCallback onShowDeveloperTools;
   final VoidCallback? onShowChangelog;
+  final VoidCallback onShowAccount;
 
   const OptionsDrawer({
     super.key,
@@ -28,6 +30,7 @@ class OptionsDrawer extends StatefulWidget {
     required this.onShowAbout,
     required this.onShowDeveloperTools,
     this.onShowChangelog,
+    required this.onShowAccount,
   });
 
   @override
@@ -169,6 +172,12 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                           ),
                         ],
                       ),
+                    ),
+                    AvatarButton(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        widget.onShowAccount();
+                      },
                     ),
                   ],
                 ),

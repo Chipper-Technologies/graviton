@@ -1104,6 +1104,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get autoRotateTooltip => '自動回転';
 
   @override
+  String get rotateSpeed => '回転速度';
+
+  @override
   String get blackColor => '黒色';
 
   @override
@@ -2922,4 +2925,532 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get importCancelled => 'インポートがキャンセルされました';
+
+  @override
+  String get accountManagementTitle => 'アカウント';
+
+  @override
+  String get accountButtonTooltip => 'アカウントとプロフィール';
+
+  @override
+  String get signInPromptTitle => 'アカウントにサインイン';
+
+  @override
+  String get signInPromptMessage => 'アカウントを作成またはサインインして、デバイス間でデータと設定を同期します。';
+
+  @override
+  String get signInButton => 'サインイン';
+
+  @override
+  String get signOutButton => 'サインアウト';
+
+  @override
+  String get resetSessionButton => 'セッションをリセット';
+
+  @override
+  String get signOutSuccess => 'サインアウトに成功しました';
+
+  @override
+  String get operationTimeout => '操作がタイムアウトしました。もう一度お試しください。';
+
+  @override
+  String get operationFailed => '操作が失敗しました。もう一度お試しください。';
+
+  @override
+  String get couldNotOpenLink => 'リンクを開けませんでした。もう一度お試しください。';
+
+  @override
+  String get pleaseWaitBeforeRetrying => 'もう一度試す前に少しお待ちください。';
+
+  @override
+  String rateLimitWithCooldown(int seconds) {
+    return 'もう一度試す前に$seconds秒お待ちください。';
+  }
+
+  @override
+  String get networkError => 'ネットワークエラー。接続を確認してもう一度お試しください。';
+
+  @override
+  String get continueAsGuestButton => 'ゲストとして続ける';
+
+  @override
+  String get signInAnonymousSuccess => 'ゲストとしてサインインしました';
+
+  @override
+  String get anonymousUserLabel => 'ゲストユーザー';
+
+  @override
+  String get guestAccountLabel => 'ゲストアカウント';
+
+  @override
+  String get authenticatedLabel => 'アカウント';
+
+  @override
+  String get changeAvatarTooltip => 'アバターを変更';
+
+  @override
+  String get editDisplayNameTooltip => '名前を編集';
+
+  @override
+  String get accountActionsSection => 'アカウント操作';
+
+  @override
+  String get upgradeAccountTitle => '完全なアカウントにアップグレード';
+
+  @override
+  String get upgradeAccountDescription => 'データを保存し、どのデバイスからでもアクセスできます';
+
+  @override
+  String get accountManagementSection => 'アカウント管理';
+
+  @override
+  String get dangerZoneSection => 'アカウント管理';
+
+  @override
+  String get deleteAccountButton => 'アカウントを削除';
+
+  @override
+  String get avatarChangedSuccess => 'アバターを更新しました';
+
+  @override
+  String get avatarChangedError => 'アバターの更新に失敗しました';
+
+  @override
+  String get accountMenuDescription => 'アカウントとプロフィールを管理';
+
+  @override
+  String get emailLabel => 'メールアドレス';
+
+  @override
+  String get passwordLabel => 'パスワード';
+
+  @override
+  String get createAccountButton => 'アカウントを作成';
+
+  @override
+  String get pleaseEnterEmail => 'メールアドレスを入力してください';
+
+  @override
+  String get pleaseEnterValidEmail => '有効なメールアドレスを入力してください';
+
+  @override
+  String get pleaseEnterPassword => 'パスワードを入力してください';
+
+  @override
+  String get passwordMinLength => 'パスワードは6文字以上である必要があります';
+
+  @override
+  String get alreadyHaveAccount => 'すでにアカウントをお持ちですか？サインイン';
+
+  @override
+  String get needAccount => 'アカウントが必要ですか？作成する';
+
+  @override
+  String get continueWithGoogle => 'Googleで続ける';
+
+  @override
+  String get continueWithGitHub => 'GitHubで続ける';
+
+  @override
+  String get continueWithApple => 'Appleで続ける';
+
+  @override
+  String get moreProviders => '他のプロバイダー';
+
+  @override
+  String get chooseProvider => 'プロバイダーを選択';
+
+  @override
+  String get selectAvatarTitle => 'アバターを選択';
+
+  @override
+  String get editAccountInformationTitle => '表示名を編集';
+
+  @override
+  String get displayNameLabel => '表示名';
+
+  @override
+  String get pleaseEnterDisplayName => '表示名を入力してください';
+
+  @override
+  String get displayNameMinLength => '名前は2文字以上である必要があります';
+
+  @override
+  String get deleteAccountTitle => 'アカウントを削除';
+
+  @override
+  String get deleteAccountWarning => 'この操作は元に戻せません。';
+
+  @override
+  String get deleteAccountMessage => 'アカウントを削除すると、それに関連するすべてのデータが完全に削除されます。';
+
+  @override
+  String get deleteAccountItem1 => 'プロフィールとアバター';
+
+  @override
+  String get deleteAccountItem2 => 'すべての保存された設定';
+
+  @override
+  String get deleteAccountItem3 => 'カスタムシナリオと設定';
+
+  @override
+  String get deleteAccountItem4 => 'アカウント認証';
+
+  @override
+  String get deleteAccountPasswordPrompt => '確認のためパスワードを入力してください：';
+
+  @override
+  String get orDivider => 'または';
+
+  @override
+  String get displayNameHint => 'お名前を入力してください（任意）';
+
+  @override
+  String get emailHint => 'メールアドレス';
+
+  @override
+  String get passwordHint => 'パスワード';
+
+  @override
+  String get alreadyHaveAccountSignIn => 'すでにアカウントをお持ちですか？ログイン';
+
+  @override
+  String get needAccountCreateOne => 'アカウントをお持ちでないですか？作成する';
+
+  @override
+  String get useGoogleProfilePhoto => 'Googleプロフィール写真を使用';
+
+  @override
+  String get customAvatars => 'カスタムアバター';
+
+  @override
+  String get saveAvatar => 'アバターを保存';
+
+  @override
+  String get displayNameFieldLabel => '表示名';
+
+  @override
+  String get displayNameFieldHint => '表示名を入力してください';
+
+  @override
+  String get saveAccountInformation => 'アカウント情報を保存';
+
+  @override
+  String get emailRequired => 'メールアドレスは必須です';
+
+  @override
+  String get emailInvalid => '有効なメールアドレスを入力してください';
+
+  @override
+  String get passwordRequired => 'パスワードは必須です';
+
+  @override
+  String get passwordTooShort => 'パスワードは8文字以上である必要があります';
+
+  @override
+  String get passwordMissingUppercase => 'パスワードには少なくとも1つの大文字が必要です';
+
+  @override
+  String get passwordMissingLowercase => 'パスワードには少なくとも1つの小文字が必要です';
+
+  @override
+  String get passwordMissingNumber => 'パスワードには少なくとも1つの数字が必要です';
+
+  @override
+  String get passwordMissingSpecialChar =>
+      'パスワードには少なくとも1つの特殊文字が必要です (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts => 'サインイン試行が多すぎます。15分後に再試行してください。';
+
+  @override
+  String get emailVerificationRequired =>
+      'この機能にアクセスする前に、メールアドレスを確認してください。受信トレイで確認リンクを確認してください。';
+
+  @override
+  String get defaultUserName => 'ユーザー';
+
+  @override
+  String get googleSignInError => 'Googleログインがキャンセルされたか失敗しました。もう一度お試しください。';
+
+  @override
+  String get gitHubSignInError => 'GitHubログインがキャンセルされたか失敗しました。もう一度お試しください。';
+
+  @override
+  String get appleSignInError => 'Appleログインがキャンセルされたか失敗しました。もう一度お試しください。';
+
+  @override
+  String get displayNameUpdated => '表示名を更新しました';
+
+  @override
+  String get displayNameUpdateFailed => '表示名の更新に失敗しました';
+
+  @override
+  String get sessionResetSuccess => 'セッションを正常にリセットしました';
+
+  @override
+  String get accountDeletedSuccess => 'アカウントを正常に削除しました';
+
+  @override
+  String get errorUserNotFound => 'このメールアドレスのアカウントが見つかりません。';
+
+  @override
+  String get errorWrongPassword => 'パスワードが正しくありません。もう一度お試しください。';
+
+  @override
+  String get errorInvalidEmail => 'メールアドレスの形式が無効です。';
+
+  @override
+  String get errorUserDisabled => 'このアカウントは無効化されています。';
+
+  @override
+  String get errorEmailInUse => 'このメールアドレスのアカウントは既に存在します。';
+
+  @override
+  String get errorWeakPassword => 'パスワードが弱すぎます。より強力なパスワードを使用してください。';
+
+  @override
+  String get errorOperationNotAllowed => 'このログイン方法は有効になっていません。';
+
+  @override
+  String get errorRequiresRecentLogin => 'この操作を実行するには、もう一度ログインしてください。';
+
+  @override
+  String get errorNetworkFailed => 'ネットワークエラー。接続を確認してください。';
+
+  @override
+  String errorUnknown(String message) {
+    return 'エラーが発生しました：$message';
+  }
+
+  @override
+  String get exceptionGoogleSignInNotInitialized => 'Googleサインインが初期化されていません';
+
+  @override
+  String get exceptionGoogleSignInTimeout => 'Googleサインインがタイムアウトしました';
+
+  @override
+  String get exceptionAppleSignInPlatform =>
+      'Apple Sign-InはAppleプラットフォームでのみ利用可能です';
+
+  @override
+  String get exceptionNoAnonymousUser => 'リンクする匿名ユーザーがありません';
+
+  @override
+  String get exceptionNoUserSignedIn => 'サインインしているユーザーがいません';
+
+  @override
+  String get firebaseErrorUserNotFound => 'このメールアドレスのアカウントが見つかりません。';
+
+  @override
+  String get firebaseErrorWrongPassword => 'パスワードが正しくありません。もう一度お試しください。';
+
+  @override
+  String get firebaseErrorInvalidEmail => 'メールアドレスの形式が無効です。';
+
+  @override
+  String get firebaseErrorUserDisabled => 'このアカウントは無効になっています。';
+
+  @override
+  String get firebaseErrorEmailInUse => 'このメールアドレスのアカウントは既に存在します。';
+
+  @override
+  String get firebaseErrorWeakPassword => 'パスワードが弱すぎます。より強力なパスワードを使用してください。';
+
+  @override
+  String get firebaseErrorOperationNotAllowed => 'このサインイン方法は有効になっていません。';
+
+  @override
+  String get firebaseErrorRequiresRecentLogin => 'この操作を実行するには、再度サインインしてください。';
+
+  @override
+  String get firebaseErrorNetworkFailed => 'ネットワークエラー。接続を確認してください。';
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      'このメールアドレスのアカウントは既に別のサインイン方法で存在しています。元の方法でサインインしてください。';
+
+  @override
+  String firebaseErrorDefault(String message) {
+    return 'エラーが発生しました: $message';
+  }
+
+  @override
+  String get integrityErrorDeviceIntegrityTitle => 'デバイスセキュリティの問題';
+
+  @override
+  String get integrityErrorDeviceIntegrity =>
+      'お使いのデバイスはこの操作のセキュリティ要件を満たしていません。';
+
+  @override
+  String integrityGuidanceDeviceIntegrity(String reference) {
+    return 'デバイスがGoogle Play Protectチェックに合格していること、およびroot化や改造されていないことを確認してください。エラーだと思われる場合は、参照番号でサポートにお問い合わせください：$reference';
+  }
+
+  @override
+  String get integrityErrorAppIntegrityTitle => 'アプリインストールの問題';
+
+  @override
+  String get integrityErrorAppIntegrity => 'アプリのインストールを確認できませんでした。';
+
+  @override
+  String integrityGuidanceAppIntegrity(String reference) {
+    return 'Google Play ストアから公式アプリを使用していることを確認してください。サイドロードまたは改造されたアプリはサポートされていません。参照：$reference';
+  }
+
+  @override
+  String get integrityErrorNetworkTitle => '接続エラー';
+
+  @override
+  String get integrityErrorNetwork => 'ネットワークエラーのため、デバイスのセキュリティを確認できませんでした。';
+
+  @override
+  String integrityGuidanceNetwork(String reference) {
+    return 'インターネット接続を確認して、もう一度お試しください。問題が解決しない場合は、参照番号でサポートにお問い合わせください：$reference';
+  }
+
+  @override
+  String get integrityErrorBackendVerificationTitle => '検証に失敗しました';
+
+  @override
+  String get integrityErrorBackendVerification => 'セキュリティ検証を完了できませんでした。';
+
+  @override
+  String integrityGuidanceBackendVerification(String reference) {
+    return 'デバイスの検証中に問題が発生しました。後でもう一度お試しください。問題が続く場合は、参照番号でサポートにお問い合わせください：$reference';
+  }
+
+  @override
+  String get integrityErrorTokenRequestTitle => 'セキュリティチェックに失敗しました';
+
+  @override
+  String get integrityErrorTokenRequest => 'セキュリティ検証を実行できませんでした。';
+
+  @override
+  String integrityGuidanceTokenRequest(String reference) {
+    return 'セキュリティトークンを生成できませんでした。アプリを再起動してもう一度お試しください。問題が解決しない場合は、参照番号でサポートにお問い合わせください：$reference';
+  }
+
+  @override
+  String get integrityErrorUnknownTitle => '検証エラー';
+
+  @override
+  String get integrityErrorUnknown => 'セキュリティ検証中に予期しないエラーが発生しました。';
+
+  @override
+  String integrityGuidanceUnknown(String reference) {
+    return 'もう一度お試しください。問題が続く場合は、参照番号でサポートにお問い合わせください：$reference';
+  }
+
+  @override
+  String get emailVerificationSent => '確認メールを送信しました！受信トレイをご確認ください。';
+
+  @override
+  String get emailVerificationResent => '確認メールを再送信しました。';
+
+  @override
+  String get emailNotVerified => 'メール未確認';
+
+  @override
+  String get emailVerified => 'メール確認済み';
+
+  @override
+  String get verifyEmailAddress => 'メールアドレスを確認';
+
+  @override
+  String get verifyEmailMessage =>
+      'すべての機能にアクセスするには、メールアドレスを確認してください。受信トレイで確認リンクを確認してください。';
+
+  @override
+  String get sendVerificationEmail => '確認メールを送信';
+
+  @override
+  String get resendVerificationEmail => '確認メールを再送信';
+
+  @override
+  String get checkVerificationStatus => '確認ステータスを確認';
+
+  @override
+  String get emailVerificationPending => 'メール確認保留中';
+
+  @override
+  String verificationEmailCooldown(int seconds) {
+    return '別の確認メールをリクエストする前に、$seconds秒お待ちください。';
+  }
+
+  @override
+  String get termsAndPrivacy => '利用規約とプライバシー';
+
+  @override
+  String get acceptTermsAndPrivacy => '利用規約とプライバシーポリシーに同意します';
+
+  @override
+  String get mustAcceptTerms => '続行するには、利用規約とプライバシーポリシーに同意する必要があります。';
+
+  @override
+  String get termsOfService => '利用規約';
+
+  @override
+  String get privacyPolicy => 'プライバシーポリシー';
+
+  @override
+  String get viewTermsOfService => '利用規約を表示';
+
+  @override
+  String get viewPrivacyPolicy => 'プライバシーポリシーを表示';
+
+  @override
+  String termsLastUpdated(String date) {
+    return '最終更新: $date';
+  }
+
+  @override
+  String privacyLastUpdated(String date) {
+    return '最終更新: $date';
+  }
+
+  @override
+  String get ageRequirement => 'アカウントを作成するには13歳以上である必要があります。';
+
+  @override
+  String get confirmAge => '私は13歳以上であることを確認します';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'exceptionEmailVerificationFailed';
+
+  @override
+  String get exceptionEmailVerificationCooldown =>
+      'exceptionEmailVerificationCooldown';
+
+  @override
+  String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
+
+  @override
+  String get collisionEffectsTitle => '衝突エフェクト';
+
+  @override
+  String get showCollisionDebris => '破片粒子';
+
+  @override
+  String get showCollisionDebrisDescription => '物理ベースの軌道を持つ衝突衝撃から放出される粒子';
+
+  @override
+  String get showCollisionShockwaves => '衝撃波リング';
+
+  @override
+  String get showCollisionShockwavesDescription => '衝突地点から衝撃力に応じて拡大するエネルギーリング';
+
+  @override
+  String get showCollisionEjection => '物質放出';
+
+  @override
+  String get showCollisionEjectionDescription => '高エネルギー衝撃時に排出される物質の渦巻く雲';
+
+  @override
+  String get showCollisionPlasmaJets => 'プラズマジェット';
+
+  @override
+  String get showCollisionPlasmaJetsDescription =>
+      '大質量星衝突からの方向性のある超高温ストリーム（実験的）';
 }

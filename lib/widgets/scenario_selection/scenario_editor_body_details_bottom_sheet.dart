@@ -659,29 +659,36 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
             // Stellar Properties (if applicable)
             _buildDetailSection(l10n.stellarPropertiesEditor, [
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildDetailCard(
-                      icon: Icons.wb_sunny_outlined,
-                      label: l10n.temperatureEditorlabel,
-                      value: _formatTemperature(widget.body.temperature),
-                      color: AppColors.accretionRed,
-                    ),
-                  ),
-                  SizedBox(width: AppTypography.spacingSmall),
-                  if (widget.body.bodyType == BodyType.star)
-                    Expanded(
-                      child: _buildDetailCard(
-                        icon: Icons.light_mode_outlined,
-                        label: l10n.luminosityEditorLabel,
-                        value: _formatLuminosity(widget.body.stellarLuminosity),
-                        color: AppColors.uiYellow,
+              Consumer<AppState>(
+                builder: (context, appState, child) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: _buildDetailCard(
+                          icon: Icons.wb_sunny_outlined,
+                          label: l10n.temperatureEditorlabel,
+                          value: NumberUtils.formatTemperatureWithUnit(
+                            widget.body.temperature,
+                            appState.ui.temperatureUnit,
+                          ),
+                          color: AppColors.accretionRed,
+                        ),
                       ),
-                    )
-                  else
-                    Expanded(child: SizedBox()), // Empty space if no luminosity
-                ],
+                      SizedBox(width: AppTypography.spacingSmall),
+                      if (widget.body.bodyType == BodyType.star)
+                        Expanded(
+                          child: _buildDetailCard(
+                            icon: Icons.light_mode_outlined,
+                            label: l10n.luminosityEditorLabel,
+                            value: _formatLuminosity(
+                              widget.body.stellarLuminosity,
+                            ),
+                            color: AppColors.uiYellow,
+                          ),
+                        ),
+                    ],
+                  );
+                },
               ),
             ]),
           ],
@@ -1745,10 +1752,6 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
   String _formatRadius(double radius) {
     return NumberUtils.formatRadiusInSolarRadii(radius);
-  }
-
-  String _formatTemperature(double temperature) {
-    return NumberUtils.formatTemperature(temperature);
   }
 
   String _formatLuminosity(double luminosity) {

@@ -148,9 +148,8 @@ void main() {
         final button = tester.widget<ElevatedButton>(
           find.byType(ElevatedButton),
         );
-        final expectedColor = AppColors.uiWhite.withValues(
-          alpha: AppTypography.opacityBarely,
-        );
+        // Secondary button uses uiBorderGrey
+        final expectedColor = AppColors.uiBorderGrey;
         expect(button.style?.backgroundColor?.resolve({}), expectedColor);
       });
 

@@ -163,6 +163,68 @@ class VisualsControls extends StatelessWidget {
             appState.ui.showOffScreenIndicators,
             appState.ui.toggleOffScreenIndicators,
           ),
+        ),
+
+        SectionDivider.labeled(
+          l10n.collisionEffectsTitle,
+          topSpacing: AppTypography.spacingSmall,
+          bottomSpacing: AppTypography.spacingMedium,
+        ),
+
+        _buildToggleOption(
+          l10n.showCollisionDebris,
+          l10n.showCollisionDebrisDescription,
+          Icons.grain,
+          appState.ui.showCollisionDebris,
+          () => _toggleWithAnalytics(
+            UIAction.visualEffectToggle,
+            UIElement.visualEffectsControls,
+            'collision_debris',
+            appState.ui.showCollisionDebris,
+            appState.ui.toggleCollisionDebris,
+          ),
+        ),
+
+        _buildToggleOption(
+          l10n.showCollisionShockwaves,
+          l10n.showCollisionShockwavesDescription,
+          Icons.radio_button_unchecked,
+          appState.ui.showCollisionShockwaves,
+          () => _toggleWithAnalytics(
+            UIAction.visualEffectToggle,
+            UIElement.visualEffectsControls,
+            'collision_shockwaves',
+            appState.ui.showCollisionShockwaves,
+            appState.ui.toggleCollisionShockwaves,
+          ),
+        ),
+
+        _buildToggleOption(
+          l10n.showCollisionEjection,
+          l10n.showCollisionEjectionDescription,
+          Icons.cloud,
+          appState.ui.showCollisionEjection,
+          () => _toggleWithAnalytics(
+            UIAction.visualEffectToggle,
+            UIElement.visualEffectsControls,
+            'collision_ejection',
+            appState.ui.showCollisionEjection,
+            appState.ui.toggleCollisionEjection,
+          ),
+        ),
+
+        _buildToggleOption(
+          l10n.showCollisionPlasmaJets,
+          l10n.showCollisionPlasmaJetsDescription,
+          Icons.bolt,
+          appState.ui.showCollisionPlasmaJets,
+          () => _toggleWithAnalytics(
+            UIAction.visualEffectToggle,
+            UIElement.visualEffectsControls,
+            'collision_plasma_jets',
+            appState.ui.showCollisionPlasmaJets,
+            appState.ui.toggleCollisionPlasmaJets,
+          ),
           isLast: true,
         ),
       ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/haptic_utils.dart';
 
 /// Enhanced ListTile with haptic feedback for navigation actions
@@ -54,7 +55,8 @@ class HapticListTile extends StatelessWidget {
               onTap!();
             }
           : null,
-      contentPadding: contentPadding,
+      contentPadding:
+          contentPadding ?? const EdgeInsets.all(AppTypography.spacingXSmall),
       dense: dense,
     );
   }

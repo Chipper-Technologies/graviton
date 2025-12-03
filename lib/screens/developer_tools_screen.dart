@@ -7,14 +7,15 @@ import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/onboarding_service.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/common/action_option.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
-import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
-import 'package:graviton/widgets/screenshot_mode_widget.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
+import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/overlays/tutorial_overlay.dart';
+import 'package:graviton/widgets/screenshot_mode_widget.dart';
 
 /// Developer Tools full-screen page
 class DeveloperToolsScreen extends StatelessWidget {
@@ -40,51 +41,58 @@ class DeveloperToolsScreen extends StatelessWidget {
             child: Column(
               children: [
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Screenshot Mode Section
-                        if (ScreenshotModeService().isAvailable) ...[
-                          SectionDivider.labeled(
-                            l10n.marketingLabel,
-                            bottomSpacing: AppTypography.spacingMedium,
-                          ),
-                          const ScreenshotModeWidget(),
-                        ],
-
-                        // Actions Section
-                        SectionDivider.labeled(
-                          l10n.showHelpTooltip,
-                          topSpacing: AppTypography.spacingXXSmall,
-                          bottomSpacing: AppTypography.spacingMedium,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: AppConstraints.contentMaxWidth,
                         ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Screenshot Mode Section
+                            if (ScreenshotModeService().isAvailable) ...[
+                              SectionDivider.labeled(
+                                l10n.marketingLabel,
+                                bottomSpacing: AppTypography.spacingMedium,
+                              ),
+                              const ScreenshotModeWidget(),
+                            ],
 
-                        // Tutorial Button
-                        ActionOption(
-                          icon: Icons.school,
-                          title: l10n.tutorialButton,
-                          description: l10n.tutorialDescription,
-                          onPressed: () => _startTutorial(context),
-                          isPrimary: true,
-                        ),
+                            // Actions Section
+                            SectionDivider.labeled(
+                              l10n.showHelpTooltip,
+                              topSpacing: AppTypography.spacingXXSmall,
+                              bottomSpacing: AppTypography.spacingMedium,
+                            ),
 
-                        // Changelog Section
-                        SectionDivider.labeled(
-                          l10n.changelogHometitle,
-                          topSpacing: AppTypography.spacingXXSmall,
-                          bottomSpacing: AppTypography.spacingMedium,
-                        ),
+                            // Tutorial Button
+                            ActionOption(
+                              icon: Icons.school,
+                              title: l10n.tutorialButton,
+                              description: l10n.tutorialDescription,
+                              onPressed: () => _startTutorial(context),
+                              isPrimary: true,
+                            ),
 
-                        // Changelog Button
-                        ActionOption(
-                          icon: Icons.assignment,
-                          title: l10n.changelogButton,
-                          description: l10n.changelogDescription,
-                          onPressed: () => _showChangelog(context),
-                          isPrimary: true,
+                            // Changelog Section
+                            SectionDivider.labeled(
+                              l10n.changelogHometitle,
+                              topSpacing: AppTypography.spacingXXSmall,
+                              bottomSpacing: AppTypography.spacingMedium,
+                            ),
+
+                            // Changelog Button
+                            ActionOption(
+                              icon: Icons.assignment,
+                              title: l10n.changelogButton,
+                              description: l10n.changelogDescription,
+                              onPressed: () => _showChangelog(context),
+                              isPrimary: true,
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),

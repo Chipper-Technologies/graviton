@@ -462,7 +462,10 @@ class CameraState extends ChangeNotifier {
   }
 
   void setAutoRotateSpeed(double speed) {
-    _autoRotateSpeed = speed.clamp(0.1, 2.0);
+    _autoRotateSpeed = speed.clamp(
+      SimulationConstants.cameraAutoRotateSpeedMin,
+      SimulationConstants.cameraAutoRotateSpeedMax,
+    );
     notifyListeners();
   }
 

@@ -35,6 +35,12 @@ class UIState extends ChangeNotifier {
   bool _showHabitableZones = false;
   bool _showHabitabilityIndicators = false;
 
+  // Collision visual effects settings
+  bool _showCollisionDebris = true;
+  bool _showCollisionShockwaves = true;
+  bool _showCollisionEjection = true;
+  bool _showCollisionPlasmaJets = false;
+
   // Language settings
   String? _selectedLanguageCode; // null means system default
 
@@ -81,6 +87,10 @@ class UIState extends ChangeNotifier {
   static const String _keyShowHabitableZones = 'showHabitableZones';
   static const String _keyShowHabitabilityIndicators =
       'showHabitabilityIndicators';
+  static const String _keyShowCollisionDebris = 'showCollisionDebris';
+  static const String _keyShowCollisionShockwaves = 'showCollisionShockwaves';
+  static const String _keyShowCollisionEjection = 'showCollisionEjection';
+  static const String _keyShowCollisionPlasmaJets = 'showCollisionPlasmaJets';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
   static const String _keyTemperatureUnit = 'temperatureUnit';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
@@ -160,6 +170,15 @@ class UIState extends ChangeNotifier {
       _showHabitableZones = prefs.getBool(_keyShowHabitableZones) ?? false;
       _showHabitabilityIndicators =
           prefs.getBool(_keyShowHabitabilityIndicators) ?? false;
+
+      // Load collision visual effects settings
+      _showCollisionDebris = prefs.getBool(_keyShowCollisionDebris) ?? true;
+      _showCollisionShockwaves =
+          prefs.getBool(_keyShowCollisionShockwaves) ?? true;
+      _showCollisionEjection = prefs.getBool(_keyShowCollisionEjection) ?? true;
+      _showCollisionPlasmaJets =
+          prefs.getBool(_keyShowCollisionPlasmaJets) ?? false;
+
       _selectedLanguageCode = prefs.getString(_keySelectedLanguageCode);
 
       // Load temperature unit setting
@@ -237,6 +256,12 @@ class UIState extends ChangeNotifier {
   // Habitability getters
   bool get showHabitableZones => _showHabitableZones;
   bool get showHabitabilityIndicators => _showHabitabilityIndicators;
+
+  // Collision visual effects getters
+  bool get showCollisionDebris => _showCollisionDebris;
+  bool get showCollisionShockwaves => _showCollisionShockwaves;
+  bool get showCollisionEjection => _showCollisionEjection;
+  bool get showCollisionPlasmaJets => _showCollisionPlasmaJets;
 
   // Gravity field getters
   bool get globalGravityFields => _globalGravityFields;
@@ -400,6 +425,47 @@ class UIState extends ChangeNotifier {
     FirebaseService.instance.logSettingsChange(
       'show_habitability_indicators',
       _showHabitabilityIndicators,
+    );
+    notifyListeners();
+  }
+
+  // Collision visual effects setters
+  void toggleCollisionDebris() {
+    _showCollisionDebris = !_showCollisionDebris;
+    _saveSetting(_keyShowCollisionDebris, _showCollisionDebris);
+    FirebaseService.instance.logSettingsChange(
+      'show_collision_debris',
+      _showCollisionDebris,
+    );
+    notifyListeners();
+  }
+
+  void toggleCollisionShockwaves() {
+    _showCollisionShockwaves = !_showCollisionShockwaves;
+    _saveSetting(_keyShowCollisionShockwaves, _showCollisionShockwaves);
+    FirebaseService.instance.logSettingsChange(
+      'show_collision_shockwaves',
+      _showCollisionShockwaves,
+    );
+    notifyListeners();
+  }
+
+  void toggleCollisionEjection() {
+    _showCollisionEjection = !_showCollisionEjection;
+    _saveSetting(_keyShowCollisionEjection, _showCollisionEjection);
+    FirebaseService.instance.logSettingsChange(
+      'show_collision_ejection',
+      _showCollisionEjection,
+    );
+    notifyListeners();
+  }
+
+  void toggleCollisionPlasmaJets() {
+    _showCollisionPlasmaJets = !_showCollisionPlasmaJets;
+    _saveSetting(_keyShowCollisionPlasmaJets, _showCollisionPlasmaJets);
+    FirebaseService.instance.logSettingsChange(
+      'show_collision_plasma_jets',
+      _showCollisionPlasmaJets,
     );
     notifyListeners();
   }

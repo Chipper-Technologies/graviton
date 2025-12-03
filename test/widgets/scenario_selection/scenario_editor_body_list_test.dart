@@ -6,6 +6,8 @@ import 'package:graviton/enums/body_type.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:graviton/state/app_state.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   group('ScenarioEditorBodyList', () {
@@ -35,15 +37,18 @@ void main() {
     });
 
     Widget makeTestableWidget(Widget child) {
-      return MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('en', '')],
-        home: Scaffold(body: child),
+      return ChangeNotifierProvider<AppState>.value(
+        value: AppState(),
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en', '')],
+          home: Scaffold(body: child),
+        ),
       );
     }
 

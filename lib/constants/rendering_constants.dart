@@ -249,6 +249,20 @@ class RenderingConstants {
   /// Caps the adaptive tolerance to maintain reasonable matching precision.
   static const double bodyMatchingMaxTolerance = 25.0;
 
+  // Collision particle effects rendering
+  static const double particleGlowBlurMultiplier = 0.5;
+  static const double particleGlowRadiusMultiplier = 1.5;
+  static const double cloudParticleSizeMultiplier = 1.5;
+
+  /// Maximum number of debris particles to maintain for performance
+  static const int maxDebrisParticles = 500;
+
+  /// Maximum number of debris cloud particles for performance
+  static const int maxCloudParticles = 200;
+
+  /// Maximum number of plasma jet particles for performance
+  static const int maxJetParticles = 100;
+
   // Common 3D vectors
 
   /// World-space up vector (Y-axis up).
