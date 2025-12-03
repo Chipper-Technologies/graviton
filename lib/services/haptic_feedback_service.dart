@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:graviton/state/ui_state.dart';
 
@@ -12,6 +13,21 @@ class HapticFeedbackService {
   UIState? _uiState;
   bool? _manuallyEnabledUI;
   bool? _manuallyEnabledCollision;
+
+  /// Check if the device supports vibration
+  /// On web desktop, vibration is not supported (returns false)
+  /// On web mobile and native platforms, vibration is supported (returns true)
+  bool get _supportsVibration {
+    if (kIsWeb) {
+      // On web, haptic feedback only works on mobile devices with vibration motors
+      // Desktop browsers will log intervention warnings if we try to vibrate
+      // We disable haptics on web to avoid these warnings since most users
+      // will be on desktop where it doesn't work anyway
+      return false;
+    }
+    // Native platforms (iOS, Android, macOS) support haptics
+    return true;
+  }
 
   /// Initialize the service with UIState to check vibration settings
   void initialize(UIState uiState) {
@@ -36,12 +52,14 @@ class HapticFeedbackService {
 
   /// Check if UI haptic feedback is enabled
   bool get isUIEnabled {
+    if (!_supportsVibration) return false;
     if (_manuallyEnabledUI != null) return _manuallyEnabledUI!;
     return _uiState?.enableUIHapticFeedback ?? true;
   }
 
   /// Check if collision haptic feedback is enabled
   bool get isCollisionEnabled {
+    if (!_supportsVibration) return false;
     if (_manuallyEnabledCollision != null) return _manuallyEnabledCollision!;
     return _uiState?.enableCollisionHapticFeedback ?? true;
   }

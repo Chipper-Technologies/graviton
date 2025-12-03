@@ -37,9 +37,11 @@ class FirebaseService {
         // Configure Crashlytics
         await _configureCrashlytics();
       } else {
-        debugPrint(
-          'Crashlytics not initialized - not supported on web/desktop',
-        );
+        if (kDebugMode) {
+          debugPrint(
+            'Crashlytics not initialized - not supported on web/desktop',
+          );
+        }
       }
 
       _remoteConfig = FirebaseRemoteConfig.instance;
@@ -180,42 +182,56 @@ class FirebaseService {
   /// Log screen view
   Future<void> logScreenView(String screenName) async {
     if (!_isInitialized) {
-      debugPrint('Firebase not initialized, skipping screen view: $screenName');
+      if (kDebugMode) {
+        debugPrint(
+          'Firebase not initialized, skipping screen view: $screenName',
+        );
+      }
       return;
     }
 
     try {
       await _analytics?.logScreenView(screenName: screenName);
     } catch (e) {
-      debugPrint('Error logging screen view $screenName: $e');
+      if (kDebugMode) {
+        debugPrint('Error logging screen view $screenName: $e');
+      }
     }
   }
 
   /// Set user properties
   Future<void> setUserProperty(String name, String? value) async {
     if (!_isInitialized) {
-      debugPrint('Firebase not initialized, skipping user property: $name');
+      if (kDebugMode) {
+        debugPrint('Firebase not initialized, skipping user property: $name');
+      }
       return;
     }
 
     try {
       await _analytics?.setUserProperty(name: name, value: value);
     } catch (e) {
-      debugPrint('Error setting user property $name: $e');
+      if (kDebugMode) {
+        debugPrint('Error setting user property $name: $e');
+      }
     }
   }
 
   /// Set user ID for analytics
   Future<void> setUserId(String? userId) async {
     if (!_isInitialized) {
-      debugPrint('Firebase not initialized, skipping user ID');
+      if (kDebugMode) {
+        debugPrint('Firebase not initialized, skipping user ID');
+      }
       return;
     }
 
     try {
       await _analytics?.setUserId(id: userId);
     } catch (e) {
-      debugPrint('Error setting user ID: $e');
+      if (kDebugMode) {
+        debugPrint('Error setting user ID: $e');
+      }
     }
   }
 

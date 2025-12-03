@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
 
@@ -9,10 +10,53 @@ void main() {
       service = HapticFeedbackService.instance;
     });
 
+    group('Platform Support', () {
+      test('should disable haptics on web platform', () {
+        // On web, haptics should be disabled regardless of settings
+        if (kIsWeb) {
+          service.setUIEnabled(true);
+          service.setCollisionEnabled(true);
+
+          expect(
+            service.isUIEnabled,
+            isFalse,
+            reason: 'UI haptics should be disabled on web',
+          );
+          expect(
+            service.isCollisionEnabled,
+            isFalse,
+            reason: 'Collision haptics should be disabled on web',
+          );
+        }
+      });
+
+      test('should enable haptics on native platforms', () {
+        // On native platforms, haptics should work when enabled
+        if (!kIsWeb) {
+          service.setUIEnabled(true);
+          service.setCollisionEnabled(true);
+
+          expect(
+            service.isUIEnabled,
+            isTrue,
+            reason: 'UI haptics should be enabled on native platforms',
+          );
+          expect(
+            service.isCollisionEnabled,
+            isTrue,
+            reason: 'Collision haptics should be enabled on native platforms',
+          );
+        }
+      });
+    });
+
     group('Enable/Disable State', () {
       test('should default to enabled state when no UI state is set', () {
         service.setEnabled(true);
-        expect(service.isEnabled, isTrue);
+        // On web, will still be false due to platform check
+        if (!kIsWeb) {
+          expect(service.isEnabled, isTrue);
+        }
       });
 
       test('should update enabled state correctly', () {
@@ -20,16 +64,26 @@ void main() {
         expect(service.isEnabled, isFalse);
 
         service.setEnabled(true);
-        expect(service.isEnabled, isTrue);
+        // On web, will still be false due to platform check
+        if (!kIsWeb) {
+          expect(service.isEnabled, isTrue);
+        } else {
+          expect(service.isEnabled, isFalse);
+        }
       });
 
       test('should respect manual override over UI state', () {
-        // Manual override should take precedence
+        // Manual override should take precedence, but web platform check is first
         service.setEnabled(false);
         expect(service.isEnabled, isFalse);
 
         service.setEnabled(true);
-        expect(service.isEnabled, isTrue);
+        if (!kIsWeb) {
+          expect(service.isEnabled, isTrue);
+        } else {
+          // Web always returns false regardless of settings
+          expect(service.isEnabled, isFalse);
+        }
       });
     });
 

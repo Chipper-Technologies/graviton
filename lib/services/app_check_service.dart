@@ -45,14 +45,18 @@ class AppCheckService {
   /// ```
   Future<void> initialize() async {
     if (_initialized) {
-      debugPrint('AppCheckService: Already initialized');
+      if (kDebugMode) {
+        debugPrint('AppCheckService: Already initialized');
+      }
       return;
     }
 
     // Check if App Check is enabled via Remote Config
     final remoteConfig = RemoteConfigService.instance;
     if (remoteConfig.appCheckEnabled == false) {
-      debugPrint('AppCheckService: Disabled via Remote Config');
+      if (kDebugMode) {
+        debugPrint('AppCheckService: Disabled via Remote Config');
+      }
       return;
     }
 
@@ -73,20 +77,16 @@ class AppCheckService {
         );
       } else {
         // Production mode - use platform-specific providers
-        debugPrint('AppCheckService: Initializing in PRODUCTION mode');
-
         if (PlatformUtils.isAndroid) {
           // Android uses Play Integrity API
           await FirebaseAppCheck.instance.activate(
             providerAndroid: AndroidPlayIntegrityProvider(),
           );
-          debugPrint('AppCheckService: Android Play Integrity activated');
         } else if (PlatformUtils.isIOS || PlatformUtils.isMacOS) {
           // iOS/macOS uses DeviceCheck API
           await FirebaseAppCheck.instance.activate(
             providerApple: AppleDeviceCheckProvider(),
           );
-          debugPrint('AppCheckService: iOS/macOS DeviceCheck activated');
         } else {
           // Web or other platforms
           const recaptchaSiteKey = String.fromEnvironment(
@@ -95,9 +95,11 @@ class AppCheckService {
           );
 
           if (recaptchaSiteKey.isEmpty) {
-            debugPrint(
-              'AppCheckService: Warning - No reCAPTCHA site key configured for web',
-            );
+            if (kDebugMode) {
+              debugPrint(
+                'AppCheckService: Warning - No reCAPTCHA site key configured for web',
+              );
+            }
             // Still activate with empty key to maintain compatibility
             await FirebaseAppCheck.instance.activate(
               providerWeb: ReCaptchaV3Provider(recaptchaSiteKey),
@@ -106,15 +108,18 @@ class AppCheckService {
             await FirebaseAppCheck.instance.activate(
               providerWeb: ReCaptchaV3Provider(recaptchaSiteKey),
             );
-            debugPrint('AppCheckService: Web reCAPTCHA v3 activated');
           }
         }
       }
 
       _initialized = true;
-      debugPrint('AppCheckService: Initialization complete');
+      if (kDebugMode) {
+        debugPrint('AppCheckService: Initialization complete');
+      }
     } catch (e) {
-      debugPrint('AppCheckService: Initialization failed: $e');
+      if (kDebugMode) {
+        debugPrint('AppCheckService: Initialization failed: $e');
+      }
       // Don't rethrow - allow app to continue without App Check
       // Firebase services will still work, just without protection
     }
@@ -133,7 +138,9 @@ class AppCheckService {
   /// ```
   Future<String?> getToken({bool forceRefresh = false}) async {
     if (!_initialized) {
-      debugPrint('AppCheckService: Cannot get token - not initialized');
+      if (kDebugMode) {
+        debugPrint('AppCheckService: Cannot get token - not initialized');
+      }
       return null;
     }
 
@@ -141,7 +148,9 @@ class AppCheckService {
       final token = await FirebaseAppCheck.instance.getToken(forceRefresh);
       return token;
     } catch (e) {
-      debugPrint('AppCheckService: Failed to get token: $e');
+      if (kDebugMode) {
+        debugPrint('AppCheckService: Failed to get token: $e');
+      }
       return null;
     }
   }
@@ -158,11 +167,15 @@ class AppCheckService {
   void setTokenAutoRefreshEnabled(bool enabled) {
     try {
       FirebaseAppCheck.instance.setTokenAutoRefreshEnabled(enabled);
-      debugPrint(
-        'AppCheckService: Token auto-refresh ${enabled ? "enabled" : "disabled"}',
-      );
+      if (kDebugMode) {
+        debugPrint(
+          'AppCheckService: Token auto-refresh ${enabled ? "enabled" : "disabled"}',
+        );
+      }
     } catch (e) {
-      debugPrint('AppCheckService: Failed to set auto-refresh: $e');
+      if (kDebugMode) {
+        debugPrint('AppCheckService: Failed to set auto-refresh: $e');
+      }
     }
   }
 
@@ -179,6 +192,8 @@ class AppCheckService {
   /// Reset the service (primarily for testing)
   void reset() {
     _initialized = false;
-    debugPrint('AppCheckService: Reset complete');
+    if (kDebugMode) {
+      debugPrint('AppCheckService: Reset complete');
+    }
   }
 }
