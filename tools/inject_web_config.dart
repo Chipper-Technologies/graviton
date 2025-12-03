@@ -31,15 +31,24 @@ void main(List<String> args) {
     exit(1);
   }
 
-  // Read index.html
-  final indexHtmlPath = 'web/index.html';
-  final indexHtmlFile = File(indexHtmlPath);
-
-  if (!indexHtmlFile.existsSync()) {
+  // Determine which index.html to modify
+  // If build/web/index.html exists, modify it (post-build)
+  // Otherwise modify web/index.html (pre-build)
+  final buildIndexHtmlPath = 'build/web/index.html';
+  final sourceIndexHtmlPath = 'web/index.html';
+  
+  final buildIndexHtmlFile = File(buildIndexHtmlPath);
+  final sourceIndexHtmlFile = File(sourceIndexHtmlPath);
+  
+  final targetFile = buildIndexHtmlFile.existsSync() 
+      ? buildIndexHtmlFile 
+      : sourceIndexHtmlFile;
+  
+  if (!targetFile.existsSync()) {
     exit(1);
   }
 
-  var indexHtmlContent = indexHtmlFile.readAsStringSync();
+  var indexHtmlContent = targetFile.readAsStringSync();
 
   // Replace template variable
   indexHtmlContent = indexHtmlContent.replaceAll(
@@ -48,44 +57,50 @@ void main(List<String> args) {
   );
 
   // Add console silencing script for production builds
-  final consoleSilenceScript = environment == 'prod'
-      ? '''
+  if (environment == 'prod' && !indexHtmlContent.contains('Silence console logs in production')) {
+    const consoleSilenceScript = '''
 <script>
     // Silence console logs in production
-    if (typeof window !== 'undefined') {
-      // Store original console methods for critical errors
+    (function() {
+      if (typeof window === 'undefined') return;
+      
+      // Store original console methods
       const originalError = console.error;
       
-      // Override console methods to suppress logs
+      // Suppress all standard logging
       console.log = function() {};
       console.debug = function() {};
       console.info = function() {};
       console.warn = function() {};
       
-      // Keep critical errors but suppress common Flutter/Firebase noise
+      // Filter console.error to suppress known non-critical messages
       console.error = function(...args) {
         const message = args.join(' ');
-        // Filter out known non-critical messages
+        
+        // Filter out known Flutter/browser noise
         if (message.includes('Intervention') ||
             message.includes('Violation') ||
             message.includes('requestAnimationFrame') ||
             message.includes('TrustedTypes') ||
             message.includes('service worker') ||
-            message.includes('Loading from existing')) {
+            message.includes('Loading from existing') ||
+            message.includes('navigator.vibrate')) {
           return;
         }
+        
         // Pass through actual errors
         originalError.apply(console, args);
       };
-    }
-  </script>'''
-      : '';
+    })();
+  </script>''';
 
-  indexHtmlContent = indexHtmlContent.replaceAll(
-    '<!-- CONSOLE_SILENCE_SCRIPT -->',
-    consoleSilenceScript,
-  );
+    // Inject before closing </head> tag
+    indexHtmlContent = indexHtmlContent.replaceFirst(
+      '</head>',
+      '$consoleSilenceScript\n</head>',
+    );
+  }
 
-  // Write back to index.html
-  indexHtmlFile.writeAsStringSync(indexHtmlContent);
+  // Write back to the target file
+  targetFile.writeAsStringSync(indexHtmlContent);
 }
