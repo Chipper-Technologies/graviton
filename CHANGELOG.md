@@ -5,7 +5,23 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.7.0] - 2025-12-09
+
+### Added
+- **Firebase Performance Monitoring**: Comprehensive performance tracking and analysis capabilities
+  - **Custom Trace Tracking**: Monitor performance of critical app operations with `startTrace()` method
+  - **HTTP Metrics**: Track network request performance with `newHttpMetric()` for API calls
+  - **Automatic Initialization**: Seamless integration with existing Firebase service architecture
+  - **Cross-Platform Support**: Performance monitoring across iOS, Android, and Web platforms
+  - **Service Layer**: Dedicated `PerformanceService` following established Firebase service patterns
+  - **Test Coverage**: Comprehensive unit tests for initialization and performance tracking methods
+
+### Improved
+- **Build Process**: Updated production web build task to properly chain configuration injection after Flutter build
+  - Ensures Firebase config is correctly injected into web builds before deployment
+  - Prevents missing configuration values in production web deployments
+
+## [1.6.0] - 2025-12-06
 
 ### Added
 - **Firebase App Check Integration**: Cross-platform backend protection for Firebase services
