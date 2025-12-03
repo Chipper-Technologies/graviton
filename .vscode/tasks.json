@@ -547,15 +547,11 @@
     {
       "label": "[PROD][WEB] Build App",
       "type": "shell",
-      "command": "flutter",
+      "command": "sh",
       "args": [
-        "build",
-        "web",
-        "--dart-define-from-file",
-        "config/prod-web.json",
-        "--release"
+        "-c",
+        "flutter build web --dart-define-from-file config/prod-web.json --release && dart run tools/inject_web_config.dart config/prod-web.json"
       ],
-      "dependsOn": ["Inject Prod Web Config"],
       "group": {
         "kind": "build",
         "isDefault": false
@@ -569,7 +565,7 @@
         "clear": false
       },
       "problemMatcher": [],
-      "detail": "Build Flutter web app for production deployment"
+      "detail": "Build Flutter web app for production deployment with console silencing"
     },
 
     // ============================================================================
