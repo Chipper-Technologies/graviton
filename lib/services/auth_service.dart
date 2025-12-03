@@ -12,8 +12,9 @@ import 'package:graviton/models/user_profile.dart';
 import 'package:graviton/services/firebase_service.dart';
 import 'package:graviton/services/play_integrity_backend_service.dart';
 import 'package:graviton/services/play_integrity_service.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:graviton/utils/platform_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 /// Service for managing Firebase Authentication
 ///
@@ -499,7 +500,8 @@ class AuthService {
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
-        webAuthenticationOptions: kIsWeb
+        nonce: null, // Firebase handles nonce generation
+        webAuthenticationOptions: (kIsWeb || PlatformUtils.isAndroid)
             ? WebAuthenticationOptions(
                 clientId: AppConfig.appleClientId,
                 redirectUri: Uri.parse(AppConfig.appleRedirectUri),

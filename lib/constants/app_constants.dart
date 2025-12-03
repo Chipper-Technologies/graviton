@@ -8,10 +8,4 @@ class AppConstants {
 
   /// Android package name for development flavor
   static const String packageNameDev = 'io.chipper.graviton.dev';
-
-  /// iOS bundle identifier for production flavor
-  static const String bundleIdProd = 'io.chipper.graviton';
-
-  /// iOS bundle identifier for development flavor
-  static const String bundleIdDev = 'io.chipper.graviton.dev';
 }
