@@ -1,3 +1,4 @@
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/firebase_event.dart';
@@ -701,6 +702,93 @@ void main() {
           returnsNormally,
         );
       });
+    });
+
+    group('Performance Monitoring', () {
+      test(
+        'Should handle startTrace calls safely when not initialized',
+        () async {
+          final trace = await service.startTrace('test_trace');
+          // Should return null when not initialized
+          expect(trace, isNull);
+        },
+      );
+
+      test('Should handle startTrace with various trace names', () async {
+        const traceNames = [
+          'simulation_step',
+          'physics_calculation',
+          'render_frame',
+          'collision_detection',
+          'screen_transition',
+        ];
+
+        for (final name in traceNames) {
+          expect(() => service.startTrace(name), returnsNormally);
+        }
+      });
+
+      test('Should handle newHttpMetric calls safely when not initialized', () {
+        final metric = service.newHttpMetric(
+          'https://api.example.com/data',
+          HttpMethod.Get,
+        );
+        // Should return null when not initialized
+        expect(metric, isNull);
+      });
+
+      test('Should handle newHttpMetric with various HTTP methods', () {
+        const url = 'https://api.example.com/data';
+        final methods = [
+          HttpMethod.Get,
+          HttpMethod.Post,
+          HttpMethod.Put,
+          HttpMethod.Delete,
+          HttpMethod.Patch,
+        ];
+
+        for (final method in methods) {
+          expect(() => service.newHttpMetric(url, method), returnsNormally);
+        }
+      });
+
+      test('Should handle newHttpMetric with edge case URLs', () {
+        const urls = [
+          '',
+          'invalid-url',
+          'http://localhost:8080',
+          'https://example.com',
+          'https://api.example.com/path/to/resource?query=value',
+        ];
+
+        for (final url in urls) {
+          expect(
+            () => service.newHttpMetric(url, HttpMethod.Get),
+            returnsNormally,
+          );
+        }
+      });
+
+      test('Should have performance getter', () {
+        // Initially null before initialization
+        expect(service.performance, isNull);
+      });
+
+      test(
+        'Should handle performance monitoring when Firebase is not available',
+        () async {
+          // These should all handle gracefully when Firebase is not initialized
+          await expectLater(
+            service.startTrace('test_trace'),
+            completion(isNull),
+          );
+
+          expect(
+            service.newHttpMetric('https://api.test.com', HttpMethod.Get),
+            isNull,
+          );
+        },
+      );
     });
   });
 }

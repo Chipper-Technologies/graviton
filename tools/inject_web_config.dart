@@ -36,14 +36,14 @@ void main(List<String> args) {
   // Otherwise modify web/index.html (pre-build)
   final buildIndexHtmlPath = 'build/web/index.html';
   final sourceIndexHtmlPath = 'web/index.html';
-  
+
   final buildIndexHtmlFile = File(buildIndexHtmlPath);
   final sourceIndexHtmlFile = File(sourceIndexHtmlPath);
-  
-  final targetFile = buildIndexHtmlFile.existsSync() 
-      ? buildIndexHtmlFile 
+
+  final targetFile = buildIndexHtmlFile.existsSync()
+      ? buildIndexHtmlFile
       : sourceIndexHtmlFile;
-  
+
   if (!targetFile.existsSync()) {
     exit(1);
   }
@@ -57,7 +57,8 @@ void main(List<String> args) {
   );
 
   // Add console silencing script for production builds
-  if (environment == 'prod' && !indexHtmlContent.contains('Silence console logs in production')) {
+  if (environment == 'prod' &&
+      !indexHtmlContent.contains('Silence console logs in production')) {
     const consoleSilenceScript = '''
 <script>
     // Silence console logs in production

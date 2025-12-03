@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graviton/enums/ab_test_group.dart';
@@ -18,11 +19,13 @@ class FirebaseService {
 
   FirebaseAnalytics? _analytics;
   FirebaseCrashlytics? _crashlytics;
+  FirebasePerformance? _performance;
   FirebaseRemoteConfig? _remoteConfig;
   bool _isInitialized = false;
 
   FirebaseAnalytics? get analytics => _analytics;
   FirebaseCrashlytics? get crashlytics => _crashlytics;
+  FirebasePerformance? get performance => _performance;
   FirebaseRemoteConfig? get remoteConfig => _remoteConfig;
   bool get isInitialized => _isInitialized;
 
@@ -48,6 +51,10 @@ class FirebaseService {
 
       // Configure Remote Config
       await _configureRemoteConfig();
+
+      // Initialize Performance Monitoring
+      _performance = FirebasePerformance.instance;
+      await _configurePerformance();
 
       // Mark as initialized before logging
       _isInitialized = true;
@@ -90,6 +97,18 @@ class FirebaseService {
       _crashlytics?.recordError(error, stack, fatal: true);
       return true;
     };
+  }
+
+  /// Configure Firebase Performance Monitoring
+  Future<void> _configurePerformance() async {
+    if (_performance == null) return;
+
+    // Enable performance collection in release mode only
+    await _performance!.setPerformanceCollectionEnabled(!kDebugMode);
+
+    if (kDebugMode) {
+      debugPrint('Firebase Performance Monitoring configured');
+    }
   }
 
   /// Configure Firebase Remote Config
@@ -399,5 +418,56 @@ class FirebaseService {
     };
 
     await logEventWithEnum(FirebaseEvent.appError, parameters: params);
+  }
+
+  // ============================================================================
+  // PERFORMANCE MONITORING
+  // ============================================================================
+
+  /// Start a custom trace for performance monitoring
+  ///
+  /// Example:
+  /// ```dart
+  /// final trace = await FirebaseService.instance.startTrace('simulation_step');
+  /// // ... perform operation ...
+  /// await trace?.stop();
+  /// ```
+  Future<Trace?> startTrace(String traceName) async {
+    if (!_isInitialized || _performance == null) return null;
+
+    try {
+      final trace = _performance!.newTrace(traceName);
+      await trace.start();
+      return trace;
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Failed to start trace $traceName: $e');
+      }
+      return null;
+    }
+  }
+
+  /// Create a custom HTTP metric for network performance monitoring
+  ///
+  /// Example:
+  /// ```dart
+  /// final metric = FirebaseService.instance.newHttpMetric(
+  ///   'https://api.example.com/data',
+  ///   HttpMethod.Get,
+  /// );
+  /// // ... perform HTTP request ...
+  /// await metric?.stop();
+  /// ```
+  HttpMetric? newHttpMetric(String url, HttpMethod httpMethod) {
+    if (!_isInitialized || _performance == null) return null;
+
+    try {
+      return _performance!.newHttpMetric(url, httpMethod);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Failed to create HTTP metric: $e');
+      }
+      return null;
+    }
   }
 }
