@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('HapticInkWell Tests', () {
@@ -96,8 +97,8 @@ void main() {
     });
 
     testWidgets('should pass through all InkWell properties', (tester) async {
-      const splashColor = Colors.red;
-      const highlightColor = Colors.blue;
+      const splashColor = AppColors.uiRed;
+      const highlightColor = AppColors.primaryColor;
       const borderRadius = BorderRadius.all(Radius.circular(8));
 
       await tester.pumpWidget(

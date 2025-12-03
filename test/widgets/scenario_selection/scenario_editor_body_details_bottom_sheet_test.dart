@@ -8,6 +8,7 @@ import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:provider/provider.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 /// Test widget wrapper with localization support
 Widget makeTestableWidget(Widget child) {
@@ -31,7 +32,7 @@ void main() {
       velocity: vm.Vector3(1, 0, 0),
       mass: 5.972e24,
       radius: 6.371e6,
-      color: Colors.blue,
+      color: AppColors.primaryColor,
       bodyType: BodyType.planet,
       isPlanet: true,
       temperature: 288.0,
@@ -868,7 +869,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 10.0,
           radius: 1.5,
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
           bodyType: BodyType.star,
           stellarLuminosity: 1.0,
           temperature: 5778.0,
@@ -881,7 +882,7 @@ void main() {
           velocity: vm.Vector3(0.0, 0.0, 1.0),
           mass: 1.0,
           radius: 0.5,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
           bodyType: BodyType.planet,
           temperature: 288.0,
           habitabilityStatus: HabitabilityStatus.habitable,
@@ -1099,7 +1100,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 8.0,
           radius: 1.2,
-          color: Colors.orange,
+          color: AppColors.uiOrangeAccent,
           bodyType: BodyType.star,
           stellarLuminosity: 0.8,
           temperature: 5000.0,
@@ -1185,7 +1186,7 @@ void main() {
           bodyType: BodyType.planet,
           mass: 1.0,
           radius: 1.0,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
           position: vm.Vector3.zero(),
           velocity: vm.Vector3.zero(),
           temperature: 288.0,

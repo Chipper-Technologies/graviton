@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/models/sunspot_data.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('SunspotData', () {
@@ -10,12 +11,12 @@ void main() {
         const testRadius = 25.0;
 
         const penumbraGradient = RadialGradient(
-          colors: [Colors.orange, Colors.red],
+          colors: [AppColors.uiOrangeAccent, AppColors.uiRed],
           stops: [0.0, 1.0],
         );
 
         const umbraGradient = RadialGradient(
-          colors: [Colors.black, Colors.brown],
+          colors: [AppColors.backgroundBlack, AppColors.asteroidRockyBrown],
           stops: [0.0, 1.0],
         );
 
@@ -43,8 +44,10 @@ void main() {
         const zeroSunspot = SunspotData(
           center: Offset.zero,
           radius: 0.0,
-          penumbraGradient: RadialGradient(colors: [Colors.transparent]),
-          umbraGradient: RadialGradient(colors: [Colors.transparent]),
+          penumbraGradient: RadialGradient(
+            colors: [AppColors.transparentColor],
+          ),
+          umbraGradient: RadialGradient(colors: [AppColors.transparentColor]),
           penumbraRect: Rect.zero,
           umbraRect: Rect.zero,
         );
@@ -62,8 +65,8 @@ void main() {
         const sunspotData = SunspotData(
           center: negativeCenter,
           radius: testRadius,
-          penumbraGradient: RadialGradient(colors: [Colors.orange]),
-          umbraGradient: RadialGradient(colors: [Colors.black]),
+          penumbraGradient: RadialGradient(colors: [AppColors.uiOrangeAccent]),
+          umbraGradient: RadialGradient(colors: [AppColors.backgroundBlack]),
           penumbraRect: Rect.fromLTRB(-80.0, -105.0, -20.0, -45.0),
           umbraRect: Rect.fromLTRB(-65.0, -90.0, -35.0, -60.0),
         );
@@ -79,11 +82,11 @@ void main() {
           center: Offset(500.0, 400.0),
           radius: 1000.0,
           penumbraGradient: RadialGradient(
-            colors: [Colors.yellow, Colors.red],
+            colors: [AppColors.stellarGType, AppColors.uiRed],
             stops: [0.0, 1.0],
           ),
           umbraGradient: RadialGradient(
-            colors: [Colors.black, Colors.grey],
+            colors: [AppColors.backgroundBlack, AppColors.uiTextGrey],
             stops: [0.0, 1.0],
           ),
           penumbraRect: Rect.fromLTRB(-500.0, -600.0, 1500.0, 1400.0),
@@ -114,7 +117,7 @@ void main() {
           center: Offset(100.0, 100.0),
           radius: 50.0,
           penumbraGradient: penumbraGradient,
-          umbraGradient: RadialGradient(colors: [Colors.black]),
+          umbraGradient: RadialGradient(colors: [AppColors.backgroundBlack]),
           penumbraRect: Rect.fromLTRB(50.0, 50.0, 150.0, 150.0),
           umbraRect: Rect.fromLTRB(75.0, 75.0, 125.0, 125.0),
         );
@@ -136,7 +139,7 @@ void main() {
         const umbraGradient = RadialGradient(
           center: Alignment.topLeft,
           colors: [
-            Colors.black,
+            AppColors.backgroundBlack,
             Color(0xFF2F2F2F), // Dark grey
             Color(0xFF4A4A4A), // Medium grey
           ],
@@ -147,14 +150,17 @@ void main() {
         const sunspotData = SunspotData(
           center: Offset(200.0, 150.0),
           radius: 75.0,
-          penumbraGradient: RadialGradient(colors: [Colors.orange]),
+          penumbraGradient: RadialGradient(colors: [AppColors.uiOrangeAccent]),
           umbraGradient: umbraGradient,
           penumbraRect: Rect.fromLTRB(125.0, 75.0, 275.0, 225.0),
           umbraRect: Rect.fromLTRB(162.5, 112.5, 237.5, 187.5),
         );
 
         expect(sunspotData.umbraGradient.colors.length, equals(3));
-        expect(sunspotData.umbraGradient.colors[0], equals(Colors.black));
+        expect(
+          sunspotData.umbraGradient.colors[0],
+          equals(AppColors.backgroundBlack),
+        );
         expect(
           sunspotData.umbraGradient.colors[1],
           equals(const Color(0xFF2F2F2F)),
@@ -179,8 +185,12 @@ void main() {
         final sunspotData = SunspotData(
           center: center,
           radius: radius,
-          penumbraGradient: const RadialGradient(colors: [Colors.orange]),
-          umbraGradient: const RadialGradient(colors: [Colors.black]),
+          penumbraGradient: const RadialGradient(
+            colors: [AppColors.uiOrangeAccent],
+          ),
+          umbraGradient: const RadialGradient(
+            colors: [AppColors.backgroundBlack],
+          ),
           penumbraRect: penumbraRect,
           umbraRect: Rect.fromCircle(center: center, radius: radius * 0.5),
         );
@@ -204,8 +214,12 @@ void main() {
         final sunspotData = SunspotData(
           center: center,
           radius: radius,
-          penumbraGradient: const RadialGradient(colors: [Colors.orange]),
-          umbraGradient: const RadialGradient(colors: [Colors.black]),
+          penumbraGradient: const RadialGradient(
+            colors: [AppColors.uiOrangeAccent],
+          ),
+          umbraGradient: const RadialGradient(
+            colors: [AppColors.backgroundBlack],
+          ),
           penumbraRect: Rect.fromCircle(center: center, radius: radius),
           umbraRect: umbraRect,
         );
@@ -221,8 +235,8 @@ void main() {
         const sunspotData = SunspotData(
           center: Offset(100.0, 100.0),
           radius: 25.0,
-          penumbraGradient: RadialGradient(colors: [Colors.orange]),
-          umbraGradient: RadialGradient(colors: [Colors.black]),
+          penumbraGradient: RadialGradient(colors: [AppColors.uiOrangeAccent]),
+          umbraGradient: RadialGradient(colors: [AppColors.backgroundBlack]),
           penumbraRect: Rect.fromLTWH(80.0, 90.0, 40.0, 30.0), // Elliptical
           umbraRect: Rect.fromLTWH(
             90.0,
@@ -260,7 +274,7 @@ void main() {
           ),
           umbraGradient: RadialGradient(
             colors: [
-              Colors.black,
+              AppColors.backgroundBlack,
               Color(0xFF1A1A1A), // Very dark grey
             ],
             stops: [0.0, 1.0],
@@ -289,7 +303,7 @@ void main() {
           ),
           umbraGradient: RadialGradient(
             colors: [
-              Colors.black,
+              AppColors.backgroundBlack,
               Color(0xFF0A0A0A), // Nearly black
               Color(0xFF1A1A1A), // Dark grey
             ],
@@ -322,7 +336,11 @@ void main() {
           ),
           umbraGradient: RadialGradient(
             center: Alignment(0.1, -0.1), // Slightly off-center
-            colors: [Colors.black, Color(0xFF0F0F0F), Color(0xFF2F2F2F)],
+            colors: [
+              AppColors.backgroundBlack,
+              Color(0xFF0F0F0F),
+              Color(0xFF2F2F2F),
+            ],
             stops: [0.0, 0.3, 1.0],
             radius: 0.8,
           ),
@@ -363,7 +381,7 @@ void main() {
             transform: GradientRotation(0.3),
           ),
           umbraGradient: RadialGradient(
-            colors: [Colors.black, Color(0xFF1A1A1A)],
+            colors: [AppColors.backgroundBlack, Color(0xFF1A1A1A)],
             stops: [0.0, 1.0],
             transform: GradientRotation(0.3),
           ),
@@ -404,7 +422,7 @@ void main() {
               stops: const [0.0, 1.0],
             ),
             umbraGradient: const RadialGradient(
-              colors: [Colors.black, Color(0xFF1A1A1A)],
+              colors: [AppColors.backgroundBlack, Color(0xFF1A1A1A)],
               stops: [0.0, 1.0],
             ),
             penumbraRect: Rect.fromCircle(
@@ -437,8 +455,8 @@ void main() {
         const sunspotData = SunspotData(
           center: Offset(100.0, 100.0),
           radius: 25.0,
-          penumbraGradient: RadialGradient(colors: [Colors.orange]),
-          umbraGradient: RadialGradient(colors: [Colors.black]),
+          penumbraGradient: RadialGradient(colors: [AppColors.uiOrangeAccent]),
+          umbraGradient: RadialGradient(colors: [AppColors.backgroundBlack]),
           penumbraRect: Rect.fromLTWH(75.0, 75.0, 50.0, 50.0),
           umbraRect: Rect.fromLTWH(87.5, 87.5, 25.0, 25.0),
         );

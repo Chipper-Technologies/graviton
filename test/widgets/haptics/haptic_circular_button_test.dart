@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/haptic_feedback_type.dart';
 import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('HapticCircularButton Widget Tests', () {
@@ -55,7 +56,7 @@ void main() {
     ) async {
       const customSize = 100.0;
       const customIconSize = 50.0;
-      const customColor = Colors.red;
+      const customColor = AppColors.uiRed;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -66,8 +67,8 @@ void main() {
               size: customSize,
               iconSize: customIconSize,
               iconColor: customColor,
-              backgroundColor: Colors.blue,
-              borderColor: Colors.green,
+              backgroundColor: AppColors.primaryColor,
+              borderColor: AppColors.uiGreen,
             ),
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('GravityFieldColorScheme Comprehensive Tests', () {
@@ -541,7 +542,7 @@ void main() {
           // Test common Color operations
           expect(color.withValues(alpha: 0.5), isA<Color>());
           expect(color.withAlpha(128), isA<Color>());
-          expect(Color.lerp(color, Colors.white, 0.5), isA<Color>());
+          expect(Color.lerp(color, AppColors.uiWhite, 0.5), isA<Color>());
           expect(HSVColor.fromColor(color), isA<HSVColor>());
           expect(color.computeLuminance(), isA<double>());
         }

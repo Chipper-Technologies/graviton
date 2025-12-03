@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/haptics/haptic_floating_action_button.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('HapticFloatingActionButton Tests', () {
@@ -65,8 +66,8 @@ void main() {
       });
 
       testWidgets('should pass through all FAB properties', (tester) async {
-        const backgroundColor = Colors.red;
-        const foregroundColor = Colors.white;
+        const backgroundColor = AppColors.uiRed;
+        const foregroundColor = AppColors.uiWhite;
         const tooltip = 'Test tooltip';
 
         await tester.pumpWidget(
@@ -139,8 +140,8 @@ void main() {
       });
 
       testWidgets('should handle focus and hover properties', (tester) async {
-        const focusColor = Colors.blue;
-        const hoverColor = Colors.green;
+        const focusColor = AppColors.primaryColor;
+        const hoverColor = AppColors.uiGreen;
         final focusNode = FocusNode();
 
         await tester.pumpWidget(
@@ -245,8 +246,8 @@ void main() {
       testWidgets('should pass through extended FAB properties', (
         tester,
       ) async {
-        const backgroundColor = Colors.purple;
-        const foregroundColor = Colors.yellow;
+        const backgroundColor = AppColors.stellarOType;
+        const foregroundColor = AppColors.stellarGType;
         const tooltip = 'Extended tooltip';
 
         await tester.pumpWidget(
@@ -426,7 +427,9 @@ void main() {
                     50,
                     (index) => Container(
                       height: 100,
-                      color: index.isEven ? Colors.blue : Colors.red,
+                      color: index.isEven
+                          ? AppColors.primaryColor
+                          : AppColors.uiRed,
                       child: Center(child: Text('Item $index')),
                     ),
                   ),
@@ -476,7 +479,9 @@ void main() {
                     50,
                     (index) => Container(
                       height: 100,
-                      color: index.isEven ? Colors.blue : Colors.red,
+                      color: index.isEven
+                          ? AppColors.primaryColor
+                          : AppColors.uiRed,
                     ),
                   ),
                 ),

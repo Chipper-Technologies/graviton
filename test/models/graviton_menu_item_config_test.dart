@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/models/graviton_menu_item_config.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('GravitonMenuItemConfig', () {
@@ -14,8 +15,8 @@ void main() {
         labelKey: 'test_label_key',
         hintKey: 'test_hint_key',
         icon: Icons.star,
-        iconColor: Colors.blue,
-        borderColor: Colors.red,
+        iconColor: AppColors.primaryColor,
+        borderColor: AppColors.uiRed,
         onTap: testCallback,
       );
     });
@@ -26,8 +27,8 @@ void main() {
         expect(testConfig.labelKey, equals('test_label_key'));
         expect(testConfig.hintKey, equals('test_hint_key'));
         expect(testConfig.icon, equals(Icons.star));
-        expect(testConfig.iconColor, equals(Colors.blue));
-        expect(testConfig.borderColor, equals(Colors.red));
+        expect(testConfig.iconColor, equals(AppColors.primaryColor));
+        expect(testConfig.borderColor, equals(AppColors.uiRed));
         expect(testConfig.onTap, equals(testCallback));
       });
 
@@ -220,12 +221,12 @@ void main() {
           labelKey: 'colored_label',
           hintKey: 'colored_hint',
           icon: Icons.palette,
-          iconColor: Colors.red,
-          borderColor: Colors.blue,
+          iconColor: AppColors.uiRed,
+          borderColor: AppColors.primaryColor,
         );
 
-        expect(config.iconColor, equals(Colors.red));
-        expect(config.borderColor, equals(Colors.blue));
+        expect(config.iconColor, equals(AppColors.uiRed));
+        expect(config.borderColor, equals(AppColors.primaryColor));
       });
 
       test('handles custom colors', () {
@@ -250,11 +251,11 @@ void main() {
           labelKey: 'transparent_label',
           hintKey: 'transparent_hint',
           icon: Icons.opacity,
-          iconColor: Colors.transparent,
+          iconColor: AppColors.transparentColor,
           borderColor: Color(0x80FF0000), // 50% red
         );
 
-        expect(config.iconColor, equals(Colors.transparent));
+        expect(config.iconColor, equals(AppColors.transparentColor));
         expect(config.borderColor?.a, closeTo(0.5, 0.01)); // 50% opacity
       });
 
@@ -340,8 +341,8 @@ void main() {
           labelKey: 'deleteAction',
           hintKey: 'deleteHint',
           icon: Icons.delete,
-          iconColor: Colors.red,
-          borderColor: Colors.red.withValues(alpha: 0.3),
+          iconColor: AppColors.uiRed,
+          borderColor: AppColors.uiRed.withValues(alpha: 0.3),
           onTap: () {
             actionTriggered = true;
           },
@@ -349,7 +350,7 @@ void main() {
 
         expect(actionConfig.value, equals('delete'));
         expect(actionConfig.icon, equals(Icons.delete));
-        expect(actionConfig.iconColor, equals(Colors.red));
+        expect(actionConfig.iconColor, equals(AppColors.uiRed));
 
         actionConfig.onTap?.call();
         expect(actionTriggered, isTrue);
@@ -361,7 +362,7 @@ void main() {
           labelKey: 'settingsNavigation',
           hintKey: 'settingsNavigationHint',
           icon: Icons.settings,
-          iconColor: Colors.grey[600],
+          iconColor: AppColors.uiBorderGrey,
           onTap: () {
             // Navigate to settings
           },
@@ -395,12 +396,12 @@ void main() {
           labelKey: 'disabledAction',
           hintKey: 'disabledActionHint',
           icon: Icons.block,
-          iconColor: Colors.grey,
+          iconColor: AppColors.uiTextGrey,
           onTap: null, // Disabled by not providing callback
         );
 
         expect(disabledConfig.onTap, isNull);
-        expect(disabledConfig.iconColor, equals(Colors.grey));
+        expect(disabledConfig.iconColor, equals(AppColors.uiTextGrey));
       });
     });
 
@@ -411,7 +412,7 @@ void main() {
           labelKey: 'themeLightLabel',
           hintKey: 'themeLightHint',
           icon: Icons.light_mode,
-          iconColor: Colors.grey[800], // Dark icon for light theme
+          iconColor: AppColors.uiDividerGrey, // Dark icon for light theme
           onTap: () {},
         );
 
@@ -420,7 +421,7 @@ void main() {
           labelKey: 'themeDarkLabel',
           hintKey: 'themeDarkHint',
           icon: Icons.dark_mode,
-          iconColor: Colors.grey[200], // Light icon for dark theme
+          iconColor: AppColors.uiTextGrey, // Light icon for dark theme
           onTap: () {},
         );
 
@@ -438,12 +439,12 @@ void main() {
           labelKey: 'highContrastLabel',
           hintKey: 'highContrastHint',
           icon: Icons.accessibility,
-          iconColor: Colors.black,
-          borderColor: Colors.white,
+          iconColor: AppColors.backgroundBlack,
+          borderColor: AppColors.uiWhite,
         );
 
-        expect(highContrastConfig.iconColor, equals(Colors.black));
-        expect(highContrastConfig.borderColor, equals(Colors.white));
+        expect(highContrastConfig.iconColor, equals(AppColors.backgroundBlack));
+        expect(highContrastConfig.borderColor, equals(AppColors.uiWhite));
       });
     });
 

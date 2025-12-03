@@ -4,6 +4,7 @@ import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/enums/app_flavor.dart';
 import 'package:graviton/services/screenshot_mode_service.dart';
 import 'package:graviton/widgets/dev_ribbon.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('DevRibbon', () {
@@ -321,7 +322,7 @@ void main() {
                 Expanded(
                   child: Container(
                     height: 100,
-                    color: Colors.blue,
+                    color: AppColors.primaryColor,
                     child: const Center(child: Text('Center')),
                   ),
                 ),

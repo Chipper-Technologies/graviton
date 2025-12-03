@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/haptics/haptic_switch_list_tile.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('HapticSwitchListTile', () {
@@ -111,8 +112,8 @@ void main() {
               isThreeLine: true,
               dense: true,
               selected: true,
-              activeColor: Colors.green,
-              inactiveThumbColor: Colors.red,
+              activeColor: AppColors.uiGreen,
+              inactiveThumbColor: AppColors.uiRed,
               contentPadding: const EdgeInsets.all(16),
             ),
           ),
@@ -130,8 +131,8 @@ void main() {
       expect(switchListTile.isThreeLine, isTrue);
       expect(switchListTile.dense, isTrue);
       expect(switchListTile.selected, isTrue);
-      expect(switchListTile.activeThumbColor, equals(Colors.green));
-      expect(switchListTile.inactiveThumbColor, equals(Colors.red));
+      expect(switchListTile.activeThumbColor, equals(AppColors.uiGreen));
+      expect(switchListTile.inactiveThumbColor, equals(AppColors.uiRed));
       expect(switchListTile.contentPadding, equals(const EdgeInsets.all(16)));
     });
 
@@ -193,8 +194,8 @@ void main() {
               value: false,
               onChanged: (value) {},
               title: const Text('Material Switch'),
-              tileColor: Colors.blue,
-              selectedTileColor: Colors.lightBlue,
+              tileColor: AppColors.primaryColor,
+              selectedTileColor: AppColors.primaryColor,
               visualDensity: VisualDensity.compact,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               enableFeedback: false,
@@ -206,8 +207,8 @@ void main() {
       final switchListTile = tester.widget<SwitchListTile>(
         find.byType(SwitchListTile),
       );
-      expect(switchListTile.tileColor, equals(Colors.blue));
-      expect(switchListTile.selectedTileColor, equals(Colors.lightBlue));
+      expect(switchListTile.tileColor, equals(AppColors.primaryColor));
+      expect(switchListTile.selectedTileColor, equals(AppColors.primaryColor));
       expect(switchListTile.visualDensity, equals(VisualDensity.compact));
       expect(
         switchListTile.materialTapTargetSize,

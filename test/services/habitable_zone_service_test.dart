@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/habitability_status.dart';
@@ -34,7 +34,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: mass,
           radius: radius,
-          color: Colors.orange,
+          color: AppColors.uiOrangeAccent,
           bodyType: BodyType.planet,
         );
 
@@ -58,7 +58,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: mass,
           radius: smallRadius,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           bodyType: BodyType.planet,
         );
 
@@ -82,7 +82,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: mass,
           radius: radius,
-          color: Colors.brown,
+          color: AppColors.asteroidRockyBrown,
           bodyType: BodyType.planet,
         );
 
@@ -104,7 +104,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: tooSmallMass,
           radius: radius,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           bodyType: BodyType.planet,
         );
 
@@ -125,7 +125,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: mass,
           radius: tooSmallRadius,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           bodyType: BodyType.planet,
         );
 
@@ -145,7 +145,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: mass,
           radius: radius,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
           bodyType: BodyType.planet,
         );
 
@@ -177,7 +177,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: extremeMass + 0.01, // Slightly above threshold
           radius: SimulationConstants.earthReferenceRadius,
-          color: Colors.purple,
+          color: AppColors.stellarOType,
           bodyType: BodyType.planet,
         );
 
@@ -199,7 +199,7 @@ void main() {
             velocity: vm.Vector3.zero(),
             mass: SimulationConstants.earthReferenceMass,
             radius: SimulationConstants.earthReferenceRadius,
-            color: Colors.blue,
+            color: AppColors.primaryColor,
             bodyType: BodyType.planet,
           );
 
@@ -232,7 +232,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: belowThresholdMass,
           radius: SimulationConstants.earthReferenceRadius,
-          color: Colors.green,
+          color: AppColors.uiGreen,
           bodyType: BodyType.planet,
         );
 
@@ -255,7 +255,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 50.0,
           radius: 3.0,
-          color: Colors.white,
+          color: AppColors.uiWhite,
           bodyType: BodyType.star,
           stellarLuminosity: SimulationConstants.solarLuminosity * 100,
         );
@@ -269,7 +269,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: SimulationConstants.earthReferenceMass,
           radius: SimulationConstants.earthReferenceRadius,
-          color: Colors.red,
+          color: AppColors.uiRed,
           bodyType: BodyType.planet,
         );
 
@@ -288,7 +288,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 10.0,
           radius: 1.5,
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
           bodyType: BodyType.star,
           stellarLuminosity: SimulationConstants.solarLuminosity,
         );
@@ -307,7 +307,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: SimulationConstants.earthReferenceMass,
           radius: SimulationConstants.earthReferenceRadius,
-          color: Colors.red,
+          color: AppColors.uiRed,
           bodyType: BodyType.planet,
         );
 
@@ -327,7 +327,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 10.0,
           radius: 1.5,
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
           bodyType: BodyType.star,
           stellarLuminosity: SimulationConstants.solarLuminosity,
         );
@@ -343,7 +343,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: SimulationConstants.earthReferenceMass,
           radius: SimulationConstants.earthReferenceRadius,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
           bodyType: BodyType.planet,
         );
 

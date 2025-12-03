@@ -76,8 +76,8 @@ class HapticAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
         foregroundColor: foregroundColor ?? AppColors.uiWhite,
         elevation: elevation ?? 0,
-        surfaceTintColor: Colors.transparent,
-        shadowColor: Colors.transparent,
+        surfaceTintColor: AppColors.transparentColor,
+        shadowColor: AppColors.transparentColor,
         automaticallyImplyLeading: false,
         titleSpacing: titleSpacing,
         leading:

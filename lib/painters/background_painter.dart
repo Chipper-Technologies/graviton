@@ -161,7 +161,7 @@ class BackgroundPainter {
                   color1,
                   color2.withValues(alpha: color2.a * 0.7),
                   color3.withValues(alpha: color3.a * 0.4),
-                  Colors.black,
+                  AppColors.backgroundBlack,
                 ]
               : [
                   color1,

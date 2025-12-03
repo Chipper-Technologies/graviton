@@ -56,8 +56,8 @@ void main() {
     testWidgets('applies custom colors when provided', (
       WidgetTester tester,
     ) async {
-      const customBg = Colors.red;
-      const customFg = Colors.blue;
+      const customBg = AppColors.uiRed;
+      const customFg = AppColors.primaryColor;
       const customElevation = 4.0;
 
       await tester.pumpWidget(

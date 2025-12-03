@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/preset_scenario.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
@@ -17,7 +18,7 @@ void main() {
           radius: 696340000,
           position: vm.Vector3(0, 0, 0),
           velocity: vm.Vector3.zero(),
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
         ),
         Body(
           name: 'Earth',
@@ -25,7 +26,7 @@ void main() {
           radius: 6371000,
           position: vm.Vector3(149597870700, 0, 0),
           velocity: vm.Vector3(0, 29780, 0),
-          color: Colors.blue,
+          color: AppColors.planetEarth,
         ),
         Body(
           name: 'Moon',
@@ -33,7 +34,7 @@ void main() {
           radius: 1737000,
           position: vm.Vector3(149597870700 + 384400000, 0, 0),
           velocity: vm.Vector3(0, 29780 + 1022, 0),
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
         ),
       ];
     });
@@ -46,7 +47,7 @@ void main() {
           description: 'Our solar system with major planets',
           bodies: testBodies,
           icon: Icons.public,
-          primaryColor: Colors.orange,
+          primaryColor: AppColors.stellarKType,
         );
 
         expect(scenario.type, equals(ScenarioType.solarSystem));
@@ -57,7 +58,7 @@ void main() {
         );
         expect(scenario.bodies, equals(testBodies));
         expect(scenario.icon, equals(Icons.public));
-        expect(scenario.primaryColor, equals(Colors.orange));
+        expect(scenario.primaryColor, equals(AppColors.stellarKType));
       });
 
       test('creates instance with empty bodies list', () {
@@ -67,15 +68,18 @@ void main() {
           description: 'A void scenario for testing',
           bodies: const [],
           icon: Icons.clear,
-          primaryColor: Colors.black,
+          primaryColor: AppColors.backgroundBlack,
         );
 
         expect(scenario.bodies, isEmpty);
         expect(scenario.type, equals(ScenarioType.custom));
         expect(scenario.name, equals('Empty Space'));
         expect(scenario.description, equals('A void scenario for testing'));
-        expect(scenario.icon, equals(Icons.clear));
-        expect(scenario.primaryColor, equals(Colors.black));
+        expect(
+          scenario.icon,
+          equals(Icons.clear),
+        ); // Fixed: should match the input icon
+        expect(scenario.primaryColor, equals(AppColors.backgroundBlack));
       });
 
       test('creates instance with single body', () {
@@ -87,7 +91,7 @@ void main() {
           description: 'Single star in space',
           bodies: singleBody,
           icon: Icons.star,
-          primaryColor: Colors.yellow,
+          primaryColor: AppColors.stellarGType,
         );
 
         expect(scenario.bodies, hasLength(1));
@@ -106,7 +110,7 @@ void main() {
           description: longDescription,
           bodies: testBodies.take(2).toList(),
           icon: Icons.compare_arrows,
-          primaryColor: Colors.purple,
+          primaryColor: AppColors.stellarOType,
         );
 
         expect(scenario.description, equals(longDescription));
@@ -123,14 +127,14 @@ void main() {
           description: 'Sun, Mercury, Venus, Earth, and Mars',
           bodies: testBodies,
           icon: Icons.wb_sunny,
-          primaryColor: Colors.orange,
+          primaryColor: AppColors.stellarKType,
         );
 
         expect(scenario.type, equals(ScenarioType.solarSystem));
         expect(scenario.bodies, hasLength(3));
         expect(scenario.name, contains('Solar'));
         expect(scenario.icon, equals(Icons.wb_sunny));
-        expect(scenario.primaryColor, equals(Colors.orange));
+        expect(scenario.primaryColor, equals(AppColors.stellarKType));
 
         // Validate bodies have realistic masses (in kg)
         final sun = scenario.bodies.firstWhere((b) => b.name == 'Sun');
@@ -148,7 +152,7 @@ void main() {
             radius: 853400000,
             position: vm.Vector3(-100000000000, 0, 0),
             velocity: vm.Vector3(0, -15000, 0),
-            color: Colors.yellow,
+            color: AppColors.stellarGType,
           ),
           Body(
             name: 'Alpha Centauri B',
@@ -156,7 +160,7 @@ void main() {
             radius: 602700000,
             position: vm.Vector3(100000000000, 0, 0),
             velocity: vm.Vector3(0, 15000, 0),
-            color: Colors.orange,
+            color: AppColors.stellarKType,
           ),
         ];
 
@@ -166,14 +170,14 @@ void main() {
           description: 'Binary star system with orbital dynamics',
           bodies: binaryBodies,
           icon: Icons.group_work,
-          primaryColor: Colors.blue,
+          primaryColor: AppColors.planetEarth,
         );
 
         expect(scenario.type, equals(ScenarioType.binaryStars));
         expect(scenario.bodies, hasLength(2));
         expect(scenario.name, equals('Alpha Centauri'));
         expect(scenario.icon, equals(Icons.group_work));
-        expect(scenario.primaryColor, equals(Colors.blue));
+        expect(scenario.primaryColor, equals(AppColors.planetEarth));
 
         // Both bodies should have stellar masses
         for (final body in scenario.bodies) {
@@ -189,7 +193,7 @@ void main() {
             radius: 696340000,
             position: vm.Vector3(-1e11, 0, 0),
             velocity: vm.Vector3(0, -10000, 0),
-            color: Colors.red,
+            color: AppColors.planetMars,
           ),
           Body(
             name: 'Body 2',
@@ -197,7 +201,7 @@ void main() {
             radius: 696340000,
             position: vm.Vector3(1e11, 0, 0),
             velocity: vm.Vector3(0, 10000, 0),
-            color: Colors.blue,
+            color: AppColors.planetEarth,
           ),
           Body(
             name: 'Body 3',
@@ -205,7 +209,7 @@ void main() {
             radius: 696340000,
             position: vm.Vector3(0, 1e11, 0),
             velocity: vm.Vector3(15000, 0, 0),
-            color: Colors.green,
+            color: AppColors.habitabilityHabitable,
           ),
         ];
 
@@ -215,7 +219,7 @@ void main() {
           description: 'Classic chaotic three-body gravitational system',
           bodies: threeBodyBodies,
           icon: Icons.scatter_plot,
-          primaryColor: Colors.red,
+          primaryColor: AppColors.planetMars,
         );
 
         expect(scenario.type, equals(ScenarioType.threeBodyClassic));
@@ -223,7 +227,7 @@ void main() {
         expect(scenario.name, contains('Three'));
         expect(scenario.description, contains('chaotic'));
         expect(scenario.icon, equals(Icons.scatter_plot));
-        expect(scenario.primaryColor, equals(Colors.red));
+        expect(scenario.primaryColor, equals(AppColors.planetMars));
       });
     });
 
@@ -245,7 +249,7 @@ void main() {
             description: 'Test description',
             bodies: testBodies,
             icon: expectedIcon,
-            primaryColor: Colors.grey,
+            primaryColor: AppColors.uiTextGrey,
           );
 
           expect(scenario.type, equals(type));
@@ -255,12 +259,15 @@ void main() {
 
       test('scenario colors match theme appropriately', () {
         final colorfulScenarios = [
-          (ScenarioType.solarSystem, Colors.orange), // Sun-like
-          (ScenarioType.binaryStars, Colors.blue), // Binary star
-          (ScenarioType.threeBodyClassic, Colors.red), // Chaotic/dangerous
-          (ScenarioType.earthMoonSun, Colors.blue), // Earth-like
-          (ScenarioType.asteroidBelt, Colors.brown), // Rocky
-          (ScenarioType.custom, Colors.purple), // Unique/creative
+          (ScenarioType.solarSystem, AppColors.stellarKType), // Sun-like
+          (ScenarioType.binaryStars, AppColors.planetEarth), // Binary star
+          (
+            ScenarioType.threeBodyClassic,
+            AppColors.planetMars,
+          ), // Chaotic/dangerous
+          (ScenarioType.earthMoonSun, AppColors.planetEarth), // Earth-like
+          (ScenarioType.asteroidBelt, AppColors.asteroidRockyBrown), // Rocky
+          (ScenarioType.custom, AppColors.stellarOType), // Unique/creative
         ];
 
         for (final (type, color) in colorfulScenarios) {
@@ -299,7 +306,7 @@ void main() {
             description: 'Testing icon variety',
             bodies: testBodies,
             icon: icon,
-            primaryColor: Colors.grey,
+            primaryColor: AppColors.uiTextGrey,
           );
 
           expect(scenario.icon, equals(icon));
@@ -319,7 +326,7 @@ void main() {
           description: 'Bodies sorted by mass for stability',
           bodies: sortedBodies,
           icon: Icons.sort,
-          primaryColor: Colors.green,
+          primaryColor: AppColors.habitabilityHabitable,
         );
 
         expect(
@@ -337,7 +344,7 @@ void main() {
             radius: 6371000,
             position: vm.Vector3(index * 1000000.0, 0, 0),
             velocity: vm.Vector3(0, 10000, 0),
-            color: Colors.blue,
+            color: AppColors.planetEarth,
           ),
         );
 
@@ -347,7 +354,7 @@ void main() {
           description: 'Three identical bodies',
           bodies: identicalBodies,
           icon: Icons.content_copy,
-          primaryColor: Colors.indigo,
+          primaryColor: AppColors.primaryColor,
         );
 
         expect(scenario.bodies, hasLength(3));
@@ -367,7 +374,7 @@ void main() {
             radius: 696e6, // Solar radius in meters
             position: vm.Vector3.zero(),
             velocity: vm.Vector3.zero(),
-            color: Colors.yellow,
+            color: AppColors.stellarGType,
           ),
           // Earth-like planet
           Body(
@@ -376,7 +383,7 @@ void main() {
             radius: 6e6, // Earth radius in meters
             position: vm.Vector3(150e9, 0, 0), // ~1 AU
             velocity: vm.Vector3(0, 30000, 0), // ~30 km/s orbital speed
-            color: Colors.green,
+            color: AppColors.habitabilityHabitable,
           ),
         ];
 
@@ -386,7 +393,7 @@ void main() {
           description: 'Physically accurate star-planet system',
           bodies: realisticBodies,
           icon: Icons.verified,
-          primaryColor: Colors.green,
+          primaryColor: AppColors.habitabilityHabitable,
         );
 
         final star = scenario.bodies[0];
@@ -417,7 +424,7 @@ void main() {
           description: 'Single body in space',
           bodies: [testBodies.first],
           icon: Icons.radio_button_unchecked,
-          primaryColor: Colors.grey,
+          primaryColor: AppColors.uiTextGrey,
         );
 
         expect(minimalScenario.bodies, hasLength(1));
@@ -431,7 +438,7 @@ void main() {
             radius: 1e6,
             position: vm.Vector3(i * 1e8, 0, 0),
             velocity: vm.Vector3(0, 1000, 0),
-            color: Colors.grey,
+            color: AppColors.uiTextGrey,
           ),
         );
 
@@ -441,7 +448,7 @@ void main() {
           description: 'Many small bodies',
           bodies: manyBodies,
           icon: Icons.apps,
-          primaryColor: Colors.brown,
+          primaryColor: AppColors.asteroidRockyBrown,
         );
 
         expect(largeScenario.bodies, hasLength(20));
@@ -456,7 +463,7 @@ void main() {
             radius: 1e10,
             position: vm.Vector3.zero(),
             velocity: vm.Vector3.zero(),
-            color: Colors.black,
+            color: AppColors.backgroundBlack,
           ),
           // Tiny body
           Body(
@@ -465,7 +472,7 @@ void main() {
             radius: 1,
             position: vm.Vector3(1e12, 0, 0),
             velocity: vm.Vector3(0, 100000, 0),
-            color: Colors.grey,
+            color: AppColors.uiTextGrey,
           ),
         ];
 
@@ -475,7 +482,7 @@ void main() {
           description: 'Bodies with extreme mass differences',
           bodies: extremeBodies,
           icon: Icons.compare,
-          primaryColor: Colors.purple,
+          primaryColor: AppColors.stellarOType,
         );
 
         final massRatio =
@@ -495,7 +502,7 @@ void main() {
           ''',
           bodies: testBodies,
           icon: Icons.star,
-          primaryColor: Colors.amber,
+          primaryColor: AppColors.stellarGType,
         );
 
         expect(scenario.name, contains('🌟'));
@@ -515,7 +522,7 @@ void main() {
           description: 'Test description',
           bodies: testBodies,
           icon: Icons.text_fields,
-          primaryColor: Colors.teal,
+          primaryColor: AppColors.habitabilityHabitable,
         );
 
         expect(scenario.name, equals(veryLongName));

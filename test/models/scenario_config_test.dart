@@ -12,14 +12,14 @@ void main() {
         const config = ScenarioConfig(
           type: ScenarioType.custom,
           icon: Icons.edit,
-          primaryColor: Colors.purple,
+          primaryColor: AppColors.stellarOType,
           expectedBodyCount: 5,
           educationalFocus: EducationalFocusKeys.chaoticDynamics,
         );
 
         expect(config.type, equals(ScenarioType.custom));
         expect(config.icon, equals(Icons.edit));
-        expect(config.primaryColor, equals(Colors.purple));
+        expect(config.primaryColor, equals(AppColors.stellarOType));
         expect(config.expectedBodyCount, equals(5));
         expect(
           config.educationalFocus,
@@ -361,7 +361,7 @@ void main() {
         const config = ScenarioConfig(
           type: ScenarioType.custom,
           icon: Icons.rocket_launch,
-          primaryColor: Colors.deepPurple,
+          primaryColor: AppColors.stellarOType,
           expectedBodyCount: 12,
           educationalFocus: EducationalFocusKeys.realWorldSystem,
           optimalCameraDistance: 2000.0,
@@ -379,7 +379,7 @@ void main() {
         const config = ScenarioConfig(
           type: ScenarioType.custom,
           icon: Icons.speed,
-          primaryColor: Colors.red,
+          primaryColor: AppColors.uiRed,
           expectedBodyCount: 3,
           educationalFocus: EducationalFocusKeys.chaoticDynamics,
           cameraDistanceMultiplier: 0.8, // Closer for action
@@ -397,7 +397,7 @@ void main() {
         const config = ScenarioConfig(
           type: ScenarioType.custom,
           icon: Icons.science,
-          primaryColor: Colors.teal,
+          primaryColor: AppColors.habitabilityHabitable,
           expectedBodyCount: 100,
           educationalFocus: EducationalFocusKeys.structureFormation,
           optimalCameraDistance: 5000.0,
@@ -418,7 +418,7 @@ void main() {
         const config = ScenarioConfig(
           type: ScenarioType.custom,
           icon: Icons.adjust,
-          primaryColor: Colors.grey,
+          primaryColor: AppColors.uiTextGrey,
           expectedBodyCount: 1,
           educationalFocus: EducationalFocusKeys.chaoticDynamics,
         );
@@ -431,7 +431,7 @@ void main() {
         const config = ScenarioConfig(
           type: ScenarioType.custom,
           icon: Icons.apps,
-          primaryColor: Colors.grey,
+          primaryColor: AppColors.uiTextGrey,
           expectedBodyCount: 1000,
           educationalFocus: EducationalFocusKeys.manyBodyDynamics,
         );
@@ -445,7 +445,7 @@ void main() {
           ScenarioConfig(
             type: ScenarioType.custom,
             icon: Icons.zoom_out,
-            primaryColor: Colors.grey,
+            primaryColor: AppColors.uiTextGrey,
             expectedBodyCount: 5,
             educationalFocus: EducationalFocusKeys.chaoticDynamics,
             optimalCameraDistance: 0.1, // Very close
@@ -453,7 +453,7 @@ void main() {
           ScenarioConfig(
             type: ScenarioType.custom,
             icon: Icons.zoom_in,
-            primaryColor: Colors.grey,
+            primaryColor: AppColors.uiTextGrey,
             expectedBodyCount: 5,
             educationalFocus: EducationalFocusKeys.chaoticDynamics,
             optimalCameraDistance: 1000000.0, // Very far
@@ -471,7 +471,7 @@ void main() {
           ScenarioConfig(
             type: ScenarioType.custom,
             icon: Icons.close,
-            primaryColor: Colors.grey,
+            primaryColor: AppColors.uiTextGrey,
             expectedBodyCount: 5,
             educationalFocus: EducationalFocusKeys.chaoticDynamics,
             cameraDistanceMultiplier: 0.1, // Very tight
@@ -479,7 +479,7 @@ void main() {
           ScenarioConfig(
             type: ScenarioType.custom,
             icon: Icons.open_in_full,
-            primaryColor: Colors.grey,
+            primaryColor: AppColors.uiTextGrey,
             expectedBodyCount: 5,
             educationalFocus: EducationalFocusKeys.chaoticDynamics,
             cameraDistanceMultiplier: 100.0, // Very wide
@@ -495,7 +495,7 @@ void main() {
         const config = ScenarioConfig(
           type: ScenarioType.custom,
           icon: Icons.school,
-          primaryColor: Colors.blue,
+          primaryColor: AppColors.primaryColor,
           expectedBodyCount: 5,
           educationalFocus: '🌟 αβγ δε Stellar Dynamics & Mechanics 🚀',
         );
@@ -512,7 +512,7 @@ void main() {
         const config = ScenarioConfig(
           type: ScenarioType.custom,
           icon: Icons.book,
-          primaryColor: Colors.indigo,
+          primaryColor: AppColors.primaryColor,
           expectedBodyCount: 8,
           educationalFocus: longEducationalFocus,
         );

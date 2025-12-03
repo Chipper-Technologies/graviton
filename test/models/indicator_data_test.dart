@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/models/indicator_data.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
@@ -18,7 +18,7 @@ void main() {
         position: vm.Vector3(100, 200, 300),
         velocity: vm.Vector3(10, 20, 30),
         bodyType: BodyType.planet,
-        color: Colors.blue,
+        color: AppColors.planetEarth,
       );
 
       testIndicator = IndicatorData(
@@ -46,7 +46,7 @@ void main() {
           position: vm.Vector3.zero(),
           velocity: vm.Vector3.zero(),
           bodyType: BodyType.moon,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
         );
 
         final moonIndicator = IndicatorData(
@@ -100,7 +100,7 @@ void main() {
           position: vm.Vector3.zero(),
           velocity: vm.Vector3.zero(),
           bodyType: BodyType.star,
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
         );
 
         final copy = testIndicator.copyWith(
@@ -188,7 +188,7 @@ void main() {
           position: vm.Vector3.zero(),
           velocity: vm.Vector3.zero(),
           bodyType: BodyType.asteroid,
-          color: Colors.brown,
+          color: AppColors.asteroidRockyBrown,
         );
 
         final indicator = IndicatorData(

@@ -440,7 +440,7 @@ void main() {
     group('Helper Method Tests', () {
       group('textWithOpacity method', () {
         test('should create text style with correct color and opacity', () {
-          const testColor = Colors.white;
+          const testColor = AppColors.uiWhite;
           const testOpacity = 0.7;
 
           final textStyle = AppTypography.textWithOpacity(
@@ -458,7 +458,7 @@ void main() {
         });
 
         test('should use custom font size when provided', () {
-          const testColor = Colors.blue;
+          const testColor = AppColors.primaryColor;
           const testOpacity = 0.5;
           const customFontSize = 20.0;
 
@@ -476,7 +476,7 @@ void main() {
         });
 
         test('should handle edge case opacity values', () {
-          const testColor = Colors.red;
+          const testColor = AppColors.uiRed;
 
           // Test minimum opacity
           final transparentStyle = AppTypography.textWithOpacity(
@@ -508,7 +508,7 @@ void main() {
         });
 
         test('should create text shadow with custom parameters', () {
-          const customColor = Colors.blue;
+          const customColor = AppColors.primaryColor;
           const customOpacity = 0.5;
           const customBlurRadius = 4.0;
           const customOffset = Offset(2, 3);
@@ -561,7 +561,7 @@ void main() {
         });
 
         test('should create border with custom parameters', () {
-          const customColor = Colors.green;
+          const customColor = AppColors.uiGreen;
           const customOpacity = 0.6;
           const customWidth = 3.0;
 
@@ -693,7 +693,7 @@ void main() {
 
       test('should have appropriate defaults for helper methods', () {
         // Default font size for textWithOpacity should be small
-        const testColor = Colors.white;
+        const testColor = AppColors.uiWhite;
         final textStyle = AppTypography.textWithOpacity(testColor, 0.5);
         expect(
           textStyle.fontSize,

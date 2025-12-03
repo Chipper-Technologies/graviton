@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
@@ -37,7 +38,7 @@ void main() {
         ), // Typical orbital velocity for simulation
         mass: 3.0, // Earth-like mass in simulation units
         radius: 1.0, // Earth radius in simulation units
-        color: Colors.blue,
+        color: AppColors.primaryColor,
         bodyType: BodyType.planet,
         stellarLuminosity: 0.0,
         temperature: 288.0, // Earth's average temperature
@@ -54,7 +55,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 10.0, // Star mass in simulation units
           radius: 2.0, // Sun radius in simulation units
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
           bodyType: BodyType.star,
           stellarLuminosity: 1.0,
           temperature: 5778.0, // Sun's surface temperature
@@ -204,7 +205,7 @@ void main() {
           velocity: vm.Vector3(-0.12345678, 0.98765432, -0.55555555),
           mass: 1.0,
           radius: 1.0,
-          color: Colors.red,
+          color: AppColors.uiRed,
           bodyType: BodyType.planet,
         );
 
@@ -289,11 +290,11 @@ void main() {
     group('Color Conversion', () {
       test('should convert colors to hex and back correctly', () {
         final colors = [
-          Colors.red,
-          Colors.green,
-          Colors.blue,
-          Colors.yellow,
-          Colors.purple,
+          AppColors.uiRed,
+          AppColors.uiGreen,
+          AppColors.primaryColor,
+          AppColors.stellarGType,
+          AppColors.stellarOType,
           const Color(0xFF123456),
           const Color(0x80ABCDEF), // With alpha
         ];
@@ -1062,7 +1063,7 @@ void main() {
             velocity: vm.Vector3.zero(),
             mass: 3.0, // Earth-like mass in simulation units
             radius: 1.0,
-            color: Colors.blue,
+            color: AppColors.primaryColor,
             bodyType: BodyType.planet,
             stellarLuminosity: 0.0,
             temperature: 288.0,
@@ -1082,7 +1083,7 @@ void main() {
             ), // Moon's orbital velocity in simulation
             mass: 0.5, // Moon mass in simulation units
             radius: 0.3,
-            color: Colors.grey,
+            color: AppColors.uiTextGrey,
             bodyType: BodyType.moon,
             stellarLuminosity: 0.0,
             temperature: 220.0,
@@ -1125,7 +1126,7 @@ void main() {
             velocity: vm.Vector3(0, 10, 0),
             mass: 10.0, // Solar mass in simulation units
             radius: 2.0,
-            color: Colors.yellow,
+            color: AppColors.stellarGType,
             bodyType: BodyType.star,
             stellarLuminosity: 1.0,
             temperature: 5778.0,
@@ -1137,7 +1138,7 @@ void main() {
             velocity: vm.Vector3(0, -10, 0),
             mass: 8.0, // Smaller star mass in simulation units
             radius: 1.8, // Smaller star
-            color: Colors.orange,
+            color: AppColors.uiOrangeAccent,
             bodyType: BodyType.star,
             stellarLuminosity: 0.6,
             temperature: 4900.0,
@@ -1181,7 +1182,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 0.001, // Minimum valid mass
           radius: 0.1,
-          color: Colors.white,
+          color: AppColors.uiWhite,
           bodyType: BodyType.planet,
         );
 
@@ -1206,7 +1207,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1000.0, // Maximum valid mass
           radius: 50.0,
-          color: Colors.black,
+          color: AppColors.backgroundBlack,
           bodyType: BodyType.blackHole,
         );
 
@@ -1234,7 +1235,7 @@ void main() {
                 velocity: vm.Vector3.zero(),
                 mass: 1.0,
                 radius: 1.0,
-                color: Colors.red,
+                color: AppColors.uiRed,
                 bodyType: type,
               ),
             )

@@ -5,6 +5,7 @@ import 'package:graviton/enums/simulation_status.dart';
 import 'package:graviton/models/body.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:flutter/material.dart';
+import 'package:graviton/theme/app_colors.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -67,7 +68,7 @@ void main() {
             radius: 696340000,
             position: vm.Vector3(0, 0, 0),
             velocity: vm.Vector3(0, 0, 0),
-            color: Colors.yellow,
+            color: AppColors.stellarGType,
           ),
           Body(
             name: 'Earth',
@@ -75,7 +76,7 @@ void main() {
             radius: 6371000,
             position: vm.Vector3(149597870700, 0, 0),
             velocity: vm.Vector3(0, 29780, 0),
-            color: Colors.blue,
+            color: AppColors.primaryColor,
           ),
         ];
 
@@ -110,7 +111,7 @@ void main() {
             radius: 696340000,
             position: vm.Vector3(0, 0, 0),
             velocity: vm.Vector3(0, 0, 0),
-            color: Colors.yellow,
+            color: AppColors.stellarGType,
           ),
         ];
 

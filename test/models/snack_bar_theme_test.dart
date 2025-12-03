@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/models/snack_bar_theme.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('SnackBarTheme', () {
-    const backgroundColor = Colors.black;
-    const borderColor = Colors.blue;
-    const textColor = Colors.white;
-    const iconColor = Colors.blue;
-    const actionColor = Colors.blue;
+    const backgroundColor = AppColors.backgroundBlack;
+    const borderColor = AppColors.primaryColor;
+    const textColor = AppColors.uiWhite;
+    const iconColor = AppColors.primaryColor;
+    const actionColor = AppColors.primaryColor;
     const testIcon = Icons.info_outline;
 
     late SnackBarTheme testTheme;
@@ -45,7 +46,7 @@ void main() {
     });
 
     test('copyWith should override only specified properties', () {
-      const newBackgroundColor = Colors.red;
+      const newBackgroundColor = AppColors.uiRed;
       const newIcon = Icons.error_outline;
 
       final copiedTheme = testTheme.copyWith(
@@ -73,7 +74,7 @@ void main() {
       );
 
       const differentTheme = SnackBarTheme(
-        backgroundColor: Colors.red, // Different color
+        backgroundColor: AppColors.uiRed, // Different color
         borderColor: borderColor,
         textColor: textColor,
         iconColor: iconColor,
@@ -131,25 +132,25 @@ void main() {
     test('should handle different color combinations correctly', () {
       final colorCombinations = [
         {
-          'bg': Colors.black,
-          'border': Colors.blue,
-          'text': Colors.white,
-          'icon': Colors.blue,
-          'action': Colors.blue,
+          'bg': AppColors.backgroundBlack,
+          'border': AppColors.primaryColor,
+          'text': AppColors.uiWhite,
+          'icon': AppColors.primaryColor,
+          'action': AppColors.primaryColor,
         },
         {
-          'bg': Colors.grey,
-          'border': Colors.green,
-          'text': Colors.black,
-          'icon': Colors.green,
-          'action': Colors.green,
+          'bg': AppColors.uiTextGrey,
+          'border': AppColors.uiGreen,
+          'text': AppColors.backgroundBlack,
+          'icon': AppColors.uiGreen,
+          'action': AppColors.uiGreen,
         },
         {
-          'bg': Colors.red,
-          'border': Colors.white,
-          'text': Colors.white,
-          'icon': Colors.white,
-          'action': Colors.white,
+          'bg': AppColors.uiRed,
+          'border': AppColors.uiWhite,
+          'text': AppColors.uiWhite,
+          'icon': AppColors.uiWhite,
+          'action': AppColors.uiWhite,
         },
       ];
 

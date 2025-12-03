@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/models/ring_particle.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -9,7 +10,7 @@ void main() {
   group('RingParticle', () {
     group('constructor and properties', () {
       test('creates particle with required parameters', () {
-        const testColor = Colors.blue;
+        const testColor = AppColors.primaryColor;
         final particle = RingParticle(
           orbitRadius: 100.0,
           orbitSpeed: 0.5,
@@ -35,7 +36,7 @@ void main() {
           orbitSpeed: 1.0,
           orbitPhase: math.pi,
           inclination: 0.2,
-          color: Colors.red,
+          color: AppColors.uiRed,
           size: 3.0,
           useXZPlane: true,
         );
@@ -54,7 +55,7 @@ void main() {
           orbitSpeed: 0.0,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.transparent,
+          color: AppColors.transparentColor,
           size: 0.0,
         );
 
@@ -62,7 +63,7 @@ void main() {
         expect(particle.orbitSpeed, equals(0.0));
         expect(particle.orbitPhase, equals(0.0));
         expect(particle.inclination, equals(0.0));
-        expect(particle.color, equals(Colors.transparent));
+        expect(particle.color, equals(AppColors.transparentColor));
         expect(particle.size, equals(0.0));
       });
 
@@ -72,7 +73,7 @@ void main() {
           orbitSpeed: 100.0,
           orbitPhase: 10 * math.pi,
           inclination: math.pi / 2,
-          color: Colors.white,
+          color: AppColors.uiWhite,
           size: 100.0,
         );
 
@@ -91,7 +92,7 @@ void main() {
           orbitSpeed: 0.1,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
           size: 1.0,
         );
 
@@ -121,7 +122,7 @@ void main() {
           orbitSpeed: 0.2,
           orbitPhase: 0.0,
           inclination: 0.1,
-          color: Colors.green,
+          color: AppColors.uiGreen,
           size: 1.0,
           useXZPlane: true,
         );
@@ -149,7 +150,7 @@ void main() {
           orbitSpeed: 0.1,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.purple,
+          color: AppColors.stellarOType,
           size: 2.0,
         );
 
@@ -176,7 +177,7 @@ void main() {
           orbitSpeed: 0.5,
           orbitPhase: math.pi / 4,
           inclination: 0.2,
-          color: Colors.orange,
+          color: AppColors.uiOrangeAccent,
           size: 1.5,
         );
 
@@ -199,7 +200,7 @@ void main() {
           orbitSpeed: 0.3,
           orbitPhase: math.pi,
           inclination: 0.1,
-          color: Colors.cyan,
+          color: AppColors.uiCyanAccent,
           size: 2.5,
         );
 
@@ -228,7 +229,7 @@ void main() {
           orbitSpeed: 0.0, // No orbital motion to isolate inclination effect
           orbitPhase: 0.0,
           inclination: math.pi / 6, // 30 degrees
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
           size: 1.0,
         );
 
@@ -250,7 +251,7 @@ void main() {
           orbitSpeed: 0.1,
           orbitPhase: 0.0,
           inclination: 0.0, // No inclination for simple circular motion
-          color: Colors.indigo,
+          color: AppColors.primaryColor,
           size: 1.0,
         );
 
@@ -313,7 +314,7 @@ void main() {
           orbitSpeed: 0.01, // Fast orbital speed due to proximity
           orbitPhase: 0.0,
           inclination: 0.0, // Equatorial orbit
-          color: Colors.grey.shade300,
+          color: AppColors.uiTextGrey,
           size: 0.3,
         );
 
@@ -330,7 +331,7 @@ void main() {
           orbitSpeed: 1.0,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.red,
+          color: AppColors.uiRed,
           size: 0.1,
         );
 
@@ -348,7 +349,7 @@ void main() {
           orbitSpeed: 1e-6,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
           size: 10.0,
         );
 
@@ -366,7 +367,7 @@ void main() {
           orbitSpeed: 1000.0,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.green,
+          color: AppColors.uiGreen,
           size: 1.0,
         );
 
@@ -384,7 +385,7 @@ void main() {
           orbitSpeed: 0.1,
           orbitPhase: 0.0,
           inclination: math.pi, // 180 degree inclination
-          color: Colors.purple,
+          color: AppColors.stellarOType,
           size: 1.0,
         );
 
@@ -409,7 +410,7 @@ void main() {
           orbitSpeed: 0.1,
           orbitPhase: math.pi / 4, // 45 degrees
           inclination: 0.1,
-          color: Colors.red,
+          color: AppColors.uiRed,
           size: 1.0,
           useXZPlane: false,
         );
@@ -419,7 +420,7 @@ void main() {
           orbitSpeed: 0.1,
           orbitPhase: math.pi / 4, // 45 degrees
           inclination: 0.1,
-          color: Colors.red,
+          color: AppColors.uiRed,
           size: 1.0,
           useXZPlane: true,
         );

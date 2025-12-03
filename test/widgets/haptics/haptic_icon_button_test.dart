@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
 import 'package:graviton/services/haptic_feedback_service.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('HapticIconButton Tests', () {
@@ -65,7 +66,7 @@ void main() {
 
     testWidgets('should pass through all button properties', (tester) async {
       const iconSize = 32.0;
-      const color = Colors.red;
+      const color = AppColors.uiRed;
       const tooltip = 'Test Tooltip';
 
       await tester.pumpWidget(

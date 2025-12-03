@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/models/dialog_action.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('DialogAction', () {
@@ -12,8 +13,8 @@ void main() {
       testAction = DialogAction(
         text: 'Test Action',
         onPressed: testCallback,
-        textColor: Colors.white,
-        backgroundColor: Colors.blue,
+        textColor: AppColors.uiWhite,
+        backgroundColor: AppColors.primaryColor,
         fontWeight: FontWeight.bold,
         isDestructive: false,
       );
@@ -23,8 +24,8 @@ void main() {
       test('creates instance with all properties', () {
         expect(testAction.text, equals('Test Action'));
         expect(testAction.onPressed, equals(testCallback));
-        expect(testAction.textColor, equals(Colors.white));
-        expect(testAction.backgroundColor, equals(Colors.blue));
+        expect(testAction.textColor, equals(AppColors.uiWhite));
+        expect(testAction.backgroundColor, equals(AppColors.primaryColor));
         expect(testAction.fontWeight, equals(FontWeight.bold));
         expect(testAction.isDestructive, isFalse);
       });
@@ -185,12 +186,15 @@ void main() {
         final coloredAction = DialogAction(
           text: 'Colored Text',
           onPressed: testCallback,
-          textColor: Colors.red,
-          backgroundColor: Colors.green,
+          textColor: AppColors.uiRed,
+          backgroundColor: AppColors.habitabilityHabitable,
         );
 
-        expect(coloredAction.textColor, equals(Colors.red));
-        expect(coloredAction.backgroundColor, equals(Colors.green));
+        expect(coloredAction.textColor, equals(AppColors.uiRed));
+        expect(
+          coloredAction.backgroundColor,
+          equals(AppColors.habitabilityHabitable),
+        );
       });
 
       test('handles custom colors', () {
@@ -214,11 +218,11 @@ void main() {
         final transparentAction = DialogAction(
           text: 'Transparent',
           onPressed: testCallback,
-          textColor: Colors.transparent,
+          textColor: AppColors.transparentColor,
           backgroundColor: const Color(0x80FF0000), // 50% red
         );
 
-        expect(transparentAction.textColor, equals(Colors.transparent));
+        expect(transparentAction.textColor, equals(AppColors.transparentColor));
         expect(
           transparentAction.backgroundColor?.a,
           closeTo(0.5, 0.01),
@@ -340,15 +344,15 @@ void main() {
           onPressed: () {
             confirmed = true;
           },
-          textColor: Colors.white,
-          backgroundColor: Colors.blue,
+          textColor: AppColors.uiWhite,
+          backgroundColor: AppColors.primaryColor,
           fontWeight: FontWeight.w500,
           isDestructive: false,
         );
 
         expect(confirmAction.text, equals('Confirm'));
         expect(confirmAction.isDestructive, isFalse);
-        expect(confirmAction.backgroundColor, equals(Colors.blue));
+        expect(confirmAction.backgroundColor, equals(AppColors.primaryColor));
 
         confirmAction.onPressed();
         expect(confirmed, isTrue);
@@ -361,14 +365,14 @@ void main() {
           onPressed: () {
             cancelled = true;
           },
-          textColor: Colors.grey[600],
+          textColor: AppColors.uiBorderGrey,
           fontWeight: FontWeight.w400,
           isDestructive: false,
         );
 
         expect(cancelAction.text, equals('Cancel'));
         expect(cancelAction.isDestructive, isFalse);
-        expect(cancelAction.textColor, equals(Colors.grey[600]));
+        expect(cancelAction.textColor, equals(AppColors.uiBorderGrey));
 
         cancelAction.onPressed();
         expect(cancelled, isTrue);
@@ -381,16 +385,16 @@ void main() {
           onPressed: () {
             deleted = true;
           },
-          textColor: Colors.white,
-          backgroundColor: Colors.red,
+          textColor: AppColors.uiWhite,
+          backgroundColor: AppColors.uiRed,
           fontWeight: FontWeight.w600,
           isDestructive: true,
         );
 
         expect(deleteAction.text, equals('Delete'));
         expect(deleteAction.isDestructive, isTrue);
-        expect(deleteAction.backgroundColor, equals(Colors.red));
-        expect(deleteAction.textColor, equals(Colors.white));
+        expect(deleteAction.backgroundColor, equals(AppColors.uiRed));
+        expect(deleteAction.textColor, equals(AppColors.uiWhite));
 
         deleteAction.onPressed();
         expect(deleted, isTrue);
@@ -403,15 +407,18 @@ void main() {
           onPressed: () {
             saved = true;
           },
-          textColor: Colors.white,
-          backgroundColor: Colors.green,
+          textColor: AppColors.uiWhite,
+          backgroundColor: AppColors.habitabilityHabitable,
           fontWeight: FontWeight.w500,
           isDestructive: false,
         );
 
         expect(saveAction.text, equals('Save'));
         expect(saveAction.isDestructive, isFalse);
-        expect(saveAction.backgroundColor, equals(Colors.green));
+        expect(
+          saveAction.backgroundColor,
+          equals(AppColors.habitabilityHabitable),
+        );
 
         saveAction.onPressed();
         expect(saved, isTrue);
@@ -424,14 +431,14 @@ void main() {
           onPressed: () {
             acknowledged = true;
           },
-          textColor: Colors.black,
-          backgroundColor: Colors.orange,
+          textColor: AppColors.backgroundBlack,
+          backgroundColor: AppColors.stellarKType,
           fontWeight: FontWeight.w600,
           isDestructive: false,
         );
 
         expect(warningAction.text, equals('I Understand'));
-        expect(warningAction.backgroundColor, equals(Colors.orange));
+        expect(warningAction.backgroundColor, equals(AppColors.stellarKType));
 
         warningAction.onPressed();
         expect(acknowledged, isTrue);
@@ -443,39 +450,42 @@ void main() {
         final lightThemeAction = DialogAction(
           text: 'Light Theme Action',
           onPressed: testCallback,
-          textColor: Colors.grey[800],
-          backgroundColor: Colors.grey[100],
+          textColor: AppColors.uiDividerGrey,
+          backgroundColor: AppColors.uiTextGrey,
           fontWeight: FontWeight.w500,
         );
 
-        expect(lightThemeAction.textColor, equals(Colors.grey[800]));
-        expect(lightThemeAction.backgroundColor, equals(Colors.grey[100]));
+        expect(lightThemeAction.textColor, equals(AppColors.uiDividerGrey));
+        expect(lightThemeAction.backgroundColor, equals(AppColors.uiTextGrey));
       });
 
       test('supports dark theme styling', () {
         final darkThemeAction = DialogAction(
           text: 'Dark Theme Action',
           onPressed: testCallback,
-          textColor: Colors.grey[200],
-          backgroundColor: Colors.grey[800],
+          textColor: AppColors.uiTextGrey,
+          backgroundColor: AppColors.uiDividerGrey,
           fontWeight: FontWeight.w500,
         );
 
-        expect(darkThemeAction.textColor, equals(Colors.grey[200]));
-        expect(darkThemeAction.backgroundColor, equals(Colors.grey[800]));
+        expect(darkThemeAction.textColor, equals(AppColors.uiTextGrey));
+        expect(
+          darkThemeAction.backgroundColor,
+          equals(AppColors.uiDividerGrey),
+        );
       });
 
       test('supports high contrast accessibility', () {
         final highContrastAction = DialogAction(
           text: 'High Contrast',
           onPressed: testCallback,
-          textColor: Colors.black,
-          backgroundColor: Colors.white,
+          textColor: AppColors.backgroundBlack,
+          backgroundColor: AppColors.uiWhite,
           fontWeight: FontWeight.w700,
         );
 
-        expect(highContrastAction.textColor, equals(Colors.black));
-        expect(highContrastAction.backgroundColor, equals(Colors.white));
+        expect(highContrastAction.textColor, equals(AppColors.backgroundBlack));
+        expect(highContrastAction.backgroundColor, equals(AppColors.uiWhite));
         expect(highContrastAction.fontWeight, equals(FontWeight.w700));
       });
     });

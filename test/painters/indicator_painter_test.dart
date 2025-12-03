@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/painters/indicator_painter.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/models/indicator_data.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/enums/body_type.dart';
@@ -20,7 +21,7 @@ void main() {
         position: vm.Vector3(100, 200, 300),
         velocity: vm.Vector3(10, 20, 30),
         bodyType: BodyType.planet,
-        color: Colors.blue,
+        color: AppColors.primaryColor,
       );
 
       testIndicator = IndicatorData(
@@ -57,7 +58,7 @@ void main() {
           position: vm.Vector3.zero(),
           velocity: vm.Vector3.zero(),
           bodyType: BodyType.star,
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
         );
 
         final starIndicator = IndicatorData(
@@ -213,7 +214,7 @@ void main() {
           position: vm.Vector3.zero(),
           velocity: vm.Vector3.zero(),
           bodyType: BodyType.planet,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
         );
 
         final earthIndicator = IndicatorData(
@@ -251,7 +252,7 @@ void main() {
           position: vm.Vector3.zero(),
           velocity: vm.Vector3.zero(),
           bodyType: BodyType.moon,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
         );
 
         final moonIndicator = IndicatorData(
@@ -350,7 +351,7 @@ void main() {
           position: vm.Vector3.zero(),
           velocity: vm.Vector3.zero(),
           bodyType: BodyType.asteroid,
-          color: Colors.brown,
+          color: AppColors.asteroidRockyBrown,
         );
 
         final specialIndicator = IndicatorData(
@@ -398,7 +399,7 @@ void main() {
             position: vm.Vector3.zero(),
             velocity: vm.Vector3.zero(),
             bodyType: bodyType,
-            color: Colors.white,
+            color: AppColors.uiWhite,
           );
 
           final indicator = IndicatorData(

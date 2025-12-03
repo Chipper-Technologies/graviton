@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/enums/scenario_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/state/camera_state.dart';
@@ -37,7 +37,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1.0,
           radius: 5.0,
-          color: Colors.blue,
+          color: AppColors.planetEarth,
           name: 'Test Body 1',
         ),
         Body(
@@ -45,7 +45,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 2.0,
           radius: 3.0,
-          color: Colors.red,
+          color: AppColors.planetMars,
           name: 'Test Body 2',
         ),
       ];
@@ -64,7 +64,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1.0,
           radius: 5.0,
-          color: Colors.blue,
+          color: AppColors.planetEarth,
           name: 'Test Body',
         ),
       ];
@@ -127,7 +127,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1.0,
           radius: 5.0,
-          color: Colors.blue,
+          color: AppColors.planetEarth,
           name: 'Test Body',
         ),
       ];
@@ -147,7 +147,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1.0,
           radius: 5.0,
-          color: Colors.blue,
+          color: AppColors.planetEarth,
           name: 'Test Body',
         ),
       ];
@@ -168,7 +168,7 @@ void main() {
             velocity: vm.Vector3.zero(),
             mass: 1.0,
             radius: 5.0,
-            color: Colors.blue,
+            color: AppColors.planetEarth,
             name: 'Test Body',
           ),
         ];

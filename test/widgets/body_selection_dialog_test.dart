@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/models/body.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/widgets/body_selection_dialog.dart';
@@ -20,7 +21,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1.989e30,
           radius: 20,
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
           isPlanet: true,
           name: 'Sun',
           bodyType: BodyType.star,
@@ -33,7 +34,7 @@ void main() {
           velocity: vm.Vector3(0, 30, 0),
           mass: 5.972e24,
           radius: 10,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
           isPlanet: true,
           name: 'Earth',
           bodyType: BodyType.planet,
@@ -46,7 +47,7 @@ void main() {
           velocity: vm.Vector3(0, -25, 0),
           mass: 6.39e23,
           radius: 8,
-          color: Colors.red,
+          color: AppColors.uiRed,
           isPlanet: true,
           name: 'Mars',
           bodyType: BodyType.planet,
@@ -127,9 +128,9 @@ void main() {
       final coloredContainers = containers.where((container) {
         final decoration = container.decoration;
         if (decoration is BoxDecoration) {
-          return decoration.color == Colors.yellow ||
-              decoration.color == Colors.blue ||
-              decoration.color == Colors.red;
+          return decoration.color == AppColors.stellarGType ||
+              decoration.color == AppColors.primaryColor ||
+              decoration.color == AppColors.uiRed;
         }
         return false;
       });
@@ -303,7 +304,7 @@ void main() {
           velocity: vm.Vector3(0, 20, 0),
           mass: 7.34e22,
           radius: 5,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           isPlanet: false, // Moon is not a planet
           name: 'Moon',
           bodyType: BodyType.moon,
@@ -398,7 +399,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1.0e24,
           radius: 10,
-          color: Colors.primaries[index % Colors.primaries.length],
+          color: AppColors.primaryColor,
           isPlanet: true,
           name: 'Body $index',
           bodyType: BodyType.planet,

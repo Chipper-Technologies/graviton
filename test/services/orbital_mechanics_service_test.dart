@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/habitability_status.dart';
@@ -22,7 +22,7 @@ void main() {
         velocity: vm.Vector3.zero(),
         mass: 10.0, // Use simulation mass units
         radius: 1.5,
-        color: Colors.yellow,
+        color: AppColors.stellarGType,
         bodyType: BodyType.star,
         stellarLuminosity: 1.0,
         temperature: 5778.0,
@@ -36,7 +36,7 @@ void main() {
         velocity: vm.Vector3(0.0, 0.0, 1.0),
         mass: 1.0, // Use simulation mass units
         radius: 0.5,
-        color: Colors.blue,
+        color: AppColors.planetEarth,
         bodyType: BodyType.planet,
         temperature: 288.0,
         habitabilityStatus: HabitabilityStatus.habitable,

@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/utils/body_type_ranges.dart';
 import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/models/body.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
-import 'package:flutter/material.dart';
 
 void main() {
   group('Body Creation with BodyTypeRanges', () {
@@ -19,7 +19,7 @@ void main() {
         velocity: vm.Vector3(0, 5.0, 0),
         mass: defaultProperties['mass']!,
         radius: defaultProperties['radius']!,
-        color: Colors.blue,
+        color: AppColors.planetEarth,
         bodyType: BodyType.planet,
         stellarLuminosity: defaultProperties['luminosity']!,
         temperature: 288.0,
@@ -186,7 +186,7 @@ void main() {
       final originalPosition = vm.Vector3(15.0, -8.0, 3.0);
       final originalVelocity = vm.Vector3(0.2, -0.5, 0.1);
       final originalName = 'Test Body';
-      final originalColor = Colors.red;
+      final originalColor = AppColors.planetMars;
       final originalTemperature = 350.0;
 
       // These properties should be preserved regardless of body type

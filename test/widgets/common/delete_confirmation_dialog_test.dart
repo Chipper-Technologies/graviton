@@ -170,7 +170,7 @@ void main() {
     testWidgets('should use custom warning color when provided', (
       WidgetTester tester,
     ) async {
-      const customColor = Colors.orange;
+      const customColor = AppColors.uiOrangeAccent;
 
       await tester.pumpWidget(
         TestUtils.wrapWithMaterialApp(

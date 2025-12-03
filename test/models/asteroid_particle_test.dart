@@ -1,6 +1,6 @@
 import 'dart:math' as math;
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/models/asteroid_particle.dart';
 
 void main() {
@@ -12,7 +12,7 @@ void main() {
           orbitSpeed: 0.5,
           orbitPhase: math.pi / 4,
           inclination: 0.1,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 2.0,
         );
 
@@ -20,7 +20,7 @@ void main() {
         expect(particle.orbitSpeed, equals(0.5));
         expect(particle.orbitPhase, equals(math.pi / 4));
         expect(particle.inclination, equals(0.1));
-        expect(particle.color, equals(Colors.grey));
+        expect(particle.color, equals(AppColors.uiTextGrey));
         expect(particle.size, equals(2.0));
         expect(particle.eccentricity, equals(0.0)); // Default value
         expect(particle.useXZPlane, isFalse); // Default value
@@ -36,7 +36,7 @@ void main() {
           orbitSpeed: 1.2,
           orbitPhase: math.pi / 2,
           inclination: 0.2,
-          color: Colors.orange,
+          color: AppColors.asteroidBrownish,
           size: 5.0,
           eccentricity: 0.3,
           useXZPlane: true,
@@ -52,7 +52,7 @@ void main() {
           orbitSpeed: 0.0,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.black,
+          color: AppColors.backgroundBlack,
           size: 0.0,
         );
 
@@ -69,7 +69,7 @@ void main() {
           orbitSpeed: 100.0,
           orbitPhase: 10 * math.pi,
           inclination: math.pi,
-          color: Colors.white,
+          color: AppColors.uiWhite,
           size: 1000.0,
           eccentricity: 0.99,
         );
@@ -87,7 +87,7 @@ void main() {
           orbitSpeed: 0.0, // No movement for static test
           orbitPhase: 0.0, // Start at angle 0
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           eccentricity: 0.0,
           useXZPlane: false, // XY plane
@@ -105,7 +105,7 @@ void main() {
           orbitSpeed: 0.0,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           eccentricity: 0.0,
           useXZPlane: true, // XZ plane
@@ -124,7 +124,7 @@ void main() {
           orbitSpeed: 0.0,
           orbitPhase: math.pi / 2,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           useXZPlane: false, // XY plane
         );
@@ -141,7 +141,7 @@ void main() {
           orbitSpeed: 0.0,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           eccentricity: 0.5, // Elliptical orbit
           useXZPlane: false,
@@ -162,7 +162,7 @@ void main() {
           orbitSpeed: 0.0,
           orbitPhase: math.pi / 2, // Start at Y position
           inclination: inclination,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           useXZPlane: false, // XY plane
         );
@@ -181,7 +181,7 @@ void main() {
           orbitSpeed: 0.0,
           orbitPhase: math.pi / 2, // Start at Z position
           inclination: inclination,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           useXZPlane: true, // XZ plane
         );
@@ -200,7 +200,7 @@ void main() {
           orbitSpeed: 1.0, // 1 radian per time unit
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
         );
 
@@ -219,7 +219,7 @@ void main() {
           orbitSpeed: 1.0,
           orbitPhase: 2 * math.pi - 0.1, // Near 2π
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
         );
 
@@ -233,7 +233,7 @@ void main() {
           orbitSpeed: 1.0,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
         );
 
@@ -247,7 +247,7 @@ void main() {
           orbitSpeed: 1.0,
           orbitPhase: 1.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
         );
 
@@ -262,7 +262,7 @@ void main() {
           orbitSpeed: 1.0,
           orbitPhase: 1.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
         );
 
@@ -276,7 +276,7 @@ void main() {
           orbitSpeed: 1.0,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           useXZPlane: false,
         );
@@ -299,7 +299,7 @@ void main() {
           orbitSpeed: 0.5,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           eccentricity: 0.0, // Circular
           useXZPlane: false,
@@ -332,7 +332,7 @@ void main() {
           orbitSpeed: 1.0, // 1 radian per time unit
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           eccentricity: 0.5, // Elliptical
           useXZPlane: false,
@@ -353,7 +353,7 @@ void main() {
           orbitSpeed: 1.0, // 1 radian per time unit
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           eccentricity: 0.99, // Very elliptical
           useXZPlane: false,
@@ -376,7 +376,7 @@ void main() {
           orbitSpeed: 1.0,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
         );
 
@@ -393,7 +393,7 @@ void main() {
           orbitSpeed: 1.0,
           orbitPhase: 0.0,
           inclination: 0.0,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
         );
 
@@ -410,7 +410,7 @@ void main() {
           orbitSpeed: 0.0,
           orbitPhase: math.pi / 2,
           inclination: math.pi, // 180 degrees
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           useXZPlane: false,
         );
@@ -427,7 +427,7 @@ void main() {
           orbitSpeed: 1.0,
           orbitPhase: 0.0,
           inclination: 0.1,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           size: 1.0,
           eccentricity: 0.3,
         );
@@ -450,7 +450,7 @@ void main() {
           orbitSpeed: 0.000018, // ~5 year orbital period
           orbitPhase: 0.5 * 2 * math.pi, // Random-ish phase
           inclination: 0.087, // ~5 degrees typical inclination
-          color: Colors.grey[600]!,
+          color: AppColors.uiTextGrey,
           size: 1.5,
           eccentricity: 0.15, // Moderate eccentricity
           useXZPlane: true, // Solar system view
@@ -477,7 +477,7 @@ void main() {
           orbitSpeed: 0.000005, // ~12 year orbital period
           orbitPhase: math.pi / 3, // 60 degrees offset (L4)
           inclination: 0.262, // ~15 degrees higher inclination
-          color: Colors.brown[400]!,
+          color: AppColors.asteroidRockyBrown,
           size: 2.0,
           eccentricity: 0.05, // Low eccentricity
           useXZPlane: true,

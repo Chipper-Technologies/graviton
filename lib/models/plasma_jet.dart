@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/models/collision_particle.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Represents a directional plasma jet from a massive star collision
@@ -96,13 +97,13 @@ class PlasmaJet {
   Color get temperatureAdjustedColor {
     if (temperature > 30000) {
       // Very hot: blue-white
-      return Color.lerp(baseColor, Colors.white, 0.6) ?? baseColor;
+      return Color.lerp(baseColor, AppColors.uiWhite, 0.6) ?? baseColor;
     } else if (temperature > 15000) {
       // Hot: blue tinted
-      return Color.lerp(baseColor, Colors.blue, 0.4) ?? baseColor;
+      return Color.lerp(baseColor, AppColors.primaryColor, 0.4) ?? baseColor;
     } else {
       // Cooler: orange-red tinted
-      return Color.lerp(baseColor, Colors.orange, 0.3) ?? baseColor;
+      return Color.lerp(baseColor, AppColors.stellarKType, 0.3) ?? baseColor;
     }
   }
 

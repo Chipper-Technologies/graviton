@@ -219,7 +219,7 @@ class _BodySelectionDialogState extends State<BodySelectionDialog> {
                   ? AppColors.uiWhite.withValues(
                       alpha: AppTypography.opacityFaint,
                     )
-                  : Colors.transparent,
+                  : AppColors.transparentColor,
               borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
               border: Border.all(
                 color: isSelected
@@ -310,7 +310,7 @@ class _BodySelectionDialogState extends State<BodySelectionDialog> {
           HapticElevatedButton(
             onPressed: _cancel,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent,
+              backgroundColor: AppColors.transparentColor,
               foregroundColor: AppColors.uiWhite.withValues(
                 alpha: AppTypography.opacityMediumHigh,
               ),

@@ -4,6 +4,8 @@ import 'package:graviton/enums/simulation_status.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/widgets/auto_pause_dialog_wrapper.dart';
 import 'package:provider/provider.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 
 void main() {
   group('AutoPauseDialogWrapper', () {
@@ -311,7 +313,9 @@ void main() {
                     onPressed: () {
                       AutoPauseDialogWrapper.show(
                         context: context,
-                        barrierColor: Colors.red.withValues(alpha: 0.5),
+                        barrierColor: AppColors.uiRed.withValues(
+                          alpha: AppTypography.opacityMedium,
+                        ),
                         child: const AlertDialog(title: Text('Test Dialog')),
                       );
                     },

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/graviton_menu_item_config.dart';
@@ -197,8 +199,10 @@ void main() {
             labelKey: 'deleteBodyTooltip',
             hintKey: 'deleteBodyAccessibility',
             icon: Icons.delete_outline,
-            iconColor: Colors.red,
-            borderColor: Colors.red.withValues(alpha: 0.5),
+            iconColor: AppColors.uiRed,
+            borderColor: AppColors.uiRed.withValues(
+              alpha: AppTypography.opacityMedium,
+            ),
             onTap: () {},
           ),
         ],
@@ -217,7 +221,7 @@ void main() {
 
       // Verify the icon has red color by checking the widget tree
       final iconWidget = tester.widget<Icon>(deleteIcon);
-      expect(iconWidget.color, equals(Colors.red));
+      expect(iconWidget.color, equals(AppColors.uiRed));
     });
 
     testWidgets('GravitonPopupMenu handles onSelected callback', (
@@ -328,16 +332,16 @@ void main() {
         labelKey: 'testKey',
         hintKey: 'hintKey',
         icon: Icons.star,
-        iconColor: Colors.blue,
-        borderColor: Colors.green,
+        iconColor: AppColors.primaryColor,
+        borderColor: AppColors.uiGreen,
       );
 
       expect(config.value, equals('test'));
       expect(config.labelKey, equals('testKey'));
       expect(config.hintKey, equals('hintKey'));
       expect(config.icon, equals(Icons.star));
-      expect(config.iconColor, equals(Colors.blue));
-      expect(config.borderColor, equals(Colors.green));
+      expect(config.iconColor, equals(AppColors.primaryColor));
+      expect(config.borderColor, equals(AppColors.uiGreen));
     });
 
     testWidgets('GravitonMenuItemConfig with minimal properties', (

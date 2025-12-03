@@ -18,7 +18,7 @@ void main() {
         velocity: vm.Vector3.zero(),
         mass: 5.972e24, // Earth mass in kg
         radius: 6.371,
-        color: Colors.blue,
+        color: AppColors.primaryColor,
         bodyType: BodyType.planet,
       );
     });
@@ -73,7 +73,7 @@ void main() {
         });
 
         final decoration = colorIndicator.decoration as BoxDecoration;
-        expect(decoration.color, equals(Colors.blue));
+        expect(decoration.color, equals(AppColors.primaryColor));
         expect(decoration.shape, equals(BoxShape.circle));
       });
     });
@@ -154,7 +154,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1.989e30, // Solar mass in kg
           radius: 696.340,
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
           bodyType: BodyType.star,
         );
 
@@ -171,7 +171,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 7.342e22, // Lunar mass in kg
           radius: 1.737,
-          color: Colors.grey,
+          color: AppColors.uiTextGrey,
           bodyType: BodyType.moon,
         );
 
@@ -190,7 +190,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1.0,
           radius: 1.0,
-          color: Colors.red,
+          color: AppColors.uiRed,
           bodyType: BodyType.planet,
         );
 
@@ -207,7 +207,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 0.0,
           radius: 1.0,
-          color: Colors.black,
+          color: AppColors.uiBlack,
           bodyType: BodyType.planet,
         );
 

@@ -108,8 +108,8 @@ class GravitonTabBar extends StatelessWidget {
                                   HapticUtils.error();
                                 },
                                 child: Container(
-                                  color:
-                                      Colors.transparent, // Invisible overlay
+                                  color: AppColors
+                                      .transparentColor, // Invisible overlay
                                 ),
                               ),
                             );
