@@ -5,13 +5,18 @@ import 'package:graviton/enums/user_avatar.dart';
 import 'package:graviton/models/user_profile.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../test_mocks.mocks.dart';
 
 @GenerateMocks([User, UserInfo])
 void main() {
   group('UserProfile', () {
-    test('fromFirebaseUser creates profile with all fields', () {
+    setUp(() {
+      SharedPreferences.setMockInitialValues({});
+    });
+
+    test('fromFirebaseUser creates profile with all fields', () async {
       final mockUser = MockUser();
       final mockProviderData = [MockUserInfo()];
       final mockMetadata = MockUserMetadata();
@@ -27,7 +32,7 @@ void main() {
       when(mockMetadata.lastSignInTime).thenReturn(DateTime(2023, 6, 1));
       when(mockProviderData.first.providerId).thenReturn('google.com');
 
-      final profile = UserProfile.fromFirebaseUser(
+      final profile = await UserProfile.fromFirebaseUser(
         mockUser,
         avatar: UserAvatar.earth,
       );
@@ -41,7 +46,7 @@ void main() {
       expect(profile.authProvider, AuthProviderType.google);
     });
 
-    test('fromFirebaseUser handles anonymous user', () {
+    test('fromFirebaseUser handles anonymous user', () async {
       final mockUser = MockUser();
       final mockMetadata = MockUserMetadata();
 
@@ -55,7 +60,7 @@ void main() {
       when(mockMetadata.creationTime).thenReturn(DateTime(2023, 1, 1));
       when(mockMetadata.lastSignInTime).thenReturn(DateTime(2023, 6, 1));
 
-      final profile = UserProfile.fromFirebaseUser(mockUser);
+      final profile = await UserProfile.fromFirebaseUser(mockUser);
 
       expect(profile.uid, 'anon-uid');
       expect(profile.email, null);
@@ -66,7 +71,7 @@ void main() {
       expect(profile.authProvider, AuthProviderType.anonymous);
     });
 
-    test('fromFirebaseUser handles email/password user', () {
+    test('fromFirebaseUser handles email/password user', () async {
       final mockUser = MockUser();
       final mockProviderData = [MockUserInfo()];
       final mockMetadata = MockUserMetadata();
@@ -82,7 +87,7 @@ void main() {
       when(mockMetadata.lastSignInTime).thenReturn(DateTime(2023, 6, 1));
       when(mockProviderData.first.providerId).thenReturn('password');
 
-      final profile = UserProfile.fromFirebaseUser(
+      final profile = await UserProfile.fromFirebaseUser(
         mockUser,
         avatar: UserAvatar.mars,
       );
@@ -90,6 +95,103 @@ void main() {
       expect(profile.authProvider, AuthProviderType.emailPassword);
       expect(profile.avatar, UserAvatar.mars);
     });
+
+    test(
+      'fromFirebaseUser uses last auth provider from SharedPreferences',
+      () async {
+        // Setup: User has both Google and Apple linked
+        final mockUser = MockUser();
+        final mockProviderData = [
+          MockUserInfo(), // Google (first in list)
+          MockUserInfo(), // Apple (second in list)
+        ];
+        final mockMetadata = MockUserMetadata();
+
+        when(mockUser.uid).thenReturn('multi-provider-uid');
+        when(mockUser.email).thenReturn('user@example.com');
+        when(mockUser.displayName).thenReturn('Multi User');
+        when(mockUser.photoURL).thenReturn(null);
+        when(mockUser.isAnonymous).thenReturn(false);
+        when(mockUser.providerData).thenReturn(mockProviderData);
+        when(mockUser.metadata).thenReturn(mockMetadata);
+        when(mockMetadata.creationTime).thenReturn(DateTime(2023, 1, 1));
+        when(mockMetadata.lastSignInTime).thenReturn(DateTime(2023, 6, 1));
+        when(mockProviderData[0].providerId).thenReturn('google.com');
+        when(mockProviderData[1].providerId).thenReturn('apple.com');
+
+        // Save Apple as the last used provider
+        SharedPreferences.setMockInitialValues({
+          'last_auth_provider_multi-provider-uid': 'apple.com',
+        });
+
+        final profile = await UserProfile.fromFirebaseUser(mockUser);
+
+        // Should use Apple (from SharedPreferences) not Google (first in providerData)
+        expect(profile.authProvider, AuthProviderType.apple);
+      },
+    );
+
+    test(
+      'fromFirebaseUser falls back to first provider when no saved preference',
+      () async {
+        // Setup: User has both Google and Apple linked
+        final mockUser = MockUser();
+        final mockProviderData = [
+          MockUserInfo(), // Google (first in list)
+          MockUserInfo(), // Apple (second in list)
+        ];
+        final mockMetadata = MockUserMetadata();
+
+        when(mockUser.uid).thenReturn('multi-provider-uid-2');
+        when(mockUser.email).thenReturn('user2@example.com');
+        when(mockUser.displayName).thenReturn('User 2');
+        when(mockUser.photoURL).thenReturn(null);
+        when(mockUser.isAnonymous).thenReturn(false);
+        when(mockUser.providerData).thenReturn(mockProviderData);
+        when(mockUser.metadata).thenReturn(mockMetadata);
+        when(mockMetadata.creationTime).thenReturn(DateTime(2023, 1, 1));
+        when(mockMetadata.lastSignInTime).thenReturn(DateTime(2023, 6, 1));
+        when(mockProviderData[0].providerId).thenReturn('google.com');
+        when(mockProviderData[1].providerId).thenReturn('apple.com');
+
+        // No saved preference - SharedPreferences is empty
+        final profile = await UserProfile.fromFirebaseUser(mockUser);
+
+        // Should fall back to first provider (Google)
+        expect(profile.authProvider, AuthProviderType.google);
+      },
+    );
+
+    test(
+      'fromFirebaseUser handles invalid saved provider ID gracefully',
+      () async {
+        final mockUser = MockUser();
+        final mockProviderData = [MockUserInfo()];
+        final mockMetadata = MockUserMetadata();
+
+        when(mockUser.uid).thenReturn('test-uid-3');
+        when(mockUser.email).thenReturn('user3@example.com');
+        when(mockUser.displayName).thenReturn('User 3');
+        when(mockUser.photoURL).thenReturn(null);
+        when(mockUser.isAnonymous).thenReturn(false);
+        when(mockUser.providerData).thenReturn(mockProviderData);
+        when(mockUser.metadata).thenReturn(mockMetadata);
+        when(mockMetadata.creationTime).thenReturn(DateTime(2023, 1, 1));
+        when(mockMetadata.lastSignInTime).thenReturn(DateTime(2023, 6, 1));
+        when(mockProviderData.first.providerId).thenReturn('google.com');
+
+        // Save an invalid/unknown provider ID
+        SharedPreferences.setMockInitialValues({
+          'last_auth_provider_test-uid-3': 'invalid-provider.com',
+        });
+
+        final profile = await UserProfile.fromFirebaseUser(mockUser);
+
+        // Should handle invalid provider and fall back to actual provider
+        // (fromProviderId returns null for unknown IDs, so it falls back to first provider)
+        expect(profile.authProvider, isNotNull);
+      },
+    );
 
     test('toJson serializes correctly', () {
       final profile = UserProfile(
@@ -448,7 +550,7 @@ void main() {
       expect(profile1.hashCode, isNot(equals(profile2.hashCode)));
     });
 
-    test('fromFirebaseUser handles all auth provider types', () {
+    test('fromFirebaseUser handles all auth provider types', () async {
       final testCases = [
         ('google.com', AuthProviderType.google),
         ('apple.com', AuthProviderType.apple),
@@ -472,7 +574,7 @@ void main() {
         when(mockMetadata.lastSignInTime).thenReturn(DateTime(2023, 6, 1));
         when(mockProviderData.first.providerId).thenReturn(testCase.$1);
 
-        final profile = UserProfile.fromFirebaseUser(mockUser);
+        final profile = await UserProfile.fromFirebaseUser(mockUser);
 
         expect(
           profile.authProvider,
