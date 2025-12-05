@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/body_creation/body_creation_mode_toggle.dart';
 import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -154,7 +155,7 @@ void main() {
           child: Row(
             children: [
               BodyCreationModeToggle(isActive: false, onToggle: () {}),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTypography.spacingLarge),
               BodyCreationModeToggle(isActive: true, onToggle: () {}),
             ],
           ),

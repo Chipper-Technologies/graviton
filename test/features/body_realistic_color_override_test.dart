@@ -190,7 +190,7 @@ void main() {
     });
 
     test('Toggling useRealisticColor should affect color selection', () {
-      final customColor = Colors.purple;
+      final customColor = AppColors.uiPurple;
       final star = Body(
         name: 'Toggle Star',
         mass: 2.0, // High mass to ensure different realistic color
@@ -216,7 +216,7 @@ void main() {
     });
 
     test('Asteroids should respect useRealisticColor flag', () {
-      final customColor = Colors.pink;
+      final customColor = AppColors.basicPink;
       final asteroid = Body(
         name: 'Asteroid',
         mass: 0.01,
@@ -236,7 +236,7 @@ void main() {
     test(
       'Black holes should respect useRealisticColor flag (non-luminous)',
       () {
-        final customColor = Colors.deepPurple;
+        final customColor = AppColors.spaceDeepPurple;
         final blackHole = Body(
           name: 'Black Hole',
           mass: 100.0,

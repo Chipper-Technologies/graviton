@@ -400,18 +400,25 @@ class GravitonPainter extends CustomPainter {
 
     // Outer glow ring
     final glowPaint = Paint()
-      ..color = AppColors.uiOrangeAccent.withValues(alpha: 0.3)
+      ..color = AppColors.uiOrangeAccent.withValues(
+        alpha: AppTypography.opacityFaint,
+      )
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 4.0
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8.0);
+      ..strokeWidth = AppTypography.borderVeryThick
+      ..maskFilter = MaskFilter.blur(
+        BlurStyle.normal,
+        AppTypography.blurMedium,
+      );
 
     canvas.drawCircle(center, handleRadius, glowPaint);
 
     // Main indicator ring
     final ringPaint = Paint()
-      ..color = AppColors.uiOrangeAccent.withValues(alpha: 0.9)
+      ..color = AppColors.uiOrangeAccent.withValues(
+        alpha: AppTypography.opacityNearlyOpaque,
+      )
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.0;
+      ..strokeWidth = AppTypography.borderHeavy;
 
     canvas.drawCircle(center, handleRadius, ringPaint);
 
@@ -419,7 +426,7 @@ class GravitonPainter extends CustomPainter {
     final arrowPaint = Paint()
       ..color = AppColors.celestialGold
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.5
+      ..strokeWidth = AppTypography.borderExtraThick
       ..strokeCap = StrokeCap.round;
 
     final arrowLength = handleSize * 0.8;

@@ -328,17 +328,54 @@ void main() {
         expect(AppTypography.borderThin, equals(1.0));
         expect(AppTypography.borderMedium, equals(1.5));
         expect(AppTypography.borderThick, equals(2.0));
+        expect(AppTypography.borderExtraThick, equals(2.5));
+        expect(AppTypography.borderHeavy, equals(3.0));
+        expect(AppTypography.borderVeryThick, equals(4.0));
       });
 
       test('border widths should be in ascending order', () {
         expect(AppTypography.borderThin, lessThan(AppTypography.borderMedium));
         expect(AppTypography.borderMedium, lessThan(AppTypography.borderThick));
+        expect(
+          AppTypography.borderThick,
+          lessThan(AppTypography.borderExtraThick),
+        );
+        expect(
+          AppTypography.borderExtraThick,
+          lessThan(AppTypography.borderHeavy),
+        );
+        expect(
+          AppTypography.borderHeavy,
+          lessThan(AppTypography.borderVeryThick),
+        );
       });
 
       test('all border widths should be positive', () {
         expect(AppTypography.borderThin, greaterThan(0.0));
         expect(AppTypography.borderMedium, greaterThan(0.0));
         expect(AppTypography.borderThick, greaterThan(0.0));
+        expect(AppTypography.borderExtraThick, greaterThan(0.0));
+        expect(AppTypography.borderHeavy, greaterThan(0.0));
+        expect(AppTypography.borderVeryThick, greaterThan(0.0));
+      });
+    });
+
+    group('Blur Radius Constants', () {
+      test('should have correct blur radius values', () {
+        expect(AppTypography.blurSmall, equals(2.0));
+        expect(AppTypography.blurMedium, equals(8.0));
+        expect(AppTypography.blurLarge, equals(16.0));
+      });
+
+      test('blur radii should be in ascending order', () {
+        expect(AppTypography.blurSmall, lessThan(AppTypography.blurMedium));
+        expect(AppTypography.blurMedium, lessThan(AppTypography.blurLarge));
+      });
+
+      test('all blur radii should be positive', () {
+        expect(AppTypography.blurSmall, greaterThan(0.0));
+        expect(AppTypography.blurMedium, greaterThan(0.0));
+        expect(AppTypography.blurLarge, greaterThan(0.0));
       });
     });
 
@@ -356,6 +393,11 @@ void main() {
       test('should have correct avatar margin', () {
         expect(AppTypography.avatarMargin, equals(6.0));
         expect(AppTypography.avatarMargin, greaterThan(0.0));
+      });
+
+      test('should have correct button size standard', () {
+        expect(AppTypography.buttonSizeStandard, equals(36.0));
+        expect(AppTypography.buttonSizeStandard, greaterThan(0.0));
       });
 
       test('should have correct avatar selection size', () {

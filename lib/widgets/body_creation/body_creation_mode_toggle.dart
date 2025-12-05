@@ -25,7 +25,7 @@ class BodyCreationModeToggle extends StatelessWidget {
     return HapticCircularButton(
       icon: Icons.add_circle_outline,
       onTap: onToggle,
-      size: 36,
+      size: AppTypography.buttonSizeStandard,
       iconColor: AppColors.uiWhite,
       backgroundColor: isActive
           ? AppColors.primaryColor.withValues(
