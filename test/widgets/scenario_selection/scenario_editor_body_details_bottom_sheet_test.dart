@@ -5,6 +5,8 @@ import 'package:graviton/models/body.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/habitability_status.dart';
 import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
+import 'package:graviton/widgets/common/body_type_picker.dart';
+import 'package:graviton/widgets/common/color_picker.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:provider/provider.dart';
@@ -226,8 +228,8 @@ void main() {
         );
 
         // Should default to Edit tab in add mode
-        // Look for Body Type section which should be visible on Edit tab
-        expect(find.text('Body Type'), findsOneWidget);
+        // Look for BodyTypePicker widget which should be visible on Edit tab
+        expect(find.byType(BodyTypePicker), findsOneWidget);
 
         // The name field should be present as a text input
         expect(find.byType(TextField), findsWidgets);
@@ -461,11 +463,11 @@ void main() {
         await tester.tap(find.text('Edit'));
         await tester.pumpAndSettle();
 
-        // Should display section headers and input fields
-        expect(find.text('Body Type'), findsOneWidget);
-        expect(find.text('Enter body name'), findsOneWidget);
-        expect(find.text('Color'), findsOneWidget);
-        expect(find.text('Position (m)'), findsOneWidget);
+        // Should display BodyTypePicker and input fields
+        expect(find.byType(BodyTypePicker), findsOneWidget);
+        expect(find.byType(TextField), findsWidgets);
+        // Color picker should be present
+        expect(find.byType(ColorPicker), findsOneWidget);
       });
 
       testWidgets('displays stellar properties', (WidgetTester tester) async {

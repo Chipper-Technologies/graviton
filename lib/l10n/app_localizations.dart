@@ -992,6 +992,42 @@ abstract class AppLocalizations {
   /// **'Add Body'**
   String get addBodyButton;
 
+  /// Accessibility hint for enabling add body mode
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to enable add body mode - click on canvas to place new bodies'**
+  String get tapToEnableAddBodyMode;
+
+  /// Accessibility hint for disabling add body mode
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to disable add body mode and return to normal interaction'**
+  String get tapToDisableAddBodyMode;
+
+  /// Status message when add body mode is active
+  ///
+  /// In en, this message translates to:
+  /// **'Add Body Mode Active'**
+  String get addBodyModeActive;
+
+  /// Status message when add body mode is inactive
+  ///
+  /// In en, this message translates to:
+  /// **'Add Body Mode Inactive'**
+  String get addBodyModeInactive;
+
+  /// Instructions shown when add body mode is active
+  ///
+  /// In en, this message translates to:
+  /// **'Tap anywhere on the canvas to place a new body'**
+  String get tapToPlaceBody;
+
+  /// Confirmation message after placing a body
+  ///
+  /// In en, this message translates to:
+  /// **'Body placed successfully'**
+  String get bodyPlacedSuccessfully;
+
   /// Instructions for adding bodies in scenario editor
   ///
   /// In en, this message translates to:
@@ -2207,6 +2243,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Body {index}'**
   String bodyIndex(int index);
+
+  /// Default name for newly created bodies
+  ///
+  /// In en, this message translates to:
+  /// **'New Body'**
+  String get bodyNewDefault;
+
+  /// Warning message when trying to place a body too close to an existing body
+  ///
+  /// In en, this message translates to:
+  /// **'Too close to existing body - please tap elsewhere'**
+  String get bodyPlacementTooClose;
 
   /// Name for inner companion planet in asteroid belt scenario
   ///

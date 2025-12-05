@@ -27,6 +27,9 @@ class Body {
   bool
   _isOrbitalPlacementActive; // whether orbital placement mode is currently active for this body
 
+  bool
+  _useRealisticColor; // whether to use realistic color based on stellar classification (only applies to stars)
+
   // Orbital parameters (used when orbital placement is active)
   double _orbitRadius; // distance from central body
   double _orbitPhase; // orbital phase (0 to 2π)
@@ -45,6 +48,14 @@ class Body {
   set isOrbitalPlacementActive(bool value) {
     if (_isOrbitalPlacementActive != value) {
       _isOrbitalPlacementActive = value;
+    }
+  }
+
+  // Getter and setter for useRealisticColor
+  bool get useRealisticColor => _useRealisticColor;
+  set useRealisticColor(bool value) {
+    if (_useRealisticColor != value) {
+      _useRealisticColor = value;
     }
   }
 
@@ -85,11 +96,13 @@ class Body {
         SimulationConstants.kelvinToCelsiusOffset, // Default to 0°C
     bool showGravityWell = false, // Disabled by default
     bool isOrbitalPlacementActive = false, // Disabled by default
+    bool useRealisticColor = true, // Default to realistic color for stars
     double orbitRadius = SimulationConstants.defaultOrbitRadius,
     double orbitPhase = 0.0, // Default phase (0 to 2π)
     double orbitInclination = 0.0, // Default inclination (0 to π/2)
   }) : _showGravityWell = showGravityWell,
        _isOrbitalPlacementActive = isOrbitalPlacementActive,
+       _useRealisticColor = useRealisticColor,
        _orbitRadius = orbitRadius,
        _orbitPhase = orbitPhase,
        _orbitInclination = orbitInclination;
@@ -150,6 +163,7 @@ class Body {
         other.temperature == temperature &&
         other.showGravityWell == showGravityWell &&
         other.isOrbitalPlacementActive == isOrbitalPlacementActive &&
+        other.useRealisticColor == useRealisticColor &&
         other.orbitRadius == orbitRadius &&
         other.orbitPhase == orbitPhase &&
         other.orbitInclination == orbitInclination;
@@ -171,9 +185,8 @@ class Body {
       temperature,
       showGravityWell,
       isOrbitalPlacementActive,
-      orbitRadius,
-      orbitPhase,
-      orbitInclination,
+      useRealisticColor,
+      Object.hash(orbitRadius, orbitPhase, orbitInclination),
     );
   }
 }

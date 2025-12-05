@@ -61,14 +61,20 @@ void main() {
       expect(cameraState.pitch, closeTo(initialPitch + 0.2, 1e-10));
     });
 
-    test('Pitch should accumulate rotation values', () {
+    test('Pitch should accumulate rotation values and be clamped', () {
       final initialPitch = cameraState.pitch;
       cameraState.rotate(0.0, 10.0); // Large pitch rotation
-      expect(cameraState.pitch, closeTo(initialPitch + 10.0, 1e-10));
+      // Should be clamped to maxPitch (1.5)
+      expect(cameraState.pitch, equals(1.5));
 
-      cameraState.rotate(0.0, -5.0); // Negative pitch rotation
-      expect(cameraState.pitch, closeTo(initialPitch + 5.0, 1e-10));
-      expect(cameraState.pitch, greaterThanOrEqualTo(-1.5));
+      cameraState.rotate(0.0, -20.0); // Large negative pitch rotation
+      // Should be clamped to minPitch (-1.5)
+      expect(cameraState.pitch, equals(-1.5));
+
+      // Reset and test normal accumulation
+      cameraState.resetView();
+      cameraState.rotate(0.0, 0.5);
+      expect(cameraState.pitch, closeTo(initialPitch + 0.5, 1e-10));
     });
 
     test('ToggleAutoRotate should change autoRotate state', () {
@@ -171,6 +177,30 @@ void main() {
       wasNotified = false;
       cameraState.resetView();
       expect(wasNotified, isTrue);
+    });
+
+    test('Pitch clamping prevents gimbal lock', () {
+      // Test that pitch is clamped to prevent camera flipping
+      cameraState.rotate(0.0, 5.0); // Try to pitch way up
+      expect(cameraState.pitch, equals(1.5)); // Clamped to max
+      expect(cameraState.pitch, lessThan(1.571)); // < 90 degrees (π/2)
+
+      cameraState.resetView();
+      cameraState.rotate(0.0, -5.0); // Try to pitch way down
+      expect(cameraState.pitch, equals(-1.5)); // Clamped to min
+      expect(cameraState.pitch, greaterThan(-1.571)); // > -90 degrees
+    });
+
+    test('setCameraParameters clamps pitch values', () {
+      // Test that direct parameter setting also clamps pitch
+      cameraState.setCameraParameters(pitch: 3.0);
+      expect(cameraState.pitch, equals(1.5)); // Clamped to max
+
+      cameraState.setCameraParameters(pitch: -3.0);
+      expect(cameraState.pitch, equals(-1.5)); // Clamped to min
+
+      cameraState.setCameraParameters(pitch: 0.5);
+      expect(cameraState.pitch, equals(0.5)); // Within bounds
     });
 
     test('Multiple operations should work correctly', () {

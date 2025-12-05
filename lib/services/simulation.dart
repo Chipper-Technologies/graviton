@@ -106,6 +106,34 @@ class Simulation {
     _markChanged();
   }
 
+  /// Add a new body to the simulation during runtime
+  ///
+  /// This method allows adding bodies dynamically without resetting the simulation.
+  /// It properly manages the trails list and marks the simulation as changed.
+  ///
+  /// Parameters:
+  /// - [body]: The body to add to the simulation
+  void addBody(Body body) {
+    bodies.add(body);
+    trails.add(<TrailPoint>[]); // Add empty trail for new body
+    _markChanged();
+  }
+
+  /// Update an existing body in the simulation
+  ///
+  /// This method updates a body at the specified index and marks the simulation
+  /// as changed to trigger UI updates.
+  ///
+  /// Parameters:
+  /// - [index]: The index of the body to update
+  /// - [body]: The updated body
+  void updateBody(int index, Body body) {
+    if (index >= 0 && index < bodies.length) {
+      bodies[index] = body;
+      _markChanged();
+    }
+  }
+
   /// Get the current scenario type
   ScenarioType get currentScenario => _currentScenario;
 

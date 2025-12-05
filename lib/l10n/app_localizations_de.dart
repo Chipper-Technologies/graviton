@@ -511,6 +511,27 @@ class AppLocalizationsDe extends AppLocalizations {
   String get addBodyButton => 'Körper hinzufügen';
 
   @override
+  String get tapToEnableAddBodyMode =>
+      'Tippen, um den Modus zum Hinzufügen von Körpern zu aktivieren - klicken Sie auf die Leinwand, um neue Körper zu platzieren';
+
+  @override
+  String get tapToDisableAddBodyMode =>
+      'Tippen, um den Modus zum Hinzufügen von Körpern zu deaktivieren und zur normalen Interaktion zurückzukehren';
+
+  @override
+  String get addBodyModeActive => 'Körper-Hinzufügen-Modus Aktiv';
+
+  @override
+  String get addBodyModeInactive => 'Körper-Hinzufügen-Modus Inaktiv';
+
+  @override
+  String get tapToPlaceBody =>
+      'Tippen Sie auf eine beliebige Stelle auf der Leinwand, um einen neuen Körper zu platzieren';
+
+  @override
+  String get bodyPlacedSuccessfully => 'Körper erfolgreich platziert';
+
+  @override
   String get addCelestialBodiesToCreateYourCustomScenarioEditor =>
       'Himmelskörper hinzufügen, um Ihr benutzerdefiniertes Szenario zu erstellen-Editor';
 
@@ -1241,6 +1262,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String bodyIndex(int index) {
     return 'Körper-Index';
   }
+
+  @override
+  String get bodyNewDefault => 'Neuer Körper';
+
+  @override
+  String get bodyPlacementTooClose =>
+      'Zu nah an vorhandenem Körper - bitte woanders tippen';
 
   @override
   String get bodyInnerPlanet => 'Innerer Planet';

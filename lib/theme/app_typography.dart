@@ -87,6 +87,14 @@ class AppTypography {
   static const double borderThin = 1.0;
   static const double borderMedium = 1.5;
   static const double borderThick = 2.0;
+  static const double borderExtraThick = 2.5;
+  static const double borderHeavy = 3.0;
+  static const double borderVeryThick = 4.0;
+
+  /// Blur radius values for visual effects
+  static const double blurSmall = 2.0;
+  static const double blurMedium = 8.0;
+  static const double blurLarge = 16.0;
 
   /// UI component dimensions
   /// Height for dropdown items, specifically used for cinematic camera technique
@@ -95,6 +103,9 @@ class AppTypography {
 
   /// Size (width and height) for avatar buttons in the AppBar
   static const double avatarSize = 32.0;
+
+  /// Standard circular button size
+  static const double buttonSizeStandard = 36.0;
 
   /// Vertical margin for avatar buttons to align properly in AppBar
   static const double avatarMargin = 6.0;

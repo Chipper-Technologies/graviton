@@ -626,6 +626,30 @@
   "@addBodyButton": {
     "description": "Button text to add a new celestial body"
   },
+  "tapToEnableAddBodyMode": "Tap to enable add body mode - click on canvas to place new bodies",
+  "@tapToEnableAddBodyMode": {
+    "description": "Accessibility hint for enabling add body mode"
+  },
+  "tapToDisableAddBodyMode": "Tap to disable add body mode and return to normal interaction",
+  "@tapToDisableAddBodyMode": {
+    "description": "Accessibility hint for disabling add body mode"
+  },
+  "addBodyModeActive": "Add Body Mode Active",
+  "@addBodyModeActive": {
+    "description": "Status message when add body mode is active"
+  },
+  "addBodyModeInactive": "Add Body Mode Inactive",
+  "@addBodyModeInactive": {
+    "description": "Status message when add body mode is inactive"
+  },
+  "tapToPlaceBody": "Tap anywhere on the canvas to place a new body",
+  "@tapToPlaceBody": {
+    "description": "Instructions shown when add body mode is active"
+  },
+  "bodyPlacedSuccessfully": "Body placed successfully",
+  "@bodyPlacedSuccessfully": {
+    "description": "Confirmation message after placing a body"
+  },
   "addCelestialBodiesToCreateYourCustomScenarioEditor": "Add celestial bodies to create your custom scenario",
   "@addCelestialBodiesToCreateYourCustomScenarioEditor": {
     "description": "Instructions for adding bodies in scenario editor"
@@ -1643,6 +1667,14 @@
         "description": "The body index number"
       }
     }
+  },
+  "bodyNewDefault": "New Body",
+  "@bodyNewDefault": {
+    "description": "Default name for newly created bodies"
+  },
+  "bodyPlacementTooClose": "Too close to existing body - please tap elsewhere",
+  "@bodyPlacementTooClose": {
+    "description": "Warning message when trying to place a body too close to an existing body"
   },
   "bodyInnerPlanet": "Inner Planet",
   "@bodyInnerPlanet": {

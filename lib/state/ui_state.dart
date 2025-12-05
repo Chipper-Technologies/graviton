@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/enums/add_body_mode.dart';
+import 'package:graviton/enums/body_movement_mode.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/gravity_field_color_scheme.dart';
 import 'package:graviton/enums/scenario_type.dart';
@@ -23,6 +25,9 @@ class UIState extends ChangeNotifier {
   bool _enableUIHapticFeedback = true;
   bool _enableCollisionHapticFeedback = true;
   double _uiOpacity = RenderingConstants.defaultUIOpacity;
+  AddBodyMode _addBodyMode = AddBodyMode.inactive;
+  BodyMovementMode _bodyMovementMode = BodyMovementMode.inactive;
+  int? _movingBodyIndex; // Index of the body currently being moved
 
   // Gravity field settings
   bool _globalGravityFields = true;
@@ -287,7 +292,56 @@ class UIState extends ChangeNotifier {
   // Fullscreen mode getters
   bool get isFullscreen => _isFullscreen;
 
+  // Add body mode getters
+  AddBodyMode get addBodyMode => _addBodyMode;
+  bool get isAddBodyModeActive => _addBodyMode.isActive;
+
+  // Body movement mode getters
+  BodyMovementMode get bodyMovementMode => _bodyMovementMode;
+  bool get isBodyMovementModeActive => _bodyMovementMode.isActive;
+  int? get movingBodyIndex => _movingBodyIndex;
+
   // Setters
+  void toggleAddBodyMode() {
+    _addBodyMode = _addBodyMode.isActive
+        ? AddBodyMode.inactive
+        : AddBodyMode.active;
+    FirebaseService.instance.logUIEvent(
+      'add_body_mode_toggled',
+      element: 'body_creation_toggle',
+      additionalParams: {'mode': _addBodyMode.name},
+    );
+    notifyListeners();
+  }
+
+  void setAddBodyMode(AddBodyMode mode) {
+    if (_addBodyMode != mode) {
+      _addBodyMode = mode;
+      notifyListeners();
+    }
+  }
+
+  void startBodyMovement(int bodyIndex) {
+    _bodyMovementMode = BodyMovementMode.active;
+    _movingBodyIndex = bodyIndex;
+    FirebaseService.instance.logUIEvent(
+      'body_movement_started',
+      element: 'body_drag_handle',
+      additionalParams: {'body_index': bodyIndex.toString()},
+    );
+    notifyListeners();
+  }
+
+  void stopBodyMovement() {
+    _bodyMovementMode = BodyMovementMode.inactive;
+    _movingBodyIndex = null;
+    FirebaseService.instance.logUIEvent(
+      'body_movement_stopped',
+      element: 'body_drag_handle',
+    );
+    notifyListeners();
+  }
+
   void toggleTrails() {
     _showTrails = !_showTrails;
     _saveSetting(_keyShowTrails, _showTrails);

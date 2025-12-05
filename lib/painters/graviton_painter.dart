@@ -44,6 +44,7 @@ class GravitonPainter extends CustomPainter {
   final GravityFieldColorScheme gravityFieldColorScheme;
   final bool showEquipotentialSurfaces;
   final bool showGravityFieldIndicators;
+  final int? movingBodyIndex;
 
   GravitonPainter({
     required this.sim,
@@ -64,6 +65,7 @@ class GravitonPainter extends CustomPainter {
     this.gravityFieldColorScheme = GravityFieldColorScheme.classic,
     this.showEquipotentialSurfaces = false,
     this.showGravityFieldIndicators = false,
+    this.movingBodyIndex,
   });
 
   @override
@@ -272,6 +274,11 @@ class GravitonPainter extends CustomPainter {
       if (selectedBodyIndex != null && selectedBodyIndex == i) {
         _drawSelectionIndicator(canvas, p, pr, followMode);
       }
+
+      // Draw move handle for body in movement mode
+      if (movingBodyIndex != null && movingBodyIndex == i) {
+        _drawMoveHandle(canvas, p, pr);
+      }
     }
 
     // Draw photon rings AFTER all bodies are rendered (so they appear on top)
@@ -380,6 +387,95 @@ class GravitonPainter extends CustomPainter {
 
       canvas.drawCircle(center, selectionRadius * 0.8, innerPaint);
     }
+  }
+
+  /// Draw move handle indicator for body being repositioned
+  static void _drawMoveHandle(Canvas canvas, Offset center, double bodyRadius) {
+    // Animated pulsing effect to indicate draggable state
+    final time = DateTime.now().millisecondsSinceEpoch / 1000.0;
+    final pulseScale = 1.0 + 0.15 * math.sin(time * 4.0);
+
+    final handleRadius = bodyRadius * 3.5 * pulseScale;
+    final handleSize = math.max(24.0, bodyRadius * 1.5);
+
+    // Outer glow ring
+    final glowPaint = Paint()
+      ..color = AppColors.uiOrangeAccent.withValues(
+        alpha: AppTypography.opacityFaint,
+      )
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = AppTypography.borderVeryThick
+      ..maskFilter = MaskFilter.blur(
+        BlurStyle.normal,
+        AppTypography.blurMedium,
+      );
+
+    canvas.drawCircle(center, handleRadius, glowPaint);
+
+    // Main indicator ring
+    final ringPaint = Paint()
+      ..color = AppColors.uiOrangeAccent.withValues(
+        alpha: AppTypography.opacityNearlyOpaque,
+      )
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = AppTypography.borderHeavy;
+
+    canvas.drawCircle(center, handleRadius, ringPaint);
+
+    // Draw directional arrows (cross pattern) to indicate movement in all directions
+    final arrowPaint = Paint()
+      ..color = AppColors.celestialGold
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = AppTypography.borderExtraThick
+      ..strokeCap = StrokeCap.round;
+
+    final arrowLength = handleSize * 0.8;
+    final arrowHeadSize = handleSize * 0.3;
+
+    // Draw four arrows: up, down, left, right
+    final directions = [
+      (0.0, -1.0), // Up
+      (0.0, 1.0), // Down
+      (-1.0, 0.0), // Left
+      (1.0, 0.0), // Right
+    ];
+
+    for (final (dx, dy) in directions) {
+      final start = Offset(
+        center.dx + dx * handleSize * 0.3,
+        center.dy + dy * handleSize * 0.3,
+      );
+      final end = Offset(
+        center.dx + dx * arrowLength,
+        center.dy + dy * arrowLength,
+      );
+
+      // Arrow shaft
+      canvas.drawLine(start, end, arrowPaint);
+
+      // Arrow head (two lines forming a V)
+      final perpDx = -dy;
+      final perpDy = dx;
+
+      final arrowHead1 = Offset(
+        end.dx - dx * arrowHeadSize + perpDx * arrowHeadSize * 0.5,
+        end.dy - dy * arrowHeadSize + perpDy * arrowHeadSize * 0.5,
+      );
+      final arrowHead2 = Offset(
+        end.dx - dx * arrowHeadSize - perpDx * arrowHeadSize * 0.5,
+        end.dy - dy * arrowHeadSize - perpDy * arrowHeadSize * 0.5,
+      );
+
+      canvas.drawLine(end, arrowHead1, arrowPaint);
+      canvas.drawLine(end, arrowHead2, arrowPaint);
+    }
+
+    // Center dot
+    final centerDotPaint = Paint()
+      ..color = AppColors.uiOrangeAccent
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(center, handleSize * 0.2, centerDotPaint);
   }
 
   /// Draw proper 3D galactic glow that scales with distance and projects correctly
@@ -1064,6 +1160,7 @@ class GravitonPainter extends CustomPainter {
         globalGravityFields != oldDelegate.globalGravityFields ||
         gravityFieldColorScheme != oldDelegate.gravityFieldColorScheme ||
         showEquipotentialSurfaces != oldDelegate.showEquipotentialSurfaces ||
-        showGravityFieldIndicators != oldDelegate.showGravityFieldIndicators;
+        showGravityFieldIndicators != oldDelegate.showGravityFieldIndicators ||
+        movingBodyIndex != oldDelegate.movingBodyIndex;
   }
 }

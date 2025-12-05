@@ -481,6 +481,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addBodyButton => '添加天体按钮';
 
   @override
+  String get tapToEnableAddBodyMode => '点击启用添加天体模式 - 在画布上点击以放置新天体';
+
+  @override
+  String get tapToDisableAddBodyMode => '点击禁用添加天体模式并返回正常交互';
+
+  @override
+  String get addBodyModeActive => '添加天体模式已激活';
+
+  @override
+  String get addBodyModeInactive => '添加天体模式未激活';
+
+  @override
+  String get tapToPlaceBody => '在画布上任意位置点击以放置新天体';
+
+  @override
+  String get bodyPlacedSuccessfully => '天体放置成功';
+
+  @override
   String get addCelestialBodiesToCreateYourCustomScenarioEditor =>
       '添加天体以创建自定义场景-编辑器';
 
@@ -1180,6 +1198,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String bodyIndex(int index) {
     return '天体索引';
   }
+
+  @override
+  String get bodyNewDefault => '新天体';
+
+  @override
+  String get bodyPlacementTooClose => '距离现有天体太近 - 请点击其他地方';
 
   @override
   String get bodyInnerPlanet => '内行星';

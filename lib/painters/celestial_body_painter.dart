@@ -184,7 +184,7 @@ class CelestialBodyPainter {
     // Clean accretion disk rings - simple and bright
     final diskPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.5;
+      ..strokeWidth = AppTypography.borderExtraThick;
 
     for (int i = 0; i < 5; i++) {
       final ringRadius = radius * (1.3 + i * 0.4);
