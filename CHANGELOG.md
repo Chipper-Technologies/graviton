@@ -8,6 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.7.0] - 2025-12-09
 
 ### Added
+- **Custom Bodies Feature**: Comprehensive dynamic body creation and manipulation system
+  - **Runtime Body Creation**: Interactive tap-to-place mode for adding celestial bodies during simulation
+    - Visual add body toggle button in simulation controls
+    - Tap-to-place interaction on 3D simulation canvas
+    - Real-time position calculation from screen coordinates to 3D space
+    - Automatic body initialization with physics properties
+  - **Body Movement System**: Single-finger drag gesture support for repositioning bodies
+    - Drag-to-move mode with visual feedback
+    - Move handle indicators showing draggable bodies
+    - Real-time position updates during drag operations
+    - Velocity reset and trail clearing on position change
+    - Automatic simulation pause during body manipulation
+  - **Enhanced Body Customization**: Per-body realistic color control
+    - Individual `useRealisticColors` flag for each body
+    - Override automatic stellar classification colors with custom choices
+    - Maintains visual consistency with existing color systems
+    - Preserves custom colors during body editing and duplication
 - **Firebase Performance Monitoring**: Comprehensive performance tracking and analysis capabilities
   - **Custom Trace Tracking**: Monitor performance of critical app operations with `startTrace()` method
   - **HTTP Metrics**: Track network request performance with `newHttpMetric()` for API calls
@@ -15,11 +32,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Cross-Platform Support**: Performance monitoring across iOS, Android, and Web platforms
   - **Service Layer**: Dedicated `PerformanceService` following established Firebase service patterns
   - **Test Coverage**: Comprehensive unit tests for initialization and performance tracking methods
+- **Camera Gimbal Lock Prevention**: Enhanced 3D navigation stability
+  - Pitch angle clamping to ±1.5 radians (~86°) to prevent gimbal lock singularity
+  - Prevents camera flipping/reversing at extreme vertical angles
+  - Maintains stable yaw rotation at all pitch angles
+  - Applied consistently across manual rotation and AI camera control
+  - Comprehensive test coverage (28 test cases) validating gimbal lock prevention
 
 ### Improved
 - **Build Process**: Updated production web build task to properly chain configuration injection after Flutter build
   - Ensures Firebase config is correctly injected into web builds before deployment
   - Prevents missing configuration values in production web deployments
+- **3D Camera Controls**: More intuitive and stable camera rotation behavior
+  - Smoother rotation near vertical viewing angles
+  - Consistent yaw behavior regardless of pitch angle
+  - Better user experience for exploring 3D space
 
 ## [1.6.0] - 2025-12-06
 
