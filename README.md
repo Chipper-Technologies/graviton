@@ -265,7 +265,21 @@ Professional screenshot capture system for creating marketing materials:
    flutter gen-l10n
    ```
 
-4. **Run the app**
+4. **Configure Firebase (Required for authentication features)**
+   ```bash
+   # Copy the template file
+   cp lib/firebase/firebase_options.dart.template lib/firebase/firebase_options.dart
+   
+   # Edit lib/firebase/firebase_options.dart and replace placeholder values with your Firebase config
+   # Get these values from Firebase Console > Project Settings > Your apps
+   # Or run: flutterfire configure (requires FlutterFire CLI)
+   ```
+   
+   **Note**: The `firebase_options.dart` file is gitignored for security. Each developer needs to create their own from the template.
+   
+   **Flavor Support**: The app supports both dev and prod Firebase projects. Configure both sets of credentials in `firebase_options.dart`. The app automatically selects the appropriate configuration based on the build flavor. See `lib/firebase/README.md` for detailed setup instructions.
+
+5. **Run the app**
    ```bash
    # Quick start with development configuration
    flutter run --dart-define-from-file config/dev.json --flavor dev
@@ -297,16 +311,25 @@ dependencies:
   vibration: ^3.1.3         # Haptic feedback for interactions
   # Firebase dependencies
   firebase_core: ^4.2.0     # Firebase core functionality
+  firebase_auth: ^5.3.3     # Firebase authentication
   firebase_analytics: ^12.0.3 # Analytics and user behavior tracking
   firebase_crashlytics: ^5.0.3 # Crash reporting and monitoring
   firebase_remote_config: ^6.1.0 # Dynamic app configuration
-  cloud_firestore: ^6.0.3   # Firestore database for changelogs
+  cloud_firestore: ^6.0.3   # Firestore database for changelogs and user data
+  # Authentication providers
+  google_sign_in: ^6.2.2    # Google Sign-In integration
+  sign_in_with_apple: ^6.1.3 # Apple Sign-In integration
   # Additional dependencies
   flutter_svg: ^2.2.1       # SVG rendering support
   package_info_plus: ^9.0.0 # Package information utilities
   shared_preferences: ^2.5.3 # Local data persistence
   sliding_up_panel: ^2.0.0+1 # Sliding panel UI component
   url_launcher: ^6.3.1      # URL launching capabilities
+  image_picker: ^1.1.2      # Image selection for profile photos
+  file_picker: ^8.1.6       # File picker for scenario import
+  share_plus: ^10.1.2       # Native sharing for simulation export
+  path_provider: ^2.1.5     # File system paths for caching
+  device_info_plus: ^11.2.0 # Device information utilities
 
 dev_dependencies:
   flutter_test:
@@ -827,7 +850,81 @@ For detailed technical information and development guides, please refer to our c
 
 ## 🔥 Firebase Integration
 
-The app includes comprehensive Firebase integration with development and production flavors for robust analytics, crash reporting, and remote configuration.
+The app includes comprehensive Firebase integration with development and production flavors for robust analytics, crash reporting, remote configuration, and App Check protection.
+
+### Firebase App Check
+
+**Protects Firebase backend resources from abuse** by verifying requests come from legitimate app instances.
+
+**Platform Support:**
+- **Android**: Play Integrity API (automatic with existing Play Integrity setup)
+- **iOS/macOS**: DeviceCheck API (automatic attestation)
+- **Web**: reCAPTCHA v3 (requires site key configuration)
+
+**Protected Services:**
+- Cloud Firestore (user data, scenarios, leaderboards)
+- Cloud Functions (custom logic, webhooks)
+- Remote Config (feature flags, rollout)
+- Cloud Storage (user-generated content)
+
+**Quick Setup:**
+1. Enable App Check in Firebase Console → App Check
+2. Register providers for each platform (Play Integrity, DeviceCheck, reCAPTCHA)
+3. Enable enforcement for Firebase services (start with "Monitor" mode)
+4. For development: Register debug tokens from app logs
+
+**Remote Config Control:**
+- **Parameter**: `app_check_enabled` (Boolean, default: `true`)
+- **Purpose**: Emergency kill switch to disable App Check without app update
+- **Similar to**: Play Integrity's `integrity_enabled` parameter
+
+📖 **Complete guide**: See [docs/APP_CHECK.md](docs/APP_CHECK.md) for detailed setup, rollout strategy, and troubleshooting.
+
+### Firebase Configuration
+
+#### 🔑 Getting SHA Fingerprints for Google Sign-In
+
+For Google Sign-In to work on Android, you need to register your app's SHA-1 and SHA-256 fingerprints in the Firebase Console. This is required for both debug (development) and release (production) builds.
+
+**Quick Method - Using Gradle:**
+
+Run this command from the project root to get all SHA fingerprints:
+
+```bash
+cd android && ./gradlew signingReport && cd ..
+```
+
+This will display SHA-1 and SHA-256 fingerprints for both **debug** and **release** variants:
+
+```
+Variant: debug
+Config: debug
+Store: /Users/username/.android/debug.keystore
+SHA1: AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD
+SHA-256: 11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66...
+
+Variant: release
+Config: release
+Store: android/app/upload-keystore.jks
+SHA1: EE:FF:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11
+SHA-256: 22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77...
+```
+
+**Adding Fingerprints to Firebase:**
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Select your project (graviton-dev or graviton-prod)
+3. Go to Project Settings → Your Apps → Android app
+4. Scroll to "SHA certificate fingerprints"
+5. Click "Add fingerprint"
+6. Add **both SHA-1 and SHA-256** from **both debug and release** variants
+7. Download the updated `google-services.json` and replace the file in `android/app/src/dev/` or `android/app/src/prod/`
+
+**Important Notes:**
+- You need fingerprints for **both debug and release** builds
+- Debug fingerprints are needed for local development/testing
+- Release fingerprints are needed for production builds from Google Play
+- Without correct fingerprints, Google Sign-In will fail with "Account reauth failed" or similar errors
 
 ### Firebase Services
 
@@ -1126,6 +1223,7 @@ Here's the comprehensive list of all Firebase Remote Config parameters used by t
   "performance_monitoring_enabled": true,
   "user_behavior_tracking": "standard",
   "ab_test_group": "control",
+  "app_check_enabled": true,
   "maintenance_mode": false,
   "maintenance_message": "Scheduled maintenance in progress",
   "news_banner_enabled": false,
@@ -1134,10 +1232,17 @@ Here's the comprehensive list of all Firebase Remote Config parameters used by t
 }
 ```
 
+**Parameter Highlights:**
+- `app_check_enabled`: Emergency kill switch to disable Firebase App Check protection (default: `true`)
+- `analytics_sampling_rate`: Control analytics volume to reduce Firebase costs
+- `maintenance_mode`: Non-dismissible dialog for scheduled maintenance
+- `emergency_notification`: High-priority alerts for critical communications
+
 **Integration Benefits:**
 - **Zero Downtime Control**: Update app behavior without App Store releases
 - **Real-time Communication**: Instant user notifications for maintenance and news
 - **Cost Optimization**: Control analytics volume with sampling rates
+- **Security Control**: Enable/disable App Check without app updates
 - **A/B Testing**: Easy experimentation with different app configurations
 - **Version Management**: Flexible update enforcement with dual-threshold system
 - **Global Reach**: Full internationalization support for worldwide users

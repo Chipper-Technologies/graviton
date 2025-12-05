@@ -29,7 +29,15 @@ This project adheres to a code of conduct that we expect all contributors to fol
    flutter pub get
    ```
 
-3. **Development Environment**
+3. **Configure Firebase**
+   ```bash
+   # Copy the template and add your Firebase credentials
+   cp lib/firebase/firebase_options.dart.template lib/firebase/firebase_options.dart
+   # Edit lib/firebase/firebase_options.dart with your Firebase project settings for BOTH dev and prod
+   ```
+   > **Note**: `firebase_options.dart` is gitignored. The file supports both dev and prod Firebase projects. Get Firebase config from project maintainers or create your own Firebase projects. See `lib/firebase/README.md` for detailed instructions.
+
+4. **Development Environment**
    ```bash
    # Run in development mode
    flutter run --dart-define-from-file config/dev.json --flavor dev

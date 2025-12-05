@@ -14,7 +14,11 @@ void main() {
   group('Graviton App Integration Tests', () {
     setUp(() async {
       // Set up test environment for SharedPreferences
-      SharedPreferences.setMockInitialValues({});
+      // Set tutorial flags to prevent dialog overlays in tests
+      SharedPreferences.setMockInitialValues({
+        'has_seen_tutorial': true,
+        'tutorial_completed': true,
+      });
     });
 
     testWidgets('App should launch successfully', (tester) async {
@@ -27,7 +31,7 @@ void main() {
       );
 
       expect(find.byType(MaterialApp), findsOneWidget);
-      expect(find.byType(ChangeNotifierProvider<AppState>), findsOneWidget);
+      expect(find.byType(MultiProvider), findsOneWidget);
     });
 
     testWidgets('App should display home screen with simulation canvas', (

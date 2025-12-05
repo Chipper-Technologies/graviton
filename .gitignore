@@ -58,11 +58,11 @@ app.*.map.json
 **/android/app/src/**/google-services.json
 **/ios/**/**/GoogleService-Info.plist
 **/ios/firebase_app_id_file.json
-**/macos/Runner/GoogleService-Info.plist
+**/macos/**/GoogleService-Info.plist
 **/macos/firebase_app_id_file.json
 
 # Environment Configuration Files (sensitive)
-config/
+config/*.json
 macos/Runner/Config.plist
 keys/
 *.env
@@ -101,9 +101,6 @@ keys/
 
 # macOS related
 **/macos/Flutter/GeneratedPluginRegistrant.swift
-
-# Web related
-lib/generated_plugin_registrant.dart
 
 # Crashlytics
 **/ios/**/crashlytics*

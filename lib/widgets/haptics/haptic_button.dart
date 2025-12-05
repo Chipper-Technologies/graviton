@@ -108,9 +108,7 @@ class HapticButton extends StatelessWidget {
       onPressed: onPressed,
       text: text,
       icon: icon,
-      backgroundColor: AppColors.uiWhite.withValues(
-        alpha: AppTypography.opacityBarely,
-      ),
+      backgroundColor: AppColors.uiBorderGrey,
       foregroundColor: AppColors.uiWhite,
       isFullWidth: isFullWidth,
       padding: padding,

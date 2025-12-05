@@ -375,5 +375,55 @@ void main() {
         expect(RenderingConstants.gravityFieldMaxAlpha, lessThan(1.0));
       });
     });
+
+    group('Collision Particle Effects Rendering Constants', () {
+      test('particle glow blur multiplier should be defined', () {
+        expect(RenderingConstants.particleGlowBlurMultiplier, equals(0.5));
+      });
+
+      test('particle glow radius multiplier should be defined', () {
+        expect(RenderingConstants.particleGlowRadiusMultiplier, equals(1.5));
+      });
+
+      test('cloud particle size multiplier should be defined', () {
+        expect(RenderingConstants.cloudParticleSizeMultiplier, equals(1.5));
+      });
+
+      test('particle effect constants should be valid multipliers', () {
+        // Blur multiplier should be reasonable
+        expect(RenderingConstants.particleGlowBlurMultiplier, greaterThan(0.0));
+        expect(RenderingConstants.particleGlowBlurMultiplier, lessThan(2.0));
+
+        // Radius multiplier should make particles bigger for glow effect
+        expect(
+          RenderingConstants.particleGlowRadiusMultiplier,
+          greaterThan(1.0),
+        );
+        expect(RenderingConstants.particleGlowRadiusMultiplier, lessThan(3.0));
+
+        // Cloud particle size multiplier should make particles larger
+        expect(
+          RenderingConstants.cloudParticleSizeMultiplier,
+          greaterThan(1.0),
+        );
+        expect(RenderingConstants.cloudParticleSizeMultiplier, lessThan(3.0));
+      });
+
+      test('particle glow size should be larger than base size', () {
+        // When multiplied by base size, glow should be bigger
+        final baseSize = 1.0;
+        final glowSize =
+            baseSize * RenderingConstants.particleGlowRadiusMultiplier;
+        expect(glowSize, greaterThan(baseSize));
+      });
+
+      test('cloud particles should be larger than debris particles', () {
+        // Cloud particles use size multiplier to appear softer
+        final debrisSize = 1.0;
+        final cloudSize =
+            debrisSize * RenderingConstants.cloudParticleSizeMultiplier;
+        expect(cloudSize, greaterThan(debrisSize));
+      });
+    });
   });
 }

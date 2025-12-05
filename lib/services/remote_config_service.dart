@@ -24,6 +24,9 @@ class RemoteConfigService {
       UserBehaviorTrackingMode.essential;
   ABTestGroup _abTestGroup = ABTestGroup.control;
 
+  // Security
+  bool _appCheckEnabled = true;
+
   // Maintenance & Communication
   bool _maintenanceMode = false;
   String _maintenanceMessage = '';
@@ -52,7 +55,6 @@ class RemoteConfigService {
       await _fetchAndActivate();
       _loadValues();
       _initialized = true;
-      debugPrint('RemoteConfigService initialized successfully');
     } catch (e) {
       debugPrint('RemoteConfigService initialization failed: $e');
     }
@@ -67,6 +69,9 @@ class RemoteConfigService {
       'performance_monitoring_enabled': true,
       'user_behavior_tracking': UserBehaviorTrackingMode.essential.configValue,
       'ab_test_group': ABTestGroup.control.configValue,
+
+      // Security
+      'app_check_enabled': true,
 
       // Maintenance & Communication
       'maintenance_mode': false,
@@ -92,7 +97,6 @@ class RemoteConfigService {
   Future<void> _fetchAndActivate() async {
     try {
       await _remoteConfig.fetchAndActivate();
-      debugPrint('Remote config fetched and activated');
     } catch (e) {
       debugPrint('Failed to fetch remote config: $e');
     }
@@ -112,6 +116,9 @@ class RemoteConfigService {
     _abTestGroup = ABTestGroupExtension.fromString(
       _remoteConfig.getString('ab_test_group'),
     );
+
+    // Security
+    _appCheckEnabled = _remoteConfig.getBool('app_check_enabled');
 
     // Maintenance & Communication
     _maintenanceMode = _remoteConfig.getBool('maintenance_mode');
@@ -140,14 +147,6 @@ class RemoteConfigService {
       'custom_message_persistent',
     );
     _customMessageExpiry = _remoteConfig.getString('custom_message_expiry');
-
-    debugPrint(
-      'Remote config values loaded: '
-      'analytics_rate=$_analyticsSamplingRate, '
-      'maintenance=$_maintenanceMode, '
-      'news_banner=$_newsBannerEnabled, '
-      'ab_test=${_abTestGroup.configValue}',
-    );
   }
 
   /// Refresh remote config values
@@ -168,6 +167,9 @@ class RemoteConfigService {
   bool get performanceMonitoringEnabled => _performanceMonitoringEnabled;
   UserBehaviorTrackingMode get userBehaviorTracking => _userBehaviorTracking;
   ABTestGroup get abTestGroup => _abTestGroup;
+
+  // Security Getters
+  bool get appCheckEnabled => _appCheckEnabled;
 
   // Maintenance & Communication Getters
   bool get maintenanceMode => _maintenanceMode;

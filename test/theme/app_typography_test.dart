@@ -347,6 +347,36 @@ void main() {
         expect(AppTypography.dropdownItemHeight, equals(44.0));
         expect(AppTypography.dropdownItemHeight, greaterThan(0.0));
       });
+
+      test('should have correct avatar size', () {
+        expect(AppTypography.avatarSize, equals(32.0));
+        expect(AppTypography.avatarSize, greaterThan(0.0));
+      });
+
+      test('should have correct avatar margin', () {
+        expect(AppTypography.avatarMargin, equals(6.0));
+        expect(AppTypography.avatarMargin, greaterThan(0.0));
+      });
+
+      test('should have correct avatar selection size', () {
+        expect(AppTypography.avatarSelectionSize, equals(48.0));
+        expect(AppTypography.avatarSelectionSize, greaterThan(0.0));
+      });
+
+      test('should have correct avatar display size', () {
+        expect(AppTypography.avatarDisplaySize, equals(96.0));
+        expect(AppTypography.avatarDisplaySize, greaterThan(0.0));
+      });
+
+      test('should have correct avatar display multiplier', () {
+        expect(AppTypography.avatarDisplayMultiplier, equals(1.5));
+        expect(AppTypography.avatarDisplayMultiplier, greaterThan(0.0));
+      });
+
+      test('should have correct icon warning multiplier', () {
+        expect(AppTypography.iconWarningMultiplier, equals(2.0));
+        expect(AppTypography.iconWarningMultiplier, greaterThan(0.0));
+      });
     });
 
     group('Text Style Constants', () {

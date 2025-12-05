@@ -2088,6 +2088,12 @@ abstract class AppLocalizations {
   /// **'Auto Rotate'**
   String get autoRotateTooltip;
 
+  /// Label for camera auto-rotation speed control slider
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate Speed'**
+  String get rotateSpeed;
+
   /// Name for black color
   ///
   /// In en, this message translates to:
@@ -5409,6 +5415,996 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Import cancelled'**
   String get importCancelled;
+
+  /// Title for account management screen
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountManagementTitle;
+
+  /// Tooltip for account button in app bar
+  ///
+  /// In en, this message translates to:
+  /// **'Account & Profile'**
+  String get accountButtonTooltip;
+
+  /// Title for sign in prompt
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In to Your Account'**
+  String get signInPromptTitle;
+
+  /// Message explaining benefits of signing in
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account or sign in to sync your data and preferences across devices.'**
+  String get signInPromptMessage;
+
+  /// Button to sign in
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signInButton;
+
+  /// Button to sign out
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOutButton;
+
+  /// Button for anonymous users to reset their session and start fresh
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Session'**
+  String get resetSessionButton;
+
+  /// Success message after signing out
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully signed out'**
+  String get signOutSuccess;
+
+  /// Error message when an operation times out
+  ///
+  /// In en, this message translates to:
+  /// **'Operation timed out. Please try again.'**
+  String get operationTimeout;
+
+  /// Generic error message when an operation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Operation failed. Please try again.'**
+  String get operationFailed;
+
+  /// Error message when a link cannot be opened
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open link. Please try again.'**
+  String get couldNotOpenLink;
+
+  /// Message shown when user needs to wait before retrying an operation
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait a moment before trying again.'**
+  String get pleaseWaitBeforeRetrying;
+
+  /// Rate limit message with cooldown duration
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait {seconds} seconds before trying again.'**
+  String rateLimitWithCooldown(int seconds);
+
+  /// Error message for network connectivity issues
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection and try again.'**
+  String get networkError;
+
+  /// Button to continue without account
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as Guest'**
+  String get continueAsGuestButton;
+
+  /// Success message for anonymous sign in
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as guest'**
+  String get signInAnonymousSuccess;
+
+  /// Label for anonymous users
+  ///
+  /// In en, this message translates to:
+  /// **'Guest User'**
+  String get anonymousUserLabel;
+
+  /// Label for guest account type
+  ///
+  /// In en, this message translates to:
+  /// **'Guest Account'**
+  String get guestAccountLabel;
+
+  /// Label for authenticated account
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get authenticatedLabel;
+
+  /// Tooltip for change avatar button
+  ///
+  /// In en, this message translates to:
+  /// **'Change Avatar'**
+  String get changeAvatarTooltip;
+
+  /// Tooltip for edit display name button
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Name'**
+  String get editDisplayNameTooltip;
+
+  /// Section title for account actions
+  ///
+  /// In en, this message translates to:
+  /// **'Account Actions'**
+  String get accountActionsSection;
+
+  /// Title for upgrade account option
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Full Account'**
+  String get upgradeAccountTitle;
+
+  /// Description for upgrade account
+  ///
+  /// In en, this message translates to:
+  /// **'Save your data and access it from any device'**
+  String get upgradeAccountDescription;
+
+  /// Section title for account management options
+  ///
+  /// In en, this message translates to:
+  /// **'Account Management'**
+  String get accountManagementSection;
+
+  /// Section title for danger zone
+  ///
+  /// In en, this message translates to:
+  /// **'Danger Zone'**
+  String get dangerZoneSection;
+
+  /// Button to delete account
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccountButton;
+
+  /// Success message after changing avatar
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar updated successfully'**
+  String get avatarChangedSuccess;
+
+  /// Error message when avatar change fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update avatar'**
+  String get avatarChangedError;
+
+  /// Description for account menu item in drawer
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your account and profile'**
+  String get accountMenuDescription;
+
+  /// Label for email input field
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// Label for password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordLabel;
+
+  /// Button text to create a new account
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccountButton;
+
+  /// Validation error when email field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get pleaseEnterEmail;
+
+  /// Validation error when email format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email'**
+  String get pleaseEnterValidEmail;
+
+  /// Validation error when password field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get pleaseEnterPassword;
+
+  /// Validation error when password is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMinLength;
+
+  /// Text to toggle from create account to sign in
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign In'**
+  String get alreadyHaveAccount;
+
+  /// Text to toggle from sign in to create account
+  ///
+  /// In en, this message translates to:
+  /// **'Need an account? Create One'**
+  String get needAccount;
+
+  /// Button text for Google sign-in
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
+
+  /// Button text for GitHub sign-in
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with GitHub'**
+  String get continueWithGitHub;
+
+  /// Button text for Apple sign-in
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get continueWithApple;
+
+  /// Button text to show additional sign-in providers
+  ///
+  /// In en, this message translates to:
+  /// **'More Providers'**
+  String get moreProviders;
+
+  /// Title for provider selection dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Provider'**
+  String get chooseProvider;
+
+  /// Title for avatar selector dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Select Avatar'**
+  String get selectAvatarTitle;
+
+  /// Title for edit account information screen
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Account Information'**
+  String get editAccountInformationTitle;
+
+  /// Label for display name input field
+  ///
+  /// In en, this message translates to:
+  /// **'Display Name'**
+  String get displayNameLabel;
+
+  /// Validation error when display name is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a display name'**
+  String get pleaseEnterDisplayName;
+
+  /// Validation error when display name is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be at least 2 characters'**
+  String get displayNameMinLength;
+
+  /// Title for delete account dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccountTitle;
+
+  /// Warning message in delete account dialog
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get deleteAccountWarning;
+
+  /// Message explaining what will be deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting your account will permanently remove any data associated with it.'**
+  String get deleteAccountMessage;
+
+  /// First item in delete account list
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile and avatar'**
+  String get deleteAccountItem1;
+
+  /// Second item in delete account list
+  ///
+  /// In en, this message translates to:
+  /// **'All saved preferences'**
+  String get deleteAccountItem2;
+
+  /// Third item in delete account list
+  ///
+  /// In en, this message translates to:
+  /// **'Custom scenarios and settings'**
+  String get deleteAccountItem3;
+
+  /// Fourth item in delete account list
+  ///
+  /// In en, this message translates to:
+  /// **'Account authentication'**
+  String get deleteAccountItem4;
+
+  /// Prompt for password confirmation before deleting account
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password to confirm:'**
+  String get deleteAccountPasswordPrompt;
+
+  /// Divider text between authentication options
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get orDivider;
+
+  /// Hint text for display name field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name (optional)'**
+  String get displayNameHint;
+
+  /// Hint text for email field
+  ///
+  /// In en, this message translates to:
+  /// **'Your email address'**
+  String get emailHint;
+
+  /// Hint text for password field
+  ///
+  /// In en, this message translates to:
+  /// **'Your password'**
+  String get passwordHint;
+
+  /// Text to switch from create account to sign in
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get alreadyHaveAccountSignIn;
+
+  /// Text to switch from sign in to create account
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? Create one'**
+  String get needAccountCreateOne;
+
+  /// Option to use Google profile photo as avatar
+  ///
+  /// In en, this message translates to:
+  /// **'Use Google Profile Photo'**
+  String get useGoogleProfilePhoto;
+
+  /// Section title for custom avatar selection
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Avatars'**
+  String get customAvatars;
+
+  /// Button text to save selected avatar
+  ///
+  /// In en, this message translates to:
+  /// **'Save Avatar'**
+  String get saveAvatar;
+
+  /// Label for display name input field in edit screen
+  ///
+  /// In en, this message translates to:
+  /// **'Display Name'**
+  String get displayNameFieldLabel;
+
+  /// Hint for display name input field in edit screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your display name'**
+  String get displayNameFieldHint;
+
+  /// Button text to save account information changes
+  ///
+  /// In en, this message translates to:
+  /// **'Save Account Information'**
+  String get saveAccountInformation;
+
+  /// Validation error when email is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// Validation error when email format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get emailInvalid;
+
+  /// Validation error when password is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
+
+  /// Validation error when password is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get passwordTooShort;
+
+  /// Validation error when password is missing uppercase letter
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one uppercase letter'**
+  String get passwordMissingUppercase;
+
+  /// Validation error when password is missing lowercase letter
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one lowercase letter'**
+  String get passwordMissingLowercase;
+
+  /// Validation error when password is missing number
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one number'**
+  String get passwordMissingNumber;
+
+  /// Validation error when password is missing special character
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one special character (!@#\$%^&*...)'**
+  String get passwordMissingSpecialChar;
+
+  /// Error message when user has exceeded rate limit for sign-in attempts
+  ///
+  /// In en, this message translates to:
+  /// **'Too many failed sign-in attempts. Please try again in 15 minutes.'**
+  String get tooManyAttempts;
+
+  /// Error message when user tries to access a feature requiring email verification
+  ///
+  /// In en, this message translates to:
+  /// **'Please verify your email address before accessing this feature. Check your inbox for the verification link.'**
+  String get emailVerificationRequired;
+
+  /// Default display name for users who don't provide one
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get defaultUserName;
+
+  /// Error message when Google sign-in fails
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign-in was canceled or failed. Please try again.'**
+  String get googleSignInError;
+
+  /// Error message when GitHub sign-in fails
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub sign-in was canceled or failed. Please try again.'**
+  String get gitHubSignInError;
+
+  /// Error message when Apple sign-in fails
+  ///
+  /// In en, this message translates to:
+  /// **'Apple sign-in was canceled or failed. Please try again.'**
+  String get appleSignInError;
+
+  /// Success message when display name is updated
+  ///
+  /// In en, this message translates to:
+  /// **'Display name updated'**
+  String get displayNameUpdated;
+
+  /// Error message when display name update fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update display name'**
+  String get displayNameUpdateFailed;
+
+  /// Success message when anonymous session is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Session reset successfully'**
+  String get sessionResetSuccess;
+
+  /// Success message when account is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted successfully'**
+  String get accountDeletedSuccess;
+
+  /// Error message for user-not-found Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'No account found with this email address.'**
+  String get errorUserNotFound;
+
+  /// Error message for wrong-password Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password. Please try again.'**
+  String get errorWrongPassword;
+
+  /// Error message for invalid-email Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email address format.'**
+  String get errorInvalidEmail;
+
+  /// Error message for user-disabled Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'This account has been disabled.'**
+  String get errorUserDisabled;
+
+  /// Error message for email-already-in-use Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'An account already exists with this email address.'**
+  String get errorEmailInUse;
+
+  /// Error message for weak-password Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'Password is too weak. Please use a stronger password.'**
+  String get errorWeakPassword;
+
+  /// Error message for operation-not-allowed Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'This sign-in method is not enabled.'**
+  String get errorOperationNotAllowed;
+
+  /// Error message for requires-recent-login Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in again to perform this action.'**
+  String get errorRequiresRecentLogin;
+
+  /// Error message for network-request-failed Firebase error
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection.'**
+  String get errorNetworkFailed;
+
+  /// Generic error message with placeholder for error details
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred: {message}'**
+  String errorUnknown(String message);
+
+  /// Exception message when Google Sign-In is not properly initialized
+  ///
+  /// In en, this message translates to:
+  /// **'Google Sign-In not initialized'**
+  String get exceptionGoogleSignInNotInitialized;
+
+  /// Exception message when Google sign-in operation times out
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign-in timed out'**
+  String get exceptionGoogleSignInTimeout;
+
+  /// Exception message when attempting Apple Sign-In on non-Apple platforms
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Sign-In is only available on Apple platforms'**
+  String get exceptionAppleSignInPlatform;
+
+  /// Exception message when trying to link credentials but no anonymous user exists
+  ///
+  /// In en, this message translates to:
+  /// **'No anonymous user to link'**
+  String get exceptionNoAnonymousUser;
+
+  /// Exception message when an operation requires a signed-in user but none exists
+  ///
+  /// In en, this message translates to:
+  /// **'No user signed in'**
+  String get exceptionNoUserSignedIn;
+
+  /// Firebase auth error when user is not found
+  ///
+  /// In en, this message translates to:
+  /// **'No account found with this email address.'**
+  String get firebaseErrorUserNotFound;
+
+  /// Firebase auth error for wrong password
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password. Please try again.'**
+  String get firebaseErrorWrongPassword;
+
+  /// Firebase auth error for invalid email format
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email address format.'**
+  String get firebaseErrorInvalidEmail;
+
+  /// Firebase auth error when user account is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'This account has been disabled.'**
+  String get firebaseErrorUserDisabled;
+
+  /// Firebase auth error when email is already in use
+  ///
+  /// In en, this message translates to:
+  /// **'An account already exists with this email address.'**
+  String get firebaseErrorEmailInUse;
+
+  /// Firebase auth error for weak password
+  ///
+  /// In en, this message translates to:
+  /// **'Password is too weak. Please use a stronger password.'**
+  String get firebaseErrorWeakPassword;
+
+  /// Firebase auth error when operation is not allowed
+  ///
+  /// In en, this message translates to:
+  /// **'This sign-in method is not enabled.'**
+  String get firebaseErrorOperationNotAllowed;
+
+  /// Firebase auth error requiring recent login
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in again to perform this action.'**
+  String get firebaseErrorRequiresRecentLogin;
+
+  /// Firebase auth error for network failures
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection.'**
+  String get firebaseErrorNetworkFailed;
+
+  /// Firebase auth error when account exists with different credential
+  ///
+  /// In en, this message translates to:
+  /// **'An account already exists with this email using a different sign-in method. Please sign in with the original method.'**
+  String get firebaseErrorAccountExistsWithDifferentCredential;
+
+  /// Default Firebase auth error message with placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred: {message}'**
+  String firebaseErrorDefault(String message);
+
+  /// Title for device integrity verification failure
+  ///
+  /// In en, this message translates to:
+  /// **'Device Security Issue'**
+  String get integrityErrorDeviceIntegrityTitle;
+
+  /// Error message when device integrity check fails
+  ///
+  /// In en, this message translates to:
+  /// **'Your device does not meet the security requirements for this operation.'**
+  String get integrityErrorDeviceIntegrity;
+
+  /// Guidance for device integrity failures
+  ///
+  /// In en, this message translates to:
+  /// **'Please ensure your device passes Google Play Protect checks and is not rooted or modified. If you believe this is an error, contact support with reference: {reference}'**
+  String integrityGuidanceDeviceIntegrity(String reference);
+
+  /// Title for app integrity verification failure
+  ///
+  /// In en, this message translates to:
+  /// **'App Installation Issue'**
+  String get integrityErrorAppIntegrityTitle;
+
+  /// Error message when app integrity check fails
+  ///
+  /// In en, this message translates to:
+  /// **'The app installation could not be verified.'**
+  String get integrityErrorAppIntegrity;
+
+  /// Guidance for app integrity failures
+  ///
+  /// In en, this message translates to:
+  /// **'Please ensure you\'re using the official app from Google Play Store. Sideloaded or modified apps are not supported. Reference: {reference}'**
+  String integrityGuidanceAppIntegrity(String reference);
+
+  /// Title for network error during integrity check
+  ///
+  /// In en, this message translates to:
+  /// **'Connection Error'**
+  String get integrityErrorNetworkTitle;
+
+  /// Error message when network error occurs during verification
+  ///
+  /// In en, this message translates to:
+  /// **'Could not verify device security due to a network error.'**
+  String get integrityErrorNetwork;
+
+  /// Guidance for network errors during integrity check
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your internet connection and try again. If the problem persists, contact support with reference: {reference}'**
+  String integrityGuidanceNetwork(String reference);
+
+  /// Title for backend verification failure
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Failed'**
+  String get integrityErrorBackendVerificationTitle;
+
+  /// Error message when backend verification fails
+  ///
+  /// In en, this message translates to:
+  /// **'Security verification could not be completed.'**
+  String get integrityErrorBackendVerification;
+
+  /// Guidance for backend verification failures
+  ///
+  /// In en, this message translates to:
+  /// **'There was an issue verifying your device. Please try again later. If this continues, contact support with reference: {reference}'**
+  String integrityGuidanceBackendVerification(String reference);
+
+  /// Title for token request failure
+  ///
+  /// In en, this message translates to:
+  /// **'Security Check Failed'**
+  String get integrityErrorTokenRequestTitle;
+
+  /// Error message when token request fails
+  ///
+  /// In en, this message translates to:
+  /// **'Could not perform security verification.'**
+  String get integrityErrorTokenRequest;
+
+  /// Guidance for token request failures
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to generate security token. Please restart the app and try again. If the issue persists, contact support with reference: {reference}'**
+  String integrityGuidanceTokenRequest(String reference);
+
+  /// Title for unknown integrity errors
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Error'**
+  String get integrityErrorUnknownTitle;
+
+  /// Error message for unknown integrity failures
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred during security verification.'**
+  String get integrityErrorUnknown;
+
+  /// Guidance for unknown integrity failures
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again. If the problem continues, contact support with reference: {reference}'**
+  String integrityGuidanceUnknown(String reference);
+
+  /// Success message after sending verification email
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent! Please check your inbox.'**
+  String get emailVerificationSent;
+
+  /// Success message after resending verification email
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email resent successfully.'**
+  String get emailVerificationResent;
+
+  /// Label indicating email is not verified
+  ///
+  /// In en, this message translates to:
+  /// **'Email not verified'**
+  String get emailNotVerified;
+
+  /// Label indicating email is verified
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified'**
+  String get emailVerified;
+
+  /// Title for email verification section
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Email Address'**
+  String get verifyEmailAddress;
+
+  /// Message explaining email verification requirement
+  ///
+  /// In en, this message translates to:
+  /// **'Please verify your email address to access all features. Check your inbox for the verification link.'**
+  String get verifyEmailMessage;
+
+  /// Button text to send verification email
+  ///
+  /// In en, this message translates to:
+  /// **'Send Verification Email'**
+  String get sendVerificationEmail;
+
+  /// Button text to resend verification email
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Verification Email'**
+  String get resendVerificationEmail;
+
+  /// Button text to refresh email verification status
+  ///
+  /// In en, this message translates to:
+  /// **'Check Verification Status'**
+  String get checkVerificationStatus;
+
+  /// Status message when email verification is pending
+  ///
+  /// In en, this message translates to:
+  /// **'Email verification pending'**
+  String get emailVerificationPending;
+
+  /// Message shown when user must wait before resending verification email
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait {seconds} seconds before requesting another verification email.'**
+  String verificationEmailCooldown(int seconds);
+
+  /// Title for terms and privacy section
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Privacy'**
+  String get termsAndPrivacy;
+
+  /// Checkbox label for accepting terms and privacy
+  ///
+  /// In en, this message translates to:
+  /// **'I accept the Terms of Service and Privacy Policy'**
+  String get acceptTermsAndPrivacy;
+
+  /// Error message when terms are not accepted
+  ///
+  /// In en, this message translates to:
+  /// **'You must accept the Terms of Service and Privacy Policy to continue.'**
+  String get mustAcceptTerms;
+
+  /// Link text for Terms of Service
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
+  /// Link text for Privacy Policy
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// Action to view Terms of Service
+  ///
+  /// In en, this message translates to:
+  /// **'View Terms of Service'**
+  String get viewTermsOfService;
+
+  /// Action to view Privacy Policy
+  ///
+  /// In en, this message translates to:
+  /// **'View Privacy Policy'**
+  String get viewPrivacyPolicy;
+
+  /// Shows when terms were last updated
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: {date}'**
+  String termsLastUpdated(String date);
+
+  /// Shows when privacy policy was last updated
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: {date}'**
+  String privacyLastUpdated(String date);
+
+  /// Message about minimum age requirement (COPPA compliance)
+  ///
+  /// In en, this message translates to:
+  /// **'You must be 13 years or older to create an account.'**
+  String get ageRequirement;
+
+  /// Checkbox label for age confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'I confirm that I am 13 years or older'**
+  String get confirmAge;
+
+  /// Exception key when email verification fails
+  ///
+  /// In en, this message translates to:
+  /// **'exceptionEmailVerificationFailed'**
+  String get exceptionEmailVerificationFailed;
+
+  /// Exception key when verification email is rate limited
+  ///
+  /// In en, this message translates to:
+  /// **'exceptionEmailVerificationCooldown'**
+  String get exceptionEmailVerificationCooldown;
+
+  /// Exception key when terms are not accepted
+  ///
+  /// In en, this message translates to:
+  /// **'exceptionTermsNotAccepted'**
+  String get exceptionTermsNotAccepted;
+
+  /// Section title for collision visual effects options
+  ///
+  /// In en, this message translates to:
+  /// **'Collision Effects'**
+  String get collisionEffectsTitle;
+
+  /// Label for collision debris particles toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Debris Particles'**
+  String get showCollisionDebris;
+
+  /// Description for collision debris particles feature
+  ///
+  /// In en, this message translates to:
+  /// **'Ejected particles from collision impacts with physics-based trajectories'**
+  String get showCollisionDebrisDescription;
+
+  /// Label for collision shockwave rings toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Shockwave Rings'**
+  String get showCollisionShockwaves;
+
+  /// Description for collision shockwave rings feature
+  ///
+  /// In en, this message translates to:
+  /// **'Expanding energy rings from collision points scaled by impact force'**
+  String get showCollisionShockwavesDescription;
+
+  /// Label for collision material ejection toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Material Ejection'**
+  String get showCollisionEjection;
+
+  /// Description for collision material ejection feature
+  ///
+  /// In en, this message translates to:
+  /// **'Billowing clouds of material expelled during high-energy impacts'**
+  String get showCollisionEjectionDescription;
+
+  /// Label for collision plasma jets toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Plasma Jets'**
+  String get showCollisionPlasmaJets;
+
+  /// Description for collision plasma jets feature
+  ///
+  /// In en, this message translates to:
+  /// **'Directional superheated streams from massive star collisions (experimental)'**
+  String get showCollisionPlasmaJetsDescription;
 }
 
 class _AppLocalizationsDelegate

@@ -1,6 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/models/custom_scenario.dart';
+import 'package:graviton/models/play_integrity_exception.dart';
+import 'package:graviton/services/auth_service.dart';
+import 'package:graviton/services/play_integrity_backend_service.dart';
+import 'package:graviton/services/play_integrity_service.dart';
+import 'package:graviton/services/user_data_sync_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Service for local storage of custom scenarios
@@ -21,7 +27,13 @@ class CustomScenarioStorage {
   /// Save a custom scenario to local storage
   static Future<void> saveScenario(CustomScenario scenario) async {
     try {
+      // Verify device integrity before saving (Android only, prevents fraudulent scenarios)
+      await _verifyDeviceIntegrityForScenario();
+
       await _saveToPreferences(scenario);
+
+      // Sync to cloud if user is authenticated (will skip if already syncing)
+      await UserDataSyncService.instance.syncCustomScenarios();
     } catch (e) {
       throw Exception('Failed to save scenario: $e');
     }
@@ -49,8 +61,33 @@ class CustomScenarioStorage {
   static Future<void> deleteScenario(String scenarioName) async {
     try {
       await _deleteFromPreferences(scenarioName);
+
+      // Sync to cloud if user is authenticated (will skip if already syncing)
+      await UserDataSyncService.instance.syncCustomScenarios();
     } catch (e) {
       throw Exception('Failed to delete scenario: $e');
+    }
+  }
+
+  /// Rename a scenario (atomic operation: delete old + save new)
+  ///
+  /// This performs delete and save as a single operation to avoid
+  /// cloud sync race conditions that can cause duplicates.
+  static Future<void> renameScenario(
+    String oldName,
+    CustomScenario newScenario,
+  ) async {
+    try {
+      // Delete old scenario locally
+      await _deleteFromPreferences(oldName);
+
+      // Save new scenario locally
+      await _saveToPreferences(newScenario);
+
+      // Sync once after both operations complete
+      await UserDataSyncService.instance.syncCustomScenarios();
+    } catch (e) {
+      throw Exception('Failed to rename scenario: $e');
     }
   }
 
@@ -108,8 +145,6 @@ class CustomScenarioStorage {
     final jsonList = existingScenarios.map((s) => s.toJson()).toList();
     final jsonString = jsonEncode(jsonList);
     await prefs.setString(_scenariosKey, jsonString);
-
-    debugPrint('Saved scenario: ${scenario.metadata.name}');
   }
 
   static Future<CustomScenario?> _loadFromPreferences(
@@ -151,8 +186,6 @@ class CustomScenarioStorage {
       final jsonList = existingScenarios.map((s) => s.toJson()).toList();
       final jsonString = jsonEncode(jsonList);
       await prefs.setString(_scenariosKey, jsonString);
-
-      debugPrint('Deleted scenario: $scenarioName');
     }
   }
 
@@ -160,7 +193,6 @@ class CustomScenarioStorage {
   static Future<void> clearAllScenarios() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_scenariosKey);
-    debugPrint('Cleared all scenarios');
   }
 
   // =============================================================================
@@ -224,14 +256,53 @@ class CustomScenarioStorage {
         }
       }
 
-      if (deletedCount > 0) {
-        debugPrint('Cleaned up $deletedCount stale test scenario(s)');
-      }
-
       return deletedCount;
     } catch (e) {
       debugPrint('Failed to cleanup stale test scenarios: $e');
       return 0;
+    }
+  }
+
+  /// Verify device integrity before saving scenarios (Android only)
+  ///
+  /// This helps prevent saving of fraudulent or tampered scenario data.
+  /// Silently succeeds on non-Android platforms or if verification fails.
+  static Future<void> _verifyDeviceIntegrityForScenario() async {
+    try {
+      final integrityService = PlayIntegrityService();
+      final backendService = PlayIntegrityBackendService.instance;
+      final user = await AuthService.instance.getCurrentUserProfile();
+      final userId = user?.uid ?? 'anonymous';
+
+      // Determine package name based on flavor
+      final packageName = FlavorConfig.instance.getPackageName();
+
+      // Use enforcement-aware verification with backend callback
+      await integrityService.verifyWithEnforcement(
+        operationId: 'save_custom_scenario',
+        userId: userId,
+        verifyTokenCallback: (token) async {
+          return await backendService.verifyToken(
+            token: token,
+            packageName: packageName,
+          );
+        },
+      );
+    } catch (e) {
+      // If it's an enforcement exception, rethrow to block operation
+      if (e is IntegrityVerificationFailedException) {
+        if (kDebugMode) {
+          debugPrint(
+            'CustomScenario: Integrity verification blocked save operation',
+          );
+        }
+        rethrow;
+      }
+
+      // For other errors, log but don't block (backward compatibility)
+      if (kDebugMode) {
+        debugPrint('CustomScenario: Integrity verification error: $e');
+      }
     }
   }
 

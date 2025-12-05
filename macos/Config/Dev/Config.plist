@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>GitHubUrls</key>
+	<dict>
+		<key>reportIssue</key>
+		<string>https://github.com/Chipper-Technologies/graviton/issues</string>
+		<key>privacyPolicy</key>
+		<string>https://github.com/Chipper-Technologies/graviton/blob/main/PRIVACY.md</string>
+		<key>license</key>
+		<string>https://github.com/Chipper-Technologies/graviton/blob/main/LICENSE.md</string>
+	</dict>
+</dict>
+</plist>

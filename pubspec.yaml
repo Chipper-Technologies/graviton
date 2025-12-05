@@ -1,7 +1,7 @@
 name: graviton
 description: "A physics simulation exploring gravitational dynamics and orbital mechanics."
 publish_to: "none"
-version: 1.5.0+17
+version: 1.6.0+22
 repository: https://github.com/Chipper-Technologies/graviton
 license: MIT
 
@@ -19,14 +19,19 @@ dependencies:
   file_picker: ^10.3.7
   firebase_core: ^4.2.0
   firebase_analytics: ^12.0.3
+  firebase_app_check: ^0.4.1+2
+  firebase_auth: ^6.1.2
   firebase_crashlytics: ^5.0.3
   firebase_remote_config: ^6.1.0
   flutter_svg: ^2.2.1
+  google_sign_in: ^7.2.0
+  http: ^1.6.0
   package_info_plus: ^9.0.0
   path_provider: ^2.1.5
   provider: ^6.1.2
   share_plus: ^12.0.1
   shared_preferences: ^2.5.3
+  sign_in_with_apple: ^7.0.1
   sliding_up_panel: ^2.0.0+1
   url_launcher: ^6.3.1
   vector_math: ^2.2.0

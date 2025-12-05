@@ -93,6 +93,27 @@ class AppTypography {
   /// selection dropdowns to ensure consistent sizing and proper text display
   static const double dropdownItemHeight = 44.0;
 
+  /// Size (width and height) for avatar buttons in the AppBar
+  static const double avatarSize = 32.0;
+
+  /// Vertical margin for avatar buttons to align properly in AppBar
+  static const double avatarMargin = 6.0;
+
+  /// Size for provider badge icons in profile card
+  static const double providerBadgeIconSize = 12.0;
+
+  /// Size for avatar selection grid items (profile photo option)
+  static const double avatarSelectionSize = 48.0;
+
+  /// Default size for avatar display widget
+  static const double avatarDisplaySize = 96.0;
+
+  /// Multiplier for large avatar displays (e.g., profile cards)
+  static const double avatarDisplayMultiplier = 1.5;
+
+  /// Multiplier for extra large warning icons
+  static const double iconWarningMultiplier = 2.0;
+
   // =============================================================================
   // TEXT STYLES
   // =============================================================================

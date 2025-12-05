@@ -79,6 +79,10 @@ class AppConstraints {
   /// Compact padding for dialog content with less space
   static const EdgeInsets dialogPaddingCompact = EdgeInsets.all(16);
 
+  // Content Constraints
+  /// Maximum width for form content on wide screens
+  static const double contentMaxWidth = 800;
+
   // Dialog Decoration
   /// Standard border radius for dialog containers
   static const double dialogBorderRadius = 24.0; // AppTypography.radiusXXLarge

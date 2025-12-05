@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -53,29 +54,43 @@ class HapticAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    return AppBar(
-      title: Text(title),
-      backgroundColor:
-          backgroundColor ??
-          AppColors.uiBlack.withValues(
-            alpha: AppTypography.opacityNearlyOpaque,
-          ),
-      foregroundColor: foregroundColor ?? AppColors.uiWhite,
-      elevation: elevation ?? 0,
-      surfaceTintColor: Colors.transparent,
-      shadowColor: Colors.transparent,
-      automaticallyImplyLeading: false,
-      titleSpacing: titleSpacing,
-      leading:
-          leading ??
-          (automaticallyImplyLeading && Navigator.of(context).canPop()
-              ? HapticIconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.of(context).pop(),
-                  tooltip: l10n?.backButtonTooltip ?? 'Back',
-                )
-              : null),
-      actions: actions,
+    // Add horizontal padding for web and desktop platforms
+    final isWebOrDesktop =
+        kIsWeb ||
+        defaultTargetPlatform == TargetPlatform.macOS ||
+        defaultTargetPlatform == TargetPlatform.windows ||
+        defaultTargetPlatform == TargetPlatform.linux;
+
+    final horizontalPadding = isWebOrDesktop
+        ? AppTypography.spacingMedium
+        : 0.0;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      child: AppBar(
+        title: Text(title),
+        backgroundColor:
+            backgroundColor ??
+            AppColors.uiBlack.withValues(
+              alpha: AppTypography.opacityNearlyOpaque,
+            ),
+        foregroundColor: foregroundColor ?? AppColors.uiWhite,
+        elevation: elevation ?? 0,
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        titleSpacing: titleSpacing,
+        leading:
+            leading ??
+            (automaticallyImplyLeading && Navigator.of(context).canPop()
+                ? HapticIconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.of(context).pop(),
+                    tooltip: l10n?.backButtonTooltip ?? 'Back',
+                  )
+                : null),
+        actions: actions,
+      ),
     );
   }
 

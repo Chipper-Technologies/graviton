@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/haptic_feedback_type.dart';
 import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
 
 void main() {

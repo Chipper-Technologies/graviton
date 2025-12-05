@@ -1,3 +1,4 @@
+import 'package:graviton/constants/app_constants.dart';
 import 'package:graviton/enums/app_flavor.dart';
 
 /// Configuration service for managing app flavors
@@ -30,6 +31,14 @@ class FlavorConfig {
         return prod;
     }
   }
+
+  /// Get the Android package name based on current flavor
+  String getPackageName() {
+    return getFlavorValue(
+      dev: AppConstants.packageNameDev,
+      prod: AppConstants.packageNameProd,
+    );
+  }
 }
 
 /// App configuration constants
@@ -37,10 +46,10 @@ class AppConfig {
   static FlavorConfig get flavor => FlavorConfig.instance;
 
   // API endpoints
-  static String get baseUrl => flavor.getFlavorValue(
-    dev: 'https://api.dev.chipperlabs.com',
-    prod: 'https://api.chipperlabs.com',
-  );
+  static String get apiUrl => const String.fromEnvironment('urls.api');
+
+  static String get playIntegrityVerificationUrl =>
+      const String.fromEnvironment('urls.playIntegrityVerification');
 
   // Version information (injected at build time for web)
   static String get appVersion =>
@@ -50,39 +59,32 @@ class AppConfig {
       const String.fromEnvironment('BUILD_NUMBER', defaultValue: '1');
 
   // External URLs
-  static String get githubUrl => const String.fromEnvironment(
-    'GITHUB_URL',
-    defaultValue: 'https://github.com/Chipper-Technologies/graviton',
-  );
+  static String get githubUrl => const String.fromEnvironment('urls.github');
 
-  static String get websiteUrl => const String.fromEnvironment(
-    'WEBSITE_URL',
-    defaultValue: 'https://chippertechnology.com',
-  );
+  static String get websiteUrl => const String.fromEnvironment('urls.website');
 
-  static String get privacyPolicyUrl => const String.fromEnvironment(
-    'PRIVACY_POLICY_URL',
-    defaultValue: 'https://chippertechnology.com/privacy-policy/graviton',
-  );
+  static String get privacyPolicyUrl =>
+      const String.fromEnvironment('urls.privacyPolicy');
 
-  static String get companyWebsiteUrl => const String.fromEnvironment(
-    'COMPANY_WEBSITE_URL',
-    defaultValue: 'https://chippertechnology.com',
-  );
+  static String get termsOfServiceUrl =>
+      const String.fromEnvironment('urls.termsOfService');
+
+  static String get companyWebsiteUrl =>
+      const String.fromEnvironment('urls.companyWebsite');
 
   // Asset paths
   static String get appLogoPath => const String.fromEnvironment(
-    'APP_LOGO_PATH',
+    'assets.appLogo',
     defaultValue: 'assets/images/app-logo.png',
   );
 
   static String get chipperLogoPath => const String.fromEnvironment(
-    'CHIPPER_LOGO_PATH',
+    'assets.chipperLogo',
     defaultValue: 'assets/images/chipper-logo.svg',
   );
 
   static String get gravitonLogoPath => const String.fromEnvironment(
-    'GRAVITON_LOGO_PATH',
+    'assets.gravitonLogo',
     defaultValue: 'assets/images/graviton-logo.svg',
   );
 
@@ -115,4 +117,11 @@ class AppConfig {
   // Screenshot mode for capturing marketing materials
   static bool get enableScreenshotMode =>
       flavor.getFlavorValue(dev: true, prod: false);
+
+  // Apple Sign-In configuration
+  static String get appleClientId =>
+      const String.fromEnvironment('apple.clientId');
+
+  static String get appleRedirectUri =>
+      const String.fromEnvironment('apple.redirectUri');
 }

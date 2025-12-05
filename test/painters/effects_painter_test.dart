@@ -2,7 +2,11 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/models/collision_particle.dart';
+import 'package:graviton/models/debris_cloud.dart';
 import 'package:graviton/models/merge_flash.dart';
+import 'package:graviton/models/plasma_jet.dart';
+import 'package:graviton/models/shockwave.dart';
 import 'package:graviton/painters/effects_painter.dart';
 import 'package:graviton/services/simulation.dart' as physics;
 import 'package:graviton/theme/app_colors.dart';
@@ -421,6 +425,425 @@ void main() {
           returnsNormally,
         );
       });
+    });
+
+    tearDown(() {
+      recorder.endRecording();
+    });
+  });
+
+  group('drawDebrisParticles', () {
+    late Canvas canvas;
+    late ui.PictureRecorder recorder;
+    late Size canvasSize;
+    late vm.Matrix4 viewProjectionMatrix;
+    late List<CollisionParticle> particles;
+
+    setUp(() {
+      recorder = ui.PictureRecorder();
+      canvas = Canvas(recorder);
+      canvasSize = const Size(800, 600);
+      viewProjectionMatrix = vm.Matrix4.identity();
+      particles = [];
+    });
+
+    test('should draw debris particles', () {
+      particles.add(
+        CollisionParticle(
+          position: vm.Vector3(0, 0, -20),
+          velocity: vm.Vector3(1, 1, 0),
+          color: AppColors.basicRed,
+          size: 2.0,
+          lifetime: 2.0,
+          mass: 0.5,
+        ),
+      );
+
+      expect(
+        () => EffectsPainter.drawDebrisParticles(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          particles,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle empty particles list', () {
+      expect(
+        () => EffectsPainter.drawDebrisParticles(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          particles,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should draw glow for larger particles', () {
+      particles.add(
+        CollisionParticle(
+          position: vm.Vector3(0, 0, -20),
+          velocity: vm.Vector3.zero(),
+          color: AppColors.basicYellow,
+          size: 3.0, // Size > 1.5 triggers glow
+          lifetime: 2.0,
+          mass: 0.5,
+        ),
+      );
+
+      expect(
+        () => EffectsPainter.drawDebrisParticles(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          particles,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle particles with varying opacity', () {
+      particles.addAll([
+        CollisionParticle(
+          position: vm.Vector3(0, 0, -20),
+          velocity: vm.Vector3.zero(),
+          color: AppColors.basicRed,
+          size: 2.0,
+          lifetime: 2.0,
+          mass: 0.5,
+        )..age = 0.0, // Full opacity
+        CollisionParticle(
+          position: vm.Vector3(10, 0, -20),
+          velocity: vm.Vector3.zero(),
+          color: AppColors.basicGreen,
+          size: 2.0,
+          lifetime: 2.0,
+          mass: 0.5,
+        )..age = 1.0, // Half opacity
+        CollisionParticle(
+          position: vm.Vector3(20, 0, -20),
+          velocity: vm.Vector3.zero(),
+          color: AppColors.basicBlue,
+          size: 2.0,
+          lifetime: 2.0,
+          mass: 0.5,
+        )..age = 2.0, // Nearly transparent
+      ]);
+
+      expect(
+        () => EffectsPainter.drawDebrisParticles(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          particles,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle many particles', () {
+      for (int i = 0; i < 100; i++) {
+        particles.add(
+          CollisionParticle(
+            position: vm.Vector3(i.toDouble(), 0, -20),
+            velocity: vm.Vector3.zero(),
+            color:
+                AppColors.basicPrimaries[i % AppColors.basicPrimaries.length],
+            size: 1.0 + (i % 3),
+            lifetime: 2.0,
+            mass: 0.5,
+          ),
+        );
+      }
+
+      expect(
+        () => EffectsPainter.drawDebrisParticles(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          particles,
+        ),
+        returnsNormally,
+      );
+    });
+
+    tearDown(() {
+      recorder.endRecording();
+    });
+  });
+
+  group('drawShockwaves', () {
+    late Canvas canvas;
+    late ui.PictureRecorder recorder;
+    late Size canvasSize;
+    late vm.Matrix4 viewProjectionMatrix;
+    late List<Shockwave> shockwaves;
+
+    setUp(() {
+      recorder = ui.PictureRecorder();
+      canvas = Canvas(recorder);
+      canvasSize = const Size(800, 600);
+      viewProjectionMatrix = vm.Matrix4.identity();
+      shockwaves = [];
+    });
+
+    test('should draw shockwaves', () {
+      shockwaves.add(
+        Shockwave(
+          position: vm.Vector3(0, 0, -20),
+          color: AppColors.basicBlue,
+          maxRadius: 50.0,
+          thickness: 2.0,
+          lifetime: 2.0,
+          impactEnergy: 100.0,
+        ),
+      );
+
+      expect(
+        () => EffectsPainter.drawShockwaves(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          shockwaves,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle empty shockwaves list', () {
+      expect(
+        () => EffectsPainter.drawShockwaves(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          shockwaves,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle multiple shockwaves at different stages', () {
+      shockwaves.addAll([
+        Shockwave(
+          position: vm.Vector3(0, 0, -20),
+          color: AppColors.basicBlue,
+          maxRadius: 30.0,
+          thickness: 2.0,
+          lifetime: 2.0,
+          impactEnergy: 100.0,
+        )..age = 0.1,
+        Shockwave(
+          position: vm.Vector3(50, 0, -20),
+          color: AppColors.basicRed,
+          maxRadius: 50.0,
+          thickness: 3.0,
+          lifetime: 2.0,
+          impactEnergy: 200.0,
+        )..age = 1.0,
+      ]);
+
+      expect(
+        () => EffectsPainter.drawShockwaves(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          shockwaves,
+        ),
+        returnsNormally,
+      );
+    });
+
+    tearDown(() {
+      recorder.endRecording();
+    });
+  });
+
+  group('drawDebrisClouds', () {
+    late Canvas canvas;
+    late ui.PictureRecorder recorder;
+    late Size canvasSize;
+    late vm.Matrix4 viewProjectionMatrix;
+    late List<DebrisCloud> clouds;
+
+    setUp(() {
+      recorder = ui.PictureRecorder();
+      canvas = Canvas(recorder);
+      canvasSize = const Size(800, 600);
+      viewProjectionMatrix = vm.Matrix4.identity();
+      clouds = [];
+    });
+
+    test('should draw debris clouds', () {
+      final particles = [
+        CollisionParticle(
+          position: vm.Vector3(0, 0, -20),
+          velocity: vm.Vector3.zero(),
+          color: AppColors.basicRed,
+          size: 2.0,
+          lifetime: 2.0,
+          mass: 0.5,
+        ),
+      ];
+
+      clouds.add(
+        DebrisCloud(
+          particles: particles,
+          centerOfMass: vm.Vector3(0, 0, -20),
+          expansionRate: 5.0,
+          lifetime: 3.0,
+          baseColor: AppColors.basicRed,
+          collisionDirection: vm.Vector3(1, 0, 0),
+        ),
+      );
+
+      expect(
+        () => EffectsPainter.drawDebrisClouds(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          clouds,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle empty clouds list', () {
+      expect(
+        () => EffectsPainter.drawDebrisClouds(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          clouds,
+        ),
+        returnsNormally,
+      );
+    });
+
+    tearDown(() {
+      recorder.endRecording();
+    });
+  });
+
+  group('drawPlasmaJets', () {
+    late Canvas canvas;
+    late ui.PictureRecorder recorder;
+    late Size canvasSize;
+    late vm.Matrix4 viewProjectionMatrix;
+    late List<PlasmaJet> jets;
+
+    setUp(() {
+      recorder = ui.PictureRecorder();
+      canvas = Canvas(recorder);
+      canvasSize = const Size(800, 600);
+      viewProjectionMatrix = vm.Matrix4.identity();
+      jets = [];
+    });
+
+    test('should draw plasma jets', () {
+      final particles = [
+        CollisionParticle(
+          position: vm.Vector3(0, 0, -20),
+          velocity: vm.Vector3(10, 0, 0),
+          color: AppColors.stellarOType,
+          size: 2.0,
+          lifetime: 2.0,
+          mass: 0.5,
+        ),
+        CollisionParticle(
+          position: vm.Vector3(5, 0, -20),
+          velocity: vm.Vector3(10, 0, 0),
+          color: AppColors.stellarOType,
+          size: 2.0,
+          lifetime: 2.0,
+          mass: 0.5,
+        ),
+      ];
+
+      jets.add(
+        PlasmaJet(
+          particles: particles,
+          origin: vm.Vector3(0, 0, -20),
+          direction: vm.Vector3(1, 0, 0),
+          velocity: 10.0,
+          lifetime: 3.0,
+          baseColor: AppColors.stellarOType,
+          temperature: 25000.0,
+        ),
+      );
+
+      expect(
+        () => EffectsPainter.drawPlasmaJets(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          jets,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle empty jets list', () {
+      expect(
+        () => EffectsPainter.drawPlasmaJets(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          jets,
+        ),
+        returnsNormally,
+      );
+    });
+
+    tearDown(() {
+      recorder.endRecording();
+    });
+  });
+
+  group('drawAllCollisionEffects', () {
+    late Canvas canvas;
+    late ui.PictureRecorder recorder;
+    late Size canvasSize;
+    late vm.Matrix4 viewProjectionMatrix;
+    late physics.Simulation simulation;
+
+    setUp(() {
+      recorder = ui.PictureRecorder();
+      canvas = Canvas(recorder);
+      canvasSize = const Size(800, 600);
+      viewProjectionMatrix = vm.Matrix4.identity();
+      simulation = physics.Simulation();
+    });
+
+    test('should draw all collision effects', () {
+      // Add merge flash
+      simulation.mergeFlashes.add(
+        MergeFlash(vm.Vector3(0, 0, -20), AppColors.basicYellow, age: 0.5),
+      );
+
+      expect(
+        () => EffectsPainter.drawAllCollisionEffects(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          simulation,
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('should handle empty simulation', () {
+      expect(
+        () => EffectsPainter.drawAllCollisionEffects(
+          canvas,
+          canvasSize,
+          viewProjectionMatrix,
+          simulation,
+        ),
+        returnsNormally,
+      );
     });
 
     tearDown(() {

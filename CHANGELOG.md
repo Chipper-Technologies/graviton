@@ -5,9 +5,87 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.6.0] - 2025-11-22
+## [1.6.0] - 2025-12-06
 
 ### Added
+- **Firebase App Check Integration**: Cross-platform backend protection for Firebase services
+  - **Multi-Platform Support**: Platform-specific attestation providers
+    - Android: Play Integrity API provider (leverages existing Play Integrity setup)
+    - iOS/macOS: DeviceCheck API provider (automatic attestation)
+    - Web: reCAPTCHA v3 provider (bot detection)
+    - Debug: Debug token provider for development/testing
+  - **App Check Service**: Centralized management of App Check functionality
+    - Automatic provider selection based on platform
+    - Token generation and refresh management
+    - Debug mode support with token registration
+    - Comprehensive error handling and logging
+  - **Firebase Service Protection**: Automatic enforcement for backend resources
+    - Cloud Firestore: Protected from unauthorized access
+    - Cloud Functions: Protected callable functions
+    - Remote Config: Protected configuration fetches
+    - Cloud Storage: Protected file access
+  - **Documentation**: Complete implementation guide (docs/APP_CHECK.md)
+    - Setup instructions for all platforms
+    - Firebase Console configuration steps
+    - Rollout strategy and best practices
+    - Integration examples with existing services
+    - Troubleshooting guide and security considerations
+  - **Testing**: Comprehensive test suite for App Check service
+    - Unit tests for initialization and token management
+    - Error handling and state management tests
+    - Platform support verification
+
+- **Collision Effects System**: Comprehensive particle-based visual effects for celestial body collisions
+  - **Physics-Based Particle Models**: Realistic collision visualization components
+    - Debris particles with physics-based trajectories and material properties
+    - Expanding shockwave effects with realistic propagation
+    - Material ejection clouds simulating impact dispersion
+    - High-energy plasma jets for energetic collisions
+  - **Collision Effects Service**: Centralized management of collision visual effects
+    - Automatic effect generation based on collision energy and impact parameters
+    - Dynamic particle lifecycle management with proper cleanup
+    - Performance-optimized rendering with conditional visibility controls
+  - **Physics Utilities**: Reusable collision physics calculations
+    - Impact energy and velocity computations
+    - Material ejection modeling based on collision mechanics
+    - Debris distribution algorithms for realistic scatter patterns
+  - **User Controls**: Full control over collision effect visibility
+    - Toggle collision effects on/off via VisualsControls widget
+    - Seamless integration into existing UI settings panel
+    - Complete localization support across all 7 supported languages
+
+- **Account Management System**: Comprehensive user account functionality with Firebase integration
+  - **Firebase Authentication**: Multi-provider authentication support
+    - Email/password authentication with account creation and password reset
+    - Google Sign-In integration for quick authentication
+    - Apple Sign-In for iOS/macOS native authentication
+    - GitHub authentication for developer-friendly sign-in
+    - Anonymous authentication for guest users
+    - Email verification support with resend functionality
+  - **User Profile Management**: Complete profile customization features
+    - Custom avatar selection with 18 emoji options
+    - Profile photo upload from device gallery
+    - Display name editing and management
+    - Profile settings persistence across sessions
+  - **Cloud Data Sync**: Automatic backup and restore of user data
+    - UserDataSyncService for Firestore integration
+    - Automatic backup of custom scenarios, settings, and preferences
+    - Cross-device synchronization when signed in
+    - Local-first approach with cloud backup on changes
+    - Anonymous user data migration when upgrading to authenticated account
+  - **Authentication UI Components**: Complete authentication flow screens
+    - AvatarButton in AppBar for quick account access
+    - Sign-in screen with multiple provider options
+    - Account management screen with profile editing
+    - Email verification screen with resend capability
+    - Password reset flow with email validation
+    - Delete account functionality with re-authentication protection
+
+- **Rotation Speed Slider Control**: New UI control for adjusting automatic camera rotation speed
+  - Rotation speed slider with configurable range (0.1x to 3.0x speed) and 29 divisions for precise control
+  - Conditional visibility - slider appears only when auto-rotate is enabled
+  - Updated camera state management to use simulation constants for rotation speed clamping
+
 - **Three-Finger Pan Gesture**: New multi-touch gesture for intuitive camera control
   - Pan camera target in view-relative directions using three-finger drag
   - Smart sensitivity scaling that adapts to current zoom level for consistent control
@@ -16,6 +94,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Zero conflicts with existing two-finger zoom and roll gestures
   - Full analytics integration for gesture tracking and user behavior insights
   - Updated tutorial and documentation to include three-finger pan instructions
+
+- **Play Integrity API Integration**: Advanced security protection for Android platform
+  - **Native Android Implementation**: Platform-specific integrity verification
+    - Kotlin MethodChannel bridge for Flutter-Android communication
+    - Google Play Integrity API integration for device and app attestation
+    - Asynchronous verification with proper error handling
+  - **Phased Rollout Strategy**: Configurable enforcement levels via Firebase Remote Config
+    - logOnly mode: Silent monitoring for baseline metrics collection
+    - warnUser mode: Non-blocking warnings to educate users about security
+    - blockHighRisk mode: Blocks suspicious requests while allowing legitimate traffic
+    - blockAll mode: Strict enforcement for maximum security (emergency use)
+  - **Service Integration**: Protection across 4 critical security boundaries
+    - Authentication flow verification to prevent unauthorized account access
+    - Cloud sync operations to protect user data integrity
+    - Simulation sharing to prevent malicious content distribution
+    - Custom scenario storage to verify legitimate scenario uploads
+  - **Comprehensive Documentation**: 846-line implementation guide
+    - Backend integration requirements and API specifications
+    - Security best practices and threat model analysis
+    - Rollout strategy recommendations with metrics interpretation
+    - Troubleshooting guides and common implementation pitfalls
+
+### Improved
+- **Code Quality Enhancements**: Extracted magic numbers to named constants for better maintainability
+  - Added `RenderingConstants.worldUp` for world-space up vector (Vector3(0, 1, 0))
+  - Added `SimulationConstants.cameraPanSensitivityFactor` for camera pan sensitivity (0.002)
+  - Added `AppTypography.avatarSize` (32.0), `avatarMargin` (6.0) for AppBar avatar button
+  - Added `AppTypography.avatarSelectionSize` (48.0) for profile photo selection grid
+  - Added `AppTypography.avatarDisplaySize` (96.0) for default avatar widget display
+  - Added `AppTypography.avatarDisplayMultiplier` (1.5) for large profile card avatars
+  - Added `AppTypography.iconWarningMultiplier` (2.0) for warning icon sizing
+  - Updated implementation files and all test files to use new constants
 
 ## [1.5.0] - 2025-11-22
 

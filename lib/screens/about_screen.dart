@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graviton/config/flavor_config.dart';
+import 'package:graviton/constants/app_constants.dart';
 import 'package:graviton/enums/version_status.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/services/version_service.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_constraints.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/clipboard_utils.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
@@ -48,7 +50,7 @@ class _AboutScreenState extends State<AboutScreen> {
         setState(() {
           _packageInfo = PackageInfo(
             appName: 'Graviton',
-            packageName: 'io.chipper.graviton',
+            packageName: AppConstants.packageNameProd,
             version: AppConfig.appVersion,
             buildNumber: AppConfig.buildNumber,
           );
@@ -86,7 +88,9 @@ class _AboutScreenState extends State<AboutScreen> {
           padding: const EdgeInsets.all(AppTypography.spacingLarge),
           child: Center(
             child: Container(
-              constraints: const BoxConstraints(maxWidth: 600),
+              constraints: const BoxConstraints(
+                maxWidth: AppConstraints.contentMaxWidth,
+              ),
               child: Column(
                 children: [
                   // Large centered logo with error handling
@@ -213,6 +217,27 @@ class _AboutScreenState extends State<AboutScreen> {
                       onTap: () => _launchUrl(AppConfig.privacyPolicyUrl),
                       child: Text(
                         AppConfig.privacyPolicyUrl,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.primary,
+                          decoration: TextDecoration.underline,
+                          decorationColor: theme.colorScheme.primary.withValues(
+                            alpha: AppTypography.opacityMediumHigh,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppTypography.spacingMedium),
+
+                  // Terms of Service Section
+                  _buildInfoSection(
+                    context,
+                    icon: Icons.description,
+                    title: l10n.termsOfService,
+                    child: HapticInkWell(
+                      onTap: () => _launchUrl(AppConfig.termsOfServiceUrl),
+                      child: Text(
+                        AppConfig.termsOfServiceUrl,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.primary,
                           decoration: TextDecoration.underline,

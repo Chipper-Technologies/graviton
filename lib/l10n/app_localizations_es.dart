@@ -1166,6 +1166,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get autoRotateTooltip => 'Rotación Automática';
 
   @override
+  String get rotateSpeed => 'Velocidad de Rotación';
+
+  @override
   String get blackColor => 'Negro';
 
   @override
@@ -3103,4 +3106,590 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get importCancelled => 'Importación cancelada';
+
+  @override
+  String get accountManagementTitle => 'Cuenta';
+
+  @override
+  String get accountButtonTooltip => 'Cuenta y Perfil';
+
+  @override
+  String get signInPromptTitle => 'Iniciar sesión en su cuenta';
+
+  @override
+  String get signInPromptMessage =>
+      'Cree una cuenta o inicie sesión para sincronizar sus datos y preferencias entre dispositivos.';
+
+  @override
+  String get signInButton => 'Iniciar sesión';
+
+  @override
+  String get signOutButton => 'Cerrar sesión';
+
+  @override
+  String get resetSessionButton => 'Restablecer sesión';
+
+  @override
+  String get signOutSuccess => 'Sesión cerrada correctamente';
+
+  @override
+  String get operationTimeout =>
+      'La operación ha caducado. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get operationFailed =>
+      'La operación ha fallado. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get couldNotOpenLink =>
+      'No se pudo abrir el enlace. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get pleaseWaitBeforeRetrying =>
+      'Por favor, espera un momento antes de intentarlo de nuevo.';
+
+  @override
+  String rateLimitWithCooldown(int seconds) {
+    return 'Por favor, espera $seconds segundos antes de intentarlo de nuevo.';
+  }
+
+  @override
+  String get networkError =>
+      'Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get continueAsGuestButton => 'Continuar como invitado';
+
+  @override
+  String get signInAnonymousSuccess => 'Sesión iniciada como invitado';
+
+  @override
+  String get anonymousUserLabel => 'Usuario invitado';
+
+  @override
+  String get guestAccountLabel => 'Cuenta de invitado';
+
+  @override
+  String get authenticatedLabel => 'Cuenta';
+
+  @override
+  String get changeAvatarTooltip => 'Cambiar avatar';
+
+  @override
+  String get editDisplayNameTooltip => 'Editar nombre';
+
+  @override
+  String get accountActionsSection => 'Acciones de cuenta';
+
+  @override
+  String get upgradeAccountTitle => 'Actualizar a cuenta completa';
+
+  @override
+  String get upgradeAccountDescription =>
+      'Guarde sus datos y acceda a ellos desde cualquier dispositivo';
+
+  @override
+  String get accountManagementSection => 'Gestión de cuenta';
+
+  @override
+  String get dangerZoneSection => 'Gestión de cuenta';
+
+  @override
+  String get deleteAccountButton => 'Eliminar cuenta';
+
+  @override
+  String get avatarChangedSuccess => 'Avatar actualizado correctamente';
+
+  @override
+  String get avatarChangedError => 'Error al actualizar el avatar';
+
+  @override
+  String get accountMenuDescription => 'Administre su cuenta y perfil';
+
+  @override
+  String get emailLabel => 'Correo electrónico';
+
+  @override
+  String get passwordLabel => 'Contraseña';
+
+  @override
+  String get createAccountButton => 'Crear cuenta';
+
+  @override
+  String get pleaseEnterEmail => 'Por favor ingrese su correo electrónico';
+
+  @override
+  String get pleaseEnterValidEmail =>
+      'Por favor ingrese un correo electrónico válido';
+
+  @override
+  String get pleaseEnterPassword => 'Por favor ingrese su contraseña';
+
+  @override
+  String get passwordMinLength =>
+      'La contraseña debe tener al menos 6 caracteres';
+
+  @override
+  String get alreadyHaveAccount => '¿Ya tiene una cuenta? Iniciar sesión';
+
+  @override
+  String get needAccount => '¿Necesita una cuenta? Crear una';
+
+  @override
+  String get continueWithGoogle => 'Continuar con Google';
+
+  @override
+  String get continueWithGitHub => 'Continuar con GitHub';
+
+  @override
+  String get continueWithApple => 'Continuar con Apple';
+
+  @override
+  String get moreProviders => 'Más Proveedores';
+
+  @override
+  String get chooseProvider => 'Elegir Proveedor';
+
+  @override
+  String get selectAvatarTitle => 'Seleccionar avatar';
+
+  @override
+  String get editAccountInformationTitle => 'Editar nombre de usuario';
+
+  @override
+  String get displayNameLabel => 'Nombre de usuario';
+
+  @override
+  String get pleaseEnterDisplayName => 'Por favor ingrese un nombre de usuario';
+
+  @override
+  String get displayNameMinLength =>
+      'El nombre debe tener al menos 2 caracteres';
+
+  @override
+  String get deleteAccountTitle => 'Eliminar cuenta';
+
+  @override
+  String get deleteAccountWarning => 'Esta acción no se puede deshacer.';
+
+  @override
+  String get deleteAccountMessage =>
+      'Eliminar su cuenta eliminará permanentemente todos los datos asociados con ella.';
+
+  @override
+  String get deleteAccountItem1 => 'Su perfil y avatar';
+
+  @override
+  String get deleteAccountItem2 => 'Todas las preferencias guardadas';
+
+  @override
+  String get deleteAccountItem3 =>
+      'Escenarios y configuraciones personalizados';
+
+  @override
+  String get deleteAccountItem4 => 'Autenticación de cuenta';
+
+  @override
+  String get deleteAccountPasswordPrompt =>
+      'Por favor ingrese su contraseña para confirmar:';
+
+  @override
+  String get orDivider => 'O';
+
+  @override
+  String get displayNameHint => 'Ingresa tu nombre (opcional)';
+
+  @override
+  String get emailHint => 'Tu dirección de correo electrónico';
+
+  @override
+  String get passwordHint => 'Tu contraseña';
+
+  @override
+  String get alreadyHaveAccountSignIn =>
+      '¿Ya tienes una cuenta? Iniciar sesión';
+
+  @override
+  String get needAccountCreateOne => '¿No tienes una cuenta? Crear una';
+
+  @override
+  String get useGoogleProfilePhoto => 'Usar foto de perfil de Google';
+
+  @override
+  String get customAvatars => 'Avatares personalizados';
+
+  @override
+  String get saveAvatar => 'Guardar avatar';
+
+  @override
+  String get displayNameFieldLabel => 'Nombre para mostrar';
+
+  @override
+  String get displayNameFieldHint => 'Ingresa tu nombre para mostrar';
+
+  @override
+  String get saveAccountInformation => 'Guardar información de la cuenta';
+
+  @override
+  String get emailRequired => 'El correo electrónico es obligatorio';
+
+  @override
+  String get emailInvalid =>
+      'Por favor, ingresa una dirección de correo electrónico válida';
+
+  @override
+  String get passwordRequired => 'La contraseña es obligatoria';
+
+  @override
+  String get passwordTooShort =>
+      'La contraseña debe tener al menos 8 caracteres';
+
+  @override
+  String get passwordMissingUppercase =>
+      'La contraseña debe contener al menos una letra mayúscula';
+
+  @override
+  String get passwordMissingLowercase =>
+      'La contraseña debe contener al menos una letra minúscula';
+
+  @override
+  String get passwordMissingNumber =>
+      'La contraseña debe contener al menos un número';
+
+  @override
+  String get passwordMissingSpecialChar =>
+      'La contraseña debe contener al menos un carácter especial (!@#\$%^&*...)';
+
+  @override
+  String get tooManyAttempts =>
+      'Demasiados intentos fallidos de inicio de sesión. Por favor, inténtelo de nuevo en 15 minutos.';
+
+  @override
+  String get emailVerificationRequired =>
+      'Por favor, verifique su dirección de correo electrónico antes de acceder a esta función. Revise su bandeja de entrada para el enlace de verificación.';
+
+  @override
+  String get defaultUserName => 'Usuario';
+
+  @override
+  String get googleSignInError =>
+      'El inicio de sesión con Google fue cancelado o falló. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get gitHubSignInError =>
+      'El inicio de sesión con GitHub fue cancelado o falló. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get appleSignInError =>
+      'El inicio de sesión con Apple fue cancelado o falló. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get displayNameUpdated => 'Nombre para mostrar actualizado';
+
+  @override
+  String get displayNameUpdateFailed =>
+      'No se pudo actualizar el nombre para mostrar';
+
+  @override
+  String get sessionResetSuccess => 'Sesión restablecida exitosamente';
+
+  @override
+  String get accountDeletedSuccess => 'Cuenta eliminada exitosamente';
+
+  @override
+  String get errorUserNotFound =>
+      'No se encontró ninguna cuenta con esta dirección de correo electrónico.';
+
+  @override
+  String get errorWrongPassword =>
+      'Contraseña incorrecta. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get errorInvalidEmail =>
+      'Formato de dirección de correo electrónico no válido.';
+
+  @override
+  String get errorUserDisabled => 'Esta cuenta ha sido deshabilitada.';
+
+  @override
+  String get errorEmailInUse =>
+      'Ya existe una cuenta con esta dirección de correo electrónico.';
+
+  @override
+  String get errorWeakPassword =>
+      'La contraseña es demasiado débil. Por favor, usa una contraseña más segura.';
+
+  @override
+  String get errorOperationNotAllowed =>
+      'Este método de inicio de sesión no está habilitado.';
+
+  @override
+  String get errorRequiresRecentLogin =>
+      'Por favor, inicia sesión nuevamente para realizar esta acción.';
+
+  @override
+  String get errorNetworkFailed =>
+      'Error de red. Por favor, verifica tu conexión.';
+
+  @override
+  String errorUnknown(String message) {
+    return 'Ocurrió un error: $message';
+  }
+
+  @override
+  String get exceptionGoogleSignInNotInitialized =>
+      'Inicio de sesión de Google no inicializado';
+
+  @override
+  String get exceptionGoogleSignInTimeout =>
+      'El inicio de sesión de Google ha caducado';
+
+  @override
+  String get exceptionAppleSignInPlatform =>
+      'Inicio de sesión de Apple solo está disponible en plataformas Apple';
+
+  @override
+  String get exceptionNoAnonymousUser => 'No hay usuario anónimo para vincular';
+
+  @override
+  String get exceptionNoUserSignedIn => 'No hay usuario conectado';
+
+  @override
+  String get firebaseErrorUserNotFound =>
+      'No se encontró ninguna cuenta con esta dirección de correo electrónico.';
+
+  @override
+  String get firebaseErrorWrongPassword =>
+      'Contraseña incorrecta. Por favor intente de nuevo.';
+
+  @override
+  String get firebaseErrorInvalidEmail =>
+      'Formato de dirección de correo electrónico no válido.';
+
+  @override
+  String get firebaseErrorUserDisabled => 'Esta cuenta ha sido deshabilitada.';
+
+  @override
+  String get firebaseErrorEmailInUse =>
+      'Ya existe una cuenta con esta dirección de correo electrónico.';
+
+  @override
+  String get firebaseErrorWeakPassword =>
+      'La contraseña es demasiado débil. Por favor use una contraseña más fuerte.';
+
+  @override
+  String get firebaseErrorOperationNotAllowed =>
+      'Este método de inicio de sesión no está habilitado.';
+
+  @override
+  String get firebaseErrorRequiresRecentLogin =>
+      'Por favor inicie sesión nuevamente para realizar esta acción.';
+
+  @override
+  String get firebaseErrorNetworkFailed =>
+      'Error de red. Por favor verifique su conexión.';
+
+  @override
+  String get firebaseErrorAccountExistsWithDifferentCredential =>
+      'Ya existe una cuenta con este correo electrónico usando un método de inicio de sesión diferente. Por favor, inicia sesión con el método original.';
+
+  @override
+  String firebaseErrorDefault(String message) {
+    return 'Se ha producido un error: $message';
+  }
+
+  @override
+  String get integrityErrorDeviceIntegrityTitle =>
+      'Problema de seguridad del dispositivo';
+
+  @override
+  String get integrityErrorDeviceIntegrity =>
+      'Su dispositivo no cumple con los requisitos de seguridad para esta operación.';
+
+  @override
+  String integrityGuidanceDeviceIntegrity(String reference) {
+    return 'Asegúrese de que su dispositivo pase las verificaciones de Google Play Protect y no esté rooteado o modificado. Si cree que esto es un error, contacte al soporte con la referencia: $reference';
+  }
+
+  @override
+  String get integrityErrorAppIntegrityTitle =>
+      'Problema de instalación de la app';
+
+  @override
+  String get integrityErrorAppIntegrity =>
+      'No se pudo verificar la instalación de la aplicación.';
+
+  @override
+  String integrityGuidanceAppIntegrity(String reference) {
+    return 'Asegúrese de que está usando la aplicación oficial de Google Play Store. No se admiten aplicaciones instaladas manualmente o modificadas. Referencia: $reference';
+  }
+
+  @override
+  String get integrityErrorNetworkTitle => 'Error de conexión';
+
+  @override
+  String get integrityErrorNetwork =>
+      'No se pudo verificar la seguridad del dispositivo debido a un error de red.';
+
+  @override
+  String integrityGuidanceNetwork(String reference) {
+    return 'Verifique su conexión a Internet e intente nuevamente. Si el problema persiste, contacte al soporte con la referencia: $reference';
+  }
+
+  @override
+  String get integrityErrorBackendVerificationTitle => 'Verificación fallida';
+
+  @override
+  String get integrityErrorBackendVerification =>
+      'No se pudo completar la verificación de seguridad.';
+
+  @override
+  String integrityGuidanceBackendVerification(String reference) {
+    return 'Hubo un problema al verificar su dispositivo. Intente nuevamente más tarde. Si esto continúa, contacte al soporte con la referencia: $reference';
+  }
+
+  @override
+  String get integrityErrorTokenRequestTitle =>
+      'Verificación de seguridad fallida';
+
+  @override
+  String get integrityErrorTokenRequest =>
+      'No se pudo realizar la verificación de seguridad.';
+
+  @override
+  String integrityGuidanceTokenRequest(String reference) {
+    return 'No se pudo generar el token de seguridad. Reinicie la aplicación e intente nuevamente. Si el problema persiste, contacte al soporte con la referencia: $reference';
+  }
+
+  @override
+  String get integrityErrorUnknownTitle => 'Error de verificación';
+
+  @override
+  String get integrityErrorUnknown =>
+      'Ocurrió un error inesperado durante la verificación de seguridad.';
+
+  @override
+  String integrityGuidanceUnknown(String reference) {
+    return 'Intente nuevamente. Si el problema continúa, contacte al soporte con la referencia: $reference';
+  }
+
+  @override
+  String get emailVerificationSent =>
+      '¡Correo de verificación enviado! Por favor, revisa tu bandeja de entrada.';
+
+  @override
+  String get emailVerificationResent =>
+      'Correo de verificación reenviado con éxito.';
+
+  @override
+  String get emailNotVerified => 'Correo no verificado';
+
+  @override
+  String get emailVerified => 'Correo verificado';
+
+  @override
+  String get verifyEmailAddress => 'Verificar dirección de correo';
+
+  @override
+  String get verifyEmailMessage =>
+      'Por favor, verifica tu dirección de correo electrónico para acceder a todas las funciones. Revisa tu bandeja de entrada para encontrar el enlace de verificación.';
+
+  @override
+  String get sendVerificationEmail => 'Enviar correo de verificación';
+
+  @override
+  String get resendVerificationEmail => 'Reenviar correo de verificación';
+
+  @override
+  String get checkVerificationStatus => 'Verificar estado de verificación';
+
+  @override
+  String get emailVerificationPending => 'Verificación de correo pendiente';
+
+  @override
+  String verificationEmailCooldown(int seconds) {
+    return 'Por favor, espera $seconds segundos antes de solicitar otro correo de verificación.';
+  }
+
+  @override
+  String get termsAndPrivacy => 'Términos y privacidad';
+
+  @override
+  String get acceptTermsAndPrivacy =>
+      'Acepto los Términos de servicio y la Política de privacidad';
+
+  @override
+  String get mustAcceptTerms =>
+      'Debe aceptar los Términos de servicio y la Política de privacidad para continuar.';
+
+  @override
+  String get termsOfService => 'Términos de servicio';
+
+  @override
+  String get privacyPolicy => 'Política de privacidad';
+
+  @override
+  String get viewTermsOfService => 'Ver Términos de servicio';
+
+  @override
+  String get viewPrivacyPolicy => 'Ver Política de privacidad';
+
+  @override
+  String termsLastUpdated(String date) {
+    return 'Última actualización: $date';
+  }
+
+  @override
+  String privacyLastUpdated(String date) {
+    return 'Última actualización: $date';
+  }
+
+  @override
+  String get ageRequirement =>
+      'Debes tener 13 años o más para crear una cuenta.';
+
+  @override
+  String get confirmAge => 'Confirmo que tengo 13 años o más';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'exceptionEmailVerificationFailed';
+
+  @override
+  String get exceptionEmailVerificationCooldown =>
+      'exceptionEmailVerificationCooldown';
+
+  @override
+  String get exceptionTermsNotAccepted => 'exceptionTermsNotAccepted';
+
+  @override
+  String get collisionEffectsTitle => 'Efectos de Colisión';
+
+  @override
+  String get showCollisionDebris => 'Partículas de Escombros';
+
+  @override
+  String get showCollisionDebrisDescription =>
+      'Partículas expulsadas de impactos de colisión con trayectorias basadas en física';
+
+  @override
+  String get showCollisionShockwaves => 'Ondas de Choque';
+
+  @override
+  String get showCollisionShockwavesDescription =>
+      'Anillos de energía en expansión desde puntos de colisión escalados por fuerza de impacto';
+
+  @override
+  String get showCollisionEjection => 'Expulsión de Material';
+
+  @override
+  String get showCollisionEjectionDescription =>
+      'Nubes ondulantes de material expulsado durante impactos de alta energía';
+
+  @override
+  String get showCollisionPlasmaJets => 'Chorros de Plasma';
+
+  @override
+  String get showCollisionPlasmaJetsDescription =>
+      'Corrientes direccionales sobrecalentadas de colisiones de estrellas masivas (experimental)';
 }

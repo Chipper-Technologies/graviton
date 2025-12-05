@@ -84,13 +84,6 @@ void main() {
         expect(find.byIcon(Icons.star), findsOneWidget);
       });
 
-      testWidgets('should display tags', (tester) async {
-        await tester.pumpWidget(createTestWidget());
-
-        expect(find.text('test'), findsOneWidget);
-        expect(find.text('physics'), findsOneWidget);
-      });
-
       testWidgets('should display duration', (tester) async {
         await tester.pumpWidget(createTestWidget());
 

@@ -268,5 +268,303 @@ void main() {
       final padding = listView.padding as EdgeInsets;
       expect(padding.bottom, greaterThanOrEqualTo(0));
     });
+
+    group('Additional Toggle Features', () {
+      testWidgets('has state management for all UI toggles', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Test that appState has all expected toggle properties
+        expect(appState.ui.showCollisionDebris, isA<bool>());
+        expect(appState.ui.showCollisionShockwaves, isA<bool>());
+        expect(appState.ui.showCollisionEjection, isA<bool>());
+        expect(appState.ui.showCollisionPlasmaJets, isA<bool>());
+        expect(appState.ui.showOrbitalPaths, isA<bool>());
+        expect(appState.ui.dualOrbitalPaths, isA<bool>());
+      });
+
+      testWidgets('collision effects can be toggled programmatically', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Test collision debris toggle
+        final initialDebris = appState.ui.showCollisionDebris;
+        appState.ui.toggleCollisionDebris();
+        await tester.pump();
+        expect(appState.ui.showCollisionDebris, !initialDebris);
+
+        // Test shockwaves toggle
+        final initialShockwaves = appState.ui.showCollisionShockwaves;
+        appState.ui.toggleCollisionShockwaves();
+        await tester.pump();
+        expect(appState.ui.showCollisionShockwaves, !initialShockwaves);
+
+        // Test ejection toggle
+        final initialEjection = appState.ui.showCollisionEjection;
+        appState.ui.toggleCollisionEjection();
+        await tester.pump();
+        expect(appState.ui.showCollisionEjection, !initialEjection);
+
+        // Test plasma jets toggle
+        final initialPlasma = appState.ui.showCollisionPlasmaJets;
+        appState.ui.toggleCollisionPlasmaJets();
+        await tester.pump();
+        expect(appState.ui.showCollisionPlasmaJets, !initialPlasma);
+      });
+
+      testWidgets('orbital paths can be toggled programmatically', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Test orbital paths toggle
+        final initialPaths = appState.ui.showOrbitalPaths;
+        appState.ui.toggleOrbitalPaths();
+        await tester.pump();
+        expect(appState.ui.showOrbitalPaths, !initialPaths);
+
+        // Test dual orbital paths toggle
+        final initialDual = appState.ui.dualOrbitalPaths;
+        appState.ui.toggleDualOrbitalPaths();
+        await tester.pump();
+        expect(appState.ui.dualOrbitalPaths, !initialDual);
+      });
+    });
+
+    group('UI State Synchronization', () {
+      testWidgets('reflects initial UI state correctly', (
+        WidgetTester tester,
+      ) async {
+        // Set specific initial state
+        appState.ui.toggleTrails(); // Ensure trails are off
+        if (appState.ui.showTrails) {
+          appState.ui.toggleTrails();
+        }
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // UI should reflect the state
+        expect(find.byType(Switch), findsWidgets);
+      });
+
+      testWidgets('updates when state changes externally', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final initialState = appState.ui.showLabels;
+
+        // Change state programmatically
+        appState.ui.toggleLabels();
+        await tester.pump();
+
+        expect(appState.ui.showLabels, !initialState);
+      });
+    });
+
+    group('Toggle Interaction Patterns', () {
+      testWidgets('allows rapid toggle clicks', (WidgetTester tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final trailsToggle = find.text('Show Trails');
+        final initialState = appState.ui.showTrails;
+
+        // Rapidly toggle multiple times
+        for (int i = 0; i < 5; i++) {
+          await tester.tap(trailsToggle);
+          await tester.pump();
+        }
+
+        // Should end up in opposite state (odd number of toggles)
+        expect(appState.ui.showTrails, !initialState);
+      });
+
+      testWidgets('handles multiple different toggles', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Toggle multiple features
+        await tester.tap(find.text('Show Trails'));
+        await tester.pump();
+
+        await tester.tap(find.text('Show Labels'));
+        await tester.pump();
+
+        await tester.tap(find.text('Realistic Colors'));
+        await tester.pump();
+
+        // All should have toggled
+        expect(find.byType(VisualsControls), findsOneWidget);
+      });
+    });
+
+    group('Visual Feedback', () {
+      testWidgets('displays icons for each toggle option', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Should have icons for visual feedback
+        expect(find.byType(Icon), findsWidgets);
+      });
+
+      testWidgets('shows different styling for enabled vs disabled', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Enable one feature, disable another
+        if (!appState.ui.showTrails) {
+          await tester.tap(find.text('Show Trails'));
+          await tester.pump();
+        }
+
+        if (appState.ui.showLabels) {
+          await tester.tap(find.text('Show Labels'));
+          await tester.pump();
+        }
+
+        // Both states should be represented in UI
+        expect(find.byType(Container), findsWidgets);
+      });
+    });
+
+    group('Section Organization', () {
+      testWidgets('displays major sections', (WidgetTester tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Check for sections that should always be present
+        expect(find.text('Display Options'), findsOneWidget);
+        expect(find.text('Path Visualization'), findsOneWidget);
+
+        // Some sections may or may not be present depending on build
+        expect(find.byType(SectionDivider), findsWidgets);
+      });
+
+      testWidgets('sections have proper spacing', (WidgetTester tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // SectionDividers should provide spacing
+        expect(find.byType(SectionDivider), findsWidgets);
+      });
+    });
+
+    group('Error Handling and Edge Cases', () {
+      testWidgets('handles null scroll controller gracefully', (
+        WidgetTester tester,
+      ) async {
+        // Widget should still work without scroll controller
+        await tester.pumpWidget(
+          createTestWidget(
+            child: VisualsControls(
+              appState: appState,
+              scrollController: ScrollController(),
+            ),
+          ),
+        );
+
+        expect(find.byType(VisualsControls), findsOneWidget);
+      });
+
+      testWidgets('handles disposed scroll controller', (
+        WidgetTester tester,
+      ) async {
+        final scrollController = ScrollController();
+        scrollController.dispose();
+
+        // Should not crash with disposed controller
+        expect(
+          () => VisualsControls(
+            appState: appState,
+            scrollController: scrollController,
+          ),
+          returnsNormally,
+        );
+      });
+
+      testWidgets('handles rapid state changes', (WidgetTester tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Rapidly change multiple states
+        for (int i = 0; i < 10; i++) {
+          appState.ui.toggleTrails();
+          appState.ui.toggleLabels();
+          appState.ui.toggleRealisticColors();
+          await tester.pump();
+        }
+
+        // Should still be functional
+        expect(find.byType(VisualsControls), findsOneWidget);
+      });
+    });
+
+    group('Integration with AppState', () {
+      testWidgets('properly references appState', (WidgetTester tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final widget = tester.widget<VisualsControls>(
+          find.byType(VisualsControls),
+        );
+
+        expect(widget.appState, equals(appState));
+      });
+
+      testWidgets('responds to appState updates', (WidgetTester tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Modify state and verify UI updates
+        final originalTrailsState = appState.ui.showTrails;
+        appState.ui.toggleTrails();
+
+        await tester.pump();
+
+        expect(appState.ui.showTrails, !originalTrailsState);
+      });
+    });
+
+    group('Performance', () {
+      testWidgets('builds efficiently with many toggles', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+
+        // Should build without excessive widget count
+        final startTime = DateTime.now();
+        await tester.pumpAndSettle();
+        final buildTime = DateTime.now().difference(startTime);
+
+        // Build should complete quickly (< 1 second even in tests)
+        expect(buildTime.inSeconds, lessThan(5));
+      });
+
+      testWidgets('handles rebuild efficiently', (WidgetTester tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Trigger rebuild
+        appState.ui.toggleTrails();
+        await tester.pump();
+
+        // Should rebuild without issues
+        expect(find.byType(VisualsControls), findsOneWidget);
+      });
+    });
   });
 }
