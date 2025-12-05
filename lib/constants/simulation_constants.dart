@@ -403,6 +403,11 @@ class SimulationConstants {
   static const double cameraTargetPitch = 0.25; // Default pitch angle
   static const double cameraTargetRoll = 0.0; // Default roll angle
 
+  // Camera pitch limits to prevent gimbal lock
+  static const double cameraPitchMax =
+      1.5; // ~86 degrees - safe limit before gimbal lock
+  static const double cameraPitchMin = -1.5; // ~-86 degrees - safe limit
+
   // Camera control UI constants
   static const double cameraFovMin = 30.0; // Minimum field of view in degrees
   static const double cameraFovMax = 120.0; // Maximum field of view in degrees

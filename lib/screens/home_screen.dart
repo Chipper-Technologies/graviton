@@ -1892,7 +1892,7 @@ class _HomeScreenState extends State<HomeScreen>
                           }
                           _lastTwoFingerRotation = d.rotation;
                         } else {
-                          // Single finger camera rotation (only when NOT moving a body)
+                          // Always rotate camera when dragging
                           final deltaYaw = -delta.dx * 0.01;
                           final deltaPitch = -delta.dy * 0.01;
                           appState.camera.rotate(deltaYaw, deltaPitch);

@@ -13,6 +13,11 @@ import 'package:graviton/utils/safe_haptic_feedback.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Manages camera and 3D view state
+///
+/// The camera uses Euler angles (yaw, pitch, roll) for rotation. To prevent
+/// gimbal lock (camera flipping at extreme angles), pitch is clamped to
+/// ±1.5 radians (~86 degrees) to keep it away from ±90 degrees where the
+/// view matrix becomes unstable.
 class CameraState extends ChangeNotifier {
   double _yaw = 0.6; // Default camera angles for most scenarios
   double _pitch = 0.3;
@@ -69,6 +74,13 @@ class CameraState extends ChangeNotifier {
     _yaw += deltaYaw;
     // Apply pitch inversion if enabled
     _pitch += _invertPitch ? -deltaPitch : deltaPitch;
+
+    // Clamp pitch to prevent gimbal lock (camera flipping at extreme angles)
+    // Keep pitch safely away from ±90 degrees (±π/2) where the camera becomes unstable
+    _pitch = _pitch.clamp(
+      SimulationConstants.cameraPitchMin,
+      SimulationConstants.cameraPitchMax,
+    );
 
     // In follow mode, maintain the follow distance
     if (_followMode) {
@@ -491,7 +503,13 @@ class CameraState extends ChangeNotifier {
     vm.Vector3? target,
   }) {
     if (yaw != null) _yaw = yaw;
-    if (pitch != null) _pitch = pitch;
+    if (pitch != null) {
+      // Clamp pitch to prevent gimbal lock
+      _pitch = pitch.clamp(
+        SimulationConstants.cameraPitchMin,
+        SimulationConstants.cameraPitchMax,
+      );
+    }
     if (roll != null) _roll = roll;
     if (distance != null) _distance = distance.clamp(5.0, 2000.0);
     if (target != null) _target = target.clone();
