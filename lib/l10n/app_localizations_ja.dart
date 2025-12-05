@@ -488,6 +488,25 @@ class AppLocalizationsJa extends AppLocalizations {
   String get addBodyButton => '天体追加ボタン';
 
   @override
+  String get tapToEnableAddBodyMode =>
+      'タップして天体追加モードを有効にする - キャンバスをクリックして新しい天体を配置';
+
+  @override
+  String get tapToDisableAddBodyMode => 'タップして天体追加モードを無効にし、通常の操作に戻る';
+
+  @override
+  String get addBodyModeActive => '天体追加モード有効';
+
+  @override
+  String get addBodyModeInactive => '天体追加モード無効';
+
+  @override
+  String get tapToPlaceBody => 'キャンバスの任意の場所をタップして新しい天体を配置';
+
+  @override
+  String get bodyPlacedSuccessfully => '天体の配置に成功しました';
+
+  @override
   String get addCelestialBodiesToCreateYourCustomScenarioEditor =>
       'カスタムシナリオを作成するために天体を追加-エディター';
 
@@ -1190,6 +1209,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String bodyIndex(int index) {
     return '天体インデックス';
   }
+
+  @override
+  String get bodyNewDefault => '新しい天体';
+
+  @override
+  String get bodyPlacementTooClose => '既存の天体に近すぎます - 別の場所をタップしてください';
 
   @override
   String get bodyInnerPlanet => '内惑星';

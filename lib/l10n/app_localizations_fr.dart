@@ -515,6 +515,27 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addBodyButton => 'Bouton Ajouter un corps';
 
   @override
+  String get tapToEnableAddBodyMode =>
+      'Appuyez pour activer le mode d\'ajout de corps - cliquez sur la toile pour placer de nouveaux corps';
+
+  @override
+  String get tapToDisableAddBodyMode =>
+      'Appuyez pour désactiver le mode d\'ajout de corps et revenir à l\'interaction normale';
+
+  @override
+  String get addBodyModeActive => 'Mode Ajout de Corps Actif';
+
+  @override
+  String get addBodyModeInactive => 'Mode Ajout de Corps Inactif';
+
+  @override
+  String get tapToPlaceBody =>
+      'Appuyez n\'importe où sur la toile pour placer un nouveau corps';
+
+  @override
+  String get bodyPlacedSuccessfully => 'Corps placé avec succès';
+
+  @override
   String get addCelestialBodiesToCreateYourCustomScenarioEditor =>
       'Ajouter des corps célestes pour créer votre scénario personnalisé-Éditeur';
 
@@ -1255,6 +1276,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String bodyIndex(int index) {
     return 'Index du corps';
   }
+
+  @override
+  String get bodyNewDefault => 'Nouveau Corps';
+
+  @override
+  String get bodyPlacementTooClose =>
+      'Trop proche d\'un corps existant - veuillez toucher ailleurs';
 
   @override
   String get bodyInnerPlanet => 'Planète Intérieure';

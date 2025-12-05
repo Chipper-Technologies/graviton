@@ -489,6 +489,24 @@ class AppLocalizationsKo extends AppLocalizations {
   String get addBodyButton => '천체 추가 버튼';
 
   @override
+  String get tapToEnableAddBodyMode => '탭하여 천체 추가 모드 활성화 - 캔버스를 클릭하여 새 천체 배치';
+
+  @override
+  String get tapToDisableAddBodyMode => '탭하여 천체 추가 모드 비활성화 및 일반 상호작용으로 돌아가기';
+
+  @override
+  String get addBodyModeActive => '천체 추가 모드 활성화됨';
+
+  @override
+  String get addBodyModeInactive => '천체 추가 모드 비활성화됨';
+
+  @override
+  String get tapToPlaceBody => '캔버스의 아무 곳이나 탭하여 새 천체 배치';
+
+  @override
+  String get bodyPlacedSuccessfully => '천체가 성공적으로 배치되었습니다';
+
+  @override
   String get addCelestialBodiesToCreateYourCustomScenarioEditor =>
       '사용자 정의 시나리오를 만들기 위해 천체 추가-편집기';
 
@@ -1192,6 +1210,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String bodyIndex(int index) {
     return '천체 인덱스';
   }
+
+  @override
+  String get bodyNewDefault => '새로운 천체';
+
+  @override
+  String get bodyPlacementTooClose => '기존 천체와 너무 가깝습니다 - 다른 곳을 탭하세요';
 
   @override
   String get bodyInnerPlanet => '내행성';

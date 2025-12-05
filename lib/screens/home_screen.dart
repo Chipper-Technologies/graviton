@@ -10,8 +10,11 @@ import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/constants/platform_channel_constants.dart';
 import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
+import 'package:graviton/enums/add_body_mode.dart';
+import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/cinematic_camera_technique.dart';
 import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/enums/snack_bar_severity.dart';
 import 'package:graviton/enums/ui_action.dart';
 import 'package:graviton/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
@@ -27,6 +30,7 @@ import 'package:graviton/screens/help_screen.dart';
 import 'package:graviton/screens/physics_settings_screen.dart';
 import 'package:graviton/screens/scenario_selection_screen.dart';
 import 'package:graviton/screens/simulation_info_screen.dart';
+import 'package:graviton/services/body_placement_service.dart';
 import 'package:graviton/services/changelog_service.dart';
 import 'package:graviton/services/cinematic_camera_controller.dart';
 import 'package:graviton/services/custom_scenario_manager.dart';
@@ -43,6 +47,7 @@ import 'package:graviton/utils/fullscreen_utils.dart';
 import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/utils/star_generator.dart';
 import 'package:graviton/widgets/auto_pause_dialog_wrapper.dart';
+import 'package:graviton/widgets/body_creation/body_creation_mode_toggle.dart';
 import 'package:graviton/widgets/body_selection_dialog.dart';
 import 'package:graviton/widgets/changelog_dialog.dart';
 import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
@@ -268,6 +273,15 @@ class _HomeScreenState extends State<HomeScreen>
             screenshotService,
             l10n,
           );
+        } else if (appState.ui.isAddBodyModeActive) {
+          // Add body mode is active - place a new body
+          _placeNewBodyAtTapLocation(
+            context,
+            appState,
+            size,
+            tapPosition,
+            l10n,
+          );
         } else {
           // Check if we tapped on a body
           final tappedBodyIndex = _findBodyAtTapLocation(
@@ -285,6 +299,194 @@ class _HomeScreenState extends State<HomeScreen>
             _showSimulationControls?.call();
           }
         }
+      }
+    });
+  }
+
+  /// Place a new body at the tap location
+  void _placeNewBodyAtTapLocation(
+    BuildContext context,
+    AppState appState,
+    Size size,
+    Offset tapPosition,
+    AppLocalizations l10n,
+  ) {
+    // Convert screen coordinates to world coordinates
+    final view = _buildView();
+    final proj = _buildProjection(size.aspectRatio);
+
+    final worldPosition = BodyPlacementService.screenToWorld(
+      screenPosition: tapPosition,
+      screenSize: size,
+      viewMatrix: view,
+      projectionMatrix: proj,
+      cameraPosition: appState.camera.eyePosition,
+      cameraTarget: appState.camera.target,
+      cameraDistance: appState.camera.distance,
+    );
+
+    // Create a default body at the tapped location
+    // Use small planet-like defaults that won't disrupt most scenarios
+    const defaultRadius = 3.0; // Small visual size
+    const defaultMass = 1.0; // Light mass (between small planet and companion)
+    final bodies = appState.simulation.bodies;
+
+    // Validate placement to prevent immediate collisions
+    final isValid = BodyPlacementService.validatePlacement(
+      position: worldPosition,
+      radius: defaultRadius,
+      existingBodyPositions: bodies.map((b) => b.position).toList(),
+      existingRadii: bodies.map((b) => b.radius).toList(),
+    );
+
+    if (!isValid) {
+      // Log analytics for invalid placement
+      FirebaseService.instance.logUIEventWithEnums(
+        UIAction.tap,
+        element: UIElement.simulationViewport,
+        value: 'body_placement_too_close',
+        additionalParams: {
+          'reason': 'collision_risk',
+          'body_count': bodies.length.toString(),
+        },
+      );
+
+      // Show warning snackbar for invalid placement
+      if (mounted) {
+        GravitonSnackBar.show(
+          context: context,
+          message: l10n.bodyPlacementTooClose,
+          severity: SnackBarSeverity.warning,
+        );
+      }
+      return;
+    }
+
+    // Start with zero velocity by default for more predictable behavior
+    // Users can adjust velocity in the body editor if needed
+    final velocity = vm.Vector3.zero();
+
+    // Create the new body with default properties
+    // Small mass and radius to avoid disrupting existing scenarios
+    final newBody = Body(
+      name: l10n.bodyNewDefault,
+      mass: defaultMass,
+      radius: defaultRadius,
+      position: worldPosition,
+      velocity: velocity,
+      color: AppColors.stellarGType,
+      bodyType: BodyType.star, // Default to star for new bodies
+      useRealisticColor:
+          appState.ui.useRealisticColors, // Use global setting as default
+    );
+
+    // Log analytics event for body placement attempt
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.tap,
+      element: UIElement.simulationViewport,
+      value: 'body_placement_initiated',
+      additionalParams: {
+        'body_count': bodies.length.toString(),
+        'scenario': appState.simulation.currentScenario.name,
+      },
+    );
+
+    // Show the body editor bottom sheet
+    _showBodyEditorForNewBody(context, appState, newBody, l10n);
+  }
+
+  /// Show the body editor bottom sheet for a newly placed body
+  void _showBodyEditorForNewBody(
+    BuildContext context,
+    AppState appState,
+    Body newBody,
+    AppLocalizations l10n,
+  ) {
+    FirebaseService.instance.logUIEventWithEnums(
+      UIAction.dialogOpened,
+      element: UIElement.bodyProperties,
+    );
+
+    // Pause simulation while editing
+    final wasPlaying = !appState.simulation.isPaused;
+    if (wasPlaying) {
+      appState.simulation.pause();
+    }
+
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.transparentColor,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setSheetState) => Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: RenderingConstants.bottomSheetMaxWidth,
+            height: MediaQuery.of(context).size.height * 0.75,
+            child: ScenarioEditorBodyDetailsBottomSheet(
+              body: newBody,
+              onBodyChanged: (updatedBody) {
+                // Add or update the body in the simulation with real-time updates
+                final bodyIndex = appState.simulation.bodies.indexOf(newBody);
+
+                if (bodyIndex == -1) {
+                  // First time - add the body
+                  appState.simulation.simulation.addBody(updatedBody);
+                  newBody = updatedBody;
+
+                  // Log successful body addition
+                  FirebaseService.instance.logUIEventWithEnums(
+                    UIAction.buttonPressed,
+                    element: UIElement.body,
+                    value: 'body_added_successfully',
+                    additionalParams: {
+                      'body_mass': updatedBody.mass.toStringAsExponential(2),
+                      'body_radius': updatedBody.radius.toString(),
+                      'total_body_count': appState.simulation.bodies.length
+                          .toString(),
+                      'scenario': appState.simulation.currentScenario.name,
+                    },
+                  );
+
+                  // Show success message
+                  if (mounted) {
+                    GravitonSnackBar.show(
+                      context: context,
+                      message: l10n.bodyPlacedSuccessfully,
+                      severity: SnackBarSeverity.success,
+                    );
+                  }
+                } else {
+                  // Update existing body in real-time
+                  appState.simulation.simulation.updateBody(
+                    bodyIndex,
+                    updatedBody,
+                  );
+                  newBody = updatedBody;
+                }
+                // Don't close the sheet - let user continue editing
+              },
+              availableCentralBodies: appState.simulation.bodies,
+              isAddMode: true,
+            ),
+          ),
+        ),
+      ),
+    ).then((_) {
+      // Resume simulation if it was playing
+      if (wasPlaying) {
+        appState.simulation.resumeSimulation();
+      }
+
+      // Deactivate add body mode if user cancelled
+      if (appState.ui.isAddBodyModeActive) {
+        // Log cancellation
+        FirebaseService.instance.logUIEventWithEnums(
+          UIAction.dialogOpened,
+          element: UIElement.bodyProperties,
+          value: 'body_placement_cancelled',
+        );
+        appState.ui.setAddBodyMode(AddBodyMode.inactive);
       }
     });
   }
@@ -657,6 +859,84 @@ class _HomeScreenState extends State<HomeScreen>
         upVector * (screenDelta.dy * panSensitivity);
 
     camera.pan(worldDelta);
+  }
+
+  /// Handle body movement by converting screen position to world coordinates
+  void _handleBodyMovement(
+    AppState appState,
+    Size screenSize,
+    Offset screenPosition,
+  ) {
+    final bodyIndex = appState.ui.movingBodyIndex;
+    if (bodyIndex == null || bodyIndex >= appState.simulation.bodies.length) {
+      return;
+    }
+
+    final body = appState.simulation.bodies[bodyIndex];
+
+    // Build view and projection matrices
+    final view = _buildView();
+    final proj = _buildProjection(screenSize.aspectRatio);
+    final vp = proj * view;
+
+    // Calculate the plane at the body's current depth
+    // Plane is perpendicular to view direction, passing through the body
+    final cameraPos = appState.camera.eyePosition;
+    final viewDir = (appState.camera.target - cameraPos).normalized();
+    final planePoint = body.position;
+
+    // Convert screen position to normalized device coordinates
+    final ndcX = (screenPosition.dx / screenSize.width) * 2.0 - 1.0;
+    final ndcY = 1.0 - (screenPosition.dy / screenSize.height) * 2.0;
+
+    // Create ray from camera through screen position
+    // Unproject the near and far points
+    final vpInv = vm.Matrix4.identity();
+    if (vpInv.copyInverse(vp) == 0.0) {
+      return; // Matrix not invertible
+    }
+
+    final nearClip = vpInv * vm.Vector4(ndcX, ndcY, -1.0, 1.0);
+    final farClip = vpInv * vm.Vector4(ndcX, ndcY, 1.0, 1.0);
+
+    final near = vm.Vector3(
+      nearClip.x / nearClip.w,
+      nearClip.y / nearClip.w,
+      nearClip.z / nearClip.w,
+    );
+    final far = vm.Vector3(
+      farClip.x / farClip.w,
+      farClip.y / farClip.w,
+      farClip.z / farClip.w,
+    );
+
+    final rayDir = (far - near).normalized();
+
+    // Ray-plane intersection
+    // Plane equation: dot(viewDir, point - planePoint) = 0
+    final denom = viewDir.dot(rayDir);
+    if (denom.abs() < 1e-6) {
+      return; // Ray parallel to plane
+    }
+
+    final t = viewDir.dot(planePoint - near) / denom;
+    if (t < 0) {
+      return; // Intersection behind ray origin
+    }
+
+    final newPosition = near + (rayDir * t);
+
+    // Update the body's position directly (Body is mutable)
+    body.position = newPosition;
+
+    // Reset velocity to prevent drift while dragging
+    body.velocity = vm.Vector3.zero();
+
+    // Trigger UI update to show the body following the finger
+    // We need to call setState to repaint the canvas on every drag update
+    setState(() {
+      // Position updated above, this triggers a rebuild
+    });
   }
 
   void _showScenarioSelectionScreen(BuildContext context) {
@@ -1511,6 +1791,22 @@ class _HomeScreenState extends State<HomeScreen>
                             null; // Reset rotation tracking
                         // Don't clear selection on drag start - let user drag selected objects
 
+                        // Check if a body was tapped to start movement
+                        // Only with single finger to avoid conflicts with camera controls
+                        if (d.pointerCount == 1) {
+                          final tappedBodyIndex = _findBodyAtTapLocation(
+                            appState,
+                            size,
+                            d.focalPoint,
+                          );
+
+                          if (tappedBodyIndex != null) {
+                            // Tapped on a body with single finger - select it and start movement mode
+                            appState.camera.selectBody(tappedBodyIndex);
+                            appState.ui.startBodyMovement(tappedBodyIndex);
+                          }
+                        }
+
                         // Show simulation controls when starting camera interaction
                         _showSimulationControls?.call();
 
@@ -1571,7 +1867,13 @@ class _HomeScreenState extends State<HomeScreen>
                           }
                         }
 
-                        if (d.pointerCount >= 3) {
+                        // Check if we're in body movement mode (highest priority)
+                        if (appState.ui.isBodyMovementModeActive &&
+                            appState.ui.movingBodyIndex != null &&
+                            d.pointerCount == 1) {
+                          // Handle body movement - don't handle camera movement
+                          _handleBodyMovement(appState, size, pos);
+                        } else if (d.pointerCount >= 3) {
                           // Handle three-finger pan
                           _handleThreeFingerPan(delta, appState);
                         } else if (d.pointerCount >= 2) {
@@ -1590,8 +1892,7 @@ class _HomeScreenState extends State<HomeScreen>
                           }
                           _lastTwoFingerRotation = d.rotation;
                         } else {
-                          // Always rotate camera when dragging
-                          // Object movement is disabled for better UX
+                          // Single finger camera rotation (only when NOT moving a body)
                           final deltaYaw = -delta.dx * 0.01;
                           final deltaPitch = -delta.dy * 0.01;
                           appState.camera.rotate(deltaYaw, deltaPitch);
@@ -1606,6 +1907,8 @@ class _HomeScreenState extends State<HomeScreen>
                             element: UIElement.viewportCanvas,
                             value: _lastTwoFingerRotation != null
                                 ? 'zoom_rotate'
+                                : appState.ui.isBodyMovementModeActive
+                                ? 'body_movement'
                                 : 'pan_rotate',
                             additionalParams: {
                               'had_movement': _hasMoved.toString(),
@@ -1614,8 +1917,26 @@ class _HomeScreenState extends State<HomeScreen>
                                   appState.ui.cinematicCameraTechnique.name,
                               'follow_mode': appState.camera.followMode
                                   .toString(),
+                              'body_movement_mode': appState
+                                  .ui
+                                  .isBodyMovementModeActive
+                                  .toString(),
                             },
                           );
+                        }
+
+                        // Stop body movement mode if active
+                        if (appState.ui.isBodyMovementModeActive) {
+                          // Clear the trail for the moved body to avoid showing
+                          // the unnatural straight line from old to new position
+                          final movedBodyIndex = appState.ui.movingBodyIndex;
+                          if (movedBodyIndex != null &&
+                              movedBodyIndex <
+                                  appState.simulation.trails.length) {
+                            appState.simulation.trails[movedBodyIndex].clear();
+                          }
+
+                          appState.ui.stopBodyMovement();
                         }
 
                         _lastPan = null;
@@ -1701,6 +2022,8 @@ class _HomeScreenState extends State<HomeScreen>
                                           showGravityFieldIndicators: appState
                                               .ui
                                               .showGravityFieldIndicators,
+                                          movingBodyIndex:
+                                              appState.ui.movingBodyIndex,
                                         ),
                                         child: const SizedBox.expand(),
                                       ),
@@ -2129,6 +2452,28 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 tooltip: l10n.aboutButtonTooltip,
                 semanticsLabel: l10n.aboutButtonTooltip,
+              ),
+
+              const SizedBox(width: AppTypography.spacingSmall),
+
+              // Add Body Mode Toggle
+              BodyCreationModeToggle(
+                isActive: appState.ui.isAddBodyModeActive,
+                onToggle: () {
+                  // Reset floating controls timer when button is pressed
+                  _showFloatingControlsTemporarily();
+
+                  appState.ui.toggleAddBodyMode();
+
+                  // Show instructional snackbar when activated
+                  if (appState.ui.isAddBodyModeActive && mounted) {
+                    GravitonSnackBar.show(
+                      context: context,
+                      message: l10n.tapToPlaceBody,
+                      severity: SnackBarSeverity.info,
+                    );
+                  }
+                },
               ),
 
               const SizedBox(width: AppTypography.spacingSmall),

@@ -90,6 +90,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
   // Gravity well state variable
   late bool _showGravityWell;
 
+  // Realistic color state variable
+  late bool _useRealisticColor;
+
   // Track unsaved changes to prevent accidental closing
   bool _hasUnsavedChanges = false;
 
@@ -118,6 +121,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     // Initialize body type and color first (needed for range calculations)
     _selectedBodyType = widget.body.bodyType;
     _selectedColor = widget.body.color;
+    _useRealisticColor = widget.body.useRealisticColor;
     _showGravityWell = widget.body.showGravityWell;
 
     _nameController = TextEditingController(text: widget.body.name);
@@ -227,6 +231,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
       // Update body type
       _selectedBodyType = widget.body.bodyType;
+
+      // Update realistic color flag
+      _useRealisticColor = widget.body.useRealisticColor;
 
       // Update orbital placement state
       _showOrbitalPlacement = widget.body.isOrbitalPlacementActive;
@@ -716,12 +723,8 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             onChanged: (value) => _updateBodyProperty(),
           ),
 
-          // Body Type Section
-          SectionDivider.labeled(
-            l10n.bodyTypeEditor,
-            topSpacing: AppTypography.spacingLarge,
-            bottomSpacing: AppTypography.spacingMedium,
-          ),
+          SizedBox(height: AppTypography.spacingLarge),
+
           BodyTypePicker(
             selectedType: _selectedBodyType,
             onTypeChanged: (bodyType) {
@@ -777,48 +780,77 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                 isPlanet:
                     bodyType == BodyType.planet || bodyType == BodyType.moon,
                 habitabilityStatus: widget.body.habitabilityStatus,
+                useRealisticColor: widget.body.useRealisticColor,
               );
               widget.onBodyChanged(updatedBody);
             },
           ),
 
-          // Color Section
-          SectionDivider.labeled(
-            l10n.colorEditor,
-            topSpacing: AppTypography.spacingLarge,
-            bottomSpacing: AppTypography.spacingMedium,
-          ),
-          ColorPicker(
-            selectedColor: _selectedColor,
-            onColorChanged: (color) {
-              setState(() {
-                _selectedColor = color;
-              });
-              final updatedBody = Body(
-                name: widget.body.name,
-                position: widget.body.position,
-                velocity: widget.body.velocity,
-                mass: widget.body.mass,
-                radius: widget.body.radius,
-                color: color,
-                bodyType: widget.body.bodyType,
-                stellarLuminosity: widget.body.stellarLuminosity,
-                temperature: widget.body.temperature,
-                showGravityWell: widget.body.showGravityWell,
-                isPlanet: widget.body.isPlanet,
-                habitabilityStatus: widget.body.habitabilityStatus,
-              );
-              widget.onBodyChanged(updatedBody);
-            },
-          ),
+          SizedBox(height: AppTypography.spacingLarge),
 
-          SectionDivider.plain(
-            topSpacing: AppTypography.spacingLarge,
-            bottomSpacing: AppTypography.spacingXSmall,
-          ),
+          // Realistic Color Toggle (only show for stars)
+          if (widget.body.bodyType == BodyType.star) ...[
+            _buildToggleOption(
+              l10n.realisticColors,
+              l10n.realisticColorsDescription,
+              Icons.palette,
+              _useRealisticColor,
+              () {
+                setState(() {
+                  _useRealisticColor = !_useRealisticColor;
+                });
+                final updatedBody = Body(
+                  name: widget.body.name,
+                  position: widget.body.position,
+                  velocity: widget.body.velocity,
+                  mass: widget.body.mass,
+                  radius: widget.body.radius,
+                  color: widget.body.color,
+                  bodyType: widget.body.bodyType,
+                  stellarLuminosity: widget.body.stellarLuminosity,
+                  temperature: widget.body.temperature,
+                  showGravityWell: widget.body.showGravityWell,
+                  isPlanet: widget.body.isPlanet,
+                  habitabilityStatus: widget.body.habitabilityStatus,
+                  useRealisticColor: _useRealisticColor,
+                );
+                widget.onBodyChanged(updatedBody);
+              },
+            ),
+          ],
+
+          SizedBox(height: AppTypography.spacingLarge),
+
+          // Color Picker (hidden for stars when realistic color is enabled)
+          if (widget.body.bodyType != BodyType.star || !_useRealisticColor)
+            ColorPicker(
+              selectedColor: _selectedColor,
+              onColorChanged: (color) {
+                setState(() {
+                  _selectedColor = color;
+                  // When user manually selects a color, disable realistic color for this body
+                  _useRealisticColor = false;
+                });
+                final updatedBody = Body(
+                  name: widget.body.name,
+                  position: widget.body.position,
+                  velocity: widget.body.velocity,
+                  mass: widget.body.mass,
+                  radius: widget.body.radius,
+                  color: color,
+                  bodyType: widget.body.bodyType,
+                  stellarLuminosity: widget.body.stellarLuminosity,
+                  temperature: widget.body.temperature,
+                  showGravityWell: widget.body.showGravityWell,
+                  isPlanet: widget.body.isPlanet,
+                  habitabilityStatus: widget.body.habitabilityStatus,
+                  useRealisticColor: _useRealisticColor,
+                );
+                widget.onBodyChanged(updatedBody);
+              },
+            ),
 
           // Gravity Well Section
-          SizedBox(height: AppTypography.spacingMedium),
           _buildToggleOption(
             l10n.gravityWellsDescription,
             AppLocalizations.of(context)!.showGravitationalFieldVisualization,
@@ -832,10 +864,9 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             },
           ),
 
-          SectionDivider.plain(topSpacing: AppTypography.spacingSmall),
+          SizedBox(height: AppTypography.spacingLarge),
 
           // Mass Section - no labeled divider, just spacing
-          SizedBox(height: AppTypography.spacingLarge),
           HapticSliderOption.detailed(
             label: AppLocalizations.of(context)!.bodyPropertiesMass,
             value: _massSlider,
@@ -1191,6 +1222,8 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         showGravityWell: _showGravityWell, // Use local gravity well state
         isPlanet: widget.body.isPlanet,
         habitabilityStatus: widget.body.habitabilityStatus,
+        useRealisticColor:
+            _useRealisticColor, // Use local realistic color state
         isOrbitalPlacementActive:
             _showOrbitalPlacement, // Include orbital placement state
         orbitRadius: _orbitRadius, // Include orbital parameters
@@ -2345,91 +2378,88 @@ class _ScenarioEditorBodyDetailsBottomSheetState
     bool isEnabled,
     VoidCallback onToggle,
   ) {
-    return Container(
-      margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
-      child: Material(
-        color: AppColors.transparentColor,
-        child: HapticInkWell(
-          onTap: onToggle,
-          borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-          child: Container(
-            padding: EdgeInsets.all(AppTypography.spacingLarge),
-            decoration: BoxDecoration(
-              color: isEnabled
-                  ? AppColors.primaryColor.withValues(
-                      alpha: AppTypography.opacityMidFade,
-                    )
-                  : AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityBarely,
+    return Material(
+      color: AppColors.transparentColor,
+      child: HapticInkWell(
+        onTap: onToggle,
+        borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+        child: Container(
+          padding: EdgeInsets.all(AppTypography.spacingLarge),
+          decoration: BoxDecoration(
+            color: isEnabled
+                ? AppColors.primaryColor.withValues(
+                    alpha: AppTypography.opacityMidFade,
+                  )
+                : AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityBarely,
+                  ),
+            borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
+            border: isEnabled
+                ? Border.all(
+                    color: AppColors.primaryColor,
+                    width: AppTypography.borderThin,
+                  )
+                : Border.all(
+                    color: AppColors.uiWhite.withValues(
+                      alpha: AppTypography.opacityDisabled,
                     ),
-              borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
-              border: isEnabled
-                  ? Border.all(
-                      color: AppColors.primaryColor,
-                      width: AppTypography.borderThin,
-                    )
-                  : Border.all(
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacityDisabled,
+                    width: AppTypography.borderThin,
+                  ),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                color: isEnabled
+                    ? AppColors.primaryColor
+                    : AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityHigh,
                       ),
-                      width: AppTypography.borderThin,
+                size: AppTypography.iconSizeXXLarge,
+              ),
+              SizedBox(width: AppTypography.spacingLarge),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: isEnabled
+                            ? AppColors.primaryColor
+                            : AppColors.uiWhite,
+                        fontSize: AppTypography.fontSizeLarge,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  icon,
-                  color: isEnabled
-                      ? AppColors.primaryColor
-                      : AppColors.uiWhite.withValues(
+                    SizedBox(height: AppTypography.spacingXSmall),
+                    Text(
+                      description,
+                      style: TextStyle(
+                        color: AppColors.uiWhite.withValues(
                           alpha: AppTypography.opacityHigh,
                         ),
-                  size: AppTypography.iconSizeXXLarge,
-                ),
-                SizedBox(width: AppTypography.spacingLarge),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          color: isEnabled
-                              ? AppColors.primaryColor
-                              : AppColors.uiWhite,
-                          fontSize: AppTypography.fontSizeLarge,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        fontSize: AppTypography.fontSizeMedium,
                       ),
-                      SizedBox(height: AppTypography.spacingXSmall),
-                      Text(
-                        description,
-                        style: TextStyle(
-                          color: AppColors.uiWhite.withValues(
-                            alpha: AppTypography.opacityHigh,
-                          ),
-                          fontSize: AppTypography.fontSizeMedium,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                HapticSwitch(
-                  value: isEnabled,
-                  onChanged: (_) => onToggle(),
-                  activeColor: AppColors.primaryColor,
-                  activeTrackColor: AppColors.primaryColor.withValues(
-                    alpha: AppTypography.opacityFaint,
-                  ),
-                  inactiveThumbColor: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityMedium,
-                  ),
-                  inactiveTrackColor: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityDisabled,
-                  ),
+              ),
+              HapticSwitch(
+                value: isEnabled,
+                onChanged: (_) => onToggle(),
+                activeColor: AppColors.primaryColor,
+                activeTrackColor: AppColors.primaryColor.withValues(
+                  alpha: AppTypography.opacityFaint,
                 ),
-              ],
-            ),
+                inactiveThumbColor: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityMedium,
+                ),
+                inactiveTrackColor: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityDisabled,
+                ),
+              ),
+            ],
           ),
         ),
       ),

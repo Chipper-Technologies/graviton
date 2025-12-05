@@ -511,6 +511,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addBodyButton => 'Add Body';
 
   @override
+  String get tapToEnableAddBodyMode =>
+      'Tap to enable add body mode - click on canvas to place new bodies';
+
+  @override
+  String get tapToDisableAddBodyMode =>
+      'Tap to disable add body mode and return to normal interaction';
+
+  @override
+  String get addBodyModeActive => 'Add Body Mode Active';
+
+  @override
+  String get addBodyModeInactive => 'Add Body Mode Inactive';
+
+  @override
+  String get tapToPlaceBody => 'Tap anywhere on the canvas to place a new body';
+
+  @override
+  String get bodyPlacedSuccessfully => 'Body placed successfully';
+
+  @override
   String get addCelestialBodiesToCreateYourCustomScenarioEditor =>
       'Add celestial bodies to create your custom scenario';
 
@@ -1241,6 +1261,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String bodyIndex(int index) {
     return 'Body $index';
   }
+
+  @override
+  String get bodyNewDefault => 'New Body';
+
+  @override
+  String get bodyPlacementTooClose =>
+      'Too close to existing body - please tap elsewhere';
 
   @override
   String get bodyInnerPlanet => 'Inner Planet';

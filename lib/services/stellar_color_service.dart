@@ -16,7 +16,13 @@ class StellarColorService {
   /// Calculate realistic body color based on temperature, mass, and body type
   /// Uses Harvard spectral classification system for stars (O, B, A, F, G, K, M)
   /// Excludes ALL planets and moons to preserve their designed appearance
+  /// Respects per-body useRealisticColor flag to allow user overrides
   static Color getRealisticBodyColor(Body body) {
+    // Check per-body flag first - if disabled, always use custom color
+    if (!body.useRealisticColor) {
+      return body.color;
+    }
+
     // Exclude ALL planets and moons from realistic coloring to preserve their design
     if (body.bodyType == BodyType.planet || body.bodyType == BodyType.moon) {
       return body.color; // Return original color for planets and moons
