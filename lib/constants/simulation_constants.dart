@@ -5,6 +5,33 @@ class SimulationConstants {
       1.2; // slightly increased to help bind the system
   static const double softening = 0.01; // collision softening parameter
 
+  // Time scale adjustment
+  /// Minimum allowed time scale for simulation
+  static const double minTimeScale = 0.1;
+
+  /// Maximum allowed time scale for simulation
+  static const double maxTimeScale = 16.0;
+
+  /// Factor for adjusting time scale (multiply/divide)
+  static const double timeScaleAdjustmentFactor = 1.5;
+
+  // Body placement defaults
+  /// Default radius for newly created bodies
+  static const double defaultNewBodyRadius = 3.0;
+
+  /// Default mass for newly created bodies
+  static const double defaultNewBodyMass = 1.0;
+
+  // Frame timing
+  /// Target milliseconds per frame for 60 FPS (1000ms / 60fps ≈ 16.67ms)
+  static const int targetFpsMilliseconds = 16;
+
+  /// Maximum delta time per frame (capped at 30 FPS worth)
+  static const double maxDeltaTime = 1.0 / 30.0;
+
+  /// Trail update frequency in seconds (240 Hz)
+  static const double trailUpdateFrequency = 1 / 240.0;
+
   // Time conversion
   // Convert simulation time units to Earth years
   // Based on typical orbital periods in the simulation (rough approximation)

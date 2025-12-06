@@ -3,6 +3,110 @@ import 'package:graviton/constants/simulation_constants.dart';
 
 void main() {
   group('SimulationConstants Tests', () {
+    group('Time Scale Constants', () {
+      test('time scale constants should be properly defined', () {
+        expect(SimulationConstants.minTimeScale, equals(0.1));
+        expect(SimulationConstants.maxTimeScale, equals(16.0));
+        expect(SimulationConstants.timeScaleAdjustmentFactor, equals(1.5));
+
+        // Test logical relationships
+        expect(
+          SimulationConstants.minTimeScale,
+          lessThan(SimulationConstants.maxTimeScale),
+        );
+        expect(SimulationConstants.minTimeScale, greaterThan(0.0));
+        expect(SimulationConstants.timeScaleAdjustmentFactor, greaterThan(1.0));
+      });
+
+      test('time scale adjustment factor should allow proper scaling', () {
+        const testSpeed = 1.0;
+        final speedUp =
+            testSpeed * SimulationConstants.timeScaleAdjustmentFactor;
+        final slowDown =
+            testSpeed / SimulationConstants.timeScaleAdjustmentFactor;
+
+        expect(speedUp, greaterThan(testSpeed));
+        expect(slowDown, lessThan(testSpeed));
+        expect(speedUp, lessThanOrEqualTo(SimulationConstants.maxTimeScale));
+        expect(
+          slowDown,
+          greaterThanOrEqualTo(SimulationConstants.minTimeScale),
+        );
+      });
+    });
+
+    group('Body Placement Constants', () {
+      test('body placement defaults should be positive', () {
+        expect(SimulationConstants.defaultNewBodyRadius, equals(3.0));
+        expect(SimulationConstants.defaultNewBodyMass, equals(1.0));
+
+        expect(SimulationConstants.defaultNewBodyRadius, greaterThan(0.0));
+        expect(SimulationConstants.defaultNewBodyMass, greaterThan(0.0));
+      });
+
+      test('body placement defaults should be reasonable values', () {
+        // Radius should be small but visible
+        expect(
+          SimulationConstants.defaultNewBodyRadius,
+          inInclusiveRange(1.0, 10.0),
+        );
+        // Mass should be moderate
+        expect(
+          SimulationConstants.defaultNewBodyMass,
+          inInclusiveRange(0.1, 10.0),
+        );
+      });
+    });
+
+    group('Frame Timing Constants', () {
+      test('frame timing constants should be properly defined', () {
+        expect(SimulationConstants.targetFpsMilliseconds, equals(16));
+        expect(SimulationConstants.maxDeltaTime, equals(1.0 / 30.0));
+        expect(SimulationConstants.trailUpdateFrequency, equals(1 / 240.0));
+
+        expect(SimulationConstants.targetFpsMilliseconds, greaterThan(0));
+        expect(SimulationConstants.maxDeltaTime, greaterThan(0.0));
+        expect(SimulationConstants.trailUpdateFrequency, greaterThan(0.0));
+      });
+
+      test(
+        'target FPS milliseconds should correspond to approximately 60 FPS',
+        () {
+          // 1000ms / 60fps ≈ 16.67ms
+          expect(
+            SimulationConstants.targetFpsMilliseconds,
+            inInclusiveRange(15, 17),
+          );
+        },
+      );
+
+      test('max delta time should cap at 30 FPS worth', () {
+        const expectedMaxDelta = 1.0 / 30.0;
+        expect(SimulationConstants.maxDeltaTime, equals(expectedMaxDelta));
+        expect(
+          SimulationConstants.maxDeltaTime,
+          inInclusiveRange(0.03, 0.04),
+        ); // ~0.0333
+      });
+
+      test('trail update frequency should be high (240 Hz)', () {
+        const expected240Hz = 1 / 240.0;
+        expect(SimulationConstants.trailUpdateFrequency, equals(expected240Hz));
+        expect(
+          SimulationConstants.trailUpdateFrequency,
+          lessThan(0.01),
+        ); // Less than 100 Hz
+      });
+
+      test('frame timing constants have correct relationships', () {
+        // Max delta time should be larger than trail update frequency
+        expect(
+          SimulationConstants.maxDeltaTime,
+          greaterThan(SimulationConstants.trailUpdateFrequency),
+        );
+      });
+    });
+
     group('Camera Control Constants', () {
       test('camera FOV constants should be properly defined', () {
         expect(SimulationConstants.cameraFovMin, equals(30.0));
