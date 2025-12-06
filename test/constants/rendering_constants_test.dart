@@ -425,5 +425,122 @@ void main() {
         expect(cloudSize, greaterThan(debrisSize));
       });
     });
+
+    group('Solar Activity Seed Constants', () {
+      test('should use appropriate types for seed calculations', () {
+        // Seed offset and multipliers should be integers for deterministic randomization
+        expect(RenderingConstants.flareIndexSeedOffset, isA<int>());
+        expect(RenderingConstants.flareProgressSeedMultiplier, isA<int>());
+        expect(RenderingConstants.seedDayMultiplier, isA<int>());
+      });
+
+      test('flare seed offset should be reasonable', () {
+        // Offset should be positive for consistent seed generation
+        expect(RenderingConstants.flareIndexSeedOffset, greaterThan(0));
+
+        // Should not be too large to avoid overflow issues
+        expect(RenderingConstants.flareIndexSeedOffset, lessThan(1000));
+      });
+
+      test('seed multipliers should support unique generation', () {
+        // Day multiplier should be large enough to avoid collisions
+        expect(RenderingConstants.seedDayMultiplier, greaterThanOrEqualTo(100));
+
+        // Flare progress multiplier should be large for unique values
+        expect(
+          RenderingConstants.flareProgressSeedMultiplier,
+          greaterThanOrEqualTo(100),
+        );
+
+        // Multipliers should be different to avoid pattern repetition
+        expect(
+          RenderingConstants.seedDayMultiplier,
+          isNot(equals(RenderingConstants.flareProgressSeedMultiplier)),
+        );
+      });
+    });
+
+    group('Atmospheric Effects Constants', () {
+      test('should use appropriate types for atmospheric rendering', () {
+        // Intensity values should be doubles for precision
+        expect(
+          RenderingConstants.atmosphericHazeDefaultIntensity,
+          isA<double>(),
+        );
+        expect(RenderingConstants.atmosphericHazeBaseExtent, isA<double>());
+        expect(
+          RenderingConstants.atmosphericHazeIntensityMultiplier,
+          isA<double>(),
+        );
+
+        // Stops array should be list of doubles
+        expect(RenderingConstants.atmosphericHazeStops, isA<List<double>>());
+      });
+
+      test('default intensity should be valid range', () {
+        // Intensity should be between 0.0 and 1.0 for alpha blending
+        expect(
+          RenderingConstants.atmosphericHazeDefaultIntensity,
+          greaterThanOrEqualTo(0.0),
+        );
+        expect(
+          RenderingConstants.atmosphericHazeDefaultIntensity,
+          lessThanOrEqualTo(1.0),
+        );
+      });
+
+      test('intensity multiplier should be reasonable', () {
+        // Multiplier should be positive for scaling effect
+        expect(
+          RenderingConstants.atmosphericHazeIntensityMultiplier,
+          greaterThan(0.0),
+        );
+
+        // Should be less than 1.0 for subtle effects
+        expect(
+          RenderingConstants.atmosphericHazeIntensityMultiplier,
+          lessThanOrEqualTo(1.0),
+        );
+      });
+
+      test('base extent should be valid multiplier', () {
+        // Base extent should be positive for halo rendering
+        expect(RenderingConstants.atmosphericHazeBaseExtent, greaterThan(0.0));
+
+        // Should not be too large to avoid excessive visual interference
+        expect(RenderingConstants.atmosphericHazeBaseExtent, lessThan(2.0));
+      });
+
+      test('haze stops should be valid gradient stops', () {
+        final stops = RenderingConstants.atmosphericHazeStops;
+
+        // Should have at least 2 stops for gradient
+        expect(stops.length, greaterThanOrEqualTo(2));
+
+        // All stops should be between 0.0 and 1.0
+        for (final stop in stops) {
+          expect(stop, greaterThanOrEqualTo(0.0));
+          expect(stop, lessThanOrEqualTo(1.0));
+        }
+
+        // Stops should be in ascending order
+        for (int i = 1; i < stops.length; i++) {
+          expect(stops[i], greaterThan(stops[i - 1]));
+        }
+
+        // Last stop should be 1.0 for proper gradient coverage
+        expect(stops.last, equals(1.0));
+      });
+
+      test('haze effects should scale properly with intensity', () {
+        // When multiplier is applied to default intensity, should remain valid
+        final scaledIntensity =
+            RenderingConstants.atmosphericHazeDefaultIntensity *
+            RenderingConstants.atmosphericHazeIntensityMultiplier;
+
+        expect(scaledIntensity, greaterThanOrEqualTo(0.0));
+        expect(scaledIntensity, lessThanOrEqualTo(1.0));
+      });
+    });
   });
 }

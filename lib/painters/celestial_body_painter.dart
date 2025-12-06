@@ -445,8 +445,8 @@ class CelestialBodyPainter {
     final dayOfYear = int.parse(_dayOfYearFormat.format(now));
     final hourOfDay = now.hour;
 
-    // Create seed that changes every hour: dayOfYear * 100 + hour
-    final seed = dayOfYear * 100 + hourOfDay;
+    // Create seed that changes every hour: dayOfYear * seedDayMultiplier + hour
+    final seed = dayOfYear * RenderingConstants.seedDayMultiplier + hourOfDay;
 
     // Check if we need to recalculate sunspots for this hour
     final cacheKey = seed;
@@ -454,7 +454,7 @@ class CelestialBodyPainter {
 
     // Generate sunspots if not cached for this hour
     if (cachedSunspots == null) {
-      cachedSunspots = _generateSunspotsForDay(
+      cachedSunspots = _generateSunspots(
         seed,
         center,
         radius,
@@ -528,14 +528,14 @@ class CelestialBodyPainter {
   /// Note: The center and radius parameters are currently unused - sunspots are generated
   /// in base reference coordinates (_baseSunCenter, _baseSunRadius) and later transformed
   /// to match the actual sun's position and size during rendering.
-  static List<SunspotData> _generateSunspotsForDay(
-    int dayOfYear,
+  static List<SunspotData> _generateSunspots(
+    int seed,
     Offset center,
     double radius,
     double stellarTemperature,
     Color stellarColor,
   ) {
-    final random = math.Random(dayOfYear);
+    final random = math.Random(seed);
     final sunspots = <SunspotData>[];
 
     // Generate sunspots using configured constants in base coordinate system
@@ -665,7 +665,8 @@ class CelestialBodyPainter {
     final now = DateTime.now().toUtc();
     final dayOfYear = int.parse(_dayOfYearFormat.format(now));
     final hourOfDay = now.hour;
-    final hourSeed = dayOfYear * 100 + hourOfDay;
+    final hourSeed =
+        dayOfYear * RenderingConstants.seedDayMultiplier + hourOfDay;
 
     final sunspotRandom = math.Random(hourSeed);
     final numSunspots =
@@ -700,7 +701,10 @@ class CelestialBodyPainter {
 
       // Use flare index with hour seed for varied positioning that changes hourly
       final flareRandom = math.Random(
-        hourSeed + flareIndex * 123 + (flareProgress * 1000).toInt(),
+        hourSeed +
+            flareIndex * RenderingConstants.flareIndexSeedOffset +
+            (flareProgress * RenderingConstants.flareProgressSeedMultiplier)
+                .toInt(),
       );
 
       // Choose flare origin (prefer sunspot areas)
@@ -1777,7 +1781,7 @@ class CelestialBodyPainter {
     Offset center,
     double radius,
     Color baseColor, {
-    double hazeIntensity = 0.3,
+    double hazeIntensity = RenderingConstants.atmosphericHazeDefaultIntensity,
     Color? atmosphericColor,
   }) {
     // Use atmospheric color if provided, otherwise use base color
@@ -1785,7 +1789,11 @@ class CelestialBodyPainter {
 
     // Create gradient that fades from haze color to transparent
     // Extend halo beyond planet radius based on intensity
-    final hazeExtent = 1.0 + (hazeIntensity * 0.5); // 1.0x to 1.5x radius
+    final hazeExtent =
+        RenderingConstants.atmosphericHazeBaseExtent +
+        (hazeIntensity *
+            RenderingConstants
+                .atmosphericHazeIntensityMultiplier); // 1.0x to 1.5x radius
     final hazeGlow = RadialGradient(
       colors: [
         hazeColor.withValues(
@@ -1799,7 +1807,8 @@ class CelestialBodyPainter {
         ), // Outer edge
         AppColors.transparentColor, // Fully transparent at edge
       ],
-      stops: const [0.7, 0.85, 0.95, 1.0], // Concentrate effect near planet
+      stops: RenderingConstants
+          .atmosphericHazeStops, // Concentrate effect near planet
     );
 
     final hazeRect = Rect.fromCircle(

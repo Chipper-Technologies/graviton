@@ -8,6 +8,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.7.0] - 2025-12-09
 
 ### Added
+- **Stellar Coronas and Atmospheric Effects**: Configurable visual enhancements for stars and planets
+  - **Stellar Coronas**: Glowing plasma atmospheres around stars
+    - Conditional rendering based on `showStellarCoronas` toggle (enabled by default)
+    - Temperature-adaptive corona colors matching stellar classification
+    - Radial gradient effects extending 3x stellar radius
+    - Performance-optimized rendering with minimal overhead
+  - **Atmospheric Effects**: Realistic atmospheric halos and scattering on planets
+    - Conditional rendering based on `showAtmosphericEffects` toggle (disabled by default)
+    - Planet-specific atmospheric intensities scientifically tuned for realism:
+      - Mercury: 0.1 (thin atmosphere)
+      - Venus: 0.6 (thick CO₂ atmosphere)
+      - Earth: 0.3 with blue Rayleigh scattering
+      - Mars: 0.15 (thin dusty atmosphere)
+      - Jupiter: 0.4 (thick gas giant)
+      - Saturn: 0.35 (gas giant with rings)
+      - Uranus: 0.25 (ice giant with methane haze)
+      - Neptune: 0.3 (deep blue ice giant)
+    - Customizable haze intensity and atmospheric color parameters
+    - Helper method `_drawAtmosphericHalo()` with comprehensive documentation
+  - **UI Integration**: Toggle controls in Visuals settings panel
+    - Two new switches with descriptive icons (☀️ for coronas, ☁️ for atmospheres)
+    - Firebase Analytics tracking for toggle events
+    - SharedPreferences persistence for user preferences
+    - New `UIElement.visualControls` enum entry
+  - **Localization**: Full translation support across all 7 languages
+    - English, Spanish, French, German, Japanese, Chinese (Simplified), Korean
+    - Descriptive titles and explanations for each feature
+  - **Test Coverage**: Comprehensive unit and widget tests
+    - UIState toggle tests (5 new tests)
+    - CelestialBodyPainter conditional rendering tests (16 new tests)
+    - UIElement enum validation tests (2 new tests)
+    - VisualsControls widget scrolling tests (3 fixed tests)
+- **Dynamic Sunspot and Solar Flare Randomization**: Enhanced stellar activity variation
+  - **Hour-Based Seed Generation**: Sunspots and flares now update every hour instead of daily
+  - **Improved Realism**: More frequent variation in stellar surface features
+  - **Correlated Activity**: Solar flares originate from sunspot regions (75% correlation)
+  - **Cached Performance**: Maintains hourly cache to prevent flickering while ensuring stability
 - **Custom Bodies Feature**: Comprehensive dynamic body creation and manipulation system
   - **Runtime Body Creation**: Interactive tap-to-place mode for adding celestial bodies during simulation
     - Visual add body toggle button in simulation controls
