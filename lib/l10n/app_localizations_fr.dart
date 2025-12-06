@@ -1808,6 +1808,30 @@ class AppLocalizationsFr extends AppLocalizations {
       'Afficher les halos atmosphériques et la diffusion sur les planètes';
 
   @override
+  String get hemisphereLightingTitle => 'Éclairage Hémisphérique';
+
+  @override
+  String get hemisphereLightingDescription =>
+      'Simuler un éclairage 3D réaliste sur les corps sphériques';
+
+  @override
+  String get castShadowsTitle => 'Ombres Portées';
+
+  @override
+  String get castShadowsDescription =>
+      'Afficher les ombres lorsque les corps occultent les sources lumineuses';
+
+  @override
+  String get specularHighlightsTitle => 'Reflets Spéculaires';
+
+  @override
+  String get specularHighlightsDescription =>
+      'Afficher les reflets sur les surfaces glacées et aquatiques';
+
+  @override
+  String get lightingEffectsLabel => 'Éclairage et Ombres';
+
+  @override
   String get habitabilityLabel => 'Habitabilité';
 
   @override

@@ -1786,6 +1786,30 @@ class AppLocalizationsEn extends AppLocalizations {
       'Display atmospheric halos and scattering on planets';
 
   @override
+  String get hemisphereLightingTitle => 'Hemisphere Lighting';
+
+  @override
+  String get hemisphereLightingDescription =>
+      'Simulate realistic 3D lighting on spherical bodies';
+
+  @override
+  String get castShadowsTitle => 'Cast Shadows';
+
+  @override
+  String get castShadowsDescription =>
+      'Show shadows when bodies occlude light sources';
+
+  @override
+  String get specularHighlightsTitle => 'Specular Highlights';
+
+  @override
+  String get specularHighlightsDescription =>
+      'Display reflective highlights on icy and water surfaces';
+
+  @override
+  String get lightingEffectsLabel => 'Lighting & Shadows';
+
+  @override
   String get habitabilityLabel => 'Habitability';
 
   @override

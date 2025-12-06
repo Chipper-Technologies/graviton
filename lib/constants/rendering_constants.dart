@@ -116,6 +116,35 @@ class RenderingConstants {
   /// Maximum additional sunspots beyond the minimum (total range: 3-9 sunspots)
   static const int maxAdditionalSunspots = 6;
 
+  // Lighting and shadow effects
+  /// Intensity shift for hemisphere lighting on the lit side (0.0-1.0)
+  /// Controls how much brighter the lit hemisphere appears
+  static const double hemisphereLightingIntensity = 0.3;
+
+  /// Gradient center offset toward light source for hemisphere effect
+  /// Higher values create more pronounced day/night division
+  static const double hemisphereLightingGradientOffset = 0.3;
+
+  /// Shadow darkness multiplier for cast shadows (0.0-1.0)
+  /// 1.0 = completely black umbra, lower values create softer shadows
+  static const double castShadowUmbraAlpha = 0.8;
+
+  /// Penumbra fade distance as ratio of shadow radius
+  /// Controls how gradually shadows fade from umbra to light
+  static const double castShadowPenumbraRatio = 0.3;
+
+  /// Specular highlight intensity on icy/water surfaces (0.0-1.0)
+  /// Controls brightness of reflective highlights
+  static const double specularHighlightIntensity = 0.6;
+
+  /// Specular highlight size as ratio of body radius
+  /// Smaller values create tighter, more concentrated highlights
+  static const double specularHighlightSize = 0.15;
+
+  /// Specular highlight shininess factor
+  /// Higher values create sharper, more mirror-like reflections
+  static const double specularHighlightShininess = 32.0;
+
   // Spherical gradient background constants
   static const int sphericalGradientSourceCount = 20;
   static const double sphericalGradientSourceRadius = 2500.0;

@@ -4,7 +4,7 @@ import 'package:graviton/enums/ui_element.dart';
 void main() {
   group('UIElement Enum', () {
     test('should have all expected UI elements', () {
-      expect(UIElement.values.length, equals(65));
+      expect(UIElement.values.length, equals(69));
       expect(UIElement.values, contains(UIElement.simulationViewport));
       expect(UIElement.values, contains(UIElement.scenarioSelection));
       expect(UIElement.values, contains(UIElement.scenarioDialog));
@@ -221,6 +221,46 @@ void main() {
       expect(UIElement.values, contains(UIElement.simulationPlaybackControls));
       expect(UIElement.values, contains(UIElement.timeScaleControls));
       expect(UIElement.values, contains(UIElement.simulationLifecycleControls));
+    });
+
+    test('should include lighting effects control elements', () {
+      expect(UIElement.values, contains(UIElement.lightingEffectsControls));
+      expect(UIElement.values, contains(UIElement.hemisphereLightingToggle));
+      expect(UIElement.values, contains(UIElement.castShadowsToggle));
+      expect(UIElement.values, contains(UIElement.specularHighlightsToggle));
+    });
+
+    test('lighting control elements should have correct string values', () {
+      expect(
+        UIElement.lightingEffectsControls.value,
+        equals('lighting_effects_controls'),
+      );
+      expect(
+        UIElement.hemisphereLightingToggle.value,
+        equals('hemisphere_lighting_toggle'),
+      );
+      expect(UIElement.castShadowsToggle.value, equals('cast_shadows_toggle'));
+      expect(
+        UIElement.specularHighlightsToggle.value,
+        equals('specular_highlights_toggle'),
+      );
+    });
+
+    test('should group lighting controls with other visual controls', () {
+      final visualControlElements = [
+        UIElement.visualControls,
+        UIElement.visualDisplayControls,
+        UIElement.visualEffectsControls,
+        UIElement.lightingEffectsControls,
+      ];
+
+      for (final element in visualControlElements) {
+        expect(
+          element.value.contains('controls'),
+          isTrue,
+          reason: '${element.value} should be a control element',
+        );
+      }
     });
   });
 }

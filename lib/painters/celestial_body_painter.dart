@@ -51,6 +51,10 @@ class CelestialBodyPainter {
     bool useRealisticColors = false,
     bool showStellarCoronas = true,
     bool showAtmosphericEffects = false,
+    bool enableHemisphereLighting = true,
+    bool enableCastShadows = false,
+    bool enableSpecularHighlights = false,
+    List<Body>? allBodies,
   }) {
     // Special rendering for celestial bodies
     final bodyEnum = CelestialBodyName.fromString(body.name);
@@ -199,7 +203,30 @@ class CelestialBodyPainter {
               ? StellarColorService.getRealisticBodyColor(body)
               : body.color;
 
+          // Calculate hemisphere lighting offset if enabled
+          Offset lightingOffset = Offset.zero;
+          if (enableHemisphereLighting && allBodies != null) {
+            final rawOffset = _calculateHemisphereLightingOffset(
+              allBodies,
+              body,
+              center,
+            );
+            // Scale offset by radius to make it proportional to body size
+            lightingOffset = Offset(
+              rawOffset.dx * radius,
+              rawOffset.dy * radius,
+            );
+          }
+
+          // Create gradient with lighting offset applied
+          final gradientCenter = center + lightingOffset;
           final glow = RadialGradient(
+            center: Alignment(
+              (gradientCenter.dx - center.dx) /
+                  (radius * RenderingConstants.bodyGlowMultiplier),
+              (gradientCenter.dy - center.dy) /
+                  (radius * RenderingConstants.bodyGlowMultiplier),
+            ),
             colors: [
               bodyColor.withValues(alpha: RenderingConstants.bodyAlpha),
               bodyColor.withValues(alpha: RenderingConstants.bodyGlowAlpha),
@@ -216,7 +243,56 @@ class CelestialBodyPainter {
             Paint()..shader = glow.createShader(rect),
           );
 
-          canvas.drawCircle(center, radius, Paint()..color = bodyColor);
+          // Draw solid body with hemisphere lighting
+          if (enableHemisphereLighting && lightingOffset != Offset.zero) {
+            // Create hemisphere gradient for main body
+            final hemisphereGradient = RadialGradient(
+              center: Alignment(
+                lightingOffset.dx / radius,
+                lightingOffset.dy / radius,
+              ),
+              colors: [
+                // Brighter on lit side
+                Color.lerp(
+                  bodyColor,
+                  AppColors.uiWhite,
+                  RenderingConstants.hemisphereLightingIntensity,
+                )!,
+                bodyColor,
+                // Darker on shadow side
+                Color.lerp(
+                  bodyColor,
+                  AppColors.uiBlack,
+                  RenderingConstants.hemisphereLightingIntensity * 0.5,
+                )!,
+              ],
+              stops: const [0.0, 0.5, 1.0],
+            );
+
+            final bodyRect = Rect.fromCircle(center: center, radius: radius);
+            canvas.drawCircle(
+              center,
+              radius,
+              Paint()..shader = hemisphereGradient.createShader(bodyRect),
+            );
+          } else {
+            // No hemisphere lighting - use solid color
+            canvas.drawCircle(center, radius, Paint()..color = bodyColor);
+          }
+
+          // Draw cast shadows if enabled
+          if (enableCastShadows &&
+              allBodies != null &&
+              body.bodyType != BodyType.star) {
+            drawCastShadow(canvas, center, radius, body, allBodies);
+          }
+
+          // Draw specular highlights if enabled
+          if (enableSpecularHighlights &&
+              allBodies != null &&
+              body.bodyType != BodyType.star) {
+            drawSpecularHighlight(canvas, center, radius, body, allBodies);
+          }
 
           // Apply atmospheric effects to all planets (not in named solar system)
           if (showAtmosphericEffects &&
@@ -2038,4 +2114,427 @@ class CelestialBodyPainter {
       return hsv.withValue(newValue).withHue(newHue).toColor();
     }
   }
+
+  /// Calculate hemisphere lighting gradient offset based on nearest light source
+  ///
+  /// For celestial bodies, the lit hemisphere faces toward the nearest star.
+  /// This creates a more realistic appearance by shifting the radial gradient
+  /// center toward the light source direction.
+  ///
+  /// Parameters:
+  /// - [bodies]: All bodies in the simulation to find nearest star
+  /// - [currentBody]: The body being rendered
+  /// - [currentBodyPosition]: Current body's position in 2D canvas space
+  ///
+  /// Returns an [Offset] representing the gradient center offset from body center,
+  /// or [Offset.zero] if no light source is found.
+  static Offset _calculateHemisphereLightingOffset(
+    List<Body> bodies,
+    Body currentBody,
+    Offset currentBodyPosition,
+  ) {
+    // Find the nearest star to this body
+    Body? nearestStar;
+    double minDistance = double.infinity;
+
+    for (final otherBody in bodies) {
+      // Skip self and non-stars
+      if (otherBody == currentBody || otherBody.bodyType != BodyType.star) {
+        continue;
+      }
+
+      // Calculate 3D distance to this star
+      final dx = otherBody.position.x - currentBody.position.x;
+      final dy = otherBody.position.y - currentBody.position.y;
+      final dz = otherBody.position.z - currentBody.position.z;
+      final distance = math.sqrt(dx * dx + dy * dy + dz * dz);
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        nearestStar = otherBody;
+      }
+    }
+
+    // No star found, return no offset
+    if (nearestStar == null) {
+      return Offset.zero;
+    }
+
+    // Calculate direction vector from current body to nearest star (in 3D)
+    final dirX = nearestStar.position.x - currentBody.position.x;
+    final dirY = nearestStar.position.y - currentBody.position.y;
+    final dirZ = nearestStar.position.z - currentBody.position.z;
+    final magnitude = math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+
+    // Normalize direction
+    if (magnitude == 0) {
+      return Offset.zero;
+    }
+
+    final normX = dirX / magnitude;
+    final normY = dirY / magnitude;
+    // Z component affects the offset magnitude (bodies facing toward/away from camera)
+
+    // Project onto 2D canvas space (simplified projection)
+    // The offset is a fraction of the body radius, controlled by gradient offset constant
+    // We use only X and Y components for 2D offset, ignoring Z depth
+    final offsetMagnitude = RenderingConstants.hemisphereLightingGradientOffset;
+
+    return Offset(normX * offsetMagnitude, normY * offsetMagnitude);
+  }
+
+  /// Calculate and draw cast shadow on a body from another body blocking light
+  ///
+  /// Implements a simplified shadow model with umbra (full shadow) and penumbra
+  /// (partial shadow) regions. Shadows are cast when a body is between a light
+  /// source and the current body.
+  ///
+  /// Parameters:
+  /// - [canvas]: The canvas to draw on
+  /// - [center]: Center position of the body receiving the shadow
+  /// - [radius]: Radius of the body receiving the shadow
+  /// - [currentBody]: The body that may be in shadow
+  /// - [allBodies]: All bodies in simulation to check for shadow casters
+  static void drawCastShadow(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    Body currentBody,
+    List<Body> allBodies,
+  ) {
+    // Find all stars (light sources)
+    final stars = allBodies.where((b) => b.bodyType == BodyType.star).toList();
+    if (stars.isEmpty) {
+      return; // No light sources, no shadows
+    }
+
+    for (final star in stars) {
+      // Skip if star is too far (optimization)
+      final starDistance = _calculate3DDistance(currentBody, star);
+      if (starDistance == 0 || starDistance > 1000.0) {
+        continue;
+      }
+
+      // Find bodies that could cast shadows on current body
+      for (final caster in allBodies) {
+        // Skip self, stars, and very small bodies
+        if (caster == currentBody ||
+            caster.bodyType == BodyType.star ||
+            caster.radius < 0.5) {
+          continue;
+        }
+
+        // Check if caster is between star and current body
+        if (!_isBodyBlockingLight(star, caster, currentBody)) {
+          continue;
+        }
+
+        // Calculate shadow parameters
+        final shadowInfo = _calculateShadowGeometry(
+          star,
+          caster,
+          currentBody,
+          center,
+          radius,
+        );
+
+        if (shadowInfo == null) {
+          continue; // No shadow to draw
+        }
+
+        // Draw umbra (full shadow)
+        if (shadowInfo.umbraRadius > 0) {
+          final umbraGradient = RadialGradient(
+            colors: [
+              AppColors.uiBlack.withValues(
+                alpha: RenderingConstants.castShadowUmbraAlpha,
+              ),
+              AppColors.uiBlack.withValues(alpha: 0.0),
+            ],
+            stops: const [0.7, 1.0],
+          );
+
+          final umbraRect = Rect.fromCircle(
+            center: shadowInfo.shadowCenter,
+            radius: shadowInfo.umbraRadius,
+          );
+          canvas.drawCircle(
+            shadowInfo.shadowCenter,
+            shadowInfo.umbraRadius,
+            Paint()
+              ..shader = umbraGradient.createShader(umbraRect)
+              ..blendMode = BlendMode.multiply,
+          );
+        }
+
+        // Draw penumbra (partial shadow)
+        if (shadowInfo.penumbraRadius > shadowInfo.umbraRadius) {
+          final penumbraGradient = RadialGradient(
+            colors: [
+              AppColors.uiBlack.withValues(
+                alpha: RenderingConstants.castShadowUmbraAlpha * 0.3,
+              ),
+              AppColors.transparentColor,
+            ],
+          );
+
+          final penumbraRect = Rect.fromCircle(
+            center: shadowInfo.shadowCenter,
+            radius: shadowInfo.penumbraRadius,
+          );
+          canvas.drawCircle(
+            shadowInfo.shadowCenter,
+            shadowInfo.penumbraRadius,
+            Paint()
+              ..shader = penumbraGradient.createShader(penumbraRect)
+              ..blendMode = BlendMode.multiply,
+          );
+        }
+      }
+    }
+  }
+
+  /// Calculate 3D distance between two bodies
+  static double _calculate3DDistance(Body body1, Body body2) {
+    final dx = body2.position.x - body1.position.x;
+    final dy = body2.position.y - body1.position.y;
+    final dz = body2.position.z - body1.position.z;
+    return math.sqrt(dx * dx + dy * dy + dz * dz);
+  }
+
+  /// Check if a body is blocking light from a star to another body
+  static bool _isBodyBlockingLight(Body star, Body caster, Body receiver) {
+    // Calculate distances
+    final starToCaster = _calculate3DDistance(star, caster);
+    final starToReceiver = _calculate3DDistance(star, receiver);
+
+    // Caster must be between star and receiver (closer to star)
+    if (starToCaster >= starToReceiver) {
+      return false;
+    }
+
+    // Calculate if caster is in the path using angular check
+    // Vector from star to caster
+    final starCasterX = caster.position.x - star.position.x;
+    final starCasterY = caster.position.y - star.position.y;
+    final starCasterZ = caster.position.z - star.position.z;
+
+    // Vector from star to receiver
+    final starReceiverX = receiver.position.x - star.position.x;
+    final starReceiverY = receiver.position.y - star.position.y;
+    final starReceiverZ = receiver.position.z - star.position.z;
+
+    // Normalize vectors
+    final starCasterDist = starToCaster;
+    final starReceiverDist = starToReceiver;
+
+    final normCasterX = starCasterX / starCasterDist;
+    final normCasterY = starCasterY / starCasterDist;
+    final normCasterZ = starCasterZ / starCasterDist;
+
+    final normReceiverX = starReceiverX / starReceiverDist;
+    final normReceiverY = starReceiverY / starReceiverDist;
+    final normReceiverZ = starReceiverZ / starReceiverDist;
+
+    // Calculate dot product (cosine of angle)
+    final dotProduct =
+        normCasterX * normReceiverX +
+        normCasterY * normReceiverY +
+        normCasterZ * normReceiverZ;
+
+    // Bodies must be roughly aligned (small angle)
+    // cos(10°) ≈ 0.985
+    return dotProduct > 0.95;
+  }
+
+  /// Calculate shadow geometry on receiver body
+  static _ShadowInfo? _calculateShadowGeometry(
+    Body star,
+    Body caster,
+    Body receiver,
+    Offset receiverCenter,
+    double receiverRadius,
+  ) {
+    // Calculate shadow position on receiver (simplified 2D projection)
+    // Direction from star through caster to receiver
+    final starToCasterX = caster.position.x - star.position.x;
+    final starToCasterY = caster.position.y - star.position.y;
+
+    // Normalize direction
+    final distance = math.sqrt(
+      starToCasterX * starToCasterX + starToCasterY * starToCasterY,
+    );
+    if (distance == 0) {
+      return null;
+    }
+
+    // Shadow center offset from receiver center
+    // Simplified: use opposite direction of star-caster vector
+    final shadowOffsetX = -starToCasterX / distance * receiverRadius * 0.3;
+    final shadowOffsetY = -starToCasterY / distance * receiverRadius * 0.3;
+
+    final shadowCenter = Offset(
+      receiverCenter.dx + shadowOffsetX,
+      receiverCenter.dy + shadowOffsetY,
+    );
+
+    // Calculate shadow size based on caster size and distances
+    final starToCaster = _calculate3DDistance(star, caster);
+    final casterToReceiver = _calculate3DDistance(caster, receiver);
+
+    // Umbra size decreases with distance
+    final totalDistance = starToCaster + casterToReceiver;
+    final umbraScale =
+        (caster.radius * receiverRadius) /
+        totalDistance.clamp(1.0, double.infinity);
+    final umbraRadius = umbraScale.clamp(0.0, receiverRadius * 0.6);
+
+    // Penumbra is larger
+    final penumbraRadius =
+        umbraRadius * (1.0 + RenderingConstants.castShadowPenumbraRatio);
+
+    return _ShadowInfo(
+      shadowCenter: shadowCenter,
+      umbraRadius: umbraRadius,
+      penumbraRadius: penumbraRadius,
+    );
+  }
+
+  /// Draw specular highlight on a body from nearby stars
+  ///
+  /// Implements Phong shading model for specular reflection, creating a bright
+  /// highlight where light from stars reflects directly toward the viewer.
+  ///
+  /// Parameters:
+  /// - [canvas]: The canvas to draw on
+  /// - [center]: Center position of the body
+  /// - [radius]: Radius of the body
+  /// - [currentBody]: The body receiving the highlight
+  /// - [allBodies]: All bodies in simulation to find light sources
+  static void drawSpecularHighlight(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    Body currentBody,
+    List<Body> allBodies,
+  ) {
+    // Find nearest star for strongest highlight
+    Body? nearestStar;
+    double minDistance = double.infinity;
+
+    for (final otherBody in allBodies) {
+      if (otherBody == currentBody || otherBody.bodyType != BodyType.star) {
+        continue;
+      }
+
+      final distance = _calculate3DDistance(currentBody, otherBody);
+      if (distance < minDistance && distance > 0) {
+        minDistance = distance;
+        nearestStar = otherBody;
+      }
+    }
+
+    if (nearestStar == null) {
+      return; // No light source
+    }
+
+    // Calculate light direction (from body to star)
+    final lightDirX = nearestStar.position.x - currentBody.position.x;
+    final lightDirY = nearestStar.position.y - currentBody.position.y;
+    final lightDirZ = nearestStar.position.z - currentBody.position.z;
+    final lightDist = math.sqrt(
+      lightDirX * lightDirX + lightDirY * lightDirY + lightDirZ * lightDirZ,
+    );
+
+    if (lightDist == 0) {
+      return;
+    }
+
+    // Normalize light direction
+    final normLightX = lightDirX / lightDist;
+    final normLightY = lightDirY / lightDist;
+    final normLightZ = lightDirZ / lightDist;
+
+    // Simplified view direction (assume camera looking down -Z axis)
+    const viewX = 0.0;
+    const viewY = 0.0;
+    const viewZ = 1.0;
+
+    // Calculate reflection vector using Phong model
+    // R = 2(N·L)N - L, where N is surface normal at highlight point
+    // Simplified: we use the light direction as approximate surface normal
+    final dotNL =
+        normLightX * normLightX +
+        normLightY * normLightY +
+        normLightZ * normLightZ;
+    final reflectX = 2 * dotNL * normLightX - normLightX;
+    final reflectY = 2 * dotNL * normLightY - normLightY;
+    final reflectZ = 2 * dotNL * normLightZ - normLightZ;
+
+    // Calculate R·V (how well reflection aligns with view)
+    final dotRV = reflectX * viewX + reflectY * viewY + reflectZ * viewZ;
+
+    // Only draw highlight if reflection somewhat toward viewer
+    if (dotRV < 0.3) {
+      return;
+    }
+
+    // Calculate highlight intensity using Phong shininess
+    final intensity = math
+        .pow(
+          dotRV.clamp(0.0, 1.0),
+          RenderingConstants.specularHighlightShininess,
+        )
+        .toDouble();
+
+    if (intensity < 0.01) {
+      return; // Too dim
+    }
+
+    // Position highlight on the lit side
+    final highlightOffset = Offset(
+      normLightX * radius * RenderingConstants.specularHighlightSize,
+      normLightY * radius * RenderingConstants.specularHighlightSize,
+    );
+    final highlightCenter = center + highlightOffset;
+
+    // Draw specular highlight with gradient
+    final highlightRadius = radius * RenderingConstants.specularHighlightSize;
+    final highlightIntensity =
+        intensity * RenderingConstants.specularHighlightIntensity;
+
+    final highlightGradient = RadialGradient(
+      colors: [
+        AppColors.uiWhite.withValues(alpha: highlightIntensity),
+        AppColors.uiWhite.withValues(alpha: highlightIntensity * 0.5),
+        AppColors.transparentColor,
+      ],
+      stops: const [0.0, 0.5, 1.0],
+    );
+
+    final highlightRect = Rect.fromCircle(
+      center: highlightCenter,
+      radius: highlightRadius,
+    );
+    canvas.drawCircle(
+      highlightCenter,
+      highlightRadius,
+      Paint()
+        ..shader = highlightGradient.createShader(highlightRect)
+        ..blendMode = BlendMode.plus, // Additive blending for bright highlight
+    );
+  }
+}
+
+/// Shadow geometry information
+class _ShadowInfo {
+  final Offset shadowCenter;
+  final double umbraRadius;
+  final double penumbraRadius;
+
+  _ShadowInfo({
+    required this.shadowCenter,
+    required this.umbraRadius,
+    required this.penumbraRadius,
+  });
 }

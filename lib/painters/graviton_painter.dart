@@ -47,6 +47,9 @@ class GravitonPainter extends CustomPainter {
   final int? movingBodyIndex;
   final bool showStellarCoronas;
   final bool showAtmosphericEffects;
+  final bool enableHemisphereLighting;
+  final bool enableCastShadows;
+  final bool enableSpecularHighlights;
 
   GravitonPainter({
     required this.sim,
@@ -70,6 +73,9 @@ class GravitonPainter extends CustomPainter {
     this.movingBodyIndex,
     this.showStellarCoronas = true,
     this.showAtmosphericEffects = false,
+    this.enableHemisphereLighting = true,
+    this.enableCastShadows = false,
+    this.enableSpecularHighlights = false,
   });
 
   @override
@@ -264,6 +270,10 @@ class GravitonPainter extends CustomPainter {
           useRealisticColors: useRealisticColors,
           showStellarCoronas: showStellarCoronas,
           showAtmosphericEffects: showAtmosphericEffects,
+          enableHemisphereLighting: enableHemisphereLighting,
+          enableCastShadows: enableCastShadows,
+          enableSpecularHighlights: enableSpecularHighlights,
+          allBodies: sim.bodies,
         );
       }
 

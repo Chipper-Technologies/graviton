@@ -486,6 +486,105 @@ void main() {
       });
     });
 
+    group('Lighting and Shadow Controls', () {
+      testWidgets('hemisphere lighting can be toggled programmatically', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final initialState = appState.ui.enableHemisphereLighting;
+        appState.ui.toggleHemisphereLighting();
+        await tester.pump();
+
+        expect(appState.ui.enableHemisphereLighting, !initialState);
+      });
+
+      testWidgets('cast shadows can be toggled programmatically', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final initialState = appState.ui.enableCastShadows;
+        appState.ui.toggleCastShadows();
+        await tester.pump();
+
+        expect(appState.ui.enableCastShadows, !initialState);
+      });
+
+      testWidgets('specular highlights can be toggled programmatically', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final initialState = appState.ui.enableSpecularHighlights;
+        appState.ui.toggleSpecularHighlights();
+        await tester.pump();
+
+        expect(appState.ui.enableSpecularHighlights, !initialState);
+      });
+
+      testWidgets('lighting toggles work independently', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final initialHemisphere = appState.ui.enableHemisphereLighting;
+        final initialShadows = appState.ui.enableCastShadows;
+        final initialSpecular = appState.ui.enableSpecularHighlights;
+
+        // Toggle hemisphere lighting
+        appState.ui.toggleHemisphereLighting();
+        await tester.pump();
+        expect(appState.ui.enableHemisphereLighting, !initialHemisphere);
+        expect(appState.ui.enableCastShadows, initialShadows);
+        expect(appState.ui.enableSpecularHighlights, initialSpecular);
+
+        // Toggle cast shadows
+        appState.ui.toggleCastShadows();
+        await tester.pump();
+        expect(appState.ui.enableCastShadows, !initialShadows);
+        expect(appState.ui.enableSpecularHighlights, initialSpecular);
+
+        // Toggle specular highlights
+        appState.ui.toggleSpecularHighlights();
+        await tester.pump();
+        expect(appState.ui.enableSpecularHighlights, !initialSpecular);
+      });
+
+      testWidgets('allows rapid lighting toggle changes', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final initialState = appState.ui.enableHemisphereLighting;
+
+        // Rapidly toggle multiple times
+        for (int i = 0; i < 5; i++) {
+          appState.ui.toggleHemisphereLighting();
+          await tester.pump();
+        }
+
+        // Should end up in opposite state (odd number of toggles)
+        expect(appState.ui.enableHemisphereLighting, !initialState);
+      });
+
+      testWidgets('lighting state types are correct', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        expect(appState.ui.enableHemisphereLighting, isA<bool>());
+        expect(appState.ui.enableCastShadows, isA<bool>());
+        expect(appState.ui.enableSpecularHighlights, isA<bool>());
+      });
+    });
+
     group('Error Handling and Edge Cases', () {
       testWidgets('handles null scroll controller gracefully', (
         WidgetTester tester,

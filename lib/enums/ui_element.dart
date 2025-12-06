@@ -204,7 +204,19 @@ enum UIElement {
   fullscreenToggle('fullscreen_toggle'),
 
   /// Visual effects controls (collision effects)
-  visualEffectsControls('visual_effects_controls');
+  visualEffectsControls('visual_effects_controls'),
+
+  /// Lighting effects controls (hemisphere lighting, shadows, specular)
+  lightingEffectsControls('lighting_effects_controls'),
+
+  /// Hemisphere lighting toggle
+  hemisphereLightingToggle('hemisphere_lighting_toggle'),
+
+  /// Cast shadows toggle
+  castShadowsToggle('cast_shadows_toggle'),
+
+  /// Specular highlights toggle
+  specularHighlightsToggle('specular_highlights_toggle');
 
   const UIElement(this.value);
 

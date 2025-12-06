@@ -542,5 +542,158 @@ void main() {
         expect(scaledIntensity, lessThanOrEqualTo(1.0));
       });
     });
+
+    group('Lighting and Shadow Constants', () {
+      test('should have all lighting constants defined', () {
+        expect(RenderingConstants.hemisphereLightingIntensity, isA<double>());
+        expect(
+          RenderingConstants.hemisphereLightingGradientOffset,
+          isA<double>(),
+        );
+        expect(RenderingConstants.castShadowUmbraAlpha, isA<double>());
+        expect(RenderingConstants.castShadowPenumbraRatio, isA<double>());
+        expect(RenderingConstants.specularHighlightIntensity, isA<double>());
+        expect(RenderingConstants.specularHighlightSize, isA<double>());
+        expect(RenderingConstants.specularHighlightShininess, isA<double>());
+      });
+
+      test('hemisphere lighting intensity should be in valid range', () {
+        expect(
+          RenderingConstants.hemisphereLightingIntensity,
+          greaterThanOrEqualTo(0.0),
+        );
+        expect(
+          RenderingConstants.hemisphereLightingIntensity,
+          lessThanOrEqualTo(1.0),
+        );
+
+        // Should be a reasonable value for subtle but visible effect
+        expect(
+          RenderingConstants.hemisphereLightingIntensity,
+          greaterThan(0.1),
+        );
+        expect(RenderingConstants.hemisphereLightingIntensity, lessThan(0.6));
+      });
+
+      test('hemisphere gradient offset should be reasonable', () {
+        expect(
+          RenderingConstants.hemisphereLightingGradientOffset,
+          greaterThan(0.0),
+        );
+        expect(
+          RenderingConstants.hemisphereLightingGradientOffset,
+          lessThan(1.0),
+        );
+
+        // Should create noticeable but not extreme shift
+        expect(
+          RenderingConstants.hemisphereLightingGradientOffset,
+          greaterThan(0.2),
+        );
+        expect(
+          RenderingConstants.hemisphereLightingGradientOffset,
+          lessThan(0.5),
+        );
+      });
+
+      test('shadow constants should create realistic effects', () {
+        // Umbra should be relatively dark but not pitch black
+        expect(
+          RenderingConstants.castShadowUmbraAlpha,
+          greaterThanOrEqualTo(0.0),
+        );
+        expect(RenderingConstants.castShadowUmbraAlpha, lessThanOrEqualTo(1.0));
+        expect(RenderingConstants.castShadowUmbraAlpha, greaterThan(0.5));
+
+        // Penumbra ratio should create smooth transition
+        expect(RenderingConstants.castShadowPenumbraRatio, greaterThan(0.0));
+        expect(RenderingConstants.castShadowPenumbraRatio, lessThan(1.0));
+      });
+
+      test('specular highlight constants should be physically reasonable', () {
+        // Intensity should be in valid range
+        expect(
+          RenderingConstants.specularHighlightIntensity,
+          greaterThanOrEqualTo(0.0),
+        );
+        expect(
+          RenderingConstants.specularHighlightIntensity,
+          lessThanOrEqualTo(1.0),
+        );
+
+        // Size should be a small fraction of body radius
+        expect(RenderingConstants.specularHighlightSize, greaterThan(0.0));
+        expect(RenderingConstants.specularHighlightSize, lessThan(0.5));
+
+        // Shininess should be reasonable for Phong/Blinn-Phong model
+        expect(RenderingConstants.specularHighlightShininess, greaterThan(1.0));
+        expect(RenderingConstants.specularHighlightShininess, lessThan(256.0));
+      });
+
+      test('specular highlights should create focused reflections', () {
+        // Small size with high shininess creates concentrated highlights
+        final isFocused =
+            RenderingConstants.specularHighlightSize < 0.2 &&
+            RenderingConstants.specularHighlightShininess > 16.0;
+
+        expect(
+          isFocused,
+          isTrue,
+          reason: 'Specular highlights should be focused for realistic effect',
+        );
+      });
+
+      test('lighting constants should work together harmoniously', () {
+        // Hemisphere lighting + shadows should not oversaturate
+        final totalDarkening =
+            RenderingConstants.hemisphereLightingIntensity +
+            RenderingConstants.castShadowUmbraAlpha;
+
+        expect(
+          totalDarkening,
+          lessThan(2.0),
+          reason: 'Combined lighting effects should not oversaturate',
+        );
+
+        // Specular should be brighter than hemisphere lighting
+        expect(
+          RenderingConstants.specularHighlightIntensity,
+          greaterThan(RenderingConstants.hemisphereLightingIntensity),
+          reason:
+              'Specular highlights should stand out from hemisphere lighting',
+        );
+      });
+
+      test('shadow penumbra should create smooth gradients', () {
+        // Penumbra should be significant enough to see but not too wide
+        expect(
+          RenderingConstants.castShadowPenumbraRatio,
+          greaterThan(0.1),
+          reason: 'Penumbra must be visible',
+        );
+        expect(
+          RenderingConstants.castShadowPenumbraRatio,
+          lessThan(0.5),
+          reason: 'Penumbra should not dominate shadow',
+        );
+      });
+
+      test('specular shininess should follow Phong model conventions', () {
+        // Common Phong shininess values range from 1 (rough) to 256 (mirror)
+        // We use 32.0 which is appropriate for glossy surfaces like ice/water
+        expect(RenderingConstants.specularHighlightShininess, equals(32.0));
+
+        // Should be a power-of-2 for optimal GPU performance in some renderers
+        final shininessInt = RenderingConstants.specularHighlightShininess
+            .toInt();
+        final powerOf2 = (shininessInt & (shininessInt - 1)) == 0;
+
+        expect(
+          powerOf2,
+          isTrue,
+          reason: 'Shininess as power-of-2 optimizes some rendering pipelines',
+        );
+      });
+    });
   });
 }

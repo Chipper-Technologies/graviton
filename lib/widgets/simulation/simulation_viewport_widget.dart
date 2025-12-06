@@ -378,6 +378,16 @@ class _SimulationViewportWidgetState extends State<SimulationViewportWidget> {
                                       .showGravityFieldIndicators,
                                   movingBodyIndex:
                                       widget.appState.ui.movingBodyIndex,
+                                  enableHemisphereLighting: widget
+                                      .appState
+                                      .ui
+                                      .enableHemisphereLighting,
+                                  enableCastShadows:
+                                      widget.appState.ui.enableCastShadows,
+                                  enableSpecularHighlights: widget
+                                      .appState
+                                      .ui
+                                      .enableSpecularHighlights,
                                 ),
                                 child: const SizedBox.expand(),
                               ),

@@ -1714,6 +1714,27 @@ class AppLocalizationsJa extends AppLocalizations {
   String get atmosphericEffectsDescription => '惑星に大気ハローと散乱を表示';
 
   @override
+  String get hemisphereLightingTitle => '半球照明';
+
+  @override
+  String get hemisphereLightingDescription => '球体に現実的な3D照明をシミュレート';
+
+  @override
+  String get castShadowsTitle => '影の投影';
+
+  @override
+  String get castShadowsDescription => '天体が光源を遮る時に影を表示';
+
+  @override
+  String get specularHighlightsTitle => '鏡面反射';
+
+  @override
+  String get specularHighlightsDescription => '氷や水の表面に反射を表示';
+
+  @override
+  String get lightingEffectsLabel => '照明と影';
+
+  @override
   String get habitabilityLabel => '居住可能性';
 
   @override

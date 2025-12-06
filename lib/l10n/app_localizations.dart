@@ -3102,6 +3102,48 @@ abstract class AppLocalizations {
   /// **'Display atmospheric halos and scattering on planets'**
   String get atmosphericEffectsDescription;
 
+  /// Label for hemisphere lighting toggle in visuals settings
+  ///
+  /// In en, this message translates to:
+  /// **'Hemisphere Lighting'**
+  String get hemisphereLightingTitle;
+
+  /// Description for hemisphere lighting effect setting
+  ///
+  /// In en, this message translates to:
+  /// **'Simulate realistic 3D lighting on spherical bodies'**
+  String get hemisphereLightingDescription;
+
+  /// Label for cast shadows toggle in visuals settings
+  ///
+  /// In en, this message translates to:
+  /// **'Cast Shadows'**
+  String get castShadowsTitle;
+
+  /// Description for cast shadows effect setting
+  ///
+  /// In en, this message translates to:
+  /// **'Show shadows when bodies occlude light sources'**
+  String get castShadowsDescription;
+
+  /// Label for specular highlights toggle in visuals settings
+  ///
+  /// In en, this message translates to:
+  /// **'Specular Highlights'**
+  String get specularHighlightsTitle;
+
+  /// Description for specular highlights effect setting
+  ///
+  /// In en, this message translates to:
+  /// **'Display reflective highlights on icy and water surfaces'**
+  String get specularHighlightsDescription;
+
+  /// Section label for lighting and shadow effects
+  ///
+  /// In en, this message translates to:
+  /// **'Lighting & Shadows'**
+  String get lightingEffectsLabel;
+
   /// Label for habitability features
   ///
   /// In en, this message translates to:
