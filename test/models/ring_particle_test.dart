@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/models/ring_particle.dart';
@@ -283,13 +282,13 @@ void main() {
           orbitSpeed: 0.0001, // Slow orbital speed
           orbitPhase: math.pi / 3,
           inclination: 0.01, // Very slight inclination
-          color: const Color(0xFFD4C5A9), // Saturn ring color
+          color: AppColors.planetSaturn, // Saturn ring color
           size: 0.5,
           useXZPlane: true, // Horizontal view
         );
 
         expect(saturnRingParticle.orbitRadius, equals(120000.0));
-        expect(saturnRingParticle.color, equals(const Color(0xFFD4C5A9)));
+        expect(saturnRingParticle.color, equals(AppColors.planetSaturn));
         expect(saturnRingParticle.useXZPlane, isTrue);
       });
 
@@ -299,12 +298,12 @@ void main() {
           orbitSpeed: 0.00001, // Very slow for distant orbit
           orbitPhase: math.pi * 1.5,
           inclination: 0.05, // 5% inclination
-          color: const Color(0xFF8C7853), // Rocky asteroid color
+          color: AppColors.planetMercury, // Rocky asteroid color
           size: 1.2,
         );
 
         expect(asteroidParticle.orbitRadius, equals(2.7 * 149597870.7));
-        expect(asteroidParticle.color, equals(const Color(0xFF8C7853)));
+        expect(asteroidParticle.color, equals(AppColors.planetMercury));
         expect(asteroidParticle.useXZPlane, isFalse); // Default orbital plane
       });
 

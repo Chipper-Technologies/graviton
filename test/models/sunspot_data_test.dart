@@ -105,9 +105,9 @@ void main() {
         const penumbraGradient = RadialGradient(
           center: Alignment.center,
           colors: [
-            Color(0xFFFFA500), // Orange
-            Color(0xFFFF4500), // Red-orange
-            Color(0xFFDC143C), // Crimson
+            AppColors.stellarKType, // Orange
+            AppColors.stellarMType, // Red-orange
+            AppColors.habitabilityTooHot, // Crimson red
           ],
           stops: [0.0, 0.6, 1.0],
           radius: 0.8,
@@ -124,12 +124,12 @@ void main() {
 
         expect(sunspotData.penumbraGradient.colors.length, equals(3));
         expect(
-          sunspotData.penumbraGradient.colors[0],
-          equals(const Color(0xFFFFA500)),
+          sunspotData.penumbraGradient.colors.first,
+          equals(AppColors.stellarKType),
         );
         expect(
-          sunspotData.penumbraGradient.colors[2],
-          equals(const Color(0xFFDC143C)),
+          sunspotData.penumbraGradient.colors.last,
+          equals(AppColors.habitabilityTooHot),
         );
         expect(sunspotData.penumbraGradient.stops, equals([0.0, 0.6, 1.0]));
         expect(sunspotData.penumbraGradient.radius, equals(0.8));
@@ -140,8 +140,8 @@ void main() {
           center: Alignment.topLeft,
           colors: [
             AppColors.backgroundBlack,
-            Color(0xFF2F2F2F), // Dark grey
-            Color(0xFF4A4A4A), // Medium grey
+            AppColors.uiTextGrey, // Dark grey
+            AppColors.uiTextGrey, // Medium grey
           ],
           stops: [0.0, 0.4, 1.0],
           radius: 0.5,
@@ -163,11 +163,11 @@ void main() {
         );
         expect(
           sunspotData.umbraGradient.colors[1],
-          equals(const Color(0xFF2F2F2F)),
+          equals(AppColors.uiTextGrey),
         );
         expect(
-          sunspotData.umbraGradient.colors[2],
-          equals(const Color(0xFF4A4A4A)),
+          sunspotData.umbraGradient.colors.last,
+          equals(AppColors.uiTextGrey),
         );
         expect(sunspotData.umbraGradient.stops, equals([0.0, 0.4, 1.0]));
         expect(sunspotData.umbraGradient.center, equals(Alignment.topLeft));
@@ -267,15 +267,15 @@ void main() {
           radius: 8.0, // Small radius for solar minimum
           penumbraGradient: RadialGradient(
             colors: [
-              Color(0xFFFFA500), // Orange
-              Color(0xFFFF6347), // Tomato red
+              AppColors.stellarKType, // Orange
+              AppColors.stellarMType, // Tomato red
             ],
             stops: [0.0, 1.0],
           ),
           umbraGradient: RadialGradient(
             colors: [
               AppColors.backgroundBlack,
-              Color(0xFF1A1A1A), // Very dark grey
+              AppColors.backgroundBlack, // Very dark grey (reuse)
             ],
             stops: [0.0, 1.0],
           ),
@@ -294,18 +294,18 @@ void main() {
           radius: 120.0, // Large radius for solar maximum
           penumbraGradient: RadialGradient(
             colors: [
-              Color(0xFFFFA500), // Orange
-              Color(0xFFFF4500), // Red-orange
-              Color(0xFFDC143C), // Crimson
-              Color(0xFF8B0000), // Dark red
+              AppColors.stellarKType, // Orange
+              AppColors.stellarMType, // Red-orange
+              AppColors.habitabilityTooHot, // Crimson
+              AppColors.habitabilityTooHot, // Dark red (reuse)
             ],
             stops: [0.0, 0.3, 0.7, 1.0],
           ),
           umbraGradient: RadialGradient(
             colors: [
               AppColors.backgroundBlack,
-              Color(0xFF0A0A0A), // Nearly black
-              Color(0xFF1A1A1A), // Dark grey
+              AppColors.backgroundBlack, // Nearly black (reuse)
+              AppColors.backgroundBlack, // Dark grey (reuse)
             ],
             stops: [0.0, 0.5, 1.0],
           ),
@@ -327,9 +327,9 @@ void main() {
           penumbraGradient: RadialGradient(
             center: Alignment(-0.2, 0.3), // Off-center gradient
             colors: [
-              Color(0xFFFFA500), // Orange
-              Color(0xFFFF7F50), // Coral
-              Color(0xFFCD5C5C), // Indian red
+              AppColors.stellarKType, // Orange
+              AppColors.stellarMType, // Coral
+              AppColors.stellarMType, // Indian red (reuse)
             ],
             stops: [0.0, 0.6, 1.0],
             radius: 1.2, // Extends beyond normal bounds
@@ -338,8 +338,8 @@ void main() {
             center: Alignment(0.1, -0.1), // Slightly off-center
             colors: [
               AppColors.backgroundBlack,
-              Color(0xFF0F0F0F),
-              Color(0xFF2F2F2F),
+              AppColors.backgroundBlack, // Dark (reuse)
+              AppColors.uiTextGrey, // Dark grey
             ],
             stops: [0.0, 0.3, 1.0],
             radius: 0.8,
@@ -375,13 +375,13 @@ void main() {
           center: Offset(750.0, 100.0), // Near edge of star
           radius: 30.0,
           penumbraGradient: RadialGradient(
-            colors: [Color(0xFFFFA500), Color(0xFFFF4500)],
+            colors: [AppColors.stellarKType, AppColors.stellarMType],
             stops: [0.0, 1.0],
             // Gradient might be more elliptical near limb due to perspective
             transform: GradientRotation(0.3),
           ),
           umbraGradient: RadialGradient(
-            colors: [AppColors.backgroundBlack, Color(0xFF1A1A1A)],
+            colors: [AppColors.backgroundBlack, AppColors.backgroundBlack],
             stops: [0.0, 1.0],
             transform: GradientRotation(0.3),
           ),
@@ -414,15 +414,13 @@ void main() {
             radius: 15.0 + (index * 2.0), // Varying sizes
             penumbraGradient: RadialGradient(
               colors: [
-                Color(
-                  0xFFFFA500 - (index * 0x001100),
-                ), // Slight color variation
-                Color(0xFFFF4500 - (index * 0x001100)),
+                AppColors.stellarKType, // Orange (slight variation per index)
+                AppColors.stellarMType, // Red-orange
               ],
               stops: const [0.0, 1.0],
             ),
             umbraGradient: const RadialGradient(
-              colors: [AppColors.backgroundBlack, Color(0xFF1A1A1A)],
+              colors: [AppColors.backgroundBlack, AppColors.backgroundBlack],
               stops: [0.0, 1.0],
             ),
             penumbraRect: Rect.fromCircle(

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/constants/simulation_constants.dart';
@@ -295,8 +294,8 @@ void main() {
           AppColors.primaryColor,
           AppColors.stellarGType,
           AppColors.stellarOType,
-          const Color(0xFF123456),
-          const Color(0x80ABCDEF), // With alpha
+          AppColors.planetMercury,
+          AppColors.uiWhite.withValues(alpha: 0.5), // With alpha
         ];
 
         for (final color in colors) {
@@ -341,7 +340,7 @@ void main() {
       });
 
       test('should handle opaque colors correctly', () {
-        final opaqueColor = const Color(0xFF123456);
+        final opaqueColor = AppColors.planetMercury;
         final body = Body(
           name: 'Opaque Color Test',
           position: vm.Vector3.zero(),
@@ -364,7 +363,7 @@ void main() {
       });
 
       test('should handle transparent colors correctly', () {
-        final transparentColor = const Color(0x80123456);
+        final transparentColor = AppColors.planetMercury.withValues(alpha: 0.5);
         final body = Body(
           name: 'Transparent Color Test',
           position: vm.Vector3.zero(),

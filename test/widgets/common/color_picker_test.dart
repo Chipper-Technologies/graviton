@@ -298,7 +298,7 @@ void main() {
       WidgetTester tester,
     ) async {
       // Use the same red color instance to test equality
-      const redColor = Color(0xFFFF0000);
+      const redColor = AppColors.stellarMType;
 
       await tester.pumpWidget(
         makeTestableWidget(

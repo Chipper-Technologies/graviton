@@ -198,8 +198,8 @@ void main() {
       });
 
       test('handles custom colors', () {
-        const customTextColor = Color(0xFF123456);
-        const customBackgroundColor = Color(0xFFABCDEF);
+        const customTextColor = AppColors.planetMercury;
+        const customBackgroundColor = AppColors.uiWhite;
         final customColorAction = DialogAction(
           text: 'Custom Colors',
           onPressed: testCallback,
@@ -219,7 +219,9 @@ void main() {
           text: 'Transparent',
           onPressed: testCallback,
           textColor: AppColors.transparentColor,
-          backgroundColor: const Color(0x80FF0000), // 50% red
+          backgroundColor: AppColors.stellarMType.withValues(
+            alpha: 0.5,
+          ), // 50% red
         );
 
         expect(transparentAction.textColor, equals(AppColors.transparentColor));

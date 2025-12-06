@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/constants/rendering_constants.dart';
@@ -629,10 +631,35 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                                 width: 1.5,
                               ),
-                              image: DecorationImage(
-                                image: AssetImage(AppConfig.appLogoPath),
-                                fit: BoxFit.cover,
-                              ),
+                            ),
+                            child: ClipOval(
+                              clipBehavior: Clip.antiAlias,
+                              child: kIsWeb
+                                  ? Container(
+                                      decoration: const BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            AppColors.spaceGradientDark,
+                                            AppColors.spaceGradientDarker,
+                                          ],
+                                        ),
+                                      ),
+                                      child: SvgPicture.asset(
+                                        AppConfig.gravitonLogoPath,
+                                        width: 28,
+                                        height: 28,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    )
+                                  : Image.asset(
+                                      AppConfig.appLogoPath,
+                                      width: 28,
+                                      height: 28,
+                                      fit: BoxFit.cover,
+                                      filterQuality: FilterQuality.high,
+                                    ),
                             ),
                           ),
                         ),

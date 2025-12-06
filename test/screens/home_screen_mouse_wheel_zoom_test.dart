@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/state/camera_state.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 void main() {
@@ -20,7 +21,7 @@ void main() {
           velocity: vm.Vector3(0, 0, 0),
           mass: 1.989e30, // Sun mass
           radius: 10.0,
-          color: const Color(0xFFFFFF00),
+          color: AppColors.stellarGType, // Sun yellow
           name: 'Sun',
         ),
         Body(
@@ -28,7 +29,7 @@ void main() {
           velocity: vm.Vector3(0, 30, 0),
           mass: 5.972e24, // Earth mass
           radius: 5.0,
-          color: const Color(0xFF0000FF),
+          color: AppColors.planetEarth, // Earth blue
           name: 'Earth',
         ),
       ];

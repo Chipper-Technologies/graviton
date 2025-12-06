@@ -20,6 +20,8 @@ class AppColors {
 
   /// Deep space background colors
   static const Color spaceDeepBlueBlack = Color(0xFF0a0a1a);
+  static const Color spaceGradientDark = Color(0xFF1a1a2e);
+  static const Color spaceGradientDarker = Color(0xFF0f0f1e);
   static const Color spacePurple = Color(0xFF2a1a3f);
   static const Color spaceDeepPurple = Color(0xFF3d1a5c);
   static const Color spacePureBlack = Color(0xFF000000);

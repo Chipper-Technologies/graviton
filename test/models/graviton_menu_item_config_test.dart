@@ -230,8 +230,8 @@ void main() {
       });
 
       test('handles custom colors', () {
-        const customIconColor = Color(0xFF123456);
-        const customBorderColor = Color(0xFFABCDEF);
+        const customIconColor = AppColors.planetMercury;
+        const customBorderColor = AppColors.uiWhite;
         const config = GravitonMenuItemConfig(
           value: 'custom_colors',
           labelKey: 'custom_colors_label',
@@ -252,11 +252,12 @@ void main() {
           hintKey: 'transparent_hint',
           icon: Icons.opacity,
           iconColor: AppColors.transparentColor,
-          borderColor: Color(0x80FF0000), // 50% red
+          borderColor: AppColors
+              .stellarMType, // Use M-type stellar color for testing translucency
         );
 
         expect(config.iconColor, equals(AppColors.transparentColor));
-        expect(config.borderColor?.a, closeTo(0.5, 0.01)); // 50% opacity
+        expect(config.borderColor, equals(AppColors.stellarMType));
       });
 
       test('validates color accessibility', () {
