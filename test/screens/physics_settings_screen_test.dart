@@ -291,6 +291,8 @@ void main() {
       // Build navigation context
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: Builder(
               builder: (context) => ElevatedButton(
@@ -324,10 +326,10 @@ void main() {
       await tester.tap(find.text('Open Settings'));
       await tester.pumpAndSettle();
 
-      // Find and tap close button
-      final closeButton = find.widgetWithIcon(IconButton, Icons.close);
-      expect(closeButton, findsOneWidget);
-      await tester.tap(closeButton);
+      // Find and tap back button
+      final backButton = find.widgetWithIcon(IconButton, Icons.arrow_back);
+      expect(backButton, findsOneWidget);
+      await tester.tap(backButton);
       await tester.pumpAndSettle();
 
       // Verify screen was closed (back to home)

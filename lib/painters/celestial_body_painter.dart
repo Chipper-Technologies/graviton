@@ -435,7 +435,14 @@ class CelestialBodyPainter {
     );
 
     // Add random sunspots (dark regions on solar surface) - adapted to stellar temperature
-    _drawSunspots(canvas, center, radius, stellarTemperature, stellarColor);
+    _drawSunspots(
+      canvas,
+      center,
+      radius,
+      stellarTemperature,
+      stellarColor,
+      body,
+    );
 
     // Add dynamic solar flares (bright eruptions from surface) - adapted to stellar type
     _drawSolarFlares(
@@ -445,6 +452,7 @@ class CelestialBodyPainter {
       currentTimeSeconds,
       stellarTemperature,
       stellarColor,
+      body,
     );
   }
 
@@ -455,20 +463,21 @@ class CelestialBodyPainter {
     double radius,
     double stellarTemperature,
     Color stellarColor,
+    Body body,
   ) {
-    // Use a seed based on the current hour for frequently varying but stable sunspot positions
+    // Use a seed based on the current day and body name for stable sunspot positions
     final now = DateTime.now().toUtc();
     final dayOfYear = int.parse(_dayOfYearFormat.format(now));
-    final hourOfDay = now.hour;
+    final bodyHash = body.name.hashCode.abs();
 
-    // Create seed that changes every hour: dayOfYear * seedDayMultiplier + hour
-    final seed = dayOfYear * RenderingConstants.seedDayMultiplier + hourOfDay;
+    // Create seed that changes daily and is unique per body
+    final seed = dayOfYear * RenderingConstants.seedDayMultiplier + bodyHash;
 
-    // Check if we need to recalculate sunspots for this hour
+    // Check if we need to recalculate sunspots for this day
     final cacheKey = seed;
     List<SunspotData>? cachedSunspots = _sunspotCache[cacheKey];
 
-    // Generate sunspots if not cached for this hour
+    // Generate sunspots if not cached for this day
     if (cachedSunspots == null) {
       cachedSunspots = _generateSunspots(
         seed,
@@ -667,24 +676,25 @@ class CelestialBodyPainter {
     double currentTimeSeconds,
     double stellarTemperature,
     Color stellarColor,
+    Body body,
   ) {
     // Use multiple time scales for different flare phases
     final currentTime =
         currentTimeSeconds; // Use passed time instead of DateTime.now()
 
     // Create multiple flare cycles with different timing
-    const flareLifetime = 8.0; // Each flare lives for 8 seconds
-    const maxFlares = 3; // Maximum concurrent flares
+    const flareLifetime =
+        30.0; // Each flare lives for 30 seconds (balanced speed)
+    const maxFlares = 2; // Maximum concurrent flares (reduced from 3)
 
     // Get sunspot positions for magnetic field correlation
-    // Use hour-based seed for variation that matches current sunspots
+    // Use day-based seed for variation that matches current sunspots
     final now = DateTime.now().toUtc();
     final dayOfYear = int.parse(_dayOfYearFormat.format(now));
-    final hourOfDay = now.hour;
-    final hourSeed =
-        dayOfYear * RenderingConstants.seedDayMultiplier + hourOfDay;
+    final bodyHash = body.name.hashCode.abs();
+    final daySeed = dayOfYear * RenderingConstants.seedDayMultiplier + bodyHash;
 
-    final sunspotRandom = math.Random(hourSeed);
+    final sunspotRandom = math.Random(daySeed);
     final numSunspots =
         RenderingConstants.minSunspots +
         sunspotRandom.nextInt(RenderingConstants.maxAdditionalSunspots);
@@ -707,7 +717,8 @@ class CelestialBodyPainter {
       final flareOffset =
           flareIndex * (flareLifetime / maxFlares); // Stagger flares
       final flareStartTime =
-          (currentTime + flareOffset) % (flareLifetime * 1.5); // Some overlap
+          (currentTime + flareOffset) %
+          (flareLifetime * 2.5); // Longer gaps between cycles
 
       // Skip if this flare hasn't started yet or has ended
       if (flareStartTime > flareLifetime) continue;
@@ -715,12 +726,13 @@ class CelestialBodyPainter {
       // Calculate flare animation progress (0.0 to 1.0)
       final flareProgress = flareStartTime / flareLifetime;
 
-      // Use flare index with hour seed for varied positioning that changes hourly
+      // Use flare index with day seed for varied positioning that changes daily
+      // Fixed seed per flare cycle - do NOT include flareProgress in seed
+      final flareCycle = (currentTime / (flareLifetime * 2.5)).floor();
       final flareRandom = math.Random(
-        hourSeed +
+        daySeed +
             flareIndex * RenderingConstants.flareIndexSeedOffset +
-            (flareProgress * RenderingConstants.flareProgressSeedMultiplier)
-                .toInt(),
+            flareCycle * 1000,
       );
 
       // Choose flare origin (prefer sunspot areas)
@@ -767,26 +779,28 @@ class CelestialBodyPainter {
       double animatedLength;
       double animatedIntensity;
 
-      if (flareProgress < 0.3) {
-        // Phase 1: Rapid emergence (0-30% of lifetime)
-        final emergenceProgress = flareProgress / 0.3;
-        final easeOut = math.sin(
-          emergenceProgress * math.pi * 0.5,
-        ); // Ease out curve
+      if (flareProgress < 0.5) {
+        // Phase 1: Slow emergence (0-50% of lifetime)
+        final emergenceProgress = flareProgress / 0.5;
+        // Use cubic easing for very gradual emergence
+        final easeOut =
+            emergenceProgress *
+            emergenceProgress *
+            (3.0 - 2.0 * emergenceProgress);
         animatedLength =
             easeOut * radius * (0.6 + flareRandom.nextDouble() * 0.8);
         animatedIntensity = easeOut * (0.8 + flareRandom.nextDouble() * 0.2);
-      } else if (flareProgress < 0.7) {
-        // Phase 2: Peak intensity (30-70% of lifetime)
-        final peakProgress = (flareProgress - 0.3) / 0.4;
+      } else if (flareProgress < 0.8) {
+        // Phase 2: Peak intensity (50-80% of lifetime)
+        final peakProgress = (flareProgress - 0.5) / 0.3;
         final intensity =
             0.9 +
             math.sin(peakProgress * math.pi * 2) * 0.1; // Subtle fluctuation
         animatedLength = radius * (0.6 + flareRandom.nextDouble() * 0.8);
         animatedIntensity = intensity * (0.8 + flareRandom.nextDouble() * 0.2);
       } else {
-        // Phase 3: Fade out (70-100% of lifetime)
-        final fadeProgress = (flareProgress - 0.7) / 0.3;
+        // Phase 3: Fade out (80-100% of lifetime)
+        final fadeProgress = (flareProgress - 0.8) / 0.2;
         final fadeEase = math.cos(
           fadeProgress * math.pi * 0.5,
         ); // Ease in curve
