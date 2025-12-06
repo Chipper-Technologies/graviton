@@ -1708,6 +1708,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get habitabilityIndicatorsLabel => '행성 상태';
 
   @override
+  String get stellarCoronasTitle => '항성 코로나';
+
+  @override
+  String get stellarCoronasDescription => '별 주변의 빛나는 플라즈마 대기를 표시';
+
+  @override
+  String get atmosphericEffectsTitle => '대기 효과';
+
+  @override
+  String get atmosphericEffectsDescription => '행성에 대기 후광과 산란 표시';
+
+  @override
   String get habitabilityLabel => '거주 가능성';
 
   @override

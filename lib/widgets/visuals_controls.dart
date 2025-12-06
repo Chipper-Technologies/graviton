@@ -110,6 +110,34 @@ class VisualsControls extends StatelessWidget {
           ),
         ),
 
+        _buildToggleOption(
+          l10n.stellarCoronasTitle,
+          l10n.stellarCoronasDescription,
+          Icons.wb_sunny,
+          appState.ui.showStellarCoronas,
+          () => _toggleWithAnalytics(
+            UIAction.visualEffectToggle,
+            UIElement.visualControls,
+            'stellar_coronas',
+            appState.ui.showStellarCoronas,
+            appState.ui.toggleStellarCoronas,
+          ),
+        ),
+
+        _buildToggleOption(
+          l10n.atmosphericEffectsTitle,
+          l10n.atmosphericEffectsDescription,
+          Icons.cloud_circle,
+          appState.ui.showAtmosphericEffects,
+          () => _toggleWithAnalytics(
+            UIAction.visualEffectToggle,
+            UIElement.visualControls,
+            'atmospheric_effects',
+            appState.ui.showAtmosphericEffects,
+            appState.ui.toggleAtmosphericEffects,
+          ),
+        ),
+
         SectionDivider.labeled(
           l10n.pathVisualizationTitle,
           topSpacing: AppTypography.spacingSmall,

@@ -288,9 +288,53 @@ void main() {
     testWidgets('should close screen when close button is tapped', (
       WidgetTester tester,
     ) async {
-      // TODO: Fix navigation context issue
-      // This test needs proper navigation setup to work correctly
-    }, skip: true);
+      // Build navigation context
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => PhysicsSettingsScreen(
+                        gravitationalConstant: 1.2,
+                        softening: 0.01,
+                        timeScale: 4.0,
+                        collisionRadiusMultiplier: 0.5,
+                        maxTrailPoints: 500,
+                        trailFadeRate: 1.0,
+                        vibrationThrottleTime: 0.5,
+                        vibrationEnabled: true,
+                        currentScenario: ScenarioType.solarSystem,
+                        onSettingsChanged: (_) {},
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Open Settings'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Navigate to settings screen
+      await tester.tap(find.text('Open Settings'));
+      await tester.pumpAndSettle();
+
+      // Find and tap back button
+      final backButton = find.widgetWithIcon(IconButton, Icons.arrow_back);
+      expect(backButton, findsOneWidget);
+      await tester.tap(backButton);
+      await tester.pumpAndSettle();
+
+      // Verify screen was closed (back to home)
+      expect(find.text('Open Settings'), findsOneWidget);
+    });
 
     testWidgets('should display correct initial values', (
       WidgetTester tester,

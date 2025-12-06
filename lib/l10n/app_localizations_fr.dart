@@ -1794,6 +1794,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get habitabilityIndicatorsLabel => 'État de la Planète';
 
   @override
+  String get stellarCoronasTitle => 'Couronnes Stellaires';
+
+  @override
+  String get stellarCoronasDescription =>
+      'Afficher les atmosphères de plasma brillant autour des étoiles';
+
+  @override
+  String get atmosphericEffectsTitle => 'Effets Atmosphériques';
+
+  @override
+  String get atmosphericEffectsDescription =>
+      'Afficher les halos atmosphériques et la diffusion sur les planètes';
+
+  @override
   String get habitabilityLabel => 'Habitabilité';
 
   @override

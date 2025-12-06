@@ -368,6 +368,10 @@ class _SimulationViewportWidgetState extends State<SimulationViewportWidget> {
                                       .appState
                                       .ui
                                       .showEquipotentialSurfaces,
+                                  showStellarCoronas:
+                                      widget.appState.ui.showStellarCoronas,
+                                  showAtmosphericEffects:
+                                      widget.appState.ui.showAtmosphericEffects,
                                   showGravityFieldIndicators: widget
                                       .appState
                                       .ui

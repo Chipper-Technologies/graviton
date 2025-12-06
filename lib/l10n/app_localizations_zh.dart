@@ -1687,6 +1687,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get habitabilityIndicatorsLabel => '行星状态';
 
   @override
+  String get stellarCoronasTitle => '恒星日冕';
+
+  @override
+  String get stellarCoronasDescription => '显示恒星周围发光的等离子体大气';
+
+  @override
+  String get atmosphericEffectsTitle => '大气效果';
+
+  @override
+  String get atmosphericEffectsDescription => '在行星上显示大气晕圈和散射';
+
+  @override
   String get habitabilityLabel => '宜居性';
 
   @override

@@ -45,6 +45,8 @@ class GravitonPainter extends CustomPainter {
   final bool showEquipotentialSurfaces;
   final bool showGravityFieldIndicators;
   final int? movingBodyIndex;
+  final bool showStellarCoronas;
+  final bool showAtmosphericEffects;
 
   GravitonPainter({
     required this.sim,
@@ -66,6 +68,8 @@ class GravitonPainter extends CustomPainter {
     this.showEquipotentialSurfaces = false,
     this.showGravityFieldIndicators = false,
     this.movingBodyIndex,
+    this.showStellarCoronas = true,
+    this.showAtmosphericEffects = false,
   });
 
   @override
@@ -258,6 +262,8 @@ class GravitonPainter extends CustomPainter {
           canvasSize: size,
           opacity: opacity,
           useRealisticColors: useRealisticColors,
+          showStellarCoronas: showStellarCoronas,
+          showAtmosphericEffects: showAtmosphericEffects,
         );
       }
 

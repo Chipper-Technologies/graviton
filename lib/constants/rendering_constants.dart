@@ -79,6 +79,37 @@ class RenderingConstants {
   /// Consistent seed for sunspot and solar flare generation to ensure stable visual patterns
   static const int sunspotSeed = 42;
 
+  /// Offset multiplier for flare index in random seed calculation
+  /// Used to ensure each flare has a unique but stable seed during its lifetime
+  static const int flareIndexSeedOffset = 123;
+
+  /// Multiplier for flare progress in random seed calculation
+  /// Converts flare progress (0.0-1.0) to integer range for seed variation
+  static const int flareProgressSeedMultiplier = 1000;
+
+  /// Multiplier for day-of-year in hourly seed calculation
+  /// Used to create unique seeds that change hourly: dayOfYear * 100 + hour
+  static const int seedDayMultiplier = 100;
+
+  // Atmospheric effects
+  /// Default intensity for atmospheric haze effects on planets (0.0-1.0)
+  /// Controls opacity and extent of atmospheric halos
+  static const double atmosphericHazeDefaultIntensity = 0.3;
+
+  /// Gradient stops for atmospheric haze radial gradient
+  /// Controls how the haze fades from planet surface to transparent edge
+  /// Values concentrate the effect near the planet for realistic appearance
+  static const List<double> atmosphericHazeStops = [0.7, 0.85, 0.95, 1.0];
+
+  /// Base extent multiplier for atmospheric haze (1.0 = planet radius)
+  /// The haze extends this far beyond the planet's surface before intensity scaling
+  static const double atmosphericHazeBaseExtent = 1.0;
+
+  /// Multiplier for haze intensity in extent calculation
+  /// Converts intensity (0.0-1.0) to additional radius extension
+  /// Final extent: baseExtent + (intensity * intensityMultiplier) = 1.0x to 1.5x radius
+  static const double atmosphericHazeIntensityMultiplier = 0.5;
+
   /// Minimum number of sunspots to generate on the sun's surface
   static const int minSunspots = 3;
 

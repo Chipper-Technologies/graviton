@@ -4,7 +4,7 @@ import 'package:graviton/enums/ui_element.dart';
 void main() {
   group('UIElement Enum', () {
     test('should have all expected UI elements', () {
-      expect(UIElement.values.length, equals(64));
+      expect(UIElement.values.length, equals(65));
       expect(UIElement.values, contains(UIElement.simulationViewport));
       expect(UIElement.values, contains(UIElement.scenarioSelection));
       expect(UIElement.values, contains(UIElement.scenarioDialog));
@@ -172,6 +172,11 @@ void main() {
       expect(UIElement.values, contains(UIElement.habitableZoneControls));
       expect(UIElement.values, contains(UIElement.orbitalPathControls));
       expect(UIElement.values, contains(UIElement.navigationAidsControls));
+      expect(UIElement.values, contains(UIElement.visualControls));
+    });
+
+    test('visualControls should have correct string value', () {
+      expect(UIElement.visualControls.value, equals('visual_controls'));
     });
 
     test('should include camera elements', () {

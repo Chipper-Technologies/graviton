@@ -3078,6 +3078,30 @@ abstract class AppLocalizations {
   /// **'Planet Status'**
   String get habitabilityIndicatorsLabel;
 
+  /// Label for stellar coronas toggle in visuals settings
+  ///
+  /// In en, this message translates to:
+  /// **'Stellar Coronas'**
+  String get stellarCoronasTitle;
+
+  /// Description for stellar coronas visual effect setting
+  ///
+  /// In en, this message translates to:
+  /// **'Show glowing plasma atmospheres around stars'**
+  String get stellarCoronasDescription;
+
+  /// Label for atmospheric effects toggle in visuals settings
+  ///
+  /// In en, this message translates to:
+  /// **'Atmospheric Effects'**
+  String get atmosphericEffectsTitle;
+
+  /// Description for atmospheric effects visual setting
+  ///
+  /// In en, this message translates to:
+  /// **'Display atmospheric halos and scattering on planets'**
+  String get atmosphericEffectsDescription;
+
   /// Label for habitability features
   ///
   /// In en, this message translates to:
