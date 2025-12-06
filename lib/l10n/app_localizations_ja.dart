@@ -1702,6 +1702,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get habitabilityIndicatorsLabel => '惑星の状態';
 
   @override
+  String get stellarCoronasTitle => '恒星コロナ';
+
+  @override
+  String get stellarCoronasDescription => '恒星の周りに輝くプラズマ大気を表示';
+
+  @override
+  String get atmosphericEffectsTitle => '大気効果';
+
+  @override
+  String get atmosphericEffectsDescription => '惑星に大気ハローと散乱を表示';
+
+  @override
   String get habitabilityLabel => '居住可能性';
 
   @override

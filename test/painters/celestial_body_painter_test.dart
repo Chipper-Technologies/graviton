@@ -272,6 +272,384 @@ void main() {
       });
     });
 
+    group('Visual Effects Conditional Rendering', () {
+      test('should render stellar coronas when enabled', () {
+        final sun = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1000.0,
+          radius: 20.0,
+          color: AppColors.basicYellow,
+          name: 'Sun',
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            sun,
+            showStellarCoronas: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should skip stellar coronas when disabled', () {
+        final sun = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1000.0,
+          radius: 20.0,
+          color: AppColors.basicYellow,
+          name: 'Sun',
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            sun,
+            showStellarCoronas: false,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should render atmospheric effects on planets when enabled', () {
+        final earth = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 10.0,
+          radius: 5.0,
+          color: AppColors.planetEarth,
+          name: 'Earth',
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            earth,
+            showAtmosphericEffects: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should skip atmospheric effects on planets when disabled', () {
+        final earth = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 10.0,
+          radius: 5.0,
+          color: AppColors.planetEarth,
+          name: 'Earth',
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            earth,
+            showAtmosphericEffects: false,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should support both effects enabled simultaneously', () {
+        final sun = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1000.0,
+          radius: 20.0,
+          color: AppColors.basicYellow,
+          name: 'Sun',
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            sun,
+            showStellarCoronas: true,
+            showAtmosphericEffects: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should support both effects disabled simultaneously', () {
+        final sun = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1000.0,
+          radius: 20.0,
+          color: AppColors.basicYellow,
+          name: 'Sun',
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            sun,
+            showStellarCoronas: false,
+            showAtmosphericEffects: false,
+          ),
+          returnsNormally,
+        );
+      });
+    });
+
+    group('Sunspot and Solar Flare Rendering', () {
+      test('should render sunspots on Sun without errors', () {
+        final sun = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1000.0,
+          radius: 20.0,
+          color: AppColors.basicYellow,
+          name: 'Sun',
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            sun,
+            useRealisticColors: true, // Enables sunspots
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should render sunspots on other stars without errors', () {
+        final star = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1500.0,
+          radius: 25.0,
+          color: AppColors.stellarFType,
+          name: 'Star Alpha',
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            star,
+            useRealisticColors: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should handle sunspot rendering at different scales', () {
+        final sun = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1000.0,
+          radius: 20.0,
+          color: AppColors.basicYellow,
+          name: 'Sun',
+        );
+
+        // Test with small radius
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            10.0, // Small radius
+            sun,
+            useRealisticColors: true,
+          ),
+          returnsNormally,
+        );
+
+        // Test with large radius
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            200.0, // Large radius
+            sun,
+            useRealisticColors: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should render solar flares without errors', () {
+        final sun = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1000.0,
+          radius: 20.0,
+          color: AppColors.basicYellow,
+          name: 'Sun',
+        );
+
+        // Solar flares are drawn as part of drawBody for stars
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            sun,
+            useRealisticColors: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should handle multiple render calls consistently', () {
+        final sun = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1000.0,
+          radius: 20.0,
+          color: AppColors.basicYellow,
+          name: 'Sun',
+        );
+
+        // Render multiple times to test caching behavior
+        for (int i = 0; i < 5; i++) {
+          expect(
+            () => CelestialBodyPainter.drawBody(
+              canvas,
+              center,
+              radius,
+              sun,
+              useRealisticColors: true,
+            ),
+            returnsNormally,
+            reason: 'Failed on render iteration $i',
+          );
+        }
+      });
+
+      test(
+        'should render without sunspots when useRealisticColors is false',
+        () {
+          final sun = Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 1000.0,
+            radius: 20.0,
+            color: AppColors.basicYellow,
+            name: 'Sun',
+          );
+
+          expect(
+            () => CelestialBodyPainter.drawBody(
+              canvas,
+              center,
+              radius,
+              sun,
+              useRealisticColors: false, // Disables sunspots
+            ),
+            returnsNormally,
+          );
+        },
+      );
+    });
+
+    group('Atmospheric Halo Rendering', () {
+      test('should render atmospheric effects on Mercury', () {
+        final mercury = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 10.0,
+          radius: 5.0,
+          color: AppColors.planetMercury,
+          name: 'Mercury',
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            mercury,
+            showAtmosphericEffects: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should render atmospheric effects on all planets', () {
+        final planetNames = [
+          'Mercury',
+          'Venus',
+          'Earth',
+          'Mars',
+          'Jupiter',
+          'Saturn',
+          'Uranus',
+          'Neptune',
+        ];
+
+        for (final planetName in planetNames) {
+          final planet = Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 10.0,
+            radius: 5.0,
+            color: AppColors.basicBlue,
+            name: planetName,
+          );
+
+          expect(
+            () => CelestialBodyPainter.drawBody(
+              canvas,
+              center,
+              radius,
+              planet,
+              showAtmosphericEffects: true,
+            ),
+            returnsNormally,
+            reason: 'Failed to render atmospheric effects on $planetName',
+          );
+        }
+      });
+
+      test('should handle atmospheric effects at different scales', () {
+        final earth = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 10.0,
+          radius: 5.0,
+          color: AppColors.planetEarth,
+          name: 'Earth',
+        );
+
+        // Test with various scales
+        final scales = [5.0, 20.0, 50.0, 100.0, 200.0];
+        for (final scale in scales) {
+          expect(
+            () => CelestialBodyPainter.drawBody(
+              canvas,
+              center,
+              scale,
+              earth,
+              showAtmosphericEffects: true,
+            ),
+            returnsNormally,
+            reason: 'Failed at scale $scale',
+          );
+        }
+      });
+    });
+
     tearDown(() {
       recorder.endRecording();
     });

@@ -46,6 +46,10 @@ class UIState extends ChangeNotifier {
   bool _showCollisionEjection = true;
   bool _showCollisionPlasmaJets = false;
 
+  // Stellar and atmospheric visual effects settings
+  bool _showStellarCoronas = true;
+  bool _showAtmosphericEffects = false;
+
   // Language settings
   String? _selectedLanguageCode; // null means system default
 
@@ -96,6 +100,8 @@ class UIState extends ChangeNotifier {
   static const String _keyShowCollisionShockwaves = 'showCollisionShockwaves';
   static const String _keyShowCollisionEjection = 'showCollisionEjection';
   static const String _keyShowCollisionPlasmaJets = 'showCollisionPlasmaJets';
+  static const String _keyShowStellarCoronas = 'showStellarCoronas';
+  static const String _keyShowAtmosphericEffects = 'showAtmosphericEffects';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
   static const String _keyTemperatureUnit = 'temperatureUnit';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
@@ -184,6 +190,11 @@ class UIState extends ChangeNotifier {
       _showCollisionPlasmaJets =
           prefs.getBool(_keyShowCollisionPlasmaJets) ?? false;
 
+      // Load stellar and atmospheric visual effects settings
+      _showStellarCoronas = prefs.getBool(_keyShowStellarCoronas) ?? true;
+      _showAtmosphericEffects =
+          prefs.getBool(_keyShowAtmosphericEffects) ?? false;
+
       _selectedLanguageCode = prefs.getString(_keySelectedLanguageCode);
 
       // Load temperature unit setting
@@ -267,6 +278,10 @@ class UIState extends ChangeNotifier {
   bool get showCollisionShockwaves => _showCollisionShockwaves;
   bool get showCollisionEjection => _showCollisionEjection;
   bool get showCollisionPlasmaJets => _showCollisionPlasmaJets;
+
+  // Stellar and atmospheric visual effects getters
+  bool get showStellarCoronas => _showStellarCoronas;
+  bool get showAtmosphericEffects => _showAtmosphericEffects;
 
   // Gravity field getters
   bool get globalGravityFields => _globalGravityFields;
@@ -520,6 +535,27 @@ class UIState extends ChangeNotifier {
     FirebaseService.instance.logSettingsChange(
       'show_collision_plasma_jets',
       _showCollisionPlasmaJets,
+    );
+    notifyListeners();
+  }
+
+  // Stellar and atmospheric visual effects setters
+  void toggleStellarCoronas() {
+    _showStellarCoronas = !_showStellarCoronas;
+    _saveSetting(_keyShowStellarCoronas, _showStellarCoronas);
+    FirebaseService.instance.logSettingsChange(
+      'show_stellar_coronas',
+      _showStellarCoronas,
+    );
+    notifyListeners();
+  }
+
+  void toggleAtmosphericEffects() {
+    _showAtmosphericEffects = !_showAtmosphericEffects;
+    _saveSetting(_keyShowAtmosphericEffects, _showAtmosphericEffects);
+    FirebaseService.instance.logSettingsChange(
+      'show_atmospheric_effects',
+      _showAtmosphericEffects,
     );
     notifyListeners();
   }

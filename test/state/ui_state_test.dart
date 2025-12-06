@@ -374,6 +374,45 @@ void main() {
       });
     });
 
+    group('Visual Effects', () {
+      test('Should initialize with default stellar coronas enabled', () {
+        expect(uiState.showStellarCoronas, isTrue);
+      });
+
+      test('Should initialize with default atmospheric effects disabled', () {
+        expect(uiState.showAtmosphericEffects, isFalse);
+      });
+
+      test('Should toggle stellar coronas', () {
+        final initial = uiState.showStellarCoronas;
+        uiState.toggleStellarCoronas();
+        expect(uiState.showStellarCoronas, equals(!initial));
+
+        uiState.toggleStellarCoronas();
+        expect(uiState.showStellarCoronas, equals(initial));
+      });
+
+      test('Should toggle atmospheric effects', () {
+        final initial = uiState.showAtmosphericEffects;
+        uiState.toggleAtmosphericEffects();
+        expect(uiState.showAtmosphericEffects, equals(!initial));
+
+        uiState.toggleAtmosphericEffects();
+        expect(uiState.showAtmosphericEffects, equals(initial));
+      });
+
+      test('Visual effect toggles should notify listeners', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        uiState.toggleStellarCoronas();
+        expect(notificationCount, equals(1));
+
+        uiState.toggleAtmosphericEffects();
+        expect(notificationCount, equals(2));
+      });
+    });
+
     group('Collision Effects', () {
       test('Should toggle collision debris', () {
         final initial = uiState.showCollisionDebris;

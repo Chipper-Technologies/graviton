@@ -2376,6 +2376,22 @@
   "@habitabilityIndicatorsLabel": {
     "description": "Label for habitability indicators toggle"
   },
+  "stellarCoronasTitle": "Stellar Coronas",
+  "@stellarCoronasTitle": {
+    "description": "Label for stellar coronas toggle in visuals settings"
+  },
+  "stellarCoronasDescription": "Show glowing plasma atmospheres around stars",
+  "@stellarCoronasDescription": {
+    "description": "Description for stellar coronas visual effect setting"
+  },
+  "atmosphericEffectsTitle": "Atmospheric Effects",
+  "@atmosphericEffectsTitle": {
+    "description": "Label for atmospheric effects toggle in visuals settings"
+  },
+  "atmosphericEffectsDescription": "Display atmospheric halos and scattering on planets",
+  "@atmosphericEffectsDescription": {
+    "description": "Description for atmospheric effects visual setting"
+  },
   "habitabilityLabel": "Habitability",
   "@habitabilityLabel": {
     "description": "Label for habitability features"

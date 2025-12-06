@@ -116,6 +116,9 @@ enum UIElement {
   /// Habitable zone controls
   habitableZoneControls('habitable_zone_controls'),
 
+  /// Visual effects controls (coronas, atmospheres)
+  visualControls('visual_controls'),
+
   /// Orbital path controls
   orbitalPathControls('orbital_path_controls'),
 

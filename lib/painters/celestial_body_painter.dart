@@ -49,6 +49,8 @@ class CelestialBodyPainter {
     Size? canvasSize,
     double opacity = 1.0,
     bool useRealisticColors = false,
+    bool showStellarCoronas = true,
+    bool showAtmosphericEffects = false,
   }) {
     // Special rendering for celestial bodies
     final bodyEnum = CelestialBodyName.fromString(body.name);
@@ -63,6 +65,7 @@ class CelestialBodyPainter {
         radius,
         body,
         useRealisticColors: useRealisticColors,
+        showStellarCoronas: showStellarCoronas,
       );
     } else if (body.bodyType == BodyType.star &&
         useRealisticColors &&
@@ -74,6 +77,7 @@ class CelestialBodyPainter {
         radius,
         body,
         useRealisticColors: useRealisticColors,
+        showStellarCoronas: showStellarCoronas,
       );
     } else {
       // Check for specific celestial body types using enum
@@ -82,14 +86,62 @@ class CelestialBodyPainter {
       switch (celestialBody) {
         case CelestialBodyName.mercury:
           drawMercury(canvas, center, radius);
+          if (showAtmosphericEffects) {
+            _drawAtmosphericHalo(
+              canvas,
+              center,
+              radius,
+              AppColors.planetMercury,
+              hazeIntensity: 0.1,
+            );
+          }
         case CelestialBodyName.venus:
           drawVenus(canvas, center, radius);
+          if (showAtmosphericEffects) {
+            _drawAtmosphericHalo(
+              canvas,
+              center,
+              radius,
+              AppColors.planetVenus,
+              hazeIntensity: 0.6,
+            );
+          }
         case CelestialBodyName.earth:
           drawEarth(canvas, center, radius);
+          if (showAtmosphericEffects) {
+            _drawAtmosphericHalo(
+              canvas,
+              center,
+              radius,
+              AppColors.planetEarth,
+              hazeIntensity: 0.3,
+              atmosphericColor: AppColors.starSkyBlue,
+            );
+          }
         case CelestialBodyName.mars:
           drawMars(canvas, center, radius);
+          if (showAtmosphericEffects) {
+            // Mars has a thin CO2 atmosphere with dust storms
+            _drawAtmosphericHalo(
+              canvas,
+              center,
+              radius,
+              AppColors.planetMars,
+              hazeIntensity: 0.15, // Thin atmosphere
+            );
+          }
         case CelestialBodyName.jupiter:
           drawJupiter(canvas, center, radius);
+          if (showAtmosphericEffects) {
+            // Jupiter has extensive atmosphere with cloud bands
+            _drawAtmosphericHalo(
+              canvas,
+              center,
+              radius,
+              AppColors.planetJupiter,
+              hazeIntensity: 0.4, // Thick atmosphere
+            );
+          }
         case CelestialBodyName.saturn:
           drawSaturn(
             canvas,
@@ -99,6 +151,16 @@ class CelestialBodyPainter {
             viewMatrix: viewMatrix,
             canvasSize: canvasSize,
           );
+          if (showAtmosphericEffects) {
+            // Saturn has similar atmosphere to Jupiter but slightly less dense
+            _drawAtmosphericHalo(
+              canvas,
+              center,
+              radius,
+              AppColors.planetSaturn,
+              hazeIntensity: 0.35, // Thick atmosphere
+            );
+          }
         case CelestialBodyName.uranus:
           drawUranus(
             canvas,
@@ -108,8 +170,28 @@ class CelestialBodyPainter {
             viewMatrix: viewMatrix,
             canvasSize: canvasSize,
           );
+          if (showAtmosphericEffects) {
+            // Uranus has methane atmosphere giving blue-green haze
+            _drawAtmosphericHalo(
+              canvas,
+              center,
+              radius,
+              AppColors.planetUranus,
+              hazeIntensity: 0.25, // Moderate atmosphere
+            );
+          }
         case CelestialBodyName.neptune:
           drawNeptune(canvas, center, radius);
+          if (showAtmosphericEffects) {
+            // Neptune has similar atmosphere to Uranus with deeper blue
+            _drawAtmosphericHalo(
+              canvas,
+              center,
+              radius,
+              AppColors.planetNeptune,
+              hazeIntensity: 0.3, // Moderate atmosphere
+            );
+          }
         default:
           // Normal body rendering
           // Use realistic colors based on stellar properties when enabled
@@ -264,6 +346,7 @@ class CelestialBodyPainter {
     double radius,
     Body body, {
     bool useRealisticColors = false,
+    bool showStellarCoronas = true,
   }) {
     // Get current time once for all solar animations
     final currentTimeSeconds = DateTime.now().millisecondsSinceEpoch / 1000.0;
@@ -281,32 +364,35 @@ class CelestialBodyPainter {
             SimulationConstants
                 .meaningfulStellarTemperatureThreshold // Has a meaningful stellar temperature
         ? body.temperature
-        : _calculateStellarTemperature(
-            body.mass,
-          ); // Corona - outer solar atmosphere (adapt color to stellar type)
-    final coronaGlow = RadialGradient(
-      colors: [
-        _getCoronaColor(stellarTemperature, useRealisticColors).withValues(
-          alpha: AppTypography.opacityVeryHigh,
-        ), // Bright center adapted to star type
-        _getCoronaColor(
-          stellarTemperature,
-          useRealisticColors,
-          isOuter: true,
-        ).withValues(alpha: AppTypography.opacityMediumHigh), // Outer color
-        AppColors.accretionDiskRed.withValues(
-          alpha: AppTypography.opacityFaint,
-        ), // Red outer
-        AppColors.transparentColor,
-      ],
-    );
+        : _calculateStellarTemperature(body.mass);
 
-    final coronaRect = Rect.fromCircle(center: center, radius: radius * 3.0);
-    canvas.drawCircle(
-      center,
-      radius * 3.0,
-      Paint()..shader = coronaGlow.createShader(coronaRect),
-    );
+    // Corona - outer solar atmosphere (adapt color to stellar type)
+    // Only render if showStellarCoronas is true
+    if (showStellarCoronas) {
+      final coronaGlow = RadialGradient(
+        colors: [
+          _getCoronaColor(stellarTemperature, useRealisticColors).withValues(
+            alpha: AppTypography.opacityVeryHigh,
+          ), // Bright center adapted to star type
+          _getCoronaColor(
+            stellarTemperature,
+            useRealisticColors,
+            isOuter: true,
+          ).withValues(alpha: AppTypography.opacityMediumHigh), // Outer color
+          AppColors.accretionDiskRed.withValues(
+            alpha: AppTypography.opacityFaint,
+          ), // Red outer
+          AppColors.transparentColor,
+        ],
+      );
+
+      final coronaRect = Rect.fromCircle(center: center, radius: radius * 3.0);
+      canvas.drawCircle(
+        center,
+        radius * 3.0,
+        Paint()..shader = coronaGlow.createShader(coronaRect),
+      );
+    }
 
     // Solar surface with stellar color adaptation
     final surfaceGlow = RadialGradient(
@@ -354,19 +440,22 @@ class CelestialBodyPainter {
     double stellarTemperature,
     Color stellarColor,
   ) {
-    // Use a fixed seed for consistent sunspot placement regardless of camera position
-    // Use a seed based on the current day of year for short-term stable but varying sunspot positions
+    // Use a seed based on the current hour for frequently varying but stable sunspot positions
     final now = DateTime.now().toUtc();
     final dayOfYear = int.parse(_dayOfYearFormat.format(now));
+    final hourOfDay = now.hour;
 
-    // Check if we need to recalculate sunspots for this day
-    final cacheKey = dayOfYear;
+    // Create seed that changes every hour: dayOfYear * 100 + hour
+    final seed = dayOfYear * 100 + hourOfDay;
+
+    // Check if we need to recalculate sunspots for this hour
+    final cacheKey = seed;
     List<SunspotData>? cachedSunspots = _sunspotCache[cacheKey];
 
-    // Generate sunspots if not cached for this day
+    // Generate sunspots if not cached for this hour
     if (cachedSunspots == null) {
       cachedSunspots = _generateSunspotsForDay(
-        dayOfYear,
+        seed,
         center,
         radius,
         stellarTemperature,
@@ -572,9 +661,13 @@ class CelestialBodyPainter {
     const maxFlares = 3; // Maximum concurrent flares
 
     // Get sunspot positions for magnetic field correlation
-    final sunspotRandom = math.Random(
-      RenderingConstants.sunspotSeed,
-    ); // Same seed as sunspots
+    // Use hour-based seed for variation that matches current sunspots
+    final now = DateTime.now().toUtc();
+    final dayOfYear = int.parse(_dayOfYearFormat.format(now));
+    final hourOfDay = now.hour;
+    final hourSeed = dayOfYear * 100 + hourOfDay;
+
+    final sunspotRandom = math.Random(hourSeed);
     final numSunspots =
         RenderingConstants.minSunspots +
         sunspotRandom.nextInt(RenderingConstants.maxAdditionalSunspots);
@@ -605,9 +698,9 @@ class CelestialBodyPainter {
       // Calculate flare animation progress (0.0 to 1.0)
       final flareProgress = flareStartTime / flareLifetime;
 
-      // Use flare index as seed for consistent positioning during its lifetime
+      // Use flare index with hour seed for varied positioning that changes hourly
       final flareRandom = math.Random(
-        RenderingConstants.sunspotSeed + flareIndex * 123,
+        hourSeed + flareIndex * 123 + (flareProgress * 1000).toInt(),
       );
 
       // Choose flare origin (prefer sunspot areas)
@@ -1663,6 +1756,61 @@ class CelestialBodyPainter {
         ringPaint,
       );
     }
+  }
+
+  /// Helper method to draw atmospheric halo effects around planets
+  ///
+  /// Creates a radial gradient halo simulating atmospheric scattering and haze.
+  /// The effect intensity and color can be customized based on the planet's
+  /// atmospheric characteristics.
+  ///
+  /// Parameters:
+  /// - [canvas]: The canvas to draw on
+  /// - [center]: Center point of the planet
+  /// - [radius]: Base radius of the planet body
+  /// - [baseColor]: Primary color of the planet for halo tinting
+  /// - [hazeIntensity]: Controls opacity and extent of atmospheric haze (0.0-1.0)
+  /// - [atmosphericColor]: Optional color for atmospheric scattering effects
+  ///   (e.g., blue for Earth's Rayleigh scattering)
+  static void _drawAtmosphericHalo(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    Color baseColor, {
+    double hazeIntensity = 0.3,
+    Color? atmosphericColor,
+  }) {
+    // Use atmospheric color if provided, otherwise use base color
+    final hazeColor = atmosphericColor ?? baseColor;
+
+    // Create gradient that fades from haze color to transparent
+    // Extend halo beyond planet radius based on intensity
+    final hazeExtent = 1.0 + (hazeIntensity * 0.5); // 1.0x to 1.5x radius
+    final hazeGlow = RadialGradient(
+      colors: [
+        hazeColor.withValues(
+          alpha: AppTypography.opacityMedium * hazeIntensity,
+        ), // Inner haze
+        hazeColor.withValues(
+          alpha: AppTypography.opacityLowMedium * hazeIntensity,
+        ), // Middle fade
+        hazeColor.withValues(
+          alpha: AppTypography.opacityFaint * hazeIntensity,
+        ), // Outer edge
+        AppColors.transparentColor, // Fully transparent at edge
+      ],
+      stops: const [0.7, 0.85, 0.95, 1.0], // Concentrate effect near planet
+    );
+
+    final hazeRect = Rect.fromCircle(
+      center: center,
+      radius: radius * hazeExtent,
+    );
+    canvas.drawCircle(
+      center,
+      radius * hazeExtent,
+      Paint()..shader = hazeGlow.createShader(hazeRect),
+    );
   }
 
   /// Helper method to calculate stellar temperature from mass
