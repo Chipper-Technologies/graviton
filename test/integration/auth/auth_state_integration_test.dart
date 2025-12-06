@@ -226,7 +226,7 @@ void main() {
       expect(authState.isAuthenticated, true);
     });
 
-    testWidgets('Photo URL should take precedence over avatar emoji', (
+    testWidgets('Custom avatar should take precedence over photo URL', (
       tester,
     ) async {
       final testAppState = AppState();
@@ -258,8 +258,20 @@ void main() {
       // Custom avatar takes precedence over photoUrl
       // Should show emoji
       expect(find.text(UserAvatar.venus.emoji), findsOneWidget);
-      // Should not show photo
-      expect(find.byType(Image), findsNothing);
+
+      // Should not show network photo in avatar button
+      // (Note: App logo may be present, so we check for NetworkImage specifically)
+      final images = find.byType(Image).evaluate();
+      final hasNetworkImage = images.any((element) {
+        final widget = element.widget as Image;
+        final provider = widget.image;
+        // Check if it's a NetworkImage or ResizeImage wrapping NetworkImage
+        if (provider is ResizeImage) {
+          return provider.imageProvider is NetworkImage;
+        }
+        return provider is NetworkImage;
+      });
+      expect(hasNetworkImage, false);
     });
   });
 }

@@ -12,7 +12,6 @@ import 'package:graviton/screens/physics_settings_screen.dart';
 import 'package:graviton/screens/simulation_info_screen.dart';
 import 'package:graviton/services/navigation_service.dart';
 import 'package:graviton/state/app_state.dart';
-import 'package:graviton/state/auth_state.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
