@@ -149,9 +149,16 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
+      // Scroll to make Path Visualization visible if needed
+      await tester.dragUntilVisible(
+        find.text('Path Visualization'),
+        find.byType(ListView),
+        const Offset(0, -100),
+      );
+
       expect(find.text('Path Visualization'), findsOneWidget);
 
-      // Just verify we have section titles - the Navigation Aids section might have been removed
+      // Just verify we have section titles
       expect(find.byType(SectionDivider), findsWidgets);
     });
 
@@ -217,6 +224,14 @@ void main() {
 
       expect(find.byType(SectionDivider), findsWidgets);
       expect(find.text('Display Options'), findsOneWidget);
+
+      // Scroll to make Path Visualization visible
+      await tester.dragUntilVisible(
+        find.text('Path Visualization'),
+        find.byType(ListView),
+        const Offset(0, -100),
+      );
+
       expect(find.text('Path Visualization'), findsOneWidget);
     });
 
@@ -448,6 +463,14 @@ void main() {
 
         // Check for sections that should always be present
         expect(find.text('Display Options'), findsOneWidget);
+
+        // Scroll to make Path Visualization visible
+        await tester.dragUntilVisible(
+          find.text('Path Visualization'),
+          find.byType(ListView),
+          const Offset(0, -100),
+        );
+
         expect(find.text('Path Visualization'), findsOneWidget);
 
         // Some sections may or may not be present depending on build
