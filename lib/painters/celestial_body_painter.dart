@@ -217,6 +217,22 @@ class CelestialBodyPainter {
           );
 
           canvas.drawCircle(center, radius, Paint()..color = bodyColor);
+
+          // Apply atmospheric effects to all planets (not in named solar system)
+          if (showAtmosphericEffects &&
+              body.bodyType == BodyType.planet &&
+              body.isPlanet == true) {
+            final intensity = _getAtmosphericIntensityForBody(body);
+            if (intensity > 0.0) {
+              _drawAtmosphericHalo(
+                canvas,
+                center,
+                radius,
+                bodyColor,
+                hazeIntensity: intensity,
+              );
+            }
+          }
       }
     }
   }
@@ -1820,6 +1836,42 @@ class CelestialBodyPainter {
       radius * hazeExtent,
       Paint()..shader = hazeGlow.createShader(hazeRect),
     );
+  }
+
+  /// Determine atmospheric intensity for generic planets based on mass and characteristics
+  ///
+  /// Returns a value between 0.0 (no atmosphere) and 0.6 (thick atmosphere)
+  /// based on planetary mass and type. This allows atmospheric effects to work
+  /// for randomly generated planets and custom scenarios.
+  static double _getAtmosphericIntensityForBody(Body body) {
+    // No atmosphere for non-planets or bodies without planet flag
+    if (body.bodyType != BodyType.planet || body.isPlanet != true) {
+      return 0.0;
+    }
+
+    final mass = body.mass;
+
+    // Small rocky planets (Mercury to Mars size): minimal atmosphere
+    // Mass range: 1.0 - 2.0
+    if (mass < SimulationConstants.earthLikePlanetMassMin) {
+      return 0.1; // Thin/minimal atmosphere
+    }
+
+    // Earth-like planets: moderate atmosphere
+    // Mass range: 2.0 - 4.0
+    if (mass < SimulationConstants.superEarthMassMin) {
+      return 0.3; // Earth-like atmosphere
+    }
+
+    // Super-Earth planets: thicker atmosphere due to higher gravity
+    // Mass range: 4.0 - 7.0
+    if (mass < 7.0) {
+      return 0.4; // Thick atmosphere
+    }
+
+    // Large gas giants and ice giants: very thick atmosphere
+    // Mass range: > 7.0
+    return 0.5; // Very thick atmosphere (Jupiter/Saturn-like)
   }
 
   /// Helper method to calculate stellar temperature from mass

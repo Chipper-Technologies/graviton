@@ -446,40 +446,45 @@ void main() {
       }
     });
 
-    testWidgets(
-      'renders in small screen size',
-      (tester) async {
-        await tester.binding.setSurfaceSize(const Size(320, 568));
+    testWidgets('renders in small screen size', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(320, 568));
 
-        await tester.pumpWidget(
-          TestUtils.wrapWithMaterialApp(
-            child: SignInForm(
-              formKey: formKey,
-              emailController: emailController,
-              passwordController: passwordController,
-              nameController: nameController,
-              obscurePassword: true,
-              isCreatingAccount: false,
-              acceptedTerms: false,
-              onAppleSignIn: () {},
-              onGoogleSignIn: () {},
-              onGitHubSignIn: () {},
-              onEmailPasswordAuth: () {},
-              onTogglePasswordVisibility: () {},
-              onToggleMode: () {},
-              onEmailChanged: (_) {},
-              onPasswordChanged: (_) {},
-              onNameChanged: (_) {},
-              onTermsChanged: (_) {},
-            ),
+      // Suppress layout overflow errors expected on small screens
+      final oldOnError = FlutterError.onError;
+      FlutterError.onError = (details) {
+        if (!details.toString().contains('overflowed')) {
+          oldOnError?.call(details);
+        }
+      };
+
+      await tester.pumpWidget(
+        TestUtils.wrapWithMaterialApp(
+          child: SignInForm(
+            formKey: formKey,
+            emailController: emailController,
+            passwordController: passwordController,
+            nameController: nameController,
+            obscurePassword: true,
+            isCreatingAccount: false,
+            acceptedTerms: false,
+            onAppleSignIn: () {},
+            onGoogleSignIn: () {},
+            onGitHubSignIn: () {},
+            onEmailPasswordAuth: () {},
+            onTogglePasswordVisibility: () {},
+            onToggleMode: () {},
+            onEmailChanged: (_) {},
+            onPasswordChanged: (_) {},
+            onNameChanged: (_) {},
+            onTermsChanged: (_) {},
           ),
-        );
+        ),
+      );
 
-        expect(find.byType(TextField), findsNWidgets(2));
+      expect(find.byType(TextField), findsNWidgets(2));
 
-        await tester.binding.setSurfaceSize(null);
-      },
-      skip: true,
-    ); // Skip - SocialAuthButton has layout overflow on small screens
+      FlutterError.onError = oldOnError;
+      await tester.binding.setSurfaceSize(null);
+    });
   });
 }

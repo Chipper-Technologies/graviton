@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/painters/celestial_body_painter.dart';
 import 'package:graviton/theme/app_typography.dart';
@@ -645,6 +646,279 @@ void main() {
             ),
             returnsNormally,
             reason: 'Failed at scale $scale',
+          );
+        }
+      });
+    });
+
+    group('Generic Planet Atmospheric Effects', () {
+      test('should apply atmospheric effects to rocky planets', () {
+        final rockyPlanet = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.5, // Small rocky planet mass range
+          radius: 0.5,
+          color: AppColors.terrestrialRockyMercury,
+          name: 'Rocky Planet',
+          bodyType: BodyType.planet,
+          isPlanet: true,
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            rockyPlanet,
+            showAtmosphericEffects: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should apply atmospheric effects to earth-like planets', () {
+        final earthLike = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 3.0, // Earth-like planet mass range
+          radius: 1.2,
+          color: AppColors.terrestrialEarthLike,
+          name: 'Earth-like',
+          bodyType: BodyType.planet,
+          isPlanet: true,
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            earthLike,
+            showAtmosphericEffects: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should apply atmospheric effects to super-earth planets', () {
+        final superEarth = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 5.0, // Super-Earth mass range
+          radius: 1.8,
+          color: AppColors.superEarthTemperate,
+          name: 'Super-Earth',
+          bodyType: BodyType.planet,
+          isPlanet: true,
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            superEarth,
+            showAtmosphericEffects: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should apply atmospheric effects to gas giants', () {
+        final gasGiant = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 10.0, // Large gas giant mass
+          radius: 3.0,
+          color: AppColors.gasGiantJupiterLike,
+          name: 'Gas Giant',
+          bodyType: BodyType.planet,
+          isPlanet: true,
+        );
+
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            gasGiant,
+            showAtmosphericEffects: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should NOT apply atmospheric effects when disabled', () {
+        final planet = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 3.0,
+          radius: 1.2,
+          color: AppColors.terrestrialEarthLike,
+          name: 'Test Planet',
+          bodyType: BodyType.planet,
+          isPlanet: true,
+        );
+
+        // Should render normally without atmospheric effects
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            planet,
+            showAtmosphericEffects: false,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('should NOT apply atmospheric effects to non-planet bodies', () {
+        final star = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 100.0,
+          radius: 5.0,
+          color: AppColors.stellarGType,
+          name: 'Star',
+          bodyType: BodyType.star,
+          isPlanet: false,
+        );
+
+        // Should render star normally without atmospheric effects
+        expect(
+          () => CelestialBodyPainter.drawBody(
+            canvas,
+            center,
+            radius,
+            star,
+            showAtmosphericEffects: true,
+          ),
+          returnsNormally,
+        );
+      });
+
+      test(
+        'should NOT apply atmospheric effects to bodies without isPlanet flag',
+        () {
+          final asteroid = Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 0.1,
+            radius: 0.2,
+            color: AppColors.uiOrange,
+            name: 'Asteroid',
+            bodyType: BodyType.asteroid,
+            isPlanet: false,
+          );
+
+          expect(
+            () => CelestialBodyPainter.drawBody(
+              canvas,
+              center,
+              radius,
+              asteroid,
+              showAtmosphericEffects: true,
+            ),
+            returnsNormally,
+          );
+        },
+      );
+
+      test('should handle planets in custom scenarios', () {
+        final customPlanets = [
+          Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 1.8,
+            radius: 0.8,
+            color: AppColors.terrestrialRockyMercury,
+            name: 'Inner Rocky Planet',
+            bodyType: BodyType.planet,
+            isPlanet: true,
+          ),
+          Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 3.2,
+            radius: 1.5,
+            color: AppColors.terrestrialEarthLike,
+            name: 'Habitable Planet',
+            bodyType: BodyType.planet,
+            isPlanet: true,
+          ),
+          Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 6.5,
+            radius: 2.2,
+            color: AppColors.gasGiantJupiterLike,
+            name: 'Gas Giant',
+            bodyType: BodyType.planet,
+            isPlanet: true,
+          ),
+          Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 4.5,
+            radius: 1.8,
+            color: AppColors.iceGiantNeptuneLike,
+            name: 'Ice Giant',
+            bodyType: BodyType.planet,
+            isPlanet: true,
+          ),
+          Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 2.8,
+            radius: 1.2,
+            color: AppColors.temperatureCold,
+            name: 'Rogue Planet',
+            bodyType: BodyType.planet,
+            isPlanet: true,
+          ),
+        ];
+
+        for (final planet in customPlanets) {
+          expect(
+            () => CelestialBodyPainter.drawBody(
+              canvas,
+              center,
+              radius,
+              planet,
+              showAtmosphericEffects: true,
+            ),
+            returnsNormally,
+            reason: 'Failed for ${planet.name}',
+          );
+        }
+      });
+
+      test('should scale atmospheric effects with planet size', () {
+        final planet = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 3.0,
+          radius: 1.2,
+          color: AppColors.terrestrialEarthLike,
+          name: 'Test Planet',
+          bodyType: BodyType.planet,
+          isPlanet: true,
+        );
+
+        // Test with various sizes
+        final sizes = [10.0, 30.0, 60.0, 120.0, 200.0];
+        for (final size in sizes) {
+          expect(
+            () => CelestialBodyPainter.drawBody(
+              canvas,
+              center,
+              size,
+              planet,
+              showAtmosphericEffects: true,
+            ),
+            returnsNormally,
+            reason: 'Failed at size $size',
           );
         }
       });
