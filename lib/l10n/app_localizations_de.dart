@@ -1788,6 +1788,30 @@ class AppLocalizationsDe extends AppLocalizations {
       'Atmosphärische Halos und Streuung auf Planeten anzeigen';
 
   @override
+  String get hemisphereLightingTitle => 'Hemisphärische Beleuchtung';
+
+  @override
+  String get hemisphereLightingDescription =>
+      'Realistische 3D-Beleuchtung auf sphärischen Körpern simulieren';
+
+  @override
+  String get castShadowsTitle => 'Schatten Werfen';
+
+  @override
+  String get castShadowsDescription =>
+      'Schatten anzeigen wenn Körper Lichtquellen verdecken';
+
+  @override
+  String get specularHighlightsTitle => 'Spiegelreflexionen';
+
+  @override
+  String get specularHighlightsDescription =>
+      'Reflexionen auf Eis- und Wasseroberflächen anzeigen';
+
+  @override
+  String get lightingEffectsLabel => 'Beleuchtung und Schatten';
+
+  @override
   String get habitabilityLabel => 'Bewohnbarkeit';
 
   @override

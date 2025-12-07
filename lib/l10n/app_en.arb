@@ -2392,6 +2392,34 @@
   "@atmosphericEffectsDescription": {
     "description": "Description for atmospheric effects visual setting"
   },
+  "hemisphereLightingTitle": "Hemisphere Lighting",
+  "@hemisphereLightingTitle": {
+    "description": "Label for hemisphere lighting toggle in visuals settings"
+  },
+  "hemisphereLightingDescription": "Simulate realistic 3D lighting on spherical bodies",
+  "@hemisphereLightingDescription": {
+    "description": "Description for hemisphere lighting effect setting"
+  },
+  "castShadowsTitle": "Cast Shadows",
+  "@castShadowsTitle": {
+    "description": "Label for cast shadows toggle in visuals settings"
+  },
+  "castShadowsDescription": "Show shadows when bodies occlude light sources",
+  "@castShadowsDescription": {
+    "description": "Description for cast shadows effect setting"
+  },
+  "specularHighlightsTitle": "Specular Highlights",
+  "@specularHighlightsTitle": {
+    "description": "Label for specular highlights toggle in visuals settings"
+  },
+  "specularHighlightsDescription": "Display reflective highlights on icy and water surfaces",
+  "@specularHighlightsDescription": {
+    "description": "Description for specular highlights effect setting"
+  },
+  "lightingEffectsLabel": "Lighting & Shadows",
+  "@lightingEffectsLabel": {
+    "description": "Section label for lighting and shadow effects"
+  },
   "habitabilityLabel": "Habitability",
   "@habitabilityLabel": {
     "description": "Label for habitability features"

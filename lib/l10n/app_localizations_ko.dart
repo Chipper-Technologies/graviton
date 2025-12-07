@@ -1720,6 +1720,27 @@ class AppLocalizationsKo extends AppLocalizations {
   String get atmosphericEffectsDescription => '행성에 대기 후광과 산란 표시';
 
   @override
+  String get hemisphereLightingTitle => '반구 조명';
+
+  @override
+  String get hemisphereLightingDescription => '구형 천체에 사실적인 3D 조명 시뮬레이션';
+
+  @override
+  String get castShadowsTitle => '그림자 투사';
+
+  @override
+  String get castShadowsDescription => '천체가 광원을 가릴 때 그림자 표시';
+
+  @override
+  String get specularHighlightsTitle => '정반사 하이라이트';
+
+  @override
+  String get specularHighlightsDescription => '얼음과 수면에 반사 하이라이트 표시';
+
+  @override
+  String get lightingEffectsLabel => '조명 및 그림자';
+
+  @override
   String get habitabilityLabel => '거주 가능성';
 
   @override

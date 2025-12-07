@@ -1699,6 +1699,27 @@ class AppLocalizationsZh extends AppLocalizations {
   String get atmosphericEffectsDescription => '在行星上显示大气晕圈和散射';
 
   @override
+  String get hemisphereLightingTitle => '半球照明';
+
+  @override
+  String get hemisphereLightingDescription => '模拟球体上逼真的3D照明';
+
+  @override
+  String get castShadowsTitle => '投射阴影';
+
+  @override
+  String get castShadowsDescription => '当天体遮挡光源时显示阴影';
+
+  @override
+  String get specularHighlightsTitle => '镜面高光';
+
+  @override
+  String get specularHighlightsDescription => '在冰和水表面显示反射高光';
+
+  @override
+  String get lightingEffectsLabel => '照明与阴影';
+
+  @override
   String get habitabilityLabel => '宜居性';
 
   @override

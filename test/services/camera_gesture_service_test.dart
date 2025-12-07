@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/services/camera_gesture_service.dart';
 import 'package:graviton/state/app_state.dart';
+import 'package:graviton/theme/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -50,7 +50,7 @@ void main() {
             radius: 1.0,
             position: vm.Vector3(0, 0, 0),
             velocity: vm.Vector3.zero(),
-            color: Colors.blue,
+            color: AppColors.basicBlue,
             bodyType: BodyType.planet,
           ),
         );

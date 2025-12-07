@@ -50,6 +50,11 @@ class UIState extends ChangeNotifier {
   bool _showStellarCoronas = true;
   bool _showAtmosphericEffects = false;
 
+  // Lighting and shadow settings
+  bool _enableHemisphereLighting = true;
+  bool _enableCastShadows = false;
+  bool _enableSpecularHighlights = false;
+
   // Language settings
   String? _selectedLanguageCode; // null means system default
 
@@ -102,6 +107,9 @@ class UIState extends ChangeNotifier {
   static const String _keyShowCollisionPlasmaJets = 'showCollisionPlasmaJets';
   static const String _keyShowStellarCoronas = 'showStellarCoronas';
   static const String _keyShowAtmosphericEffects = 'showAtmosphericEffects';
+  static const String _keyEnableHemisphereLighting = 'enableHemisphereLighting';
+  static const String _keyEnableCastShadows = 'enableCastShadows';
+  static const String _keyEnableSpecularHighlights = 'enableSpecularHighlights';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
   static const String _keyTemperatureUnit = 'temperatureUnit';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
@@ -195,6 +203,13 @@ class UIState extends ChangeNotifier {
       _showAtmosphericEffects =
           prefs.getBool(_keyShowAtmosphericEffects) ?? false;
 
+      // Load lighting and shadow settings
+      _enableHemisphereLighting =
+          prefs.getBool(_keyEnableHemisphereLighting) ?? true;
+      _enableCastShadows = prefs.getBool(_keyEnableCastShadows) ?? false;
+      _enableSpecularHighlights =
+          prefs.getBool(_keyEnableSpecularHighlights) ?? false;
+
       _selectedLanguageCode = prefs.getString(_keySelectedLanguageCode);
 
       // Load temperature unit setting
@@ -282,6 +297,11 @@ class UIState extends ChangeNotifier {
   // Stellar and atmospheric visual effects getters
   bool get showStellarCoronas => _showStellarCoronas;
   bool get showAtmosphericEffects => _showAtmosphericEffects;
+
+  // Lighting and shadow getters
+  bool get enableHemisphereLighting => _enableHemisphereLighting;
+  bool get enableCastShadows => _enableCastShadows;
+  bool get enableSpecularHighlights => _enableSpecularHighlights;
 
   // Gravity field getters
   bool get globalGravityFields => _globalGravityFields;
@@ -556,6 +576,37 @@ class UIState extends ChangeNotifier {
     FirebaseService.instance.logSettingsChange(
       'show_atmospheric_effects',
       _showAtmosphericEffects,
+    );
+    notifyListeners();
+  }
+
+  // Lighting and shadow setters
+  void toggleHemisphereLighting() {
+    _enableHemisphereLighting = !_enableHemisphereLighting;
+    _saveSetting(_keyEnableHemisphereLighting, _enableHemisphereLighting);
+    FirebaseService.instance.logSettingsChange(
+      'enable_hemisphere_lighting',
+      _enableHemisphereLighting,
+    );
+    notifyListeners();
+  }
+
+  void toggleCastShadows() {
+    _enableCastShadows = !_enableCastShadows;
+    _saveSetting(_keyEnableCastShadows, _enableCastShadows);
+    FirebaseService.instance.logSettingsChange(
+      'enable_cast_shadows',
+      _enableCastShadows,
+    );
+    notifyListeners();
+  }
+
+  void toggleSpecularHighlights() {
+    _enableSpecularHighlights = !_enableSpecularHighlights;
+    _saveSetting(_keyEnableSpecularHighlights, _enableSpecularHighlights);
+    FirebaseService.instance.logSettingsChange(
+      'enable_specular_highlights',
+      _enableSpecularHighlights,
     );
     notifyListeners();
   }
