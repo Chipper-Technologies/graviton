@@ -294,6 +294,21 @@ class CelestialBodyPainter {
             drawSpecularHighlight(canvas, center, radius, body, allBodies);
           }
 
+          // Draw atmospheric scattering if hemisphere lighting is enabled
+          // This creates a sunrise/sunset glow on the lit side
+          if (enableHemisphereLighting &&
+              allBodies != null &&
+              body.bodyType == BodyType.planet) {
+            drawAtmosphericScattering(
+              canvas,
+              center,
+              radius,
+              body,
+              allBodies,
+              bodyColor,
+            );
+          }
+
           // Apply atmospheric effects to all planets (not in named solar system)
           if (showAtmosphericEffects &&
               body.bodyType == BodyType.planet &&
@@ -2128,57 +2143,43 @@ class CelestialBodyPainter {
   ///
   /// Returns an [Offset] representing the gradient center offset from body center,
   /// or [Offset.zero] if no light source is found.
+  ///
+  /// Now uses blended lighting from multiple light sources for more realistic
+  /// illumination in systems with multiple stars.
   static Offset _calculateHemisphereLightingOffset(
     List<Body> bodies,
     Body currentBody,
     Offset currentBodyPosition,
   ) {
-    // Find the nearest star to this body
-    Body? nearestStar;
-    double minDistance = double.infinity;
+    // Find all stars in the system
+    final stars = bodies
+        .where((body) => body != currentBody && body.bodyType == BodyType.star)
+        .toList();
 
-    for (final otherBody in bodies) {
-      // Skip self and non-stars
-      if (otherBody == currentBody || otherBody.bodyType != BodyType.star) {
-        continue;
-      }
-
-      // Calculate 3D distance to this star
-      final dx = otherBody.position.x - currentBody.position.x;
-      final dy = otherBody.position.y - currentBody.position.y;
-      final dz = otherBody.position.z - currentBody.position.z;
-      final distance = math.sqrt(dx * dx + dy * dy + dz * dz);
-
-      if (distance < minDistance) {
-        minDistance = distance;
-        nearestStar = otherBody;
-      }
-    }
-
-    // No star found, return no offset
-    if (nearestStar == null) {
+    // No stars found, return no offset
+    if (stars.isEmpty) {
       return Offset.zero;
     }
 
-    // Calculate direction vector from current body to nearest star (in 3D)
-    final dirX = nearestStar.position.x - currentBody.position.x;
-    final dirY = nearestStar.position.y - currentBody.position.y;
-    final dirZ = nearestStar.position.z - currentBody.position.z;
-    final magnitude = math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+    // Calculate blended lighting from multiple sources
+    final blendedLight = _calculateBlendedLighting(currentBody, stars);
 
-    // Normalize direction
-    if (magnitude == 0) {
+    // No significant light contribution
+    if (blendedLight.intensity == 0.0) {
       return Offset.zero;
     }
 
-    final normX = dirX / magnitude;
-    final normY = dirY / magnitude;
+    // Extract 2D direction from 3D light direction
+    final normX = blendedLight.direction.x;
+    final normY = blendedLight.direction.y;
     // Z component affects the offset magnitude (bodies facing toward/away from camera)
 
     // Project onto 2D canvas space (simplified projection)
     // The offset is a fraction of the body radius, controlled by gradient offset constant
-    // We use only X and Y components for 2D offset, ignoring Z depth
-    final offsetMagnitude = RenderingConstants.hemisphereLightingGradientOffset;
+    // Scale by intensity for realistic light falloff
+    final offsetMagnitude =
+        RenderingConstants.hemisphereLightingGradientOffset *
+        blendedLight.intensity;
 
     return Offset(normX * offsetMagnitude, normY * offsetMagnitude);
   }
@@ -2500,8 +2501,12 @@ class CelestialBodyPainter {
 
     // Draw specular highlight with gradient
     final highlightRadius = radius * RenderingConstants.specularHighlightSize;
+
+    // Scale intensity by body's albedo (reflectivity)
+    // Ice worlds and bright surfaces reflect more light than dark rocky bodies
+    final albedo = _getBodyAlbedo(currentBody);
     final highlightIntensity =
-        intensity * RenderingConstants.specularHighlightIntensity;
+        intensity * RenderingConstants.specularHighlightIntensity * albedo;
 
     final highlightGradient = RadialGradient(
       colors: [
@@ -2524,6 +2529,246 @@ class CelestialBodyPainter {
         ..blendMode = BlendMode.plus, // Additive blending for bright highlight
     );
   }
+
+  /// Draw atmospheric scattering effect on the lit side of a body
+  ///
+  /// Creates a sunrise/sunset glow effect along the terminator (day/night boundary)
+  /// by adding orange/red scattering where atmosphere is backlit by the star.
+  static void drawAtmosphericScattering(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    Body currentBody,
+    List<Body> allBodies,
+    Color bodyColor,
+  ) {
+    // Find light sources
+    final stars = allBodies
+        .where((body) => body != currentBody && body.bodyType == BodyType.star)
+        .toList();
+
+    if (stars.isEmpty) {
+      return; // No light source
+    }
+
+    // Calculate blended lighting direction
+    final blendedLight = _calculateBlendedLighting(currentBody, stars);
+
+    if (blendedLight.intensity < 0.1) {
+      return; // Too dim for visible scattering
+    }
+
+    // Calculate light direction in 2D (normalized)
+    final lightX = blendedLight.direction.x;
+    final lightY = blendedLight.direction.y;
+
+    // Create scattering effect along the terminator (perpendicular to light)
+    // Scattering appears as a crescent around the lit edge
+    final scatteringWidth =
+        radius * RenderingConstants.atmosphericScatteringWidth;
+    final scatteringIntensity =
+        RenderingConstants.atmosphericScatteringIntensity *
+        blendedLight.intensity;
+
+    // Position scattering ring slightly toward the light source
+    final scatteringOffset = Offset(
+      lightX * radius * 0.7, // Slightly inset from edge
+      lightY * radius * 0.7,
+    );
+
+    // Create gradient with warm scattering colors (orange/red like sunrise)
+    final scatteringGradient = RadialGradient(
+      center: Alignment(
+        scatteringOffset.dx / (radius + scatteringWidth),
+        scatteringOffset.dy / (radius + scatteringWidth),
+      ),
+      colors: [
+        // Inner edge: blend with body color
+        Color.lerp(
+          bodyColor,
+          AppColors.stellarGType,
+          0.3,
+        )!.withValues(alpha: scatteringIntensity * 0.3),
+        // Mid: orange scattering
+        AppColors.stellarKType.withValues(alpha: scatteringIntensity * 0.6),
+        // Outer: red/orange glow
+        AppColors.stellarMType.withValues(alpha: scatteringIntensity * 0.4),
+        // Fade to transparent
+        AppColors.transparentColor,
+      ],
+      stops: const [0.0, 0.4, 0.7, 1.0],
+      // Concentrate scattering near terminator
+      focal: Alignment(
+        scatteringOffset.dx / (radius + scatteringWidth) * 0.5,
+        scatteringOffset.dy / (radius + scatteringWidth) * 0.5,
+      ),
+      focalRadius: RenderingConstants.atmosphericScatteringConcentration * 0.1,
+    );
+
+    final scatteringRect = Rect.fromCircle(
+      center: center,
+      radius: radius + scatteringWidth,
+    );
+
+    canvas.drawCircle(
+      center,
+      radius + scatteringWidth * 0.8, // Slightly smaller than full width
+      Paint()
+        ..shader = scatteringGradient.createShader(scatteringRect)
+        ..blendMode = BlendMode.plus, // Additive for glowing effect
+    );
+  }
+
+  /// Get albedo (reflectivity) for a body based on its properties
+  ///
+  /// Returns a value between 0.0 (absorbs all light) and 1.0 (reflects all light)
+  /// based on the body's type, name, and color characteristics.
+  static double _getBodyAlbedo(Body body) {
+    // Check for specific celestial bodies first
+    final bodyName = CelestialBodyName.fromString(body.name);
+
+    // Ice worlds (bright, reflective)
+    if (body.name.toLowerCase().contains('ice') ||
+        body.name.toLowerCase().contains('icy')) {
+      return RenderingConstants.albedoIce;
+    }
+
+    // Ocean worlds
+    if (bodyName == CelestialBodyName.earth ||
+        body.name.toLowerCase().contains('ocean') ||
+        body.name.toLowerCase().contains('water')) {
+      return RenderingConstants.albedoWater;
+    }
+
+    // Desert/arid worlds
+    if (bodyName == CelestialBodyName.mars ||
+        body.name.toLowerCase().contains('desert') ||
+        body.name.toLowerCase().contains('arid')) {
+      return RenderingConstants.albedoDesert;
+    }
+
+    // Dark/volcanic worlds
+    if (body.name.toLowerCase().contains('volcanic') ||
+        body.name.toLowerCase().contains('lava') ||
+        body.name.toLowerCase().contains('dark')) {
+      return RenderingConstants.albedoDark;
+    }
+
+    // Gas giants (based on specific known bodies)
+    if (bodyName == CelestialBodyName.jupiter ||
+        bodyName == CelestialBodyName.saturn ||
+        bodyName == CelestialBodyName.uranus ||
+        bodyName == CelestialBodyName.neptune ||
+        body.name.toLowerCase().contains('gas giant')) {
+      return RenderingConstants.albedoGasGiant;
+    }
+
+    // Rocky terrestrial planets (default for planets)
+    if (body.bodyType == BodyType.planet) {
+      return RenderingConstants.albedoRock;
+    }
+
+    // Vegetation (Earth-like)
+    if (body.name.toLowerCase().contains('forest') ||
+        body.name.toLowerCase().contains('vegetation')) {
+      return RenderingConstants.albedoVegetation;
+    }
+
+    // Moons typically have lower albedo (rocky/icy mix)
+    if (body.bodyType == BodyType.moon) {
+      return (RenderingConstants.albedoRock + RenderingConstants.albedoIce) / 2;
+    }
+
+    // Default for unknown types
+    return RenderingConstants.albedoDefault;
+  }
+
+  /// Calculate blended lighting from multiple light sources
+  ///
+  /// Returns the dominant light direction and intensity by blending contributions
+  /// from up to [RenderingConstants.maxLightSourcesForBlending] light sources.
+  static _LightContribution _calculateBlendedLighting(
+    Body body,
+    List<Body> lightSources,
+  ) {
+    if (lightSources.isEmpty) {
+      // No light sources - return zero contribution
+      return _LightContribution(
+        star: body, // Use body itself as placeholder
+        intensity: 0.0,
+        direction: vm.Vector3(0, 0, 1),
+      );
+    }
+
+    // Calculate contributions from each light source
+    final contributions = <_LightContribution>[];
+
+    for (final star in lightSources) {
+      final displacement = star.position - body.position;
+      final distance = displacement.length;
+
+      // Skip if too far away
+      if (distance > RenderingConstants.lightSourceMaxDistance) {
+        continue;
+      }
+
+      // Calculate intensity based on inverse square law with distance
+      final baseIntensity = star.mass / (distance * distance);
+
+      // Normalize to reasonable range (0.0 - 1.0)
+      final normalizedIntensity = (baseIntensity * 10).clamp(0.0, 1.0);
+
+      // Skip if contribution is too small
+      if (normalizedIntensity < RenderingConstants.lightSourceMinContribution) {
+        continue;
+      }
+
+      contributions.add(
+        _LightContribution(
+          star: star,
+          intensity: normalizedIntensity,
+          direction: displacement.normalized(),
+        ),
+      );
+    }
+
+    // If no significant contributions, return zero
+    if (contributions.isEmpty) {
+      return _LightContribution(
+        star: lightSources.first,
+        intensity: 0.0,
+        direction: vm.Vector3(0, 0, 1),
+      );
+    }
+
+    // Sort by intensity (brightest first)
+    contributions.sort((a, b) => b.intensity.compareTo(a.intensity));
+
+    // Take top N contributions
+    final topContributions = contributions
+        .take(RenderingConstants.maxLightSourcesForBlending)
+        .toList();
+
+    // Blend directions weighted by intensity
+    var blendedDirection = vm.Vector3.zero();
+    var totalIntensity = 0.0;
+
+    for (final contribution in topContributions) {
+      blendedDirection += contribution.direction * contribution.intensity;
+      totalIntensity += contribution.intensity;
+    }
+
+    // Normalize the blended direction
+    if (blendedDirection.length > 0) {
+      blendedDirection = blendedDirection.normalized();
+    }
+
+    return _LightContribution(
+      star: topContributions.first.star, // Use brightest star as primary
+      intensity: totalIntensity / topContributions.length, // Average intensity
+      direction: blendedDirection,
+    );
+  }
 }
 
 /// Shadow geometry information
@@ -2536,5 +2781,18 @@ class _ShadowInfo {
     required this.shadowCenter,
     required this.umbraRadius,
     required this.penumbraRadius,
+  });
+}
+
+/// Light source contribution for blended lighting
+class _LightContribution {
+  final Body star;
+  final double intensity;
+  final vm.Vector3 direction;
+
+  _LightContribution({
+    required this.star,
+    required this.intensity,
+    required this.direction,
   });
 }

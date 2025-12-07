@@ -145,6 +145,57 @@ class RenderingConstants {
   /// Higher values create sharper, more mirror-like reflections
   static const double specularHighlightShininess = 32.0;
 
+  // Multiple light source blending
+  /// Maximum number of light sources to blend for lighting calculations
+  /// Higher values are more accurate but more expensive
+  static const int maxLightSourcesForBlending = 3;
+
+  /// Distance threshold for light source contribution (in simulation units)
+  /// Light sources beyond this distance have minimal effect
+  static const double lightSourceMaxDistance = 50.0;
+
+  /// Minimum light contribution to include in blending (0.0-1.0)
+  /// Filters out negligible light sources for performance
+  static const double lightSourceMinContribution = 0.05;
+
+  // Atmospheric scattering on lit side
+  /// Intensity multiplier for atmospheric glow on sunlit side (0.0-1.0)
+  /// Creates sunrise/sunset effect around terminator
+  static const double atmosphericScatteringIntensity = 0.4;
+
+  /// Width of atmospheric scattering glow as ratio of body radius
+  /// Controls how far the glow extends beyond planet limb
+  static const double atmosphericScatteringWidth = 0.25;
+
+  /// Concentration factor for scattering effect
+  /// Higher values create tighter glow near terminator
+  static const double atmosphericScatteringConcentration = 3.0;
+
+  // Body albedo system (surface reflectivity)
+  /// Ice/snow surface albedo - highly reflective
+  static const double albedoIce = 0.9;
+
+  /// Ocean/water surface albedo - moderately reflective
+  static const double albedoWater = 0.06;
+
+  /// Rocky/terrestrial surface albedo - low reflectivity
+  static const double albedoRock = 0.15;
+
+  /// Desert surface albedo - moderate reflectivity
+  static const double albedoDesert = 0.35;
+
+  /// Vegetation surface albedo - low reflectivity
+  static const double albedoVegetation = 0.12;
+
+  /// Gas giant atmosphere albedo - high reflectivity
+  static const double albedoGasGiant = 0.52;
+
+  /// Dark/volcanic surface albedo - very low reflectivity
+  static const double albedoDark = 0.08;
+
+  /// Default albedo for unknown body types
+  static const double albedoDefault = 0.2;
+
   // Spherical gradient background constants
   static const int sphericalGradientSourceCount = 20;
   static const double sphericalGradientSourceRadius = 2500.0;

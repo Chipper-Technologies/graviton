@@ -1442,6 +1442,174 @@ void main() {
       });
     });
 
+    group('Enhancement Features', () {
+      test('should apply albedo-based specular highlights', () {
+        final testRecorder = ui.PictureRecorder();
+        final testCanvas = Canvas(testRecorder);
+
+        final iceWorld = Body(
+          name: 'Ice Planet',
+          mass: 1.0,
+          radius: 6.0e6,
+          position: vm.Vector3(0, 0, 0),
+          velocity: vm.Vector3(0, 0, 0),
+          color: Colors.white,
+          bodyType: BodyType.planet,
+        );
+
+        final star = Body(
+          name: 'Star',
+          mass: 100.0,
+          radius: 6.96e8,
+          position: vm.Vector3(10, 0, 0),
+          velocity: vm.Vector3(0, 0, 0),
+          color: Colors.yellow,
+          bodyType: BodyType.star,
+        );
+
+        CelestialBodyPainter.drawBody(
+          testCanvas,
+          const Offset(100, 100),
+          50.0,
+          iceWorld,
+          enableSpecularHighlights: true,
+          allBodies: [star, iceWorld],
+        );
+
+        expect(() => testRecorder.endRecording(), returnsNormally);
+      });
+
+      test('should blend light from multiple stars', () {
+        final testRecorder = ui.PictureRecorder();
+        final testCanvas = Canvas(testRecorder);
+
+        final planet = Body(
+          name: 'Planet',
+          mass: 1.0,
+          radius: 6.0e6,
+          position: vm.Vector3(0, 0, 0),
+          velocity: vm.Vector3(0, 0, 0),
+          color: Colors.blue,
+          bodyType: BodyType.planet,
+        );
+
+        final starA = Body(
+          name: 'Star A',
+          mass: 100.0,
+          radius: 6.96e8,
+          position: vm.Vector3(10, 0, 0),
+          velocity: vm.Vector3(0, 0, 0),
+          color: Colors.yellow,
+          bodyType: BodyType.star,
+        );
+
+        final starB = Body(
+          name: 'Star B',
+          mass: 80.0,
+          radius: 5.5e8,
+          position: vm.Vector3(-8, 5, 0),
+          velocity: vm.Vector3(0, 0, 0),
+          color: Colors.orange,
+          bodyType: BodyType.star,
+        );
+
+        CelestialBodyPainter.drawBody(
+          testCanvas,
+          const Offset(100, 100),
+          50.0,
+          planet,
+          enableHemisphereLighting: true,
+          allBodies: [starA, starB, planet],
+        );
+
+        expect(() => testRecorder.endRecording(), returnsNormally);
+      });
+
+      test('should draw atmospheric scattering on planets', () {
+        final testRecorder = ui.PictureRecorder();
+        final testCanvas = Canvas(testRecorder);
+
+        final earth = Body(
+          name: 'Earth',
+          mass: 1.0,
+          radius: 6.0e6,
+          position: vm.Vector3(0, 0, 0),
+          velocity: vm.Vector3(0, 0, 0),
+          color: Colors.blue,
+          bodyType: BodyType.planet,
+        );
+
+        final sun = Body(
+          name: 'Sun',
+          mass: 333000.0,
+          radius: 6.96e8,
+          position: vm.Vector3(15, 0, 0),
+          velocity: vm.Vector3(0, 0, 0),
+          color: Colors.yellow,
+          bodyType: BodyType.star,
+        );
+
+        CelestialBodyPainter.drawBody(
+          testCanvas,
+          const Offset(100, 100),
+          50.0,
+          earth,
+          enableHemisphereLighting: true,
+          allBodies: [sun, earth],
+        );
+
+        expect(() => testRecorder.endRecording(), returnsNormally);
+      });
+
+      test('should combine all enhancements', () {
+        final testRecorder = ui.PictureRecorder();
+        final testCanvas = Canvas(testRecorder);
+
+        final planet = Body(
+          name: 'Tatooine',
+          mass: 1.0,
+          radius: 6.0e6,
+          position: vm.Vector3(0, 0, 0),
+          velocity: vm.Vector3(0, 0, 0),
+          color: Colors.orange,
+          bodyType: BodyType.planet,
+        );
+
+        final sunA = Body(
+          name: 'Tatoo I',
+          mass: 100.0,
+          radius: 6.96e8,
+          position: vm.Vector3(12, 0, 0),
+          velocity: vm.Vector3(0, 0, 0),
+          color: Colors.yellow,
+          bodyType: BodyType.star,
+        );
+
+        final sunB = Body(
+          name: 'Tatoo II',
+          mass: 95.0,
+          radius: 6.8e8,
+          position: vm.Vector3(-10, 7, 0),
+          velocity: vm.Vector3(0, 0, 0),
+          color: Colors.orange,
+          bodyType: BodyType.star,
+        );
+
+        CelestialBodyPainter.drawBody(
+          testCanvas,
+          const Offset(100, 100),
+          50.0,
+          planet,
+          enableHemisphereLighting: true,
+          enableCastShadows: true,
+          enableSpecularHighlights: true,
+          allBodies: [sunA, sunB, planet],
+        );
+
+        expect(() => testRecorder.endRecording(), returnsNormally);
+      });
+    });
+
     tearDown(() {
       recorder.endRecording();
     });
