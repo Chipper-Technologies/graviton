@@ -1453,7 +1453,7 @@ void main() {
           radius: 6.0e6,
           position: vm.Vector3(0, 0, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.white,
+          color: AppColors.uiWhite,
           bodyType: BodyType.planet,
         );
 
@@ -1463,7 +1463,7 @@ void main() {
           radius: 6.96e8,
           position: vm.Vector3(10, 0, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
           bodyType: BodyType.star,
         );
 
@@ -1489,7 +1489,7 @@ void main() {
           radius: 6.0e6,
           position: vm.Vector3(0, 0, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.blue,
+          color: AppColors.basicBlue,
           bodyType: BodyType.planet,
         );
 
@@ -1499,7 +1499,7 @@ void main() {
           radius: 6.96e8,
           position: vm.Vector3(10, 0, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
           bodyType: BodyType.star,
         );
 
@@ -1509,7 +1509,7 @@ void main() {
           radius: 5.5e8,
           position: vm.Vector3(-8, 5, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.orange,
+          color: AppColors.uiOrange,
           bodyType: BodyType.star,
         );
 
@@ -1535,7 +1535,7 @@ void main() {
           radius: 6.0e6,
           position: vm.Vector3(0, 0, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.blue,
+          color: AppColors.planetEarth,
           bodyType: BodyType.planet,
         );
 
@@ -1545,7 +1545,7 @@ void main() {
           radius: 6.96e8,
           position: vm.Vector3(15, 0, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
           bodyType: BodyType.star,
         );
 
@@ -1571,7 +1571,7 @@ void main() {
           radius: 6.0e6,
           position: vm.Vector3(0, 0, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.orange,
+          color: AppColors.uiOrange,
           bodyType: BodyType.planet,
         );
 
@@ -1581,7 +1581,7 @@ void main() {
           radius: 6.96e8,
           position: vm.Vector3(12, 0, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.yellow,
+          color: AppColors.basicYellow,
           bodyType: BodyType.star,
         );
 
@@ -1591,7 +1591,7 @@ void main() {
           radius: 6.8e8,
           position: vm.Vector3(-10, 7, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.orange,
+          color: AppColors.uiOrange,
           bodyType: BodyType.star,
         );
 

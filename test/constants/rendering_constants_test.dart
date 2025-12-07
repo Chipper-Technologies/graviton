@@ -550,6 +550,16 @@ void main() {
           RenderingConstants.hemisphereLightingGradientOffset,
           isA<double>(),
         );
+        expect(
+          RenderingConstants.hemisphereLightingShadowIntensityRatio,
+          isA<double>(),
+        );
+        expect(
+          RenderingConstants.hemisphereLightingGradientStart,
+          isA<double>(),
+        );
+        expect(RenderingConstants.hemisphereLightingGradientMid, isA<double>());
+        expect(RenderingConstants.hemisphereLightingGradientEnd, isA<double>());
         expect(RenderingConstants.castShadowUmbraAlpha, isA<double>());
         expect(RenderingConstants.castShadowPenumbraRatio, isA<double>());
         expect(RenderingConstants.specularHighlightIntensity, isA<double>());
@@ -596,6 +606,43 @@ void main() {
         );
       });
 
+      test('hemisphere shadow intensity ratio should be valid', () {
+        expect(
+          RenderingConstants.hemisphereLightingShadowIntensityRatio,
+          greaterThanOrEqualTo(0.0),
+        );
+        expect(
+          RenderingConstants.hemisphereLightingShadowIntensityRatio,
+          lessThanOrEqualTo(1.0),
+        );
+
+        // Should darken shadow side but not make it pitch black
+        expect(
+          RenderingConstants.hemisphereLightingShadowIntensityRatio,
+          greaterThan(0.3),
+        );
+        expect(
+          RenderingConstants.hemisphereLightingShadowIntensityRatio,
+          lessThan(0.8),
+        );
+      });
+
+      test('hemisphere gradient stops should be in correct order', () {
+        expect(RenderingConstants.hemisphereLightingGradientStart, equals(0.0));
+        expect(RenderingConstants.hemisphereLightingGradientMid, equals(0.5));
+        expect(RenderingConstants.hemisphereLightingGradientEnd, equals(1.0));
+
+        // Verify ordering
+        expect(
+          RenderingConstants.hemisphereLightingGradientStart,
+          lessThan(RenderingConstants.hemisphereLightingGradientMid),
+        );
+        expect(
+          RenderingConstants.hemisphereLightingGradientMid,
+          lessThan(RenderingConstants.hemisphereLightingGradientEnd),
+        );
+      });
+
       test('shadow constants should create realistic effects', () {
         // Umbra should be relatively dark but not pitch black
         expect(
@@ -608,6 +655,26 @@ void main() {
         // Penumbra ratio should create smooth transition
         expect(RenderingConstants.castShadowPenumbraRatio, greaterThan(0.0));
         expect(RenderingConstants.castShadowPenumbraRatio, lessThan(1.0));
+      });
+
+      test('cast shadow geometry constants should be defined', () {
+        expect(RenderingConstants.castShadowMaxDistance, isA<double>());
+        expect(RenderingConstants.castShadowMinCasterRadius, isA<double>());
+        expect(RenderingConstants.castShadowUmbraGradientStart, isA<double>());
+        expect(RenderingConstants.castShadowUmbraGradientEnd, isA<double>());
+        expect(
+          RenderingConstants.castShadowPenumbraIntensityRatio,
+          isA<double>(),
+        );
+        expect(RenderingConstants.castShadowAlignmentThreshold, isA<double>());
+        expect(RenderingConstants.castShadowCenterOffsetRatio, isA<double>());
+        expect(RenderingConstants.castShadowMinDistance, isA<double>());
+        expect(RenderingConstants.castShadowMaxUmbraRatio, isA<double>());
+
+        // All should be positive
+        expect(RenderingConstants.castShadowMaxDistance, greaterThan(0.0));
+        expect(RenderingConstants.castShadowMinCasterRadius, greaterThan(0.0));
+        expect(RenderingConstants.castShadowMinDistance, greaterThan(0.0));
       });
 
       test('specular highlight constants should be physically reasonable', () {
@@ -628,6 +695,42 @@ void main() {
         // Shininess should be reasonable for Phong/Blinn-Phong model
         expect(RenderingConstants.specularHighlightShininess, greaterThan(1.0));
         expect(RenderingConstants.specularHighlightShininess, lessThan(256.0));
+      });
+
+      test('specular view direction should be defined', () {
+        expect(RenderingConstants.specularViewDirectionX, equals(0.0));
+        expect(RenderingConstants.specularViewDirectionY, equals(0.0));
+        expect(RenderingConstants.specularViewDirectionZ, equals(1.0));
+      });
+
+      test('specular reflection and gradient constants should be defined', () {
+        expect(RenderingConstants.specularMinReflectionDot, isA<double>());
+        expect(RenderingConstants.specularMinIntensity, isA<double>());
+        expect(
+          RenderingConstants.specularHighlightGradientFalloff,
+          isA<double>(),
+        );
+        expect(
+          RenderingConstants.specularHighlightGradientMidpoint,
+          isA<double>(),
+        );
+        expect(
+          RenderingConstants.specularHighlightGradientStart,
+          isA<double>(),
+        );
+        expect(RenderingConstants.specularHighlightGradientEnd, isA<double>());
+
+        // Should be in valid ranges
+        expect(
+          RenderingConstants.specularMinReflectionDot,
+          greaterThanOrEqualTo(0.0),
+        );
+        expect(
+          RenderingConstants.specularMinReflectionDot,
+          lessThanOrEqualTo(1.0),
+        );
+        expect(RenderingConstants.specularMinIntensity, greaterThan(0.0));
+        expect(RenderingConstants.specularMinIntensity, lessThan(0.1));
       });
 
       test('specular highlights should create focused reflections', () {
@@ -661,6 +764,112 @@ void main() {
           greaterThan(RenderingConstants.hemisphereLightingIntensity),
           reason:
               'Specular highlights should stand out from hemisphere lighting',
+        );
+      });
+
+      test('atmospheric scattering constants should be defined', () {
+        expect(
+          RenderingConstants.atmosphericScatteringMinIntensity,
+          isA<double>(),
+        );
+        expect(
+          RenderingConstants.atmosphericScatteringOffsetRatio,
+          isA<double>(),
+        );
+        expect(
+          RenderingConstants.atmosphericScatteringInnerColorBlend,
+          isA<double>(),
+        );
+        expect(
+          RenderingConstants.atmosphericScatteringInnerAlpha,
+          isA<double>(),
+        );
+        expect(RenderingConstants.atmosphericScatteringMidAlpha, isA<double>());
+        expect(
+          RenderingConstants.atmosphericScatteringOuterAlpha,
+          isA<double>(),
+        );
+        expect(
+          RenderingConstants.atmosphericScatteringFocalRatio,
+          isA<double>(),
+        );
+        expect(
+          RenderingConstants.atmosphericScatteringFocalRadiusMultiplier,
+          isA<double>(),
+        );
+        expect(
+          RenderingConstants.atmosphericScatteringDrawWidthRatio,
+          isA<double>(),
+        );
+      });
+
+      test('atmospheric scattering gradient stops should be in order', () {
+        expect(
+          RenderingConstants.atmosphericScatteringGradientStart,
+          equals(0.0),
+        );
+        expect(
+          RenderingConstants.atmosphericScatteringGradientMid1,
+          equals(0.4),
+        );
+        expect(
+          RenderingConstants.atmosphericScatteringGradientMid2,
+          equals(0.7),
+        );
+        expect(
+          RenderingConstants.atmosphericScatteringGradientEnd,
+          equals(1.0),
+        );
+
+        // Verify correct ordering
+        expect(
+          RenderingConstants.atmosphericScatteringGradientStart,
+          lessThan(RenderingConstants.atmosphericScatteringGradientMid1),
+        );
+        expect(
+          RenderingConstants.atmosphericScatteringGradientMid1,
+          lessThan(RenderingConstants.atmosphericScatteringGradientMid2),
+        );
+        expect(
+          RenderingConstants.atmosphericScatteringGradientMid2,
+          lessThan(RenderingConstants.atmosphericScatteringGradientEnd),
+        );
+      });
+
+      test('default light direction should point toward viewer', () {
+        expect(RenderingConstants.defaultLightDirectionX, equals(0.0));
+        expect(RenderingConstants.defaultLightDirectionY, equals(0.0));
+        expect(RenderingConstants.defaultLightDirectionZ, equals(1.0));
+
+        // Should be a unit vector along positive Z axis
+        final lengthSquared =
+            RenderingConstants.defaultLightDirectionX *
+                RenderingConstants.defaultLightDirectionX +
+            RenderingConstants.defaultLightDirectionY *
+                RenderingConstants.defaultLightDirectionY +
+            RenderingConstants.defaultLightDirectionZ *
+                RenderingConstants.defaultLightDirectionZ;
+        expect(lengthSquared, closeTo(1.0, 0.0001));
+      });
+
+      test('light intensity normalization should be reasonable', () {
+        expect(
+          RenderingConstants.lightIntensityNormalizationFactor,
+          isA<double>(),
+        );
+        expect(
+          RenderingConstants.lightIntensityNormalizationFactor,
+          greaterThan(0.0),
+        );
+
+        // Should be in a reasonable range for mass/distance² scaling
+        expect(
+          RenderingConstants.lightIntensityNormalizationFactor,
+          greaterThan(1.0),
+        );
+        expect(
+          RenderingConstants.lightIntensityNormalizationFactor,
+          lessThan(100.0),
         );
       });
 

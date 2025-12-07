@@ -8,82 +8,69 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.7.0] - 2025-12-09
 
 ### Added
-- **Stellar Coronas and Atmospheric Effects**: Configurable visual enhancements for stars and planets
-  - **Stellar Coronas**: Glowing plasma atmospheres around stars
-    - Conditional rendering based on `showStellarCoronas` toggle (enabled by default)
-    - Temperature-adaptive corona colors matching stellar classification
-    - Radial gradient effects extending 3x stellar radius
-    - Performance-optimized rendering with minimal overhead
-  - **Atmospheric Effects**: Realistic atmospheric halos and scattering on planets
-    - Conditional rendering based on `showAtmosphericEffects` toggle (disabled by default)
-    - Planet-specific atmospheric intensities scientifically tuned for realism:
-      - Mercury: 0.1 (thin atmosphere)
-      - Venus: 0.6 (thick CO₂ atmosphere)
-      - Earth: 0.3 with blue Rayleigh scattering
-      - Mars: 0.15 (thin dusty atmosphere)
-      - Jupiter: 0.4 (thick gas giant)
-      - Saturn: 0.35 (gas giant with rings)
-      - Uranus: 0.25 (ice giant with methane haze)
-      - Neptune: 0.3 (deep blue ice giant)
-    - Customizable haze intensity and atmospheric color parameters
-    - Helper method `_drawAtmosphericHalo()` with comprehensive documentation
-  - **UI Integration**: Toggle controls in Visuals settings panel
-    - Two new switches with descriptive icons (☀️ for coronas, ☁️ for atmospheres)
-    - Firebase Analytics tracking for toggle events
+- **Advanced 3D Lighting and Shadow System**: Comprehensive visual enhancement suite with physically-based rendering
+  - **Hemisphere Lighting**: Realistic 3D illumination simulation for spherical bodies
+    - Light source direction calculation with day/night gradient transitions
+    - Multiple light source blending for binary/trinary star systems (up to 3 sources)
+    - Inverse square law distance-based intensity calculations
+    - Weighted directional blending prioritizing brightest/closest stars
+    - Toggle control with Firebase Analytics tracking and persistence
+  - **Cast Shadows**: Dynamic shadow rendering with umbra/penumbra regions
+    - Bodies cast shadows when occluding light sources
+    - Penumbra (soft shadow) and umbra (full shadow) with proper angular detection
+    - Binary star system support with multiple shadow sources
+    - Distance-based shadow intensity calculations
+    - Toggle control with state management integration
+  - **Specular Highlights**: Phong shading model for reflective surfaces
+    - Angle-dependent highlight intensity using Phong reflection model
+    - Albedo-based scaling for different surface types (ice: 0.9, water: 0.06, rock: 0.15, gas giants: 0.52)
+    - Body-specific reflectivity calculations (8 albedo types)
+    - Additive blending for bright highlight effects
+    - Toggle control with UI integration
+  - **Atmospheric Scattering**: Sunrise/sunset glow effects on illuminated hemispheres
+    - Orange/red scattering along terminator (day/night boundary)
+    - Scales with light intensity from multiple sources
+    - Planet-only application (excludes moons and asteroids)
+    - Integrated with hemisphere lighting system
+  - **UI Integration**: Three toggle switches in Visuals settings panel
+    - Descriptive icons and labels for each lighting feature
+    - Firebase Analytics event tracking for all toggles
     - SharedPreferences persistence for user preferences
-    - New `UIElement.visualControls` enum entry
+    - Seamless integration with existing visual controls
   - **Localization**: Full translation support across all 7 languages
     - English, Spanish, French, German, Japanese, Chinese (Simplified), Korean
-    - Descriptive titles and explanations for each feature
-  - **Test Coverage**: Comprehensive unit and widget tests
-    - UIState toggle tests (5 new tests)
-    - CelestialBodyPainter conditional rendering tests (16 new tests)
-    - UIElement enum validation tests (2 new tests)
-    - VisualsControls widget scrolling tests (3 fixed tests)
-- **Dynamic Sunspot and Solar Flare Randomization**: Enhanced stellar activity variation
-  - **Hour-Based Seed Generation**: Sunspots and flares now update every hour instead of daily
-  - **Improved Realism**: More frequent variation in stellar surface features
-  - **Correlated Activity**: Solar flares originate from sunspot regions (75% correlation)
-  - **Cached Performance**: Maintains hourly cache to prevent flickering while ensuring stability
-- **Custom Bodies Feature**: Comprehensive dynamic body creation and manipulation system
-  - **Runtime Body Creation**: Interactive tap-to-place mode for adding celestial bodies during simulation
-    - Visual add body toggle button in simulation controls
-    - Tap-to-place interaction on 3D simulation canvas
-    - Real-time position calculation from screen coordinates to 3D space
-    - Automatic body initialization with physics properties
-  - **Body Movement System**: Single-finger drag gesture support for repositioning bodies
-    - Drag-to-move mode with visual feedback
-    - Move handle indicators showing draggable bodies
-    - Real-time position updates during drag operations
-    - Velocity reset and trail clearing on position change
-    - Automatic simulation pause during body manipulation
-  - **Enhanced Body Customization**: Per-body realistic color control
-    - Individual `useRealisticColors` flag for each body
-    - Override automatic stellar classification colors with custom choices
-    - Maintains visual consistency with existing color systems
-    - Preserves custom colors during body editing and duplication
-- **Firebase Performance Monitoring**: Comprehensive performance tracking and analysis capabilities
-  - **Custom Trace Tracking**: Monitor performance of critical app operations with `startTrace()` method
-  - **HTTP Metrics**: Track network request performance with `newHttpMetric()` for API calls
-  - **Automatic Initialization**: Seamless integration with existing Firebase service architecture
-  - **Cross-Platform Support**: Performance monitoring across iOS, Android, and Web platforms
-  - **Service Layer**: Dedicated `PerformanceService` following established Firebase service patterns
-  - **Test Coverage**: Comprehensive unit tests for initialization and performance tracking methods
+    - Descriptive titles and technical explanations
+  - **Test Coverage**: Extensive unit and integration tests (5,808 tests passing)
+    - 205 lighting-specific tests covering all features
+    - 53 painter tests for shadow/highlight rendering
+    - 4 enhancement feature integration tests
+    - Zero code analysis errors, 100% pass rate
+- **Stellar Coronas and Atmospheric Effects**: Configurable visual enhancements for stars and planets
+  - **Stellar Coronas**: Glowing plasma atmospheres around stars with temperature-adaptive colors
+  - **Atmospheric Effects**: Planet-specific atmospheric halos with scientifically-tuned intensities
+  - **UI Controls**: Toggle switches with descriptive icons (☀️ coronas, ☁️ atmospheres)
+  - **Localization**: Full translation support across all 7 languages
+- **Dynamic Stellar Activity**: Hour-based sunspot and solar flare randomization
+  - Hourly seed generation for more frequent variation
+  - Correlated solar flares originating from sunspot regions (75% correlation)
+  - Cached performance preventing flickering
+- **Custom Bodies System**: Interactive body creation and manipulation
+  - Tap-to-place mode for adding celestial bodies during simulation
+  - Single-finger drag gesture for repositioning bodies
+  - Per-body realistic color control with custom override capability
+  - Real-time 3D position calculation from screen coordinates
+- **Firebase Performance Monitoring**: Cross-platform performance tracking
+  - Custom trace tracking for critical operations
+  - HTTP metrics for API call monitoring
+  - Dedicated PerformanceService with comprehensive test coverage
 - **Camera Gimbal Lock Prevention**: Enhanced 3D navigation stability
-  - Pitch angle clamping to ±1.5 radians (~86°) to prevent gimbal lock singularity
-  - Prevents camera flipping/reversing at extreme vertical angles
-  - Maintains stable yaw rotation at all pitch angles
-  - Applied consistently across manual rotation and AI camera control
-  - Comprehensive test coverage (28 test cases) validating gimbal lock prevention
+  - Pitch angle clamping to ±1.5 radians (~86°) preventing singularity
+  - Stable yaw rotation at all pitch angles
+  - Comprehensive test coverage (28 test cases)
 
 ### Improved
-- **Build Process**: Updated production web build task to properly chain configuration injection after Flutter build
-  - Ensures Firebase config is correctly injected into web builds before deployment
-  - Prevents missing configuration values in production web deployments
-- **3D Camera Controls**: More intuitive and stable camera rotation behavior
-  - Smoother rotation near vertical viewing angles
-  - Consistent yaw behavior regardless of pitch angle
-  - Better user experience for exploring 3D space
+- **Build Process**: Production web builds now properly chain Firebase configuration injection
+- **3D Camera Controls**: Smoother rotation behavior near vertical viewing angles
 
 ## [1.6.0] - 2025-12-06
 

@@ -121,9 +121,23 @@ class RenderingConstants {
   /// Controls how much brighter the lit hemisphere appears
   static const double hemisphereLightingIntensity = 0.3;
 
+  /// Shadow side darkening multiplier for hemisphere lighting (0.0-1.0)
+  /// Reduces intensity on shadowed hemisphere relative to lit side
+  /// Applied as: intensity * hemisphereLightingShadowIntensityRatio
+  static const double hemisphereLightingShadowIntensityRatio = 0.5;
+
   /// Gradient center offset toward light source for hemisphere effect
   /// Higher values create more pronounced day/night division
   static const double hemisphereLightingGradientOffset = 0.3;
+
+  /// Start position of hemisphere lighting gradient (lit side)
+  static const double hemisphereLightingGradientStart = 0.0;
+
+  /// Middle position of hemisphere lighting gradient (terminator)
+  static const double hemisphereLightingGradientMid = 0.5;
+
+  /// End position of hemisphere lighting gradient (shadow side)
+  static const double hemisphereLightingGradientEnd = 1.0;
 
   /// Shadow darkness multiplier for cast shadows (0.0-1.0)
   /// 1.0 = completely black umbra, lower values create softer shadows
@@ -132,6 +146,35 @@ class RenderingConstants {
   /// Penumbra fade distance as ratio of shadow radius
   /// Controls how gradually shadows fade from umbra to light
   static const double castShadowPenumbraRatio = 0.3;
+
+  /// Start position for umbra gradient transition (0.0-1.0)
+  /// Controls where the shadow begins to fade from full intensity
+  static const double castShadowUmbraGradientStart = 0.7;
+
+  /// End position for umbra gradient transition (0.0-1.0)
+  /// Controls where the shadow fades to transparent
+  static const double castShadowUmbraGradientEnd = 1.0;
+
+  /// Penumbra darkness as ratio of umbra darkness (0.0-1.0)
+  /// Controls how dark the partial shadow is relative to full shadow
+  static const double castShadowPenumbraIntensityRatio = 0.3;
+
+  /// Alignment threshold for shadow occlusion detection (0.0-1.0)
+  /// Cosine of angle between star-caster and star-receiver vectors
+  /// 0.95 ≈ cos(18°), requiring bodies to be roughly aligned for shadows
+  static const double castShadowAlignmentThreshold = 0.95;
+
+  /// Shadow center offset as ratio of receiver body radius (0.0-1.0)
+  /// Controls how far shadow is displaced from body center toward light source
+  static const double castShadowCenterOffsetRatio = 0.3;
+
+  /// Minimum distance clamp for shadow size calculation (simulation units)
+  /// Prevents division by very small distances that would create oversized shadows
+  static const double castShadowMinDistance = 1.0;
+
+  /// Maximum umbra size as ratio of receiver body radius (0.0-1.0)
+  /// Prevents shadows from covering more than this fraction of the body
+  static const double castShadowMaxUmbraRatio = 0.6;
 
   /// Specular highlight intensity on icy/water surfaces (0.0-1.0)
   /// Controls brightness of reflective highlights
@@ -144,6 +187,42 @@ class RenderingConstants {
   /// Specular highlight shininess factor
   /// Higher values create sharper, more mirror-like reflections
   static const double specularHighlightShininess = 32.0;
+
+  /// View direction vector X component for specular highlights
+  /// Camera viewing direction in 3D space (assumes camera looking down -Z)
+  static const double specularViewDirectionX = 0.0;
+
+  /// View direction vector Y component for specular highlights
+  /// Camera viewing direction in 3D space (assumes camera looking down -Z)
+  static const double specularViewDirectionY = 0.0;
+
+  /// View direction vector Z component for specular highlights
+  /// Camera viewing direction in 3D space (assumes camera looking down -Z)
+  static const double specularViewDirectionZ = 1.0;
+
+  /// Minimum dot product between reflection and view vectors (0.0-1.0)
+  /// Specular highlights only render when reflection aligns with view above this threshold
+  static const double specularMinReflectionDot = 0.3;
+
+  /// Minimum visible specular highlight intensity (0.0-1.0)
+  /// Filters out highlights dimmer than this threshold for performance
+  static const double specularMinIntensity = 0.01;
+
+  /// Intensity multiplier for gradient falloff at midpoint (0.0-1.0)
+  /// Controls how quickly the highlight fades from center to edge
+  static const double specularHighlightGradientFalloff = 0.5;
+
+  /// Position of gradient midpoint in radial gradient (0.0-1.0)
+  /// Defines where the falloff begins in the highlight gradient
+  static const double specularHighlightGradientMidpoint = 0.5;
+
+  /// Starting position of specular highlight gradient (0.0-1.0)
+  /// Full intensity at center of highlight
+  static const double specularHighlightGradientStart = 0.0;
+
+  /// Ending position of specular highlight gradient (0.0-1.0)
+  /// Fully transparent at edge of highlight
+  static const double specularHighlightGradientEnd = 1.0;
 
   // Multiple light source blending
   /// Maximum number of light sources to blend for lighting calculations
@@ -158,6 +237,14 @@ class RenderingConstants {
   /// Filters out negligible light sources for performance
   static const double lightSourceMinContribution = 0.05;
 
+  /// Maximum distance for shadow calculations (in simulation units)
+  /// Stars beyond this distance don't cast shadows for performance
+  static const double castShadowMaxDistance = 1000.0;
+
+  /// Minimum radius for a body to cast shadows (in simulation units)
+  /// Bodies smaller than this don't cast visible shadows for performance
+  static const double castShadowMinCasterRadius = 0.5;
+
   // Atmospheric scattering on lit side
   /// Intensity multiplier for atmospheric glow on sunlit side (0.0-1.0)
   /// Creates sunrise/sunset effect around terminator
@@ -170,6 +257,69 @@ class RenderingConstants {
   /// Concentration factor for scattering effect
   /// Higher values create tighter glow near terminator
   static const double atmosphericScatteringConcentration = 3.0;
+
+  /// Minimum light intensity for visible atmospheric scattering (0.0-1.0)
+  /// Scattering only renders when light intensity exceeds this threshold
+  static const double atmosphericScatteringMinIntensity = 0.1;
+
+  /// Scattering ring offset as ratio of body radius (0.0-1.0)
+  /// Controls how far inset the scattering appears from body edge
+  static const double atmosphericScatteringOffsetRatio = 0.7;
+
+  /// Inner scattering color blend ratio (0.0-1.0)
+  /// Controls how much to blend body color with scattering color
+  static const double atmosphericScatteringInnerColorBlend = 0.3;
+
+  /// Inner scattering alpha multiplier (0.0-1.0)
+  /// Controls opacity at innermost edge of scattering gradient
+  static const double atmosphericScatteringInnerAlpha = 0.3;
+
+  /// Mid scattering alpha multiplier (0.0-1.0)
+  /// Controls opacity at middle of scattering gradient (orange)
+  static const double atmosphericScatteringMidAlpha = 0.6;
+
+  /// Outer scattering alpha multiplier (0.0-1.0)
+  /// Controls opacity at outer edge of scattering gradient (red glow)
+  static const double atmosphericScatteringOuterAlpha = 0.4;
+
+  /// Starting position of atmospheric scattering gradient (0.0-1.0)
+  /// Inner edge where body color blends with scattering
+  static const double atmosphericScatteringGradientStart = 0.0;
+
+  /// First mid position of atmospheric scattering gradient (0.0-1.0)
+  /// Where orange scattering appears
+  static const double atmosphericScatteringGradientMid1 = 0.4;
+
+  /// Second mid position of atmospheric scattering gradient (0.0-1.0)
+  /// Where red/orange glow appears
+  static const double atmosphericScatteringGradientMid2 = 0.7;
+
+  /// Ending position of atmospheric scattering gradient (0.0-1.0)
+  /// Outer edge fading to transparent
+  static const double atmosphericScatteringGradientEnd = 1.0;
+
+  /// Focal point position multiplier for scattering gradient (0.0-1.0)
+  /// Controls how far toward terminator the scattering concentrates
+  static const double atmosphericScatteringFocalRatio = 0.5;
+
+  /// Focal radius multiplier for scattering gradient tightness
+  /// Multiplied by concentration factor to control gradient spread
+  static const double atmosphericScatteringFocalRadiusMultiplier = 0.1;
+
+  /// Draw width ratio for atmospheric scattering effect (0.0-1.0)
+  /// Controls how much of the scattering width is actually rendered
+  static const double atmosphericScatteringDrawWidthRatio = 0.8;
+
+  /// Default light direction when no light sources are found
+  /// Points directly at viewer (positive Z axis)
+  static const double defaultLightDirectionX = 0.0;
+  static const double defaultLightDirectionY = 0.0;
+  static const double defaultLightDirectionZ = 1.0;
+
+  /// Intensity normalization factor for light calculations
+  /// Converts raw intensity (mass/distance²) to normalized range (0.0-1.0)
+  /// Empirically derived to balance visual appearance across typical scenarios
+  static const double lightIntensityNormalizationFactor = 10.0;
 
   // Body albedo system (surface reflectivity)
   /// Ice/snow surface albedo - highly reflective

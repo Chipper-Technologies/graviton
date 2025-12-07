@@ -5,6 +5,8 @@ import 'package:graviton/constants/rendering_constants.dart';
 import 'package:graviton/constants/simulation_constants.dart';
 import 'package:graviton/enums/body_type.dart';
 import 'package:graviton/enums/celestial_body_name.dart';
+import 'package:graviton/painters/light_contribution.dart';
+import 'package:graviton/painters/shadow_info.dart';
 import 'package:graviton/models/body.dart';
 import 'package:graviton/models/sunspot_data.dart';
 import 'package:graviton/services/stellar_color_service.dart';
@@ -263,10 +265,15 @@ class CelestialBodyPainter {
                 Color.lerp(
                   bodyColor,
                   AppColors.uiBlack,
-                  RenderingConstants.hemisphereLightingIntensity * 0.5,
+                  RenderingConstants.hemisphereLightingIntensity *
+                      RenderingConstants.hemisphereLightingShadowIntensityRatio,
                 )!,
               ],
-              stops: const [0.0, 0.5, 1.0],
+              stops: const [
+                RenderingConstants.hemisphereLightingGradientStart,
+                RenderingConstants.hemisphereLightingGradientMid,
+                RenderingConstants.hemisphereLightingGradientEnd,
+              ],
             );
 
             final bodyRect = Rect.fromCircle(center: center, radius: radius);
@@ -2212,7 +2219,8 @@ class CelestialBodyPainter {
     for (final star in stars) {
       // Skip if star is too far (optimization)
       final starDistance = _calculate3DDistance(currentBody, star);
-      if (starDistance == 0 || starDistance > 1000.0) {
+      if (starDistance == 0 ||
+          starDistance > RenderingConstants.castShadowMaxDistance) {
         continue;
       }
 
@@ -2221,7 +2229,7 @@ class CelestialBodyPainter {
         // Skip self, stars, and very small bodies
         if (caster == currentBody ||
             caster.bodyType == BodyType.star ||
-            caster.radius < 0.5) {
+            caster.radius < RenderingConstants.castShadowMinCasterRadius) {
           continue;
         }
 
@@ -2252,7 +2260,10 @@ class CelestialBodyPainter {
               ),
               AppColors.uiBlack.withValues(alpha: 0.0),
             ],
-            stops: const [0.7, 1.0],
+            stops: const [
+              RenderingConstants.castShadowUmbraGradientStart,
+              RenderingConstants.castShadowUmbraGradientEnd,
+            ],
           );
 
           final umbraRect = Rect.fromCircle(
@@ -2273,7 +2284,9 @@ class CelestialBodyPainter {
           final penumbraGradient = RadialGradient(
             colors: [
               AppColors.uiBlack.withValues(
-                alpha: RenderingConstants.castShadowUmbraAlpha * 0.3,
+                alpha:
+                    RenderingConstants.castShadowUmbraAlpha *
+                    RenderingConstants.castShadowPenumbraIntensityRatio,
               ),
               AppColors.transparentColor,
             ],
@@ -2344,12 +2357,11 @@ class CelestialBodyPainter {
         normCasterZ * normReceiverZ;
 
     // Bodies must be roughly aligned (small angle)
-    // cos(10°) ≈ 0.985
-    return dotProduct > 0.95;
+    return dotProduct > RenderingConstants.castShadowAlignmentThreshold;
   }
 
   /// Calculate shadow geometry on receiver body
-  static _ShadowInfo? _calculateShadowGeometry(
+  static ShadowInfo? _calculateShadowGeometry(
     Body star,
     Body caster,
     Body receiver,
@@ -2371,8 +2383,16 @@ class CelestialBodyPainter {
 
     // Shadow center offset from receiver center
     // Simplified: use opposite direction of star-caster vector
-    final shadowOffsetX = -starToCasterX / distance * receiverRadius * 0.3;
-    final shadowOffsetY = -starToCasterY / distance * receiverRadius * 0.3;
+    final shadowOffsetX =
+        -starToCasterX /
+        distance *
+        receiverRadius *
+        RenderingConstants.castShadowCenterOffsetRatio;
+    final shadowOffsetY =
+        -starToCasterY /
+        distance *
+        receiverRadius *
+        RenderingConstants.castShadowCenterOffsetRatio;
 
     final shadowCenter = Offset(
       receiverCenter.dx + shadowOffsetX,
@@ -2387,14 +2407,20 @@ class CelestialBodyPainter {
     final totalDistance = starToCaster + casterToReceiver;
     final umbraScale =
         (caster.radius * receiverRadius) /
-        totalDistance.clamp(1.0, double.infinity);
-    final umbraRadius = umbraScale.clamp(0.0, receiverRadius * 0.6);
+        totalDistance.clamp(
+          RenderingConstants.castShadowMinDistance,
+          double.infinity,
+        );
+    final umbraRadius = umbraScale.clamp(
+      0.0,
+      receiverRadius * RenderingConstants.castShadowMaxUmbraRatio,
+    );
 
     // Penumbra is larger
     final penumbraRadius =
         umbraRadius * (1.0 + RenderingConstants.castShadowPenumbraRatio);
 
-    return _ShadowInfo(
+    return ShadowInfo(
       shadowCenter: shadowCenter,
       umbraRadius: umbraRadius,
       penumbraRadius: penumbraRadius,
@@ -2457,9 +2483,9 @@ class CelestialBodyPainter {
     final normLightZ = lightDirZ / lightDist;
 
     // Simplified view direction (assume camera looking down -Z axis)
-    const viewX = 0.0;
-    const viewY = 0.0;
-    const viewZ = 1.0;
+    const viewX = RenderingConstants.specularViewDirectionX;
+    const viewY = RenderingConstants.specularViewDirectionY;
+    const viewZ = RenderingConstants.specularViewDirectionZ;
 
     // Calculate reflection vector using Phong model
     // R = 2(N·L)N - L, where N is surface normal at highlight point
@@ -2476,7 +2502,7 @@ class CelestialBodyPainter {
     final dotRV = reflectX * viewX + reflectY * viewY + reflectZ * viewZ;
 
     // Only draw highlight if reflection somewhat toward viewer
-    if (dotRV < 0.3) {
+    if (dotRV < RenderingConstants.specularMinReflectionDot) {
       return;
     }
 
@@ -2488,7 +2514,7 @@ class CelestialBodyPainter {
         )
         .toDouble();
 
-    if (intensity < 0.01) {
+    if (intensity < RenderingConstants.specularMinIntensity) {
       return; // Too dim
     }
 
@@ -2511,10 +2537,18 @@ class CelestialBodyPainter {
     final highlightGradient = RadialGradient(
       colors: [
         AppColors.uiWhite.withValues(alpha: highlightIntensity),
-        AppColors.uiWhite.withValues(alpha: highlightIntensity * 0.5),
+        AppColors.uiWhite.withValues(
+          alpha:
+              highlightIntensity *
+              RenderingConstants.specularHighlightGradientFalloff,
+        ),
         AppColors.transparentColor,
       ],
-      stops: const [0.0, 0.5, 1.0],
+      stops: const [
+        RenderingConstants.specularHighlightGradientStart,
+        RenderingConstants.specularHighlightGradientMidpoint,
+        RenderingConstants.specularHighlightGradientEnd,
+      ],
     );
 
     final highlightRect = Rect.fromCircle(
@@ -2554,7 +2588,8 @@ class CelestialBodyPainter {
     // Calculate blended lighting direction
     final blendedLight = _calculateBlendedLighting(currentBody, stars);
 
-    if (blendedLight.intensity < 0.1) {
+    if (blendedLight.intensity <
+        RenderingConstants.atmosphericScatteringMinIntensity) {
       return; // Too dim for visible scattering
     }
 
@@ -2572,8 +2607,8 @@ class CelestialBodyPainter {
 
     // Position scattering ring slightly toward the light source
     final scatteringOffset = Offset(
-      lightX * radius * 0.7, // Slightly inset from edge
-      lightY * radius * 0.7,
+      lightX * radius * RenderingConstants.atmosphericScatteringOffsetRatio,
+      lightY * radius * RenderingConstants.atmosphericScatteringOffsetRatio,
     );
 
     // Create gradient with warm scattering colors (orange/red like sunrise)
@@ -2587,22 +2622,45 @@ class CelestialBodyPainter {
         Color.lerp(
           bodyColor,
           AppColors.stellarGType,
-          0.3,
-        )!.withValues(alpha: scatteringIntensity * 0.3),
+          RenderingConstants.atmosphericScatteringInnerColorBlend,
+        )!.withValues(
+          alpha:
+              scatteringIntensity *
+              RenderingConstants.atmosphericScatteringInnerAlpha,
+        ),
         // Mid: orange scattering
-        AppColors.stellarKType.withValues(alpha: scatteringIntensity * 0.6),
+        AppColors.stellarKType.withValues(
+          alpha:
+              scatteringIntensity *
+              RenderingConstants.atmosphericScatteringMidAlpha,
+        ),
         // Outer: red/orange glow
-        AppColors.stellarMType.withValues(alpha: scatteringIntensity * 0.4),
+        AppColors.stellarMType.withValues(
+          alpha:
+              scatteringIntensity *
+              RenderingConstants.atmosphericScatteringOuterAlpha,
+        ),
         // Fade to transparent
         AppColors.transparentColor,
       ],
-      stops: const [0.0, 0.4, 0.7, 1.0],
+      stops: const [
+        RenderingConstants.atmosphericScatteringGradientStart,
+        RenderingConstants.atmosphericScatteringGradientMid1,
+        RenderingConstants.atmosphericScatteringGradientMid2,
+        RenderingConstants.atmosphericScatteringGradientEnd,
+      ],
       // Concentrate scattering near terminator
       focal: Alignment(
-        scatteringOffset.dx / (radius + scatteringWidth) * 0.5,
-        scatteringOffset.dy / (radius + scatteringWidth) * 0.5,
+        scatteringOffset.dx /
+            (radius + scatteringWidth) *
+            RenderingConstants.atmosphericScatteringFocalRatio,
+        scatteringOffset.dy /
+            (radius + scatteringWidth) *
+            RenderingConstants.atmosphericScatteringFocalRatio,
       ),
-      focalRadius: RenderingConstants.atmosphericScatteringConcentration * 0.1,
+      focalRadius:
+          RenderingConstants.atmosphericScatteringConcentration *
+          RenderingConstants.atmosphericScatteringFocalRadiusMultiplier,
     );
 
     final scatteringRect = Rect.fromCircle(
@@ -2612,7 +2670,9 @@ class CelestialBodyPainter {
 
     canvas.drawCircle(
       center,
-      radius + scatteringWidth * 0.8, // Slightly smaller than full width
+      radius +
+          scatteringWidth *
+              RenderingConstants.atmosphericScatteringDrawWidthRatio,
       Paint()
         ..shader = scatteringGradient.createShader(scatteringRect)
         ..blendMode = BlendMode.plus, // Additive for glowing effect
@@ -2687,21 +2747,25 @@ class CelestialBodyPainter {
   ///
   /// Returns the dominant light direction and intensity by blending contributions
   /// from up to [RenderingConstants.maxLightSourcesForBlending] light sources.
-  static _LightContribution _calculateBlendedLighting(
+  static LightContribution _calculateBlendedLighting(
     Body body,
     List<Body> lightSources,
   ) {
     if (lightSources.isEmpty) {
       // No light sources - return zero contribution
-      return _LightContribution(
+      return LightContribution(
         star: body, // Use body itself as placeholder
         intensity: 0.0,
-        direction: vm.Vector3(0, 0, 1),
+        direction: vm.Vector3(
+          RenderingConstants.defaultLightDirectionX,
+          RenderingConstants.defaultLightDirectionY,
+          RenderingConstants.defaultLightDirectionZ,
+        ),
       );
     }
 
     // Calculate contributions from each light source
-    final contributions = <_LightContribution>[];
+    final contributions = <LightContribution>[];
 
     for (final star in lightSources) {
       final displacement = star.position - body.position;
@@ -2716,7 +2780,9 @@ class CelestialBodyPainter {
       final baseIntensity = star.mass / (distance * distance);
 
       // Normalize to reasonable range (0.0 - 1.0)
-      final normalizedIntensity = (baseIntensity * 10).clamp(0.0, 1.0);
+      final normalizedIntensity =
+          (baseIntensity * RenderingConstants.lightIntensityNormalizationFactor)
+              .clamp(0.0, 1.0);
 
       // Skip if contribution is too small
       if (normalizedIntensity < RenderingConstants.lightSourceMinContribution) {
@@ -2724,7 +2790,7 @@ class CelestialBodyPainter {
       }
 
       contributions.add(
-        _LightContribution(
+        LightContribution(
           star: star,
           intensity: normalizedIntensity,
           direction: displacement.normalized(),
@@ -2734,10 +2800,14 @@ class CelestialBodyPainter {
 
     // If no significant contributions, return zero
     if (contributions.isEmpty) {
-      return _LightContribution(
+      return LightContribution(
         star: lightSources.first,
         intensity: 0.0,
-        direction: vm.Vector3(0, 0, 1),
+        direction: vm.Vector3(
+          RenderingConstants.defaultLightDirectionX,
+          RenderingConstants.defaultLightDirectionY,
+          RenderingConstants.defaultLightDirectionZ,
+        ),
       );
     }
 
@@ -2763,36 +2833,10 @@ class CelestialBodyPainter {
       blendedDirection = blendedDirection.normalized();
     }
 
-    return _LightContribution(
+    return LightContribution(
       star: topContributions.first.star, // Use brightest star as primary
       intensity: totalIntensity / topContributions.length, // Average intensity
       direction: blendedDirection,
     );
   }
-}
-
-/// Shadow geometry information
-class _ShadowInfo {
-  final Offset shadowCenter;
-  final double umbraRadius;
-  final double penumbraRadius;
-
-  _ShadowInfo({
-    required this.shadowCenter,
-    required this.umbraRadius,
-    required this.penumbraRadius,
-  });
-}
-
-/// Light source contribution for blended lighting
-class _LightContribution {
-  final Body star;
-  final double intensity;
-  final vm.Vector3 direction;
-
-  _LightContribution({
-    required this.star,
-    required this.intensity,
-    required this.direction,
-  });
 }
