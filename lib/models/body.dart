@@ -35,6 +35,20 @@ class Body {
   double _orbitPhase; // orbital phase (0 to 2π)
   double _orbitInclination; // orbital inclination (0 to π/2)
 
+  // Relativistic effects properties
+  double
+  properTime; // proper time elapsed for this body (relativistic time dilation)
+  double timeDilationFactor; // γ factor from special relativity
+  bool
+  _showRelativisticGlow; // whether to show visual glow for high-velocity bodies
+
+  // Tidal force properties
+  double tidalStress; // magnitude of tidal stress experienced by this body
+  vm.Vector3 tidalAxisMajor; // direction of major tidal axis (stretching)
+  vm.Vector3 tidalAxisMinor; // direction of minor tidal axis (compression)
+  bool _showTidalForces; // whether to show tidal force visualization
+  double tidalHeating; // heating from tidal forces (energy per unit time)
+
   // Getter and setter for showGravityWell
   bool get showGravityWell => _showGravityWell;
   set showGravityWell(bool value) {
@@ -81,6 +95,22 @@ class Body {
     }
   }
 
+  // Getter and setter for showRelativisticGlow
+  bool get showRelativisticGlow => _showRelativisticGlow;
+  set showRelativisticGlow(bool value) {
+    if (_showRelativisticGlow != value) {
+      _showRelativisticGlow = value;
+    }
+  }
+
+  // Getter and setter for showTidalForces
+  bool get showTidalForces => _showTidalForces;
+  set showTidalForces(bool value) {
+    if (_showTidalForces != value) {
+      _showTidalForces = value;
+    }
+  }
+
   Body({
     required this.position,
     required this.velocity,
@@ -100,12 +130,26 @@ class Body {
     double orbitRadius = SimulationConstants.defaultOrbitRadius,
     double orbitPhase = 0.0, // Default phase (0 to 2π)
     double orbitInclination = 0.0, // Default inclination (0 to π/2)
+    // Relativistic properties
+    this.properTime = 0.0, // Start at zero proper time
+    this.timeDilationFactor = 1.0, // No dilation initially (γ = 1)
+    bool showRelativisticGlow = false, // Disabled by default
+    // Tidal force properties
+    this.tidalStress = 0.0, // No tidal stress initially
+    vm.Vector3? tidalAxisMajor, // Optional, defaults to zero vector
+    vm.Vector3? tidalAxisMinor, // Optional, defaults to zero vector
+    bool showTidalForces = false, // Disabled by default
+    this.tidalHeating = 0.0, // No tidal heating initially
   }) : _showGravityWell = showGravityWell,
        _isOrbitalPlacementActive = isOrbitalPlacementActive,
        _useRealisticColor = useRealisticColor,
        _orbitRadius = orbitRadius,
        _orbitPhase = orbitPhase,
-       _orbitInclination = orbitInclination;
+       _orbitInclination = orbitInclination,
+       _showRelativisticGlow = showRelativisticGlow,
+       _showTidalForces = showTidalForces,
+       tidalAxisMajor = tidalAxisMajor ?? vm.Vector3.zero(),
+       tidalAxisMinor = tidalAxisMinor ?? vm.Vector3.zero();
 
   /// Whether this body is a star that emits light
   bool get isLuminous => bodyType.isLuminous;
@@ -166,7 +210,15 @@ class Body {
         other.useRealisticColor == useRealisticColor &&
         other.orbitRadius == orbitRadius &&
         other.orbitPhase == orbitPhase &&
-        other.orbitInclination == orbitInclination;
+        other.orbitInclination == orbitInclination &&
+        other.properTime == properTime &&
+        other.timeDilationFactor == timeDilationFactor &&
+        other.showRelativisticGlow == showRelativisticGlow &&
+        other.tidalStress == tidalStress &&
+        other.tidalAxisMajor == tidalAxisMajor &&
+        other.tidalAxisMinor == tidalAxisMinor &&
+        other.showTidalForces == showTidalForces &&
+        other.tidalHeating == tidalHeating;
   }
 
   @override
@@ -186,7 +238,19 @@ class Body {
       showGravityWell,
       isOrbitalPlacementActive,
       useRealisticColor,
-      Object.hash(orbitRadius, orbitPhase, orbitInclination),
+      Object.hash(
+        orbitRadius,
+        orbitPhase,
+        orbitInclination,
+        properTime,
+        timeDilationFactor,
+        showRelativisticGlow,
+        tidalStress,
+        tidalAxisMajor,
+        tidalAxisMinor,
+        showTidalForces,
+        tidalHeating,
+      ),
     );
   }
 }

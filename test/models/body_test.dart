@@ -864,5 +864,233 @@ void main() {
         expect(body.hashCode, equals(body.hashCode));
       });
     });
+
+    group('Relativistic Properties Tests', () {
+      test('should initialize with default relativistic properties', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+        );
+
+        expect(body.properTime, equals(0.0));
+        expect(body.timeDilationFactor, equals(1.0));
+        expect(body.showRelativisticGlow, isFalse);
+      });
+
+      test('should allow setting custom relativistic properties', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          properTime: 100.0,
+          timeDilationFactor: 1.1547,
+          showRelativisticGlow: true,
+        );
+
+        expect(body.properTime, equals(100.0));
+        expect(body.timeDilationFactor, equals(1.1547));
+        expect(body.showRelativisticGlow, isTrue);
+      });
+
+      test('showRelativisticGlow getter and setter should work', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+        );
+
+        expect(body.showRelativisticGlow, isFalse);
+
+        body.showRelativisticGlow = true;
+        expect(body.showRelativisticGlow, isTrue);
+
+        body.showRelativisticGlow = false;
+        expect(body.showRelativisticGlow, isFalse);
+      });
+
+      test('equality should include relativistic properties', () {
+        final body1 = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          properTime: 50.0,
+          timeDilationFactor: 1.2,
+          showRelativisticGlow: true,
+        );
+
+        final body2 = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          properTime: 50.0,
+          timeDilationFactor: 1.2,
+          showRelativisticGlow: true,
+        );
+
+        final body3 = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          properTime: 100.0, // Different proper time
+          timeDilationFactor: 1.2,
+          showRelativisticGlow: true,
+        );
+
+        expect(body1, equals(body2));
+        expect(body1, isNot(equals(body3)));
+      });
+    });
+
+    group('Tidal Force Properties Tests', () {
+      test('should initialize with default tidal properties', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+        );
+
+        expect(body.tidalStress, equals(0.0));
+        expect(body.tidalAxisMajor, equals(vm.Vector3.zero()));
+        expect(body.tidalAxisMinor, equals(vm.Vector3.zero()));
+        expect(body.showTidalForces, isFalse);
+        expect(body.tidalHeating, equals(0.0));
+      });
+
+      test('should allow setting custom tidal properties', () {
+        final majorAxis = vm.Vector3(1.0, 0.0, 0.0);
+        final minorAxis = vm.Vector3(0.0, 1.0, 0.0);
+
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          tidalStress: 0.5,
+          tidalAxisMajor: majorAxis,
+          tidalAxisMinor: minorAxis,
+          showTidalForces: true,
+          tidalHeating: 10.0,
+        );
+
+        expect(body.tidalStress, equals(0.5));
+        expect(body.tidalAxisMajor, equals(majorAxis));
+        expect(body.tidalAxisMinor, equals(minorAxis));
+        expect(body.showTidalForces, isTrue);
+        expect(body.tidalHeating, equals(10.0));
+      });
+
+      test('showTidalForces getter and setter should work', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+        );
+
+        expect(body.showTidalForces, isFalse);
+
+        body.showTidalForces = true;
+        expect(body.showTidalForces, isTrue);
+
+        body.showTidalForces = false;
+        expect(body.showTidalForces, isFalse);
+      });
+
+      test('equality should include tidal properties', () {
+        final majorAxis = vm.Vector3(1.0, 0.0, 0.0);
+        final minorAxis = vm.Vector3(0.0, 1.0, 0.0);
+
+        final body1 = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          tidalStress: 0.3,
+          tidalAxisMajor: majorAxis,
+          tidalAxisMinor: minorAxis,
+          showTidalForces: true,
+          tidalHeating: 5.0,
+        );
+
+        final body2 = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          tidalStress: 0.3,
+          tidalAxisMajor: majorAxis,
+          tidalAxisMinor: minorAxis,
+          showTidalForces: true,
+          tidalHeating: 5.0,
+        );
+
+        final body3 = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+          tidalStress: 0.6, // Different tidal stress
+          tidalAxisMajor: majorAxis,
+          tidalAxisMinor: minorAxis,
+          showTidalForces: true,
+          tidalHeating: 5.0,
+        );
+
+        expect(body1, equals(body2));
+        expect(body1, isNot(equals(body3)));
+      });
+
+      test('tidal axes can be modified after construction', () {
+        final body = Body(
+          position: vm.Vector3.zero(),
+          velocity: vm.Vector3.zero(),
+          mass: 1.0,
+          radius: 1.0,
+          color: AppColors.basicBlue,
+          name: 'Test Body',
+        );
+
+        expect(body.tidalAxisMajor, equals(vm.Vector3.zero()));
+
+        // Modify the tidal axis
+        body.tidalAxisMajor = vm.Vector3(1.0, 0.0, 0.0);
+        expect(body.tidalAxisMajor, equals(vm.Vector3(1.0, 0.0, 0.0)));
+
+        body.tidalAxisMinor = vm.Vector3(0.0, 1.0, 0.0);
+        expect(body.tidalAxisMinor, equals(vm.Vector3(0.0, 1.0, 0.0)));
+      });
+    });
   });
 }
