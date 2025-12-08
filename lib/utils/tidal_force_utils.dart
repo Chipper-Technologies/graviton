@@ -265,9 +265,6 @@ class TidalForceUtils {
   ///
   /// Filters bodies by minimum mass and sorts by distance and mass
   /// to find the most significant tidal force sources
-  ///
-  /// Filters bodies by minimum mass and sorts by distance and mass
-  /// to find the most significant tidal force sources
   static List<Body> _findSignificantTidalBodies(
     Body targetBody,
     List<Body> allBodies,

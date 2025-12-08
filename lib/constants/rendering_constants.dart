@@ -316,6 +316,10 @@ class RenderingConstants {
   /// Scales the additional radius based on glow intensity (0.0-1.0)
   static const double relativisticOuterGlowRadiusIntensityScale = 1.5;
 
+  /// Inner glow layer base radius multiplier for relativistic effects
+  /// Controls the base size of the inner glow layer before intensity scaling
+  static const double relativisticInnerGlowRadiusBase = 1.3;
+
   /// Blue-shift color blend ratio for relativistic glow (0.0-1.0)
   /// Controls how much to blend toward white from blue at maximum intensity
   static const double relativisticColorBlendRatio = 0.7;

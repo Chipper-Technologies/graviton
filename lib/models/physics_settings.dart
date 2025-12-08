@@ -204,6 +204,8 @@ class PhysicsSettings {
 
   @override
   int get hashCode {
+    // NOTE: Object.hash supports up to 20 arguments. Currently using 11.
+    // If more properties are added (>20), switch to Object.hashAll for scalability.
     return Object.hash(
       gravitationalConstant,
       softening,

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/constants/relativistic_constants.dart';
 
@@ -162,12 +164,12 @@ void main() {
 
       test('Lorentz factor at maxBeta should be finite and reasonable', () {
         final beta = RelativisticConstants.maxBeta;
-        final gamma = 1.0 / (1.0 - beta * beta);
+        final gamma = 1.0 / math.sqrt(1.0 - beta * beta);
 
         expect(gamma.isFinite, isTrue);
         expect(gamma, greaterThan(1.0));
-        // At β=0.95, γ ≈ 10.26 (not 3.2, that's wrong calculation)
-        expect(gamma, lessThan(15.0));
+        // At β=0.95: γ = 1/√(1-0.95²) = 1/√0.0975 ≈ 3.2
+        expect(gamma, closeTo(3.2, 0.1));
       });
 
       test('color intensity should be reasonable for visualization', () {

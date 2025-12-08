@@ -904,5 +904,107 @@ void main() {
         );
       });
     });
+
+    group('Relativistic Effects Constants', () {
+      test('should have valid relativistic glow threshold', () {
+        expect(
+          RenderingConstants.minimumRelativisticGlowThreshold,
+          equals(0.05),
+        );
+        expect(
+          RenderingConstants.minimumRelativisticGlowThreshold,
+          greaterThan(0.0),
+        );
+        expect(
+          RenderingConstants.minimumRelativisticGlowThreshold,
+          lessThan(0.2),
+          reason: 'Threshold should be low to show subtle effects',
+        );
+      });
+
+      test('should have valid glow radius multipliers', () {
+        expect(RenderingConstants.relativisticOuterGlowRadiusBase, equals(2.0));
+        expect(
+          RenderingConstants.relativisticOuterGlowRadiusIntensityScale,
+          equals(1.5),
+        );
+        expect(RenderingConstants.relativisticInnerGlowRadiusBase, equals(1.3));
+
+        // Base multipliers should be greater than 1.0 to extend beyond body
+        expect(
+          RenderingConstants.relativisticOuterGlowRadiusBase,
+          greaterThan(1.0),
+        );
+        expect(
+          RenderingConstants.relativisticInnerGlowRadiusBase,
+          greaterThan(1.0),
+        );
+
+        // Outer glow should be larger than inner glow
+        expect(
+          RenderingConstants.relativisticOuterGlowRadiusBase,
+          greaterThan(RenderingConstants.relativisticInnerGlowRadiusBase),
+        );
+      });
+
+      test('should have valid color blend ratios', () {
+        expect(RenderingConstants.relativisticColorBlendRatio, equals(0.7));
+        expect(
+          RenderingConstants.relativisticColorBlendRatio,
+          greaterThanOrEqualTo(0.0),
+        );
+        expect(
+          RenderingConstants.relativisticColorBlendRatio,
+          lessThanOrEqualTo(1.0),
+        );
+      });
+    });
+
+    group('Tidal Forces Constants', () {
+      test('should have valid tidal stress threshold', () {
+        expect(RenderingConstants.minimumTidalStressThreshold, equals(0.01));
+        expect(
+          RenderingConstants.minimumTidalStressThreshold,
+          greaterThan(0.0),
+        );
+        expect(
+          RenderingConstants.minimumTidalStressThreshold,
+          lessThan(0.1),
+          reason: 'Threshold should be low to show subtle tidal effects',
+        );
+      });
+
+      test('should have valid tidal stress normalization factor', () {
+        expect(RenderingConstants.tidalStressNormalizationFactor, equals(10.0));
+        expect(
+          RenderingConstants.tidalStressNormalizationFactor,
+          greaterThan(1.0),
+          reason: 'Factor should normalize stress values to 0.0-1.0 range',
+        );
+      });
+
+      test('should have valid stress color blend ratios', () {
+        expect(RenderingConstants.tidalStressMediumBlendRatio, equals(0.5));
+        expect(RenderingConstants.tidalStressHighBlendRatio, equals(0.5));
+
+        // Ratios should be in valid range
+        expect(
+          RenderingConstants.tidalStressMediumBlendRatio,
+          greaterThanOrEqualTo(0.0),
+        );
+        expect(
+          RenderingConstants.tidalStressMediumBlendRatio,
+          lessThanOrEqualTo(1.0),
+        );
+        expect(
+          RenderingConstants.tidalStressHighBlendRatio,
+          greaterThanOrEqualTo(0.0),
+        );
+        expect(
+          RenderingConstants.tidalStressHighBlendRatio,
+          lessThanOrEqualTo(1.0),
+        );
+      });
+    });
   });
 }

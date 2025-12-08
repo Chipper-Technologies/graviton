@@ -2016,8 +2016,12 @@ class CelestialBodyPainter {
                 RenderingConstants.relativisticOuterGlowRadiusIntensityScale);
     final outerGlow = RadialGradient(
       colors: [
-        relativisticColor.withValues(alpha: glowIntensity * 0.3),
-        relativisticColor.withValues(alpha: glowIntensity * 0.15),
+        relativisticColor.withValues(
+          alpha: glowIntensity * AppTypography.opacityFaint,
+        ),
+        relativisticColor.withValues(
+          alpha: glowIntensity * AppTypography.opacityMidFade,
+        ),
         AppColors.transparentColor,
       ],
       stops: const [0.0, 0.5, 1.0],
@@ -2031,11 +2035,18 @@ class CelestialBodyPainter {
     );
 
     // Inner glow layer (intense, compact)
-    final innerGlowRadius = radius * (1.3 + glowIntensity * 0.4);
+    final innerGlowRadius =
+        radius *
+        (RenderingConstants.relativisticInnerGlowRadiusBase +
+            glowIntensity * AppTypography.opacitySemiTransparent);
     final innerGlow = RadialGradient(
       colors: [
-        relativisticColor.withValues(alpha: glowIntensity * 0.6),
-        relativisticColor.withValues(alpha: glowIntensity * 0.4),
+        relativisticColor.withValues(
+          alpha: glowIntensity * AppTypography.opacityMediumHigh,
+        ),
+        relativisticColor.withValues(
+          alpha: glowIntensity * AppTypography.opacitySemiTransparent,
+        ),
         AppColors.transparentColor,
       ],
       stops: const [0.0, 0.6, 1.0],
@@ -2096,8 +2107,12 @@ class CelestialBodyPainter {
     // Draw stress color overlay
     final stressGlow = RadialGradient(
       colors: [
-        stressColor.withValues(alpha: stressIntensity * 0.4),
-        stressColor.withValues(alpha: stressIntensity * 0.2),
+        stressColor.withValues(
+          alpha: stressIntensity * AppTypography.opacitySemiTransparent,
+        ),
+        stressColor.withValues(
+          alpha: stressIntensity * AppTypography.opacityVeryFaint,
+        ),
         AppColors.transparentColor,
       ],
       stops: const [0.0, 0.7, 1.0],
@@ -2134,7 +2149,9 @@ class CelestialBodyPainter {
 
       // Draw tidal axis lines
       final axisPaint = Paint()
-        ..color = stressColor.withValues(alpha: stressIntensity * 0.7)
+        ..color = stressColor.withValues(
+          alpha: stressIntensity * AppTypography.opacityHigh,
+        )
         ..strokeWidth = AppTypography.spacingXXSmall
         ..style = PaintingStyle.stroke;
 
@@ -2494,7 +2511,9 @@ class CelestialBodyPainter {
               AppColors.uiBlack.withValues(
                 alpha: RenderingConstants.castShadowUmbraAlpha,
               ),
-              AppColors.uiBlack.withValues(alpha: 0.0),
+              AppColors.uiBlack.withValues(
+                alpha: AppTypography.opacityTransparent,
+              ),
             ],
             stops: const [
               RenderingConstants.castShadowUmbraGradientStart,

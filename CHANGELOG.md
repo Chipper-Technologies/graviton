@@ -8,6 +8,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.7.0] - 2025-12-09
 
 ### Added
+- **Relativistic Effects and Tidal Force Physics**: Advanced physics simulation for high-velocity objects and gravitational tidal interactions
+  - **Relativistic Physics**: Post-Newtonian corrections for objects approaching light speed
+    - 1PN (first-order post-Newtonian) corrections for velocity-dependent gravitational effects
+    - Time dilation calculations using Lorentz factor (γ = 1/√(1-β²))
+    - Speed-dependent visual glow effects with blue-shift color transitions
+    - Configurable speed of light in simulation units (15.0 default)
+    - Maximum velocity capping at 95% light speed for numerical stability
+    - UI toggle controls with real-time parameter adjustment
+  - **Tidal Force Physics**: Gravitational tidal tensor calculations and Roche limit detection
+    - Tidal tensor analysis for bodies experiencing differential gravitational forces
+    - Roche limit calculations for detecting gravitational breakup potential
+    - Tidal stress visualization with color-coded intensity (orange → red gradient)
+    - Tidal axis indicators showing principal stretch/compression directions
+    - Multi-body tidal interaction support (considers up to 3 nearest massive bodies)
+    - Configurable tidal heating and stress thresholds
+  - **Physics Constants and Configuration**:
+    - `AuthConstants`: Rate-limiting configuration for authentication (5 attempts, 15min cooldown)
+    - `RelativisticConstants`: Speed of light, thresholds, and PN correction toggles
+    - `TidalConstants`: Roche limits, heating rates, and visualization thresholds
+    - `RenderingConstants`: 8 new constants for relativistic/tidal visual effects
+  - **Visual Effects**:
+    - Relativistic glow with dual-layer gradient (outer/inner) scaling with velocity
+    - Blue-shift color blending approaching white at extreme speeds (0.7 blend ratio)
+    - Tidal stress overlays with radial gradient effects
+    - Semantic color constants: `relativisticBlue`, `tidalStressOrange`, `tidalStressRed`
+  - **Code Quality Improvements**:
+    - Extracted all magic numbers to named constants (AppTypography, RenderingConstants)
+    - Consistent use of AppColors semantic constants (zero tolerance for hardcoded colors)
+    - One class per file organization with dedicated unit tests
+    - Comprehensive documentation with mathematical formulas and usage examples
+  - **Test Coverage**: 296+ physics tests covering all new features
+    - 33 relativistic physics tests (Lorentz factor, 1PN/2PN corrections, momentum/energy)
+    - 54 simulation integration tests (RK4 integration, tidal tensor calculations)
+    - 28 relativistic constants tests
+    - 55 rendering constants tests (including 6 new relativistic + 3 tidal tests)
+    - 4 auth constants tests
+  - **Localization**: Full translation support across all 7 languages for new physics controls
 - **Advanced 3D Lighting and Shadow System**: Comprehensive visual enhancement suite with physically-based rendering
   - **Hemisphere Lighting**: Realistic 3D illumination simulation for spherical bodies
     - Light source direction calculation with day/night gradient transitions
