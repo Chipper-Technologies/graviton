@@ -130,6 +130,18 @@ enum UIAction {
   /// Gravity field color scheme changed
   gravityFieldColorSchemeChanged('gravity_field_color_scheme_changed'),
 
+  /// Relativistic effects toggle
+  relativisticEffectsToggle('relativistic_effects_toggle'),
+
+  /// Relativistic glow visualization toggle
+  relativisticGlowToggle('relativistic_glow_toggle'),
+
+  /// Tidal forces toggle
+  tidalForcesToggle('tidal_forces_toggle'),
+
+  /// Tidal visualization toggle
+  tidalVisualizationToggle('tidal_visualization_toggle'),
+
   /// Physics setting adjusted
   physicsSettingAdjusted('physics_setting_adjusted'),
 

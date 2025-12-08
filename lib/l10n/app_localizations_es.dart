@@ -425,6 +425,34 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gravityFieldsTitle => 'Campos Gravitatorios';
 
   @override
+  String get relativisticEffectsTitle => 'Efectos Relativistas';
+
+  @override
+  String get relativisticEffectsDescription =>
+      'Aplicar correcciones post-newtonianas para objetos de alta velocidad';
+
+  @override
+  String get relativisticGlowTitle => 'Brillo Relativista';
+
+  @override
+  String get relativisticGlowDescription =>
+      'Visualizar dilatación del tiempo con brillo basado en velocidad';
+
+  @override
+  String get tidalForcesTitle => 'Fuerzas de Marea';
+
+  @override
+  String get tidalForcesDescription =>
+      'Calcular deformación de marea y efectos de calentamiento';
+
+  @override
+  String get tidalVisualizationTitle => 'Visualización de Mareas';
+
+  @override
+  String get tidalVisualizationDescription =>
+      'Mostrar estrés de marea y ejes de deformación';
+
+  @override
   String get gravityWellsDescription =>
       'Mostrar la intensidad del campo gravitacional alrededor de objetos';
 

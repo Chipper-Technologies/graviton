@@ -322,6 +322,25 @@ class AppColors {
     0xFFFFD700,
   ); // Pure gold for graviton highlights
 
+  /// Relativistic physics visualization colors
+  static const Color relativisticBlue = Color(
+    0xFF87CEEB,
+  ); // Blue-shifted light from high-velocity objects
+  static const Color relativisticWhite = Color(
+    0xFFFFFFFF,
+  ); // White highlight for extreme relativistic speeds
+  static const Color blueShiftColor = Color(
+    0xFF87CEEB,
+  ); // Doppler blue-shift for objects approaching light speed
+
+  /// Tidal forces visualization colors
+  static const Color tidalStressOrange = Color(
+    0xFFFF8C00,
+  ); // Medium tidal stress indicator
+  static const Color tidalStressRed = Color(
+    0xFFF44336,
+  ); // High tidal stress/heating indicator
+
   /// Star glow gradient colors
   static const Color starGlowWhite = Color(0xFFFFFFFF); // Bright white center
   static const Color starGlowGold = Color(0xFFFFD700); // Golden ring

@@ -103,6 +103,7 @@ class RelativisticPhysicsUtils {
   /// - [position2]: Position of body 2 (source of gravity)
   /// - [velocity2]: Velocity of body 2
   /// - [mass2]: Mass of body 2
+  /// - [gravitationalConstant]: Gravitational constant (G) for acceleration calculation
   /// - [speedOfLight]: Speed of light in simulation units
   /// - [softening]: Softening parameter for numerical stability
   ///
@@ -113,6 +114,7 @@ class RelativisticPhysicsUtils {
     vm.Vector3 position2,
     vm.Vector3 velocity2,
     double mass2, {
+    double gravitationalConstant = SimulationConstants.gravitationalConstant,
     double speedOfLight = RelativisticConstants.speedOfLight,
     double softening = SimulationConstants.softening,
   }) {
@@ -123,7 +125,7 @@ class RelativisticPhysicsUtils {
     final invR = 1.0 / distance;
     final invR3 = invR * invR * invR;
 
-    final gm = SimulationConstants.gravitationalConstant * mass2;
+    final gm = gravitationalConstant * mass2;
     final classicalAccel = r * (gm * invR3);
 
     // If 1PN corrections are disabled, return classical result
@@ -185,6 +187,7 @@ class RelativisticPhysicsUtils {
     vm.Vector3 position2,
     vm.Vector3 velocity2,
     double mass2, {
+    double gravitationalConstant = SimulationConstants.gravitationalConstant,
     double speedOfLight = RelativisticConstants.speedOfLight,
     double softening = SimulationConstants.softening,
   }) {
@@ -196,6 +199,7 @@ class RelativisticPhysicsUtils {
         position2,
         velocity2,
         mass2,
+        gravitationalConstant: gravitationalConstant,
         speedOfLight: speedOfLight,
         softening: softening,
       );
@@ -209,6 +213,7 @@ class RelativisticPhysicsUtils {
       position2,
       velocity2,
       mass2,
+      gravitationalConstant: gravitationalConstant,
       speedOfLight: speedOfLight,
       softening: softening,
     );

@@ -388,6 +388,14 @@ class _SimulationViewportWidgetState extends State<SimulationViewportWidget> {
                                       .appState
                                       .ui
                                       .enableSpecularHighlights,
+                                  showRelativisticGlow: widget
+                                      .appState
+                                      .simulation
+                                      .showRelativisticGlow,
+                                  showTidalVisualization: widget
+                                      .appState
+                                      .simulation
+                                      .showTidalVisualization,
                                 ),
                                 child: const SizedBox.expand(),
                               ),

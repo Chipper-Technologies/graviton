@@ -4,7 +4,7 @@ import 'package:graviton/enums/ui_element.dart';
 void main() {
   group('UIElement Enum', () {
     test('should have all expected UI elements', () {
-      expect(UIElement.values.length, equals(69));
+      expect(UIElement.values.length, equals(73));
       expect(UIElement.values, contains(UIElement.simulationViewport));
       expect(UIElement.values, contains(UIElement.scenarioSelection));
       expect(UIElement.values, contains(UIElement.scenarioDialog));

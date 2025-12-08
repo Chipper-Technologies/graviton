@@ -396,6 +396,30 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gravityFieldsTitle => '重力場';
 
   @override
+  String get relativisticEffectsTitle => '相対論的効果';
+
+  @override
+  String get relativisticEffectsDescription => '高速物体に対するポストニュートン補正を適用';
+
+  @override
+  String get relativisticGlowTitle => '相対論的グロー';
+
+  @override
+  String get relativisticGlowDescription => '速度ベースのグローで時間の遅れを視覚化';
+
+  @override
+  String get tidalForcesTitle => '潮汐力';
+
+  @override
+  String get tidalForcesDescription => '潮汐変形と加熱効果を計算';
+
+  @override
+  String get tidalVisualizationTitle => '潮汐の視覚化';
+
+  @override
+  String get tidalVisualizationDescription => '潮汐応力と変形軸を表示';
+
+  @override
   String get gravityWellsDescription => 'オブジェクト周辺の重力場の強度を表示';
 
   @override

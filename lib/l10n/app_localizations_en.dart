@@ -418,6 +418,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gravityFieldsTitle => 'Gravity Fields';
 
   @override
+  String get relativisticEffectsTitle => 'Relativistic Effects';
+
+  @override
+  String get relativisticEffectsDescription =>
+      'Apply post-Newtonian corrections for high-speed objects';
+
+  @override
+  String get relativisticGlowTitle => 'Relativistic Glow';
+
+  @override
+  String get relativisticGlowDescription =>
+      'Visualize time dilation with velocity-based glow';
+
+  @override
+  String get tidalForcesTitle => 'Tidal Forces';
+
+  @override
+  String get tidalForcesDescription =>
+      'Calculate tidal deformation and heating effects';
+
+  @override
+  String get tidalVisualizationTitle => 'Tidal Visualization';
+
+  @override
+  String get tidalVisualizationDescription =>
+      'Show tidal stress and deformation axes';
+
+  @override
   String get gravityWellsDescription =>
       'Show gravitational field strength around objects';
 

@@ -397,6 +397,30 @@ class AppLocalizationsKo extends AppLocalizations {
   String get gravityFieldsTitle => '중력장';
 
   @override
+  String get relativisticEffectsTitle => '상대론적 효과';
+
+  @override
+  String get relativisticEffectsDescription => '고속 물체에 대한 포스트 뉴턴 보정 적용';
+
+  @override
+  String get relativisticGlowTitle => '상대론적 글로우';
+
+  @override
+  String get relativisticGlowDescription => '속도 기반 글로우로 시간 지연 시각화';
+
+  @override
+  String get tidalForcesTitle => '조석력';
+
+  @override
+  String get tidalForcesDescription => '조석 변형 및 가열 효과 계산';
+
+  @override
+  String get tidalVisualizationTitle => '조석 시각화';
+
+  @override
+  String get tidalVisualizationDescription => '조석 응력 및 변형 축 표시';
+
+  @override
   String get gravityWellsDescription => '객체 주변의 중력장 강도 표시';
 
   @override
