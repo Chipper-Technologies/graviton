@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb, debugPrint;
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:graviton/config/flavor_config.dart';
+import 'package:graviton/constants/auth_constants.dart';
 import 'package:graviton/enums/auth_provider_type.dart';
 import 'package:graviton/enums/user_avatar.dart';
 import 'package:graviton/models/play_integrity_exception.dart';
@@ -40,12 +41,6 @@ class AuthService {
 
   /// Track failed sign-in attempts for rate limiting
   final Map<String, List<DateTime>> _failedSignInAttempts = {};
-
-  /// Maximum failed attempts before rate limiting kicks in
-  static const int _maxFailedAttempts = 5;
-
-  /// Rate limit duration in minutes
-  static const int _rateLimitDurationMinutes = 15;
 
   // ============================================================================
   // SharedPreferences Keys
@@ -174,11 +169,13 @@ class AuthService {
 
     // Remove attempts older than rate limit duration
     attempts.removeWhere(
-      (time) => now.difference(time).inMinutes > _rateLimitDurationMinutes,
+      (time) =>
+          now.difference(time).inMinutes >
+          AuthConstants.rateLimitDurationMinutes,
     );
 
     // Check if still rate limited
-    if (attempts.length >= _maxFailedAttempts) {
+    if (attempts.length >= AuthConstants.maxFailedAttempts) {
       if (kDebugMode) {
         debugPrint(
           'AuthService: Rate limit active for identifier (${attempts.length} attempts)',
