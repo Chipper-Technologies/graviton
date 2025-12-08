@@ -108,7 +108,7 @@ class PhysicsControls extends StatelessWidget {
           ),
 
           Container(
-            margin: EdgeInsets.only(bottom: AppTypography.spacingSmall),
+            margin: EdgeInsets.only(bottom: AppTypography.spacingMedium),
             padding: EdgeInsets.all(AppTypography.spacingLarge),
             decoration: BoxDecoration(
               color: AppColors.uiWhite.withValues(
@@ -176,7 +176,6 @@ class PhysicsControls extends StatelessWidget {
           ),
         ],
 
-        // Simulation Speed Section
         ToggleOption(
           title: l10n.relativisticEffectsTitle,
           description: l10n.relativisticEffectsDescription,
@@ -270,7 +269,6 @@ class PhysicsControls extends StatelessWidget {
 
         SectionDivider.labeled(
           l10n.simulationSpeed,
-          topSpacing: AppTypography.spacingSmall,
           bottomSpacing: AppTypography.spacingMedium,
         ),
 
@@ -287,8 +285,6 @@ class PhysicsControls extends StatelessWidget {
           formatter: (value) => '${NumberUtils.formatDecimal(value, 1)}x',
         ),
 
-        SizedBox(height: AppTypography.spacingMedium),
-
         // Quick Speed Presets
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -303,7 +299,7 @@ class PhysicsControls extends StatelessWidget {
 
         SectionDivider.labeled(
           l10n.debugStatisticsTitle,
-          topSpacing: AppTypography.spacingLarge,
+          topSpacing: AppTypography.spacingMedium,
           bottomSpacing: AppTypography.spacingMedium,
         ),
 

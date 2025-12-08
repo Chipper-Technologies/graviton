@@ -617,7 +617,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                 ),
               ],
             ),
-            SizedBox(height: AppTypography.spacingSmall),
+            SizedBox(height: AppTypography.spacingMedium),
             Row(
               children: [
                 Expanded(
@@ -634,7 +634,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             ),
           ]),
 
-          SizedBox(height: AppTypography.spacingLarge),
+          SizedBox(height: AppTypography.spacingMedium),
 
           // Position & Motion
           _buildDetailSection(l10n.positionMotionEditor, [
@@ -648,7 +648,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                     color: AppColors.primaryColor,
                   ),
                 ),
-                SizedBox(width: AppTypography.spacingSmall),
+                SizedBox(width: AppTypography.spacingMedium),
                 Expanded(
                   child: _buildDetailCard(
                     icon: Icons.speed,
@@ -662,7 +662,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           ]),
 
           if (widget.body.temperature > 0) ...[
-            SizedBox(height: AppTypography.spacingLarge),
+            SizedBox(height: AppTypography.spacingMedium),
 
             // Stellar Properties (if applicable)
             _buildDetailSection(l10n.stellarPropertiesEditor, [
@@ -723,7 +723,11 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             onChanged: (value) => _updateBodyProperty(),
           ),
 
-          SizedBox(height: AppTypography.spacingLarge),
+          SectionDivider.labeled(
+            l10n.bodyTypeLabel,
+            topSpacing: AppTypography.spacingMedium,
+            bottomSpacing: AppTypography.spacingMedium,
+          ),
 
           BodyTypePicker(
             selectedType: _selectedBodyType,
@@ -786,10 +790,14 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             },
           ),
 
-          SizedBox(height: AppTypography.spacingLarge),
+          SizedBox(height: AppTypography.spacingMedium),
 
           // Realistic Color Toggle (only show for stars)
           if (widget.body.bodyType == BodyType.star) ...[
+            SectionDivider.labeled(
+              l10n.displayOptionsTitle,
+              bottomSpacing: AppTypography.spacingMedium,
+            ),
             _buildToggleOption(
               l10n.realisticColors,
               l10n.realisticColorsDescription,
@@ -819,7 +827,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             ),
           ],
 
-          SizedBox(height: AppTypography.spacingLarge),
+          SizedBox(height: AppTypography.spacingMedium),
 
           // Color Picker (hidden for stars when realistic color is enabled)
           if (widget.body.bodyType != BodyType.star || !_useRealisticColor)
@@ -864,7 +872,11 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             },
           ),
 
-          SizedBox(height: AppTypography.spacingLarge),
+          SectionDivider.labeled(
+            l10n.propertiesEditor,
+            topSpacing: AppTypography.spacingMedium,
+            bottomSpacing: AppTypography.spacingMedium,
+          ),
 
           // Mass Section - no labeled divider, just spacing
           HapticSliderOption.detailed(
@@ -899,7 +911,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           ),
 
           SectionDivider.plain(
-            topSpacing: AppTypography.spacingLarge,
+            topSpacing: AppTypography.spacingMedium,
             bottomSpacing: AppTypography.spacingXSmall,
           ),
 
@@ -937,7 +949,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           ),
 
           SectionDivider.plain(
-            topSpacing: AppTypography.spacingLarge,
+            topSpacing: AppTypography.spacingMedium,
             bottomSpacing: AppTypography.spacingXSmall,
           ),
 
@@ -977,7 +989,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           ],
 
           SectionDivider.plain(
-            topSpacing: AppTypography.spacingLarge,
+            topSpacing: AppTypography.spacingMedium,
             bottomSpacing: AppTypography.spacingXSmall,
           ),
 
@@ -1067,7 +1079,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           if (widget.availableCentralBodies.isNotEmpty) ...[
             SectionDivider.labeled(
               l10n.orbitalPlacementEditor,
-              topSpacing: AppTypography.spacingLarge,
+              topSpacing: AppTypography.spacingMedium,
               bottomSpacing: AppTypography.spacingMedium,
             ),
             _buildOrbitalPlacementSection(l10n),
@@ -1078,7 +1090,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             // Position Section
             SectionDivider.labeled(
               l10n.positionMEditor,
-              topSpacing: AppTypography.spacingLarge,
+              topSpacing: AppTypography.spacingMedium,
               bottomSpacing: AppTypography.spacingMedium,
             ),
             Row(
@@ -1139,7 +1151,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
             // Velocity Section
             SectionDivider.labeled(
               l10n.velocityMsEditor,
-              topSpacing: AppTypography.spacingLarge,
+              topSpacing: AppTypography.spacingMedium,
               bottomSpacing: AppTypography.spacingMedium,
             ),
             Row(
@@ -1193,7 +1205,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
           ],
 
           // Final spacing
-          SizedBox(height: AppTypography.spacingLarge),
+          SizedBox(height: AppTypography.spacingMedium),
         ],
       ),
     );
@@ -1347,7 +1359,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                       fontWeight: FontWeight.normal,
                     ),
                     contentPadding: EdgeInsets.symmetric(
-                      vertical: AppTypography.spacingLarge,
+                      vertical: AppTypography.spacingMedium,
                       horizontal: AppTypography.spacingMedium,
                     ),
                   ),
@@ -1416,7 +1428,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                   fontWeight: FontWeight.normal,
                 ),
                 contentPadding: EdgeInsets.symmetric(
-                  vertical: AppTypography.spacingLarge,
+                  vertical: AppTypography.spacingMedium,
                   horizontal: AppTypography.spacingMedium,
                 ),
               ),
@@ -1836,7 +1848,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
 
         // Orbital Parameters (only show when placement mode is active)
         if (_showOrbitalPlacement) ...[
-          SizedBox(height: AppTypography.spacingLarge),
+          SizedBox(height: AppTypography.spacingMedium),
 
           // Orbital placement container with fixed constraints
           SizedBox(
@@ -1905,7 +1917,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                 if (_selectedCentralBody != null)
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.all(AppTypography.spacingLarge),
+                    padding: EdgeInsets.all(AppTypography.spacingMedium),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -1970,7 +1982,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                   SizedBox(height: AppTypography.spacingMedium),
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.all(AppTypography.spacingLarge),
+                    padding: EdgeInsets.all(AppTypography.spacingMedium),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: _isCurrentOrbitStable()
@@ -2384,7 +2396,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
         onTap: onToggle,
         borderRadius: BorderRadius.circular(AppTypography.radiusLarge),
         child: Container(
-          padding: EdgeInsets.all(AppTypography.spacingLarge),
+          padding: EdgeInsets.all(AppTypography.spacingMedium),
           decoration: BoxDecoration(
             color: isEnabled
                 ? AppColors.primaryColor.withValues(
@@ -2417,7 +2429,7 @@ class _ScenarioEditorBodyDetailsBottomSheetState
                       ),
                 size: AppTypography.iconSizeXXLarge,
               ),
-              SizedBox(width: AppTypography.spacingLarge),
+              SizedBox(width: AppTypography.spacingMedium),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -128,7 +128,6 @@ class CameraControls extends StatelessWidget {
             CinematicCameraTechnique.manual) ...[
           SectionDivider.labeled(
             l10n.manualControlsTitle,
-            topSpacing: AppTypography.spacingSmall,
             bottomSpacing: AppTypography.spacingMedium,
           ),
 
@@ -194,7 +193,7 @@ class CameraControls extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: AppTypography.spacingXXLarge),
+          const SizedBox(height: AppTypography.spacingMedium),
 
           _buildToggleOption(
             l10n.autoRotateTooltip,
@@ -206,7 +205,7 @@ class CameraControls extends StatelessWidget {
 
           // Rotate Speed Slider (only visible when auto-rotate is enabled)
           if (appState.camera.autoRotate) ...[
-            const SizedBox(height: AppTypography.spacingLarge),
+            const SizedBox(height: AppTypography.spacingMedium),
 
             HapticSliderOption.detailed(
               label: l10n.rotateSpeed,
@@ -236,8 +235,6 @@ class CameraControls extends StatelessWidget {
             ),
           ],
 
-          const SizedBox(height: AppTypography.spacingMedium),
-
           _buildToggleOption(
             l10n.invertPitchControlsLabel,
             l10n.invertPitchControlsDescription,
@@ -251,7 +248,7 @@ class CameraControls extends StatelessWidget {
         // Camera Settings - Combined FOV, Speed, and Visual Aids
         SectionDivider.labeled(
           l10n.cameraSettingsTitle,
-          topSpacing: AppTypography.spacingLarge,
+          topSpacing: AppTypography.spacingMedium,
           bottomSpacing: AppTypography.spacingMedium,
         ),
 
@@ -336,7 +333,7 @@ class CameraControls extends StatelessWidget {
     bool isLast = false,
   }) {
     return Container(
-      margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingSmall),
+      margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingMedium),
       child: Material(
         color: AppColors.transparentColor,
         child: HapticInkWell(

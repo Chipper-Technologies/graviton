@@ -26,7 +26,7 @@ class CameraModeOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: AppTypography.spacingSmall),
+      margin: const EdgeInsets.only(bottom: AppTypography.spacingMedium),
       child: Material(
         color: AppColors.transparentColor,
         child: HapticInkWell(

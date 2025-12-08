@@ -140,7 +140,6 @@ class VisualsControls extends StatelessWidget {
 
         SectionDivider.labeled(
           l10n.lightingEffectsLabel,
-          topSpacing: AppTypography.spacingSmall,
           bottomSpacing: AppTypography.spacingMedium,
         ),
 
@@ -188,7 +187,6 @@ class VisualsControls extends StatelessWidget {
 
         SectionDivider.labeled(
           l10n.pathVisualizationTitle,
-          topSpacing: AppTypography.spacingSmall,
           bottomSpacing: AppTypography.spacingMedium,
         ),
 
@@ -223,7 +221,6 @@ class VisualsControls extends StatelessWidget {
 
         SectionDivider.labeled(
           l10n.navigationAidsTitle,
-          topSpacing: AppTypography.spacingSmall,
           bottomSpacing: AppTypography.spacingMedium,
         ),
 
@@ -243,7 +240,6 @@ class VisualsControls extends StatelessWidget {
 
         SectionDivider.labeled(
           l10n.collisionEffectsTitle,
-          topSpacing: AppTypography.spacingSmall,
           bottomSpacing: AppTypography.spacingMedium,
         ),
 
@@ -316,7 +312,7 @@ class VisualsControls extends StatelessWidget {
     bool isLast = false,
   }) {
     return Container(
-      margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingSmall),
+      margin: EdgeInsets.only(bottom: isLast ? 0 : AppTypography.spacingMedium),
       child: Material(
         color: AppColors.transparentColor,
         child: Semantics(
