@@ -50,20 +50,20 @@ class SimulationInfoScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildScenarioSection(context, l10n, scenario),
-                        const SizedBox(height: AppTypography.spacingLarge),
+                        const SizedBox(height: AppTypography.spacingMedium),
                         _buildBodyStatisticsSection(context, l10n, bodies),
-                        const SizedBox(height: AppTypography.spacingLarge),
+                        const SizedBox(height: AppTypography.spacingMedium),
                         _buildEnergyDynamicsSection(context, l10n, bodies),
-                        const SizedBox(height: AppTypography.spacingLarge),
+                        const SizedBox(height: AppTypography.spacingMedium),
                         _buildOrbitalMechanicsSection(
                           context,
                           l10n,
                           bodies,
                           appState,
                         ),
-                        const SizedBox(height: AppTypography.spacingLarge),
+                        const SizedBox(height: AppTypography.spacingMedium),
                         _buildPhysicsSection(context, l10n, appState),
-                        const SizedBox(height: AppTypography.spacingLarge),
+                        const SizedBox(height: AppTypography.spacingMedium),
                         _buildCelestialBodiesSection(
                           context,
                           l10n,
@@ -121,7 +121,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.primaryColor,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             Expanded(
               child: _buildStatCard(
                 icon: Icons.fitness_center,
@@ -132,7 +132,7 @@ class SimulationInfoScreen extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTypography.spacingSmall),
+        const SizedBox(height: AppTypography.spacingMedium),
 
         // Stars and Planets row
         Row(
@@ -145,7 +145,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.uiYellow,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             Expanded(
               child: _buildStatCard(
                 icon: Icons.language,
@@ -156,7 +156,7 @@ class SimulationInfoScreen extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTypography.spacingSmall),
+        const SizedBox(height: AppTypography.spacingMedium),
 
         // Asteroids & Moons row
         Row(
@@ -169,14 +169,14 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.uiGreen,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             const Expanded(child: SizedBox()),
           ],
         ),
 
         // Optional row for special objects
         if (stats['blackHoles']! > 0 || stats['habitableWorlds']! > 0) ...[
-          const SizedBox(height: AppTypography.spacingSmall),
+          const SizedBox(height: AppTypography.spacingMedium),
           Row(
             children: [
               if (stats['blackHoles']! > 0)
@@ -190,7 +190,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 )
               else
                 const Expanded(child: SizedBox()),
-              const SizedBox(width: AppTypography.spacingSmall),
+              const SizedBox(width: AppTypography.spacingMedium),
               if (stats['habitableWorlds']! > 0)
                 Expanded(
                   child: _buildStatCard(
@@ -234,7 +234,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.primaryColor,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             Expanded(
               child: _buildStatCard(
                 icon: Icons.timeline,
@@ -247,7 +247,7 @@ class SimulationInfoScreen extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTypography.spacingSmall),
+        const SizedBox(height: AppTypography.spacingMedium),
 
         // Gravitational Constant row
         Row(
@@ -260,7 +260,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.uiGreen,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             const Expanded(child: SizedBox()), // Empty space for symmetry
           ],
         ),
@@ -494,7 +494,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.uiPurple,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             Expanded(
               child: _buildStatCard(
                 icon: Icons.speed,
@@ -505,7 +505,7 @@ class SimulationInfoScreen extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTypography.spacingSmall),
+        const SizedBox(height: AppTypography.spacingMedium),
 
         // Potential Energy and Angular Momentum row
         Row(
@@ -518,7 +518,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.uiRed,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             Expanded(
               child: _buildStatCard(
                 icon: Icons.rotate_right,
@@ -531,7 +531,7 @@ class SimulationInfoScreen extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTypography.spacingSmall),
+        const SizedBox(height: AppTypography.spacingMedium),
 
         // System Momentum and Center of Mass row
         Row(
@@ -544,7 +544,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.uiGreen,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             Expanded(
               child: _buildStatCard(
                 icon: Icons.my_location,
@@ -575,7 +575,7 @@ class SimulationInfoScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionDivider.labeled(l10n.orbitalMechanicsTitle),
-        const SizedBox(height: AppTypography.spacingLarge),
+        const SizedBox(height: AppTypography.spacingMedium),
 
         // Velocity Range row
         Row(
@@ -589,7 +589,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.uiTeal,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             Expanded(
               child: _buildStatCard(
                 icon: Icons.timeline,
@@ -600,7 +600,7 @@ class SimulationInfoScreen extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTypography.spacingSmall),
+        const SizedBox(height: AppTypography.spacingMedium),
 
         // Temperature Range row
         Row(
@@ -614,7 +614,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.uiAmber,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             const Expanded(child: SizedBox()), // Empty space for symmetry
           ],
         ),
@@ -760,7 +760,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.uiOrange,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             Expanded(
               child: _buildBodyStatItem(
                 icon: Icons.circle_outlined,
@@ -771,7 +771,7 @@ class SimulationInfoScreen extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTypography.spacingSmall),
+        const SizedBox(height: AppTypography.spacingMedium),
 
         // Row 2: Velocity and Temperature
         Row(
@@ -784,7 +784,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.uiBlue,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             Expanded(
               child: _buildBodyStatItem(
                 icon: Icons.thermostat,
@@ -795,7 +795,7 @@ class SimulationInfoScreen extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTypography.spacingSmall),
+        const SizedBox(height: AppTypography.spacingMedium),
 
         // Row 3: Energy and Escape Velocity
         Row(
@@ -808,7 +808,7 @@ class SimulationInfoScreen extends StatelessWidget {
                 color: AppColors.uiPurple,
               ),
             ),
-            const SizedBox(width: AppTypography.spacingSmall),
+            const SizedBox(width: AppTypography.spacingMedium),
             Expanded(
               child: _buildBodyStatItem(
                 icon: Icons.launch,
@@ -822,7 +822,7 @@ class SimulationInfoScreen extends StatelessWidget {
 
         // Conditional rows based on body type
         if (body.bodyType == BodyType.star) ...[
-          const SizedBox(height: AppTypography.spacingSmall),
+          const SizedBox(height: AppTypography.spacingMedium),
           // Luminosity for stars
           Row(
             children: [
@@ -834,14 +834,14 @@ class SimulationInfoScreen extends StatelessWidget {
                   color: AppColors.uiYellow,
                 ),
               ),
-              const SizedBox(width: AppTypography.spacingSmall),
+              const SizedBox(width: AppTypography.spacingMedium),
               const Expanded(child: SizedBox()),
             ],
           ),
         ],
 
         if (body.bodyType == BodyType.planet) ...[
-          const SizedBox(height: AppTypography.spacingSmall),
+          const SizedBox(height: AppTypography.spacingMedium),
           // Habitability for planets
           Row(
             children: [
@@ -856,7 +856,7 @@ class SimulationInfoScreen extends StatelessWidget {
                   color: _getHabitabilityColor(body.habitabilityStatus),
                 ),
               ),
-              const SizedBox(width: AppTypography.spacingSmall),
+              const SizedBox(width: AppTypography.spacingMedium),
               const Expanded(child: SizedBox()),
             ],
           ),
