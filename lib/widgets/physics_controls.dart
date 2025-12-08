@@ -177,6 +177,97 @@ class PhysicsControls extends StatelessWidget {
         ],
 
         // Simulation Speed Section
+        ToggleOption(
+          title: l10n.relativisticEffectsTitle,
+          description: l10n.relativisticEffectsDescription,
+          icon: Icons.flare,
+          isEnabled: appState.simulation.enableRelativisticEffects,
+          onChanged: (_) {
+            // Track analytics before toggling
+            FirebaseService.instance.logUIEventWithEnums(
+              UIAction.relativisticEffectsToggle,
+              element: UIElement.relativisticEffectsControls,
+              value: (!appState.simulation.enableRelativisticEffects)
+                  .toString(),
+              additionalParams: {
+                'previous_state': appState.simulation.enableRelativisticEffects
+                    .toString(),
+              },
+            );
+            appState.simulation.toggleRelativisticEffects();
+          },
+        ),
+
+        if (appState.simulation.enableRelativisticEffects) ...[
+          ToggleOption(
+            title: l10n.relativisticGlowTitle,
+            description: l10n.relativisticGlowDescription,
+            icon: Icons.brightness_7,
+            isEnabled: appState.simulation.showRelativisticGlow,
+            onChanged: (_) {
+              // Track analytics before toggling
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.relativisticGlowToggle,
+                element: UIElement.relativisticGlowVisualization,
+                value: (!appState.simulation.showRelativisticGlow).toString(),
+                additionalParams: {
+                  'previous_state': appState.simulation.showRelativisticGlow
+                      .toString(),
+                  'relativistic_effects_enabled': appState
+                      .simulation
+                      .enableRelativisticEffects
+                      .toString(),
+                },
+              );
+              appState.simulation.toggleRelativisticGlow();
+            },
+          ),
+        ],
+
+        ToggleOption(
+          title: l10n.tidalForcesTitle,
+          description: l10n.tidalForcesDescription,
+          icon: Icons.water,
+          isEnabled: appState.simulation.enableTidalForces,
+          onChanged: (_) {
+            // Track analytics before toggling
+            FirebaseService.instance.logUIEventWithEnums(
+              UIAction.tidalForcesToggle,
+              element: UIElement.tidalForcesControls,
+              value: (!appState.simulation.enableTidalForces).toString(),
+              additionalParams: {
+                'previous_state': appState.simulation.enableTidalForces
+                    .toString(),
+              },
+            );
+            appState.simulation.toggleTidalForces();
+          },
+        ),
+
+        if (appState.simulation.enableTidalForces) ...[
+          ToggleOption(
+            title: l10n.tidalVisualizationTitle,
+            description: l10n.tidalVisualizationDescription,
+            icon: Icons.waves,
+            isEnabled: appState.simulation.showTidalVisualization,
+            onChanged: (_) {
+              // Track analytics before toggling
+              FirebaseService.instance.logUIEventWithEnums(
+                UIAction.tidalVisualizationToggle,
+                element: UIElement.tidalVisualization,
+                value: (!appState.simulation.showTidalVisualization).toString(),
+                additionalParams: {
+                  'previous_state': appState.simulation.showTidalVisualization
+                      .toString(),
+                  'tidal_forces_enabled': appState.simulation.enableTidalForces
+                      .toString(),
+                },
+              );
+              appState.simulation.toggleTidalVisualization();
+            },
+          ),
+        ],
+
         SectionDivider.labeled(
           l10n.simulationSpeed,
           topSpacing: AppTypography.spacingSmall,

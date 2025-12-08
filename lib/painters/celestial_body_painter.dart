@@ -57,6 +57,8 @@ class CelestialBodyPainter {
     bool enableCastShadows = false,
     bool enableSpecularHighlights = false,
     List<Body>? allBodies,
+    bool showRelativisticGlow = false,
+    bool showTidalVisualization = false,
   }) {
     // Special rendering for celestial bodies
     final bodyEnum = CelestialBodyName.fromString(body.name);
@@ -330,6 +332,24 @@ class CelestialBodyPainter {
                 hazeIntensity: intensity,
               );
             }
+          }
+
+          // Draw relativistic glow if enabled and body has time dilation
+          if (showRelativisticGlow &&
+              body.showRelativisticGlow &&
+              body.timeDilationFactor < 1.0) {
+            _drawRelativisticGlow(
+              canvas,
+              center,
+              radius,
+              body.timeDilationFactor,
+              bodyColor,
+            );
+          }
+
+          // Draw tidal deformation and stress visualization if enabled
+          if (showTidalVisualization && body.showTidalForces) {
+            _drawTidalVisualization(canvas, center, radius, body, bodyColor);
           }
       }
     }
@@ -1950,6 +1970,239 @@ class CelestialBodyPainter {
     );
   }
 
+  /// Draw relativistic glow effect based on time dilation
+  ///
+  /// Bodies moving at high velocities experience time dilation (γ < 1.0).
+  /// This renders a velocity-based blue-shifted glow that intensifies with
+  /// higher velocities, visualizing the relativistic effects.
+  ///
+  /// Parameters:
+  /// - [canvas]: The canvas to draw on
+  /// - [center]: Center position of the body
+  /// - [radius]: Radius of the body
+  /// - [timeDilationFactor]: Time dilation factor (γ), ranges from 0.0 (light speed) to 1.0 (stationary)
+  /// - [bodyColor]: Base color of the body
+  static void _drawRelativisticGlow(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    double timeDilationFactor,
+    Color bodyColor,
+  ) {
+    // Calculate glow intensity based on time dilation
+    // Lower γ (higher velocity) = brighter glow
+    // γ = 1.0 (stationary) → intensity = 0.0 (no glow)
+    // γ = 0.0 (light speed) → intensity = 1.0 (maximum glow)
+    final glowIntensity = 1.0 - timeDilationFactor;
+
+    // Only render if significant relativistic effects present
+    if (glowIntensity < RenderingConstants.minimumRelativisticGlowThreshold) {
+      return;
+    }
+
+    // Blue-shift color for relativistic glow (approaching light speed appears blue-shifted)
+    final relativisticColor = Color.lerp(
+      AppColors.relativisticBlue,
+      AppColors.relativisticWhite,
+      glowIntensity * RenderingConstants.relativisticColorBlendRatio,
+    )!;
+
+    // Create multi-layered glow effect
+    // Outer glow layer (faint, extended)
+    final outerGlowRadius =
+        radius *
+        (RenderingConstants.relativisticOuterGlowRadiusBase +
+            glowIntensity *
+                RenderingConstants.relativisticOuterGlowRadiusIntensityScale);
+    final outerGlow = RadialGradient(
+      colors: [
+        relativisticColor.withValues(
+          alpha: glowIntensity * AppTypography.opacityFaint,
+        ),
+        relativisticColor.withValues(
+          alpha: glowIntensity * AppTypography.opacityMidFade,
+        ),
+        AppColors.transparentColor,
+      ],
+      stops: const [0.0, 0.5, 1.0],
+    );
+
+    final outerRect = Rect.fromCircle(center: center, radius: outerGlowRadius);
+    canvas.drawCircle(
+      center,
+      outerGlowRadius,
+      Paint()..shader = outerGlow.createShader(outerRect),
+    );
+
+    // Inner glow layer (intense, compact)
+    final innerGlowRadius =
+        radius *
+        (RenderingConstants.relativisticInnerGlowRadiusBase +
+            glowIntensity * AppTypography.opacitySemiTransparent);
+    final innerGlow = RadialGradient(
+      colors: [
+        relativisticColor.withValues(
+          alpha: glowIntensity * AppTypography.opacityMediumHigh,
+        ),
+        relativisticColor.withValues(
+          alpha: glowIntensity * AppTypography.opacitySemiTransparent,
+        ),
+        AppColors.transparentColor,
+      ],
+      stops: const [0.0, 0.6, 1.0],
+    );
+
+    final innerRect = Rect.fromCircle(center: center, radius: innerGlowRadius);
+    canvas.drawCircle(
+      center,
+      innerGlowRadius,
+      Paint()..shader = innerGlow.createShader(innerRect),
+    );
+  }
+
+  /// Draw tidal deformation and stress visualization
+  ///
+  /// Visualizes tidal forces acting on a body by rendering:
+  /// 1. Elliptical deformation along major/minor tidal axes
+  /// 2. Color-coded stress magnitude (from base color to red/orange)
+  /// 3. Directional lines showing tidal axis orientation
+  ///
+  /// Parameters:
+  /// - [canvas]: The canvas to draw on
+  /// - [center]: Center position of the body
+  /// - [radius]: Base radius of the body
+  /// - [body]: Body object containing tidal force data
+  /// - [bodyColor]: Base color of the body
+  static void _drawTidalVisualization(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    Body body,
+    Color bodyColor,
+  ) {
+    if (body.tidalStress < RenderingConstants.minimumTidalStressThreshold) {
+      return;
+    }
+
+    // Calculate stress intensity (normalized)
+    // tidalStress can range from 0 to very large values
+    // Normalize to 0.0-1.0 range for visualization
+    final stressIntensity = math.min(
+      body.tidalStress / RenderingConstants.tidalStressNormalizationFactor,
+      1.0,
+    );
+
+    // Color-code based on tidal stress magnitude
+    // Low stress: base color → Medium stress: orange → High stress: red
+    final stressColor = Color.lerp(
+      Color.lerp(
+        bodyColor,
+        AppColors.tidalStressOrange,
+        stressIntensity * RenderingConstants.tidalStressMediumBlendRatio,
+      )!,
+      AppColors.tidalStressRed,
+      stressIntensity * RenderingConstants.tidalStressHighBlendRatio,
+    )!;
+
+    // Draw stress color overlay
+    final stressGlow = RadialGradient(
+      colors: [
+        stressColor.withValues(
+          alpha: stressIntensity * AppTypography.opacitySemiTransparent,
+        ),
+        stressColor.withValues(
+          alpha: stressIntensity * AppTypography.opacityVeryFaint,
+        ),
+        AppColors.transparentColor,
+      ],
+      stops: const [0.0, 0.7, 1.0],
+    );
+
+    final stressRect = Rect.fromCircle(center: center, radius: radius * 1.5);
+    canvas.drawCircle(
+      center,
+      radius * 1.5,
+      Paint()..shader = stressGlow.createShader(stressRect),
+    );
+
+    // Draw tidal deformation axes if they exist
+    if (body.tidalAxisMajor.length >
+            RenderingConstants.minimumTidalStressThreshold &&
+        body.tidalAxisMinor.length >
+            RenderingConstants.minimumTidalStressThreshold) {
+      // Scale axes for visualization (exaggerate deformation for visibility)
+      final majorLength = radius * (1.0 + stressIntensity * 0.3);
+      final minorLength = radius * (1.0 - stressIntensity * 0.15);
+
+      // Calculate axis endpoints
+      final majorAxis = body.tidalAxisMajor.normalized();
+      final minorAxis = body.tidalAxisMinor.normalized();
+
+      final majorEnd1 =
+          center + Offset(majorAxis.x * majorLength, majorAxis.y * majorLength);
+      final majorEnd2 =
+          center - Offset(majorAxis.x * majorLength, majorAxis.y * majorLength);
+      final minorEnd1 =
+          center + Offset(minorAxis.x * minorLength, minorAxis.y * minorLength);
+      final minorEnd2 =
+          center - Offset(minorAxis.x * minorLength, minorAxis.y * minorLength);
+
+      // Draw tidal axis lines
+      final axisPaint = Paint()
+        ..color = stressColor.withValues(
+          alpha: stressIntensity * AppTypography.opacityHigh,
+        )
+        ..strokeWidth = AppTypography.spacingXXSmall
+        ..style = PaintingStyle.stroke;
+
+      // Major axis (direction of maximum tidal stretch)
+      canvas.drawLine(majorEnd1, majorEnd2, axisPaint);
+
+      // Minor axis (direction of maximum tidal compression)
+      axisPaint.strokeWidth = AppTypography.spacingXXSmall * 0.7;
+      canvas.drawLine(minorEnd1, minorEnd2, axisPaint);
+
+      // Draw arrowheads on major axis to show direction
+      _drawArrowhead(canvas, majorEnd1, majorAxis, axisPaint, radius * 0.15);
+      _drawArrowhead(canvas, majorEnd2, -majorAxis, axisPaint, radius * 0.15);
+    }
+  }
+
+  /// Draw an arrowhead at the given position pointing in the given direction
+  static void _drawArrowhead(
+    Canvas canvas,
+    Offset position,
+    vm.Vector3 direction,
+    Paint paint,
+    double size,
+  ) {
+    // Calculate perpendicular vector for arrowhead wings
+    final perpendicular = vm.Vector3(
+      -direction.y,
+      direction.x,
+      0.0,
+    ).normalized();
+
+    // Arrow wing endpoints
+    final wing1 =
+        position -
+        Offset(direction.x * size, direction.y * size) +
+        Offset(perpendicular.x * size * 0.5, perpendicular.y * size * 0.5);
+    final wing2 =
+        position -
+        Offset(direction.x * size, direction.y * size) -
+        Offset(perpendicular.x * size * 0.5, perpendicular.y * size * 0.5);
+
+    // Draw arrowhead
+    final path = Path()
+      ..moveTo(position.dx, position.dy)
+      ..lineTo(wing1.dx, wing1.dy)
+      ..moveTo(position.dx, position.dy)
+      ..lineTo(wing2.dx, wing2.dy);
+
+    canvas.drawPath(path, paint);
+  }
+
   /// Determine atmospheric intensity for generic planets based on mass and characteristics
   ///
   /// Returns a value between 0.0 (no atmosphere) and 0.6 (thick atmosphere)
@@ -2258,7 +2511,9 @@ class CelestialBodyPainter {
               AppColors.uiBlack.withValues(
                 alpha: RenderingConstants.castShadowUmbraAlpha,
               ),
-              AppColors.uiBlack.withValues(alpha: 0.0),
+              AppColors.uiBlack.withValues(
+                alpha: AppTypography.opacityTransparent,
+              ),
             ],
             stops: const [
               RenderingConstants.castShadowUmbraGradientStart,

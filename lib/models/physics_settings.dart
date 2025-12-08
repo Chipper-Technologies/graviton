@@ -11,6 +11,14 @@ class PhysicsSettings {
   final double vibrationThrottleTime;
   final bool vibrationEnabled;
 
+  // Relativistic effects settings
+  final bool enableRelativisticEffects;
+  final bool showRelativisticGlow;
+
+  // Tidal forces settings
+  final bool enableTidalForces;
+  final bool showTidalVisualization;
+
   const PhysicsSettings({
     required this.gravitationalConstant,
     required this.softening,
@@ -19,6 +27,10 @@ class PhysicsSettings {
     required this.trailFadeRate,
     required this.vibrationThrottleTime,
     required this.vibrationEnabled,
+    this.enableRelativisticEffects = false,
+    this.showRelativisticGlow = false,
+    this.enableTidalForces = false,
+    this.showTidalVisualization = false,
   });
 
   /// Create default physics settings from simulation constants
@@ -41,6 +53,10 @@ class PhysicsSettings {
     trailFadeRate: 0.5, // Standard fade rate
     vibrationThrottleTime: 0.18, // Standard haptic timing
     vibrationEnabled: true,
+    enableRelativisticEffects: false,
+    showRelativisticGlow: false,
+    enableTidalForces: false,
+    showTidalVisualization: false,
   );
 
   /// Create experimental physics for sandbox scenarios
@@ -52,6 +68,10 @@ class PhysicsSettings {
     trailFadeRate: SimulationConstants.trailFadeRate,
     vibrationThrottleTime: SimulationConstants.vibrationThrottleTime,
     vibrationEnabled: true,
+    enableRelativisticEffects: false,
+    showRelativisticGlow: false,
+    enableTidalForces: false,
+    showTidalVisualization: false,
   );
 
   /// Get appropriate default settings for a scenario type
@@ -81,6 +101,10 @@ class PhysicsSettings {
     double? trailFadeRate,
     double? vibrationThrottleTime,
     bool? vibrationEnabled,
+    bool? enableRelativisticEffects,
+    bool? showRelativisticGlow,
+    bool? enableTidalForces,
+    bool? showTidalVisualization,
   }) {
     return PhysicsSettings(
       gravitationalConstant:
@@ -93,6 +117,12 @@ class PhysicsSettings {
       vibrationThrottleTime:
           vibrationThrottleTime ?? this.vibrationThrottleTime,
       vibrationEnabled: vibrationEnabled ?? this.vibrationEnabled,
+      enableRelativisticEffects:
+          enableRelativisticEffects ?? this.enableRelativisticEffects,
+      showRelativisticGlow: showRelativisticGlow ?? this.showRelativisticGlow,
+      enableTidalForces: enableTidalForces ?? this.enableTidalForces,
+      showTidalVisualization:
+          showTidalVisualization ?? this.showTidalVisualization,
     );
   }
 
@@ -105,7 +135,11 @@ class PhysicsSettings {
         maxTrailPoints != defaults.maxTrailPoints ||
         trailFadeRate != defaults.trailFadeRate ||
         vibrationThrottleTime != defaults.vibrationThrottleTime ||
-        vibrationEnabled != defaults.vibrationEnabled;
+        vibrationEnabled != defaults.vibrationEnabled ||
+        enableRelativisticEffects != defaults.enableRelativisticEffects ||
+        showRelativisticGlow != defaults.showRelativisticGlow ||
+        enableTidalForces != defaults.enableTidalForces ||
+        showTidalVisualization != defaults.showTidalVisualization;
   }
 
   /// Convert to Map for serialization
@@ -118,6 +152,10 @@ class PhysicsSettings {
       'trailFadeRate': trailFadeRate,
       'vibrationThrottleTime': vibrationThrottleTime,
       'vibrationEnabled': vibrationEnabled,
+      'enableRelativisticEffects': enableRelativisticEffects,
+      'showRelativisticGlow': showRelativisticGlow,
+      'enableTidalForces': enableTidalForces,
+      'showTidalVisualization': showTidalVisualization,
     };
   }
 
@@ -139,6 +177,10 @@ class PhysicsSettings {
           map['vibrationThrottleTime']?.toDouble() ??
           SimulationConstants.vibrationThrottleTime,
       vibrationEnabled: map['vibrationEnabled'] ?? true,
+      enableRelativisticEffects: map['enableRelativisticEffects'] ?? false,
+      showRelativisticGlow: map['showRelativisticGlow'] ?? false,
+      enableTidalForces: map['enableTidalForces'] ?? false,
+      showTidalVisualization: map['showTidalVisualization'] ?? false,
     );
   }
 
@@ -153,22 +195,34 @@ class PhysicsSettings {
         other.maxTrailPoints == maxTrailPoints &&
         other.trailFadeRate == trailFadeRate &&
         other.vibrationThrottleTime == vibrationThrottleTime &&
-        other.vibrationEnabled == vibrationEnabled;
+        other.vibrationEnabled == vibrationEnabled &&
+        other.enableRelativisticEffects == enableRelativisticEffects &&
+        other.showRelativisticGlow == showRelativisticGlow &&
+        other.enableTidalForces == enableTidalForces &&
+        other.showTidalVisualization == showTidalVisualization;
   }
 
   @override
   int get hashCode {
-    return gravitationalConstant.hashCode ^
-        softening.hashCode ^
-        collisionRadiusMultiplier.hashCode ^
-        maxTrailPoints.hashCode ^
-        trailFadeRate.hashCode ^
-        vibrationThrottleTime.hashCode ^
-        vibrationEnabled.hashCode;
+    // NOTE: Object.hash supports up to 20 arguments. Currently using 11.
+    // If more properties are added (>20), switch to Object.hashAll for scalability.
+    return Object.hash(
+      gravitationalConstant,
+      softening,
+      collisionRadiusMultiplier,
+      maxTrailPoints,
+      trailFadeRate,
+      vibrationThrottleTime,
+      vibrationEnabled,
+      enableRelativisticEffects,
+      showRelativisticGlow,
+      enableTidalForces,
+      showTidalVisualization,
+    );
   }
 
   @override
   String toString() {
-    return 'PhysicsSettings(gravitationalConstant: $gravitationalConstant, softening: $softening, collisionRadiusMultiplier: $collisionRadiusMultiplier, maxTrailPoints: $maxTrailPoints, trailFadeRate: $trailFadeRate, vibrationThrottleTime: $vibrationThrottleTime, vibrationEnabled: $vibrationEnabled)';
+    return 'PhysicsSettings(gravitationalConstant: $gravitationalConstant, softening: $softening, collisionRadiusMultiplier: $collisionRadiusMultiplier, maxTrailPoints: $maxTrailPoints, trailFadeRate: $trailFadeRate, vibrationThrottleTime: $vibrationThrottleTime, vibrationEnabled: $vibrationEnabled, enableRelativisticEffects: $enableRelativisticEffects, showRelativisticGlow: $showRelativisticGlow, enableTidalForces: $enableTidalForces, showTidalVisualization: $showTidalVisualization)';
   }
 }

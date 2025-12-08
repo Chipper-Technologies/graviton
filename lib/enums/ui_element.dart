@@ -100,6 +100,18 @@ enum UIElement {
   /// Gravity field color scheme selector
   gravityFieldColorScheme('gravity_field_color_scheme'),
 
+  /// Relativistic effects controls
+  relativisticEffectsControls('relativistic_effects_controls'),
+
+  /// Relativistic glow visualization
+  relativisticGlowVisualization('relativistic_glow_visualization'),
+
+  /// Tidal forces controls
+  tidalForcesControls('tidal_forces_controls'),
+
+  /// Tidal visualization
+  tidalVisualization('tidal_visualization'),
+
   // Visual Controls Elements
   /// Visual display controls
   visualDisplayControls('visual_display_controls'),

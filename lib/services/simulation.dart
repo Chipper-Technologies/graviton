@@ -22,6 +22,8 @@ import 'package:graviton/services/stellar_color_service.dart';
 import 'package:graviton/services/temperature_service.dart';
 import 'package:graviton/services/collision_effects_service.dart';
 import 'package:graviton/state/app_state.dart';
+import 'package:graviton/utils/relativistic_physics_utils.dart';
+import 'package:graviton/utils/tidal_force_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/services/haptic_feedback_service.dart';
 
@@ -38,6 +40,12 @@ class Simulation {
   bool _vibrationEnabled = true;
   bool _useRealisticColors = false; // Track realistic colors setting
 
+  // Relativistic and tidal physics settings
+  bool _enableRelativisticEffects = false;
+  bool _showRelativisticGlow = false;
+  bool _enableTidalForces = false;
+  bool _showTidalVisualization = false;
+
   // Public getters for physics parameters
   double get gravitationalConstant => _gravitationalConstant;
   double get softening => _softening;
@@ -47,6 +55,10 @@ class Simulation {
   double get vibrationThrottleTime => _vibrationThrottleTime;
   bool get vibrationEnabled => _vibrationEnabled;
   bool get useRealisticColors => _useRealisticColors;
+  bool get enableRelativisticEffects => _enableRelativisticEffects;
+  bool get showRelativisticGlow => _showRelativisticGlow;
+  bool get enableTidalForces => _enableTidalForces;
+  bool get showTidalVisualization => _showTidalVisualization;
 
   List<Body> bodies = [];
   List<List<TrailPoint>> trails = [];
@@ -146,6 +158,10 @@ class Simulation {
     double? trailFadeRate,
     double? vibrationThrottleTime,
     bool? vibrationEnabled,
+    bool? enableRelativisticEffects,
+    bool? showRelativisticGlow,
+    bool? enableTidalForces,
+    bool? showTidalVisualization,
   }) {
     if (gravitationalConstant != null) {
       _gravitationalConstant = gravitationalConstant;
@@ -167,6 +183,18 @@ class Simulation {
     }
     if (vibrationEnabled != null) {
       _vibrationEnabled = vibrationEnabled;
+    }
+    if (enableRelativisticEffects != null) {
+      _enableRelativisticEffects = enableRelativisticEffects;
+    }
+    if (showRelativisticGlow != null) {
+      _showRelativisticGlow = showRelativisticGlow;
+    }
+    if (enableTidalForces != null) {
+      _enableTidalForces = enableTidalForces;
+    }
+    if (showTidalVisualization != null) {
+      _showTidalVisualization = showTidalVisualization;
     }
   }
 
@@ -575,7 +603,7 @@ class Simulation {
     final initPos = [for (var b in bodies) b.position.clone()];
     final initVel = [for (var b in bodies) b.velocity.clone()];
 
-    List<vm.Vector3> accelerations(List<vm.Vector3> pos) {
+    List<vm.Vector3> accelerations(List<vm.Vector3> pos, List<vm.Vector3> vel) {
       final a = List.generate(n, (_) => vm.Vector3.zero());
       for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -584,7 +612,7 @@ class Simulation {
           final dist2 = r.length2;
 
           // Balanced softening for galaxy formation - allows spiraling into black hole
-          double softening = SimulationConstants.softening;
+          double softening = _softening;
           if (_currentScenario == ScenarioType.galaxyFormation) {
             // Use moderate softening that allows realistic orbital decay without sudden stops
             if (i == 0 || j == 0) {
@@ -602,38 +630,129 @@ class Simulation {
             }
           }
 
-          final softDist2 = dist2 + softening;
-          final invR = 1.0 / math.sqrt(softDist2);
-          final invR3 = invR * invR * invR;
-          a[i] += r * (gravitationalConstant * bodies[j].mass * invR3);
+          // Apply relativistic corrections if enabled
+          if (_enableRelativisticEffects) {
+            final accel = RelativisticPhysicsUtils.calculate1PNAcceleration(
+              pos[i],
+              vel[i],
+              pos[j],
+              vel[j],
+              bodies[j].mass,
+              gravitationalConstant: _gravitationalConstant,
+              softening: softening,
+            );
+            a[i] += accel;
+          } else {
+            // Classical Newtonian acceleration
+            final softDist2 = dist2 + softening;
+            final invR = 1.0 / math.sqrt(softDist2);
+            final invR3 = invR * invR * invR;
+            a[i] += r * (_gravitationalConstant * bodies[j].mass * invR3);
+          }
         }
       }
       return a;
     }
 
     final k1x = [for (int i = 0; i < n; i++) initVel[i].clone()];
-    final k1v = accelerations(initPos);
+    final k1v = accelerations(initPos, initVel);
 
     final p2 = [for (int i = 0; i < n; i++) initPos[i] + k1x[i] * (dt / 2)];
     final v2 = [for (int i = 0; i < n; i++) initVel[i] + k1v[i] * (dt / 2)];
     final k2x = [for (int i = 0; i < n; i++) v2[i].clone()];
-    final k2v = accelerations(p2);
+    final k2v = accelerations(p2, v2);
 
     final p3 = [for (int i = 0; i < n; i++) initPos[i] + k2x[i] * (dt / 2)];
     final v3 = [for (int i = 0; i < n; i++) initVel[i] + k2v[i] * (dt / 2)];
     final k3x = [for (int i = 0; i < n; i++) v3[i].clone()];
-    final k3v = accelerations(p3);
+    final k3v = accelerations(p3, v3);
 
     final p4 = [for (int i = 0; i < n; i++) initPos[i] + k3x[i] * dt];
     final v4 = [for (int i = 0; i < n; i++) initVel[i] + k3v[i] * dt];
     final k4x = [for (int i = 0; i < n; i++) v4[i].clone()];
-    final k4v = accelerations(p4);
+    final k4v = accelerations(p4, v4);
 
     for (int i = 0; i < n; i++) {
       bodies[i].position =
           initPos[i] + (k1x[i] + k2x[i] * 2 + k3x[i] * 2 + k4x[i]) * (dt / 6);
       bodies[i].velocity =
           initVel[i] + (k1v[i] + k2v[i] * 2 + k3v[i] * 2 + k4v[i]) * (dt / 6);
+    }
+
+    // Update relativistic effects
+    if (_enableRelativisticEffects) {
+      for (int i = 0; i < n; i++) {
+        final body = bodies[i];
+
+        // Calculate time dilation factor (Lorentz factor)
+        body.timeDilationFactor =
+            RelativisticPhysicsUtils.calculateLorentzFactor(body.velocity);
+
+        // Update proper time (time experienced by the body)
+        body.properTime = RelativisticPhysicsUtils.updateProperTime(
+          body.properTime,
+          dt,
+          body.velocity,
+        );
+
+        // Set visualization flag
+        body.showRelativisticGlow = _showRelativisticGlow;
+      }
+    } else {
+      // Reset relativistic properties when disabled
+      for (int i = 0; i < n; i++) {
+        bodies[i].timeDilationFactor = 1.0;
+        bodies[i].properTime += dt; // Just use coordinate time
+        bodies[i].showRelativisticGlow = false;
+      }
+    }
+
+    // Update tidal forces
+    if (_enableTidalForces) {
+      for (int i = 0; i < n; i++) {
+        final body = bodies[i];
+        body.showTidalForces = _showTidalVisualization;
+
+        // Calculate tidal tensor from all other bodies
+        final tidalTensor = TidalForceUtils.calculateTidalTensor(
+          body,
+          bodies.where((b) => b != body).toList(),
+        );
+
+        // Calculate tidal stress magnitude
+        final tidalStress = TidalForceUtils.calculateTidalStress(tidalTensor);
+        body.tidalStress = tidalStress;
+
+        // Calculate principal axes (eigenvectors of tidal tensor)
+        final principalAxes = TidalForceUtils.calculatePrincipalAxes(
+          tidalTensor,
+        );
+        final eigenvectors = principalAxes['eigenvectors'] as List<vm.Vector3>;
+        body.tidalAxisMajor =
+            eigenvectors[0]; // Major axis (dominant eigenvector)
+        body.tidalAxisMinor =
+            eigenvectors[1]; // Minor axis (second eigenvector)
+
+        // Calculate tidal heating if body has radius
+        if (body.radius > 0) {
+          body.tidalHeating = TidalForceUtils.calculateTidalHeating(
+            tidalStress,
+            body.mass,
+            body.radius,
+          );
+        } else {
+          body.tidalHeating = 0.0;
+        }
+      }
+    } else {
+      // Reset tidal properties when disabled
+      for (int i = 0; i < n; i++) {
+        bodies[i].tidalStress = 0.0;
+        bodies[i].tidalAxisMajor = vm.Vector3.zero();
+        bodies[i].tidalAxisMinor = vm.Vector3.zero();
+        bodies[i].tidalHeating = 0.0;
+        bodies[i].showTidalForces = false;
+      }
     }
 
     // Special case: Keep central star fixed in asteroid belt scenario

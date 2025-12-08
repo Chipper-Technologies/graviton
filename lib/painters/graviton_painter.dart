@@ -50,6 +50,8 @@ class GravitonPainter extends CustomPainter {
   final bool enableHemisphereLighting;
   final bool enableCastShadows;
   final bool enableSpecularHighlights;
+  final bool showRelativisticGlow;
+  final bool showTidalVisualization;
 
   GravitonPainter({
     required this.sim,
@@ -76,6 +78,8 @@ class GravitonPainter extends CustomPainter {
     this.enableHemisphereLighting = true,
     this.enableCastShadows = false,
     this.enableSpecularHighlights = false,
+    this.showRelativisticGlow = false,
+    this.showTidalVisualization = false,
   });
 
   @override
@@ -274,6 +278,8 @@ class GravitonPainter extends CustomPainter {
           enableCastShadows: enableCastShadows,
           enableSpecularHighlights: enableSpecularHighlights,
           allBodies: sim.bodies,
+          showRelativisticGlow: showRelativisticGlow,
+          showTidalVisualization: showTidalVisualization,
         );
       }
 

@@ -302,6 +302,45 @@ class RenderingConstants {
   /// Controls how far toward terminator the scattering concentrates
   static const double atmosphericScatteringFocalRatio = 0.5;
 
+  // Relativistic effects visualization
+  /// Minimum glow intensity threshold for relativistic effects (0.0-1.0)
+  /// Below this threshold, relativistic glow is not rendered for performance
+  /// Based on time dilation factor: intensity = 1.0 - γ (Lorentz factor)
+  static const double minimumRelativisticGlowThreshold = 0.05;
+
+  /// Outer glow layer base radius multiplier for relativistic effects
+  /// Controls the base size of the outer glow layer before intensity scaling
+  static const double relativisticOuterGlowRadiusBase = 2.0;
+
+  /// Outer glow layer intensity multiplier for relativistic effects
+  /// Scales the additional radius based on glow intensity (0.0-1.0)
+  static const double relativisticOuterGlowRadiusIntensityScale = 1.5;
+
+  /// Inner glow layer base radius multiplier for relativistic effects
+  /// Controls the base size of the inner glow layer before intensity scaling
+  static const double relativisticInnerGlowRadiusBase = 1.3;
+
+  /// Blue-shift color blend ratio for relativistic glow (0.0-1.0)
+  /// Controls how much to blend toward white from blue at maximum intensity
+  static const double relativisticColorBlendRatio = 0.7;
+
+  // Tidal forces visualization
+  /// Minimum tidal stress threshold for visualization (0.0-1.0)
+  /// Below this threshold, tidal visualization is not rendered for performance
+  static const double minimumTidalStressThreshold = 0.01;
+
+  /// Tidal stress normalization factor for intensity calculation
+  /// Divides raw tidal stress to normalize to 0.0-1.0 range for visualization
+  static const double tidalStressNormalizationFactor = 10.0;
+
+  /// Tidal stress color blend ratio for medium stress (0.0-1.0)
+  /// Controls how much to blend body color with orange at medium stress levels
+  static const double tidalStressMediumBlendRatio = 0.5;
+
+  /// Tidal stress color blend ratio for high stress (0.0-1.0)
+  /// Controls how much to blend medium stress color with red at high stress levels
+  static const double tidalStressHighBlendRatio = 0.5;
+
   /// Focal radius multiplier for scattering gradient tightness
   /// Multiplied by concentration factor to control gradient spread
   static const double atmosphericScatteringFocalRadiusMultiplier = 0.1;

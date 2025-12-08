@@ -482,6 +482,38 @@
   "@gravityFieldsTitle": {
     "description": "Toggle title for gravity field visualization"
   },
+  "relativisticEffectsTitle": "Relativistic Effects",
+  "@relativisticEffectsTitle": {
+    "description": "Toggle title for relativistic physics effects"
+  },
+  "relativisticEffectsDescription": "Apply post-Newtonian corrections for high-speed objects",
+  "@relativisticEffectsDescription": {
+    "description": "Description for relativistic effects toggle"
+  },
+  "relativisticGlowTitle": "Relativistic Glow",
+  "@relativisticGlowTitle": {
+    "description": "Toggle title for relativistic glow visualization"
+  },
+  "relativisticGlowDescription": "Visualize time dilation with velocity-based glow",
+  "@relativisticGlowDescription": {
+    "description": "Description for relativistic glow visualization toggle"
+  },
+  "tidalForcesTitle": "Tidal Forces",
+  "@tidalForcesTitle": {
+    "description": "Toggle title for tidal force calculations"
+  },
+  "tidalForcesDescription": "Calculate tidal deformation and heating effects",
+  "@tidalForcesDescription": {
+    "description": "Description for tidal forces toggle"
+  },
+  "tidalVisualizationTitle": "Tidal Visualization",
+  "@tidalVisualizationTitle": {
+    "description": "Toggle title for tidal force visualization"
+  },
+  "tidalVisualizationDescription": "Show tidal stress and deformation axes",
+  "@tidalVisualizationDescription": {
+    "description": "Description for tidal visualization toggle"
+  },
   "gravityWellsDescription": "Show gravitational field strength around objects",
   "@gravityWellsDescription": {
     "description": "Description for gravity wells setting"

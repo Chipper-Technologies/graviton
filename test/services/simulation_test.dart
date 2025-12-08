@@ -658,5 +658,90 @@ void main() {
         expect(simulation.bodies.length, greaterThan(0));
       });
     });
+
+    group('Relativistic and Tidal Effects Integration Tests', () {
+      test('Should process simulation with relativistic effects enabled', () {
+        // Create fast-moving body
+        final fastBody = Body(
+          name: 'Fast Body',
+          mass: 1.0,
+          radius: 1.0,
+          position: vm.Vector3(0.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.1, 0.0, 0.0), // 0.1c
+          color: AppColors.stellarOType,
+        );
+
+        simulation.bodies = [fastBody];
+        simulation.trails = [[]];
+        simulation.updatePhysicsSettings(enableRelativisticEffects: true);
+
+        // Should process without errors
+        expect(() => simulation.stepRK4(1.0 / 60.0), returnsNormally);
+        expect(fastBody.velocity.length.isFinite, isTrue);
+        expect(fastBody.position.x.isFinite, isTrue);
+      });
+
+      test('Should process simulation with tidal forces enabled', () {
+        // Create close binary system
+        final primary = Body(
+          name: 'Primary',
+          mass: 10.0,
+          radius: 2.0,
+          position: vm.Vector3(-5.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.0, 0.5, 0.0),
+          color: AppColors.stellarOType,
+        );
+
+        final secondary = Body(
+          name: 'Secondary',
+          mass: 5.0,
+          radius: 1.5,
+          position: vm.Vector3(5.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.0, -0.5, 0.0),
+          color: AppColors.stellarBType,
+        );
+
+        simulation.bodies = [primary, secondary];
+        simulation.trails = [[], []];
+        simulation.updatePhysicsSettings(enableTidalForces: true);
+
+        // Should process without errors (tests the eigenvector extraction fix)
+        expect(() => simulation.stepRK4(1.0 / 60.0), returnsNormally);
+        expect(secondary.velocity.length.isFinite, isTrue);
+        expect(secondary.position.x.isFinite, isTrue);
+      });
+
+      test('Should handle both effects simultaneously', () {
+        final primary = Body(
+          name: 'Fast Primary',
+          mass: 3.0,
+          radius: 12.0,
+          position: vm.Vector3(0.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.15, 0.0, 0.0), // 0.15c
+          color: AppColors.stellarOType,
+        );
+
+        final secondary = Body(
+          name: 'Fast Secondary',
+          mass: 2.0,
+          radius: 9.0,
+          position: vm.Vector3(45.0, 0.0, 0.0),
+          velocity: vm.Vector3(0.12, 0.05, 0.0),
+          color: AppColors.stellarBType,
+        );
+
+        simulation.bodies = [primary, secondary];
+        simulation.trails = [[], []];
+        simulation.updatePhysicsSettings(
+          enableRelativisticEffects: true,
+          enableTidalForces: true,
+        );
+
+        // Should handle both effects without errors or NaN
+        expect(() => simulation.stepRK4(1.0 / 60.0), returnsNormally);
+        expect(secondary.position.x.isNaN, isFalse);
+        expect(secondary.velocity.x.isNaN, isFalse);
+      });
+    });
   });
 }

@@ -422,6 +422,34 @@ class AppLocalizationsFr extends AppLocalizations {
   String get gravityFieldsTitle => 'Champs Gravitationnels';
 
   @override
+  String get relativisticEffectsTitle => 'Effets Relativistes';
+
+  @override
+  String get relativisticEffectsDescription =>
+      'Appliquer des corrections post-newtoniennes pour les objets à grande vitesse';
+
+  @override
+  String get relativisticGlowTitle => 'Lueur Relativiste';
+
+  @override
+  String get relativisticGlowDescription =>
+      'Visualiser la dilatation du temps avec une lueur basée sur la vélocité';
+
+  @override
+  String get tidalForcesTitle => 'Forces de Marée';
+
+  @override
+  String get tidalForcesDescription =>
+      'Calculer la déformation de marée et les effets de chauffage';
+
+  @override
+  String get tidalVisualizationTitle => 'Visualisation des Marées';
+
+  @override
+  String get tidalVisualizationDescription =>
+      'Afficher le stress de marée et les axes de déformation';
+
+  @override
   String get gravityWellsDescription =>
       'Afficher l\'intensité du champ gravitationnel autour des objets';
 

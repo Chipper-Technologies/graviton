@@ -418,6 +418,34 @@ class AppLocalizationsDe extends AppLocalizations {
   String get gravityFieldsTitle => 'Gravitationsfelder';
 
   @override
+  String get relativisticEffectsTitle => 'Relativistische Effekte';
+
+  @override
+  String get relativisticEffectsDescription =>
+      'Post-Newtonsche Korrekturen für Hochgeschwindigkeitsobjekte anwenden';
+
+  @override
+  String get relativisticGlowTitle => 'Relativistisches Leuchten';
+
+  @override
+  String get relativisticGlowDescription =>
+      'Zeitdilatation mit geschwindigkeitsbasiertem Leuchten visualisieren';
+
+  @override
+  String get tidalForcesTitle => 'Gezeitenkräfte';
+
+  @override
+  String get tidalForcesDescription =>
+      'Gezeitenverformung und Heizeffekte berechnen';
+
+  @override
+  String get tidalVisualizationTitle => 'Gezeitenvisualisierung';
+
+  @override
+  String get tidalVisualizationDescription =>
+      'Gezeitenstress und Verformungsachsen anzeigen';
+
+  @override
   String get gravityWellsDescription =>
       'Gravitationsfeldstärke um Objekte anzeigen';
 

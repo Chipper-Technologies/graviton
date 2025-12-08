@@ -7,6 +7,14 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+/// Test scroll offset constants for PhysicsControls ListView navigation
+/// These offsets scroll to specific sections of the controls panel
+const kScrollToSimulationSpeedOffset = Offset(0, -400);
+const kScrollToSimulationSpeedSectionOffset = Offset(0, -600);
+const kScrollToSpeedPresetsOffset = Offset(0, -700);
+const kScrollToDebugStatisticsOffset = Offset(0, -800);
+const kScrollToStatisticsTableOffset = Offset(0, -1200);
+
 void main() {
   late AppState appState;
 
@@ -134,7 +142,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Scroll down much further to see the debug & statistics section
-      await tester.drag(find.byType(ListView), const Offset(0, -800));
+      await tester.drag(find.byType(ListView), kScrollToDebugStatisticsOffset);
       await tester.pumpAndSettle();
 
       expect(find.text('Debug & Statistics'), findsOneWidget);
@@ -146,7 +154,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Scroll down much further to see the debug & statistics section
-      await tester.drag(find.byType(ListView), const Offset(0, -800));
+      await tester.drag(find.byType(ListView), kScrollToDebugStatisticsOffset);
       await tester.pumpAndSettle();
 
       final initialState = appState.ui.showStats;
@@ -168,7 +176,10 @@ void main() {
       await tester.pumpAndSettle();
 
       // Scroll down to see the simulation speed section
-      await tester.drag(find.byType(ListView), const Offset(0, -300));
+      await tester.drag(
+        find.byType(ListView),
+        kScrollToSimulationSpeedSectionOffset,
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Simulation Speed'), findsOneWidget);
@@ -180,7 +191,10 @@ void main() {
       await tester.pumpAndSettle();
 
       // Scroll down to see the simulation speed section
-      await tester.drag(find.byType(ListView), const Offset(0, -300));
+      await tester.drag(
+        find.byType(ListView),
+        kScrollToSimulationSpeedSectionOffset,
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(Slider), findsOneWidget);
@@ -232,13 +246,13 @@ void main() {
       expect(find.text('Physics Visualization'), findsOneWidget);
 
       // Scroll down to see the other section titles
-      await tester.drag(find.byType(ListView), const Offset(0, -400));
+      await tester.drag(find.byType(ListView), kScrollToSimulationSpeedOffset);
       await tester.pumpAndSettle();
 
       expect(find.text('Simulation Speed'), findsOneWidget);
 
       // Scroll further to see debug & statistics
-      await tester.drag(find.byType(ListView), const Offset(0, -400));
+      await tester.drag(find.byType(ListView), kScrollToSimulationSpeedOffset);
       await tester.pumpAndSettle();
 
       expect(find.text('Debug & Statistics'), findsOneWidget);
@@ -273,7 +287,7 @@ void main() {
       expect(appState.ui.globalGravityFields, !initialGravity);
 
       // Scroll down to find statistics toggle
-      await tester.drag(find.byType(ListView), const Offset(0, -800));
+      await tester.drag(find.byType(ListView), kScrollToDebugStatisticsOffset);
       await tester.pumpAndSettle();
 
       // Toggle statistics
@@ -309,11 +323,11 @@ void main() {
       await tester.pumpAndSettle();
 
       // Scroll down to see the statistics section
-      await tester.drag(find.byType(ListView), const Offset(0, -800));
+      await tester.drag(find.byType(ListView), kScrollToDebugStatisticsOffset);
       await tester.pumpAndSettle();
 
       // Then scroll further to see the actual statistics table when stats are enabled
-      await tester.drag(find.byType(ListView), const Offset(0, -400));
+      await tester.drag(find.byType(ListView), kScrollToSimulationSpeedOffset);
       await tester.pumpAndSettle();
 
       // If stats are enabled, should show various statistics
@@ -359,7 +373,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Scroll down to see the speed preset buttons - need more scroll to reach them
-      await tester.drag(find.byType(ListView), const Offset(0, -400));
+      await tester.drag(find.byType(ListView), kScrollToSpeedPresetsOffset);
       await tester.pumpAndSettle();
 
       // Should have speed preset buttons

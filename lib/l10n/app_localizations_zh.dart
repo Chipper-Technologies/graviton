@@ -389,6 +389,30 @@ class AppLocalizationsZh extends AppLocalizations {
   String get gravityFieldsTitle => '重力场';
 
   @override
+  String get relativisticEffectsTitle => '相对论效应';
+
+  @override
+  String get relativisticEffectsDescription => '对高速物体应用后牛顿修正';
+
+  @override
+  String get relativisticGlowTitle => '相对论光晕';
+
+  @override
+  String get relativisticGlowDescription => '通过基于速度的光晕可视化时间膨胀';
+
+  @override
+  String get tidalForcesTitle => '潮汐力';
+
+  @override
+  String get tidalForcesDescription => '计算潮汐变形和加热效应';
+
+  @override
+  String get tidalVisualizationTitle => '潮汐可视化';
+
+  @override
+  String get tidalVisualizationDescription => '显示潮汐应力和变形轴';
+
+  @override
   String get gravityWellsDescription => '显示物体周围的引力场强度';
 
   @override

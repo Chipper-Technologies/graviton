@@ -144,6 +144,12 @@ class SimulationState extends ChangeNotifier {
   List<List<TrailPoint>> get trails => _simulation.trails;
   List<MergeFlash> get mergeFlashes => _simulation.mergeFlashes;
 
+  // Physics settings getters
+  bool get enableRelativisticEffects => _simulation.enableRelativisticEffects;
+  bool get showRelativisticGlow => _simulation.showRelativisticGlow;
+  bool get enableTidalForces => _simulation.enableTidalForces;
+  bool get showTidalVisualization => _simulation.showTidalVisualization;
+
   // Physics control
   void start() {
     if (_status.canStart) {
@@ -457,6 +463,38 @@ class SimulationState extends ChangeNotifier {
   /// Update vibration setting in the simulation
   void setVibrationEnabled(bool enabled) {
     _simulation.setVibrationEnabled(enabled);
+  }
+
+  /// Toggle relativistic effects
+  void toggleRelativisticEffects() {
+    _simulation.updatePhysicsSettings(
+      enableRelativisticEffects: !_simulation.enableRelativisticEffects,
+    );
+    notifyListeners();
+  }
+
+  /// Toggle relativistic glow visualization
+  void toggleRelativisticGlow() {
+    _simulation.updatePhysicsSettings(
+      showRelativisticGlow: !_simulation.showRelativisticGlow,
+    );
+    notifyListeners();
+  }
+
+  /// Toggle tidal forces
+  void toggleTidalForces() {
+    _simulation.updatePhysicsSettings(
+      enableTidalForces: !_simulation.enableTidalForces,
+    );
+    notifyListeners();
+  }
+
+  /// Toggle tidal visualization
+  void toggleTidalVisualization() {
+    _simulation.updatePhysicsSettings(
+      showTidalVisualization: !_simulation.showTidalVisualization,
+    );
+    notifyListeners();
   }
 
   /// Apply physics settings to the simulation

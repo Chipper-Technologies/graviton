@@ -818,6 +818,54 @@ abstract class AppLocalizations {
   /// **'Gravity Fields'**
   String get gravityFieldsTitle;
 
+  /// Toggle title for relativistic physics effects
+  ///
+  /// In en, this message translates to:
+  /// **'Relativistic Effects'**
+  String get relativisticEffectsTitle;
+
+  /// Description for relativistic effects toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Apply post-Newtonian corrections for high-speed objects'**
+  String get relativisticEffectsDescription;
+
+  /// Toggle title for relativistic glow visualization
+  ///
+  /// In en, this message translates to:
+  /// **'Relativistic Glow'**
+  String get relativisticGlowTitle;
+
+  /// Description for relativistic glow visualization toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Visualize time dilation with velocity-based glow'**
+  String get relativisticGlowDescription;
+
+  /// Toggle title for tidal force calculations
+  ///
+  /// In en, this message translates to:
+  /// **'Tidal Forces'**
+  String get tidalForcesTitle;
+
+  /// Description for tidal forces toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Calculate tidal deformation and heating effects'**
+  String get tidalForcesDescription;
+
+  /// Toggle title for tidal force visualization
+  ///
+  /// In en, this message translates to:
+  /// **'Tidal Visualization'**
+  String get tidalVisualizationTitle;
+
+  /// Description for tidal visualization toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Show tidal stress and deformation axes'**
+  String get tidalVisualizationDescription;
+
   /// Description for gravity wells setting
   ///
   /// In en, this message translates to:
