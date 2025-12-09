@@ -22,8 +22,9 @@ void main() {
       await TestHelpers.initializeAppStateWithTimeout(testAppState);
     });
 
-    tearDown(() {
+    tearDown(() async {
       testAppState.dispose();
+      await Future.delayed(const Duration(milliseconds: 10));
     });
 
     testWidgets('Three-finger pan gesture should move camera target', (
