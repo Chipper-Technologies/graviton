@@ -365,7 +365,7 @@ void main() {
     ) async {
       await tester.pumpWidget(GravitonApp(appState: testAppState));
       await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pumpAndSettle();
 
       final initialYaw = testAppState.camera.yaw;
 
@@ -375,10 +375,14 @@ void main() {
 
         // Simulate single-finger drag (camera rotation)
         await tester.drag(viewportGesture, const Offset(100, 0));
-        await tester.pump();
+        await tester.pumpAndSettle();
 
-        // Yaw should have changed
-        expect(testAppState.camera.yaw, isNot(equals(initialYaw)));
+        // Yaw should have changed (allow small epsilon for floating point)
+        expect(
+          testAppState.camera.yaw,
+          isNot(closeTo(initialYaw, 0.001)),
+          reason: 'Camera yaw should change after single-finger drag',
+        );
       }
 
       await TestHelpers.pumpAppTimers(tester);
