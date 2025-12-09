@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
 import 'package:graviton/state/ui_state.dart';
 
 void main() {

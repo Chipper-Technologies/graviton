@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/user_avatar.dart';
-import 'package:graviton/state/auth_state.dart';
+import 'package:graviton/core/enums/user_avatar.dart';
+import 'package:graviton/features/auth/state/auth_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {

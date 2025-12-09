@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/state/app_state.dart';
-import 'package:graviton/services/fullscreen_service.dart';
+import 'package:graviton/services/ui/fullscreen_service.dart';
 import 'package:graviton/utils/fullscreen_utils.dart';
 
 void main() {

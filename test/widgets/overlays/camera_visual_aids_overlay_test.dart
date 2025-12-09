@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:graviton/widgets/overlays/camera_visual_aids_overlay.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/theme/app_colors.dart';

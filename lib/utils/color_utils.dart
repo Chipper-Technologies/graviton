@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/enums/celestial_body_name.dart';
-import 'package:graviton/enums/habitability_status.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/core/enums/celestial_body_name.dart';
+import 'package:graviton/core/enums/habitability_status.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 

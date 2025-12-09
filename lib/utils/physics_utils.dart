@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:graviton/constants/simulation_constants.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Physics utility functions for gravitational calculations and energy computations

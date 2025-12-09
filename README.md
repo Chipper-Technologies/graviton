@@ -792,6 +792,12 @@ Graviton follows a **clean architecture** approach with clear separation of conc
 
 **[📖 View Complete Architecture Documentation →](docs/ARCHITECTURE.md)**
 
+> **🚧 Architecture Restructuring in Progress**  
+> The application is being migrated to a feature-based architecture for improved scalability and maintainability.
+> - ✅ **Phase 1 Complete**: New directory structure created
+> - 📋 **Current Phase**: Services migration preparation
+> - 📖 **[Migration Guide →](docs/ARCHITECTURE_MIGRATION.md)** | **[Quick Reference →](docs/ARCHITECTURE_QUICK_REFERENCE.md)**
+
 ### 🔧 Enhanced State Management
 - **Provider Pattern**: Clean, reactive state management using `provider` package
 - **ChangeNotifier**: Efficient state updates with automatic UI rebuilding
@@ -832,6 +838,8 @@ For detailed technical information and development guides, please refer to our c
   - Rendering system architecture
   - Service layer organization
   - Design patterns and principles
+- **[Architecture Migration Guide](docs/ARCHITECTURE_MIGRATION.md)** - 🚧 Ongoing restructuring to feature-based architecture
+- **[Architecture Quick Reference](docs/ARCHITECTURE_QUICK_REFERENCE.md)** - Quick guide to new structure and code organization
 
 ### 🎥 Camera System Documentation  
 - **[Camera Techniques](docs/CAMERA_TECHNIQUES.md)** - Advanced 3D camera system and cinematic controls

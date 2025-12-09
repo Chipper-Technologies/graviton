@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/widgets/scenario_selection/import_scenario_tile.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/import_scenario_tile.dart';
 
 void main() {
   group('ImportScenarioTile Tests', () {

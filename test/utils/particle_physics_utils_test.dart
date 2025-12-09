@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/models/body.dart';
-import 'package:graviton/models/collision_particle.dart';
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/models/particles/collision_particle.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/utils/particle_physics_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;

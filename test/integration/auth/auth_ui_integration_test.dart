@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/main.dart';
 import 'package:graviton/state/app_state.dart';
-import 'package:graviton/state/auth_state.dart';
-import 'package:graviton/widgets/auth/avatar_button.dart';
+import 'package:graviton/features/auth/state/auth_state.dart';
+import 'package:graviton/features/auth/presentation/widgets/avatar_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

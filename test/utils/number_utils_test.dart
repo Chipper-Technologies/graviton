@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vector_math/vector_math.dart';
 import 'package:graviton/utils/number_utils.dart';
-import 'package:graviton/enums/temperature_unit.dart';
+import 'package:graviton/core/enums/temperature_unit.dart';
 
 void main() {
   group('NumberUtils', () {

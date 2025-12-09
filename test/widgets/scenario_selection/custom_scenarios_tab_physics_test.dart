@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/widgets/scenario_selection/custom_scenarios_tab.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/custom_scenarios_tab.dart';
 
 import '../../test_utils.dart';
 

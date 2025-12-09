@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/constants/test_constants.dart';
-import 'package:graviton/constants/tidal_constants.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/core/constants/test_constants.dart';
+import 'package:graviton/core/constants/tidal_constants.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/utils/tidal_force_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;

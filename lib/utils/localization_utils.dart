@@ -1,7 +1,7 @@
-import 'package:graviton/enums/celestial_body_name.dart';
-import 'package:graviton/constants/educational_focus_keys.dart';
-import 'package:graviton/enums/habitability_status.dart';
-import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/core/enums/celestial_body_name.dart';
+import 'package:graviton/core/constants/educational_focus_keys.dart';
+import 'package:graviton/core/enums/habitability_status.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 
 /// Utility functions for localization mapping and text handling

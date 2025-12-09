@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/state/app_state.dart';
-import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../test_mocks.mocks.dart';

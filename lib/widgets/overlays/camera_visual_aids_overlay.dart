@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;

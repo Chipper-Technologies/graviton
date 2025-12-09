@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/widgets/scenario_selection/custom_scenarios_tab.dart';
-import 'package:graviton/widgets/scenario_selection/experimental_scenario_tile.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/custom_scenarios_tab.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/experimental_scenario_tile.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:provider/provider.dart';

@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:graviton/constants/simulation_constants.dart';
-import 'package:graviton/constants/tidal_constants.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
+import 'package:graviton/core/constants/tidal_constants.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Utility functions for tidal force calculations and Roche limit analysis

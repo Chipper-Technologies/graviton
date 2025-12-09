@@ -1,6 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/core/constants/rendering_constants.dart';
 
 /// Utility functions for platform-specific behavior
 class PlatformUtils {

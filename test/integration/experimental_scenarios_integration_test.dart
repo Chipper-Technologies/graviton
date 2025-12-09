@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/models/experimental_scenario_config.dart';
+import 'package:graviton/features/scenarios/domain/experimental_scenario_config.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';

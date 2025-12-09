@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/constants/simulation_constants.dart';
-import 'package:graviton/enums/firebase_event.dart';
-import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/enums/simulation_status.dart';
-import 'package:graviton/enums/ui_action.dart';
-import 'package:graviton/enums/ui_element.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
+import 'package:graviton/core/enums/firebase_event.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
+import 'package:graviton/core/enums/simulation_status.dart';
+import 'package:graviton/core/enums/ui_action.dart';
+import 'package:graviton/core/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/body.dart';
-import 'package:graviton/models/merge_flash.dart';
-import 'package:graviton/models/physics_settings.dart';
-import 'package:graviton/models/trail_point.dart';
-import 'package:graviton/services/accessibility_service.dart';
-import 'package:graviton/services/firebase_service.dart';
-import 'package:graviton/services/haptic_feedback_service.dart';
-import 'package:graviton/services/simulation.dart' as physics;
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/models/effects/merge_flash.dart';
+import 'package:graviton/models/physics/physics_settings.dart';
+import 'package:graviton/models/effects/trail_point.dart';
+import 'package:graviton/services/ui/accessibility_service.dart';
+import 'package:graviton/services/firebase/firebase_service.dart';
+import 'package:graviton/services/ui/haptic_feedback_service.dart';
+import 'package:graviton/services/simulation/simulation.dart' as physics;
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Manages the simulation state and physics

@@ -1,13 +1,13 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/enums/ui_action.dart';
-import 'package:graviton/enums/ui_element.dart';
-import 'package:graviton/models/body.dart';
-import 'package:graviton/models/indicator_data.dart';
-import 'package:graviton/painters/indicator_painter.dart';
-import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/core/enums/body_type.dart';
+import 'package:graviton/core/enums/ui_action.dart';
+import 'package:graviton/core/enums/ui_element.dart';
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/models/ui/indicator_data.dart';
+import 'package:graviton/shared/painters/indicator_painter.dart';
+import 'package:graviton/services/firebase/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;

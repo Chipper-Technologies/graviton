@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:graviton/constants/simulation_constants.dart';
-import 'package:graviton/models/body.dart';
-import 'package:graviton/models/merge_flash.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/models/effects/merge_flash.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
 /// Collision detection and merge utilities for physics simulation

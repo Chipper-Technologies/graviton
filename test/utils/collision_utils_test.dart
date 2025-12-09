@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/utils/collision_utils.dart';
-import 'package:graviton/models/body.dart';
-import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/constants/test_constants.dart';
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/core/enums/body_type.dart';
+import 'package:graviton/core/constants/test_constants.dart';
 import 'package:graviton/theme/app_colors.dart';
 
 void main() {

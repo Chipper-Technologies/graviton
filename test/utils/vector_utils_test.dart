@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/utils/vector_utils.dart';
-import 'package:graviton/constants/test_constants.dart';
+import 'package:graviton/core/constants/test_constants.dart';
 
 void main() {
   group('VectorUtils Tests', () {

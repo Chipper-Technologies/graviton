@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/body.dart';
-import 'package:graviton/services/screenshot_mode_service.dart';
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/services/ui/screenshot_mode_service.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/utils/star_generator.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/widgets/scenario_selection/preset_scenario_tile.dart';
-import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/models/scenario_config.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/preset_scenario_tile.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
+import 'package:graviton/features/scenarios/domain/scenario_config.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';

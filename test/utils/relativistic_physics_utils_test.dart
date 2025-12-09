@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/constants/relativistic_constants.dart';
-import 'package:graviton/constants/simulation_constants.dart';
-import 'package:graviton/constants/test_constants.dart';
+import 'package:graviton/core/constants/relativistic_constants.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
+import 'package:graviton/core/constants/test_constants.dart';
 import 'package:graviton/utils/relativistic_physics_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 

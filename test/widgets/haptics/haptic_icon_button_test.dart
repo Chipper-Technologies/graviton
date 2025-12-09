@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
-import 'package:graviton/services/haptic_feedback_service.dart';
+import 'package:graviton/services/ui/haptic_feedback_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 
 void main() {
