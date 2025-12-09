@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/models/physics_settings.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
+import 'package:graviton/models/physics/physics_settings.dart';
 import 'package:graviton/state/simulation_state.dart';
 
 void main() {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/services/haptic_feedback_service.dart';
+import 'package:graviton/services/ui/haptic_feedback_service.dart';
 
-import 'auth_state.dart';
+import 'package:graviton/features/auth/state/auth_state.dart';
 import 'camera_state.dart';
 import 'physics_state.dart';
 import 'simulation_state.dart';

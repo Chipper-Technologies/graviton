@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/haptics/haptic_list_tile.dart';
-import 'package:graviton/services/haptic_feedback_service.dart';
+import 'package:graviton/services/ui/haptic_feedback_service.dart';
 
 void main() {
   group('HapticListTile Tests', () {

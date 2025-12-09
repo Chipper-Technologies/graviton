@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/core/enums/body_type.dart';
 import 'package:graviton/widgets/common/body_type_picker.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/enums/habitability_status.dart';
-import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/services/scenario_service.dart';
+import 'package:graviton/core/enums/body_type.dart';
+import 'package:graviton/core/enums/habitability_status.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
+import 'package:graviton/features/scenarios/data/scenario_service.dart';
 import '../test_utils.dart';
 
 void main() {

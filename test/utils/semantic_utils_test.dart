@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/utils/semantic_utils.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/enums/simulation_status.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/core/enums/simulation_status.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:flutter/material.dart';
 import 'package:graviton/theme/app_colors.dart';

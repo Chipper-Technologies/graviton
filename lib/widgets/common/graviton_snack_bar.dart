@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/enums/snack_bar_severity.dart';
-import 'package:graviton/models/snack_bar_theme.dart';
+import 'package:graviton/core/enums/snack_bar_severity.dart';
+import 'package:graviton/models/ui/snack_bar_theme.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 

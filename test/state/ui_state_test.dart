@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/cinematic_camera_technique.dart';
-import 'package:graviton/enums/gravity_field_color_scheme.dart';
-import 'package:graviton/enums/temperature_unit.dart';
+import 'package:graviton/core/enums/cinematic_camera_technique.dart';
+import 'package:graviton/core/enums/gravity_field_color_scheme.dart';
+import 'package:graviton/core/enums/temperature_unit.dart';
 import 'package:graviton/state/ui_state.dart';
 
 void main() {

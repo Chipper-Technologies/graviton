@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/services/auth_service.dart';
+import 'package:graviton/features/auth/data/auth_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Comprehensive security tests for authentication features

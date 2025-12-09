@@ -328,7 +328,7 @@ void main() {
         for (int i = 0; i < 3; i++) {
           final nextButton = find.byType(ElevatedButton);
           if (nextButton.evaluate().isNotEmpty) {
-            await tester.tap(nextButton);
+            await tester.tap(nextButton, warnIfMissed: false);
             await tester.pump(const Duration(milliseconds: 50));
           }
         }

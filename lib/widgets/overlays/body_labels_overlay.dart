@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/core/constants/rendering_constants.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/localization_utils.dart';

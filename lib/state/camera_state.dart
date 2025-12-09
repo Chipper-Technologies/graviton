@@ -1,14 +1,14 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:graviton/constants/simulation_constants.dart';
-import 'package:graviton/enums/auto_rotate_status.dart';
-import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/enums/ui_action.dart';
-import 'package:graviton/enums/ui_element.dart';
-import 'package:graviton/models/body.dart';
-import 'package:graviton/models/scenario_config.dart';
-import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
+import 'package:graviton/core/enums/auto_rotate_status.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
+import 'package:graviton/core/enums/ui_action.dart';
+import 'package:graviton/core/enums/ui_element.dart';
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/features/scenarios/domain/scenario_config.dart';
+import 'package:graviton/services/firebase/firebase_service.dart';
 import 'package:graviton/utils/safe_haptic_feedback.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 

@@ -1,6 +1,6 @@
-import 'package:graviton/enums/simulation_status.dart';
+import 'package:graviton/core/enums/simulation_status.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:graviton/utils/number_utils.dart';
 
 /// Utility class for creating accessible semantic descriptions and actions

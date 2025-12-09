@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/constants/rendering_constants.dart';
-import 'package:graviton/enums/add_body_mode.dart';
-import 'package:graviton/enums/body_movement_mode.dart';
-import 'package:graviton/enums/cinematic_camera_technique.dart';
-import 'package:graviton/enums/gravity_field_color_scheme.dart';
-import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/enums/temperature_unit.dart';
-import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/core/constants/rendering_constants.dart';
+import 'package:graviton/core/enums/add_body_mode.dart';
+import 'package:graviton/core/enums/body_movement_mode.dart';
+import 'package:graviton/core/enums/cinematic_camera_technique.dart';
+import 'package:graviton/core/enums/gravity_field_color_scheme.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
+import 'package:graviton/core/enums/temperature_unit.dart';
+import 'package:graviton/services/firebase/firebase_service.dart';
 import 'package:graviton/utils/safe_haptic_feedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

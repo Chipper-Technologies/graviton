@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/enums/integrity_failure_reason.dart';
-import 'package:graviton/models/play_integrity_exception.dart';
+import 'package:graviton/core/enums/integrity_failure_reason.dart';
+import 'package:graviton/models/security/play_integrity_exception.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 
 /// Helper utilities for displaying Play Integrity error messages to users.

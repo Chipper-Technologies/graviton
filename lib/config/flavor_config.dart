@@ -1,5 +1,5 @@
-import 'package:graviton/constants/app_constants.dart';
-import 'package:graviton/enums/app_flavor.dart';
+import 'package:graviton/core/constants/app_constants.dart';
+import 'package:graviton/core/enums/app_flavor.dart';
 
 /// Configuration service for managing app flavors
 class FlavorConfig {
