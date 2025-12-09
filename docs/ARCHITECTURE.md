@@ -464,23 +464,55 @@ graviton/
 │   ├── CAMERA_TECHNIQUES.md   # Camera system documentation
 │   ├── FASTLANE.md           # Deployment documentation
 │   └── MARKETING.md          # Marketing materials
-├── test/                        # Test suites
+├── test/                        # Test suites (mirrors lib structure)
 │   ├── config/                # Configuration tests
-│   ├── constants/             # Constants tests
-│   ├── core/                  # Core functionality tests
-│   ├── enums/                 # Enumeration tests
+│   ├── core/                  # Core layer tests
+│   │   ├── constants/         # Constants tests
+│   │   └── enums/             # Enumeration tests
 │   ├── experiments/           # Advanced physics experiments
-│   ├── features/              # Feature-specific tests
-│   ├── integration/           # Integration tests
-│   ├── models/                # Model tests
-│   ├── painters/              # Painter tests
-│   ├── scenarios/             # Scenario tests
-│   ├── screens/               # Screen tests
-│   ├── services/              # Service tests
+│   ├── features/              # Feature-specific tests (mirrors lib/features/)
+│   │   ├── about/             # About feature tests
+│   │   ├── account/           # Account management tests
+│   │   ├── auth/              # Authentication tests
+│   │   ├── camera/            # Camera integration tests
+│   │   ├── developer_tools/   # Developer tools tests
+│   │   ├── help/              # Help feature tests
+│   │   ├── home/              # Home screen tests
+│   │   ├── scenarios/         # Scenario tests
+│   │   │   ├── domain/        # Scenario domain model tests
+│   │   │   ├── integration/   # Scenario integration tests
+│   │   │   └── presentation/  # Scenario UI tests
+│   │   ├── settings/          # Settings tests
+│   │   └── simulation/        # Simulation feature tests
+│   │       ├── integration/   # Simulation integration tests
+│   │       └── presentation/  # Simulation UI tests
+│   ├── integration/           # Cross-feature integration tests
+│   ├── models/                # Model tests (organized by domain)
+│   │   ├── camera/            # Camera model tests
+│   │   ├── celestial/         # Celestial body model tests
+│   │   ├── changelog/         # Changelog model tests
+│   │   ├── effects/           # Effects model tests
+│   │   ├── particles/         # Particle system tests
+│   │   ├── physics/           # Physics model tests
+│   │   ├── security/          # Security model tests
+│   │   ├── ui/                # UI model tests
+│   │   └── user/              # User model tests
+│   ├── scenarios/             # Legacy scenario tests
+│   ├── security/              # Security tests
+│   ├── services/              # Service tests (organized by category)
+│   │   ├── camera/            # Camera service tests
+│   │   ├── firebase/          # Firebase service tests
+│   │   ├── platform/          # Platform service tests
+│   │   ├── scenarios/         # Scenario service tests
+│   │   ├── simulation/        # Physics simulation tests
+│   │   └── ui/                # UI service tests
+│   ├── shared/                # Shared component tests
+│   │   ├── painters/          # Custom painter tests
+│   │   └── widgets/           # Shared widget tests
 │   ├── state/                 # State management tests
 │   ├── theme/                 # Theme tests
 │   ├── utils/                 # Utility tests
-│   └── widgets/               # Widget tests
+│   └── widgets/               # Widget tests (organized by feature)
 ├── tools/                       # Development tools
 │   ├── generate_keystore.sh   # Android keystore generation
 │   ├── generate_screenshots.py # Screenshot automation
@@ -502,17 +534,21 @@ graviton/
 
 ### Application Source Structure
 
+The application follows a **feature-based architecture** with clean architecture principles:
+
 ```
 lib/
 ├── main.dart                    # App entry point
 ├── config/                      # Configuration management
 │   └── flavor_config.dart      # App flavor configuration
-├── constants/                   # Application constants
-│   ├── educational_focus_keys.dart # Educational content keys
-│   ├── rendering_constants.dart # Rendering system constants
-│   ├── simulation_constants.dart # Physics simulation constants
-│   └── test_constants.dart     # Testing configuration constants
-├── enums/                       # Type definitions
+├── core/                        # Core application layer
+│   ├── constants/              # Application constants
+│   │   ├── educational_focus_keys.dart # Educational content keys
+│   │   ├── rendering_constants.dart # Rendering system constants
+│   │   ├── simulation_constants.dart # Physics simulation constants
+│   │   ├── test_constants.dart # Testing configuration constants
+│   │   └── ui_constants.dart   # UI constants
+│   └── enums/                  # Type definitions
 │   ├── ab_test_group.dart      # A/B testing groups
 │   ├── accessibility_camera_action.dart # Accessibility camera actions
 │   ├── accessibility_physics_parameter.dart # Accessibility physics parameters
@@ -541,8 +577,60 @@ lib/
 │   ├── tutorial_action.dart    # Tutorial interaction types
 │   ├── ui_action.dart          # User interface actions
 │   ├── ui_element.dart         # UI component types
-│   ├── user_behavior_tracking_mode.dart # Analytics tracking modes
-│   └── version_status.dart     # App version status types
+│   │   ├── user_behavior_tracking_mode.dart # Analytics tracking modes
+│   │   └── version_status.dart     # App version status types
+├── features/                    # Feature modules (clean architecture)
+│   ├── about/                  # About feature
+│   │   └── presentation/
+│   │       └── screens/
+│   │           └── about_screen.dart # About/credits screen
+│   ├── account/                # Account management feature
+│   │   └── presentation/
+│   │       ├── screens/
+│   │       │   └── account_management_screen.dart # Account screen
+│   │       └── widgets/        # Account widgets
+│   ├── auth/                   # Authentication feature
+│   │   ├── data/              # Auth data layer
+│   │   ├── state/             # Auth state management
+│   │   └── presentation/
+│   │       ├── screens/
+│   │       │   └── sign_in_screen.dart # Authentication UI
+│   │       └── widgets/        # Auth widgets
+│   ├── developer_tools/        # Development utilities feature
+│   │   └── presentation/
+│   │       └── screens/
+│   │           └── developer_tools_screen.dart
+│   ├── help/                   # Help & tutorials feature
+│   │   └── presentation/
+│   │       └── screens/
+│   │           └── help_screen.dart
+│   ├── home/                   # Main simulation feature
+│   │   └── presentation/
+│   │       └── screens/
+│   │           └── home_screen.dart # Main simulation screen
+│   ├── scenarios/              # Scenario management feature
+│   │   ├── domain/            # Scenario domain models
+│   │   │   ├── custom_scenario.dart # User scenarios
+│   │   │   ├── preset_scenario.dart # Educational scenarios
+│   │   │   ├── scenario_configuration.dart
+│   │   │   ├── scenario_metadata.dart
+│   │   │   └── ... (other scenario models)
+│   │   └── presentation/
+│   │       ├── screens/
+│   │       │   ├── scenario_editor_screen.dart # Scenario editor
+│   │       │   └── scenario_selection_screen.dart # Scenario picker
+│   │       └── widgets/        # Scenario widgets
+│   ├── settings/               # Settings feature
+│   │   └── presentation/
+│   │       └── screens/
+│   │           ├── application_settings_screen.dart
+│   │           └── physics_settings_screen.dart
+│   └── simulation/             # Simulation display feature
+│       └── presentation/
+│           └── screens/
+│               └── simulation_info_screen.dart
+├── firebase/                    # Firebase integration
+│   └── firebase_options.dart   # Firebase configuration
 ├── l10n/                        # Internationalization
 │   ├── app_localizations.dart  # Generated localizations base
 │   ├── app_localizations_de.dart # German localizations
@@ -559,76 +647,88 @@ lib/
 │   ├── app_ja.arb             # Japanese translations
 │   ├── app_ko.arb             # Korean translations
 │   └── app_zh.arb             # Chinese translations
-├── models/                      # Data models
-│   ├── asteroid_particle.dart  # Asteroid system data
-│   ├── body.dart               # Celestial body model
-│   ├── body_data.dart          # Body configuration data
-│   ├── camera_movement.dart    # Camera animation data
-│   ├── camera_position.dart    # 3D camera state
-│   ├── changelog.dart          # Version changelog
-│   ├── changelog_entry.dart    # Individual change entries
-│   ├── changelog_version.dart  # Version metadata
-│   ├── chaos_events.dart       # Chaotic simulation events
-│   ├── custom_scenario.dart    # User-created scenarios
-│   ├── custom_scenario_summary.dart # Scenario summary data
-│   ├── dialog_action.dart      # Dialog action definitions
-│   ├── experimental_scenario_config.dart # Experimental scenario configuration
-│   ├── graviton_menu_item_config.dart # Menu item configuration
-│   ├── indicator_data.dart     # UI indicator information
-│   ├── merge_flash.dart        # Collision effects
-│   ├── objectives_config.dart  # Educational objectives
-│   ├── orbital_event.dart      # Orbital mechanics events
-│   ├── orbital_parameters.dart # Keplerian elements
-│   ├── orbital_placement.dart  # Orbital placement calculations
-│   ├── particle_system_data.dart # Particle system configuration
-│   ├── particle_systems_config.dart # Multi-particle system setup
-│   ├── physics_settings.dart   # Physics configuration
-│   ├── platform_version_config.dart # Platform-specific config
-│   ├── predictive_orbital_config.dart # Orbital prediction settings
-│   ├── preset_scenario.dart    # Educational scenarios
-│   ├── ring_particle.dart      # Planetary ring systems
-│   ├── scenario_camera_parameters.dart # Scenario camera settings
-│   ├── scenario_config.dart    # Scenario definitions
-│   ├── scenario_configuration.dart # Complete scenario setup
-│   ├── scenario_json_schema.dart # JSON validation schema
-│   ├── scenario_metadata.dart  # Scenario information
-│   ├── scenario_physics_settings.dart # Per-scenario physics
-│   ├── scenario_validation_result.dart # Validation results
-│   ├── scenario_validation_rules.dart # Validation rule definitions
-│   ├── screenshot_models.dart  # Screenshot system data
-│   ├── screenshot_preset.dart  # Screenshot configurations
-│   ├── screenshot_presets.dart # Predefined screenshot sets
-│   ├── snack_bar_theme.dart    # Snack bar theming
-│   ├── success_criteria.dart   # Educational success metrics
-│   ├── sunspot_data.dart       # Solar activity data
-│   ├── trail_point.dart        # Motion trail data
-│   └── tutorial_step.dart      # Tutorial system data
+├── models/                      # Shared data models
+│   ├── camera/                 # Camera models
+│   │   ├── camera_movement.dart # Camera animation data
+│   │   └── camera_position.dart # 3D camera state
+│   ├── celestial/              # Celestial body models
+│   │   ├── body.dart          # Celestial body model
+│   │   ├── body_data.dart     # Body configuration data
+│   │   ├── indicator_data.dart # UI indicator information
+│   │   ├── orbital_parameters.dart # Keplerian elements
+│   │   ├── orbital_placement.dart # Orbital placement calculations
+│   │   ├── rogue_planet_physics.dart # Rogue planet mechanics
+│   │   └── sunspot_data.dart  # Solar activity data
+│   ├── changelog/              # Version changelog models
+│   │   ├── changelog.dart     # Version changelog
+│   │   ├── changelog_entry.dart # Individual change entries
+│   │   └── changelog_version.dart # Version metadata
+│   ├── effects/                # Visual effects models
+│   │   ├── collision_particle.dart # Collision particles
+│   │   ├── debris_cloud.dart  # Debris cloud effects
+│   │   ├── merge_flash.dart   # Collision flash effects
+│   │   ├── plasma_jet.dart    # Plasma jet effects
+│   │   ├── shockwave.dart     # Shockwave effects
+│   │   └── trail_point.dart   # Motion trail data
+│   ├── particles/              # Particle system models
+│   │   ├── asteroid_particle.dart # Asteroid system data
+│   │   ├── particle_system_data.dart # Particle system configuration
+│   │   └── ring_particle.dart # Planetary ring systems
+│   ├── physics/                # Physics models
+│   │   └── physics_settings.dart # Physics configuration
+│   ├── security/               # Security models
+│   │   ├── integrity_config.dart # Integrity configuration
+│   │   └── play_integrity_exception.dart # Integrity exceptions
+│   ├── ui/                     # UI models
+│   │   ├── dialog_action.dart # Dialog action definitions
+│   │   ├── graviton_menu_item_config.dart # Menu item configuration
+│   │   ├── screenshot_preset.dart # Screenshot configurations
+│   │   ├── screenshot_presets.dart # Predefined screenshot sets
+│   │   └── snack_bar_theme.dart # Snack bar theming
+│   └── user/                   # User models
+│       └── user_profile.dart  # User profile data
 ├── services/                    # Business logic services
-│   ├── accessibility_service.dart # Accessibility support
-│   ├── asteroid_belt_system.dart # Asteroid belt simulation
-│   ├── auth_service.dart       # Firebase Authentication (multi-provider)
-│   ├── changelog_service.dart  # Version change management
-│   ├── cinematic_camera_controller.dart # Automated camera movements
-│   ├── custom_scenario_manager.dart # User scenario management
-│   ├── custom_scenario_storage.dart # User scenario persistence
-│   ├── firebase_service.dart   # Firebase integration
-│   ├── fullscreen_service.dart # System UI control
-│   ├── habitable_zone_service.dart # Life zone calculations
-│   ├── haptic_feedback_service.dart # Touch feedback
-│   ├── keyboard_navigation_service.dart # Keyboard accessibility
-│   ├── onboarding_service.dart # User onboarding
-│   ├── orbital_mechanics_service.dart # Orbital mechanics calculations
-│   ├── orbital_prediction_engine.dart # Orbital mechanics
-│   ├── remote_config_service.dart # Feature flag management
-│   ├── scenario_serialization_service.dart # Scenario data serialization
-│   ├── scenario_service.dart   # Educational content
-│   ├── screenshot_mode_service.dart # Development tools
-│   ├── semantic_focus_service.dart # Accessibility focus management
-│   ├── simulation.dart         # Core physics engine
-│   ├── stellar_color_service.dart # Star color calculations
-│   ├── temperature_service.dart # Thermal modeling
-│   ├── user_data_sync_service.dart # Cloud user data synchronization
-│   └── version_service.dart    # App version management
+│   ├── camera/                 # Camera services
+│   │   ├── camera_gesture_service.dart # Camera gesture handling
+│   │   └── cinematic_camera_controller.dart # Automated camera movements
+│   ├── firebase/               # Firebase services
+│   │   ├── app_check_service.dart # App Check integration
+│   │   ├── firebase_service.dart # Firebase integration
+│   │   ├── remote_config_service.dart # Feature flag management
+│   │   └── user_data_sync_service.dart # Cloud user data synchronization
+│   ├── platform/               # Platform services
+│   │   ├── changelog_service.dart # Version change management
+│   │   ├── platform_channel_service.dart # Platform channels
+│   │   ├── play_integrity_service.dart # Play Integrity API
+│   │   └── version_service.dart # App version management
+│   ├── scenarios/              # Scenario services
+│   │   ├── custom_scenario_manager.dart # User scenario management
+│   │   ├── custom_scenario_storage.dart # User scenario persistence
+│   │   ├── scenario_serialization_service.dart # Scenario data serialization
+│   │   ├── scenario_service.dart # Educational content
+│   │   └── simulation_share_service.dart # Scenario sharing
+│   ├── simulation/             # Physics simulation services
+│   │   ├── asteroid_belt_system.dart # Asteroid belt simulation
+│   │   ├── body_interaction_service.dart # Body interactions
+│   │   ├── body_movement_service.dart # Body movement
+│   │   ├── body_placement_service.dart # Body placement
+│   │   ├── collision_effects_service.dart # Collision effects
+│   │   ├── enhanced_habitability_service.dart # Enhanced habitability
+│   │   ├── habitable_zone_service.dart # Life zone calculations
+│   │   ├── orbital_mechanics_service.dart # Orbital mechanics calculations
+│   │   ├── orbital_prediction_engine.dart # Orbital prediction
+│   │   ├── simulation.dart    # Core physics engine
+│   │   ├── stellar_color_service.dart # Star color calculations
+│   │   └── temperature_service.dart # Thermal modeling
+│   ├── ui/                     # UI services
+│   │   ├── accessibility_service.dart # Accessibility support
+│   │   ├── fullscreen_service.dart # System UI control
+│   │   ├── haptic_feedback_service.dart # Touch feedback
+│   │   ├── keyboard_navigation_service.dart # Keyboard accessibility
+│   │   ├── onboarding_service.dart # User onboarding
+│   │   ├── screenshot_mode_service.dart # Development tools
+│   │   └── semantic_focus_service.dart # Accessibility focus management
+│   └── navigation_service.dart # Navigation service
 ├── state/                       # State management
 │   ├── app_state.dart          # Central application state
 │   ├── auth_state.dart         # Authentication and user state
@@ -657,19 +757,31 @@ lib/
 │   ├── ui_utils.dart           # UI helper functions
 │   ├── vector_utils.dart       # 3D vector operations
 │   └── version_utils.dart      # Version management utilities
-├── painters/                    # Custom rendering engines
-│   ├── asteroid_belt_painter.dart # Asteroid belt visualization
-│   ├── background_painter.dart # Starfield background
-│   ├── celestial_body_painter.dart # Planet/star rendering
-│   ├── effects_painter.dart    # Visual effects
-│   ├── graviton_painter.dart   # Main orchestrator
-│   ├── gravity_painter.dart    # Gravity field visualization
-│   ├── habitability_painter.dart # Habitable zone rendering
-│   ├── highlight_painter.dart  # Object highlighting
-│   ├── indicator_painter.dart  # UI indicators rendering
-│   ├── orbital_path_painter.dart # Trajectory visualization
-│   └── trail_painter.dart      # Motion trail rendering
-├── widgets/                     # UI components
+├── shared/                      # Shared components
+│   ├── painters/               # Custom rendering engines
+│   │   ├── asteroid_belt_painter.dart # Asteroid belt visualization
+│   │   ├── background_painter.dart # Starfield background
+│   │   ├── celestial_body_painter.dart # Planet/star rendering
+│   │   ├── effects_painter.dart # Visual effects
+│   │   ├── gradient_border_painter.dart # Gradient borders
+│   │   ├── graviton_painter.dart # Main orchestrator
+│   │   ├── gravity_painter.dart # Gravity field visualization
+│   │   ├── habitability_painter.dart # Habitable zone rendering
+│   │   ├── highlight_painter.dart # Object highlighting
+│   │   ├── indicator_painter.dart # UI indicators rendering
+│   │   ├── light_contribution.dart # Light calculations
+│   │   ├── orbital_path_painter.dart # Trajectory visualization
+│   │   ├── shadow_info.dart   # Shadow information
+│   │   └── trail_painter.dart # Motion trail rendering
+│   └── widgets/                # Shared widgets
+│       ├── controls/           # Control widgets
+│       │   ├── screenshot_countdown.dart
+│       │   └── share_action_button.dart
+│       ├── dialogs/            # Dialog widgets
+│       │   └── body_selection_dialog.dart
+│       └── layouts/            # Layout widgets
+│           └── options_drawer.dart
+├── widgets/                     # Feature-agnostic UI components
 │   ├── account/                # Account management widgets
 │   │   ├── account_management_options.dart # Account action options
 │   │   ├── avatar_display.dart # Avatar display component
@@ -761,18 +873,6 @@ lib/
 │   ├── sliding_panel_bottom_sheet.dart # Sliding panel bottom controls
 │   ├── version_check_dialog.dart # Version update dialog
 │   └── visuals_controls.dart   # Visual settings controls
-├── screens/                     # Application screens
-│   ├── about_screen.dart       # About/credits screen
-│   ├── account_management_screen.dart # User account management
-│   ├── application_settings_screen.dart # App-wide settings
-│   ├── developer_tools_screen.dart # Development utilities
-│   ├── help_screen.dart        # User help and tutorials
-│   ├── home_screen.dart        # Main simulation screen
-│   ├── physics_settings_screen.dart # Physics parameter settings
-│   ├── scenario_editor_screen.dart # Custom scenario creation/editing
-│   ├── scenario_selection_screen.dart # Educational scenario picker
-│   ├── sign_in_screen.dart     # Authentication interface
-│   └── simulation_info_screen.dart # Simulation information display
 └── theme/                       # Design system
     ├── app_colors.dart         # Color palette definitions
     ├── app_constraints.dart    # Layout constraints and dimensions
@@ -838,29 +938,78 @@ lib/
 
 ## 🧪 Testing Strategy
 
+### Test Organization Philosophy
+
+The test directory structure **mirrors the lib/ directory structure exactly**, following clean architecture principles. This organization provides:
+
+- **Easy Navigation**: Tests are located in the same relative path as their source files
+- **Feature Isolation**: Feature-specific tests are grouped together
+- **Domain Separation**: Models organized by domain (celestial, particles, effects, etc.)
+- **Service Categories**: Services grouped by responsibility (simulation, ui, firebase, platform)
+- **Discoverability**: Clear 1:1 mapping between source files and their tests
+
 ### Comprehensive Test Coverage
 
 The project maintains extensive test coverage across all architectural layers:
 
 ```
 test/
-├── config/            # Configuration tests
-├── constants/         # Physics and app constants tests
-├── core/              # Core functionality tests
-├── enums/             # Enumeration value tests
-├── experiments/       # Advanced physics experiments tests
-├── features/          # Feature-specific test suites
-├── integration/       # End-to-end integration tests
-├── models/            # Data model validation tests
-├── painters/          # Custom painter tests
-├── scenarios/         # Physics scenario tests
-├── screens/           # Screen tests (including authentication screens)
-├── services/          # Service layer tests (auth, haptic, fullscreen, physics)
-├── state/             # State management tests
-├── theme/             # Theme tests
-├── utils/             # Utility function tests
-└── widgets/           # UI component tests (including haptic widgets)
+├── config/                      # Configuration tests
+├── core/                        # Core layer tests
+│   ├── constants/              # Physics and app constants tests
+│   └── enums/                  # Enumeration value tests
+├── experiments/                 # Advanced physics experiments tests
+├── features/                    # Feature-specific test suites (mirrors lib/features/)
+│   ├── about/                  # About feature tests
+│   ├── account/                # Account management tests (auth UI, profile)
+│   ├── auth/                   # Authentication tests (providers, state)
+│   ├── camera/integration/     # Camera integration tests
+│   ├── developer_tools/        # Developer tools tests
+│   ├── help/                   # Help feature tests
+│   ├── home/                   # Home screen tests
+│   ├── scenarios/              # Scenario feature tests
+│   │   ├── domain/            # Scenario model tests (20 tests)
+│   │   ├── integration/       # Scenario integration tests (8 tests)
+│   │   └── presentation/      # Scenario UI tests
+│   ├── settings/               # Settings tests
+│   │   └── integration/       # Settings integration tests
+│   └── simulation/             # Simulation feature tests
+│       ├── integration/       # Simulation integration tests (8 tests)
+│       └── presentation/      # Simulation UI tests
+├── integration/                 # Cross-feature integration tests
+├── models/                      # Domain model tests (organized by domain)
+│   ├── camera/                 # Camera models (2 tests)
+│   ├── celestial/              # Celestial bodies (8 tests)
+│   ├── changelog/              # Changelog models (2 tests)
+│   ├── effects/                # Visual effects (3 tests)
+│   ├── particles/              # Particle systems (6 tests)
+│   ├── physics/                # Physics settings (1 test)
+│   ├── security/               # Security models (3 tests)
+│   ├── ui/                     # UI models (5 tests)
+│   └── user/                   # User models (2 tests)
+├── scenarios/                   # Legacy scenario tests
+├── security/                    # Security tests
+├── services/                    # Service layer tests (organized by category)
+│   ├── camera/                 # Camera services (2 tests)
+│   ├── firebase/               # Firebase services (4 tests)
+│   ├── platform/               # Platform services (4 tests)
+│   ├── scenarios/              # Scenario services (5 tests)
+│   ├── simulation/             # Physics simulation (12 tests)
+│   └── ui/                     # UI services (8 tests)
+├── shared/                      # Shared component tests
+│   ├── painters/               # Custom painter tests (16 tests)
+│   └── widgets/                # Shared widget tests
+├── state/                       # State management tests (14 tests)
+├── theme/                       # Theme tests
+├── utils/                       # Utility function tests (29 tests)
+└── widgets/                     # Widget tests (organized by type)
+    ├── camera/                 # Camera widgets
+    ├── common/                 # Common widgets
+    ├── dialogs/                # Dialog widgets
+    └── overlays/               # Overlay widgets
 ```
+
+**Total: 5,945+ tests across all layers**
 
 ### Test Categories
 

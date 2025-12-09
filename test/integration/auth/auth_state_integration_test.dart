@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/auth_provider_type.dart';
-import 'package:graviton/enums/user_avatar.dart';
+import 'package:graviton/core/enums/auth_provider_type.dart';
+import 'package:graviton/core/enums/user_avatar.dart';
 import 'package:graviton/main.dart';
-import 'package:graviton/models/user_profile.dart';
+import 'package:graviton/models/user/user_profile.dart';
 import 'package:graviton/state/app_state.dart';
-import 'package:graviton/state/auth_state.dart';
-import 'package:graviton/widgets/auth/avatar_button.dart';
+import 'package:graviton/features/auth/state/auth_state.dart';
+import 'package:graviton/features/auth/presentation/widgets/avatar_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -226,7 +226,7 @@ void main() {
       expect(authState.isAuthenticated, true);
     });
 
-    testWidgets('Photo URL should take precedence over avatar emoji', (
+    testWidgets('Custom avatar should take precedence over photo URL', (
       tester,
     ) async {
       final testAppState = AppState();
@@ -258,8 +258,20 @@ void main() {
       // Custom avatar takes precedence over photoUrl
       // Should show emoji
       expect(find.text(UserAvatar.venus.emoji), findsOneWidget);
-      // Should not show photo
-      expect(find.byType(Image), findsNothing);
+
+      // Should not show network photo in avatar button
+      // (Note: App logo may be present, so we check for NetworkImage specifically)
+      final images = find.byType(Image).evaluate();
+      final hasNetworkImage = images.any((element) {
+        final widget = element.widget as Image;
+        final provider = widget.image;
+        // Check if it's a NetworkImage or ResizeImage wrapping NetworkImage
+        if (provider is ResizeImage) {
+          return provider.imageProvider is NetworkImage;
+        }
+        return provider is NetworkImage;
+      });
+      expect(hasNetworkImage, false);
     });
   });
 }

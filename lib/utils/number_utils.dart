@@ -1,4 +1,4 @@
-import 'package:graviton/constants/simulation_constants.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
 import 'package:intl/intl.dart';
 
 /// Utility class for formatting numbers with proper decimal precision and units.

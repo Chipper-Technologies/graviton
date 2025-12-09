@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/constants/simulation_constants.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
 import 'package:graviton/state/camera_state.dart';
 
 void main() {

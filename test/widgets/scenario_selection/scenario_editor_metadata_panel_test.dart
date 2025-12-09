@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/objectives_config.dart';
-import 'package:graviton/models/scenario_metadata.dart';
+import 'package:graviton/features/scenarios/domain/objectives_config.dart';
+import 'package:graviton/features/scenarios/domain/scenario_metadata.dart';
 import 'package:graviton/widgets/common/section_divider.dart';
-import 'package:graviton/widgets/scenario_selection/scenario_editor_metadata_panel.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/scenario_editor_metadata_panel.dart';
 
 /// Test widget wrapper with localization support
 Widget makeTestableWidget(Widget child) {

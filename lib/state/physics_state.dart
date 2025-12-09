@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/models/physics_settings.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
+import 'package:graviton/models/physics/physics_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Manages physics settings per scenario with persistence

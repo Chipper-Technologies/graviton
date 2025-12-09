@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:graviton/services/fullscreen_service.dart';
+import 'package:graviton/services/ui/fullscreen_service.dart';
 import 'package:graviton/state/app_state.dart';
 
 /// Utility functions for managing fullscreen mode

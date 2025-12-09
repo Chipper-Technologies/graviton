@@ -1,4 +1,4 @@
-import '../enums/body_type.dart';
+import 'package:graviton/core/enums/body_type.dart';
 
 /// Utility class for calculating realistic property ranges based on celestial body types.
 ///

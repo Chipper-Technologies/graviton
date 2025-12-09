@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/services/scenario_service.dart';
-import 'package:graviton/services/simulation.dart' as physics;
+import 'package:graviton/core/enums/scenario_type.dart';
+import 'package:graviton/features/scenarios/data/scenario_service.dart';
+import 'package:graviton/services/simulation/simulation.dart' as physics;
 import '../test_utils.dart';
 
 void main() {

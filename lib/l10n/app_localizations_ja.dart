@@ -396,6 +396,30 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gravityFieldsTitle => '重力場';
 
   @override
+  String get relativisticEffectsTitle => '相対論的効果';
+
+  @override
+  String get relativisticEffectsDescription => '高速物体に対するポストニュートン補正を適用';
+
+  @override
+  String get relativisticGlowTitle => '相対論的グロー';
+
+  @override
+  String get relativisticGlowDescription => '速度ベースのグローで時間の遅れを視覚化';
+
+  @override
+  String get tidalForcesTitle => '潮汐力';
+
+  @override
+  String get tidalForcesDescription => '潮汐変形と加熱効果を計算';
+
+  @override
+  String get tidalVisualizationTitle => '潮汐の視覚化';
+
+  @override
+  String get tidalVisualizationDescription => '潮汐応力と変形軸を表示';
+
+  @override
   String get gravityWellsDescription => 'オブジェクト周辺の重力場の強度を表示';
 
   @override
@@ -486,6 +510,25 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get addBodyButton => '天体追加ボタン';
+
+  @override
+  String get tapToEnableAddBodyMode =>
+      'タップして天体追加モードを有効にする - キャンバスをクリックして新しい天体を配置';
+
+  @override
+  String get tapToDisableAddBodyMode => 'タップして天体追加モードを無効にし、通常の操作に戻る';
+
+  @override
+  String get addBodyModeActive => '天体追加モード有効';
+
+  @override
+  String get addBodyModeInactive => '天体追加モード無効';
+
+  @override
+  String get tapToPlaceBody => 'キャンバスの任意の場所をタップして新しい天体を配置';
+
+  @override
+  String get bodyPlacedSuccessfully => '天体の配置に成功しました';
 
   @override
   String get addCelestialBodiesToCreateYourCustomScenarioEditor =>
@@ -1192,6 +1235,12 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get bodyNewDefault => '新しい天体';
+
+  @override
+  String get bodyPlacementTooClose => '既存の天体に近すぎます - 別の場所をタップしてください';
+
+  @override
   String get bodyInnerPlanet => '内惑星';
 
   @override
@@ -1675,6 +1724,39 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get habitabilityIndicatorsLabel => '惑星の状態';
+
+  @override
+  String get stellarCoronasTitle => '恒星コロナ';
+
+  @override
+  String get stellarCoronasDescription => '恒星の周りに輝くプラズマ大気を表示';
+
+  @override
+  String get atmosphericEffectsTitle => '大気効果';
+
+  @override
+  String get atmosphericEffectsDescription => '惑星に大気ハローと散乱を表示';
+
+  @override
+  String get hemisphereLightingTitle => '半球照明';
+
+  @override
+  String get hemisphereLightingDescription => '球体に現実的な3D照明をシミュレート';
+
+  @override
+  String get castShadowsTitle => '影の投影';
+
+  @override
+  String get castShadowsDescription => '天体が光源を遮る時に影を表示';
+
+  @override
+  String get specularHighlightsTitle => '鏡面反射';
+
+  @override
+  String get specularHighlightsDescription => '氷や水の表面に反射を表示';
+
+  @override
+  String get lightingEffectsLabel => '照明と影';
 
   @override
   String get habitabilityLabel => '居住可能性';

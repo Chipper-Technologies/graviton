@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/config/flavor_config.dart';
-import 'package:graviton/constants/rendering_constants.dart';
-import 'package:graviton/enums/tutorial_action.dart';
+import 'package:graviton/core/constants/rendering_constants.dart';
+import 'package:graviton/core/enums/tutorial_action.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/tutorial_step.dart';
-import 'package:graviton/painters/highlight_painter.dart';
+import 'package:graviton/models/ui/tutorial_step.dart';
+import 'package:graviton/shared/painters/highlight_painter.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';

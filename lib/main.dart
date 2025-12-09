@@ -4,34 +4,40 @@
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'config/flavor_config.dart';
 import 'firebase/firebase_options.dart';
-import 'constants/platform_channel_constants.dart';
-import 'enums/app_flavor.dart';
-import 'enums/firebase_event.dart';
+import 'package:graviton/core/constants/platform_channel_constants.dart';
+import 'package:graviton/core/enums/app_flavor.dart';
+import 'package:graviton/core/enums/firebase_event.dart';
 import 'l10n/app_localizations.dart';
-import 'screens/about_screen.dart';
-import 'screens/application_settings_screen.dart';
-import 'screens/help_screen.dart';
-import 'screens/home_screen.dart';
-import 'services/app_check_service.dart';
-import 'services/auth_service.dart';
-import 'services/changelog_service.dart';
-import 'services/firebase_service.dart';
-import 'widgets/changelog_dialog.dart';
-import 'services/remote_config_service.dart';
-import 'services/version_service.dart';
+import 'package:graviton/features/about/presentation/screens/about_screen.dart';
+import 'package:graviton/features/settings/presentation/screens/application_settings_screen.dart';
+import 'package:graviton/features/help/presentation/screens/help_screen.dart';
+import 'package:graviton/features/home/presentation/screens/home_screen.dart';
+import 'services/firebase/app_check_service.dart';
+import 'package:graviton/features/auth/data/auth_service.dart';
+import 'services/platform/changelog_service.dart';
+import 'services/firebase/firebase_service.dart';
+import 'package:graviton/shared/widgets/dialogs/changelog_dialog.dart';
+import 'services/firebase/remote_config_service.dart';
+import 'services/platform/version_service.dart';
 import 'state/app_state.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_typography.dart';
-import 'widgets/dev_ribbon.dart';
+import 'package:graviton/widgets/common/dev_ribbon.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Disable all debug print statements in release mode
+  if (kReleaseMode) {
+    debugPrint = (String? message, {int? wrapWidth}) {};
+  }
 
   // Set up platform channel for macOS menu integration
   _setupPlatformChannels();

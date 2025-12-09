@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
-import 'package:graviton/models/body.dart';
-import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/enums/habitability_status.dart';
-import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/core/enums/body_type.dart';
+import 'package:graviton/core/enums/habitability_status.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/scenario_editor_body_details_bottom_sheet.dart';
+import 'package:graviton/widgets/common/body_type_picker.dart';
+import 'package:graviton/widgets/common/color_picker.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:provider/provider.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 /// Test widget wrapper with localization support
 Widget makeTestableWidget(Widget child) {
@@ -31,7 +34,7 @@ void main() {
       velocity: vm.Vector3(1, 0, 0),
       mass: 5.972e24,
       radius: 6.371e6,
-      color: Colors.blue,
+      color: AppColors.primaryColor,
       bodyType: BodyType.planet,
       isPlanet: true,
       temperature: 288.0,
@@ -225,8 +228,8 @@ void main() {
         );
 
         // Should default to Edit tab in add mode
-        // Look for Body Type section which should be visible on Edit tab
-        expect(find.text('Body Type'), findsOneWidget);
+        // Look for BodyTypePicker widget which should be visible on Edit tab
+        expect(find.byType(BodyTypePicker), findsOneWidget);
 
         // The name field should be present as a text input
         expect(find.byType(TextField), findsWidgets);
@@ -460,11 +463,11 @@ void main() {
         await tester.tap(find.text('Edit'));
         await tester.pumpAndSettle();
 
-        // Should display section headers and input fields
-        expect(find.text('Body Type'), findsOneWidget);
-        expect(find.text('Enter body name'), findsOneWidget);
-        expect(find.text('Color'), findsOneWidget);
-        expect(find.text('Position (m)'), findsOneWidget);
+        // Should display BodyTypePicker and input fields
+        expect(find.byType(BodyTypePicker), findsOneWidget);
+        expect(find.byType(TextField), findsWidgets);
+        // Color picker should be present
+        expect(find.byType(ColorPicker), findsOneWidget);
       });
 
       testWidgets('displays stellar properties', (WidgetTester tester) async {
@@ -868,7 +871,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 10.0,
           radius: 1.5,
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
           bodyType: BodyType.star,
           stellarLuminosity: 1.0,
           temperature: 5778.0,
@@ -881,7 +884,7 @@ void main() {
           velocity: vm.Vector3(0.0, 0.0, 1.0),
           mass: 1.0,
           radius: 0.5,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
           bodyType: BodyType.planet,
           temperature: 288.0,
           habitabilityStatus: HabitabilityStatus.habitable,
@@ -1099,7 +1102,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 8.0,
           radius: 1.2,
-          color: Colors.orange,
+          color: AppColors.uiOrangeAccent,
           bodyType: BodyType.star,
           stellarLuminosity: 0.8,
           temperature: 5000.0,
@@ -1185,7 +1188,7 @@ void main() {
           bodyType: BodyType.planet,
           mass: 1.0,
           radius: 1.0,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
           position: vm.Vector3.zero(),
           velocity: vm.Vector3.zero(),
           temperature: 288.0,

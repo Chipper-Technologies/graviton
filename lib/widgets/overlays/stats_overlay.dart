@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/enums/auto_rotate_status.dart';
-import 'package:graviton/enums/habitability_status.dart';
-import 'package:graviton/enums/simulation_status.dart';
+import 'package:graviton/core/enums/auto_rotate_status.dart';
+import 'package:graviton/core/enums/habitability_status.dart';
+import 'package:graviton/core/enums/simulation_status.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';

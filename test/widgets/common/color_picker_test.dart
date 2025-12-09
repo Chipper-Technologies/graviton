@@ -78,12 +78,16 @@ void main() {
       WidgetTester tester,
     ) async {
       Color? changedColor;
-      const testColors = [Colors.red, Colors.green, Colors.blue];
+      const testColors = [
+        AppColors.uiRed,
+        AppColors.uiGreen,
+        AppColors.primaryColor,
+      ];
 
       await tester.pumpWidget(
         makeTestableWidget(
           ColorPicker(
-            selectedColor: Colors.red,
+            selectedColor: AppColors.uiRed,
             onColorChanged: (color) => changedColor = color,
             colors: testColors,
           ),
@@ -94,19 +98,23 @@ void main() {
       await tester.tap(find.byType(GestureDetector).at(1));
       await tester.pump();
 
-      expect(changedColor, equals(Colors.green));
+      expect(changedColor, equals(AppColors.uiGreen));
     });
 
     testWidgets('calls onColorChanged for all colors', (
       WidgetTester tester,
     ) async {
       final List<Color> changedColors = [];
-      const testColors = [Colors.red, Colors.green, Colors.blue];
+      const testColors = [
+        AppColors.uiRed,
+        AppColors.uiGreen,
+        AppColors.primaryColor,
+      ];
 
       await tester.pumpWidget(
         makeTestableWidget(
           ColorPicker(
-            selectedColor: Colors.red,
+            selectedColor: AppColors.uiRed,
             onColorChanged: (color) => changedColors.add(color),
             colors: testColors,
           ),
@@ -130,10 +138,14 @@ void main() {
       await tester.pumpWidget(
         makeTestableWidget(
           ColorPicker(
-            selectedColor: Colors.blue,
+            selectedColor: AppColors.primaryColor,
             onColorChanged: (color) => changedColor = color,
             enabled: false,
-            colors: const [Colors.red, Colors.green, Colors.blue],
+            colors: const [
+              AppColors.uiRed,
+              AppColors.uiGreen,
+              AppColors.primaryColor,
+            ],
           ),
         ),
       );
@@ -151,10 +163,10 @@ void main() {
       await tester.pumpWidget(
         makeTestableWidget(
           ColorPicker(
-            selectedColor: Colors.blue,
+            selectedColor: AppColors.primaryColor,
             onColorChanged: (_) {},
             itemSize: 60.0,
-            colors: const [Colors.red],
+            colors: const [AppColors.uiRed],
           ),
         ),
       );
@@ -178,15 +190,15 @@ void main() {
       await tester.pumpWidget(
         makeTestableWidget(
           ColorPicker(
-            selectedColor: Colors.blue,
+            selectedColor: AppColors.primaryColor,
             onColorChanged: (_) {},
             colors: const [
-              Colors.red,
-              Colors.green,
-              Colors.blue,
-              Colors.yellow,
-              Colors.orange,
-              Colors.purple,
+              AppColors.uiRed,
+              AppColors.uiGreen,
+              AppColors.primaryColor,
+              AppColors.stellarGType,
+              AppColors.uiOrangeAccent,
+              AppColors.stellarOType,
             ],
           ),
         ),
@@ -205,9 +217,13 @@ void main() {
       await tester.pumpWidget(
         makeTestableWidget(
           ColorPicker(
-            selectedColor: Colors.red,
+            selectedColor: AppColors.uiRed,
             onColorChanged: (_) {},
-            colors: const [Colors.red, Colors.green, Colors.blue],
+            colors: const [
+              AppColors.uiRed,
+              AppColors.uiGreen,
+              AppColors.primaryColor,
+            ],
           ),
         ),
       );
@@ -226,9 +242,9 @@ void main() {
       await tester.pumpWidget(
         makeTestableWidget(
           ColorPicker(
-            selectedColor: Colors.red,
+            selectedColor: AppColors.uiRed,
             onColorChanged: (_) {},
-            colors: const [Colors.red, Colors.green],
+            colors: const [AppColors.uiRed, AppColors.uiGreen],
           ),
         ),
       );
@@ -239,8 +255,12 @@ void main() {
     });
 
     testWidgets('changes selection correctly', (WidgetTester tester) async {
-      Color selectedColor = Colors.red;
-      const testColors = [Colors.red, Colors.green, Colors.blue];
+      Color selectedColor = AppColors.uiRed;
+      const testColors = [
+        AppColors.uiRed,
+        AppColors.uiGreen,
+        AppColors.primaryColor,
+      ];
 
       await tester.pumpWidget(
         makeTestableWidget(
@@ -259,33 +279,33 @@ void main() {
       );
 
       // Initially red should be selected
-      expect(selectedColor, equals(Colors.red));
+      expect(selectedColor, equals(AppColors.uiRed));
 
       // Tap green and verify selection changes
       await tester.tap(find.byType(GestureDetector).at(1));
       await tester.pump();
 
-      expect(selectedColor, equals(Colors.green));
+      expect(selectedColor, equals(AppColors.uiGreen));
 
       // Tap blue and verify selection changes
       await tester.tap(find.byType(GestureDetector).at(2));
       await tester.pump();
 
-      expect(selectedColor, equals(Colors.blue));
+      expect(selectedColor, equals(AppColors.primaryColor));
     });
 
     testWidgets('handles color equality correctly', (
       WidgetTester tester,
     ) async {
       // Use the same red color instance to test equality
-      const redColor = Color(0xFFFF0000);
+      const redColor = AppColors.stellarMType;
 
       await tester.pumpWidget(
         makeTestableWidget(
           ColorPicker(
             selectedColor: redColor,
             onColorChanged: (_) {},
-            colors: const [redColor, Colors.green],
+            colors: const [redColor, AppColors.uiGreen],
           ),
         ),
       );
@@ -303,9 +323,10 @@ void main() {
       await tester.pumpWidget(
         makeTestableWidget(
           ColorPicker(
-            selectedColor: Colors.white, // Light color should have dark check
+            selectedColor:
+                AppColors.uiWhite, // Light color should have dark check
             onColorChanged: (_) {},
-            colors: const [Colors.white, Colors.black],
+            colors: const [AppColors.uiWhite, AppColors.uiBlack],
           ),
         ),
       );
@@ -315,7 +336,10 @@ void main() {
 
       // Check that icon has proper color contrast
       final icon = tester.widget<Icon>(find.byIcon(Icons.check));
-      expect(icon.color, equals(Colors.black)); // Dark icon on light background
+      expect(
+        icon.color,
+        equals(AppColors.uiBlack),
+      ); // Dark icon on light background
     });
 
     testWidgets(
@@ -324,9 +348,10 @@ void main() {
         await tester.pumpWidget(
           makeTestableWidget(
             ColorPicker(
-              selectedColor: Colors.black, // Dark color should have light check
+              selectedColor:
+                  AppColors.uiBlack, // Dark color should have light check
               onColorChanged: (_) {},
-              colors: const [Colors.white, Colors.black],
+              colors: const [AppColors.uiWhite, AppColors.uiBlack],
             ),
           ),
         );
@@ -338,7 +363,7 @@ void main() {
         final icon = tester.widget<Icon>(find.byIcon(Icons.check));
         expect(
           icon.color,
-          equals(Colors.white),
+          equals(AppColors.uiWhite),
         ); // Light icon on dark background
       },
     );
@@ -349,9 +374,13 @@ void main() {
       await tester.pumpWidget(
         makeTestableWidget(
           ColorPicker(
-            selectedColor: Colors.blue,
+            selectedColor: AppColors.primaryColor,
             onColorChanged: (_) {},
-            colors: const [Colors.red, Colors.green, Colors.blue],
+            colors: const [
+              AppColors.uiRed,
+              AppColors.uiGreen,
+              AppColors.primaryColor,
+            ],
           ),
         ),
       );

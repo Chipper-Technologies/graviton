@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:graviton/widgets/overlays/camera_visual_aids_overlay.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('CameraVisualAidsOverlay Widget Tests', () {
@@ -19,7 +20,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1000,
           radius: 5,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
         ),
       ];
       testViewMatrix = vm.Matrix4.identity();
@@ -244,7 +245,7 @@ void main() {
                 velocity: vm.Vector3.zero(),
                 mass: 1000,
                 radius: 5,
-                color: Colors.red,
+                color: AppColors.uiRed,
               ),
             ],
             viewMatrix: vm.Matrix4.identity(),

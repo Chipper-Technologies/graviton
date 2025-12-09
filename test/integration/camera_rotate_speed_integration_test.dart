@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/constants/simulation_constants.dart';
-import 'package:graviton/enums/cinematic_camera_technique.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
+import 'package:graviton/core/enums/cinematic_camera_technique.dart';
 import 'package:graviton/state/app_state.dart';
-import 'package:graviton/widgets/camera_controls.dart';
+import 'package:graviton/shared/widgets/controls/camera_controls.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

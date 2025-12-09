@@ -389,6 +389,30 @@ class AppLocalizationsZh extends AppLocalizations {
   String get gravityFieldsTitle => '重力场';
 
   @override
+  String get relativisticEffectsTitle => '相对论效应';
+
+  @override
+  String get relativisticEffectsDescription => '对高速物体应用后牛顿修正';
+
+  @override
+  String get relativisticGlowTitle => '相对论光晕';
+
+  @override
+  String get relativisticGlowDescription => '通过基于速度的光晕可视化时间膨胀';
+
+  @override
+  String get tidalForcesTitle => '潮汐力';
+
+  @override
+  String get tidalForcesDescription => '计算潮汐变形和加热效应';
+
+  @override
+  String get tidalVisualizationTitle => '潮汐可视化';
+
+  @override
+  String get tidalVisualizationDescription => '显示潮汐应力和变形轴';
+
+  @override
   String get gravityWellsDescription => '显示物体周围的引力场强度';
 
   @override
@@ -479,6 +503,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get addBodyButton => '添加天体按钮';
+
+  @override
+  String get tapToEnableAddBodyMode => '点击启用添加天体模式 - 在画布上点击以放置新天体';
+
+  @override
+  String get tapToDisableAddBodyMode => '点击禁用添加天体模式并返回正常交互';
+
+  @override
+  String get addBodyModeActive => '添加天体模式已激活';
+
+  @override
+  String get addBodyModeInactive => '添加天体模式未激活';
+
+  @override
+  String get tapToPlaceBody => '在画布上任意位置点击以放置新天体';
+
+  @override
+  String get bodyPlacedSuccessfully => '天体放置成功';
 
   @override
   String get addCelestialBodiesToCreateYourCustomScenarioEditor =>
@@ -1182,6 +1224,12 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get bodyNewDefault => '新天体';
+
+  @override
+  String get bodyPlacementTooClose => '距离现有天体太近 - 请点击其他地方';
+
+  @override
   String get bodyInnerPlanet => '内行星';
 
   @override
@@ -1661,6 +1709,39 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get habitabilityIndicatorsLabel => '行星状态';
+
+  @override
+  String get stellarCoronasTitle => '恒星日冕';
+
+  @override
+  String get stellarCoronasDescription => '显示恒星周围发光的等离子体大气';
+
+  @override
+  String get atmosphericEffectsTitle => '大气效果';
+
+  @override
+  String get atmosphericEffectsDescription => '在行星上显示大气晕圈和散射';
+
+  @override
+  String get hemisphereLightingTitle => '半球照明';
+
+  @override
+  String get hemisphereLightingDescription => '模拟球体上逼真的3D照明';
+
+  @override
+  String get castShadowsTitle => '投射阴影';
+
+  @override
+  String get castShadowsDescription => '当天体遮挡光源时显示阴影';
+
+  @override
+  String get specularHighlightsTitle => '镜面高光';
+
+  @override
+  String get specularHighlightsDescription => '在冰和水表面显示反射高光';
+
+  @override
+  String get lightingEffectsLabel => '照明与阴影';
 
   @override
   String get habitabilityLabel => '宜居性';

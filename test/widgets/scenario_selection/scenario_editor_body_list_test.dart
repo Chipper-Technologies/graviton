@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/models/body.dart';
-import 'package:graviton/widgets/scenario_selection/scenario_editor_body_list.dart';
-import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/scenario_editor_body_list.dart';
+import 'package:graviton/core/enums/body_type.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -21,7 +22,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 1.0,
           radius: 1.0,
-          color: Colors.blue,
+          color: AppColors.primaryColor,
           bodyType: BodyType.planet,
         ),
         Body(
@@ -30,7 +31,7 @@ void main() {
           velocity: vm.Vector3.zero(),
           mass: 333000.0,
           radius: 109.0,
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
           bodyType: BodyType.star,
         ),
       ];

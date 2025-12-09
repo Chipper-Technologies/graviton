@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/services/auth_service.dart';
-import 'package:graviton/services/firebase_service.dart';
-import 'package:graviton/state/auth_state.dart';
+import 'package:graviton/features/auth/data/auth_service.dart';
+import 'package:graviton/services/firebase/firebase_service.dart';
+import 'package:graviton/features/auth/state/auth_state.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 

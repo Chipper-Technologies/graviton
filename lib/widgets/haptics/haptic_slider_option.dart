@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/services/haptic_feedback_service.dart';
+import 'package:graviton/services/ui/haptic_feedback_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/number_utils.dart';

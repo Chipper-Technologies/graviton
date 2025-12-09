@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
-import 'package:graviton/models/body.dart';
-import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/enums/habitability_status.dart';
-import 'package:graviton/widgets/scenario_selection/scenario_editor_body_details_bottom_sheet.dart';
+import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/core/enums/body_type.dart';
+import 'package:graviton/core/enums/habitability_status.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/scenario_editor_body_details_bottom_sheet.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/utils/number_utils.dart';
 import 'package:graviton/state/app_state.dart';
@@ -34,7 +35,7 @@ void main() {
         velocity: vm.Vector3.zero(),
         mass: 20.0, // 20 sim units = 2.0 solar masses
         radius: 1.0,
-        color: Colors.yellow,
+        color: AppColors.stellarGType,
         bodyType: BodyType.star,
         isPlanet: false,
         temperature: 5778.0,
@@ -79,7 +80,7 @@ void main() {
         velocity: vm.Vector3.zero(),
         mass: 10.0,
         radius: 2.5, // 2.5 sim units = 2.5 solar radii
-        color: Colors.orange,
+        color: AppColors.stellarKType,
         bodyType: BodyType.star,
         isPlanet: false,
         temperature: 4500.0,

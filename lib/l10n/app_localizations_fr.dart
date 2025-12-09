@@ -422,6 +422,34 @@ class AppLocalizationsFr extends AppLocalizations {
   String get gravityFieldsTitle => 'Champs Gravitationnels';
 
   @override
+  String get relativisticEffectsTitle => 'Effets Relativistes';
+
+  @override
+  String get relativisticEffectsDescription =>
+      'Appliquer des corrections post-newtoniennes pour les objets à grande vitesse';
+
+  @override
+  String get relativisticGlowTitle => 'Lueur Relativiste';
+
+  @override
+  String get relativisticGlowDescription =>
+      'Visualiser la dilatation du temps avec une lueur basée sur la vélocité';
+
+  @override
+  String get tidalForcesTitle => 'Forces de Marée';
+
+  @override
+  String get tidalForcesDescription =>
+      'Calculer la déformation de marée et les effets de chauffage';
+
+  @override
+  String get tidalVisualizationTitle => 'Visualisation des Marées';
+
+  @override
+  String get tidalVisualizationDescription =>
+      'Afficher le stress de marée et les axes de déformation';
+
+  @override
   String get gravityWellsDescription =>
       'Afficher l\'intensité du champ gravitationnel autour des objets';
 
@@ -513,6 +541,27 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get addBodyButton => 'Bouton Ajouter un corps';
+
+  @override
+  String get tapToEnableAddBodyMode =>
+      'Appuyez pour activer le mode d\'ajout de corps - cliquez sur la toile pour placer de nouveaux corps';
+
+  @override
+  String get tapToDisableAddBodyMode =>
+      'Appuyez pour désactiver le mode d\'ajout de corps et revenir à l\'interaction normale';
+
+  @override
+  String get addBodyModeActive => 'Mode Ajout de Corps Actif';
+
+  @override
+  String get addBodyModeInactive => 'Mode Ajout de Corps Inactif';
+
+  @override
+  String get tapToPlaceBody =>
+      'Appuyez n\'importe où sur la toile pour placer un nouveau corps';
+
+  @override
+  String get bodyPlacedSuccessfully => 'Corps placé avec succès';
 
   @override
   String get addCelestialBodiesToCreateYourCustomScenarioEditor =>
@@ -1257,6 +1306,13 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get bodyNewDefault => 'Nouveau Corps';
+
+  @override
+  String get bodyPlacementTooClose =>
+      'Trop proche d\'un corps existant - veuillez toucher ailleurs';
+
+  @override
   String get bodyInnerPlanet => 'Planète Intérieure';
 
   @override
@@ -1764,6 +1820,44 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get habitabilityIndicatorsLabel => 'État de la Planète';
+
+  @override
+  String get stellarCoronasTitle => 'Couronnes Stellaires';
+
+  @override
+  String get stellarCoronasDescription =>
+      'Afficher les atmosphères de plasma brillant autour des étoiles';
+
+  @override
+  String get atmosphericEffectsTitle => 'Effets Atmosphériques';
+
+  @override
+  String get atmosphericEffectsDescription =>
+      'Afficher les halos atmosphériques et la diffusion sur les planètes';
+
+  @override
+  String get hemisphereLightingTitle => 'Éclairage Hémisphérique';
+
+  @override
+  String get hemisphereLightingDescription =>
+      'Simuler un éclairage 3D réaliste sur les corps sphériques';
+
+  @override
+  String get castShadowsTitle => 'Ombres Portées';
+
+  @override
+  String get castShadowsDescription =>
+      'Afficher les ombres lorsque les corps occultent les sources lumineuses';
+
+  @override
+  String get specularHighlightsTitle => 'Reflets Spéculaires';
+
+  @override
+  String get specularHighlightsDescription =>
+      'Afficher les reflets sur les surfaces glacées et aquatiques';
+
+  @override
+  String get lightingEffectsLabel => 'Éclairage et Ombres';
 
   @override
   String get habitabilityLabel => 'Habitabilité';

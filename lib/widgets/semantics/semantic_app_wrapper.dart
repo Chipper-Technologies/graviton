@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/services/semantic_focus_service.dart';
+import 'package:graviton/services/ui/semantic_focus_service.dart';
 
 /// Main semantic wrapper that provides focus navigation shortcuts for the entire app
 class SemanticAppWrapper extends StatelessWidget {

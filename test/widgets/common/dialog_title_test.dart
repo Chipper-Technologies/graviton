@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 /// Helper to create a MaterialApp wrapper for testing
 Widget createTestApp({Widget? child, ThemeData? theme}) {
@@ -60,7 +61,7 @@ void main() {
     });
 
     testWidgets('applies custom icon color and size', (tester) async {
-      const customColor = Colors.red;
+      const customColor = AppColors.uiRed;
       const customSize = 32.0;
 
       await tester.pumpWidget(
@@ -85,7 +86,7 @@ void main() {
       const customStyle = TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w300,
-        color: Colors.green,
+        color: AppColors.uiGreen,
       );
 
       await tester.pumpWidget(

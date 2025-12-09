@@ -27,6 +27,8 @@ void main() {
     group('Space & Cosmic Colors', () {
       test('should have valid deep space background colors', () {
         expect(AppColors.spaceDeepBlueBlack, const Color(0xFF0a0a1a));
+        expect(AppColors.spaceGradientDark, const Color(0xFF1a1a2e));
+        expect(AppColors.spaceGradientDarker, const Color(0xFF0f0f1e));
         expect(AppColors.spacePurple, const Color(0xFF2a1a3f));
         expect(AppColors.spaceDeepPurple, const Color(0xFF3d1a5c));
         expect(AppColors.spacePureBlack, const Color(0xFF000000));

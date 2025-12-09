@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/habitability_status.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/core/enums/habitability_status.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/color_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -127,7 +128,7 @@ void main() {
       });
 
       test('should clamp opacity values', () {
-        const baseColor = Colors.blue;
+        const baseColor = AppColors.primaryColor;
 
         // Test values outside valid range
         final resultNegative = ColorUtils.withOpacity(baseColor, -0.5);
@@ -184,7 +185,7 @@ void main() {
       });
 
       test('should handle extreme darken values', () {
-        const baseColor = Colors.white;
+        const baseColor = AppColors.uiWhite;
 
         // Complete darkening should result in black
         final resultBlack = ColorUtils.darken(baseColor, 1.0);
@@ -215,7 +216,7 @@ void main() {
       });
 
       test('should handle extreme lighten values', () {
-        const baseColor = Colors.black;
+        const baseColor = AppColors.uiBlack;
 
         // Complete lightening should result in white
         final resultWhite = ColorUtils.lighten(baseColor, 1.0);
@@ -610,7 +611,7 @@ void main() {
         expect(gradient.colors[0], equals(centerColor));
 
         // Last color should be transparent
-        expect(gradient.colors[4], equals(Colors.transparent));
+        expect(gradient.colors[4], equals(AppColors.transparentColor));
 
         // Stops should be in ascending order
         expect(gradient.stops![0], equals(0.0));
@@ -626,11 +627,20 @@ void main() {
 
         final gradient = ColorUtils.createGlowGradient(centerColor, edgeColor);
 
-        // Alpha should decrease through the gradient (except transparent)
+        // Alpha should decrease through the gradient using AppTypography constants
         expect(gradient.colors[0].a, equals(1.0)); // Center - full alpha
-        expect(gradient.colors[1].a, equals(0.8)); // First fade
-        expect(gradient.colors[2].a, equals(0.4)); // Second fade
-        expect(gradient.colors[3].a, equals(0.1)); // Edge fade
+        expect(
+          gradient.colors[1].a,
+          equals(AppTypography.opacityMedium),
+        ); // First fade (0.5)
+        expect(
+          gradient.colors[2].a,
+          equals(AppTypography.opacityVeryFaint),
+        ); // Second fade (0.2)
+        expect(
+          gradient.colors[3].a,
+          equals(AppTypography.opacityTransparent),
+        ); // Edge fade (0.0)
         expect(gradient.colors[4].a, equals(0.0)); // Transparent
       });
     });

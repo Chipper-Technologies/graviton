@@ -818,6 +818,54 @@ abstract class AppLocalizations {
   /// **'Gravity Fields'**
   String get gravityFieldsTitle;
 
+  /// Toggle title for relativistic physics effects
+  ///
+  /// In en, this message translates to:
+  /// **'Relativistic Effects'**
+  String get relativisticEffectsTitle;
+
+  /// Description for relativistic effects toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Apply post-Newtonian corrections for high-speed objects'**
+  String get relativisticEffectsDescription;
+
+  /// Toggle title for relativistic glow visualization
+  ///
+  /// In en, this message translates to:
+  /// **'Relativistic Glow'**
+  String get relativisticGlowTitle;
+
+  /// Description for relativistic glow visualization toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Visualize time dilation with velocity-based glow'**
+  String get relativisticGlowDescription;
+
+  /// Toggle title for tidal force calculations
+  ///
+  /// In en, this message translates to:
+  /// **'Tidal Forces'**
+  String get tidalForcesTitle;
+
+  /// Description for tidal forces toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Calculate tidal deformation and heating effects'**
+  String get tidalForcesDescription;
+
+  /// Toggle title for tidal force visualization
+  ///
+  /// In en, this message translates to:
+  /// **'Tidal Visualization'**
+  String get tidalVisualizationTitle;
+
+  /// Description for tidal visualization toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Show tidal stress and deformation axes'**
+  String get tidalVisualizationDescription;
+
   /// Description for gravity wells setting
   ///
   /// In en, this message translates to:
@@ -991,6 +1039,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add Body'**
   String get addBodyButton;
+
+  /// Accessibility hint for enabling add body mode
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to enable add body mode - click on canvas to place new bodies'**
+  String get tapToEnableAddBodyMode;
+
+  /// Accessibility hint for disabling add body mode
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to disable add body mode and return to normal interaction'**
+  String get tapToDisableAddBodyMode;
+
+  /// Status message when add body mode is active
+  ///
+  /// In en, this message translates to:
+  /// **'Add Body Mode Active'**
+  String get addBodyModeActive;
+
+  /// Status message when add body mode is inactive
+  ///
+  /// In en, this message translates to:
+  /// **'Add Body Mode Inactive'**
+  String get addBodyModeInactive;
+
+  /// Instructions shown when add body mode is active
+  ///
+  /// In en, this message translates to:
+  /// **'Tap anywhere on the canvas to place a new body'**
+  String get tapToPlaceBody;
+
+  /// Confirmation message after placing a body
+  ///
+  /// In en, this message translates to:
+  /// **'Body placed successfully'**
+  String get bodyPlacedSuccessfully;
 
   /// Instructions for adding bodies in scenario editor
   ///
@@ -2208,6 +2292,18 @@ abstract class AppLocalizations {
   /// **'Body {index}'**
   String bodyIndex(int index);
 
+  /// Default name for newly created bodies
+  ///
+  /// In en, this message translates to:
+  /// **'New Body'**
+  String get bodyNewDefault;
+
+  /// Warning message when trying to place a body too close to an existing body
+  ///
+  /// In en, this message translates to:
+  /// **'Too close to existing body - please tap elsewhere'**
+  String get bodyPlacementTooClose;
+
   /// Name for inner companion planet in asteroid belt scenario
   ///
   /// In en, this message translates to:
@@ -3029,6 +3125,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Planet Status'**
   String get habitabilityIndicatorsLabel;
+
+  /// Label for stellar coronas toggle in visuals settings
+  ///
+  /// In en, this message translates to:
+  /// **'Stellar Coronas'**
+  String get stellarCoronasTitle;
+
+  /// Description for stellar coronas visual effect setting
+  ///
+  /// In en, this message translates to:
+  /// **'Show glowing plasma atmospheres around stars'**
+  String get stellarCoronasDescription;
+
+  /// Label for atmospheric effects toggle in visuals settings
+  ///
+  /// In en, this message translates to:
+  /// **'Atmospheric Effects'**
+  String get atmosphericEffectsTitle;
+
+  /// Description for atmospheric effects visual setting
+  ///
+  /// In en, this message translates to:
+  /// **'Display atmospheric halos and scattering on planets'**
+  String get atmosphericEffectsDescription;
+
+  /// Label for hemisphere lighting toggle in visuals settings
+  ///
+  /// In en, this message translates to:
+  /// **'Hemisphere Lighting'**
+  String get hemisphereLightingTitle;
+
+  /// Description for hemisphere lighting effect setting
+  ///
+  /// In en, this message translates to:
+  /// **'Simulate realistic 3D lighting on spherical bodies'**
+  String get hemisphereLightingDescription;
+
+  /// Label for cast shadows toggle in visuals settings
+  ///
+  /// In en, this message translates to:
+  /// **'Cast Shadows'**
+  String get castShadowsTitle;
+
+  /// Description for cast shadows effect setting
+  ///
+  /// In en, this message translates to:
+  /// **'Show shadows when bodies occlude light sources'**
+  String get castShadowsDescription;
+
+  /// Label for specular highlights toggle in visuals settings
+  ///
+  /// In en, this message translates to:
+  /// **'Specular Highlights'**
+  String get specularHighlightsTitle;
+
+  /// Description for specular highlights effect setting
+  ///
+  /// In en, this message translates to:
+  /// **'Display reflective highlights on icy and water surfaces'**
+  String get specularHighlightsDescription;
+
+  /// Section label for lighting and shadow effects
+  ///
+  /// In en, this message translates to:
+  /// **'Lighting & Shadows'**
+  String get lightingEffectsLabel;
 
   /// Label for habitability features
   ///

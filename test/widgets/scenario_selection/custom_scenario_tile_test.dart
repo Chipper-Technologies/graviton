@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/theme/app_colors.dart';
-import 'package:graviton/widgets/scenario_selection/custom_scenario_tile.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/custom_scenario_tile.dart';
 
 void main() {
   group('CustomScenarioTile Tests', () {
@@ -106,23 +106,23 @@ void main() {
       );
 
       // Test main tile tap
-      await tester.tap(find.byType(CustomScenarioTile));
+      await tester.tap(find.byType(CustomScenarioTile), warnIfMissed: false);
       expect(tapped, true);
 
       // Test edit button tap through 3-dot menu
-      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.tap(find.byIcon(Icons.more_vert), warnIfMissed: false);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.edit_outlined));
+      await tester.tap(find.byIcon(Icons.edit_outlined), warnIfMissed: false);
       await tester.pumpAndSettle();
       expect(edited, true);
 
       // Open menu again for delete test
-      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.tap(find.byIcon(Icons.more_vert), warnIfMissed: false);
       await tester.pumpAndSettle();
 
       // Test delete button tap
-      await tester.tap(find.byIcon(Icons.delete_outline));
+      await tester.tap(find.byIcon(Icons.delete_outline), warnIfMissed: false);
       await tester.pumpAndSettle();
       expect(deleted, true);
     });
@@ -289,14 +289,14 @@ void main() {
       );
 
       // Test edit button multiple times through 3-dot menu
-      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.tap(find.byIcon(Icons.more_vert), warnIfMissed: false);
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(Icons.edit_outlined));
+      await tester.tap(find.byIcon(Icons.edit_outlined), warnIfMissed: false);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.tap(find.byIcon(Icons.more_vert), warnIfMissed: false);
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(Icons.edit_outlined));
+      await tester.tap(find.byIcon(Icons.edit_outlined), warnIfMissed: false);
       await tester.pumpAndSettle();
 
       expect(editCount, 2);
@@ -304,16 +304,16 @@ void main() {
       expect(tapCount, 0);
 
       // Test delete button through menu
-      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.tap(find.byIcon(Icons.more_vert), warnIfMissed: false);
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(Icons.delete_outline));
+      await tester.tap(find.byIcon(Icons.delete_outline), warnIfMissed: false);
       await tester.pumpAndSettle();
       expect(deleteCount, 1);
       expect(editCount, 2);
       expect(tapCount, 0);
 
       // Test main tile tap (avoiding action buttons)
-      await tester.tap(find.text(testScenarioName));
+      await tester.tap(find.text(testScenarioName), warnIfMissed: false);
       expect(tapCount, 1);
       expect(editCount, 2);
       expect(deleteCount, 1);
@@ -337,7 +337,7 @@ void main() {
       );
 
       // Open the 3-dot menu
-      await tester.tap(find.byIcon(Icons.more_vert));
+      await tester.tap(find.byIcon(Icons.more_vert), warnIfMissed: false);
       await tester.pumpAndSettle();
 
       // Verify menu items are present
