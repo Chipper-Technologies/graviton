@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/cinematic_camera_technique.dart';
-import 'package:graviton/enums/gravity_field_color_scheme.dart';
-import 'package:graviton/enums/temperature_unit.dart';
+import 'package:graviton/core/enums/cinematic_camera_technique.dart';
+import 'package:graviton/core/enums/gravity_field_color_scheme.dart';
+import 'package:graviton/core/enums/temperature_unit.dart';
 import 'package:graviton/state/ui_state.dart';
 
 void main() {
@@ -371,6 +371,175 @@ void main() {
 
         uiState.toggleHabitabilityIndicators();
         expect(notificationCount, equals(2));
+      });
+    });
+
+    group('Visual Effects', () {
+      test('Should initialize with default stellar coronas enabled', () {
+        expect(uiState.showStellarCoronas, isTrue);
+      });
+
+      test('Should initialize with default atmospheric effects disabled', () {
+        expect(uiState.showAtmosphericEffects, isFalse);
+      });
+
+      test('Should toggle stellar coronas', () {
+        final initial = uiState.showStellarCoronas;
+        uiState.toggleStellarCoronas();
+        expect(uiState.showStellarCoronas, equals(!initial));
+
+        uiState.toggleStellarCoronas();
+        expect(uiState.showStellarCoronas, equals(initial));
+      });
+
+      test('Should toggle atmospheric effects', () {
+        final initial = uiState.showAtmosphericEffects;
+        uiState.toggleAtmosphericEffects();
+        expect(uiState.showAtmosphericEffects, equals(!initial));
+
+        uiState.toggleAtmosphericEffects();
+        expect(uiState.showAtmosphericEffects, equals(initial));
+      });
+
+      test('Visual effect toggles should notify listeners', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        uiState.toggleStellarCoronas();
+        expect(notificationCount, equals(1));
+
+        uiState.toggleAtmosphericEffects();
+        expect(notificationCount, equals(2));
+      });
+    });
+
+    group('Lighting and Shadow Effects', () {
+      test('Should initialize with default hemisphere lighting enabled', () {
+        expect(uiState.enableHemisphereLighting, isTrue);
+      });
+
+      test('Should initialize with default cast shadows disabled', () {
+        expect(uiState.enableCastShadows, isFalse);
+      });
+
+      test('Should initialize with default specular highlights disabled', () {
+        expect(uiState.enableSpecularHighlights, isFalse);
+      });
+
+      test('Should toggle hemisphere lighting', () {
+        final initial = uiState.enableHemisphereLighting;
+        uiState.toggleHemisphereLighting();
+        expect(uiState.enableHemisphereLighting, equals(!initial));
+
+        uiState.toggleHemisphereLighting();
+        expect(uiState.enableHemisphereLighting, equals(initial));
+      });
+
+      test('Should toggle cast shadows', () {
+        final initial = uiState.enableCastShadows;
+        uiState.toggleCastShadows();
+        expect(uiState.enableCastShadows, equals(!initial));
+
+        uiState.toggleCastShadows();
+        expect(uiState.enableCastShadows, equals(initial));
+      });
+
+      test('Should toggle specular highlights', () {
+        final initial = uiState.enableSpecularHighlights;
+        uiState.toggleSpecularHighlights();
+        expect(uiState.enableSpecularHighlights, equals(!initial));
+
+        uiState.toggleSpecularHighlights();
+        expect(uiState.enableSpecularHighlights, equals(initial));
+      });
+
+      test('Lighting effect toggles should notify listeners', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        uiState.toggleHemisphereLighting();
+        expect(notificationCount, equals(1));
+
+        uiState.toggleCastShadows();
+        expect(notificationCount, equals(2));
+
+        uiState.toggleSpecularHighlights();
+        expect(notificationCount, equals(3));
+      });
+
+      test('Should handle multiple rapid lighting toggles', () {
+        var notificationCount = 0;
+        uiState.addListener(() => notificationCount++);
+
+        // Rapid toggling should work correctly
+        for (int i = 0; i < 10; i++) {
+          uiState.toggleHemisphereLighting();
+        }
+
+        expect(notificationCount, equals(10));
+        expect(
+          uiState.enableHemisphereLighting,
+          isTrue,
+        ); // Should end at initial state
+      });
+
+      test('All lighting effects can be enabled simultaneously', () {
+        uiState.toggleHemisphereLighting(); // Start false (toggled from true)
+        uiState.toggleHemisphereLighting(); // Back to true
+        uiState.toggleCastShadows(); // Enable (start from false)
+        uiState.toggleSpecularHighlights(); // Enable (start from false)
+
+        expect(uiState.enableHemisphereLighting, isTrue);
+        expect(uiState.enableCastShadows, isTrue);
+        expect(uiState.enableSpecularHighlights, isTrue);
+      });
+
+      test('All lighting effects can be disabled simultaneously', () {
+        uiState.toggleHemisphereLighting(); // Disable (start from true)
+
+        expect(uiState.enableHemisphereLighting, isFalse);
+        expect(uiState.enableCastShadows, isFalse);
+        expect(uiState.enableSpecularHighlights, isFalse);
+      });
+
+      test(
+        'Lighting settings should be independent of other visual settings',
+        () {
+          // Set lighting states
+          uiState.toggleHemisphereLighting(); // Toggle to false
+          uiState.toggleCastShadows(); // Toggle to true
+
+          // Change other visual settings
+          uiState.toggleStellarCoronas();
+          uiState.toggleAtmosphericEffects();
+          uiState.toggleCollisionDebris();
+
+          // Lighting states should persist
+          expect(uiState.enableHemisphereLighting, isFalse);
+          expect(uiState.enableCastShadows, isTrue);
+          expect(uiState.enableSpecularHighlights, isFalse);
+        },
+      );
+
+      test('Should maintain lighting state through multiple operations', () {
+        // Enable all lighting effects
+        uiState.toggleCastShadows(); // Enable
+        uiState.toggleSpecularHighlights(); // Enable
+
+        // Verify enabled
+        expect(uiState.enableHemisphereLighting, isTrue);
+        expect(uiState.enableCastShadows, isTrue);
+        expect(uiState.enableSpecularHighlights, isTrue);
+
+        // Perform other UI operations
+        uiState.toggleStats();
+        uiState.toggleGrid();
+        uiState.setUIOpacity(0.5);
+
+        // Lighting states should persist
+        expect(uiState.enableHemisphereLighting, isTrue);
+        expect(uiState.enableCastShadows, isTrue);
+        expect(uiState.enableSpecularHighlights, isTrue);
       });
     });
 

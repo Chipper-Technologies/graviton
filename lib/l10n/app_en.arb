@@ -482,6 +482,38 @@
   "@gravityFieldsTitle": {
     "description": "Toggle title for gravity field visualization"
   },
+  "relativisticEffectsTitle": "Relativistic Effects",
+  "@relativisticEffectsTitle": {
+    "description": "Toggle title for relativistic physics effects"
+  },
+  "relativisticEffectsDescription": "Apply post-Newtonian corrections for high-speed objects",
+  "@relativisticEffectsDescription": {
+    "description": "Description for relativistic effects toggle"
+  },
+  "relativisticGlowTitle": "Relativistic Glow",
+  "@relativisticGlowTitle": {
+    "description": "Toggle title for relativistic glow visualization"
+  },
+  "relativisticGlowDescription": "Visualize time dilation with velocity-based glow",
+  "@relativisticGlowDescription": {
+    "description": "Description for relativistic glow visualization toggle"
+  },
+  "tidalForcesTitle": "Tidal Forces",
+  "@tidalForcesTitle": {
+    "description": "Toggle title for tidal force calculations"
+  },
+  "tidalForcesDescription": "Calculate tidal deformation and heating effects",
+  "@tidalForcesDescription": {
+    "description": "Description for tidal forces toggle"
+  },
+  "tidalVisualizationTitle": "Tidal Visualization",
+  "@tidalVisualizationTitle": {
+    "description": "Toggle title for tidal force visualization"
+  },
+  "tidalVisualizationDescription": "Show tidal stress and deformation axes",
+  "@tidalVisualizationDescription": {
+    "description": "Description for tidal visualization toggle"
+  },
   "gravityWellsDescription": "Show gravitational field strength around objects",
   "@gravityWellsDescription": {
     "description": "Description for gravity wells setting"
@@ -625,6 +657,30 @@
   "addBodyButton": "Add Body",
   "@addBodyButton": {
     "description": "Button text to add a new celestial body"
+  },
+  "tapToEnableAddBodyMode": "Tap to enable add body mode - click on canvas to place new bodies",
+  "@tapToEnableAddBodyMode": {
+    "description": "Accessibility hint for enabling add body mode"
+  },
+  "tapToDisableAddBodyMode": "Tap to disable add body mode and return to normal interaction",
+  "@tapToDisableAddBodyMode": {
+    "description": "Accessibility hint for disabling add body mode"
+  },
+  "addBodyModeActive": "Add Body Mode Active",
+  "@addBodyModeActive": {
+    "description": "Status message when add body mode is active"
+  },
+  "addBodyModeInactive": "Add Body Mode Inactive",
+  "@addBodyModeInactive": {
+    "description": "Status message when add body mode is inactive"
+  },
+  "tapToPlaceBody": "Tap anywhere on the canvas to place a new body",
+  "@tapToPlaceBody": {
+    "description": "Instructions shown when add body mode is active"
+  },
+  "bodyPlacedSuccessfully": "Body placed successfully",
+  "@bodyPlacedSuccessfully": {
+    "description": "Confirmation message after placing a body"
   },
   "addCelestialBodiesToCreateYourCustomScenarioEditor": "Add celestial bodies to create your custom scenario",
   "@addCelestialBodiesToCreateYourCustomScenarioEditor": {
@@ -1644,6 +1700,14 @@
       }
     }
   },
+  "bodyNewDefault": "New Body",
+  "@bodyNewDefault": {
+    "description": "Default name for newly created bodies"
+  },
+  "bodyPlacementTooClose": "Too close to existing body - please tap elsewhere",
+  "@bodyPlacementTooClose": {
+    "description": "Warning message when trying to place a body too close to an existing body"
+  },
   "bodyInnerPlanet": "Inner Planet",
   "@bodyInnerPlanet": {
     "description": "Name for inner companion planet in asteroid belt scenario"
@@ -2343,6 +2407,50 @@
   "habitabilityIndicatorsLabel": "Planet Status",
   "@habitabilityIndicatorsLabel": {
     "description": "Label for habitability indicators toggle"
+  },
+  "stellarCoronasTitle": "Stellar Coronas",
+  "@stellarCoronasTitle": {
+    "description": "Label for stellar coronas toggle in visuals settings"
+  },
+  "stellarCoronasDescription": "Show glowing plasma atmospheres around stars",
+  "@stellarCoronasDescription": {
+    "description": "Description for stellar coronas visual effect setting"
+  },
+  "atmosphericEffectsTitle": "Atmospheric Effects",
+  "@atmosphericEffectsTitle": {
+    "description": "Label for atmospheric effects toggle in visuals settings"
+  },
+  "atmosphericEffectsDescription": "Display atmospheric halos and scattering on planets",
+  "@atmosphericEffectsDescription": {
+    "description": "Description for atmospheric effects visual setting"
+  },
+  "hemisphereLightingTitle": "Hemisphere Lighting",
+  "@hemisphereLightingTitle": {
+    "description": "Label for hemisphere lighting toggle in visuals settings"
+  },
+  "hemisphereLightingDescription": "Simulate realistic 3D lighting on spherical bodies",
+  "@hemisphereLightingDescription": {
+    "description": "Description for hemisphere lighting effect setting"
+  },
+  "castShadowsTitle": "Cast Shadows",
+  "@castShadowsTitle": {
+    "description": "Label for cast shadows toggle in visuals settings"
+  },
+  "castShadowsDescription": "Show shadows when bodies occlude light sources",
+  "@castShadowsDescription": {
+    "description": "Description for cast shadows effect setting"
+  },
+  "specularHighlightsTitle": "Specular Highlights",
+  "@specularHighlightsTitle": {
+    "description": "Label for specular highlights toggle in visuals settings"
+  },
+  "specularHighlightsDescription": "Display reflective highlights on icy and water surfaces",
+  "@specularHighlightsDescription": {
+    "description": "Description for specular highlights effect setting"
+  },
+  "lightingEffectsLabel": "Lighting & Shadows",
+  "@lightingEffectsLabel": {
+    "description": "Section label for lighting and shadow effects"
   },
   "habitabilityLabel": "Habitability",
   "@habitabilityLabel": {

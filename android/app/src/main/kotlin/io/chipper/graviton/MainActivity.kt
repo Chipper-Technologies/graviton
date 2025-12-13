@@ -17,13 +17,18 @@ class MainActivity : FlutterActivity() {
     private val TAG = "MainActivity"
     
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Enable edge-to-edge display for Android 15+ (SDK 35) compatibility
-        // This replaces the deprecated status/navigation bar color APIs
-        // that Flutter's embedding layer uses internally
-        if (Build.VERSION.SDK_INT >= 35) { // Android 15 (Vanilla Ice Cream)
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-        }
         super.onCreate(savedInstanceState)
+        
+        /*
+         * Enable edge-to-edge mode for Android 15+ (SDK 35) compatibility.
+         * WindowCompat.setDecorFitsSystemWindows(window, false) prevents Flutter from
+         * calling deprecated APIs (setStatusBarColor, setNavigationBarColor, etc.)
+         * by telling the system that our app will handle insets.
+         * 
+         * This works in conjunction with the theme settings in values-v35/styles.xml
+         * to ensure proper edge-to-edge display on Android 15+.
+         */
+        WindowCompat.setDecorFitsSystemWindows(window, false)
     }
     
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {

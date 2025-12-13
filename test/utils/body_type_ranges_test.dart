@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/utils/body_type_ranges.dart';
-import 'package:graviton/enums/body_type.dart';
+import 'package:graviton/core/enums/body_type.dart';
 
 void main() {
   group('BodyTypeRanges', () {

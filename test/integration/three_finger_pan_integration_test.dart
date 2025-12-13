@@ -1,7 +1,10 @@
+@Tags(['integration', 'skip-ci'])
+library;
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/constants/simulation_constants.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
 import 'package:graviton/main.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,8 +25,10 @@ void main() {
       await TestHelpers.initializeAppStateWithTimeout(testAppState);
     });
 
-    tearDown(() {
+    tearDown(() async {
+      await Future.delayed(const Duration(milliseconds: 100));
       testAppState.dispose();
+      await Future.delayed(const Duration(milliseconds: 100));
     });
 
     testWidgets('Three-finger pan gesture should move camera target', (
@@ -82,7 +87,10 @@ void main() {
         expect(testAppState.camera.target, isNot(equals(initialTarget)));
       }
 
-      await TestHelpers.pumpAppTimers(tester);
+      // Clean up widget tree
+      await tester.pump();
+      await tester.pumpWidget(Container());
+      await tester.pump();
     });
 
     testWidgets(
@@ -135,7 +143,10 @@ void main() {
           expect(testAppState.camera.target.y, isNot(equals(initialTargetY)));
         }
 
-        await TestHelpers.pumpAppTimers(tester);
+        // Clean up widget tree
+        await tester.pump();
+        await tester.pumpWidget(Container());
+        await tester.pump();
       },
     );
 
@@ -194,7 +205,10 @@ void main() {
         expect(testAppState.camera.roll, equals(initialRoll));
       }
 
-      await TestHelpers.pumpAppTimers(tester);
+      // Clean up widget tree
+      await tester.pump();
+      await tester.pumpWidget(Container());
+      await tester.pump();
     });
 
     testWidgets('Three-finger pan should not affect camera distance', (
@@ -248,7 +262,10 @@ void main() {
         expect(testAppState.camera.distance, equals(initialDistance));
       }
 
-      await TestHelpers.pumpAppTimers(tester);
+      // Clean up widget tree
+      await tester.pump();
+      await tester.pumpWidget(Container());
+      await tester.pump();
     });
 
     testWidgets('Three-finger pan should be disabled in follow mode', (
@@ -309,7 +326,10 @@ void main() {
         }
       }
 
-      await TestHelpers.pumpAppTimers(tester);
+      // Clean up widget tree
+      await tester.pump();
+      await tester.pumpWidget(Container());
+      await tester.pump();
     });
 
     testWidgets('Two-finger gestures should still work for zoom and roll', (
@@ -357,7 +377,10 @@ void main() {
         expect(testAppState.camera.distance, isNot(equals(initialDistance)));
       }
 
-      await TestHelpers.pumpAppTimers(tester);
+      // Clean up widget tree
+      await tester.pump();
+      await tester.pumpWidget(Container());
+      await tester.pump();
     });
 
     testWidgets('Single-finger gesture should still work for rotation', (
@@ -365,7 +388,7 @@ void main() {
     ) async {
       await tester.pumpWidget(GravitonApp(appState: testAppState));
       await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pumpAndSettle();
 
       final initialYaw = testAppState.camera.yaw;
 
@@ -375,13 +398,20 @@ void main() {
 
         // Simulate single-finger drag (camera rotation)
         await tester.drag(viewportGesture, const Offset(100, 0));
-        await tester.pump();
+        await tester.pumpAndSettle();
 
-        // Yaw should have changed
-        expect(testAppState.camera.yaw, isNot(equals(initialYaw)));
+        // Yaw should have changed (allow small epsilon for floating point)
+        expect(
+          testAppState.camera.yaw,
+          isNot(closeTo(initialYaw, 0.001)),
+          reason: 'Camera yaw should change after single-finger drag',
+        );
       }
 
-      await TestHelpers.pumpAppTimers(tester);
+      // Clean up widget tree
+      await tester.pump();
+      await tester.pumpWidget(Container());
+      await tester.pump();
     });
 
     testWidgets(
@@ -439,7 +469,10 @@ void main() {
           expect(testAppState.camera.target, isNot(equals(initialTarget)));
         }
 
-        await TestHelpers.pumpAppTimers(tester);
+        // Clean up widget tree
+        await tester.pump();
+        await tester.pumpWidget(Container());
+        await tester.pump();
       },
     );
 

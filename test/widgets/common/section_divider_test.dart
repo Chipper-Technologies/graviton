@@ -55,7 +55,7 @@ void main() {
       WidgetTester tester,
     ) async {
       // Arrange
-      const customColor = Colors.red;
+      const customColor = AppColors.uiRed;
 
       // Act
       await tester.pumpWidget(
@@ -73,7 +73,7 @@ void main() {
       WidgetTester tester,
     ) async {
       // Arrange
-      const customColor = Colors.blue;
+      const customColor = AppColors.primaryColor;
       const labelText = 'Custom Section';
 
       // Act
@@ -170,7 +170,7 @@ void main() {
       const customStyle = TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: Colors.green,
+        color: AppColors.uiGreen,
       );
 
       // Act
@@ -188,7 +188,7 @@ void main() {
       final textWidget = tester.widget<Text>(find.text(labelText));
       expect(textWidget.style?.fontSize, equals(20));
       expect(textWidget.style?.fontWeight, equals(FontWeight.bold));
-      expect(textWidget.style?.color, equals(Colors.green));
+      expect(textWidget.style?.color, equals(AppColors.uiGreen));
     });
 
     testWidgets('should apply top and bottom spacing', (
@@ -295,10 +295,10 @@ void main() {
           MaterialApp(
             theme: ThemeData(
               textTheme: const TextTheme(
-                titleSmall: TextStyle(color: Colors.purple),
+                titleSmall: TextStyle(color: AppColors.stellarOType),
               ),
               colorScheme: const ColorScheme.light(
-                onSurfaceVariant: Colors.orange,
+                onSurfaceVariant: AppColors.uiOrangeAccent,
               ),
             ),
             home: Scaffold(body: SectionDivider.labeled(labelText)),
@@ -309,7 +309,7 @@ void main() {
         expect(find.text(labelText), findsOneWidget);
 
         final textWidget = tester.widget<Text>(find.text(labelText));
-        expect(textWidget.style?.color, equals(Colors.orange));
+        expect(textWidget.style?.color, equals(AppColors.uiOrangeAccent));
         expect(textWidget.style?.fontWeight, equals(FontWeight.w500));
       },
     );
@@ -319,8 +319,8 @@ void main() {
     ) async {
       // Arrange
       const labelText = 'Full Custom Section';
-      const customStyle = TextStyle(color: Colors.red, fontSize: 18);
-      const customColor = Colors.blue;
+      const customStyle = TextStyle(color: AppColors.uiRed, fontSize: 18);
+      const customColor = AppColors.primaryColor;
       const customThickness = 2.0;
       const customLabelPadding = 20.0;
       const customTopSpacing = 10.0;
@@ -351,7 +351,7 @@ void main() {
 
       // Check text style
       final textWidget = tester.widget<Text>(find.text(labelText));
-      expect(textWidget.style?.color, equals(Colors.red));
+      expect(textWidget.style?.color, equals(AppColors.uiRed));
       expect(textWidget.style?.fontSize, equals(18));
 
       // Check padding

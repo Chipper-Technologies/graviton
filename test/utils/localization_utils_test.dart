@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/habitability_status.dart';
-import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/core/enums/habitability_status.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/utils/localization_utils.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

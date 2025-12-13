@@ -1,4 +1,4 @@
-import 'package:graviton/services/haptic_feedback_service.dart';
+import 'package:graviton/services/ui/haptic_feedback_service.dart';
 
 /// Utility class for common haptic feedback patterns
 class HapticUtils {

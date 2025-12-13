@@ -418,6 +418,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gravityFieldsTitle => 'Gravity Fields';
 
   @override
+  String get relativisticEffectsTitle => 'Relativistic Effects';
+
+  @override
+  String get relativisticEffectsDescription =>
+      'Apply post-Newtonian corrections for high-speed objects';
+
+  @override
+  String get relativisticGlowTitle => 'Relativistic Glow';
+
+  @override
+  String get relativisticGlowDescription =>
+      'Visualize time dilation with velocity-based glow';
+
+  @override
+  String get tidalForcesTitle => 'Tidal Forces';
+
+  @override
+  String get tidalForcesDescription =>
+      'Calculate tidal deformation and heating effects';
+
+  @override
+  String get tidalVisualizationTitle => 'Tidal Visualization';
+
+  @override
+  String get tidalVisualizationDescription =>
+      'Show tidal stress and deformation axes';
+
+  @override
   String get gravityWellsDescription =>
       'Show gravitational field strength around objects';
 
@@ -509,6 +537,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addBodyButton => 'Add Body';
+
+  @override
+  String get tapToEnableAddBodyMode =>
+      'Tap to enable add body mode - click on canvas to place new bodies';
+
+  @override
+  String get tapToDisableAddBodyMode =>
+      'Tap to disable add body mode and return to normal interaction';
+
+  @override
+  String get addBodyModeActive => 'Add Body Mode Active';
+
+  @override
+  String get addBodyModeInactive => 'Add Body Mode Inactive';
+
+  @override
+  String get tapToPlaceBody => 'Tap anywhere on the canvas to place a new body';
+
+  @override
+  String get bodyPlacedSuccessfully => 'Body placed successfully';
 
   @override
   String get addCelestialBodiesToCreateYourCustomScenarioEditor =>
@@ -1243,6 +1291,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get bodyNewDefault => 'New Body';
+
+  @override
+  String get bodyPlacementTooClose =>
+      'Too close to existing body - please tap elsewhere';
+
+  @override
   String get bodyInnerPlanet => 'Inner Planet';
 
   @override
@@ -1743,6 +1798,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get habitabilityIndicatorsLabel => 'Planet Status';
+
+  @override
+  String get stellarCoronasTitle => 'Stellar Coronas';
+
+  @override
+  String get stellarCoronasDescription =>
+      'Show glowing plasma atmospheres around stars';
+
+  @override
+  String get atmosphericEffectsTitle => 'Atmospheric Effects';
+
+  @override
+  String get atmosphericEffectsDescription =>
+      'Display atmospheric halos and scattering on planets';
+
+  @override
+  String get hemisphereLightingTitle => 'Hemisphere Lighting';
+
+  @override
+  String get hemisphereLightingDescription =>
+      'Simulate realistic 3D lighting on spherical bodies';
+
+  @override
+  String get castShadowsTitle => 'Cast Shadows';
+
+  @override
+  String get castShadowsDescription =>
+      'Show shadows when bodies occlude light sources';
+
+  @override
+  String get specularHighlightsTitle => 'Specular Highlights';
+
+  @override
+  String get specularHighlightsDescription =>
+      'Display reflective highlights on icy and water surfaces';
+
+  @override
+  String get lightingEffectsLabel => 'Lighting & Shadows';
 
   @override
   String get habitabilityLabel => 'Habitability';

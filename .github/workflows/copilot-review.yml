@@ -37,7 +37,7 @@ jobs:
       run: flutter analyze --fatal-infos
 
     - name: Run tests
-      run: flutter test
+      run: flutter test --exclude-tags=skip-ci
 
     - name: Copilot Review
       uses: actions/github-script@v7

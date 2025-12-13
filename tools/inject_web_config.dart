@@ -25,20 +25,30 @@ void main(List<String> args) {
   // Read config file
   final configJson = jsonDecode(configFile.readAsStringSync());
   final googleWebClientId = configJson['google.webClientId'] as String?;
+  final environment = configJson['environment'] as String? ?? 'dev';
 
   if (googleWebClientId == null) {
     exit(1);
   }
 
-  // Read index.html
-  final indexHtmlPath = 'web/index.html';
-  final indexHtmlFile = File(indexHtmlPath);
+  // Determine which index.html to modify
+  // If build/web/index.html exists, modify it (post-build)
+  // Otherwise modify web/index.html (pre-build)
+  final buildIndexHtmlPath = 'build/web/index.html';
+  final sourceIndexHtmlPath = 'web/index.html';
 
-  if (!indexHtmlFile.existsSync()) {
+  final buildIndexHtmlFile = File(buildIndexHtmlPath);
+  final sourceIndexHtmlFile = File(sourceIndexHtmlPath);
+
+  final targetFile = buildIndexHtmlFile.existsSync()
+      ? buildIndexHtmlFile
+      : sourceIndexHtmlFile;
+
+  if (!targetFile.existsSync()) {
     exit(1);
   }
 
-  var indexHtmlContent = indexHtmlFile.readAsStringSync();
+  var indexHtmlContent = targetFile.readAsStringSync();
 
   // Replace template variable
   indexHtmlContent = indexHtmlContent.replaceAll(
@@ -46,6 +56,68 @@ void main(List<String> args) {
     googleWebClientId,
   );
 
-  // Write back to index.html
-  indexHtmlFile.writeAsStringSync(indexHtmlContent);
+  // Add console silencing script for production builds
+  if (environment == 'prod' &&
+      !indexHtmlContent.contains('Silence console logs in production')) {
+    const consoleSilenceScript = '''
+<script>
+    // Silence console logs in production
+    (function() {
+      if (typeof window === 'undefined') return;
+      
+      // Store original console methods
+      const originalError = console.error;
+      const originalWarn = console.warn;
+      
+      // Suppress all standard logging
+      console.log = function() {};
+      console.debug = function() {};
+      console.info = function() {};
+      
+      // Filter console.warn to suppress browser violations/interventions
+      console.warn = function(...args) {
+        const message = args.join(' ');
+        
+        // Filter out performance violations and interventions
+        if (message.includes('Violation') ||
+            message.includes('Intervention') ||
+            message.includes('requestAnimationFrame') ||
+            message.includes('navigator.vibrate')) {
+          return;
+        }
+        
+        // Pass through other warnings
+        originalWarn.apply(console, args);
+      };
+      
+      // Filter console.error to suppress known non-critical messages
+      console.error = function(...args) {
+        const message = args.join(' ');
+        
+        // Filter out known Flutter/browser noise
+        if (message.includes('Intervention') ||
+            message.includes('Violation') ||
+            message.includes('requestAnimationFrame') ||
+            message.includes('TrustedTypes') ||
+            message.includes('service worker') ||
+            message.includes('Loading from existing') ||
+            message.includes('navigator.vibrate')) {
+          return;
+        }
+        
+        // Pass through actual errors
+        originalError.apply(console, args);
+      };
+    })();
+  </script>''';
+
+    // Inject before closing </head> tag
+    indexHtmlContent = indexHtmlContent.replaceFirst(
+      '</head>',
+      '$consoleSilenceScript\n</head>',
+    );
+  }
+
+  // Write back to the target file
+  targetFile.writeAsStringSync(indexHtmlContent);
 }

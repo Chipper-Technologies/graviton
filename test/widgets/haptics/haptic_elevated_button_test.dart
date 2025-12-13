@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/haptics/haptic_elevated_button.dart';
-import 'package:graviton/services/haptic_feedback_service.dart';
+import 'package:graviton/services/ui/haptic_feedback_service.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('HapticElevatedButton Tests', () {
@@ -83,7 +84,7 @@ void main() {
 
     testWidgets('should pass through all button properties', (tester) async {
       const style = ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(Colors.red),
+        backgroundColor: WidgetStatePropertyAll(AppColors.uiRed),
       );
 
       await tester.pumpWidget(

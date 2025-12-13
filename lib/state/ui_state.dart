@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/constants/rendering_constants.dart';
-import 'package:graviton/enums/cinematic_camera_technique.dart';
-import 'package:graviton/enums/gravity_field_color_scheme.dart';
-import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/enums/temperature_unit.dart';
-import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/core/constants/rendering_constants.dart';
+import 'package:graviton/core/enums/add_body_mode.dart';
+import 'package:graviton/core/enums/body_movement_mode.dart';
+import 'package:graviton/core/enums/cinematic_camera_technique.dart';
+import 'package:graviton/core/enums/gravity_field_color_scheme.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
+import 'package:graviton/core/enums/temperature_unit.dart';
+import 'package:graviton/services/firebase/firebase_service.dart';
 import 'package:graviton/utils/safe_haptic_feedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +25,9 @@ class UIState extends ChangeNotifier {
   bool _enableUIHapticFeedback = true;
   bool _enableCollisionHapticFeedback = true;
   double _uiOpacity = RenderingConstants.defaultUIOpacity;
+  AddBodyMode _addBodyMode = AddBodyMode.inactive;
+  BodyMovementMode _bodyMovementMode = BodyMovementMode.inactive;
+  int? _movingBodyIndex; // Index of the body currently being moved
 
   // Gravity field settings
   bool _globalGravityFields = true;
@@ -40,6 +45,15 @@ class UIState extends ChangeNotifier {
   bool _showCollisionShockwaves = true;
   bool _showCollisionEjection = true;
   bool _showCollisionPlasmaJets = false;
+
+  // Stellar and atmospheric visual effects settings
+  bool _showStellarCoronas = true;
+  bool _showAtmosphericEffects = false;
+
+  // Lighting and shadow settings
+  bool _enableHemisphereLighting = true;
+  bool _enableCastShadows = false;
+  bool _enableSpecularHighlights = false;
 
   // Language settings
   String? _selectedLanguageCode; // null means system default
@@ -91,6 +105,11 @@ class UIState extends ChangeNotifier {
   static const String _keyShowCollisionShockwaves = 'showCollisionShockwaves';
   static const String _keyShowCollisionEjection = 'showCollisionEjection';
   static const String _keyShowCollisionPlasmaJets = 'showCollisionPlasmaJets';
+  static const String _keyShowStellarCoronas = 'showStellarCoronas';
+  static const String _keyShowAtmosphericEffects = 'showAtmosphericEffects';
+  static const String _keyEnableHemisphereLighting = 'enableHemisphereLighting';
+  static const String _keyEnableCastShadows = 'enableCastShadows';
+  static const String _keyEnableSpecularHighlights = 'enableSpecularHighlights';
   static const String _keySelectedLanguageCode = 'selectedLanguageCode';
   static const String _keyTemperatureUnit = 'temperatureUnit';
   static const String _keyCinematicCameraTechnique = 'cinematicCameraTechnique';
@@ -179,6 +198,18 @@ class UIState extends ChangeNotifier {
       _showCollisionPlasmaJets =
           prefs.getBool(_keyShowCollisionPlasmaJets) ?? false;
 
+      // Load stellar and atmospheric visual effects settings
+      _showStellarCoronas = prefs.getBool(_keyShowStellarCoronas) ?? true;
+      _showAtmosphericEffects =
+          prefs.getBool(_keyShowAtmosphericEffects) ?? false;
+
+      // Load lighting and shadow settings
+      _enableHemisphereLighting =
+          prefs.getBool(_keyEnableHemisphereLighting) ?? true;
+      _enableCastShadows = prefs.getBool(_keyEnableCastShadows) ?? false;
+      _enableSpecularHighlights =
+          prefs.getBool(_keyEnableSpecularHighlights) ?? false;
+
       _selectedLanguageCode = prefs.getString(_keySelectedLanguageCode);
 
       // Load temperature unit setting
@@ -263,6 +294,15 @@ class UIState extends ChangeNotifier {
   bool get showCollisionEjection => _showCollisionEjection;
   bool get showCollisionPlasmaJets => _showCollisionPlasmaJets;
 
+  // Stellar and atmospheric visual effects getters
+  bool get showStellarCoronas => _showStellarCoronas;
+  bool get showAtmosphericEffects => _showAtmosphericEffects;
+
+  // Lighting and shadow getters
+  bool get enableHemisphereLighting => _enableHemisphereLighting;
+  bool get enableCastShadows => _enableCastShadows;
+  bool get enableSpecularHighlights => _enableSpecularHighlights;
+
   // Gravity field getters
   bool get globalGravityFields => _globalGravityFields;
   GravityFieldColorScheme get gravityFieldColorScheme =>
@@ -287,7 +327,56 @@ class UIState extends ChangeNotifier {
   // Fullscreen mode getters
   bool get isFullscreen => _isFullscreen;
 
+  // Add body mode getters
+  AddBodyMode get addBodyMode => _addBodyMode;
+  bool get isAddBodyModeActive => _addBodyMode.isActive;
+
+  // Body movement mode getters
+  BodyMovementMode get bodyMovementMode => _bodyMovementMode;
+  bool get isBodyMovementModeActive => _bodyMovementMode.isActive;
+  int? get movingBodyIndex => _movingBodyIndex;
+
   // Setters
+  void toggleAddBodyMode() {
+    _addBodyMode = _addBodyMode.isActive
+        ? AddBodyMode.inactive
+        : AddBodyMode.active;
+    FirebaseService.instance.logUIEvent(
+      'add_body_mode_toggled',
+      element: 'body_creation_toggle',
+      additionalParams: {'mode': _addBodyMode.name},
+    );
+    notifyListeners();
+  }
+
+  void setAddBodyMode(AddBodyMode mode) {
+    if (_addBodyMode != mode) {
+      _addBodyMode = mode;
+      notifyListeners();
+    }
+  }
+
+  void startBodyMovement(int bodyIndex) {
+    _bodyMovementMode = BodyMovementMode.active;
+    _movingBodyIndex = bodyIndex;
+    FirebaseService.instance.logUIEvent(
+      'body_movement_started',
+      element: 'body_drag_handle',
+      additionalParams: {'body_index': bodyIndex.toString()},
+    );
+    notifyListeners();
+  }
+
+  void stopBodyMovement() {
+    _bodyMovementMode = BodyMovementMode.inactive;
+    _movingBodyIndex = null;
+    FirebaseService.instance.logUIEvent(
+      'body_movement_stopped',
+      element: 'body_drag_handle',
+    );
+    notifyListeners();
+  }
+
   void toggleTrails() {
     _showTrails = !_showTrails;
     _saveSetting(_keyShowTrails, _showTrails);
@@ -466,6 +555,58 @@ class UIState extends ChangeNotifier {
     FirebaseService.instance.logSettingsChange(
       'show_collision_plasma_jets',
       _showCollisionPlasmaJets,
+    );
+    notifyListeners();
+  }
+
+  // Stellar and atmospheric visual effects setters
+  void toggleStellarCoronas() {
+    _showStellarCoronas = !_showStellarCoronas;
+    _saveSetting(_keyShowStellarCoronas, _showStellarCoronas);
+    FirebaseService.instance.logSettingsChange(
+      'show_stellar_coronas',
+      _showStellarCoronas,
+    );
+    notifyListeners();
+  }
+
+  void toggleAtmosphericEffects() {
+    _showAtmosphericEffects = !_showAtmosphericEffects;
+    _saveSetting(_keyShowAtmosphericEffects, _showAtmosphericEffects);
+    FirebaseService.instance.logSettingsChange(
+      'show_atmospheric_effects',
+      _showAtmosphericEffects,
+    );
+    notifyListeners();
+  }
+
+  // Lighting and shadow setters
+  void toggleHemisphereLighting() {
+    _enableHemisphereLighting = !_enableHemisphereLighting;
+    _saveSetting(_keyEnableHemisphereLighting, _enableHemisphereLighting);
+    FirebaseService.instance.logSettingsChange(
+      'enable_hemisphere_lighting',
+      _enableHemisphereLighting,
+    );
+    notifyListeners();
+  }
+
+  void toggleCastShadows() {
+    _enableCastShadows = !_enableCastShadows;
+    _saveSetting(_keyEnableCastShadows, _enableCastShadows);
+    FirebaseService.instance.logSettingsChange(
+      'enable_cast_shadows',
+      _enableCastShadows,
+    );
+    notifyListeners();
+  }
+
+  void toggleSpecularHighlights() {
+    _enableSpecularHighlights = !_enableSpecularHighlights;
+    _saveSetting(_keyEnableSpecularHighlights, _enableSpecularHighlights);
+    FirebaseService.instance.logSettingsChange(
+      'enable_specular_highlights',
+      _enableSpecularHighlights,
     );
     notifyListeners();
   }

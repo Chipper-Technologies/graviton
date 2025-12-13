@@ -5,6 +5,110 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2025-12-13
+
+### Added
+- **Relativistic Effects and Tidal Force Physics**: Advanced physics simulation for high-velocity objects and gravitational tidal interactions
+  - **Relativistic Physics**: Post-Newtonian corrections for objects approaching light speed
+    - 1PN (first-order post-Newtonian) corrections for velocity-dependent gravitational effects
+    - Time dilation calculations using Lorentz factor (γ = 1/√(1-β²))
+    - Speed-dependent visual glow effects with blue-shift color transitions
+    - Configurable speed of light in simulation units (15.0 default)
+    - Maximum velocity capping at 95% light speed for numerical stability
+    - UI toggle controls with real-time parameter adjustment
+  - **Tidal Force Physics**: Gravitational tidal tensor calculations and Roche limit detection
+    - Tidal tensor analysis for bodies experiencing differential gravitational forces
+    - Roche limit calculations for detecting gravitational breakup potential
+    - Tidal stress visualization with color-coded intensity (orange → red gradient)
+    - Tidal axis indicators showing principal stretch/compression directions
+    - Multi-body tidal interaction support (considers up to 3 nearest massive bodies)
+    - Configurable tidal heating and stress thresholds
+  - **Physics Constants and Configuration**:
+    - `AuthConstants`: Rate-limiting configuration for authentication (5 attempts, 15min cooldown)
+    - `RelativisticConstants`: Speed of light, thresholds, and PN correction toggles
+    - `TidalConstants`: Roche limits, heating rates, and visualization thresholds
+    - `RenderingConstants`: 8 new constants for relativistic/tidal visual effects
+  - **Visual Effects**:
+    - Relativistic glow with dual-layer gradient (outer/inner) scaling with velocity
+    - Blue-shift color blending approaching white at extreme speeds (0.7 blend ratio)
+    - Tidal stress overlays with radial gradient effects
+    - Semantic color constants: `relativisticBlue`, `tidalStressOrange`, `tidalStressRed`
+  - **Code Quality Improvements**:
+    - Extracted all magic numbers to named constants (AppTypography, RenderingConstants)
+    - Consistent use of AppColors semantic constants (zero tolerance for hardcoded colors)
+    - One class per file organization with dedicated unit tests
+    - Comprehensive documentation with mathematical formulas and usage examples
+  - **Test Coverage**: 296+ physics tests covering all new features
+    - 33 relativistic physics tests (Lorentz factor, 1PN/2PN corrections, momentum/energy)
+    - 54 simulation integration tests (RK4 integration, tidal tensor calculations)
+    - 28 relativistic constants tests
+    - 55 rendering constants tests (including 6 new relativistic + 3 tidal tests)
+    - 4 auth constants tests
+  - **Localization**: Full translation support across all 7 languages for new physics controls
+- **Advanced 3D Lighting and Shadow System**: Comprehensive visual enhancement suite with physically-based rendering
+  - **Hemisphere Lighting**: Realistic 3D illumination simulation for spherical bodies
+    - Light source direction calculation with day/night gradient transitions
+    - Multiple light source blending for binary/trinary star systems (up to 3 sources)
+    - Inverse square law distance-based intensity calculations
+    - Weighted directional blending prioritizing brightest/closest stars
+    - Toggle control with Firebase Analytics tracking and persistence
+  - **Cast Shadows**: Dynamic shadow rendering with umbra/penumbra regions
+    - Bodies cast shadows when occluding light sources
+    - Penumbra (soft shadow) and umbra (full shadow) with proper angular detection
+    - Binary star system support with multiple shadow sources
+    - Distance-based shadow intensity calculations
+    - Toggle control with state management integration
+  - **Specular Highlights**: Phong shading model for reflective surfaces
+    - Angle-dependent highlight intensity using Phong reflection model
+    - Albedo-based scaling for different surface types (ice: 0.9, water: 0.06, rock: 0.15, gas giants: 0.52)
+    - Body-specific reflectivity calculations (8 albedo types)
+    - Additive blending for bright highlight effects
+    - Toggle control with UI integration
+  - **Atmospheric Scattering**: Sunrise/sunset glow effects on illuminated hemispheres
+    - Orange/red scattering along terminator (day/night boundary)
+    - Scales with light intensity from multiple sources
+    - Planet-only application (excludes moons and asteroids)
+    - Integrated with hemisphere lighting system
+  - **UI Integration**: Three toggle switches in Visuals settings panel
+    - Descriptive icons and labels for each lighting feature
+    - Firebase Analytics event tracking for all toggles
+    - SharedPreferences persistence for user preferences
+    - Seamless integration with existing visual controls
+  - **Localization**: Full translation support across all 7 languages
+    - English, Spanish, French, German, Japanese, Chinese (Simplified), Korean
+    - Descriptive titles and technical explanations
+  - **Test Coverage**: Extensive unit and integration tests (5,808 tests passing)
+    - 205 lighting-specific tests covering all features
+    - 53 painter tests for shadow/highlight rendering
+    - 4 enhancement feature integration tests
+    - Zero code analysis errors, 100% pass rate
+- **Stellar Coronas and Atmospheric Effects**: Configurable visual enhancements for stars and planets
+  - **Stellar Coronas**: Glowing plasma atmospheres around stars with temperature-adaptive colors
+  - **Atmospheric Effects**: Planet-specific atmospheric halos with scientifically-tuned intensities
+  - **UI Controls**: Toggle switches with descriptive icons (☀️ coronas, ☁️ atmospheres)
+  - **Localization**: Full translation support across all 7 languages
+- **Dynamic Stellar Activity**: Hour-based sunspot and solar flare randomization
+  - Hourly seed generation for more frequent variation
+  - Correlated solar flares originating from sunspot regions (75% correlation)
+  - Cached performance preventing flickering
+- **Custom Bodies System**: Interactive body creation and manipulation
+  - Tap-to-place mode for adding celestial bodies during simulation
+  - Single-finger drag gesture for repositioning bodies
+  - Per-body realistic color control with custom override capability
+  - Real-time 3D position calculation from screen coordinates
+- **Firebase Performance Monitoring**: Cross-platform performance tracking
+  - Custom trace tracking for critical operations
+  - HTTP metrics for API call monitoring
+  - Dedicated PerformanceService with comprehensive test coverage
+- **Camera Gimbal Lock Prevention**: Enhanced 3D navigation stability
+  - Pitch angle clamping to ±1.5 radians (~86°) preventing singularity
+  - Stable yaw rotation at all pitch angles
+  - Comprehensive test coverage (28 test cases)
+
+### Improved
+- **Build Process**: Production web builds now properly chain Firebase configuration injection
+- **3D Camera Controls**: Smoother rotation behavior near vertical viewing angles
+
 ## [1.6.0] - 2025-12-06
 
 ### Added

@@ -169,7 +169,7 @@ class _ColorPickerState extends State<ColorPicker> {
                       )?.colorOptionTooltip(_getColorName(context, color)) ??
                       'Select ${_getColorName(context, color)} color for celestial body',
                   child: Material(
-                    color: Colors.transparent,
+                    color: AppColors.transparentColor,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(size / 2),
                       onTap: widget.enabled

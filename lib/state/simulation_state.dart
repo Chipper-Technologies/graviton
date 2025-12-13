@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/constants/simulation_constants.dart';
-import 'package:graviton/enums/firebase_event.dart';
-import 'package:graviton/enums/scenario_type.dart';
-import 'package:graviton/enums/simulation_status.dart';
-import 'package:graviton/enums/ui_action.dart';
-import 'package:graviton/enums/ui_element.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
+import 'package:graviton/core/enums/firebase_event.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
+import 'package:graviton/core/enums/simulation_status.dart';
+import 'package:graviton/core/enums/ui_action.dart';
+import 'package:graviton/core/enums/ui_element.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/body.dart';
-import 'package:graviton/models/merge_flash.dart';
-import 'package:graviton/models/physics_settings.dart';
-import 'package:graviton/models/trail_point.dart';
-import 'package:graviton/services/accessibility_service.dart';
-import 'package:graviton/services/firebase_service.dart';
-import 'package:graviton/services/haptic_feedback_service.dart';
-import 'package:graviton/services/simulation.dart' as physics;
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/models/effects/merge_flash.dart';
+import 'package:graviton/models/physics/physics_settings.dart';
+import 'package:graviton/models/effects/trail_point.dart';
+import 'package:graviton/services/ui/accessibility_service.dart';
+import 'package:graviton/services/firebase/firebase_service.dart';
+import 'package:graviton/services/ui/haptic_feedback_service.dart';
+import 'package:graviton/services/simulation/simulation.dart' as physics;
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Manages the simulation state and physics
@@ -143,6 +143,12 @@ class SimulationState extends ChangeNotifier {
   List<Body> get bodies => _simulation.bodies;
   List<List<TrailPoint>> get trails => _simulation.trails;
   List<MergeFlash> get mergeFlashes => _simulation.mergeFlashes;
+
+  // Physics settings getters
+  bool get enableRelativisticEffects => _simulation.enableRelativisticEffects;
+  bool get showRelativisticGlow => _simulation.showRelativisticGlow;
+  bool get enableTidalForces => _simulation.enableTidalForces;
+  bool get showTidalVisualization => _simulation.showTidalVisualization;
 
   // Physics control
   void start() {
@@ -457,6 +463,38 @@ class SimulationState extends ChangeNotifier {
   /// Update vibration setting in the simulation
   void setVibrationEnabled(bool enabled) {
     _simulation.setVibrationEnabled(enabled);
+  }
+
+  /// Toggle relativistic effects
+  void toggleRelativisticEffects() {
+    _simulation.updatePhysicsSettings(
+      enableRelativisticEffects: !_simulation.enableRelativisticEffects,
+    );
+    notifyListeners();
+  }
+
+  /// Toggle relativistic glow visualization
+  void toggleRelativisticGlow() {
+    _simulation.updatePhysicsSettings(
+      showRelativisticGlow: !_simulation.showRelativisticGlow,
+    );
+    notifyListeners();
+  }
+
+  /// Toggle tidal forces
+  void toggleTidalForces() {
+    _simulation.updatePhysicsSettings(
+      enableTidalForces: !_simulation.enableTidalForces,
+    );
+    notifyListeners();
+  }
+
+  /// Toggle tidal visualization
+  void toggleTidalVisualization() {
+    _simulation.updatePhysicsSettings(
+      showTidalVisualization: !_simulation.showTidalVisualization,
+    );
+    notifyListeners();
   }
 
   /// Apply physics settings to the simulation

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/models/dialog_action.dart';
+import 'package:graviton/models/ui/dialog_action.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
+import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
 
 import '../../test_utils.dart';
@@ -85,7 +86,7 @@ void main() {
     testWidgets('should use custom icon color when provided', (
       WidgetTester tester,
     ) async {
-      const customColor = Colors.orange;
+      const customColor = AppColors.uiOrangeAccent;
 
       await tester.pumpWidget(
         TestUtils.wrapWithMaterialApp(
@@ -110,8 +111,10 @@ void main() {
         DialogAction(
           text: 'Custom Action',
           onPressed: () {},
-          textColor: Colors.red,
-          backgroundColor: Colors.yellow.withAlpha(50),
+          textColor: AppColors.uiRed,
+          backgroundColor: AppColors.stellarGType.withValues(
+            alpha: AppTypography.opacityVeryFaint,
+          ),
           fontWeight: FontWeight.bold,
         ),
       ];
@@ -156,7 +159,7 @@ void main() {
     testWidgets('should apply custom background color when provided', (
       WidgetTester tester,
     ) async {
-      const customBackground = Colors.purple;
+      const customBackground = AppColors.stellarOType;
 
       await tester.pumpWidget(
         TestUtils.wrapWithMaterialApp(

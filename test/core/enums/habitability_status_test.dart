@@ -1,0 +1,250 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/core/enums/habitability_status.dart';
+
+void main() {
+  group('HabitabilityStatus Enum', () {
+    test('should have all expected habitability statuses', () {
+      expect(HabitabilityStatus.values.length, equals(11));
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.habitable));
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.tooHot));
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.tooCold));
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.gasGiant));
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.tooSmall));
+      expect(
+        HabitabilityStatus.values,
+        contains(HabitabilityStatus.noAtmosphere),
+      );
+      expect(
+        HabitabilityStatus.values,
+        contains(HabitabilityStatus.toxicAtmosphere),
+      );
+      expect(
+        HabitabilityStatus.values,
+        contains(HabitabilityStatus.highRadiation),
+      );
+      expect(
+        HabitabilityStatus.values,
+        contains(HabitabilityStatus.tidallyLocked),
+      );
+      expect(
+        HabitabilityStatus.values,
+        contains(HabitabilityStatus.extremeGravity),
+      );
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.unknown));
+    });
+
+    group('statusColor extension', () {
+      test('should return correct colors for each status', () {
+        expect(
+          HabitabilityStatus.habitable.statusColor,
+          equals(0xFF4CAF50),
+        ); // Green
+        expect(
+          HabitabilityStatus.tooHot.statusColor,
+          equals(0xFFF44336),
+        ); // Red
+        expect(
+          HabitabilityStatus.tooCold.statusColor,
+          equals(0xFF2196F3),
+        ); // Blue
+        expect(
+          HabitabilityStatus.unknown.statusColor,
+          equals(0xFF9E9E9E),
+        ); // Grey
+        expect(
+          HabitabilityStatus.gasGiant.statusColor,
+          equals(0xFFFF9800),
+        ); // Orange
+        expect(
+          HabitabilityStatus.tooSmall.statusColor,
+          equals(0xFF795548),
+        ); // Brown
+        expect(
+          HabitabilityStatus.noAtmosphere.statusColor,
+          equals(0xFF607D8B),
+        ); // Blue grey
+        expect(
+          HabitabilityStatus.toxicAtmosphere.statusColor,
+          equals(0xFF9C27B0),
+        ); // Purple
+        expect(
+          HabitabilityStatus.highRadiation.statusColor,
+          equals(0xFFE91E63),
+        ); // Pink
+        expect(
+          HabitabilityStatus.tidallyLocked.statusColor,
+          equals(0xFFFF5722),
+        ); // Deep orange
+        expect(
+          HabitabilityStatus.extremeGravity.statusColor,
+          equals(0xFF3F51B5),
+        ); // Indigo
+      });
+
+      test('should use semantically appropriate colors', () {
+        // Green for habitable (positive) - check that green component is significant
+        final habitableColor = HabitabilityStatus.habitable.statusColor;
+        final habitableGreen = (habitableColor >> 8) & 0xFF;
+        final habitableRed = (habitableColor >> 16) & 0xFF;
+        final habitableBlue = habitableColor & 0xFF;
+        expect(
+          habitableGreen,
+          greaterThan(habitableBlue),
+          reason: 'Habitable should have more green than blue',
+        );
+        expect(
+          habitableGreen,
+          greaterThan(habitableRed),
+          reason: 'Habitable should have more green than red',
+        );
+
+        // Red for too hot - check that red component is significant
+        final hotColor = HabitabilityStatus.tooHot.statusColor;
+        final hotRed = (hotColor >> 16) & 0xFF;
+        final hotGreen = (hotColor >> 8) & 0xFF;
+        final hotBlue = hotColor & 0xFF;
+        expect(
+          hotRed,
+          greaterThan(hotGreen),
+          reason: 'Too hot should have more red than green',
+        );
+        expect(
+          hotRed,
+          greaterThan(hotBlue),
+          reason: 'Too hot should have more red than blue',
+        );
+
+        // Blue for too cold - check that blue component is significant
+        final coldColor = HabitabilityStatus.tooCold.statusColor;
+        final coldBlue = coldColor & 0xFF;
+        final coldRed = (coldColor >> 16) & 0xFF;
+        final coldGreen = (coldColor >> 8) & 0xFF;
+        expect(
+          coldBlue,
+          greaterThan(coldRed),
+          reason: 'Too cold should have more blue than red',
+        );
+        expect(
+          coldBlue,
+          greaterThan(coldGreen),
+          reason: 'Too cold should have more blue than green',
+        );
+      });
+
+      test('should have unique colors', () {
+        final colors = HabitabilityStatus.values
+            .map((status) => status.statusColor)
+            .toSet();
+        expect(
+          colors.length,
+          equals(HabitabilityStatus.values.length),
+          reason: 'All habitability statuses should have unique colors',
+        );
+      });
+    });
+
+    group('localizationKey extension', () {
+      test('should return correct localization keys', () {
+        expect(
+          HabitabilityStatus.habitable.localizationKey,
+          equals('habitabilityHabitable'),
+        );
+        expect(
+          HabitabilityStatus.tooHot.localizationKey,
+          equals('habitabilityTooHot'),
+        );
+        expect(
+          HabitabilityStatus.tooCold.localizationKey,
+          equals('habitabilityTooCold'),
+        );
+        expect(
+          HabitabilityStatus.unknown.localizationKey,
+          equals('habitabilityUnknown'),
+        );
+        expect(
+          HabitabilityStatus.gasGiant.localizationKey,
+          equals('habitabilityGasGiant'),
+        );
+        expect(
+          HabitabilityStatus.tooSmall.localizationKey,
+          equals('habitabilityTooSmall'),
+        );
+        expect(
+          HabitabilityStatus.noAtmosphere.localizationKey,
+          equals('habitabilityNoAtmosphere'),
+        );
+        expect(
+          HabitabilityStatus.toxicAtmosphere.localizationKey,
+          equals('habitabilityToxicAtmosphere'),
+        );
+        expect(
+          HabitabilityStatus.highRadiation.localizationKey,
+          equals('habitabilityHighRadiation'),
+        );
+        expect(
+          HabitabilityStatus.tidallyLocked.localizationKey,
+          equals('habitabilityTidallyLocked'),
+        );
+        expect(
+          HabitabilityStatus.extremeGravity.localizationKey,
+          equals('habitabilityExtremeGravity'),
+        );
+      });
+
+      test('should follow consistent naming pattern', () {
+        for (final status in HabitabilityStatus.values) {
+          final key = status.localizationKey;
+          expect(
+            key,
+            startsWith('habitability'),
+            reason: '$key should start with "habitability" prefix',
+          );
+          expect(
+            key,
+            matches(RegExp(r'^habitability[A-Z][a-zA-Z]*$')),
+            reason: '$key should follow camelCase pattern after prefix',
+          );
+        }
+      });
+
+      test('should have unique localization keys', () {
+        final keys = HabitabilityStatus.values
+            .map((status) => status.localizationKey)
+            .toSet();
+        expect(
+          keys.length,
+          equals(HabitabilityStatus.values.length),
+          reason:
+              'All habitability statuses should have unique localization keys',
+        );
+      });
+    });
+
+    test('should cover all potential habitability scenarios', () {
+      // Should have positive case
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.habitable));
+
+      // Should have temperature-based negative cases
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.tooHot));
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.tooCold));
+
+      // Should have fallback for undetermined cases
+      expect(HabitabilityStatus.values, contains(HabitabilityStatus.unknown));
+    });
+
+    test('should have extension methods for all enum values', () {
+      for (final status in HabitabilityStatus.values) {
+        // Verify all extension methods work without throwing
+        expect(() => status.statusColor, returnsNormally);
+        expect(() => status.localizationKey, returnsNormally);
+
+        // Verify return types
+        expect(status.statusColor, isA<int>());
+        expect(status.localizationKey, isA<String>());
+
+        // Verify non-empty returns
+        expect(status.localizationKey, isNotEmpty);
+      }
+    });
+  });
+}

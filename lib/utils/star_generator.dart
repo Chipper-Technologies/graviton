@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:graviton/constants/rendering_constants.dart';
+import 'package:graviton/core/constants/rendering_constants.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 

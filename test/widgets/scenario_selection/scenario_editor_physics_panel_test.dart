@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/scenario_physics_settings.dart';
-import 'package:graviton/models/particle_systems_config.dart';
-import 'package:graviton/widgets/scenario_selection/scenario_editor_physics_panel.dart';
+import 'package:graviton/features/scenarios/domain/scenario_physics_settings.dart';
+import 'package:graviton/features/scenarios/domain/particle_systems_config.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/scenario_editor_physics_panel.dart';
 import 'package:graviton/widgets/haptics/haptic_slider_option.dart';
 
 /// Test widget wrapper with localization support

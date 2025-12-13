@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/semantics/semantic_simulation_canvas.dart';
-import 'package:graviton/models/body.dart';
-import 'package:graviton/enums/simulation_status.dart';
+import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/core/enums/simulation_status.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 import '../../test_utils.dart';
+import 'package:graviton/theme/app_colors.dart';
 
 void main() {
   group('SemanticSimulationCanvas Initialization', () {
@@ -16,7 +17,7 @@ void main() {
           radius: 696340000,
           position: vm.Vector3(0, 0, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
         ),
       ];
 
@@ -30,7 +31,11 @@ void main() {
             cameraDistance: 1000.0,
             autoRotate: false,
             followMode: false,
-            child: Container(width: 200, height: 200, color: Colors.blue),
+            child: Container(
+              width: 200,
+              height: 200,
+              color: AppColors.primaryColor,
+            ),
           ),
         ),
       );
@@ -47,7 +52,7 @@ void main() {
           radius: 696340000,
           position: vm.Vector3(0, 0, 0),
           velocity: vm.Vector3(0, 0, 0),
-          color: Colors.yellow,
+          color: AppColors.stellarGType,
         ),
       ];
 
@@ -61,7 +66,11 @@ void main() {
             cameraDistance: 1000.0,
             autoRotate: false,
             followMode: false,
-            child: Container(width: 200, height: 200, color: Colors.blue),
+            child: Container(
+              width: 200,
+              height: 200,
+              color: AppColors.primaryColor,
+            ),
           ),
         ),
       );
@@ -77,7 +86,7 @@ void main() {
             cameraDistance: 2000.0,
             autoRotate: true,
             followMode: true,
-            child: Container(width: 200, height: 200, color: Colors.red),
+            child: Container(width: 200, height: 200, color: AppColors.uiRed),
           ),
         ),
       );

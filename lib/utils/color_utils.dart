@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:graviton/enums/celestial_body_name.dart';
-import 'package:graviton/enums/habitability_status.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/core/enums/celestial_body_name.dart';
+import 'package:graviton/core/enums/habitability_status.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:graviton/theme/app_colors.dart';
+import 'package:graviton/theme/app_typography.dart';
 
 /// Utility functions for color operations and celestial body color mapping
 class ColorUtils {
@@ -153,10 +154,10 @@ class ColorUtils {
     return RadialGradient(
       colors: [
         centerColor,
-        centerColor.withValues(alpha: 0.8),
-        centerColor.withValues(alpha: 0.4),
-        edgeColor.withValues(alpha: 0.1),
-        Colors.transparent,
+        edgeColor.withValues(alpha: AppTypography.opacityMedium),
+        edgeColor.withValues(alpha: AppTypography.opacityVeryFaint),
+        edgeColor.withValues(alpha: AppTypography.opacityTransparent),
+        AppColors.transparentColor,
       ],
       stops: const [0.0, 0.3, 0.6, 0.8, 1.0],
     );

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/config/flavor_config.dart';
-import 'package:graviton/enums/app_flavor.dart';
+import 'package:graviton/core/enums/app_flavor.dart';
 
 void main() {
   group('FlavorConfig', () {

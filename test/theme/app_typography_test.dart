@@ -328,17 +328,54 @@ void main() {
         expect(AppTypography.borderThin, equals(1.0));
         expect(AppTypography.borderMedium, equals(1.5));
         expect(AppTypography.borderThick, equals(2.0));
+        expect(AppTypography.borderExtraThick, equals(2.5));
+        expect(AppTypography.borderHeavy, equals(3.0));
+        expect(AppTypography.borderVeryThick, equals(4.0));
       });
 
       test('border widths should be in ascending order', () {
         expect(AppTypography.borderThin, lessThan(AppTypography.borderMedium));
         expect(AppTypography.borderMedium, lessThan(AppTypography.borderThick));
+        expect(
+          AppTypography.borderThick,
+          lessThan(AppTypography.borderExtraThick),
+        );
+        expect(
+          AppTypography.borderExtraThick,
+          lessThan(AppTypography.borderHeavy),
+        );
+        expect(
+          AppTypography.borderHeavy,
+          lessThan(AppTypography.borderVeryThick),
+        );
       });
 
       test('all border widths should be positive', () {
         expect(AppTypography.borderThin, greaterThan(0.0));
         expect(AppTypography.borderMedium, greaterThan(0.0));
         expect(AppTypography.borderThick, greaterThan(0.0));
+        expect(AppTypography.borderExtraThick, greaterThan(0.0));
+        expect(AppTypography.borderHeavy, greaterThan(0.0));
+        expect(AppTypography.borderVeryThick, greaterThan(0.0));
+      });
+    });
+
+    group('Blur Radius Constants', () {
+      test('should have correct blur radius values', () {
+        expect(AppTypography.blurSmall, equals(2.0));
+        expect(AppTypography.blurMedium, equals(8.0));
+        expect(AppTypography.blurLarge, equals(16.0));
+      });
+
+      test('blur radii should be in ascending order', () {
+        expect(AppTypography.blurSmall, lessThan(AppTypography.blurMedium));
+        expect(AppTypography.blurMedium, lessThan(AppTypography.blurLarge));
+      });
+
+      test('all blur radii should be positive', () {
+        expect(AppTypography.blurSmall, greaterThan(0.0));
+        expect(AppTypography.blurMedium, greaterThan(0.0));
+        expect(AppTypography.blurLarge, greaterThan(0.0));
       });
     });
 
@@ -356,6 +393,11 @@ void main() {
       test('should have correct avatar margin', () {
         expect(AppTypography.avatarMargin, equals(6.0));
         expect(AppTypography.avatarMargin, greaterThan(0.0));
+      });
+
+      test('should have correct button size standard', () {
+        expect(AppTypography.buttonSizeStandard, equals(36.0));
+        expect(AppTypography.buttonSizeStandard, greaterThan(0.0));
       });
 
       test('should have correct avatar selection size', () {
@@ -440,7 +482,7 @@ void main() {
     group('Helper Method Tests', () {
       group('textWithOpacity method', () {
         test('should create text style with correct color and opacity', () {
-          const testColor = Colors.white;
+          const testColor = AppColors.uiWhite;
           const testOpacity = 0.7;
 
           final textStyle = AppTypography.textWithOpacity(
@@ -458,7 +500,7 @@ void main() {
         });
 
         test('should use custom font size when provided', () {
-          const testColor = Colors.blue;
+          const testColor = AppColors.primaryColor;
           const testOpacity = 0.5;
           const customFontSize = 20.0;
 
@@ -476,7 +518,7 @@ void main() {
         });
 
         test('should handle edge case opacity values', () {
-          const testColor = Colors.red;
+          const testColor = AppColors.uiRed;
 
           // Test minimum opacity
           final transparentStyle = AppTypography.textWithOpacity(
@@ -508,7 +550,7 @@ void main() {
         });
 
         test('should create text shadow with custom parameters', () {
-          const customColor = Colors.blue;
+          const customColor = AppColors.primaryColor;
           const customOpacity = 0.5;
           const customBlurRadius = 4.0;
           const customOffset = Offset(2, 3);
@@ -561,7 +603,7 @@ void main() {
         });
 
         test('should create border with custom parameters', () {
-          const customColor = Colors.green;
+          const customColor = AppColors.uiGreen;
           const customOpacity = 0.6;
           const customWidth = 3.0;
 
@@ -693,7 +735,7 @@ void main() {
 
       test('should have appropriate defaults for helper methods', () {
         // Default font size for textWithOpacity should be small
-        const testColor = Colors.white;
+        const testColor = AppColors.uiWhite;
         final textStyle = AppTypography.textWithOpacity(testColor, 0.5);
         expect(
           textStyle.fontSize,

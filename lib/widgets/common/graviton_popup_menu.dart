@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/graviton_menu_item_config.dart';
-import 'package:graviton/services/firebase_service.dart';
+import 'package:graviton/models/ui/graviton_menu_item_config.dart';
+import 'package:graviton/services/firebase/firebase_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
-import 'package:graviton/enums/ui_action.dart';
-import 'package:graviton/enums/ui_element.dart';
+import 'package:graviton/core/enums/ui_action.dart';
+import 'package:graviton/core/enums/ui_element.dart';
 
 /// A reusable popup menu widget following Graviton's design system
 ///

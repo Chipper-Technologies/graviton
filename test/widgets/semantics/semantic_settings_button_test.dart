@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/widgets/semantics/semantic_settings_button.dart';
-import 'package:graviton/services/semantic_focus_service.dart';
+import 'package:graviton/services/ui/semantic_focus_service.dart';
 import 'package:graviton/theme/app_colors.dart';
 
 import '../../test_utils.dart';

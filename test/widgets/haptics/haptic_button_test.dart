@@ -240,8 +240,8 @@ void main() {
       testWidgets('uses custom colors when provided', (
         WidgetTester tester,
       ) async {
-        const customBg = Colors.purple;
-        const customFg = Colors.yellow;
+        const customBg = AppColors.stellarOType;
+        const customFg = AppColors.stellarGType;
 
         await tester.pumpWidget(
           TestUtils.wrapWithMaterialApp(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/services/semantic_focus_service.dart';
+import 'package:graviton/services/ui/semantic_focus_service.dart';
 
 /// Semantic wrapper for scenario selector with proper focus management
 class SemanticScenarioSelector extends StatelessWidget {

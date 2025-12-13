@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/enums/scenario_type.dart';
+import 'package:graviton/core/enums/scenario_type.dart';
 import 'package:graviton/l10n/app_localizations.dart';
-import 'package:graviton/models/scenario_config.dart';
-import 'package:graviton/widgets/scenario_selection/preset_scenarios_tab.dart';
+import 'package:graviton/features/scenarios/domain/scenario_config.dart';
+import 'package:graviton/features/scenarios/presentation/widgets/preset_scenarios_tab.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 
 /// Test widget wrapper with localization support

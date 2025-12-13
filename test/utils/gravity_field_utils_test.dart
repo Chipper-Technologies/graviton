@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graviton/constants/simulation_constants.dart';
-import 'package:graviton/enums/body_type.dart';
-import 'package:graviton/enums/gravity_field_color_scheme.dart';
-import 'package:graviton/models/body.dart';
+import 'package:graviton/core/constants/simulation_constants.dart';
+import 'package:graviton/core/enums/body_type.dart';
+import 'package:graviton/core/enums/gravity_field_color_scheme.dart';
+import 'package:graviton/models/celestial/body.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/utils/gravity_field_utils.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;

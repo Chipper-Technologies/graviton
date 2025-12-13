@@ -397,6 +397,30 @@ class AppLocalizationsKo extends AppLocalizations {
   String get gravityFieldsTitle => '중력장';
 
   @override
+  String get relativisticEffectsTitle => '상대론적 효과';
+
+  @override
+  String get relativisticEffectsDescription => '고속 물체에 대한 포스트 뉴턴 보정 적용';
+
+  @override
+  String get relativisticGlowTitle => '상대론적 글로우';
+
+  @override
+  String get relativisticGlowDescription => '속도 기반 글로우로 시간 지연 시각화';
+
+  @override
+  String get tidalForcesTitle => '조석력';
+
+  @override
+  String get tidalForcesDescription => '조석 변형 및 가열 효과 계산';
+
+  @override
+  String get tidalVisualizationTitle => '조석 시각화';
+
+  @override
+  String get tidalVisualizationDescription => '조석 응력 및 변형 축 표시';
+
+  @override
   String get gravityWellsDescription => '객체 주변의 중력장 강도 표시';
 
   @override
@@ -487,6 +511,24 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get addBodyButton => '천체 추가 버튼';
+
+  @override
+  String get tapToEnableAddBodyMode => '탭하여 천체 추가 모드 활성화 - 캔버스를 클릭하여 새 천체 배치';
+
+  @override
+  String get tapToDisableAddBodyMode => '탭하여 천체 추가 모드 비활성화 및 일반 상호작용으로 돌아가기';
+
+  @override
+  String get addBodyModeActive => '천체 추가 모드 활성화됨';
+
+  @override
+  String get addBodyModeInactive => '천체 추가 모드 비활성화됨';
+
+  @override
+  String get tapToPlaceBody => '캔버스의 아무 곳이나 탭하여 새 천체 배치';
+
+  @override
+  String get bodyPlacedSuccessfully => '천체가 성공적으로 배치되었습니다';
 
   @override
   String get addCelestialBodiesToCreateYourCustomScenarioEditor =>
@@ -1194,6 +1236,12 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get bodyNewDefault => '새로운 천체';
+
+  @override
+  String get bodyPlacementTooClose => '기존 천체와 너무 가깝습니다 - 다른 곳을 탭하세요';
+
+  @override
   String get bodyInnerPlanet => '내행성';
 
   @override
@@ -1682,6 +1730,39 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get habitabilityIndicatorsLabel => '행성 상태';
+
+  @override
+  String get stellarCoronasTitle => '항성 코로나';
+
+  @override
+  String get stellarCoronasDescription => '별 주변의 빛나는 플라즈마 대기를 표시';
+
+  @override
+  String get atmosphericEffectsTitle => '대기 효과';
+
+  @override
+  String get atmosphericEffectsDescription => '행성에 대기 후광과 산란 표시';
+
+  @override
+  String get hemisphereLightingTitle => '반구 조명';
+
+  @override
+  String get hemisphereLightingDescription => '구형 천체에 사실적인 3D 조명 시뮬레이션';
+
+  @override
+  String get castShadowsTitle => '그림자 투사';
+
+  @override
+  String get castShadowsDescription => '천체가 광원을 가릴 때 그림자 표시';
+
+  @override
+  String get specularHighlightsTitle => '정반사 하이라이트';
+
+  @override
+  String get specularHighlightsDescription => '얼음과 수면에 반사 하이라이트 표시';
+
+  @override
+  String get lightingEffectsLabel => '조명 및 그림자';
 
   @override
   String get habitabilityLabel => '거주 가능성';
