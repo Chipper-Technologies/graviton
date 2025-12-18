@@ -230,12 +230,14 @@ class RenderingConstants {
   static const int maxLightSourcesForBlending = 3;
 
   /// Distance threshold for light source contribution (in simulation units)
+  /// Must be large enough to cover all planets in solar system (Neptune ~1505 units)
   /// Light sources beyond this distance have minimal effect
-  static const double lightSourceMaxDistance = 50.0;
+  static const double lightSourceMaxDistance = 2000.0;
 
   /// Minimum light contribution to include in blending (0.0-1.0)
-  /// Filters out negligible light sources for performance
-  static const double lightSourceMinContribution = 0.05;
+  /// Must be very low to include outer planets (Neptune intensity ~0.0002)
+  /// Filters out only truly negligible light sources
+  static const double lightSourceMinContribution = 0.0001;
 
   /// Maximum distance for shadow calculations (in simulation units)
   /// Stars beyond this distance don't cast shadows for performance

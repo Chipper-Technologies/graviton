@@ -343,11 +343,16 @@ class CelestialBodyPainter {
               ? RenderingConstants.hemisphereLightingShadowIntensityRatio
               : 0.1;
 
+          // Use stronger overlay intensity for custom bodies (textured planets)
+          // This ensures shadows are visible over detailed textures like Jupiter's bands
+          final highlightAlpha =
+              RenderingConstants.hemisphereLightingIntensity * 0.4;
+
           final overlayGradient = LinearGradient(
             begin: Alignment(dir.dx, dir.dy),
             end: Alignment(-dir.dx, -dir.dy),
             colors: [
-              AppColors.uiWhite.withValues(alpha: 0.2), // Highlight
+              AppColors.uiWhite.withValues(alpha: highlightAlpha), // Highlight
               AppColors.transparentColor, // Mid-tone (show texture)
               AppColors.uiBlack.withValues(alpha: shadowAlpha), // Shadow
             ],
@@ -2554,15 +2559,30 @@ class CelestialBodyPainter {
     );
     final sunProjected = viewMatrix.transform(sunPosWorld);
 
-    // Convert to NDC
-    if (sunProjected.w.abs() < RenderingConstants.projectionClipZThreshold) {
-      return (offset: Offset.zero, phase: phase);
-    }
-    final sunNDC = sunProjected.xyz / sunProjected.w;
+    // Check if sun is behind camera (w <= 0 means behind or at camera plane)
+    // In this case, we need to invert the direction to avoid the flip
+    final isSunBehindCamera =
+        sunProjected.w < RenderingConstants.projectionClipZThreshold;
 
-    // Convert NDC to screen coordinates
-    final sunScreenX = (sunNDC.x + 1.0) * 0.5 * canvasSize.width;
-    final sunScreenY = (1.0 - sunNDC.y) * 0.5 * canvasSize.height;
+    // Convert to NDC - handle behind camera case
+    double sunScreenX;
+    double sunScreenY;
+
+    if (isSunBehindCamera) {
+      // Sun is behind camera - use camera-space direction instead
+      // This prevents the flip when panning around to the dark side
+      final lightDirX = lightVec.x;
+      final lightDirY = -lightVec.y; // Invert Y for Flutter
+
+      // Scale to screen-like magnitude (arbitrary but consistent)
+      sunScreenX = currentBodyPosition.dx + lightDirX * canvasSize.width;
+      sunScreenY = currentBodyPosition.dy + lightDirY * canvasSize.height;
+    } else {
+      // Normal projection when sun is visible
+      final sunNDC = sunProjected.xyz / sunProjected.w;
+      sunScreenX = (sunNDC.x + 1.0) * 0.5 * canvasSize.width;
+      sunScreenY = (1.0 - sunNDC.y) * 0.5 * canvasSize.height;
+    }
 
     // Calculate direction from planet to Sun in screen space
     final dx = sunScreenX - currentBodyPosition.dx;
@@ -2570,7 +2590,8 @@ class CelestialBodyPainter {
     final distance = math.sqrt(dx * dx + dy * dy);
 
     if (distance < 0.001) {
-      return (offset: Offset.zero, phase: phase);
+      // Sun is at same screen position as body - use default direction
+      return (offset: Offset(0.0, -blendedLight.intensity), phase: phase);
     }
 
     // Return normalized direction scaled by intensity
@@ -3229,12 +3250,17 @@ class CelestialBodyPainter {
       final baseIntensity = star.mass / (distance * distance);
 
       // Normalize to reasonable range (0.0 - 1.0)
-      final normalizedIntensity =
-          (baseIntensity * RenderingConstants.lightIntensityNormalizationFactor)
-              .clamp(0.0, 1.0);
+      // For hemisphere lighting, we use a minimum intensity floor to ensure
+      // visible shadows even at large distances (outer planets)
+      final rawIntensity =
+          baseIntensity * RenderingConstants.lightIntensityNormalizationFactor;
+      final normalizedIntensity = rawIntensity.clamp(
+        RenderingConstants.lightSourceMinContribution,
+        1.0,
+      );
 
-      // Skip if contribution is too small
-      if (normalizedIntensity < RenderingConstants.lightSourceMinContribution) {
+      // Skip only if completely negligible (below the floor)
+      if (rawIntensity < RenderingConstants.lightSourceMinContribution) {
         continue;
       }
 
