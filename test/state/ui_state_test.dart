@@ -870,7 +870,15 @@ void main() {
         expect(uiState.isBodyMovementModeActive, isFalse);
         expect(uiState.movingBodyIndex, isNull);
 
-        // Lock interaction
+        // Unlock interaction (default is locked)
+        uiState.toggleInteractionLock();
+        expect(uiState.isInteractionLocked, isFalse);
+
+        // Body movement mode should still be accessible
+        expect(uiState.isBodyMovementModeActive, isFalse);
+        expect(uiState.movingBodyIndex, isNull);
+
+        // Lock again
         uiState.toggleInteractionLock();
         expect(uiState.isInteractionLocked, isTrue);
 
