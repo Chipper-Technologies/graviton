@@ -119,12 +119,12 @@ class RenderingConstants {
   // Lighting and shadow effects
   /// Intensity shift for hemisphere lighting on the lit side (0.0-1.0)
   /// Controls how much brighter the lit hemisphere appears
-  static const double hemisphereLightingIntensity = 0.3;
+  static const double hemisphereLightingIntensity = 0.9;
 
   /// Shadow side darkening multiplier for hemisphere lighting (0.0-1.0)
   /// Reduces intensity on shadowed hemisphere relative to lit side
   /// Applied as: intensity * hemisphereLightingShadowIntensityRatio
-  static const double hemisphereLightingShadowIntensityRatio = 0.5;
+  static const double hemisphereLightingShadowIntensityRatio = 0.6;
 
   /// Gradient center offset toward light source for hemisphere effect
   /// Higher values create more pronounced day/night division

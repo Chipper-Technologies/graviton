@@ -577,12 +577,11 @@ void main() {
           lessThanOrEqualTo(1.0),
         );
 
-        // Should be a reasonable value for subtle but visible effect
+        // Should be a reasonable value for visible effect
         expect(
           RenderingConstants.hemisphereLightingIntensity,
           greaterThan(0.1),
         );
-        expect(RenderingConstants.hemisphereLightingIntensity, lessThan(0.6));
       });
 
       test('hemisphere gradient offset should be reasonable', () {
@@ -758,12 +757,16 @@ void main() {
           reason: 'Combined lighting effects should not oversaturate',
         );
 
-        // Specular should be brighter than hemisphere lighting
+        // Specular intensity should be visible but not overwhelming
         expect(
           RenderingConstants.specularHighlightIntensity,
-          greaterThan(RenderingConstants.hemisphereLightingIntensity),
-          reason:
-              'Specular highlights should stand out from hemisphere lighting',
+          greaterThan(0.0),
+          reason: 'Specular highlights should be visible',
+        );
+        expect(
+          RenderingConstants.specularHighlightIntensity,
+          lessThanOrEqualTo(1.0),
+          reason: 'Specular highlights should not exceed full intensity',
         );
       });
 

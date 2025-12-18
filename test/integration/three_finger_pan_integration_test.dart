@@ -34,9 +34,11 @@ void main() {
     testWidgets('Three-finger pan gesture should move camera target', (
       tester,
     ) async {
-      await tester.pumpWidget(GravitonApp(appState: testAppState));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
+      await TestHelpers.setupAndPumpApp(
+        tester,
+        testAppState,
+        GravitonApp(appState: testAppState),
+      );
 
       // Get initial camera target
       final initialTarget = testAppState.camera.target.clone();
@@ -88,7 +90,7 @@ void main() {
       }
 
       // Clean up widget tree
-      await tester.pump();
+      await TestHelpers.pumpAppTimers(tester);
       await tester.pumpWidget(Container());
       await tester.pump();
     });
@@ -96,9 +98,11 @@ void main() {
     testWidgets(
       'Three-finger vertical pan should move camera target vertically',
       (tester) async {
-        await tester.pumpWidget(GravitonApp(appState: testAppState));
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 100));
+        await TestHelpers.setupAndPumpApp(
+          tester,
+          testAppState,
+          GravitonApp(appState: testAppState),
+        );
 
         final initialTargetY = testAppState.camera.target.y;
 
@@ -144,7 +148,7 @@ void main() {
         }
 
         // Clean up widget tree
-        await tester.pump();
+        await TestHelpers.pumpAppTimers(tester);
         await tester.pumpWidget(Container());
         await tester.pump();
       },
@@ -153,9 +157,11 @@ void main() {
     testWidgets('Three-finger pan should not affect camera angles', (
       tester,
     ) async {
-      await tester.pumpWidget(GravitonApp(appState: testAppState));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
+      await TestHelpers.setupAndPumpApp(
+        tester,
+        testAppState,
+        GravitonApp(appState: testAppState),
+      );
 
       final initialYaw = testAppState.camera.yaw;
       final initialPitch = testAppState.camera.pitch;
@@ -206,7 +212,7 @@ void main() {
       }
 
       // Clean up widget tree
-      await tester.pump();
+      await TestHelpers.pumpAppTimers(tester);
       await tester.pumpWidget(Container());
       await tester.pump();
     });
@@ -214,9 +220,11 @@ void main() {
     testWidgets('Three-finger pan should not affect camera distance', (
       tester,
     ) async {
-      await tester.pumpWidget(GravitonApp(appState: testAppState));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
+      await TestHelpers.setupAndPumpApp(
+        tester,
+        testAppState,
+        GravitonApp(appState: testAppState),
+      );
 
       final initialDistance = testAppState.camera.distance;
 
@@ -263,7 +271,7 @@ void main() {
       }
 
       // Clean up widget tree
-      await tester.pump();
+      await TestHelpers.pumpAppTimers(tester);
       await tester.pumpWidget(Container());
       await tester.pump();
     });
@@ -271,9 +279,11 @@ void main() {
     testWidgets('Three-finger pan should be disabled in follow mode', (
       tester,
     ) async {
-      await tester.pumpWidget(GravitonApp(appState: testAppState));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
+      await TestHelpers.setupAndPumpApp(
+        tester,
+        testAppState,
+        GravitonApp(appState: testAppState),
+      );
 
       // Enable follow mode on first body
       if (testAppState.simulation.bodies.isNotEmpty) {
@@ -327,7 +337,7 @@ void main() {
       }
 
       // Clean up widget tree
-      await tester.pump();
+      await TestHelpers.pumpAppTimers(tester);
       await tester.pumpWidget(Container());
       await tester.pump();
     });
@@ -335,9 +345,11 @@ void main() {
     testWidgets('Two-finger gestures should still work for zoom and roll', (
       tester,
     ) async {
-      await tester.pumpWidget(GravitonApp(appState: testAppState));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
+      await TestHelpers.setupAndPumpApp(
+        tester,
+        testAppState,
+        GravitonApp(appState: testAppState),
+      );
 
       final initialDistance = testAppState.camera.distance;
 
@@ -378,7 +390,7 @@ void main() {
       }
 
       // Clean up widget tree
-      await tester.pump();
+      await TestHelpers.pumpAppTimers(tester);
       await tester.pumpWidget(Container());
       await tester.pump();
     });
@@ -386,9 +398,11 @@ void main() {
     testWidgets('Single-finger gesture should still work for rotation', (
       tester,
     ) async {
-      await tester.pumpWidget(GravitonApp(appState: testAppState));
-      await tester.pump();
-      await tester.pumpAndSettle();
+      await TestHelpers.setupAndPumpApp(
+        tester,
+        testAppState,
+        GravitonApp(appState: testAppState),
+      );
 
       final initialYaw = testAppState.camera.yaw;
 
@@ -398,7 +412,8 @@ void main() {
 
         // Simulate single-finger drag (camera rotation)
         await tester.drag(viewportGesture, const Offset(100, 0));
-        await tester.pumpAndSettle();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
 
         // Yaw should have changed (allow small epsilon for floating point)
         expect(
@@ -409,7 +424,7 @@ void main() {
       }
 
       // Clean up widget tree
-      await tester.pump();
+      await TestHelpers.pumpAppTimers(tester);
       await tester.pumpWidget(Container());
       await tester.pump();
     });
@@ -417,9 +432,11 @@ void main() {
     testWidgets(
       'Three-finger pan should work with different camera yaw angles',
       (tester) async {
-        await tester.pumpWidget(GravitonApp(appState: testAppState));
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 100));
+        await TestHelpers.setupAndPumpApp(
+          tester,
+          testAppState,
+          GravitonApp(appState: testAppState),
+        );
 
         // Rotate camera to different angle
         testAppState.camera.setCameraParameters(yaw: 1.5);
@@ -470,7 +487,7 @@ void main() {
         }
 
         // Clean up widget tree
-        await tester.pump();
+        await TestHelpers.pumpAppTimers(tester);
         await tester.pumpWidget(Container());
         await tester.pump();
       },
