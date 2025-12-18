@@ -678,6 +678,26 @@
   "@tapToPlaceBody": {
     "description": "Instructions shown when add body mode is active"
   },
+  "lockInteraction": "Lock Interaction",
+  "@lockInteraction": {
+    "description": "Button tooltip for the interaction lock toggle"
+  },
+  "tapToLockInteraction": "Tap to lock interaction - prevents accidentally moving bodies",
+  "@tapToLockInteraction": {
+    "description": "Accessibility hint for enabling interaction lock"
+  },
+  "tapToUnlockInteraction": "Tap to unlock interaction - allows moving bodies by dragging",
+  "@tapToUnlockInteraction": {
+    "description": "Accessibility hint for disabling interaction lock"
+  },
+  "interactionLocked": "Interaction locked",
+  "@interactionLocked": {
+    "description": "Snackbar message when interaction is locked"
+  },
+  "interactionUnlocked": "Interaction unlocked",
+  "@interactionUnlocked": {
+    "description": "Snackbar message when interaction is unlocked"
+  },
   "bodyPlacedSuccessfully": "Body placed successfully",
   "@bodyPlacedSuccessfully": {
     "description": "Confirmation message after placing a body"

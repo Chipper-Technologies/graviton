@@ -528,6 +528,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get tapToPlaceBody => 'キャンバスの任意の場所をタップして新しい天体を配置';
 
   @override
+  String get lockInteraction => '操作をロック';
+
+  @override
+  String get tapToLockInteraction => 'タップしてロック - 天体の誤った移動を防止';
+
+  @override
+  String get tapToUnlockInteraction => 'タップして解除 - ドラッグで天体を移動可能に';
+
+  @override
+  String get interactionLocked => '操作がロックされています';
+
+  @override
+  String get interactionUnlocked => '操作のロックが解除されました';
+
+  @override
   String get bodyPlacedSuccessfully => '天体の配置に成功しました';
 
   @override

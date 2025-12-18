@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/core/constants/rendering_constants.dart';
 import 'package:graviton/core/constants/simulation_constants.dart';
@@ -14,44 +14,45 @@ import 'package:graviton/core/enums/scenario_type.dart';
 import 'package:graviton/core/enums/snack_bar_severity.dart';
 import 'package:graviton/core/enums/ui_action.dart';
 import 'package:graviton/core/enums/ui_element.dart';
+import 'package:graviton/features/auth/presentation/widgets/avatar_button.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/celestial/body.dart';
 import 'package:graviton/models/ui/dialog_action.dart';
-import 'package:graviton/services/simulation/body_interaction_service.dart';
 import 'package:graviton/services/camera/camera_gesture_service.dart';
 import 'package:graviton/services/camera/cinematic_camera_controller.dart';
 import 'package:graviton/services/firebase/firebase_service.dart';
+import 'package:graviton/services/platform/platform_channel_service.dart';
+import 'package:graviton/services/simulation/body_interaction_service.dart';
 import 'package:graviton/services/ui/fullscreen_service.dart';
 import 'package:graviton/services/ui/keyboard_navigation_service.dart';
 import 'package:graviton/services/ui/navigation_service.dart';
-import 'package:graviton/services/platform/platform_channel_service.dart';
 import 'package:graviton/services/ui/screenshot_mode_service.dart';
+import 'package:graviton/shared/widgets/controls/screenshot_countdown.dart';
+import 'package:graviton/shared/widgets/controls/share_action_button.dart';
+import 'package:graviton/shared/widgets/dialogs/body_selection_dialog.dart';
+import 'package:graviton/shared/widgets/dialogs/maintenance_dialog.dart';
+import 'package:graviton/shared/widgets/dialogs/version_check_dialog.dart';
+import 'package:graviton/shared/widgets/layouts/options_drawer.dart';
+import 'package:graviton/shared/widgets/layouts/sliding_panel_bottom_sheet.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/utils/camera_projection_utils.dart';
 import 'package:graviton/utils/platform_utils.dart';
 import 'package:graviton/utils/star_generator.dart';
-import 'package:graviton/features/auth/presentation/widgets/avatar_button.dart';
 import 'package:graviton/widgets/body_creation/body_creation_mode_toggle.dart';
-import 'package:graviton/shared/widgets/dialogs/body_selection_dialog.dart';
 import 'package:graviton/widgets/common/base_confirmation_dialog.dart';
 import 'package:graviton/widgets/common/graviton_snack_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
 import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
-import 'package:graviton/shared/widgets/dialogs/maintenance_dialog.dart';
-import 'package:graviton/shared/widgets/layouts/options_drawer.dart';
+import 'package:graviton/widgets/interaction/interaction_lock_toggle.dart';
 import 'package:graviton/widgets/overlays/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/overlays/camera_visual_aids_overlay.dart';
 import 'package:graviton/widgets/overlays/stats_overlay.dart';
-import 'package:graviton/shared/widgets/controls/screenshot_countdown.dart';
 import 'package:graviton/widgets/semantics/semantic_live_region.dart';
-import 'package:graviton/shared/widgets/controls/share_action_button.dart';
 import 'package:graviton/widgets/simulation/simulation_viewport_widget.dart';
-import 'package:graviton/shared/widgets/layouts/sliding_panel_bottom_sheet.dart';
-import 'package:graviton/shared/widgets/dialogs/version_check_dialog.dart';
 import 'package:provider/provider.dart';
 
 /// Main screen for Graviton
@@ -1064,6 +1065,30 @@ class _HomeScreenState extends State<HomeScreen>
                     GravitonSnackBar.show(
                       context: context,
                       message: l10n.tapToPlaceBody,
+                      severity: SnackBarSeverity.info,
+                    );
+                  }
+                },
+              ),
+
+              const SizedBox(width: AppTypography.spacingSmall),
+
+              // Interaction Lock Toggle
+              InteractionLockToggle(
+                isLocked: appState.ui.isInteractionLocked,
+                onToggle: () {
+                  // Reset floating controls timer when button is pressed
+                  _showFloatingControlsTemporarily();
+
+                  appState.ui.toggleInteractionLock();
+
+                  // Show feedback snackbar
+                  if (mounted) {
+                    GravitonSnackBar.show(
+                      context: context,
+                      message: appState.ui.isInteractionLocked
+                          ? l10n.interactionLocked
+                          : l10n.interactionUnlocked,
                       severity: SnackBarSeverity.info,
                     );
                   }

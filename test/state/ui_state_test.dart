@@ -839,5 +839,45 @@ void main() {
         expect(notificationCount, equals(20));
       });
     });
+
+    group('Interaction Lock Tests', () {
+      test('isInteractionLocked should default to true', () {
+        expect(uiState.isInteractionLocked, isTrue);
+      });
+
+      test('toggleInteractionLock should toggle lock state', () {
+        expect(uiState.isInteractionLocked, isTrue);
+
+        uiState.toggleInteractionLock();
+        expect(uiState.isInteractionLocked, isFalse);
+
+        uiState.toggleInteractionLock();
+        expect(uiState.isInteractionLocked, isTrue);
+      });
+
+      test('toggleInteractionLock should notify listeners', () {
+        bool wasNotified = false;
+        uiState.addListener(() {
+          wasNotified = true;
+        });
+
+        uiState.toggleInteractionLock();
+        expect(wasNotified, isTrue);
+      });
+
+      test('interaction lock should not affect body movement mode getters', () {
+        // Body movement mode is a separate concept
+        expect(uiState.isBodyMovementModeActive, isFalse);
+        expect(uiState.movingBodyIndex, isNull);
+
+        // Lock interaction
+        uiState.toggleInteractionLock();
+        expect(uiState.isInteractionLocked, isTrue);
+
+        // Body movement mode should still be accessible
+        expect(uiState.isBodyMovementModeActive, isFalse);
+        expect(uiState.movingBodyIndex, isNull);
+      });
+    });
   });
 }

@@ -520,6 +520,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tapToPlaceBody => '在画布上任意位置点击以放置新天体';
 
   @override
+  String get lockInteraction => '锁定交互';
+
+  @override
+  String get tapToLockInteraction => '点击锁定 - 防止意外移动天体';
+
+  @override
+  String get tapToUnlockInteraction => '点击解锁 - 允许通过拖动移动天体';
+
+  @override
+  String get interactionLocked => '交互已锁定';
+
+  @override
+  String get interactionUnlocked => '交互已解锁';
+
+  @override
   String get bodyPlacedSuccessfully => '天体放置成功';
 
   @override

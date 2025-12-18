@@ -28,6 +28,7 @@ class UIState extends ChangeNotifier {
   AddBodyMode _addBodyMode = AddBodyMode.inactive;
   BodyMovementMode _bodyMovementMode = BodyMovementMode.inactive;
   int? _movingBodyIndex; // Index of the body currently being moved
+  bool _isInteractionLocked = true; // Prevents accidental body dragging
 
   // Gravity field settings
   bool _globalGravityFields = true;
@@ -117,6 +118,7 @@ class UIState extends ChangeNotifier {
   static const String _keyHideUIInScreenshotMode = 'hideUIInScreenshotMode';
   static const String _keyIsFullscreen = 'isFullscreen';
   static const String _keyLastSeenChangelogVersion = 'lastSeenChangelogVersion';
+  static const String _keyIsInteractionLocked = 'isInteractionLocked';
 
   /// Initialize and load saved settings
   Future<void> initialize() async {
@@ -234,6 +236,9 @@ class UIState extends ChangeNotifier {
 
       _isFullscreen = prefs.getBool(_keyIsFullscreen) ?? false;
 
+      // Load interaction lock setting
+      _isInteractionLocked = prefs.getBool(_keyIsInteractionLocked) ?? false;
+
       // Load changelog tracking
       _lastSeenChangelogVersion = prefs.getString(_keyLastSeenChangelogVersion);
 
@@ -336,6 +341,9 @@ class UIState extends ChangeNotifier {
   bool get isBodyMovementModeActive => _bodyMovementMode.isActive;
   int? get movingBodyIndex => _movingBodyIndex;
 
+  // Interaction lock getters
+  bool get isInteractionLocked => _isInteractionLocked;
+
   // Setters
   void toggleAddBodyMode() {
     _addBodyMode = _addBodyMode.isActive
@@ -373,6 +381,16 @@ class UIState extends ChangeNotifier {
     FirebaseService.instance.logUIEvent(
       'body_movement_stopped',
       element: 'body_drag_handle',
+    );
+    notifyListeners();
+  }
+
+  void toggleInteractionLock() {
+    _isInteractionLocked = !_isInteractionLocked;
+    _saveSetting(_keyIsInteractionLocked, _isInteractionLocked);
+    FirebaseService.instance.logSettingsChange(
+      'interaction_locked',
+      _isInteractionLocked,
     );
     notifyListeners();
   }

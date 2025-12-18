@@ -564,6 +564,23 @@ class AppLocalizationsEs extends AppLocalizations {
       'Toca en cualquier lugar del lienzo para colocar un nuevo cuerpo';
 
   @override
+  String get lockInteraction => 'Bloquear interacción';
+
+  @override
+  String get tapToLockInteraction =>
+      'Toca para bloquear - evita mover cuerpos accidentalmente';
+
+  @override
+  String get tapToUnlockInteraction =>
+      'Toca para desbloquear - permite mover cuerpos arrastrándolos';
+
+  @override
+  String get interactionLocked => 'Interacción bloqueada';
+
+  @override
+  String get interactionUnlocked => 'Interacción desbloqueada';
+
+  @override
   String get bodyPlacedSuccessfully => 'Cuerpo colocado exitosamente';
 
   @override
