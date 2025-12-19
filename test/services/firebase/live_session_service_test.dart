@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/models/firebase/live_session.dart';
 import 'package:graviton/services/firebase/live_session_service.dart';
 
 void main() {

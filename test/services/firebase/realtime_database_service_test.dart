@@ -232,6 +232,45 @@ void main() {
         expect(service.ref('users/user-123/data'), isNull);
       });
 
+      test('Should reject empty and whitespace paths', () {
+        expect(service.ref(''), isNull);
+        expect(service.ref('   '), isNull);
+        expect(service.ref('\t'), isNull);
+        expect(service.ref('\n'), isNull);
+      });
+
+      test('Should reject paths with invalid characters', () {
+        // Paths with dots (invalid in Firebase RTDB)
+        expect(service.ref('users.data'), isNull);
+        expect(service.ref('users/user.name'), isNull);
+
+        // Paths with hash
+        expect(service.ref('users#data'), isNull);
+        expect(service.ref('users/data#1'), isNull);
+
+        // Paths with dollar sign
+        expect(service.ref('users\$data'), isNull);
+        expect(service.ref('users/\$special'), isNull);
+
+        // Paths with brackets
+        expect(service.ref('users[0]'), isNull);
+        expect(service.ref('users/data[key]'), isNull);
+      });
+
+      test('Should reject path traversal attempts', () {
+        expect(service.ref('..'), isNull);
+        expect(service.ref('../users'), isNull);
+        expect(service.ref('users/../admin'), isNull);
+        expect(service.ref('users/data/..'), isNull);
+        expect(service.ref('users/../../etc/passwd'), isNull);
+      });
+
+      test('Should reject paths with consecutive slashes', () {
+        expect(service.ref('users//data'), isNull);
+        expect(service.ref('users///profile'), isNull);
+        expect(service.ref('a//b//c'), isNull);
+      });
+
       test('Should handle queryOnce with various parameters', () async {
         // Test all parameter combinations
         var results = await service.queryOnce(

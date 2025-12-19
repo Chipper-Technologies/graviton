@@ -108,9 +108,14 @@ class RealtimeDatabaseService {
   }
 
   /// Dispose of resources and clean up subscriptions
+  ///
+  /// This method cancels all active subscriptions, clears the database
+  /// reference, and resets all state flags. After calling dispose, the
+  /// service must be re-initialized before use.
   Future<void> dispose() async {
     await _connectionSubscription?.cancel();
     _connectionSubscription = null;
+    _database = null;
     _isInitialized = false;
     _isConnected = false;
 
@@ -120,20 +125,115 @@ class RealtimeDatabaseService {
   }
 
   // =============================================================================
+  // PATH VALIDATION
+  // =============================================================================
+
+  /// Characters that are not allowed in Firebase Realtime Database paths
+  static final RegExp _invalidPathChars = RegExp(r'[.#$\[\]]');
+
+  /// Pattern for path traversal attempts
+  static final RegExp _pathTraversalPattern = RegExp(r'(^|/)\.\.(/|$)');
+
+  /// Validates and sanitizes a database path
+  ///
+  /// Returns the sanitized path if valid, null if the path is invalid.
+  /// Invalid paths include:
+  /// - Empty or whitespace-only paths
+  /// - Paths containing invalid characters (. # $ [ ])
+  /// - Paths with consecutive slashes
+  /// - Paths attempting path traversal (..)
+  ///
+  /// [path] The path to validate
+  String? _validatePath(String path) {
+    // Check for empty or whitespace-only path
+    if (path.trim().isEmpty) {
+      debugPrint('RealtimeDatabaseService: Invalid path - empty or whitespace');
+      return null;
+    }
+
+    // Normalize the path - trim whitespace and remove leading/trailing slashes
+    var sanitized = path.trim();
+    while (sanitized.startsWith('/')) {
+      sanitized = sanitized.substring(1);
+    }
+    while (sanitized.endsWith('/')) {
+      sanitized = sanitized.substring(0, sanitized.length - 1);
+    }
+
+    // Check for empty path after normalization
+    if (sanitized.isEmpty) {
+      debugPrint(
+        'RealtimeDatabaseService: Invalid path - empty after normalization',
+      );
+      return null;
+    }
+
+    // Check for path traversal attempts
+    if (_pathTraversalPattern.hasMatch(sanitized)) {
+      debugPrint(
+        'RealtimeDatabaseService: Invalid path - path traversal detected: '
+        '$path',
+      );
+      return null;
+    }
+
+    // Check for consecutive slashes
+    if (sanitized.contains('//')) {
+      debugPrint(
+        'RealtimeDatabaseService: Invalid path - consecutive slashes: $path',
+      );
+      return null;
+    }
+
+    // Check for invalid characters in each path segment
+    final segments = sanitized.split('/');
+    for (final segment in segments) {
+      if (segment.isEmpty) {
+        debugPrint(
+          'RealtimeDatabaseService: Invalid path - empty segment: $path',
+        );
+        return null;
+      }
+
+      if (_invalidPathChars.hasMatch(segment)) {
+        debugPrint(
+          'RealtimeDatabaseService: Invalid path - contains invalid '
+          'characters (. # \$ [ ]): $path',
+        );
+        return null;
+      }
+    }
+
+    return sanitized;
+  }
+
+  // =============================================================================
   // DATABASE REFERENCES
   // =============================================================================
 
   /// Get a database reference for the specified path
   ///
-  /// Returns null if the service is not initialized.
+  /// Returns null if the service is not initialized or path is invalid.
   ///
   /// [path] The path in the database (e.g., 'simulations/abc123')
+  ///
+  /// Invalid paths include:
+  /// - Empty or whitespace-only paths
+  /// - Paths containing invalid characters (. # $ [ ])
+  /// - Paths with consecutive slashes
+  /// - Paths attempting path traversal (..)
   DatabaseReference? ref(String path) {
     if (!_isInitialized || _database == null) {
       debugPrint('RealtimeDatabaseService: Cannot get ref - not initialized');
       return null;
     }
-    return _database!.ref(path);
+
+    final validatedPath = _validatePath(path);
+    if (validatedPath == null) {
+      return null;
+    }
+
+    return _database!.ref(validatedPath);
   }
 
   /// Get a reference to the current user's data node
@@ -488,11 +588,41 @@ class RealtimeDatabaseService {
   /// Returns the new value if successful, null otherwise.
   Future<num?> increment(String path, num delta) async {
     final result = await runTransaction(path, (Object? currentData) {
-      final currentValue = (currentData as num?) ?? 0;
+      // Handle null or non-numeric current values
+      num currentValue;
+      if (currentData == null) {
+        currentValue = 0;
+      } else if (currentData is num) {
+        currentValue = currentData;
+      } else {
+        // If current value is not numeric, start from 0
+        if (kDebugMode) {
+          debugPrint(
+            'RealtimeDatabaseService: increment found non-numeric value '
+            '(${currentData.runtimeType}) at $path, starting from 0',
+          );
+        }
+        currentValue = 0;
+      }
       return Transaction.success(currentValue + delta);
     });
 
-    return result as num?;
+    // Safely convert result to num
+    if (result == null) {
+      return null;
+    }
+    if (result is num) {
+      return result;
+    }
+
+    // Unexpected result type
+    if (kDebugMode) {
+      debugPrint(
+        'RealtimeDatabaseService: increment returned unexpected type '
+        '(${result.runtimeType}) at $path',
+      );
+    }
+    return null;
   }
 
   // =============================================================================

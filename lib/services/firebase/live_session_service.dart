@@ -4,111 +4,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart'
     show kDebugMode, debugPrint, visibleForTesting;
 import 'package:graviton/features/auth/data/auth_service.dart';
+import 'package:graviton/models/firebase/live_session.dart';
 import 'package:graviton/services/firebase/firebase_service.dart';
 import 'package:graviton/services/firebase/realtime_database_service.dart';
-
-/// Represents a live simulation session that can be shared with other users
-///
-/// Contains metadata about the session including the scenario being run,
-/// the host user, and current viewer count.
-class LiveSession {
-  /// Unique identifier for the session
-  final String id;
-
-  /// User ID of the session host
-  final String hostId;
-
-  /// Display name of the host
-  final String hostName;
-
-  /// Name of the scenario being simulated
-  final String scenarioName;
-
-  /// Whether the simulation is currently running
-  final bool isRunning;
-
-  /// Current time scale of the simulation
-  final double timeScale;
-
-  /// Number of active viewers (excluding host)
-  final int viewerCount;
-
-  /// Timestamp when session was created
-  final DateTime createdAt;
-
-  /// Timestamp of last update
-  final DateTime updatedAt;
-
-  const LiveSession({
-    required this.id,
-    required this.hostId,
-    required this.hostName,
-    required this.scenarioName,
-    required this.isRunning,
-    required this.timeScale,
-    required this.viewerCount,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  /// Create a LiveSession from a database map
-  factory LiveSession.fromMap(String id, Map<String, dynamic> map) {
-    return LiveSession(
-      id: id,
-      hostId: map['hostId'] as String? ?? '',
-      hostName: map['hostName'] as String? ?? 'Unknown',
-      scenarioName: map['scenarioName'] as String? ?? 'Custom',
-      isRunning: map['isRunning'] as bool? ?? false,
-      timeScale: (map['timeScale'] as num?)?.toDouble() ?? 1.0,
-      viewerCount: map['viewerCount'] as int? ?? 0,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(
-        map['createdAt'] as int? ?? DateTime.now().millisecondsSinceEpoch,
-      ),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(
-        map['updatedAt'] as int? ?? DateTime.now().millisecondsSinceEpoch,
-      ),
-    );
-  }
-
-  /// Convert session to a map for database storage
-  Map<String, dynamic> toMap() {
-    return {
-      'hostId': hostId,
-      'hostName': hostName,
-      'scenarioName': scenarioName,
-      'isRunning': isRunning,
-      'timeScale': timeScale,
-      'viewerCount': viewerCount,
-      'createdAt': createdAt.millisecondsSinceEpoch,
-      'updatedAt': updatedAt.millisecondsSinceEpoch,
-    };
-  }
-
-  /// Create a copy with updated fields
-  LiveSession copyWith({
-    String? id,
-    String? hostId,
-    String? hostName,
-    String? scenarioName,
-    bool? isRunning,
-    double? timeScale,
-    int? viewerCount,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) {
-    return LiveSession(
-      id: id ?? this.id,
-      hostId: hostId ?? this.hostId,
-      hostName: hostName ?? this.hostName,
-      scenarioName: scenarioName ?? this.scenarioName,
-      isRunning: isRunning ?? this.isRunning,
-      timeScale: timeScale ?? this.timeScale,
-      viewerCount: viewerCount ?? this.viewerCount,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
-  }
-}
 
 /// Service for managing live simulation sessions using Firebase Realtime Database
 ///
@@ -321,13 +219,41 @@ class LiveSessionService {
   void _startViewerTracking(String sessionId) {
     final viewersPath = '$_sessionsPath/$sessionId/$_viewersPath';
 
-    _viewerAddedSubscription = _rtdb.onChildAdded(viewersPath).listen((_) {
-      _updateViewerCount(sessionId);
-    });
+    _viewerAddedSubscription = _rtdb
+        .onChildAdded(viewersPath)
+        .listen(
+          (_) {
+            _updateViewerCount(sessionId);
+          },
+          onError: (Object error, StackTrace stackTrace) {
+            debugPrint(
+              'LiveSessionService: Viewer added subscription error: $error',
+            );
+            if (kDebugMode) {
+              debugPrint('Stack trace: $stackTrace');
+            }
+            FirebaseService.instance.recordError(error, stackTrace);
+          },
+          cancelOnError: false,
+        );
 
-    _viewerRemovedSubscription = _rtdb.onChildRemoved(viewersPath).listen((_) {
-      _updateViewerCount(sessionId);
-    });
+    _viewerRemovedSubscription = _rtdb
+        .onChildRemoved(viewersPath)
+        .listen(
+          (_) {
+            _updateViewerCount(sessionId);
+          },
+          onError: (Object error, StackTrace stackTrace) {
+            debugPrint(
+              'LiveSessionService: Viewer removed subscription error: $error',
+            );
+            if (kDebugMode) {
+              debugPrint('Stack trace: $stackTrace');
+            }
+            FirebaseService.instance.recordError(error, stackTrace);
+          },
+          cancelOnError: false,
+        );
   }
 
   /// Update the viewer count and notify callback
@@ -351,17 +277,63 @@ class LiveSessionService {
   /// Get a stream of all active live sessions
   ///
   /// Returns a stream that emits a list of active sessions whenever
-  /// the session list changes.
+  /// the session list changes. Handles malformed data gracefully by
+  /// skipping invalid entries and logging errors in debug mode.
   Stream<List<LiveSession>> getActiveSessions() {
-    return _rtdb.onValue(_sessionsPath).map((data) {
-      if (data == null) return <LiveSession>[];
+    return _rtdb
+        .onValue(_sessionsPath)
+        .map((data) {
+          if (data == null) return <LiveSession>[];
 
-      final sessionsMap = Map<String, dynamic>.from(data as Map);
-      return sessionsMap.entries.map((entry) {
-        final sessionData = Map<String, dynamic>.from(entry.value as Map);
-        return LiveSession.fromMap(entry.key, sessionData);
-      }).toList();
-    });
+          // Validate that data is a Map
+          if (data is! Map) {
+            debugPrint(
+              'LiveSessionService: Expected Map but got ${data.runtimeType}',
+            );
+            return <LiveSession>[];
+          }
+
+          final sessions = <LiveSession>[];
+          final sessionsMap = Map<String, dynamic>.from(data);
+
+          for (final entry in sessionsMap.entries) {
+            try {
+              // Skip if value is not a Map
+              if (entry.value is! Map) {
+                if (kDebugMode) {
+                  debugPrint(
+                    'LiveSessionService: Skipping invalid session entry '
+                    '"${entry.key}" - expected Map but got '
+                    '${entry.value.runtimeType}',
+                  );
+                }
+                continue;
+              }
+
+              final sessionData = Map<String, dynamic>.from(entry.value as Map);
+              sessions.add(LiveSession.fromMap(entry.key, sessionData));
+            } catch (e) {
+              // Log error but continue processing other sessions
+              if (kDebugMode) {
+                debugPrint(
+                  'LiveSessionService: Error parsing session "${entry.key}": $e',
+                );
+              }
+            }
+          }
+
+          return sessions;
+        })
+        .handleError((Object error, StackTrace stackTrace) {
+          debugPrint(
+            'LiveSessionService: Error in getActiveSessions stream: $error',
+          );
+          if (kDebugMode) {
+            debugPrint('Stack trace: $stackTrace');
+          }
+          // Return empty list on error to prevent stream from terminating
+          return <LiveSession>[];
+        });
   }
 
   /// Join a live session as a viewer
@@ -401,14 +373,48 @@ class LiveSessionService {
       await viewerRef?.onDisconnect().remove();
 
       // Start listening to session updates
-      _sessionSubscription = _rtdb.onValue('$_sessionsPath/$sessionId').listen((
-        data,
-      ) {
-        if (data != null && _onSessionUpdated != null) {
-          final sessionData = Map<String, dynamic>.from(data as Map);
-          _onSessionUpdated!(LiveSession.fromMap(sessionId, sessionData));
-        }
-      });
+      _sessionSubscription = _rtdb
+          .onValue('$_sessionsPath/$sessionId')
+          .listen(
+            (data) {
+              if (data == null || _onSessionUpdated == null) return;
+
+              try {
+                // Validate data is a Map before parsing
+                if (data is! Map) {
+                  if (kDebugMode) {
+                    debugPrint(
+                      'LiveSessionService: Session data is not a Map, '
+                      'got ${data.runtimeType}',
+                    );
+                  }
+                  return;
+                }
+
+                final sessionData = Map<String, dynamic>.from(data);
+                _onSessionUpdated!(LiveSession.fromMap(sessionId, sessionData));
+              } catch (e, stackTrace) {
+                debugPrint(
+                  'LiveSessionService: Error parsing session update: $e',
+                );
+                if (kDebugMode) {
+                  debugPrint('Stack trace: $stackTrace');
+                }
+                // Don't rethrow - allow stream to continue
+              }
+            },
+            onError: (Object error, StackTrace stackTrace) {
+              debugPrint(
+                'LiveSessionService: Session subscription error: $error',
+              );
+              if (kDebugMode) {
+                debugPrint('Stack trace: $stackTrace');
+              }
+              FirebaseService.instance.recordError(error, stackTrace);
+              // Stream will continue listening after error
+            },
+            cancelOnError: false,
+          );
 
       if (kDebugMode) {
         debugPrint('LiveSessionService: Joined session $sessionId');
