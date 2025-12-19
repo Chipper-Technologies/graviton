@@ -56,11 +56,15 @@ class CelestialBodyPainter {
     );
 
     return [
-      (clampedMid - RenderingConstants.hemisphereLightingStopOffset)
-          .clamp(0.0, 1.0),
+      (clampedMid - RenderingConstants.hemisphereLightingStopOffset).clamp(
+        0.0,
+        1.0,
+      ),
       clampedMid,
-      (clampedMid + RenderingConstants.hemisphereLightingStopOffset)
-          .clamp(0.0, 1.0),
+      (clampedMid + RenderingConstants.hemisphereLightingStopOffset).clamp(
+        0.0,
+        1.0,
+      ),
     ];
   }
 
@@ -352,7 +356,8 @@ class CelestialBodyPainter {
 
           // Use stronger overlay intensity for custom bodies (textured planets)
           // This ensures shadows are visible over detailed textures like Jupiter's bands
-          final highlightAlpha = RenderingConstants.hemisphereLightingIntensity *
+          final highlightAlpha =
+              RenderingConstants.hemisphereLightingIntensity *
               RenderingConstants.customBodyHighlightMultiplier;
 
           final overlayGradient = LinearGradient(

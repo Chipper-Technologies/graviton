@@ -23,6 +23,7 @@ import 'services/firebase/app_check_service.dart';
 import 'package:graviton/features/auth/data/auth_service.dart';
 import 'services/platform/changelog_service.dart';
 import 'services/firebase/firebase_service.dart';
+import 'services/firebase/realtime_database_service.dart';
 import 'package:graviton/shared/widgets/dialogs/changelog_dialog.dart';
 import 'services/firebase/remote_config_service.dart';
 import 'services/platform/version_service.dart';
@@ -74,6 +75,7 @@ void main() async {
 
     await AppCheckService.instance.initialize();
     await FirebaseService.instance.initialize();
+    await RealtimeDatabaseService.instance.initialize();
     await AuthService.instance.initialize();
   } catch (e) {
     debugPrint('Firebase initialization failed: $e');

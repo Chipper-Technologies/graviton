@@ -907,45 +907,48 @@ void main() {
         );
       });
 
-      test('specular back-face culling threshold should prevent back-facing highlights', () {
-        expect(
-          RenderingConstants.specularBackFaceCullingThreshold,
-          isA<double>(),
-        );
-        expect(
-          RenderingConstants.specularBackFaceCullingThreshold,
-          greaterThanOrEqualTo(0.0),
-        );
-        expect(
-          RenderingConstants.specularBackFaceCullingThreshold,
-          lessThan(0.5),
-        );
-        // Should be small enough to only cull truly back-facing surfaces
-        expect(
-          RenderingConstants.specularBackFaceCullingThreshold,
-          equals(0.1),
-        );
-      });
+      test(
+        'specular back-face culling threshold should prevent back-facing highlights',
+        () {
+          expect(
+            RenderingConstants.specularBackFaceCullingThreshold,
+            isA<double>(),
+          );
+          expect(
+            RenderingConstants.specularBackFaceCullingThreshold,
+            greaterThanOrEqualTo(0.0),
+          );
+          expect(
+            RenderingConstants.specularBackFaceCullingThreshold,
+            lessThan(0.5),
+          );
+          // Should be small enough to only cull truly back-facing surfaces
+          expect(
+            RenderingConstants.specularBackFaceCullingThreshold,
+            equals(0.1),
+          );
+        },
+      );
 
-      test('specular intensity power scaling should create gradual falloff', () {
-        expect(
-          RenderingConstants.specularIntensityPowerScaling,
-          isA<double>(),
-        );
-        expect(
-          RenderingConstants.specularIntensityPowerScaling,
-          greaterThan(0.0),
-        );
-        expect(
-          RenderingConstants.specularIntensityPowerScaling,
-          lessThanOrEqualTo(1.0),
-        );
-        // Value of 0.5 creates softer, more gradual falloff (square root)
-        expect(
-          RenderingConstants.specularIntensityPowerScaling,
-          equals(0.5),
-        );
-      });
+      test(
+        'specular intensity power scaling should create gradual falloff',
+        () {
+          expect(
+            RenderingConstants.specularIntensityPowerScaling,
+            isA<double>(),
+          );
+          expect(
+            RenderingConstants.specularIntensityPowerScaling,
+            greaterThan(0.0),
+          );
+          expect(
+            RenderingConstants.specularIntensityPowerScaling,
+            lessThanOrEqualTo(1.0),
+          );
+          // Value of 0.5 creates softer, more gradual falloff (square root)
+          expect(RenderingConstants.specularIntensityPowerScaling, equals(0.5));
+        },
+      );
 
       test('hemisphere lighting phase clamp values should be symmetric', () {
         expect(
@@ -956,20 +959,11 @@ void main() {
           RenderingConstants.hemisphereLightingPhaseMaxClamp,
           isA<double>(),
         );
-        expect(
-          RenderingConstants.hemisphereLightingStopOffset,
-          isA<double>(),
-        );
+        expect(RenderingConstants.hemisphereLightingStopOffset, isA<double>());
 
         // Min and max should be symmetric around 0.5
-        expect(
-          RenderingConstants.hemisphereLightingPhaseMinClamp,
-          equals(0.1),
-        );
-        expect(
-          RenderingConstants.hemisphereLightingPhaseMaxClamp,
-          equals(0.9),
-        );
+        expect(RenderingConstants.hemisphereLightingPhaseMinClamp, equals(0.1));
+        expect(RenderingConstants.hemisphereLightingPhaseMaxClamp, equals(0.9));
         expect(
           RenderingConstants.hemisphereLightingPhaseMinClamp +
               RenderingConstants.hemisphereLightingPhaseMaxClamp,
@@ -979,31 +973,29 @@ void main() {
         // Stop offset should be less than half the clamping range
         expect(
           RenderingConstants.hemisphereLightingStopOffset,
-          lessThanOrEqualTo(
-            RenderingConstants.hemisphereLightingPhaseMinClamp,
-          ),
+          lessThanOrEqualTo(RenderingConstants.hemisphereLightingPhaseMinClamp),
         );
       });
 
-      test('custom body highlight multiplier should reduce intensity for textured bodies', () {
-        expect(
-          RenderingConstants.customBodyHighlightMultiplier,
-          isA<double>(),
-        );
-        expect(
-          RenderingConstants.customBodyHighlightMultiplier,
-          greaterThan(0.0),
-        );
-        expect(
-          RenderingConstants.customBodyHighlightMultiplier,
-          lessThan(1.0),
-        );
-        // Should reduce intensity significantly for textured bodies
-        expect(
-          RenderingConstants.customBodyHighlightMultiplier,
-          equals(0.4),
-        );
-      });
+      test(
+        'custom body highlight multiplier should reduce intensity for textured bodies',
+        () {
+          expect(
+            RenderingConstants.customBodyHighlightMultiplier,
+            isA<double>(),
+          );
+          expect(
+            RenderingConstants.customBodyHighlightMultiplier,
+            greaterThan(0.0),
+          );
+          expect(
+            RenderingConstants.customBodyHighlightMultiplier,
+            lessThan(1.0),
+          );
+          // Should reduce intensity significantly for textured bodies
+          expect(RenderingConstants.customBodyHighlightMultiplier, equals(0.4));
+        },
+      );
 
       test('light direction epsilon should prevent division by near-zero', () {
         expect(RenderingConstants.lightDirectionEpsilon, isA<double>());
@@ -1038,10 +1030,7 @@ void main() {
       });
 
       test('body occlusion radius multiplier should be close to 1.0', () {
-        expect(
-          RenderingConstants.bodyOcclusionRadiusMultiplier,
-          isA<double>(),
-        );
+        expect(RenderingConstants.bodyOcclusionRadiusMultiplier, isA<double>());
         expect(
           RenderingConstants.bodyOcclusionRadiusMultiplier,
           greaterThan(0.5),
@@ -1051,10 +1040,7 @@ void main() {
           lessThanOrEqualTo(1.0),
         );
         // Should be close to 1.0 but slightly smaller to avoid edge cases
-        expect(
-          RenderingConstants.bodyOcclusionRadiusMultiplier,
-          equals(0.85),
-        );
+        expect(RenderingConstants.bodyOcclusionRadiusMultiplier, equals(0.85));
       });
     });
 
