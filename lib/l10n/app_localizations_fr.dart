@@ -561,6 +561,23 @@ class AppLocalizationsFr extends AppLocalizations {
       'Appuyez n\'importe où sur la toile pour placer un nouveau corps';
 
   @override
+  String get lockInteraction => 'Verrouiller l\'interaction';
+
+  @override
+  String get tapToLockInteraction =>
+      'Appuyez pour verrouiller - empêche le déplacement accidentel des corps';
+
+  @override
+  String get tapToUnlockInteraction =>
+      'Appuyez pour déverrouiller - permet de déplacer les corps en les faisant glisser';
+
+  @override
+  String get interactionLocked => 'Interaction verrouillée';
+
+  @override
+  String get interactionUnlocked => 'Interaction déverrouillée';
+
+  @override
   String get bodyPlacedSuccessfully => 'Corps placé avec succès';
 
   @override
