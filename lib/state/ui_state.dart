@@ -237,7 +237,7 @@ class UIState extends ChangeNotifier {
       _isFullscreen = prefs.getBool(_keyIsFullscreen) ?? false;
 
       // Load interaction lock setting
-      _isInteractionLocked = prefs.getBool(_keyIsInteractionLocked) ?? false;
+      _isInteractionLocked = prefs.getBool(_keyIsInteractionLocked) ?? true;
 
       // Load changelog tracking
       _lastSeenChangelogVersion = prefs.getString(_keyLastSeenChangelogVersion);
