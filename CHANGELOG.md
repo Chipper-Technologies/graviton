@@ -14,6 +14,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Integration into simulation viewport to conditionally block body dragging
   - Visual and haptic feedback when toggling lock state
   - Localization support across all 7 languages
+- **Body Label Occlusion Detection**: Labels now hide when occluded by closer celestial bodies
+  - O(n²) occlusion pass with configurable radius multiplier (0.85)
+  - Performance documentation for future optimization with spatial partitioning
+
+### Changed
+- **Enhanced Hemisphere Lighting**: Improved phase-based light/shadow gradient calculations
+  - Camera-space transformations for more accurate hemisphere lighting direction
+  - New `_calculateGradientStops()` helper consolidates duplicate gradient logic (DRY)
+  - Configurable phase clamp values (0.1-0.9) prevent gradient stop bunching
+  - Ambient shadow ratio for softer lighting when cast shadows are disabled
+- **Improved Specular Highlights**: Blinn-Phong shading in camera space
+  - Back-face culling threshold (0.1) prevents highlights on sphere backsides
+  - Power scaling (0.5) creates gradual intensity falloff
+  - Uses worldToCameraMatrix when available for accurate calculations
+- **Outer Planet Rendering Support**: Updated constants for distant bodies
+  - Increased light source distance from 50 to 2000 units
+  - Reduced minimum contribution from 0.05 to 0.0001 for realistic falloff
+  - Custom body highlight multiplier (0.4) for textured planets like Jupiter
+
+### Fixed
+- Light direction epsilon (0.001) prevents division by near-zero in edge cases
 
 ## [1.7.0] - 2025-12-13
 
