@@ -5,6 +5,16 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2025-12-22
+
+### Added
+- **Interaction Lock Feature**: Screen lock to prevent accidental body dragging during pan/exploration
+  - New interaction lock toggle widget with locked/unlocked visual states
+  - UI state management for persisting lock preference across sessions
+  - Integration into simulation viewport to conditionally block body dragging
+  - Visual and haptic feedback when toggling lock state
+  - Localization support across all 7 languages
+
 ## [1.7.0] - 2025-12-13
 
 ### Added

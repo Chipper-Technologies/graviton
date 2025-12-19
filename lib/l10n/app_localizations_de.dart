@@ -557,6 +557,23 @@ class AppLocalizationsDe extends AppLocalizations {
       'Tippen Sie auf eine beliebige Stelle auf der Leinwand, um einen neuen Körper zu platzieren';
 
   @override
+  String get lockInteraction => 'Interaktion sperren';
+
+  @override
+  String get tapToLockInteraction =>
+      'Tippen zum Sperren - verhindert versehentliches Bewegen von Körpern';
+
+  @override
+  String get tapToUnlockInteraction =>
+      'Tippen zum Entsperren - ermöglicht das Bewegen von Körpern durch Ziehen';
+
+  @override
+  String get interactionLocked => 'Interaktion gesperrt';
+
+  @override
+  String get interactionUnlocked => 'Interaktion entsperrt';
+
+  @override
   String get bodyPlacedSuccessfully => 'Körper erfolgreich platziert';
 
   @override

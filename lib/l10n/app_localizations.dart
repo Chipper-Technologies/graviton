@@ -1070,6 +1070,36 @@ abstract class AppLocalizations {
   /// **'Tap anywhere on the canvas to place a new body'**
   String get tapToPlaceBody;
 
+  /// Button tooltip for the interaction lock toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Lock Interaction'**
+  String get lockInteraction;
+
+  /// Accessibility hint for enabling interaction lock
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to lock interaction - prevents accidentally moving bodies'**
+  String get tapToLockInteraction;
+
+  /// Accessibility hint for disabling interaction lock
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to unlock interaction - allows moving bodies by dragging'**
+  String get tapToUnlockInteraction;
+
+  /// Snackbar message when interaction is locked
+  ///
+  /// In en, this message translates to:
+  /// **'Interaction locked'**
+  String get interactionLocked;
+
+  /// Snackbar message when interaction is unlocked
+  ///
+  /// In en, this message translates to:
+  /// **'Interaction unlocked'**
+  String get interactionUnlocked;
+
   /// Confirmation message after placing a body
   ///
   /// In en, this message translates to:

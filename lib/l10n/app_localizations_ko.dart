@@ -528,6 +528,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get tapToPlaceBody => '캔버스의 아무 곳이나 탭하여 새 천체 배치';
 
   @override
+  String get lockInteraction => '상호작용 잠금';
+
+  @override
+  String get tapToLockInteraction => '탭하여 잠금 - 실수로 천체를 이동하는 것을 방지';
+
+  @override
+  String get tapToUnlockInteraction => '탭하여 잠금 해제 - 드래그하여 천체 이동 가능';
+
+  @override
+  String get interactionLocked => '상호작용이 잠겼습니다';
+
+  @override
+  String get interactionUnlocked => '상호작용이 해제되었습니다';
+
+  @override
   String get bodyPlacedSuccessfully => '천체가 성공적으로 배치되었습니다';
 
   @override

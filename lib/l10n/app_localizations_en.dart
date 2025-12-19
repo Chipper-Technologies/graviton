@@ -556,6 +556,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tapToPlaceBody => 'Tap anywhere on the canvas to place a new body';
 
   @override
+  String get lockInteraction => 'Lock Interaction';
+
+  @override
+  String get tapToLockInteraction =>
+      'Tap to lock interaction - prevents accidentally moving bodies';
+
+  @override
+  String get tapToUnlockInteraction =>
+      'Tap to unlock interaction - allows moving bodies by dragging';
+
+  @override
+  String get interactionLocked => 'Interaction locked';
+
+  @override
+  String get interactionUnlocked => 'Interaction unlocked';
+
+  @override
   String get bodyPlacedSuccessfully => 'Body placed successfully';
 
   @override
