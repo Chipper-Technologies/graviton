@@ -41,13 +41,37 @@ class CelestialBodyPainter {
     return totalDistance / points.length;
   }
 
+  /// Calculate gradient stops for hemisphere lighting based on the lighting phase.
+  ///
+  /// The phase determines where the lit/shadow transition occurs:
+  /// - Phase 1.0 (Full): Light dominates, stops around [0.8, 0.9, 1.0]
+  /// - Phase -1.0 (New): Dark dominates, stops around [0.0, 0.1, 0.2]
+  ///
+  /// Returns a list of three gradient stop positions [start, mid, end].
+  static List<double> _calculateGradientStops(double lightingPhase) {
+    final midPoint = (lightingPhase + 1.0) / 2.0;
+    final clampedMid = midPoint.clamp(
+      RenderingConstants.hemisphereLightingPhaseMinClamp,
+      RenderingConstants.hemisphereLightingPhaseMaxClamp,
+    );
+
+    return [
+      (clampedMid - RenderingConstants.hemisphereLightingStopOffset)
+          .clamp(0.0, 1.0),
+      clampedMid,
+      (clampedMid + RenderingConstants.hemisphereLightingStopOffset)
+          .clamp(0.0, 1.0),
+    ];
+  }
+
   /// Draw a body based on its name/type with special rendering for known celestial objects
   static void drawBody(
     Canvas canvas,
     Offset center,
     double radius,
     Body body, {
-    vm.Matrix4? viewMatrix,
+    vm.Matrix4? viewMatrix, // This is actually ViewProjection Matrix (VP)
+    vm.Matrix4? worldToCameraMatrix, // This is View Matrix (V)
     Size? canvasSize,
     double opacity = 1.0,
     bool useRealisticColors = false,
@@ -90,6 +114,32 @@ class CelestialBodyPainter {
     } else {
       // Check for specific celestial body types using enum
       final celestialBody = CelestialBodyName.fromString(body.name);
+      final bodyColor = body.color;
+
+      // Calculate hemisphere lighting offset if enabled
+      ({Offset offset, double phase}) lightingResult = (
+        offset: Offset.zero,
+        phase: 0.0,
+      );
+
+      if (enableHemisphereLighting &&
+          allBodies != null &&
+          viewMatrix != null &&
+          canvasSize != null) {
+        lightingResult = _calculateHemisphereLightingOffset(
+          allBodies,
+          body,
+          center,
+          viewMatrix,
+          worldToCameraMatrix,
+          canvasSize,
+        );
+      }
+
+      final lightingOffset = lightingResult.offset;
+      final lightingPhase = lightingResult.phase;
+
+      bool customDrawn = false;
 
       switch (celestialBody) {
         case CelestialBodyName.mercury:
@@ -103,6 +153,7 @@ class CelestialBodyPainter {
               hazeIntensity: 0.1,
             );
           }
+          customDrawn = true;
         case CelestialBodyName.venus:
           drawVenus(canvas, center, radius);
           if (showAtmosphericEffects) {
@@ -114,6 +165,7 @@ class CelestialBodyPainter {
               hazeIntensity: 0.6,
             );
           }
+          customDrawn = true;
         case CelestialBodyName.earth:
           drawEarth(canvas, center, radius);
           if (showAtmosphericEffects) {
@@ -126,6 +178,7 @@ class CelestialBodyPainter {
               atmosphericColor: AppColors.starSkyBlue,
             );
           }
+          customDrawn = true;
         case CelestialBodyName.mars:
           drawMars(canvas, center, radius);
           if (showAtmosphericEffects) {
@@ -138,6 +191,7 @@ class CelestialBodyPainter {
               hazeIntensity: 0.15, // Thin atmosphere
             );
           }
+          customDrawn = true;
         case CelestialBodyName.jupiter:
           drawJupiter(canvas, center, radius);
           if (showAtmosphericEffects) {
@@ -150,6 +204,7 @@ class CelestialBodyPainter {
               hazeIntensity: 0.4, // Thick atmosphere
             );
           }
+          customDrawn = true;
         case CelestialBodyName.saturn:
           drawSaturn(
             canvas,
@@ -169,6 +224,7 @@ class CelestialBodyPainter {
               hazeIntensity: 0.35, // Thick atmosphere
             );
           }
+          customDrawn = true;
         case CelestialBodyName.uranus:
           drawUranus(
             canvas,
@@ -188,6 +244,7 @@ class CelestialBodyPainter {
               hazeIntensity: 0.25, // Moderate atmosphere
             );
           }
+          customDrawn = true;
         case CelestialBodyName.neptune:
           drawNeptune(canvas, center, radius);
           if (showAtmosphericEffects) {
@@ -200,157 +257,192 @@ class CelestialBodyPainter {
               hazeIntensity: 0.3, // Moderate atmosphere
             );
           }
+          customDrawn = true;
         default:
-          // Normal body rendering
-          // Use realistic colors based on stellar properties when enabled
-          final bodyColor = useRealisticColors
-              ? StellarColorService.getRealisticBodyColor(body)
-              : body.color;
+          customDrawn = false;
+      }
 
-          // Calculate hemisphere lighting offset if enabled
-          Offset lightingOffset = Offset.zero;
-          if (enableHemisphereLighting && allBodies != null) {
-            final rawOffset = _calculateHemisphereLightingOffset(
-              allBodies,
-              body,
-              center,
-            );
-            // Scale offset by radius to make it proportional to body size
-            lightingOffset = Offset(
-              rawOffset.dx * radius,
-              rawOffset.dy * radius,
-            );
-          }
+      if (!customDrawn) {
+        // Normal body rendering
+        // Use realistic colors based on stellar properties when enabled
+        final bodyColor = useRealisticColors
+            ? StellarColorService.getRealisticBodyColor(body)
+            : body.color;
 
-          // Create gradient with lighting offset applied
-          final gradientCenter = center + lightingOffset;
-          final glow = RadialGradient(
-            center: Alignment(
-              (gradientCenter.dx - center.dx) /
-                  (radius * RenderingConstants.bodyGlowMultiplier),
-              (gradientCenter.dy - center.dy) /
-                  (radius * RenderingConstants.bodyGlowMultiplier),
-            ),
-            colors: [
-              bodyColor.withValues(alpha: RenderingConstants.bodyAlpha),
-              bodyColor.withValues(alpha: RenderingConstants.bodyGlowAlpha),
-            ],
+        // Create gradient with lighting offset applied
+        final glow = RadialGradient(
+          center: Alignment(lightingOffset.dx, lightingOffset.dy),
+          colors: [
+            bodyColor.withValues(alpha: RenderingConstants.bodyAlpha),
+            bodyColor.withValues(alpha: RenderingConstants.bodyGlowAlpha),
+          ],
+        );
+
+        final rect = Rect.fromCircle(
+          center: center,
+          radius: radius * RenderingConstants.bodyGlowMultiplier,
+        );
+        canvas.drawCircle(
+          center,
+          radius * RenderingConstants.bodyGlowMultiplier,
+          Paint()..shader = glow.createShader(rect),
+        );
+
+        // Draw solid body with hemisphere lighting
+        if (enableHemisphereLighting && lightingOffset != Offset.zero) {
+          // Normalize direction
+          final dist = lightingOffset.distance;
+          final dir = dist > 0 ? lightingOffset / dist : Offset.zero;
+
+          final brightColor = Color.lerp(
+            bodyColor,
+            AppColors.uiWhite,
+            RenderingConstants.hemisphereLightingIntensity,
+          )!;
+
+          // If cast shadows are disabled, the "shadow" side should be much lighter (ambient light only)
+          // If enabled, use the standard shadow ratio
+          final shadowRatio = enableCastShadows
+              ? RenderingConstants.hemisphereLightingShadowIntensityRatio
+              : RenderingConstants.hemisphereLightingAmbientShadowRatio;
+
+          final shadowColor = Color.lerp(
+            bodyColor,
+            AppColors.uiBlack,
+            shadowRatio,
+          )!;
+
+          // Calculate stops based on phase
+          final stops = _calculateGradientStops(lightingPhase);
+
+          // Linear gradient from Light Side to Dark Side
+          final gradient = LinearGradient(
+            begin: Alignment(dir.dx, dir.dy),
+            end: Alignment(-dir.dx, -dir.dy),
+            colors: [brightColor, bodyColor, shadowColor],
+            stops: stops,
           );
 
-          final rect = Rect.fromCircle(
-            center: center,
-            radius: radius * RenderingConstants.bodyGlowMultiplier,
-          );
+          final bodyRect = Rect.fromCircle(center: center, radius: radius);
           canvas.drawCircle(
             center,
-            radius * RenderingConstants.bodyGlowMultiplier,
-            Paint()..shader = glow.createShader(rect),
+            radius,
+            Paint()..shader = gradient.createShader(bodyRect),
+          );
+        } else {
+          // No hemisphere lighting - use solid color
+          canvas.drawCircle(center, radius, Paint()..color = bodyColor);
+        }
+      } else {
+        // Custom drawn body (Earth, etc.) - Apply Universal Overlay
+        if (enableHemisphereLighting && lightingOffset != Offset.zero) {
+          // Normalize direction
+          final dist = lightingOffset.distance;
+          final dir = dist > 0 ? lightingOffset / dist : Offset.zero;
+
+          // Calculate stops based on phase
+          final stops = _calculateGradientStops(lightingPhase);
+
+          // Linear gradient overlay: Light -> Transparent -> Dark
+
+          // If cast shadows are disabled, the "shadow" side should be much lighter
+          final shadowAlpha = enableCastShadows
+              ? RenderingConstants.hemisphereLightingShadowIntensityRatio
+              : RenderingConstants.hemisphereLightingAmbientShadowRatio;
+
+          // Use stronger overlay intensity for custom bodies (textured planets)
+          // This ensures shadows are visible over detailed textures like Jupiter's bands
+          final highlightAlpha = RenderingConstants.hemisphereLightingIntensity *
+              RenderingConstants.customBodyHighlightMultiplier;
+
+          final overlayGradient = LinearGradient(
+            begin: Alignment(dir.dx, dir.dy),
+            end: Alignment(-dir.dx, -dir.dy),
+            colors: [
+              AppColors.uiWhite.withValues(alpha: highlightAlpha), // Highlight
+              AppColors.transparentColor, // Mid-tone (show texture)
+              AppColors.uiBlack.withValues(alpha: shadowAlpha), // Shadow
+            ],
+            stops: stops,
           );
 
-          // Draw solid body with hemisphere lighting
-          if (enableHemisphereLighting && lightingOffset != Offset.zero) {
-            // Create hemisphere gradient for main body
-            final hemisphereGradient = RadialGradient(
-              center: Alignment(
-                lightingOffset.dx / radius,
-                lightingOffset.dy / radius,
-              ),
-              colors: [
-                // Brighter on lit side
-                Color.lerp(
-                  bodyColor,
-                  AppColors.uiWhite,
-                  RenderingConstants.hemisphereLightingIntensity,
-                )!,
-                bodyColor,
-                // Darker on shadow side
-                Color.lerp(
-                  bodyColor,
-                  AppColors.uiBlack,
-                  RenderingConstants.hemisphereLightingIntensity *
-                      RenderingConstants.hemisphereLightingShadowIntensityRatio,
-                )!,
-              ],
-              stops: const [
-                RenderingConstants.hemisphereLightingGradientStart,
-                RenderingConstants.hemisphereLightingGradientMid,
-                RenderingConstants.hemisphereLightingGradientEnd,
-              ],
-            );
+          final bodyRect = Rect.fromCircle(center: center, radius: radius);
+          canvas.drawCircle(
+            center,
+            radius,
+            Paint()..shader = overlayGradient.createShader(bodyRect),
+          );
+        }
+      }
 
-            final bodyRect = Rect.fromCircle(center: center, radius: radius);
-            canvas.drawCircle(
-              center,
-              radius,
-              Paint()..shader = hemisphereGradient.createShader(bodyRect),
-            );
-          } else {
-            // No hemisphere lighting - use solid color
-            canvas.drawCircle(center, radius, Paint()..color = bodyColor);
-          }
+      // Draw cast shadows if enabled
+      if (enableCastShadows &&
+          allBodies != null &&
+          body.bodyType != BodyType.star) {
+        drawCastShadow(canvas, center, radius, body, allBodies);
+      }
 
-          // Draw cast shadows if enabled
-          if (enableCastShadows &&
-              allBodies != null &&
-              body.bodyType != BodyType.star) {
-            drawCastShadow(canvas, center, radius, body, allBodies);
-          }
+      // Draw specular highlights if enabled
+      if (enableSpecularHighlights &&
+          allBodies != null &&
+          body.bodyType != BodyType.star) {
+        drawSpecularHighlight(
+          canvas,
+          center,
+          radius,
+          body,
+          allBodies,
+          worldToCameraMatrix: worldToCameraMatrix,
+        );
+      }
 
-          // Draw specular highlights if enabled
-          if (enableSpecularHighlights &&
-              allBodies != null &&
-              body.bodyType != BodyType.star) {
-            drawSpecularHighlight(canvas, center, radius, body, allBodies);
-          }
+      // Draw atmospheric scattering if hemisphere lighting is enabled
+      // This creates a sunrise/sunset glow on the lit side
+      if (enableHemisphereLighting &&
+          allBodies != null &&
+          body.bodyType == BodyType.planet) {
+        drawAtmosphericScattering(
+          canvas,
+          center,
+          radius,
+          body,
+          allBodies,
+          bodyColor,
+        );
+      }
 
-          // Draw atmospheric scattering if hemisphere lighting is enabled
-          // This creates a sunrise/sunset glow on the lit side
-          if (enableHemisphereLighting &&
-              allBodies != null &&
-              body.bodyType == BodyType.planet) {
-            drawAtmosphericScattering(
-              canvas,
-              center,
-              radius,
-              body,
-              allBodies,
-              bodyColor,
-            );
-          }
+      // Apply atmospheric effects to all planets (not in named solar system)
+      if (showAtmosphericEffects &&
+          body.bodyType == BodyType.planet &&
+          body.isPlanet == true) {
+        final intensity = _getAtmosphericIntensityForBody(body);
+        if (intensity > 0.0) {
+          _drawAtmosphericHalo(
+            canvas,
+            center,
+            radius,
+            bodyColor,
+            hazeIntensity: intensity,
+          );
+        }
+      }
 
-          // Apply atmospheric effects to all planets (not in named solar system)
-          if (showAtmosphericEffects &&
-              body.bodyType == BodyType.planet &&
-              body.isPlanet == true) {
-            final intensity = _getAtmosphericIntensityForBody(body);
-            if (intensity > 0.0) {
-              _drawAtmosphericHalo(
-                canvas,
-                center,
-                radius,
-                bodyColor,
-                hazeIntensity: intensity,
-              );
-            }
-          }
+      // Draw relativistic glow if enabled and body has time dilation
+      if (showRelativisticGlow &&
+          body.showRelativisticGlow &&
+          body.timeDilationFactor < 1.0) {
+        _drawRelativisticGlow(
+          canvas,
+          center,
+          radius,
+          body.timeDilationFactor,
+          bodyColor,
+        );
+      }
 
-          // Draw relativistic glow if enabled and body has time dilation
-          if (showRelativisticGlow &&
-              body.showRelativisticGlow &&
-              body.timeDilationFactor < 1.0) {
-            _drawRelativisticGlow(
-              canvas,
-              center,
-              radius,
-              body.timeDilationFactor,
-              bodyColor,
-            );
-          }
-
-          // Draw tidal deformation and stress visualization if enabled
-          if (showTidalVisualization && body.showTidalForces) {
-            _drawTidalVisualization(canvas, center, radius, body, bodyColor);
-          }
+      // Draw tidal deformation and stress visualization if enabled
+      if (showTidalVisualization && body.showTidalForces) {
+        _drawTidalVisualization(canvas, center, radius, body, bodyColor);
       }
     }
   }
@@ -2404,12 +2496,13 @@ class CelestialBodyPainter {
   /// Returns an [Offset] representing the gradient center offset from body center,
   /// or [Offset.zero] if no light source is found.
   ///
-  /// Now uses blended lighting from multiple light sources for more realistic
-  /// illumination in systems with multiple stars.
-  static Offset _calculateHemisphereLightingOffset(
+  static ({Offset offset, double phase}) _calculateHemisphereLightingOffset(
     List<Body> bodies,
     Body currentBody,
     Offset currentBodyPosition,
+    Matrix4 viewMatrix,
+    Matrix4? worldToCameraMatrix,
+    Size canvasSize,
   ) {
     // Find all stars in the system
     final stars = bodies
@@ -2418,30 +2511,106 @@ class CelestialBodyPainter {
 
     // No stars found, return no offset
     if (stars.isEmpty) {
-      return Offset.zero;
+      return (offset: Offset.zero, phase: 0.0);
     }
 
-    // Calculate blended lighting from multiple sources
+    // For simplicity, use the brightest/nearest star
     final blendedLight = _calculateBlendedLighting(currentBody, stars);
-
-    // No significant light contribution
     if (blendedLight.intensity == 0.0) {
-      return Offset.zero;
+      return (offset: Offset.zero, phase: 0.0);
     }
 
-    // Extract 2D direction from 3D light direction
-    final normX = blendedLight.direction.x;
-    final normY = blendedLight.direction.y;
-    // Z component affects the offset magnitude (bodies facing toward/away from camera)
+    // 1. Calculate Phase (Z-alignment)
+    // Use worldToCameraMatrix (View Matrix) if available, otherwise fallback to viewMatrix (VP)
+    // Using View Matrix ensures we calculate angles in Camera Space (orthogonal), not Clip Space (perspective distorted)
+    final transformMatrix = worldToCameraMatrix ?? viewMatrix;
 
-    // Project onto 2D canvas space (simplified projection)
-    // The offset is a fraction of the body radius, controlled by gradient offset constant
-    // Scale by intensity for realistic light falloff
-    final offsetMagnitude =
-        RenderingConstants.hemisphereLightingGradientOffset *
-        blendedLight.intensity;
+    // Transform positions to Camera Space
+    final bodyPos = vm.Vector4(
+      currentBody.position.x,
+      currentBody.position.y,
+      currentBody.position.z,
+      1.0,
+    );
+    final sunPos = vm.Vector4(
+      blendedLight.star.position.x,
+      blendedLight.star.position.y,
+      blendedLight.star.position.z,
+      1.0,
+    );
 
-    return Offset(normX * offsetMagnitude, normY * offsetMagnitude);
+    final bodyCam = transformMatrix.transform(bodyPos);
+    final sunCam = transformMatrix.transform(sunPos);
+
+    // Vector from Body to Sun in Camera Space
+    final lightVec = vm.Vector3(
+      sunCam.x - bodyCam.x,
+      sunCam.y - bodyCam.y,
+      sunCam.z - bodyCam.z,
+    ).normalized();
+
+    // Vector from Body to Camera (Camera is at 0,0,0 in Camera Space)
+    // V = (0,0,0) - BodyCam = -BodyCam
+    final viewVec = vm.Vector3(-bodyCam.x, -bodyCam.y, -bodyCam.z).normalized();
+
+    // Dot product: 1.0 = Aligned (Full Moon), -1.0 = Opposite (New Moon)
+    final phase = lightVec.dot(viewVec);
+
+    // 2. Calculate Screen Space Offset (Direction)
+    // Project the Sun's 3D position to screen space using VP matrix (viewMatrix)
+    final sunPosWorld = vm.Vector4(
+      blendedLight.star.position.x,
+      blendedLight.star.position.y,
+      blendedLight.star.position.z,
+      1.0,
+    );
+    final sunProjected = viewMatrix.transform(sunPosWorld);
+
+    // Check if sun is behind camera (w <= 0 means behind or at camera plane)
+    // In this case, we need to invert the direction to avoid the flip
+    final isSunBehindCamera =
+        sunProjected.w < RenderingConstants.projectionClipZThreshold;
+
+    // Convert to NDC - handle behind camera case
+    double sunScreenX;
+    double sunScreenY;
+
+    if (isSunBehindCamera) {
+      // Sun is behind camera - use camera-space direction instead
+      // This prevents the flip when panning around to the dark side
+      final lightDirX = lightVec.x;
+      final lightDirY = -lightVec.y; // Invert Y for Flutter
+
+      // Scale to screen-like magnitude (arbitrary but consistent)
+      sunScreenX = currentBodyPosition.dx + lightDirX * canvasSize.width;
+      sunScreenY = currentBodyPosition.dy + lightDirY * canvasSize.height;
+    } else {
+      // Normal projection when sun is visible
+      final sunNDC = sunProjected.xyz / sunProjected.w;
+      sunScreenX = (sunNDC.x + 1.0) * 0.5 * canvasSize.width;
+      sunScreenY = (1.0 - sunNDC.y) * 0.5 * canvasSize.height;
+    }
+
+    // Calculate direction from planet to Sun in screen space
+    final dx = sunScreenX - currentBodyPosition.dx;
+    final dy = sunScreenY - currentBodyPosition.dy;
+    final distance = math.sqrt(dx * dx + dy * dy);
+
+    if (distance < RenderingConstants.lightDirectionEpsilon) {
+      // Sun is at same screen position as body - use default direction
+      return (offset: Offset(0.0, -blendedLight.intensity), phase: phase);
+    }
+
+    // Return normalized direction scaled by intensity
+    final normX = dx / distance;
+    final normY = dy / distance;
+
+    final result = Offset(
+      normX * blendedLight.intensity,
+      normY * blendedLight.intensity,
+    );
+
+    return (offset: result, phase: phase);
   }
 
   /// Calculate and draw cast shadow on a body from another body blocking light
@@ -2698,8 +2867,9 @@ class CelestialBodyPainter {
     Offset center,
     double radius,
     Body currentBody,
-    List<Body> allBodies,
-  ) {
+    List<Body> allBodies, {
+    vm.Matrix4? worldToCameraMatrix,
+  }) {
     // Find nearest star for strongest highlight
     Body? nearestStar;
     double minDistance = double.infinity;
@@ -2720,64 +2890,123 @@ class CelestialBodyPainter {
       return; // No light source
     }
 
-    // Calculate light direction (from body to star)
-    final lightDirX = nearestStar.position.x - currentBody.position.x;
-    final lightDirY = nearestStar.position.y - currentBody.position.y;
-    final lightDirZ = nearestStar.position.z - currentBody.position.z;
-    final lightDist = math.sqrt(
-      lightDirX * lightDirX + lightDirY * lightDirY + lightDirZ * lightDirZ,
-    );
+    double highlightX, highlightY;
+    double intensity = 1.0;
 
-    if (lightDist == 0) {
-      return;
+    if (worldToCameraMatrix != null) {
+      // 1. Transform positions to Camera Space
+      final bodyPos = vm.Vector4(
+        currentBody.position.x,
+        currentBody.position.y,
+        currentBody.position.z,
+        1.0,
+      );
+      final starPos = vm.Vector4(
+        nearestStar.position.x,
+        nearestStar.position.y,
+        nearestStar.position.z,
+        1.0,
+      );
+
+      final bodyCam = worldToCameraMatrix.transform(bodyPos);
+      final starCam = worldToCameraMatrix.transform(starPos);
+
+      // 2. Calculate Vectors
+      // L: Vector from Body to Star
+      final L = (starCam.xyz - bodyCam.xyz).normalized();
+
+      // V: Vector from Body to Camera (Camera is at 0,0,0)
+      final V = (-bodyCam.xyz).normalized();
+
+      // H: Half vector (Blinn-Phong) - this is the normal direction required for reflection
+      final H = (L + V).normalized();
+
+      // Check if the highlight is on the front face
+      // The normal H must face the camera (H.z > 0 in Camera Space? No, Camera looks down -Z usually)
+      // In standard OpenGL/Flutter camera space:
+      // Camera is at origin, looking down -Z.
+      // So visible points have Z < 0.
+      // Normals facing the camera have Z > 0.
+      if (H.z <= RenderingConstants.specularBackFaceCullingThreshold) {
+        return; // Cull back-facing highlights
+      }
+
+      // 3. Project H to screen offset
+      // H is a unit vector representing the normal on the sphere surface.
+      // The 2D projection of this point on the disk is simply (H.x, H.y)
+      // (assuming orthogonal projection for the sphere's local appearance)
+      // Note: Screen Y is down, Camera Y is up.
+      highlightX = H.x;
+      highlightY = -H.y;
+
+      // Modulate intensity by N.L (Lambertian) at the highlight point
+      // N = H at the highlight point.
+      final dotNL = H.dot(L);
+      intensity = math
+          .pow(
+            dotNL.clamp(0.0, 1.0),
+            RenderingConstants.specularIntensityPowerScaling,
+          )
+          .toDouble();
+    } else {
+      // Fallback to old logic (World Space)
+      final lightDirX = nearestStar.position.x - currentBody.position.x;
+      final lightDirY = nearestStar.position.y - currentBody.position.y;
+      final lightDirZ = nearestStar.position.z - currentBody.position.z;
+      final lightDist = math.sqrt(
+        lightDirX * lightDirX + lightDirY * lightDirY + lightDirZ * lightDirZ,
+      );
+
+      if (lightDist == 0) return;
+
+      // Normalize light direction
+      final normLightX = lightDirX / lightDist;
+      final normLightY = lightDirY / lightDist;
+      final normLightZ = lightDirZ / lightDist;
+
+      // Simplified view direction (assume camera looking down -Z axis)
+      const viewX = RenderingConstants.specularViewDirectionX;
+      const viewY = RenderingConstants.specularViewDirectionY;
+      const viewZ = RenderingConstants.specularViewDirectionZ;
+
+      // Calculate reflection vector using Phong model
+      // R = 2(N·L)N - L, where N is surface normal at highlight point
+      // Simplified: we use the light direction as approximate surface normal
+      final dotNL =
+          normLightX * normLightX +
+          normLightY * normLightY +
+          normLightZ * normLightZ;
+      final reflectX = 2 * dotNL * normLightX - normLightX;
+      final reflectY = 2 * dotNL * normLightY - normLightY;
+      final reflectZ = 2 * dotNL * normLightZ - normLightZ;
+
+      // Calculate R·V (how well reflection aligns with view)
+      final dotRV = reflectX * viewX + reflectY * viewY + reflectZ * viewZ;
+
+      // Only draw highlight if reflection somewhat toward viewer
+      if (dotRV < RenderingConstants.specularMinReflectionDot) {
+        return;
+      }
+
+      // Calculate highlight intensity using Phong shininess
+      intensity = math
+          .pow(
+            dotRV.clamp(0.0, 1.0),
+            RenderingConstants.specularHighlightShininess,
+          )
+          .toDouble();
+
+      highlightX = normLightX;
+      highlightY = normLightY;
     }
-
-    // Normalize light direction
-    final normLightX = lightDirX / lightDist;
-    final normLightY = lightDirY / lightDist;
-    final normLightZ = lightDirZ / lightDist;
-
-    // Simplified view direction (assume camera looking down -Z axis)
-    const viewX = RenderingConstants.specularViewDirectionX;
-    const viewY = RenderingConstants.specularViewDirectionY;
-    const viewZ = RenderingConstants.specularViewDirectionZ;
-
-    // Calculate reflection vector using Phong model
-    // R = 2(N·L)N - L, where N is surface normal at highlight point
-    // Simplified: we use the light direction as approximate surface normal
-    final dotNL =
-        normLightX * normLightX +
-        normLightY * normLightY +
-        normLightZ * normLightZ;
-    final reflectX = 2 * dotNL * normLightX - normLightX;
-    final reflectY = 2 * dotNL * normLightY - normLightY;
-    final reflectZ = 2 * dotNL * normLightZ - normLightZ;
-
-    // Calculate R·V (how well reflection aligns with view)
-    final dotRV = reflectX * viewX + reflectY * viewY + reflectZ * viewZ;
-
-    // Only draw highlight if reflection somewhat toward viewer
-    if (dotRV < RenderingConstants.specularMinReflectionDot) {
-      return;
-    }
-
-    // Calculate highlight intensity using Phong shininess
-    final intensity = math
-        .pow(
-          dotRV.clamp(0.0, 1.0),
-          RenderingConstants.specularHighlightShininess,
-        )
-        .toDouble();
 
     if (intensity < RenderingConstants.specularMinIntensity) {
       return; // Too dim
     }
 
     // Position highlight on the lit side
-    final highlightOffset = Offset(
-      normLightX * radius * RenderingConstants.specularHighlightSize,
-      normLightY * radius * RenderingConstants.specularHighlightSize,
-    );
+    // Use full radius for position (highlightX/Y are normalized coordinates on the sphere surface)
+    final highlightOffset = Offset(highlightX * radius, highlightY * radius);
     final highlightCenter = center + highlightOffset;
 
     // Draw specular highlight with gradient
@@ -3035,12 +3264,17 @@ class CelestialBodyPainter {
       final baseIntensity = star.mass / (distance * distance);
 
       // Normalize to reasonable range (0.0 - 1.0)
-      final normalizedIntensity =
-          (baseIntensity * RenderingConstants.lightIntensityNormalizationFactor)
-              .clamp(0.0, 1.0);
+      // For hemisphere lighting, we use a minimum intensity floor to ensure
+      // visible shadows even at large distances (outer planets)
+      final rawIntensity =
+          baseIntensity * RenderingConstants.lightIntensityNormalizationFactor;
+      final normalizedIntensity = rawIntensity.clamp(
+        RenderingConstants.lightSourceMinContribution,
+        1.0,
+      );
 
-      // Skip if contribution is too small
-      if (normalizedIntensity < RenderingConstants.lightSourceMinContribution) {
+      // Skip only if completely negligible (below the floor)
+      if (rawIntensity < RenderingConstants.lightSourceMinContribution) {
         continue;
       }
 
