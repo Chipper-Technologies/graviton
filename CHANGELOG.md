@@ -8,6 +8,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.8.0] - 2025-12-22
 
 ### Added
+- **Firebase Realtime Database Integration**: Live simulation sharing between users
+  - **RealtimeDatabaseService**: Low-level database operations with connection monitoring
+    - Real-time data synchronization with offline persistence support
+    - Path validation to prevent traversal attacks and invalid characters
+    - Atomic transactions and increment operations with type safety
+    - Presence tracking for online/offline status
+    - Comprehensive error handling with Crashlytics integration
+  - **LiveSessionService**: Host and join live simulation sessions
+    - Real-time session state updates (running status, time scale, scenario)
+    - Viewer count tracking with automatic presence management
+    - Stream-based active session discovery
+    - Graceful error handling for malformed data and network issues
+  - **LiveSession Model**: Data model for live session metadata
+    - Serialization/deserialization with sensible defaults
+    - Immutable design with copyWith support
+    - Equality and hashCode implementations
+  - **Test Coverage**: 89 tests for Firebase Realtime Database services
+    - 35 RealtimeDatabaseService tests (path validation, operations, edge cases)
+    - 18 LiveSessionService tests (hosting, viewing, streams)
+    - 36 LiveSession model tests (constructor, serialization, equality)
 - **Interaction Lock Feature**: Screen lock to prevent accidental body dragging during pan/exploration
   - New interaction lock toggle widget with locked/unlocked visual states
   - UI state management for persisting lock preference across sessions
