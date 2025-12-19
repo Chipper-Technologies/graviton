@@ -132,7 +132,8 @@ class _BodyLabelsPainter extends CustomPainter {
 
       // Use a slightly smaller radius to avoid hiding labels at the edge
       final occlusionRadius =
-          occluder.screenRadius * RenderingConstants.bodyOcclusionRadiusMultiplier;
+          occluder.screenRadius *
+          RenderingConstants.bodyOcclusionRadiusMultiplier;
 
       if (distance < occlusionRadius) {
         return true; // Occluded
