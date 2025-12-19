@@ -41,6 +41,29 @@ class CelestialBodyPainter {
     return totalDistance / points.length;
   }
 
+  /// Calculate gradient stops for hemisphere lighting based on the lighting phase.
+  ///
+  /// The phase determines where the lit/shadow transition occurs:
+  /// - Phase 1.0 (Full): Light dominates, stops around [0.8, 0.9, 1.0]
+  /// - Phase -1.0 (New): Dark dominates, stops around [0.0, 0.1, 0.2]
+  ///
+  /// Returns a list of three gradient stop positions [start, mid, end].
+  static List<double> _calculateGradientStops(double lightingPhase) {
+    final midPoint = (lightingPhase + 1.0) / 2.0;
+    final clampedMid = midPoint.clamp(
+      RenderingConstants.hemisphereLightingPhaseMinClamp,
+      RenderingConstants.hemisphereLightingPhaseMaxClamp,
+    );
+
+    return [
+      (clampedMid - RenderingConstants.hemisphereLightingStopOffset)
+          .clamp(0.0, 1.0),
+      clampedMid,
+      (clampedMid + RenderingConstants.hemisphereLightingStopOffset)
+          .clamp(0.0, 1.0),
+    ];
+  }
+
   /// Draw a body based on its name/type with special rendering for known celestial objects
   static void drawBody(
     Canvas canvas,
@@ -281,7 +304,7 @@ class CelestialBodyPainter {
           // If enabled, use the standard shadow ratio
           final shadowRatio = enableCastShadows
               ? RenderingConstants.hemisphereLightingShadowIntensityRatio
-              : 0.1; // Very light shadow if cast shadows are disabled
+              : RenderingConstants.hemisphereLightingAmbientShadowRatio;
 
           final shadowColor = Color.lerp(
             bodyColor,
@@ -290,16 +313,7 @@ class CelestialBodyPainter {
           )!;
 
           // Calculate stops based on phase
-          // Phase: 1.0 (Full) -> Light dominates. Stops [0.8, 0.9, 1.0]
-          // Phase: -1.0 (New) -> Dark dominates. Stops [0.0, 0.1, 0.2]
-          final midPoint = (lightingPhase + 1.0) / 2.0;
-          final clampedMid = midPoint.clamp(0.1, 0.9);
-
-          final stops = [
-            (clampedMid - 0.1).clamp(0.0, 1.0),
-            clampedMid,
-            (clampedMid + 0.1).clamp(0.0, 1.0),
-          ];
+          final stops = _calculateGradientStops(lightingPhase);
 
           // Linear gradient from Light Side to Dark Side
           final gradient = LinearGradient(
@@ -327,26 +341,19 @@ class CelestialBodyPainter {
           final dir = dist > 0 ? lightingOffset / dist : Offset.zero;
 
           // Calculate stops based on phase
-          final midPoint = (lightingPhase + 1.0) / 2.0;
-          final clampedMid = midPoint.clamp(0.1, 0.9);
-
-          final stops = [
-            (clampedMid - 0.1).clamp(0.0, 1.0),
-            clampedMid,
-            (clampedMid + 0.1).clamp(0.0, 1.0),
-          ];
+          final stops = _calculateGradientStops(lightingPhase);
 
           // Linear gradient overlay: Light -> Transparent -> Dark
 
           // If cast shadows are disabled, the "shadow" side should be much lighter
           final shadowAlpha = enableCastShadows
               ? RenderingConstants.hemisphereLightingShadowIntensityRatio
-              : 0.1;
+              : RenderingConstants.hemisphereLightingAmbientShadowRatio;
 
           // Use stronger overlay intensity for custom bodies (textured planets)
           // This ensures shadows are visible over detailed textures like Jupiter's bands
-          final highlightAlpha =
-              RenderingConstants.hemisphereLightingIntensity * 0.4;
+          final highlightAlpha = RenderingConstants.hemisphereLightingIntensity *
+              RenderingConstants.customBodyHighlightMultiplier;
 
           final overlayGradient = LinearGradient(
             begin: Alignment(dir.dx, dir.dy),
@@ -2589,7 +2596,7 @@ class CelestialBodyPainter {
     final dy = sunScreenY - currentBodyPosition.dy;
     final distance = math.sqrt(dx * dx + dy * dy);
 
-    if (distance < 0.001) {
+    if (distance < RenderingConstants.lightDirectionEpsilon) {
       // Sun is at same screen position as body - use default direction
       return (offset: Offset(0.0, -blendedLight.intensity), phase: phase);
     }
@@ -2920,7 +2927,9 @@ class CelestialBodyPainter {
       // Camera is at origin, looking down -Z.
       // So visible points have Z < 0.
       // Normals facing the camera have Z > 0.
-      if (H.z <= 0.1) return; // Cull back-facing highlights
+      if (H.z <= RenderingConstants.specularBackFaceCullingThreshold) {
+        return; // Cull back-facing highlights
+      }
 
       // 3. Project H to screen offset
       // H is a unit vector representing the normal on the sphere surface.
@@ -2933,7 +2942,12 @@ class CelestialBodyPainter {
       // Modulate intensity by N.L (Lambertian) at the highlight point
       // N = H at the highlight point.
       final dotNL = H.dot(L);
-      intensity = math.pow(dotNL.clamp(0.0, 1.0), 0.5).toDouble();
+      intensity = math
+          .pow(
+            dotNL.clamp(0.0, 1.0),
+            RenderingConstants.specularIntensityPowerScaling,
+          )
+          .toDouble();
     } else {
       // Fallback to old logic (World Space)
       final lightDirX = nearestStar.position.x - currentBody.position.x;

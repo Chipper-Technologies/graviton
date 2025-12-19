@@ -91,6 +91,13 @@ class AppTypography {
   static const double borderHeavy = 3.0;
   static const double borderVeryThick = 4.0;
 
+  /// Label offset values for positioning labels relative to celestial bodies
+  /// Horizontal offset to position label to the right of body center
+  static const double labelOffsetX = 15.0;
+
+  /// Vertical offset to position label above body center (negative = upward)
+  static const double labelOffsetY = 10.0;
+
   /// Blur radius values for visual effects
   static const double blurSmall = 2.0;
   static const double blurMedium = 8.0;

@@ -108,8 +108,17 @@ class _BodyLabelsPainter extends CustomPainter {
     );
   }
 
-  /// Check if a body is occluded by any closer body
-  /// Returns true if the body's center is within another closer body's projected disc
+  /// Check if a body is occluded by any closer body.
+  ///
+  /// Returns true if the body's center is within another closer body's
+  /// projected disc.
+  ///
+  /// **Performance Note:** This uses an O(n) check against already-processed
+  /// closer bodies, resulting in O(n²) overall complexity for the full
+  /// occlusion pass. This is acceptable for typical scenarios (10-50 bodies).
+  /// If body counts grow significantly (100+), consider optimizing with
+  /// spatial partitioning (e.g., a simple grid or quadtree) to reduce the
+  /// number of distance checks per body.
   bool _isOccluded(
     ({Offset screenPos, double zDepth, double screenRadius}) target,
     List<({Body body, Offset screenPos, double zDepth, double screenRadius})>
@@ -122,7 +131,8 @@ class _BodyLabelsPainter extends CustomPainter {
       final distance = math.sqrt(dx * dx + dy * dy);
 
       // Use a slightly smaller radius to avoid hiding labels at the edge
-      final occlusionRadius = occluder.screenRadius * 0.85;
+      final occlusionRadius =
+          occluder.screenRadius * RenderingConstants.bodyOcclusionRadiusMultiplier;
 
       if (distance < occlusionRadius) {
         return true; // Occluded
@@ -190,8 +200,8 @@ class _BodyLabelsPainter extends CustomPainter {
     for (final item in labelsToShow) {
       // Offset label position slightly to avoid overlapping with the body
       final labelOffset = Offset(
-        item.screenPos.dx + 15, // Offset to the right
-        item.screenPos.dy - 10, // Offset upward
+        item.screenPos.dx + AppTypography.labelOffsetX, // Offset to the right
+        item.screenPos.dy - AppTypography.labelOffsetY, // Offset upward
       );
 
       // Get the localized name for the body
