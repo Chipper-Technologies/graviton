@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart'
     show kDebugMode, debugPrint, visibleForTesting;
 import 'package:graviton/features/auth/data/auth_service.dart';
 import 'package:graviton/models/firebase/live_session.dart';
+import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/services/firebase/firebase_service.dart';
 import 'package:graviton/services/firebase/realtime_database_service.dart';
 
@@ -47,6 +48,11 @@ class LiveSessionService {
   // Database paths
   static const String _sessionsPath = 'live_sessions';
   static const String _viewersPath = 'viewers';
+  static const String _statePath = 'state';
+
+  // State sync configuration
+  /// Minimum interval between state broadcasts to avoid flooding
+  static const Duration _minBroadcastInterval = Duration(milliseconds: 100);
 
   // Session state
   String? _currentSessionId;
@@ -54,10 +60,13 @@ class LiveSessionService {
   StreamSubscription<dynamic>? _sessionSubscription;
   StreamSubscription<MapEntry<String?, dynamic>>? _viewerAddedSubscription;
   StreamSubscription<MapEntry<String?, dynamic>>? _viewerRemovedSubscription;
+  StreamSubscription<dynamic>? _stateSubscription;
+  DateTime? _lastBroadcastTime;
 
   // Callbacks
   void Function(int viewerCount)? _onViewerCountChanged;
   void Function(LiveSession session)? _onSessionUpdated;
+  void Function(SimulationSnapshot snapshot)? _onStateReceived;
 
   /// The ID of the current session being hosted or viewed
   String? get currentSessionId => _currentSessionId;
@@ -445,6 +454,8 @@ class LiveSessionService {
       // Cancel session subscription
       await _sessionSubscription?.cancel();
       _sessionSubscription = null;
+      await _stateSubscription?.cancel();
+      _stateSubscription = null;
 
       // Remove from viewers
       final viewerPath =
@@ -459,6 +470,7 @@ class LiveSessionService {
 
       _currentSessionId = null;
       _onSessionUpdated = null;
+      _onStateReceived = null;
 
       return true;
     } catch (e, stackTrace) {
@@ -466,6 +478,106 @@ class LiveSessionService {
       FirebaseService.instance.recordError(e, stackTrace);
       return false;
     }
+  }
+
+  // =============================================================================
+  // STATE SYNC
+  // =============================================================================
+
+  /// Broadcast simulation state to all viewers (host only)
+  ///
+  /// [snapshot] The current simulation state to broadcast
+  ///
+  /// Returns true if successfully broadcast.
+  /// Rate-limited to prevent flooding the database.
+  Future<bool> broadcastState(SimulationSnapshot snapshot) async {
+    if (!_isHosting || _currentSessionId == null) {
+      debugPrint('LiveSessionService: Cannot broadcast - not hosting');
+      return false;
+    }
+
+    // Rate limiting
+    final now = DateTime.now();
+    if (_lastBroadcastTime != null &&
+        now.difference(_lastBroadcastTime!) < _minBroadcastInterval) {
+      return false; // Skip this update, too soon
+    }
+    _lastBroadcastTime = now;
+
+    try {
+      final statePath = '$_sessionsPath/$_currentSessionId/$_statePath';
+      await _rtdb.setValue(statePath, snapshot.toMap());
+      return true;
+    } catch (e, stackTrace) {
+      debugPrint('LiveSessionService: Failed to broadcast state: $e');
+      FirebaseService.instance.recordError(e, stackTrace);
+      return false;
+    }
+  }
+
+  /// Start receiving simulation state updates (viewer only)
+  ///
+  /// [onStateReceived] Callback when new state is received from host
+  void startStateSync({
+    required void Function(SimulationSnapshot snapshot) onStateReceived,
+  }) {
+    if (_isHosting || _currentSessionId == null) {
+      debugPrint('LiveSessionService: Cannot start state sync');
+      return;
+    }
+
+    _onStateReceived = onStateReceived;
+    final statePath = '$_sessionsPath/$_currentSessionId/$_statePath';
+
+    _stateSubscription = _rtdb
+        .onValue(statePath)
+        .listen(
+          (data) {
+            if (data == null || _onStateReceived == null) return;
+
+            try {
+              if (data is! Map) {
+                if (kDebugMode) {
+                  debugPrint(
+                    'LiveSessionService: State data is not a Map, '
+                    'got ${data.runtimeType}',
+                  );
+                }
+                return;
+              }
+
+              final stateData = Map<String, dynamic>.from(data);
+              final snapshot = SimulationSnapshot.fromMap(stateData);
+              _onStateReceived!(snapshot);
+            } catch (e, stackTrace) {
+              debugPrint('LiveSessionService: Error parsing state update: $e');
+              if (kDebugMode) {
+                debugPrint('Stack trace: $stackTrace');
+              }
+            }
+          },
+          onError: (Object error, StackTrace stackTrace) {
+            debugPrint('LiveSessionService: State sync error: $error');
+            if (kDebugMode) {
+              debugPrint('Stack trace: $stackTrace');
+            }
+            FirebaseService.instance.recordError(error, stackTrace);
+          },
+          cancelOnError: false,
+        );
+
+    if (kDebugMode) {
+      debugPrint(
+        'LiveSessionService: Started state sync for $_currentSessionId',
+      );
+    }
+  }
+
+  /// Stop receiving simulation state updates
+  void stopStateSync() {
+    _stateSubscription?.cancel();
+    _stateSubscription = null;
+    _onStateReceived = null;
   }
 
   // =============================================================================
@@ -485,6 +597,8 @@ class LiveSessionService {
   ///
   /// Call this when the user signs out or the app is closing.
   Future<void> dispose() async {
+    stopStateSync();
+
     if (_isHosting) {
       await stopHosting();
     } else if (_currentSessionId != null) {
@@ -493,6 +607,8 @@ class LiveSessionService {
 
     _onViewerCountChanged = null;
     _onSessionUpdated = null;
+    _onStateReceived = null;
+    _lastBroadcastTime = null;
   }
 
   // =============================================================================

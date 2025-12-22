@@ -58,9 +58,7 @@ class HostControlsWidget extends StatelessWidget {
             ? AppColors.primaryColor.withValues(
                 alpha: AppTypography.opacityMidFade,
               )
-            : AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityBarely,
-              ),
+            : AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
         borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
         border: Border.all(
           color: isHosting
@@ -89,7 +87,9 @@ class HostControlsWidget extends StatelessWidget {
               const SizedBox(width: AppTypography.spacingSmall),
               Expanded(
                 child: Text(
-                  isHosting ? l10n.liveSessionHosting : l10n.liveSessionNotHosting,
+                  isHosting
+                      ? l10n.liveSessionHosting
+                      : l10n.liveSessionNotHosting,
                   style: TextStyle(
                     color: isHosting
                         ? AppColors.primaryColor
@@ -101,20 +101,14 @@ class HostControlsWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              if (isHosting) ...[
-                _ViewerCountBadge(count: viewerCount),
-              ],
+              if (isHosting) ...[_ViewerCountBadge(count: viewerCount)],
             ],
           ),
           const SizedBox(height: AppTypography.spacingSmall),
           if (isHosting)
-            _StopHostingButton(
-              onPressed: () => _stopHosting(context),
-            )
+            _StopHostingButton(onPressed: () => _stopHosting(context))
           else
-            _StartHostingButton(
-              onPressed: () => _startHosting(context),
-            ),
+            _StartHostingButton(onPressed: () => _startHosting(context)),
         ],
       ),
     );

@@ -121,10 +121,7 @@ class _SessionCard extends StatelessWidget {
   final LiveSession session;
   final VoidCallback onJoin;
 
-  const _SessionCard({
-    required this.session,
-    required this.onJoin,
-  });
+  const _SessionCard({required this.session, required this.onJoin});
 
   @override
   Widget build(BuildContext context) {
@@ -134,9 +131,7 @@ class _SessionCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppTypography.spacingSmall),
       padding: const EdgeInsets.all(AppTypography.spacingMedium),
       decoration: BoxDecoration(
-        color: AppColors.uiWhite.withValues(
-          alpha: AppTypography.opacityBarely,
-        ),
+        color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
         borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
         border: Border.all(
           color: AppColors.uiWhite.withValues(
@@ -256,10 +251,7 @@ class _ViewingSessionCard extends StatelessWidget {
   final AppState appState;
   final VoidCallback onLeave;
 
-  const _ViewingSessionCard({
-    required this.appState,
-    required this.onLeave,
-  });
+  const _ViewingSessionCard({required this.appState, required this.onLeave});
 
   @override
   Widget build(BuildContext context) {
@@ -338,7 +330,9 @@ class _ViewingSessionCard extends StatelessWidget {
                   color: AppColors.uiWhite.withValues(
                     alpha: AppTypography.opacityMidFade,
                   ),
-                  borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusSmall,
+                  ),
                   border: Border.all(
                     color: AppColors.uiWhite.withValues(
                       alpha: AppTypography.opacityHigh,

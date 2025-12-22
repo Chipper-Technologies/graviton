@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/state/live_session_state.dart';
 
 void main() {
@@ -47,9 +48,7 @@ void main() {
       test('startHosting should handle missing auth gracefully', () async {
         // Without Firebase/Auth initialized, startHosting should fail
         // but should return false rather than throwing
-        final result = await state.startHosting(
-          scenarioName: 'Test Scenario',
-        );
+        final result = await state.startHosting(scenarioName: 'Test Scenario');
 
         // Should fail gracefully (no authenticated user)
         expect(result, isFalse);
@@ -141,10 +140,13 @@ void main() {
     });
 
     group('Update Hosted Session', () {
-      test('updateHostedSession should return false when not hosting', () async {
-        final result = await state.updateHostedSession(isRunning: true);
-        expect(result, isFalse);
-      });
+      test(
+        'updateHostedSession should return false when not hosting',
+        () async {
+          final result = await state.updateHostedSession(isRunning: true);
+          expect(result, isFalse);
+        },
+      );
 
       test('updateHostedSession should accept timeScale parameter', () async {
         final result = await state.updateHostedSession(timeScale: 1.5);
@@ -237,6 +239,39 @@ void main() {
         expect(state.isHosting, isFalse);
       });
     });
+
+    group('State Sync', () {
+      test('broadcastState should return false when not hosting', () async {
+        final snapshot = SimulationSnapshot(
+          bodies: [],
+          isRunning: false,
+          timeScale: 1.0,
+          totalTime: 0.0,
+          stepCount: 0,
+          timestamp: DateTime.now(),
+        );
+        final result = await state.broadcastState(snapshot);
+        expect(result, isFalse);
+      });
+
+      test('startStateSync should not throw when not viewing', () {
+        expect(() => state.startStateSync(), returnsNormally);
+      });
+
+      test('stopStateSync should not throw when not syncing', () {
+        expect(() => state.stopStateSync(), returnsNormally);
+      });
+
+      test('latestSnapshot should be null initially', () {
+        expect(state.latestSnapshot, isNull);
+      });
+
+      test('startStateSync with callback should not throw', () {
+        expect(
+          () => state.startStateSync(onSnapshotReceived: (snapshot) {}),
+          returnsNormally,
+        );
+      });
+    });
   });
 }
-

@@ -34,9 +34,7 @@ void main() {
 
     testWidgets('should render correctly', (WidgetTester tester) async {
       await tester.pumpWidget(
-        createTestWidget(
-          child: SessionBrowserWidget(appState: appState),
-        ),
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
       );
       // Use pump() with duration instead of pumpAndSettle() to avoid timeout
       await tester.pump(const Duration(milliseconds: 100));
@@ -48,9 +46,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        createTestWidget(
-          child: SessionBrowserWidget(appState: appState),
-        ),
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
       );
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -66,9 +62,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        createTestWidget(
-          child: SessionBrowserWidget(appState: appState),
-        ),
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
       );
       await tester.pump();
 
@@ -81,16 +75,12 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        createTestWidget(
-          child: SessionBrowserWidget(appState: appState),
-        ),
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
       );
       await tester.pump(const Duration(milliseconds: 100));
 
       // Navigate away to trigger dispose
-      await tester.pumpWidget(
-        createTestWidget(child: const SizedBox()),
-      );
+      await tester.pumpWidget(createTestWidget(child: const SizedBox()));
       await tester.pump(const Duration(milliseconds: 100));
 
       // Should complete without error
@@ -101,9 +91,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        createTestWidget(
-          child: SessionBrowserWidget(appState: appState),
-        ),
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
       );
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -151,9 +139,7 @@ void main() {
 
     testWidgets('should be a StatefulWidget', (WidgetTester tester) async {
       await tester.pumpWidget(
-        createTestWidget(
-          child: SessionBrowserWidget(appState: appState),
-        ),
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
       );
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -167,9 +153,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        createTestWidget(
-          child: SessionBrowserWidget(appState: appState),
-        ),
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
       );
       await tester.pump(const Duration(milliseconds: 50));
       await tester.pump(const Duration(milliseconds: 50));
@@ -182,9 +166,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        createTestWidget(
-          child: SessionBrowserWidget(appState: appState),
-        ),
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
       );
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -196,9 +178,7 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        createTestWidget(
-          child: SessionBrowserWidget(appState: appState),
-        ),
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
       );
       await tester.pump(const Duration(milliseconds: 100));
 

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart' show ChangeNotifier, kDebugMode;
 import 'package:graviton/models/firebase/live_session.dart';
+import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/services/firebase/live_session_service.dart';
 
 /// Manages the state of live session hosting and viewing
@@ -11,6 +12,7 @@ import 'package:graviton/services/firebase/live_session_service.dart';
 /// - Hosting status and viewer count
 /// - Viewing status and session updates
 /// - Active session list for browsing
+/// - Real-time simulation state synchronization
 ///
 /// Example usage:
 /// ```dart
@@ -18,6 +20,9 @@ import 'package:graviton/services/firebase/live_session_service.dart';
 ///
 /// // Start hosting
 /// await liveState.startHosting(scenarioName: 'Solar System');
+///
+/// // Broadcast simulation state
+/// await liveState.broadcastState(snapshot);
 ///
 /// // Listen to viewer count changes
 /// liveState.addListener(() {
@@ -36,11 +41,15 @@ class LiveSessionState extends ChangeNotifier {
   bool _isViewing = false;
   String? _viewedSessionId;
   LiveSession? _currentSession;
+  SimulationSnapshot? _latestSnapshot;
 
   // Active sessions stream
   StreamSubscription<List<LiveSession>>? _sessionsSubscription;
   List<LiveSession> _activeSessions = [];
   bool _isLoadingSessions = false;
+
+  // State sync callback for viewer
+  void Function(SimulationSnapshot snapshot)? _onSnapshotReceived;
 
   // =============================================================================
   // GETTERS
@@ -63,6 +72,9 @@ class LiveSessionState extends ChangeNotifier {
 
   /// The current session being viewed (null if not viewing)
   LiveSession? get currentSession => _currentSession;
+
+  /// The latest simulation snapshot received from host (viewer only)
+  SimulationSnapshot? get latestSnapshot => _latestSnapshot;
 
   /// List of active sessions available to join
   List<LiveSession> get activeSessions => _activeSessions;
@@ -114,10 +126,7 @@ class LiveSessionState extends ChangeNotifier {
   /// Update the hosted session state
   ///
   /// Call this when simulation parameters change to sync with viewers.
-  Future<bool> updateHostedSession({
-    bool? isRunning,
-    double? timeScale,
-  }) async {
+  Future<bool> updateHostedSession({bool? isRunning, double? timeScale}) async {
     if (!_isHosting) return false;
 
     return _service.updateSessionState(
@@ -186,6 +195,7 @@ class LiveSessionState extends ChangeNotifier {
       _isViewing = false;
       _viewedSessionId = null;
       _currentSession = null;
+      _latestSnapshot = null;
       notifyListeners();
     }
 
@@ -195,6 +205,45 @@ class LiveSessionState extends ChangeNotifier {
   void _onSessionUpdated(LiveSession session) {
     _currentSession = session;
     notifyListeners();
+  }
+
+  // =============================================================================
+  // STATE SYNC
+  // =============================================================================
+
+  /// Broadcast simulation state to viewers (host only)
+  ///
+  /// [snapshot] The current simulation state to broadcast
+  ///
+  /// Returns true if successfully broadcast.
+  Future<bool> broadcastState(SimulationSnapshot snapshot) async {
+    if (!_isHosting) return false;
+    return _service.broadcastState(snapshot);
+  }
+
+  /// Start receiving simulation state updates (viewer only)
+  ///
+  /// [onSnapshotReceived] Callback when new state is received from host
+  void startStateSync({
+    void Function(SimulationSnapshot snapshot)? onSnapshotReceived,
+  }) {
+    if (!_isViewing) return;
+
+    _onSnapshotReceived = onSnapshotReceived;
+    _service.startStateSync(
+      onStateReceived: (snapshot) {
+        _latestSnapshot = snapshot;
+        _onSnapshotReceived?.call(snapshot);
+        notifyListeners();
+      },
+    );
+  }
+
+  /// Stop receiving simulation state updates
+  void stopStateSync() {
+    _service.stopStateSync();
+    _latestSnapshot = null;
+    _onSnapshotReceived = null;
   }
 
   // =============================================================================
@@ -245,6 +294,7 @@ class LiveSessionState extends ChangeNotifier {
   /// Clean up all resources
   Future<void> cleanup() async {
     stopSessionDiscovery();
+    stopStateSync();
 
     if (_isHosting) {
       await stopHosting();
