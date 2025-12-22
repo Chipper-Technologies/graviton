@@ -6597,6 +6597,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Directional superheated streams from massive star collisions (experimental)'**
   String get showCollisionPlasmaJetsDescription;
+
+  /// Status text when user is hosting a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Hosting Live Session'**
+  String get liveSessionHosting;
+
+  /// Label when user is not hosting a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Share Live Session'**
+  String get liveSessionNotHosting;
+
+  /// Button text to start hosting a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Start Hosting'**
+  String get liveSessionStartHosting;
+
+  /// Button text to stop hosting a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Hosting'**
+  String get liveSessionStopHosting;
+
+  /// Shows the number of viewers in a live session
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No viewers} =1{1 viewer} other{{count} viewers}}'**
+  String liveSessionViewerCount(int count);
+
+  /// Title for the live session browser screen
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Sessions'**
+  String get liveSessionBrowseSessions;
+
+  /// Message when no live sessions are available
+  ///
+  /// In en, this message translates to:
+  /// **'No active sessions'**
+  String get liveSessionNoSessions;
+
+  /// Button text to join a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get liveSessionJoin;
+
+  /// Button text to leave a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Session'**
+  String get liveSessionLeave;
+
+  /// Status text when viewing someone else's live session
+  ///
+  /// In en, this message translates to:
+  /// **'Viewing Live Session'**
+  String get liveSessionViewing;
+
+  /// Shows who is hosting the session
+  ///
+  /// In en, this message translates to:
+  /// **'Hosted by {hostName}'**
+  String liveSessionHostedBy(String hostName);
+
+  /// Shows the scenario being simulated
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario: {scenarioName}'**
+  String liveSessionScenario(String scenarioName);
+
+  /// Message shown when user needs to sign in for live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to share or view live sessions'**
+  String get liveSessionRequiresAuth;
 }
 
 class _AppLocalizationsDelegate

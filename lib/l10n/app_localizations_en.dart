@@ -3763,4 +3763,57 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get showCollisionPlasmaJetsDescription =>
       'Directional superheated streams from massive star collisions (experimental)';
+
+  @override
+  String get liveSessionHosting => 'Hosting Live Session';
+
+  @override
+  String get liveSessionNotHosting => 'Share Live Session';
+
+  @override
+  String get liveSessionStartHosting => 'Start Hosting';
+
+  @override
+  String get liveSessionStopHosting => 'Stop Hosting';
+
+  @override
+  String liveSessionViewerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count viewers',
+      one: '1 viewer',
+      zero: 'No viewers',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get liveSessionBrowseSessions => 'Browse Sessions';
+
+  @override
+  String get liveSessionNoSessions => 'No active sessions';
+
+  @override
+  String get liveSessionJoin => 'Join';
+
+  @override
+  String get liveSessionLeave => 'Leave Session';
+
+  @override
+  String get liveSessionViewing => 'Viewing Live Session';
+
+  @override
+  String liveSessionHostedBy(String hostName) {
+    return 'Hosted by $hostName';
+  }
+
+  @override
+  String liveSessionScenario(String scenarioName) {
+    return 'Scenario: $scenarioName';
+  }
+
+  @override
+  String get liveSessionRequiresAuth =>
+      'Sign in to share or view live sessions';
 }

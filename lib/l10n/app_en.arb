@@ -4875,5 +4875,75 @@
   "showCollisionPlasmaJetsDescription": "Directional superheated streams from massive star collisions (experimental)",
   "@showCollisionPlasmaJetsDescription": {
     "description": "Description for collision plasma jets feature"
+  },
+  "liveSessionHosting": "Hosting Live Session",
+  "@liveSessionHosting": {
+    "description": "Status text when user is hosting a live session"
+  },
+  "liveSessionNotHosting": "Share Live Session",
+  "@liveSessionNotHosting": {
+    "description": "Label when user is not hosting a live session"
+  },
+  "liveSessionStartHosting": "Start Hosting",
+  "@liveSessionStartHosting": {
+    "description": "Button text to start hosting a live session"
+  },
+  "liveSessionStopHosting": "Stop Hosting",
+  "@liveSessionStopHosting": {
+    "description": "Button text to stop hosting a live session"
+  },
+  "liveSessionViewerCount": "{count, plural, =0{No viewers} =1{1 viewer} other{{count} viewers}}",
+  "@liveSessionViewerCount": {
+    "description": "Shows the number of viewers in a live session",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "The number of viewers"
+      }
+    }
+  },
+  "liveSessionBrowseSessions": "Browse Sessions",
+  "@liveSessionBrowseSessions": {
+    "description": "Title for the live session browser screen"
+  },
+  "liveSessionNoSessions": "No active sessions",
+  "@liveSessionNoSessions": {
+    "description": "Message when no live sessions are available"
+  },
+  "liveSessionJoin": "Join",
+  "@liveSessionJoin": {
+    "description": "Button text to join a live session"
+  },
+  "liveSessionLeave": "Leave Session",
+  "@liveSessionLeave": {
+    "description": "Button text to leave a live session"
+  },
+  "liveSessionViewing": "Viewing Live Session",
+  "@liveSessionViewing": {
+    "description": "Status text when viewing someone else's live session"
+  },
+  "liveSessionHostedBy": "Hosted by {hostName}",
+  "@liveSessionHostedBy": {
+    "description": "Shows who is hosting the session",
+    "placeholders": {
+      "hostName": {
+        "type": "String",
+        "description": "The name of the host"
+      }
+    }
+  },
+  "liveSessionScenario": "Scenario: {scenarioName}",
+  "@liveSessionScenario": {
+    "description": "Shows the scenario being simulated",
+    "placeholders": {
+      "scenarioName": {
+        "type": "String",
+        "description": "The name of the scenario"
+      }
+    }
+  },
+  "liveSessionRequiresAuth": "Sign in to share or view live sessions",
+  "@liveSessionRequiresAuth": {
+    "description": "Message shown when user needs to sign in for live sessions"
   }
 }
