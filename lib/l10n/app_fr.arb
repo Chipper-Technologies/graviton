@@ -1120,5 +1120,18 @@
   "showCollisionEjection": "Éjection de Matière",
   "showCollisionEjectionDescription": "Nuages ondulants de matière expulsée lors d'impacts à haute énergie",
   "showCollisionPlasmaJets": "Jets de Plasma",
-  "showCollisionPlasmaJetsDescription": "Flux directionnels surchauffés issus de collisions d'étoiles massives (expérimental)"
+  "showCollisionPlasmaJetsDescription": "Flux directionnels surchauffés issus de collisions d'étoiles massives (expérimental)",
+  "liveSessionHosting": "Session en direct active",
+  "liveSessionNotHosting": "Partager une session en direct",
+  "liveSessionStartHosting": "Démarrer l'hébergement",
+  "liveSessionStopHosting": "Arrêter l'hébergement",
+  "liveSessionViewerCount": "{count, plural, =0{Aucun spectateur} =1{1 spectateur} other{{count} spectateurs}}",
+  "liveSessionBrowseSessions": "Parcourir les sessions",
+  "liveSessionNoSessions": "Aucune session active",
+  "liveSessionJoin": "Rejoindre",
+  "liveSessionLeave": "Quitter la session",
+  "liveSessionViewing": "Visionnage de session en direct",
+  "liveSessionHostedBy": "Hébergé par {hostName}",
+  "liveSessionScenario": "Scénario : {scenarioName}",
+  "liveSessionRequiresAuth": "Connectez-vous pour partager ou voir des sessions en direct"
 }

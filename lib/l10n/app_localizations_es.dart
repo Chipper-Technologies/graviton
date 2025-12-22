@@ -3805,55 +3805,55 @@ class AppLocalizationsEs extends AppLocalizations {
       'Corrientes direccionales sobrecalentadas de colisiones de estrellas masivas (experimental)';
 
   @override
-  String get liveSessionHosting => 'Hosting Live Session';
+  String get liveSessionHosting => 'Sesión en vivo activa';
 
   @override
-  String get liveSessionNotHosting => 'Share Live Session';
+  String get liveSessionNotHosting => 'Compartir sesión en vivo';
 
   @override
-  String get liveSessionStartHosting => 'Start Hosting';
+  String get liveSessionStartHosting => 'Iniciar hosting';
 
   @override
-  String get liveSessionStopHosting => 'Stop Hosting';
+  String get liveSessionStopHosting => 'Detener hosting';
 
   @override
   String liveSessionViewerCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count viewers',
-      one: '1 viewer',
-      zero: 'No viewers',
+      other: '$count espectadores',
+      one: '1 espectador',
+      zero: 'Sin espectadores',
     );
     return '$_temp0';
   }
 
   @override
-  String get liveSessionBrowseSessions => 'Browse Sessions';
+  String get liveSessionBrowseSessions => 'Explorar sesiones';
 
   @override
-  String get liveSessionNoSessions => 'No active sessions';
+  String get liveSessionNoSessions => 'No hay sesiones activas';
 
   @override
-  String get liveSessionJoin => 'Join';
+  String get liveSessionJoin => 'Unirse';
 
   @override
-  String get liveSessionLeave => 'Leave Session';
+  String get liveSessionLeave => 'Salir de sesión';
 
   @override
-  String get liveSessionViewing => 'Viewing Live Session';
+  String get liveSessionViewing => 'Viendo sesión en vivo';
 
   @override
   String liveSessionHostedBy(String hostName) {
-    return 'Hosted by $hostName';
+    return 'Presentado por $hostName';
   }
 
   @override
   String liveSessionScenario(String scenarioName) {
-    return 'Scenario: $scenarioName';
+    return 'Escenario: $scenarioName';
   }
 
   @override
   String get liveSessionRequiresAuth =>
-      'Sign in to share or view live sessions';
+      'Inicia sesión para compartir o ver sesiones en vivo';
 }

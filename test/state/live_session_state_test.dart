@@ -139,6 +139,104 @@ void main() {
         expect(() => testState.dispose(), returnsNormally);
       });
     });
+
+    group('Update Hosted Session', () {
+      test('updateHostedSession should return false when not hosting', () async {
+        final result = await state.updateHostedSession(isRunning: true);
+        expect(result, isFalse);
+      });
+
+      test('updateHostedSession should accept timeScale parameter', () async {
+        final result = await state.updateHostedSession(timeScale: 1.5);
+        expect(result, isFalse);
+      });
+
+      test('updateHostedSession should accept both parameters', () async {
+        final result = await state.updateHostedSession(
+          isRunning: true,
+          timeScale: 2.0,
+        );
+        expect(result, isFalse);
+      });
+    });
+
+    group('Cleanup', () {
+      test('cleanup should not throw when idle', () async {
+        await expectLater(state.cleanup(), completes);
+      });
+
+      test('cleanup should stop session discovery', () async {
+        state.startSessionDiscovery();
+        await state.cleanup();
+        expect(state.activeSessions, isEmpty);
+      });
+
+      test('cleanup should work after hosting attempt', () async {
+        await state.startHosting(scenarioName: 'Test');
+        await expectLater(state.cleanup(), completes);
+        expect(state.isHosting, isFalse);
+      });
+
+      test('cleanup should work after viewing attempt', () async {
+        await state.startViewing('test-session');
+        await expectLater(state.cleanup(), completes);
+        expect(state.isViewing, isFalse);
+      });
+    });
+
+    group('Session Discovery Edge Cases', () {
+      test('startSessionDiscovery called twice should not throw', () {
+        state.startSessionDiscovery();
+        expect(() => state.startSessionDiscovery(), returnsNormally);
+        state.stopSessionDiscovery();
+      });
+
+      test('stopSessionDiscovery called twice should not throw', () {
+        state.startSessionDiscovery();
+        state.stopSessionDiscovery();
+        expect(() => state.stopSessionDiscovery(), returnsNormally);
+      });
+
+      test('isLoadingSessions should be false after stop', () {
+        state.startSessionDiscovery();
+        state.stopSessionDiscovery();
+        expect(state.isLoadingSessions, isFalse);
+      });
+    });
+
+    group('Viewing Edge Cases', () {
+      test('startViewing should handle non-existent session', () async {
+        final result = await state.startViewing('non-existent-session-id');
+        expect(result, isFalse);
+        expect(state.isViewing, isFalse);
+        expect(state.viewedSessionId, isNull);
+      });
+
+      test('startViewing should clear previous viewing state', () async {
+        await state.startViewing('session-1');
+        await state.startViewing('session-2');
+        // Both should fail without Firebase, but no exception
+        expect(state.isViewing, isFalse);
+      });
+    });
+
+    group('Hosting Edge Cases', () {
+      test('startHosting with displayName should not throw', () async {
+        final result = await state.startHosting(
+          scenarioName: 'Test',
+          displayName: 'Test Host',
+        );
+        expect(result, isFalse);
+      });
+
+      test('startHosting should stop viewing first', () async {
+        await state.startViewing('test-session');
+        await state.startHosting(scenarioName: 'Test');
+        // Both should fail without Firebase
+        expect(state.isViewing, isFalse);
+        expect(state.isHosting, isFalse);
+      });
+    });
   });
 }
 

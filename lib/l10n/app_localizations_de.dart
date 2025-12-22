@@ -3778,55 +3778,55 @@ class AppLocalizationsDe extends AppLocalizations {
       'Gerichtete überhitzte Ströme aus massiven Sternkollisionen (experimentell)';
 
   @override
-  String get liveSessionHosting => 'Hosting Live Session';
+  String get liveSessionHosting => 'Live-Sitzung wird gehostet';
 
   @override
-  String get liveSessionNotHosting => 'Share Live Session';
+  String get liveSessionNotHosting => 'Live-Sitzung teilen';
 
   @override
-  String get liveSessionStartHosting => 'Start Hosting';
+  String get liveSessionStartHosting => 'Hosting starten';
 
   @override
-  String get liveSessionStopHosting => 'Stop Hosting';
+  String get liveSessionStopHosting => 'Hosting beenden';
 
   @override
   String liveSessionViewerCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count viewers',
-      one: '1 viewer',
-      zero: 'No viewers',
+      other: '$count Zuschauer',
+      one: '1 Zuschauer',
+      zero: 'Keine Zuschauer',
     );
     return '$_temp0';
   }
 
   @override
-  String get liveSessionBrowseSessions => 'Browse Sessions';
+  String get liveSessionBrowseSessions => 'Sitzungen durchsuchen';
 
   @override
-  String get liveSessionNoSessions => 'No active sessions';
+  String get liveSessionNoSessions => 'Keine aktiven Sitzungen';
 
   @override
-  String get liveSessionJoin => 'Join';
+  String get liveSessionJoin => 'Beitreten';
 
   @override
-  String get liveSessionLeave => 'Leave Session';
+  String get liveSessionLeave => 'Sitzung verlassen';
 
   @override
-  String get liveSessionViewing => 'Viewing Live Session';
+  String get liveSessionViewing => 'Live-Sitzung ansehen';
 
   @override
   String liveSessionHostedBy(String hostName) {
-    return 'Hosted by $hostName';
+    return 'Gehostet von $hostName';
   }
 
   @override
   String liveSessionScenario(String scenarioName) {
-    return 'Scenario: $scenarioName';
+    return 'Szenario: $scenarioName';
   }
 
   @override
   String get liveSessionRequiresAuth =>
-      'Sign in to share or view live sessions';
+      'Melden Sie sich an, um Live-Sitzungen zu teilen oder anzusehen';
 }

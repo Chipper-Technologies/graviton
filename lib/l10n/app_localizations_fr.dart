@@ -3809,55 +3809,55 @@ class AppLocalizationsFr extends AppLocalizations {
       'Flux directionnels surchauffés issus de collisions d\'étoiles massives (expérimental)';
 
   @override
-  String get liveSessionHosting => 'Hosting Live Session';
+  String get liveSessionHosting => 'Session en direct active';
 
   @override
-  String get liveSessionNotHosting => 'Share Live Session';
+  String get liveSessionNotHosting => 'Partager une session en direct';
 
   @override
-  String get liveSessionStartHosting => 'Start Hosting';
+  String get liveSessionStartHosting => 'Démarrer l\'hébergement';
 
   @override
-  String get liveSessionStopHosting => 'Stop Hosting';
+  String get liveSessionStopHosting => 'Arrêter l\'hébergement';
 
   @override
   String liveSessionViewerCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count viewers',
-      one: '1 viewer',
-      zero: 'No viewers',
+      other: '$count spectateurs',
+      one: '1 spectateur',
+      zero: 'Aucun spectateur',
     );
     return '$_temp0';
   }
 
   @override
-  String get liveSessionBrowseSessions => 'Browse Sessions';
+  String get liveSessionBrowseSessions => 'Parcourir les sessions';
 
   @override
-  String get liveSessionNoSessions => 'No active sessions';
+  String get liveSessionNoSessions => 'Aucune session active';
 
   @override
-  String get liveSessionJoin => 'Join';
+  String get liveSessionJoin => 'Rejoindre';
 
   @override
-  String get liveSessionLeave => 'Leave Session';
+  String get liveSessionLeave => 'Quitter la session';
 
   @override
-  String get liveSessionViewing => 'Viewing Live Session';
+  String get liveSessionViewing => 'Visionnage de session en direct';
 
   @override
   String liveSessionHostedBy(String hostName) {
-    return 'Hosted by $hostName';
+    return 'Hébergé par $hostName';
   }
 
   @override
   String liveSessionScenario(String scenarioName) {
-    return 'Scenario: $scenarioName';
+    return 'Scénario : $scenarioName';
   }
 
   @override
   String get liveSessionRequiresAuth =>
-      'Sign in to share or view live sessions';
+      'Connectez-vous pour partager ou voir des sessions en direct';
 }

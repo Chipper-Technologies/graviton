@@ -3563,55 +3563,54 @@ class AppLocalizationsKo extends AppLocalizations {
       '거대 별 충돌에서 나오는 방향성 초고온 흐름 (실험적)';
 
   @override
-  String get liveSessionHosting => 'Hosting Live Session';
+  String get liveSessionHosting => '라이브 세션 호스팅 중';
 
   @override
-  String get liveSessionNotHosting => 'Share Live Session';
+  String get liveSessionNotHosting => '라이브 세션 공유';
 
   @override
-  String get liveSessionStartHosting => 'Start Hosting';
+  String get liveSessionStartHosting => '호스팅 시작';
 
   @override
-  String get liveSessionStopHosting => 'Stop Hosting';
+  String get liveSessionStopHosting => '호스팅 중지';
 
   @override
   String liveSessionViewerCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count viewers',
-      one: '1 viewer',
-      zero: 'No viewers',
+      other: '시청자 $count명',
+      one: '시청자 1명',
+      zero: '시청자 없음',
     );
     return '$_temp0';
   }
 
   @override
-  String get liveSessionBrowseSessions => 'Browse Sessions';
+  String get liveSessionBrowseSessions => '세션 찾아보기';
 
   @override
-  String get liveSessionNoSessions => 'No active sessions';
+  String get liveSessionNoSessions => '활성 세션 없음';
 
   @override
-  String get liveSessionJoin => 'Join';
+  String get liveSessionJoin => '참여';
 
   @override
-  String get liveSessionLeave => 'Leave Session';
+  String get liveSessionLeave => '세션 나가기';
 
   @override
-  String get liveSessionViewing => 'Viewing Live Session';
+  String get liveSessionViewing => '라이브 세션 시청 중';
 
   @override
   String liveSessionHostedBy(String hostName) {
-    return 'Hosted by $hostName';
+    return '$hostName이(가) 호스팅';
   }
 
   @override
   String liveSessionScenario(String scenarioName) {
-    return 'Scenario: $scenarioName';
+    return '시나리오: $scenarioName';
   }
 
   @override
-  String get liveSessionRequiresAuth =>
-      'Sign in to share or view live sessions';
+  String get liveSessionRequiresAuth => '라이브 세션을 공유하거나 보려면 로그인하세요';
 }

@@ -3552,55 +3552,54 @@ class AppLocalizationsJa extends AppLocalizations {
       '大質量星衝突からの方向性のある超高温ストリーム（実験的）';
 
   @override
-  String get liveSessionHosting => 'Hosting Live Session';
+  String get liveSessionHosting => 'ライブセッションをホスト中';
 
   @override
-  String get liveSessionNotHosting => 'Share Live Session';
+  String get liveSessionNotHosting => 'ライブセッションを共有';
 
   @override
-  String get liveSessionStartHosting => 'Start Hosting';
+  String get liveSessionStartHosting => 'ホストを開始';
 
   @override
-  String get liveSessionStopHosting => 'Stop Hosting';
+  String get liveSessionStopHosting => 'ホストを停止';
 
   @override
   String liveSessionViewerCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count viewers',
-      one: '1 viewer',
-      zero: 'No viewers',
+      other: '$count人の視聴者',
+      one: '1人の視聴者',
+      zero: '視聴者なし',
     );
     return '$_temp0';
   }
 
   @override
-  String get liveSessionBrowseSessions => 'Browse Sessions';
+  String get liveSessionBrowseSessions => 'セッションを閲覧';
 
   @override
-  String get liveSessionNoSessions => 'No active sessions';
+  String get liveSessionNoSessions => 'アクティブなセッションはありません';
 
   @override
-  String get liveSessionJoin => 'Join';
+  String get liveSessionJoin => '参加';
 
   @override
-  String get liveSessionLeave => 'Leave Session';
+  String get liveSessionLeave => 'セッションを退出';
 
   @override
-  String get liveSessionViewing => 'Viewing Live Session';
+  String get liveSessionViewing => 'ライブセッションを視聴中';
 
   @override
   String liveSessionHostedBy(String hostName) {
-    return 'Hosted by $hostName';
+    return '$hostNameがホスト';
   }
 
   @override
   String liveSessionScenario(String scenarioName) {
-    return 'Scenario: $scenarioName';
+    return 'シナリオ：$scenarioName';
   }
 
   @override
-  String get liveSessionRequiresAuth =>
-      'Sign in to share or view live sessions';
+  String get liveSessionRequiresAuth => 'ライブセッションを共有または視聴するにはサインインしてください';
 }

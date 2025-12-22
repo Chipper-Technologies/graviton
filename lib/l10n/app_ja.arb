@@ -1120,5 +1120,18 @@
   "showCollisionEjection": "物質放出",
   "showCollisionEjectionDescription": "高エネルギー衝撃時に排出される物質の渦巻く雲",
   "showCollisionPlasmaJets": "プラズマジェット",
-  "showCollisionPlasmaJetsDescription": "大質量星衝突からの方向性のある超高温ストリーム（実験的）"
+  "showCollisionPlasmaJetsDescription": "大質量星衝突からの方向性のある超高温ストリーム（実験的）",
+  "liveSessionHosting": "ライブセッションをホスト中",
+  "liveSessionNotHosting": "ライブセッションを共有",
+  "liveSessionStartHosting": "ホストを開始",
+  "liveSessionStopHosting": "ホストを停止",
+  "liveSessionViewerCount": "{count, plural, =0{視聴者なし} =1{1人の視聴者} other{{count}人の視聴者}}",
+  "liveSessionBrowseSessions": "セッションを閲覧",
+  "liveSessionNoSessions": "アクティブなセッションはありません",
+  "liveSessionJoin": "参加",
+  "liveSessionLeave": "セッションを退出",
+  "liveSessionViewing": "ライブセッションを視聴中",
+  "liveSessionHostedBy": "{hostName}がホスト",
+  "liveSessionScenario": "シナリオ：{scenarioName}",
+  "liveSessionRequiresAuth": "ライブセッションを共有または視聴するにはサインインしてください"
 }

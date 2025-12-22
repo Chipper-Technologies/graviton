@@ -3527,55 +3527,54 @@ class AppLocalizationsZh extends AppLocalizations {
   String get showCollisionPlasmaJetsDescription => '来自大质量恒星碰撞的定向超高温流（实验性）';
 
   @override
-  String get liveSessionHosting => 'Hosting Live Session';
+  String get liveSessionHosting => '正在主持直播会话';
 
   @override
-  String get liveSessionNotHosting => 'Share Live Session';
+  String get liveSessionNotHosting => '分享直播会话';
 
   @override
-  String get liveSessionStartHosting => 'Start Hosting';
+  String get liveSessionStartHosting => '开始主持';
 
   @override
-  String get liveSessionStopHosting => 'Stop Hosting';
+  String get liveSessionStopHosting => '停止主持';
 
   @override
   String liveSessionViewerCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count viewers',
-      one: '1 viewer',
-      zero: 'No viewers',
+      other: '$count位观看者',
+      one: '1位观看者',
+      zero: '无观看者',
     );
     return '$_temp0';
   }
 
   @override
-  String get liveSessionBrowseSessions => 'Browse Sessions';
+  String get liveSessionBrowseSessions => '浏览会话';
 
   @override
-  String get liveSessionNoSessions => 'No active sessions';
+  String get liveSessionNoSessions => '没有活跃会话';
 
   @override
-  String get liveSessionJoin => 'Join';
+  String get liveSessionJoin => '加入';
 
   @override
-  String get liveSessionLeave => 'Leave Session';
+  String get liveSessionLeave => '离开会话';
 
   @override
-  String get liveSessionViewing => 'Viewing Live Session';
+  String get liveSessionViewing => '正在观看直播会话';
 
   @override
   String liveSessionHostedBy(String hostName) {
-    return 'Hosted by $hostName';
+    return '由$hostName主持';
   }
 
   @override
   String liveSessionScenario(String scenarioName) {
-    return 'Scenario: $scenarioName';
+    return '场景：$scenarioName';
   }
 
   @override
-  String get liveSessionRequiresAuth =>
-      'Sign in to share or view live sessions';
+  String get liveSessionRequiresAuth => '登录以分享或观看直播会话';
 }

@@ -110,5 +110,99 @@ void main() {
       // Verify widget renders
       expect(find.byType(SessionBrowserWidget), findsOneWidget);
     });
+
+    testWidgets('should accept onSessionJoined callback', (
+      WidgetTester tester,
+    ) async {
+      var callbackFired = false;
+
+      await tester.pumpWidget(
+        createTestWidget(
+          child: SessionBrowserWidget(
+            appState: appState,
+            onSessionJoined: (_) => callbackFired = true,
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.byType(SessionBrowserWidget), findsOneWidget);
+      expect(callbackFired, isFalse); // No session to join
+    });
+
+    testWidgets('should accept onSessionLeft callback', (
+      WidgetTester tester,
+    ) async {
+      var callbackFired = false;
+
+      await tester.pumpWidget(
+        createTestWidget(
+          child: SessionBrowserWidget(
+            appState: appState,
+            onSessionLeft: () => callbackFired = true,
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.byType(SessionBrowserWidget), findsOneWidget);
+      expect(callbackFired, isFalse);
+    });
+
+    testWidgets('should be a StatefulWidget', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: SessionBrowserWidget(appState: appState),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+
+      final widget = tester.widget<SessionBrowserWidget>(
+        find.byType(SessionBrowserWidget),
+      );
+      expect(widget, isA<StatefulWidget>());
+    });
+
+    testWidgets('should handle multiple pump cycles', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: SessionBrowserWidget(appState: appState),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 50));
+      await tester.pump(const Duration(milliseconds: 50));
+      await tester.pump(const Duration(milliseconds: 50));
+
+      expect(find.byType(SessionBrowserWidget), findsOneWidget);
+    });
+
+    testWidgets('should contain Center widget in empty/loading state', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: SessionBrowserWidget(appState: appState),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Should have some centering for empty/loading state
+      expect(find.byType(Center), findsAtLeastNWidgets(1));
+    });
+
+    testWidgets('should contain Padding for proper spacing', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: SessionBrowserWidget(appState: appState),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.byType(Padding), findsAtLeastNWidgets(1));
+    });
   });
 }

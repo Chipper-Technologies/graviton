@@ -169,5 +169,89 @@ void main() {
       final container = tester.widget<Container>(find.byType(Container).first);
       expect(container, isNotNull);
     });
+
+    testWidgets('should render with different scenario names', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Solar System Simulation',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(HostControlsWidget), findsOneWidget);
+    });
+
+    testWidgets('should handle onHostingStopped callback', (
+      WidgetTester tester,
+    ) async {
+      var stoppedCalled = false;
+
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+            onHostingStopped: () => stoppedCalled = true,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Widget should render with callback configured
+      expect(find.byType(HostControlsWidget), findsOneWidget);
+      expect(stoppedCalled, isFalse); // Not hosting, so callback not called
+    });
+
+    testWidgets('should contain Text widgets for labels', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should have text labels
+      expect(find.byType(Text), findsAtLeastNWidgets(1));
+    });
+
+    testWidgets('should contain Row for layout', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Row), findsAtLeastNWidgets(1));
+    });
+
+    testWidgets('should contain Column for vertical layout', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Column), findsAtLeastNWidgets(1));
+    });
   });
 }

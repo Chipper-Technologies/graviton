@@ -234,6 +234,8 @@ class LiveSessionState extends ChangeNotifier {
     _sessionsSubscription?.cancel();
     _sessionsSubscription = null;
     _activeSessions = [];
+    _isLoadingSessions = false;
+    notifyListeners();
   }
 
   // =============================================================================

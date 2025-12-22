@@ -1120,5 +1120,18 @@
   "showCollisionEjection": "Materialauswurf",
   "showCollisionEjectionDescription": "Aufwallende Materialwolken, die bei hochenergetischen Einschlägen ausgestoßen werden",
   "showCollisionPlasmaJets": "Plasmajets",
-  "showCollisionPlasmaJetsDescription": "Gerichtete überhitzte Ströme aus massiven Sternkollisionen (experimentell)"
+  "showCollisionPlasmaJetsDescription": "Gerichtete überhitzte Ströme aus massiven Sternkollisionen (experimentell)",
+  "liveSessionHosting": "Live-Sitzung wird gehostet",
+  "liveSessionNotHosting": "Live-Sitzung teilen",
+  "liveSessionStartHosting": "Hosting starten",
+  "liveSessionStopHosting": "Hosting beenden",
+  "liveSessionViewerCount": "{count, plural, =0{Keine Zuschauer} =1{1 Zuschauer} other{{count} Zuschauer}}",
+  "liveSessionBrowseSessions": "Sitzungen durchsuchen",
+  "liveSessionNoSessions": "Keine aktiven Sitzungen",
+  "liveSessionJoin": "Beitreten",
+  "liveSessionLeave": "Sitzung verlassen",
+  "liveSessionViewing": "Live-Sitzung ansehen",
+  "liveSessionHostedBy": "Gehostet von {hostName}",
+  "liveSessionScenario": "Szenario: {scenarioName}",
+  "liveSessionRequiresAuth": "Melden Sie sich an, um Live-Sitzungen zu teilen oder anzusehen"
 }
