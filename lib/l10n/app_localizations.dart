@@ -6759,6 +6759,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share or join real-time simulations'**
   String get liveSessionMenuDescription;
+
+  /// Tab label for browsing live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Browse'**
+  String get liveSessionBrowseTab;
+
+  /// Tab label for starting a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Start Sharing'**
+  String get liveSessionStartSharingTab;
+
+  /// Description text for the browse sessions tab
+  ///
+  /// In en, this message translates to:
+  /// **'Join a live session to watch another user\'s simulation in real-time'**
+  String get liveSessionBrowseDescription;
+
+  /// Description text for the start sharing tab
+  ///
+  /// In en, this message translates to:
+  /// **'Share your current simulation with others in real-time'**
+  String get liveSessionShareDescription;
+
+  /// Label showing which scenario will be shared
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario to share'**
+  String get liveSessionScenarioToShare;
+
+  /// Toggle label for enabling password protection
+  ///
+  /// In en, this message translates to:
+  /// **'Password Protection'**
+  String get liveSessionPasswordProtection;
+
+  /// Placeholder text for password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter password'**
+  String get liveSessionSetPassword;
+
+  /// Help text explaining password protection
+  ///
+  /// In en, this message translates to:
+  /// **'Viewers will need to enter this password to join your session'**
+  String get liveSessionPasswordDescription;
+
+  /// Error message when password is required but not entered
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a password'**
+  String get liveSessionPasswordRequired;
+
+  /// Title for password entry dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Password'**
+  String get liveSessionEnterPassword;
+
+  /// Hint text for password input in join dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Session password'**
+  String get liveSessionPasswordHint;
+
+  /// Label indicating session is password protected
+  ///
+  /// In en, this message translates to:
+  /// **'Password protected'**
+  String get liveSessionPasswordProtected;
+
+  /// Error message when entered password is wrong
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password'**
+  String get liveSessionIncorrectPassword;
 }
 
 class _AppLocalizationsDelegate

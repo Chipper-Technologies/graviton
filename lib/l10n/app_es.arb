@@ -1147,5 +1147,18 @@
   "liveSessionHostingDescription": "Transmitiendo tu simulación a los espectadores",
   "liveSessionViewingDescription": "Viendo una transmisión de simulación en vivo",
   "liveSessionMenuTitle": "Sesiones en Vivo",
-  "liveSessionMenuDescription": "Compartir o unirse a simulaciones en tiempo real"
+  "liveSessionMenuDescription": "Compartir o unirse a simulaciones en tiempo real",
+  "liveSessionBrowseTab": "Explorar",
+  "liveSessionStartSharingTab": "Comenzar a Compartir",
+  "liveSessionBrowseDescription": "Únete a una sesión en vivo para ver la simulación de otro usuario en tiempo real",
+  "liveSessionShareDescription": "Comparte tu simulación actual con otros en tiempo real",
+  "liveSessionScenarioToShare": "Escenario a compartir",
+  "liveSessionPasswordProtection": "Protección con Contraseña",
+  "liveSessionSetPassword": "Introducir contraseña",
+  "liveSessionPasswordDescription": "Los espectadores necesitarán introducir esta contraseña para unirse a tu sesión",
+  "liveSessionPasswordRequired": "Por favor, introduce una contraseña",
+  "liveSessionEnterPassword": "Introducir Contraseña",
+  "liveSessionPasswordHint": "Contraseña de sesión",
+  "liveSessionPasswordProtected": "Protegida con contraseña",
+  "liveSessionIncorrectPassword": "Contraseña incorrecta"
 }

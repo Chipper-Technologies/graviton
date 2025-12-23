@@ -1147,5 +1147,18 @@
   "liveSessionHostingDescription": "시청자에게 시뮬레이션 방송 중",
   "liveSessionViewingDescription": "라이브 시뮬레이션 방송 시청 중",
   "liveSessionMenuTitle": "라이브 세션",
-  "liveSessionMenuDescription": "실시간 시뮬레이션 공유 또는 참여"
+  "liveSessionMenuDescription": "실시간 시뮬레이션 공유 또는 참여",
+  "liveSessionBrowseTab": "찾아보기",
+  "liveSessionStartSharingTab": "공유 시작",
+  "liveSessionBrowseDescription": "라이브 세션에 참여하여 다른 사용자의 시뮬레이션을 실시간으로 시청",
+  "liveSessionShareDescription": "현재 시뮬레이션을 다른 사용자와 실시간으로 공유",
+  "liveSessionScenarioToShare": "공유할 시나리오",
+  "liveSessionPasswordProtection": "비밀번호 보호",
+  "liveSessionSetPassword": "비밀번호 입력",
+  "liveSessionPasswordDescription": "시청자는 세션에 참여하려면 이 비밀번호를 입력해야 합니다",
+  "liveSessionPasswordRequired": "비밀번호를 입력하세요",
+  "liveSessionEnterPassword": "비밀번호 입력",
+  "liveSessionPasswordHint": "세션 비밀번호",
+  "liveSessionPasswordProtected": "비밀번호 보호됨",
+  "liveSessionIncorrectPassword": "잘못된 비밀번호"
 }

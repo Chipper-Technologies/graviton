@@ -87,11 +87,13 @@ class LiveSessionService {
   ///
   /// [scenarioName] The name of the scenario being simulated
   /// [displayName] The display name of the host (optional, uses auth name)
+  /// [password] Optional password for viewers to join (enables password protection)
   ///
   /// Returns the session ID if successful, null otherwise.
   Future<String?> startHosting({
     required String scenarioName,
     String? displayName,
+    String? password,
   }) async {
     if (_isHosting) {
       debugPrint('LiveSessionService: Already hosting a session');
@@ -106,6 +108,13 @@ class LiveSessionService {
 
     try {
       final now = DateTime.now();
+
+      // Hash the password if provided
+      String? passwordHash;
+      if (password != null && password.isNotEmpty) {
+        passwordHash = _hashPassword(password);
+      }
+
       final session = LiveSession(
         id: '', // Will be set by push
         hostId: user.uid,
@@ -116,10 +125,15 @@ class LiveSessionService {
         viewerCount: 0,
         createdAt: now,
         updatedAt: now,
+        isPasswordProtected: passwordHash != null,
+        passwordHash: passwordHash,
       );
 
-      // Create the session
-      final sessionId = await _rtdb.push(_sessionsPath, session.toMap());
+      // Create the session - include password hash in database
+      final sessionId = await _rtdb.push(
+        _sessionsPath,
+        session.toMap(includePasswordHash: true),
+      );
       if (sessionId == null) {
         debugPrint('LiveSessionService: Failed to create session');
         return null;
@@ -348,11 +362,14 @@ class LiveSessionService {
   /// Join a live session as a viewer
   ///
   /// [sessionId] The ID of the session to join
+  /// [password] The password for password-protected sessions
   /// [onSessionUpdated] Callback when session state changes
   ///
-  /// Returns true if successfully joined.
+  /// Returns true if successfully joined, false if password is incorrect
+  /// or the session doesn't exist.
   Future<bool> joinSession(
     String sessionId, {
+    String? password,
     void Function(LiveSession session)? onSessionUpdated,
   }) async {
     if (_isHosting) {
@@ -367,6 +384,19 @@ class LiveSessionService {
     }
 
     try {
+      // Check if session is password protected and verify password
+      final storedHash = await _getSessionPasswordHash(sessionId);
+      if (storedHash != null) {
+        if (password == null || password.isEmpty) {
+          debugPrint('LiveSessionService: Password required but not provided');
+          return false;
+        }
+        if (!_verifyPassword(password, storedHash)) {
+          debugPrint('LiveSessionService: Incorrect password');
+          return false;
+        }
+      }
+
       _currentSessionId = sessionId;
       _onSessionUpdated = onSessionUpdated;
 
@@ -620,6 +650,35 @@ class LiveSessionService {
     _onSessionUpdated = null;
     _onStateReceived = null;
     _lastBroadcastTime = null;
+  }
+
+  // =============================================================================
+  // PASSWORD HANDLING
+  // =============================================================================
+
+  /// Hash a password for storage
+  ///
+  /// Uses a simple hash for live session passwords. This is not meant for
+  /// critical security but provides basic protection against casual viewing.
+  String _hashPassword(String password) {
+    // Use a simple hash combining the password with a salt
+    // For production security, use bcrypt or argon2
+    const salt = 'graviton_live_session_v1';
+    final combined = '$salt$password$salt';
+    return combined.hashCode.toRadixString(16);
+  }
+
+  /// Verify a password against a stored hash
+  bool _verifyPassword(String password, String storedHash) {
+    final inputHash = _hashPassword(password);
+    return inputHash == storedHash;
+  }
+
+  /// Fetch the password hash for a session from the database
+  Future<String?> _getSessionPasswordHash(String sessionId) async {
+    final path = '$_sessionsPath/$sessionId/passwordHash';
+    final hash = await _rtdb.getValue(path);
+    return hash as String?;
   }
 
   // =============================================================================

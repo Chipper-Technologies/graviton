@@ -1147,5 +1147,18 @@
   "liveSessionHostingDescription": "視聴者にシミュレーションを配信中",
   "liveSessionViewingDescription": "ライブシミュレーション配信を視聴中",
   "liveSessionMenuTitle": "ライブセッション",
-  "liveSessionMenuDescription": "リアルタイムシミュレーションを共有または参加"
+  "liveSessionMenuDescription": "リアルタイムシミュレーションを共有または参加",
+  "liveSessionBrowseTab": "閲覧",
+  "liveSessionStartSharingTab": "共有を開始",
+  "liveSessionBrowseDescription": "ライブセッションに参加して、他のユーザーのシミュレーションをリアルタイムで視聴",
+  "liveSessionShareDescription": "現在のシミュレーションを他のユーザーとリアルタイムで共有",
+  "liveSessionScenarioToShare": "共有するシナリオ",
+  "liveSessionPasswordProtection": "パスワード保護",
+  "liveSessionSetPassword": "パスワードを入力",
+  "liveSessionPasswordDescription": "視聴者はセッションに参加するためにこのパスワードを入力する必要があります",
+  "liveSessionPasswordRequired": "パスワードを入力してください",
+  "liveSessionEnterPassword": "パスワードを入力",
+  "liveSessionPasswordHint": "セッションパスワード",
+  "liveSessionPasswordProtected": "パスワード保護済み",
+  "liveSessionIncorrectPassword": "パスワードが正しくありません"
 }

@@ -450,5 +450,269 @@ void main() {
         expect(session == (123 as dynamic), isFalse);
       });
     });
+
+    group('Password Protection', () {
+      test('Should create session with password protection', () {
+        final now = DateTime.now();
+        final session = LiveSession(
+          id: 'protected-id',
+          hostId: 'host',
+          hostName: 'Host',
+          scenarioName: 'Scenario',
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: 0,
+          createdAt: now,
+          updatedAt: now,
+          isPasswordProtected: true,
+          passwordHash: 'abc123hash',
+        );
+
+        expect(session.isPasswordProtected, isTrue);
+        expect(session.passwordHash, 'abc123hash');
+      });
+
+      test('Should default isPasswordProtected to false', () {
+        final now = DateTime.now();
+        final session = LiveSession(
+          id: 'id',
+          hostId: 'host',
+          hostName: 'Host',
+          scenarioName: 'Scenario',
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: 0,
+          createdAt: now,
+          updatedAt: now,
+        );
+
+        expect(session.isPasswordProtected, isFalse);
+        expect(session.passwordHash, isNull);
+      });
+
+      test('Should deserialize isPasswordProtected from map', () {
+        final timestamp = DateTime.now().millisecondsSinceEpoch;
+        final map = {
+          'hostId': 'host',
+          'hostName': 'Host',
+          'scenarioName': 'Scenario',
+          'isRunning': true,
+          'timeScale': 1.0,
+          'viewerCount': 0,
+          'createdAt': timestamp,
+          'updatedAt': timestamp,
+          'isPasswordProtected': true,
+        };
+
+        final session = LiveSession.fromMap('id', map);
+
+        expect(session.isPasswordProtected, isTrue);
+        // passwordHash not exposed via fromMap for security
+      });
+
+      test('Should handle missing isPasswordProtected in map', () {
+        final session = LiveSession.fromMap('id', {});
+
+        expect(session.isPasswordProtected, isFalse);
+      });
+
+      test('Should include isPasswordProtected in toMap', () {
+        final now = DateTime.now();
+        final session = LiveSession(
+          id: 'id',
+          hostId: 'host',
+          hostName: 'Host',
+          scenarioName: 'Scenario',
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: 0,
+          createdAt: now,
+          updatedAt: now,
+          isPasswordProtected: true,
+          passwordHash: 'hashvalue',
+        );
+
+        final map = session.toMap();
+
+        expect(map['isPasswordProtected'], isTrue);
+        expect(map.containsKey('passwordHash'), isFalse);
+      });
+
+      test('Should include passwordHash in toMap when requested', () {
+        final now = DateTime.now();
+        final session = LiveSession(
+          id: 'id',
+          hostId: 'host',
+          hostName: 'Host',
+          scenarioName: 'Scenario',
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: 0,
+          createdAt: now,
+          updatedAt: now,
+          isPasswordProtected: true,
+          passwordHash: 'secrethash',
+        );
+
+        final map = session.toMap(includePasswordHash: true);
+
+        expect(map['isPasswordProtected'], isTrue);
+        expect(map['passwordHash'], 'secrethash');
+      });
+
+      test('Should not include passwordHash when null even if requested', () {
+        final now = DateTime.now();
+        final session = LiveSession(
+          id: 'id',
+          hostId: 'host',
+          hostName: 'Host',
+          scenarioName: 'Scenario',
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: 0,
+          createdAt: now,
+          updatedAt: now,
+          isPasswordProtected: false,
+        );
+
+        final map = session.toMap(includePasswordHash: true);
+
+        expect(map.containsKey('passwordHash'), isFalse);
+      });
+
+      test('Should copyWith password protection fields', () {
+        final now = DateTime.now();
+        final original = LiveSession(
+          id: 'id',
+          hostId: 'host',
+          hostName: 'Host',
+          scenarioName: 'Scenario',
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: 0,
+          createdAt: now,
+          updatedAt: now,
+          isPasswordProtected: false,
+        );
+
+        final updated = original.copyWith(
+          isPasswordProtected: true,
+          passwordHash: 'newhash',
+        );
+
+        expect(original.isPasswordProtected, isFalse);
+        expect(original.passwordHash, isNull);
+        expect(updated.isPasswordProtected, isTrue);
+        expect(updated.passwordHash, 'newhash');
+      });
+
+      test('Should include isPasswordProtected in toString', () {
+        final now = DateTime.now();
+        final session = LiveSession(
+          id: 'id',
+          hostId: 'host',
+          hostName: 'Host',
+          scenarioName: 'Scenario',
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: 0,
+          createdAt: now,
+          updatedAt: now,
+          isPasswordProtected: true,
+        );
+
+        final str = session.toString();
+
+        expect(str, contains('isPasswordProtected: true'));
+      });
+
+      test('Should consider isPasswordProtected in equality', () {
+        final now = DateTime(2024, 1, 1, 12, 0, 0);
+        final session1 = LiveSession(
+          id: 'id',
+          hostId: 'host',
+          hostName: 'Host',
+          scenarioName: 'Scenario',
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: 0,
+          createdAt: now,
+          updatedAt: now,
+          isPasswordProtected: true,
+        );
+        final session2 = LiveSession(
+          id: 'id',
+          hostId: 'host',
+          hostName: 'Host',
+          scenarioName: 'Scenario',
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: 0,
+          createdAt: now,
+          updatedAt: now,
+          isPasswordProtected: false,
+        );
+
+        expect(session1, isNot(equals(session2)));
+      });
+
+      test('Should have same hashCode for identical password sessions', () {
+        final now = DateTime(2024, 1, 1, 12, 0, 0);
+        final session1 = LiveSession(
+          id: 'id',
+          hostId: 'host',
+          hostName: 'Host',
+          scenarioName: 'Scenario',
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: 0,
+          createdAt: now,
+          updatedAt: now,
+          isPasswordProtected: true,
+        );
+        final session2 = LiveSession(
+          id: 'id',
+          hostId: 'host',
+          hostName: 'Host',
+          scenarioName: 'Scenario',
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: 0,
+          createdAt: now,
+          updatedAt: now,
+          isPasswordProtected: true,
+        );
+
+        expect(session1.hashCode, equals(session2.hashCode));
+      });
+
+      test(
+        'Should roundtrip password protected session through toMap/fromMap',
+        () {
+          final now = DateTime.now();
+          final original = LiveSession(
+            id: 'roundtrip-id',
+            hostId: 'host',
+            hostName: 'Host',
+            scenarioName: 'Scenario',
+            isRunning: true,
+            timeScale: 1.0,
+            viewerCount: 0,
+            createdAt: now,
+            updatedAt: now,
+            isPasswordProtected: true,
+            passwordHash: 'myhash',
+          );
+
+          final map = original.toMap();
+          final restored = LiveSession.fromMap(original.id, map);
+
+          // isPasswordProtected should survive roundtrip
+          expect(restored.isPasswordProtected, original.isPasswordProtected);
+          // passwordHash intentionally NOT exposed in fromMap for security
+          expect(restored.passwordHash, isNull);
+        },
+      );
+    });
   });
 }

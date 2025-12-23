@@ -3619,4 +3619,43 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get liveSessionMenuDescription => '分享或加入实时模拟';
+
+  @override
+  String get liveSessionBrowseTab => '浏览';
+
+  @override
+  String get liveSessionStartSharingTab => '开始分享';
+
+  @override
+  String get liveSessionBrowseDescription => '加入实时会话以实时观看其他用户的模拟';
+
+  @override
+  String get liveSessionShareDescription => '实时与他人分享您当前的模拟';
+
+  @override
+  String get liveSessionScenarioToShare => '要分享的场景';
+
+  @override
+  String get liveSessionPasswordProtection => '密码保护';
+
+  @override
+  String get liveSessionSetPassword => '输入密码';
+
+  @override
+  String get liveSessionPasswordDescription => '观众需要输入此密码才能加入您的会话';
+
+  @override
+  String get liveSessionPasswordRequired => '请输入密码';
+
+  @override
+  String get liveSessionEnterPassword => '输入密码';
+
+  @override
+  String get liveSessionPasswordHint => '会话密码';
+
+  @override
+  String get liveSessionPasswordProtected => '已启用密码保护';
+
+  @override
+  String get liveSessionIncorrectPassword => '密码错误';
 }

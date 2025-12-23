@@ -102,11 +102,13 @@ class MockLiveSessionState extends _i1.Mock implements _i2.LiveSessionState {
   _i5.Future<bool> startHosting({
     required String? scenarioName,
     String? displayName,
+    String? password,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#startHosting, [], {
               #scenarioName: scenarioName,
               #displayName: displayName,
+              #password: password,
             }),
             returnValue: _i5.Future<bool>.value(false),
           )
@@ -132,9 +134,13 @@ class MockLiveSessionState extends _i1.Mock implements _i2.LiveSessionState {
           as _i5.Future<bool>);
 
   @override
-  _i5.Future<bool> startViewing(String? sessionId) =>
+  _i5.Future<bool> startViewing(String? sessionId, {String? password}) =>
       (super.noSuchMethod(
-            Invocation.method(#startViewing, [sessionId]),
+            Invocation.method(
+              #startViewing,
+              [sessionId],
+              {#password: password},
+            ),
             returnValue: _i5.Future<bool>.value(false),
           )
           as _i5.Future<bool>);

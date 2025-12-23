@@ -3905,4 +3905,47 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get liveSessionMenuDescription =>
       'Compartir o unirse a simulaciones en tiempo real';
+
+  @override
+  String get liveSessionBrowseTab => 'Explorar';
+
+  @override
+  String get liveSessionStartSharingTab => 'Comenzar a Compartir';
+
+  @override
+  String get liveSessionBrowseDescription =>
+      'Únete a una sesión en vivo para ver la simulación de otro usuario en tiempo real';
+
+  @override
+  String get liveSessionShareDescription =>
+      'Comparte tu simulación actual con otros en tiempo real';
+
+  @override
+  String get liveSessionScenarioToShare => 'Escenario a compartir';
+
+  @override
+  String get liveSessionPasswordProtection => 'Protección con Contraseña';
+
+  @override
+  String get liveSessionSetPassword => 'Introducir contraseña';
+
+  @override
+  String get liveSessionPasswordDescription =>
+      'Los espectadores necesitarán introducir esta contraseña para unirse a tu sesión';
+
+  @override
+  String get liveSessionPasswordRequired =>
+      'Por favor, introduce una contraseña';
+
+  @override
+  String get liveSessionEnterPassword => 'Introducir Contraseña';
+
+  @override
+  String get liveSessionPasswordHint => 'Contraseña de sesión';
+
+  @override
+  String get liveSessionPasswordProtected => 'Protegida con contraseña';
+
+  @override
+  String get liveSessionIncorrectPassword => 'Contraseña incorrecta';
 }

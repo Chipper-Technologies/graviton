@@ -480,5 +480,228 @@ void main() {
         expect(result, isFalse);
       });
     });
+
+    group('Password Protected Hosting', () {
+      test('Should accept password parameter when starting hosting', () async {
+        final sessionId = await service.startHosting(
+          scenarioName: 'Test',
+          password: 'mypassword',
+        );
+        expect(sessionId, isNull); // Fails without auth
+      });
+
+      test('Should accept empty password', () async {
+        final sessionId = await service.startHosting(
+          scenarioName: 'Test',
+          password: '',
+        );
+        expect(sessionId, isNull);
+      });
+
+      test('Should accept all hosting parameters', () async {
+        final sessionId = await service.startHosting(
+          scenarioName: 'Test Scenario',
+          displayName: 'Custom Host',
+          password: 'secretpass',
+        );
+        expect(sessionId, isNull);
+      });
+
+      test('Should accept null password (no protection)', () async {
+        final sessionId = await service.startHosting(scenarioName: 'Test');
+        expect(sessionId, isNull);
+      });
+    });
+
+    group('Password Protected Joining', () {
+      test('Should accept password parameter when joining', () async {
+        final result = await service.joinSession(
+          'test-session',
+          password: 'viewerpassword',
+        );
+        expect(result, isFalse); // Fails without auth
+      });
+
+      test('Should accept empty password when joining', () async {
+        final result = await service.joinSession('test-session', password: '');
+        expect(result, isFalse);
+      });
+
+      test('Should accept all join parameters', () async {
+        final result = await service.joinSession(
+          'test-session',
+          password: 'secret',
+          onSessionUpdated: (session) {},
+        );
+        expect(result, isFalse);
+      });
+
+      test('Should work without password for non-protected sessions', () async {
+        final result = await service.joinSession('test-session');
+        expect(result, isFalse);
+      });
+    });
+
+    group('Session State After Operations', () {
+      test('isHosting should remain false after failed start', () async {
+        await service.startHosting(scenarioName: 'Test');
+        expect(service.isHosting, isFalse);
+      });
+
+      test('currentSessionId should remain null after failed start', () async {
+        await service.startHosting(scenarioName: 'Test');
+        expect(service.currentSessionId, isNull);
+      });
+
+      test('isHosting should be false after stop', () async {
+        await service.startHosting(scenarioName: 'Test');
+        await service.stopHosting();
+        expect(service.isHosting, isFalse);
+      });
+    });
+
+    group('Service Lifecycle', () {
+      test('Should handle rapid start/stop hosting cycles', () async {
+        for (var i = 0; i < 3; i++) {
+          await service.startHosting(scenarioName: 'Test $i');
+          await service.stopHosting();
+        }
+        expect(service.isHosting, isFalse);
+      });
+
+      test('Should handle rapid join/leave cycles', () async {
+        for (var i = 0; i < 3; i++) {
+          await service.joinSession('session-$i');
+          await service.leaveSession();
+        }
+        expect(service.currentSessionId, isNull);
+      });
+
+      test('Should handle alternating host/join operations', () async {
+        await service.startHosting(scenarioName: 'Test');
+        await service.joinSession('session-1');
+        await service.startHosting(scenarioName: 'Test2');
+        await service.leaveSession();
+        expect(service.isHosting, isFalse);
+      });
+    });
+
+    group('Broadcast Edge Cases', () {
+      test('Should handle broadcast with running simulation', () async {
+        final snapshot = SimulationSnapshot(
+          bodies: [],
+          isRunning: true,
+          timeScale: 4.0,
+          totalTime: 1000.0,
+          stepCount: 500,
+          timestamp: DateTime.now(),
+        );
+        final result = await service.broadcastState(snapshot);
+        expect(result, isFalse);
+      });
+
+      test('Should handle broadcast with paused simulation', () async {
+        final snapshot = SimulationSnapshot(
+          bodies: [],
+          isRunning: false,
+          timeScale: 1.0,
+          totalTime: 50.0,
+          stepCount: 25,
+          timestamp: DateTime.now(),
+        );
+        final result = await service.broadcastState(snapshot);
+        expect(result, isFalse);
+      });
+
+      test('Should handle broadcast with various time scales', () async {
+        for (final timeScale in [0.1, 0.5, 1.0, 2.0, 4.0, 8.0]) {
+          final snapshot = SimulationSnapshot(
+            bodies: [],
+            isRunning: true,
+            timeScale: timeScale,
+            totalTime: 100.0,
+            stepCount: 50,
+            timestamp: DateTime.now(),
+          );
+          final result = await service.broadcastState(snapshot);
+          expect(result, isFalse);
+        }
+      });
+    });
+
+    group('Session Update with Various Parameters', () {
+      test('Should handle update with isRunning only', () async {
+        final result = await service.updateSessionState(isRunning: true);
+        expect(result, isFalse);
+      });
+
+      test('Should handle update with timeScale only', () async {
+        final result = await service.updateSessionState(timeScale: 2.0);
+        expect(result, isFalse);
+      });
+
+      test('Should handle update with scenarioName only', () async {
+        final result = await service.updateSessionState(
+          scenarioName: 'New Scenario',
+        );
+        expect(result, isFalse);
+      });
+
+      test('Should handle update with all parameters', () async {
+        final result = await service.updateSessionState(
+          isRunning: true,
+          timeScale: 4.0,
+          scenarioName: 'Updated Scenario',
+        );
+        expect(result, isFalse);
+      });
+
+      test('Should handle update with no parameters', () async {
+        final result = await service.updateSessionState();
+        expect(result, isFalse);
+      });
+    });
+
+    group('Multiple Callback Handling', () {
+      test('Should handle setting callback multiple times', () {
+        for (var i = 0; i < 5; i++) {
+          service.setOnViewerCountChanged((count) {});
+        }
+        expect(service.isHosting, isFalse);
+      });
+
+      test('Should handle alternating set and clear callbacks', () {
+        service.setOnViewerCountChanged((count) {});
+        service.setOnViewerCountChanged(null);
+        service.setOnViewerCountChanged((count) {});
+        service.setOnViewerCountChanged(null);
+        expect(service.isHosting, isFalse);
+      });
+    });
+
+    group('State Sync Edge Cases', () {
+      test('Should handle starting state sync multiple times', () {
+        for (var i = 0; i < 3; i++) {
+          service.startStateSync(onStateReceived: (snapshot) {});
+        }
+        expect(service.isHosting, isFalse);
+      });
+
+      test('Should handle stopping state sync multiple times', () {
+        service.startStateSync(onStateReceived: (snapshot) {});
+        for (var i = 0; i < 3; i++) {
+          service.stopStateSync();
+        }
+        expect(service.isHosting, isFalse);
+      });
+
+      test('Should handle start/stop state sync cycles', () {
+        for (var i = 0; i < 3; i++) {
+          service.startStateSync(onStateReceived: (snapshot) {});
+          service.stopStateSync();
+        }
+        expect(service.isHosting, isFalse);
+      });
+    });
   });
 }

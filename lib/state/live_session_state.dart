@@ -145,11 +145,13 @@ class LiveSessionState extends ChangeNotifier {
   ///
   /// [scenarioName] The name of the scenario being simulated
   /// [displayName] Optional display name for the host
+  /// [password] Optional password for viewers to join (enables password protection)
   ///
   /// Returns true if hosting started successfully.
   Future<bool> startHosting({
     required String scenarioName,
     String? displayName,
+    String? password,
   }) async {
     if (_isHosting) return true;
     if (_isViewing) {
@@ -162,6 +164,7 @@ class LiveSessionState extends ChangeNotifier {
     final sessionId = await _service.startHosting(
       scenarioName: scenarioName,
       displayName: displayName,
+      password: password,
     );
 
     if (sessionId != null) {
@@ -220,9 +223,10 @@ class LiveSessionState extends ChangeNotifier {
   /// Start viewing a live session
   ///
   /// [sessionId] The ID of the session to join
+  /// [password] The password to join (required for password-protected sessions)
   ///
   /// Returns true if successfully joined.
-  Future<bool> startViewing(String sessionId) async {
+  Future<bool> startViewing(String sessionId, {String? password}) async {
     if (_isViewing) {
       await stopViewing();
     }
@@ -234,6 +238,7 @@ class LiveSessionState extends ChangeNotifier {
 
     final success = await _service.joinSession(
       sessionId,
+      password: password,
       onSessionUpdated: _onSessionUpdated,
     );
 

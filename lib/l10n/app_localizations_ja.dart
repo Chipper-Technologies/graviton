@@ -3644,4 +3644,45 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get liveSessionMenuDescription => 'リアルタイムシミュレーションを共有または参加';
+
+  @override
+  String get liveSessionBrowseTab => '閲覧';
+
+  @override
+  String get liveSessionStartSharingTab => '共有を開始';
+
+  @override
+  String get liveSessionBrowseDescription =>
+      'ライブセッションに参加して、他のユーザーのシミュレーションをリアルタイムで視聴';
+
+  @override
+  String get liveSessionShareDescription => '現在のシミュレーションを他のユーザーとリアルタイムで共有';
+
+  @override
+  String get liveSessionScenarioToShare => '共有するシナリオ';
+
+  @override
+  String get liveSessionPasswordProtection => 'パスワード保護';
+
+  @override
+  String get liveSessionSetPassword => 'パスワードを入力';
+
+  @override
+  String get liveSessionPasswordDescription =>
+      '視聴者はセッションに参加するためにこのパスワードを入力する必要があります';
+
+  @override
+  String get liveSessionPasswordRequired => 'パスワードを入力してください';
+
+  @override
+  String get liveSessionEnterPassword => 'パスワードを入力';
+
+  @override
+  String get liveSessionPasswordHint => 'セッションパスワード';
+
+  @override
+  String get liveSessionPasswordProtected => 'パスワード保護済み';
+
+  @override
+  String get liveSessionIncorrectPassword => 'パスワードが正しくありません';
 }

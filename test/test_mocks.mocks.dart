@@ -11214,6 +11214,149 @@ class MockAppLocalizations extends _i1.Mock implements _i8.AppLocalizations {
           as String);
 
   @override
+  String get liveSessionBrowseTab =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionBrowseTab),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionBrowseTab),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionStartSharingTab =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionStartSharingTab),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionStartSharingTab),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionBrowseDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionBrowseDescription),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionBrowseDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionShareDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionShareDescription),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionShareDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionScenarioToShare =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionScenarioToShare),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionScenarioToShare),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionPasswordProtection =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionPasswordProtection),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionPasswordProtection),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionSetPassword =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionSetPassword),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionSetPassword),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionPasswordDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionPasswordDescription),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionPasswordDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionPasswordRequired =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionPasswordRequired),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionPasswordRequired),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionEnterPassword =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionEnterPassword),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionEnterPassword),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionPasswordHint =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionPasswordHint),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionPasswordHint),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionPasswordProtected =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionPasswordProtected),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionPasswordProtected),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionIncorrectPassword =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionIncorrectPassword),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionIncorrectPassword),
+            ),
+          )
+          as String);
+
+  @override
   String simulationDescription(
     int? bodyCount,
     String? status,
@@ -13805,11 +13948,13 @@ class MockLiveSessionService extends _i1.Mock
   _i10.Future<String?> startHosting({
     required String? scenarioName,
     String? displayName,
+    String? password,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#startHosting, [], {
               #scenarioName: scenarioName,
               #displayName: displayName,
+              #password: password,
             }),
             returnValue: _i10.Future<String?>.value(),
           )
@@ -13850,13 +13995,14 @@ class MockLiveSessionService extends _i1.Mock
   @override
   _i10.Future<bool> joinSession(
     String? sessionId, {
+    String? password,
     void Function(_i13.LiveSession)? onSessionUpdated,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
               #joinSession,
               [sessionId],
-              {#onSessionUpdated: onSessionUpdated},
+              {#password: password, #onSessionUpdated: onSessionUpdated},
             ),
             returnValue: _i10.Future<bool>.value(false),
           )

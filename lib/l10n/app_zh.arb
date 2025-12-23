@@ -1147,5 +1147,18 @@
   "liveSessionHostingDescription": "正在向观众广播您的模拟",
   "liveSessionViewingDescription": "正在观看实时模拟广播",
   "liveSessionMenuTitle": "实时会话",
-  "liveSessionMenuDescription": "分享或加入实时模拟"
+  "liveSessionMenuDescription": "分享或加入实时模拟",
+  "liveSessionBrowseTab": "浏览",
+  "liveSessionStartSharingTab": "开始分享",
+  "liveSessionBrowseDescription": "加入实时会话以实时观看其他用户的模拟",
+  "liveSessionShareDescription": "实时与他人分享您当前的模拟",
+  "liveSessionScenarioToShare": "要分享的场景",
+  "liveSessionPasswordProtection": "密码保护",
+  "liveSessionSetPassword": "输入密码",
+  "liveSessionPasswordDescription": "观众需要输入此密码才能加入您的会话",
+  "liveSessionPasswordRequired": "请输入密码",
+  "liveSessionEnterPassword": "输入密码",
+  "liveSessionPasswordHint": "会话密码",
+  "liveSessionPasswordProtected": "已启用密码保护",
+  "liveSessionIncorrectPassword": "密码错误"
 }

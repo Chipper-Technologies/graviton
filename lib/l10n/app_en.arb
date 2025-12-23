@@ -5001,5 +5001,57 @@
   "liveSessionMenuDescription": "Share or join real-time simulations",
   "@liveSessionMenuDescription": {
     "description": "Menu item description for live sessions"
+  },
+  "liveSessionBrowseTab": "Browse",
+  "@liveSessionBrowseTab": {
+    "description": "Tab label for browsing live sessions"
+  },
+  "liveSessionStartSharingTab": "Start Sharing",
+  "@liveSessionStartSharingTab": {
+    "description": "Tab label for starting a live session"
+  },
+  "liveSessionBrowseDescription": "Join a live session to watch another user's simulation in real-time",
+  "@liveSessionBrowseDescription": {
+    "description": "Description text for the browse sessions tab"
+  },
+  "liveSessionShareDescription": "Share your current simulation with others in real-time",
+  "@liveSessionShareDescription": {
+    "description": "Description text for the start sharing tab"
+  },
+  "liveSessionScenarioToShare": "Scenario to share",
+  "@liveSessionScenarioToShare": {
+    "description": "Label showing which scenario will be shared"
+  },
+  "liveSessionPasswordProtection": "Password Protection",
+  "@liveSessionPasswordProtection": {
+    "description": "Toggle label for enabling password protection"
+  },
+  "liveSessionSetPassword": "Enter password",
+  "@liveSessionSetPassword": {
+    "description": "Placeholder text for password input field"
+  },
+  "liveSessionPasswordDescription": "Viewers will need to enter this password to join your session",
+  "@liveSessionPasswordDescription": {
+    "description": "Help text explaining password protection"
+  },
+  "liveSessionPasswordRequired": "Please enter a password",
+  "@liveSessionPasswordRequired": {
+    "description": "Error message when password is required but not entered"
+  },
+  "liveSessionEnterPassword": "Enter Password",
+  "@liveSessionEnterPassword": {
+    "description": "Title for password entry dialog"
+  },
+  "liveSessionPasswordHint": "Session password",
+  "@liveSessionPasswordHint": {
+    "description": "Hint text for password input in join dialog"
+  },
+  "liveSessionPasswordProtected": "Password protected",
+  "@liveSessionPasswordProtected": {
+    "description": "Label indicating session is password protected"
+  },
+  "liveSessionIncorrectPassword": "Incorrect password",
+  "@liveSessionIncorrectPassword": {
+    "description": "Error message when entered password is wrong"
   }
 }

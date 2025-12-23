@@ -3655,4 +3655,45 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get liveSessionMenuDescription => '실시간 시뮬레이션 공유 또는 참여';
+
+  @override
+  String get liveSessionBrowseTab => '찾아보기';
+
+  @override
+  String get liveSessionStartSharingTab => '공유 시작';
+
+  @override
+  String get liveSessionBrowseDescription =>
+      '라이브 세션에 참여하여 다른 사용자의 시뮬레이션을 실시간으로 시청';
+
+  @override
+  String get liveSessionShareDescription => '현재 시뮬레이션을 다른 사용자와 실시간으로 공유';
+
+  @override
+  String get liveSessionScenarioToShare => '공유할 시나리오';
+
+  @override
+  String get liveSessionPasswordProtection => '비밀번호 보호';
+
+  @override
+  String get liveSessionSetPassword => '비밀번호 입력';
+
+  @override
+  String get liveSessionPasswordDescription =>
+      '시청자는 세션에 참여하려면 이 비밀번호를 입력해야 합니다';
+
+  @override
+  String get liveSessionPasswordRequired => '비밀번호를 입력하세요';
+
+  @override
+  String get liveSessionEnterPassword => '비밀번호 입력';
+
+  @override
+  String get liveSessionPasswordHint => '세션 비밀번호';
+
+  @override
+  String get liveSessionPasswordProtected => '비밀번호 보호됨';
+
+  @override
+  String get liveSessionIncorrectPassword => '잘못된 비밀번호';
 }

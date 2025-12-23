@@ -453,5 +453,149 @@ void main() {
         expect(state.activeSessions, isEmpty);
       });
     });
+
+    group('Password Protected Hosting', () {
+      test('startHosting should accept password parameter', () async {
+        final result = await state.startHosting(
+          scenarioName: 'Test',
+          password: 'mypassword',
+        );
+        // Fails without auth, but should accept parameter
+        expect(result, isFalse);
+      });
+
+      test('startHosting with empty password should not throw', () async {
+        final result = await state.startHosting(
+          scenarioName: 'Test',
+          password: '',
+        );
+        expect(result, isFalse);
+      });
+
+      test('startHosting with all parameters should not throw', () async {
+        final result = await state.startHosting(
+          scenarioName: 'Test Scenario',
+          displayName: 'Test Host',
+          password: 'secret123',
+        );
+        expect(result, isFalse);
+      });
+    });
+
+    group('Password Protected Viewing', () {
+      test('startViewing should accept password parameter', () async {
+        final result = await state.startViewing(
+          'session-id',
+          password: 'viewerpassword',
+        );
+        // Fails without auth, but should accept parameter
+        expect(result, isFalse);
+      });
+
+      test('startViewing with empty password should not throw', () async {
+        final result = await state.startViewing('session-id', password: '');
+        expect(result, isFalse);
+      });
+
+      test('startViewing with null password should work', () async {
+        final result = await state.startViewing('session-id');
+        expect(result, isFalse);
+      });
+    });
+
+    group('Connection Status Transitions', () {
+      test(
+        'connectionStatus should be disconnected after stopViewing',
+        () async {
+          await state.startViewing('test-session');
+          await state.stopViewing();
+          // After failed ops, status may be error or disconnected
+          expect(
+            state.connectionStatus,
+            anyOf(
+              equals(LiveSessionConnectionStatus.disconnected),
+              equals(LiveSessionConnectionStatus.error),
+            ),
+          );
+        },
+      );
+
+      test('connectionStatus should reflect state after stopHosting', () async {
+        await state.startHosting(scenarioName: 'Test');
+        await state.stopHosting();
+        // After failed ops, status may be error or disconnected
+        expect(
+          state.connectionStatus,
+          anyOf(
+            equals(LiveSessionConnectionStatus.disconnected),
+            equals(LiveSessionConnectionStatus.error),
+          ),
+        );
+      });
+
+      test('connectionStatus should be disconnected after cleanup', () async {
+        await state.cleanup();
+        expect(
+          state.connectionStatus,
+          equals(LiveSessionConnectionStatus.disconnected),
+        );
+      });
+    });
+
+    group('Error State Management', () {
+      test('hasRecentError should return false initially', () {
+        expect(state.hasRecentError, isFalse);
+      });
+
+      test('lastErrorMessage should be null initially', () {
+        expect(state.lastErrorMessage, isNull);
+      });
+
+      test('lastErrorTime should be null initially', () {
+        expect(state.lastErrorTime, isNull);
+      });
+
+      test('clearError should clear error state', () {
+        state.clearError();
+        expect(state.lastErrorMessage, isNull);
+        expect(state.lastErrorTime, isNull);
+      });
+    });
+
+    group('Advanced State Checks', () {
+      test('viewedSessionId should be null initially', () {
+        expect(state.viewedSessionId, isNull);
+      });
+
+      test('hostedSessionId should be null initially', () {
+        expect(state.hostedSessionId, isNull);
+      });
+
+      test('currentSession should be null initially', () {
+        expect(state.currentSession, isNull);
+      });
+
+      test('isInSession should match isHosting or isViewing', () {
+        expect(state.isInSession, equals(state.isHosting || state.isViewing));
+      });
+    });
+
+    group('State Transitions During Hosting Attempt', () {
+      test('should transition from viewing to hosting', () async {
+        await state.startViewing('session1');
+        await state.startHosting(scenarioName: 'Test');
+        // Both fail but transitions should be clean
+        expect(state.isViewing, isFalse);
+        expect(state.isHosting, isFalse);
+      });
+
+      test('should transition from hosting to viewing', () async {
+        await state.startHosting(scenarioName: 'Test');
+        await state.startViewing('session1');
+        // Both fail but transitions should be clean
+        expect(state.isHosting, isFalse);
+        expect(state.isViewing, isFalse);
+      });
+    });
   });
 }
