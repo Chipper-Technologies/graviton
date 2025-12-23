@@ -5064,6 +5064,14 @@
   "@liveSessionPasswordDescription": {
     "description": "Help text explaining password protection"
   },
+  "liveSessionCameraSync": "Camera Sync",
+  "@liveSessionCameraSync": {
+    "description": "Toggle label for enabling camera synchronization with viewers"
+  },
+  "liveSessionCameraSyncDescription": "Viewers will see the same camera angle and movements as you",
+  "@liveSessionCameraSyncDescription": {
+    "description": "Help text explaining camera synchronization feature"
+  },
   "liveSessionPasswordRequired": "Please enter a password",
   "@liveSessionPasswordRequired": {
     "description": "Error message when password is required but not entered"

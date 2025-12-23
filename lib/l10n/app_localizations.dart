@@ -6844,6 +6844,18 @@ abstract class AppLocalizations {
   /// **'Viewers will need to enter this password to join your session'**
   String get liveSessionPasswordDescription;
 
+  /// Toggle label for enabling camera synchronization with viewers
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Sync'**
+  String get liveSessionCameraSync;
+
+  /// Help text explaining camera synchronization feature
+  ///
+  /// In en, this message translates to:
+  /// **'Viewers will see the same camera angle and movements as you'**
+  String get liveSessionCameraSyncDescription;
+
   /// Error message when password is required but not entered
   ///
   /// In en, this message translates to:

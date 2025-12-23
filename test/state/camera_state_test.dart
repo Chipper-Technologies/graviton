@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/models/firebase/camera_snapshot.dart';
 import 'package:graviton/state/camera_state.dart';
+import 'package:vector_math/vector_math_64.dart' as vm;
 
 void main() {
   group('CameraState Tests', () {
@@ -217,6 +219,157 @@ void main() {
       expect(cameraState.pitch, equals(0.3 + 0.3));
       expect(cameraState.autoRotate, isTrue);
       expect(cameraState.selectedBody, equals(2));
+    });
+
+    group('applySnapshot', () {
+      test('should apply all camera properties from snapshot', () {
+        final snapshot = CameraSnapshot(
+          yaw: 1.2,
+          pitch: 0.5,
+          roll: 0.1,
+          distance: 600.0,
+          target: vm.Vector3(10.0, 20.0, 30.0),
+          followMode: true,
+          followedBodyIndex: 2,
+          selectedBody: 1,
+          autoRotate: true,
+          fieldOfView: 75.0,
+        );
+
+        cameraState.applySnapshot(snapshot);
+
+        expect(cameraState.yaw, equals(1.2));
+        expect(cameraState.pitch, equals(0.5));
+        expect(cameraState.roll, equals(0.1));
+        expect(cameraState.distance, equals(600.0));
+        expect(cameraState.target.x, equals(10.0));
+        expect(cameraState.target.y, equals(20.0));
+        expect(cameraState.target.z, equals(30.0));
+        expect(cameraState.followMode, isTrue);
+        expect(cameraState.followedBodyIndex, equals(2));
+        expect(cameraState.selectedBody, equals(1));
+        expect(cameraState.autoRotate, isTrue);
+        expect(cameraState.fieldOfView, equals(75.0));
+      });
+
+      test('should clamp pitch values within bounds', () {
+        final snapshot = CameraSnapshot(
+          yaw: 0.5,
+          pitch: 3.0, // Exceeds max
+          roll: 0.0,
+          distance: 300.0,
+          target: vm.Vector3.zero(),
+          followMode: false,
+          autoRotate: false,
+          fieldOfView: 60.0,
+        );
+
+        cameraState.applySnapshot(snapshot);
+
+        expect(cameraState.pitch, equals(1.5)); // Clamped to max
+      });
+
+      test('should clamp distance values within bounds', () {
+        final snapshotMin = CameraSnapshot(
+          yaw: 0.5,
+          pitch: 0.3,
+          roll: 0.0,
+          distance: 1.0, // Below min
+          target: vm.Vector3.zero(),
+          followMode: false,
+          autoRotate: false,
+          fieldOfView: 60.0,
+        );
+
+        cameraState.applySnapshot(snapshotMin);
+        expect(cameraState.distance, equals(5.0)); // Clamped to min
+
+        final snapshotMax = CameraSnapshot(
+          yaw: 0.5,
+          pitch: 0.3,
+          roll: 0.0,
+          distance: 5000.0, // Above max
+          target: vm.Vector3.zero(),
+          followMode: false,
+          autoRotate: false,
+          fieldOfView: 60.0,
+        );
+
+        cameraState.applySnapshot(snapshotMax);
+        expect(cameraState.distance, equals(2000.0)); // Clamped to max
+      });
+
+      test('should clamp field of view within bounds', () {
+        final snapshotMin = CameraSnapshot(
+          yaw: 0.5,
+          pitch: 0.3,
+          roll: 0.0,
+          distance: 300.0,
+          target: vm.Vector3.zero(),
+          followMode: false,
+          autoRotate: false,
+          fieldOfView: 10.0, // Below min
+        );
+
+        cameraState.applySnapshot(snapshotMin);
+        expect(cameraState.fieldOfView, equals(30.0)); // Clamped to min
+
+        final snapshotMax = CameraSnapshot(
+          yaw: 0.5,
+          pitch: 0.3,
+          roll: 0.0,
+          distance: 300.0,
+          target: vm.Vector3.zero(),
+          followMode: false,
+          autoRotate: false,
+          fieldOfView: 150.0, // Above max
+        );
+
+        cameraState.applySnapshot(snapshotMax);
+        expect(cameraState.fieldOfView, equals(120.0)); // Clamped to max
+      });
+
+      test('should notify listeners', () {
+        var notified = false;
+        cameraState.addListener(() {
+          notified = true;
+        });
+
+        final snapshot = CameraSnapshot(
+          yaw: 0.5,
+          pitch: 0.3,
+          roll: 0.0,
+          distance: 300.0,
+          target: vm.Vector3.zero(),
+          followMode: false,
+          autoRotate: false,
+          fieldOfView: 60.0,
+        );
+
+        cameraState.applySnapshot(snapshot);
+
+        expect(notified, isTrue);
+      });
+
+      test('should handle null optional fields', () {
+        final snapshot = CameraSnapshot(
+          yaw: 0.5,
+          pitch: 0.3,
+          roll: 0.0,
+          distance: 300.0,
+          target: vm.Vector3.zero(),
+          followMode: false,
+          followedBodyIndex: null,
+          selectedBody: null,
+          autoRotate: false,
+          fieldOfView: 60.0,
+        );
+
+        cameraState.applySnapshot(snapshot);
+
+        expect(cameraState.followedBodyIndex, isNull);
+        expect(cameraState.selectedBody, isNull);
+      });
     });
   });
 }

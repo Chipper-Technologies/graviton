@@ -3954,6 +3954,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Los espectadores necesitarán introducir esta contraseña para unirse a tu sesión';
 
   @override
+  String get liveSessionCameraSync => 'Sincronización de Cámara';
+
+  @override
+  String get liveSessionCameraSyncDescription =>
+      'Los espectadores verán el mismo ángulo de cámara y movimientos que tú';
+
+  @override
   String get liveSessionPasswordRequired =>
       'Por favor, introduce una contraseña';
 

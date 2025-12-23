@@ -597,5 +597,51 @@ void main() {
         expect(state.isViewing, isFalse);
       });
     });
+
+    group('Camera Sync', () {
+      test('syncCameraWithViewers should be true by default', () {
+        expect(state.syncCameraWithViewers, isTrue);
+      });
+
+      test('setSyncCameraWithViewers should update value', () {
+        state.setSyncCameraWithViewers(false);
+        expect(state.syncCameraWithViewers, isFalse);
+
+        state.setSyncCameraWithViewers(true);
+        expect(state.syncCameraWithViewers, isTrue);
+      });
+
+      test('setSyncCameraWithViewers should notify listeners on change', () {
+        var notified = false;
+        state.addListener(() {
+          notified = true;
+        });
+
+        state.setSyncCameraWithViewers(false);
+        expect(notified, isTrue);
+      });
+
+      test(
+        'setSyncCameraWithViewers should not notify when value unchanged',
+        () {
+          var notifyCount = 0;
+          state.addListener(() {
+            notifyCount++;
+          });
+
+          // Set to current value (true by default)
+          state.setSyncCameraWithViewers(true);
+          expect(notifyCount, equals(0));
+
+          // Change value
+          state.setSyncCameraWithViewers(false);
+          expect(notifyCount, equals(1));
+
+          // Set to same value again
+          state.setSyncCameraWithViewers(false);
+          expect(notifyCount, equals(1));
+        },
+      );
+    });
   });
 }

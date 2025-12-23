@@ -121,6 +121,7 @@ class _StartSharingTabState extends State<StartSharingTab> {
 
   Widget _buildStartView(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final liveSession = Provider.of<LiveSessionState>(context);
 
     return SingleChildScrollView(
       child: Column(
@@ -175,6 +176,20 @@ class _StartSharingTabState extends State<StartSharingTab> {
             ),
             const SizedBox(height: AppTypography.spacingMedium),
           ],
+
+          // Camera sync toggle
+          ToggleOption(
+            title: l10n.liveSessionCameraSync,
+            description: l10n.liveSessionCameraSyncDescription,
+            icon: liveSession.syncCameraWithViewers
+                ? Icons.videocam
+                : Icons.videocam_off,
+            isEnabled: liveSession.syncCameraWithViewers,
+            onChanged: (value) {
+              liveSession.setSyncCameraWithViewers(value);
+            },
+          ),
+          const SizedBox(height: AppTypography.spacingMedium),
 
           // Start hosting button
           SizedBox(
@@ -386,6 +401,20 @@ class _StartSharingTabState extends State<StartSharingTab> {
               obscureText: true,
             ),
           ],
+          const SizedBox(height: AppTypography.spacingMedium),
+
+          // Camera sync toggle
+          ToggleOption(
+            title: l10n.liveSessionCameraSync,
+            description: l10n.liveSessionCameraSyncDescription,
+            icon: liveSession.syncCameraWithViewers
+                ? Icons.videocam
+                : Icons.videocam_off,
+            isEnabled: liveSession.syncCameraWithViewers,
+            onChanged: (value) {
+              liveSession.setSyncCameraWithViewers(value);
+            },
+          ),
           const SizedBox(height: AppTypography.spacingMedium),
 
           // Update session button

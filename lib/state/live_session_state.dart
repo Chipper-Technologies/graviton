@@ -41,6 +41,7 @@ class LiveSessionState extends ChangeNotifier {
   int _viewerCount = 0;
   String? _hostedScenarioName;
   bool _hostedIsPasswordProtected = false;
+  bool _syncCameraWithViewers = true; // Default to syncing camera
 
   // Viewing state
   bool _isViewing = false;
@@ -136,6 +137,17 @@ class LiveSessionState extends ChangeNotifier {
   bool get hasRecentError =>
       _lastErrorTime != null &&
       DateTime.now().difference(_lastErrorTime!) < const Duration(seconds: 30);
+
+  /// Whether camera movements should be synced to viewers
+  bool get syncCameraWithViewers => _syncCameraWithViewers;
+
+  /// Toggle whether camera movements are synced with viewers
+  void setSyncCameraWithViewers(bool value) {
+    if (_syncCameraWithViewers != value) {
+      _syncCameraWithViewers = value;
+      notifyListeners();
+    }
+  }
 
   // =============================================================================
   // ERROR HANDLING

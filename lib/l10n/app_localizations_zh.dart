@@ -3665,6 +3665,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get liveSessionPasswordDescription => '观众需要输入此密码才能加入您的会话';
 
   @override
+  String get liveSessionCameraSync => '相机同步';
+
+  @override
+  String get liveSessionCameraSyncDescription => '观众将看到与您相同的相机角度和移动';
+
+  @override
   String get liveSessionPasswordRequired => '请输入密码';
 
   @override

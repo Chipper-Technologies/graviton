@@ -3692,6 +3692,13 @@ class AppLocalizationsJa extends AppLocalizations {
       '視聴者はセッションに参加するためにこのパスワードを入力する必要があります';
 
   @override
+  String get liveSessionCameraSync => 'カメラ同期';
+
+  @override
+  String get liveSessionCameraSyncDescription =>
+      '視聴者はあなたと同じカメラアングルと動きを見ることができます';
+
+  @override
   String get liveSessionPasswordRequired => 'パスワードを入力してください';
 
   @override

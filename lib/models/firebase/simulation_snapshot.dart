@@ -4,6 +4,7 @@ import 'package:vector_math/vector_math_64.dart' as vm;
 import 'package:graviton/core/enums/body_type.dart';
 import 'package:graviton/core/enums/habitability_status.dart';
 import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/models/firebase/camera_snapshot.dart';
 
 /// A lightweight serializable representation of a [Body] for network sync
 ///
@@ -210,6 +211,12 @@ class SimulationSnapshot {
   /// Timestamp when snapshot was taken
   final DateTime timestamp;
 
+  /// Optional camera state for synced viewing
+  ///
+  /// When provided, viewers will see the host's camera position,
+  /// rotation, and follow mode. When null, viewers have free camera control.
+  final CameraSnapshot? camera;
+
   /// Creates a new [SimulationSnapshot] instance
   const SimulationSnapshot({
     required this.bodies,
@@ -218,15 +225,20 @@ class SimulationSnapshot {
     required this.totalTime,
     required this.stepCount,
     required this.timestamp,
+    this.camera,
   });
 
   /// Create a snapshot from current simulation state
+  ///
+  /// [camera] Optional camera snapshot for synced viewing.
+  /// When provided, viewers will see the host's camera position.
   factory SimulationSnapshot.fromSimulation({
     required List<Body> bodies,
     required bool isRunning,
     required double timeScale,
     required double totalTime,
     required int stepCount,
+    CameraSnapshot? camera,
   }) {
     return SimulationSnapshot(
       bodies: bodies.map(BodySnapshot.fromBody).toList(),
@@ -235,12 +247,14 @@ class SimulationSnapshot {
       totalTime: totalTime,
       stepCount: stepCount,
       timestamp: DateTime.now(),
+      camera: camera,
     );
   }
 
   /// Create a snapshot from a database map
   factory SimulationSnapshot.fromMap(Map<String, dynamic> map) {
     final bodiesList = map['bodies'] as List<dynamic>? ?? [];
+    final cameraData = map['camera'];
     return SimulationSnapshot(
       bodies: bodiesList
           .map((b) => BodySnapshot.fromMap(Map<String, dynamic>.from(b as Map)))
@@ -252,6 +266,9 @@ class SimulationSnapshot {
       timestamp: DateTime.fromMillisecondsSinceEpoch(
         map['timestamp'] as int? ?? DateTime.now().millisecondsSinceEpoch,
       ),
+      camera: cameraData != null
+          ? CameraSnapshot.fromMap(Map<String, dynamic>.from(cameraData as Map))
+          : null,
     );
   }
 
@@ -264,6 +281,7 @@ class SimulationSnapshot {
       'totalTime': totalTime,
       'stepCount': stepCount,
       'timestamp': timestamp.millisecondsSinceEpoch,
+      if (camera != null) 'camera': camera!.toMap(),
     };
   }
 
@@ -272,8 +290,12 @@ class SimulationSnapshot {
     return DateTime.now().difference(timestamp) > threshold;
   }
 
+  /// Whether this snapshot includes camera sync data
+  bool get hasCameraSync => camera != null;
+
   @override
   String toString() =>
       'SimulationSnapshot(bodies: ${bodies.length}, '
-      'isRunning: $isRunning, timeScale: $timeScale)';
+      'isRunning: $isRunning, timeScale: $timeScale, '
+      'cameraSync: $hasCameraSync)';
 }

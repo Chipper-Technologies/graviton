@@ -17,6 +17,7 @@ import 'package:graviton/core/enums/ui_element.dart';
 import 'package:graviton/features/auth/presentation/widgets/avatar_button.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/models/firebase/camera_snapshot.dart';
 import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/models/ui/dialog_action.dart';
 import 'package:graviton/services/camera/camera_gesture_service.dart';
@@ -235,11 +236,15 @@ class _HomeScreenState extends State<HomeScreen>
 
     // Broadcast simulation state if hosting a live session
     _broadcastIfHosting(appState);
+
+    // Apply camera sync from host if viewing a live session
+    _applyCameraSyncIfViewing(appState);
   }
 
   /// Broadcasts simulation state to viewers if hosting a live session.
   ///
   /// Only broadcasts at [_broadcastInterval] intervals to avoid flooding.
+  /// Includes camera state if [LiveSessionState.syncCameraWithViewers] is enabled.
   void _broadcastIfHosting(AppState appState) {
     final liveSession = appState.liveSession;
     if (!liveSession.isHosting) return;
@@ -249,14 +254,48 @@ class _HomeScreenState extends State<HomeScreen>
 
     _lastBroadcast = now;
 
+    // Build camera snapshot if camera sync is enabled
+    CameraSnapshot? cameraSnapshot;
+    if (liveSession.syncCameraWithViewers) {
+      final camera = appState.camera;
+      cameraSnapshot = CameraSnapshot(
+        yaw: camera.yaw,
+        pitch: camera.pitch,
+        roll: camera.roll,
+        distance: camera.distance,
+        target: camera.target,
+        followMode: camera.followMode,
+        followedBodyIndex: camera.followedBodyIndex,
+        selectedBody: camera.selectedBody,
+        autoRotate: camera.autoRotate,
+        fieldOfView: camera.fieldOfView,
+      );
+    }
+
     final snapshot = SimulationSnapshot.fromSimulation(
       bodies: appState.simulation.bodies,
       isRunning: appState.simulation.isRunning && !appState.simulation.isPaused,
       timeScale: appState.simulation.timeScale,
       totalTime: appState.simulation.totalTime,
       stepCount: appState.simulation.stepCount,
+      camera: cameraSnapshot,
     );
     liveSession.broadcastState(snapshot);
+  }
+
+  /// Applies camera state from the host when viewing a live session.
+  ///
+  /// Only applies camera sync if the host has camera sync enabled and
+  /// the received snapshot includes camera data.
+  void _applyCameraSyncIfViewing(AppState appState) {
+    final liveSession = appState.liveSession;
+    if (!liveSession.isViewing) return;
+
+    final snapshot = liveSession.latestSnapshot;
+    if (snapshot == null || !snapshot.hasCameraSync) return;
+
+    // Apply camera state from the host
+    appState.camera.applySnapshot(snapshot.camera!);
   }
 
   void _handleTapWithDelay(
@@ -714,8 +753,7 @@ class _HomeScreenState extends State<HomeScreen>
                             AppTypography.radiusSmall,
                           ),
                           child: const Padding(
-                            padding:
-                                EdgeInsets.all(AppTypography.spacingSmall),
+                            padding: EdgeInsets.all(AppTypography.spacingSmall),
                             child: ConnectionStatusIndicator(
                               showLabel: false,
                               compact: true,

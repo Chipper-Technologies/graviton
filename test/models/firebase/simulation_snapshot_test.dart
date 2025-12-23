@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/core/enums/body_type.dart';
 import 'package:graviton/core/enums/habitability_status.dart';
 import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/models/firebase/camera_snapshot.dart';
 import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -337,6 +338,201 @@ void main() {
       expect(snapshot.toString(), contains('2'));
       expect(snapshot.toString(), contains('true'));
       expect(snapshot.toString(), contains('4.0'));
+    });
+
+    group('camera sync', () {
+      late CameraSnapshot testCameraSnapshot;
+
+      setUp(() {
+        testCameraSnapshot = CameraSnapshot(
+          yaw: 0.5,
+          pitch: 0.3,
+          roll: 0.1,
+          distance: 500.0,
+          target: vm.Vector3(10.0, 20.0, 30.0),
+          followMode: true,
+          followedBodyIndex: 1,
+          selectedBody: 0,
+          autoRotate: true,
+          fieldOfView: 75.0,
+        );
+      });
+
+      test('hasCameraSync should return false when camera is null', () {
+        final snapshot = SimulationSnapshot.fromSimulation(
+          bodies: testBodies,
+          isRunning: true,
+          timeScale: 1.0,
+          totalTime: 0.0,
+          stepCount: 0,
+        );
+
+        expect(snapshot.hasCameraSync, isFalse);
+        expect(snapshot.camera, isNull);
+      });
+
+      test('hasCameraSync should return true when camera is present', () {
+        final snapshot = SimulationSnapshot.fromSimulation(
+          bodies: testBodies,
+          isRunning: true,
+          timeScale: 1.0,
+          totalTime: 0.0,
+          stepCount: 0,
+          camera: testCameraSnapshot,
+        );
+
+        expect(snapshot.hasCameraSync, isTrue);
+        expect(snapshot.camera, isNotNull);
+      });
+
+      test('toMap should include camera when present', () {
+        final snapshot = SimulationSnapshot.fromSimulation(
+          bodies: testBodies,
+          isRunning: true,
+          timeScale: 1.0,
+          totalTime: 0.0,
+          stepCount: 0,
+          camera: testCameraSnapshot,
+        );
+
+        final map = snapshot.toMap();
+
+        expect(map.containsKey('camera'), isTrue);
+        expect(map['camera'], isA<Map<String, dynamic>>());
+        expect(map['camera']['yaw'], equals(0.5));
+        expect(map['camera']['pitch'], equals(0.3));
+        expect(map['camera']['followMode'], isTrue);
+      });
+
+      test('toMap should not include camera when null', () {
+        final snapshot = SimulationSnapshot.fromSimulation(
+          bodies: testBodies,
+          isRunning: true,
+          timeScale: 1.0,
+          totalTime: 0.0,
+          stepCount: 0,
+        );
+
+        final map = snapshot.toMap();
+
+        expect(map.containsKey('camera'), isFalse);
+      });
+
+      test('fromMap should deserialize camera correctly', () {
+        final map = {
+          'bodies': [],
+          'isRunning': true,
+          'timeScale': 2.0,
+          'totalTime': 100.0,
+          'stepCount': 50,
+          'timestamp': DateTime.now().millisecondsSinceEpoch,
+          'camera': {
+            'yaw': 0.5,
+            'pitch': 0.3,
+            'roll': 0.1,
+            'distance': 500.0,
+            'target': [10.0, 20.0, 30.0],
+            'followMode': true,
+            'followedBodyIndex': 1,
+            'selectedBody': 0,
+            'autoRotate': true,
+            'fieldOfView': 75.0,
+          },
+        };
+
+        final snapshot = SimulationSnapshot.fromMap(map);
+
+        expect(snapshot.hasCameraSync, isTrue);
+        expect(snapshot.camera!.yaw, equals(0.5));
+        expect(snapshot.camera!.pitch, equals(0.3));
+        expect(snapshot.camera!.roll, equals(0.1));
+        expect(snapshot.camera!.distance, equals(500.0));
+        expect(snapshot.camera!.target.x, equals(10.0));
+        expect(snapshot.camera!.followMode, isTrue);
+        expect(snapshot.camera!.followedBodyIndex, equals(1));
+        expect(snapshot.camera!.autoRotate, isTrue);
+        expect(snapshot.camera!.fieldOfView, equals(75.0));
+      });
+
+      test('fromMap should handle missing camera field', () {
+        final map = {
+          'bodies': [],
+          'isRunning': true,
+          'timeScale': 2.0,
+          'totalTime': 100.0,
+          'stepCount': 50,
+          'timestamp': DateTime.now().millisecondsSinceEpoch,
+        };
+
+        final snapshot = SimulationSnapshot.fromMap(map);
+
+        expect(snapshot.hasCameraSync, isFalse);
+        expect(snapshot.camera, isNull);
+      });
+
+      test('roundtrip serialization should preserve camera data', () {
+        final original = SimulationSnapshot.fromSimulation(
+          bodies: testBodies,
+          isRunning: true,
+          timeScale: 4.0,
+          totalTime: 1000.0,
+          stepCount: 500,
+          camera: testCameraSnapshot,
+        );
+        final map = original.toMap();
+        final restored = SimulationSnapshot.fromMap(map);
+
+        expect(restored.hasCameraSync, isTrue);
+        expect(restored.camera!.yaw, equals(original.camera!.yaw));
+        expect(restored.camera!.pitch, equals(original.camera!.pitch));
+        expect(restored.camera!.roll, equals(original.camera!.roll));
+        expect(restored.camera!.distance, equals(original.camera!.distance));
+        expect(restored.camera!.target.x, equals(original.camera!.target.x));
+        expect(restored.camera!.target.y, equals(original.camera!.target.y));
+        expect(restored.camera!.target.z, equals(original.camera!.target.z));
+        expect(
+          restored.camera!.followMode,
+          equals(original.camera!.followMode),
+        );
+        expect(
+          restored.camera!.followedBodyIndex,
+          equals(original.camera!.followedBodyIndex),
+        );
+        expect(
+          restored.camera!.selectedBody,
+          equals(original.camera!.selectedBody),
+        );
+        expect(
+          restored.camera!.autoRotate,
+          equals(original.camera!.autoRotate),
+        );
+        expect(
+          restored.camera!.fieldOfView,
+          equals(original.camera!.fieldOfView),
+        );
+      });
+
+      test('toString should indicate camera sync status', () {
+        final snapshotWithCamera = SimulationSnapshot.fromSimulation(
+          bodies: testBodies,
+          isRunning: true,
+          timeScale: 1.0,
+          totalTime: 0.0,
+          stepCount: 0,
+          camera: testCameraSnapshot,
+        );
+
+        final snapshotWithoutCamera = SimulationSnapshot.fromSimulation(
+          bodies: testBodies,
+          isRunning: true,
+          timeScale: 1.0,
+          totalTime: 0.0,
+          stepCount: 0,
+        );
+
+        expect(snapshotWithCamera.toString(), contains('cameraSync: true'));
+        expect(snapshotWithoutCamera.toString(), contains('cameraSync: false'));
+      });
     });
   });
 }

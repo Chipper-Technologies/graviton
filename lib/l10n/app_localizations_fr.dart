@@ -3959,6 +3959,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Les spectateurs devront entrer ce mot de passe pour rejoindre votre session';
 
   @override
+  String get liveSessionCameraSync => 'Synchronisation de la Caméra';
+
+  @override
+  String get liveSessionCameraSyncDescription =>
+      'Les spectateurs verront le même angle de caméra et les mêmes mouvements que vous';
+
+  @override
   String get liveSessionPasswordRequired => 'Veuillez entrer un mot de passe';
 
   @override

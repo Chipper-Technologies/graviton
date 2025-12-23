@@ -1162,6 +1162,8 @@
   "liveSessionPasswordProtection": "비밀번호 보호",
   "liveSessionSetPassword": "비밀번호 입력",
   "liveSessionPasswordDescription": "시청자는 세션에 참여하려면 이 비밀번호를 입력해야 합니다",
+  "liveSessionCameraSync": "카메라 동기화",
+  "liveSessionCameraSyncDescription": "시청자는 당신과 동일한 카메라 각도와 움직임을 볼 수 있습니다",
   "liveSessionPasswordRequired": "비밀번호를 입력하세요",
   "liveSessionEnterPassword": "비밀번호 입력",
   "liveSessionPasswordHint": "세션 비밀번호",
