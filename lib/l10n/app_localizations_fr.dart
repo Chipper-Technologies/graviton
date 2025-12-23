@@ -3860,4 +3860,31 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get liveSessionRequiresAuth =>
       'Connectez-vous pour partager ou voir des sessions en direct';
+
+  @override
+  String get liveSessionStatusDisconnected => 'Déconnecté';
+
+  @override
+  String get liveSessionStatusConnecting => 'Connexion...';
+
+  @override
+  String get liveSessionStatusConnected => 'Connecté';
+
+  @override
+  String get liveSessionStatusReconnecting => 'Reconnexion...';
+
+  @override
+  String get liveSessionStatusError => 'Erreur de connexion';
+
+  @override
+  String get liveSessionErrorHostingFailed =>
+      'Impossible de démarrer l\'hébergement. Veuillez réessayer.';
+
+  @override
+  String get liveSessionErrorJoinFailed =>
+      'Impossible de rejoindre la session. Veuillez réessayer.';
+
+  @override
+  String get liveSessionErrorConnectionLost =>
+      'Connexion perdue. Tentative de reconnexion...';
 }

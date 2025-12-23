@@ -4945,5 +4945,37 @@
   "liveSessionRequiresAuth": "Sign in to share or view live sessions",
   "@liveSessionRequiresAuth": {
     "description": "Message shown when user needs to sign in for live sessions"
+  },
+  "liveSessionStatusDisconnected": "Disconnected",
+  "@liveSessionStatusDisconnected": {
+    "description": "Connection status when not connected to any session"
+  },
+  "liveSessionStatusConnecting": "Connecting...",
+  "@liveSessionStatusConnecting": {
+    "description": "Connection status when attempting to connect"
+  },
+  "liveSessionStatusConnected": "Connected",
+  "@liveSessionStatusConnected": {
+    "description": "Connection status when successfully connected"
+  },
+  "liveSessionStatusReconnecting": "Reconnecting...",
+  "@liveSessionStatusReconnecting": {
+    "description": "Connection status when attempting to reconnect"
+  },
+  "liveSessionStatusError": "Connection Error",
+  "@liveSessionStatusError": {
+    "description": "Connection status when an error occurred"
+  },
+  "liveSessionErrorHostingFailed": "Failed to start hosting. Please try again.",
+  "@liveSessionErrorHostingFailed": {
+    "description": "Error message when hosting fails to start"
+  },
+  "liveSessionErrorJoinFailed": "Failed to join session. Please try again.",
+  "@liveSessionErrorJoinFailed": {
+    "description": "Error message when joining a session fails"
+  },
+  "liveSessionErrorConnectionLost": "Connection lost. Attempting to reconnect...",
+  "@liveSessionErrorConnectionLost": {
+    "description": "Error message when connection is lost"
   }
 }

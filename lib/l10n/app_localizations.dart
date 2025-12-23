@@ -6675,6 +6675,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign in to share or view live sessions'**
   String get liveSessionRequiresAuth;
+
+  /// Connection status when not connected to any session
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected'**
+  String get liveSessionStatusDisconnected;
+
+  /// Connection status when attempting to connect
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting...'**
+  String get liveSessionStatusConnecting;
+
+  /// Connection status when successfully connected
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get liveSessionStatusConnected;
+
+  /// Connection status when attempting to reconnect
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnecting...'**
+  String get liveSessionStatusReconnecting;
+
+  /// Connection status when an error occurred
+  ///
+  /// In en, this message translates to:
+  /// **'Connection Error'**
+  String get liveSessionStatusError;
+
+  /// Error message when hosting fails to start
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start hosting. Please try again.'**
+  String get liveSessionErrorHostingFailed;
+
+  /// Error message when joining a session fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to join session. Please try again.'**
+  String get liveSessionErrorJoinFailed;
+
+  /// Error message when connection is lost
+  ///
+  /// In en, this message translates to:
+  /// **'Connection lost. Attempting to reconnect...'**
+  String get liveSessionErrorConnectionLost;
 }
 
 class _AppLocalizationsDelegate

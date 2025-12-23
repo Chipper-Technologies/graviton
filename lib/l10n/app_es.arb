@@ -1133,5 +1133,13 @@
   "liveSessionViewing": "Viendo sesión en vivo",
   "liveSessionHostedBy": "Presentado por {hostName}",
   "liveSessionScenario": "Escenario: {scenarioName}",
-  "liveSessionRequiresAuth": "Inicia sesión para compartir o ver sesiones en vivo"
+  "liveSessionRequiresAuth": "Inicia sesión para compartir o ver sesiones en vivo",
+  "liveSessionStatusDisconnected": "Desconectado",
+  "liveSessionStatusConnecting": "Conectando...",
+  "liveSessionStatusConnected": "Conectado",
+  "liveSessionStatusReconnecting": "Reconectando...",
+  "liveSessionStatusError": "Error de conexión",
+  "liveSessionErrorHostingFailed": "No se pudo iniciar el alojamiento. Por favor, inténtalo de nuevo.",
+  "liveSessionErrorJoinFailed": "No se pudo unir a la sesión. Por favor, inténtalo de nuevo.",
+  "liveSessionErrorConnectionLost": "Conexión perdida. Intentando reconectar..."
 }

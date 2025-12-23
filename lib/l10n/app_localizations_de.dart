@@ -3829,4 +3829,31 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get liveSessionRequiresAuth =>
       'Melden Sie sich an, um Live-Sitzungen zu teilen oder anzusehen';
+
+  @override
+  String get liveSessionStatusDisconnected => 'Getrennt';
+
+  @override
+  String get liveSessionStatusConnecting => 'Verbinden...';
+
+  @override
+  String get liveSessionStatusConnected => 'Verbunden';
+
+  @override
+  String get liveSessionStatusReconnecting => 'Erneut verbinden...';
+
+  @override
+  String get liveSessionStatusError => 'Verbindungsfehler';
+
+  @override
+  String get liveSessionErrorHostingFailed =>
+      'Hosting konnte nicht gestartet werden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get liveSessionErrorJoinFailed =>
+      'Beitritt zur Sitzung fehlgeschlagen. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get liveSessionErrorConnectionLost =>
+      'Verbindung verloren. Versuche erneut zu verbinden...';
 }

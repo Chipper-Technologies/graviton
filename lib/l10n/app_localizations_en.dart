@@ -3816,4 +3816,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get liveSessionRequiresAuth =>
       'Sign in to share or view live sessions';
+
+  @override
+  String get liveSessionStatusDisconnected => 'Disconnected';
+
+  @override
+  String get liveSessionStatusConnecting => 'Connecting...';
+
+  @override
+  String get liveSessionStatusConnected => 'Connected';
+
+  @override
+  String get liveSessionStatusReconnecting => 'Reconnecting...';
+
+  @override
+  String get liveSessionStatusError => 'Connection Error';
+
+  @override
+  String get liveSessionErrorHostingFailed =>
+      'Failed to start hosting. Please try again.';
+
+  @override
+  String get liveSessionErrorJoinFailed =>
+      'Failed to join session. Please try again.';
+
+  @override
+  String get liveSessionErrorConnectionLost =>
+      'Connection lost. Attempting to reconnect...';
 }

@@ -3602,4 +3602,28 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get liveSessionRequiresAuth => 'ライブセッションを共有または視聴するにはサインインしてください';
+
+  @override
+  String get liveSessionStatusDisconnected => '切断済み';
+
+  @override
+  String get liveSessionStatusConnecting => '接続中...';
+
+  @override
+  String get liveSessionStatusConnected => '接続済み';
+
+  @override
+  String get liveSessionStatusReconnecting => '再接続中...';
+
+  @override
+  String get liveSessionStatusError => '接続エラー';
+
+  @override
+  String get liveSessionErrorHostingFailed => 'ホスティングを開始できませんでした。もう一度お試しください。';
+
+  @override
+  String get liveSessionErrorJoinFailed => 'セッションに参加できませんでした。もう一度お試しください。';
+
+  @override
+  String get liveSessionErrorConnectionLost => '接続が失われました。再接続を試みています...';
 }

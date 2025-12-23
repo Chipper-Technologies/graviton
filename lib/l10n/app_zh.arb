@@ -1133,5 +1133,13 @@
   "liveSessionViewing": "正在观看直播会话",
   "liveSessionHostedBy": "由{hostName}主持",
   "liveSessionScenario": "场景：{scenarioName}",
-  "liveSessionRequiresAuth": "登录以分享或观看直播会话"
+  "liveSessionRequiresAuth": "登录以分享或观看直播会话",
+  "liveSessionStatusDisconnected": "已断开",
+  "liveSessionStatusConnecting": "连接中...",
+  "liveSessionStatusConnected": "已连接",
+  "liveSessionStatusReconnecting": "重新连接中...",
+  "liveSessionStatusError": "连接错误",
+  "liveSessionErrorHostingFailed": "无法开始主持。请重试。",
+  "liveSessionErrorJoinFailed": "无法加入会话。请重试。",
+  "liveSessionErrorConnectionLost": "连接丢失。正在尝试重新连接..."
 }

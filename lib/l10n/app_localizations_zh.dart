@@ -3577,4 +3577,28 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get liveSessionRequiresAuth => '登录以分享或观看直播会话';
+
+  @override
+  String get liveSessionStatusDisconnected => '已断开';
+
+  @override
+  String get liveSessionStatusConnecting => '连接中...';
+
+  @override
+  String get liveSessionStatusConnected => '已连接';
+
+  @override
+  String get liveSessionStatusReconnecting => '重新连接中...';
+
+  @override
+  String get liveSessionStatusError => '连接错误';
+
+  @override
+  String get liveSessionErrorHostingFailed => '无法开始主持。请重试。';
+
+  @override
+  String get liveSessionErrorJoinFailed => '无法加入会话。请重试。';
+
+  @override
+  String get liveSessionErrorConnectionLost => '连接丢失。正在尝试重新连接...';
 }

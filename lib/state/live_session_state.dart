@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart' show ChangeNotifier, kDebugMode;
+import 'package:graviton/core/enums/live_session_connection_status.dart';
 import 'package:graviton/models/firebase/live_session.dart';
 import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/services/firebase/live_session_service.dart';
@@ -13,6 +14,7 @@ import 'package:graviton/services/firebase/live_session_service.dart';
 /// - Viewing status and session updates
 /// - Active session list for browsing
 /// - Real-time simulation state synchronization
+/// - Connection status and error handling
 ///
 /// Example usage:
 /// ```dart
@@ -27,6 +29,7 @@ import 'package:graviton/services/firebase/live_session_service.dart';
 /// // Listen to viewer count changes
 /// liveState.addListener(() {
 ///   print('Viewer count: ${liveState.viewerCount}');
+///   print('Connection: ${liveState.connectionStatus}');
 /// });
 /// ```
 class LiveSessionState extends ChangeNotifier {
@@ -42,6 +45,12 @@ class LiveSessionState extends ChangeNotifier {
   String? _viewedSessionId;
   LiveSession? _currentSession;
   SimulationSnapshot? _latestSnapshot;
+
+  // Connection state
+  LiveSessionConnectionStatus _connectionStatus =
+      LiveSessionConnectionStatus.disconnected;
+  String? _lastErrorMessage;
+  DateTime? _lastErrorTime;
 
   // Active sessions stream
   StreamSubscription<List<LiveSession>>? _sessionsSubscription;
@@ -85,6 +94,49 @@ class LiveSessionState extends ChangeNotifier {
   /// Whether the user is in any session (hosting or viewing)
   bool get isInSession => _isHosting || _isViewing;
 
+  /// Current connection status for the live session
+  LiveSessionConnectionStatus get connectionStatus => _connectionStatus;
+
+  /// The last error message that occurred (null if no error)
+  String? get lastErrorMessage => _lastErrorMessage;
+
+  /// When the last error occurred (null if no error)
+  DateTime? get lastErrorTime => _lastErrorTime;
+
+  /// Whether there's a recent error (within last 30 seconds)
+  bool get hasRecentError =>
+      _lastErrorTime != null &&
+      DateTime.now().difference(_lastErrorTime!) < const Duration(seconds: 30);
+
+  // =============================================================================
+  // ERROR HANDLING
+  // =============================================================================
+
+  /// Set an error state with message
+  void _setError(String message) {
+    _connectionStatus = LiveSessionConnectionStatus.error;
+    _lastErrorMessage = message;
+    _lastErrorTime = DateTime.now();
+    notifyListeners();
+  }
+
+  /// Clear any error state
+  void clearError() {
+    if (_lastErrorMessage != null) {
+      _lastErrorMessage = null;
+      _lastErrorTime = null;
+      notifyListeners();
+    }
+  }
+
+  /// Update connection status
+  void _setConnectionStatus(LiveSessionConnectionStatus status) {
+    if (_connectionStatus != status) {
+      _connectionStatus = status;
+      notifyListeners();
+    }
+  }
+
   // =============================================================================
   // HOSTING
   // =============================================================================
@@ -116,10 +168,13 @@ class LiveSessionState extends ChangeNotifier {
       _isHosting = true;
       _hostedSessionId = sessionId;
       _viewerCount = 0;
+      _setConnectionStatus(LiveSessionConnectionStatus.connected);
+      clearError();
       notifyListeners();
       return true;
     }
 
+    _setError('Failed to start hosting session');
     return false;
   }
 
@@ -144,7 +199,10 @@ class LiveSessionState extends ChangeNotifier {
       _isHosting = false;
       _hostedSessionId = null;
       _viewerCount = 0;
+      _setConnectionStatus(LiveSessionConnectionStatus.disconnected);
       notifyListeners();
+    } else {
+      _setError('Failed to stop hosting session');
     }
 
     return success;
@@ -172,6 +230,8 @@ class LiveSessionState extends ChangeNotifier {
       await stopHosting();
     }
 
+    _setConnectionStatus(LiveSessionConnectionStatus.connecting);
+
     final success = await _service.joinSession(
       sessionId,
       onSessionUpdated: _onSessionUpdated,
@@ -180,7 +240,11 @@ class LiveSessionState extends ChangeNotifier {
     if (success) {
       _isViewing = true;
       _viewedSessionId = sessionId;
+      _setConnectionStatus(LiveSessionConnectionStatus.connected);
+      clearError();
       notifyListeners();
+    } else {
+      _setError('Failed to join session');
     }
 
     return success;
@@ -196,7 +260,10 @@ class LiveSessionState extends ChangeNotifier {
       _viewedSessionId = null;
       _currentSession = null;
       _latestSnapshot = null;
+      _setConnectionStatus(LiveSessionConnectionStatus.disconnected);
       notifyListeners();
+    } else {
+      _setError('Failed to leave session');
     }
 
     return success;

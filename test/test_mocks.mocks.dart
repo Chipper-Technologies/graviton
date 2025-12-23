@@ -1298,6 +1298,94 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
           as String);
 
   @override
+  String get relativisticEffectsTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#relativisticEffectsTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#relativisticEffectsTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get relativisticEffectsDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#relativisticEffectsDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#relativisticEffectsDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get relativisticGlowTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#relativisticGlowTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#relativisticGlowTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get relativisticGlowDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#relativisticGlowDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#relativisticGlowDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get tidalForcesTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#tidalForcesTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#tidalForcesTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get tidalForcesDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#tidalForcesDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#tidalForcesDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get tidalVisualizationTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#tidalVisualizationTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#tidalVisualizationTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get tidalVisualizationDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#tidalVisualizationDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#tidalVisualizationDescription),
+            ),
+          )
+          as String);
+
+  @override
   String get gravityWellsDescription =>
       (super.noSuchMethod(
             Invocation.getter(#gravityWellsDescription),
@@ -1592,6 +1680,127 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
             returnValue: _i8.dummyValue<String>(
               this,
               Invocation.getter(#addBodyButton),
+            ),
+          )
+          as String);
+
+  @override
+  String get tapToEnableAddBodyMode =>
+      (super.noSuchMethod(
+            Invocation.getter(#tapToEnableAddBodyMode),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#tapToEnableAddBodyMode),
+            ),
+          )
+          as String);
+
+  @override
+  String get tapToDisableAddBodyMode =>
+      (super.noSuchMethod(
+            Invocation.getter(#tapToDisableAddBodyMode),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#tapToDisableAddBodyMode),
+            ),
+          )
+          as String);
+
+  @override
+  String get addBodyModeActive =>
+      (super.noSuchMethod(
+            Invocation.getter(#addBodyModeActive),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#addBodyModeActive),
+            ),
+          )
+          as String);
+
+  @override
+  String get addBodyModeInactive =>
+      (super.noSuchMethod(
+            Invocation.getter(#addBodyModeInactive),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#addBodyModeInactive),
+            ),
+          )
+          as String);
+
+  @override
+  String get tapToPlaceBody =>
+      (super.noSuchMethod(
+            Invocation.getter(#tapToPlaceBody),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#tapToPlaceBody),
+            ),
+          )
+          as String);
+
+  @override
+  String get lockInteraction =>
+      (super.noSuchMethod(
+            Invocation.getter(#lockInteraction),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#lockInteraction),
+            ),
+          )
+          as String);
+
+  @override
+  String get tapToLockInteraction =>
+      (super.noSuchMethod(
+            Invocation.getter(#tapToLockInteraction),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#tapToLockInteraction),
+            ),
+          )
+          as String);
+
+  @override
+  String get tapToUnlockInteraction =>
+      (super.noSuchMethod(
+            Invocation.getter(#tapToUnlockInteraction),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#tapToUnlockInteraction),
+            ),
+          )
+          as String);
+
+  @override
+  String get interactionLocked =>
+      (super.noSuchMethod(
+            Invocation.getter(#interactionLocked),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#interactionLocked),
+            ),
+          )
+          as String);
+
+  @override
+  String get interactionUnlocked =>
+      (super.noSuchMethod(
+            Invocation.getter(#interactionUnlocked),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#interactionUnlocked),
+            ),
+          )
+          as String);
+
+  @override
+  String get bodyPlacedSuccessfully =>
+      (super.noSuchMethod(
+            Invocation.getter(#bodyPlacedSuccessfully),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#bodyPlacedSuccessfully),
             ),
           )
           as String);
@@ -3462,6 +3671,28 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
           as String);
 
   @override
+  String get bodyNewDefault =>
+      (super.noSuchMethod(
+            Invocation.getter(#bodyNewDefault),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#bodyNewDefault),
+            ),
+          )
+          as String);
+
+  @override
+  String get bodyPlacementTooClose =>
+      (super.noSuchMethod(
+            Invocation.getter(#bodyPlacementTooClose),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#bodyPlacementTooClose),
+            ),
+          )
+          as String);
+
+  @override
   String get bodyInnerPlanet =>
       (super.noSuchMethod(
             Invocation.getter(#bodyInnerPlanet),
@@ -4699,6 +4930,127 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
             returnValue: _i8.dummyValue<String>(
               this,
               Invocation.getter(#habitabilityIndicatorsLabel),
+            ),
+          )
+          as String);
+
+  @override
+  String get stellarCoronasTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#stellarCoronasTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#stellarCoronasTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get stellarCoronasDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#stellarCoronasDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#stellarCoronasDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get atmosphericEffectsTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#atmosphericEffectsTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#atmosphericEffectsTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get atmosphericEffectsDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#atmosphericEffectsDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#atmosphericEffectsDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get hemisphereLightingTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#hemisphereLightingTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#hemisphereLightingTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get hemisphereLightingDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#hemisphereLightingDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#hemisphereLightingDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get castShadowsTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#castShadowsTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#castShadowsTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get castShadowsDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#castShadowsDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#castShadowsDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get specularHighlightsTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#specularHighlightsTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#specularHighlightsTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get specularHighlightsDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#specularHighlightsDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#specularHighlightsDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get lightingEffectsLabel =>
+      (super.noSuchMethod(
+            Invocation.getter(#lightingEffectsLabel),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#lightingEffectsLabel),
             ),
           )
           as String);
@@ -10461,6 +10813,303 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
           as String);
 
   @override
+  String get collisionEffectsTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#collisionEffectsTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#collisionEffectsTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get showCollisionDebris =>
+      (super.noSuchMethod(
+            Invocation.getter(#showCollisionDebris),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#showCollisionDebris),
+            ),
+          )
+          as String);
+
+  @override
+  String get showCollisionDebrisDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#showCollisionDebrisDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#showCollisionDebrisDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get showCollisionShockwaves =>
+      (super.noSuchMethod(
+            Invocation.getter(#showCollisionShockwaves),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#showCollisionShockwaves),
+            ),
+          )
+          as String);
+
+  @override
+  String get showCollisionShockwavesDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#showCollisionShockwavesDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#showCollisionShockwavesDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get showCollisionEjection =>
+      (super.noSuchMethod(
+            Invocation.getter(#showCollisionEjection),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#showCollisionEjection),
+            ),
+          )
+          as String);
+
+  @override
+  String get showCollisionEjectionDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#showCollisionEjectionDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#showCollisionEjectionDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get showCollisionPlasmaJets =>
+      (super.noSuchMethod(
+            Invocation.getter(#showCollisionPlasmaJets),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#showCollisionPlasmaJets),
+            ),
+          )
+          as String);
+
+  @override
+  String get showCollisionPlasmaJetsDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#showCollisionPlasmaJetsDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#showCollisionPlasmaJetsDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionHosting =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionHosting),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionHosting),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionNotHosting =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionNotHosting),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionNotHosting),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionStartHosting =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionStartHosting),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionStartHosting),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionStopHosting =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionStopHosting),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionStopHosting),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionBrowseSessions =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionBrowseSessions),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionBrowseSessions),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionNoSessions =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionNoSessions),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionNoSessions),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionJoin =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionJoin),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionJoin),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionLeave =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionLeave),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionLeave),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionViewing =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionViewing),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionViewing),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionRequiresAuth =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionRequiresAuth),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionRequiresAuth),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionStatusDisconnected =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionStatusDisconnected),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionStatusDisconnected),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionStatusConnecting =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionStatusConnecting),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionStatusConnecting),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionStatusConnected =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionStatusConnected),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionStatusConnected),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionStatusReconnecting =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionStatusReconnecting),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionStatusReconnecting),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionStatusError =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionStatusError),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionStatusError),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionErrorHostingFailed =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionErrorHostingFailed),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionErrorHostingFailed),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionErrorJoinFailed =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionErrorJoinFailed),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionErrorJoinFailed),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionErrorConnectionLost =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionErrorConnectionLost),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionErrorConnectionLost),
+            ),
+          )
+          as String);
+
+  @override
   String simulationDescription(
     int? bodyCount,
     String? status,
@@ -11652,6 +12301,39 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
             ),
           )
           as String);
+
+  @override
+  String liveSessionViewerCount(int? count) =>
+      (super.noSuchMethod(
+            Invocation.method(#liveSessionViewerCount, [count]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#liveSessionViewerCount, [count]),
+            ),
+          )
+          as String);
+
+  @override
+  String liveSessionHostedBy(String? hostName) =>
+      (super.noSuchMethod(
+            Invocation.method(#liveSessionHostedBy, [hostName]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#liveSessionHostedBy, [hostName]),
+            ),
+          )
+          as String);
+
+  @override
+  String liveSessionScenario(String? scenarioName) =>
+      (super.noSuchMethod(
+            Invocation.method(#liveSessionScenario, [scenarioName]),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.method(#liveSessionScenario, [scenarioName]),
+            ),
+          )
+          as String);
 }
 
 /// A class which mocks [User].
@@ -12576,6 +13258,7 @@ class MockGoogleSignIn extends _i1.Mock implements _i5.GoogleSignIn {
 /// A class which mocks [GoogleSignInAccount].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockGoogleSignInAccount extends _i1.Mock
     implements _i5.GoogleSignInAccount {
   MockGoogleSignInAccount() {
@@ -12627,6 +13310,7 @@ class MockGoogleSignInAccount extends _i1.Mock
 /// A class which mocks [GoogleSignInAuthentication].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockGoogleSignInAuthentication extends _i1.Mock
     implements _i6.GoogleSignInAuthentication {
   MockGoogleSignInAuthentication() {

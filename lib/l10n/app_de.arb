@@ -1133,5 +1133,13 @@
   "liveSessionViewing": "Live-Sitzung ansehen",
   "liveSessionHostedBy": "Gehostet von {hostName}",
   "liveSessionScenario": "Szenario: {scenarioName}",
-  "liveSessionRequiresAuth": "Melden Sie sich an, um Live-Sitzungen zu teilen oder anzusehen"
+  "liveSessionRequiresAuth": "Melden Sie sich an, um Live-Sitzungen zu teilen oder anzusehen",
+  "liveSessionStatusDisconnected": "Getrennt",
+  "liveSessionStatusConnecting": "Verbinden...",
+  "liveSessionStatusConnected": "Verbunden",
+  "liveSessionStatusReconnecting": "Erneut verbinden...",
+  "liveSessionStatusError": "Verbindungsfehler",
+  "liveSessionErrorHostingFailed": "Hosting konnte nicht gestartet werden. Bitte versuchen Sie es erneut.",
+  "liveSessionErrorJoinFailed": "Beitritt zur Sitzung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+  "liveSessionErrorConnectionLost": "Verbindung verloren. Versuche erneut zu verbinden..."
 }

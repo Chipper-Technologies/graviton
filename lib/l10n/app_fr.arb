@@ -1133,5 +1133,13 @@
   "liveSessionViewing": "Visionnage de session en direct",
   "liveSessionHostedBy": "Hébergé par {hostName}",
   "liveSessionScenario": "Scénario : {scenarioName}",
-  "liveSessionRequiresAuth": "Connectez-vous pour partager ou voir des sessions en direct"
+  "liveSessionRequiresAuth": "Connectez-vous pour partager ou voir des sessions en direct",
+  "liveSessionStatusDisconnected": "Déconnecté",
+  "liveSessionStatusConnecting": "Connexion...",
+  "liveSessionStatusConnected": "Connecté",
+  "liveSessionStatusReconnecting": "Reconnexion...",
+  "liveSessionStatusError": "Erreur de connexion",
+  "liveSessionErrorHostingFailed": "Impossible de démarrer l'hébergement. Veuillez réessayer.",
+  "liveSessionErrorJoinFailed": "Impossible de rejoindre la session. Veuillez réessayer.",
+  "liveSessionErrorConnectionLost": "Connexion perdue. Tentative de reconnexion..."
 }

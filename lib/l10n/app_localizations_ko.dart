@@ -3613,4 +3613,28 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get liveSessionRequiresAuth => '라이브 세션을 공유하거나 보려면 로그인하세요';
+
+  @override
+  String get liveSessionStatusDisconnected => '연결 끊김';
+
+  @override
+  String get liveSessionStatusConnecting => '연결 중...';
+
+  @override
+  String get liveSessionStatusConnected => '연결됨';
+
+  @override
+  String get liveSessionStatusReconnecting => '재연결 중...';
+
+  @override
+  String get liveSessionStatusError => '연결 오류';
+
+  @override
+  String get liveSessionErrorHostingFailed => '호스팅을 시작할 수 없습니다. 다시 시도해 주세요.';
+
+  @override
+  String get liveSessionErrorJoinFailed => '세션에 참가할 수 없습니다. 다시 시도해 주세요.';
+
+  @override
+  String get liveSessionErrorConnectionLost => '연결이 끊어졌습니다. 재연결 시도 중...';
 }

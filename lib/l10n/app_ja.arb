@@ -1133,5 +1133,13 @@
   "liveSessionViewing": "ライブセッションを視聴中",
   "liveSessionHostedBy": "{hostName}がホスト",
   "liveSessionScenario": "シナリオ：{scenarioName}",
-  "liveSessionRequiresAuth": "ライブセッションを共有または視聴するにはサインインしてください"
+  "liveSessionRequiresAuth": "ライブセッションを共有または視聴するにはサインインしてください",
+  "liveSessionStatusDisconnected": "切断済み",
+  "liveSessionStatusConnecting": "接続中...",
+  "liveSessionStatusConnected": "接続済み",
+  "liveSessionStatusReconnecting": "再接続中...",
+  "liveSessionStatusError": "接続エラー",
+  "liveSessionErrorHostingFailed": "ホスティングを開始できませんでした。もう一度お試しください。",
+  "liveSessionErrorJoinFailed": "セッションに参加できませんでした。もう一度お試しください。",
+  "liveSessionErrorConnectionLost": "接続が失われました。再接続を試みています..."
 }
