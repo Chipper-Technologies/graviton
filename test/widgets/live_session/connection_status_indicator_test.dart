@@ -247,5 +247,105 @@ void main() {
         'liveSessionStatusError',
       );
     });
+
+    test('all enum values are covered', () {
+      expect(LiveSessionConnectionStatus.values.length, equals(5));
+    });
+
+    test('name property returns correct string', () {
+      expect(LiveSessionConnectionStatus.disconnected.name, 'disconnected');
+      expect(LiveSessionConnectionStatus.connecting.name, 'connecting');
+      expect(LiveSessionConnectionStatus.connected.name, 'connected');
+      expect(LiveSessionConnectionStatus.reconnecting.name, 'reconnecting');
+      expect(LiveSessionConnectionStatus.error.name, 'error');
+    });
+  });
+
+  group('ConnectionStatusIndicator Edge Cases', () {
+    late MockLiveSessionState mockLiveSessionState;
+
+    setUp(() {
+      mockLiveSessionState = MockLiveSessionState();
+      when(mockLiveSessionState.isInSession).thenReturn(true);
+    });
+
+    Widget buildTestWidget({
+      bool showLabel = true,
+      bool compact = false,
+      VoidCallback? onTap,
+    }) {
+      return MaterialApp(
+        home: Scaffold(
+          body: ChangeNotifierProvider<LiveSessionState>.value(
+            value: mockLiveSessionState,
+            child: ConnectionStatusIndicator(
+              showLabel: showLabel,
+              compact: compact,
+              onTap: onTap,
+            ),
+          ),
+        ),
+      );
+    }
+
+    testWidgets('handles all status types with compact mode', (
+      WidgetTester tester,
+    ) async {
+      for (final status in LiveSessionConnectionStatus.values) {
+        when(mockLiveSessionState.connectionStatus).thenReturn(status);
+        await tester.pumpWidget(
+          buildTestWidget(compact: true, showLabel: true),
+        );
+        await tester.pump();
+        expect(find.byType(ConnectionStatusIndicator), findsOneWidget);
+      }
+    });
+
+    testWidgets('handles all status types without label', (
+      WidgetTester tester,
+    ) async {
+      for (final status in LiveSessionConnectionStatus.values) {
+        when(mockLiveSessionState.connectionStatus).thenReturn(status);
+        await tester.pumpWidget(buildTestWidget(showLabel: false));
+        await tester.pump();
+        expect(find.byType(ConnectionStatusIndicator), findsOneWidget);
+      }
+    });
+
+    testWidgets('error status renders correctly', (WidgetTester tester) async {
+      when(
+        mockLiveSessionState.connectionStatus,
+      ).thenReturn(LiveSessionConnectionStatus.error);
+      await tester.pumpWidget(buildTestWidget());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ConnectionStatusIndicator), findsOneWidget);
+      expect(find.byType(Container), findsAtLeastNWidgets(1));
+    });
+
+    testWidgets('reconnecting status shows progress indicator', (
+      WidgetTester tester,
+    ) async {
+      when(
+        mockLiveSessionState.connectionStatus,
+      ).thenReturn(LiveSessionConnectionStatus.reconnecting);
+      await tester.pumpWidget(buildTestWidget());
+      await tester.pump();
+
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
+    testWidgets('handles onTap with error status', (WidgetTester tester) async {
+      var tapped = false;
+      when(
+        mockLiveSessionState.connectionStatus,
+      ).thenReturn(LiveSessionConnectionStatus.error);
+
+      await tester.pumpWidget(buildTestWidget(onTap: () => tapped = true));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(GestureDetector));
+      expect(tapped, isTrue);
+    });
   });
 }

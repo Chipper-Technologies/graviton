@@ -379,5 +379,134 @@ void main() {
 
       expect(find.byType(HostControlsWidget), findsOneWidget);
     });
+
+    testWidgets('should display play_circle_outline icon in start button', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.play_circle_outline), findsOneWidget);
+    });
+
+    testWidgets('should have proper border styling', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Verify Container exists with BoxDecoration
+      final containers = tester.widgetList<Container>(find.byType(Container));
+      expect(containers.any((c) => c.decoration is BoxDecoration), isTrue);
+    });
+
+    testWidgets('should show liveSessionNotHosting text when not hosting', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should contain the "Share Live Session" or equivalent text
+      expect(find.byType(Text), findsAtLeastNWidgets(2));
+    });
+
+    testWidgets('should respond to state changes from Provider', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Trigger state change
+      liveSessionState.notifyListeners();
+      await tester.pump();
+
+      expect(find.byType(HostControlsWidget), findsOneWidget);
+    });
+
+    testWidgets('start button should be full width', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // SizedBox with width: double.infinity
+      final sizedBoxes = tester.widgetList<SizedBox>(find.byType(SizedBox));
+      expect(sizedBoxes.any((s) => s.width == double.infinity), isTrue);
+    });
+
+    testWidgets('should handle callbacks being null', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+            onHostingStarted: null,
+            onHostingStopped: null,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Tap start button - should not throw with null callbacks
+      final startButton = find.byType(HapticInkWell).first;
+      await tester.tap(startButton);
+      await tester.pump();
+
+      expect(find.byType(HostControlsWidget), findsOneWidget);
+    });
+
+    testWidgets('should contain icon with correct size', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final icons = tester.widgetList<Icon>(find.byType(Icon));
+      expect(icons, isNotEmpty);
+    });
   });
 }

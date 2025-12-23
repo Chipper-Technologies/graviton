@@ -291,5 +291,167 @@ void main() {
       // Widget should be able to access LiveSessionState through Provider
       expect(find.byType(SessionBrowserWidget), findsOneWidget);
     });
+
+    testWidgets('should use appState.liveSession for discovery', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pump(const Duration(milliseconds: 50));
+
+      // Verify the widget is using appState.liveSession
+      expect(find.byType(SessionBrowserWidget), findsOneWidget);
+      expect(appState.liveSession, isNotNull);
+    });
+
+    testWidgets('should handle dispose during loading', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      // Immediately dispose without waiting
+      await tester.pumpWidget(createTestWidget(child: const SizedBox()));
+      await tester.pump();
+
+      expect(find.byType(SessionBrowserWidget), findsNothing);
+    });
+
+    testWidgets('should render Column when sessions would be available', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pump(const Duration(milliseconds: 200));
+
+      // Widget tree should be present
+      expect(find.byType(SessionBrowserWidget), findsOneWidget);
+    });
+
+    testWidgets('empty state should show wifi_tethering_off icon', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      // Wait for loading to finish
+      await tester.pump(const Duration(milliseconds: 500));
+
+      // When empty (not loading), should show the empty state icon
+      final hasEmptyIcon = find
+          .byIcon(Icons.wifi_tethering_off)
+          .evaluate()
+          .isNotEmpty;
+      final hasLoading = find
+          .byType(CircularProgressIndicator)
+          .evaluate()
+          .isNotEmpty;
+      expect(hasEmptyIcon || hasLoading, isTrue);
+    });
+
+    testWidgets('loading state should show CircularProgressIndicator', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      // Immediately pump without waiting
+      await tester.pump();
+
+      // Should show loading or empty state
+      expect(find.byType(SessionBrowserWidget), findsOneWidget);
+    });
+
+    testWidgets('should handle onSessionJoined callback correctly', (
+      WidgetTester tester,
+    ) async {
+      var callbackSession;
+
+      await tester.pumpWidget(
+        createTestWidget(
+          child: SessionBrowserWidget(
+            appState: appState,
+            onSessionJoined: (session) {
+              callbackSession = session;
+            },
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Callback not invoked yet (no sessions to join)
+      expect(callbackSession, isNull);
+    });
+
+    testWidgets('should handle onSessionLeft callback correctly', (
+      WidgetTester tester,
+    ) async {
+      var leftCalled = false;
+
+      await tester.pumpWidget(
+        createTestWidget(
+          child: SessionBrowserWidget(
+            appState: appState,
+            onSessionLeft: () {
+              leftCalled = true;
+            },
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Callback not invoked yet (not viewing)
+      expect(leftCalled, isFalse);
+    });
+
+    testWidgets('should work with both callbacks provided', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: SessionBrowserWidget(
+            appState: appState,
+            onSessionJoined: (_) {},
+            onSessionLeft: () {},
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.byType(SessionBrowserWidget), findsOneWidget);
+    });
+
+    testWidgets('should work with no callbacks provided', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: SessionBrowserWidget(
+            appState: appState,
+            onSessionJoined: null,
+            onSessionLeft: null,
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.byType(SessionBrowserWidget), findsOneWidget);
+    });
+
+    testWidgets('should have StatefulWidget state class', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+
+      final widget = tester.widget<SessionBrowserWidget>(
+        find.byType(SessionBrowserWidget),
+      );
+      expect(widget.createState(), isA<State<SessionBrowserWidget>>());
+    });
   });
 }

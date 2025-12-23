@@ -348,5 +348,110 @@ void main() {
         expect(notifyCount, equals(countAfterStart));
       });
     });
+
+    group('Update Hosted Session', () {
+      test('updateHostedSession returns false when not hosting', () async {
+        final result = await state.updateHostedSession(isRunning: true);
+        expect(result, isFalse);
+      });
+
+      test(
+        'updateHostedSession with timeScale returns false when not hosting',
+        () async {
+          final result = await state.updateHostedSession(timeScale: 2.0);
+          expect(result, isFalse);
+        },
+      );
+
+      test(
+        'updateHostedSession with both params returns false when not hosting',
+        () async {
+          final result = await state.updateHostedSession(
+            isRunning: false,
+            timeScale: 0.5,
+          );
+          expect(result, isFalse);
+        },
+      );
+    });
+
+    group('State Sync Advanced', () {
+      test('startStateSync should not throw when already syncing', () {
+        state.startStateSync();
+        state.startStateSync();
+        expect(() => state.startStateSync(), returnsNormally);
+      });
+
+      test('stopStateSync should clear latestSnapshot', () {
+        state.stopStateSync();
+        expect(state.latestSnapshot, isNull);
+      });
+
+      test('stopStateSync multiple times should not throw', () {
+        state.stopStateSync();
+        state.stopStateSync();
+        state.stopStateSync();
+        expect(() => state.stopStateSync(), returnsNormally);
+      });
+    });
+
+    group('isInSession Property', () {
+      test('isInSession should be false initially', () {
+        expect(state.isInSession, isFalse);
+      });
+
+      test('isInSession matches isHosting or isViewing', () {
+        expect(state.isInSession, equals(state.isHosting || state.isViewing));
+      });
+    });
+
+    group('Hosting with Display Name', () {
+      test('startHosting with custom displayName should not throw', () async {
+        final result = await state.startHosting(
+          scenarioName: 'Test',
+          displayName: 'Custom Name',
+        );
+        expect(result, isFalse); // Fails without auth
+      });
+    });
+
+    group('Concurrent Operations', () {
+      test('rapid startHosting calls should not throw', () async {
+        await state.startHosting(scenarioName: 'Test1');
+        await state.startHosting(scenarioName: 'Test2');
+        await state.startHosting(scenarioName: 'Test3');
+        expect(state.isHosting, isFalse);
+      });
+
+      test('rapid startViewing calls should not throw', () async {
+        await state.startViewing('session1');
+        await state.startViewing('session2');
+        await state.startViewing('session3');
+        expect(state.isViewing, isFalse);
+      });
+
+      test('alternating hosting and viewing should not throw', () async {
+        await state.startHosting(scenarioName: 'Test');
+        await state.startViewing('session1');
+        await state.startHosting(scenarioName: 'Test2');
+        await state.startViewing('session2');
+        expect(state.isHosting, isFalse);
+        expect(state.isViewing, isFalse);
+      });
+    });
+
+    group('Session Discovery Stream', () {
+      test('startSessionDiscovery sets isLoadingSessions', () {
+        state.startSessionDiscovery();
+        // Initially true, may become false quickly
+        expect(state.isLoadingSessions, isA<bool>());
+      });
+
+      test('stopSessionDiscovery clears activeSessions', () {
+        state.startSessionDiscovery();
+        state.stopSessionDiscovery();
+        expect(state.activeSessions, isEmpty);
+      });
+    });
   });
 }

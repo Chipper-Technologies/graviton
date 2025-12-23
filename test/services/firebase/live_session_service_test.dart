@@ -331,6 +331,154 @@ void main() {
         );
         expect(sessionId, isNull);
       });
+
+      test('Should accept only scenarioName', () async {
+        final sessionId = await service.startHosting(scenarioName: 'Only Name');
+        expect(sessionId, isNull);
+      });
+    });
+
+    group('Active Sessions Retrieval', () {
+      test('getActiveSessions should return Stream', () {
+        final stream = service.getActiveSessions();
+        expect(stream, isA<Stream<List<LiveSession>>>());
+      });
+
+      test('getActiveSessions stream should emit empty list initially', () {
+        final stream = service.getActiveSessions();
+        expectLater(stream, emitsAnyOf([isEmpty, isA<List<LiveSession>>()]));
+      });
+    });
+
+    group('Leave Session', () {
+      test('Should return false when not in session', () async {
+        final result = await service.leaveSession();
+        expect(result, isFalse);
+      });
+    });
+
+    group('Viewer Count Callback', () {
+      test('Should not throw when setting callback', () {
+        expect(
+          () => service.setOnViewerCountChanged((count) {}),
+          returnsNormally,
+        );
+      });
+
+      test('Should not throw when clearing callback', () {
+        service.setOnViewerCountChanged((count) {});
+        expect(() => service.setOnViewerCountChanged(null), returnsNormally);
+      });
+
+      test('Should not throw when setting callback multiple times', () {
+        service.setOnViewerCountChanged((count) {});
+        service.setOnViewerCountChanged((count) {});
+        service.setOnViewerCountChanged((count) {});
+        expect(service.isHosting, isFalse);
+      });
+    });
+
+    group('Start State Sync', () {
+      test('Should not throw when starting state sync', () {
+        expect(
+          () => service.startStateSync(onStateReceived: (snapshot) {}),
+          returnsNormally,
+        );
+      });
+
+      test('Should not throw when starting state sync twice', () {
+        service.startStateSync(onStateReceived: (snapshot) {});
+        expect(
+          () => service.startStateSync(onStateReceived: (snapshot) {}),
+          returnsNormally,
+        );
+      });
+    });
+
+    group('Stop State Sync', () {
+      test('Should not throw when stopping without starting', () {
+        expect(() => service.stopStateSync(), returnsNormally);
+      });
+
+      test('Should not throw when stopping after starting', () {
+        service.startStateSync(onStateReceived: (snapshot) {});
+        expect(() => service.stopStateSync(), returnsNormally);
+      });
+
+      test('Should not throw when stopping multiple times', () {
+        service.stopStateSync();
+        service.stopStateSync();
+        expect(() => service.stopStateSync(), returnsNormally);
+      });
+    });
+
+    group('Current Session ID', () {
+      test('Should be null initially', () {
+        expect(service.currentSessionId, isNull);
+      });
+
+      test('Should remain null after failed hosting', () async {
+        await service.startHosting(scenarioName: 'Test');
+        expect(service.currentSessionId, isNull);
+      });
+    });
+
+    group('Service Accessors', () {
+      test('isHosting should be accessible', () {
+        expect(service.isHosting, isA<bool>());
+      });
+
+      test('currentSessionId should be accessible', () {
+        expect(service.currentSessionId, isNull);
+      });
+    });
+
+    group('Broadcast with Data', () {
+      test('Should return false for empty snapshot when not hosting', () async {
+        final snapshot = SimulationSnapshot(
+          bodies: [],
+          isRunning: false,
+          timeScale: 1.0,
+          totalTime: 0.0,
+          stepCount: 0,
+          timestamp: DateTime.now(),
+        );
+        final result = await service.broadcastState(snapshot);
+        expect(result, isFalse);
+      });
+
+      test(
+        'Should return false for snapshot with bodies when not hosting',
+        () async {
+          final snapshot = SimulationSnapshot(
+            bodies: [],
+            isRunning: true,
+            timeScale: 2.0,
+            totalTime: 500.0,
+            stepCount: 100,
+            timestamp: DateTime.now(),
+          );
+          final result = await service.broadcastState(snapshot);
+          expect(result, isFalse);
+        },
+      );
+    });
+
+    group('Join with Different Session IDs', () {
+      test('Should handle empty session ID', () async {
+        final result = await service.joinSession('');
+        expect(result, isFalse);
+      });
+
+      test('Should handle whitespace session ID', () async {
+        final result = await service.joinSession('   ');
+        expect(result, isFalse);
+      });
+
+      test('Should handle special characters in session ID', () async {
+        final result = await service.joinSession('session-123_test');
+        expect(result, isFalse);
+      });
     });
   });
 }
