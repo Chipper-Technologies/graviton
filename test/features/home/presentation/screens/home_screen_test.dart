@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/features/home/presentation/screens/home_screen.dart';
 import 'package:graviton/state/app_state.dart';
+import 'package:graviton/state/live_session_state.dart';
 import 'package:graviton/features/auth/state/auth_state.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +19,9 @@ void main() {
         providers: [
           ChangeNotifierProvider<AppState>.value(value: appState),
           ChangeNotifierProvider<AuthState>.value(value: appState.auth),
+          ChangeNotifierProvider<LiveSessionState>(
+            create: (_) => LiveSessionState(),
+          ),
         ],
         child: const HomeScreen(),
       ),
@@ -309,6 +313,9 @@ void main() {
                 ChangeNotifierProvider<AuthState>.value(
                   value: freshAppState.auth,
                 ),
+                ChangeNotifierProvider<LiveSessionState>(
+                  create: (_) => LiveSessionState(),
+                ),
               ],
               child: const HomeScreen(),
             ),
@@ -420,6 +427,9 @@ void main() {
                 ChangeNotifierProvider<AuthState>.value(
                   value: mockAppState.auth,
                 ),
+                ChangeNotifierProvider<LiveSessionState>(
+                  create: (_) => LiveSessionState(),
+                ),
               ],
               child: Builder(
                 builder: (context) {
@@ -511,6 +521,9 @@ void main() {
                 ChangeNotifierProvider<AppState>.value(value: mockAppState),
                 ChangeNotifierProvider<AuthState>.value(
                   value: mockAppState.auth,
+                ),
+                ChangeNotifierProvider<LiveSessionState>(
+                  create: (_) => LiveSessionState(),
                 ),
               ],
               child: const SizedBox(width: 0, height: 0, child: HomeScreen()),
