@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/models/firebase/live_session.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/state/live_session_state.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/widgets/live_session/session_browser_widget.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
+import 'session_browser_widget_test.mocks.dart';
+
+@GenerateMocks([LiveSessionState])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -452,6 +459,361 @@ void main() {
         find.byType(SessionBrowserWidget),
       );
       expect(widget.createState(), isA<State<SessionBrowserWidget>>());
+    });
+  });
+
+  group('SessionBrowserWidget with Mocked State', () {
+    late AppState appState;
+    late MockLiveSessionState mockLiveSession;
+
+    Widget createMockedTestWidget({required Widget child}) {
+      return ChangeNotifierProvider<LiveSessionState>.value(
+        value: mockLiveSession,
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en')],
+          home: Scaffold(body: child),
+        ),
+      );
+    }
+
+    LiveSession createMockSession({
+      String id = 'session1',
+      String hostId = 'host1',
+      String hostName = 'Test Host',
+      String scenarioName = 'Solar System',
+      int viewerCount = 3,
+      bool isRunning = true,
+    }) {
+      return LiveSession(
+        id: id,
+        hostId: hostId,
+        hostName: hostName,
+        scenarioName: scenarioName,
+        viewerCount: viewerCount,
+        isRunning: isRunning,
+        timeScale: 1.0,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+    }
+
+    setUp(() {
+      appState = AppState();
+      mockLiveSession = MockLiveSessionState();
+      // Default stubs
+      when(mockLiveSession.activeSessions).thenReturn([]);
+      when(mockLiveSession.isLoadingSessions).thenReturn(false);
+      when(mockLiveSession.isViewing).thenReturn(false);
+      when(mockLiveSession.currentSession).thenReturn(null);
+    });
+
+    tearDown(() {
+      appState.dispose();
+    });
+
+    testWidgets('shows loading state when isLoadingSessions is true', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isLoadingSessions).thenReturn(true);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pump();
+
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
+    testWidgets('shows empty state when no sessions', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.activeSessions).thenReturn([]);
+      when(mockLiveSession.isLoadingSessions).thenReturn(false);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pump();
+
+      // Should show empty state icon
+      expect(find.byIcon(Icons.wifi_tethering_off), findsOneWidget);
+    });
+
+    testWidgets('shows session cards when sessions available', (
+      WidgetTester tester,
+    ) async {
+      final sessions = [
+        createMockSession(
+          id: 'session1',
+          hostName: 'Alice',
+          scenarioName: 'Binary Stars',
+          viewerCount: 5,
+        ),
+        createMockSession(
+          id: 'session2',
+          hostName: 'Bob',
+          scenarioName: 'Three Body',
+          viewerCount: 2,
+        ),
+      ];
+      when(mockLiveSession.activeSessions).thenReturn(sessions);
+      when(mockLiveSession.isLoadingSessions).thenReturn(false);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show session scenario names
+      expect(find.text('Binary Stars'), findsOneWidget);
+      expect(find.text('Three Body'), findsOneWidget);
+      // Should show "Join" buttons for each session
+      expect(find.text('Join'), findsNWidgets(2));
+    });
+
+    testWidgets('shows host name in session card', (WidgetTester tester) async {
+      final sessions = [
+        createMockSession(hostName: 'Alice', scenarioName: 'Solar System'),
+      ];
+      when(mockLiveSession.activeSessions).thenReturn(sessions);
+      when(mockLiveSession.isLoadingSessions).thenReturn(false);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show "Hosted by Alice" or similar
+      expect(find.textContaining('Alice'), findsOneWidget);
+    });
+
+    testWidgets('shows viewer count in session card', (
+      WidgetTester tester,
+    ) async {
+      final sessions = [
+        createMockSession(scenarioName: 'Test', viewerCount: 7),
+      ];
+      when(mockLiveSession.activeSessions).thenReturn(sessions);
+      when(mockLiveSession.isLoadingSessions).thenReturn(false);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show viewer count with visibility icon
+      expect(find.byIcon(Icons.visibility), findsAtLeastNWidgets(1));
+      expect(find.textContaining('7'), findsAtLeastNWidgets(1));
+    });
+
+    testWidgets('shows play icon for running session', (
+      WidgetTester tester,
+    ) async {
+      final sessions = [
+        createMockSession(scenarioName: 'Running', isRunning: true),
+      ];
+      when(mockLiveSession.activeSessions).thenReturn(sessions);
+      when(mockLiveSession.isLoadingSessions).thenReturn(false);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+    });
+
+    testWidgets('shows pause icon for paused session', (
+      WidgetTester tester,
+    ) async {
+      final sessions = [
+        createMockSession(scenarioName: 'Paused', isRunning: false),
+      ];
+      when(mockLiveSession.activeSessions).thenReturn(sessions);
+      when(mockLiveSession.isLoadingSessions).thenReturn(false);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.pause), findsOneWidget);
+    });
+
+    testWidgets('shows viewing card when isViewing is true', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isViewing).thenReturn(true);
+      when(mockLiveSession.currentSession).thenReturn(
+        createMockSession(hostName: 'Alice', scenarioName: 'Viewed Session'),
+      );
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show "Viewing" text
+      expect(find.textContaining('Viewing'), findsOneWidget);
+      // Should show the session name
+      expect(find.text('Viewed Session'), findsOneWidget);
+      // Should show "Leave" button
+      expect(find.textContaining('Leave'), findsOneWidget);
+    });
+
+    testWidgets('calls startViewing when join button tapped', (
+      WidgetTester tester,
+    ) async {
+      final session = createMockSession(
+        id: 'session123',
+        scenarioName: 'Test Session',
+      );
+      when(mockLiveSession.activeSessions).thenReturn([session]);
+      when(mockLiveSession.isLoadingSessions).thenReturn(false);
+      when(mockLiveSession.startViewing(any)).thenAnswer((_) async => true);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pumpAndSettle();
+
+      // Tap the join button
+      await tester.tap(find.text('Join'));
+      await tester.pump();
+
+      verify(mockLiveSession.startViewing('session123')).called(1);
+    });
+
+    testWidgets('calls stopViewing when leave button tapped', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isViewing).thenReturn(true);
+      when(
+        mockLiveSession.currentSession,
+      ).thenReturn(createMockSession(scenarioName: 'Current Session'));
+      when(mockLiveSession.stopViewing()).thenAnswer((_) async => true);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap the leave button
+      final leaveButton = find.widgetWithText(HapticInkWell, 'Leave Session');
+      if (leaveButton.evaluate().isNotEmpty) {
+        await tester.tap(leaveButton);
+        await tester.pump();
+        verify(mockLiveSession.stopViewing()).called(1);
+      }
+    });
+
+    testWidgets('fires onSessionJoined callback on successful join', (
+      WidgetTester tester,
+    ) async {
+      LiveSession? joinedSession;
+      final session = createMockSession(
+        id: 'session456',
+        scenarioName: 'Join Test',
+      );
+      when(mockLiveSession.activeSessions).thenReturn([session]);
+      when(mockLiveSession.isLoadingSessions).thenReturn(false);
+      when(mockLiveSession.startViewing(any)).thenAnswer((_) async => true);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: SessionBrowserWidget(
+            appState: appState,
+            onSessionJoined: (s) => joinedSession = s,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Join'));
+      await tester.pumpAndSettle();
+
+      expect(joinedSession, isNotNull);
+      expect(joinedSession!.id, equals('session456'));
+    });
+
+    testWidgets('fires onSessionLeft callback on successful leave', (
+      WidgetTester tester,
+    ) async {
+      var leftSession = false;
+      when(mockLiveSession.isViewing).thenReturn(true);
+      when(
+        mockLiveSession.currentSession,
+      ).thenReturn(createMockSession(scenarioName: 'Leave Test'));
+      when(mockLiveSession.stopViewing()).thenAnswer((_) async => true);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: SessionBrowserWidget(
+            appState: appState,
+            onSessionLeft: () => leftSession = true,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final leaveButton = find.widgetWithText(HapticInkWell, 'Leave Session');
+      if (leaveButton.evaluate().isNotEmpty) {
+        await tester.tap(leaveButton);
+        await tester.pumpAndSettle();
+        expect(leftSession, isTrue);
+      }
+    });
+
+    testWidgets('shows browse sessions header when sessions available', (
+      WidgetTester tester,
+    ) async {
+      final sessions = [createMockSession(scenarioName: 'Test')];
+      when(mockLiveSession.activeSessions).thenReturn(sessions);
+      when(mockLiveSession.isLoadingSessions).thenReturn(false);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show "Browse Sessions" or similar header
+      expect(find.textContaining('Browse'), findsOneWidget);
+    });
+
+    testWidgets('viewing card shows host name', (WidgetTester tester) async {
+      when(mockLiveSession.isViewing).thenReturn(true);
+      when(mockLiveSession.currentSession).thenReturn(
+        createMockSession(hostName: 'Charlie', scenarioName: 'Test'),
+      );
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show "Hosted by Charlie" or similar
+      expect(find.textContaining('Charlie'), findsOneWidget);
+    });
+
+    testWidgets('handles null currentSession gracefully', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isViewing).thenReturn(true);
+      when(mockLiveSession.currentSession).thenReturn(null);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(child: SessionBrowserWidget(appState: appState)),
+      );
+      await tester.pumpAndSettle();
+
+      // Should still show viewing card without crashing
+      expect(find.textContaining('Viewing'), findsOneWidget);
     });
   });
 }

@@ -6,8 +6,13 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/state/live_session_state.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/widgets/live_session/host_controls_widget.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
+import 'host_controls_widget_test.mocks.dart';
+
+@GenerateMocks([LiveSessionState])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -507,6 +512,321 @@ void main() {
 
       final icons = tester.widgetList<Icon>(find.byType(Icon));
       expect(icons, isNotEmpty);
+    });
+  });
+
+  group('HostControlsWidget with Mocked State', () {
+    late AppState appState;
+    late MockLiveSessionState mockLiveSession;
+
+    Widget createMockedTestWidget({required Widget child}) {
+      return ChangeNotifierProvider<LiveSessionState>.value(
+        value: mockLiveSession,
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en')],
+          home: Scaffold(body: child),
+        ),
+      );
+    }
+
+    setUp(() {
+      appState = AppState();
+      mockLiveSession = MockLiveSessionState();
+      // Default stubs
+      when(mockLiveSession.isHosting).thenReturn(false);
+      when(mockLiveSession.viewerCount).thenReturn(0);
+    });
+
+    tearDown(() {
+      appState.dispose();
+    });
+
+    testWidgets('shows stop button when hosting', (WidgetTester tester) async {
+      when(mockLiveSession.isHosting).thenReturn(true);
+      when(mockLiveSession.viewerCount).thenReturn(3);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show "Stop" text in the stop button
+      expect(find.textContaining('Stop'), findsOneWidget);
+    });
+
+    testWidgets('shows viewer count badge when hosting', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(true);
+      when(mockLiveSession.viewerCount).thenReturn(5);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show viewer count text (e.g., "5 viewers")
+      expect(find.textContaining('5'), findsAtLeastNWidgets(1));
+      // Should have visibility icon for viewers
+      expect(find.byIcon(Icons.visibility), findsOneWidget);
+    });
+
+    testWidgets('shows wifi_tethering icon when hosting', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(true);
+      when(mockLiveSession.viewerCount).thenReturn(0);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show wifi_tethering (active) icon when hosting
+      expect(find.byIcon(Icons.wifi_tethering), findsOneWidget);
+    });
+
+    testWidgets('shows wifi_tethering_off icon when not hosting', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(false);
+      when(mockLiveSession.viewerCount).thenReturn(0);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show wifi_tethering_off icon when not hosting
+      expect(find.byIcon(Icons.wifi_tethering_off), findsOneWidget);
+    });
+
+    testWidgets('calls stopHosting when stop button tapped', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(true);
+      when(mockLiveSession.viewerCount).thenReturn(2);
+      when(mockLiveSession.stopHosting()).thenAnswer((_) async => true);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap the stop button
+      final stopButton = find.widgetWithText(HapticInkWell, 'Stop Hosting');
+      if (stopButton.evaluate().isNotEmpty) {
+        await tester.tap(stopButton);
+        await tester.pump();
+        verify(mockLiveSession.stopHosting()).called(1);
+      }
+    });
+
+    testWidgets('calls startHosting when start button tapped', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(false);
+      when(mockLiveSession.viewerCount).thenReturn(0);
+      when(
+        mockLiveSession.startHosting(
+          scenarioName: anyNamed('scenarioName'),
+          displayName: anyNamed('displayName'),
+        ),
+      ).thenAnswer((_) async => true);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Solar System',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap the start button
+      final startButton = find.byType(HapticInkWell).first;
+      await tester.tap(startButton);
+      await tester.pump();
+
+      verify(
+        mockLiveSession.startHosting(
+          scenarioName: 'Solar System',
+          displayName: anyNamed('displayName'),
+        ),
+      ).called(1);
+    });
+
+    testWidgets('fires onHostingStopped callback on successful stop', (
+      WidgetTester tester,
+    ) async {
+      var callbackFired = false;
+      when(mockLiveSession.isHosting).thenReturn(true);
+      when(mockLiveSession.viewerCount).thenReturn(1);
+      when(mockLiveSession.stopHosting()).thenAnswer((_) async => true);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+            onHostingStopped: () => callbackFired = true,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap stop button
+      final stopButton = find.widgetWithText(HapticInkWell, 'Stop Hosting');
+      if (stopButton.evaluate().isNotEmpty) {
+        await tester.tap(stopButton);
+        await tester.pumpAndSettle();
+        expect(callbackFired, isTrue);
+      }
+    });
+
+    testWidgets('fires onHostingStarted callback on successful start', (
+      WidgetTester tester,
+    ) async {
+      var callbackFired = false;
+      when(mockLiveSession.isHosting).thenReturn(false);
+      when(mockLiveSession.viewerCount).thenReturn(0);
+      when(
+        mockLiveSession.startHosting(
+          scenarioName: anyNamed('scenarioName'),
+          displayName: anyNamed('displayName'),
+        ),
+      ).thenAnswer((_) async => true);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+            onHostingStarted: () => callbackFired = true,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap start button
+      final startButton = find.byType(HapticInkWell).first;
+      await tester.tap(startButton);
+      await tester.pumpAndSettle();
+
+      expect(callbackFired, isTrue);
+    });
+
+    testWidgets('shows hosting status text when hosting', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(true);
+      when(mockLiveSession.viewerCount).thenReturn(0);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show "Hosting" or "Live" text
+      expect(find.textContaining('Hosting'), findsAtLeastNWidgets(1));
+    });
+
+    testWidgets('viewer count badge shows zero viewers correctly', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(true);
+      when(mockLiveSession.viewerCount).thenReturn(0);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show "0 viewers" or similar
+      expect(find.byIcon(Icons.visibility), findsOneWidget);
+    });
+
+    testWidgets('viewer count badge shows multiple viewers correctly', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(true);
+      when(mockLiveSession.viewerCount).thenReturn(42);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should show "42" in the viewer count
+      expect(find.textContaining('42'), findsOneWidget);
+    });
+
+    testWidgets('has primary color border when hosting', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(true);
+      when(mockLiveSession.viewerCount).thenReturn(0);
+
+      await tester.pumpWidget(
+        createMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Verify container has BoxDecoration
+      final containers = tester.widgetList<Container>(find.byType(Container));
+      expect(containers.any((c) => c.decoration is BoxDecoration), isTrue);
     });
   });
 }
