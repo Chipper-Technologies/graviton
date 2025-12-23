@@ -1141,5 +1141,11 @@
   "liveSessionStatusError": "Erreur de connexion",
   "liveSessionErrorHostingFailed": "Impossible de démarrer l'hébergement. Veuillez réessayer.",
   "liveSessionErrorJoinFailed": "Impossible de rejoindre la session. Veuillez réessayer.",
-  "liveSessionErrorConnectionLost": "Connexion perdue. Tentative de reconnexion..."
+  "liveSessionErrorConnectionLost": "Connexion perdue. Tentative de reconnexion...",
+  "liveSessionTitle": "Session en Direct",
+  "liveSessionDescription": "Partagez votre simulation ou rejoignez d'autres en temps réel",
+  "liveSessionHostingDescription": "Diffusion de votre simulation aux spectateurs",
+  "liveSessionViewingDescription": "Regarder une diffusion de simulation en direct",
+  "liveSessionMenuTitle": "Sessions en Direct",
+  "liveSessionMenuDescription": "Partager ou rejoindre des simulations en temps réel"
 }

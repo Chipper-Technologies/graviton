@@ -178,8 +178,8 @@ class MockLiveSessionState extends _i1.Mock implements _i2.LiveSessionState {
   );
 
   @override
-  void stopSessionDiscovery() => super.noSuchMethod(
-    Invocation.method(#stopSessionDiscovery, []),
+  void stopSessionDiscovery({bool? notify = true}) => super.noSuchMethod(
+    Invocation.method(#stopSessionDiscovery, [], {#notify: notify}),
     returnValueForMissingStub: null,
   );
 

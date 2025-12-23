@@ -54,6 +54,7 @@ import 'package:graviton/widgets/overlays/stats_overlay.dart';
 import 'package:graviton/widgets/semantics/semantic_live_region.dart';
 import 'package:graviton/widgets/simulation/simulation_viewport_widget.dart';
 import 'package:graviton/widgets/live_session/connection_status_indicator.dart';
+import 'package:graviton/widgets/live_session/live_session_panel.dart';
 import 'package:provider/provider.dart';
 
 /// Main screen for Graviton
@@ -600,6 +601,7 @@ class _HomeScreenState extends State<HomeScreen>
               onShowChangelog: () =>
                   NavigationService.showCurrentVersionChangelog(context),
               onShowAccount: () => _showAccountManagementScreen(context),
+              onShowLiveSession: () => LiveSessionPanel.show(context),
             ),
             appBar: shouldHideUI
                 ? null

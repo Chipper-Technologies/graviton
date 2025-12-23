@@ -1141,5 +1141,11 @@
   "liveSessionStatusError": "Error de conexión",
   "liveSessionErrorHostingFailed": "No se pudo iniciar el alojamiento. Por favor, inténtalo de nuevo.",
   "liveSessionErrorJoinFailed": "No se pudo unir a la sesión. Por favor, inténtalo de nuevo.",
-  "liveSessionErrorConnectionLost": "Conexión perdida. Intentando reconectar..."
+  "liveSessionErrorConnectionLost": "Conexión perdida. Intentando reconectar...",
+  "liveSessionTitle": "Sesión en Vivo",
+  "liveSessionDescription": "Comparte tu simulación o únete a otros en tiempo real",
+  "liveSessionHostingDescription": "Transmitiendo tu simulación a los espectadores",
+  "liveSessionViewingDescription": "Viendo una transmisión de simulación en vivo",
+  "liveSessionMenuTitle": "Sesiones en Vivo",
+  "liveSessionMenuDescription": "Compartir o unirse a simulaciones en tiempo real"
 }

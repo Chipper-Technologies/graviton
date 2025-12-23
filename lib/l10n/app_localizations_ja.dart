@@ -3626,4 +3626,22 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get liveSessionErrorConnectionLost => '接続が失われました。再接続を試みています...';
+
+  @override
+  String get liveSessionTitle => 'ライブセッション';
+
+  @override
+  String get liveSessionDescription => 'シミュレーションを共有するか、リアルタイムで他のユーザーに参加';
+
+  @override
+  String get liveSessionHostingDescription => '視聴者にシミュレーションを配信中';
+
+  @override
+  String get liveSessionViewingDescription => 'ライブシミュレーション配信を視聴中';
+
+  @override
+  String get liveSessionMenuTitle => 'ライブセッション';
+
+  @override
+  String get liveSessionMenuDescription => 'リアルタイムシミュレーションを共有または参加';
 }

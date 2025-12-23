@@ -1141,5 +1141,11 @@
   "liveSessionStatusError": "Verbindungsfehler",
   "liveSessionErrorHostingFailed": "Hosting konnte nicht gestartet werden. Bitte versuchen Sie es erneut.",
   "liveSessionErrorJoinFailed": "Beitritt zur Sitzung fehlgeschlagen. Bitte versuchen Sie es erneut.",
-  "liveSessionErrorConnectionLost": "Verbindung verloren. Versuche erneut zu verbinden..."
+  "liveSessionErrorConnectionLost": "Verbindung verloren. Versuche erneut zu verbinden...",
+  "liveSessionTitle": "Live-Sitzung",
+  "liveSessionDescription": "Teilen Sie Ihre Simulation oder treten Sie anderen in Echtzeit bei",
+  "liveSessionHostingDescription": "Übertragen Sie Ihre Simulation an Zuschauer",
+  "liveSessionViewingDescription": "Sehen Sie eine Live-Simulationsübertragung",
+  "liveSessionMenuTitle": "Live-Sitzungen",
+  "liveSessionMenuDescription": "Echtzeit-Simulationen teilen oder beitreten"
 }

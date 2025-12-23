@@ -1141,5 +1141,11 @@
   "liveSessionStatusError": "연결 오류",
   "liveSessionErrorHostingFailed": "호스팅을 시작할 수 없습니다. 다시 시도해 주세요.",
   "liveSessionErrorJoinFailed": "세션에 참가할 수 없습니다. 다시 시도해 주세요.",
-  "liveSessionErrorConnectionLost": "연결이 끊어졌습니다. 재연결 시도 중..."
+  "liveSessionErrorConnectionLost": "연결이 끊어졌습니다. 재연결 시도 중...",
+  "liveSessionTitle": "라이브 세션",
+  "liveSessionDescription": "시뮬레이션을 공유하거나 실시간으로 다른 사람들과 참여",
+  "liveSessionHostingDescription": "시청자에게 시뮬레이션 방송 중",
+  "liveSessionViewingDescription": "라이브 시뮬레이션 방송 시청 중",
+  "liveSessionMenuTitle": "라이브 세션",
+  "liveSessionMenuDescription": "실시간 시뮬레이션 공유 또는 참여"
 }

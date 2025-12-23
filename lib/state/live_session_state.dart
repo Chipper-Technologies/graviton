@@ -346,12 +346,16 @@ class LiveSessionState extends ChangeNotifier {
   /// Stop listening to active sessions
   ///
   /// Call this when leaving the session browser screen.
-  void stopSessionDiscovery() {
+  /// Set [notify] to false when calling from dispose to avoid state updates
+  /// during widget teardown.
+  void stopSessionDiscovery({bool notify = true}) {
     _sessionsSubscription?.cancel();
     _sessionsSubscription = null;
     _activeSessions = [];
     _isLoadingSessions = false;
-    notifyListeners();
+    if (notify) {
+      notifyListeners();
+    }
   }
 
   // =============================================================================

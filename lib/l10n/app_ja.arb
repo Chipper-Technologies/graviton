@@ -1141,5 +1141,11 @@
   "liveSessionStatusError": "接続エラー",
   "liveSessionErrorHostingFailed": "ホスティングを開始できませんでした。もう一度お試しください。",
   "liveSessionErrorJoinFailed": "セッションに参加できませんでした。もう一度お試しください。",
-  "liveSessionErrorConnectionLost": "接続が失われました。再接続を試みています..."
+  "liveSessionErrorConnectionLost": "接続が失われました。再接続を試みています...",
+  "liveSessionTitle": "ライブセッション",
+  "liveSessionDescription": "シミュレーションを共有するか、リアルタイムで他のユーザーに参加",
+  "liveSessionHostingDescription": "視聴者にシミュレーションを配信中",
+  "liveSessionViewingDescription": "ライブシミュレーション配信を視聴中",
+  "liveSessionMenuTitle": "ライブセッション",
+  "liveSessionMenuDescription": "リアルタイムシミュレーションを共有または参加"
 }

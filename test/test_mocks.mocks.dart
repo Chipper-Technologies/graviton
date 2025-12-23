@@ -11110,6 +11110,72 @@ class MockAppLocalizations extends _i1.Mock implements _i7.AppLocalizations {
           as String);
 
   @override
+  String get liveSessionTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionHostingDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionHostingDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionHostingDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionViewingDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionViewingDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionViewingDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionMenuTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionMenuTitle),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionMenuTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionMenuDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionMenuDescription),
+            returnValue: _i8.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionMenuDescription),
+            ),
+          )
+          as String);
+
+  @override
   String simulationDescription(
     int? bodyCount,
     String? status,

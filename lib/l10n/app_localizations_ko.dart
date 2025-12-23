@@ -3637,4 +3637,22 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get liveSessionErrorConnectionLost => '연결이 끊어졌습니다. 재연결 시도 중...';
+
+  @override
+  String get liveSessionTitle => '라이브 세션';
+
+  @override
+  String get liveSessionDescription => '시뮬레이션을 공유하거나 실시간으로 다른 사람들과 참여';
+
+  @override
+  String get liveSessionHostingDescription => '시청자에게 시뮬레이션 방송 중';
+
+  @override
+  String get liveSessionViewingDescription => '라이브 시뮬레이션 방송 시청 중';
+
+  @override
+  String get liveSessionMenuTitle => '라이브 세션';
+
+  @override
+  String get liveSessionMenuDescription => '실시간 시뮬레이션 공유 또는 참여';
 }

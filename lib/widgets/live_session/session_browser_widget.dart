@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/firebase/live_session.dart';
 import 'package:graviton/state/app_state.dart';
@@ -43,12 +44,18 @@ class _SessionBrowserWidgetState extends State<SessionBrowserWidget> {
   @override
   void initState() {
     super.initState();
-    widget.appState.liveSession.startSessionDiscovery();
+    // Use post-frame callback to avoid calling notifyListeners during build
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        widget.appState.liveSession.startSessionDiscovery();
+      }
+    });
   }
 
   @override
   void dispose() {
-    widget.appState.liveSession.stopSessionDiscovery();
+    // Pass notify: false to avoid triggering state updates during widget teardown
+    widget.appState.liveSession.stopSessionDiscovery(notify: false);
     super.dispose();
   }
 

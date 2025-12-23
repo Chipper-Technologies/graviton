@@ -1141,5 +1141,11 @@
   "liveSessionStatusError": "连接错误",
   "liveSessionErrorHostingFailed": "无法开始主持。请重试。",
   "liveSessionErrorJoinFailed": "无法加入会话。请重试。",
-  "liveSessionErrorConnectionLost": "连接丢失。正在尝试重新连接..."
+  "liveSessionErrorConnectionLost": "连接丢失。正在尝试重新连接...",
+  "liveSessionTitle": "实时会话",
+  "liveSessionDescription": "分享您的模拟或实时加入其他人",
+  "liveSessionHostingDescription": "正在向观众广播您的模拟",
+  "liveSessionViewingDescription": "正在观看实时模拟广播",
+  "liveSessionMenuTitle": "实时会话",
+  "liveSessionMenuDescription": "分享或加入实时模拟"
 }

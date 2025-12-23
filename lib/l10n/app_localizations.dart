@@ -6723,6 +6723,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Connection lost. Attempting to reconnect...'**
   String get liveSessionErrorConnectionLost;
+
+  /// Title for the live session panel
+  ///
+  /// In en, this message translates to:
+  /// **'Live Session'**
+  String get liveSessionTitle;
+
+  /// Description text for the live session panel
+  ///
+  /// In en, this message translates to:
+  /// **'Share your simulation or join others in real-time'**
+  String get liveSessionDescription;
+
+  /// Description when actively hosting a session
+  ///
+  /// In en, this message translates to:
+  /// **'Broadcasting your simulation to viewers'**
+  String get liveSessionHostingDescription;
+
+  /// Description when actively viewing a session
+  ///
+  /// In en, this message translates to:
+  /// **'Watching a live simulation broadcast'**
+  String get liveSessionViewingDescription;
+
+  /// Menu item title for live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Live Sessions'**
+  String get liveSessionMenuTitle;
+
+  /// Menu item description for live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Share or join real-time simulations'**
+  String get liveSessionMenuDescription;
 }
 
 class _AppLocalizationsDelegate

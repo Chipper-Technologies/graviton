@@ -4977,5 +4977,29 @@
   "liveSessionErrorConnectionLost": "Connection lost. Attempting to reconnect...",
   "@liveSessionErrorConnectionLost": {
     "description": "Error message when connection is lost"
+  },
+  "liveSessionTitle": "Live Session",
+  "@liveSessionTitle": {
+    "description": "Title for the live session panel"
+  },
+  "liveSessionDescription": "Share your simulation or join others in real-time",
+  "@liveSessionDescription": {
+    "description": "Description text for the live session panel"
+  },
+  "liveSessionHostingDescription": "Broadcasting your simulation to viewers",
+  "@liveSessionHostingDescription": {
+    "description": "Description when actively hosting a session"
+  },
+  "liveSessionViewingDescription": "Watching a live simulation broadcast",
+  "@liveSessionViewingDescription": {
+    "description": "Description when actively viewing a session"
+  },
+  "liveSessionMenuTitle": "Live Sessions",
+  "@liveSessionMenuTitle": {
+    "description": "Menu item title for live sessions"
+  },
+  "liveSessionMenuDescription": "Share or join real-time simulations",
+  "@liveSessionMenuDescription": {
+    "description": "Menu item description for live sessions"
   }
 }

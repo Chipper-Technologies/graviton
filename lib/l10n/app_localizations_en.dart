@@ -3843,4 +3843,26 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get liveSessionErrorConnectionLost =>
       'Connection lost. Attempting to reconnect...';
+
+  @override
+  String get liveSessionTitle => 'Live Session';
+
+  @override
+  String get liveSessionDescription =>
+      'Share your simulation or join others in real-time';
+
+  @override
+  String get liveSessionHostingDescription =>
+      'Broadcasting your simulation to viewers';
+
+  @override
+  String get liveSessionViewingDescription =>
+      'Watching a live simulation broadcast';
+
+  @override
+  String get liveSessionMenuTitle => 'Live Sessions';
+
+  @override
+  String get liveSessionMenuDescription =>
+      'Share or join real-time simulations';
 }

@@ -3601,4 +3601,22 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get liveSessionErrorConnectionLost => '连接丢失。正在尝试重新连接...';
+
+  @override
+  String get liveSessionTitle => '实时会话';
+
+  @override
+  String get liveSessionDescription => '分享您的模拟或实时加入其他人';
+
+  @override
+  String get liveSessionHostingDescription => '正在向观众广播您的模拟';
+
+  @override
+  String get liveSessionViewingDescription => '正在观看实时模拟广播';
+
+  @override
+  String get liveSessionMenuTitle => '实时会话';
+
+  @override
+  String get liveSessionMenuDescription => '分享或加入实时模拟';
 }
