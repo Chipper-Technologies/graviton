@@ -38,7 +38,7 @@ void main() {
       expect(snapshot.velocity.z, equals(0.5));
       expect(snapshot.mass, equals(1000.0));
       expect(snapshot.radius, equals(50.0));
-      expect(snapshot.colorValue, equals(Colors.yellow.value));
+      expect(snapshot.colorValue, equals(Colors.yellow.toARGB32()));
       expect(snapshot.isPlanet, isFalse);
       expect(snapshot.bodyType, equals(BodyType.star));
       expect(snapshot.stellarLuminosity, equals(1.0));
@@ -55,7 +55,7 @@ void main() {
       expect(map['velocity'], equals([1.0, -2.0, 0.5]));
       expect(map['mass'], equals(1000.0));
       expect(map['radius'], equals(50.0));
-      expect(map['colorValue'], equals(Colors.yellow.value));
+      expect(map['colorValue'], equals(Colors.yellow.toARGB32()));
       expect(map['isPlanet'], isFalse);
       expect(map['bodyType'], equals(BodyType.star.index));
       expect(map['stellarLuminosity'], equals(1.0));
@@ -73,7 +73,7 @@ void main() {
         'velocity': [0.5, -1.0, 0.25],
         'mass': 500.0,
         'radius': 25.0,
-        'colorValue': Colors.blue.value,
+        'colorValue': Colors.blue.toARGB32(),
         'isPlanet': true,
         'bodyType': BodyType.planet.index,
         'stellarLuminosity': 0.0,
@@ -92,7 +92,7 @@ void main() {
       expect(snapshot.velocity.z, equals(0.25));
       expect(snapshot.mass, equals(500.0));
       expect(snapshot.radius, equals(25.0));
-      expect(snapshot.colorValue, equals(Colors.blue.value));
+      expect(snapshot.colorValue, equals(Colors.blue.toARGB32()));
       expect(snapshot.isPlanet, isTrue);
       expect(snapshot.bodyType, equals(BodyType.planet));
       expect(snapshot.stellarLuminosity, equals(0.0));
@@ -152,7 +152,7 @@ void main() {
       expect(targetBody.velocity.x, equals(1.0));
       expect(targetBody.mass, equals(1000.0));
       expect(targetBody.radius, equals(50.0));
-      expect(targetBody.color.value, equals(Colors.yellow.value));
+      expect(targetBody.color.toARGB32(), equals(Colors.yellow.toARGB32()));
     });
 
     test('toBody should create new body with correct state', () {
@@ -244,7 +244,7 @@ void main() {
             'velocity': [1.0, 2.0, 3.0],
             'mass': 100.0,
             'radius': 20.0,
-            'colorValue': Colors.red.value,
+            'colorValue': Colors.red.toARGB32(),
             'isPlanet': true,
             'bodyType': BodyType.planet.index,
             'stellarLuminosity': 0.0,

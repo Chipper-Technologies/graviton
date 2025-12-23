@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/state/live_session_state.dart';
+import 'package:provider/provider.dart';
 import 'package:graviton/models/firebase/live_session.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/theme/app_colors.dart';
@@ -62,16 +64,14 @@ class _SessionBrowserWidgetState extends State<SessionBrowserWidget> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final liveSession = widget.appState.liveSession;
+    // Use Provider.of to listen to changes and trigger rebuilds
+    final liveSession = Provider.of<LiveSessionState>(context);
     final sessions = liveSession.activeSessions;
     final isLoading = liveSession.isLoadingSessions;
     final isViewing = liveSession.isViewing;
 
     if (isViewing) {
-      return _ViewingSessionCard(
-        appState: widget.appState,
-        onLeave: () => _leaveSession(context),
-      );
+      return _ViewingSessionCard(onLeave: () => _leaveSession(context));
     }
 
     if (isLoading) {
@@ -109,14 +109,16 @@ class _SessionBrowserWidgetState extends State<SessionBrowserWidget> {
   }
 
   Future<void> _joinSession(BuildContext context, LiveSession session) async {
-    final success = await widget.appState.liveSession.startViewing(session.id);
+    final liveSession = Provider.of<LiveSessionState>(context, listen: false);
+    final success = await liveSession.startViewing(session.id);
     if (success) {
       widget.onSessionJoined?.call(session);
     }
   }
 
   Future<void> _leaveSession(BuildContext context) async {
-    final success = await widget.appState.liveSession.stopViewing();
+    final liveSession = Provider.of<LiveSessionState>(context, listen: false);
+    final success = await liveSession.stopViewing();
     if (success) {
       widget.onSessionLeft?.call();
     }
@@ -255,15 +257,15 @@ class _SessionCard extends StatelessWidget {
 
 /// Card showing the currently viewed session
 class _ViewingSessionCard extends StatelessWidget {
-  final AppState appState;
   final VoidCallback onLeave;
 
-  const _ViewingSessionCard({required this.appState, required this.onLeave});
+  const _ViewingSessionCard({required this.onLeave});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final session = appState.liveSession.currentSession;
+    final liveSession = Provider.of<LiveSessionState>(context);
+    final session = liveSession.currentSession;
 
     return Container(
       padding: const EdgeInsets.all(AppTypography.spacingMedium),

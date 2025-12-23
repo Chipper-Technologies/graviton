@@ -17,6 +17,7 @@ import 'package:graviton/core/enums/ui_element.dart';
 import 'package:graviton/features/auth/presentation/widgets/avatar_button.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/models/ui/dialog_action.dart';
 import 'package:graviton/services/camera/camera_gesture_service.dart';
 import 'package:graviton/services/camera/cinematic_camera_controller.dart';
@@ -75,6 +76,10 @@ class _HomeScreenState extends State<HomeScreen>
   ); // More stars with enhanced data, using default radius
 
   Duration _lastElapsed = Duration.zero;
+  DateTime _lastBroadcast = DateTime.now();
+
+  /// Interval between live session broadcasts (5 times per second)
+  static const Duration _broadcastInterval = Duration(milliseconds: 200);
 
   final bool _hasMoved = false; // Track if any movement occurred during gesture
 
@@ -226,6 +231,31 @@ class _HomeScreenState extends State<HomeScreen>
         SimulationConstants.trailUpdateFrequency,
       );
     }
+
+    // Broadcast simulation state if hosting a live session
+    _broadcastIfHosting(appState);
+  }
+
+  /// Broadcasts simulation state to viewers if hosting a live session.
+  ///
+  /// Only broadcasts at [_broadcastInterval] intervals to avoid flooding.
+  void _broadcastIfHosting(AppState appState) {
+    final liveSession = appState.liveSession;
+    if (!liveSession.isHosting) return;
+
+    final now = DateTime.now();
+    if (now.difference(_lastBroadcast) < _broadcastInterval) return;
+
+    _lastBroadcast = now;
+
+    final snapshot = SimulationSnapshot.fromSimulation(
+      bodies: appState.simulation.bodies,
+      isRunning: appState.simulation.isRunning && !appState.simulation.isPaused,
+      timeScale: appState.simulation.timeScale,
+      totalTime: appState.simulation.totalTime,
+      stepCount: appState.simulation.stepCount,
+    );
+    liveSession.broadcastState(snapshot);
   }
 
   void _handleTapWithDelay(

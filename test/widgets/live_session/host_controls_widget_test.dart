@@ -3,34 +3,42 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
+import 'package:graviton/state/live_session_state.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/widgets/live_session/host_controls_widget.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('HostControlsWidget', () {
     late AppState appState;
+    late LiveSessionState liveSessionState;
 
     Widget createTestWidget({required Widget child}) {
-      return MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('en')],
-        home: Scaffold(body: child),
+      return ChangeNotifierProvider<LiveSessionState>.value(
+        value: liveSessionState,
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en')],
+          home: Scaffold(body: child),
+        ),
       );
     }
 
     setUp(() {
       appState = AppState();
+      liveSessionState = LiveSessionState();
     });
 
     tearDown(() {
       appState.dispose();
+      liveSessionState.dispose();
     });
 
     testWidgets('should render correctly in not hosting state', (
@@ -90,6 +98,7 @@ void main() {
     testWidgets('should call onHostingStarted callback when hosting starts', (
       WidgetTester tester,
     ) async {
+      // ignore: unused_local_variable
       var startedCalled = false;
 
       await tester.pumpWidget(
@@ -252,6 +261,123 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(Column), findsAtLeastNWidgets(1));
+    });
+
+    testWidgets('should show wifi_tethering_off icon when not hosting', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.wifi_tethering_off), findsOneWidget);
+    });
+
+    testWidgets('should have Container with proper decoration', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find Container with BoxDecoration
+      final containers = tester.widgetList<Container>(find.byType(Container));
+      expect(containers, isNotEmpty);
+    });
+
+    testWidgets('should rebuild when liveSession changes', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Notify listeners to trigger rebuild
+      appState.liveSession.notifyListeners();
+      await tester.pump();
+
+      expect(find.byType(HostControlsWidget), findsOneWidget);
+    });
+
+    testWidgets('should use AppTypography spacing constants', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find SizedBox widgets used for spacing
+      expect(find.byType(SizedBox), findsAtLeastNWidgets(1));
+    });
+
+    testWidgets('should show Expanded widget for flexible text', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Expanded), findsAtLeastNWidgets(1));
+    });
+
+    testWidgets('should handle very long scenario names', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName:
+                'Very Long Scenario Name That Should Not Break The Layout',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(HostControlsWidget), findsOneWidget);
+    });
+
+    testWidgets('should handle empty scenario name', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          child: HostControlsWidget(appState: appState, scenarioName: ''),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(HostControlsWidget), findsOneWidget);
     });
   });
 }

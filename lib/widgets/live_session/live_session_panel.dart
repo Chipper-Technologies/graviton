@@ -141,10 +141,7 @@ class _PanelHeader extends StatelessWidget {
   final AppLocalizations l10n;
   final LiveSessionState liveSessionState;
 
-  const _PanelHeader({
-    required this.l10n,
-    required this.liveSessionState,
-  });
+  const _PanelHeader({required this.l10n, required this.liveSessionState});
 
   @override
   Widget build(BuildContext context) {
@@ -250,10 +247,7 @@ class _ConnectionStatusSection extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: AppTypography.spacingLarge),
       child: Row(
         children: [
-          const ConnectionStatusIndicator(
-            showLabel: true,
-            compact: false,
-          ),
+          const ConnectionStatusIndicator(showLabel: true, compact: false),
           const Spacer(),
           if (liveSessionState.viewerCount > 0)
             _ViewerCountBadge(count: liveSessionState.viewerCount),
@@ -312,10 +306,7 @@ class _SectionTitle extends StatelessWidget {
   final IconData icon;
   final String title;
 
-  const _SectionTitle({
-    required this.icon,
-    required this.title,
-  });
+  const _SectionTitle({required this.icon, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -323,9 +314,7 @@ class _SectionTitle extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: AppColors.uiWhite.withValues(
-            alpha: AppTypography.opacityHigh,
-          ),
+          color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityHigh),
           size: AppTypography.iconSizeMedium,
         ),
         const SizedBox(width: AppTypography.spacingSmall),

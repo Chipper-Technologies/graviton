@@ -1,0 +1,18 @@
+{
+  "rules": {
+    "live_sessions": {
+      ".read": "auth != null",
+      "$sessionId": {
+        ".write": "auth != null && (!data.exists() || data.child('hostId').val() === auth.uid)",
+        "viewers": {
+          "$viewerId": {
+            ".write": "auth != null && $viewerId === auth.uid"
+          }
+        },
+        "state": {
+          ".write": "auth != null && data.parent().child('hostId').val() === auth.uid"
+        }
+      }
+    }
+  }
+}

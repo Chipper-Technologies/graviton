@@ -78,7 +78,7 @@ class BodySnapshot {
       velocity: body.velocity.clone(),
       mass: body.mass,
       radius: body.radius,
-      colorValue: body.color.value,
+      colorValue: body.color.toARGB32(),
       isPlanet: body.isPlanet,
       bodyType: body.bodyType,
       stellarLuminosity: body.stellarLuminosity,

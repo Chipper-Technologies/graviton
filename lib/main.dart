@@ -24,7 +24,6 @@ import 'package:graviton/features/auth/data/auth_service.dart';
 import 'services/platform/changelog_service.dart';
 import 'services/firebase/firebase_service.dart';
 import 'services/firebase/realtime_database_service.dart';
-import 'package:graviton/state/live_session_state.dart';
 import 'package:graviton/shared/widgets/dialogs/changelog_dialog.dart';
 import 'services/firebase/remote_config_service.dart';
 import 'services/platform/version_service.dart';
@@ -194,7 +193,7 @@ class GravitonApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: appState),
         ChangeNotifierProvider.value(value: appState.auth),
-        ChangeNotifierProvider(create: (_) => LiveSessionState()),
+        ChangeNotifierProvider.value(value: appState.liveSession),
       ],
       child: Consumer<AppState>(
         builder: (context, appState, child) {

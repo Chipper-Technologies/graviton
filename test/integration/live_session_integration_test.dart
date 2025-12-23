@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vector_math/vector_math_64.dart' as vm;
 
@@ -126,7 +125,10 @@ void main() {
         final restored = SimulationSnapshot.fromMap(map);
         final restoredBody = restored.bodies.first;
 
-        expect(restoredBody.colorValue, equals(AppColors.stellarGType.value));
+        expect(
+          restoredBody.colorValue,
+          equals(AppColors.stellarGType.toARGB32()),
+        );
       });
 
       test('body snapshot can be converted back to Body', () {
@@ -441,8 +443,9 @@ void main() {
         final receivedSnapshot = SimulationSnapshot.fromMap(map);
 
         // Recreate bodies on the viewing end
-        final recreatedBodies =
-            receivedSnapshot.bodies.map((bs) => bs.toBody()).toList();
+        final recreatedBodies = receivedSnapshot.bodies
+            .map((bs) => bs.toBody())
+            .toList();
 
         expect(recreatedBodies.length, equals(2));
 

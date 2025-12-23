@@ -506,7 +506,18 @@ class LiveSessionService {
 
     try {
       final statePath = '$_sessionsPath/$_currentSessionId/$_statePath';
-      await _rtdb.setValue(statePath, snapshot.toMap());
+      final data = snapshot.toMap();
+
+      // Update both the state sub-path and root session metadata
+      await Future.wait([
+        _rtdb.setValue(statePath, data),
+        _rtdb.updateValues('$_sessionsPath/$_currentSessionId', {
+          'isRunning': snapshot.isRunning,
+          'timeScale': snapshot.timeScale,
+          'updatedAt': DateTime.now().millisecondsSinceEpoch,
+        }),
+      ]);
+
       return true;
     } catch (e, stackTrace) {
       debugPrint('LiveSessionService: Failed to broadcast state: $e');

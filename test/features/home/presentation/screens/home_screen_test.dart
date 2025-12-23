@@ -19,8 +19,8 @@ void main() {
         providers: [
           ChangeNotifierProvider<AppState>.value(value: appState),
           ChangeNotifierProvider<AuthState>.value(value: appState.auth),
-          ChangeNotifierProvider<LiveSessionState>(
-            create: (_) => LiveSessionState(),
+          ChangeNotifierProvider<LiveSessionState>.value(
+            value: appState.liveSession,
           ),
         ],
         child: const HomeScreen(),
@@ -313,8 +313,8 @@ void main() {
                 ChangeNotifierProvider<AuthState>.value(
                   value: freshAppState.auth,
                 ),
-                ChangeNotifierProvider<LiveSessionState>(
-                  create: (_) => LiveSessionState(),
+                ChangeNotifierProvider<LiveSessionState>.value(
+                  value: freshAppState.liveSession,
                 ),
               ],
               child: const HomeScreen(),
@@ -427,8 +427,8 @@ void main() {
                 ChangeNotifierProvider<AuthState>.value(
                   value: mockAppState.auth,
                 ),
-                ChangeNotifierProvider<LiveSessionState>(
-                  create: (_) => LiveSessionState(),
+                ChangeNotifierProvider<LiveSessionState>.value(
+                  value: mockAppState.liveSession,
                 ),
               ],
               child: Builder(
@@ -522,8 +522,8 @@ void main() {
                 ChangeNotifierProvider<AuthState>.value(
                   value: mockAppState.auth,
                 ),
-                ChangeNotifierProvider<LiveSessionState>(
-                  create: (_) => LiveSessionState(),
+                ChangeNotifierProvider<LiveSessionState>.value(
+                  value: mockAppState.liveSession,
                 ),
               ],
               child: const SizedBox(width: 0, height: 0, child: HomeScreen()),

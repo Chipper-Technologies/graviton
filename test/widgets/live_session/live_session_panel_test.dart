@@ -105,8 +105,9 @@ void main() {
       expect(find.text(l10n.liveSessionDescription), findsOneWidget);
     });
 
-    testWidgets('should not show connection status when disconnected',
-        (tester) async {
+    testWidgets('should not show connection status when disconnected', (
+      tester,
+    ) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
@@ -115,6 +116,7 @@ void main() {
       // The indicator shows when compact: true, showLabel: true
 
       // _ConnectionStatusSection should return SizedBox.shrink when not connected
+      // ignore: unused_local_variable
       final connectionSection = find.byType(ConnectionStatusIndicator);
       // There's one in the panel itself when connected, but _ConnectionStatusSection hides it
       // We need to verify the logic works correctly
@@ -158,8 +160,10 @@ void main() {
     });
 
     group('Callbacks', () {
-      testWidgets('onHostingChanged callback is passed to HostControlsWidget',
-          (tester) async {
+      testWidgets('onHostingChanged callback is passed to HostControlsWidget', (
+        tester,
+      ) async {
+        // ignore: unused_local_variable
         var callbackInvoked = false;
 
         await tester.pumpWidget(
@@ -172,18 +176,20 @@ void main() {
       });
 
       testWidgets(
-          'onViewingChanged callback is passed to SessionBrowserWidget',
-          (tester) async {
-        var callbackInvoked = false;
+        'onViewingChanged callback is passed to SessionBrowserWidget',
+        (tester) async {
+          // ignore: unused_local_variable
+          var callbackInvoked = false;
 
-        await tester.pumpWidget(
-          createTestWidget(onViewingChanged: () => callbackInvoked = true),
-        );
-        await tester.pumpAndSettle();
+          await tester.pumpWidget(
+            createTestWidget(onViewingChanged: () => callbackInvoked = true),
+          );
+          await tester.pumpAndSettle();
 
-        // SessionBrowserWidget should be present with the callback
-        expect(find.byType(SessionBrowserWidget), findsOneWidget);
-      });
+          // SessionBrowserWidget should be present with the callback
+          expect(find.byType(SessionBrowserWidget), findsOneWidget);
+        },
+      );
     });
 
     group('Container styling', () {
@@ -206,8 +212,9 @@ void main() {
     });
 
     group('Close button behavior', () {
-      testWidgets('should close panel when close button is tapped',
-          (tester) async {
+      testWidgets('should close panel when close button is tapped', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           MultiProvider(
             providers: [
@@ -250,8 +257,9 @@ void main() {
     });
 
     group('Icons', () {
-      testWidgets('should show wifi_tethering icon for hosting section',
-          (tester) async {
+      testWidgets('should show wifi_tethering icon for hosting section', (
+        tester,
+      ) async {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
+import 'package:graviton/state/live_session_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
+import 'package:provider/provider.dart';
 
 /// A compact widget for controlling live session hosting
 ///
@@ -48,8 +50,10 @@ class HostControlsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isHosting = appState.liveSession.isHosting;
-    final viewerCount = appState.liveSession.viewerCount;
+    // Use Provider.of to listen to changes and trigger rebuilds
+    final liveSession = Provider.of<LiveSessionState>(context);
+    final isHosting = liveSession.isHosting;
+    final viewerCount = liveSession.viewerCount;
 
     return Container(
       padding: const EdgeInsets.all(AppTypography.spacingMedium),
@@ -115,9 +119,8 @@ class HostControlsWidget extends StatelessWidget {
   }
 
   Future<void> _startHosting(BuildContext context) async {
-    final success = await appState.liveSession.startHosting(
-      scenarioName: scenarioName,
-    );
+    final liveSession = Provider.of<LiveSessionState>(context, listen: false);
+    final success = await liveSession.startHosting(scenarioName: scenarioName);
 
     if (success) {
       onHostingStarted?.call();
@@ -125,7 +128,8 @@ class HostControlsWidget extends StatelessWidget {
   }
 
   Future<void> _stopHosting(BuildContext context) async {
-    final success = await appState.liveSession.stopHosting();
+    final liveSession = Provider.of<LiveSessionState>(context, listen: false);
+    final success = await liveSession.stopHosting();
 
     if (success) {
       onHostingStopped?.call();

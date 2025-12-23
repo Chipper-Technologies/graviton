@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/models/firebase/live_session.dart';
+import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/services/firebase/live_session_service.dart';
 
 void main() {
@@ -248,6 +249,87 @@ void main() {
         await service.dispose();
         expect(service.currentSessionId, isNull);
         expect(service.isHosting, isFalse);
+      });
+
+      test('Should handle multiple dispose calls', () async {
+        await service.dispose();
+        await service.dispose();
+        expect(service.isHosting, isFalse);
+      });
+    });
+
+    group('State Sync Operations', () {
+      test('Should not throw when starting state sync while hosting', () {
+        service.startStateSync(onStateReceived: (snapshot) {});
+        // Should not throw even when not in viewing mode
+      });
+
+      test('Should not throw when stopping state sync', () {
+        service.stopStateSync();
+        // Should not throw
+      });
+
+      test('Should handle multiple stop state sync calls', () {
+        service.stopStateSync();
+        service.stopStateSync();
+        // Should not throw
+      });
+    });
+
+    group('Broadcast Operations', () {
+      test('Should return false when broadcasting while not hosting', () async {
+        final snapshot = SimulationSnapshot(
+          bodies: [],
+          isRunning: true,
+          timeScale: 1.0,
+          totalTime: 100.0,
+          stepCount: 50,
+          timestamp: DateTime.now(),
+        );
+
+        final result = await service.broadcastState(snapshot);
+        expect(result, isFalse);
+      });
+    });
+
+    group('Join Session with Callbacks', () {
+      test('Should accept onSessionUpdated callback', () async {
+        final result = await service.joinSession(
+          'test-session',
+          onSessionUpdated: (session) {},
+        );
+        expect(result, isFalse); // Fails because no auth
+      });
+    });
+
+    group('Update Session State', () {
+      test('Should accept multiple parameters', () async {
+        final result = await service.updateSessionState(
+          isRunning: true,
+          timeScale: 2.0,
+          scenarioName: 'Updated Scenario',
+        );
+        expect(result, isFalse);
+      });
+
+      test('Should accept only isRunning', () async {
+        final result = await service.updateSessionState(isRunning: false);
+        expect(result, isFalse);
+      });
+
+      test('Should accept only timeScale', () async {
+        final result = await service.updateSessionState(timeScale: 0.5);
+        expect(result, isFalse);
+      });
+    });
+
+    group('Start Hosting with Options', () {
+      test('Should accept displayName parameter', () async {
+        final sessionId = await service.startHosting(
+          scenarioName: 'Test',
+          displayName: 'Custom Host Name',
+        );
+        expect(sessionId, isNull);
       });
     });
   });

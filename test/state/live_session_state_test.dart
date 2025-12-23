@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/core/enums/live_session_connection_status.dart';
 import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/state/live_session_state.dart';
 
@@ -271,6 +272,80 @@ void main() {
           () => state.startStateSync(onSnapshotReceived: (snapshot) {}),
           returnsNormally,
         );
+      });
+    });
+
+    group('Connection Status', () {
+      test('connectionStatus should be disconnected initially', () {
+        expect(
+          state.connectionStatus,
+          equals(LiveSessionConnectionStatus.disconnected),
+        );
+      });
+
+      test('lastErrorMessage should be null initially', () {
+        expect(state.lastErrorMessage, isNull);
+      });
+
+      test('lastErrorTime should be null initially', () {
+        expect(state.lastErrorTime, isNull);
+      });
+
+      test('hasRecentError should be false initially', () {
+        expect(state.hasRecentError, isFalse);
+      });
+
+      test('clearError should not throw when no error', () {
+        expect(() => state.clearError(), returnsNormally);
+      });
+    });
+
+    group('Multiple Operations', () {
+      test(
+        'startViewing then startHosting should stop viewing first',
+        () async {
+          await state.startViewing('test-session');
+          await state.startHosting(scenarioName: 'Test');
+          // Both should fail without Firebase, but no exception
+          expect(state.isViewing, isFalse);
+          expect(state.isHosting, isFalse);
+        },
+      );
+
+      test(
+        'startHosting then startViewing should stop hosting first',
+        () async {
+          await state.startHosting(scenarioName: 'Test');
+          await state.startViewing('test-session');
+          // Both should fail without Firebase, but no exception
+          expect(state.isHosting, isFalse);
+          expect(state.isViewing, isFalse);
+        },
+      );
+
+      test('multiple cleanup calls should not throw', () async {
+        await state.cleanup();
+        await state.cleanup();
+        expect(state.isHosting, isFalse);
+        expect(state.isViewing, isFalse);
+      });
+    });
+
+    group('Notification Count', () {
+      test('clearError should not notify when no error exists', () {
+        var notifyCount = 0;
+        state.addListener(() => notifyCount++);
+        state.clearError();
+        expect(notifyCount, equals(0));
+      });
+
+      test('stopSessionDiscovery with notify false should not notify', () {
+        var notifyCount = 0;
+        state.addListener(() => notifyCount++);
+        state.startSessionDiscovery();
+        final countAfterStart = notifyCount;
+        state.stopSessionDiscovery(notify: false);
+        expect(notifyCount, equals(countAfterStart));
       });
     });
   });
