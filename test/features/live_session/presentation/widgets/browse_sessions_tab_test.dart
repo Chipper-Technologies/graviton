@@ -6,6 +6,8 @@ import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/firebase/live_session.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/state/live_session_state.dart';
+import 'package:graviton/widgets/common/dialog_title.dart';
+import 'package:graviton/widgets/haptics/haptic_text_button.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
@@ -168,6 +170,7 @@ void main() {
       when(mockLiveSession.isInSession).thenReturn(false);
       when(mockLiveSession.activeSessions).thenReturn([]);
       when(mockLiveSession.isLoadingSessions).thenReturn(false);
+      when(mockLiveSession.hostedSessionId).thenReturn(null);
     });
 
     tearDown(() {
@@ -352,6 +355,35 @@ void main() {
 
       // Password dialog should be shown
       expect(find.text('Enter Password'), findsOneWidget);
+    });
+
+    testWidgets('password dialog should use DialogTitle and HapticTextButton', (
+      WidgetTester tester,
+    ) async {
+      final sessions = [
+        createMockSession(
+          id: 'protected-session',
+          hostName: 'Protected Host',
+          scenarioName: 'Protected Scenario',
+          isPasswordProtected: true,
+        ),
+      ];
+
+      when(mockLiveSession.isLoadingSessions).thenReturn(false);
+      when(mockLiveSession.activeSessions).thenReturn(sessions);
+
+      await tester.pumpWidget(createMockedTestWidget());
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Find and tap the Join button
+      await tester.tap(find.text('Join'));
+      await tester.pumpAndSettle();
+
+      // Dialog should use standard DialogTitle component
+      expect(find.byType(DialogTitle), findsOneWidget);
+
+      // Dialog should use HapticTextButton for actions
+      expect(find.byType(HapticTextButton), findsNWidgets(2));
     });
   });
 }

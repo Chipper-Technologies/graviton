@@ -7,8 +7,11 @@ import 'dart:async' as _i5;
 import 'dart:ui' as _i7;
 
 import 'package:graviton/core/enums/live_session_connection_status.dart' as _i4;
+import 'package:graviton/core/enums/user_avatar.dart' as _i9;
+import 'package:graviton/features/auth/state/auth_state.dart' as _i8;
 import 'package:graviton/models/firebase/live_session.dart' as _i3;
 import 'package:graviton/models/firebase/simulation_snapshot.dart' as _i6;
+import 'package:graviton/models/user/user_profile.dart' as _i10;
 import 'package:graviton/state/live_session_state.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -115,11 +118,16 @@ class MockLiveSessionState extends _i1.Mock implements _i2.LiveSessionState {
           as _i5.Future<bool>);
 
   @override
-  _i5.Future<bool> updateHostedSession({bool? isRunning, double? timeScale}) =>
+  _i5.Future<bool> updateHostedSession({
+    bool? isRunning,
+    double? timeScale,
+    String? scenarioName,
+  }) =>
       (super.noSuchMethod(
             Invocation.method(#updateHostedSession, [], {
               #isRunning: isRunning,
               #timeScale: timeScale,
+              #scenarioName: scenarioName,
             }),
             returnValue: _i5.Future<bool>.value(false),
           )
@@ -213,6 +221,207 @@ class MockLiveSessionState extends _i1.Mock implements _i2.LiveSessionState {
   @override
   void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
     Invocation.method(#removeListener, [listener]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+    Invocation.method(#notifyListeners, []),
+    returnValueForMissingStub: null,
+  );
+}
+
+/// A class which mocks [AuthState].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthState extends _i1.Mock implements _i8.AuthState {
+  MockAuthState() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  bool get isLoading =>
+      (super.noSuchMethod(Invocation.getter(#isLoading), returnValue: false)
+          as bool);
+
+  @override
+  bool get isAuthenticated =>
+      (super.noSuchMethod(
+            Invocation.getter(#isAuthenticated),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
+  bool get isAnonymous =>
+      (super.noSuchMethod(Invocation.getter(#isAnonymous), returnValue: false)
+          as bool);
+
+  @override
+  bool get hasListeners =>
+      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
+          as bool);
+
+  @override
+  _i5.Future<void> initialize() =>
+      (super.noSuchMethod(
+            Invocation.method(#initialize, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<bool> signInWithEmailPassword({
+    required String? email,
+    required String? password,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithEmailPassword, [], {
+              #email: email,
+              #password: password,
+            }),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> createAccount({
+    required String? email,
+    required String? password,
+    String? displayName,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#createAccount, [], {
+              #email: email,
+              #password: password,
+              #displayName: displayName,
+            }),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> signInWithGoogle() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithGoogle, []),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> signInWithApple() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithApple, []),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> signInWithGitHub() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithGitHub, []),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> signInAnonymously() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInAnonymously, []),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> linkAnonymousAccountWithEmailPassword({
+    required String? email,
+    required String? password,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#linkAnonymousAccountWithEmailPassword, [], {
+              #email: email,
+              #password: password,
+            }),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> resetPassword(String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#resetPassword, [email]),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> updateDisplayName(String? displayName) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateDisplayName, [displayName]),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> setAvatar(_i9.UserAvatar? avatar) =>
+      (super.noSuchMethod(
+            Invocation.method(#setAvatar, [avatar]),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> clearAvatar() =>
+      (super.noSuchMethod(
+            Invocation.method(#clearAvatar, []),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> deleteAccount({String? password}) =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteAccount, [], {#password: password}),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> signOut() =>
+      (super.noSuchMethod(
+            Invocation.method(#signOut, []),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  void clearError() => super.noSuchMethod(
+    Invocation.method(#clearError, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void setCurrentUserForTest(_i10.UserProfile? user) => super.noSuchMethod(
+    Invocation.method(#setCurrentUserForTest, [user]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+    Invocation.method(#addListener, [listener]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+    Invocation.method(#removeListener, [listener]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void dispose() => super.noSuchMethod(
+    Invocation.method(#dispose, []),
     returnValueForMissingStub: null,
   );
 

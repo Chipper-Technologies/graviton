@@ -39,6 +39,8 @@ class LiveSessionState extends ChangeNotifier {
   bool _isHosting = false;
   String? _hostedSessionId;
   int _viewerCount = 0;
+  String? _hostedScenarioName;
+  bool _hostedIsPasswordProtected = false;
 
   // Viewing state
   bool _isViewing = false;
@@ -69,6 +71,33 @@ class LiveSessionState extends ChangeNotifier {
 
   /// The ID of the session being hosted
   String? get hostedSessionId => _hostedSessionId;
+
+  /// The session being hosted (null if not hosting)
+  /// Looks up the session from activeSessions by hostedSessionId
+  LiveSession? get hostedSession {
+    if (!_isHosting || _hostedSessionId == null) return null;
+    // First try to find in active sessions
+    try {
+      return _activeSessions.firstWhere((s) => s.id == _hostedSessionId);
+    } catch (_) {
+      // Fall back to locally stored data
+      if (_hostedScenarioName != null) {
+        return LiveSession(
+          id: _hostedSessionId!,
+          hostId: '',
+          hostName: '',
+          scenarioName: _hostedScenarioName!,
+          isRunning: true,
+          timeScale: 1.0,
+          viewerCount: _viewerCount,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          isPasswordProtected: _hostedIsPasswordProtected,
+        );
+      }
+      return null;
+    }
+  }
 
   /// Number of viewers in the hosted session
   int get viewerCount => _viewerCount;
@@ -170,6 +199,8 @@ class LiveSessionState extends ChangeNotifier {
     if (sessionId != null) {
       _isHosting = true;
       _hostedSessionId = sessionId;
+      _hostedScenarioName = scenarioName;
+      _hostedIsPasswordProtected = password != null && password.isNotEmpty;
       _viewerCount = 0;
       _setConnectionStatus(LiveSessionConnectionStatus.connected);
       clearError();
@@ -184,12 +215,26 @@ class LiveSessionState extends ChangeNotifier {
   /// Update the hosted session state
   ///
   /// Call this when simulation parameters change to sync with viewers.
-  Future<bool> updateHostedSession({bool? isRunning, double? timeScale}) async {
+  /// [isRunning] Whether the simulation is running
+  /// [timeScale] The time scale factor
+  /// [scenarioName] The name of the current scenario (for display purposes)
+  Future<bool> updateHostedSession({
+    bool? isRunning,
+    double? timeScale,
+    String? scenarioName,
+  }) async {
     if (!_isHosting) return false;
+
+    // Update local state if scenario name is provided
+    if (scenarioName != null) {
+      _hostedScenarioName = scenarioName;
+      notifyListeners();
+    }
 
     return _service.updateSessionState(
       isRunning: isRunning,
       timeScale: timeScale,
+      scenarioName: scenarioName,
     );
   }
 
@@ -201,6 +246,8 @@ class LiveSessionState extends ChangeNotifier {
     if (success) {
       _isHosting = false;
       _hostedSessionId = null;
+      _hostedScenarioName = null;
+      _hostedIsPasswordProtected = false;
       _viewerCount = 0;
       _setConnectionStatus(LiveSessionConnectionStatus.disconnected);
       notifyListeners();
@@ -226,7 +273,14 @@ class LiveSessionState extends ChangeNotifier {
   /// [password] The password to join (required for password-protected sessions)
   ///
   /// Returns true if successfully joined.
+  /// Returns false if trying to join own hosted session.
   Future<bool> startViewing(String sessionId, {String? password}) async {
+    // Prevent joining your own session
+    if (_isHosting && _hostedSessionId == sessionId) {
+      _setError('Cannot join your own session');
+      return false;
+    }
+
     if (_isViewing) {
       await stopViewing();
     }

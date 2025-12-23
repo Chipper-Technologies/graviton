@@ -49,39 +49,72 @@ class ConnectionStatusIndicator extends StatelessWidget {
         final status = liveState.connectionStatus;
         final color = _getStatusColor(status);
         final l10n = AppLocalizations.of(context);
+        final statusText = _getStatusText(l10n, status);
+        final isInteractive = onTap != null;
 
-        return GestureDetector(
-          onTap: onTap,
-          child: Container(
-            padding: compact
-                ? EdgeInsets.zero
-                : EdgeInsets.symmetric(
-                    horizontal: AppTypography.spacingSmall,
-                    vertical: AppTypography.spacingXSmall,
-                  ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildStatusDot(status, color),
-                if (showLabel) ...[
-                  SizedBox(width: AppTypography.spacingXSmall),
-                  Text(
-                    _getStatusText(l10n, status),
-                    style: TextStyle(
-                      color: color,
-                      fontSize: compact
-                          ? AppTypography.fontSizeSmall
-                          : AppTypography.fontSizeMedium,
-                      fontWeight: FontWeight.w500,
+        // Build the semantic label for accessibility
+        final semanticLabel = _buildSemanticLabel(l10n, status);
+
+        return Semantics(
+          label: semanticLabel,
+          liveRegion: true, // Announce status changes to screen readers
+          button: isInteractive,
+          enabled: isInteractive,
+          onTap: isInteractive ? onTap : null,
+          excludeSemantics: true, // We provide our own complete label
+          child: GestureDetector(
+            onTap: onTap,
+            child: Container(
+              padding: compact
+                  ? EdgeInsets.zero
+                  : EdgeInsets.symmetric(vertical: AppTypography.spacingXSmall),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildStatusDot(status, color),
+                  if (showLabel) ...[
+                    SizedBox(width: AppTypography.spacingXSmall),
+                    Text(
+                      statusText,
+                      style: TextStyle(
+                        color: color,
+                        fontSize: compact
+                            ? AppTypography.fontSizeSmall
+                            : AppTypography.fontSizeMedium,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         );
       },
     );
+  }
+
+  /// Builds a comprehensive semantic label for the connection status
+  String _buildSemanticLabel(
+    AppLocalizations? l10n,
+    LiveSessionConnectionStatus status,
+  ) {
+    final statusText = _getStatusText(l10n, status);
+
+    if (l10n == null) {
+      return onTap != null
+          ? 'Connection status: $statusText. Tap for session settings.'
+          : 'Connection status: $statusText';
+    }
+
+    // Use localized format with status
+    final baseLabel = l10n.liveSessionConnectionStatusLabel(statusText);
+
+    if (onTap != null) {
+      return '$baseLabel. ${l10n.liveSessionTapForSettings}';
+    }
+
+    return baseLabel;
   }
 
   Widget _buildStatusDot(LiveSessionConnectionStatus status, Color color) {

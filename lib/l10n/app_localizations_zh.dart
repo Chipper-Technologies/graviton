@@ -3536,7 +3536,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get liveSessionStartHosting => '开始主持';
 
   @override
-  String get liveSessionStopHosting => '停止主持';
+  String get liveSessionStopHosting => '停止分享';
+
+  @override
+  String get liveSessionUpdateSession => '更新会话';
 
   @override
   String liveSessionViewerCount(int count) {
@@ -3551,6 +3554,9 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get liveSessionNoViewers => '还没有人观看';
+
+  @override
   String get liveSessionBrowseSessions => '浏览会话';
 
   @override
@@ -3558,6 +3564,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get liveSessionJoin => '加入';
+
+  @override
+  String get liveSessionYourSession => '您的会话';
 
   @override
   String get liveSessionLeave => '离开会话';
@@ -3594,6 +3603,17 @@ class AppLocalizationsZh extends AppLocalizations {
   String get liveSessionStatusError => '连接错误';
 
   @override
+  String liveSessionConnectionStatusLabel(String status) {
+    return '连接状态：$status';
+  }
+
+  @override
+  String get liveSessionTapForSettings => '点击查看会话设置';
+
+  @override
+  String get liveSessionIndicatorTooltip => '实时会话';
+
+  @override
   String get liveSessionErrorHostingFailed => '无法开始主持。请重试。';
 
   @override
@@ -3624,7 +3644,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get liveSessionBrowseTab => '浏览';
 
   @override
-  String get liveSessionStartSharingTab => '开始分享';
+  String get liveSessionStartSharingTab => '分享';
 
   @override
   String get liveSessionBrowseDescription => '加入实时会话以实时观看其他用户的模拟';
@@ -3657,5 +3677,30 @@ class AppLocalizationsZh extends AppLocalizations {
   String get liveSessionPasswordProtected => '已启用密码保护';
 
   @override
+  String get liveSessionPasswordEnabled => '需要密码才能加入';
+
+  @override
+  String get liveSessionPasswordDisabled => '任何人都可以加入';
+
+  @override
   String get liveSessionIncorrectPassword => '密码错误';
+
+  @override
+  String get liveSessionRequiresAccountTitle => '需要账户';
+
+  @override
+  String get liveSessionRequiresAccountMessage =>
+      '直播会话仅供注册用户使用。创建免费账户与他人分享您的模拟。';
+
+  @override
+  String get liveSessionCreateAccount => '创建账户';
+
+  @override
+  String get liveSessionSessionName => '会话名称';
+
+  @override
+  String get liveSessionSessionNameHint => '为您的会话命名';
+
+  @override
+  String get liveSessionSettings => '会话设置';
 }

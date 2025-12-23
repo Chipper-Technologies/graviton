@@ -5,7 +5,9 @@ import 'package:graviton/state/app_state.dart';
 import 'package:graviton/state/live_session_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
+import 'package:graviton/widgets/common/dialog_title.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
+import 'package:graviton/widgets/haptics/haptic_text_button.dart';
 import 'package:provider/provider.dart';
 
 /// Tab for browsing and joining live sessions
@@ -59,6 +61,7 @@ class _BrowseSessionsTabState extends State<BrowseSessionsTab> {
     final sessions = liveSession.activeSessions;
     final isLoading = liveSession.isLoadingSessions;
     final isViewing = liveSession.isViewing;
+    final hostedSessionId = liveSession.hostedSessionId;
 
     return Padding(
       padding: const EdgeInsets.all(AppTypography.spacingLarge),
@@ -87,6 +90,7 @@ class _BrowseSessionsTabState extends State<BrowseSessionsTab> {
                 ? _EmptyState(message: l10n.liveSessionNoSessions)
                 : _SessionList(
                     sessions: sessions,
+                    hostedSessionId: hostedSessionId,
                     onJoin: (session) => _joinSession(context, session),
                   ),
           ),
@@ -135,10 +139,28 @@ class _BrowseSessionsTabState extends State<BrowseSessionsTab> {
     return showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.backgroundBlack,
-        title: Text(
-          l10n.liveSessionEnterPassword,
-          style: const TextStyle(color: AppColors.uiWhite),
+        backgroundColor: AppColors.uiBlack.withValues(
+          alpha: AppTypography.opacityAlmostOpaque,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
+          side: BorderSide(
+            color: AppColors.primaryColor.withValues(
+              alpha: AppTypography.opacityFaint,
+            ),
+            width: AppTypography.borderThin,
+          ),
+        ),
+        title: DialogTitle(
+          title: l10n.liveSessionEnterPassword,
+          icon: Icons.lock_outline,
+          iconColor: AppColors.primaryColor,
+          iconSize: AppTypography.iconSizeLarge,
+          spacing: AppTypography.spacingSmall,
+          titleStyle: AppTypography.largeText.copyWith(
+            color: AppColors.uiWhite,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         content: TextField(
           controller: controller,
@@ -184,13 +206,41 @@ class _BrowseSessionsTabState extends State<BrowseSessionsTab> {
           ),
         ),
         actions: [
-          TextButton(
+          HapticTextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel),
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.uiWhite,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
+              ),
+            ),
+            child: Text(
+              l10n.cancel,
+              style: AppTypography.mediumText.copyWith(
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityMediumHigh,
+                ),
+              ),
+            ),
           ),
-          TextButton(
+          HapticTextButton(
             onPressed: () => Navigator.pop(context, controller.text),
-            child: Text(l10n.liveSessionJoin),
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.primaryColor,
+              backgroundColor: AppColors.primaryColor.withValues(
+                alpha: AppTypography.opacityDisabled,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
+              ),
+            ),
+            child: Text(
+              l10n.liveSessionJoin,
+              style: AppTypography.mediumText.copyWith(
+                color: AppColors.primaryColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ],
       ),
@@ -246,9 +296,14 @@ class _EmptyState extends StatelessWidget {
 /// List of available sessions
 class _SessionList extends StatelessWidget {
   final List<LiveSession> sessions;
+  final String? hostedSessionId;
   final void Function(LiveSession) onJoin;
 
-  const _SessionList({required this.sessions, required this.onJoin});
+  const _SessionList({
+    required this.sessions,
+    required this.onJoin,
+    this.hostedSessionId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -258,6 +313,7 @@ class _SessionList extends StatelessWidget {
           const SizedBox(height: AppTypography.spacingMedium),
       itemBuilder: (context, index) => _SessionCard(
         session: sessions[index],
+        isOwnSession: sessions[index].id == hostedSessionId,
         onJoin: () => onJoin(sessions[index]),
       ),
     );
@@ -267,9 +323,14 @@ class _SessionList extends StatelessWidget {
 /// Card displaying a single session
 class _SessionCard extends StatelessWidget {
   final LiveSession session;
+  final bool isOwnSession;
   final VoidCallback onJoin;
 
-  const _SessionCard({required this.session, required this.onJoin});
+  const _SessionCard({
+    required this.session,
+    required this.onJoin,
+    this.isOwnSession = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -383,29 +444,55 @@ class _SessionCard extends StatelessWidget {
               ],
             ),
           ),
-          // Join button
-          HapticInkWell(
-            onTap: onJoin,
-            borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
-            child: Container(
+          // Join button or "Your Session" label
+          if (isOwnSession)
+            Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppTypography.spacingMedium,
                 vertical: AppTypography.spacingSmall,
               ),
               decoration: BoxDecoration(
-                color: AppColors.primaryColor,
+                color: AppColors.uiWhite.withValues(
+                  alpha: AppTypography.opacityDisabled,
+                ),
                 borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
               ),
               child: Text(
-                l10n.liveSessionJoin,
-                style: const TextStyle(
-                  color: AppColors.uiWhite,
+                l10n.liveSessionYourSession,
+                style: TextStyle(
+                  color: AppColors.uiWhite.withValues(
+                    alpha: AppTypography.opacityHigh,
+                  ),
                   fontSize: AppTypography.fontSizeSmall,
                   fontWeight: FontWeight.w600,
                 ),
               ),
+            )
+          else
+            HapticInkWell(
+              onTap: onJoin,
+              borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppTypography.spacingMedium,
+                  vertical: AppTypography.spacingSmall,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(
+                    AppTypography.radiusSmall,
+                  ),
+                ),
+                child: Text(
+                  l10n.liveSessionJoin,
+                  style: const TextStyle(
+                    color: AppColors.uiWhite,
+                    fontSize: AppTypography.fontSizeSmall,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ),
-          ),
         ],
       ),
     );

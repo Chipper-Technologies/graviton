@@ -3561,7 +3561,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get liveSessionStartHosting => 'ホストを開始';
 
   @override
-  String get liveSessionStopHosting => 'ホストを停止';
+  String get liveSessionStopHosting => '共有を停止';
+
+  @override
+  String get liveSessionUpdateSession => 'セッションを更新';
 
   @override
   String liveSessionViewerCount(int count) {
@@ -3576,6 +3579,9 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get liveSessionNoViewers => 'まだ誰も視聴していません';
+
+  @override
   String get liveSessionBrowseSessions => 'セッションを閲覧';
 
   @override
@@ -3583,6 +3589,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get liveSessionJoin => '参加';
+
+  @override
+  String get liveSessionYourSession => 'あなたのセッション';
 
   @override
   String get liveSessionLeave => 'セッションを退出';
@@ -3619,6 +3628,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String get liveSessionStatusError => '接続エラー';
 
   @override
+  String liveSessionConnectionStatusLabel(String status) {
+    return '接続状態：$status';
+  }
+
+  @override
+  String get liveSessionTapForSettings => 'タップしてセッション設定を表示';
+
+  @override
+  String get liveSessionIndicatorTooltip => 'ライブセッション';
+
+  @override
   String get liveSessionErrorHostingFailed => 'ホスティングを開始できませんでした。もう一度お試しください。';
 
   @override
@@ -3649,7 +3669,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get liveSessionBrowseTab => '閲覧';
 
   @override
-  String get liveSessionStartSharingTab => '共有を開始';
+  String get liveSessionStartSharingTab => '共有';
 
   @override
   String get liveSessionBrowseDescription =>
@@ -3684,5 +3704,30 @@ class AppLocalizationsJa extends AppLocalizations {
   String get liveSessionPasswordProtected => 'パスワード保護済み';
 
   @override
+  String get liveSessionPasswordEnabled => '参加にはパスワードが必要です';
+
+  @override
+  String get liveSessionPasswordDisabled => '誰でも参加できます';
+
+  @override
   String get liveSessionIncorrectPassword => 'パスワードが正しくありません';
+
+  @override
+  String get liveSessionRequiresAccountTitle => 'アカウントが必要です';
+
+  @override
+  String get liveSessionRequiresAccountMessage =>
+      'ライブセッションは登録ユーザーのみ利用可能です。無料アカウントを作成して、シミュレーションを他のユーザーと共有しましょう。';
+
+  @override
+  String get liveSessionCreateAccount => 'アカウントを作成';
+
+  @override
+  String get liveSessionSessionName => 'セッション名';
+
+  @override
+  String get liveSessionSessionNameHint => 'セッションに名前を付けてください';
+
+  @override
+  String get liveSessionSettings => 'セッション設定';
 }

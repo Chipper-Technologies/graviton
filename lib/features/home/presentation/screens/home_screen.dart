@@ -48,6 +48,7 @@ import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
 import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/widgets/interaction/interaction_lock_toggle.dart';
 import 'package:graviton/widgets/overlays/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/overlays/camera_visual_aids_overlay.dart';
@@ -701,10 +702,26 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                     actions: [
-                      // Live session connection status indicator
-                      const ConnectionStatusIndicator(
-                        showLabel: false,
-                        compact: true,
+                      // Live session connection status indicator - tappable to show session screen
+                      Tooltip(
+                        message: l10n.liveSessionIndicatorTooltip,
+                        child: HapticInkWell(
+                          onTap: () => LiveSessionScreen.show(
+                            context,
+                            appState: appState,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            AppTypography.radiusSmall,
+                          ),
+                          child: const Padding(
+                            padding:
+                                EdgeInsets.all(AppTypography.spacingSmall),
+                            child: ConnectionStatusIndicator(
+                              showLabel: false,
+                              compact: true,
+                            ),
+                          ),
+                        ),
                       ),
                       // Avatar button
                       AvatarButton(

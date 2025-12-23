@@ -6619,14 +6619,26 @@ abstract class AppLocalizations {
   /// Button text to stop hosting a live session
   ///
   /// In en, this message translates to:
-  /// **'Stop Hosting'**
+  /// **'Stop Sharing'**
   String get liveSessionStopHosting;
+
+  /// Button text to update the active live session settings
+  ///
+  /// In en, this message translates to:
+  /// **'Update Session'**
+  String get liveSessionUpdateSession;
 
   /// Shows the number of viewers in a live session
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =0{No viewers} =1{1 viewer} other{{count} viewers}}'**
   String liveSessionViewerCount(int count);
+
+  /// Message shown when no viewers are connected to the live session
+  ///
+  /// In en, this message translates to:
+  /// **'No one is watching yet'**
+  String get liveSessionNoViewers;
 
   /// Title for the live session browser screen
   ///
@@ -6645,6 +6657,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Join'**
   String get liveSessionJoin;
+
+  /// Label shown on session card when it's the user's own hosted session
+  ///
+  /// In en, this message translates to:
+  /// **'Your Session'**
+  String get liveSessionYourSession;
 
   /// Button text to leave a live session
   ///
@@ -6705,6 +6723,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Connection Error'**
   String get liveSessionStatusError;
+
+  /// Accessibility label for connection status indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Connection status: {status}'**
+  String liveSessionConnectionStatusLabel(String status);
+
+  /// Accessibility hint for tapping connection indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Tap for session settings'**
+  String get liveSessionTapForSettings;
+
+  /// Tooltip for connection status indicator in app bar
+  ///
+  /// In en, this message translates to:
+  /// **'Live Session'**
+  String get liveSessionIndicatorTooltip;
 
   /// Error message when hosting fails to start
   ///
@@ -6769,7 +6805,7 @@ abstract class AppLocalizations {
   /// Tab label for starting a live session
   ///
   /// In en, this message translates to:
-  /// **'Start Sharing'**
+  /// **'Sharing'**
   String get liveSessionStartSharingTab;
 
   /// Description text for the browse sessions tab
@@ -6832,11 +6868,59 @@ abstract class AppLocalizations {
   /// **'Password protected'**
   String get liveSessionPasswordProtected;
 
+  /// Status text when session has password protection enabled
+  ///
+  /// In en, this message translates to:
+  /// **'Password required to join'**
+  String get liveSessionPasswordEnabled;
+
+  /// Status text when session has no password protection
+  ///
+  /// In en, this message translates to:
+  /// **'Anyone can join'**
+  String get liveSessionPasswordDisabled;
+
   /// Error message when entered password is wrong
   ///
   /// In en, this message translates to:
   /// **'Incorrect password'**
   String get liveSessionIncorrectPassword;
+
+  /// Title for dialog when user needs an account for live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Account Required'**
+  String get liveSessionRequiresAccountTitle;
+
+  /// Message explaining why account is needed for live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Live sessions are available to registered users. Create a free account to share your simulations with others.'**
+  String get liveSessionRequiresAccountMessage;
+
+  /// Button to create an account from live session dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get liveSessionCreateAccount;
+
+  /// Label for session name input
+  ///
+  /// In en, this message translates to:
+  /// **'Session Name'**
+  String get liveSessionSessionName;
+
+  /// Hint text for session name input
+  ///
+  /// In en, this message translates to:
+  /// **'Give your session a name'**
+  String get liveSessionSessionNameHint;
+
+  /// Title for session settings dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Session Settings'**
+  String get liveSessionSettings;
 }
 
 class _AppLocalizationsDelegate

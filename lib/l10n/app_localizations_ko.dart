@@ -3572,7 +3572,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get liveSessionStartHosting => '호스팅 시작';
 
   @override
-  String get liveSessionStopHosting => '호스팅 중지';
+  String get liveSessionStopHosting => '공유 중지';
+
+  @override
+  String get liveSessionUpdateSession => '세션 업데이트';
 
   @override
   String liveSessionViewerCount(int count) {
@@ -3587,6 +3590,9 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get liveSessionNoViewers => '아직 아무도 시청하고 있지 않습니다';
+
+  @override
   String get liveSessionBrowseSessions => '세션 찾아보기';
 
   @override
@@ -3594,6 +3600,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get liveSessionJoin => '참여';
+
+  @override
+  String get liveSessionYourSession => '내 세션';
 
   @override
   String get liveSessionLeave => '세션 나가기';
@@ -3630,6 +3639,17 @@ class AppLocalizationsKo extends AppLocalizations {
   String get liveSessionStatusError => '연결 오류';
 
   @override
+  String liveSessionConnectionStatusLabel(String status) {
+    return '연결 상태: $status';
+  }
+
+  @override
+  String get liveSessionTapForSettings => '세션 설정을 보려면 탭하세요';
+
+  @override
+  String get liveSessionIndicatorTooltip => '라이브 세션';
+
+  @override
   String get liveSessionErrorHostingFailed => '호스팅을 시작할 수 없습니다. 다시 시도해 주세요.';
 
   @override
@@ -3660,7 +3680,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get liveSessionBrowseTab => '찾아보기';
 
   @override
-  String get liveSessionStartSharingTab => '공유 시작';
+  String get liveSessionStartSharingTab => '공유';
 
   @override
   String get liveSessionBrowseDescription =>
@@ -3695,5 +3715,30 @@ class AppLocalizationsKo extends AppLocalizations {
   String get liveSessionPasswordProtected => '비밀번호 보호됨';
 
   @override
+  String get liveSessionPasswordEnabled => '참여하려면 비밀번호가 필요합니다';
+
+  @override
+  String get liveSessionPasswordDisabled => '누구나 참여할 수 있습니다';
+
+  @override
   String get liveSessionIncorrectPassword => '잘못된 비밀번호';
+
+  @override
+  String get liveSessionRequiresAccountTitle => '계정 필요';
+
+  @override
+  String get liveSessionRequiresAccountMessage =>
+      '라이브 세션은 등록된 사용자만 이용할 수 있습니다. 무료 계정을 만들어 시뮬레이션을 다른 사람들과 공유하세요.';
+
+  @override
+  String get liveSessionCreateAccount => '계정 만들기';
+
+  @override
+  String get liveSessionSessionName => '세션 이름';
+
+  @override
+  String get liveSessionSessionNameHint => '세션 이름을 지정하세요';
+
+  @override
+  String get liveSessionSettings => '세션 설정';
 }

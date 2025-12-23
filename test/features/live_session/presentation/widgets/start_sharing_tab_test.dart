@@ -81,11 +81,11 @@ void main() {
       );
     });
 
-    testWidgets('should show scenario to share', (WidgetTester tester) async {
+    testWidgets('should show session name field', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('Scenario to share'), findsOneWidget);
+      expect(find.text('Session Name'), findsOneWidget);
     });
 
     testWidgets('should show password protection toggle', (
@@ -166,6 +166,8 @@ void main() {
       when(mockLiveSession.isViewing).thenReturn(false);
       when(mockLiveSession.isInSession).thenReturn(false);
       when(mockLiveSession.viewerCount).thenReturn(0);
+      when(mockLiveSession.currentSession).thenReturn(null);
+      when(mockLiveSession.hostedSession).thenReturn(null);
     });
 
     tearDown(() {
@@ -181,7 +183,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Start Hosting'), findsOneWidget);
-      expect(find.text('Stop Hosting'), findsNothing);
+      expect(find.text('Stop Sharing'), findsNothing);
     });
 
     testWidgets('should show hosting view when hosting', (
@@ -193,7 +195,7 @@ void main() {
       await tester.pumpWidget(createMockedTestWidget());
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('Stop Hosting'), findsOneWidget);
+      expect(find.text('Stop Sharing'), findsOneWidget);
       expect(find.text('Hosting Live Session'), findsOneWidget);
       expect(find.text('3 viewers'), findsOneWidget);
     });
@@ -246,8 +248,8 @@ void main() {
       await tester.tap(find.byType(Switch));
       await tester.pump();
 
-      // Should show password input field
-      expect(find.byType(TextField), findsOneWidget);
+      // Should show password input field (2 TextFields: session name + password)
+      expect(find.byType(TextField), findsNWidgets(2));
       expect(
         find.textContaining('Viewers will need to enter this password'),
         findsOneWidget,
@@ -298,8 +300,9 @@ void main() {
       await tester.tap(find.byType(Switch));
       await tester.pump();
 
-      // Enter password
-      await tester.enterText(find.byType(TextField), 'mypassword');
+      // Enter password (find the password field by hint text)
+      final passwordField = find.widgetWithText(TextField, 'Enter password');
+      await tester.enterText(passwordField, 'mypassword');
       await tester.pump();
 
       // Tap start hosting
@@ -334,6 +337,51 @@ void main() {
       expect(find.text('Please enter a password'), findsOneWidget);
     });
 
+    testWidgets('should use custom session name when provided', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(false);
+      when(
+        mockLiveSession.startHosting(
+          scenarioName: anyNamed('scenarioName'),
+          password: anyNamed('password'),
+        ),
+      ).thenAnswer((_) async => true);
+
+      await tester.pumpWidget(createMockedTestWidget());
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Enter a custom session name
+      final sessionNameField = find.widgetWithText(
+        TextField,
+        'Give your session a name',
+      );
+      await tester.enterText(sessionNameField, 'My Custom Session');
+      await tester.pump();
+
+      // Tap start hosting
+      await tester.tap(find.text('Start Hosting'));
+      await tester.pump(const Duration(milliseconds: 100));
+
+      verify(
+        mockLiveSession.startHosting(
+          scenarioName: 'My Custom Session',
+          password: null,
+        ),
+      ).called(1);
+    });
+
+    testWidgets('should show session name hint text', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(false);
+
+      await tester.pumpWidget(createMockedTestWidget());
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.text('Give your session a name'), findsOneWidget);
+    });
+
     testWidgets('should call stopHosting when stop button pressed', (
       WidgetTester tester,
     ) async {
@@ -344,8 +392,8 @@ void main() {
       await tester.pumpWidget(createMockedTestWidget());
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Tap stop hosting
-      await tester.tap(find.text('Stop Hosting'));
+      // Tap stop sharing
+      await tester.tap(find.text('Stop Sharing'));
       await tester.pump(const Duration(milliseconds: 100));
 
       verify(mockLiveSession.stopHosting()).called(1);
@@ -390,8 +438,8 @@ void main() {
       );
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Tap stop hosting
-      await tester.tap(find.text('Stop Hosting'));
+      // Tap stop sharing
+      await tester.tap(find.text('Stop Sharing'));
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(callbackInvoked, isTrue);
@@ -408,7 +456,7 @@ void main() {
       expect(find.byIcon(Icons.wifi_tethering), findsOneWidget);
     });
 
-    testWidgets('should show stop icon in stop hosting button', (
+    testWidgets('should show stop icon in stop sharing button', (
       WidgetTester tester,
     ) async {
       when(mockLiveSession.isHosting).thenReturn(true);
@@ -439,7 +487,7 @@ void main() {
       expect(find.byIcon(Icons.lock), findsOneWidget);
     });
 
-    testWidgets('should show globe icon for scenario', (
+    testWidgets('should show label icon for session name field', (
       WidgetTester tester,
     ) async {
       when(mockLiveSession.isHosting).thenReturn(false);
@@ -447,19 +495,21 @@ void main() {
       await tester.pumpWidget(createMockedTestWidget());
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.byIcon(Icons.public), findsOneWidget);
+      expect(find.byIcon(Icons.label_outline), findsOneWidget);
     });
 
-    testWidgets('should show visibility icon for viewer count when hosting', (
-      WidgetTester tester,
-    ) async {
-      when(mockLiveSession.isHosting).thenReturn(true);
-      when(mockLiveSession.viewerCount).thenReturn(5);
+    testWidgets(
+      'should show hosting status banner with viewer count when hosting',
+      (WidgetTester tester) async {
+        when(mockLiveSession.isHosting).thenReturn(true);
+        when(mockLiveSession.viewerCount).thenReturn(5);
 
-      await tester.pumpWidget(createMockedTestWidget());
-      await tester.pump(const Duration(milliseconds: 100));
+        await tester.pumpWidget(createMockedTestWidget());
+        await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.byIcon(Icons.visibility), findsOneWidget);
-    });
+        // Hosting banner has wifi_tethering icon
+        expect(find.byIcon(Icons.wifi_tethering), findsOneWidget);
+      },
+    );
   });
 }

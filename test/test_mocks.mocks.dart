@@ -10994,6 +10994,28 @@ class MockAppLocalizations extends _i1.Mock implements _i8.AppLocalizations {
           as String);
 
   @override
+  String get liveSessionUpdateSession =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionUpdateSession),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionUpdateSession),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionNoViewers =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionNoViewers),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionNoViewers),
+            ),
+          )
+          as String);
+
+  @override
   String get liveSessionBrowseSessions =>
       (super.noSuchMethod(
             Invocation.getter(#liveSessionBrowseSessions),
@@ -11346,12 +11368,100 @@ class MockAppLocalizations extends _i1.Mock implements _i8.AppLocalizations {
           as String);
 
   @override
+  String get liveSessionPasswordEnabled =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionPasswordEnabled),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionPasswordEnabled),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionPasswordDisabled =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionPasswordDisabled),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionPasswordDisabled),
+            ),
+          )
+          as String);
+
+  @override
   String get liveSessionIncorrectPassword =>
       (super.noSuchMethod(
             Invocation.getter(#liveSessionIncorrectPassword),
             returnValue: _i9.dummyValue<String>(
               this,
               Invocation.getter(#liveSessionIncorrectPassword),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionRequiresAccountTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionRequiresAccountTitle),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionRequiresAccountTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionRequiresAccountMessage =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionRequiresAccountMessage),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionRequiresAccountMessage),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionCreateAccount =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionCreateAccount),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionCreateAccount),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionSessionName =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionSessionName),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionSessionName),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionSessionNameHint =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionSessionNameHint),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionSessionNameHint),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionSettings =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionSettings),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionSettings),
             ),
           )
           as String);

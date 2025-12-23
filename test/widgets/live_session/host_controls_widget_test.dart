@@ -645,7 +645,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Find and tap the stop button
-      final stopButton = find.widgetWithText(HapticInkWell, 'Stop Hosting');
+      final stopButton = find.widgetWithText(HapticInkWell, 'Stop Sharing');
       if (stopButton.evaluate().isNotEmpty) {
         await tester.tap(stopButton);
         await tester.pump();
@@ -708,7 +708,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Find and tap stop button
-      final stopButton = find.widgetWithText(HapticInkWell, 'Stop Hosting');
+      final stopButton = find.widgetWithText(HapticInkWell, 'Stop Sharing');
       if (stopButton.evaluate().isNotEmpty) {
         await tester.tap(stopButton);
         await tester.pumpAndSettle();

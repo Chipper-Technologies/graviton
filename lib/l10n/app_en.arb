@@ -4888,9 +4888,13 @@
   "@liveSessionStartHosting": {
     "description": "Button text to start hosting a live session"
   },
-  "liveSessionStopHosting": "Stop Hosting",
+  "liveSessionStopHosting": "Stop Sharing",
   "@liveSessionStopHosting": {
     "description": "Button text to stop hosting a live session"
+  },
+  "liveSessionUpdateSession": "Update Session",
+  "@liveSessionUpdateSession": {
+    "description": "Button text to update the active live session settings"
   },
   "liveSessionViewerCount": "{count, plural, =0{No viewers} =1{1 viewer} other{{count} viewers}}",
   "@liveSessionViewerCount": {
@@ -4901,6 +4905,10 @@
         "description": "The number of viewers"
       }
     }
+  },
+  "liveSessionNoViewers": "No one is watching yet",
+  "@liveSessionNoViewers": {
+    "description": "Message shown when no viewers are connected to the live session"
   },
   "liveSessionBrowseSessions": "Browse Sessions",
   "@liveSessionBrowseSessions": {
@@ -4913,6 +4921,10 @@
   "liveSessionJoin": "Join",
   "@liveSessionJoin": {
     "description": "Button text to join a live session"
+  },
+  "liveSessionYourSession": "Your Session",
+  "@liveSessionYourSession": {
+    "description": "Label shown on session card when it's the user's own hosted session"
   },
   "liveSessionLeave": "Leave Session",
   "@liveSessionLeave": {
@@ -4966,6 +4978,24 @@
   "@liveSessionStatusError": {
     "description": "Connection status when an error occurred"
   },
+  "liveSessionConnectionStatusLabel": "Connection status: {status}",
+  "@liveSessionConnectionStatusLabel": {
+    "description": "Accessibility label for connection status indicator",
+    "placeholders": {
+      "status": {
+        "type": "String",
+        "example": "Connected"
+      }
+    }
+  },
+  "liveSessionTapForSettings": "Tap for session settings",
+  "@liveSessionTapForSettings": {
+    "description": "Accessibility hint for tapping connection indicator"
+  },
+  "liveSessionIndicatorTooltip": "Live Session",
+  "@liveSessionIndicatorTooltip": {
+    "description": "Tooltip for connection status indicator in app bar"
+  },
   "liveSessionErrorHostingFailed": "Failed to start hosting. Please try again.",
   "@liveSessionErrorHostingFailed": {
     "description": "Error message when hosting fails to start"
@@ -5006,7 +5036,7 @@
   "@liveSessionBrowseTab": {
     "description": "Tab label for browsing live sessions"
   },
-  "liveSessionStartSharingTab": "Start Sharing",
+  "liveSessionStartSharingTab": "Sharing",
   "@liveSessionStartSharingTab": {
     "description": "Tab label for starting a live session"
   },
@@ -5050,8 +5080,40 @@
   "@liveSessionPasswordProtected": {
     "description": "Label indicating session is password protected"
   },
+  "liveSessionPasswordEnabled": "Password required to join",
+  "@liveSessionPasswordEnabled": {
+    "description": "Status text when session has password protection enabled"
+  },
+  "liveSessionPasswordDisabled": "Anyone can join",
+  "@liveSessionPasswordDisabled": {
+    "description": "Status text when session has no password protection"
+  },
   "liveSessionIncorrectPassword": "Incorrect password",
   "@liveSessionIncorrectPassword": {
     "description": "Error message when entered password is wrong"
+  },
+  "liveSessionRequiresAccountTitle": "Account Required",
+  "@liveSessionRequiresAccountTitle": {
+    "description": "Title for dialog when user needs an account for live sessions"
+  },
+  "liveSessionRequiresAccountMessage": "Live sessions are available to registered users. Create a free account to share your simulations with others.",
+  "@liveSessionRequiresAccountMessage": {
+    "description": "Message explaining why account is needed for live sessions"
+  },
+  "liveSessionCreateAccount": "Create Account",
+  "@liveSessionCreateAccount": {
+    "description": "Button to create an account from live session dialog"
+  },
+  "liveSessionSessionName": "Session Name",
+  "@liveSessionSessionName": {
+    "description": "Label for session name input"
+  },
+  "liveSessionSessionNameHint": "Give your session a name",
+  "@liveSessionSessionNameHint": {
+    "description": "Hint text for session name input"
+  },
+  "liveSessionSettings": "Session Settings",
+  "@liveSessionSettings": {
+    "description": "Title for session settings dialog"
   }
 }

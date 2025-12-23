@@ -3787,7 +3787,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get liveSessionStartHosting => 'Hosting starten';
 
   @override
-  String get liveSessionStopHosting => 'Hosting beenden';
+  String get liveSessionStopHosting => 'Teilen beenden';
+
+  @override
+  String get liveSessionUpdateSession => 'Sitzung aktualisieren';
 
   @override
   String liveSessionViewerCount(int count) {
@@ -3802,6 +3805,9 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get liveSessionNoViewers => 'Noch schaut niemand zu';
+
+  @override
   String get liveSessionBrowseSessions => 'Sitzungen durchsuchen';
 
   @override
@@ -3809,6 +3815,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get liveSessionJoin => 'Beitreten';
+
+  @override
+  String get liveSessionYourSession => 'Ihre Sitzung';
 
   @override
   String get liveSessionLeave => 'Sitzung verlassen';
@@ -3844,6 +3853,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get liveSessionStatusError => 'Verbindungsfehler';
+
+  @override
+  String liveSessionConnectionStatusLabel(String status) {
+    return 'Verbindungsstatus: $status';
+  }
+
+  @override
+  String get liveSessionTapForSettings => 'Tippen für Sitzungseinstellungen';
+
+  @override
+  String get liveSessionIndicatorTooltip => 'Live-Sitzung';
 
   @override
   String get liveSessionErrorHostingFailed =>
@@ -3883,7 +3903,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get liveSessionBrowseTab => 'Durchsuchen';
 
   @override
-  String get liveSessionStartSharingTab => 'Teilen starten';
+  String get liveSessionStartSharingTab => 'Teilen';
 
   @override
   String get liveSessionBrowseDescription =>
@@ -3919,5 +3939,32 @@ class AppLocalizationsDe extends AppLocalizations {
   String get liveSessionPasswordProtected => 'Passwortgeschützt';
 
   @override
+  String get liveSessionPasswordEnabled =>
+      'Passwort zum Beitreten erforderlich';
+
+  @override
+  String get liveSessionPasswordDisabled => 'Jeder kann beitreten';
+
+  @override
   String get liveSessionIncorrectPassword => 'Falsches Passwort';
+
+  @override
+  String get liveSessionRequiresAccountTitle => 'Konto erforderlich';
+
+  @override
+  String get liveSessionRequiresAccountMessage =>
+      'Live-Sitzungen sind für registrierte Benutzer verfügbar. Erstellen Sie ein kostenloses Konto, um Ihre Simulationen mit anderen zu teilen.';
+
+  @override
+  String get liveSessionCreateAccount => 'Konto erstellen';
+
+  @override
+  String get liveSessionSessionName => 'Sitzungsname';
+
+  @override
+  String get liveSessionSessionNameHint =>
+      'Geben Sie Ihrer Sitzung einen Namen';
+
+  @override
+  String get liveSessionSettings => 'Sitzungseinstellungen';
 }

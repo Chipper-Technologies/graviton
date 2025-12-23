@@ -115,11 +115,16 @@ class MockLiveSessionState extends _i1.Mock implements _i2.LiveSessionState {
           as _i5.Future<bool>);
 
   @override
-  _i5.Future<bool> updateHostedSession({bool? isRunning, double? timeScale}) =>
+  _i5.Future<bool> updateHostedSession({
+    bool? isRunning,
+    double? timeScale,
+    String? scenarioName,
+  }) =>
       (super.noSuchMethod(
             Invocation.method(#updateHostedSession, [], {
               #isRunning: isRunning,
               #timeScale: timeScale,
+              #scenarioName: scenarioName,
             }),
             returnValue: _i5.Future<bool>.value(false),
           )
