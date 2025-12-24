@@ -33,7 +33,22 @@ class PremiumService {
   PremiumTier get currentTier => _currentTier;
 
   /// Whether user has premium access
-  bool get hasPremiumAccess => _currentTier.hasPremiumAccess;
+  ///
+  /// Returns true if:
+  /// - User has a premium/lifetime subscription, OR
+  /// - Paywall is globally disabled AND user is authenticated
+  bool get hasPremiumAccess {
+    // Check for actual subscription
+    if (_currentTier.hasPremiumAccess) return true;
+
+    // Check if paywall is globally disabled for authenticated users
+    if (RemoteConfigService.instance.premiumPaywallDisabled &&
+        _currentUserId != null) {
+      return true;
+    }
+
+    return false;
+  }
 
   /// Current customer info from RevenueCat
   CustomerInfo? get customerInfo => _customerInfo;

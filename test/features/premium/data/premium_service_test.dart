@@ -6,13 +6,21 @@ import 'package:graviton/features/premium/data/premium_service.dart';
 import 'package:graviton/features/premium/domain/premium_feature.dart';
 import 'package:graviton/features/premium/domain/premium_limits.dart';
 import 'package:graviton/features/premium/domain/premium_pricing.dart';
+import 'package:graviton/services/firebase/remote_config_service.dart';
 
 void main() {
   group('PremiumService', () {
     late PremiumService service;
 
     setUp(() {
+      // Reset for clean state
+      RemoteConfigService.instance.setPaywallDisabledForTesting(false);
       service = PremiumService.instance;
+    });
+
+    tearDown(() {
+      // Reset paywall state after each test
+      RemoteConfigService.instance.setPaywallDisabledForTesting(false);
     });
 
     test('initial tier is free', () {
@@ -101,6 +109,72 @@ void main() {
         expect(AppConfig.stripeYearlyPaymentLink, equals(''));
         expect(AppConfig.stripeLifetimePaymentLink, equals(''));
       });
+    });
+
+    group('Paywall Disabled Feature', () {
+      test(
+        'hasPremiumAccess returns false when paywall disabled but no user',
+        () {
+          // Enable paywall bypass
+          RemoteConfigService.instance.setPaywallDisabledForTesting(true);
+
+          // User is not logged in (no userId set)
+          // hasPremiumAccess should still be false because user is not authenticated
+          expect(service.hasPremiumAccess, isFalse);
+        },
+      );
+
+      test(
+        'hasPremiumAccess returns true when paywall disabled and user logged in',
+        () async {
+          // Enable paywall bypass
+          RemoteConfigService.instance.setPaywallDisabledForTesting(true);
+
+          // Simulate user login (on web, this just sets _currentUserId)
+          await service.login('test-user-123');
+
+          // hasPremiumAccess should be true because paywall is disabled and user is authenticated
+          expect(service.hasPremiumAccess, isTrue);
+
+          // Clean up
+          await service.logout();
+        },
+      );
+
+      test(
+        'hasPremiumAccess returns false after logout even with paywall disabled',
+        () async {
+          // Enable paywall bypass
+          RemoteConfigService.instance.setPaywallDisabledForTesting(true);
+
+          // Login and then logout
+          await service.login('test-user-123');
+          await service.logout();
+
+          // hasPremiumAccess should be false after logout
+          expect(service.hasPremiumAccess, isFalse);
+        },
+      );
+
+      test(
+        'currentTier remains free even when paywall disabled gives premium access',
+        () async {
+          // Enable paywall bypass
+          RemoteConfigService.instance.setPaywallDisabledForTesting(true);
+
+          // Login user
+          await service.login('test-user-123');
+
+          // currentTier should still be free (they don't have a real subscription)
+          expect(service.currentTier, equals(PremiumTier.free));
+
+          // But hasPremiumAccess should be true
+          expect(service.hasPremiumAccess, isTrue);
+
+          // Clean up
+          await service.logout();
+        },
+      );
     });
   });
 }

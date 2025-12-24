@@ -52,6 +52,7 @@ class RemoteConfigService {
 
   // Premium Features
   bool _premiumEnabled = true;
+  bool _premiumPaywallDisabled = false;
   int _premiumFreeSessionDuration = 15;
   int _premiumFreeMaxViewers = 3;
   int _premiumFreeSessionsPerDay = 2;
@@ -111,6 +112,7 @@ class RemoteConfigService {
 
       // Premium Features
       'premium_enabled': true,
+      'premium_paywall_disabled': false,
       'premium_free_session_duration': 15,
       'premium_free_max_viewers': 3,
       'premium_free_sessions_per_day': 2,
@@ -181,6 +183,9 @@ class RemoteConfigService {
 
     // Premium Features
     _premiumEnabled = _remoteConfig.getBool('premium_enabled');
+    _premiumPaywallDisabled = _remoteConfig.getBool(
+      'premium_paywall_disabled',
+    );
     _premiumFreeSessionDuration = _remoteConfig.getInt(
       'premium_free_session_duration',
     );
@@ -395,6 +400,12 @@ class RemoteConfigService {
   /// Whether premium features are enabled globally
   bool get premiumEnabled => _premiumEnabled;
 
+  /// Whether the paywall is disabled globally
+  ///
+  /// When true, all authenticated users receive premium features for free.
+  /// Useful for beta testing, promotions, or emergency paywall disabling.
+  bool get premiumPaywallDisabled => _premiumPaywallDisabled;
+
   /// Whether to show paywall when limits are reached
   bool get showPaywallOnLimit => _premiumShowPaywallOnLimit;
 
@@ -438,5 +449,21 @@ class RemoteConfigService {
       discountPercentage: discount.discountPercentage,
       discountReason: discount.reason,
     );
+  }
+
+  // =============================================================================
+  // TESTING SUPPORT
+  // =============================================================================
+
+  /// Set the premiumPaywallDisabled flag for testing
+  @visibleForTesting
+  void setPaywallDisabledForTesting(bool disabled) {
+    _premiumPaywallDisabled = disabled;
+  }
+
+  /// Reset the instance for testing
+  @visibleForTesting
+  static void resetInstance() {
+    _instance = null;
   }
 }
