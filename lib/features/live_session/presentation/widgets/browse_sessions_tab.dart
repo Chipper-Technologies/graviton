@@ -106,8 +106,9 @@ class _BrowseSessionsTabState extends State<BrowseSessionsTab> {
     // If password protected, show password dialog
     if (session.isPasswordProtected) {
       final password = await _showPasswordDialog(context);
-      if (password == null || !mounted)
+      if (password == null || !mounted) {
         return; // User cancelled or widget disposed
+      }
 
       final success = await liveSession.startViewing(
         session.id,

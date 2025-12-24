@@ -374,7 +374,7 @@ void main() {
     testWidgets('should handle onSessionJoined callback correctly', (
       WidgetTester tester,
     ) async {
-      var callbackSession;
+      LiveSession? callbackSession;
 
       await tester.pumpWidget(
         createTestWidget(
