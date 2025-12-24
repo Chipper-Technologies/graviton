@@ -190,6 +190,8 @@ void main() {
       when(mockLiveSession.hostedSessionId).thenReturn(null);
       when(mockLiveSession.stopHosting()).thenAnswer((_) async => true);
       when(mockLiveSession.stopViewing()).thenAnswer((_) async => true);
+      when(mockLiveSession.syncCameraWithViewers).thenReturn(false);
+      when(mockLiveSession.latestSnapshot).thenReturn(null);
     });
 
     tearDown(() {

@@ -1164,6 +1164,8 @@
   "liveSessionPasswordDescription": "观众需要输入此密码才能加入您的会话",
   "liveSessionCameraSync": "相机同步",
   "liveSessionCameraSyncDescription": "观众将看到与您相同的相机角度和移动",
+  "liveSessionCameraSyncActive": "相机已同步",
+  "liveSessionCameraSyncViewerActive": "相机由主持人控制",
   "liveSessionPasswordRequired": "请输入密码",
   "liveSessionEnterPassword": "输入密码",
   "liveSessionPasswordHint": "会话密码",

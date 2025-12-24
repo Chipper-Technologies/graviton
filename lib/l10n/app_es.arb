@@ -1164,6 +1164,8 @@
   "liveSessionPasswordDescription": "Los espectadores necesitarán introducir esta contraseña para unirse a tu sesión",
   "liveSessionCameraSync": "Sincronización de Cámara",
   "liveSessionCameraSyncDescription": "Los espectadores verán el mismo ángulo de cámara y movimientos que tú",
+  "liveSessionCameraSyncActive": "Cámara sincronizada",
+  "liveSessionCameraSyncViewerActive": "Cámara controlada por el anfitrión",
   "liveSessionPasswordRequired": "Por favor, introduce una contraseña",
   "liveSessionEnterPassword": "Introducir Contraseña",
   "liveSessionPasswordHint": "Contraseña de sesión",

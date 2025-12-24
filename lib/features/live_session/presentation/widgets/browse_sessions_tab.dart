@@ -571,6 +571,31 @@ class _ViewingCard extends StatelessWidget {
                   fontSize: AppTypography.fontSizeMedium,
                 ),
               ),
+              // Camera sync indicator for viewers
+              if (liveSession.latestSnapshot?.hasCameraSync ?? false) ...[
+                const SizedBox(height: AppTypography.spacingSmall),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.videocam,
+                      color: AppColors.uiWhite.withValues(
+                        alpha: AppTypography.opacityMedium,
+                      ),
+                      size: AppTypography.iconSizeSmall,
+                    ),
+                    const SizedBox(width: AppTypography.spacingXSmall),
+                    Text(
+                      l10n.liveSessionCameraSyncViewerActive,
+                      style: TextStyle(
+                        color: AppColors.uiWhite.withValues(
+                          alpha: AppTypography.opacityMedium,
+                        ),
+                        fontSize: AppTypography.fontSizeXSmall,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ],
             const SizedBox(height: AppTypography.spacingLarge),
             SizedBox(

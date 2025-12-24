@@ -11049,6 +11049,17 @@ class MockAppLocalizations extends _i1.Mock implements _i8.AppLocalizations {
           as String);
 
   @override
+  String get liveSessionYourSession =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionYourSession),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionYourSession),
+            ),
+          )
+          as String);
+
+  @override
   String get liveSessionLeave =>
       (super.noSuchMethod(
             Invocation.getter(#liveSessionLeave),
@@ -11132,6 +11143,28 @@ class MockAppLocalizations extends _i1.Mock implements _i8.AppLocalizations {
             returnValue: _i9.dummyValue<String>(
               this,
               Invocation.getter(#liveSessionStatusError),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionTapForSettings =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionTapForSettings),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionTapForSettings),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionIndicatorTooltip =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionIndicatorTooltip),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionIndicatorTooltip),
             ),
           )
           as String);
@@ -11319,6 +11352,50 @@ class MockAppLocalizations extends _i1.Mock implements _i8.AppLocalizations {
             returnValue: _i9.dummyValue<String>(
               this,
               Invocation.getter(#liveSessionPasswordDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionCameraSync =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionCameraSync),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionCameraSync),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionCameraSyncDescription =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionCameraSyncDescription),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionCameraSyncDescription),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionCameraSyncActive =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionCameraSyncActive),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionCameraSyncActive),
+            ),
+          )
+          as String);
+
+  @override
+  String get liveSessionCameraSyncViewerActive =>
+      (super.noSuchMethod(
+            Invocation.getter(#liveSessionCameraSyncViewerActive),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#liveSessionCameraSyncViewerActive),
             ),
           )
           as String);
@@ -12688,6 +12765,17 @@ class MockAppLocalizations extends _i1.Mock implements _i8.AppLocalizations {
             returnValue: _i9.dummyValue<String>(
               this,
               Invocation.method(#liveSessionScenario, [scenarioName]),
+            ),
+          )
+          as String);
+
+  @override
+  String liveSessionConnectionStatusLabel(String? status) =>
+      (super.noSuchMethod(
+            Invocation.method(#liveSessionConnectionStatusLabel, [status]),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.method(#liveSessionConnectionStatusLabel, [status]),
             ),
           )
           as String);

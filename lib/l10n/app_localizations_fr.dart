@@ -3966,6 +3966,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Les spectateurs verront le même angle de caméra et les mêmes mouvements que vous';
 
   @override
+  String get liveSessionCameraSyncActive => 'Caméra synchronisée';
+
+  @override
+  String get liveSessionCameraSyncViewerActive =>
+      'Caméra contrôlée par l\'hôte';
+
+  @override
   String get liveSessionPasswordRequired => 'Veuillez entrer un mot de passe';
 
   @override

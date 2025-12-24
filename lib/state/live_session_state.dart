@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart' show ChangeNotifier, kDebugMode;
+import 'package:flutter/foundation.dart' show ChangeNotifier;
 import 'package:graviton/core/enums/live_session_connection_status.dart';
 import 'package:graviton/models/firebase/live_session.dart';
 import 'package:graviton/models/firebase/simulation_snapshot.dart';
@@ -404,10 +404,6 @@ class LiveSessionState extends ChangeNotifier {
         notifyListeners();
       },
       onError: (Object error) {
-        if (kDebugMode) {
-          // ignore: avoid_print
-          print('LiveSessionState: Error loading sessions: $error');
-        }
         _isLoadingSessions = false;
         notifyListeners();
       },

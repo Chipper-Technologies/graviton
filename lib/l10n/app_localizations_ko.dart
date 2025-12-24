@@ -3710,6 +3710,12 @@ class AppLocalizationsKo extends AppLocalizations {
       '시청자는 당신과 동일한 카메라 각도와 움직임을 볼 수 있습니다';
 
   @override
+  String get liveSessionCameraSyncActive => '카메라 동기화됨';
+
+  @override
+  String get liveSessionCameraSyncViewerActive => '호스트가 카메라 제어 중';
+
+  @override
   String get liveSessionPasswordRequired => '비밀번호를 입력하세요';
 
   @override

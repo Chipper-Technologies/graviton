@@ -3699,6 +3699,12 @@ class AppLocalizationsJa extends AppLocalizations {
       '視聴者はあなたと同じカメラアングルと動きを見ることができます';
 
   @override
+  String get liveSessionCameraSyncActive => 'カメラ同期中';
+
+  @override
+  String get liveSessionCameraSyncViewerActive => 'ホストがカメラを制御中';
+
+  @override
   String get liveSessionPasswordRequired => 'パスワードを入力してください';
 
   @override

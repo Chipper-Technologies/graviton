@@ -3961,6 +3961,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Los espectadores verán el mismo ángulo de cámara y movimientos que tú';
 
   @override
+  String get liveSessionCameraSyncActive => 'Cámara sincronizada';
+
+  @override
+  String get liveSessionCameraSyncViewerActive =>
+      'Cámara controlada por el anfitrión';
+
+  @override
   String get liveSessionPasswordRequired =>
       'Por favor, introduce una contraseña';
 

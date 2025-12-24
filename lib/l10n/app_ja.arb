@@ -1164,6 +1164,8 @@
   "liveSessionPasswordDescription": "視聴者はセッションに参加するためにこのパスワードを入力する必要があります",
   "liveSessionCameraSync": "カメラ同期",
   "liveSessionCameraSyncDescription": "視聴者はあなたと同じカメラアングルと動きを見ることができます",
+  "liveSessionCameraSyncActive": "カメラ同期中",
+  "liveSessionCameraSyncViewerActive": "ホストがカメラを制御中",
   "liveSessionPasswordRequired": "パスワードを入力してください",
   "liveSessionEnterPassword": "パスワードを入力",
   "liveSessionPasswordHint": "セッションパスワード",

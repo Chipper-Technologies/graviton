@@ -3671,6 +3671,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get liveSessionCameraSyncDescription => '观众将看到与您相同的相机角度和移动';
 
   @override
+  String get liveSessionCameraSyncActive => '相机已同步';
+
+  @override
+  String get liveSessionCameraSyncViewerActive => '相机由主持人控制';
+
+  @override
   String get liveSessionPasswordRequired => '请输入密码';
 
   @override

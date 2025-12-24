@@ -5072,6 +5072,14 @@
   "@liveSessionCameraSyncDescription": {
     "description": "Help text explaining camera synchronization feature"
   },
+  "liveSessionCameraSyncActive": "Camera synced",
+  "@liveSessionCameraSyncActive": {
+    "description": "Status indicator showing camera sync is active for host"
+  },
+  "liveSessionCameraSyncViewerActive": "Camera controlled by host",
+  "@liveSessionCameraSyncViewerActive": {
+    "description": "Status indicator showing viewer camera is being controlled by host"
+  },
   "liveSessionPasswordRequired": "Please enter a password",
   "@liveSessionPasswordRequired": {
     "description": "Error message when password is required but not entered"

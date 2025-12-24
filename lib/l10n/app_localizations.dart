@@ -6856,6 +6856,18 @@ abstract class AppLocalizations {
   /// **'Viewers will see the same camera angle and movements as you'**
   String get liveSessionCameraSyncDescription;
 
+  /// Status indicator showing camera sync is active for host
+  ///
+  /// In en, this message translates to:
+  /// **'Camera synced'**
+  String get liveSessionCameraSyncActive;
+
+  /// Status indicator showing viewer camera is being controlled by host
+  ///
+  /// In en, this message translates to:
+  /// **'Camera controlled by host'**
+  String get liveSessionCameraSyncViewerActive;
+
   /// Error message when password is required but not entered
   ///
   /// In en, this message translates to:

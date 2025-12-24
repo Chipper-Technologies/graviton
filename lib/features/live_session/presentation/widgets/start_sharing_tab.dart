@@ -189,7 +189,6 @@ class _StartSharingTabState extends State<StartSharingTab> {
               liveSession.setSyncCameraWithViewers(value);
             },
           ),
-          const SizedBox(height: AppTypography.spacingMedium),
 
           // Start hosting button
           SizedBox(
@@ -297,6 +296,31 @@ class _StartSharingTabState extends State<StartSharingTab> {
                           fontSize: AppTypography.fontSizeSmall,
                         ),
                       ),
+                      // Camera sync status
+                      if (liveSession.syncCameraWithViewers) ...[
+                        const SizedBox(height: AppTypography.spacingXSmall),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.videocam,
+                              color: AppColors.uiWhite.withValues(
+                                alpha: AppTypography.opacityMedium,
+                              ),
+                              size: AppTypography.iconSizeSmall,
+                            ),
+                            const SizedBox(width: AppTypography.spacingXSmall),
+                            Text(
+                              l10n.liveSessionCameraSyncActive,
+                              style: TextStyle(
+                                color: AppColors.uiWhite.withValues(
+                                  alpha: AppTypography.opacityMedium,
+                                ),
+                                fontSize: AppTypography.fontSizeXSmall,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -415,7 +439,6 @@ class _StartSharingTabState extends State<StartSharingTab> {
               liveSession.setSyncCameraWithViewers(value);
             },
           ),
-          const SizedBox(height: AppTypography.spacingMedium),
 
           // Update session button
           SizedBox(

@@ -5,6 +5,7 @@ import 'package:graviton/features/live_session/presentation/widgets/start_sharin
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/state/live_session_state.dart';
+import 'package:graviton/widgets/common/toggle_option.dart';
 import 'package:graviton/widgets/live_session/connection_status_indicator.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -95,7 +96,8 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Password Protection'), findsOneWidget);
-      expect(find.byType(Switch), findsOneWidget);
+      // There are 2 switches now (password protection and camera sync)
+      expect(find.byType(Switch), findsNWidgets(2));
     });
 
     testWidgets('should accept callbacks', (WidgetTester tester) async {
@@ -168,6 +170,7 @@ void main() {
       when(mockLiveSession.viewerCount).thenReturn(0);
       when(mockLiveSession.currentSession).thenReturn(null);
       when(mockLiveSession.hostedSession).thenReturn(null);
+      when(mockLiveSession.syncCameraWithViewers).thenReturn(false);
     });
 
     tearDown(() {
@@ -220,16 +223,15 @@ void main() {
       await tester.pumpWidget(createMockedTestWidget());
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Find the switch
-      final switchFinder = find.byType(Switch);
-      expect(switchFinder, findsOneWidget);
-
-      // Initially should be off
-      Switch switchWidget = tester.widget(switchFinder);
-      expect(switchWidget.value, isFalse);
+      // Find the password protection toggle by its text
+      final passwordToggle = find.ancestor(
+        of: find.text('Password Protection'),
+        matching: find.byType(ToggleOption),
+      );
+      expect(passwordToggle, findsOneWidget);
 
       // Tap to toggle on
-      await tester.tap(switchFinder);
+      await tester.tap(passwordToggle);
       await tester.pump();
 
       // Should now show password input
@@ -244,8 +246,12 @@ void main() {
       await tester.pumpWidget(createMockedTestWidget());
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Toggle password protection on
-      await tester.tap(find.byType(Switch));
+      // Find and tap the password protection toggle
+      final passwordToggle = find.ancestor(
+        of: find.text('Password Protection'),
+        matching: find.byType(ToggleOption),
+      );
+      await tester.tap(passwordToggle);
       await tester.pump();
 
       // Should show password input field (2 TextFields: session name + password)
@@ -296,8 +302,12 @@ void main() {
       await tester.pumpWidget(createMockedTestWidget());
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Toggle password protection on
-      await tester.tap(find.byType(Switch));
+      // Find and tap the password protection toggle
+      final passwordToggle = find.ancestor(
+        of: find.text('Password Protection'),
+        matching: find.byType(ToggleOption),
+      );
+      await tester.tap(passwordToggle);
       await tester.pump();
 
       // Enter password (find the password field by hint text)
@@ -325,8 +335,12 @@ void main() {
       await tester.pumpWidget(createMockedTestWidget());
       await tester.pump(const Duration(milliseconds: 100));
 
-      // Toggle password protection on
-      await tester.tap(find.byType(Switch));
+      // Find and tap the password protection toggle
+      final passwordToggle = find.ancestor(
+        of: find.text('Password Protection'),
+        matching: find.byType(ToggleOption),
+      );
+      await tester.tap(passwordToggle);
       await tester.pump();
 
       // Try to start hosting without password
@@ -479,8 +493,12 @@ void main() {
       // Initially shows unlock icon
       expect(find.byIcon(Icons.lock_open), findsOneWidget);
 
-      // Toggle password protection
-      await tester.tap(find.byType(Switch));
+      // Find and tap the password protection toggle
+      final passwordToggle = find.ancestor(
+        of: find.text('Password Protection'),
+        matching: find.byType(ToggleOption),
+      );
+      await tester.tap(passwordToggle);
       await tester.pump();
 
       // Should show lock icon
@@ -509,6 +527,36 @@ void main() {
 
         // Hosting banner has wifi_tethering icon
         expect(find.byIcon(Icons.wifi_tethering), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'should show camera sync indicator when syncCameraWithViewers is enabled',
+      (WidgetTester tester) async {
+        when(mockLiveSession.isHosting).thenReturn(true);
+        when(mockLiveSession.viewerCount).thenReturn(2);
+        when(mockLiveSession.syncCameraWithViewers).thenReturn(true);
+
+        await tester.pumpWidget(createMockedTestWidget());
+        await tester.pump(const Duration(milliseconds: 100));
+
+        // Camera sync indicator text should be visible in the hosting banner
+        expect(find.text('Camera synced'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'should not show camera sync indicator when syncCameraWithViewers is disabled',
+      (WidgetTester tester) async {
+        when(mockLiveSession.isHosting).thenReturn(true);
+        when(mockLiveSession.viewerCount).thenReturn(2);
+        when(mockLiveSession.syncCameraWithViewers).thenReturn(false);
+
+        await tester.pumpWidget(createMockedTestWidget());
+        await tester.pump(const Duration(milliseconds: 100));
+
+        // Camera sync indicator should not be visible
+        expect(find.text('Camera synced'), findsNothing);
       },
     );
   });

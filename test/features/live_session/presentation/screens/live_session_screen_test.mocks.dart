@@ -91,9 +91,23 @@ class MockLiveSessionState extends _i1.Mock implements _i2.LiveSessionState {
           as bool);
 
   @override
+  bool get syncCameraWithViewers =>
+      (super.noSuchMethod(
+            Invocation.getter(#syncCameraWithViewers),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
   bool get hasListeners =>
       (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
           as bool);
+
+  @override
+  void setSyncCameraWithViewers(bool? value) => super.noSuchMethod(
+    Invocation.method(#setSyncCameraWithViewers, [value]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void clearError() => super.noSuchMethod(

@@ -3,7 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/features/live_session/presentation/widgets/browse_sessions_tab.dart';
 import 'package:graviton/l10n/app_localizations.dart';
+import 'package:graviton/models/firebase/camera_snapshot.dart';
 import 'package:graviton/models/firebase/live_session.dart';
+import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/state/live_session_state.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
@@ -11,6 +13,7 @@ import 'package:graviton/widgets/haptics/haptic_text_button.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
+import 'package:vector_math/vector_math_64.dart' as vm;
 
 import 'browse_sessions_tab_test.mocks.dart';
 
@@ -171,6 +174,7 @@ void main() {
       when(mockLiveSession.activeSessions).thenReturn([]);
       when(mockLiveSession.isLoadingSessions).thenReturn(false);
       when(mockLiveSession.hostedSessionId).thenReturn(null);
+      when(mockLiveSession.latestSnapshot).thenReturn(null);
     });
 
     tearDown(() {
@@ -294,6 +298,107 @@ void main() {
       expect(find.textContaining('Current Host'), findsOneWidget);
       expect(find.textContaining('Leave'), findsOneWidget);
     });
+
+    testWidgets(
+      'should show camera sync indicator when host has camera sync enabled',
+      (WidgetTester tester) async {
+        final session = createMockSession(
+          id: 'viewing-session',
+          hostName: 'Current Host',
+          scenarioName: 'Current Scenario',
+        );
+
+        // Create a snapshot with camera sync (has camera data)
+        final snapshotWithCamera = SimulationSnapshot(
+          bodies: [],
+          isRunning: true,
+          timeScale: 1.0,
+          totalTime: 100.0,
+          stepCount: 50,
+          timestamp: DateTime.now(),
+          camera: CameraSnapshot(
+            yaw: 0.0,
+            pitch: 0.0,
+            roll: 0.0,
+            distance: 100.0,
+            target: vm.Vector3.zero(),
+            followMode: false,
+            autoRotate: false,
+            fieldOfView: 60.0,
+          ),
+        );
+
+        when(mockLiveSession.isViewing).thenReturn(true);
+        when(mockLiveSession.currentSession).thenReturn(session);
+        when(mockLiveSession.isLoadingSessions).thenReturn(false);
+        when(mockLiveSession.activeSessions).thenReturn([]);
+        when(mockLiveSession.latestSnapshot).thenReturn(snapshotWithCamera);
+
+        await tester.pumpWidget(createMockedTestWidget());
+        await tester.pump(const Duration(milliseconds: 100));
+
+        // Camera sync indicator should be visible
+        expect(find.byIcon(Icons.videocam), findsOneWidget);
+        expect(find.text('Camera controlled by host'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'should not show camera sync indicator when host has no camera sync',
+      (WidgetTester tester) async {
+        final session = createMockSession(
+          id: 'viewing-session',
+          hostName: 'Current Host',
+          scenarioName: 'Current Scenario',
+        );
+
+        // Create a snapshot without camera sync (no camera data)
+        final snapshotWithoutCamera = SimulationSnapshot(
+          bodies: [],
+          isRunning: true,
+          timeScale: 1.0,
+          totalTime: 100.0,
+          stepCount: 50,
+          timestamp: DateTime.now(),
+          camera: null,
+        );
+
+        when(mockLiveSession.isViewing).thenReturn(true);
+        when(mockLiveSession.currentSession).thenReturn(session);
+        when(mockLiveSession.isLoadingSessions).thenReturn(false);
+        when(mockLiveSession.activeSessions).thenReturn([]);
+        when(mockLiveSession.latestSnapshot).thenReturn(snapshotWithoutCamera);
+
+        await tester.pumpWidget(createMockedTestWidget());
+        await tester.pump(const Duration(milliseconds: 100));
+
+        // Camera sync indicator should not be visible
+        expect(find.text('Camera controlled by host'), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'should not show camera sync indicator when no snapshot available',
+      (WidgetTester tester) async {
+        final session = createMockSession(
+          id: 'viewing-session',
+          hostName: 'Current Host',
+          scenarioName: 'Current Scenario',
+        );
+
+        when(mockLiveSession.isViewing).thenReturn(true);
+        when(mockLiveSession.currentSession).thenReturn(session);
+        when(mockLiveSession.isLoadingSessions).thenReturn(false);
+        when(mockLiveSession.activeSessions).thenReturn([]);
+        when(mockLiveSession.latestSnapshot).thenReturn(null);
+
+        await tester.pumpWidget(createMockedTestWidget());
+        await tester.pump(const Duration(milliseconds: 100));
+
+        // Camera sync indicator should not be visible
+        expect(find.text('Camera controlled by host'), findsNothing);
+      },
+    );
 
     testWidgets('should show description text', (WidgetTester tester) async {
       when(mockLiveSession.isLoadingSessions).thenReturn(false);

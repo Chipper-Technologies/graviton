@@ -166,9 +166,9 @@ class FirebaseService {
 
       // Check if we should sample this event
       if (!remoteConfigService.shouldSampleAnalytics()) {
-        if (kDebugMode) {
-          debugPrint('Event $name skipped due to sampling rate');
-        }
+        // if (kDebugMode) {
+        //   debugPrint('Event $name skipped due to sampling rate');
+        // }
         return;
       }
 

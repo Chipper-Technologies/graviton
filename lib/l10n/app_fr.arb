@@ -1164,6 +1164,8 @@
   "liveSessionPasswordDescription": "Les spectateurs devront entrer ce mot de passe pour rejoindre votre session",
   "liveSessionCameraSync": "Synchronisation de la Caméra",
   "liveSessionCameraSyncDescription": "Les spectateurs verront le même angle de caméra et les mêmes mouvements que vous",
+  "liveSessionCameraSyncActive": "Caméra synchronisée",
+  "liveSessionCameraSyncViewerActive": "Caméra contrôlée par l'hôte",
   "liveSessionPasswordRequired": "Veuillez entrer un mot de passe",
   "liveSessionEnterPassword": "Entrer le Mot de Passe",
   "liveSessionPasswordHint": "Mot de passe de session",
