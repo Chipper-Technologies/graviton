@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graviton/core/enums/ab_test_group.dart';
 import 'package:graviton/core/enums/custom_message_type.dart';
 import 'package:graviton/core/enums/user_behavior_tracking_mode.dart';
+import 'package:graviton/features/premium/domain/premium_limits.dart';
+import 'package:graviton/features/premium/domain/premium_pricing.dart';
+import 'package:graviton/features/premium/domain/targeted_discount.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 
 /// Service for managing all Firebase Remote Config features
@@ -44,6 +49,19 @@ class RemoteConfigService {
   bool _customMessageDismissible = true;
   bool _customMessagePersistent = false;
   String _customMessageExpiry = '';
+
+  // Premium Features
+  bool _premiumEnabled = true;
+  int _premiumFreeSessionDuration = 15;
+  int _premiumFreeMaxViewers = 3;
+  int _premiumFreeSessionsPerDay = 2;
+  double _premiumMonthlyPrice = 2.99;
+  double _premiumYearlyPrice = 19.99;
+  double _premiumLifetimePrice = 39.99;
+  bool _premiumShowPaywallOnLimit = true;
+  String _premiumTargetedDiscounts = '[]';
+  bool _premiumCameraSyncRequiresPremium = true;
+  bool _premiumPasswordRequiresPremium = true;
 
   /// Initialize the remote config service
   Future<void> initialize() async {
@@ -90,6 +108,19 @@ class RemoteConfigService {
       'custom_message_dismissible': true,
       'custom_message_persistent': false,
       'custom_message_expiry': '',
+
+      // Premium Features
+      'premium_enabled': true,
+      'premium_free_session_duration': 15,
+      'premium_free_max_viewers': 3,
+      'premium_free_sessions_per_day': 2,
+      'premium_monthly_price': 2.99,
+      'premium_yearly_price': 19.99,
+      'premium_lifetime_price': 39.99,
+      'premium_show_paywall_on_limit': true,
+      'premium_targeted_discounts': '[]',
+      'premium_camera_sync_requires_premium': true,
+      'premium_password_requires_premium': true,
     });
   }
 
@@ -147,6 +178,31 @@ class RemoteConfigService {
       'custom_message_persistent',
     );
     _customMessageExpiry = _remoteConfig.getString('custom_message_expiry');
+
+    // Premium Features
+    _premiumEnabled = _remoteConfig.getBool('premium_enabled');
+    _premiumFreeSessionDuration = _remoteConfig.getInt(
+      'premium_free_session_duration',
+    );
+    _premiumFreeMaxViewers = _remoteConfig.getInt('premium_free_max_viewers');
+    _premiumFreeSessionsPerDay = _remoteConfig.getInt(
+      'premium_free_sessions_per_day',
+    );
+    _premiumMonthlyPrice = _remoteConfig.getDouble('premium_monthly_price');
+    _premiumYearlyPrice = _remoteConfig.getDouble('premium_yearly_price');
+    _premiumLifetimePrice = _remoteConfig.getDouble('premium_lifetime_price');
+    _premiumShowPaywallOnLimit = _remoteConfig.getBool(
+      'premium_show_paywall_on_limit',
+    );
+    _premiumTargetedDiscounts = _remoteConfig.getString(
+      'premium_targeted_discounts',
+    );
+    _premiumCameraSyncRequiresPremium = _remoteConfig.getBool(
+      'premium_camera_sync_requires_premium',
+    );
+    _premiumPasswordRequiresPremium = _remoteConfig.getBool(
+      'premium_password_requires_premium',
+    );
   }
 
   /// Refresh remote config values
@@ -330,5 +386,57 @@ class RemoteConfigService {
     }
 
     return true; // News banners are dismissible by default
+  }
+
+  // =============================================================================
+  // PREMIUM FEATURE GETTERS
+  // =============================================================================
+
+  /// Whether premium features are enabled globally
+  bool get premiumEnabled => _premiumEnabled;
+
+  /// Whether to show paywall when limits are reached
+  bool get showPaywallOnLimit => _premiumShowPaywallOnLimit;
+
+  /// Get premium limits from remote config
+  PremiumLimits get premiumLimits => PremiumLimits(
+    freeSessionDurationMinutes: _premiumFreeSessionDuration,
+    freeMaxViewers: _premiumFreeMaxViewers,
+    freeSessionsPerDay: _premiumFreeSessionsPerDay,
+    premiumMaxViewers: 25, // Fixed for premium tier
+    cameraSyncRequiresPremium: _premiumCameraSyncRequiresPremium,
+    passwordRequiresPremium: _premiumPasswordRequiresPremium,
+  );
+
+  /// Get premium pricing from remote config
+  PremiumPricing get premiumPricing => PremiumPricing(
+    monthlyPriceUsd: _premiumMonthlyPrice,
+    yearlyPriceUsd: _premiumYearlyPrice,
+    lifetimePriceUsd: _premiumLifetimePrice,
+  );
+
+  /// Get targeted discounts for a specific user
+  TargetedDiscount? getTargetedDiscountForUser(String? userId) {
+    if (userId == null || userId.isEmpty) return null;
+
+    try {
+      final discountsJson = jsonDecode(_premiumTargetedDiscounts) as List;
+      final discounts = TargetedDiscount.parseList(discountsJson);
+      return discounts.where((d) => d.userId == userId).firstOrNull;
+    } catch (e) {
+      debugPrint('Failed to parse targeted discounts: $e');
+      return null;
+    }
+  }
+
+  /// Get premium pricing with targeted discount applied for a user
+  PremiumPricing getPricingForUser(String? userId) {
+    final discount = getTargetedDiscountForUser(userId);
+    if (discount == null) return premiumPricing;
+
+    return premiumPricing.copyWith(
+      discountPercentage: discount.discountPercentage,
+      discountReason: discount.reason,
+    );
   }
 }

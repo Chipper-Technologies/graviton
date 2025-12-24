@@ -3965,4 +3965,152 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get liveSessionSettings => 'Session Settings';
+
+  @override
+  String get premiumTierFree => 'Free';
+
+  @override
+  String get premiumTierPremium => 'Premium';
+
+  @override
+  String get premiumTierLifetime => 'Lifetime';
+
+  @override
+  String get premiumTitle => 'Graviton Premium';
+
+  @override
+  String get premiumSubtitle => 'Unlock unlimited Live Sessions';
+
+  @override
+  String get premiumBenefitUnlimitedDuration => 'Unlimited Session Duration';
+
+  @override
+  String get premiumBenefitUnlimitedDurationDesc =>
+      'Host sessions as long as you want';
+
+  @override
+  String premiumBenefitViewers(int count) {
+    return 'Up to $count Viewers';
+  }
+
+  @override
+  String get premiumBenefitViewersDesc => 'Share with larger audiences';
+
+  @override
+  String get premiumBenefitCameraSync => 'Camera Sync';
+
+  @override
+  String get premiumBenefitCameraSyncDesc =>
+      'Synchronize views across all viewers';
+
+  @override
+  String get premiumBenefitPassword => 'Password Protection';
+
+  @override
+  String get premiumBenefitPasswordDesc => 'Keep your sessions private';
+
+  @override
+  String get premiumBenefitUnlimitedSessions => 'Unlimited Sessions Per Day';
+
+  @override
+  String get premiumBenefitUnlimitedSessionsDesc =>
+      'No daily limits on hosting';
+
+  @override
+  String get premiumPlanMonthly => 'Monthly';
+
+  @override
+  String get premiumPlanYearly => 'Yearly';
+
+  @override
+  String get premiumPlanLifetime => 'Lifetime';
+
+  @override
+  String get premiumPeriodMonth => '/month';
+
+  @override
+  String get premiumPeriodYear => '/year';
+
+  @override
+  String get premiumPeriodOneTime => ' one-time';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Save $percent%';
+  }
+
+  @override
+  String get premiumBestValue => 'Best Value';
+
+  @override
+  String get premiumStartFreeTrial => 'Start Free Trial';
+
+  @override
+  String get premiumBuyNow => 'Buy Now';
+
+  @override
+  String get premiumRestorePurchases => 'Restore Purchases';
+
+  @override
+  String get premiumLegalText =>
+      'Subscriptions will automatically renew unless cancelled at least 24 hours before the end of the current period. You can manage your subscriptions in your App Store settings.';
+
+  @override
+  String get premiumUpgrade => 'Upgrade';
+
+  @override
+  String get premiumUpgradeToPremium => 'Upgrade to Premium';
+
+  @override
+  String get premiumSessionExpired => 'Session Expired';
+
+  @override
+  String get premiumSessionExpiredMessage =>
+      'Your free session time has ended. Your live session has been stopped.';
+
+  @override
+  String get premiumUnlimitedSessionsHint =>
+      'Upgrade to Premium for unlimited session time';
+
+  @override
+  String get premiumTimeRemaining => 'Time Remaining';
+
+  @override
+  String get premiumSessionLimitReached => 'Session Limit Reached';
+
+  @override
+  String premiumSessionLimitMessage(int count) {
+    return 'You\'ve reached your daily limit of $count sessions. Upgrade to Premium for unlimited sessions.';
+  }
+
+  @override
+  String premiumDurationLimitMessage(int minutes) {
+    return 'Free sessions are limited to $minutes minutes. Upgrade for unlimited session time.';
+  }
+
+  @override
+  String get premiumFeatureRequiresPremium => 'This feature requires Premium';
+
+  @override
+  String get premiumPurchaseFailed => 'Purchase failed. Please try again.';
+
+  @override
+  String get premiumRestoreFailed =>
+      'Could not restore purchases. Please try again.';
+
+  @override
+  String get premiumRestoreSuccess => 'Purchases restored successfully!';
+
+  @override
+  String get premiumNoPurchasesToRestore =>
+      'No previous purchases found to restore.';
+
+  @override
+  String get premiumRedirectingToPayment => 'Redirecting to secure payment...';
+
+  @override
+  String get premiumFreeTierLabel => 'Free';
+
+  @override
+  String get premiumProBadge => 'PRO';
 }

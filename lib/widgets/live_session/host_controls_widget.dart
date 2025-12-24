@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/features/premium/presentation/paywall_screen.dart';
+import 'package:graviton/features/premium/presentation/premium_state.dart';
+import 'package:graviton/features/premium/presentation/widgets/session_expired_dialog.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/state/live_session_state.dart';
 import 'package:graviton/theme/app_colors.dart';
 import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
+import 'package:graviton/widgets/live_session/viewer_count_badge.dart';
 import 'package:provider/provider.dart';
 
 /// A compact widget for controlling live session hosting
@@ -26,7 +30,7 @@ import 'package:provider/provider.dart';
 ///   onHostingStopped: () => print('Stopped hosting'),
 /// )
 /// ```
-class HostControlsWidget extends StatelessWidget {
+class HostControlsWidget extends StatefulWidget {
   /// The application state containing live session state
   final AppState appState;
 
@@ -46,6 +50,33 @@ class HostControlsWidget extends StatelessWidget {
     this.onHostingStarted,
     this.onHostingStopped,
   });
+
+  @override
+  State<HostControlsWidget> createState() => _HostControlsWidgetState();
+}
+
+class _HostControlsWidgetState extends State<HostControlsWidget> {
+  PremiumState? _premiumState;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Set up session expiration callback
+    _premiumState = Provider.of<PremiumState>(context, listen: false);
+    _premiumState?.onSessionExpired = _handleSessionExpired;
+  }
+
+  @override
+  void dispose() {
+    // Clean up the callback
+    _premiumState?.onSessionExpired = null;
+    super.dispose();
+  }
+
+  void _handleSessionExpired() {
+    // Auto-stop hosting when session expires
+    _stopHosting(context, showDialog: true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +136,7 @@ class HostControlsWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              if (isHosting) ...[_ViewerCountBadge(count: viewerCount)],
+              if (isHosting) ...[ViewerCountBadge(count: viewerCount)],
             ],
           ),
           const SizedBox(height: AppTypography.spacingSmall),
@@ -119,63 +150,76 @@ class HostControlsWidget extends StatelessWidget {
   }
 
   Future<void> _startHosting(BuildContext context) async {
+    final premiumState = Provider.of<PremiumState>(context, listen: false);
+    final l10n = AppLocalizations.of(context)!;
+
+    // Check premium limits before starting
+    if (!premiumState.canStartSession) {
+      // Show session limit dialog
+      final shouldUpgrade = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(l10n.premiumSessionLimitReached),
+          content: Text(
+            l10n.premiumSessionLimitMessage(
+              premiumState.limits.freeSessionsPerDay,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(l10n.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(l10n.premiumUpgrade),
+            ),
+          ],
+        ),
+      );
+
+      if (shouldUpgrade == true && context.mounted) {
+        await PaywallScreen.show(context);
+      }
+      return;
+    }
+
+    // Start the session and record usage
     final liveSession = Provider.of<LiveSessionState>(context, listen: false);
-    final success = await liveSession.startHosting(scenarioName: scenarioName);
+    final success = await liveSession.startHosting(
+      scenarioName: widget.scenarioName,
+    );
 
     if (success) {
-      onHostingStarted?.call();
+      // Start usage tracking for the session
+      premiumState.startSessionTracking();
+      widget.onHostingStarted?.call();
     }
   }
 
-  Future<void> _stopHosting(BuildContext context) async {
+  Future<void> _stopHosting(
+    BuildContext context, {
+    bool showDialog = false,
+  }) async {
     final liveSession = Provider.of<LiveSessionState>(context, listen: false);
+    final premiumState = Provider.of<PremiumState>(context, listen: false);
     final success = await liveSession.stopHosting();
 
     if (success) {
-      onHostingStopped?.call();
+      // Stop usage tracking for the session
+      premiumState.stopSessionTracking();
+      widget.onHostingStopped?.call();
+
+      // Show expiration dialog if session was auto-stopped
+      if (showDialog && context.mounted) {
+        final shouldUpgrade = await SessionExpiredDialog.show(context);
+        if (shouldUpgrade == true && context.mounted) {
+          await PaywallScreen.show(context);
+        }
+        // Reset the expiration flag for next session
+        premiumState.resetSessionExpired();
+      }
     }
-  }
-}
-
-/// Badge showing the number of viewers
-class _ViewerCountBadge extends StatelessWidget {
-  final int count;
-
-  const _ViewerCountBadge({required this.count});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppTypography.spacingSmall,
-        vertical: AppTypography.spacingXSmall,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.primaryColor,
-        borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.visibility,
-            color: AppColors.uiWhite,
-            size: AppTypography.iconSizeSmall,
-          ),
-          const SizedBox(width: AppTypography.spacingXSmall),
-          Text(
-            l10n.liveSessionViewerCount(count),
-            style: const TextStyle(
-              color: AppColors.uiWhite,
-              fontSize: AppTypography.fontSizeXSmall,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
 

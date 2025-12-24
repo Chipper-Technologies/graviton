@@ -14,6 +14,7 @@ import 'firebase/firebase_options.dart';
 import 'package:graviton/core/constants/platform_channel_constants.dart';
 import 'package:graviton/core/enums/app_flavor.dart';
 import 'package:graviton/core/enums/firebase_event.dart';
+import 'package:graviton/features/premium/presentation/premium_state.dart';
 import 'l10n/app_localizations.dart';
 import 'package:graviton/features/about/presentation/screens/about_screen.dart';
 import 'package:graviton/features/settings/presentation/screens/application_settings_screen.dart';
@@ -194,6 +195,7 @@ class GravitonApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: appState),
         ChangeNotifierProvider.value(value: appState.auth),
         ChangeNotifierProvider.value(value: appState.liveSession),
+        ChangeNotifierProvider(create: (_) => PremiumState()..initialize()),
       ],
       child: Consumer<AppState>(
         builder: (context, appState, child) {

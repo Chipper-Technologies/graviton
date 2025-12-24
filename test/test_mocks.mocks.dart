@@ -11544,6 +11544,446 @@ class MockAppLocalizations extends _i1.Mock implements _i8.AppLocalizations {
           as String);
 
   @override
+  String get premiumTierFree =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumTierFree),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumTierFree),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumTierPremium =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumTierPremium),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumTierPremium),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumTierLifetime =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumTierLifetime),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumTierLifetime),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumTitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumTitle),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumTitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumSubtitle =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumSubtitle),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumSubtitle),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumBenefitUnlimitedDuration =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumBenefitUnlimitedDuration),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumBenefitUnlimitedDuration),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumBenefitUnlimitedDurationDesc =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumBenefitUnlimitedDurationDesc),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumBenefitUnlimitedDurationDesc),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumBenefitViewersDesc =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumBenefitViewersDesc),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumBenefitViewersDesc),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumBenefitCameraSync =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumBenefitCameraSync),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumBenefitCameraSync),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumBenefitCameraSyncDesc =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumBenefitCameraSyncDesc),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumBenefitCameraSyncDesc),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumBenefitPassword =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumBenefitPassword),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumBenefitPassword),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumBenefitPasswordDesc =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumBenefitPasswordDesc),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumBenefitPasswordDesc),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumBenefitUnlimitedSessions =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumBenefitUnlimitedSessions),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumBenefitUnlimitedSessions),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumBenefitUnlimitedSessionsDesc =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumBenefitUnlimitedSessionsDesc),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumBenefitUnlimitedSessionsDesc),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumPlanMonthly =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumPlanMonthly),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumPlanMonthly),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumPlanYearly =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumPlanYearly),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumPlanYearly),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumPlanLifetime =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumPlanLifetime),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumPlanLifetime),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumPeriodMonth =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumPeriodMonth),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumPeriodMonth),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumPeriodYear =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumPeriodYear),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumPeriodYear),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumPeriodOneTime =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumPeriodOneTime),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumPeriodOneTime),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumBestValue =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumBestValue),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumBestValue),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumStartFreeTrial =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumStartFreeTrial),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumStartFreeTrial),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumBuyNow =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumBuyNow),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumBuyNow),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumRestorePurchases =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumRestorePurchases),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumRestorePurchases),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumLegalText =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumLegalText),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumLegalText),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumUpgrade =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumUpgrade),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumUpgrade),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumUpgradeToPremium =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumUpgradeToPremium),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumUpgradeToPremium),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumSessionExpired =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumSessionExpired),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumSessionExpired),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumSessionExpiredMessage =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumSessionExpiredMessage),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumSessionExpiredMessage),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumUnlimitedSessionsHint =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumUnlimitedSessionsHint),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumUnlimitedSessionsHint),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumTimeRemaining =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumTimeRemaining),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumTimeRemaining),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumSessionLimitReached =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumSessionLimitReached),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumSessionLimitReached),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumFeatureRequiresPremium =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumFeatureRequiresPremium),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumFeatureRequiresPremium),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumPurchaseFailed =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumPurchaseFailed),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumPurchaseFailed),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumRestoreFailed =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumRestoreFailed),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumRestoreFailed),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumRestoreSuccess =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumRestoreSuccess),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumRestoreSuccess),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumNoPurchasesToRestore =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumNoPurchasesToRestore),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumNoPurchasesToRestore),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumRedirectingToPayment =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumRedirectingToPayment),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumRedirectingToPayment),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumFreeTierLabel =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumFreeTierLabel),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumFreeTierLabel),
+            ),
+          )
+          as String);
+
+  @override
+  String get premiumProBadge =>
+      (super.noSuchMethod(
+            Invocation.getter(#premiumProBadge),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.getter(#premiumProBadge),
+            ),
+          )
+          as String);
+
+  @override
   String simulationDescription(
     int? bodyCount,
     String? status,
@@ -12776,6 +13216,50 @@ class MockAppLocalizations extends _i1.Mock implements _i8.AppLocalizations {
             returnValue: _i9.dummyValue<String>(
               this,
               Invocation.method(#liveSessionConnectionStatusLabel, [status]),
+            ),
+          )
+          as String);
+
+  @override
+  String premiumBenefitViewers(int? count) =>
+      (super.noSuchMethod(
+            Invocation.method(#premiumBenefitViewers, [count]),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.method(#premiumBenefitViewers, [count]),
+            ),
+          )
+          as String);
+
+  @override
+  String premiumSavePercent(String? percent) =>
+      (super.noSuchMethod(
+            Invocation.method(#premiumSavePercent, [percent]),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.method(#premiumSavePercent, [percent]),
+            ),
+          )
+          as String);
+
+  @override
+  String premiumSessionLimitMessage(int? count) =>
+      (super.noSuchMethod(
+            Invocation.method(#premiumSessionLimitMessage, [count]),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.method(#premiumSessionLimitMessage, [count]),
+            ),
+          )
+          as String);
+
+  @override
+  String premiumDurationLimitMessage(int? minutes) =>
+      (super.noSuchMethod(
+            Invocation.method(#premiumDurationLimitMessage, [minutes]),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.method(#premiumDurationLimitMessage, [minutes]),
             ),
           )
           as String);

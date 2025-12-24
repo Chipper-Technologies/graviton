@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/features/premium/domain/premium_limits.dart';
+import 'package:graviton/features/premium/presentation/premium_state.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/state/live_session_state.dart';
@@ -12,17 +14,23 @@ import 'package:provider/provider.dart';
 
 import 'host_controls_widget_test.mocks.dart';
 
-@GenerateMocks([LiveSessionState])
+@GenerateMocks([LiveSessionState, PremiumState])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('HostControlsWidget', () {
     late AppState appState;
     late LiveSessionState liveSessionState;
+    late PremiumState premiumState;
 
     Widget createTestWidget({required Widget child}) {
-      return ChangeNotifierProvider<LiveSessionState>.value(
-        value: liveSessionState,
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<LiveSessionState>.value(
+            value: liveSessionState,
+          ),
+          ChangeNotifierProvider<PremiumState>.value(value: premiumState),
+        ],
         child: MaterialApp(
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -39,11 +47,13 @@ void main() {
     setUp(() {
       appState = AppState();
       liveSessionState = LiveSessionState();
+      premiumState = PremiumState();
     });
 
     tearDown(() {
       appState.dispose();
       liveSessionState.dispose();
+      premiumState.dispose();
     });
 
     testWidgets('should render correctly in not hosting state', (
@@ -518,10 +528,16 @@ void main() {
   group('HostControlsWidget with Mocked State', () {
     late AppState appState;
     late MockLiveSessionState mockLiveSession;
+    late PremiumState premiumState;
 
     Widget createMockedTestWidget({required Widget child}) {
-      return ChangeNotifierProvider<LiveSessionState>.value(
-        value: mockLiveSession,
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<LiveSessionState>.value(
+            value: mockLiveSession,
+          ),
+          ChangeNotifierProvider<PremiumState>.value(value: premiumState),
+        ],
         child: MaterialApp(
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -538,6 +554,7 @@ void main() {
     setUp(() {
       appState = AppState();
       mockLiveSession = MockLiveSessionState();
+      premiumState = PremiumState();
       // Default stubs
       when(mockLiveSession.isHosting).thenReturn(false);
       when(mockLiveSession.viewerCount).thenReturn(0);
@@ -545,6 +562,7 @@ void main() {
 
     tearDown(() {
       appState.dispose();
+      premiumState.dispose();
     });
 
     testWidgets('shows stop button when hosting', (WidgetTester tester) async {
@@ -686,6 +704,9 @@ void main() {
           displayName: anyNamed('displayName'),
         ),
       ).called(1);
+
+      // Stop session tracking to cancel the timer
+      premiumState.stopSessionTracking();
     });
 
     testWidgets('fires onHostingStopped callback on successful stop', (
@@ -746,6 +767,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(callbackFired, isTrue);
+
+      // Stop session tracking to cancel the timer
+      premiumState.stopSessionTracking();
     });
 
     testWidgets('shows hosting status text when hosting', (
@@ -827,6 +851,169 @@ void main() {
       // Verify container has BoxDecoration
       final containers = tester.widgetList<Container>(find.byType(Container));
       expect(containers.any((c) => c.decoration is BoxDecoration), isTrue);
+    });
+  });
+
+  group('HostControlsWidget PremiumState Interactions', () {
+    late AppState appState;
+    late MockLiveSessionState mockLiveSession;
+    late MockPremiumState mockPremiumState;
+
+    Widget createFullyMockedTestWidget({required Widget child}) {
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<LiveSessionState>.value(
+            value: mockLiveSession,
+          ),
+          ChangeNotifierProvider<PremiumState>.value(value: mockPremiumState),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en')],
+          home: Scaffold(body: child),
+        ),
+      );
+    }
+
+    setUp(() {
+      appState = AppState();
+      mockLiveSession = MockLiveSessionState();
+      mockPremiumState = MockPremiumState();
+
+      // Default stubs for LiveSessionState
+      when(mockLiveSession.isHosting).thenReturn(false);
+      when(mockLiveSession.viewerCount).thenReturn(0);
+
+      // Default stubs for PremiumState
+      when(mockPremiumState.canStartSession).thenReturn(true);
+      when(mockPremiumState.limits).thenReturn(PremiumLimits.defaults);
+      when(mockPremiumState.startSessionTracking()).thenReturn(null);
+      when(mockPremiumState.stopSessionTracking()).thenReturn(null);
+    });
+
+    tearDown(() {
+      appState.dispose();
+    });
+
+    testWidgets('calls startSessionTracking when startHosting succeeds', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(false);
+      when(mockLiveSession.viewerCount).thenReturn(0);
+      when(
+        mockLiveSession.startHosting(
+          scenarioName: anyNamed('scenarioName'),
+          displayName: anyNamed('displayName'),
+        ),
+      ).thenAnswer((_) async => true);
+
+      await tester.pumpWidget(
+        createFullyMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap the start button
+      final startButton = find.byType(HapticInkWell).first;
+      await tester.tap(startButton);
+      await tester.pumpAndSettle();
+
+      // Verify startSessionTracking was called
+      verify(mockPremiumState.startSessionTracking()).called(1);
+    });
+
+    testWidgets('does not call startSessionTracking when startHosting fails', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(false);
+      when(mockLiveSession.viewerCount).thenReturn(0);
+      when(
+        mockLiveSession.startHosting(
+          scenarioName: anyNamed('scenarioName'),
+          displayName: anyNamed('displayName'),
+        ),
+      ).thenAnswer((_) async => false);
+
+      await tester.pumpWidget(
+        createFullyMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap the start button
+      final startButton = find.byType(HapticInkWell).first;
+      await tester.tap(startButton);
+      await tester.pumpAndSettle();
+
+      // Verify startSessionTracking was NOT called
+      verifyNever(mockPremiumState.startSessionTracking());
+    });
+
+    testWidgets('calls stopSessionTracking when stopHosting succeeds', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(true);
+      when(mockLiveSession.viewerCount).thenReturn(2);
+      when(mockLiveSession.stopHosting()).thenAnswer((_) async => true);
+
+      await tester.pumpWidget(
+        createFullyMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap the stop button
+      final stopButton = find.widgetWithText(HapticInkWell, 'Stop Sharing');
+      expect(stopButton, findsOneWidget);
+      await tester.tap(stopButton);
+      await tester.pumpAndSettle();
+
+      // Verify stopSessionTracking was called
+      verify(mockPremiumState.stopSessionTracking()).called(1);
+    });
+
+    testWidgets('does not call stopSessionTracking when stopHosting fails', (
+      WidgetTester tester,
+    ) async {
+      when(mockLiveSession.isHosting).thenReturn(true);
+      when(mockLiveSession.viewerCount).thenReturn(2);
+      when(mockLiveSession.stopHosting()).thenAnswer((_) async => false);
+
+      await tester.pumpWidget(
+        createFullyMockedTestWidget(
+          child: HostControlsWidget(
+            appState: appState,
+            scenarioName: 'Test Scenario',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Find and tap the stop button
+      final stopButton = find.widgetWithText(HapticInkWell, 'Stop Sharing');
+      expect(stopButton, findsOneWidget);
+      await tester.tap(stopButton);
+      await tester.pumpAndSettle();
+
+      // Verify stopSessionTracking was NOT called
+      verifyNever(mockPremiumState.stopSessionTracking());
     });
   });
 }

@@ -4007,4 +4007,153 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get liveSessionSettings => 'Configuración de sesión';
+
+  @override
+  String get premiumTierFree => 'Gratis';
+
+  @override
+  String get premiumTierPremium => 'Premium';
+
+  @override
+  String get premiumTierLifetime => 'De por vida';
+
+  @override
+  String get premiumTitle => 'Graviton Premium';
+
+  @override
+  String get premiumSubtitle => 'Desbloquea sesiones en vivo ilimitadas';
+
+  @override
+  String get premiumBenefitUnlimitedDuration => 'Duración de sesión ilimitada';
+
+  @override
+  String get premiumBenefitUnlimitedDurationDesc =>
+      'Organiza sesiones todo el tiempo que quieras';
+
+  @override
+  String premiumBenefitViewers(int count) {
+    return 'Hasta $count espectadores';
+  }
+
+  @override
+  String get premiumBenefitViewersDesc => 'Comparte con audiencias más grandes';
+
+  @override
+  String get premiumBenefitCameraSync => 'Sincronización de cámara';
+
+  @override
+  String get premiumBenefitCameraSyncDesc =>
+      'Sincroniza vistas para todos los espectadores';
+
+  @override
+  String get premiumBenefitPassword => 'Protección con contraseña';
+
+  @override
+  String get premiumBenefitPasswordDesc => 'Mantén tus sesiones privadas';
+
+  @override
+  String get premiumBenefitUnlimitedSessions => 'Sesiones ilimitadas por día';
+
+  @override
+  String get premiumBenefitUnlimitedSessionsDesc =>
+      'Sin límites diarios de hospedaje';
+
+  @override
+  String get premiumPlanMonthly => 'Mensual';
+
+  @override
+  String get premiumPlanYearly => 'Anual';
+
+  @override
+  String get premiumPlanLifetime => 'De por vida';
+
+  @override
+  String get premiumPeriodMonth => '/mes';
+
+  @override
+  String get premiumPeriodYear => '/año';
+
+  @override
+  String get premiumPeriodOneTime => ' único';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Ahorra $percent%';
+  }
+
+  @override
+  String get premiumBestValue => 'Mejor valor';
+
+  @override
+  String get premiumStartFreeTrial => 'Iniciar prueba gratis';
+
+  @override
+  String get premiumBuyNow => 'Comprar ahora';
+
+  @override
+  String get premiumRestorePurchases => 'Restaurar compras';
+
+  @override
+  String get premiumLegalText =>
+      'Las suscripciones se renovarán automáticamente a menos que se cancelen al menos 24 horas antes del final del período actual. Puedes administrar tus suscripciones en la configuración de la App Store.';
+
+  @override
+  String get premiumUpgrade => 'Mejorar';
+
+  @override
+  String get premiumUpgradeToPremium => 'Mejorar a Premium';
+
+  @override
+  String get premiumSessionExpired => 'Sesión expirada';
+
+  @override
+  String get premiumSessionExpiredMessage =>
+      'Tu tiempo de sesión gratuita ha terminado. Tu sesión en vivo ha sido detenida.';
+
+  @override
+  String get premiumUnlimitedSessionsHint =>
+      'Mejora a Premium para tiempo de sesión ilimitado';
+
+  @override
+  String get premiumTimeRemaining => 'Tiempo restante';
+
+  @override
+  String get premiumSessionLimitReached => 'Límite de sesión alcanzado';
+
+  @override
+  String premiumSessionLimitMessage(int count) {
+    return 'Has alcanzado tu límite diario de $count sesiones. Mejora a Premium para sesiones ilimitadas.';
+  }
+
+  @override
+  String premiumDurationLimitMessage(int minutes) {
+    return 'Las sesiones gratuitas están limitadas a $minutes minutos. Mejora para tiempo de sesión ilimitado.';
+  }
+
+  @override
+  String get premiumFeatureRequiresPremium => 'Esta función requiere Premium';
+
+  @override
+  String get premiumPurchaseFailed =>
+      'La compra falló. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get premiumRestoreFailed =>
+      'No se pudieron restaurar las compras. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get premiumRestoreSuccess => '¡Compras restauradas exitosamente!';
+
+  @override
+  String get premiumNoPurchasesToRestore =>
+      'No se encontraron compras anteriores para restaurar.';
+
+  @override
+  String get premiumRedirectingToPayment => 'Redirigiendo a pago seguro...';
+
+  @override
+  String get premiumFreeTierLabel => 'Gratis';
+
+  @override
+  String get premiumProBadge => 'PRO';
 }

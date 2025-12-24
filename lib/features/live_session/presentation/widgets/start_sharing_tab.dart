@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:graviton/features/premium/domain/premium_feature.dart';
+import 'package:graviton/features/premium/presentation/paywall_screen.dart';
+import 'package:graviton/features/premium/presentation/widgets/premium_overlay.dart';
+import 'package:graviton/features/premium/presentation/widgets/session_timer_widget.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/state/live_session_state.dart';
@@ -149,20 +153,24 @@ class _StartSharingTabState extends State<StartSharingTab> {
           ),
           const SizedBox(height: AppTypography.spacingMedium),
 
-          // Password protection toggle using standard ToggleOption
-          ToggleOption(
-            title: l10n.liveSessionPasswordProtection,
-            description: l10n.liveSessionPasswordDescription,
-            icon: _isPasswordProtected ? Icons.lock : Icons.lock_open,
-            isEnabled: _isPasswordProtected,
-            onChanged: (value) {
-              setState(() {
-                _isPasswordProtected = value;
-                if (!value) {
-                  _passwordController.clear();
-                }
-              });
-            },
+          // Password protection toggle (Premium feature)
+          PremiumOverlay(
+            feature: PremiumFeature.passwordProtection,
+            onTap: () => PaywallScreen.show(context),
+            child: ToggleOption(
+              title: l10n.liveSessionPasswordProtection,
+              description: l10n.liveSessionPasswordDescription,
+              icon: _isPasswordProtected ? Icons.lock : Icons.lock_open,
+              isEnabled: _isPasswordProtected,
+              onChanged: (value) {
+                setState(() {
+                  _isPasswordProtected = value;
+                  if (!value) {
+                    _passwordController.clear();
+                  }
+                });
+              },
+            ),
           ),
 
           // Password input field (shown when protection is enabled)
@@ -177,17 +185,21 @@ class _StartSharingTabState extends State<StartSharingTab> {
             const SizedBox(height: AppTypography.spacingMedium),
           ],
 
-          // Camera sync toggle
-          ToggleOption(
-            title: l10n.liveSessionCameraSync,
-            description: l10n.liveSessionCameraSyncDescription,
-            icon: liveSession.syncCameraWithViewers
-                ? Icons.videocam
-                : Icons.videocam_off,
-            isEnabled: liveSession.syncCameraWithViewers,
-            onChanged: (value) {
-              liveSession.setSyncCameraWithViewers(value);
-            },
+          // Camera sync toggle (Premium feature)
+          PremiumOverlay(
+            feature: PremiumFeature.cameraSync,
+            onTap: () => PaywallScreen.show(context),
+            child: ToggleOption(
+              title: l10n.liveSessionCameraSync,
+              description: l10n.liveSessionCameraSyncDescription,
+              icon: liveSession.syncCameraWithViewers
+                  ? Icons.videocam
+                  : Icons.videocam_off,
+              isEnabled: liveSession.syncCameraWithViewers,
+              onChanged: (value) {
+                liveSession.setSyncCameraWithViewers(value);
+              },
+            ),
           ),
 
           // Start hosting button
@@ -296,6 +308,12 @@ class _StartSharingTabState extends State<StartSharingTab> {
                           fontSize: AppTypography.fontSizeSmall,
                         ),
                       ),
+                      // Session timer for free users
+                      const SizedBox(height: AppTypography.spacingSmall),
+                      SessionTimerWidget(
+                        compact: true,
+                        onTap: () => PaywallScreen.show(context),
+                      ),
                       // Camera sync status
                       if (liveSession.syncCameraWithViewers) ...[
                         const SizedBox(height: AppTypography.spacingXSmall),
@@ -399,20 +417,24 @@ class _StartSharingTabState extends State<StartSharingTab> {
           ),
           const SizedBox(height: AppTypography.spacingMedium),
 
-          // Password protection toggle using standard ToggleOption
-          ToggleOption(
-            title: l10n.liveSessionPasswordProtection,
-            description: l10n.liveSessionPasswordDescription,
-            icon: _isPasswordProtected ? Icons.lock : Icons.lock_open,
-            isEnabled: _isPasswordProtected,
-            onChanged: (value) {
-              setState(() {
-                _isPasswordProtected = value;
-                if (!value) {
-                  _passwordController.clear();
-                }
-              });
-            },
+          // Password protection toggle (Premium feature)
+          PremiumOverlay(
+            feature: PremiumFeature.passwordProtection,
+            onTap: () => PaywallScreen.show(context),
+            child: ToggleOption(
+              title: l10n.liveSessionPasswordProtection,
+              description: l10n.liveSessionPasswordDescription,
+              icon: _isPasswordProtected ? Icons.lock : Icons.lock_open,
+              isEnabled: _isPasswordProtected,
+              onChanged: (value) {
+                setState(() {
+                  _isPasswordProtected = value;
+                  if (!value) {
+                    _passwordController.clear();
+                  }
+                });
+              },
+            ),
           ),
 
           // Password input field (shown when protection is enabled)
@@ -427,17 +449,21 @@ class _StartSharingTabState extends State<StartSharingTab> {
           ],
           const SizedBox(height: AppTypography.spacingMedium),
 
-          // Camera sync toggle
-          ToggleOption(
-            title: l10n.liveSessionCameraSync,
-            description: l10n.liveSessionCameraSyncDescription,
-            icon: liveSession.syncCameraWithViewers
-                ? Icons.videocam
-                : Icons.videocam_off,
-            isEnabled: liveSession.syncCameraWithViewers,
-            onChanged: (value) {
-              liveSession.setSyncCameraWithViewers(value);
-            },
+          // Camera sync toggle (Premium feature)
+          PremiumOverlay(
+            feature: PremiumFeature.cameraSync,
+            onTap: () => PaywallScreen.show(context),
+            child: ToggleOption(
+              title: l10n.liveSessionCameraSync,
+              description: l10n.liveSessionCameraSyncDescription,
+              icon: liveSession.syncCameraWithViewers
+                  ? Icons.videocam
+                  : Icons.videocam_off,
+              isEnabled: liveSession.syncCameraWithViewers,
+              onChanged: (value) {
+                liveSession.setSyncCameraWithViewers(value);
+              },
+            ),
           ),
 
           // Update session button

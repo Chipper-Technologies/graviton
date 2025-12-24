@@ -4011,4 +4011,154 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get liveSessionSettings => 'Paramètres de session';
+
+  @override
+  String get premiumTierFree => 'Gratuit';
+
+  @override
+  String get premiumTierPremium => 'Premium';
+
+  @override
+  String get premiumTierLifetime => 'À vie';
+
+  @override
+  String get premiumTitle => 'Graviton Premium';
+
+  @override
+  String get premiumSubtitle => 'Débloquez des sessions en direct illimitées';
+
+  @override
+  String get premiumBenefitUnlimitedDuration => 'Durée de session illimitée';
+
+  @override
+  String get premiumBenefitUnlimitedDurationDesc =>
+      'Hébergez des sessions aussi longtemps que vous le souhaitez';
+
+  @override
+  String premiumBenefitViewers(int count) {
+    return 'Jusqu\'à $count spectateurs';
+  }
+
+  @override
+  String get premiumBenefitViewersDesc => 'Partagez avec un public plus large';
+
+  @override
+  String get premiumBenefitCameraSync => 'Synchronisation de caméra';
+
+  @override
+  String get premiumBenefitCameraSyncDesc =>
+      'Synchronisez les vues pour tous les spectateurs';
+
+  @override
+  String get premiumBenefitPassword => 'Protection par mot de passe';
+
+  @override
+  String get premiumBenefitPasswordDesc => 'Gardez vos sessions privées';
+
+  @override
+  String get premiumBenefitUnlimitedSessions => 'Sessions illimitées par jour';
+
+  @override
+  String get premiumBenefitUnlimitedSessionsDesc =>
+      'Aucune limite quotidienne d\'hébergement';
+
+  @override
+  String get premiumPlanMonthly => 'Mensuel';
+
+  @override
+  String get premiumPlanYearly => 'Annuel';
+
+  @override
+  String get premiumPlanLifetime => 'À vie';
+
+  @override
+  String get premiumPeriodMonth => '/mois';
+
+  @override
+  String get premiumPeriodYear => '/an';
+
+  @override
+  String get premiumPeriodOneTime => ' unique';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Économisez $percent%';
+  }
+
+  @override
+  String get premiumBestValue => 'Meilleure valeur';
+
+  @override
+  String get premiumStartFreeTrial => 'Démarrer l\'essai gratuit';
+
+  @override
+  String get premiumBuyNow => 'Acheter maintenant';
+
+  @override
+  String get premiumRestorePurchases => 'Restaurer les achats';
+
+  @override
+  String get premiumLegalText =>
+      'Les abonnements seront automatiquement renouvelés sauf annulation au moins 24 heures avant la fin de la période en cours. Vous pouvez gérer vos abonnements dans les paramètres de l\'App Store.';
+
+  @override
+  String get premiumUpgrade => 'Mettre à niveau';
+
+  @override
+  String get premiumUpgradeToPremium => 'Passer à Premium';
+
+  @override
+  String get premiumSessionExpired => 'Session expirée';
+
+  @override
+  String get premiumSessionExpiredMessage =>
+      'Votre temps de session gratuite est terminé. Votre session en direct a été arrêtée.';
+
+  @override
+  String get premiumUnlimitedSessionsHint =>
+      'Passez à Premium pour un temps de session illimité';
+
+  @override
+  String get premiumTimeRemaining => 'Temps restant';
+
+  @override
+  String get premiumSessionLimitReached => 'Limite de session atteinte';
+
+  @override
+  String premiumSessionLimitMessage(int count) {
+    return 'Vous avez atteint votre limite quotidienne de $count sessions. Passez à Premium pour des sessions illimitées.';
+  }
+
+  @override
+  String premiumDurationLimitMessage(int minutes) {
+    return 'Les sessions gratuites sont limitées à $minutes minutes. Mettez à niveau pour un temps de session illimité.';
+  }
+
+  @override
+  String get premiumFeatureRequiresPremium =>
+      'Cette fonctionnalité nécessite Premium';
+
+  @override
+  String get premiumPurchaseFailed => 'L\'achat a échoué. Veuillez réessayer.';
+
+  @override
+  String get premiumRestoreFailed =>
+      'Impossible de restaurer les achats. Veuillez réessayer.';
+
+  @override
+  String get premiumRestoreSuccess => 'Achats restaurés avec succès !';
+
+  @override
+  String get premiumNoPurchasesToRestore =>
+      'Aucun achat précédent trouvé à restaurer.';
+
+  @override
+  String get premiumRedirectingToPayment =>
+      'Redirection vers le paiement sécurisé...';
+
+  @override
+  String get premiumFreeTierLabel => 'Gratuit';
+
+  @override
+  String get premiumProBadge => 'PRO';
 }
