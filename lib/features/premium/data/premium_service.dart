@@ -20,6 +20,10 @@ class PremiumService {
 
   PremiumService._();
 
+  /// Internal constructor for subclassing in tests
+  @protected
+  PremiumService.internal();
+
   bool _initialized = false;
   PremiumTier _currentTier = PremiumTier.free;
   CustomerInfo? _customerInfo;

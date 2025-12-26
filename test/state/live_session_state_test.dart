@@ -1,7 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/core/enums/live_session_connection_status.dart';
+import 'package:graviton/features/premium/data/premium_service.dart';
 import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/state/live_session_state.dart';
+
+import '../helpers/mock_premium_service.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -10,11 +13,14 @@ void main() {
     late LiveSessionState state;
 
     setUp(() {
+      // Set up mock premium service with premium access for all tests
+      PremiumService.setInstance(MockPremiumService(hasPremium: true));
       state = LiveSessionState();
     });
 
     tearDown(() {
       state.dispose();
+      PremiumService.resetInstance();
     });
 
     group('Initial State', () {
@@ -642,6 +648,40 @@ void main() {
           expect(notifyCount, equals(1));
         },
       );
+
+      test('setSyncCameraWithViewers should not enable without premium', () {
+        // Switch to non-premium user
+        PremiumService.resetInstance();
+        PremiumService.setInstance(MockPremiumService(hasPremium: false));
+
+        final nonPremiumState = LiveSessionState();
+        addTearDown(nonPremiumState.dispose);
+
+        // First disable it
+        nonPremiumState.setSyncCameraWithViewers(false);
+        expect(nonPremiumState.syncCameraWithViewers, isFalse);
+
+        // Try to enable - should be blocked
+        nonPremiumState.setSyncCameraWithViewers(true);
+        expect(nonPremiumState.syncCameraWithViewers, isFalse);
+      });
+
+      test('setSyncCameraWithViewers should allow disable without premium', () {
+        // Start with premium to enable camera sync
+        state.setSyncCameraWithViewers(true);
+        expect(state.syncCameraWithViewers, isTrue);
+
+        // Switch to non-premium user
+        PremiumService.resetInstance();
+        PremiumService.setInstance(MockPremiumService(hasPremium: false));
+
+        final nonPremiumState = LiveSessionState();
+        addTearDown(nonPremiumState.dispose);
+
+        // Should be able to disable even without premium
+        nonPremiumState.setSyncCameraWithViewers(false);
+        expect(nonPremiumState.syncCameraWithViewers, isFalse);
+      });
     });
   });
 }
