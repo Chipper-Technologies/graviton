@@ -149,4 +149,10 @@ class AppConfig {
   /// Example: https://buy.stripe.com/xxx
   static String get stripeLifetimePaymentLink =>
       const String.fromEnvironment('stripe.lifetimePaymentLink');
+
+  /// Stripe Billing Portal URL for managing subscriptions.
+  /// Create in Stripe Dashboard > Settings > Billing > Customer Portal.
+  /// Example: https://billing.stripe.com/p/login/xxx
+  static String get stripeBillingPortalUrl =>
+      const String.fromEnvironment('stripe.billingPortalUrl');
 }

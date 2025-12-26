@@ -31,12 +31,19 @@ class DefaultLockedIndicator extends StatelessWidget {
           vertical: AppTypography.spacingSmall,
         ),
         decoration: BoxDecoration(
-          color: AppColors.uiAmber.withValues(
-            alpha: AppTypography.opacityFaint,
+          gradient: LinearGradient(
+            colors: [
+              AppColors.premiumPrimary.withValues(
+                alpha: AppTypography.opacityFaint,
+              ),
+              AppColors.premiumSecondary.withValues(
+                alpha: AppTypography.opacityFaint,
+              ),
+            ],
           ),
           borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
           border: Border.all(
-            color: AppColors.uiAmber.withValues(
+            color: AppColors.premiumPrimary.withValues(
               alpha: AppTypography.opacityMedium,
             ),
           ),
@@ -45,9 +52,9 @@ class DefaultLockedIndicator extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(
-              Icons.lock_outline,
+              Icons.auto_awesome,
               size: AppTypography.iconSizeSmall,
-              color: AppColors.uiAmber,
+              color: AppColors.premiumPrimary,
               semanticLabel: null, // Handled by parent Semantics
             ),
             const SizedBox(width: AppTypography.spacingSmall),
@@ -55,7 +62,7 @@ class DefaultLockedIndicator extends StatelessWidget {
               child: Text(
                 l10n.premiumTierPremium,
                 style: const TextStyle(
-                  color: AppColors.uiAmber,
+                  color: AppColors.premiumPrimary,
                   fontSize: AppTypography.fontSizeSmall,
                   fontWeight: FontWeight.w500,
                 ),

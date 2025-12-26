@@ -3803,6 +3803,9 @@ class AppLocalizationsZh extends AppLocalizations {
       '订阅将自动续订，除非在当前期间结束前至少24小时取消。您可以在App Store设置中管理订阅。';
 
   @override
+  String get premiumManageSubscriptions => '管理订阅';
+
+  @override
   String get premiumUpgrade => '升级';
 
   @override

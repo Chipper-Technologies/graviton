@@ -4098,6 +4098,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'Las suscripciones se renovarán automáticamente a menos que se cancelen al menos 24 horas antes del final del período actual. Puedes administrar tus suscripciones en la configuración de la App Store.';
 
   @override
+  String get premiumManageSubscriptions => 'Administrar suscripciones';
+
+  @override
   String get premiumUpgrade => 'Mejorar';
 
   @override

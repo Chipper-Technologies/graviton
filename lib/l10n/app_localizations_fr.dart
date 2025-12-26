@@ -4102,6 +4102,9 @@ class AppLocalizationsFr extends AppLocalizations {
       'Les abonnements seront automatiquement renouvelés sauf annulation au moins 24 heures avant la fin de la période en cours. Vous pouvez gérer vos abonnements dans les paramètres de l\'App Store.';
 
   @override
+  String get premiumManageSubscriptions => 'Gérer les abonnements';
+
+  @override
   String get premiumUpgrade => 'Mettre à niveau';
 
   @override

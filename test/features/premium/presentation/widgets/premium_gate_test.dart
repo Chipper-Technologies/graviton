@@ -71,7 +71,7 @@ void main() {
       // Should show the DefaultLockedIndicator instead of child content
       expect(find.text('Locked Content'), findsNothing);
       expect(find.byType(DefaultLockedIndicator), findsOneWidget);
-      expect(find.byIcon(Icons.lock_outline), findsOneWidget);
+      expect(find.byIcon(Icons.auto_awesome), findsOneWidget);
     });
 
     testWidgets('shows custom lockedChild when provided', (tester) async {
@@ -105,7 +105,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Hidden Content'), findsNothing);
-      expect(find.byIcon(Icons.lock_outline), findsNothing);
+      expect(find.byIcon(Icons.auto_awesome), findsNothing);
       expect(find.byType(SizedBox), findsWidgets);
     });
 
@@ -126,7 +126,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.lock_outline));
+      await tester.tap(find.byIcon(Icons.auto_awesome));
       await tester.pump();
 
       expect(tapped, isTrue);

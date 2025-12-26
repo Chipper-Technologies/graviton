@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:graviton/config/flavor_config.dart';
 import 'package:graviton/core/enums/firebase_event.dart';
 import 'package:graviton/core/enums/stripe_price_tier.dart';
 import 'package:graviton/features/premium/data/stripe_web_service.dart';
@@ -11,6 +12,7 @@ import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/features/premium/presentation/premium_state.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Paywall screen for purchasing premium subscriptions
 ///
@@ -74,7 +76,14 @@ class _PaywallScreenState extends State<PaywallScreen> {
               _buildHeader(context),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(AppTypography.spacingLarge),
+                  padding: EdgeInsets.only(
+                    left: AppTypography.spacingLarge,
+                    right: AppTypography.spacingLarge,
+                    top: AppTypography.spacingLarge,
+                    bottom:
+                        AppTypography.spacingLarge +
+                        MediaQuery.of(context).padding.bottom,
+                  ),
                   child: Column(
                     children: [
                       _buildBenefitsList(context),
@@ -84,7 +93,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       _buildPurchaseButton(context, premiumState),
                       const SizedBox(height: AppTypography.spacingMedium),
                       _buildRestoreButton(context, premiumState),
-                      const SizedBox(height: AppTypography.spacingLarge),
+                      const SizedBox(height: AppTypography.spacingXSmall),
                       _buildLegalText(context),
                     ],
                   ),
@@ -119,14 +128,17 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 padding: const EdgeInsets.all(AppTypography.spacingSmall),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [AppColors.uiAmber, AppColors.uiOrange],
+                    colors: [
+                      AppColors.premiumPrimary,
+                      AppColors.premiumSecondary,
+                    ],
                   ),
                   borderRadius: BorderRadius.circular(
                     AppTypography.radiusMedium,
                   ),
                 ),
                 child: const Icon(
-                  Icons.star,
+                  Icons.auto_awesome,
                   color: AppColors.uiWhite,
                   size: AppTypography.iconSizeLarge,
                 ),
@@ -207,14 +219,14 @@ class _PaywallScreenState extends State<PaywallScreen> {
               Container(
                 padding: const EdgeInsets.all(AppTypography.spacingSmall),
                 decoration: BoxDecoration(
-                  color: AppColors.uiAmber.withValues(alpha: 0.2),
+                  color: AppColors.premiumPrimary.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(
                     AppTypography.radiusSmall,
                   ),
                 ),
                 child: Icon(
                   benefit.icon,
-                  color: AppColors.uiAmber,
+                  color: AppColors.premiumAccent,
                   size: AppTypography.iconSizeMedium,
                 ),
               ),
@@ -241,10 +253,16 @@ class _PaywallScreenState extends State<PaywallScreen> {
                   ],
                 ),
               ),
-              Icon(
-                Icons.check_circle,
-                color: AppColors.uiGreen,
-                size: AppTypography.iconSizeMedium,
+              Container(
+                decoration: const BoxDecoration(
+                  color: AppColors.uiWhite,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.check_circle,
+                  color: AppColors.uiGreen,
+                  size: AppTypography.iconSizeLarge,
+                ),
               ),
             ],
           ),
@@ -310,7 +328,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
               ? '\$${pricing.lifetimePriceUsd.toStringAsFixed(2)}'
               : null,
           badge: l10n.premiumBestValue,
-          badgeColor: AppColors.uiPurple,
+          badgeColor: AppColors.premiumGold,
           onTap: () => setState(() => _selectedIndex = 2),
         ),
       ],
@@ -349,8 +367,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 }
               },
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.uiAmber,
-          foregroundColor: AppColors.uiBlack,
+          backgroundColor: AppColors.premiumPrimary,
+          foregroundColor: AppColors.uiWhite,
           padding: const EdgeInsets.symmetric(
             vertical: AppTypography.spacingMedium,
           ),
@@ -364,7 +382,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 width: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.uiBlack),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.uiWhite),
                 ),
               )
             : Text(
@@ -421,8 +439,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 }
               },
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.uiAmber,
-          foregroundColor: AppColors.uiBlack,
+          backgroundColor: AppColors.premiumPrimary,
+          foregroundColor: AppColors.uiWhite,
           padding: const EdgeInsets.symmetric(
             vertical: AppTypography.spacingMedium,
           ),
@@ -436,13 +454,16 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 width: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.uiBlack),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.uiWhite),
                 ),
               )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.lock, size: AppTypography.iconSizeMedium),
+                  const Icon(
+                    Icons.auto_awesome,
+                    size: AppTypography.iconSizeMedium,
+                  ),
                   const SizedBox(width: AppTypography.spacingSmall),
                   Text(
                     _selectedIndex == 2
@@ -472,10 +493,18 @@ class _PaywallScreenState extends State<PaywallScreen> {
           ? null
           : () async {
               final navigator = Navigator.of(context);
+              final messenger = ScaffoldMessenger.of(context);
               final success = await premiumState.restorePurchases();
               if (!mounted) return;
               if (success) {
                 navigator.pop(true);
+              } else {
+                messenger.showSnackBar(
+                  SnackBar(
+                    content: Text(l10n.premiumNoPurchasesToRestore),
+                    backgroundColor: AppColors.uiRed,
+                  ),
+                );
               }
             },
       child: Text(
@@ -530,14 +559,56 @@ class _PaywallScreenState extends State<PaywallScreen> {
 
   Widget _buildLegalText(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Text(
-      l10n.premiumLegalText,
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color: AppColors.uiWhite.withValues(alpha: 0.4),
-        fontSize: AppTypography.fontSizeXSmall,
-      ),
+    return Column(
+      children: [
+        Text(
+          l10n.premiumLegalText,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: AppColors.uiWhite.withValues(alpha: 0.4),
+            fontSize: AppTypography.fontSizeXSmall,
+          ),
+        ),
+        const SizedBox(height: AppTypography.spacingSmall),
+        GestureDetector(
+          onTap: _openSubscriptionManagement,
+          child: Text(
+            l10n.premiumManageSubscriptions,
+            style: TextStyle(
+              color: AppColors.premiumAccent,
+              fontSize: AppTypography.fontSizeSmall,
+              decoration: TextDecoration.underline,
+              decorationColor: AppColors.premiumAccent,
+            ),
+          ),
+        ),
+      ],
     );
+  }
+
+  /// Opens the platform-specific subscription management page
+  Future<void> _openSubscriptionManagement() async {
+    late final Uri uri;
+
+    if (kIsWeb) {
+      // On web, open Stripe billing portal
+      final billingPortalUrl = AppConfig.stripeBillingPortalUrl;
+      if (billingPortalUrl.isEmpty) return;
+      uri = Uri.parse(billingPortalUrl);
+    } else if (defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.macOS) {
+      // On iOS/macOS, open App Store subscriptions
+      uri = Uri.parse('https://apps.apple.com/account/subscriptions');
+    } else if (defaultTargetPlatform == TargetPlatform.android) {
+      // On Android, open Play Store subscriptions
+      uri = Uri.parse('https://play.google.com/store/account/subscriptions');
+    } else {
+      return;
+    }
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 }
 
@@ -605,12 +676,12 @@ class _SubscriptionOption extends StatelessWidget {
           padding: const EdgeInsets.all(AppTypography.spacingMedium),
           decoration: BoxDecoration(
             color: isSelected
-                ? AppColors.uiAmber.withValues(alpha: 0.15)
+                ? AppColors.premiumPrimary.withValues(alpha: 0.15)
                 : AppColors.spaceGradientDark.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
             border: Border.all(
               color: isSelected
-                  ? AppColors.uiAmber
+                  ? AppColors.premiumPrimary
                   : AppColors.uiWhite.withValues(alpha: 0.1),
               width: isSelected ? 2 : 1,
             ),
@@ -624,14 +695,14 @@ class _SubscriptionOption extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: isSelected
-                        ? AppColors.uiAmber
+                        ? AppColors.premiumPrimary
                         : AppColors.uiWhite.withValues(alpha: 0.2),
                   ),
                   child: isSelected
                       ? const Icon(
                           Icons.check,
                           size: 16,
-                          color: AppColors.uiBlack,
+                          color: AppColors.uiWhite,
                         )
                       : null,
                 ),
@@ -698,7 +769,7 @@ class _SubscriptionOption extends StatelessWidget {
                         text: price,
                         style: TextStyle(
                           color: isSelected
-                              ? AppColors.uiAmber
+                              ? AppColors.premiumAccent
                               : AppColors.uiWhite,
                           fontSize: AppTypography.fontSizeLarge,
                           fontWeight: FontWeight.bold,

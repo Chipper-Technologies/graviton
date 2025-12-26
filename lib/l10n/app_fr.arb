@@ -1206,6 +1206,7 @@
   "premiumBuyNow": "Acheter maintenant",
   "premiumRestorePurchases": "Restaurer les achats",
   "premiumLegalText": "Les abonnements seront automatiquement renouvelés sauf annulation au moins 24 heures avant la fin de la période en cours. Vous pouvez gérer vos abonnements dans les paramètres de l'App Store.",
+  "premiumManageSubscriptions": "Gérer les abonnements",
   "premiumUpgrade": "Mettre à niveau",
   "premiumUpgradeToPremium": "Passer à Premium",
   "premiumSessionExpired": "Session expirée",

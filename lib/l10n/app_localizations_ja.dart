@@ -3831,6 +3831,9 @@ class AppLocalizationsJa extends AppLocalizations {
       'サブスクリプションは、現在の期間終了の少なくとも24時間前までにキャンセルしない限り、自動的に更新されます。App Storeの設定でサブスクリプションを管理できます。';
 
   @override
+  String get premiumManageSubscriptions => 'サブスクリプションを管理';
+
+  @override
   String get premiumUpgrade => 'アップグレード';
 
   @override

@@ -35,7 +35,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.lock_outline), findsOneWidget);
+      expect(find.byIcon(Icons.auto_awesome), findsOneWidget);
     });
 
     testWidgets('has amber color scheme', (tester) async {

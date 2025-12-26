@@ -274,6 +274,28 @@ class AppColors {
   static const Color googleYellow = Color(0xFFFBBC05);
   static const Color googleGreen = Color(0xFF34A853);
 
+  // =============================================================================
+  // PREMIUM TIER COLORS
+  // =============================================================================
+
+  /// Premium primary - sophisticated violet-blue
+  static const Color premiumPrimary = Color(0xFF8B5CF6); // Vibrant violet
+  static const Color premiumSecondary = Color(0xFF6366F1); // Indigo
+  static const Color premiumAccent = Color(0xFFA78BFA); // Light violet
+
+  /// Premium gradient colors
+  static const Color premiumGradientStart = Color(0xFF8B5CF6); // Violet
+  static const Color premiumGradientEnd = Color(0xFF6366F1); // Indigo
+
+  /// Premium badge/highlight colors
+  static const Color premiumBadge = Color(
+    0xFFA78BFA,
+  ); // Light violet for badges
+  static const Color premiumGold = Color(
+    0xFFD4AF37,
+  ); // Subdued gold for accents
+  static const Color premiumStar = Color(0xFFE9D5FF); // Very light violet
+
   /// Off-screen indicator colors
   static const Color offScreenBlackHole = Color(
     0xFF404040,

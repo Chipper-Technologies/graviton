@@ -1206,6 +1206,7 @@
   "premiumBuyNow": "今すぐ購入",
   "premiumRestorePurchases": "購入を復元",
   "premiumLegalText": "サブスクリプションは、現在の期間終了の少なくとも24時間前までにキャンセルしない限り、自動的に更新されます。App Storeの設定でサブスクリプションを管理できます。",
+  "premiumManageSubscriptions": "サブスクリプションを管理",
   "premiumUpgrade": "アップグレード",
   "premiumUpgradeToPremium": "プレミアムにアップグレード",
   "premiumSessionExpired": "セッション期限切れ",

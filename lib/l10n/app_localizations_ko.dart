@@ -3842,6 +3842,9 @@ class AppLocalizationsKo extends AppLocalizations {
       '구독은 현재 기간 종료 최소 24시간 전에 취소하지 않으면 자동으로 갱신됩니다. App Store 설정에서 구독을 관리할 수 있습니다.';
 
   @override
+  String get premiumManageSubscriptions => '구독 관리';
+
+  @override
   String get premiumUpgrade => '업그레이드';
 
   @override

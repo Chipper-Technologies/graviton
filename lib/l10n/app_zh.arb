@@ -1206,6 +1206,7 @@
   "premiumBuyNow": "立即购买",
   "premiumRestorePurchases": "恢复购买",
   "premiumLegalText": "订阅将自动续订，除非在当前期间结束前至少24小时取消。您可以在App Store设置中管理订阅。",
+  "premiumManageSubscriptions": "管理订阅",
   "premiumUpgrade": "升级",
   "premiumUpgradeToPremium": "升级到高级版",
   "premiumSessionExpired": "会话已过期",

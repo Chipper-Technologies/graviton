@@ -51,7 +51,13 @@ class PremiumOverlay extends StatelessWidget {
           button: true,
           hint: l10n.premiumUpgradeToPremium,
           child: GestureDetector(
-            onTap: onTap,
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              // Unfocus any focused widget to prevent focus issues when
+              // the paywall closes
+              FocusScope.of(context).unfocus();
+              onTap?.call();
+            },
             child: Stack(
               children: [
                 // Show child with reduced opacity
@@ -72,16 +78,21 @@ class PremiumOverlay extends StatelessWidget {
                         vertical: AppTypography.spacingXXSmall,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.uiAmber,
+                        gradient: const LinearGradient(
+                          colors: [
+                            AppColors.premiumPrimary,
+                            AppColors.premiumSecondary,
+                          ],
+                        ),
                         borderRadius: BorderRadius.circular(
-                          AppTypography.radiusSmall,
+                          AppTypography.radiusMedium,
                         ),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(
-                            Icons.star,
+                            Icons.auto_awesome,
                             size: AppTypography.iconSizeSmall,
                             color: AppColors.uiWhite,
                           ),

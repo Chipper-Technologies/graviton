@@ -4056,6 +4056,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Subscriptions will automatically renew unless cancelled at least 24 hours before the end of the current period. You can manage your subscriptions in your App Store settings.';
 
   @override
+  String get premiumManageSubscriptions => 'Manage Subscriptions';
+
+  @override
   String get premiumUpgrade => 'Upgrade';
 
   @override

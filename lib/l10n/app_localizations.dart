@@ -7108,6 +7108,12 @@ abstract class AppLocalizations {
   /// **'Subscriptions will automatically renew unless cancelled at least 24 hours before the end of the current period. You can manage your subscriptions in your App Store settings.'**
   String get premiumLegalText;
 
+  /// Link text to open subscription management
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Subscriptions'**
+  String get premiumManageSubscriptions;
+
   /// Button text to upgrade to premium
   ///
   /// In en, this message translates to:

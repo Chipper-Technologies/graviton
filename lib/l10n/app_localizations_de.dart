@@ -4072,6 +4072,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Abonnements werden automatisch verlängert, sofern sie nicht mindestens 24 Stunden vor Ende des aktuellen Zeitraums gekündigt werden. Sie können Ihre Abonnements in den App Store-Einstellungen verwalten.';
 
   @override
+  String get premiumManageSubscriptions => 'Abonnements verwalten';
+
+  @override
   String get premiumUpgrade => 'Upgrade';
 
   @override

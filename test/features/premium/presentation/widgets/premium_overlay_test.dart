@@ -61,7 +61,7 @@ void main() {
       // Free tier users should see the overlay
       // The widget uses a Stack when locked
       expect(find.byType(Stack), findsWidgets);
-      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(find.byIcon(Icons.auto_awesome), findsOneWidget);
     });
 
     testWidgets('child has reduced opacity when locked', (tester) async {
@@ -97,7 +97,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Find the star icon (part of the overlay) and tap near it
-      await tester.tap(find.byIcon(Icons.star));
+      await tester.tap(find.byIcon(Icons.auto_awesome));
       await tester.pump();
 
       expect(tapped, isTrue);

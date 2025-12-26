@@ -183,9 +183,7 @@ class RemoteConfigService {
 
     // Premium Features
     _premiumEnabled = _remoteConfig.getBool('premium_enabled');
-    _premiumPaywallDisabled = _remoteConfig.getBool(
-      'premium_paywall_disabled',
-    );
+    _premiumPaywallDisabled = _remoteConfig.getBool('premium_paywall_disabled');
     _premiumFreeSessionDuration = _remoteConfig.getInt(
       'premium_free_session_duration',
     );
