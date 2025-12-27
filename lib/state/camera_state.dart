@@ -7,6 +7,7 @@ import 'package:graviton/core/enums/scenario_type.dart';
 import 'package:graviton/core/enums/ui_action.dart';
 import 'package:graviton/core/enums/ui_element.dart';
 import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/models/firebase/camera_snapshot.dart';
 import 'package:graviton/features/scenarios/domain/scenario_config.dart';
 import 'package:graviton/services/firebase/firebase_service.dart';
 import 'package:graviton/utils/safe_haptic_feedback.dart';
@@ -513,6 +514,35 @@ class CameraState extends ChangeNotifier {
     if (roll != null) _roll = roll;
     if (distance != null) _distance = distance.clamp(5.0, 2000.0);
     if (target != null) _target = target.clone();
+
+    notifyListeners();
+  }
+
+  /// Apply camera state from a live session snapshot
+  ///
+  /// Used by viewers to sync their camera with the host's camera position.
+  /// Only applies the snapshot if [CameraSnapshot] is not null.
+  ///
+  /// [snapshot] The camera snapshot received from the host
+  void applySnapshot(CameraSnapshot snapshot) {
+    _yaw = snapshot.yaw;
+    _pitch = snapshot.pitch.clamp(
+      SimulationConstants.cameraPitchMin,
+      SimulationConstants.cameraPitchMax,
+    );
+    _roll = snapshot.roll;
+    _distance = snapshot.distance.clamp(5.0, 2000.0);
+    _target = snapshot.target.clone();
+    _followMode = snapshot.followMode;
+    _followedBodyIndex = snapshot.followedBodyIndex;
+    _selectedBody = snapshot.selectedBody;
+    _autoRotate = snapshot.autoRotate
+        ? AutoRotateStatus.on
+        : AutoRotateStatus.off;
+    _fieldOfView = snapshot.fieldOfView.clamp(
+      SimulationConstants.cameraFovMin,
+      SimulationConstants.cameraFovMax,
+    );
 
     notifyListeners();
   }

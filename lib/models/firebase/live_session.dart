@@ -18,6 +18,7 @@
 ///   viewerCount: 3,
 ///   createdAt: DateTime.now(),
 ///   updatedAt: DateTime.now(),
+///   isPasswordProtected: true,
 /// );
 ///
 /// // Serialize for database
@@ -54,6 +55,13 @@ class LiveSession {
   /// Timestamp of last update
   final DateTime updatedAt;
 
+  /// Whether the session requires a password to join
+  final bool isPasswordProtected;
+
+  /// The password hash (only stored in database, not exposed to viewers)
+  /// This is null when fetching session list for security
+  final String? passwordHash;
+
   /// Creates a new [LiveSession] instance
   ///
   /// All fields are required to ensure complete session data.
@@ -67,6 +75,8 @@ class LiveSession {
     required this.viewerCount,
     required this.createdAt,
     required this.updatedAt,
+    this.isPasswordProtected = false,
+    this.passwordHash,
   });
 
   /// Create a LiveSession from a database map
@@ -82,6 +92,7 @@ class LiveSession {
   /// - `timeScale`: 1.0
   /// - `viewerCount`: 0
   /// - `createdAt`/`updatedAt`: current time
+  /// - `isPasswordProtected`: false
   factory LiveSession.fromMap(String id, Map<String, dynamic> map) {
     return LiveSession(
       id: id,
@@ -97,6 +108,9 @@ class LiveSession {
       updatedAt: DateTime.fromMillisecondsSinceEpoch(
         map['updatedAt'] as int? ?? DateTime.now().millisecondsSinceEpoch,
       ),
+      isPasswordProtected: map['isPasswordProtected'] as bool? ?? false,
+      // Note: passwordHash is intentionally not exposed in fromMap for security
+      // The hash is only checked server-side or in the service layer
     );
   }
 
@@ -104,8 +118,11 @@ class LiveSession {
   ///
   /// Note: The `id` field is not included as it is typically used
   /// as the database key rather than stored in the value.
-  Map<String, dynamic> toMap() {
-    return {
+  ///
+  /// [includePasswordHash] Set to true when creating/updating a session
+  /// to include the password hash. Defaults to false for security.
+  Map<String, dynamic> toMap({bool includePasswordHash = false}) {
+    final map = <String, dynamic>{
       'hostId': hostId,
       'hostName': hostName,
       'scenarioName': scenarioName,
@@ -114,7 +131,12 @@ class LiveSession {
       'viewerCount': viewerCount,
       'createdAt': createdAt.millisecondsSinceEpoch,
       'updatedAt': updatedAt.millisecondsSinceEpoch,
+      'isPasswordProtected': isPasswordProtected,
     };
+    if (includePasswordHash && passwordHash != null) {
+      map['passwordHash'] = passwordHash;
+    }
+    return map;
   }
 
   /// Create a copy with updated fields
@@ -130,6 +152,8 @@ class LiveSession {
     int? viewerCount,
     DateTime? createdAt,
     DateTime? updatedAt,
+    bool? isPasswordProtected,
+    String? passwordHash,
   }) {
     return LiveSession(
       id: id ?? this.id,
@@ -141,6 +165,8 @@ class LiveSession {
       viewerCount: viewerCount ?? this.viewerCount,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      isPasswordProtected: isPasswordProtected ?? this.isPasswordProtected,
+      passwordHash: passwordHash ?? this.passwordHash,
     );
   }
 
@@ -148,7 +174,7 @@ class LiveSession {
   String toString() {
     return 'LiveSession(id: $id, hostName: $hostName, '
         'scenarioName: $scenarioName, isRunning: $isRunning, '
-        'viewerCount: $viewerCount)';
+        'viewerCount: $viewerCount, isPasswordProtected: $isPasswordProtected)';
   }
 
   @override
@@ -163,7 +189,8 @@ class LiveSession {
         other.timeScale == timeScale &&
         other.viewerCount == viewerCount &&
         other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
+        other.updatedAt == updatedAt &&
+        other.isPasswordProtected == isPasswordProtected;
   }
 
   @override
@@ -178,6 +205,7 @@ class LiveSession {
       viewerCount,
       createdAt,
       updatedAt,
+      isPasswordProtected,
     );
   }
 }

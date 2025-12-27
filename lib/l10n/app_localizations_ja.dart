@@ -3550,4 +3550,197 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get showCollisionPlasmaJetsDescription =>
       '大質量星衝突からの方向性のある超高温ストリーム（実験的）';
+
+  @override
+  String get liveSessionHosting => 'ライブセッションをホスト中';
+
+  @override
+  String get liveSessionNotHosting => 'ライブセッションを共有';
+
+  @override
+  String get liveSessionStartHosting => 'ホストを開始';
+
+  @override
+  String get liveSessionStopHosting => '共有を停止';
+
+  @override
+  String get liveSessionUpdateSession => 'セッションを更新';
+
+  @override
+  String liveSessionViewerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count人の視聴者',
+      one: '1人の視聴者',
+      zero: '視聴者なし',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get liveSessionNoViewers => 'まだ誰も視聴していません';
+
+  @override
+  String get liveSessionBrowseSessions => 'セッションを閲覧';
+
+  @override
+  String get liveSessionNoSessions => 'アクティブなセッションはありません';
+
+  @override
+  String get liveSessionJoin => '参加';
+
+  @override
+  String get liveSessionYourSession => 'あなたのセッション';
+
+  @override
+  String get liveSessionLeave => 'セッションを退出';
+
+  @override
+  String get liveSessionViewing => 'ライブセッションを視聴中';
+
+  @override
+  String liveSessionHostedBy(String hostName) {
+    return '$hostNameがホスト';
+  }
+
+  @override
+  String liveSessionScenario(String scenarioName) {
+    return 'シナリオ：$scenarioName';
+  }
+
+  @override
+  String get liveSessionRequiresAuth => 'ライブセッションを共有または視聴するにはサインインしてください';
+
+  @override
+  String get liveSessionStatusDisconnected => '切断済み';
+
+  @override
+  String get liveSessionStatusConnecting => '接続中...';
+
+  @override
+  String get liveSessionStatusConnected => '接続済み';
+
+  @override
+  String get liveSessionStatusReconnecting => '再接続中...';
+
+  @override
+  String get liveSessionStatusError => '接続エラー';
+
+  @override
+  String liveSessionConnectionStatusLabel(String status) {
+    return '接続状態：$status';
+  }
+
+  @override
+  String get liveSessionTapForSettings => 'タップしてセッション設定を表示';
+
+  @override
+  String get liveSessionIndicatorTooltip => 'ライブセッション';
+
+  @override
+  String get liveSessionErrorHostingFailed => 'ホスティングを開始できませんでした。もう一度お試しください。';
+
+  @override
+  String get liveSessionErrorJoinFailed => 'セッションに参加できませんでした。もう一度お試しください。';
+
+  @override
+  String get liveSessionErrorConnectionLost => '接続が失われました。再接続を試みています...';
+
+  @override
+  String get liveSessionTitle => 'ライブセッション';
+
+  @override
+  String get liveSessionDescription => 'シミュレーションを共有するか、リアルタイムで他のユーザーに参加';
+
+  @override
+  String get liveSessionHostingDescription => '視聴者にシミュレーションを配信中';
+
+  @override
+  String get liveSessionViewingDescription => 'ライブシミュレーション配信を視聴中';
+
+  @override
+  String get liveSessionMenuTitle => 'ライブセッション';
+
+  @override
+  String get liveSessionMenuDescription => 'リアルタイムシミュレーションを共有または参加';
+
+  @override
+  String get liveSessionBrowseTab => '閲覧';
+
+  @override
+  String get liveSessionStartSharingTab => '共有';
+
+  @override
+  String get liveSessionBrowseDescription =>
+      'ライブセッションに参加して、他のユーザーのシミュレーションをリアルタイムで視聴';
+
+  @override
+  String get liveSessionShareDescription => '現在のシミュレーションを他のユーザーとリアルタイムで共有';
+
+  @override
+  String get liveSessionScenarioToShare => '共有するシナリオ';
+
+  @override
+  String get liveSessionPasswordProtection => 'パスワード保護';
+
+  @override
+  String get liveSessionSetPassword => 'パスワードを入力';
+
+  @override
+  String get liveSessionPasswordDescription =>
+      '視聴者はセッションに参加するためにこのパスワードを入力する必要があります';
+
+  @override
+  String get liveSessionCameraSync => 'カメラ同期';
+
+  @override
+  String get liveSessionCameraSyncDescription =>
+      '視聴者はあなたと同じカメラアングルと動きを見ることができます';
+
+  @override
+  String get liveSessionCameraSyncActive => 'カメラ同期中';
+
+  @override
+  String get liveSessionCameraSyncViewerActive => 'ホストがカメラを制御中';
+
+  @override
+  String get liveSessionPasswordRequired => 'パスワードを入力してください';
+
+  @override
+  String get liveSessionEnterPassword => 'パスワードを入力';
+
+  @override
+  String get liveSessionPasswordHint => 'セッションパスワード';
+
+  @override
+  String get liveSessionPasswordProtected => 'パスワード保護済み';
+
+  @override
+  String get liveSessionPasswordEnabled => '参加にはパスワードが必要です';
+
+  @override
+  String get liveSessionPasswordDisabled => '誰でも参加できます';
+
+  @override
+  String get liveSessionIncorrectPassword => 'パスワードが正しくありません';
+
+  @override
+  String get liveSessionRequiresAccountTitle => 'アカウントが必要です';
+
+  @override
+  String get liveSessionRequiresAccountMessage =>
+      'ライブセッションは登録ユーザーのみ利用可能です。無料アカウントを作成して、シミュレーションを他のユーザーと共有しましょう。';
+
+  @override
+  String get liveSessionCreateAccount => 'アカウントを作成';
+
+  @override
+  String get liveSessionSessionName => 'セッション名';
+
+  @override
+  String get liveSessionSessionNameHint => 'セッションに名前を付けてください';
+
+  @override
+  String get liveSessionSettings => 'セッション設定';
 }

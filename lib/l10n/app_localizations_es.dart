@@ -3803,4 +3803,208 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get showCollisionPlasmaJetsDescription =>
       'Corrientes direccionales sobrecalentadas de colisiones de estrellas masivas (experimental)';
+
+  @override
+  String get liveSessionHosting => 'Sesión en vivo activa';
+
+  @override
+  String get liveSessionNotHosting => 'Compartir sesión en vivo';
+
+  @override
+  String get liveSessionStartHosting => 'Iniciar hosting';
+
+  @override
+  String get liveSessionStopHosting => 'Dejar de compartir';
+
+  @override
+  String get liveSessionUpdateSession => 'Actualizar sesión';
+
+  @override
+  String liveSessionViewerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count espectadores',
+      one: '1 espectador',
+      zero: 'Sin espectadores',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get liveSessionNoViewers => 'Nadie está mirando todavía';
+
+  @override
+  String get liveSessionBrowseSessions => 'Explorar sesiones';
+
+  @override
+  String get liveSessionNoSessions => 'No hay sesiones activas';
+
+  @override
+  String get liveSessionJoin => 'Unirse';
+
+  @override
+  String get liveSessionYourSession => 'Tu sesión';
+
+  @override
+  String get liveSessionLeave => 'Salir de sesión';
+
+  @override
+  String get liveSessionViewing => 'Viendo sesión en vivo';
+
+  @override
+  String liveSessionHostedBy(String hostName) {
+    return 'Presentado por $hostName';
+  }
+
+  @override
+  String liveSessionScenario(String scenarioName) {
+    return 'Escenario: $scenarioName';
+  }
+
+  @override
+  String get liveSessionRequiresAuth =>
+      'Inicia sesión para compartir o ver sesiones en vivo';
+
+  @override
+  String get liveSessionStatusDisconnected => 'Desconectado';
+
+  @override
+  String get liveSessionStatusConnecting => 'Conectando...';
+
+  @override
+  String get liveSessionStatusConnected => 'Conectado';
+
+  @override
+  String get liveSessionStatusReconnecting => 'Reconectando...';
+
+  @override
+  String get liveSessionStatusError => 'Error de conexión';
+
+  @override
+  String liveSessionConnectionStatusLabel(String status) {
+    return 'Estado de conexión: $status';
+  }
+
+  @override
+  String get liveSessionTapForSettings => 'Toca para configuración de sesión';
+
+  @override
+  String get liveSessionIndicatorTooltip => 'Sesión en Vivo';
+
+  @override
+  String get liveSessionErrorHostingFailed =>
+      'No se pudo iniciar el alojamiento. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get liveSessionErrorJoinFailed =>
+      'No se pudo unir a la sesión. Por favor, inténtalo de nuevo.';
+
+  @override
+  String get liveSessionErrorConnectionLost =>
+      'Conexión perdida. Intentando reconectar...';
+
+  @override
+  String get liveSessionTitle => 'Sesión en Vivo';
+
+  @override
+  String get liveSessionDescription =>
+      'Comparte tu simulación o únete a otros en tiempo real';
+
+  @override
+  String get liveSessionHostingDescription =>
+      'Transmitiendo tu simulación a los espectadores';
+
+  @override
+  String get liveSessionViewingDescription =>
+      'Viendo una transmisión de simulación en vivo';
+
+  @override
+  String get liveSessionMenuTitle => 'Sesiones en Vivo';
+
+  @override
+  String get liveSessionMenuDescription =>
+      'Compartir o unirse a simulaciones en tiempo real';
+
+  @override
+  String get liveSessionBrowseTab => 'Explorar';
+
+  @override
+  String get liveSessionStartSharingTab => 'Compartir';
+
+  @override
+  String get liveSessionBrowseDescription =>
+      'Únete a una sesión en vivo para ver la simulación de otro usuario en tiempo real';
+
+  @override
+  String get liveSessionShareDescription =>
+      'Comparte tu simulación actual con otros en tiempo real';
+
+  @override
+  String get liveSessionScenarioToShare => 'Escenario a compartir';
+
+  @override
+  String get liveSessionPasswordProtection => 'Protección con Contraseña';
+
+  @override
+  String get liveSessionSetPassword => 'Introducir contraseña';
+
+  @override
+  String get liveSessionPasswordDescription =>
+      'Los espectadores necesitarán introducir esta contraseña para unirse a tu sesión';
+
+  @override
+  String get liveSessionCameraSync => 'Sincronización de Cámara';
+
+  @override
+  String get liveSessionCameraSyncDescription =>
+      'Los espectadores verán el mismo ángulo de cámara y movimientos que tú';
+
+  @override
+  String get liveSessionCameraSyncActive => 'Cámara sincronizada';
+
+  @override
+  String get liveSessionCameraSyncViewerActive =>
+      'Cámara controlada por el anfitrión';
+
+  @override
+  String get liveSessionPasswordRequired =>
+      'Por favor, introduce una contraseña';
+
+  @override
+  String get liveSessionEnterPassword => 'Introducir Contraseña';
+
+  @override
+  String get liveSessionPasswordHint => 'Contraseña de sesión';
+
+  @override
+  String get liveSessionPasswordProtected => 'Protegida con contraseña';
+
+  @override
+  String get liveSessionPasswordEnabled => 'Se requiere contraseña para unirse';
+
+  @override
+  String get liveSessionPasswordDisabled => 'Cualquiera puede unirse';
+
+  @override
+  String get liveSessionIncorrectPassword => 'Contraseña incorrecta';
+
+  @override
+  String get liveSessionRequiresAccountTitle => 'Cuenta requerida';
+
+  @override
+  String get liveSessionRequiresAccountMessage =>
+      'Las sesiones en vivo están disponibles para usuarios registrados. Crea una cuenta gratuita para compartir tus simulaciones con otros.';
+
+  @override
+  String get liveSessionCreateAccount => 'Crear cuenta';
+
+  @override
+  String get liveSessionSessionName => 'Nombre de la sesión';
+
+  @override
+  String get liveSessionSessionNameHint => 'Dale un nombre a tu sesión';
+
+  @override
+  String get liveSessionSettings => 'Configuración de sesión';
 }

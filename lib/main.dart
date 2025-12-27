@@ -193,6 +193,7 @@ class GravitonApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: appState),
         ChangeNotifierProvider.value(value: appState.auth),
+        ChangeNotifierProvider.value(value: appState.liveSession),
       ],
       child: Consumer<AppState>(
         builder: (context, appState, child) {

@@ -8,26 +8,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.8.0] - 2025-12-22
 
 ### Added
-- **Firebase Realtime Database Integration**: Live simulation sharing between users
-  - **RealtimeDatabaseService**: Low-level database operations with connection monitoring
-    - Real-time data synchronization with offline persistence support
-    - Path validation to prevent traversal attacks and invalid characters
-    - Atomic transactions and increment operations with type safety
-    - Presence tracking for online/offline status
-    - Comprehensive error handling with Crashlytics integration
-  - **LiveSessionService**: Host and join live simulation sessions
-    - Real-time session state updates (running status, time scale, scenario)
-    - Viewer count tracking with automatic presence management
-    - Stream-based active session discovery
-    - Graceful error handling for malformed data and network issues
-  - **LiveSession Model**: Data model for live session metadata
-    - Serialization/deserialization with sensible defaults
-    - Immutable design with copyWith support
-    - Equality and hashCode implementations
-  - **Test Coverage**: 89 tests for Firebase Realtime Database services
+- **Live Sessions Feature**: Real-time collaborative simulation viewing
+  - **Firebase Realtime Database Integration**: Infrastructure for live simulation sharing
+    - **RealtimeDatabaseService**: Low-level database operations with connection monitoring
+      - Real-time data synchronization with offline persistence support
+      - Path validation to prevent traversal attacks and invalid characters
+      - Atomic transactions and increment operations with type safety
+      - Presence tracking for online/offline status
+      - Comprehensive error handling with Crashlytics integration
+    - **LiveSessionService**: Host and join live simulation sessions
+      - Real-time session state updates (running status, time scale, scenario)
+      - Viewer count tracking with automatic presence management
+      - Stream-based active session discovery
+      - Graceful error handling for malformed data and network issues
+    - **LiveSession Model**: Data model for live session metadata
+      - Serialization/deserialization with sensible defaults
+      - Immutable design with copyWith support
+      - Equality and hashCode implementations
+  - **Session Hosting**: Share simulations with other users in real-time
+    - Password protection for private sessions
+    - Camera synchronization to sync viewer cameras with host perspective
+    - Live viewer count display with automatic presence management
+    - Connection status tracking with visual indicators
+  - **Session Browsing**: Discover and join active sessions
+    - SessionBrowserWidget for discovering available live sessions
+    - Password entry dialog for protected sessions
+    - Real-time session list updates
+  - **Camera Sync Indicators**: Visual status feedback for camera synchronization
+    - Host indicator showing "Camera synced" when sync is enabled
+    - Viewer indicator showing "Camera controlled by host" when receiving camera data
+    - Localized strings for all 7 supported languages
+  - **Live Session State Management**: Integration with authentication
+    - LiveSessionState provider for reactive UI updates
+    - Authentication requirement enforcement for hosting/viewing
+    - Connection status and error handling
+  - **Test Coverage**: 700+ tests for live session functionality
     - 35 RealtimeDatabaseService tests (path validation, operations, edge cases)
     - 18 LiveSessionService tests (hosting, viewing, streams)
     - 36 LiveSession model tests (constructor, serialization, equality)
+    - Widget tests for SessionBrowserWidget, StartSharingTab, BrowseSessionsTab
+    - State management tests for LiveSessionState
 - **Interaction Lock Feature**: Screen lock to prevent accidental body dragging during pan/exploration
   - New interaction lock toggle widget with locked/unlocked visual states
   - UI state management for persisting lock preference across sessions

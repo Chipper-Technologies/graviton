@@ -17,6 +17,8 @@ import 'package:graviton/core/enums/ui_element.dart';
 import 'package:graviton/features/auth/presentation/widgets/avatar_button.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/celestial/body.dart';
+import 'package:graviton/models/firebase/camera_snapshot.dart';
+import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/models/ui/dialog_action.dart';
 import 'package:graviton/services/camera/camera_gesture_service.dart';
 import 'package:graviton/services/camera/cinematic_camera_controller.dart';
@@ -47,12 +49,15 @@ import 'package:graviton/widgets/haptics/haptic_app_bar.dart';
 import 'package:graviton/widgets/haptics/haptic_circular_button.dart';
 import 'package:graviton/widgets/haptics/haptic_gesture_detector.dart';
 import 'package:graviton/widgets/haptics/haptic_icon_button.dart';
+import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/widgets/interaction/interaction_lock_toggle.dart';
 import 'package:graviton/widgets/overlays/body_property_editor_overlay.dart';
 import 'package:graviton/widgets/overlays/camera_visual_aids_overlay.dart';
 import 'package:graviton/widgets/overlays/stats_overlay.dart';
 import 'package:graviton/widgets/semantics/semantic_live_region.dart';
 import 'package:graviton/widgets/simulation/simulation_viewport_widget.dart';
+import 'package:graviton/widgets/live_session/connection_status_indicator.dart';
+import 'package:graviton/features/live_session/presentation/screens/live_session_screen.dart';
 import 'package:provider/provider.dart';
 
 /// Main screen for Graviton
@@ -73,6 +78,10 @@ class _HomeScreenState extends State<HomeScreen>
   ); // More stars with enhanced data, using default radius
 
   Duration _lastElapsed = Duration.zero;
+  DateTime _lastBroadcast = DateTime.now();
+
+  /// Interval between live session broadcasts (5 times per second)
+  static const Duration _broadcastInterval = Duration(milliseconds: 200);
 
   final bool _hasMoved = false; // Track if any movement occurred during gesture
 
@@ -224,6 +233,69 @@ class _HomeScreenState extends State<HomeScreen>
         SimulationConstants.trailUpdateFrequency,
       );
     }
+
+    // Broadcast simulation state if hosting a live session
+    _broadcastIfHosting(appState);
+
+    // Apply camera sync from host if viewing a live session
+    _applyCameraSyncIfViewing(appState);
+  }
+
+  /// Broadcasts simulation state to viewers if hosting a live session.
+  ///
+  /// Only broadcasts at [_broadcastInterval] intervals to avoid flooding.
+  /// Includes camera state if [LiveSessionState.syncCameraWithViewers] is enabled.
+  void _broadcastIfHosting(AppState appState) {
+    final liveSession = appState.liveSession;
+    if (!liveSession.isHosting) return;
+
+    final now = DateTime.now();
+    if (now.difference(_lastBroadcast) < _broadcastInterval) return;
+
+    _lastBroadcast = now;
+
+    // Build camera snapshot if camera sync is enabled
+    CameraSnapshot? cameraSnapshot;
+    if (liveSession.syncCameraWithViewers) {
+      final camera = appState.camera;
+      cameraSnapshot = CameraSnapshot(
+        yaw: camera.yaw,
+        pitch: camera.pitch,
+        roll: camera.roll,
+        distance: camera.distance,
+        target: camera.target,
+        followMode: camera.followMode,
+        followedBodyIndex: camera.followedBodyIndex,
+        selectedBody: camera.selectedBody,
+        autoRotate: camera.autoRotate,
+        fieldOfView: camera.fieldOfView,
+      );
+    }
+
+    final snapshot = SimulationSnapshot.fromSimulation(
+      bodies: appState.simulation.bodies,
+      isRunning: appState.simulation.isRunning && !appState.simulation.isPaused,
+      timeScale: appState.simulation.timeScale,
+      totalTime: appState.simulation.totalTime,
+      stepCount: appState.simulation.stepCount,
+      camera: cameraSnapshot,
+    );
+    liveSession.broadcastState(snapshot);
+  }
+
+  /// Applies camera state from the host when viewing a live session.
+  ///
+  /// Only applies camera sync if the host has camera sync enabled and
+  /// the received snapshot includes camera data.
+  void _applyCameraSyncIfViewing(AppState appState) {
+    final liveSession = appState.liveSession;
+    if (!liveSession.isViewing) return;
+
+    final snapshot = liveSession.latestSnapshot;
+    if (snapshot == null || !snapshot.hasCameraSync) return;
+
+    // Apply camera state from the host
+    appState.camera.applySnapshot(snapshot.camera!);
   }
 
   void _handleTapWithDelay(
@@ -599,6 +671,8 @@ class _HomeScreenState extends State<HomeScreen>
               onShowChangelog: () =>
                   NavigationService.showCurrentVersionChangelog(context),
               onShowAccount: () => _showAccountManagementScreen(context),
+              onShowLiveSession: () =>
+                  LiveSessionScreen.show(context, appState: appState),
             ),
             appBar: shouldHideUI
                 ? null
@@ -667,6 +741,26 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                     actions: [
+                      // Live session connection status indicator - tappable to show session screen
+                      Tooltip(
+                        message: l10n.liveSessionIndicatorTooltip,
+                        child: HapticInkWell(
+                          onTap: () => LiveSessionScreen.show(
+                            context,
+                            appState: appState,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            AppTypography.radiusSmall,
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(AppTypography.spacingSmall),
+                            child: ConnectionStatusIndicator(
+                              showLabel: false,
+                              compact: true,
+                            ),
+                          ),
+                        ),
+                      ),
                       // Avatar button
                       AvatarButton(
                         onTap: () {

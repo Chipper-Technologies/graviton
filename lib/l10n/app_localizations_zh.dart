@@ -3525,4 +3525,194 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get showCollisionPlasmaJetsDescription => '来自大质量恒星碰撞的定向超高温流（实验性）';
+
+  @override
+  String get liveSessionHosting => '正在主持直播会话';
+
+  @override
+  String get liveSessionNotHosting => '分享直播会话';
+
+  @override
+  String get liveSessionStartHosting => '开始主持';
+
+  @override
+  String get liveSessionStopHosting => '停止分享';
+
+  @override
+  String get liveSessionUpdateSession => '更新会话';
+
+  @override
+  String liveSessionViewerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count位观看者',
+      one: '1位观看者',
+      zero: '无观看者',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get liveSessionNoViewers => '还没有人观看';
+
+  @override
+  String get liveSessionBrowseSessions => '浏览会话';
+
+  @override
+  String get liveSessionNoSessions => '没有活跃会话';
+
+  @override
+  String get liveSessionJoin => '加入';
+
+  @override
+  String get liveSessionYourSession => '您的会话';
+
+  @override
+  String get liveSessionLeave => '离开会话';
+
+  @override
+  String get liveSessionViewing => '正在观看直播会话';
+
+  @override
+  String liveSessionHostedBy(String hostName) {
+    return '由$hostName主持';
+  }
+
+  @override
+  String liveSessionScenario(String scenarioName) {
+    return '场景：$scenarioName';
+  }
+
+  @override
+  String get liveSessionRequiresAuth => '登录以分享或观看直播会话';
+
+  @override
+  String get liveSessionStatusDisconnected => '已断开';
+
+  @override
+  String get liveSessionStatusConnecting => '连接中...';
+
+  @override
+  String get liveSessionStatusConnected => '已连接';
+
+  @override
+  String get liveSessionStatusReconnecting => '重新连接中...';
+
+  @override
+  String get liveSessionStatusError => '连接错误';
+
+  @override
+  String liveSessionConnectionStatusLabel(String status) {
+    return '连接状态：$status';
+  }
+
+  @override
+  String get liveSessionTapForSettings => '点击查看会话设置';
+
+  @override
+  String get liveSessionIndicatorTooltip => '实时会话';
+
+  @override
+  String get liveSessionErrorHostingFailed => '无法开始主持。请重试。';
+
+  @override
+  String get liveSessionErrorJoinFailed => '无法加入会话。请重试。';
+
+  @override
+  String get liveSessionErrorConnectionLost => '连接丢失。正在尝试重新连接...';
+
+  @override
+  String get liveSessionTitle => '实时会话';
+
+  @override
+  String get liveSessionDescription => '分享您的模拟或实时加入其他人';
+
+  @override
+  String get liveSessionHostingDescription => '正在向观众广播您的模拟';
+
+  @override
+  String get liveSessionViewingDescription => '正在观看实时模拟广播';
+
+  @override
+  String get liveSessionMenuTitle => '实时会话';
+
+  @override
+  String get liveSessionMenuDescription => '分享或加入实时模拟';
+
+  @override
+  String get liveSessionBrowseTab => '浏览';
+
+  @override
+  String get liveSessionStartSharingTab => '分享';
+
+  @override
+  String get liveSessionBrowseDescription => '加入实时会话以实时观看其他用户的模拟';
+
+  @override
+  String get liveSessionShareDescription => '实时与他人分享您当前的模拟';
+
+  @override
+  String get liveSessionScenarioToShare => '要分享的场景';
+
+  @override
+  String get liveSessionPasswordProtection => '密码保护';
+
+  @override
+  String get liveSessionSetPassword => '输入密码';
+
+  @override
+  String get liveSessionPasswordDescription => '观众需要输入此密码才能加入您的会话';
+
+  @override
+  String get liveSessionCameraSync => '相机同步';
+
+  @override
+  String get liveSessionCameraSyncDescription => '观众将看到与您相同的相机角度和移动';
+
+  @override
+  String get liveSessionCameraSyncActive => '相机已同步';
+
+  @override
+  String get liveSessionCameraSyncViewerActive => '相机由主持人控制';
+
+  @override
+  String get liveSessionPasswordRequired => '请输入密码';
+
+  @override
+  String get liveSessionEnterPassword => '输入密码';
+
+  @override
+  String get liveSessionPasswordHint => '会话密码';
+
+  @override
+  String get liveSessionPasswordProtected => '已启用密码保护';
+
+  @override
+  String get liveSessionPasswordEnabled => '需要密码才能加入';
+
+  @override
+  String get liveSessionPasswordDisabled => '任何人都可以加入';
+
+  @override
+  String get liveSessionIncorrectPassword => '密码错误';
+
+  @override
+  String get liveSessionRequiresAccountTitle => '需要账户';
+
+  @override
+  String get liveSessionRequiresAccountMessage =>
+      '直播会话仅供注册用户使用。创建免费账户与他人分享您的模拟。';
+
+  @override
+  String get liveSessionCreateAccount => '创建账户';
+
+  @override
+  String get liveSessionSessionName => '会话名称';
+
+  @override
+  String get liveSessionSessionNameHint => '为您的会话命名';
+
+  @override
+  String get liveSessionSettings => '会话设置';
 }

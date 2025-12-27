@@ -266,10 +266,6 @@ class RealtimeDatabaseService {
 
     try {
       await reference.set(value);
-
-      if (kDebugMode) {
-        debugPrint('RealtimeDatabaseService: Set value at $path');
-      }
       return true;
     } catch (e, stackTrace) {
       debugPrint('RealtimeDatabaseService: Failed to set value at $path: $e');
@@ -293,10 +289,6 @@ class RealtimeDatabaseService {
 
     try {
       await reference.update(values);
-
-      if (kDebugMode) {
-        debugPrint('RealtimeDatabaseService: Updated values at $path');
-      }
       return true;
     } catch (e, stackTrace) {
       debugPrint(
@@ -320,12 +312,6 @@ class RealtimeDatabaseService {
     try {
       final newRef = reference.push();
       await newRef.set(value);
-
-      if (kDebugMode) {
-        debugPrint(
-          'RealtimeDatabaseService: Pushed new value at $path/${newRef.key}',
-        );
-      }
       return newRef.key;
     } catch (e, stackTrace) {
       debugPrint('RealtimeDatabaseService: Failed to push at $path: $e');
@@ -345,10 +331,6 @@ class RealtimeDatabaseService {
 
     try {
       await reference.remove();
-
-      if (kDebugMode) {
-        debugPrint('RealtimeDatabaseService: Removed data at $path');
-      }
       return true;
     } catch (e, stackTrace) {
       debugPrint('RealtimeDatabaseService: Failed to remove at $path: $e');
