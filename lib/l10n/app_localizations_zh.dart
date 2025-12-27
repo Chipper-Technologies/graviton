@@ -3715,4 +3715,148 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get liveSessionSettings => '会话设置';
+
+  @override
+  String get premiumTierFree => '免费';
+
+  @override
+  String get premiumTierPremium => '高级版';
+
+  @override
+  String get premiumTierLifetime => '终身版';
+
+  @override
+  String get premiumTitle => 'Graviton 高级版';
+
+  @override
+  String get premiumSubtitle => '解锁无限制的直播会话';
+
+  @override
+  String get premiumBenefitUnlimitedDuration => '无限制会话时长';
+
+  @override
+  String get premiumBenefitUnlimitedDurationDesc => '随心所欲地主持会话';
+
+  @override
+  String premiumBenefitViewers(int count) {
+    return '最多 $count 位观众';
+  }
+
+  @override
+  String get premiumBenefitViewersDesc => '与更多观众分享';
+
+  @override
+  String get premiumBenefitCameraSync => '相机同步';
+
+  @override
+  String get premiumBenefitCameraSyncDesc => '为所有观众同步视角';
+
+  @override
+  String get premiumBenefitPassword => '密码保护';
+
+  @override
+  String get premiumBenefitPasswordDesc => '保持会话私密';
+
+  @override
+  String get premiumBenefitUnlimitedSessions => '每日无限制会话';
+
+  @override
+  String get premiumBenefitUnlimitedSessionsDesc => '无每日主持限制';
+
+  @override
+  String get premiumPlanMonthly => '月付';
+
+  @override
+  String get premiumPlanYearly => '年付';
+
+  @override
+  String get premiumPlanLifetime => '终身';
+
+  @override
+  String get premiumPeriodMonth => '/月';
+
+  @override
+  String get premiumPeriodYear => '/年';
+
+  @override
+  String get premiumPeriodOneTime => ' 一次性';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return '节省 $percent%';
+  }
+
+  @override
+  String get premiumBestValue => '最超值';
+
+  @override
+  String get premiumStartFreeTrial => '开始免费试用';
+
+  @override
+  String get premiumBuyNow => '立即购买';
+
+  @override
+  String get premiumRestorePurchases => '恢复购买';
+
+  @override
+  String get premiumLegalText =>
+      '订阅将自动续订，除非在当前期间结束前至少24小时取消。您可以在App Store设置中管理订阅。';
+
+  @override
+  String get premiumManageSubscriptions => '管理订阅';
+
+  @override
+  String get premiumUpgrade => '升级';
+
+  @override
+  String get premiumUpgradeToPremium => '升级到高级版';
+
+  @override
+  String get premiumSessionExpired => '会话已过期';
+
+  @override
+  String get premiumSessionExpiredMessage => '您的免费会话时间已结束。您的实时会话已停止。';
+
+  @override
+  String get premiumUnlimitedSessionsHint => '升级到高级版享受无限会话时长';
+
+  @override
+  String get premiumTimeRemaining => '剩余时间';
+
+  @override
+  String get premiumSessionLimitReached => '已达会话限制';
+
+  @override
+  String premiumSessionLimitMessage(int count) {
+    return '您已达到每日 $count 次会话限制。升级到高级版享受无限制会话。';
+  }
+
+  @override
+  String premiumDurationLimitMessage(int minutes) {
+    return '免费会话限制为 $minutes 分钟。升级享受无限制会话时长。';
+  }
+
+  @override
+  String get premiumFeatureRequiresPremium => '此功能需要高级版';
+
+  @override
+  String get premiumPurchaseFailed => '购买失败，请重试。';
+
+  @override
+  String get premiumRestoreFailed => '无法恢复购买，请重试。';
+
+  @override
+  String get premiumRestoreSuccess => '购买恢复成功！';
+
+  @override
+  String get premiumNoPurchasesToRestore => '未找到可恢复的历史购买记录。';
+
+  @override
+  String get premiumRedirectingToPayment => '正在跳转到安全支付...';
+
+  @override
+  String get premiumFreeTierLabel => '免费';
+
+  @override
+  String get premiumProBadge => 'PRO';
 }

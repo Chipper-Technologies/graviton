@@ -5,76 +5,58 @@ All notable changes to the Graviton project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.8.0] - 2025-12-22
+## [1.8.0] - 2025-12-24
 
 ### Added
+- **Premium Tier System**: Comprehensive subscription infrastructure with usage limits and feature gating
+  - **Domain Models**: PremiumTier enum (free/premium), PremiumLimits for configurable limits, UsageStats for tracking
+  - **PremiumService**: RevenueCat integration for subscription management with Firebase Remote Config fallback
+  - **UsageTrackingService**: Session time and count tracking with Firestore persistence
+  - **StripeWebService**: Web-only Stripe Payment Links integration for premium purchases
+  - **PremiumState**: Provider-based state management for reactive UI updates
+  - **PremiumGate Widget**: Declarative feature gating with customizable blocked content
+  - **PremiumOverlay Widget**: Visual overlay for premium-only features with upgrade prompts
+  - **Paywall Kill Switch**: Remote Config flag (`premium_paywall_disabled`) to globally disable paywall for authenticated users
+  - Localization support across all 7 languages
 - **Live Sessions Feature**: Real-time collaborative simulation viewing
   - **Firebase Realtime Database Integration**: Infrastructure for live simulation sharing
-    - **RealtimeDatabaseService**: Low-level database operations with connection monitoring
-      - Real-time data synchronization with offline persistence support
-      - Path validation to prevent traversal attacks and invalid characters
-      - Atomic transactions and increment operations with type safety
-      - Presence tracking for online/offline status
-      - Comprehensive error handling with Crashlytics integration
-    - **LiveSessionService**: Host and join live simulation sessions
-      - Real-time session state updates (running status, time scale, scenario)
-      - Viewer count tracking with automatic presence management
-      - Stream-based active session discovery
-      - Graceful error handling for malformed data and network issues
-    - **LiveSession Model**: Data model for live session metadata
-      - Serialization/deserialization with sensible defaults
-      - Immutable design with copyWith support
-      - Equality and hashCode implementations
-  - **Session Hosting**: Share simulations with other users in real-time
-    - Password protection for private sessions
-    - Camera synchronization to sync viewer cameras with host perspective
-    - Live viewer count display with automatic presence management
-    - Connection status tracking with visual indicators
-  - **Session Browsing**: Discover and join active sessions
-    - SessionBrowserWidget for discovering available live sessions
-    - Password entry dialog for protected sessions
-    - Real-time session list updates
-  - **Camera Sync Indicators**: Visual status feedback for camera synchronization
-    - Host indicator showing "Camera synced" when sync is enabled
-    - Viewer indicator showing "Camera controlled by host" when receiving camera data
-    - Localized strings for all 7 supported languages
-  - **Live Session State Management**: Integration with authentication
-    - LiveSessionState provider for reactive UI updates
-    - Authentication requirement enforcement for hosting/viewing
-    - Connection status and error handling
-  - **Test Coverage**: 700+ tests for live session functionality
-    - 35 RealtimeDatabaseService tests (path validation, operations, edge cases)
-    - 18 LiveSessionService tests (hosting, viewing, streams)
-    - 36 LiveSession model tests (constructor, serialization, equality)
-    - Widget tests for SessionBrowserWidget, StartSharingTab, BrowseSessionsTab
-    - State management tests for LiveSessionState
+    - **RealtimeDatabaseService**: Low-level database operations with connection monitoring, path validation, atomic transactions, and presence tracking
+    - **LiveSessionService**: Host and join sessions with real-time state updates, viewer count tracking, and stream-based discovery
+    - **LiveSession Model**: Immutable data model with serialization and equality support
+  - **Session Hosting**: Share simulations with password protection, camera sync, and live viewer count
+  - **Session Browsing**: Discover and join active sessions with real-time updates
+  - **Camera Sync Indicators**: Visual feedback for host and viewer camera synchronization states
+  - **Live Session State Management**: Provider integration with authentication enforcement
+  - **Shared Widgets**: Extracted and consolidated reusable components
+    - ViewerCountBadge for displaying viewer counts with icons
+    - SessionCard for consistent session list items
+    - SessionLoadingIndicator for loading states
+    - SessionEmptyState for empty list states
+    - PulseAnimation for attention-drawing effects
 - **Interaction Lock Feature**: Screen lock to prevent accidental body dragging during pan/exploration
-  - New interaction lock toggle widget with locked/unlocked visual states
-  - UI state management for persisting lock preference across sessions
-  - Integration into simulation viewport to conditionally block body dragging
-  - Visual and haptic feedback when toggling lock state
-  - Localization support across all 7 languages
-- **Body Label Occlusion Detection**: Labels now hide when occluded by closer celestial bodies
+  - Toggle widget with locked/unlocked visual states and haptic feedback
+  - UI state persistence across sessions
+- **Body Label Occlusion Detection**: Labels hide when occluded by closer celestial bodies
   - O(n²) occlusion pass with configurable radius multiplier (0.85)
-  - Performance documentation for future optimization with spatial partitioning
 
 ### Changed
 - **Enhanced Hemisphere Lighting**: Improved phase-based light/shadow gradient calculations
-  - Camera-space transformations for more accurate hemisphere lighting direction
-  - New `_calculateGradientStops()` helper consolidates duplicate gradient logic (DRY)
+  - Camera-space transformations for accurate hemisphere lighting direction
+  - New `_calculateGradientStops()` helper consolidates duplicate gradient logic
   - Configurable phase clamp values (0.1-0.9) prevent gradient stop bunching
-  - Ambient shadow ratio for softer lighting when cast shadows are disabled
 - **Improved Specular Highlights**: Blinn-Phong shading in camera space
   - Back-face culling threshold (0.1) prevents highlights on sphere backsides
-  - Power scaling (0.5) creates gradual intensity falloff
   - Uses worldToCameraMatrix when available for accurate calculations
 - **Outer Planet Rendering Support**: Updated constants for distant bodies
-  - Increased light source distance from 50 to 2000 units
-  - Reduced minimum contribution from 0.05 to 0.0001 for realistic falloff
-  - Custom body highlight multiplier (0.4) for textured planets like Jupiter
+  - Increased light source distance from 50 to 2000 units for realistic falloff
 
 ### Fixed
 - Light direction epsilon (0.001) prevents division by near-zero in edge cases
+
+### Tests
+- 6700+ passing tests with comprehensive coverage
+  - Premium tier: PremiumService, UsageTrackingService, StripeWebService, PremiumState, PremiumGate, PremiumOverlay
+  - Live sessions: RealtimeDatabaseService (35), LiveSessionService (18), LiveSession model (36), widgets, state management
 
 ## [1.7.0] - 2025-12-13
 

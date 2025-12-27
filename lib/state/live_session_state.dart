@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart' show ChangeNotifier;
 import 'package:graviton/core/enums/live_session_connection_status.dart';
+import 'package:graviton/features/premium/data/premium_service.dart';
+import 'package:graviton/features/premium/domain/premium_feature.dart';
 import 'package:graviton/models/firebase/live_session.dart';
 import 'package:graviton/models/firebase/simulation_snapshot.dart';
 import 'package:graviton/services/firebase/live_session_service.dart';
@@ -142,7 +144,16 @@ class LiveSessionState extends ChangeNotifier {
   bool get syncCameraWithViewers => _syncCameraWithViewers;
 
   /// Toggle whether camera movements are synced with viewers
+  ///
+  /// Note: Camera sync requires premium access. If the user doesn't have
+  /// premium and tries to enable camera sync, it will be silently ignored.
   void setSyncCameraWithViewers(bool value) {
+    // Enforce premium requirement for camera sync
+    if (value &&
+        !PremiumService.instance.canUseFeature(PremiumFeature.cameraSync)) {
+      // Silently ignore - UI should prevent this, but enforce at state level
+      return;
+    }
     if (_syncCameraWithViewers != value) {
       _syncCameraWithViewers = value;
       notifyListeners();
@@ -199,20 +210,35 @@ class LiveSessionState extends ChangeNotifier {
       await stopViewing();
     }
 
+    // Enforce premium requirement for password protection
+    // Strip password if user doesn't have premium access
+    final effectivePassword =
+        PremiumService.instance.canUseFeature(PremiumFeature.passwordProtection)
+        ? password
+        : null;
+
+    // Enforce premium requirement for camera sync
+    // Reset to false if user doesn't have premium access
+    if (_syncCameraWithViewers &&
+        !PremiumService.instance.canUseFeature(PremiumFeature.cameraSync)) {
+      _syncCameraWithViewers = false;
+    }
+
     // Set up the viewer count callback before starting
     _service.setOnViewerCountChanged(_onViewerCountChanged);
 
     final sessionId = await _service.startHosting(
       scenarioName: scenarioName,
       displayName: displayName,
-      password: password,
+      password: effectivePassword,
     );
 
     if (sessionId != null) {
       _isHosting = true;
       _hostedSessionId = sessionId;
       _hostedScenarioName = scenarioName;
-      _hostedIsPasswordProtected = password != null && password.isNotEmpty;
+      _hostedIsPasswordProtected =
+          effectivePassword != null && effectivePassword.isNotEmpty;
       _viewerCount = 0;
       _setConnectionStatus(LiveSessionConnectionStatus.connected);
       clearError();

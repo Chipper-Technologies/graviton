@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graviton/features/premium/presentation/premium_state.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/l10n/app_localizations_en.dart';
 import 'package:graviton/state/app_state.dart';
@@ -14,17 +15,20 @@ void main() {
   group('LiveSessionPanel Tests', () {
     late AppState appState;
     late LiveSessionState liveSessionState;
+    late PremiumState premiumState;
     late AppLocalizationsEn l10n;
 
     setUp(() {
       appState = AppState();
       liveSessionState = LiveSessionState();
+      premiumState = PremiumState();
       l10n = AppLocalizationsEn();
     });
 
     tearDown(() {
       appState.dispose();
       liveSessionState.dispose();
+      premiumState.dispose();
     });
 
     Widget createTestWidget({
@@ -37,6 +41,7 @@ void main() {
           ChangeNotifierProvider<LiveSessionState>.value(
             value: liveSessionState,
           ),
+          ChangeNotifierProvider<PremiumState>.value(value: premiumState),
         ],
         child: MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -131,6 +136,7 @@ void main() {
               ChangeNotifierProvider<LiveSessionState>.value(
                 value: liveSessionState,
               ),
+              ChangeNotifierProvider<PremiumState>.value(value: premiumState),
             ],
             child: MaterialApp(
               localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -222,6 +228,7 @@ void main() {
               ChangeNotifierProvider<LiveSessionState>.value(
                 value: liveSessionState,
               ),
+              ChangeNotifierProvider<PremiumState>.value(value: premiumState),
             ],
             child: MaterialApp(
               localizationsDelegates: AppLocalizations.localizationsDelegates,

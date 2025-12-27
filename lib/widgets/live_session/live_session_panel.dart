@@ -9,6 +9,7 @@ import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/widgets/live_session/connection_status_indicator.dart';
 import 'package:graviton/widgets/live_session/host_controls_widget.dart';
 import 'package:graviton/widgets/live_session/session_browser_widget.dart';
+import 'package:graviton/widgets/live_session/viewer_count_badge.dart';
 import 'package:provider/provider.dart';
 
 /// A comprehensive panel for managing live session functionality
@@ -250,51 +251,10 @@ class _ConnectionStatusSection extends StatelessWidget {
           const ConnectionStatusIndicator(showLabel: true, compact: false),
           const Spacer(),
           if (liveSessionState.viewerCount > 0)
-            _ViewerCountBadge(count: liveSessionState.viewerCount),
-        ],
-      ),
-    );
-  }
-}
-
-/// Badge showing viewer count
-class _ViewerCountBadge extends StatelessWidget {
-  final int count;
-
-  const _ViewerCountBadge({required this.count});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppTypography.spacingMedium,
-        vertical: AppTypography.spacingXSmall,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.primaryColor.withValues(
-          alpha: AppTypography.opacityMidFade,
-        ),
-        borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.visibility,
-            color: AppColors.primaryColor,
-            size: AppTypography.iconSizeSmall,
-          ),
-          const SizedBox(width: AppTypography.spacingXSmall),
-          Text(
-            l10n.liveSessionViewerCount(count),
-            style: TextStyle(
-              color: AppColors.primaryColor,
-              fontSize: AppTypography.fontSizeSmall,
-              fontWeight: FontWeight.w600,
+            ViewerCountBadge(
+              count: liveSessionState.viewerCount,
+              style: ViewerCountBadgeStyle.subtle,
             ),
-          ),
         ],
       ),
     );

@@ -3743,4 +3743,149 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get liveSessionSettings => 'セッション設定';
+
+  @override
+  String get premiumTierFree => '無料';
+
+  @override
+  String get premiumTierPremium => 'プレミアム';
+
+  @override
+  String get premiumTierLifetime => '永久版';
+
+  @override
+  String get premiumTitle => 'Graviton プレミアム';
+
+  @override
+  String get premiumSubtitle => '無制限のライブセッションを解放';
+
+  @override
+  String get premiumBenefitUnlimitedDuration => '無制限のセッション時間';
+
+  @override
+  String get premiumBenefitUnlimitedDurationDesc => '好きなだけセッションをホスト';
+
+  @override
+  String premiumBenefitViewers(int count) {
+    return '最大$count人の視聴者';
+  }
+
+  @override
+  String get premiumBenefitViewersDesc => 'より多くの視聴者と共有';
+
+  @override
+  String get premiumBenefitCameraSync => 'カメラ同期';
+
+  @override
+  String get premiumBenefitCameraSyncDesc => '全視聴者の視点を同期';
+
+  @override
+  String get premiumBenefitPassword => 'パスワード保護';
+
+  @override
+  String get premiumBenefitPasswordDesc => 'セッションをプライベートに保護';
+
+  @override
+  String get premiumBenefitUnlimitedSessions => '1日無制限のセッション';
+
+  @override
+  String get premiumBenefitUnlimitedSessionsDesc => 'ホスティングに日次制限なし';
+
+  @override
+  String get premiumPlanMonthly => '月額';
+
+  @override
+  String get premiumPlanYearly => '年額';
+
+  @override
+  String get premiumPlanLifetime => '永久';
+
+  @override
+  String get premiumPeriodMonth => '/月';
+
+  @override
+  String get premiumPeriodYear => '/年';
+
+  @override
+  String get premiumPeriodOneTime => ' 一回払い';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return '$percent%お得';
+  }
+
+  @override
+  String get premiumBestValue => '最もお得';
+
+  @override
+  String get premiumStartFreeTrial => '無料トライアルを開始';
+
+  @override
+  String get premiumBuyNow => '今すぐ購入';
+
+  @override
+  String get premiumRestorePurchases => '購入を復元';
+
+  @override
+  String get premiumLegalText =>
+      'サブスクリプションは、現在の期間終了の少なくとも24時間前までにキャンセルしない限り、自動的に更新されます。App Storeの設定でサブスクリプションを管理できます。';
+
+  @override
+  String get premiumManageSubscriptions => 'サブスクリプションを管理';
+
+  @override
+  String get premiumUpgrade => 'アップグレード';
+
+  @override
+  String get premiumUpgradeToPremium => 'プレミアムにアップグレード';
+
+  @override
+  String get premiumSessionExpired => 'セッション期限切れ';
+
+  @override
+  String get premiumSessionExpiredMessage =>
+      '無料セッション時間が終了しました。ライブセッションが停止されました。';
+
+  @override
+  String get premiumUnlimitedSessionsHint => 'プレミアムにアップグレードして無制限のセッション時間を取得';
+
+  @override
+  String get premiumTimeRemaining => '残り時間';
+
+  @override
+  String get premiumSessionLimitReached => 'セッション制限に達しました';
+
+  @override
+  String premiumSessionLimitMessage(int count) {
+    return '1日$countセッションの制限に達しました。プレミアムにアップグレードして無制限のセッションを利用しましょう。';
+  }
+
+  @override
+  String premiumDurationLimitMessage(int minutes) {
+    return '無料セッションは$minutes分に制限されています。アップグレードして無制限のセッション時間を取得しましょう。';
+  }
+
+  @override
+  String get premiumFeatureRequiresPremium => 'この機能にはプレミアムが必要です';
+
+  @override
+  String get premiumPurchaseFailed => '購入に失敗しました。もう一度お試しください。';
+
+  @override
+  String get premiumRestoreFailed => '購入を復元できませんでした。もう一度お試しください。';
+
+  @override
+  String get premiumRestoreSuccess => '購入が正常に復元されました！';
+
+  @override
+  String get premiumNoPurchasesToRestore => '復元する以前の購入が見つかりませんでした。';
+
+  @override
+  String get premiumRedirectingToPayment => '安全な支払いページにリダイレクト中...';
+
+  @override
+  String get premiumFreeTierLabel => '無料';
+
+  @override
+  String get premiumProBadge => 'PRO';
 }

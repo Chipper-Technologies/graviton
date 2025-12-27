@@ -8,6 +8,9 @@ import 'package:graviton/theme/app_typography.dart';
 import 'package:graviton/widgets/common/dialog_title.dart';
 import 'package:graviton/widgets/haptics/haptic_ink_well.dart';
 import 'package:graviton/widgets/haptics/haptic_text_button.dart';
+import 'package:graviton/widgets/live_session/session_card.dart';
+import 'package:graviton/widgets/live_session/session_empty_state.dart';
+import 'package:graviton/widgets/live_session/session_loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 /// Tab for browsing and joining live sessions
@@ -85,9 +88,9 @@ class _BrowseSessionsTabState extends State<BrowseSessionsTab> {
             child: isViewing
                 ? _ViewingCard(onLeave: () => _leaveSession(context))
                 : isLoading
-                ? _LoadingState()
+                ? const SessionLoadingIndicator()
                 : sessions.isEmpty
-                ? _EmptyState(message: l10n.liveSessionNoSessions)
+                ? SessionEmptyState(message: l10n.liveSessionNoSessions)
                 : _SessionList(
                     sessions: sessions,
                     hostedSessionId: hostedSessionId,
@@ -249,51 +252,6 @@ class _BrowseSessionsTabState extends State<BrowseSessionsTab> {
   }
 }
 
-/// Loading indicator while fetching sessions
-class _LoadingState extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(color: AppColors.primaryColor),
-    );
-  }
-}
-
-/// Empty state when no sessions available
-class _EmptyState extends StatelessWidget {
-  final String message;
-
-  const _EmptyState({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.wifi_tethering_off,
-            size: AppTypography.iconSizeXXXLarge,
-            color: AppColors.uiWhite.withValues(
-              alpha: AppTypography.opacityMedium,
-            ),
-          ),
-          const SizedBox(height: AppTypography.spacingMedium),
-          Text(
-            message,
-            style: TextStyle(
-              color: AppColors.uiWhite.withValues(
-                alpha: AppTypography.opacityMedium,
-              ),
-              fontSize: AppTypography.fontSizeMedium,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 /// List of available sessions
 class _SessionList extends StatelessWidget {
   final List<LiveSession> sessions;
@@ -312,189 +270,10 @@ class _SessionList extends StatelessWidget {
       itemCount: sessions.length,
       separatorBuilder: (context, index) =>
           const SizedBox(height: AppTypography.spacingMedium),
-      itemBuilder: (context, index) => _SessionCard(
+      itemBuilder: (context, index) => SessionCard(
         session: sessions[index],
         isOwnSession: sessions[index].id == hostedSessionId,
         onJoin: () => onJoin(sessions[index]),
-      ),
-    );
-  }
-}
-
-/// Card displaying a single session
-class _SessionCard extends StatelessWidget {
-  final LiveSession session;
-  final bool isOwnSession;
-  final VoidCallback onJoin;
-
-  const _SessionCard({
-    required this.session,
-    required this.onJoin,
-    this.isOwnSession = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
-    return Container(
-      padding: const EdgeInsets.all(AppTypography.spacingMedium),
-      decoration: BoxDecoration(
-        color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),
-        borderRadius: BorderRadius.circular(AppTypography.radiusMedium),
-        border: Border.all(
-          color: AppColors.uiWhite.withValues(
-            alpha: AppTypography.opacityDisabled,
-          ),
-          width: AppTypography.borderThin,
-        ),
-      ),
-      child: Row(
-        children: [
-          // Session status indicator
-          Container(
-            width: AppTypography.iconSizeXLarge,
-            height: AppTypography.iconSizeXLarge,
-            decoration: BoxDecoration(
-              color: session.isRunning
-                  ? AppColors.habitabilityHabitable.withValues(
-                      alpha: AppTypography.opacityMidFade,
-                    )
-                  : AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityDisabled,
-                    ),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              session.isRunning ? Icons.play_arrow : Icons.pause,
-              color: session.isRunning
-                  ? AppColors.habitabilityHabitable
-                  : AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityHigh,
-                    ),
-              size: AppTypography.iconSizeMedium,
-            ),
-          ),
-          const SizedBox(width: AppTypography.spacingMedium),
-          // Session info
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        session.scenarioName,
-                        style: TextStyle(
-                          color: AppColors.uiWhite.withValues(
-                            alpha: AppTypography.opacityFull,
-                          ),
-                          fontSize: AppTypography.fontSizeMedium,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    if (session.isPasswordProtected)
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: AppTypography.spacingSmall,
-                        ),
-                        child: Icon(
-                          Icons.lock,
-                          size: AppTypography.iconSizeSmall,
-                          color: AppColors.uiWhite.withValues(
-                            alpha: AppTypography.opacityHigh,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: AppTypography.spacingXSmall),
-                Text(
-                  l10n.liveSessionHostedBy(session.hostName),
-                  style: TextStyle(
-                    color: AppColors.uiWhite.withValues(
-                      alpha: AppTypography.opacityHigh,
-                    ),
-                    fontSize: AppTypography.fontSizeSmall,
-                  ),
-                ),
-                const SizedBox(height: AppTypography.spacingXSmall),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.visibility,
-                      color: AppColors.uiWhite.withValues(
-                        alpha: AppTypography.opacityMedium,
-                      ),
-                      size: AppTypography.iconSizeSmall,
-                    ),
-                    const SizedBox(width: AppTypography.spacingXSmall),
-                    Text(
-                      l10n.liveSessionViewerCount(session.viewerCount),
-                      style: TextStyle(
-                        color: AppColors.uiWhite.withValues(
-                          alpha: AppTypography.opacityMedium,
-                        ),
-                        fontSize: AppTypography.fontSizeXSmall,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          // Join button or "Your Session" label
-          if (isOwnSession)
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppTypography.spacingMedium,
-                vertical: AppTypography.spacingSmall,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.uiWhite.withValues(
-                  alpha: AppTypography.opacityDisabled,
-                ),
-                borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
-              ),
-              child: Text(
-                l10n.liveSessionYourSession,
-                style: TextStyle(
-                  color: AppColors.uiWhite.withValues(
-                    alpha: AppTypography.opacityHigh,
-                  ),
-                  fontSize: AppTypography.fontSizeSmall,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            )
-          else
-            HapticInkWell(
-              onTap: onJoin,
-              borderRadius: BorderRadius.circular(AppTypography.radiusSmall),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppTypography.spacingMedium,
-                  vertical: AppTypography.spacingSmall,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(
-                    AppTypography.radiusSmall,
-                  ),
-                ),
-                child: Text(
-                  l10n.liveSessionJoin,
-                  style: const TextStyle(
-                    color: AppColors.uiWhite,
-                    fontSize: AppTypography.fontSizeSmall,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-        ],
       ),
     );
   }

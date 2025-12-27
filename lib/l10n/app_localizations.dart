@@ -6945,6 +6945,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Session Settings'**
   String get liveSessionSettings;
+
+  /// Display name for free subscription tier
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get premiumTierFree;
+
+  /// Display name for premium subscription tier
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premiumTierPremium;
+
+  /// Display name for lifetime subscription tier
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime'**
+  String get premiumTierLifetime;
+
+  /// Title for premium subscription
+  ///
+  /// In en, this message translates to:
+  /// **'Graviton Premium'**
+  String get premiumTitle;
+
+  /// Subtitle describing premium benefits
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock unlimited Live Sessions'**
+  String get premiumSubtitle;
+
+  /// Premium benefit - unlimited session time
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Session Duration'**
+  String get premiumBenefitUnlimitedDuration;
+
+  /// Description for unlimited duration benefit
+  ///
+  /// In en, this message translates to:
+  /// **'Host sessions as long as you want'**
+  String get premiumBenefitUnlimitedDurationDesc;
+
+  /// Premium benefit - viewer count
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {count} Viewers'**
+  String premiumBenefitViewers(int count);
+
+  /// Description for viewer count benefit
+  ///
+  /// In en, this message translates to:
+  /// **'Share with larger audiences'**
+  String get premiumBenefitViewersDesc;
+
+  /// Premium benefit - camera synchronization
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Sync'**
+  String get premiumBenefitCameraSync;
+
+  /// Description for camera sync benefit
+  ///
+  /// In en, this message translates to:
+  /// **'Synchronize views across all viewers'**
+  String get premiumBenefitCameraSyncDesc;
+
+  /// Premium benefit - password protection
+  ///
+  /// In en, this message translates to:
+  /// **'Password Protection'**
+  String get premiumBenefitPassword;
+
+  /// Description for password protection benefit
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your sessions private'**
+  String get premiumBenefitPasswordDesc;
+
+  /// Premium benefit - no daily session limit
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Sessions Per Day'**
+  String get premiumBenefitUnlimitedSessions;
+
+  /// Description for unlimited sessions benefit
+  ///
+  /// In en, this message translates to:
+  /// **'No daily limits on hosting'**
+  String get premiumBenefitUnlimitedSessionsDesc;
+
+  /// Monthly subscription plan name
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get premiumPlanMonthly;
+
+  /// Yearly subscription plan name
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get premiumPlanYearly;
+
+  /// Lifetime purchase plan name
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime'**
+  String get premiumPlanLifetime;
+
+  /// Monthly billing period suffix
+  ///
+  /// In en, this message translates to:
+  /// **'/month'**
+  String get premiumPeriodMonth;
+
+  /// Yearly billing period suffix
+  ///
+  /// In en, this message translates to:
+  /// **'/year'**
+  String get premiumPeriodYear;
+
+  /// One-time purchase suffix
+  ///
+  /// In en, this message translates to:
+  /// **' one-time'**
+  String get premiumPeriodOneTime;
+
+  /// Savings percentage badge
+  ///
+  /// In en, this message translates to:
+  /// **'Save {percent}%'**
+  String premiumSavePercent(String percent);
+
+  /// Best value badge for lifetime plan
+  ///
+  /// In en, this message translates to:
+  /// **'Best Value'**
+  String get premiumBestValue;
+
+  /// Button text to start free trial
+  ///
+  /// In en, this message translates to:
+  /// **'Start Free Trial'**
+  String get premiumStartFreeTrial;
+
+  /// Button text for one-time purchase
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Now'**
+  String get premiumBuyNow;
+
+  /// Button to restore previous purchases
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchases'**
+  String get premiumRestorePurchases;
+
+  /// Legal disclaimer for subscriptions
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions will automatically renew unless cancelled at least 24 hours before the end of the current period. You can manage your subscriptions in your App Store settings.'**
+  String get premiumLegalText;
+
+  /// Link text to open subscription management
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Subscriptions'**
+  String get premiumManageSubscriptions;
+
+  /// Button text to upgrade to premium
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get premiumUpgrade;
+
+  /// Full upgrade button text
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium'**
+  String get premiumUpgradeToPremium;
+
+  /// Text shown when free session time has expired
+  ///
+  /// In en, this message translates to:
+  /// **'Session Expired'**
+  String get premiumSessionExpired;
+
+  /// Detailed message explaining session expiration
+  ///
+  /// In en, this message translates to:
+  /// **'Your free session time has ended. Your live session has been stopped.'**
+  String get premiumSessionExpiredMessage;
+
+  /// Hint text encouraging upgrade for unlimited sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium for unlimited session time'**
+  String get premiumUnlimitedSessionsHint;
+
+  /// Label for remaining session time
+  ///
+  /// In en, this message translates to:
+  /// **'Time Remaining'**
+  String get premiumTimeRemaining;
+
+  /// Title when daily session limit reached
+  ///
+  /// In en, this message translates to:
+  /// **'Session Limit Reached'**
+  String get premiumSessionLimitReached;
+
+  /// Message when session limit reached
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve reached your daily limit of {count} sessions. Upgrade to Premium for unlimited sessions.'**
+  String premiumSessionLimitMessage(int count);
+
+  /// Message when duration limit reached
+  ///
+  /// In en, this message translates to:
+  /// **'Free sessions are limited to {minutes} minutes. Upgrade for unlimited session time.'**
+  String premiumDurationLimitMessage(int minutes);
+
+  /// Message when trying to access premium-only feature
+  ///
+  /// In en, this message translates to:
+  /// **'This feature requires Premium'**
+  String get premiumFeatureRequiresPremium;
+
+  /// Error message when purchase fails
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed. Please try again.'**
+  String get premiumPurchaseFailed;
+
+  /// Error message when restore fails
+  ///
+  /// In en, this message translates to:
+  /// **'Could not restore purchases. Please try again.'**
+  String get premiumRestoreFailed;
+
+  /// Success message when purchases restored
+  ///
+  /// In en, this message translates to:
+  /// **'Purchases restored successfully!'**
+  String get premiumRestoreSuccess;
+
+  /// Message when no purchases exist to restore
+  ///
+  /// In en, this message translates to:
+  /// **'No previous purchases found to restore.'**
+  String get premiumNoPurchasesToRestore;
+
+  /// Message shown when redirecting to Stripe checkout
+  ///
+  /// In en, this message translates to:
+  /// **'Redirecting to secure payment...'**
+  String get premiumRedirectingToPayment;
+
+  /// Label indicating free tier status
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get premiumFreeTierLabel;
+
+  /// Short badge text for premium/pro features
+  ///
+  /// In en, this message translates to:
+  /// **'PRO'**
+  String get premiumProBadge;
 }
 
 class _AppLocalizationsDelegate

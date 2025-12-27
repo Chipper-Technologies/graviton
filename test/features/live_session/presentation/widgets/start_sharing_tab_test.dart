@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/features/live_session/presentation/widgets/start_sharing_tab.dart';
+import 'package:graviton/features/premium/presentation/premium_state.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/state/app_state.dart';
 import 'package:graviton/state/live_session_state.dart';
@@ -13,20 +14,26 @@ import 'package:provider/provider.dart';
 
 import 'start_sharing_tab_test.mocks.dart';
 
-@GenerateMocks([LiveSessionState])
+@GenerateMocks([LiveSessionState, PremiumState])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('StartSharingTab', () {
     late AppState appState;
     late LiveSessionState liveSessionState;
+    late PremiumState premiumState;
 
     Widget createTestWidget({
       VoidCallback? onHostingStarted,
       VoidCallback? onHostingStopped,
     }) {
-      return ChangeNotifierProvider<LiveSessionState>.value(
-        value: liveSessionState,
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<LiveSessionState>.value(
+            value: liveSessionState,
+          ),
+          ChangeNotifierProvider<PremiumState>.value(value: premiumState),
+        ],
         child: MaterialApp(
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -49,11 +56,13 @@ void main() {
     setUp(() {
       appState = AppState();
       liveSessionState = LiveSessionState();
+      premiumState = PremiumState();
     });
 
     tearDown(() {
       appState.dispose();
       liveSessionState.dispose();
+      premiumState.dispose();
     });
 
     testWidgets('should render correctly', (WidgetTester tester) async {
@@ -133,13 +142,19 @@ void main() {
   group('StartSharingTab with Mocked State', () {
     late AppState appState;
     late MockLiveSessionState mockLiveSession;
+    late MockPremiumState mockPremiumState;
 
     Widget createMockedTestWidget({
       VoidCallback? onHostingStarted,
       VoidCallback? onHostingStopped,
     }) {
-      return ChangeNotifierProvider<LiveSessionState>.value(
-        value: mockLiveSession,
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<LiveSessionState>.value(
+            value: mockLiveSession,
+          ),
+          ChangeNotifierProvider<PremiumState>.value(value: mockPremiumState),
+        ],
         child: MaterialApp(
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -162,6 +177,11 @@ void main() {
     setUp(() {
       appState = AppState();
       mockLiveSession = MockLiveSessionState();
+      mockPremiumState = MockPremiumState();
+
+      // Mock premium state to allow all features
+      when(mockPremiumState.canUseFeature(any)).thenReturn(true);
+      when(mockPremiumState.hasPremiumAccess).thenReturn(true);
 
       // Default mock behavior
       when(mockLiveSession.isHosting).thenReturn(false);

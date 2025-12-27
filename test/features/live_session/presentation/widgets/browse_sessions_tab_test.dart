@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graviton/features/live_session/presentation/widgets/browse_sessions_tab.dart';
+import 'package:graviton/features/premium/presentation/premium_state.dart';
 import 'package:graviton/l10n/app_localizations.dart';
 import 'package:graviton/models/firebase/camera_snapshot.dart';
 import 'package:graviton/models/firebase/live_session.dart';
@@ -24,13 +25,19 @@ void main() {
   group('BrowseSessionsTab', () {
     late AppState appState;
     late LiveSessionState liveSessionState;
+    late PremiumState premiumState;
 
     Widget createTestWidget({
       void Function(LiveSession)? onSessionJoined,
       VoidCallback? onSessionLeft,
     }) {
-      return ChangeNotifierProvider<LiveSessionState>.value(
-        value: liveSessionState,
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<LiveSessionState>.value(
+            value: liveSessionState,
+          ),
+          ChangeNotifierProvider<PremiumState>.value(value: premiumState),
+        ],
         child: MaterialApp(
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -53,11 +60,13 @@ void main() {
     setUp(() {
       appState = AppState();
       liveSessionState = LiveSessionState();
+      premiumState = PremiumState();
     });
 
     tearDown(() {
       appState.dispose();
       liveSessionState.dispose();
+      premiumState.dispose();
     });
 
     testWidgets('should render correctly', (WidgetTester tester) async {
@@ -114,13 +123,19 @@ void main() {
   group('BrowseSessionsTab with Mocked State', () {
     late AppState appState;
     late MockLiveSessionState mockLiveSession;
+    late PremiumState premiumState;
 
     Widget createMockedTestWidget({
       void Function(LiveSession)? onSessionJoined,
       VoidCallback? onSessionLeft,
     }) {
-      return ChangeNotifierProvider<LiveSessionState>.value(
-        value: mockLiveSession,
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<LiveSessionState>.value(
+            value: mockLiveSession,
+          ),
+          ChangeNotifierProvider<PremiumState>.value(value: premiumState),
+        ],
         child: MaterialApp(
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -166,6 +181,7 @@ void main() {
     setUp(() {
       appState = AppState();
       mockLiveSession = MockLiveSessionState();
+      premiumState = PremiumState();
 
       // Default mock behavior
       when(mockLiveSession.isHosting).thenReturn(false);
@@ -179,6 +195,7 @@ void main() {
 
     tearDown(() {
       appState.dispose();
+      premiumState.dispose();
     });
 
     testWidgets('should show loading state when loading', (

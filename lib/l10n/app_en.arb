@@ -5131,5 +5131,210 @@
   "liveSessionSettings": "Session Settings",
   "@liveSessionSettings": {
     "description": "Title for session settings dialog"
+  },
+
+  "premiumTierFree": "Free",
+  "@premiumTierFree": {
+    "description": "Display name for free subscription tier"
+  },
+  "premiumTierPremium": "Premium",
+  "@premiumTierPremium": {
+    "description": "Display name for premium subscription tier"
+  },
+  "premiumTierLifetime": "Lifetime",
+  "@premiumTierLifetime": {
+    "description": "Display name for lifetime subscription tier"
+  },
+  "premiumTitle": "Graviton Premium",
+  "@premiumTitle": {
+    "description": "Title for premium subscription"
+  },
+  "premiumSubtitle": "Unlock unlimited Live Sessions",
+  "@premiumSubtitle": {
+    "description": "Subtitle describing premium benefits"
+  },
+  "premiumBenefitUnlimitedDuration": "Unlimited Session Duration",
+  "@premiumBenefitUnlimitedDuration": {
+    "description": "Premium benefit - unlimited session time"
+  },
+  "premiumBenefitUnlimitedDurationDesc": "Host sessions as long as you want",
+  "@premiumBenefitUnlimitedDurationDesc": {
+    "description": "Description for unlimited duration benefit"
+  },
+  "premiumBenefitViewers": "Up to {count} Viewers",
+  "@premiumBenefitViewers": {
+    "description": "Premium benefit - viewer count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "25"
+      }
+    }
+  },
+  "premiumBenefitViewersDesc": "Share with larger audiences",
+  "@premiumBenefitViewersDesc": {
+    "description": "Description for viewer count benefit"
+  },
+  "premiumBenefitCameraSync": "Camera Sync",
+  "@premiumBenefitCameraSync": {
+    "description": "Premium benefit - camera synchronization"
+  },
+  "premiumBenefitCameraSyncDesc": "Synchronize views across all viewers",
+  "@premiumBenefitCameraSyncDesc": {
+    "description": "Description for camera sync benefit"
+  },
+  "premiumBenefitPassword": "Password Protection",
+  "@premiumBenefitPassword": {
+    "description": "Premium benefit - password protection"
+  },
+  "premiumBenefitPasswordDesc": "Keep your sessions private",
+  "@premiumBenefitPasswordDesc": {
+    "description": "Description for password protection benefit"
+  },
+  "premiumBenefitUnlimitedSessions": "Unlimited Sessions Per Day",
+  "@premiumBenefitUnlimitedSessions": {
+    "description": "Premium benefit - no daily session limit"
+  },
+  "premiumBenefitUnlimitedSessionsDesc": "No daily limits on hosting",
+  "@premiumBenefitUnlimitedSessionsDesc": {
+    "description": "Description for unlimited sessions benefit"
+  },
+  "premiumPlanMonthly": "Monthly",
+  "@premiumPlanMonthly": {
+    "description": "Monthly subscription plan name"
+  },
+  "premiumPlanYearly": "Yearly",
+  "@premiumPlanYearly": {
+    "description": "Yearly subscription plan name"
+  },
+  "premiumPlanLifetime": "Lifetime",
+  "@premiumPlanLifetime": {
+    "description": "Lifetime purchase plan name"
+  },
+  "premiumPeriodMonth": "/month",
+  "@premiumPeriodMonth": {
+    "description": "Monthly billing period suffix"
+  },
+  "premiumPeriodYear": "/year",
+  "@premiumPeriodYear": {
+    "description": "Yearly billing period suffix"
+  },
+  "premiumPeriodOneTime": " one-time",
+  "@premiumPeriodOneTime": {
+    "description": "One-time purchase suffix"
+  },
+  "premiumSavePercent": "Save {percent}%",
+  "@premiumSavePercent": {
+    "description": "Savings percentage badge",
+    "placeholders": {
+      "percent": {
+        "type": "String",
+        "example": "44"
+      }
+    }
+  },
+  "premiumBestValue": "Best Value",
+  "@premiumBestValue": {
+    "description": "Best value badge for lifetime plan"
+  },
+  "premiumStartFreeTrial": "Start Free Trial",
+  "@premiumStartFreeTrial": {
+    "description": "Button text to start free trial"
+  },
+  "premiumBuyNow": "Buy Now",
+  "@premiumBuyNow": {
+    "description": "Button text for one-time purchase"
+  },
+  "premiumRestorePurchases": "Restore Purchases",
+  "@premiumRestorePurchases": {
+    "description": "Button to restore previous purchases"
+  },
+  "premiumLegalText": "Subscriptions will automatically renew unless cancelled at least 24 hours before the end of the current period. You can manage your subscriptions in your App Store settings.",
+  "@premiumLegalText": {
+    "description": "Legal disclaimer for subscriptions"
+  },
+  "premiumManageSubscriptions": "Manage Subscriptions",
+  "@premiumManageSubscriptions": {
+    "description": "Link text to open subscription management"
+  },
+  "premiumUpgrade": "Upgrade",
+  "@premiumUpgrade": {
+    "description": "Button text to upgrade to premium"
+  },
+  "premiumUpgradeToPremium": "Upgrade to Premium",
+  "@premiumUpgradeToPremium": {
+    "description": "Full upgrade button text"
+  },
+  "premiumSessionExpired": "Session Expired",
+  "@premiumSessionExpired": {
+    "description": "Text shown when free session time has expired"
+  },
+  "premiumSessionExpiredMessage": "Your free session time has ended. Your live session has been stopped.",
+  "@premiumSessionExpiredMessage": {
+    "description": "Detailed message explaining session expiration"
+  },
+  "premiumUnlimitedSessionsHint": "Upgrade to Premium for unlimited session time",
+  "@premiumUnlimitedSessionsHint": {
+    "description": "Hint text encouraging upgrade for unlimited sessions"
+  },
+  "premiumTimeRemaining": "Time Remaining",
+  "@premiumTimeRemaining": {
+    "description": "Label for remaining session time"
+  },
+  "premiumSessionLimitReached": "Session Limit Reached",
+  "@premiumSessionLimitReached": {
+    "description": "Title when daily session limit reached"
+  },
+  "premiumSessionLimitMessage": "You've reached your daily limit of {count} sessions. Upgrade to Premium for unlimited sessions.",
+  "@premiumSessionLimitMessage": {
+    "description": "Message when session limit reached",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "premiumDurationLimitMessage": "Free sessions are limited to {minutes} minutes. Upgrade for unlimited session time.",
+  "@premiumDurationLimitMessage": {
+    "description": "Message when duration limit reached",
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "premiumFeatureRequiresPremium": "This feature requires Premium",
+  "@premiumFeatureRequiresPremium": {
+    "description": "Message when trying to access premium-only feature"
+  },
+  "premiumPurchaseFailed": "Purchase failed. Please try again.",
+  "@premiumPurchaseFailed": {
+    "description": "Error message when purchase fails"
+  },
+  "premiumRestoreFailed": "Could not restore purchases. Please try again.",
+  "@premiumRestoreFailed": {
+    "description": "Error message when restore fails"
+  },
+  "premiumRestoreSuccess": "Purchases restored successfully!",
+  "@premiumRestoreSuccess": {
+    "description": "Success message when purchases restored"
+  },
+  "premiumNoPurchasesToRestore": "No previous purchases found to restore.",
+  "@premiumNoPurchasesToRestore": {
+    "description": "Message when no purchases exist to restore"
+  },
+  "premiumRedirectingToPayment": "Redirecting to secure payment...",
+  "@premiumRedirectingToPayment": {
+    "description": "Message shown when redirecting to Stripe checkout"
+  },
+  "premiumFreeTierLabel": "Free",
+  "@premiumFreeTierLabel": {
+    "description": "Label indicating free tier status"
+  },
+  "premiumProBadge": "PRO",
+  "@premiumProBadge": {
+    "description": "Short badge text for premium/pro features"
   }
 }
