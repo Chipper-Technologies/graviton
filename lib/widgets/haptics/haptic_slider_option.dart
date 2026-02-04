@@ -247,7 +247,7 @@ class _HapticSliderOptionState extends State<HapticSliderOption> {
     final increment = (widget.max - widget.min) / widget.divisions;
 
     return Container(
-      margin: EdgeInsets.only(bottom: AppTypography.spacingLarge),
+      margin: EdgeInsets.only(bottom: AppTypography.spacingMedium),
       padding: EdgeInsets.all(AppTypography.spacingLarge),
       decoration: BoxDecoration(
         color: AppColors.uiWhite.withValues(alpha: AppTypography.opacityBarely),

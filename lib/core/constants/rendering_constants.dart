@@ -19,6 +19,13 @@ class RenderingConstants {
   static const double bodyAlpha = 0.8;
   static const double bodyGlowAlpha = 0.0; // for gradient end
 
+  /// Occlusion radius multiplier for hiding labels behind bodies (0.0-1.0)
+  /// Labels are hidden when their center falls within this fraction of the
+  /// occluding body's screen radius. Using 0.85 (85%) prevents labels from
+  /// being hidden when they're only at the very edge of a body's disc,
+  /// providing a small buffer zone for better visual clarity.
+  static const double bodyOcclusionRadiusMultiplier = 0.85;
+
   // Celestial body specific rendering
   static const double blackHoleAccretionDiskMultiplier = 5.0;
   static const double blackHoleRingBaseAlpha = 0.6;
@@ -119,12 +126,18 @@ class RenderingConstants {
   // Lighting and shadow effects
   /// Intensity shift for hemisphere lighting on the lit side (0.0-1.0)
   /// Controls how much brighter the lit hemisphere appears
-  static const double hemisphereLightingIntensity = 0.3;
+  static const double hemisphereLightingIntensity = 0.9;
 
   /// Shadow side darkening multiplier for hemisphere lighting (0.0-1.0)
   /// Reduces intensity on shadowed hemisphere relative to lit side
   /// Applied as: intensity * hemisphereLightingShadowIntensityRatio
-  static const double hemisphereLightingShadowIntensityRatio = 0.5;
+  static const double hemisphereLightingShadowIntensityRatio = 0.6;
+
+  /// Ambient shadow intensity when cast shadows are disabled (0.0-1.0)
+  /// When cast shadows are off, the shadow side uses this lighter value
+  /// instead of the full hemisphereLightingShadowIntensityRatio, creating
+  /// a softer ambient-only lighting effect that still shows depth.
+  static const double hemisphereLightingAmbientShadowRatio = 0.1;
 
   /// Gradient center offset toward light source for hemisphere effect
   /// Higher values create more pronounced day/night division
@@ -138,6 +151,31 @@ class RenderingConstants {
 
   /// End position of hemisphere lighting gradient (shadow side)
   static const double hemisphereLightingGradientEnd = 1.0;
+
+  /// Minimum clamp value for hemisphere lighting phase midpoint (0.0-1.0)
+  /// Prevents gradient stops from bunching at the extreme lit edge
+  static const double hemisphereLightingPhaseMinClamp = 0.1;
+
+  /// Maximum clamp value for hemisphere lighting phase midpoint (0.0-1.0)
+  /// Prevents gradient stops from bunching at the extreme shadow edge
+  static const double hemisphereLightingPhaseMaxClamp = 0.9;
+
+  /// Offset for calculating gradient stops around the midpoint (0.0-0.5)
+  /// Controls the width of the transition zone between lit and shadow sides
+  static const double hemisphereLightingStopOffset = 0.1;
+
+  /// Highlight intensity multiplier for custom textured bodies (0.0-1.0)
+  /// Textured planets like Jupiter need reduced highlight intensity compared
+  /// to simple solid-color bodies, as their detailed surface textures already
+  /// provide visual depth. This multiplier scales hemisphereLightingIntensity
+  /// to achieve balanced lighting over complex textures.
+  static const double customBodyHighlightMultiplier = 0.4;
+
+  /// Epsilon threshold for light direction calculation (screen pixels)
+  /// When the sun's screen position is closer than this to the body's position,
+  /// the direction calculation uses a default value to prevent division by
+  /// near-zero distances that would produce unstable or undefined results.
+  static const double lightDirectionEpsilon = 0.001;
 
   /// Shadow darkness multiplier for cast shadows (0.0-1.0)
   /// 1.0 = completely black umbra, lower values create softer shadows
@@ -208,6 +246,18 @@ class RenderingConstants {
   /// Filters out highlights dimmer than this threshold for performance
   static const double specularMinIntensity = 0.01;
 
+  /// Threshold for back-face culling of specular highlights (0.0-1.0)
+  /// Prevents highlights from appearing on the back side of spheres.
+  /// The half-vector's Z component in camera space must exceed this value
+  /// for the highlight to be rendered. Higher values cull more aggressively.
+  static const double specularBackFaceCullingThreshold = 0.1;
+
+  /// Power exponent for specular intensity falloff with Lambertian term (N·L)
+  /// Controls how the highlight intensity varies based on surface orientation.
+  /// Lower values (< 1.0) create softer, more gradual falloff.
+  /// Higher values create sharper, more concentrated highlights.
+  static const double specularIntensityPowerScaling = 0.5;
+
   /// Intensity multiplier for gradient falloff at midpoint (0.0-1.0)
   /// Controls how quickly the highlight fades from center to edge
   static const double specularHighlightGradientFalloff = 0.5;
@@ -230,12 +280,14 @@ class RenderingConstants {
   static const int maxLightSourcesForBlending = 3;
 
   /// Distance threshold for light source contribution (in simulation units)
+  /// Must be large enough to cover all planets in solar system (Neptune ~1505 units)
   /// Light sources beyond this distance have minimal effect
-  static const double lightSourceMaxDistance = 50.0;
+  static const double lightSourceMaxDistance = 2000.0;
 
   /// Minimum light contribution to include in blending (0.0-1.0)
-  /// Filters out negligible light sources for performance
-  static const double lightSourceMinContribution = 0.05;
+  /// Must be very low to include outer planets (Neptune intensity ~0.0002)
+  /// Filters out only truly negligible light sources
+  static const double lightSourceMinContribution = 0.0001;
 
   /// Maximum distance for shadow calculations (in simulation units)
   /// Stars beyond this distance don't cast shadows for performance

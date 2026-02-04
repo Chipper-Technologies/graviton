@@ -5,6 +5,7 @@ import 'package:graviton/services/ui/haptic_feedback_service.dart';
 
 import 'package:graviton/features/auth/state/auth_state.dart';
 import 'camera_state.dart';
+import 'live_session_state.dart';
 import 'physics_state.dart';
 import 'simulation_state.dart';
 import 'ui_state.dart';
@@ -16,6 +17,7 @@ class AppState extends ChangeNotifier {
   final CameraState camera = CameraState();
   final PhysicsState physics = PhysicsState();
   final AuthState auth = AuthState();
+  final LiveSessionState liveSession = LiveSessionState();
 
   bool _isInitialized = false;
   String? _lastError;
@@ -36,6 +38,7 @@ class AppState extends ChangeNotifier {
     camera.addListener(_onChildStateChanged);
     physics.addListener(_onChildStateChanged);
     auth.addListener(_onChildStateChanged);
+    liveSession.addListener(_onChildStateChanged);
 
     // Wire AppState reference to Simulation for collision effects UI settings
     simulation.setAppState(this);

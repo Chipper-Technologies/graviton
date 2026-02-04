@@ -213,5 +213,33 @@ void main() {
       expect(() => service.newsBannerText, returnsNormally);
       expect(() => service.emergencyNotification, returnsNormally);
     });
+
+    group('Premium Feature Flags', () {
+      test('premiumEnabled defaults to true', () {
+        expect(service.premiumEnabled, isTrue);
+      });
+
+      test('premiumPaywallDisabled defaults to false', () {
+        expect(service.premiumPaywallDisabled, isFalse);
+      });
+
+      test('showPaywallOnLimit defaults to true', () {
+        expect(service.showPaywallOnLimit, isTrue);
+      });
+
+      test('premiumLimits returns valid values', () {
+        final limits = service.premiumLimits;
+        expect(limits.freeSessionDurationMinutes, greaterThan(0));
+        expect(limits.freeMaxViewers, greaterThan(0));
+        expect(limits.freeSessionsPerDay, greaterThan(0));
+      });
+
+      test('premiumPricing returns valid values', () {
+        final pricing = service.premiumPricing;
+        expect(pricing.monthlyPriceUsd, greaterThan(0));
+        expect(pricing.yearlyPriceUsd, greaterThan(0));
+        expect(pricing.lifetimePriceUsd, greaterThan(0));
+      });
+    });
   });
 }

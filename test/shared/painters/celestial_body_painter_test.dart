@@ -1028,6 +1028,79 @@ void main() {
             returnsNormally,
           );
         });
+
+        test('should apply hemisphere lighting at outer planet distances', () {
+          // Neptune is at ~1505 units from Sun in solar system scenario
+          // Sun has mass 50.0
+          final neptune = Body(
+            position: vm.Vector3(1505, 0, 0),
+            velocity: vm.Vector3.zero(),
+            mass: 0.06,
+            radius: 2.34,
+            color: AppColors.planetNeptune,
+            name: 'Neptune',
+            bodyType: BodyType.planet,
+          );
+
+          final sun = Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 50.0,
+            radius: 4.8,
+            color: AppColors.celestialGold,
+            name: 'Sun',
+            bodyType: BodyType.star,
+            stellarLuminosity: 1.0,
+          );
+
+          expect(
+            () => CelestialBodyPainter.drawBody(
+              canvas,
+              center,
+              radius,
+              neptune,
+              enableHemisphereLighting: true,
+              allBodies: [neptune, sun],
+            ),
+            returnsNormally,
+          );
+        });
+
+        test('should apply hemisphere lighting at Jupiter distance', () {
+          // Jupiter is at ~260 units from Sun
+          final jupiter = Body(
+            position: vm.Vector3(260, 0, 0),
+            velocity: vm.Vector3.zero(),
+            mass: 0.30,
+            radius: 6.72,
+            color: AppColors.planetJupiter,
+            name: 'Jupiter',
+            bodyType: BodyType.planet,
+          );
+
+          final sun = Body(
+            position: vm.Vector3.zero(),
+            velocity: vm.Vector3.zero(),
+            mass: 50.0,
+            radius: 4.8,
+            color: AppColors.celestialGold,
+            name: 'Sun',
+            bodyType: BodyType.star,
+            stellarLuminosity: 1.0,
+          );
+
+          expect(
+            () => CelestialBodyPainter.drawBody(
+              canvas,
+              center,
+              radius,
+              jupiter,
+              enableHemisphereLighting: true,
+              allBodies: [jupiter, sun],
+            ),
+            returnsNormally,
+          );
+        });
       });
 
       group('drawCastShadow', () {

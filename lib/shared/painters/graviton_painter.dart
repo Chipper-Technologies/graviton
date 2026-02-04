@@ -269,6 +269,7 @@ class GravitonPainter extends CustomPainter {
           pr,
           b,
           viewMatrix: vp,
+          worldToCameraMatrix: view,
           canvasSize: size,
           opacity: opacity,
           useRealisticColors: useRealisticColors,

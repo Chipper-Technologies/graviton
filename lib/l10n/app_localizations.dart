@@ -1070,6 +1070,36 @@ abstract class AppLocalizations {
   /// **'Tap anywhere on the canvas to place a new body'**
   String get tapToPlaceBody;
 
+  /// Button tooltip for the interaction lock toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Lock Interaction'**
+  String get lockInteraction;
+
+  /// Accessibility hint for enabling interaction lock
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to lock interaction - prevents accidentally moving bodies'**
+  String get tapToLockInteraction;
+
+  /// Accessibility hint for disabling interaction lock
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to unlock interaction - allows moving bodies by dragging'**
+  String get tapToUnlockInteraction;
+
+  /// Snackbar message when interaction is locked
+  ///
+  /// In en, this message translates to:
+  /// **'Interaction locked'**
+  String get interactionLocked;
+
+  /// Snackbar message when interaction is unlocked
+  ///
+  /// In en, this message translates to:
+  /// **'Interaction unlocked'**
+  String get interactionUnlocked;
+
   /// Confirmation message after placing a body
   ///
   /// In en, this message translates to:
@@ -6567,6 +6597,624 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Directional superheated streams from massive star collisions (experimental)'**
   String get showCollisionPlasmaJetsDescription;
+
+  /// Status text when user is hosting a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Hosting Live Session'**
+  String get liveSessionHosting;
+
+  /// Label when user is not hosting a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Share Live Session'**
+  String get liveSessionNotHosting;
+
+  /// Button text to start hosting a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Start Hosting'**
+  String get liveSessionStartHosting;
+
+  /// Button text to stop hosting a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Sharing'**
+  String get liveSessionStopHosting;
+
+  /// Button text to update the active live session settings
+  ///
+  /// In en, this message translates to:
+  /// **'Update Session'**
+  String get liveSessionUpdateSession;
+
+  /// Shows the number of viewers in a live session
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No viewers} =1{1 viewer} other{{count} viewers}}'**
+  String liveSessionViewerCount(int count);
+
+  /// Message shown when no viewers are connected to the live session
+  ///
+  /// In en, this message translates to:
+  /// **'No one is watching yet'**
+  String get liveSessionNoViewers;
+
+  /// Title for the live session browser screen
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Sessions'**
+  String get liveSessionBrowseSessions;
+
+  /// Message when no live sessions are available
+  ///
+  /// In en, this message translates to:
+  /// **'No active sessions'**
+  String get liveSessionNoSessions;
+
+  /// Button text to join a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get liveSessionJoin;
+
+  /// Label shown on session card when it's the user's own hosted session
+  ///
+  /// In en, this message translates to:
+  /// **'Your Session'**
+  String get liveSessionYourSession;
+
+  /// Button text to leave a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Session'**
+  String get liveSessionLeave;
+
+  /// Status text when viewing someone else's live session
+  ///
+  /// In en, this message translates to:
+  /// **'Viewing Live Session'**
+  String get liveSessionViewing;
+
+  /// Shows who is hosting the session
+  ///
+  /// In en, this message translates to:
+  /// **'Hosted by {hostName}'**
+  String liveSessionHostedBy(String hostName);
+
+  /// Shows the scenario being simulated
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario: {scenarioName}'**
+  String liveSessionScenario(String scenarioName);
+
+  /// Message shown when user needs to sign in for live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to share or view live sessions'**
+  String get liveSessionRequiresAuth;
+
+  /// Connection status when not connected to any session
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected'**
+  String get liveSessionStatusDisconnected;
+
+  /// Connection status when attempting to connect
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting...'**
+  String get liveSessionStatusConnecting;
+
+  /// Connection status when successfully connected
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get liveSessionStatusConnected;
+
+  /// Connection status when attempting to reconnect
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnecting...'**
+  String get liveSessionStatusReconnecting;
+
+  /// Connection status when an error occurred
+  ///
+  /// In en, this message translates to:
+  /// **'Connection Error'**
+  String get liveSessionStatusError;
+
+  /// Accessibility label for connection status indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Connection status: {status}'**
+  String liveSessionConnectionStatusLabel(String status);
+
+  /// Accessibility hint for tapping connection indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Tap for session settings'**
+  String get liveSessionTapForSettings;
+
+  /// Tooltip for connection status indicator in app bar
+  ///
+  /// In en, this message translates to:
+  /// **'Live Session'**
+  String get liveSessionIndicatorTooltip;
+
+  /// Error message when hosting fails to start
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start hosting. Please try again.'**
+  String get liveSessionErrorHostingFailed;
+
+  /// Error message when joining a session fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to join session. Please try again.'**
+  String get liveSessionErrorJoinFailed;
+
+  /// Error message when connection is lost
+  ///
+  /// In en, this message translates to:
+  /// **'Connection lost. Attempting to reconnect...'**
+  String get liveSessionErrorConnectionLost;
+
+  /// Title for the live session panel
+  ///
+  /// In en, this message translates to:
+  /// **'Live Session'**
+  String get liveSessionTitle;
+
+  /// Description text for the live session panel
+  ///
+  /// In en, this message translates to:
+  /// **'Share your simulation or join others in real-time'**
+  String get liveSessionDescription;
+
+  /// Description when actively hosting a session
+  ///
+  /// In en, this message translates to:
+  /// **'Broadcasting your simulation to viewers'**
+  String get liveSessionHostingDescription;
+
+  /// Description when actively viewing a session
+  ///
+  /// In en, this message translates to:
+  /// **'Watching a live simulation broadcast'**
+  String get liveSessionViewingDescription;
+
+  /// Menu item title for live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Live Sessions'**
+  String get liveSessionMenuTitle;
+
+  /// Menu item description for live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Share or join real-time simulations'**
+  String get liveSessionMenuDescription;
+
+  /// Tab label for browsing live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Browse'**
+  String get liveSessionBrowseTab;
+
+  /// Tab label for starting a live session
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing'**
+  String get liveSessionStartSharingTab;
+
+  /// Description text for the browse sessions tab
+  ///
+  /// In en, this message translates to:
+  /// **'Join a live session to watch another user\'s simulation in real-time'**
+  String get liveSessionBrowseDescription;
+
+  /// Description text for the start sharing tab
+  ///
+  /// In en, this message translates to:
+  /// **'Share your current simulation with others in real-time'**
+  String get liveSessionShareDescription;
+
+  /// Label showing which scenario will be shared
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario to share'**
+  String get liveSessionScenarioToShare;
+
+  /// Toggle label for enabling password protection
+  ///
+  /// In en, this message translates to:
+  /// **'Password Protection'**
+  String get liveSessionPasswordProtection;
+
+  /// Placeholder text for password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter password'**
+  String get liveSessionSetPassword;
+
+  /// Help text explaining password protection
+  ///
+  /// In en, this message translates to:
+  /// **'Viewers will need to enter this password to join your session'**
+  String get liveSessionPasswordDescription;
+
+  /// Toggle label for enabling camera synchronization with viewers
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Sync'**
+  String get liveSessionCameraSync;
+
+  /// Help text explaining camera synchronization feature
+  ///
+  /// In en, this message translates to:
+  /// **'Viewers will see the same camera angle and movements as you'**
+  String get liveSessionCameraSyncDescription;
+
+  /// Status indicator showing camera sync is active for host
+  ///
+  /// In en, this message translates to:
+  /// **'Camera synced'**
+  String get liveSessionCameraSyncActive;
+
+  /// Status indicator showing viewer camera is being controlled by host
+  ///
+  /// In en, this message translates to:
+  /// **'Camera controlled by host'**
+  String get liveSessionCameraSyncViewerActive;
+
+  /// Error message when password is required but not entered
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a password'**
+  String get liveSessionPasswordRequired;
+
+  /// Title for password entry dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Password'**
+  String get liveSessionEnterPassword;
+
+  /// Hint text for password input in join dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Session password'**
+  String get liveSessionPasswordHint;
+
+  /// Label indicating session is password protected
+  ///
+  /// In en, this message translates to:
+  /// **'Password protected'**
+  String get liveSessionPasswordProtected;
+
+  /// Status text when session has password protection enabled
+  ///
+  /// In en, this message translates to:
+  /// **'Password required to join'**
+  String get liveSessionPasswordEnabled;
+
+  /// Status text when session has no password protection
+  ///
+  /// In en, this message translates to:
+  /// **'Anyone can join'**
+  String get liveSessionPasswordDisabled;
+
+  /// Error message when entered password is wrong
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password'**
+  String get liveSessionIncorrectPassword;
+
+  /// Title for dialog when user needs an account for live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Account Required'**
+  String get liveSessionRequiresAccountTitle;
+
+  /// Message explaining why account is needed for live sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Live sessions are available to registered users. Create a free account to share your simulations with others.'**
+  String get liveSessionRequiresAccountMessage;
+
+  /// Button to create an account from live session dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get liveSessionCreateAccount;
+
+  /// Label for session name input
+  ///
+  /// In en, this message translates to:
+  /// **'Session Name'**
+  String get liveSessionSessionName;
+
+  /// Hint text for session name input
+  ///
+  /// In en, this message translates to:
+  /// **'Give your session a name'**
+  String get liveSessionSessionNameHint;
+
+  /// Title for session settings dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Session Settings'**
+  String get liveSessionSettings;
+
+  /// Display name for free subscription tier
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get premiumTierFree;
+
+  /// Display name for premium subscription tier
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premiumTierPremium;
+
+  /// Display name for lifetime subscription tier
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime'**
+  String get premiumTierLifetime;
+
+  /// Title for premium subscription
+  ///
+  /// In en, this message translates to:
+  /// **'Graviton Premium'**
+  String get premiumTitle;
+
+  /// Subtitle describing premium benefits
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock unlimited Live Sessions'**
+  String get premiumSubtitle;
+
+  /// Premium benefit - unlimited session time
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Session Duration'**
+  String get premiumBenefitUnlimitedDuration;
+
+  /// Description for unlimited duration benefit
+  ///
+  /// In en, this message translates to:
+  /// **'Host sessions as long as you want'**
+  String get premiumBenefitUnlimitedDurationDesc;
+
+  /// Premium benefit - viewer count
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {count} Viewers'**
+  String premiumBenefitViewers(int count);
+
+  /// Description for viewer count benefit
+  ///
+  /// In en, this message translates to:
+  /// **'Share with larger audiences'**
+  String get premiumBenefitViewersDesc;
+
+  /// Premium benefit - camera synchronization
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Sync'**
+  String get premiumBenefitCameraSync;
+
+  /// Description for camera sync benefit
+  ///
+  /// In en, this message translates to:
+  /// **'Synchronize views across all viewers'**
+  String get premiumBenefitCameraSyncDesc;
+
+  /// Premium benefit - password protection
+  ///
+  /// In en, this message translates to:
+  /// **'Password Protection'**
+  String get premiumBenefitPassword;
+
+  /// Description for password protection benefit
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your sessions private'**
+  String get premiumBenefitPasswordDesc;
+
+  /// Premium benefit - no daily session limit
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Sessions Per Day'**
+  String get premiumBenefitUnlimitedSessions;
+
+  /// Description for unlimited sessions benefit
+  ///
+  /// In en, this message translates to:
+  /// **'No daily limits on hosting'**
+  String get premiumBenefitUnlimitedSessionsDesc;
+
+  /// Monthly subscription plan name
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get premiumPlanMonthly;
+
+  /// Yearly subscription plan name
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get premiumPlanYearly;
+
+  /// Lifetime purchase plan name
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime'**
+  String get premiumPlanLifetime;
+
+  /// Monthly billing period suffix
+  ///
+  /// In en, this message translates to:
+  /// **'/month'**
+  String get premiumPeriodMonth;
+
+  /// Yearly billing period suffix
+  ///
+  /// In en, this message translates to:
+  /// **'/year'**
+  String get premiumPeriodYear;
+
+  /// One-time purchase suffix
+  ///
+  /// In en, this message translates to:
+  /// **' one-time'**
+  String get premiumPeriodOneTime;
+
+  /// Savings percentage badge
+  ///
+  /// In en, this message translates to:
+  /// **'Save {percent}%'**
+  String premiumSavePercent(String percent);
+
+  /// Best value badge for lifetime plan
+  ///
+  /// In en, this message translates to:
+  /// **'Best Value'**
+  String get premiumBestValue;
+
+  /// Button text to start free trial
+  ///
+  /// In en, this message translates to:
+  /// **'Start Free Trial'**
+  String get premiumStartFreeTrial;
+
+  /// Button text for one-time purchase
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Now'**
+  String get premiumBuyNow;
+
+  /// Button to restore previous purchases
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchases'**
+  String get premiumRestorePurchases;
+
+  /// Legal disclaimer for subscriptions
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions will automatically renew unless cancelled at least 24 hours before the end of the current period. You can manage your subscriptions in your App Store settings.'**
+  String get premiumLegalText;
+
+  /// Link text to open subscription management
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Subscriptions'**
+  String get premiumManageSubscriptions;
+
+  /// Button text to upgrade to premium
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get premiumUpgrade;
+
+  /// Full upgrade button text
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium'**
+  String get premiumUpgradeToPremium;
+
+  /// Text shown when free session time has expired
+  ///
+  /// In en, this message translates to:
+  /// **'Session Expired'**
+  String get premiumSessionExpired;
+
+  /// Detailed message explaining session expiration
+  ///
+  /// In en, this message translates to:
+  /// **'Your free session time has ended. Your live session has been stopped.'**
+  String get premiumSessionExpiredMessage;
+
+  /// Hint text encouraging upgrade for unlimited sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium for unlimited session time'**
+  String get premiumUnlimitedSessionsHint;
+
+  /// Label for remaining session time
+  ///
+  /// In en, this message translates to:
+  /// **'Time Remaining'**
+  String get premiumTimeRemaining;
+
+  /// Title when daily session limit reached
+  ///
+  /// In en, this message translates to:
+  /// **'Session Limit Reached'**
+  String get premiumSessionLimitReached;
+
+  /// Message when session limit reached
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve reached your daily limit of {count} sessions. Upgrade to Premium for unlimited sessions.'**
+  String premiumSessionLimitMessage(int count);
+
+  /// Message when duration limit reached
+  ///
+  /// In en, this message translates to:
+  /// **'Free sessions are limited to {minutes} minutes. Upgrade for unlimited session time.'**
+  String premiumDurationLimitMessage(int minutes);
+
+  /// Message when trying to access premium-only feature
+  ///
+  /// In en, this message translates to:
+  /// **'This feature requires Premium'**
+  String get premiumFeatureRequiresPremium;
+
+  /// Error message when purchase fails
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed. Please try again.'**
+  String get premiumPurchaseFailed;
+
+  /// Error message when restore fails
+  ///
+  /// In en, this message translates to:
+  /// **'Could not restore purchases. Please try again.'**
+  String get premiumRestoreFailed;
+
+  /// Success message when purchases restored
+  ///
+  /// In en, this message translates to:
+  /// **'Purchases restored successfully!'**
+  String get premiumRestoreSuccess;
+
+  /// Message when no purchases exist to restore
+  ///
+  /// In en, this message translates to:
+  /// **'No previous purchases found to restore.'**
+  String get premiumNoPurchasesToRestore;
+
+  /// Message shown when redirecting to Stripe checkout
+  ///
+  /// In en, this message translates to:
+  /// **'Redirecting to secure payment...'**
+  String get premiumRedirectingToPayment;
+
+  /// Label indicating free tier status
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get premiumFreeTierLabel;
+
+  /// Short badge text for premium/pro features
+  ///
+  /// In en, this message translates to:
+  /// **'PRO'**
+  String get premiumProBadge;
 }
 
 class _AppLocalizationsDelegate

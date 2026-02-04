@@ -124,4 +124,35 @@ class AppConfig {
 
   static String get appleRedirectUri =>
       const String.fromEnvironment('apple.redirectUri');
+
+  // RevenueCat configuration
+  /// RevenueCat API key loaded from config file.
+  /// Empty string on unsupported platforms (web, windows).
+  static String get revenueCatApiKey =>
+      const String.fromEnvironment('revenuecat.apiKey');
+
+  // Stripe configuration (Web only)
+  /// Stripe Payment Link URL for monthly subscription.
+  /// Create in Stripe Dashboard > Payment Links.
+  /// Example: https://buy.stripe.com/xxx
+  static String get stripeMonthlyPaymentLink =>
+      const String.fromEnvironment('stripe.monthlyPaymentLink');
+
+  /// Stripe Payment Link URL for yearly subscription.
+  /// Create in Stripe Dashboard > Payment Links.
+  /// Example: https://buy.stripe.com/xxx
+  static String get stripeYearlyPaymentLink =>
+      const String.fromEnvironment('stripe.yearlyPaymentLink');
+
+  /// Stripe Payment Link URL for lifetime purchase.
+  /// Create in Stripe Dashboard > Payment Links.
+  /// Example: https://buy.stripe.com/xxx
+  static String get stripeLifetimePaymentLink =>
+      const String.fromEnvironment('stripe.lifetimePaymentLink');
+
+  /// Stripe Billing Portal URL for managing subscriptions.
+  /// Create in Stripe Dashboard > Settings > Billing > Customer Portal.
+  /// Example: https://billing.stripe.com/p/login/xxx
+  static String get stripeBillingPortalUrl =>
+      const String.fromEnvironment('stripe.billingPortalUrl');
 }

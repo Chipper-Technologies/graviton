@@ -248,7 +248,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: AppTypography.spacingXXLarge),
+                  const SizedBox(height: AppTypography.spacingMedium),
 
                   // Copyright Section
                   _buildInfoSection(
@@ -260,7 +260,6 @@ class _AboutScreenState extends State<AboutScreen> {
                       style: theme.textTheme.bodyMedium,
                     ),
                   ),
-                  const SizedBox(height: AppTypography.spacingXXLarge),
                 ],
               ),
             ),

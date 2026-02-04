@@ -581,5 +581,55 @@ void main() {
         expect(AppConfig.gravitonLogoPath.startsWith('assets/'), isTrue);
       });
     });
+
+    group('RevenueCat Configuration', () {
+      test('revenueCatApiKey should return a string', () {
+        // In test environment, this returns empty string (no dart-define)
+        expect(AppConfig.revenueCatApiKey, isA<String>());
+      });
+
+      test('revenueCatApiKey defaults to empty string when not configured', () {
+        // When no environment variable is set, it should return empty string
+        expect(AppConfig.revenueCatApiKey, equals(''));
+      });
+
+      test('revenueCatApiKey is accessible as a compile-time constant', () {
+        // This tests that the getter doesn't throw
+        const apiKey = String.fromEnvironment('revenuecat.apiKey');
+        expect(apiKey, isA<String>());
+        expect(AppConfig.revenueCatApiKey, equals(apiKey));
+      });
+    });
+
+    group('Stripe Configuration', () {
+      test('stripeMonthlyPaymentLink should return a string', () {
+        expect(AppConfig.stripeMonthlyPaymentLink, isA<String>());
+      });
+
+      test('stripeYearlyPaymentLink should return a string', () {
+        expect(AppConfig.stripeYearlyPaymentLink, isA<String>());
+      });
+
+      test('stripeLifetimePaymentLink should return a string', () {
+        expect(AppConfig.stripeLifetimePaymentLink, isA<String>());
+      });
+
+      test('Stripe Payment Links default to empty when not configured', () {
+        // When no environment variable is set, they should return empty string
+        expect(AppConfig.stripeMonthlyPaymentLink, equals(''));
+        expect(AppConfig.stripeYearlyPaymentLink, equals(''));
+        expect(AppConfig.stripeLifetimePaymentLink, equals(''));
+      });
+
+      test('Stripe Payment Links are accessible as compile-time constants', () {
+        const monthly = String.fromEnvironment('stripe.monthlyPaymentLink');
+        const yearly = String.fromEnvironment('stripe.yearlyPaymentLink');
+        const lifetime = String.fromEnvironment('stripe.lifetimePaymentLink');
+
+        expect(AppConfig.stripeMonthlyPaymentLink, equals(monthly));
+        expect(AppConfig.stripeYearlyPaymentLink, equals(yearly));
+        expect(AppConfig.stripeLifetimePaymentLink, equals(lifetime));
+      });
+    });
   });
 }

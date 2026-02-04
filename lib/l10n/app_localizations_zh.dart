@@ -520,6 +520,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tapToPlaceBody => '在画布上任意位置点击以放置新天体';
 
   @override
+  String get lockInteraction => '锁定交互';
+
+  @override
+  String get tapToLockInteraction => '点击锁定 - 防止意外移动天体';
+
+  @override
+  String get tapToUnlockInteraction => '点击解锁 - 允许通过拖动移动天体';
+
+  @override
+  String get interactionLocked => '交互已锁定';
+
+  @override
+  String get interactionUnlocked => '交互已解锁';
+
+  @override
   String get bodyPlacedSuccessfully => '天体放置成功';
 
   @override
@@ -3510,4 +3525,338 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get showCollisionPlasmaJetsDescription => '来自大质量恒星碰撞的定向超高温流（实验性）';
+
+  @override
+  String get liveSessionHosting => '正在主持直播会话';
+
+  @override
+  String get liveSessionNotHosting => '分享直播会话';
+
+  @override
+  String get liveSessionStartHosting => '开始主持';
+
+  @override
+  String get liveSessionStopHosting => '停止分享';
+
+  @override
+  String get liveSessionUpdateSession => '更新会话';
+
+  @override
+  String liveSessionViewerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count位观看者',
+      one: '1位观看者',
+      zero: '无观看者',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get liveSessionNoViewers => '还没有人观看';
+
+  @override
+  String get liveSessionBrowseSessions => '浏览会话';
+
+  @override
+  String get liveSessionNoSessions => '没有活跃会话';
+
+  @override
+  String get liveSessionJoin => '加入';
+
+  @override
+  String get liveSessionYourSession => '您的会话';
+
+  @override
+  String get liveSessionLeave => '离开会话';
+
+  @override
+  String get liveSessionViewing => '正在观看直播会话';
+
+  @override
+  String liveSessionHostedBy(String hostName) {
+    return '由$hostName主持';
+  }
+
+  @override
+  String liveSessionScenario(String scenarioName) {
+    return '场景：$scenarioName';
+  }
+
+  @override
+  String get liveSessionRequiresAuth => '登录以分享或观看直播会话';
+
+  @override
+  String get liveSessionStatusDisconnected => '已断开';
+
+  @override
+  String get liveSessionStatusConnecting => '连接中...';
+
+  @override
+  String get liveSessionStatusConnected => '已连接';
+
+  @override
+  String get liveSessionStatusReconnecting => '重新连接中...';
+
+  @override
+  String get liveSessionStatusError => '连接错误';
+
+  @override
+  String liveSessionConnectionStatusLabel(String status) {
+    return '连接状态：$status';
+  }
+
+  @override
+  String get liveSessionTapForSettings => '点击查看会话设置';
+
+  @override
+  String get liveSessionIndicatorTooltip => '实时会话';
+
+  @override
+  String get liveSessionErrorHostingFailed => '无法开始主持。请重试。';
+
+  @override
+  String get liveSessionErrorJoinFailed => '无法加入会话。请重试。';
+
+  @override
+  String get liveSessionErrorConnectionLost => '连接丢失。正在尝试重新连接...';
+
+  @override
+  String get liveSessionTitle => '实时会话';
+
+  @override
+  String get liveSessionDescription => '分享您的模拟或实时加入其他人';
+
+  @override
+  String get liveSessionHostingDescription => '正在向观众广播您的模拟';
+
+  @override
+  String get liveSessionViewingDescription => '正在观看实时模拟广播';
+
+  @override
+  String get liveSessionMenuTitle => '实时会话';
+
+  @override
+  String get liveSessionMenuDescription => '分享或加入实时模拟';
+
+  @override
+  String get liveSessionBrowseTab => '浏览';
+
+  @override
+  String get liveSessionStartSharingTab => '分享';
+
+  @override
+  String get liveSessionBrowseDescription => '加入实时会话以实时观看其他用户的模拟';
+
+  @override
+  String get liveSessionShareDescription => '实时与他人分享您当前的模拟';
+
+  @override
+  String get liveSessionScenarioToShare => '要分享的场景';
+
+  @override
+  String get liveSessionPasswordProtection => '密码保护';
+
+  @override
+  String get liveSessionSetPassword => '输入密码';
+
+  @override
+  String get liveSessionPasswordDescription => '观众需要输入此密码才能加入您的会话';
+
+  @override
+  String get liveSessionCameraSync => '相机同步';
+
+  @override
+  String get liveSessionCameraSyncDescription => '观众将看到与您相同的相机角度和移动';
+
+  @override
+  String get liveSessionCameraSyncActive => '相机已同步';
+
+  @override
+  String get liveSessionCameraSyncViewerActive => '相机由主持人控制';
+
+  @override
+  String get liveSessionPasswordRequired => '请输入密码';
+
+  @override
+  String get liveSessionEnterPassword => '输入密码';
+
+  @override
+  String get liveSessionPasswordHint => '会话密码';
+
+  @override
+  String get liveSessionPasswordProtected => '已启用密码保护';
+
+  @override
+  String get liveSessionPasswordEnabled => '需要密码才能加入';
+
+  @override
+  String get liveSessionPasswordDisabled => '任何人都可以加入';
+
+  @override
+  String get liveSessionIncorrectPassword => '密码错误';
+
+  @override
+  String get liveSessionRequiresAccountTitle => '需要账户';
+
+  @override
+  String get liveSessionRequiresAccountMessage =>
+      '直播会话仅供注册用户使用。创建免费账户与他人分享您的模拟。';
+
+  @override
+  String get liveSessionCreateAccount => '创建账户';
+
+  @override
+  String get liveSessionSessionName => '会话名称';
+
+  @override
+  String get liveSessionSessionNameHint => '为您的会话命名';
+
+  @override
+  String get liveSessionSettings => '会话设置';
+
+  @override
+  String get premiumTierFree => '免费';
+
+  @override
+  String get premiumTierPremium => '高级版';
+
+  @override
+  String get premiumTierLifetime => '终身版';
+
+  @override
+  String get premiumTitle => 'Graviton 高级版';
+
+  @override
+  String get premiumSubtitle => '解锁无限制的直播会话';
+
+  @override
+  String get premiumBenefitUnlimitedDuration => '无限制会话时长';
+
+  @override
+  String get premiumBenefitUnlimitedDurationDesc => '随心所欲地主持会话';
+
+  @override
+  String premiumBenefitViewers(int count) {
+    return '最多 $count 位观众';
+  }
+
+  @override
+  String get premiumBenefitViewersDesc => '与更多观众分享';
+
+  @override
+  String get premiumBenefitCameraSync => '相机同步';
+
+  @override
+  String get premiumBenefitCameraSyncDesc => '为所有观众同步视角';
+
+  @override
+  String get premiumBenefitPassword => '密码保护';
+
+  @override
+  String get premiumBenefitPasswordDesc => '保持会话私密';
+
+  @override
+  String get premiumBenefitUnlimitedSessions => '每日无限制会话';
+
+  @override
+  String get premiumBenefitUnlimitedSessionsDesc => '无每日主持限制';
+
+  @override
+  String get premiumPlanMonthly => '月付';
+
+  @override
+  String get premiumPlanYearly => '年付';
+
+  @override
+  String get premiumPlanLifetime => '终身';
+
+  @override
+  String get premiumPeriodMonth => '/月';
+
+  @override
+  String get premiumPeriodYear => '/年';
+
+  @override
+  String get premiumPeriodOneTime => ' 一次性';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return '节省 $percent%';
+  }
+
+  @override
+  String get premiumBestValue => '最超值';
+
+  @override
+  String get premiumStartFreeTrial => '开始免费试用';
+
+  @override
+  String get premiumBuyNow => '立即购买';
+
+  @override
+  String get premiumRestorePurchases => '恢复购买';
+
+  @override
+  String get premiumLegalText =>
+      '订阅将自动续订，除非在当前期间结束前至少24小时取消。您可以在App Store设置中管理订阅。';
+
+  @override
+  String get premiumManageSubscriptions => '管理订阅';
+
+  @override
+  String get premiumUpgrade => '升级';
+
+  @override
+  String get premiumUpgradeToPremium => '升级到高级版';
+
+  @override
+  String get premiumSessionExpired => '会话已过期';
+
+  @override
+  String get premiumSessionExpiredMessage => '您的免费会话时间已结束。您的实时会话已停止。';
+
+  @override
+  String get premiumUnlimitedSessionsHint => '升级到高级版享受无限会话时长';
+
+  @override
+  String get premiumTimeRemaining => '剩余时间';
+
+  @override
+  String get premiumSessionLimitReached => '已达会话限制';
+
+  @override
+  String premiumSessionLimitMessage(int count) {
+    return '您已达到每日 $count 次会话限制。升级到高级版享受无限制会话。';
+  }
+
+  @override
+  String premiumDurationLimitMessage(int minutes) {
+    return '免费会话限制为 $minutes 分钟。升级享受无限制会话时长。';
+  }
+
+  @override
+  String get premiumFeatureRequiresPremium => '此功能需要高级版';
+
+  @override
+  String get premiumPurchaseFailed => '购买失败，请重试。';
+
+  @override
+  String get premiumRestoreFailed => '无法恢复购买，请重试。';
+
+  @override
+  String get premiumRestoreSuccess => '购买恢复成功！';
+
+  @override
+  String get premiumNoPurchasesToRestore => '未找到可恢复的历史购买记录。';
+
+  @override
+  String get premiumRedirectingToPayment => '正在跳转到安全支付...';
+
+  @override
+  String get premiumFreeTierLabel => '免费';
+
+  @override
+  String get premiumProBadge => 'PRO';
 }

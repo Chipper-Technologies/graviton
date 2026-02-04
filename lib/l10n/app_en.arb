@@ -678,6 +678,26 @@
   "@tapToPlaceBody": {
     "description": "Instructions shown when add body mode is active"
   },
+  "lockInteraction": "Lock Interaction",
+  "@lockInteraction": {
+    "description": "Button tooltip for the interaction lock toggle"
+  },
+  "tapToLockInteraction": "Tap to lock interaction - prevents accidentally moving bodies",
+  "@tapToLockInteraction": {
+    "description": "Accessibility hint for enabling interaction lock"
+  },
+  "tapToUnlockInteraction": "Tap to unlock interaction - allows moving bodies by dragging",
+  "@tapToUnlockInteraction": {
+    "description": "Accessibility hint for disabling interaction lock"
+  },
+  "interactionLocked": "Interaction locked",
+  "@interactionLocked": {
+    "description": "Snackbar message when interaction is locked"
+  },
+  "interactionUnlocked": "Interaction unlocked",
+  "@interactionUnlocked": {
+    "description": "Snackbar message when interaction is unlocked"
+  },
   "bodyPlacedSuccessfully": "Body placed successfully",
   "@bodyPlacedSuccessfully": {
     "description": "Confirmation message after placing a body"
@@ -4855,5 +4875,466 @@
   "showCollisionPlasmaJetsDescription": "Directional superheated streams from massive star collisions (experimental)",
   "@showCollisionPlasmaJetsDescription": {
     "description": "Description for collision plasma jets feature"
+  },
+  "liveSessionHosting": "Hosting Live Session",
+  "@liveSessionHosting": {
+    "description": "Status text when user is hosting a live session"
+  },
+  "liveSessionNotHosting": "Share Live Session",
+  "@liveSessionNotHosting": {
+    "description": "Label when user is not hosting a live session"
+  },
+  "liveSessionStartHosting": "Start Hosting",
+  "@liveSessionStartHosting": {
+    "description": "Button text to start hosting a live session"
+  },
+  "liveSessionStopHosting": "Stop Sharing",
+  "@liveSessionStopHosting": {
+    "description": "Button text to stop hosting a live session"
+  },
+  "liveSessionUpdateSession": "Update Session",
+  "@liveSessionUpdateSession": {
+    "description": "Button text to update the active live session settings"
+  },
+  "liveSessionViewerCount": "{count, plural, =0{No viewers} =1{1 viewer} other{{count} viewers}}",
+  "@liveSessionViewerCount": {
+    "description": "Shows the number of viewers in a live session",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "The number of viewers"
+      }
+    }
+  },
+  "liveSessionNoViewers": "No one is watching yet",
+  "@liveSessionNoViewers": {
+    "description": "Message shown when no viewers are connected to the live session"
+  },
+  "liveSessionBrowseSessions": "Browse Sessions",
+  "@liveSessionBrowseSessions": {
+    "description": "Title for the live session browser screen"
+  },
+  "liveSessionNoSessions": "No active sessions",
+  "@liveSessionNoSessions": {
+    "description": "Message when no live sessions are available"
+  },
+  "liveSessionJoin": "Join",
+  "@liveSessionJoin": {
+    "description": "Button text to join a live session"
+  },
+  "liveSessionYourSession": "Your Session",
+  "@liveSessionYourSession": {
+    "description": "Label shown on session card when it's the user's own hosted session"
+  },
+  "liveSessionLeave": "Leave Session",
+  "@liveSessionLeave": {
+    "description": "Button text to leave a live session"
+  },
+  "liveSessionViewing": "Viewing Live Session",
+  "@liveSessionViewing": {
+    "description": "Status text when viewing someone else's live session"
+  },
+  "liveSessionHostedBy": "Hosted by {hostName}",
+  "@liveSessionHostedBy": {
+    "description": "Shows who is hosting the session",
+    "placeholders": {
+      "hostName": {
+        "type": "String",
+        "description": "The name of the host"
+      }
+    }
+  },
+  "liveSessionScenario": "Scenario: {scenarioName}",
+  "@liveSessionScenario": {
+    "description": "Shows the scenario being simulated",
+    "placeholders": {
+      "scenarioName": {
+        "type": "String",
+        "description": "The name of the scenario"
+      }
+    }
+  },
+  "liveSessionRequiresAuth": "Sign in to share or view live sessions",
+  "@liveSessionRequiresAuth": {
+    "description": "Message shown when user needs to sign in for live sessions"
+  },
+  "liveSessionStatusDisconnected": "Disconnected",
+  "@liveSessionStatusDisconnected": {
+    "description": "Connection status when not connected to any session"
+  },
+  "liveSessionStatusConnecting": "Connecting...",
+  "@liveSessionStatusConnecting": {
+    "description": "Connection status when attempting to connect"
+  },
+  "liveSessionStatusConnected": "Connected",
+  "@liveSessionStatusConnected": {
+    "description": "Connection status when successfully connected"
+  },
+  "liveSessionStatusReconnecting": "Reconnecting...",
+  "@liveSessionStatusReconnecting": {
+    "description": "Connection status when attempting to reconnect"
+  },
+  "liveSessionStatusError": "Connection Error",
+  "@liveSessionStatusError": {
+    "description": "Connection status when an error occurred"
+  },
+  "liveSessionConnectionStatusLabel": "Connection status: {status}",
+  "@liveSessionConnectionStatusLabel": {
+    "description": "Accessibility label for connection status indicator",
+    "placeholders": {
+      "status": {
+        "type": "String",
+        "example": "Connected"
+      }
+    }
+  },
+  "liveSessionTapForSettings": "Tap for session settings",
+  "@liveSessionTapForSettings": {
+    "description": "Accessibility hint for tapping connection indicator"
+  },
+  "liveSessionIndicatorTooltip": "Live Session",
+  "@liveSessionIndicatorTooltip": {
+    "description": "Tooltip for connection status indicator in app bar"
+  },
+  "liveSessionErrorHostingFailed": "Failed to start hosting. Please try again.",
+  "@liveSessionErrorHostingFailed": {
+    "description": "Error message when hosting fails to start"
+  },
+  "liveSessionErrorJoinFailed": "Failed to join session. Please try again.",
+  "@liveSessionErrorJoinFailed": {
+    "description": "Error message when joining a session fails"
+  },
+  "liveSessionErrorConnectionLost": "Connection lost. Attempting to reconnect...",
+  "@liveSessionErrorConnectionLost": {
+    "description": "Error message when connection is lost"
+  },
+  "liveSessionTitle": "Live Session",
+  "@liveSessionTitle": {
+    "description": "Title for the live session panel"
+  },
+  "liveSessionDescription": "Share your simulation or join others in real-time",
+  "@liveSessionDescription": {
+    "description": "Description text for the live session panel"
+  },
+  "liveSessionHostingDescription": "Broadcasting your simulation to viewers",
+  "@liveSessionHostingDescription": {
+    "description": "Description when actively hosting a session"
+  },
+  "liveSessionViewingDescription": "Watching a live simulation broadcast",
+  "@liveSessionViewingDescription": {
+    "description": "Description when actively viewing a session"
+  },
+  "liveSessionMenuTitle": "Live Sessions",
+  "@liveSessionMenuTitle": {
+    "description": "Menu item title for live sessions"
+  },
+  "liveSessionMenuDescription": "Share or join real-time simulations",
+  "@liveSessionMenuDescription": {
+    "description": "Menu item description for live sessions"
+  },
+  "liveSessionBrowseTab": "Browse",
+  "@liveSessionBrowseTab": {
+    "description": "Tab label for browsing live sessions"
+  },
+  "liveSessionStartSharingTab": "Sharing",
+  "@liveSessionStartSharingTab": {
+    "description": "Tab label for starting a live session"
+  },
+  "liveSessionBrowseDescription": "Join a live session to watch another user's simulation in real-time",
+  "@liveSessionBrowseDescription": {
+    "description": "Description text for the browse sessions tab"
+  },
+  "liveSessionShareDescription": "Share your current simulation with others in real-time",
+  "@liveSessionShareDescription": {
+    "description": "Description text for the start sharing tab"
+  },
+  "liveSessionScenarioToShare": "Scenario to share",
+  "@liveSessionScenarioToShare": {
+    "description": "Label showing which scenario will be shared"
+  },
+  "liveSessionPasswordProtection": "Password Protection",
+  "@liveSessionPasswordProtection": {
+    "description": "Toggle label for enabling password protection"
+  },
+  "liveSessionSetPassword": "Enter password",
+  "@liveSessionSetPassword": {
+    "description": "Placeholder text for password input field"
+  },
+  "liveSessionPasswordDescription": "Viewers will need to enter this password to join your session",
+  "@liveSessionPasswordDescription": {
+    "description": "Help text explaining password protection"
+  },
+  "liveSessionCameraSync": "Camera Sync",
+  "@liveSessionCameraSync": {
+    "description": "Toggle label for enabling camera synchronization with viewers"
+  },
+  "liveSessionCameraSyncDescription": "Viewers will see the same camera angle and movements as you",
+  "@liveSessionCameraSyncDescription": {
+    "description": "Help text explaining camera synchronization feature"
+  },
+  "liveSessionCameraSyncActive": "Camera synced",
+  "@liveSessionCameraSyncActive": {
+    "description": "Status indicator showing camera sync is active for host"
+  },
+  "liveSessionCameraSyncViewerActive": "Camera controlled by host",
+  "@liveSessionCameraSyncViewerActive": {
+    "description": "Status indicator showing viewer camera is being controlled by host"
+  },
+  "liveSessionPasswordRequired": "Please enter a password",
+  "@liveSessionPasswordRequired": {
+    "description": "Error message when password is required but not entered"
+  },
+  "liveSessionEnterPassword": "Enter Password",
+  "@liveSessionEnterPassword": {
+    "description": "Title for password entry dialog"
+  },
+  "liveSessionPasswordHint": "Session password",
+  "@liveSessionPasswordHint": {
+    "description": "Hint text for password input in join dialog"
+  },
+  "liveSessionPasswordProtected": "Password protected",
+  "@liveSessionPasswordProtected": {
+    "description": "Label indicating session is password protected"
+  },
+  "liveSessionPasswordEnabled": "Password required to join",
+  "@liveSessionPasswordEnabled": {
+    "description": "Status text when session has password protection enabled"
+  },
+  "liveSessionPasswordDisabled": "Anyone can join",
+  "@liveSessionPasswordDisabled": {
+    "description": "Status text when session has no password protection"
+  },
+  "liveSessionIncorrectPassword": "Incorrect password",
+  "@liveSessionIncorrectPassword": {
+    "description": "Error message when entered password is wrong"
+  },
+  "liveSessionRequiresAccountTitle": "Account Required",
+  "@liveSessionRequiresAccountTitle": {
+    "description": "Title for dialog when user needs an account for live sessions"
+  },
+  "liveSessionRequiresAccountMessage": "Live sessions are available to registered users. Create a free account to share your simulations with others.",
+  "@liveSessionRequiresAccountMessage": {
+    "description": "Message explaining why account is needed for live sessions"
+  },
+  "liveSessionCreateAccount": "Create Account",
+  "@liveSessionCreateAccount": {
+    "description": "Button to create an account from live session dialog"
+  },
+  "liveSessionSessionName": "Session Name",
+  "@liveSessionSessionName": {
+    "description": "Label for session name input"
+  },
+  "liveSessionSessionNameHint": "Give your session a name",
+  "@liveSessionSessionNameHint": {
+    "description": "Hint text for session name input"
+  },
+  "liveSessionSettings": "Session Settings",
+  "@liveSessionSettings": {
+    "description": "Title for session settings dialog"
+  },
+
+  "premiumTierFree": "Free",
+  "@premiumTierFree": {
+    "description": "Display name for free subscription tier"
+  },
+  "premiumTierPremium": "Premium",
+  "@premiumTierPremium": {
+    "description": "Display name for premium subscription tier"
+  },
+  "premiumTierLifetime": "Lifetime",
+  "@premiumTierLifetime": {
+    "description": "Display name for lifetime subscription tier"
+  },
+  "premiumTitle": "Graviton Premium",
+  "@premiumTitle": {
+    "description": "Title for premium subscription"
+  },
+  "premiumSubtitle": "Unlock unlimited Live Sessions",
+  "@premiumSubtitle": {
+    "description": "Subtitle describing premium benefits"
+  },
+  "premiumBenefitUnlimitedDuration": "Unlimited Session Duration",
+  "@premiumBenefitUnlimitedDuration": {
+    "description": "Premium benefit - unlimited session time"
+  },
+  "premiumBenefitUnlimitedDurationDesc": "Host sessions as long as you want",
+  "@premiumBenefitUnlimitedDurationDesc": {
+    "description": "Description for unlimited duration benefit"
+  },
+  "premiumBenefitViewers": "Up to {count} Viewers",
+  "@premiumBenefitViewers": {
+    "description": "Premium benefit - viewer count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "25"
+      }
+    }
+  },
+  "premiumBenefitViewersDesc": "Share with larger audiences",
+  "@premiumBenefitViewersDesc": {
+    "description": "Description for viewer count benefit"
+  },
+  "premiumBenefitCameraSync": "Camera Sync",
+  "@premiumBenefitCameraSync": {
+    "description": "Premium benefit - camera synchronization"
+  },
+  "premiumBenefitCameraSyncDesc": "Synchronize views across all viewers",
+  "@premiumBenefitCameraSyncDesc": {
+    "description": "Description for camera sync benefit"
+  },
+  "premiumBenefitPassword": "Password Protection",
+  "@premiumBenefitPassword": {
+    "description": "Premium benefit - password protection"
+  },
+  "premiumBenefitPasswordDesc": "Keep your sessions private",
+  "@premiumBenefitPasswordDesc": {
+    "description": "Description for password protection benefit"
+  },
+  "premiumBenefitUnlimitedSessions": "Unlimited Sessions Per Day",
+  "@premiumBenefitUnlimitedSessions": {
+    "description": "Premium benefit - no daily session limit"
+  },
+  "premiumBenefitUnlimitedSessionsDesc": "No daily limits on hosting",
+  "@premiumBenefitUnlimitedSessionsDesc": {
+    "description": "Description for unlimited sessions benefit"
+  },
+  "premiumPlanMonthly": "Monthly",
+  "@premiumPlanMonthly": {
+    "description": "Monthly subscription plan name"
+  },
+  "premiumPlanYearly": "Yearly",
+  "@premiumPlanYearly": {
+    "description": "Yearly subscription plan name"
+  },
+  "premiumPlanLifetime": "Lifetime",
+  "@premiumPlanLifetime": {
+    "description": "Lifetime purchase plan name"
+  },
+  "premiumPeriodMonth": "/month",
+  "@premiumPeriodMonth": {
+    "description": "Monthly billing period suffix"
+  },
+  "premiumPeriodYear": "/year",
+  "@premiumPeriodYear": {
+    "description": "Yearly billing period suffix"
+  },
+  "premiumPeriodOneTime": " one-time",
+  "@premiumPeriodOneTime": {
+    "description": "One-time purchase suffix"
+  },
+  "premiumSavePercent": "Save {percent}%",
+  "@premiumSavePercent": {
+    "description": "Savings percentage badge",
+    "placeholders": {
+      "percent": {
+        "type": "String",
+        "example": "44"
+      }
+    }
+  },
+  "premiumBestValue": "Best Value",
+  "@premiumBestValue": {
+    "description": "Best value badge for lifetime plan"
+  },
+  "premiumStartFreeTrial": "Start Free Trial",
+  "@premiumStartFreeTrial": {
+    "description": "Button text to start free trial"
+  },
+  "premiumBuyNow": "Buy Now",
+  "@premiumBuyNow": {
+    "description": "Button text for one-time purchase"
+  },
+  "premiumRestorePurchases": "Restore Purchases",
+  "@premiumRestorePurchases": {
+    "description": "Button to restore previous purchases"
+  },
+  "premiumLegalText": "Subscriptions will automatically renew unless cancelled at least 24 hours before the end of the current period. You can manage your subscriptions in your App Store settings.",
+  "@premiumLegalText": {
+    "description": "Legal disclaimer for subscriptions"
+  },
+  "premiumManageSubscriptions": "Manage Subscriptions",
+  "@premiumManageSubscriptions": {
+    "description": "Link text to open subscription management"
+  },
+  "premiumUpgrade": "Upgrade",
+  "@premiumUpgrade": {
+    "description": "Button text to upgrade to premium"
+  },
+  "premiumUpgradeToPremium": "Upgrade to Premium",
+  "@premiumUpgradeToPremium": {
+    "description": "Full upgrade button text"
+  },
+  "premiumSessionExpired": "Session Expired",
+  "@premiumSessionExpired": {
+    "description": "Text shown when free session time has expired"
+  },
+  "premiumSessionExpiredMessage": "Your free session time has ended. Your live session has been stopped.",
+  "@premiumSessionExpiredMessage": {
+    "description": "Detailed message explaining session expiration"
+  },
+  "premiumUnlimitedSessionsHint": "Upgrade to Premium for unlimited session time",
+  "@premiumUnlimitedSessionsHint": {
+    "description": "Hint text encouraging upgrade for unlimited sessions"
+  },
+  "premiumTimeRemaining": "Time Remaining",
+  "@premiumTimeRemaining": {
+    "description": "Label for remaining session time"
+  },
+  "premiumSessionLimitReached": "Session Limit Reached",
+  "@premiumSessionLimitReached": {
+    "description": "Title when daily session limit reached"
+  },
+  "premiumSessionLimitMessage": "You've reached your daily limit of {count} sessions. Upgrade to Premium for unlimited sessions.",
+  "@premiumSessionLimitMessage": {
+    "description": "Message when session limit reached",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "premiumDurationLimitMessage": "Free sessions are limited to {minutes} minutes. Upgrade for unlimited session time.",
+  "@premiumDurationLimitMessage": {
+    "description": "Message when duration limit reached",
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "premiumFeatureRequiresPremium": "This feature requires Premium",
+  "@premiumFeatureRequiresPremium": {
+    "description": "Message when trying to access premium-only feature"
+  },
+  "premiumPurchaseFailed": "Purchase failed. Please try again.",
+  "@premiumPurchaseFailed": {
+    "description": "Error message when purchase fails"
+  },
+  "premiumRestoreFailed": "Could not restore purchases. Please try again.",
+  "@premiumRestoreFailed": {
+    "description": "Error message when restore fails"
+  },
+  "premiumRestoreSuccess": "Purchases restored successfully!",
+  "@premiumRestoreSuccess": {
+    "description": "Success message when purchases restored"
+  },
+  "premiumNoPurchasesToRestore": "No previous purchases found to restore.",
+  "@premiumNoPurchasesToRestore": {
+    "description": "Message when no purchases exist to restore"
+  },
+  "premiumRedirectingToPayment": "Redirecting to secure payment...",
+  "@premiumRedirectingToPayment": {
+    "description": "Message shown when redirecting to Stripe checkout"
+  },
+  "premiumFreeTierLabel": "Free",
+  "@premiumFreeTierLabel": {
+    "description": "Label indicating free tier status"
+  },
+  "premiumProBadge": "PRO",
+  "@premiumProBadge": {
+    "description": "Short badge text for premium/pro features"
   }
 }

@@ -263,8 +263,6 @@ class _PhysicsSettingsScreenState extends State<PhysicsSettingsScreen> {
                               icon: Icons.refresh,
                               onPressed: _resetToDefaults,
                             ),
-
-                            SizedBox(height: AppTypography.spacingXXLarge),
                           ],
                         ),
                       ),

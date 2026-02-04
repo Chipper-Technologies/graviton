@@ -14,6 +14,7 @@ import 'firebase/firebase_options.dart';
 import 'package:graviton/core/constants/platform_channel_constants.dart';
 import 'package:graviton/core/enums/app_flavor.dart';
 import 'package:graviton/core/enums/firebase_event.dart';
+import 'package:graviton/features/premium/presentation/premium_state.dart';
 import 'l10n/app_localizations.dart';
 import 'package:graviton/features/about/presentation/screens/about_screen.dart';
 import 'package:graviton/features/settings/presentation/screens/application_settings_screen.dart';
@@ -23,6 +24,7 @@ import 'services/firebase/app_check_service.dart';
 import 'package:graviton/features/auth/data/auth_service.dart';
 import 'services/platform/changelog_service.dart';
 import 'services/firebase/firebase_service.dart';
+import 'services/firebase/realtime_database_service.dart';
 import 'package:graviton/shared/widgets/dialogs/changelog_dialog.dart';
 import 'services/firebase/remote_config_service.dart';
 import 'services/platform/version_service.dart';
@@ -74,6 +76,7 @@ void main() async {
 
     await AppCheckService.instance.initialize();
     await FirebaseService.instance.initialize();
+    await RealtimeDatabaseService.instance.initialize();
     await AuthService.instance.initialize();
   } catch (e) {
     debugPrint('Firebase initialization failed: $e');
@@ -191,6 +194,8 @@ class GravitonApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: appState),
         ChangeNotifierProvider.value(value: appState.auth),
+        ChangeNotifierProvider.value(value: appState.liveSession),
+        ChangeNotifierProvider(create: (_) => PremiumState()..initialize()),
       ],
       child: Consumer<AppState>(
         builder: (context, appState, child) {

@@ -20,6 +20,7 @@ class OptionsDrawer extends StatefulWidget {
   final VoidCallback onShowDeveloperTools;
   final VoidCallback? onShowChangelog;
   final VoidCallback onShowAccount;
+  final VoidCallback? onShowLiveSession;
 
   const OptionsDrawer({
     super.key,
@@ -31,6 +32,7 @@ class OptionsDrawer extends StatefulWidget {
     required this.onShowDeveloperTools,
     this.onShowChangelog,
     required this.onShowAccount,
+    this.onShowLiveSession,
   });
 
   @override
@@ -201,6 +203,20 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                       },
                     ),
                     const SectionDivider.plain(),
+                    // Live Session menu item
+                    if (widget.onShowLiveSession != null)
+                      _buildDrawerItem(
+                        context: context,
+                        icon: Icons.cast_connected,
+                        title: l10n.liveSessionMenuTitle,
+                        subtitle: l10n.liveSessionMenuDescription,
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          widget.onShowLiveSession!();
+                        },
+                      ),
+                    if (widget.onShowLiveSession != null)
+                      const SectionDivider.plain(),
                     _buildDrawerItem(
                       context: context,
                       icon: Icons.science,

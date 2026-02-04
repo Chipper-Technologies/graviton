@@ -557,6 +557,23 @@ class AppLocalizationsDe extends AppLocalizations {
       'Tippen Sie auf eine beliebige Stelle auf der Leinwand, um einen neuen Körper zu platzieren';
 
   @override
+  String get lockInteraction => 'Interaktion sperren';
+
+  @override
+  String get tapToLockInteraction =>
+      'Tippen zum Sperren - verhindert versehentliches Bewegen von Körpern';
+
+  @override
+  String get tapToUnlockInteraction =>
+      'Tippen zum Entsperren - ermöglicht das Bewegen von Körpern durch Ziehen';
+
+  @override
+  String get interactionLocked => 'Interaktion gesperrt';
+
+  @override
+  String get interactionUnlocked => 'Interaktion entsperrt';
+
+  @override
   String get bodyPlacedSuccessfully => 'Körper erfolgreich platziert';
 
   @override
@@ -3759,4 +3776,363 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get showCollisionPlasmaJetsDescription =>
       'Gerichtete überhitzte Ströme aus massiven Sternkollisionen (experimentell)';
+
+  @override
+  String get liveSessionHosting => 'Live-Sitzung wird gehostet';
+
+  @override
+  String get liveSessionNotHosting => 'Live-Sitzung teilen';
+
+  @override
+  String get liveSessionStartHosting => 'Hosting starten';
+
+  @override
+  String get liveSessionStopHosting => 'Teilen beenden';
+
+  @override
+  String get liveSessionUpdateSession => 'Sitzung aktualisieren';
+
+  @override
+  String liveSessionViewerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Zuschauer',
+      one: '1 Zuschauer',
+      zero: 'Keine Zuschauer',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get liveSessionNoViewers => 'Noch schaut niemand zu';
+
+  @override
+  String get liveSessionBrowseSessions => 'Sitzungen durchsuchen';
+
+  @override
+  String get liveSessionNoSessions => 'Keine aktiven Sitzungen';
+
+  @override
+  String get liveSessionJoin => 'Beitreten';
+
+  @override
+  String get liveSessionYourSession => 'Ihre Sitzung';
+
+  @override
+  String get liveSessionLeave => 'Sitzung verlassen';
+
+  @override
+  String get liveSessionViewing => 'Live-Sitzung ansehen';
+
+  @override
+  String liveSessionHostedBy(String hostName) {
+    return 'Gehostet von $hostName';
+  }
+
+  @override
+  String liveSessionScenario(String scenarioName) {
+    return 'Szenario: $scenarioName';
+  }
+
+  @override
+  String get liveSessionRequiresAuth =>
+      'Melden Sie sich an, um Live-Sitzungen zu teilen oder anzusehen';
+
+  @override
+  String get liveSessionStatusDisconnected => 'Getrennt';
+
+  @override
+  String get liveSessionStatusConnecting => 'Verbinden...';
+
+  @override
+  String get liveSessionStatusConnected => 'Verbunden';
+
+  @override
+  String get liveSessionStatusReconnecting => 'Erneut verbinden...';
+
+  @override
+  String get liveSessionStatusError => 'Verbindungsfehler';
+
+  @override
+  String liveSessionConnectionStatusLabel(String status) {
+    return 'Verbindungsstatus: $status';
+  }
+
+  @override
+  String get liveSessionTapForSettings => 'Tippen für Sitzungseinstellungen';
+
+  @override
+  String get liveSessionIndicatorTooltip => 'Live-Sitzung';
+
+  @override
+  String get liveSessionErrorHostingFailed =>
+      'Hosting konnte nicht gestartet werden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get liveSessionErrorJoinFailed =>
+      'Beitritt zur Sitzung fehlgeschlagen. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get liveSessionErrorConnectionLost =>
+      'Verbindung verloren. Versuche erneut zu verbinden...';
+
+  @override
+  String get liveSessionTitle => 'Live-Sitzung';
+
+  @override
+  String get liveSessionDescription =>
+      'Teilen Sie Ihre Simulation oder treten Sie anderen in Echtzeit bei';
+
+  @override
+  String get liveSessionHostingDescription =>
+      'Übertragen Sie Ihre Simulation an Zuschauer';
+
+  @override
+  String get liveSessionViewingDescription =>
+      'Sehen Sie eine Live-Simulationsübertragung';
+
+  @override
+  String get liveSessionMenuTitle => 'Live-Sitzungen';
+
+  @override
+  String get liveSessionMenuDescription =>
+      'Echtzeit-Simulationen teilen oder beitreten';
+
+  @override
+  String get liveSessionBrowseTab => 'Durchsuchen';
+
+  @override
+  String get liveSessionStartSharingTab => 'Teilen';
+
+  @override
+  String get liveSessionBrowseDescription =>
+      'Treten Sie einer Live-Sitzung bei, um die Simulation eines anderen Benutzers in Echtzeit zu sehen';
+
+  @override
+  String get liveSessionShareDescription =>
+      'Teilen Sie Ihre aktuelle Simulation in Echtzeit mit anderen';
+
+  @override
+  String get liveSessionScenarioToShare => 'Zu teilendes Szenario';
+
+  @override
+  String get liveSessionPasswordProtection => 'Passwortschutz';
+
+  @override
+  String get liveSessionSetPassword => 'Passwort eingeben';
+
+  @override
+  String get liveSessionPasswordDescription =>
+      'Zuschauer müssen dieses Passwort eingeben, um Ihrer Sitzung beizutreten';
+
+  @override
+  String get liveSessionCameraSync => 'Kamera-Synchronisation';
+
+  @override
+  String get liveSessionCameraSyncDescription =>
+      'Zuschauer sehen den gleichen Kamerawinkel und die gleichen Bewegungen wie Sie';
+
+  @override
+  String get liveSessionCameraSyncActive => 'Kamera synchronisiert';
+
+  @override
+  String get liveSessionCameraSyncViewerActive =>
+      'Kamera wird vom Host gesteuert';
+
+  @override
+  String get liveSessionPasswordRequired => 'Bitte geben Sie ein Passwort ein';
+
+  @override
+  String get liveSessionEnterPassword => 'Passwort eingeben';
+
+  @override
+  String get liveSessionPasswordHint => 'Sitzungspasswort';
+
+  @override
+  String get liveSessionPasswordProtected => 'Passwortgeschützt';
+
+  @override
+  String get liveSessionPasswordEnabled =>
+      'Passwort zum Beitreten erforderlich';
+
+  @override
+  String get liveSessionPasswordDisabled => 'Jeder kann beitreten';
+
+  @override
+  String get liveSessionIncorrectPassword => 'Falsches Passwort';
+
+  @override
+  String get liveSessionRequiresAccountTitle => 'Konto erforderlich';
+
+  @override
+  String get liveSessionRequiresAccountMessage =>
+      'Live-Sitzungen sind für registrierte Benutzer verfügbar. Erstellen Sie ein kostenloses Konto, um Ihre Simulationen mit anderen zu teilen.';
+
+  @override
+  String get liveSessionCreateAccount => 'Konto erstellen';
+
+  @override
+  String get liveSessionSessionName => 'Sitzungsname';
+
+  @override
+  String get liveSessionSessionNameHint =>
+      'Geben Sie Ihrer Sitzung einen Namen';
+
+  @override
+  String get liveSessionSettings => 'Sitzungseinstellungen';
+
+  @override
+  String get premiumTierFree => 'Kostenlos';
+
+  @override
+  String get premiumTierPremium => 'Premium';
+
+  @override
+  String get premiumTierLifetime => 'Lebenslang';
+
+  @override
+  String get premiumTitle => 'Graviton Premium';
+
+  @override
+  String get premiumSubtitle => 'Unbegrenzte Live-Sitzungen freischalten';
+
+  @override
+  String get premiumBenefitUnlimitedDuration => 'Unbegrenzte Sitzungsdauer';
+
+  @override
+  String get premiumBenefitUnlimitedDurationDesc =>
+      'Sitzungen so lange wie Sie möchten hosten';
+
+  @override
+  String premiumBenefitViewers(int count) {
+    return 'Bis zu $count Zuschauer';
+  }
+
+  @override
+  String get premiumBenefitViewersDesc => 'Mit größerem Publikum teilen';
+
+  @override
+  String get premiumBenefitCameraSync => 'Kamerasynchronisation';
+
+  @override
+  String get premiumBenefitCameraSyncDesc =>
+      'Ansichten für alle Zuschauer synchronisieren';
+
+  @override
+  String get premiumBenefitPassword => 'Passwortschutz';
+
+  @override
+  String get premiumBenefitPasswordDesc => 'Halten Sie Ihre Sitzungen privat';
+
+  @override
+  String get premiumBenefitUnlimitedSessions => 'Unbegrenzte Sitzungen pro Tag';
+
+  @override
+  String get premiumBenefitUnlimitedSessionsDesc =>
+      'Keine täglichen Hosting-Limits';
+
+  @override
+  String get premiumPlanMonthly => 'Monatlich';
+
+  @override
+  String get premiumPlanYearly => 'Jährlich';
+
+  @override
+  String get premiumPlanLifetime => 'Lebenslang';
+
+  @override
+  String get premiumPeriodMonth => '/Monat';
+
+  @override
+  String get premiumPeriodYear => '/Jahr';
+
+  @override
+  String get premiumPeriodOneTime => ' einmalig';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return '$percent% sparen';
+  }
+
+  @override
+  String get premiumBestValue => 'Bester Wert';
+
+  @override
+  String get premiumStartFreeTrial => 'Kostenlos testen';
+
+  @override
+  String get premiumBuyNow => 'Jetzt kaufen';
+
+  @override
+  String get premiumRestorePurchases => 'Käufe wiederherstellen';
+
+  @override
+  String get premiumLegalText =>
+      'Abonnements werden automatisch verlängert, sofern sie nicht mindestens 24 Stunden vor Ende des aktuellen Zeitraums gekündigt werden. Sie können Ihre Abonnements in den App Store-Einstellungen verwalten.';
+
+  @override
+  String get premiumManageSubscriptions => 'Abonnements verwalten';
+
+  @override
+  String get premiumUpgrade => 'Upgrade';
+
+  @override
+  String get premiumUpgradeToPremium => 'Auf Premium upgraden';
+
+  @override
+  String get premiumSessionExpired => 'Sitzung abgelaufen';
+
+  @override
+  String get premiumSessionExpiredMessage =>
+      'Ihre kostenlose Sitzungszeit ist abgelaufen. Ihre Live-Sitzung wurde beendet.';
+
+  @override
+  String get premiumUnlimitedSessionsHint =>
+      'Upgraden Sie auf Premium für unbegrenzte Sitzungszeit';
+
+  @override
+  String get premiumTimeRemaining => 'Verbleibende Zeit';
+
+  @override
+  String get premiumSessionLimitReached => 'Sitzungslimit erreicht';
+
+  @override
+  String premiumSessionLimitMessage(int count) {
+    return 'Sie haben Ihr tägliches Limit von $count Sitzungen erreicht. Upgraden Sie auf Premium für unbegrenzte Sitzungen.';
+  }
+
+  @override
+  String premiumDurationLimitMessage(int minutes) {
+    return 'Kostenlose Sitzungen sind auf $minutes Minuten begrenzt. Upgraden Sie für unbegrenzte Sitzungszeit.';
+  }
+
+  @override
+  String get premiumFeatureRequiresPremium =>
+      'Diese Funktion erfordert Premium';
+
+  @override
+  String get premiumPurchaseFailed =>
+      'Kauf fehlgeschlagen. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get premiumRestoreFailed =>
+      'Käufe konnten nicht wiederhergestellt werden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get premiumRestoreSuccess => 'Käufe erfolgreich wiederhergestellt!';
+
+  @override
+  String get premiumNoPurchasesToRestore =>
+      'Keine früheren Käufe zum Wiederherstellen gefunden.';
+
+  @override
+  String get premiumRedirectingToPayment =>
+      'Weiterleitung zur sicheren Zahlung...';
+
+  @override
+  String get premiumFreeTierLabel => 'Kostenlos';
+
+  @override
+  String get premiumProBadge => 'PRO';
 }

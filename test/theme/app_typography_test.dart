@@ -360,6 +360,28 @@ void main() {
       });
     });
 
+    group('Label Offset Constants', () {
+      test('should have correct label offset values', () {
+        expect(AppTypography.labelOffsetX, equals(15.0));
+        expect(AppTypography.labelOffsetY, equals(10.0));
+      });
+
+      test('label offsets should be positive for right/up positioning', () {
+        // X offset positions label to the right of body center
+        expect(AppTypography.labelOffsetX, greaterThan(0.0));
+        // Y offset is applied as negative to position label above body
+        expect(AppTypography.labelOffsetY, greaterThan(0.0));
+      });
+
+      test('label offsets should be reasonable for UI visibility', () {
+        // Should be large enough to be visible but not too far from body
+        expect(AppTypography.labelOffsetX, greaterThan(5.0));
+        expect(AppTypography.labelOffsetX, lessThan(30.0));
+        expect(AppTypography.labelOffsetY, greaterThan(5.0));
+        expect(AppTypography.labelOffsetY, lessThan(30.0));
+      });
+    });
+
     group('Blur Radius Constants', () {
       test('should have correct blur radius values', () {
         expect(AppTypography.blurSmall, equals(2.0));

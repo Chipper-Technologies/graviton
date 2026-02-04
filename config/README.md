@@ -70,6 +70,27 @@ Each configuration file contains environment settings, URLs, assets, and Firebas
 - `recaptchaSiteKey` - (Web only) reCAPTCHA v3 site key for App Check
 - `iosBundleId` - (iOS/macOS only) Bundle identifier
 
+### RevenueCat Configuration
+
+- `revenuecat.apiKey` - RevenueCat public API key for in-app purchases
+
+**Platform-specific keys:**
+- iOS/macOS: Use Apple API key (prefix `appl_`)
+- Android: Use Google API key (prefix `goog_`)
+- Web/Windows: Leave empty (RevenueCat not supported)
+
+Get your API keys from [RevenueCat Dashboard](https://app.revenuecat.com/) → Project Settings → API Keys.
+
+### Stripe Configuration (Web only)
+
+- `stripe.monthlyPriceId` - Stripe price ID for monthly subscription
+- `stripe.yearlyPriceId` - Stripe price ID for yearly subscription
+- `stripe.lifetimePriceId` - Stripe price ID for lifetime purchase
+
+Get your price IDs from [Stripe Dashboard](https://dashboard.stripe.com/) → Products → Price IDs.
+
+**Note:** Stripe is only used for web payments. Native platforms use RevenueCat.
+
 ## Usage
 
 Configuration files are loaded at compile time using `--dart-define-from-file`:

@@ -4,7 +4,8 @@ import 'package:graviton/core/enums/firebase_event.dart';
 void main() {
   group('FirebaseEvent Enum', () {
     test('should have all expected Firebase events', () {
-      expect(FirebaseEvent.values.length, equals(18));
+      // 18 original + 18 premium events + 3 stripe events = 39 total
+      expect(FirebaseEvent.values.length, equals(39));
       expect(FirebaseEvent.values, contains(FirebaseEvent.appInitialized));
       expect(FirebaseEvent.values, contains(FirebaseEvent.appStart));
       expect(FirebaseEvent.values, contains(FirebaseEvent.appError));
@@ -29,6 +30,56 @@ void main() {
       expect(FirebaseEvent.values, contains(FirebaseEvent.shareDialogOpened));
       expect(FirebaseEvent.values, contains(FirebaseEvent.shareCancelled));
       expect(FirebaseEvent.values, contains(FirebaseEvent.shareFailed));
+      // Premium events
+      expect(FirebaseEvent.values, contains(FirebaseEvent.paywallOpened));
+      expect(FirebaseEvent.values, contains(FirebaseEvent.paywallClosed));
+      expect(FirebaseEvent.values, contains(FirebaseEvent.purchaseStarted));
+      expect(FirebaseEvent.values, contains(FirebaseEvent.purchaseCompleted));
+      expect(FirebaseEvent.values, contains(FirebaseEvent.purchaseFailed));
+      expect(FirebaseEvent.values, contains(FirebaseEvent.purchaseCancelled));
+      expect(
+        FirebaseEvent.values,
+        contains(FirebaseEvent.purchaseRestoreStarted),
+      );
+      expect(
+        FirebaseEvent.values,
+        contains(FirebaseEvent.purchaseRestoreCompleted),
+      );
+      expect(
+        FirebaseEvent.values,
+        contains(FirebaseEvent.purchaseRestoreFailed),
+      );
+      expect(FirebaseEvent.values, contains(FirebaseEvent.subscriptionExpired));
+      expect(FirebaseEvent.values, contains(FirebaseEvent.trialStarted));
+      expect(FirebaseEvent.values, contains(FirebaseEvent.trialConverted));
+      expect(
+        FirebaseEvent.values,
+        contains(FirebaseEvent.premiumFeatureAccessed),
+      );
+      expect(
+        FirebaseEvent.values,
+        contains(FirebaseEvent.premiumFeatureBlocked),
+      );
+      expect(FirebaseEvent.values, contains(FirebaseEvent.sessionLimitReached));
+      expect(
+        FirebaseEvent.values,
+        contains(FirebaseEvent.durationLimitReached),
+      );
+      expect(FirebaseEvent.values, contains(FirebaseEvent.freeSessionStarted));
+      expect(FirebaseEvent.values, contains(FirebaseEvent.freeSessionEnded));
+      // Stripe web payment events
+      expect(
+        FirebaseEvent.values,
+        contains(FirebaseEvent.stripePurchaseInitiated),
+      );
+      expect(
+        FirebaseEvent.values,
+        contains(FirebaseEvent.stripePurchaseCompleted),
+      );
+      expect(
+        FirebaseEvent.values,
+        contains(FirebaseEvent.stripePurchaseFailed),
+      );
     });
 
     test('should have correct string values', () {
@@ -119,6 +170,46 @@ void main() {
         equals(6),
         reason: 'Should have exactly 6 share-related events',
       );
+
+      // Purchase/subscription events
+      final purchaseEvents = FirebaseEvent.values
+          .where((event) => event.value.startsWith('purchase_'))
+          .toList();
+      expect(
+        purchaseEvents.length,
+        equals(7),
+        reason: 'Should have exactly 7 purchase-related events',
+      );
+
+      // Stripe web payment events
+      final stripeEvents = FirebaseEvent.values
+          .where((event) => event.value.startsWith('stripe_'))
+          .toList();
+      expect(
+        stripeEvents.length,
+        equals(3),
+        reason: 'Should have exactly 3 stripe payment events',
+      );
+
+      // Premium feature events
+      final premiumEvents = FirebaseEvent.values
+          .where((event) => event.value.startsWith('premium_'))
+          .toList();
+      expect(
+        premiumEvents.length,
+        equals(2),
+        reason: 'Should have exactly 2 premium feature events',
+      );
+
+      // Session limit events
+      final limitEvents = FirebaseEvent.values
+          .where((event) => event.value.contains('limit'))
+          .toList();
+      expect(
+        limitEvents.length,
+        equals(2),
+        reason: 'Should have exactly 2 limit-related events',
+      );
     });
 
     test('should have all sharing events', () {
@@ -135,6 +226,33 @@ void main() {
         expect(FirebaseEvent.values, contains(event));
         expect(event.value, contains('share'));
       }
+    });
+
+    test('should have all Stripe web payment events', () {
+      final stripeEvents = [
+        FirebaseEvent.stripePurchaseInitiated,
+        FirebaseEvent.stripePurchaseCompleted,
+        FirebaseEvent.stripePurchaseFailed,
+      ];
+
+      for (final event in stripeEvents) {
+        expect(FirebaseEvent.values, contains(event));
+        expect(event.value, startsWith('stripe_'));
+      }
+
+      // Verify correct string values
+      expect(
+        FirebaseEvent.stripePurchaseInitiated.value,
+        equals('stripe_purchase_initiated'),
+      );
+      expect(
+        FirebaseEvent.stripePurchaseCompleted.value,
+        equals('stripe_purchase_completed'),
+      );
+      expect(
+        FirebaseEvent.stripePurchaseFailed.value,
+        equals('stripe_purchase_failed'),
+      );
     });
 
     test('should have static methods for dynamic event creation', () {

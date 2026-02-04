@@ -71,10 +71,6 @@ class ApplicationSettingsScreen extends StatelessWidget {
                                   l10n,
                                   appState,
                                 ),
-                                SizedBox(height: AppTypography.spacingXXLarge),
-
-                                // Future settings sections can be added here
-                                // For example: Theme settings, Sound settings, etc.
                               ],
                             ),
                           ),
