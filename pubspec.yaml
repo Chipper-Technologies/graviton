@@ -63,6 +63,9 @@ flutter_launcher_icons:
   macos:
     generate: true
     image_path: "assets/images/app-logo.png"
+  windows:
+    generate: true
+    image_path: "assets/images/app-logo.png"
   image_path: "assets/images/app-logo.png"
   min_sdk_android: 21
   remove_alpha_ios: true
@@ -76,3 +79,4 @@ flutter_native_splash:
   ios_content_mode: scaleAspectFit
   fullscreen: false
   web: true
+  windows: true
